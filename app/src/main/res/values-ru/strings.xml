@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="capo_toggle">"Капо связки переключения"</string>
+    <string name="capo_toggle_onlycapo">"Показать только Капо связки если таковые имеются"</string>
+    <string name="capo_toggle_bothcapo">"Показать как капо и родные аккорды если таковые имеются"</string>
+    <string name="language">"Язык"</string>
+    <string name="refreshsongs">"Обновить меню песни"</string>
+    <string name="custom1_theme">"Особый 1"</string>
+    <string name="custom2_theme">"Особый 2"</string>
+    <string name="scripture">"Cвященное писание"</string>
+    <string name="slide">"Cтраница"</string>
+
+    <string name="visualmetronome">"Визуальный"</string>
+    <string name="onsonglocation">"Вы должны разместить Онсона файл резервной копии в /documents/OpenSong/ папки для того, чтобы быть доступными для импорта"</string>
+    <string name="savesong">"Cохранить"</string>
+    <string name="metronomepadsettings">"Метроном и фоновые параметры музыка"</string>
+    <string name="metronome">"Метроном"</string>
+    <string name="temponotset">"Темп не был установлен для этой песни"</string>
+    <string name="timesignotset">"Время подпись не был установлен для этой песни"</string>
+    <string name="pad">"фоновая музыка"</string>
+    <string name="wait">"Подождите ...."</string>
+    <string name="volume">"объем"</string>
+    <string name="pan">"Лево / Право"</string>
+    <string name="linespacing">"Обрезать межстрочный интервал"</string>
+    <string name="currently">"в настоящее время"</string>
+    <string name="currentkeycode">"Текущий код ключа"</string>
+	<string name="notset">"Не установлено"</string>
+	<string name="songactionsbuttons">"Кнопки для запуска / остановки действия песни"</string>
+	<string name="padPedalText">"Старт / Стоп фоновой музыки"</string>
+	<string name="autoscrollPedalText">"Старт / Стоп автопрокрутку"</string>	
+	<string name="metronomePedalText">"Старт / стоп метронома"</string>
+    
+    <string name="autoscroll_time">"Автоматическая прокрутка время задержки"</string>
+    
+    <string name="songbuttons_toggle">"Кнопки-переключатели страница ярлыков"</string>
+    <string name="song_functionnotavailable">"Эта функция доступна не для песен"</string>
+    
+    <string name="latest_updates">"Последние обновления"</string>
+    
+    <string name="storage_choose">"Управление дискового пространства"</string>
+    <string name="storage_help">"Пожалуйста, выберите место хранения по умолчанию для ваших файлов OpenSong. Вы можете изменить это в любое время из меню Options."</string>
+    <string name="storage_space">"Свободное пространство"</string>
+    <string name="storage_notavailable">"недоступен"</string>
+    <string name="storage_int">"Эмуляция внешних / внутренних хранение"</string>
+    <string name="storage_ext">"Внешние накопители"</string>
+    
+    <string name="link">"Cсылка"</string>
+    <string name="link_choose">"Выберите файл, чтобы связать с этой песней"</string>
+    
+    <string name="autoscroll">"Автоматическая прокрутка"</string>
+    
+    <string name="import_onsong_done">"Успех - Онсона песни были добавлены /documents/OpenSong/Songs/OnSong"</string>
+    <string name="import_onsong_error">"Нет Онсона файл резервной копии не найдено в /documents/OpenSong/"</string>
+    <string name="import_onsong_choose">"Импорт Онсона резервного копирования файлов"</string>
+    
+    <string name="pad_playing">"Резервное трек начал играть"</string>
+    <string name="pad_stopped">"Резервное трек остановки (подождите Fade Out)"</string>
+    <string name="pad_choose_key">"Пожалуйста, выберите ключ этой песни"</string>
+    <string name="pad_error">"Суть этой песни не было установлено"</string>
+    <string name="backing_track">"Выберите бэк-трек"</string>
+    <string name="pad_onoroff">"Используйте подушку с этой песней"</string>
+    <string name="pad_auto">"Автоматический"</string>
+    
+    <string name="stickynotes">"Примечания песни"</string>
+    
+    <string name="youtube">"Поиск YouTube для текущей песни"</string>
+    
+    <string name="pdf_functionnotavailable">"Эта функция не доступна для PDF документов"</string>
+    <string name="pdf_selectpage">"Выберите страницу"</string>
+    
+   	<string name="options_set">"НАБOP"</string>
+   	<string name="options_set_load">"ГРУЗИТЬСЯ"</string>
+   	<string name="options_set_save">"СОХРАНЯТЬ"</string>
+	<string name="options_set_nameofset">"Новый набор имя"</string>
+   	<string name="options_set_clear">"ОЧИЩАТЬ"</string>
+   	<string name="options_set_delete">"УДАЛЯТЬ"</string>
+   	<string name="options_set_export">"ЗКСПОРТИРОВАТЬ"</string>
+   	<string name="options_set_edit">"ОТРЕДАКТИРОВАТЬ"</string>
+   	
+	<string name="options_song">"ПЕСНЯ"</string>
+	<string name="options_song_transpose">"Транспонирование"</string>
+	<string name="options_song_convert">"Преобразование песню к моему предпочтительный формат аккорда"</string>
+	<string name="options_song_sharp">"Используйте # аккорды"</string>
+	<string name="options_song_flat">"Используйте b аккорды"</string>
+	<string name="options_song_edit">"Редактировать"</string>
+	<string name="options_song_rename">"Переименовать"</string>
+	<string name="options_song_delete">"Удалить"</string>
+	<string name="options_song_new">"Новый"</string>
+	<string name="options_song_export">"Экспорт"</string>
+    <string name="options_song_stickynotes">"Редактировать песня заметка"</string>
+    <string name="options_song_newfolder">"Создать новую папку песню"</string>
+    <string name="options_song_editfolder">"Изменить имя папки песня"</string>
+		
+	<string name="options_options">"ВАРИАНТЫ"</string>
+	<string name="options_options_theme">"Переключение темы"</string>
+	<string name="options_options_scale">"Переключить автоматического масштабирования песня вкл / выкл"</string>
+	<string name="options_options_fontsize">Select font size</string>
+	<string name="options_options_showchords">"Показать / скрыть Аккорды"</string>
+	<string name="options_options_chordformat">"Выберите формат аккорд"</string>
+	<string name="options_options_gestures">"Присвоение специальных жестов"</string>
+	<string name="options_options_songswipe">"Переключить салфетки для перемещения между песнями вкл / выкл"</string>
+	<string name="options_options_menuswipe">"Закрыть список песни и опция меню проведите вкл / выкл"</string>
+	<string name="options_options_hidebar">"Скрыть верхней панели меню включения / выключения"</string>
+	<string name="options_options_colors">"Изменение Цвета"</string>
+	<string name="options_options_fonts">"Изменить шрифты"</string>
+	<string name="options_options_pedal">"Связать Педаль"</string>
+	<string name="options_options_help">"Помощь (онлайн)"</string>
+	<string name="options_options_start">"Вернуться к Стартовый экран"</string>
+							
+    <string name="customgestures">"Присвоение специальных жестов"</string>
+    <string name="doubleTap">"Выберите двойного действия крана"</string>
+    <string name="longPress">"Выберите Длительное нажатие действия"</string>
+    <string name="gesture1">"Откройте оба меню"</string>
+    <string name="gesture2">"Редактировать песня"</string>
+    <string name="gesture3">"Добавить песню для установки"</string>
+
+    <string name="transpose">"Транспонирование"</string>
+    <string name="docontinue">"продолжать"</string>
+    <string name="chordformat_help">"Когда перенося песню , вы хотитеприложение для обнаружения формат аккордовпесни в каждом времени?"</string>
+	<string name="chordformat_check">"Обнаружение аккорд формате каждый раз, когда вы транспонировать"</string>
+	<string name="chordformat_default">"Всегда предполагайте, песни в моей предпочтительный формат аккордов"</string>
+    <string name="chordformat_check_short">"Всегда проверяйте"</string>
+    <string name="chordformat_default_short">"Не спрашивайте меня"</string>
+    
+    <string name="nothighenoughapi">"Вам необходима более новая версия Android для этого !"</string>
+    
+    <string name="checkchordformat">"Вы уверены, что эта песня в нужный формат аккорда ?"</string>
+	<string name="oldchordformat">"Обнаружен нынешний формат аккорд"</string>
+	
+    <string name="firstsong">"Показано первую песню"</string>
+    <string name="lastsong">"Показано последнюю песню"</string>
+    
+    <string name="set_edit">"Редактировать"</string>
+    <string name="set_edit_title">"Редактировать текущий набор"</string>
+    <string name="set_help">"Перетащите песни вокруг , чтобы изменить порядок Вашего устройства"</string>
+    
+    <string name="currentset">"Текущий набор"</string>
+    <string name="setmargins">"Настройте\nполя"</string>
+    <string name="setxmargins">"Горизонтальная размер маржи"</string>
+    <string name="setymargins">"Вертикальный размер маржи"</string>
+    <string name="update_projector">"Обновление\nпроектор"</string>
+    <string name="black_screen">"Черный\nэкран"</string>
+    <string name="choose_image1">"Выберите\nфоновое\nизображение 1"</string>
+    <string name="choose_image2">"Выберите\nфоновое\nизображение 2"</string>
+    <string name="choose_video1">"Выберите фоновое видео 1"</string>
+    <string name="choose_video2">"Выберите фоновое видео 2"</string>
+    
+    <string name="choosechordformat">"Выберите формат аккорда ( используется только при транспозиции песню )"</string>
+    
+    <string name="switchtopresentmode">"Переключение в режим презентации"</string>
+    <string name="switchtoperformmode">"Переключение в режим производительности"</string>
+    <string name="presentermode">"режим презентации"</string>
+    <string name="sendtoprojector">"выступать"</string>
+    <string name="presoBackground">"Презентация фон"</string>
+    <string name="presoShowLogo">"Показать логотип"</string>
+    <string name="notcompatible">"К сожалению, вы должны Android 4.2 или выше, чтобы использовать функцию на двойной экран презентации !"</string>
+	<string name="nodisplays">"Никакие внешние дисплеи не подключен . Пожалуйста, подключите к вторичному дисплею через выход HDMI или Miracast совместимый беспроводной дисплей ."</string>
+    <string name="extradisplay">"Дополнительный дисплей обнаружено . Песни будут отображаться на дополнительном дисплее ."</string>
+	<string name="beta">"Бета особенность - все еще есть ошибки и конфигурация изображения / дисплей пока не доступна . Ожидайте вылетает!"</string>
+    
+    <string name="songnamealreadytaken">"К сожалению, это название песни / имя файла уже используется ( предложение может быть , чтобы добавить номер версии до конца )."</string>
+    <string name="chordiesearch">"Онлайн поиск в www.chordie.com"</string>
+    <string name="ultimateguitarsearch">"Онлайн поиск в Ultimate-Guitar.com"</string>
+    <string name="phrasesearch">"Введите поисковую фразу ( название, автор , текст и т.д. )"</string>
+    <string name="grabchordpro">"Извлечение данных ChordPro"</string>
+    <string name="chordproprogress">"Цель данных песни ChordPro на странице&#8230;"</string>
+    <string name="closesearch">"Закрыть поиск"</string>
+    <string name="chordpro_false">"Нет ChordPro песня обнаружено !"</string>
+	<string name="chordpro_true">"ChordPro песня обнаружено !"</string>
+	<string name="choosefolder">"Выберите папку для сохранения файла в"</string>
+	<string name="choosesongname">"Выберите имя для этой песни"</string>
+	<string name="newfolder">"Новая папка"</string>
+	<string name="newfoldername">"Введите имя новой папки"</string>
+	<string name="folderexists">"Эта папка уже существует !"</string>
+	<string name="createfoldererror">"Былошибка при создании новой папки !"</string>
+	<string name="createfoldersuccess">"Новая папка создается !"</string>
+    
+	<string name="welcome">"OpenSong Музыка просмотра \п Автор Гарет Эванс"</string>
+		
+	<string name="intro">"OpenSong Музыка просмотра использует песни, созданные в OpenSong и отображает их на экране планшета. Она направлена ​​на поклонение музыкантов и очень много в стадии разработки. Она лучше всего работает в портретном режиме, но я оставил ландшафтном режиме доступны (на всякий случай)."</string>
+		
+	<string name="intro_songsfolder">"Приложение выглядит для папки в ваших документах под названием \"OpenSong / Songs\" и если он не может найти его, он создает ее для вас. Затем он сохраняет одну песню под названием \"Любовь вечна\", один из моих собственных песен, в папку (в противном случае вы не были бы в состоянии сделать что-либо с приложением!). Чтобы использовать свои собственные песни OpenSong, скопируйте их в Документы / OpenSong / Песни / папок. Вы можете иметь один уровень вложенных папок внутри папки Песни. \n\n Приложение также поставляется в комплекте с 700 + песен, которые можно использовать, но имейте в виду, вы несете ответственность за соблюдение любых потенциальных проблем с авторским правом, и вы используете их на свой страх и риск!"</string>
+		
+	<string name="intro_dropbox">"Если вы хотите использовать песни / Наборы через раздаточной коробке счета (позволяет группам доступ к той же информации), вам нужно будет установить приложение, которое позволяет синхронизацию Dropbox файлы с планшетом. К сожалению, официальная Dropbox приложение не использует локальную папку так же, как настольное приложение делает. \n\n (бесплатно) приложение, которое я рекомендовал бы, DropSync который делает это для вас. Если вы хотите сделать это, я рекомендовал бы сбросить папку Песни на планшете (кнопка выше) первых, чтобы вы не используете ни песни на ваш счет Dropbox с моими версий! \n\n При настройке DropSync, синхронизировать папку DropBox OpenSong с / документов / OpenSong / папки и позволяют 2 способ синхронизации (собирание основную папку OpenSong позволит обеим песни и устанавливает для синхронизации). \n Это займет несколько минут (в зависимости от количества песен у вас есть) при первом запуске. Стандартный оговорка - я не несу ответственности за любые убытки, песен на папке DropBox! Вы делаете это на свой страх и риск. \n\n Однако, я эту возможность на устройстве, и все это, кажется, seemlessly работать (график синхронизации по умолчанию 1 час) на приложение DropSync, но вы можете изменить это)."</string>
+	    
+	<string name="intro_future">"К сожалению, я не владеете IPAD / Mac, так что я не в состоянии разработать на этой платформе (пожертвования приветствуются &#8230;..), но я намерен продолжать совершенствовать это приложение в связи Конечно. Я просто хотел поделиться тем, что я сделал уже в надежде, что кто-то еще находит это полезным."</string>
+		
+	<string name="intro_help">"При использовании приложение, \"салфетки\" меню слева, чтобы выбрать песню и \"салфетки\" меню справа для различных других вариантов. \n\n Длительное нажатие на песню в левом меню будет добавить песню в свой установить. Длительное нажатие на песню в вашем наборе будет удалить его. \n\n Наборы могут быть загружены из или сохранены в папке \"OpenSong / устанавливает. Длительное нажатие на сохраненном наборе удалит его из устройства. \n\n Теперь Вы можете поделиться сохраненные наборы и любой из ваших песен по электронной почте, DropBox и т.д.
+	"</string>
+	
+	<string name="rename">"Введите новое имя файла для этой песни ( это, как она появится в вашем меню песня )"</string>
+	<string name="renametitle">"Переименовать"</string>
+			
+	<string name="copyresources">"Нажмите, чтобы скопировать различные песни \n Вы несете ответственность за Copyright"</string>
+	<string name="gotosong">"НАЖМИТЕ ЗДЕСЬ, ЧТОБЫ НАЧАТЬ \n\n Открыть SONG ПРОСМОТРА"</string>
+	<string name="wipesongs">"Сброс мою папку местные песни"</string>
+	<string name="dropsync">"Скачать DropSync App (бесплатно)"</string>
+	<string name="app_name">"OpenSong Tablet"</string>
+	<string name="drawer_open">"Открыть"</string>
+	<string name="drawer_close">"Закрыть"</string>
+	<string name="set_back">"Назад"</string>
+	<string name="set_forward">"Переслать"</string>
+	<string name="backtohome">"Вернуться на главную страницу"</string>
+	<string name="exit">"Вы уверены, что хотите выйти из программы?"</string>
+	
+	<string name="on_width">"ВКЛ - Ширина только"</string>
+	<string name="on_set">"ВКЛ - Наборы только"</string>
+	<string name="on">"ВКЛ"</string>
+	<string name="off">"ВЫКЛ"</string>
+	<string name="scaleY">"Масштаб страницы, чтобы соответствовать песню теперь"</string>
+	<string name="swipeSet">"Размах между песнями теперь"</string>
+	<string name="fontsize">"Вам нужно отключить автоматическое масштабный песню."</string>	
+	<string name="drawerswipe">"Список Развернуть песни и меню опций на салфетки теперь"</string>
+	<string name="toggleScrollBeforeSwipe">"Переключить прокрутки до следующей / предыдущей песни"</string>
+	<string name="toggleScrollBeforeSwipeToggle">"Предыдущий / Следующий кнопки также прокручивают сначала теперь"</string>
+    <string name="toggleLandscapeColumns">"Вид колонка Пейзаж теперь"</string>
+			
+	<string name="exportcurrentsong">"Дайте текущую песню"</string>
+	<string name="exportsavedset">"Отправить сохраненный набор"</string>
+	<string name="importnewsong">"Импорт песню"</string>
+	<string name="importnewset">"Импорт набор"</string>
+	<string name="hasbeenexported">"было экспортировано"</string>
+	<string name="hasbeenimported">"было импортировано"</string>
+	<string name="hasnotbeenexported">"не экспортируется - была проблема!"</string>			
+	<string name="hasnotbeenimported">"не был импортирован - была проблема!"</string>			
+		
+	<string name="add_song_to_set">"Добавить текущую песню установить"</string>
+
+	<string name="edit_song_title">"Название песни"</string>
+	<string name="edit_song_author">"Автор"</string>
+	<string name="edit_song_lyrics">"Тексты песен"</string>
+	<string name="edit_song_copyright">"Информация об авторском праве"</string>
+	<string name="edit_song_presentation">"Порядок представления"</string>
+	<string name="edit_song_ccli">"CCLI"</string>
+	<string name="edit_song_capo">"Капо лад"</string>
+	<string name="edit_song_key">"Шпилька"</string>
+	<string name="edit_song_aka">"Также известный, как"</string>
+	<string name="edit_song_keyline">"Заголовок в одну строку"</string>
+	<string name="edit_song_user1">"Пользователь 1"</string>
+	<string name="edit_song_user2">"Пользователь 2"</string>
+	<string name="edit_song_user3">"Пользователь 3"</string>
+	<string name="edit_song_theme">"Тема"</string>
+	<string name="edit_song_tempo">"Темп"</string>
+	<string name="edit_song_timesig">"Временная отметка"</string>
+	<string name="edit_song_hymn">"Число Гимн"</string>
+	<string name="edit_song_availabletags">"[В] = Стих, [V1] = Стих 1, [C] = хор, [С1] для хора 1, [P] = Prechorus, [T] = тегов, [B] = мост, [&#8230; (все, что вы хотите ) &#8230;] = пользовательских тегов. \ п Лирические строки начинаются с пробела аккордов линий с полной остановки, строки комментариев с запятой."</string>
+    <string name="edit_song_duration">"Продолжительность песни (в секундах)"</string>
+    <string name="edit_song_notes">"Песня заметки"</string>
+    <string name="edit_song_midi">"MIDI сообщение, отправленное из песни"</string>
+    <string name="edit_song_midi_index">"MIDI сообщение, чтобы активировать песню"</string>
+    <string name="edit_song_restrictions">"Ограничения"</string>
+    <string name="edit_song_books">"Книги песня принадлежит"</string>
+    <string name="edit_song_pitch">"Примечания труб шаг за песню"</string>  
+	
+	<string name="show_general_advanced">"Переключение общие / расширенный поля"</string>
+	<string name="edit_song_capo_print">"Распечатать Capo аккорды"</string>
+	
+	<string name="search_top">"Песня на вершине списка поиска выбранного"</string>
+	<string name="search_here">"Поиск здесь"</string>
+	
+	<string name="edit_cancel">"Выйти без сохранения"</string>
+	<string name="edit_save">"Сохранить изменения"</string>
+	<string name="edit_delete">"Удалить эту песню"</string>
+	
+	<string name="areyousure">"Вы уверены? "</string>
+	<string name="overwritecurrentset">"Это приведет к перезаписи текущий набор."</string>
+	<string name="removesavedset">"Это приведет к удалению этого набора из папки вашего \"наборы\"."</string>
+	
+	<string name="yes">"Да"</string>
+	<string name="no">"Нет"</string>
+	<string name="ok">"Ok"</string>
+	<string name="cancel">"Отменить"</string>
+		
+	<string name="songfolderexists">"Папка OpenSong 'песни' уже существует. Отлично!"</string>
+	<string name="songfoldercreate">"Создание папки OpenSong 'песни'"</string>
+	<string name="setsfolderexists">"Папка OpenSong \"наборы\" уже существует. Отлично!"</string>
+	<string name="setsfoldercreate">"Создание папки OpenSong \"наборы\""</string>
+	<string name="initialisesongs_start">"Инициализация папку 'песни' -"</string>		
+	<string name="initialisesongs_end">"песня (ы) найден!"</string>		
+	<string name="initialisesets_start">"Инициализация папку \"наборы\" -"</string>		
+	<string name="initialisesets_end">"Набор (ы) найден!"</string>		
+	<string name="installingsongs">"Установка песни &#8230;."</string>
+	<string name="assetcopydone">"OpenSong Песни были скопированы в папку \"Songs\" .."</string>
+	
+	<string name="createanewsong">"Создать новую песню"</string>
+	<string name="createanewset">"Создать новый набор"</string>
+	<string name="newsongtitleprompt">"Пожалуйста, введите заголовок для вашего нового песни"</string>
+	<string name="newsettitleprompt">"Пожалуйста, введите заголовок для вашего нового набора"</string>
+	<string name="shouldnotbedeleted">"не должна быть исключена из папке \"Songs\"!"</string>
+	<string name="songhasbeendeleted">"был удален из папке \"песен."</string>
+	<string name="sethasbeendeleted">"был удален из папки вашего \"наборы\"."</string>
+	<string name="deleteerror_start">"Существовал проблема удаления"</string>
+	<string name="deleteerror_end_song">"от папке \"песен."</string>
+	<string name="deleteerror_end_sets">"из папки вашего \"наборы\"."</string>
+	<string name="songdoesntexist">"Эта песня не на вашем устройстве. Вы удалили его?"</string>
+	<string name="addedtoset">"была добавлена ​​к концу текущего набора."</string>
+	<string name="removedfromset">"была удалена из вашего набора."</string>
+		
+	<string name="soundLink">"Слушайте \"Любовь века '"</string>
+	<string name="stop">"Стоп"</string>
+	<string name="start">"Начать"</string>
+	<string name="action_search">"Поиск песни"</string>
+	<string name="action_settings">"Настройки OpenSong"</string>
+	
+	<string name="toastmessage_maxfont">"Максимальный размер шрифта, достиг"</string>
+	<string name="toastmessage_minfont">"Минимальный размер шрифта достиг"</string>
+	
+	<string name="options_backtooptions">"Назад к вариантам"</string>
+	<string name="options_savethisset">"SAVE ЭТОТ КОМПЛЕКТ"</string>
+	<string name="options_clearthisset">"Снимите этот SET"</string>
+	
+	<string name="mainfoldername">"ГЛАВНАЯ"</string>
+	
+	<string name="colorchooser">"Выбор цвета"</string>
+	<string name="dark_theme">"Темный тема"</string>
+	<string name="light_theme">"Свет тема"</string>
+	<string name="item">"Пункт"</string>
+	<string name="page_background">"Фон Страница"</string>
+	<string name="lyrics_color">"Текст шрифта"</string>
+	<string name="chord_color">"Аккорды шрифта"</string>
+	<string name="capo_color">"Шрифт Capo"</string>
+	<string name="verse_background">"Стих фон"</string>
+	<string name="chorus_background">"Припев фон"</string>
+	<string name="prechorus_background">"Prechorus фон"</string>
+	<string name="bridge_background">"Фон мост"</string>
+	<string name="tag_background">"Тэг фон"</string>
+	<string name="comment_background">"Комментарий фон"</string>
+	<string name="custom_background">"Пользовательские фон тег"</string>
+	<string name="reset_colours">"Сброс Цвета"</string>
+							
+	<string name="pageturn_title">"Связать кнопки Листать"</string>
+	<string name="pageturn_instructions">"Эта страница позволяет назначить кнопки от перелистывания страниц устройства (такие как Bluetooth педального переключателя) для контроля перемещения через наборов или прокрутки вверх и вниз на странице песни. \ П \nВы должны убедиться, что устройство уже подключено к вашему Android планшета и включил. \ п \nНажмите на зеленых или синих кнопок ниже а затем нажмите кнопку управления на ножной переключатель, и т.д."</string>
+	<string name="pageturn_set">"Кнопки для перемещения с помощью набора"</string>
+    <string name="pageturn_song">"Кнопки для прокрутки в окне песни"</string>
+	<string name="pageturn_next">"Установить кнопку «Далее»"</string>
+	<string name="pageturn_previous">"Установить кнопку «Назад»"</string>
+	<string name="pageturn_up">"Установить 'Прокрутка вверх' кнопку"</string>
+	<string name="pageturn_down">"Набор 'Прокрутите' кнопку"</string>
+	<string name="pageturn_waiting">"В ожидании кнопку &#8230;."</string>
+	<string name="pageturn_needset">"Вы должны быть просмотра песню, перечисленные в текущем наборе использовать Листать центр"</string>
+	<string name="pageturn_attempt">"Открытие первую песню в текущем наборе &#8230;."</string>
+		
+	<string name="changefonts">"Изменение шрифтов"</string>
+	<string name="chooselyricfont">"Выберите лирическую шрифт"</string>
+	<string name="choosechordfont">"Выберите аккорд шрифт"</string>
+	<string name="font_default">"По умолчанию"</string>
+	<string name="font_monospace">"Droid Моноширинный"</string>
+	<string name="font_sans">"Droid Sans"</string>
+	<string name="font_serif">"Droid засечками"</string>
+	<string name="font_firasanslight">"FiraSansOT-Свет"</string>
+	<string name="font_firasansregular">"FiraSansOT-Regular"</string>
+	<string name="font_kaushanscript">"KaushanScript"</string>
+	<string name="font_latolight">"Лато света"</string>
+	<string name="font_latoregular">"Лато Регулярный"</string>
+	<string name="font_lyrics_line1">"Любовь вечна, "</string>
+	<string name="font_lyrics_line2">"любовь без меры"</string>
+	<string name="font_chords_line1">"С"</string>
+	<string name="font_chords_line2">"D / F #"</string>
+
+</resources>

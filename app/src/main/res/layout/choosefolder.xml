@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text_in_menu"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+	android:textAppearance="?android:attr/textAppearanceMedium"
+    android:textColor="?android:attr/textColorAlertDialogListItem"
+    android:gravity="center_vertical"
+    android:padding="10dp"
+    android:ellipsize="marquee" />

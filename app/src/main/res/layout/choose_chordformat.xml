@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/choosechordformat"
+            android:textSize="22sp" />
+
+        <RadioGroup
+            android:id="@+id/chordFormat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/chordFormat1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chordFormat1" />
+
+            <RadioButton
+                android:id="@+id/chordFormat2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chordFormat2" />
+
+            <RadioButton
+                android:id="@+id/chordFormat3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chordFormat3" />
+
+            <RadioButton
+                android:id="@+id/chordFormat4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chordFormat4" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/chordformat_help"
+            android:textSize="22sp" />
+
+        <RadioGroup
+            android:id="@+id/chordFormat_decideaction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/chordformat_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chordformat_check" />
+
+            <RadioButton
+                android:id="@+id/chordformat_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chordformat_default" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/exitChordFormat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="20dp"
+            android:background="@drawable/red_button"
+            android:onClick="exitChordFormat"
+            android:text="@string/edit_save" />
+    </LinearLayout>
+
+</ScrollView>

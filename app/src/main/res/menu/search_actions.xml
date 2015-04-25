@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+ 
+    <item android:id="@+id/chordie_websearch"
+          android:title="@string/chordiesearch"
+          android:icon="@drawable/ic_action_cloud"
+          android:label="@string/chordiesearch"
+          android:hint="@string/chordiesearch"
+          android:showAsAction="never|collapseActionView"/>
+    
+    <item android:id="@+id/ultimateguitar_websearch"
+          android:title="@string/ultimateguitarsearch"
+          android:icon="@drawable/ic_action_cloud"
+          android:label="@string/ultimateguitarsearch"
+          android:hint="@string/ultimateguitarsearch"
+          android:showAsAction="never|collapseActionView"/>
+    
+    </menu>

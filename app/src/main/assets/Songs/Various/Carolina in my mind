@@ -1,0 +1,83 @@
+<song>
+<title>Carolina in my mind</title>
+<author>James Taylor</author>
+<copyright>James Taylor</copyright>
+<lyrics>[]
+; Compile with
+; gchord -g -o CarolinaInMyMind.ps CarolinaInMyMind.chopro
+;
+; CarolinaInMyMind.chopro
+; output of TXT2CHO v0.1   17.02.94
+; for automatically created .CHO - files
+;
+;
+ James Taylor
+
+;Capo on 3rd fret
+
+;
+;Chords used:
+;
+;    D     G    G/F#  Em7   G/A   A/C#  Bm    D/F#  E7
+;E: -2-   -3-   -3-   ---   -3-   ---   -2-   ---   ---
+;B: -3-   ---   ---   -3-   -3-   -5-   -3-   -3-   -3-
+;G: -2-   ---   ---   ---   ---   -2-   -4-   -2-   -1-
+;D: ---   ---   ---   -2-   ---   -x-   -4-   ---   -2-
+;A: ---   -x-   -x-   -2-   -x-   -4-   -2-   -x-   -2-
+;E: ---   -3-   -2-   ---   ---   ---   ---   -2-   ---
+;
+;   Bm7    C   A#o7  A7sus4 A7   F#m7   G/H
+;E: -2-   ---   ---   ---   ---   -2-   -3-
+;B: -3-   -1-   -2-   -3-   -2-   -2-   -3-
+;G: -2-   ---   ---   ---   ---   -2-   ---
+;D: -4-   -2-   -2-   -2-   -2-   -2-   -x-
+;A: -2-   -3-   -1-   ---   ---   -4-   -2-
+;E: ---   ---   ---   ---   ---   -2-   ---
+;
+;
+[C]
+. D              G        G/F#      A
+ In my mind Ive gone to Carolina    
+.G                     A     Em7
+ Cant you see the sunshine? Cant you just feel the
+. A            D               A/C#        Hm     A
+ moonshining?  Aint it just like a friend of mine to
+.G      D/F#       E7  G/A      D      Hm7
+ hit me from behind.   Yes Im goin to Caroli -
+. Em7  G/A      D   D
+ na    in my mind.  
+[]
+
+.  D                 C                   G
+ Karen, shes a sil- ver sun Youd best walk her way and watch
+.A   A#o7      Hm          G                      A
+ it  shining.   Watch her watch the morning come. 
+.A     G                    D/F#         Hm7   E7
+   A   silver tear appear - ing now, Im cry - ing
+.A7sus4   A7     D      Hm7      Em7  G/A      D  D
+ aint      I? Ive gone to Carolina in my mind.    
+
+ There aint no doubt in no ones mind that loves the finest thing
+ around. Whisper something soft and kind.And hey babe, the skies on
+ fire, Im dying aint I? Ive gone to Carolina in my mind.
+
+;Chorus
+
+ Dark and silent, late last night I think I heard the highway
+ calling; geese in flight and dogs that bite.
+ And signs that might be omens say Im going, Im going, Ive gone
+ to Carolina in my mind.
+
+.D      G              A                     Hm   Hm
+ With a holy host of others standing round me.    
+.F#m7                 Em7                G
+ Still Im on the dark side of the moon.  
+.A             C               G                    D
+    And it seems like it goes on like this forev - er.
+. D             C        G/HEm7
+ You must for - give me     
+.G/A               D   Hm7   Em7 G/A      D  D
+ if Im up and gone to Carolina in my mind.   
+
+;Chorus</lyrics>
+</song>

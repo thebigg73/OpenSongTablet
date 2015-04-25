@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<song>
+  <title>All my days</title>
+  <author>Stuart Townend</author>
+  <copyright>1998 Thankyou Music</copyright>
+  <presentation></presentation>
+  <hymn_number>513</hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>A</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
+  <lyrics>[Intro]
+.C#m7  D  E
+
+[V1]
+.C#m7   D           E         A       D   A
+ All my days I will sing this song of gladness
+.C#m7    D             E        A    D 
+ Give my praise to the Fountain of delights
+.    Bm D  E                Bm    D  E
+ For in my helplessness You heard my cry
+.    Bm    D  E                       F# B
+ And waves of mercy poured down on my life
+
+[V2]
+ I will trust in the cross of my Redeemer
+ I will sing of the blood that never fails
+ Of sins forgiven, of conscience cleansed
+ Of death defeated and life without end
+
+[C]
+.          E      A           B      E
+ Beautiful Saviour, Wonderful Counsellor
+.           F#m              F#m/E
+ Clothed in majesty, Lord of history
+.           B/D#     C#m7       B/E#
+ You're the Way, the Truth, the Life
+.            E      A             B/D# E
+ Star of the Morning, glorious in holiness
+.           F#m                 F#m/E
+ You're the Risen One, heaven's Champion
+.        B/D#   C#m7 B         C#m7  D  E
+ And You reign, You reign over all
+
+[V3]
+ I long to be where the praise is never-ending
+ Yearn to dwell where the glory never fades
+ Where countless worshippers will share one song
+ And cries of 'worthy' will honour the Lamb</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+  <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
+</song>

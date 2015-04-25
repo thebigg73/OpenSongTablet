@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="capo_toggle">"Capo akkordok váltás"</string>
+    <string name="capo_toggle_onlycapo">"Csak megtekintés capo akkordok, ha rendelkezésre áll"</string>
+    <string name="capo_toggle_bothcapo">"Mutasd mind capo és a natív akkordok, ha rendelkezésre áll"</string>
+    <string name="language">"Nyelv"</string>
+    <string name="refreshsongs">"Frissítés dalt menübe"</string>
+    <string name="custom1_theme">"Custom 1"</string>
+    <string name="custom2_theme">"Custom 2"</string>
+    <string name="scripture">"Szentírás"</string>
+    <string name="slide">"Oldal"</string>
+
+    <string name="visualmetronome">"Vizuális"</string>
+    <string name="onsonglocation">"Be kell, hogy tegye a OnSong mentés fájlt az /documents/OpenSong/ mappát, hogy legyen elérhető az import"</string>
+    <string name="savesong">"Megtakarit"</string>
+    <string name="metronomepadsettings">"Metronóm és háttérzene beállítások"</string>
+    <string name="metronome">"Metronóm"</string>
+    <string name="temponotset">"Tempo nincs beállítva ezt a dalt"</string>
+    <string name="timesignotset">"Ütemmutató nincs beállítva ezt a dalt"</string>
+    <string name="pad">"Háttérzene"</string>
+    <string name="wait">"Várni ...."</string>
+    <string name="volume">"Hangerő"</string>
+    <string name="pan">"Bal / Jobb"</string>
+    <string name="linespacing">"Trim sorköz által"</string>
+    <string name="currently">"Jelenleg"</string>
+    <string name="currentkeycode">"Jelenlegi legfontosabb kódot"</string>
+	<string name="notset">"Nincs beállítva"</string>
+	<string name="songactionsbuttons">"Gombok kezdeni / megállni dalt akciók"</string>
+	<string name="padPedalText">"Kezdeni / megállni pad"</string>
+	<string name="autoscrollPedalText">"Kezdeni / megállni autoscroll"</string>	
+	<string name="metronomePedalText">"Kezdeni / megállni metronóm"</string>
+    
+    <string name="autoscroll_time">"Auto-scroll késleltetési idő"</string>
+    
+    <string name="songbuttons_toggle">"Váltás oldal gombok hivatkozások"</string>
+    <string name="song_functionnotavailable">"Ez a funkció nem elérhető dalok"</string>
+    
+    <string name="latest_updates">"Utolsó frissítések</string>
+    
+    <string name="storage_choose">"Kezelése tárhely"</string>
+    <string name="storage_help">"Kérjük, válasszon az alapértelmezett tárolási helyet a OpenSong fájlokat. Meg lehet változtatni ezt bármikor a Beállítások menüben."</string>
+    <string name="storage_space">"Rendelkezésre álló hely"</string>
+    <string name="storage_notavailable">"Nem áll rendelkezésre"</string>
+    <string name="storage_int">"Emulált külső / belső tároló"</string>
+    <string name="storage_ext">"Külső tároló"</string>
+    
+    <string name="link">"Link"</string>
+    <string name="link_choose">"Válasszon egy fájlt, hogy csatolja ezt a dalt"</string>
+    
+    <string name="autoscroll">"Auto-scroll"</string>
+    
+    <string name="import_onsong_done">"Siker - OnSong dalok kerültek fel /documents/OpenSong/Songs/OnSong"</string>
+    <string name="import_onsong_error">"Nem OnSong biztonsági mentés található /documents/OpenSong/"</string>
+    <string name="import_onsong_choose">"Import OnSong biztonsági mentés"</string>
+    
+    <string name="pad_playing">"Háttér pályán kezdte játszani"</string>
+    <string name="pad_stopped">"Háttér pályán leáll (várni Fade Out)"</string>
+    <string name="pad_choose_key">"Kérjük, válassza ki a kulcsot, ezt a dalt"</string>
+    <string name="pad_error">"A kulcs ennek a dalnak nincs beállítva"</string>
+    <string name="backing_track">"Válasszon háttér pályán"</string>
+    <string name="pad_onoroff">"Használja a pad ezzel a dallal"</string>
+    <string name="pad_auto">"Kocsi"</string>
+    
+    <string name="stickynotes">"Dal jegyzetek"</string>
+    
+    <string name="youtube">"Keresés a YouTube aktuális dal"</string>
+    
+    <string name="pdf_functionnotavailable">"Ez a funkció nem elérhető a PDF dokumentumok"</string>
+    <string name="pdf_selectpage">"Válassza ki az oldal"</string>
+    
+   	<string name="options_set">"KÉSZLET"</string>
+   	<string name="options_set_load">"RAK"</string>
+   	<string name="options_set_save">"MEGTAKARIT"</string>
+   	<string name="options_set_nameofset">"Új nevet"</string>
+   	<string name="options_set_clear">"VÁMKEZELTET"</string>
+   	<string name="options_set_delete">"TÖRÖL"</string>
+   	<string name="options_set_export">"EXPORTÁL"</string>
+   	<string name="options_set_edit">"SZERKESZTÉS"</string>
+   	
+	<string name="options_song">"DAL"</string>
+	<string name="options_song_transpose">"Át kell ültetni"</string>
+	<string name="options_song_convert">"Átalakítás dal az én pÁt kell ültetnireferált akkord formátum"</string>
+	<string name="options_song_sharp">"Használja # akkordok"</string>
+	<string name="options_song_flat">"A b akkordok"</string>
+	<string name="options_song_edit">"Szerkesztés"</string>
+	<string name="options_song_rename">"Átnevezése"</string>
+	<string name="options_song_delete">"Törlés"</string>
+	<string name="options_song_new">"Új"</string>
+	<string name="options_song_export">"Exportálás"</string>
+    <string name="options_song_stickynotes">"Szerkesztés dalt ragadós cetli"</string>
+    <string name="options_song_newfolder">"Hozzon létre új dalt mappa"</string>
+    <string name="options_song_editfolder">"Szerkesztés dal mappa neve"</string>
+		
+	<string name="options_options">"OPCIÓK"</string>
+	<string name="options_options_theme">"Változik téma"</string>
+	<string name="options_options_scale">"Toggle Auto Scale dal be / ki"</string>
+	<string name="options_options_fontsize">"Válassza ki a betűméretet"</string>
+	<string name="options_options_showchords">"Megjelenítése / elrejtése akkord"</string>
+	<string name="options_options_chordformat">"Válasszon akkord formátum"</string>
+	<string name="options_options_gestures">"Rendeljen egyedi gesztusok"</string>
+	<string name="options_options_songswipe">"Váltás ellop lépni a dalok között be / ki"</string>
+	<string name="options_options_menuswipe">"Váltás dal lista és menük húzza be / ki"</string>
+	<string name="options_options_hidebar">"Hide felső menüsor on / off"</string>
+	<string name="options_options_colors">"Változás Színek"</string>
+	<string name="options_options_fonts">"Változás betűtípusok"</string>
+	<string name="options_options_pedal">"Hozzárendelése lábpedál"</string>
+	<string name="options_options_help">"Segítség (Online)"</string>
+	<string name="options_options_start">"Vissza a Start képernyő"</string>
+							
+    <string name="customgestures">"Rendeljen egyedi gesztusok"</string>
+    <string name="doubleTap">"Válassza ki dupla csap akció"</string>
+    <string name="longPress">"Válassza ki a hosszú nyomja akció"</string>
+    <string name="gesture1">"Nyissuk menük"</string>
+    <string name="gesture2">"Szerkesztés song"</string>
+    <string name="gesture3">"Add dal beállítani"</string>
+
+    <string name="transpose">"Át kell ültetni"</string>
+    <string name="docontinue">"Folytatódik"</string>
+    <string name="chordformat_help">"Átültetése során egy dalt , nem akarsz az alkalmazás észleli a húrt formátumban egy dal minden alkalommal ?"</string>
+	<string name="chordformat_check">"Érzékeli akkord formátumban minden alkalommal, amikor átültetésére"</string>
+	<string name="chordformat_default">"Mindig fel- dalok vannak az általam preferált akkord formátumban"</string>
+    <string name="chordformat_check_short">"Mindig ellenőrizze"</string>
+    <string name="chordformat_default_short">"Ne kérdezd"</string>
+    
+    <string name="nothighenoughapi">"Szüksége van egy újabb változata Android for this!"</string>
+    
+    <string name="checkchordformat">"Biztos benne, hogy ez a dal az Ön által megadott akkord formátum?"</string>
+	<string name="oldchordformat">"Észlelt aktuális akkord formátumban"</string>
+	
+    <string name="firstsong">"Megjelenítve első dal"</string>
+    <string name="lastsong">"Megjelenítve utolsó dal"</string>
+    
+    <string name="set_edit">"EZERKESZTÉS"</string>
+    <string name="set_edit_title">"Szerkesztheti a jelenlegi készlet"</string>
+    <string name="set_help">"Drag dalok körül, hogy a sorrend megváltoztatása a beállított"</string>
+    
+    <string name="currentset">"Aktuális készlet"</string>
+    <string name="setmargins">"Állítsa\nmargók"</string>
+    <string name="setxmargins">"Vízszintes margó"</string>
+    <string name="setymargins">"Függőleges margó"</string>
+    <string name="update_projector">"Frissítés\nprojektor"</string>
+    <string name="black_screen">"Fekete\nképernyő"</string>
+    <string name="choose_image1">"Válassza ki a\nháttérképet 1"</string>
+    <string name="choose_image2">"Válassza ki a\nháttérképet 2"</string>
+    <string name="choose_video1">"Válassza ki a háttér video 1"</string>
+    <string name="choose_video2">"Válassza ki a háttér video 2"</string>
+    
+    <string name="choosechordformat">"Válassza akkord formátum (csak átültetése során a dal)"</string>
+    
+    <string name="switchtopresentmode">"Váltás bemutató módba"</string>
+    <string name="switchtoperformmode">"Váltás teljesítmény üzemmódban"</string>
+    <string name="presentermode">"Bemutató üzemmód"</string>
+    <string name="sendtoprojector">"Vetít"</string>
+    <string name="presoBackground">"Bemutatkozás háttér"</string>
+    <string name="presoShowLogo">"Megjelenítése logo"</string>
+    <string name="notcompatible">"Sajnos szükség van az Android 4.2 vagy újabb kell használni a kettős képernyő bemutató funkciót !"</string>
+	<string name="nodisplays">"Nincs külső kijelzők csatlakoztatva. Kérjük, csatlakozzon a másodlagos kijelző , HDMI kimenet , vagy MiraCast kompatibilis vezeték nélküli kijelző ."</string>
+    <string name="extradisplay">"Másodlagos kijelző észlelt . Dalok jelenik meg a másodlagos kijelző ."</string>
+	<string name="beta">"Beta funkció - még a hibákat és a kép / megjelenítés beállítás még nem áll rendelkezésre . Várják összeomlik !"</string>
+    
+    <string name="songnamealreadytaken">"Sajnos ez a dal címe / filename már használják (a javaslat lehet , hogy adjunk egy verziószámot a vége)."</string>
+    <string name="chordiesearch">"Online keresés a www.chordie.com"</string>
+    <string name="ultimateguitarsearch">"Online keresés a Ultimate-Guitar.com"</string>
+    <string name="phrasesearch">"Adja meg a keresendő kifejezést (cím, szerző , dalszöveg , stb )"</string>
+    <string name="grabchordpro">"Kivonat ChordPro adat"</string>
+    <string name="chordproprogress">"Keresi a ChordPro dal adatok a&#8230;"</string>
+    <string name="closesearch">"Bezárás keresés"</string>
+    <string name="chordpro_false">"Nem ChordPro dal észlelt !"</string>
+	<string name="chordpro_true">"ChordPro dal észlelt !"</string>
+	<string name="choosefolder">"Válassza ki a mappát, mentse fájlba"</string>
+	<string name="choosesongname">"Válasszon egy nevet a dal"</string>
+	<string name="newfolder">"új mappa"</string>
+	<string name="newfoldername">"Adja meg az új mappa nevét"</string>
+	<string name="folderexists">"Ez a mappa már létezik !"</string>
+	<string name="createfoldererror">"Hiba történt létrehozása az új mappa !"</string>
+	<string name="createfoldersuccess">"Létrehozott új mappa !"</string>
+    
+	<string name="welcome">"OpenSong Music Viewer \n Írta: Gareth Evans"</string>
+		
+	<string name="intro">"A OpenSong Music Viewer dal létrehozott OpenSong és megjeleníti őket a tablet képernyőjén. Célja, hogy istentisztelet zenészek, és nagyon sok a munka folyamatban van. Úgy működik a legjobban portré módban, de hagytam tájkép módban elérhető (csak abban az esetben)."</string>
+		
+	<string name="intro_songsfolder">"Az alkalmazás keres egy mappát a Documents úgynevezett \"OpenSong / Songs\", és ha nem talál ilyet, létrehoz neked. Ezután ment egy dal 'Love örök \", az egyik a saját dalok, a mappa (ellenkező esetben nem lenne képes bármit is tenni az app!). Ahhoz, hogy a saját OpenSong dalok, másolja be a Dokumentumok / OpenSong / Songs / mappába. Akkor egy szintet almappákat belül a Songs mappába. \n\n Az app is jön a csomagban 700 + dal, amely akkor használható, de tartsa szem előtt, akkor felelős azért, hogy az esetleges szerzői jogi kérdések, és használja őket a saját felelősségére!"</string>
+		
+	<string name="intro_dropbox">"Ha szeretné használni Songs / készletek segítségével a Dropbox-fiók (lehetővé teszi a csoportok számára ugyanazt az információt), akkor kell telepíteni egy alkalmazást, amely lehetővé teszi a szinkronizálás a Dropbox fájlokat a tablet. Sajnos a hivatalos Dropbox alkalmazás nem használ egy helyi mappát, ugyanúgy, mint az asztali alkalmazást tesz. \n\n A (ingyenes) alkalmazás, amely azt ajánlom, DropSync, amely nem ezt neked. Ha azt szeretnénk, hogy ezt, csak javasolni tudom visszaállítani a dalok mappát a tablet (gomb felett) az első, így nem írja felül egy dalt sem a Dropbox fiók az én verzió! \n\n beállításakor DropSync, szinkronizálja a Dropbox OpenSong mappát a / documents / OpenSong / mappába, és lehetővé teszi 2 utas sync (felvette a fő OpenSong mappa lehetővé teszi a két dalt, és meghatározza, hogy szinkronizálni kell). \n Ez eltart egy néhány percig (attól függően, hogy hány dal van), az első nekifutás. Általános jogi nyilatkozat - nem vagyok felelős semmilyen veszteséget dalt a Dropbox mappában! Ön ezt a saját kockázatára. \n\n Én azonban ezt beállítani a készüléken, és úgy tűnik, minden működik seemlessly (az alapértelmezett szinkronizációs ütemezést 1 óra), a DropSync app, de meg lehet változtatni ezt)."</string>
+	    
+	<string name="intro_future">"Sajnos nem a saját iPad / Mac, úgyhogy nem tudok fejlődni, hogy a platform (adományok szívesen &#8230;..), de kívánom, hogy folyamatosan javítja ezt app megfelelő Természetesen. Én tényleg csak szerettem volna megosztani, amit tettem már abban a reményben, hogy valaki megtalálja ezt a hasznos."</string>
+		
+	<string name="intro_help">"Ha az alkalmazás, \"ellop\" menü a bal oldalon, hogy válasszon egy dalt, és \"ellop\" menüben a jobb számos más lehetőségeket. \n\n hosszú megnyomásával egy dalt a bal oldali menüben növeli a dalt a beállítva. Hosszú megnyomásával egy dalt a beállított távolítsa el. \n\n Sets lehet betölteni, vagy menti a 'OpenSong / készletek \"mappába. Hosszú megnyomásával a mentett meg törli azt a készülékről. \n\n Most már megoszthatja mentett készletek és bármelyik dalt mailben, Dropbox, stb
+	"</string>
+	
+	<string name="rename">"Adjon meg egy új fájlnevet ezt a dalt ( ez így is fog jelenni a dal menüben)"</string>
+	<string name="renametitle">"Átnevezése"</string>
+				
+	<string name="copyresources">"Kattintson ide másolni a különböző dalok \n Ön felelős a szerzői jogi"</string>
+	<string name="gotosong">"Kattintson ide, hogy \n OPEN SONG VIEWER"</string>
+	<string name="wipesongs">"Állítsa vissza a helyi dalokat mappába"</string>
+	<string name="dropsync">"Töltsd le DropSync App (ingyenes)"</string>
+	<string name="app_name">"OpenSong Tablet"</string>
+	<string name="drawer_open">"Megnyitás"</string>
+	<string name="drawer_close">"Bezár"</string>
+	<string name="set_back">"Vissza"</string>
+	<string name="set_forward">"Előre"</string>
+	<string name="backtohome">"Vissza a főoldalra"</string>
+	<string name="exit">"Biztos benne, hogy ki akar lépni a programot?"</string>
+	
+	<string name="on_width">"BE - Szélesség csak"</string>
+	<string name="on_set">"BE - Készletek csak"</string>
+	<string name="on">"BE"</string>
+	<string name="off">"KI"</string>
+	<string name="scaleY">"Scale oldalt, hogy illeszkedjen a dal már"</string>
+	<string name="swipeSet">"Swipe zeneszámok között most"</string>
+	<string name="fontsize">"Be kell, hogy kapcsolja ki az automatikus mérleg dalt."</string>	
+	<string name="drawerswipe">"Kinyitni a dal lista és menük által ellop most"</string>
+	<string name="toggleScrollBeforeSwipe">"Váltás scroll, mielőtt a következő / előző szám"</string>
+	<string name="toggleScrollBeforeSwipeToggle">"Előző / Következő gombok görgeti először most"</string>
+    <string name="toggleLandscapeColumns">"Táj oszlop nézet most"</string>
+			
+	<string name="exportcurrentsong">"Ossza meg az aktuális zeneszám"</string>
+	<string name="exportsavedset">"Ossza meg a mentett meg"</string>
+	<string name="importnewsong">"Importálása dal"</string>
+	<string name="importnewset">"Importálása egy sor"</string>
+	<string name="hasbeenexported">"exportra került"</string>
+	<string name="hasbeenimported">"már importált"</string>
+	<string name="hasnotbeenexported">"nem exportált - volt a probléma!"</string>			
+	<string name="hasnotbeenimported">"nem importált - nem volt probléma!"</string>			
+		
+	<string name="add_song_to_set">"Add jelenlegi dal beállítani"</string>
+
+	<string name="edit_song_title">"Dal címe"</string>
+	<string name="edit_song_author">"Szerző"</string>
+	<string name="edit_song_lyrics">"Dalszöveg"</string>
+	<string name="edit_song_copyright">"Szerzői jogi információk"</string>
+	<string name="edit_song_presentation">"Bemutatása érdekében,"</string>
+	<string name="edit_song_ccli">"CCLI"</string>
+	<string name="edit_song_capo">"Capo bosszankodik"</string>
+	<string name="edit_song_key">"Kulcs"</string>
+	<string name="edit_song_aka">"Más néven"</string>
+	<string name="edit_song_keyline">"Key vonal"</string>
+	<string name="edit_song_user1">"Felhasználó 1"</string>
+	<string name="edit_song_user2">"Felhasználó 2"</string>
+	<string name="edit_song_user3">"Felhasználó 3"</string>
+	<string name="edit_song_theme">"Témák"</string>
+	<string name="edit_song_tempo">"Tempó"</string>
+	<string name="edit_song_timesig">"Ütemjelzés"</string>
+	<string name="edit_song_hymn">"Hymn szám"</string>
+	<string name="edit_song_availabletags">"[V] = vers, [V1] = 1. vers, [C] = Chorus, [C1] A Chorus 1, [P] = Prechorus, [T] = Tag, [B] = Bridge, [&#8230; (amit akarsz ) &#8230;] = Egyéni tag. \n Líra sorok egy helyet, akkord vonalak teljesen megáll, megjegyzés sorokat pontosvesszővel."</string>
+    <string name="edit_song_duration">"Song időtartama (másodpercben)"</string>
+    <string name="edit_song_notes">"Song cetlik"</string>
+    <string name="edit_song_midi">"MIDI üzenetet küldött dal"</string>
+    <string name="edit_song_midi_index">"MIDI üzenetet, hogy aktiválja a dalt"</string>
+    <string name="edit_song_restrictions">"Korlátozások"</string>
+    <string name="edit_song_books">"Könyvek dalhoz"</string>
+    <string name="edit_song_pitch">"Hangolósípon megjegyzések dalt"</string>  
+	
+	<string name="show_general_advanced">"Váltás általános / speciális területek"</string>
+	<string name="edit_song_capo_print">"Nyomtatás capo akkordok"</string>
+
+	<string name="search_top">"Song tetején keresési lista kiválasztott"</string>
+	<string name="search_here">"Keresés itt"</string>
+	
+	<string name="edit_cancel">"Kilépés mentés nélkül"</string>
+	<string name="edit_save">"Változtatások mentése"</string>
+	<string name="edit_delete">"Törölje ezt a dalt"</string>
+	
+	<string name="areyousure">"Biztos benne?"</string>
+	<string name="overwritecurrentset">"Ez felülírja az aktuális készlet."</string>
+	<string name="removesavedset">"Ez fogja törölni ezt a készletet a \"készletek\" mappába."</string>
+	
+	<string name="yes">"Igen"</string>
+	<string name="no">"Nem"</string>
+	<string name="ok">"Rendben"</string>
+	<string name="cancel">"Mégse"</string>
+		
+	<string name="songfolderexists">"OpenSong \"Songs\" mappa már létezik. Kiváló!"</string>
+	<string name="songfoldercreate">"Létrehozása OpenSong \"Songs\" Folder"</string>
+	<string name="setsfolderexists">"OpenSong \"készletek\" mappa már létezik. Kiváló!"</string>
+	<string name="setsfoldercreate">"Létrehozása OpenSong \"készletek\" Folder"</string>
+	<string name="initialisesongs_start">"Inicializálása \"Songs\" mappába -"</string>		
+	<string name="initialisesongs_end">"dal (ok) található!"</string>		
+	<string name="initialisesets_start">"Inicializálása \"készletek\" mappába -"</string>		
+	<string name="initialisesets_end">"set (s) található!"</string>		
+	<string name="installingsongs">"Telepítése dal &#8230;."</string>
+	<string name="assetcopydone">"OpenSong Songs már másolt a \"Songs\" mappát .."</string>
+	
+	<string name="createanewsong">"Új dal"</string>
+	<string name="createanewset">"Létrehozása új"</string>
+	<string name="newsongtitleprompt">"Adjon meg egy nevet az új dal"</string>
+	<string name="newsettitleprompt">"Kérjük, adja meg a címet az új"</string>
+	<string name="shouldnotbedeleted">"nem kell törölni a \"Songs\" mappába!"</string>
+	<string name="songhasbeendeleted">"törölték a \"Songs\" mappába."</string>
+	<string name="sethasbeendeleted">"törölték a \"készletek\" mappába."</string>
+	<string name="deleteerror_start">"Volt egy probléma törlése"</string>
+	<string name="deleteerror_end_song">"az Ön \"Songs\" mappába."</string>
+	<string name="deleteerror_end_sets">"az Ön \"készletek\" mappába."</string>
+	<string name="songdoesntexist">"Ez a dal nem a készüléken. Már törölte azt?"</string>
+	<string name="addedtoset">"került, hogy a végén a jelenlegi készlet."</string>
+	<string name="removedfromset">"el lett távolítva a készüléket."</string>
+		
+	<string name="soundLink">"Hallgassa meg 'Love örök \""</string>
+	<string name="stop">"Időzítő megállítása"</string>
+	<string name="start">"Kezdés"</string>
+	<string name="action_search">"Keresés dalok"</string>
+	<string name="action_settings">"OpenSong beállítások"</string>
+	
+	<string name="toastmessage_maxfont">"Legnagyobb betűméret elérte"</string>
+	<string name="toastmessage_minfont">"Minimális betűméret elérte"</string>
+	
+	<string name="options_backtooptions">"BACK TO OPCIÓK"</string>
+	<string name="options_savethisset">"SAVE ez meg"</string>
+	<string name="options_clearthisset">"Töröljük a SET"</string>
+	
+	<string name="mainfoldername">"FŐBB"</string>
+		
+	<string name="colorchooser">"Szín-választó"</string>
+	<string name="dark_theme">"Sötét téma"</string>
+	<string name="light_theme">"Light téma"</string>
+	<string name="item">"Alkatrész"</string>
+	<string name="page_background">"Oldal háttér"</string>
+	<string name="lyrics_color">"Lyrics font"</string>
+	<string name="chord_color">"Chords font"</string>
+	<string name="capo_color">"Capo font"</string>
+	<string name="verse_background">"Verse háttér"</string>
+	<string name="chorus_background">"Chorus háttér"</string>
+	<string name="prechorus_background">"Prechorus háttér"</string>
+	<string name="bridge_background">"Bridge háttér"</string>
+	<string name="tag_background">"Tag háttér"</string>
+	<string name="comment_background">"Megjegyzés háttér"</string>
+	<string name="custom_background">"Egyéni tag háttér"</string>
+	<string name="reset_colours">"Visszaállítása Színek"</string>
+							
+	<string name="pageturn_title">"Rendeljen oldal viszont gombok"</string>
+	<string name="pageturn_instructions">"Ez az oldal lehetővé teszi, hogy hozzá gombokat a lapozás eszközt (például a bluetooth lábkapcsoló) ellenőrzése mozognak készletek vagy fel-le irányú egy dalt oldalon. \n\nA gondoskodnia kell arról, hogy a készülék már csatlakoztatva van az Android tablet és be van kapcsolva. \n\nA a zöld vagy a kék gomb alatt, majd nyomja meg a kívánt gombot a lábkapcsoló stb"</string>
+	<string name="pageturn_set">"Gombokat az egy sor"</string>
+    <string name="pageturn_song">"Gombokkal böngészhet a dalt ablakban"</string>
+	<string name="pageturn_next">"A 'Tovább' gombra"</string>
+	<string name="pageturn_previous">"A 'Előző' gombra"</string>
+	<string name="pageturn_up">"Beállítása \"Görgetés fel 'gombra"</string>
+	<string name="pageturn_down">"Set \"Görgessen le\" gomb"</string>
+	<string name="pageturn_waiting">"Várakozás a gomb &#8230;."</string>
+	<string name="pageturn_needset">"Meg kell megtekintésére egy dalt szereplő jelenlegi használni a lapozás létesítmény"</string>
+	<string name="pageturn_attempt">"Nyitva az első dal a jelenlegi &#8230;."</string>
+		
+	<string name="changefonts">"Megváltoztathatja a betűtípusokat"</string>
+	<string name="chooselyricfont">"Válassza ki a lírai font"</string>
+	<string name="choosechordfont">"Választás akkord font"</string>
+	<string name="font_default">"Alapértelmezett sorrend"</string>
+	<string name="font_monospace">"Droid Monospace"</string>
+	<string name="font_sans">"Droid Sans"</string>
+	<string name="font_serif">"Droid Serif"</string>
+	<string name="font_firasanslight">"FiraSansOT-Light"</string>
+	<string name="font_firasansregular">"FiraSansOT-Regular"</string>
+	<string name="font_kaushanscript">"KaushanScript"</string>
+	<string name="font_latolight">"Lato Fény"</string>
+	<string name="font_latoregular">"Lato rendszeres"</string>
+	<string name="font_lyrics_line1">"Szerelem örök, "</string>
+	<string name="font_lyrics_line2">"Szeretem mérték nélkül"</string>
+	<string name="font_chords_line1">"G"</string>
+	<string name="font_chords_line2">"D / F #"</string>
+					
+</resources>

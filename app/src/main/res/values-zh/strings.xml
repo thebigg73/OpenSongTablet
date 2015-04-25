@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="capo_toggle">"卡波和弦切换"</string>
+    <string name="capo_toggle_onlycapo">"只显示变调夹弦（如果可用）"</string>
+    <string name="capo_toggle_bothcapo">"同时显示变调夹和本地和弦（如果可用）"</string>
+    <string name="language">"语言"</string>
+    <string name="refreshsongs">"刷新歌曲菜单"</string>
+    <string name="custom1_theme">"自定义1"</string>
+    <string name="custom2_theme">"自定义2"</string>
+    <string name="scripture">"圣经"</string>
+    <string name="slide">"页面"</string>
+
+    <string name="visualmetronome">"视觉"</string>
+    <string name="onsonglocation">"您需要将您的备份稳城文件到 /documents/OpenSong/ 文件夹，它可用来导入"</string>
+    <string name="savesong">"为了节省"</string>
+    <string name="metronomepadsettings">"节拍器和键盘设置"</string>
+    <string name="metronome">"节拍器"</string>
+    <string name="temponotset">"天宝还没有被定为这首歌曲"</string>
+    <string name="timesignotset">"时值尚未设置这首歌曲"</string>
+    <string name="pad">"背景音乐"</string>
+    <string name="wait">"等待...."</string>
+    <string name="volume">"音量"</string>
+    <string name="pan">"左/右"</string>
+    <string name="linespacing">"修剪线间距由"</string>
+    <string name="currently">"目前"</string>
+    <string name="currentkeycode">"当前关键代码"</string>
+	<string name="notset">"未设置"</string>
+	<string name="songactionsbuttons">"按钮启动/停止歌曲行动"</string>
+	<string name="padPedalText">"启动/停止背景音乐"</string>
+	<string name="autoscrollPedalText">"启动/停止自动滚屏"</string>	
+	<string name="metronomePedalText">"启动/停止节拍器"</string>
+    
+    <string name="autoscroll_time">"自动滚动延迟时间"</string>
+    
+    <string name="songbuttons_toggle">"切换页面的快捷方式按钮"</string>
+    <string name="song_functionnotavailable">"此功能不适用于歌曲"</string>
+    
+    <string name="latest_updates">"最新更新"</string>
+    
+    <string name="storage_choose">"管理存储空间"</string>
+    <string name="storage_help">"请选择默认存储位置为您OpenSong文件。您可以从选项菜单中的任何时候改变这一点。"</string>
+    <string name="storage_space">"可用空间"</string>
+    <string name="storage_notavailable">"无法使用"</string>
+    <string name="storage_int">"模拟外部/内部存储"</string>
+    <string name="storage_ext">"外部存储"</string>
+    
+    <string name="link">"链接"</string>
+    <string name="link_choose">"选择一个文件，这首歌曲链接"</string>
+    
+    <string name="autoscroll">"自动滚动"</string>
+    
+    <string name="import_onsong_done">"成功 - 稳城的歌曲已被添加到 /documents/OpenSong/Songs/OnSong"</string>
+    <string name="import_onsong_error">"稳城没有备份文件中发现 /documents/OpenSong/"</string>
+    <string name="import_onsong_choose">"稳城导入备份文件"</string>
+    
+    <string name="pad_playing">"依托轨道已经开始播放"</string>
+    <string name="pad_stopped">"依托轨道被停止（等待淡出）"</string>
+    <string name="pad_choose_key">"请选择这首歌的关键"</string>
+    <string name="pad_error">"这首歌的密钥尚未设置"</string>
+    <string name="backing_track">"选择依托轨道"</string>
+    <string name="pad_onoroff">"使用垫，用这首歌"</string>
+    <string name="pad_auto">"汽车"</string>
+    
+    <string name="stickynotes">"宋笔记"</string>
+    
+    <string name="youtube">"搜索YouTube当前歌曲"</string>
+    
+    <string name="pdf_functionnotavailable">"此功能不适用于PDF文档"</string>
+    <string name="pdf_selectpage">"选择页面"</string>
+    
+   	<string name="options_set">"集"</string>
+   	<string name="options_set_load">"负荷"</string>
+   	<string name="options_set_save">"保存"</string>
+   	<string name="options_set_nameofset">"新集名称"</string>
+   	<string name="options_set_clear">"明确"</string>
+   	<string name="options_set_delete">"删除"</string>
+   	<string name="options_set_export">"出口"</string>
+   	<string name="options_set_edit">"编辑"</string>
+   	
+	<string name="options_song">"歌"</string>
+	<string name="options_song_transpose">"颠倒"</string>
+	<string name="options_song_convert">"转换歌曲到我的首选格式的和弦"</string>
+	<string name="options_song_sharp">"使用＃和弦"</string>
+	<string name="options_song_flat">"采用b和弦"</string>
+	<string name="options_song_edit">"编辑"</string>
+	<string name="options_song_rename">"重命名"</string>
+	<string name="options_song_delete">"删除"</string>
+	<string name="options_song_new">"新"</string>
+	<string name="options_song_export">"出口"</string>
+    <string name="options_song_stickynotes">"编辑歌曲便条"</string>
+    <string name="options_song_newfolder">"创建新文件夹的歌曲"</string>
+    <string name="options_song_editfolder">"编辑歌曲的文件夹名称"</string>
+		
+	<string name="options_options">"选项"</string>
+	<string name="options_options_theme">"切换主题"</string>
+	<string name="options_options_scale">"切换自动缩放"</string>
+	<string name="options_options_fontsize">"选择字体大小"</string>
+	<string name="options_options_showchords">"显示/隐藏和弦"</string>
+	<string name="options_options_chordformat">"选择和弦格式"</string>
+	<string name="options_options_gestures">"指定自定义手势"</string>
+	<string name="options_options_songswipe">"切换轻扫上的歌曲之间移动/关闭"</string>
+	<string name="options_options_menuswipe">"切换歌曲列表和选项菜单轻扫开/关"</string>
+	<string name="options_options_hidebar">"隐藏开启/关闭顶部的菜单栏"</string>
+	<string name="options_options_colors">"改变颜色"</string>
+	<string name="options_options_fonts">"更改字体"</string>
+	<string name="options_options_pedal">"分配脚踏板"</string>
+	<string name="options_options_help">"帮助（在线）"</string>
+	<string name="options_options_start">"回到开始屏"</string>
+							
+    <string name="customgestures">"指定自定义手势"</string>
+    <string name="doubleTap">"选择双击动作"</string>
+    <string name="longPress">"选择长按行动"</string>
+    <string name="gesture1">"打开这两个菜单"</string>
+    <string name="gesture2">"编辑歌曲"</string>
+    <string name="gesture3">"添加歌曲设置"</string>
+
+    <string name="transpose">"移调"</string>
+    <string name="docontinue">"继续"</string>
+    <string name="chordformat_help">"当移调一首歌，你想应用程序来检测和弦格式的歌曲在每个时间呢？"</string>
+	<string name="chordformat_check">"每次转一次检测和弦格式"</string>
+	<string name="chordformat_default">"总是以为歌曲是我的首选格式的和弦"</string>
+    <string name="chordformat_check_short">"经常检查"</string>
+    <string name="chordformat_default_short">"别问我"</string>
+    
+    <string name="nothighenoughapi">"你需要的Android这个较新版本！"</string>
+    
+    <string name="checkchordformat">"你确定这首歌曲是您的首选和弦格式？"</string>
+	<string name="oldchordformat">"检测当前的和弦格式"</string>
+	
+    <string name="firstsong">"显示的第一首歌曲"</string>
+    <string name="lastsong">"显示最后一首歌曲"</string>
+    
+    <string name="set_edit">"编辑"</string>
+    <string name="set_edit_title">"编辑您的当前设置"</string>
+    <string name="set_help">"拖动歌曲各地更改设置的顺序"</string>
+    
+    <string name="currentset">"当前设置"</string>
+    <string name="setmargins">"调整页边距"</string>
+    <string name="setxmargins">"水平边距大小"</string>
+    <string name="setymargins">"垂直边距大小"</string>
+    <string name="update_projector">"更新\n投影机"</string>
+    <string name="black_screen">"黑屏"</string>
+    <string name="choose_image1">"选择背景图片1"</string>
+    <string name="choose_image2">"选择背景图片2"</string>
+    <string name="choose_video1">"选择背景视频1"</string>
+    <string name="choose_video2">"选择背景视频2"</string>
+    
+    <string name="choosechordformat">"选择和弦格式（仅调换一首歌曲时使用）"</string>
+    
+    <string name="switchtopresentmode">"切换到演示模式"</string>
+    <string name="switchtoperformmode">"切换到高性能模式"</string>
+    <string name="presentermode">"演示模式"</string>
+    <string name="sendtoprojector">"投射"</string>
+    <string name="presoBackground">"背景介绍"</string>
+    <string name="presoShowLogo">"展会标志"</string>
+    <string name="notcompatible">"不幸的是，你需要的Android 4.2或更高版本使用双屏幕演示功能！"</string>
+	<string name="nodisplays">"没有外部显示器连接。请连接到使用HDMI输出或MiraCast兼容的无线显示器辅助显示器。"</string>
+    <string name="extradisplay">"辅助显示器进行检测。歌曲将被显示在副显示屏上。"</string>
+	<string name="beta">"Beta版的功能 - 仍然有bug和图像/显示配置尚未公布。期待崩溃！"</string>
+    
+	
+    <string name="songnamealreadytaken">"幸的是这首歌曲的标题/文件名已被使用（建议可以是一个版本号添加到末尾）。"</string>
+    <string name="chordiesearch">""在www.chordie.com网上搜索"</string>
+    <string name="ultimateguitarsearch">"在Ultimate-Guitar.com网上搜索"</string>
+    <string name="phrasesearch">"输入搜索词组（标题，作者，歌词等）"</string>
+    <string name="grabchordpro">"提取ChordPro数据"</string>
+    <string name="chordproprogress">"寻找页面上ChordPro乐曲数据&#8230;"</string>
+    <string name="closesearch">"关闭搜索"</string>
+    <string name="chordpro_false">"没有ChordPro歌检测到！"</string>
+	<string name="chordpro_true">"ChordPro歌发现！"</string>
+	<string name="choosefolder">"选择文件夹保存文件"</string>
+	<string name="choosesongname">"在这首歌中选择一个名称"</string>
+	<string name="newfolder">"新建文件夹"</string>
+	<string name="newfoldername">"输入一个新的文件夹名称"</string>
+	<string name="folderexists">"这个文件夹已经存在！"</string>
+	<string name="createfoldererror">"在建立新的文件夹的错误！"</string>
+	<string name="createfoldersuccess">"新的文件夹中创建！"</string>
+    
+	<string name="welcome">"OpenSong音乐查看器\ñ作者加雷思·埃文斯"</string>
+		
+	<string name="intro">"该OpenSong音乐Viewer使用在OpenSong创建歌曲和平板电脑屏幕上显示出来。其目的是崇拜的音乐家和正在进行中相当多的工作。它的工作原理最好在肖像模式下，但我已经离开了风景模式（以防万一）。"</string>
+		
+	<string name="intro_songsfolder">"该应用程序查找一个文件夹中的文件称为“OpenSong /歌曲'，如果它不能找到它，它会创建它。然后，它可以节省一首歌曲叫做“永远的爱”，我自己的歌曲之一，该文件夹（否则，你就无法与应用程序做任何事情！）。要使用自己的OpenSong歌曲，将它们复制到文件/ OpenSong /歌曲/文件夹。你可以在你的歌曲文件夹中的子文件夹中的一个级别。\n \n已该应用程序还附带了700 +的歌，你可以使用，但请记住您有责任遵守任何潜在的版权问题，你使用它们的风险自担！"</string>
+		
+	<string name="intro_dropbox">"如果你想通过Dropbox帐户（允许组访问相同的信息）使用歌曲/套，你需要安装一个应用程序，允许Dropbox的文件同步与您的平板电脑。不幸的是，官方的Dropbox应用程式中不作为桌面应用程序做同样的方式使用本地文件夹。\n \n已（免费的）应用程序，我建议是DropSync它可以实现这个要求。如果你想这样做，我会建议先重新设置歌曲的文件夹在平板电脑上（上面的按钮），这样你就不会覆盖在你的Dropbox帐户中的任何歌曲与我的版本！ \n \n已在设置DropSync，同步你的Dropbox文件夹OpenSong与你/文件/ OpenSong /文件夹，并允许2路同步（采摘主要OpenSong文件夹将允许两首歌曲，并设置要同步）。\n这个将采取几分钟（取决于歌曲你有多少），在第一次运行。标准的免责声明 - 我不负责的歌曲在你的Dropbox文件夹的任何损失！你在自己的风险做到这一点。 \n \n已不过，我已经设置了这个我的设备上，这一切似乎工作无缝（默认的同步排程为1小时）上DropSync应用程序，但你可以改变这一点）。"</string>
+	    
+	<string name="intro_future">"不幸的是我没有自己一个iPad / Mac上，所以我无法开发平台（捐款欢迎&#8230;..），但我打算继续改进这个程序 在适当的当然。我真的只是想分享我所希望别人发现这个有用的已经做了。"</string>
+		
+	<string name="intro_help">"当使用的应用程序，“刷卡”菜单在左边选择各种其他的选择权的歌曲和“刷卡”的菜单。\n \n已长按上一首歌曲在左边的菜单将歌曲添加到您的设置。长按上一首歌曲在你的设置将其删除。 \n \n已设置可从加载或保存到你的'OpenSong /设置“文件夹。长按上保存的设置会从您的设备中删除。 \n \n已现在，您可以共享保存的设置和您的任何歌曲通过电子邮件，Dropbox的，等等。"</string>
+	
+	<string name="rename">"在这首歌中输入新的文件名（这是怎么会出现在你的歌声菜单）"</string>
+	<string name="renametitle">"重命名"</string>
+			
+	<string name="copyresources">"点击此处复制各种歌曲\n您是负责版权"</string>
+	<string name="gotosong">"点击这里开始\n打开歌阅读器"</string>
+	<string name="wipesongs">"重设我的本地文件夹的歌曲"</string>
+	<string name="dropsync">"下载DropSync应用程序（免费）"</string>
+	<string name="app_name">"OpenSong平板"</string>
+	<string name="drawer_open">"打开"</string>
+	<string name="drawer_close">"关闭"</string>
+	<string name="set_back">"后面返回"</string>
+	<string name="set_forward">"正向"</string>
+	<string name="backtohome">"返回首页"</string>
+	<string name="exit">"您确定要退出程序？"</string>
+	
+	<string name="on_width">"打开 - 宽度仅"</string>
+	<string name="on_set">"打开 - 仅套"</string>
+	<string name="on">"打开"</string>
+	<string name="off">"关闭"</string>
+	<string name="scaleY">"规模以适合的歌，现在"</string>
+	<string name="swipeSet">"歌曲之间滑动现在"</string>
+	<string name="fontsize">"您需要关闭自动量程歌曲。"</string>	
+	<string name="drawerswipe">"打开歌曲列表和​​选项菜单通过刷卡是现在"</string>
+	<string name="toggleScrollBeforeSwipe">"下一个/上一首歌曲之前切换滚动"</string>
+	<string name="toggleScrollBeforeSwipeToggle">"上一页/下一页按钮也滚动首先是现在"</string>
+    <string name="toggleLandscapeColumns">"景观柱的观点是现在"</string>
+			
+	
+	
+	<string name="exportcurrentsong">"分享当前歌曲"</string>
+	<string name="exportsavedset">"分享保存的设置"</string>
+	<string name="importnewsong">"导入一首歌曲"</string>
+	<string name="importnewset">"导入一组"</string>
+	<string name="hasbeenexported">"已出口"</string>
+	<string name="hasbeenimported">"已导入"</string>
+	<string name="hasnotbeenexported">"还没有导出 - 出现了一个问题！"</string>			
+	<string name="hasnotbeenimported">"并没有输 - 出现了一个问题！"</string>			
+		
+	<string name="add_song_to_set">"将当前歌曲添加到设置"</string>
+
+	<string name="edit_song_title">"歌名"</string>
+	<string name="edit_song_author">"作者"</string>
+	<string name="edit_song_lyrics">"歌词"</string>
+	<string name="edit_song_copyright">"版权信息"</string>
+	<string name="edit_song_presentation">"为了演示"</string>
+	<string name="edit_song_ccli">"CCLI"</string>
+	<string name="edit_song_capo">"卡波烦恼"</string>
+	<string name="edit_song_key">"图注"</string>
+	<string name="edit_song_aka">"也被称为"</string>
+	<string name="edit_song_keyline">"重点线"</string>
+	<string name="edit_song_user1">"用户1"</string>
+	<string name="edit_song_user2">"用户2"</string>
+	<string name="edit_song_user3">"用户3"</string>
+	<string name="edit_song_theme">"背景主题"</string>
+	<string name="edit_song_tempo">"拍子"</string>
+	<string name="edit_song_timesig">"时间签名"</string>
+	<string name="edit_song_hymn">"圣诗"</string>
+	<string name="edit_song_availabletags">"[V] =诗歌，[V1] =诗歌1，[C] =合唱，[C1]的合唱1，[P] = Prechorus，[T] =标签，[B] =大桥，[&#8230;（任何你想要的）&#8230;] =自定义标签。\n抒情行以空格开头，弦线用句号，注释行以分号。"</string>
+    <string name="edit_song_duration">"歌曲持续时间（秒）"</string>
+    <string name="edit_song_notes">"宋即时贴"</string>
+    <string name="edit_song_midi">"从歌曲的MIDI信息发送"</string>
+    <string name="edit_song_midi_index">"MIDI消息激活歌曲"</string>
+    <string name="edit_song_restrictions">"限制"</string>
+    <string name="edit_song_books">"书籍歌曲属于"</string>
+    <string name="edit_song_pitch">"律管笔记歌曲"</string>  
+	
+	<string name="show_general_advanced">"切换普通/高级领域"</string>
+	<string name="edit_song_capo_print">"打印变调夹弦"</string>
+	
+	<string name="search_top">"宋在选定的搜索列表顶部"</string>
+	<string name="search_here">"在这里搜索"</string>
+	
+	<string name="edit_cancel">"退出不保存"</string>
+	<string name="edit_save">"保存更改"</string>
+	<string name="edit_delete">"删除这首歌"</string>
+	
+	<string name="areyousure">"是否确定?"</string>
+	<string name="overwritecurrentset">"这将覆盖您当前的设置。"</string>
+	<string name="removesavedset">"这将删除这一套从“设置”文件夹。"</string>
+	
+	<string name="yes">"有用"</string>
+	<string name="no">"没有"</string>
+	<string name="ok">"确认"</string>
+	<string name="cancel">"取消"</string>
+		
+	<string name="songfolderexists">"OpenSong“诗经”文件夹已经存在。优秀的！"</string>
+	<string name="songfoldercreate">"创建OpenSong“诗经”文件夹"</string>
+	<string name="setsfolderexists">"OpenSong'设置'文件夹已经存在。优秀的！"</string>
+	<string name="setsfoldercreate">"创建OpenSong'集'文件夹"</string>
+	<string name="initialisesongs_start">"初始化“诗经”的文件夹 -"</string>		
+	<string name="initialisesongs_end">"歌曲（第）发现！"</string>		
+	<string name="initialisesets_start">"初始化“设置”文件夹 -"</string>		
+	<string name="initialisesets_end">"集（第）发现！"</string>		
+	<string name="installingsongs">"安装的歌曲&#8230;."</string>
+	<string name="assetcopydone">"OpenSong歌曲已被复制到您的“诗经”文件夹下。"</string>
+	
+	<string name="createanewsong">"创建新曲"</string>
+	<string name="createanewset">"创建新组"</string>
+	<string name="newsongtitleprompt">"请输入标题为您的新曲"</string>
+	<string name="newsettitleprompt">"请输入标题为您的新集"</string>
+	<string name="shouldnotbedeleted">"不应该从你的“诗经”文件夹中删除！"</string>
+	<string name="songhasbeendeleted">"从“诗经”文件夹已被删除。"</string>
+	<string name="sethasbeendeleted">"从你的“设置”文件夹已被删除。"</string>
+	<string name="deleteerror_start">"有一个问题删除"</string>
+	<string name="deleteerror_end_song">"从“诗经”文件夹中。"</string>
+	<string name="deleteerror_end_sets">"从你的“设置”文件夹。"</string>
+	<string name="songdoesntexist">"这首歌是不是你的设备上。你已经删除了它？"</string>
+	<string name="addedtoset">"已被添加到您的当前集的末尾。"</string>
+	<string name="removedfromset">"从你的设置已被删除。"</string>
+		
+	<string name="soundLink">"听“爱永恒”"</string>
+	<string name="stop">"站住"</string>
+	<string name="start">" 开始"</string>
+	<string name="action_search">"搜索歌曲"</string>
+	<string name="action_settings">"OpenSong设置"</string>
+	
+	<string name="toastmessage_maxfont">"达到最大字体大小"</string>
+	<string name="toastmessage_minfont">"达到最小字体大小"</string>
+	
+	<string name="options_backtooptions">"返回选项"</string>
+	<string name="options_savethisset">"保存该设定值"</string>
+	<string name="options_clearthisset">"清除此设置"</string>
+	
+	
+	<string name="mainfoldername">"MAIN"</string>
+	
+		
+	<string name="colorchooser">"颜色选择器"</string>
+	<string name="dark_theme">"Dark theme"</string>
+	<string name="light_theme">"光主题"</string>
+	<string name="item">"项目"</string>
+	<string name="page_background">"页面背景"</string>
+	<string name="lyrics_color">"歌词字体"</string>
+	<string name="chord_color">"和弦字体"</string>
+	<string name="capo_color">"投诉警察课的字体"</string>
+	<string name="verse_background">"经文背景"</string>
+	<string name="chorus_background">"合唱背景"</string>
+	<string name="prechorus_background">"Prechorus背景"</string>
+	<string name="bridge_background">"Bridge背景"</string>
+	<string name="tag_background">"标签背景"</string>
+	<string name="comment_background">"评论背景"</string>
+	<string name="custom_background">"自定义标签的背景"</string>
+	<string name="reset_colours">"重设颜色"</string>
+							
+	<string name="pageturn_title">"分配翻页按钮"</string>
+	<string name="pageturn_instructions">"此页面允许你指定从一个翻页按钮设备（如蓝牙脚踏开关）来控制移动，通过设置或向上和向下滚动一首歌页面上。\n \n您必须确保该设备已经连接到你的Andr​​oid平板电脑并打开。\n \n单击下面的绿色或蓝色按钮，然后按你的脚踏开关所需的控制按钮等"</string>
+	<string name="pageturn_set">"按钮移动通过一组"</string>
+    <string name="pageturn_song">"按钮，在一首歌曲的窗口滚动"</string>
+	<string name="pageturn_next">"设定“下一步”按钮"</string>
+	<string name="pageturn_previous">"设置“上一页”按钮"</string>
+	<string name="pageturn_up">"设置“向上滚动”按钮"</string>
+	<string name="pageturn_down">"设置“向下滚动”按钮"</string>
+	<string name="pageturn_waiting">"等待按钮&#8230;."</string>
+	<string name="pageturn_needset">"你需要查看当前集中列出一首歌使用翻页设施"</string>
+	<string name="pageturn_attempt">"开幕的第一首歌曲在当前设定&#8230;."</string>
+		
+	<string name="changefonts">"改变字体"</string>
+	<string name="chooselyricfont">"选择歌词的字体"</string>
+	<string name="choosechordfont">"选择和弦字体"</string>
+	<string name="font_default">"默认"</string>
+	<string name="font_monospace">"Droid的等宽字体"</string>
+	<string name="font_sans">"Droid的三世"</string>
+	<string name="font_serif">"Droid的衬线"</string>
+	<string name="font_firasanslight">"FiraSansOT-光"</string>
+	<string name="font_firasansregular">"FiraSansOT，定期"</string>
+	<string name="font_kaushanscript">"KaushanScript"</string>
+	<string name="font_latolight">"拉托灯"</string>
+	<string name="font_latoregular">"拉托经常"</string>
+	<string name="font_lyrics_line1">"爱永恒，"</string>
+	<string name="font_lyrics_line2">"爱无止境"</string>
+	<string name="font_chords_line1">"G"</string>
+	<string name="font_chords_line2">"D / F＃"</string>
+					
+</resources>

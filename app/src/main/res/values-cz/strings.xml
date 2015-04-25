@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="capo_toggle">"Capo akordy přepínat"</string>
+    <string name="capo_toggle_onlycapo">"Zobrazit pouze capo akordy-li k dispozici"</string>
+    <string name="capo_toggle_bothcapo">"Ukaž jak capo a rodilých mluvčích akordy-li k dispozici"</string>
+    <string name="language">"Jazyk"</string>
+    <string name="refreshsongs">"Obnovit nabídku song"</string>
+    <string name="custom1_theme">"Custom 1"</string>
+    <string name="custom2_theme">"Custom 2"</string>
+    <string name="scripture">"Písmo svaté"</string>
+    <string name="slide">"Stránka"</string>
+
+    <string name="visualmetronome">"Vizuální"</string>
+    <string name="onsonglocation">"Je třeba umístit OnSong záložní soubor do /documents/OpenSong/ složky, aby bylo k dispozici pro import"</string>
+    <string name="savesong">"Zachránit"</string>
+    <string name="metronomepadsettings">"Metronom a pozadí nastavení hudby"</string>
+    <string name="metronome">"Metronom"</string>
+    <string name="temponotset">"Tempo nebyl nastaven pro tuto píseň"</string>
+    <string name="timesignotset">"Čas podpis nebyl nastaven pro tuto píseň"</string>
+    <string name="pad">"Hudba na pozadí"</string>
+    <string name="wait">"Počkejte ...."</string>
+    <string name="volume">"Hlasitost"</string>
+    <string name="pan">"Levý / Pravý"</string>
+    <string name="linespacing">"Trim řádkování by"</string>
+    <string name="currently">"V Současnosti"</string>
+    <string name="currentkeycode">"Aktuální šifrovací klíč"</string>
+	<string name="notset">"Není stanoveno"</string>
+	<string name="songactionsbuttons">"Tlačítka pro spuštění / zastavení skladby akce"</string>
+	<string name="padPedalText">"Start / zastavit hudba na pozadí"</string>
+	<string name="autoscrollPedalText">"Start / zastavit autoscroll"</string>	
+	<string name="metronomePedalText">"Start / zastavit metronom"</string>
+    
+    <string name="autoscroll_time">"Auto-scroll zpoždění"</string>
+    
+    <string name="songbuttons_toggle">"Přepnout tlačítka strana zkratky"</string>
+    <string name="song_functionnotavailable">"Tato funkce není k dispozici pro písně"</string>
+    
+    <string name="latest_updates">Poslední aktualizace</string>
+    
+    <string name="storage_choose">"Správa úložiště"</string>
+    <string name="storage_help">"Prosím, vyberte výchozí umístění úložiště pro vaše soubory OpenSong. Můžete změnit kdykoliv z nabídky Volby."</string>
+    <string name="storage_space">"Dostupné místo"</string>
+    <string name="storage_notavailable">"Není k dispozici"</string>
+    <string name="storage_int">"Emulovaný externí / Interní paměť"</string>
+    <string name="storage_ext">"Externí paměť"</string>
+    
+    <string name="link">"Odkaz"</string>
+    <string name="link_choose">"Vyberte soubor, který chcete propojit s touto písní"</string>
+    
+    <string name="autoscroll">"Auto-scroll"</string>
+    
+    <string name="import_onsong_done">"Úspěch - OnSong písně byly přidány do /documents/OpenSong/Songs/OnSong"</string>
+    <string name="import_onsong_error">"No OnSong zálohování souborů najdete v /documents/OpenSong/"</string>
+    <string name="import_onsong_choose">"Umožňuje importovat OnSong zálohování souborů"</string>
+    
+    <string name="pad_playing">"Zálohování trať začala hrát"</string>
+    <string name="pad_stopped">"Zálohování dráha je zastavení (čekat na zatmívání)"</string>
+    <string name="pad_choose_key">"Vyberte klíč této písně"</string>
+    <string name="pad_error">"Klíčem této písně nebyl nastaven"</string>
+    <string name="backing_track">"Vyberte si doprovodnou stopu"</string>
+    <string name="pad_onoroff">"Použijte podložku s touto písní"</string>
+    <string name="pad_auto">"Auto"</string>
+    
+    <string name="stickynotes">"Song poznámky"</string>
+    
+    <string name="youtube">"Hledat YouTube pro aktuální skladby"</string>
+    
+    <string name="pdf_functionnotavailable">"Tato funkce není k dispozici pro dokumenty ve formátu PDF"</string>
+    <string name="pdf_selectpage">"Zvolte stránku"</string>
+    
+   	<string name="options_set">"SBÍRKA"</string>
+   	<string name="options_set_load">"NABÍT"</string>
+   	<string name="options_set_save">"ULOŽIT"</string>
+   	<string name="options_set_nameofset">"Nový set jméno"</string>
+   	<string name="options_set_clear">"VYMAZAT"</string>
+   	<string name="options_set_delete">"ODSTRANIT"</string>
+   	<string name="options_set_export">"EXPORTOVAT"</string>
+   	<string name="options_set_edit">"EDITOVAT"</string>
+   	
+	<string name="options_song">"PÍSEŇ"</string>
+	<string name="options_song_transpose">"Transpozice"</string>
+	<string name="options_song_convert">"Převést písničku do svého preferovaného formátu akordu"</string>
+	<string name="options_song_sharp">"Použijte # akordy"</string>
+	<string name="options_song_flat">"Použijte b akordy"</string>
+	<string name="options_song_edit">"Upravit"</string>
+	<string name="options_song_rename">"Přejmenovat"</string>
+	<string name="options_song_delete">"Odstranit"</string>
+	<string name="options_song_new">"Nový"</string>
+	<string name="options_song_export">"Exportovat"</string>
+    <string name="options_song_stickynotes">"Editovat song sticky note"</string>
+    <string name="options_song_newfolder">"Vytvořit novou složku písně"</string>
+    <string name="options_song_editfolder">"Upravit název složky song"</string>
+		
+	<string name="options_options">"MOŽNOSTI"</string>
+	<string name="options_options_theme">"Změnit vzhled"</string>
+	<string name="options_options_scale">"Přepnout autoscale"</string>
+	<string name="options_options_fontsize">"Vyberte velikost písma"</string>
+	<string name="options_options_showchords">"Zobrazit / Skrýt akordy"</string>
+	<string name="options_options_chordformat">"Zvolte formát akord"</string>
+	<string name="options_options_gestures">"Přiřadit vlastní gesta"</string>
+	<string name="options_options_songswipe">"Přepnout švihnout pro pohyb mezi skladbami zap / vyp"</string>
+	<string name="options_options_menuswipe">"Přepnout Seznam písní a volba menu přejeďte zap / vyp"</string>
+	<string name="options_options_hidebar">"Skrýt lišty nabídek zap / vyp"</string>
+	<string name="options_options_colors">"Změna barvy"</string>
+	<string name="options_options_fonts">"Změna písma"</string>
+	<string name="options_options_pedal">"Přiřazení nožní pedál"</string>
+	<string name="options_options_help">"Help (online)"</string>
+	<string name="options_options_start">"Zpět na Úvodní obrazovka"</string>
+							
+    <string name="customgestures">"Přiřadit vlastní gesta"</string> 
+    <string name="doubleTap">"Vyberte dvojí akci klepněte na položku"</string>
+    <string name="longPress">"Vyberte dlouhé stiskněte tlačítko Akce"</string>
+    <string name="gesture1">"Otevřete oba nabídky"</string>
+    <string name="gesture2">"Edit song"</string>
+    <string name="gesture3">"Přidat skladbu do nastavení"</string>
+
+    <string name="transpose">"Transpozice"</string>
+    <string name="docontinue">"Pokračovat"</string>
+    <string name="chordformat_help">"Při provedení skladby , chceteaplikaci zjistit formátu akordpíseň je v každém čase ?"</string>
+	<string name="chordformat_check">"Rozpoznat akord formátovat každém transponovat"</string>
+	<string name="chordformat_default">"Vždy se předpokládat, písně jsou v mé preferovaného formátu akordu"</string>
+    <string name="chordformat_check_short">"Vždy zkontrolujte, zda"</string>
+    <string name="chordformat_default_short">"Neptejte se mě"</string>
+    
+    <string name="nothighenoughapi">"Potřebujete novější verzi Androidu pro to !"</string>
+    
+    <string name="checkchordformat">"Jste si jisti, že tato píseň je ve vašem preferovaném formátu akordu ?"</string>
+	<string name="oldchordformat">"Zjištěno Současný formát akord"</string>
+	
+    <string name="firstsong">"Zobrazení první píseň"</string>
+    <string name="lastsong">"Zobrazení poslední píseň"</string>
+    
+    <string name="set_edit">"EDITOVAT"</string>
+    <string name="set_edit_title">"Upravte stávající soubor"</string>
+    <string name="set_help">"Přetažením písně , a tak změnit pořadí vašeho přístroje"</string>
+    
+    <string name="currentset">"Aktuální set"</string>
+    <string name="setmargins">"Nastavte\nokraje"</string>
+    <string name="setxmargins">"Horizontální velikost marže"</string>
+    <string name="setymargins">"Vertikální velikost marže"</string>
+    <string name="update_projector">"aktualizace\nprojektor"</string>
+    <string name="black_screen">"černá\nobrazovka"</string>
+    <string name="choose_image1">"Vyberte obrázek\nna pozadí 1"</string>
+    <string name="choose_image2">"Vyberte obrázek\nna pozadí 2"</string>
+    <string name="choose_video1">"Vyberte si pozadí\nvideo 1"</string>
+    <string name="choose_video2">"Vyberte si pozadí\nvideo 2"</string>
+    
+    <string name="choosechordformat">"Zvolte formát akord (používá se pouze při provádění píseň)"</string>
+    
+    <string name="switchtopresentmode">"Přepnutí do režimu prezentace"</string>
+    <string name="switchtoperformmode">"Přepnutí do režimu výkonu"</string>
+    <string name="presentermode">"Režim prezentace"</string>
+    <string name="sendtoprojector">"Vrhat"</string>
+    <string name="presoBackground">"Prezentace na pozadí"</string>
+    <string name="presoShowLogo">"Zobrazit logo"</string>
+    <string name="notcompatible">"Bohužel musíte Android 4.2 nebo vyšší použít funkci prezentační dual obrazovky !"</string>
+	<string name="nodisplays">"Žádné externí zobrazovací zařízení připojeno. Připojte se prosím k sekundární displej pomocí HDMI výstupu nebo MiraCast kompatibilní bezdrátovou displej."</string>
+    <string name="extradisplay">"Zjištěny sekundární displej . Skladby se zobrazí na sekundárním displeji."</string>
+	<string name="beta">"Beta funkce - má stále chyby a konfigurace image / displej zatím není k dispozici . Očekávejte pády !"</string>
+    
+    <string name="songnamealreadytaken">"Bohužel tento název skladby / souboru byl již použit (návrh může být přidat číslo verze až do konce )."</string>
+    <string name="chordiesearch">"Online vyhledávání na www.chordie.com"</string>
+    <string name="ultimateguitarsearch">"Online vyhledávání na Ultimate-Guitar.com"</string>
+    <string name="phrasesearch">"Zadejte hledaný výraz ( název, autor , texty , atd )"</string>
+    <string name="grabchordpro">"Extrahovat data ChordPro"</string>
+    <string name="chordproprogress">"Hledáte ChordPro písní dat na straně&#8230;"</string>
+    <string name="closesearch">"Zavřít vyhledávání"</string>
+    <string name="chordpro_false">"No ChordPro song detekován !"</string>
+	<string name="chordpro_true">"ChordPro song detekován !"</string>
+	<string name="choosefolder">"Vyberte složku pro uložení souboru v"</string>
+	<string name="choosesongname">"Zvolte název pro tuto píseň"</string>
+	<string name="newfolder">"Nová složka"</string>
+	<string name="newfoldername">"Zadejte název nové složky"</string>
+	<string name="folderexists">"Tato složka již existuje!"</string>
+	<string name="createfoldererror">"Došlo k chybě při vytváření nové složky !"</string>
+	<string name="createfoldersuccess">"Nová složka vytvořena!"</string>
+    
+	<string name="welcome">"OpenSong Music Viewer\n Napsal Gareth Evans"</string>
+		
+	<string name="intro">"OpenSong Music Viewer používá skladby vytvořené v OpenSong a zobrazí je na obrazovce tabletu. Je zaměřena na uctívání hudebníků a je velmi work in progress. To funguje nejlépe v režimu na výšku, ale já jsem odešel do režimu na šířku k dispozici (jen pro případ)."</string>
+		
+	<string name="intro_songsfolder">"Aplikace vyhledá složky v dokumentech s názvem \"OpenSong / Songs\" a pokud to nemůže najít, vytváří to pro vás. To pak uloží jednu skladbu s názvem \"Láska na věky\", jeden z mých vlastních písní, do složky (jinak byste nebyli schopni nic dělat s app!). Chcete-li použít vlastní OpenSong skladby, zkopírujte je do Dokumenty / OpenSong / Písně / složky. Můžete mít jednu úroveň podsložky uvnitř složky Songs.\n\n app také je dodáván s 700 a více písní, které můžete použít, ale mějte na paměti, jste odpovědni za dodržování případných otázkách autorských práv a můžete je použít na tvoje vlastní riziko!"</string>
+		
+	<string name="intro_dropbox">"Pokud chcete použít písní / Sady přes Dropbox účtu (umožňuje skupinám přístup ke stejným informacím), budete muset nainstalovat aplikaci, která umožňuje synchronizaci souborů Dropbox s tabletem. Bohužel oficiální Dropbox aplikace nepoužívá lokální složku stejným způsobem jako desktop app dělá.\n\n (zdarma) aplikace, které bych doporučil je DropSync, který to udělá za vás. Chcete-li to provést, bych doporučil resetování složku písničky na vašem tabletu (tlačítko nahoře), jako první, takže nemusíte přepsat všechny skladby na vašem účtu Dropbox se svými verzemi!\n\n Při nastavování DropSync, synchronizovat složky Dropbox OpenSong s / dokumenty / OpenSong / složky a nechte 2 way sync (sběr hlavní složku OpenSong umožní oběma písní a sady mají být synchronizovány).\n To bude trvat několik minut (v závislosti na počtu skladeb, které máte), v prvním běhu. Standardní zřeknutí se - nejsem zodpovědný za jakoukoli ztrátu písní na své virtuální složky! Děláte to na vlastní nebezpečí.\n\n Nicméně, jsem si toto nastavení na mém zařízení, a to všechno se zdá fungovat plynule (výchozí sync schedule je 1 hodina) v aplikaci DropSync, ale můžete to změnit)."</string>
+	    
+	<string name="intro_future">"Bohužel nemám vlastní iPad / Mac, takže jsem schopen vyvíjet na této platformě (dary vítají .....), ale mám v úmyslu, aby se zlepšení této aplikaci v důsledku Samozřejmě. Opravdu jsem se chtěl podělit, co jsem udělal už v naději, že někdo najde to užitečné."</string>
+		
+	<string name="intro_help">"Používáte-li aplikaci, \"švihnout\" v menu na levé straně vyberte skladbu a \"výpad\" v menu na pravé pro různé další možnosti.\n\n Dlouhým stiskem na skladbu v levém menu se přidat skladbu do svého set. Dlouhým stiskem na skladbu v sadě se ji odstranit.\n\n Sady lze načíst z nebo uložit do složky vašich \"OpenSong / nastavit. Dlouhým stiskem na uloženého souboru bude odstranit z vašeho zařízení.\n\n Nyní můžete sdílet uložené soubory a některé z vašich skladeb prostřednictvím e-mailu, Dropbox, atd.
+	"</string>
+	
+
+	<string name="rename">"Zadejte nový název souboru pro tuto píseň (to je, jak to bude vypadat ve vaší nabídce písně)"</string>
+	<string name="renametitle">"Přejmenovat"</string>
+			
+	<string name="copyresources">"Klikněte zde pro kopírování různé skladby\n Jste zodpovědní za Copyright"</string>
+	<string name="gotosong">"Klikněte zde a budete\n OPEN SONG PROHLÍŽEČE"</string>
+	<string name="wipesongs">"Obnovit svou místní složku písně"</string>
+	<string name="dropsync">"Stáhněte si DropSync App (zdarma)"</string>
+	<string name="app_name">"OpenSong Tablet"</string>
+	<string name="drawer_open">"Otevřít"</string>
+	<string name="drawer_close">"Zavřít"</string>
+	<string name="set_back">"Zpět"</string>
+	<string name="set_forward">"Vpřed"</string>
+	<string name="backtohome">"Zpět na domovskou stránku"</string>
+	<string name="exit">"Jste si jisti, že chcete ukončit program?"</string>
+	
+	<string name="on_width">ZAPNUTO - Šířka pouze</string>
+	<string name="on_set">VYPNUTO - Sady pouze</string>
+	<string name="on">"ZAPNUTO"</string>
+	<string name="off">"VYPNUTO"</string>
+	<string name="scaleY">"Měřítko stránky, aby se vešly píseň je nyní"</string>
+	<string name="swipeSet">"Swipe mezi písněmi je nyní"</string>
+	<string name="fontsize">"Musíte vypnout automatické měřítko píseň."</string>	
+	<string name="drawerswipe">"Otevřít seznam song a volba menu pomocí výpad je nyní"</string>
+	<string name="toggleScrollBeforeSwipe">"Přepnout scroll před další / předchozí skladbu"</string>
+	<string name="toggleScrollBeforeSwipeToggle">"Předchozí / Další tlačítka procházet také první je nyní"</string>
+    <string name="toggleLandscapeColumns">"Pohled sloupec krajina je nyní"</string>
+				
+	<string name="exportcurrentsong">"Podělte se o aktuální skladbu"</string>
+	<string name="exportsavedset">"Sdílet uloženou sadu"</string>
+	<string name="importnewsong">"Import píseň"</string>
+	<string name="importnewset">"Importovat soubor"</string>
+	<string name="hasbeenexported">"byl exportován"</string>
+	<string name="hasbeenimported">"byl importován"</string>
+	<string name="hasnotbeenexported">"nebylo vyvezeno - tam byl problém!"</string>			
+	<string name="hasnotbeenimported">"nebyl importován - tam byl problém!"</string>			
+		
+	<string name="add_song_to_set">"Přidat aktuální skladbu nastavit"</string>
+
+	<string name="edit_song_title">"Název skladby"</string>
+	<string name="edit_song_author">"Autor"</string>
+	<string name="edit_song_lyrics">"Text"</string>
+	<string name="edit_song_copyright">"Copyright info"</string>
+	<string name="edit_song_presentation">"Objednávka prezentace"</string>
+	<string name="edit_song_ccli">"CCLI"</string>
+	<string name="edit_song_capo">"Capo pražec"</string>
+	<string name="edit_song_key">"Klíč"</string>
+	<string name="edit_song_aka">"Také známý jako"</string>
+	<string name="edit_song_keyline">"Key linka"</string>
+	<string name="edit_song_user1">"Uživatel 1"</string>
+	<string name="edit_song_user2">"Uživatel 2."</string>
+	<string name="edit_song_user3">"Uživatel 3."</string>
+	<string name="edit_song_theme">"Téma"</string>
+	<string name="edit_song_tempo">"Tempo"</string>
+	<string name="edit_song_timesig">"Čas podpis"</string>
+	<string name="edit_song_hymn">"Číslo Hymn"</string>
+	<string name="edit_song_availabletags">"[V] = Verse, [V1] = Verse 1, [C] = Chorus, [C1] pro Chorus 1, [P] = Prechorus, [T] = Tag, [B] = most, [&#8230; (cokoliv chcete, ) &#8230;] = Vlastní tag. \n Lyric linky začínají mezerou, akord linky s tečkou, komentář řádky se středníkem."</string>
+    <string name="edit_song_duration">"Doba song (v sekundách)"</string>
+    <string name="edit_song_notes">"Poznámky song"</string>
+    <string name="edit_song_midi">"MIDI zpráva odeslána z písně"</string>
+    <string name="edit_song_midi_index">"MIDI zpráva pro aktivaci píseň"</string>
+    <string name="edit_song_restrictions">"Omezení"</string>
+    <string name="edit_song_books">"Knihy song patří k"</string>
+    <string name="edit_song_pitch">"Osová vzdálenost trubek poznámky k písni"</string>  
+	
+	<string name="show_general_advanced">"Přepnout obecné / pokročilé pole"</string>
+	<string name="edit_song_capo_print">"Tisk Capo akordy"</string>
+
+	<string name="search_top">"Song na vrcholu hledání seznam vybraného"</string>
+	<string name="search_here">"Hledat zde"</string>
+	
+	<string name="edit_cancel">"Ukončit bez uložení"</string>
+	<string name="edit_save">"Uložit změny"</string>
+	<string name="edit_delete">"Smazat tento song"</string>
+	
+	<string name="areyousure">"Jste si jist?"</string>
+	<string name="overwritecurrentset">"Toto přepíše aktuální soubor."</string>
+	<string name="removesavedset">"Toto smaže soubor ze složky svého \"sady\"."</string>
+	
+	<string name="yes">"Ano"</string>
+	<string name="no">"Nenašli jsme "</string>
+	<string name="ok">"Dobrá."</string>
+	<string name="cancel">"Zrušit"</string>
+		
+	<string name="songfolderexists">"Složka OpenSong \"Písně\" již existuje. Výborný!"</string>
+	<string name="songfoldercreate">"Vytvoření složky OpenSong \"Songs\""</string>
+	<string name="setsfolderexists">"Složka OpenSong 'Nastavení' již existuje. Výborný!"</string>
+	<string name="setsfoldercreate">"Vytvoření složky OpenSong 'Nastavení'"</string>
+	<string name="initialisesongs_start">"Inicializace složku \"Songs\" -"</string>		
+	<string name="initialisesongs_end">"song (y)!"</string>		
+	<string name="initialisesets_start">"Inicializace složku \"nastaví\" -"</string>		
+	<string name="initialisesets_end">"soubor (y)!"</string>		
+	<string name="installingsongs">"Instalace písničky ...."</string>
+	<string name="assetcopydone">"OpenSong Písně byly zkopírovány do složky vašich \"písní\" .."</string>
+	
+	<string name="createanewsong">"Vytvořit nový song"</string>
+	<string name="createanewset">"Vytvořit novou sadu"</string>
+	<string name="newsongtitleprompt">"Prosím, zadejte název pro novou píseň"</string>
+	<string name="newsettitleprompt">"Prosím, zadejte název pro novou sadu"</string>
+	<string name="shouldnotbedeleted">"by měl být odstraněn ze složky vašich Písně \"!"</string>
+	<string name="songhasbeendeleted">"ze složky svého \"Písně\" byl smazán."</string>
+	<string name="sethasbeendeleted">"ze složky svého \"sad\" byl smazán."</string>
+	<string name="deleteerror_start">"Tam byl problém mazání"</string>
+	<string name="deleteerror_end_song">"ze složky svého \"Songs\"."</string>
+	<string name="deleteerror_end_sets">"ze složky svého \"sady\"."</string>
+	<string name="songdoesntexist">"Že píseň není na vašem zařízení. Už jste ji odstraněn?"</string>
+	<string name="addedtoset">"byla přidána na konec aktuálního souboru."</string>
+	<string name="removedfromset">"odstranil ze svého setu."</string>
+		
+	<string name="soundLink">"Poslechněte si 'Láska na věky \""</string>
+	<string name="stop">"Zastavení"</string>
+	<string name="start">"Počátek"</string>
+	<string name="action_search">"Hledání skladby"</string>
+	<string name="action_settings">"Nastavení OpenSong"</string>
+	
+	<string name="toastmessage_maxfont">"Maximální velikost písma dosáhla"</string>
+	<string name="toastmessage_minfont">"Minimální velikost písma dosáhla"</string>
+	
+	<string name="options_backtooptions">"Zpět na možnosti"</string>
+	<string name="options_savethisset">"SAVE Tato sada"</string>
+	<string name="options_clearthisset">"CLEAR TENTO SET"</string>
+	
+	<string name="mainfoldername">"HLAVNÍ"</string>
+		
+	<string name="colorchooser">"Barva Chooser"</string>
+	<string name="dark_theme">"Tmavě téma"</string>
+	<string name="light_theme">"Světlo téma"</string>
+	<string name="item">"Položka"</string>
+	<string name="page_background">"Page pozadí"</string>
+	<string name="lyrics_color">"Texty písmo"</string>
+	<string name="chord_color">"Akordy písmo"</string>
+	<string name="capo_color">"Capo písmo"</string>
+	<string name="verse_background">"Verš pozadí"</string>
+	<string name="chorus_background">"Chorus pozadí"</string>
+	<string name="prechorus_background">"Prechorus pozadí"</string>
+	<string name="bridge_background">"Most pozadí"</string>
+	<string name="tag_background">"Tag pozadí"</string>
+	<string name="comment_background">"Komentář pozadí"</string>
+	<string name="custom_background">"Vlastní tag na pozadí"</string>
+	<string name="reset_colours">"Obnovit BARVY"</string>
+							
+	<string name="pageturn_title">"Přiřazení otáčení stránek tlačítka"</string>
+	<string name="pageturn_instructions">"Tato stránka vám umožňuje přiřadit tlačítka ze zařízení na otáčení stránek (např. bluetooth nožního spínače) pro ovládání pohybu pomocí sady nebo rolování nahoru a dolů na stránce písně.\n\nK musí zajistit, že zařízení je již připojen k Android tabletu a zapnout.\n\nKlikněte na zelených nebo modrých tlačítek níže a stiskněte tlačítko požadovaného ovládání na nožním spínačem, atd."</string>
+	<string name="pageturn_set">"Tlačítka pro pohyb prostřednictvím souboru"</string>
+    <string name="pageturn_song">"Tlačítka pro posun okna písně"</string>
+	<string name="pageturn_next">"Nastavte tlačítko \"Další\""</string>
+	<string name="pageturn_previous">"Nastavte tlačítko 'Předchozí'"</string>
+	<string name="pageturn_up">"Nastavení \"Scroll up\" tlačítko"</string>
+	<string name="pageturn_down">"Set \"Přejděte dolů\" tlačítko"</string>
+	<string name="pageturn_waiting">"Čekání na tlačítko ...."</string>
+	<string name="pageturn_needset">"Musíte být prohlížení píseň uvedené v aktuální sadě používat zařízení strana otáčení"</string>
+	<string name="pageturn_attempt">"Otevření první skladbu v aktuální sadě ...."</string>
+		
+	<string name="changefonts">"Změna písma"</string>
+	<string name="chooselyricfont">"Zvolte lyrické písmo"</string>
+	<string name="choosechordfont">"Zvolte akord písmo"</string>
+	<string name="font_default">"standardní"</string>
+	<string name="font_monospace">"Droid Monospace"</string>
+	<string name="font_sans">"Droid Sans"</string>
+	<string name="font_serif">"Droid Serif"</string>
+	<string name="font_firasanslight">"FiraSansOT-Light"</string>
+	<string name="font_firasansregular">"FiraSansOT-Regular"</string>
+	<string name="font_kaushanscript">"KaushanScript"</string>
+	<string name="font_latolight">"Lato Light"</string>
+	<string name="font_latoregular">"Lato Pravidelné"</string>
+	<string name="font_lyrics_line1">"Láska na věky, "</string>
+	<string name="font_lyrics_line2">"milovat bez míry"</string>
+	<string name="font_chords_line1">"G"</string>
+	<string name="font_chords_line2">"D / F #"</string>
+					
+</resources>

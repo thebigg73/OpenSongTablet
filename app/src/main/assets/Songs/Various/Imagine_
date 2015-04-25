@@ -1,0 +1,71 @@
+<song>
+<title>Imagine</title>
+<author>John Lennon</author>
+<copyright>John Lennon</copyright>
+<lyrics>[]
+;run with -a -g
+
+;John Lennon
+
+;Verse1:
+.C                   Cmaj7 F
+ Imagine  there's no heaven
+.C               Cmaj7F
+ It's easy if you  try
+.C          Cmaj7  F
+ No hell   below us
+.C           Cmaj7F
+ Above us only sky
+.           Am        Dm7 F/C
+ Imagine all  the people  
+.G            C/G  G7    C
+ Living   for today   AH 
+
+;Verse2:
+.C               Cmaj7       F
+ Imagine there's no countries
+.C              Cmaj7   F
+ It isn't hard  to   do 
+.C               Cmaj7  F
+ Nothing to kill or die for
+.C              Cmaj7F
+ And no religion too 
+.           Am        Dm7  F/C
+ Imagine all  the people   
+.G             C/G  G7
+ Living   life in peace
+
+;Bridge#1:
+.F           G             C    E7  F
+ You   may say    I'm a dreamer     
+.F        G              C   E7   F
+ But I'm not the only one         
+.F             G           C      E7   F
+ I hope some day    you'll join us     
+.           G          C
+ and the world   will be as one
+
+;Verse3:
+.C          Cmaj7       F
+ Imagine no possessions 
+.C              Cmaj7F
+ I wonder if you can 
+.C                 Cmaj7     F
+ No need for greed  or hunger
+.C               Cmaj7  F
+ A brother hood  of man 
+.           Am        Dm7  F/C
+ Imagine all  the people   
+.G          C/G   G7
+ Sharing all the World
+
+;Bridge#2:
+.F           G           C    E7   F
+ You   may say  I'm a dreamer      
+.F        G              C    E7   F
+ But I'm not the only one          
+.F             G         C       E7   F
+ I hope some day  you'll join us      
+.           G        C
+ and the world  will live as one</lyrics>
+</song>

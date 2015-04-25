@@ -1,0 +1,61 @@
+<song>
+<title>Moon Shadow</title>
+<author>Cat Stevens</author>
+<copyright>Cat Stevens</copyright>
+<lyrics>[]
+; Compile with
+; chord -o Moonshadow.ps Moonshadow.chopro
+;
+ Cat Stevens
+;
+[C
+.    D                       A7   D
+ Oh, I'm bein' followed by a moon shadow,
+.G            A7   D
+ moon shadow, moon shadow,
+.D                       A7   D
+ Leapin and hoppin' on a moon shadow,
+.G            A7   D
+ moon shadow, moon shadow.
+[
+
+.    G    D    G       D      G       D       Em      A7
+ And if I ever lose my hands, lose my plough, lose my land,
+.   G    D    G       D         Em   A7   D   F#m   Hm
+ Oh if I ever lose my hands, oh if                  
+.  Em            A       D
+ I won't have to work no more.
+
+.    G    D    G       D     G       D        Em      A7
+ And if I ever lose my eyes, lose my colours, all run dry,
+.    G    D    G       D        Em   A7   D   F#m   Hm
+ Yes if I ever lose my eyes, oh if                  
+.  Em            A      D
+ I won't have to cry no more.
+
+.E7                  A         E                    A
+ Did it take long to find me?  I asked the faithful light.
+.E                   A         E7                         A
+ Did it take long to find me?  And are you gonna stay the night?
+
+;chorus
+
+.    G    D    G       D       G     D          Em    A7
+ And if I ever lose my legs, I won't moan and I won't beg,
+.   G    D    G       D        Em   A7   D   F#m   Hm
+ Oh if I ever lose my legs, oh if                  
+.  Em            A       D
+ I won't have to walk no more.
+
+.    G    D    G       D      G      D      Em        A7
+ And if I ever lose my mouth, all my teeth, north and south,
+.    G    D    G       D         Em   A7   D   F#m   Hm
+ Yes if I ever lose my mouth, oh if                  
+.  Em            A
+ I won't have to talk.
+
+;chorus
+
+.G            A7   D       G            A7   D
+ moon shadow, moon shadow, moon shadow, moon shadow.</lyrics>
+</song>

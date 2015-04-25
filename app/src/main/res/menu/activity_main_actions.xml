@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Show Songs -->
+  
+     <item android:id="@+id/set_back"
+          android:icon="@drawable/ic_action_rewind"
+          android:title="@string/set_back"
+          android:showAsAction="always"/>
+ 
+    <item android:id="@+id/set_forward"
+          android:icon="@drawable/ic_action_fast_forward"
+          android:title="@string/set_forward"
+          android:showAsAction="always"/>
+
+    <item android:id="@+id/action_fullsearch"
+          android:title="@string/action_search"
+          android:icon="@drawable/ic_action_search"
+          android:label="@string/action_search"
+          android:hint="@string/action_search"
+          android:showAsAction="ifRoom|collapseActionView"/>
+
+        <item android:id="@+id/youtube_websearch"
+          android:title="@string/youtube"
+          android:icon="@drawable/action_youtube"
+          android:label="@string/youtube"
+          android:hint="@string/youtube"
+          android:showAsAction="never"/>
+    
+    	<item android:id="@+id/chordie_websearch"
+          android:title="@string/chordiesearch"
+          android:icon="@drawable/ic_action_cloud"
+          android:label="@string/chordiesearch"
+          android:hint="@string/chordiesearch"
+          android:showAsAction="never"/>
+
+        <item android:id="@+id/ultimateguitar_websearch"
+          android:title="@string/ultimateguitarsearch"
+          android:icon="@drawable/ic_action_cloud"
+          android:label="@string/ultimateguitarsearch"
+          android:hint="@string/ultimateguitarsearch"
+          android:showAsAction="never"/>
+        
+    <item android:id="@+id/set_add"
+          android:icon="@drawable/ic_action_new"
+          android:title="@string/add_song_to_set"
+          android:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/present_mode"
+          android:icon="@drawable/action_present"
+          android:title="@string/switchtopresentmode"
+          android:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/pad_menu_button"
+          android:icon="@drawable/pad"
+          android:title="@string/pad_onoroff"
+          android:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/autoscroll_menu_button"
+          android:icon="@drawable/autoscroll"
+          android:title="@string/autoscroll"
+          android:showAsAction="ifRoom"/>
+
+<!--
+    <item android:id="@+id/metronome_menu_button"
+          android:icon="@drawable/metronome"
+          android:title="@string/backing_track"
+          android:showAsAction="ifRoom"/>
+
+  
+    <item android:id="@+id/link_menu_button"
+          android:icon="@drawable/link"
+          android:title="@string/backing_track"
+          android:showAsAction="ifRoom"/>
+
+-->
+
+    <item android:id="@+id/pageselect_menu_button"
+          android:icon="@drawable/pdf_page"
+          android:title="@string/pdf_selectpage"
+          android:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/stickynotes_menu_button"
+          android:icon="@drawable/note_bw"
+          android:title="@string/stickynotes"
+          android:showAsAction="ifRoom"/>
+
+    
+<!-- 
+    <item android:id="@+id/perform_mode"
+          android:icon="@drawable/action_perform"
+          android:title="@string/switchtoperformmode"
+          android:showAsAction="ifRoom"/>
+-->
+ 
+    <item android:id="@+id/action_search"
+          android:icon="@drawable/action_song"
+          android:title="@string/action_search"
+          android:showAsAction="always"/>
+    
+    <!-- Show Options -->
+    <item android:id="@+id/action_settings"
+          android:icon="@drawable/ic_action_settings"
+          android:title="@string/action_settings"
+          android:showAsAction="always" />
+    </menu>

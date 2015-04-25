@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="capo_toggle">"Acordes Capo alternar"</string>
+    <string name="capo_toggle_onlycapo">"Mostrar sólo acordes capo si están disponibles"</string>
+    <string name="capo_toggle_bothcapo">"Mostrar los dos a capo y acordes nativos si están disponibles"</string>
+    <string name="language">"Lengua"</string>
+    <string name="refreshsongs">"Actualizar menú canción"</string>
+    <string name="custom1_theme">"Personalizado 1"</string>
+    <string name="custom2_theme">"Personalizado 2"</string>
+    <string name="scripture">"Sagrada Escritura"</string>
+    <string name="slide">"Página"</string>
+
+    <string name="visualmetronome">"Visual"</string>
+    <string name="onsonglocation">"Es necesario colocar el archivo de copia de seguridad en el Onsong /documents/OpenSong/ carpeta para que esté disponible para importar"</string>
+    <string name="savesong">"Guardar"</string>
+    <string name="metronomepadsettings">"Configuración de la música metrónomo y de fondo"</string>
+    <string name="metronome">"Metrónomo"</string>
+    <string name="temponotset">"Tempo no se ha establecido para esta canción"</string>
+    <string name="timesignotset">"De compás no se ha establecido para esta canción"</string>
+    <string name="pad">"Música de fondo"</string>
+    <string name="wait">"Espere ...."</string>
+    <string name="volume">"Volumen"</string>
+    <string name="pan">"Izquierda / Derecha"</string>
+    <string name="linespacing">"Interlineado ajuste por"</string>
+    <string name="currently">"Corrientemente"</string>
+    <string name="currentkeycode">"Código de la llave actual"</string>
+	<string name="notset">"No establecido"</string>
+	<string name="songactionsbuttons">"Botones para comencar / detener las acciones de canciones"</string>
+	<string name="padPedalText">"Comencar / detener música de fondo"</string>
+	<string name="autoscrollPedalText">"Comencar / detener autoscroll"</string>	
+	<string name="metronomePedalText">"Comencar / detener metrónomo"</string>
+    
+    <string name="autoscroll_time">"Auto-scroll tiempo de retardo"</string>
+    
+    <string name="songbuttons_toggle">"Alternar botones de página atajos"</string>
+    <string name="song_functionnotavailable">"Esta función no está disponible para canciones"</string>
+    
+    <string name="latest_updates">"últimas actualizaciones"</string>
+    
+    <string name="storage_choose">"Administrar almacenamiento"</string>
+    <string name="storage_help">"Por favor, elija la ubicación de almacenamiento predeterminada para los archivos de OpenSong. Usted puede cambiar esto en cualquier momento desde el menú Opciones."</string>
+    <string name="storage_space">"Espacio disponible"</string>
+    <string name="storage_notavailable">"No disponible"</string>
+    <string name="storage_int">"Almacenamiento externo emulado / interno"</string>
+    <string name="storage_ext">"Almacenamiento externo"</string>
+    
+    <string name="link">"Enlace"</string>
+    <string name="link_choose">"Elija un archivo para enlazar con esta canción"</string>
+    
+    <string name="autoscroll">"Auto-scroll"</string>
+    
+    <string name="import_onsong_done">"Éxito - canciones Onsong se han añadido a /documents/OpenSong/Songs/Onsong"</string>
+    <string name="import_onsong_error">"No hay ningún archivo de copia de seguridad Onsong encuentra en /documents/OpenSong/"</string>
+    <string name="import_onsong_choose">"Archivo de copia de seguridad de importación Onsong"</string>
+    
+    <string name="pad_playing">"Pista de acompañamiento ha empezado a jugar"</string>
+    <string name="pad_stopped">"Pista de acompañamiento se detiene (esperar fade out)"</string>
+    <string name="pad_choose_key">"Por favor seleccione la clave de esta canción"</string>
+    <string name="pad_error">"La clave de esta canción no se ha establecido"</string>
+    <string name="backing_track">"Elige pista de acompañamiento"</string>
+    <string name="pad_onoroff">"Use una almohadilla con esta canción"</string>
+    <string name="pad_auto">"Auto"</string>
+    
+    <string name="stickynotes">"Notas de la canción"</string>
+    
+    <string name="youtube">"Buscar en YouTube para la canción actual"</string>
+    
+    <string name="pdf_functionnotavailable">"Esta función no está disponible para documentos PDF"</string>
+    <string name="pdf_selectpage">"Seleccione la página"</string>
+    
+   	<string name="options_set">"CONJUNTO"</string>
+   	<string name="options_set_load">"CARGA"</string>
+   	<string name="options_set_save">"GUARDAR"</string>
+   	<string name="options_set_nameofset">"Nuevo nombre de conjunto"</string>
+   	<string name="options_set_clear">"DESPEJAR"</string>
+  	<string name="options_set_delete">"BORRAR"</string>
+   	<string name="options_set_export">"EXPORTAR"</string>
+   	<string name="options_set_edit">"EDITAR"</string>
+   	
+	<string name="options_song">"CANCIÓN"</string>
+	<string name="options_song_transpose">"Transposición"</string>
+	<string name="options_song_convert">"Convertir canción a mi formato acorde preferida"</string>
+	<string name="options_song_sharp">"Utilice # acordes"</string>
+	<string name="options_song_flat">"Utilice b acordes"</string>
+	<string name="options_song_edit">"Editar"</string>
+	<string name="options_song_rename">"Cambiar el nombre de"</string>
+	<string name="options_song_delete">"Borrar"</string>
+	<string name="options_song_new">"Nuevo"</string>
+	<string name="options_song_export">"Exportar"</string>
+    <string name="options_song_stickynotes">"Editar canción nota adhesiva"</string>
+    <string name="options_song_newfolder">"Crear carpeta nueva canción"</string>
+    <string name="options_song_editfolder">"Editar nombre de carpeta canción"</string>
+		
+	<string name="options_options">"OPCIONES"</string>
+	<string name="options_options_theme">"Cambie Tema"</string>
+	<string name="options_options_scale">"Canción auto escala activado / desactivado"</string>
+	<string name="options_options_fontsize">"Seleccione el tamaño de la fuente"</string>
+	<string name="options_options_showchords">"Mostrar / Ocultar Acordes"</string>
+	<string name="options_options_chordformat">"Elija formato acorde"</string>
+	<string name="options_options_gestures">"Asignar gestos personalizados"</string>
+	<string name="options_options_songswipe">"Golpe de palanca para moverse entre las canciones de encendido / apagado"</string>
+	<string name="options_options_menuswipe">"Lista de canciones y menús de opción Toggle deslizar encendido / apagado"</string>
+	<string name="options_options_hidebar">"Ocultar barra de menú superior de encendido / apagado"</string>
+	<string name="options_options_colors">"Cambio de Colores"</string>
+	<string name="options_options_fonts">"Cambiar Fuentes"</string>
+	<string name="options_options_pedal">"Asigne pedal"</string>
+	<string name="options_options_help">"Ayuda (Online)"</string>
+	<string name="options_options_start">"Volver a la pantalla de inicio"</string>
+							
+    <string name="customgestures">"Asignar gestos personalizados"</string>
+    <string name="doubleTap">"Seleccione la acción doble toque"</string>
+    <string name="longPress">"Seleccione la acción pulsación larga"</string>
+    <string name="gesture1">"Abra las dos menús"</string>
+    <string name="gesture2">"Editar canción"</string>
+    <string name="gesture3">"Añadir canción a establecer"</string>
+
+    <string name="transpose">"Transposición"</string>
+    <string name="docontinue">"Continuar"</string>
+    <string name="chordformat_help">"Al transponer una canción , ¿desea la aplicación para detectar el formato de acordes de una canción es en cada momento ?"</string>
+	<string name="chordformat_check">"Detectar formato acorde cada vez que transponer"</string>
+	<string name="chordformat_default">"Siempre asuma canciones están en mi formato acorde preferida"</string>
+    <string name="chordformat_check_short">"Compruebe siempre"</string>
+    <string name="chordformat_default_short">"No me preguntes"</string>
+    
+    <string name="nothighenoughapi">"Se necesita una versión más reciente de Android para esto!"</string>
+    
+    <string name="checkchordformat">"¿Seguro que esta canción está en su formato acorde preferido ?"</string>
+	<string name="oldchordformat">"Formato acorde actual Detectado"</string>
+	
+    <string name="firstsong">"Viendo primera canción"</string>
+    <string name="lastsong">"Viendo última canción"</string>
+    
+    <string name="set_edit">"EDITAR"</string>
+    <string name="set_edit_title">"Editar su conjunto actual"</string>
+    <string name="set_help">"Canciones Arrastre alrededor para cambiar el orden de su aparato"</string>
+    
+    <string name="currentset">"Conjunto actual"</string>
+    <string name="setmargins">"Ajuste los\nmárgenes"</string>
+    <string name="setxmargins">"Tamaño del margen horizontal"</string>
+    <string name="setymargins">"Tamaño del margen vertical"</string>
+    <string name="update_projector">"Actualización\nproyector"</string>
+    <string name="black_screen">"Pantalla\nen negro"</string>
+    <string name="choose_image1">"Seleccione la imagen de fondo 1"</string>
+    <string name="choose_image2">"Seleccione la imagen de fondo 2"</string>
+    <string name="choose_video1">"Elija el fondo de vídeo 1"</string>
+    <string name="choose_video2">"Elija el fondo de vídeo 2"</string>
+    
+    <string name="choosechordformat">"Elige formato acorde (sólo se utiliza en la transposición de una canción)"</string>
+    
+    <string name="switchtopresentmode">"Cambiar a modo de presentación"</string>
+    <string name="switchtoperformmode">"Cambiar a modo de rendimiento"</string>
+    <string name="presentermode">"Modo de presentación"</string>
+    <string name="sendtoprojector">"Proyecto"</string>
+    <string name="presoBackground">"Fondo de la presentación"</string>
+    <string name="presoShowLogo">"Mostrar logotipo"</string>
+    <string name="notcompatible">"Desafortunadamente usted necesita Android 4.2 o superior para utilizar la función de presentación de doble pantalla !"</string>
+	<string name="nodisplays">"No hay pantallas externas conectadas . Por favor, conectarse a una pantalla secundaria utilizando una salida HDMI o Miracast pantalla inalámbrica compatible."</string>
+    <string name="extradisplay">"Pantalla secundaria detectada . Canciones se mostrarán en la pantalla secundaria ."</string>
+	<string name="beta">"Característica Beta - todavía tiene errores y configuración de la imagen / pantalla aún no está disponible . Esperar choques!"</string>
+    
+    <string name="songnamealreadytaken">"Desafortunadamente este título de la canción / nombre de archivo ya ha sido utilizado ( una sugerencia podría ser añadir un número de versión para el final)."</string>
+    <string name="chordiesearch">"Búsqueda en línea en www.chordie.com"</string>
+    <string name="ultimateguitarsearch">"Búsqueda en línea en Ultimate-Guitar.com"</string>
+    <string name="phrasesearch">"Ingrese frase de búsqueda ( título, autor , letras, etc )"</string>
+    <string name="grabchordpro">"Extraer datos ChordPro"</string>
+    <string name="chordproprogress">"Buscando datos de canciones ChordPro en la página&#8230;"</string>
+    <string name="closesearch">"Cerrar búsqueda"</string>
+    <string name="chordpro_false">"Canción No ChordPro detectado !"</string>
+	<string name="chordpro_true">"Canción ChordPro detectado !"</string>
+	<string name="choosefolder">"Elegir carpeta para guardar el archivo en"</string>
+	<string name="choosesongname">"Elegir un nombre para esta canción"</string>
+	<string name="newfolder">"Nueva carpeta"</string>
+	<string name="newfoldername">"Introduzca un nuevo nombre de carpeta"</string>
+	<string name="folderexists">"Esta carpeta ya existe!"</string>
+	<string name="createfoldererror">"Hubo un error al crear la nueva carpeta !"</string>
+	<string name="createfoldersuccess">"Nueva carpeta creada !"</string>
+    
+	<string name="welcome">"OpenSong Música Visor \n Escrito por Gareth Evans"</string>
+		
+	<string name="intro">"The Music Visor OpenSong utiliza canciones creadas en OpenSong y los muestra en la pantalla del tablet. Está dirigido a los músicos de culto y es en gran medida un trabajo en progreso. Lo mejor en el modo vertical funciona, pero he dejado el modo horizontal disponible (por si acaso)."</string>
+		
+	<string name="intro_songsfolder">"La aplicación busca una carpeta en sus documentos llamados \"OpenSong / Songs 'y si no lo encuentra, lo crea para usted. A continuación, guarda una sola canción llamada \"Everlasting Love\", una de mis propias canciones, a la carpeta (si no, no sería capaz de hacer cualquier cosa con la aplicación!). Para usar sus propias canciones OpenSong, copiarlos en los Documentos / OpenSong / Canciones / carpeta. Usted puede tener un nivel de subcarpetas dentro de la carpeta de canciones. \n\n La aplicación también viene con más de 700 canciones que se pueden utilizar, pero hay que tener en cuenta que usted es responsable por haber adherido a los posibles problemas de derechos de autor y los utilizan en su propio riesgo!"</string>
+		
+	<string name="intro_dropbox">"Si desea utilizar canciones / Juegos a través de una cuenta de Dropbox (permite que los grupos tengan acceso a la misma información), necesitará instalar una aplicación que permite la sincronización de los archivos de Dropbox con su tableta. Por desgracia, la aplicación oficial de Dropbox no utiliza una carpeta local en la misma forma que la aplicación de escritorio hace. \n\n Una aplicación (gratis) que recomendaría es DropSync que lo hace por usted. Si usted desea hacer esto, yo recomendaría restablecer la carpeta de canciones en tu tableta (botón arriba) primero, para no sobrescribir ninguna canción en su cuenta de Dropbox con mis versiones! \n\n Al configurar DropSync, sincronizar tu carpeta de Dropbox OpenSong con su documentos / OpenSong / carpeta / y deje 2 vías de sincronización (recogiendo la carpeta principal OpenSong permitirá a ambas canciones y establece que se sincronicen). \n Esto tomará un pocos minutos (dependiendo de la cantidad de canciones que tiene) en la primera ejecución. Descargo de responsabilidad estándar - Yo no soy responsable de ninguna pérdida de canciones en su carpeta de Dropbox! Esto se hace a su propio riesgo. \n\n Sin embargo, ésta la he puesto en mi equipo y todo parece funcionar fichero de tus ajustes (la programación de sincronización por defecto es de 1 hora) en la aplicación DropSync, pero usted puede cambiar esto)."</string>
+	    
+	<string name="intro_future">"Desafortunadamente yo no tengo un iPad / Mac, por lo que no soy capaz de desarrollar en esa plataforma (se aceptan donaciones &#8230;..), pero tengo la intención de seguir mejorando esta aplicación a su debido Por supuesto. Realmente sólo quería compartir lo que he hecho ya en la esperanza de que alguien encuentre esto útil."</string>
+		
+	<string name="intro_help">"Al utilizar la aplicación, 'golpe' en el menú de la izquierda para elegir una canción y 'golpe' en el menú de la derecha para varias otras opciones. \n\n Larga presionar sobre una canción en el menú de la izquierda va a añadir la canción a su establecer. Larga presionar sobre una canción en su conjunto lo eliminará. \n\n Los conjuntos se pueden cargar desde o guardar en su carpeta 'OpenSong / Juegos. Largo que presiona un conjunto guardado lo eliminará del dispositivo.\n\n Ahora puede compartir juegos guardados y ninguna de sus canciones a través de correo electrónico, Dropbox, etc
+	"</string>
+	
+	<string name="rename">"Introduzca un nuevo nombre de archivo para esta canción (así es como aparecerá en el menú de la canción)"</string>
+	<string name="renametitle">"Cambiar el nombre de"</string>
+			
+	<string name="copyresources">"Haga clic aquí para copiar varias canciones \n Usted es responsable por el Derecho de Autor"</string>
+	<string name="gotosong">"HAGA CLIC AQUÍ PARA \n OPEN SONG ESPECTADOR"</string>
+	<string name="wipesongs">"Restablecer mi carpeta de canciones locales"</string>
+	<string name="dropsync">"Descarga DropSync App (gratis)"</string>
+	<string name="app_name">"OpenSong Tablet"</string>
+	<string name="drawer_open">"Abrir"</string>
+	<string name="drawer_close">"Cerrar"</string>
+	<string name="set_back">"Atrás"</string>
+	<string name="set_forward">"Siguiente"</string>
+	<string name="backtohome">"Volver a la Home"</string>
+	<string name="exit">"¿Está seguro que desea salir del programa?"</string>
+	
+	<string name="on_width">"ON - Ancho sólo"</string>
+	<string name="on_set">"ON - Sets sólo"</string>
+	<string name="on">"Encendido"</string>
+	<string name="off">"Apagado"</string>
+	<string name="scaleY">"Página Ajustar al canción es ahora"</string>
+	<string name="swipeSet">"Swipe entre las canciones es ahora"</string>
+	<string name="fontsize">"Usted necesita apagar canción escala automática."</string>	
+	<string name="drawerswipe">"Abrir la lista de canciones y menús de opciones por golpe es ahora"</string>
+	<string name="toggleScrollBeforeSwipe">"Desplazamiento de palanca antes de la siguiente / anterior canción"</string>
+	<string name="toggleScrollBeforeSwipeToggle">"Botones Anterior / Siguiente también desplazarse primero es ahora"</string>
+    <string name="toggleLandscapeColumns">"Vista la columna del paisaje es ahora"</string>
+			
+	<string name="exportcurrentsong">"Comparte la canción actual"</string>
+	<string name="exportsavedset">"Comparte el conjunto guardado"</string>
+	<string name="importnewsong">"Importar una canción"</string>
+	<string name="importnewset">"Importar un conjunto"</string>
+	<string name="hasbeenexported">"se ha exportado"</string>
+	<string name="hasbeenimported">"se ha importado"</string>
+	<string name="hasnotbeenexported">"no se ha exportado - había un problema!"</string>			
+	<string name="hasnotbeenimported">"no se ha importado - que había un problema!"</string>			
+		
+	<string name="add_song_to_set">"Añadir canción actual para establecer"</string>
+	
+	<string name="edit_song_title">"Título de la canción"</string>
+	<string name="edit_song_author">"Autor"</string>
+	<string name="edit_song_lyrics">"Letras"</string>
+	<string name="edit_song_copyright">"Información Legal"</string>
+	<string name="edit_song_presentation">"Orden de presentación"</string>
+	<string name="edit_song_ccli">"CCLI"</string>
+	<string name="edit_song_capo">"Capo traste"</string>
+	<string name="edit_song_key">"Clave"</string>
+	<string name="edit_song_aka">"También conocido como"</string>
+	<string name="edit_song_keyline">"Línea de Clave"</string>
+	<string name="edit_song_user1">"Usuario 1"</string>
+	<string name="edit_song_user2">"Usuario 2"</string>
+	<string name="edit_song_user3">"Usuario 3"</string>
+	<string name="edit_song_theme">"Tema"</string>
+	<string name="edit_song_tempo">"Tempo"</string>
+	<string name="edit_song_timesig">"Compás"</string>
+	<string name="edit_song_hymn">"Número Himno"</string>
+	<string name="edit_song_availabletags">"[V] = verso, [V1] = El versículo 1, [C] = Coro, [C1] para Coro 1, [P] = Prechorus, [T] = Tag, [B] = Bridge, [&#8230; (lo que quieras ) &#8230; líneas] = etiqueta personalizada. \n líricos comienzan con un espacio, líneas de acordes con un punto, líneas de comentario con un punto y coma."</string>
+    <string name="edit_song_duration">"Duración Song (segundos)"</string>
+    <string name="edit_song_notes">"Canción notas adhesivas"</string>
+    <string name="edit_song_midi">"Mensaje MIDI enviado desde canción"</string>
+    <string name="edit_song_midi_index">"Mensaje MIDI para activar canción"</string>
+    <string name="edit_song_restrictions">"Restricciones"</string>
+    <string name="edit_song_books">"Libros canción pertenece a"</string>
+    <string name="edit_song_pitch">"Notas diapasón de canción"</string>  
+	
+	<string name="show_general_advanced">"Campos generales / avanzadas Toggle"</string>
+	<string name="edit_song_capo_print">"Acordes Imprimir capo"</string>
+
+	<string name="search_top">"Canción en la parte superior de la lista de búsqueda seleccionado"</string>
+	<string name="search_here">"Busque aquí"</string>
+	
+	<string name="edit_cancel">"Salir sin guardar"</string>
+	<string name="edit_save">"Guardar cambios"</string>
+	<string name="edit_delete">"Eliminar esta canción"</string>
+	
+	<string name="areyousure">"¿Estás seguro?"</string>
+	<string name="overwritecurrentset">"Esto sobreescribirá su conjunto actual."</string>
+	<string name="removesavedset">"Esto borrará este conjunto desde tu carpeta de 'Juegos'."</string>
+	
+	<string name="yes">"Si"</string>
+	<string name="no">"No"</string>
+	<string name="ok">"Aceptar"</string>
+	<string name="cancel">"Cancelar"</string>
+		
+	<string name="songfolderexists">"Ya existe la carpeta OpenSong 'Canciones'. Excelente!"</string>
+	<string name="songfoldercreate">"Creación de carpetas OpenSong 'Canciones'"</string>
+	<string name="setsfolderexists">"Ya existe la carpeta OpenSong 'Juegos'. Excelente!"</string>
+	<string name="setsfoldercreate">"Creación de carpetas OpenSong 'Juegos'"</string>
+	<string name="initialisesongs_start">"Iniciando carpeta 'Songs' -"</string>		
+	<string name="initialisesongs_end">"canción (s) encontrado!"</string>		
+	<string name="initialisesets_start">"Iniciando carpeta 'Juegos' -"</string>		
+	<string name="initialisesets_end">"(s) encontrado!"</string>		
+	<string name="installingsongs">"Instalación de canciones &#8230;."</string>
+	<string name="assetcopydone">"OpenSong canciones se han copiado a la carpeta de sus 'Canciones' .."</string>
+	
+	<string name="createanewsong">"Crear nueva canción"</string>
+	<string name="createanewset">"Crear nuevo conjunto"</string>
+	<string name="newsongtitleprompt">"Por favor, introduzca un título para la nueva canción"</string>
+	<string name="newsettitleprompt">"Por favor, introduzca un título para la nueva serie"</string>
+	<string name="shouldnotbedeleted">"no debe ser borrado de su carpeta 'Songs'!"</string>
+	<string name="songhasbeendeleted">"ha sido borrado de la carpeta de 'Canciones'."</string>
+	<string name="sethasbeendeleted">"ha sido borrado de la carpeta de \"conjuntos\"."</string>
+	<string name="deleteerror_start">"Hubo un problema al eliminar"</string>
+	<string name="deleteerror_end_song">"desde tu carpeta de 'Canciones'."</string>
+	<string name="deleteerror_end_sets">"desde tu carpeta de 'Juegos'."</string>
+	<string name="songdoesntexist">"Esa canción no está en su dispositivo. ¿Has borrado él?"</string>
+	<string name="addedtoset">"se ha añadido al final de su conjunto actual."</string>
+	<string name="removedfromset">"ha sido removido de su aparato."</string>
+		
+	<string name="soundLink">"Escucha 'Amor eterno'"</string>
+	<string name="stop">"Parar"</string>
+	<string name="start">"Comencemos"</string>
+	<string name="action_search">"Buscar canciones"</string>
+	<string name="action_settings">"Ajustes OpenSong"</string>
+	
+	<string name="toastmessage_maxfont">"El tamaño máximo de fuente alcanzado"</string>
+	<string name="toastmessage_minfont">"El tamaño mínimo de fuente alcanzado"</string>
+	
+	<string name="options_backtooptions">"VOLVER A LAS OPCIONES"</string>
+	<string name="options_savethisset">"GUARDE ESTE SET"</string>
+	<string name="options_clearthisset">"BORRAR ESTE SISTEMA"</string>
+	
+	<string name="mainfoldername">"PRINCIPAL"</string>
+	
+	<string name="colorchooser">"Color Selector"</string>
+	<string name="dark_theme">"Dark theme"</string>
+	<string name="light_theme">"Tema de Luz"</string>
+	<string name="item">"Artículo"</string>
+	<string name="page_background">"Fondo Página"</string>
+	<string name="lyrics_color">"Letras de fuente"</string>
+	<string name="chord_color">"Acordes de la fuente"</string>
+	<string name="capo_color">"Fuente Capo"</string>
+	<string name="verse_background">"Fondo Verso"</string>
+	<string name="chorus_background">"Fondo Chorus"</string>
+	<string name="prechorus_background">"Prechorus fondo"</string>
+	<string name="bridge_background">"Fondo Puente"</string>
+	<string name="tag_background">"Fondo Tag"</string>
+	<string name="comment_background">"Comentario fondo"</string>
+	<string name="custom_background">"Fondo de la etiqueta personalizada"</string>
+	<string name="reset_colours">"Cambiar colores"</string>
+							
+	<string name="pageturn_title">"Asignar botones de la página de giro"</string>
+	<string name="pageturn_instructions">"Esta página le permite asignar los botones de un dispositivo de cambio de página (como un pedal bluetooth) para el control de movimiento a través de juegos o el desplazamiento hacia arriba y hacia abajo en una página de la canción. \n \nNo debe asegurarse de que el dispositivo ya está conectado a la tableta Android y encendida. \n \nHaga clic en los botones verdes o azules debajo luego presione el botón de control deseado en su pedal, etc"</string>
+	<string name="pageturn_set">"Botones para moverse a través de un conjunto"</string>
+    <string name="pageturn_song">"Botones para desplazarse en una ventana canción"</string>
+	<string name="pageturn_next">"Configurar el botón 'Siguiente'"</string>
+	<string name="pageturn_previous">"Ponga el botón 'Anterior'"</string>
+	<string name="pageturn_up">"Set 'Desplácese hacia arriba' botón"</string>
+	<string name="pageturn_down">"Set 'Desplácese hacia abajo' botón"</string>
+	<string name="pageturn_waiting">"Esperando botón &#8230;."</string>
+	<string name="pageturn_needset">"Tienes que estar viendo una canción que aparece en el conjunto actual para usar la facilidad de cambio de página"</string>
+	<string name="pageturn_attempt">"Apertura de la primera canción en conjunto actual &#8230;."</string>
+		
+	<string name="changefonts">"Cambie las fuentes"</string>
+	<string name="chooselyricfont">"Elija la fuente lírica"</string>
+	<string name="choosechordfont">"Elija la fuente de acordes"</string>
+	<string name="font_default">"Defecto"</string>
+	<string name="font_monospace">"Droid Monoespacio"</string>
+	<string name="font_sans">"Droid Sans"</string>
+	<string name="font_serif">"Droid Serif"</string>
+	<string name="font_firasanslight">"FiraSansOT-Luz"</string>
+	<string name="font_firasansregular">"FiraSansOT-Regular"</string>
+	<string name="font_kaushanscript">"KaushanScript"</string>
+	<string name="font_latolight">"Lato Luz"</string>
+	<string name="font_latoregular">"Lato Regular"</string>
+	<string name="font_lyrics_line1">"Amor eterno, "</string>
+	<string name="font_lyrics_line2">"amar sin medida"</string>
+	<string name="font_chords_line1">"G"</string>
+	<string name="font_chords_line2">"D / F #"</string>
+					
+</resources>

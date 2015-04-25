@@ -1,0 +1,62 @@
+<song>
+<title>Streets Of London</title>
+<author>Ralph McTell</author>
+<copyright>Ralph McTell</copyright>
+<lyrics>[]
+; Compile with
+; chord -o StreetsOfLondon.ps StreetsOfLondon.chopro
+;
+ Ralph McTell
+. C                G               Am          Em
+ Have you seen the old man in the closed down market,
+. F               C               Dm7       G7
+ Kicking out the papers with his worn out shoes?
+.C                G              Am             Em
+ In his eyes you see no pride.  Hanging loosely by his side,
+. F           C             G7          C
+ Yesterday's paper telling yesterday's news.
+
+[C
+.    F           Em            G G7 Am
+ So how can you tell me you're lonely,
+.D           D7                     G     G7
+ And say for you that the sun don't shine?
+. C              G                Am                    Em
+ Let me take you by the hand and lead you through the streets of London,
+. F             C                 G                    C
+ I'll show you something that'll make you change your mind.
+[
+
+.C                 G            Am                   Em
+ Have you seen the old girl who walks the streets of London?
+.F           C            Dm7        G7
+ Dirt in her hair and her clothes in rags.
+.C                 G                 Am             Em
+ She's no time for talking, she just keeps right on walking,
+.F            C       G7          C
+ Carrying her home in two carrier bags.
+
+;Chorus
+
+.C                 G         Am         Em
+ In the all night cafe at a quarter to eleven,
+.F        C           Dm7          G7
+ Same old man sitting there on his own.
+.C               G             Am         Em
+ Looking at the world over the rim of his tea cup,
+.F                C             G7            C
+ Each tea lasts a hour, then he wanders home alone.
+
+;Chorus
+
+.C                 G          Am                Em
+ Have you seen the old man outside the seamen's mission?
+.F             C                D7       G7
+ Memory fading with the metal ribbons he wears.
+.C             G        Am                  Em
+ In our winter city the rain cries a little pitty,
+.    F                  C         G7                 C
+ For one more forgotten hero in a world that doesn't care.
+
+;Chorus</lyrics>
+</song>

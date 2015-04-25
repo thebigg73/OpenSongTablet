@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<song>
+  <title>Low in the grave</title>
+  <author>Robert Lowry, 1874</author>
+  <copyright>Public Domain</copyright>
+  <presentation>V1 C V2 C V3 C</presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>27783</ccli>
+  <theme>Christ: Ressurection; </theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
+  <lyrics>[V1]
+.G                        D        G
+ Low in the grave He lay, Jesus my Savior!
+.C           G           Em  A7     D
+ Waiting the coming day, Je__sus my Lord!
+
+[C]
+.            G
+ (Spirited!) Up from the grave He arose,
+.              C                G
+ With a mighty triumph o'er His foes;
+.    D                      G    C G
+ He arose a victor from the dark domain,
+.       C        A7            D      A7 D7
+ And He lives forever with His saints to reign,
+.    G         C          G      D       G
+ He arose! He arose! Hallelujah! Christ arose!
+
+[V2]
+.G                          D        G
+ Vainly they watch His bed, Jesus my Savior!
+.C           G              Em  A7     D
+ Vainly they seal the dead, Je__sus my Lord!
+
+[V3]
+.G                           D        G
+ Death cannot keep his prey, Jesus my Savior!
+.C           G          Em  A7     D
+ He tore the bars away, Je__sus my Lord!</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+  <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
+</song>

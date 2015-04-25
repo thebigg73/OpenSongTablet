@@ -1,0 +1,131 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.garethevans.church.opensongtablet"
+    android:versionCode="62"
+    android:versionName="3.4.2"
+    android:installLocation="auto" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="22" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+     <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <meta-data
+      		android:name="android.app.default_searchable"
+      		android:value=".SearchSongs" />
+        <service android:enabled="true"
+         	android:exported="false"
+         	android:name="com.garethevans.church.opensongtablet.SoftKeyboardForce">
+    	 </service>
+         <activity
+            android:name="com.garethevans.church.opensongtablet.SearchSongs"
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
+           <intent-filter >
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter >
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity> 
+         <activity
+            android:name="com.garethevans.church.opensongtablet.SettingsActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.garethevans.church.opensongtablet.FullscreenActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
+            android:label="@string/app_name">
+            
+        </activity>
+        <activity
+            android:name="com.garethevans.church.opensongtablet.EditSong"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenLayout|screenSize"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustResize|adjustPan" >
+        </activity>
+        <activity
+            android:name="com.garethevans.church.opensongtablet.ChangeDisplayPreferences"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.garethevans.church.opensongtablet.ChangeFonts"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.garethevans.church.opensongtablet.setPageTurns"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.garethevans.church.opensongtablet.ListSongFiles"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.garethevans.church.opensongtablet.SearchViewFilterMode"
+            android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.garethevans.church.opensongtablet.ChordProConvert"
+            android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.garethevans.church.opensongtablet.Chordie"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.garethevans.church.opensongtablet.PresentMode"
+            android:screenOrientation="landscape"
+           android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+            android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.garethevans.church.opensongtablet.ChordFormat"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.garethevans.church.opensongtablet.BibleSelect"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.garethevans.church.opensongtablet.ListViewDraggingAnimation"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.garethevans.church.opensongtablet.GestureOptions"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.garethevans.church.opensongtablet.StorageChooser"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.garethevans.church.opensongtablet.MetronomePadSettings"
+            android:label="@string/app_name" >
+        </activity>
+        
+        
+        
+        </application>
+
+</manifest>

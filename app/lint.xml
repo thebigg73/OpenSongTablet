@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+    <issue id="UselessParent">
+        <ignore path="res/layout/activity_fullscreen_table.xml" />
+        <ignore path="res/layout/ambilwarna_dialog.xml" />
+    </issue>
+</lint>

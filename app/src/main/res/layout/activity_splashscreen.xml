@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000" >
+    
+    <ScrollView
+        android:id="@+id/Blurb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="#000" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                android:gravity="center_horizontal"
+                android:text="@string/welcome"
+                android:textColor="#fff"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center_horizontal"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+                        <Button
+                android:id="@+id/latest_updates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:background="#000"
+                android:onClick="latestUpdates"
+                android:text="@string/latest_updates"
+                android:textColor="#ff0"
+                android:textSize="18sp" />
+  
+            <Button
+                android:id="@+id/goToSongs"
+                android:background="@drawable/green_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:onClick="gotothesongs"
+                android:padding="4dp"
+                android:text="@string/gotosong"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/intro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/intro"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+
+            
+             <TextView
+                android:id="@+id/intro_songsfolder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/intro_songsfolder"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+
+            
+            <TextView
+                android:id="@+id/intro_dropbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/intro_dropbox"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+            
+            <Button
+                android:id="@+id/dropsync"
+                android:background="@drawable/blue_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:onClick="dropSync"
+                android:padding="4dp"
+                android:text="@string/dropsync"
+                android:textSize="22sp" />
+ 
+                        <TextView
+                android:id="@+id/intro_future"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/intro_future"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+            
+                        
+            <Button
+                android:id="@+id/webLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:background="#000"
+                android:onClick="webLink"
+                android:text="@string/webLink"
+                android:textColor="#ff0"
+                android:textSize="22sp" />
+
+ 
+        </LinearLayout>
+    </ScrollView>   
+    
+</RelativeLayout>

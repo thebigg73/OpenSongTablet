@@ -1,0 +1,31 @@
+<resources>
+
+    <!--
+        Base application theme for API 21+. This theme completely replaces
+        AppBaseTheme from BOTH res/values/styles.xml and
+        res/values-v11/styles.xml on API 21+ devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Material">
+        <!-- API 21 theme customizations can go here. -->
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <style name="MyActionBar" parent="@android:style/Widget.Material.ActionBar">
+        <item name="android:background">#121222</item>
+    <item name="android:titleTextStyle">@style/Theme.MyAppTheme.ActionBar.TitleTextStyle</item>
+    
+    </style>        
+
+    <style name="Theme.MyAppTheme.ActionBar.TitleTextStyle" parent="android:style/TextAppearance.Material.Widget.ActionBar.Title">
+    <item name="android:textColor">#FFFFFF</item>
+    
+    </style>   
+    
+    <style name="AltAppBaseTheme" parent="android:Theme.Holo">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>        
+        <item name="android:windowBackground">@null</item>
+        <item name="buttonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="buttonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+   
+</resources>

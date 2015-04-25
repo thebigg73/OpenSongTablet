@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>   
+
+    <string name="capo_toggle">"カポの和音がトグル"</string>
+    <string name="capo_toggle_onlycapo">"利用可能な場合のみカポ和音を表示"</string>
+    <string name="capo_toggle_bothcapo">"カポとネイティブコード利用可能な場合の両方を表示"</string>
+    <string name="language">"言語"</string>
+    <string name="refreshsongs">"ソングメニューをリフレッシュ"</string>
+    <string name="custom1_theme">"カスタム1"</string>
+    <string name="custom2_theme">"カスタム2"</string>
+    <string name="scripture">"聖書"</string>
+    <string name="slide">"ページ"</string>
+
+    <string name="visualmetronome">"ビジュアル"</string>
+    <string name="onsonglocation">"あなたはそれをインポートするために利用可能であるためには /documents/OpenSong/フォルダにあなたのOnSongバックアップファイルを配置する必要があります"</string>
+    <string name="savesong">"保存するには"</string>
+    <string name="metronomepadsettings">"メトロノームと背景音楽の設定"</string>
+    <string name="metronome">"メトロノーム"</string>
+    <string name="temponotset">"テンポはこの曲のために設定されていない"</string>
+    <string name="timesignotset">"拍子はこの曲のために設定されていない"</string>
+    <string name="pad">"バックグラウンドミュージック"</string>
+    <string name="wait">"待って...."</string>
+    <string name="volume">"ボリューム"</string>
+    <string name="pan">"左/右"</string>
+    <string name="linespacing">"によるトリム行間隔"</string>
+    <string name="currently">"現在"</string>
+    <string name="currentkeycode">"現在のキーコード"</string>
+	<string name="notset">"設定されない"</string>
+	<string name="songactionsbuttons">"ボタンは、曲のアクションを停止/開始する"</string>
+	<string name="padPedalText">"スタート/ストップ·バックグラウンドミュージック"</string>
+	<string name="autoscrollPedalText">"開始/自動スクロールを停止する"</string>	
+	<string name="metronomePedalText">"/ストップメトロノームを開始"</string>
+    
+    <string name="autoscroll_time">"自動スクロール遅延時間"</string>
+    
+    <string name="songbuttons_toggle">"トグルページボタンのショートカット"</string>
+    <string name="song_functionnotavailable">"この機能は、曲のために利用できません"</string>
+    
+    <string name="latest_updates">"最新のアップデート"</string>
+    
+    <string name="storage_choose">"収納スペースを管理する"</string>
+    <string name="storage_help">"あなたのOpenSongファイルのデフォルトの保存場所を選択してください。 [オプション]メニューからいつでも変更することができます。"</string>
+    <string name="storage_space">"利用可能空間"</string>
+    <string name="storage_notavailable">"利用不可"</string>
+    <string name="storage_int">"エミュレートされた外部/内部ストレージ"</string>
+    <string name="storage_ext">"外部記憶装置"</string>
+    
+    <string name="link">"リンク"</string>
+    <string name="link_choose">"この曲とリンクするファイルを選択してください"</string>
+    
+    <string name="autoscroll">"自動スクロール"</string>
+    
+    <string name="import_onsong_done">"成功 - OnSong曲に追加されました  /documents/OpenSong/Songs/OnSong"</string>
+    <string name="import_onsong_error">"いいえOnSongバックアップファイルが見られなかっ /documents/OpenSong/"</string>
+    <string name="import_onsong_choose">"インポートOnSongバックアップファイル"</string>
+    
+    <string name="pad_playing">"バッキングトラックの再生が開始されました"</string>
+    <string name="pad_stopped">"バッキングトラックは（フェードアウトを待つ）を停止されている"</string>
+    <string name="pad_choose_key">"この曲のキーを選択してください"</string>
+    <string name="pad_error">"この曲のキーが設定されていません"</string>
+    <string name="backing_track">"バッキングトラックを選択してください"</string>
+    <string name="pad_onoroff">"この歌でパッドを使用してください"</string>
+    <string name="pad_auto">"オート"</string>
+    
+    <string name="stickynotes">"ソングノート"</string>
+    
+    <string name="youtube">"現在の曲のためにYouTubeでの検索"</string>
+    
+    <string name="pdf_functionnotavailable">"この関数は、PDF文書には使用できません"</string>
+    <string name="pdf_selectpage">"選択ページ"</string>
+    
+   	<string name="options_set">"組"</string>
+   	<string name="options_set_load">"積み込む"</string>
+   	<string name="options_set_save">"溜める"</string>
+   	<string name="options_set_nameofset">"新しいセット名"</string>
+   	<string name="options_set_clear">"引き払う"</string>
+   	<string name="options_set_delete">"デリート"</string>
+   	<string name="options_set_export">"輸出する"</string>
+   	<string name="options_set_edit">"エディット"</string>
+
+	<string name="options_song">"歌"</string>
+	<string name="options_song_transpose">"移調する"</string>
+	<string name="options_song_convert">"私の好みコード形式に曲を変換する"</string>
+	<string name="options_song_sharp">"＃和音を使用してください"</string>
+	<string name="options_song_flat">"b和音を使用してください"</string>
+	<string name="options_song_edit">"編集"</string>
+	<string name="options_song_rename">"リネーム"</string>
+	<string name="options_song_delete">"削除"</string>
+	<string name="options_song_new">"新しい"</string>
+	<string name="options_song_export">"輸出"</string>
+    <string name="options_song_stickynotes">"編集歌付箋"</string>
+    <string name="options_song_newfolder">"新曲のフォルダを作成します"</string>
+    <string name="options_song_editfolder">"編集歌フォルダ名"</string>
+		
+	<string name="options_options">"オプション"</string>
+	<string name="options_options_theme">"スイッチのテーマ"</string>
+	<string name="options_options_scale">"トグルオートスケール"</string>
+	<string name="options_options_fontsize">"選択したフォントサイズ"</string>
+	<string name="options_options_showchords">"表示/非表示の和音"</string>
+	<string name="options_options_chordformat">"和音形式を選択してください"</string>
+	<string name="options_options_gestures">"カスタムジェスチャを割り当て"</string>
+	<string name="options_options_songswipe">"トグルスワイプオフ/上の曲間を移動するには"</string>
+	<string name="options_options_menuswipe">"トグル曲のリストとオプションメニューがオン/オフにスワイプ"</string>
+	<string name="options_options_hidebar">"オン/オフ上部のメニューバーを非表示にする"</string>
+	<string name="options_options_colors">"色の変更"</string>
+	<string name="options_options_fonts">"変更フォント"</string>
+	<string name="options_options_pedal">"フットペダルを割り当て"</string>
+	<string name="options_options_help">"ヘルプ（オンライン）"</string>
+	<string name="options_options_start">"画面を起動するために戻る"</string>
+							
+    <string name="customgestures">"カスタムジェスチャを割り当て"</string>
+    <string name="doubleTap">"ダブルタップアクションを選択します"</string>
+    <string name="longPress">"長押しアクションを選択"</string>
+    <string name="gesture1">"両方のメニューを開きます"</string>
+    <string name="gesture2">"編集歌"</string>
+    <string name="gesture3">"設定するために曲を追加"</string>
+
+    <string name="transpose">"トランスポーズ"</string>
+    <string name="docontinue">"続ける"</string>
+    <string name="chordformat_help">"曲を移調するときは、アプリが曲が毎回ある和音フォーマットを検出したいのですか？"</string>
+	<string name="chordformat_check">"和音フォーマットあなたが移調するたびに検出"</string>
+	<string name="chordformat_default">"常に曲は私の好み和音形式であると仮定"</string>
+    <string name="chordformat_check_short">"必ず確認してください"</string>
+    <string name="chordformat_default_short">"私に聞かないでください"</string>
+    
+    <string name="nothighenoughapi">"あなたはこのためのAndroidの新しいバージョンが必要です！"</string>
+    
+    <string name="checkchordformat">"あなたはこの曲がお好みの和音形式であることを確認していますか？"</string>
+	<string name="oldchordformat">"検出された現在の和音フォーマット"</string>
+	
+    <string name="firstsong">"最初の曲を表示する"</string>
+    <string name="lastsong">"最後の曲を表示する"</string>
+    
+    <string name="set_edit">"編集"</string>
+    <string name="set_edit_title">"あなたの現在のセットを編集"</string>
+    <string name="set_help">"ドラッグ曲は周りのあなたのセットの順序を変更するには"</string>
+    
+    <string name="currentset">"現在のセット"</string>
+    <string name="setmargins">"余白を調整する"</string>
+    <string name="setxmargins">"水平余白サイズ"</string>
+    <string name="setymargins">"垂直余白サイズ"</string>
+    <string name="update_projector">"アップデート\nプロジェクター"</string>
+    <string name="black_screen">"黒い画面"</string>
+    <string name="choose_image1">"背景画像1を選択してください"</string>
+    <string name="choose_image2">背景画像2を選択してください</string>
+    <string name="choose_video1">背景ビデオ1を選択してください</string>
+    <string name="choose_video2">背景ビデオ2を選択してください</string>
+    
+    <string name="choosechordformat">"和音形式を選択してください（曲を移調するときのみ使用されます）"</string>
+    
+    <string name="switchtopresentmode">"プレゼンテーションモードに切り替え"</string>
+    <string name="switchtoperformmode">"パフォーマンスモードに切り替え"</string>
+    <string name="presentermode">"プレゼンテーションモード"</string>
+    <string name="sendtoprojector">"張り出す"</string>
+    <string name="presoBackground">"プレゼンテーションの背景"</string>
+    <string name="presoShowLogo">"ショーのロゴ"</string>
+    <string name="notcompatible">"残念ながら、あなたは、デュアルスクリーンのプレゼンテーション機能を使用するには、 4.2以上のAndroidが必要です！"</string>
+	<string name="nodisplays">"外付けのディスプレイが接続されていない。 HDMI出力やMiraCast互換性のあるワイヤレスディスプレイを使用して、セカンダリディスプレイに接続してください。"</string>
+    <string name="extradisplay">"セカンダリディスプレイが検出されました。曲がセカンダリディスプレイに表示されます。"</string>
+	<string name="beta">"ベータ版の特徴は - まだバグや画像/表示設定がまだ利用できないがあります。クラッシュを期待する！"</string>
+    
+    <string name="songnamealreadytaken">"残念ながら、この曲のタイトル/ファイル名がすでに（提案は最後にバージョン番号を追加することができる）に使用されている。"</string>
+    <string name="chordiesearch">"www.chordie.comでオンライン検索"</string>
+    <string name="ultimateguitarsearch">"Ultimate-Guitar.comのオンライン検索"</string>
+    <string name="phrasesearch">"検索語句を入力します（タイトル、作成者、歌詞など）"</string>
+    <string name="grabchordpro">"ChordProデータを抽出"</string>
+    <string name="chordproprogress">"ページのChordProソングデータを探して"</string>
+    <string name="closesearch">"クローズ検索"</string>
+    <string name="chordpro_false">"いいえChordProの歌は、検出された！"</string>
+	<string name="chordpro_true">"ChordProの歌は、検出された！"</string>
+	<string name="choosefolder">"でファイルを保存するフォルダを選択してください"</string>
+	<string name="choosesongname">"この曲の名前を選択してください"</string>
+	<string name="newfolder">"新しいフォルダ"</string>
+	<string name="newfoldername">"新しいフォルダ名を入力してください"</string>
+	<string name="folderexists">"このフォルダには既に存在します！"</string>
+	<string name="createfoldererror">"新しいフォルダの作成中にエラーが発生しました！"</string>
+	<string name="createfoldersuccess">"新規フォルダ作成！"</string>
+    
+	<string name="welcome">"Nギャレス·エヴァンスによって書かれたOpenSongミュージックビューア\"</string>
+		
+	<string name="intro">"OpenSong音楽ViewerはOpenSongで作成した曲を使用しており、タブレット画面上に表示します。それは礼拝のミュージシャンを目指した、とても進行中の作業です。これは、ポートレートモードで最適に動作しますが、私は（念のため）利用可能なランドスケープモードを残してきた。"</string>
+		
+	<string name="intro_songsfolder">"アプリケーションは、「OpenSong /歌 'というドキュメント内のフォルダを探し、それを見つけることができない場合、それはあなたのためにそれを作成します。その後、（そうでなければ、あなたはアプリで何かをすることはできないだろう！）フォルダに、「永遠の​​愛」という単一の歌、私自身の歌の1を保存します。自分OpenSongの曲を使用するには、ドキュメント/ OpenSong /歌/フォルダにコピーします。あなたは、このアプリはまた、あなたが使用できる700 +歌がバンドルされていますが、クマを念頭にあなたが潜在的な著作権の問題を遵守する責任を負いますN \n \。あなたの歌フォルダ内のサブフォルダの1つのレベルを持つことができますし、あなたにそれらを使用する自己責任！"</string>
+		
+	<string name="intro_dropbox">"あなたはDropboxのアカウント（グループが同じ情報にアクセスすることを可能にする）を介して歌/セットを使用する場合は、タブレットでのDropboxのファイルの同期を可能にするアプリをインストールする必要があります。残念ながら、公式のDropboxアプリは、デスクトップアプリケーションが行うのと同じ方法で、ローカルフォルダを使用していません。\n \n A私が推薦する（無料）アプリがあなたのためにこれを行いDropSyncです。あなたがこれをしたい場合は、私のバージョンでお使いのDropboxアカウント上の任意の曲を上書きしないので、私が最初に（上のボタン）をタブレットに曲フォルダをリセット推薦する！ \n \n DropSyncを設定する場合は、/書類/ OpenSong /フォルダを使ってDropboxがOpenSongフォルダを同期して2ウェイの同期が（主OpenSongフォルダを選ぶことは、両方の曲やセットを同期させることができるようになります）。\nこれは取ることができ数分後、最初の実行で（あなたが持っている曲数によって異なります）。標準免責条項 - 私はあなたのDropboxフォルダの曲の損失については責任を負いませんよ！あなたは、ご自身の責任でこれを行う。 \n \nしかし、私は自分のデバイスでこれを設定していると）それはすべてDropSyncアプリ上で（デフォルトの同期スケジュールは1時間です）シームレスに動作するようですが、これを変更することができます。"</string>
+	    
+	<string name="intro_future">"残念ながら、私はアプリ/のMacを所有していないので、私は（寄付が&#8230;..歓迎）、そのプラットフォーム上で開発することができませんが、私はこのアプリ を維持向上する予定のためにあるもちろん。私は実際にちょうど私が他の誰かが、これは重宝していることを期待して、すでに何をやったか共有したいと思った。"</string>
+		
+	<string name="intro_help">"様々な他のオプションについては、右からの歌と「スワイプ」メニューを選択しておいた。は、\n \nロング左側のメニューで曲を押すと曲が追加されます上のアプリ、「スワイプ」メニューを使用している場合、あなたのセット。長いあなたのセットで曲を押すと、それを削除します。 \n \nセットからロードされたか、あなたの 'OpenSong /設定」フォルダに保存することができます。長い保存セットに押すと、お使いのデバイスから削除します。 \n \nこれで、電子メール、Dropboxが、によって保存セットとあなたの曲のいずれかを共有することができます"</string>
+		
+	<string name="rename">"（これはそれがあなたの曲のメニューに表示されるかである） 、この曲のために新しいファイル名を入力してください"</string>
+	<string name="renametitle">"名前の変更"</string>
+			
+	<string name="copyresources">"様々な曲をコピーするにはこちらをクリックして、\nはあなたが著作権を担当している"</string>
+	<string name="gotosong">"\nは、OPEN SONGビューアを起動するには、ここをクリックしてください"</string>
+	<string name="wipesongs">"私の地元の歌フォルダをリセット"</string>
+	<string name="dropsync">"DropSyncアプリをダウンロード（無料）"</string>
+	<string name="app_name">"OpenSongタブレット"</string>
+	<string name="drawer_open">"位置打开"</string>
+	<string name="drawer_close">"閉じる"</string>
+	<string name="set_back">"戻る"</string>
+	<string name="set_forward">"転送"</string>
+	<string name="backtohome">"ホームに戻る"</string>
+	<string name="exit">"あなたがプログラムを終了してもよろしいですか？"</string>
+	
+	<string name="on_width">"上の - 幅のみ"</string>
+	<string name="on_set">"上の - セットのみ"</string>
+	<string name="on">"上の"</string>
+	<string name="off">"オフ"</string>
+	<string name="scaleY">"曲に合わせてスケールのページがある"</string>
+	<string name="swipeSet">"曲間のスワイプは今で"</string>
+	<string name="fontsize">"あなたは、オートスケールの曲をオフにする必要があります。"</string>	
+	<string name="drawerswipe">"スワイプによるオープン曲リストとオプションメニューが今"</string>
+	<string name="toggleScrollBeforeSwipe">"次/前の曲の前にトグルスクロール"</string>
+	<string name="toggleScrollBeforeSwipeToggle">"前/次ボタンも、今最初にスクロールします"</string>
+    <string name="toggleLandscapeColumns">"風景カラム表示になりましたです"</string>
+			
+	<string name="exportcurrentsong">"現在の曲を共有する"</string>
+	<string name="exportsavedset">"保存されたセットを共有"</string>
+	<string name="importnewsong">"曲をインポートする"</string>
+	<string name="importnewset">"セットをインポート"</string>
+	<string name="hasbeenexported">"エクスポートされた"</string>
+	<string name="hasbeenimported">"インポートされている"</string>
+	<string name="hasnotbeenexported">"エクスポートされていない - 問題があった！"</string>			
+	<string name="hasnotbeenimported">"インポートされていない - 問題があった！"</string>			
+		
+	<string name="add_song_to_set">"設定するには現在の曲を追加"</string>
+
+	<string name="edit_song_title">"曲のタイトル"</string>
+	<string name="edit_song_author">"作成者"</string>
+	<string name="edit_song_lyrics">"歌詞"</string>
+	<string name="edit_song_copyright">"著作権情報"</string>
+	<string name="edit_song_presentation">"提示順序"</string>
+	<string name="edit_song_ccli">"CCLI"</string>
+	<string name="edit_song_capo">"カポフレット"</string>
+	<string name="edit_song_key">"キー (key)"</string>
+	<string name="edit_song_aka">"べつ"</string>
+	<string name="edit_song_keyline">"キーライン"</string>
+	<string name="edit_song_user1">"ユーザー1"</string>
+	<string name="edit_song_user2">"ユーザー2"</string>
+	<string name="edit_song_user3">"ユーザー3"</string>
+	<string name="edit_song_theme">"テーマ"</string>
+	<string name="edit_song_tempo">"Tempo"</string>
+	<string name="edit_song_timesig">"拍子記号"</string>
+	<string name="edit_song_hymn">"賛美歌番号"</string>
+	<string name="edit_song_availabletags">"コー​​ラス1 [V] =詩、[V1] =詩1、[C] =コーラス、[C1]、[P] = Prechorus、[T] =タグ、[B] =あなたが好きな橋、[&#8230;（ ）&#8230;] =カスタムタグ。\nリリックラインが完全に停止、セミコロンでコメント行にスペース、コードの行で始まります。"</string>
+    <string name="edit_song_duration">"曲の時間（秒）"</string>
+    <string name="edit_song_notes">"ソング付箋"</string>
+    <string name="edit_song_midi">"MIDIメッセージが歌から送信された"</string>
+    <string name="edit_song_midi_index">"MIDIメッセージは、曲を活性化するため"</string>
+    <string name="edit_song_restrictions">"制限"</string>
+    <string name="edit_song_books">"洋書の歌が属する"</string>
+    <string name="edit_song_pitch">"曲のピッチパイプノート"</string>  
+	
+	<string name="show_general_advanced">"先進的/一般的なフィールドを切り替える"</string>
+	<string name="edit_song_capo_print">"印刷カポの和音"</string>
+
+	<string name="search_top">"選択した検索リストの一番上にある歌"</string>
+	<string name="search_here">"検索する"</string>
+	
+	<string name="edit_cancel">"保存せずに終了"</string>
+	<string name="edit_save">"変更内容を保存"</string>
+	<string name="edit_delete">"この曲を削除する"</string>
+	
+	<string name="areyousure">"確かですか？"</string>
+	<string name="overwritecurrentset">"これはあなたの現在のセットが上書きされます。"</string>
+	<string name="removesavedset">"これはあなたの「設定」フォルダからこのセットを削除します。"</string>
+	
+	<string name="yes">"はい"</string>
+	<string name="no">"ノー (No)"</string>
+	<string name="ok">"オーケー (OK)"</string>
+	<string name="cancel">" キャンセル"</string>
+		
+	<string name="songfolderexists">"OpenSong '歌'フォルダがすでに存在しています。 EXCELLENT！"</string>
+	<string name="songfoldercreate">"OpenSong '歌'フォルダの作成"</string>
+	<string name="setsfolderexists">"OpenSong「設定」フォルダがすでに存在しています。 EXCELLENT！"</string>
+	<string name="setsfoldercreate">"OpenSong「設定」フォルダの作成"</string>
+	<string name="initialisesongs_start">"'歌'フォルダを初期化 -"</string>		
+	<string name="initialisesongs_end">"曲見つかりました！"</string>		
+	<string name="initialisesets_start">"「設定」フォルダを初期化 -"</string>		
+	<string name="initialisesets_end">"セット見つかりました！"</string>		
+	<string name="installingsongs">"曲のインストール&#8230;."</string>
+	<string name="assetcopydone">"OpenSong歌は、あなたの「歌」フォルダにコピーされています.."</string>
+	
+	<string name="createanewsong">"新規ソングを作成し"</string>
+	<string name="createanewset">"新しいセットを作成"</string>
+	<string name="newsongtitleprompt">"新しい曲のタイトルを入力してください"</string>
+	<string name="newsettitleprompt">"あなたの新しいセットのタイトルを入力してください"</string>
+	<string name="shouldnotbedeleted">"あなたの「歌」フォルダから削除すべきではありません！"</string>
+	<string name="songhasbeendeleted">"あなたの '歌'フォルダから削除されています。"</string>
+	<string name="sethasbeendeleted">"あなたの「設定」フォルダから削除されています。"</string>
+	<string name="deleteerror_start">"削除問題が発生しました"</string>
+	<string name="deleteerror_end_song">"あなたの '歌'フォルダから。"</string>
+	<string name="deleteerror_end_sets">"あなたの「設定」フォルダから。"</string>
+	<string name="songdoesntexist">"その曲は、お使いのデバイス上にありません。あなたはそれを削除したことがありますか？"</string>
+	<string name="addedtoset">"あなたの現在のセットの最後に追加されました。"</string>
+	<string name="removedfromset">"あなたのセットから削除されました。"</string>
+		
+	<string name="soundLink">"「永遠の愛」を聞く"</string>
+	<string name="stop">"停止"</string>
+	<string name="start">"開始"</string>
+	<string name="action_search">"検索の歌"</string>
+	<string name="action_settings">"OpenSong設定"</string>
+	
+	<string name="toastmessage_maxfont">"到達した最大のフォントサイズ"</string>
+	<string name="toastmessage_minfont">"最小フォントサイズに達し"</string>
+	
+	<string name="options_backtooptions">"BACKオプションに"</string>
+	<string name="options_savethisset">"このセットを保存"</string>
+	<string name="options_clearthisset">"このセットをクリア"</string>
+	
+	<string name="mainfoldername">"ホームページ"</string>
+		
+	<string name="colorchooser">"カラーセレクタ"</string>
+	<string name="dark_theme">"暗いテーマ"</string>
+	<string name="light_theme">"光をテーマ"</string>
+	<string name="item">"項目"</string>
+	<string name="page_background">"ページの背景"</string>
+	<string name="lyrics_color">"歌詞のフォント"</string>
+	<string name="chord_color">"和音フォント"</string>
+	<string name="capo_color">"カポフォント"</string>
+	<string name="verse_background">"詩の背景"</string>
+	<string name="chorus_background">"コー​​ラス背景"</string>
+	<string name="prechorus_background">"Prechorusの背景"</string>
+	<string name="bridge_background">"ブリッジの背景"</string>
+	<string name="tag_background">"タグの背景"</string>
+	<string name="comment_background">"コメントの背景"</string>
+	<string name="custom_background">"カスタムタグの背景"</string>
+	<string name="reset_colours">"色のリセット"</string>
+							
+	<string name="pageturn_title">"ページめくりボタンの割り当て"</string>
+	<string name="pageturn_instructions">"このページでは。ソングページを下にしてセットを移動するか、上にスクロールを制御する（例えば、ブルートゥースフットスイッチなど）ページめくり器からボタンを割り当てることができます\n \nあなたは、デバイスがすでにあなたのAndroidタブレットが接続されていることを確認する必要がありますとに切り替えました。\n \nOKを緑や青のボタンを下にしてなど、お使いのフットスイッチで所望の制御ボタンを押してください"</string>
+	<string name="pageturn_set">"セット内を移動するためのボタン"</string>
+    <string name="pageturn_song">"Songウィンドウ内をスクロールするためのボタン"</string>
+	<string name="pageturn_next">"[次へ]ボタンは、設定された"</string>
+	<string name="pageturn_previous">"「前」ボタンを設定する"</string>
+	<string name="pageturn_up">"ボタンを「スクロールアップ」に設定"</string>
+	<string name="pageturn_down">"セットボタンを「下にスクロール」"</string>
+	<string name="pageturn_waiting">"ボタンを待っている&#8230;."</string>
+	<string name="pageturn_needset">"あなたは、ページめくり機能を使用するために現在のセットにリストされている曲を表示する必要がある"</string>
+	<string name="pageturn_attempt">"現在のセットの最初の曲を開く&#8230;."</string>
+		
+	<string name="changefonts">"フォントを変える"</string>
+	<string name="chooselyricfont">"歌詞のフォントを選択してください"</string>
+	<string name="choosechordfont">"コー​​ドフォントを選択してください"</string>
+	<string name="font_default">"初期値"</string>
+	<string name="font_monospace">"ドロイドモノスペース"</string>
+	<string name="font_sans">"ドロイドなき"</string>
+	<string name="font_serif">"ドロイドセリフ"</string>
+	<string name="font_firasanslight">"FiraSansOTライト"</string>
+	<string name="font_firasansregular">"FiraSansOT正規"</string>
+	<string name="font_kaushanscript">"KaushanScript"</string>
+	<string name="font_latolight">"ラトライト"</string>
+	<string name="font_latoregular">"定期ラト"</string>
+	<string name="font_lyrics_line1">"永遠の愛、"</string>
+	<string name="font_lyrics_line2">"対策のない愛"</string>
+	<string name="font_chords_line1">"G	"</string>
+	<string name="font_chords_line2">"D / F＃の"</string>
+					
+</resources>

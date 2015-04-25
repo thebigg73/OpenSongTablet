@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="capo_toggle">"Capo akkoorde wissel"</string>
+    <string name="capo_toggle_onlycapo">"Wys net capo akkoorde indien beskikbaar"</string>
+    <string name="capo_toggle_bothcapo">"Wys beide capo en inheemse akkoorde indien beskikbaar"</string>
+    <string name="language">"Taal"</string>
+    <string name="refreshsongs">"Verfris lied spyskaart"</string>
+    <string name="custom1_theme">"Custom 1"</string>
+    <string name="custom2_theme">"Custom 2"</string>
+    <string name="scripture">"Skrif"</string>
+    <string name="slide">"Page"</string>
+
+    <string name="visualmetronome">"Visueel"</string>
+    <string name="onsonglocation">"Jy moet jou OnSong rugsteunlêer te plaas in die /documents/OpenSong/ gids voor dit beskikbaar te invoer wees"</string>
+    <string name="savesong">"Red"</string>
+    <string name="metronomepadsettings">"Metronoom en agtergrond musiek instellings"</string>
+    <string name="metronome">"Metronoom"</string>
+    <string name="temponotset">"Tempo is nog nie vasgestel vir hierdie lied"</string>
+    <string name="timesignotset">"Tydmaatteken is nog nie vasgestel vir hierdie lied"</string>
+    <string name="pad">"Agtergrond musiek"</string>
+    <string name="wait">"Wag ...."</string>
+    <string name="volume">"Deel"</string>
+    <string name="pan">"Links / regs"</string>
+    <string name="linespacing">"Trim lynspasiëring deur"</string>
+    <string name="currently">"Tans"</string>
+    <string name="currentkeycode">"Huidige sleutel-kode"</string>
+	<string name="notset">"Nie ingestel"</string>
+	<string name="songactionsbuttons">"Knoppies om te begin / stop lied aksies"</string>
+	<string name="padPedalText">"Begin / stop agtergrond musiek"</string>
+	<string name="autoscrollPedalText">"Begin / stop autoscroll"</string>	
+	<string name="metronomePedalText">"Begin / stop metronoom"</string>
+    
+    <string name="autoscroll_time">"Auto-scroll vertraging tyd"</string>
+    
+    <string name="songbuttons_toggle">"Toggle bladsy knoppies kortpaaie"</string>
+    <string name="song_functionnotavailable">"Hierdie funksie is nie beskikbaar vir liedjies"</string>
+    
+    <string name="latest_updates">"Laaste updates"</string>
+    
+    <string name="storage_choose">"Bestuur stoor"</string>
+    <string name="storage_help">"Kies die standaard stoor plek vir jou OpenSong lêers. Jy kan dit enige tyd vanaf die Options menu verander."</string>
+    <string name="storage_space">"Beskikbare ruimte"</string>
+    <string name="storage_notavailable">"Nie beskikbaar"</string>
+    <string name="storage_int">"Nagevolg eksterne / interne stoor"</string>
+    <string name="storage_ext">"Eksterne stoor"</string>
+    
+    <string name="link">"Link"</string>
+    <string name="link_choose">"Kies 'n lêer om te skakel met hierdie lied"</string>
+    
+    <string name="autoscroll">"Auto-boek"</string>
+    
+    <string name="import_onsong_done">"Sukses - OnSong songs is bygevoeg na /documents/OpenSong/Songs/OnSong"</string>
+    <string name="import_onsong_error">"Geen OnSong rugsteunlêer gevind in /documents/OpenSong/"</string>
+    <string name="import_onsong_choose">"Invoer OnSong rugsteunlêer"</string>
+    
+    <string name="pad_playing">"Backing track begin speel het"</string>
+    <string name="pad_stopped">"Backing track is die stop (wag vir fade out)"</string>
+    <string name="pad_choose_key">"Kies die sleutel van hierdie lied"</string>
+    <string name="pad_error">"Die sleutel van hierdie lied is nog nie vasgestel"</string>
+    <string name="backing_track">"Kies backing track"</string>
+    <string name="pad_onoroff">"Gebruik 'n pad met hierdie lied"</string>
+    <string name="pad_auto">"Auto"</string>
+   
+    <string name="stickynotes">"Lied notas"</string>
+    
+    <string name="youtube">"Soek YouTube vir die huidige liedjie"</string>
+    
+    <string name="pdf_functionnotavailable">"Hierdie funksie is nie beskikbaar vir PDF-dokumente"</string>
+    <string name="pdf_selectpage">"Kies bladsy"</string>
+    
+   	<string name="options_set">"STEL"</string>
+   	<string name="options_set_load">"LAAI"</string>
+   	<string name="options_set_save">""RED"</string>
+   	<string name="options_set_nameofset">"Nuwe stel naam"</string>
+   	<string name="options_set_clear">"OPRUIM"</string>
+   	<string name="options_set_delete">"VERWYDER"</string>
+   	<string name="options_set_export">"UITVOER"</string>
+   	<string name="options_set_edit">"WYSIG"</string>
+   	
+	<string name="options_song">"LIED"</string>
+	<string name="options_song_transpose">"Transponeer"</string>
+	<string name="options_song_convert">"Skakel lied vir my voorkeur koord formaat"</string>
+	<string name="options_song_sharp">"Gebruik # akkoorde"</string>
+	<string name="options_song_flat">"Gebruik b akkoorde"</string>
+	<string name="options_song_edit">"Wysig"</string>
+	<string name="options_song_rename">"Hernoem"</string>
+	<string name="options_song_delete">"Verwyder"</string>
+	<string name="options_song_new">"Nuwe"</string>
+	<string name="options_song_export">"Uitvoer"</string>
+    <string name="options_song_stickynotes">"Wysig lied taai noot"</string>
+    <string name="options_song_newfolder">"Skep nuwe lied gids"</string>
+    <string name="options_song_editfolder">"Naam lied gids wysig"</string>
+		
+	<string name="options_options">"OPSIES"</string>
+	<string name="options_options_theme">"Skakel Tema"</string>
+	<string name="options_options_scale">"Toggle motor skaal lied op / af"</string>
+	<string name="options_options_fontsize">"Kies lettergrootte"</string>
+	<string name="options_options_showchords">"Wys / verberg Chords"</string>
+	<string name="options_options_chordformat">"Kies koord formaat"</string>
+	<string name="options_options_gestures">"Ken persoonlike gebare"</string>
+	<string name="options_options_songswipe">"Toggle krap tussen liedjies op / af te beweeg"</string>
+	<string name="options_options_menuswipe">"Toggle lietjie en opsies menu deur swipe ap / af"</string>
+	<string name="options_options_hidebar">"Verberg boonste menu bar op / af"</string>
+	<string name="options_options_colors">"Verandering kleure"</string>
+	<string name="options_options_fonts">"Verandering Fonts"</string>
+	<string name="options_options_pedal">"Ken voet pedaal"</string>
+	<string name="options_options_help">"Help (Online)"</string>
+	<string name="options_options_start">"Gaan Terug na die begin skerm"</string>
+							
+			
+	
+    
+    <string name="customgestures">"Ken persoonlike gebare"</string>    
+    <string name="doubleTap">"Kies dubbel tap aksie"</string>
+    <string name="longPress">"Kies 'n lang pers aksie"</string>
+    <string name="gesture1">"Maak beide spyskaarte"</string>
+    <string name="gesture2">"Wysig lied"</string>
+    <string name="gesture3">"Voeg liedjie te stel"</string>
+
+    <string name="transpose">"Transponeer"</string>
+    <string name="docontinue">"Voortgaan"</string>
+    <string name="chordformat_help">"Wanneer omzetting 'n lied, wil jy die app die koord formaat 'n lied is in elke tyd op te spoor?"</string>
+	<string name="chordformat_check">"Spoor koord formaat elke keer as jy transponeer"</string>
+	<string name="chordformat_default">"Altyd aanvaar liedjies is in my voorkeur koord formaat"</string>
+    <string name="chordformat_check_short">"Gaan altyd"</string>
+    <string name="chordformat_default_short">"Moet my nie vra"</string>
+    
+    <string name="nothighenoughapi">"Jy moet 'n nuwer weergawe van Android vir hierdie !"</string>
+    
+    <string name="checkchordformat">"Is jy seker dat hierdie lied is in jou voorkeur koord formaat ?"</string>
+	<string name="oldchordformat">"Bespeur huidige koord formaat"</string>
+	
+    <string name="firstsong">"Vertoon eerste liedjie"</string>
+    <string name="lastsong">"Vertoon laaste lied"</string>
+    
+    <string name="set_edit">"WYSIG"</string>
+    <string name="set_edit_title">"Verander jou huidige stel"</string>
+    <string name="set_help">"Sleep liedjies rondom die einde van jou stel om te verander"</string>
+        
+    <string name="currentset">"Huidige stel"</string>
+    <string name="setmargins">"Pas rande"</string>
+    <string name="setxmargins">"Horisontale marge grootte"</string>
+    <string name="setymargins">"Vertikale marge grootte"</string>
+    <string name="update_projector">"Werk\nprojektor"</string>
+    <string name="black_screen">"Swart\nskerm"</string>
+    <string name="choose_image1">"Kies agtergrond\nbeeld 1"</string>
+    <string name="choose_image2">"Kies agtergrond\nbeeld 2"</string>
+    <string name="choose_video1">"Kies agtergrond\nvideo 1"</string>
+    <string name="choose_video2">"Kies agtergrond\nvideo 2"</string>
+    
+    <string name="choosechordformat">"Kies koord formaat (slegs gebruik wanneer omzetting 'n lied)"</string>
+    
+    <string name="switchtopresentmode">"Skakel oor na aanbieding af"</string>
+    <string name="switchtoperformmode">"Skakel oor na prestasie af"</string>
+    <string name="presentermode">"Aanbieding af"</string>
+    <string name="sendtoprojector">"Projek"</string>
+    <string name="presoBackground">"Aanbieding agtergrond"</string>
+    <string name="presoShowLogo">"Wys logo"</string>
+    <string name="notcompatible">"Ongelukkig moet jy Android 4,2 of hoër is die dubbele skerm aanbieding funksie te gebruik !"</string>
+	<string name="nodisplays">"Geen eksterne uitstallings verbind . Koppel aan 'n sekondêre vertoning met behulp van 'n HDMI-uitset of MiraCast versoenbaar draadloos vertoon ."</string>
+    <string name="extradisplay">"Sekondêre vertoning bespeur . Liedjies sal op die sekondêre vertoning vertoon word."</string>
+	<string name="beta">"Beta funksie - nog foute en beeld / display opset is nog nie beskikbaar nie . Verwag crashes !"</string>
+    
+	
+    <string name="songnamealreadytaken">"Ongelukkig is hierdie liedjie titel / lêernaam is reeds gebruik ( \'n voorstel kan \'n weergawe nommer toe te voeg tot die einde )."</string>
+    <string name="chordiesearch">"Online soek by www.chordie.com"</string>
+    <string name="ultimateguitarsearch">Online soek by Ultimate-Guitar.com</string>
+    <string name="phrasesearch">"Gee soek term ( titel, skrywer , lirieke, ens )"</string>
+    <string name="grabchordpro">"Uittreksel ChordPro data"</string>
+    <string name="chordproprogress">"Op soek na ChordPro liedjie data op bladsy&#8230;"</string>
+    <string name="closesearch">"Close soek"</string>
+    <string name="chordpro_false">"Geen ChordPro lied opgespoor !"</string>
+	<string name="chordpro_true">"ChordPro lied opgespoor !"</string>
+	<string name="choosefolder">"Kies gids lêer te stoor in"</string>
+	<string name="choosesongname">"Kies 'n naam vir hierdie lied"</string>
+	<string name="newfolder">"Nuwe gids"</string>
+	<string name="newfoldername">"Sleutel 'n naam 'n nuwe gids"</string>
+	<string name="folderexists">"Hierdie gids bestaan ​​reeds !"</string>
+	<string name="createfoldererror">"Daar was 'n fout met die skep van die nuwe gids !"</string>
+	<string name="createfoldersuccess">"Nuwe gids geskep !"</string>
+    
+	<string name="welcome">"OpenSong Musiek Viewer \ n Geskryf deur Gareth Evans"</string>
+		
+	<string name="intro">"Die OpenSong Musiek Viewer gebruik liedjies geskep in OpenSong en vertoon dit op jou tablet skerm. Dit is gemik op aanbidding musikante en is baie 'n work in progress. Dit werk die beste in portret af, maar ek het die landskap af links beskikbaar (net in geval)."</string>
+		
+	<string name="intro_songsfolder">"Die aansoek lyk vir 'n gids in jou dokumente genoem 'OpenSong / Songs \"en as dit nie kan vind nie, dit skep dit vir jou. Dit spaar dan 'n enkele liedjie genaamd \"Love ewige\", een van my eie liedjies, na die gids (anders sou jy nie in staat wees om iets te doen met die jeug!). Jou eie OpenSong liedjies te gebruik, skryf hulle op die dokumente / OpenSong / Songs / gids. Jy kan een vlak van submappen in jou Songs gids. \ N \ n Die inligting kom ook saam met 700 + songs wat jy kan gebruik, maar hou in gedagte is jy verantwoordelik vir die voldoening aan enige potensiële probleme met kopiereg en jy gebruik dit op jou eie risiko!"</string>
+		
+	<string name="intro_dropbox">"As jy wil Songs / stelle te gebruik deur 'n Dropbox rekening (kan groepe dieselfde toegang tot inligting), sal jy 'n app wat toelaat dat die sinchroniseer van Dropbox lêers met jou tablet te installeer. Ongelukkig is die amptelike Dropbox inligting nie 'n plaaslike gids te gebruik in dieselfde manier as die lessenaar inligting nie \ n \ n A (gratis) artikels wat ek sou aanbeveel is DropSync wat doen dit vir jou.. As jy wil om dit te doen, sou ek aanbeveel die Herstel van die Songs gids op jou tablet (knoppie hierbo) eerste sodat jy nie met my weergawes oorskryf nie enige liedjies op jou Dropbox rekening! \ N \ n Wanneer die opstel DropSync, sinchroniseer jou Dropbox OpenSong gids met jou / dokumente / OpenSong / gids en laat 2 way sync (pluk die belangrikste OpenSong gids sal toelaat dat beide liedjies en stel om te gesinchroniseer word). \ N Dit sal neem om 'n n paar minute (afhangende van die aantal van die liedjies wat jy het) op die eerste termyn. Standard disclaimer - ek is nie verantwoordelik vir enige verlies van die liedjies op jou Dropbox gids! Jy doen dit op jou eie risiko. \ N \ n Ek het egter die opstel op my selfoon en dit alles lyk seemlessly werk (die verstek sync skedule is 1 uur) op die DropSync inligting, maar jy kan dit verander)."</string>
+	    
+	
+	
+	
+	<string name="intro_future">"Ongelukkig het ek self nog nie 'n iPad / Mac, so ek is nie in staat om te ontwikkel op die platform (donasies welkom .....), maar ek beoog om te hou die verbetering van hierdie inligting mettertyd. Ek het regtig wou net om te deel wat ek reeds gedoen het in die hoop dat iemand anders vind dit nuttig."</string>
+		
+	<string name="intro_help">"By die gebruik van die jeug, 'n slag 'die spyskaart aan die linkerkant 'n lied en 'n slag' die spyskaart van die reg is vir verskeie ander opsies om van te kies. \ N \ n lang druk op 'n lied in die linker menu sal die liedjie by jou stel. Lank op 'n liedjie te druk in jou stel sal dit verwyder. \ N \ n Sets kan vanaf gelaai word of gestoor word op 'OpenSong / Stelle 'n gids. Lank op 'n gered set druk sal dit uit jou toestel verwyder. \ N \ n Jy kan nou deel gered stelle en enige van jou liedjies via e-pos, Dropbox, ens
+	"</string>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<string name="rename">"Voer 'n nuwe lêer naam vir hierdie liedjie (dit is hoe dit in jou liedjie spyskaart sal verskyn)"</string>
+	<string name="renametitle">"Hernoem"</string>
+			
+	
+	<string name="copyresources">"Klik hier verskeie liedjies te kopieer \ n U is verantwoordelik vir die Copyright"</string>
+	<string name="gotosong">"KLIK HIER \ n OOP SONG kyker BEGIN"</string>
+	<string name="wipesongs">"Herstel my plaaslike liedjies gids"</string>
+	<string name="dropsync">"Aflaai DropSync App (gratis)"</string>
+	<string name="app_name">"OpenSong Tablet"</string>
+	<string name="drawer_open">"Oop"</string>
+	<string name="drawer_close">"Sluit"</string>
+	<string name="set_back">"Terug"</string>
+	<string name="set_forward">"Vorentoe"</string>
+	<string name="backtohome">"Terug na die Tuisblad"</string>
+	<string name="exit">"Is jy seker jy wil die program te verlaat?"</string>
+	
+	<string name="on_width">"OP - Breedte net"</string>
+	<string name="on_set">"OP - Stel net"</string>
+	<string name="on">"OP"</string>
+	<string name="off">"AF"</string>
+	<string name="scaleY">"Skaal bladsy liedjie aan te pas, is nou"</string>
+	<string name="swipeSet">"Swipe tussen songs is nou"</string>
+	<string name="fontsize">"Jy nodig het om af te draai die motor skaal lied."</string>	
+	<string name="drawerswipe">"Oop song lys en opsies menu deur swipe is nou"</string>
+	<string name="toggleScrollBeforeSwipe">"Toggle scroll voor die volgende/vorige lied"</string>
+	<string name="toggleScrollBeforeSwipeToggle">"Vorige/Volgende knoppies kan ook scroll eers is nou"</string>
+    <string name="toggleLandscapeColumns">"Landscape kolom siening is nou"</string>
+			
+		
+
+	
+	
+	<string name="exportcurrentsong">"Deel die huidige liedjie"</string>
+	<string name="exportsavedset">"Deel die gered stel"</string>
+	<string name="importnewsong">"Voer 'n lied"</string>
+	<string name="importnewset">"Voer 'n stel"</string>
+	<string name="hasbeenexported">"is uitgevoer"</string>
+	<string name="hasbeenimported">"ingevoer"</string>
+	<string name="hasnotbeenexported">"is nie uitgevoer nie - daar was 'n probleem!"</string>			
+	<string name="hasnotbeenimported">"is nie ingevoer nie - daar was 'n probleem!"</string>			
+		
+	<string name="add_song_to_set">"Voeg huidige liedjie te stel"</string>
+	
+
+	<string name="edit_song_title">"Song title"</string>
+	<string name="edit_song_author">"Skrywer"</string>
+	<string name="edit_song_lyrics">"Lyrics"</string>
+	<string name="edit_song_copyright">"Kopiereg inligting"</string>
+	<string name="edit_song_presentation">"Aanbieding orde"</string>
+	<string name="edit_song_ccli">"CCLI"</string>
+	<string name="edit_song_capo">"Capo kabbeling"</string>
+	<string name="edit_song_key">"Sleutel"</string>
+	<string name="edit_song_aka">"Ook bekend as"</string>
+	<string name="edit_song_keyline">"Sleutel lyn"</string>
+	<string name="edit_song_user1">"Gebruikers 1"</string>
+	<string name="edit_song_user2">"Gebruiker 2"</string>
+	<string name="edit_song_user3">"Gebruiker 3"</string>
+	<string name="edit_song_theme">"Tema"</string>
+	<string name="edit_song_tempo">"Tempo"</string>
+	<string name="edit_song_timesig">"Tydmaatteken"</string>
+	<string name="edit_song_hymn">"Hymn aantal"</string>
+	<string name="edit_song_availabletags">"[V] = Vers [V1] = Vers 1, [C] = Koor, [C1] vir Chorus 1, [P] = Prechorus, [T] = Tag, [B] = Bridge, [&#8230; (alles wat jy wil hê ) &#8230;] = Custom tag. \ n Lyric lyne begin met 'n spasie, koord lyne met 'n punt, kommentaar lyne met 'n kommapunt."</string>
+	<string name="edit_song_duration">"Lied duur (sekondes)"</string>
+    <string name="edit_song_notes">"Lied taai notas"</string>
+    <string name="edit_song_midi">"MIDI boodskap gestuur van lied"</string>
+    <string name="edit_song_midi_index">"MIDI boodskap liedjie te aktiveer"</string>
+    <string name="edit_song_restrictions">"Beperkings"</string>
+    <string name="edit_song_books">"Boeke lied behoort aan"</string>
+    <string name="edit_song_pitch">"Pitch pyp notas vir lied"</string>  
+	
+	
+	
+
+	<string name="show_general_advanced">"Toggle algemene / gevorderde velde"</string>
+	<string name="edit_song_capo_print">"Print Capo akkoorde"</string>
+	
+	<string name="search_top">"Song by top van die soektog lys gekies"</string>
+	<string name="search_here">"Soek hier"</string>
+	
+	<string name="edit_cancel">"Stop sonder om te bewaar"</string>
+	<string name="edit_save">"Stoor veranderinge"</string>
+	<string name="edit_delete">"Verwyder hierdie lied"</string>
+	
+	<string name="areyousure">"Is jy seker?"</string>
+	<string name="overwritecurrentset">"Dit sal jou huidige stel vervang."</string>
+	<string name="removesavedset">"Dit sal hierdie stel van jou gids stelle 'verwyder."</string>
+	
+	<string name="yes">"Ja"</string>
+	<string name="no">"Nee"</string>
+	<string name="ok">"Ok"</string>
+	<string name="cancel">"Kanselleer"</string>
+		
+	<string name="songfolderexists">"OpenSong 'Songs \"gids bestaan ​​reeds. Uitstekend!"</string>
+	<string name="songfoldercreate">"Skep OpenSong 'Songs \"gids"</string>
+	<string name="setsfolderexists">"OpenSong stelle \"gids bestaan ​​reeds. Uitstekend!"</string>
+	<string name="setsfoldercreate">"Skep OpenSong stelle \"gids"</string>
+	<string name="initialisesongs_start">"Inisialiseer 'Songs 'n gids -"</string>		
+	<string name="initialisesongs_end">"liedjie (s) gevind!"</string>		
+	<string name="initialisesets_start">"Inisialiseer stelle 'n gids -"</string>		
+	<string name="initialisesets_end">"set (s) gevind!"</string>		
+	<string name="installingsongs">"Die installering van liedjies ...."</string>
+	<string name="assetcopydone">"OpenSong Songs is kopieer na jou 'Songs 'n gids .."</string>
+	
+	<string name="createanewsong">"Skep nuwe lied"</string>
+	<string name="createanewset">"Skep nuwe stel"</string>
+	<string name="newsongtitleprompt">"Voer 'n titel vir jou nuwe lied"</string>
+	<string name="newsettitleprompt">"Voer 'n titel vir jou nuwe stel"</string>
+	<string name="shouldnotbedeleted">"moet nie van jou 'Songs 'n gids geskrap word!"</string>
+	<string name="songhasbeendeleted">"is van jou gids 'Songs' verwyder."</string>
+	<string name="sethasbeendeleted">"is van jou gids stelle 'verwyder."</string>
+	<string name="deleteerror_start">"Daar was 'n fout met die verwydering"</string>
+	<string name="deleteerror_end_song">"uit jou gids 'Songs."</string>
+	<string name="deleteerror_end_sets">"uit jou gids stelle."</string>
+	<string name="songdoesntexist">"Daardie liedjie is nie op jou toestel. Het jy dit verwyder?"</string>
+	<string name="addedtoset">"is by die einde van jou huidige stel."</string>
+	<string name="removedfromset">"is van jou stel verwyder."</string>
+			
+	<string name="soundLink">"Luister na 'n ewige Liefde '"</string>
+	<string name="stop">"Stop"</string>
+	<string name="start">"Begin"</string>
+	<string name="action_search">"Soek songs"</string>
+	<string name="action_settings">"OpenSong instellings"</string>
+	
+	<string name="toastmessage_maxfont">"Maksimum lettergrootte bereik"</string>
+	<string name="toastmessage_minfont">"Minimum lettergrootte bereik"</string>
+	
+	<string name="options_backtooptions">"TERUG na opsies"</string>
+	<string name="options_savethisset">"Hou hierdie SET"</string>
+	<string name="options_clearthisset">"Duidelik dat dit SET"</string>
+	
+	<string name="mainfoldername">"MAIN"</string>
+	
+	<string name="colorchooser">"Kleur Chooser"</string>
+	<string name="dark_theme">"Dark theme"</string>
+	<string name="light_theme">"Lig tema"</string>
+	<string name="item">"Item"</string>
+	<string name="page_background">"Page agtergrond"</string>
+	<string name="lyrics_color">"Lirieke font"</string>
+	<string name="chord_color">"Akkoorde font"</string>
+	<string name="capo_color">"Capo font"</string>
+	<string name="verse_background">"Vers agtergrond"</string>
+	<string name="chorus_background">"Koor agtergrond"</string>
+	<string name="prechorus_background">"Prechorus agtergrond"</string>
+	<string name="bridge_background">"Bridge agtergrond"</string>
+	<string name="tag_background">"Tag agtergrond"</string>
+	<string name="comment_background">"Kommentaar agtergrond"</string>
+	<string name="custom_background">"Custom tag agtergrond"</string>
+	<string name="reset_colours">"Herstel kleure"</string>
+							
+	<string name="pageturn_title">"Ken bladsy beurt knoppies"</string>
+	<string name="pageturn_instructions">"Hierdie bladsy laat jou knoppies van 'n bladsy draai toestel (soos 'n bluetooth voet schakelaar) toe te ken, te beheer beweeg deur stelle of blaai op en af ​​op 'n liedjie bladsy. \ N \ nJy moet verseker dat die toestel is reeds gekoppel aan jou Android-tablet en aangeskakel. \ n \ nKliek op die groen of blou knoppies druk dan op die verlangde beheer knoppie op jou voet schakelaar, ens"</string>
+	<string name="pageturn_set">"Knoppies deur middel van 'n stel om te beweeg"</string>
+    <string name="pageturn_song">"Knoppies om te blaai in 'n lied venster"</string>
+	<string name="pageturn_next">"Stel 'Volgende' knoppie"</string>
+	<string name="pageturn_previous">"Stel 'Vorige' knoppie"</string>
+	<string name="pageturn_up">"Stel 'Scroll up \"knoppie"</string>
+	<string name="pageturn_down">"Stel 'Scroll down \"-knoppie"</string>
+	<string name="pageturn_waiting">"Wag vir knoppie ...."</string>
+	<string name="pageturn_needset">"Jy moet lees van 'n lied wat in die huidige stel die bladsy draai fasiliteit te gebruik"</string>
+	<string name="pageturn_attempt">"Opening eerste lied in die huidige stel ...."</string>
+		
+	<string name="changefonts">"Verander fonts"</string>
+	<string name="chooselyricfont">"Kies liriek font"</string>
+	<string name="choosechordfont">"Kies koord font"</string>
+	<string name="font_default">"Verstek"</string>
+	<string name="font_monospace">"Droid Monospasie"</string>
+	<string name="font_sans">"Droid Sans"</string>
+	<string name="font_serif">"Droid Serif"</string>
+	<string name="font_firasanslight">"FiraSansOT-Light"</string>
+	<string name="font_firasansregular">"FiraSansOT-Gereelde"</string>
+	<string name="font_kaushanscript">"KaushanScript"</string>
+	<string name="font_latolight">"Lato Light"</string>
+	<string name="font_latoregular">"Lato Gereelde"</string>
+	<string name="font_lyrics_line1">"Lief ewige, "</string>
+	<string name="font_lyrics_line2">"lief sonder maat"</string>
+	<string name="font_chords_line1">"G"</string>
+	<string name="font_chords_line2">"D / F #"</string>
+					
+</resources>

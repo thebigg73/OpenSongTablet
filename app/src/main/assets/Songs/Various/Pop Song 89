@@ -1,0 +1,37 @@
+<song>
+<title>Pop Song 89</title>
+<author>REM</author>
+<copyright>REM</copyright>
+<lyrics>[]
+;REM
+; Scott A. Yanoff (yanoff@csd4.csd.uwm.edu)
+
+;intro:
+.A  D   A  D
+           
+
+. A        D        A           D
+ Hello I saw you I know you I knew you
+.    A           D             A      D
+ I think I can remember your name...name
+.A   D  A D
+          
+. A          D       A     D
+ Hello I'm sorry I lost myself
+.    A        D               A        D
+ I think I thought you were someone else
+
+. E         G               D          B(addE)
+ Should we talk about the weather?     
+. E         G                D         B
+ Should we talk about the government?  
+
+;break:
+.B  B E E7B B E D Dsus4
+                  
+
+ Hello my friend are you visible today?
+ And no one ever knew that it could be so strange...strange
+ Hello I'm sorry I lost myself
+ I think I thought you were someone else</lyrics>
+</song>
