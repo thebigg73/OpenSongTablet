@@ -361,5 +361,12 @@
 	<string name="font_lyrics_line2">"爱无止境"</string>
 	<string name="font_chords_line1">"G"</string>
 	<string name="font_chords_line2">"D / F＃"</string>
-					
+    <string name="gesture4">刷新当前歌曲</string>
+    <string name="guitar">吉他</string>
+    <string name="ukulele">四弦琴</string>
+    <string name="piano">钢琴</string>
+    <string name="mandolin">曼多林</string>
+    <string name="chords">和弦</string>
+    <string name="instrument">仪器</string>
+
 </resources>

@@ -358,5 +358,12 @@
 	<string name="font_lyrics_line2">"milovat bez míry"</string>
 	<string name="font_chords_line1">"G"</string>
 	<string name="font_chords_line2">"D / F #"</string>
-					
+    <string name="gesture4">Obnovit aktuální skladbu</string>
+    <string name="guitar">Kytara</string>
+    <string name="ukulele">Ukulele</string>
+    <string name="piano">Klavir</string>
+    <string name="mandolin">Mandolína</string>
+    <string name="chords">Akord</string>
+    <string name="instrument">Nástroj</string>
+
 </resources>

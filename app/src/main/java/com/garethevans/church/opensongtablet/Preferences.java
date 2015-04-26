@@ -1,7 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.content.SharedPreferences.Editor;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 public class Preferences extends Activity {
@@ -165,7 +165,8 @@ public class Preferences extends Activity {
 		FullscreenActivity.mDisplayTheme = FullscreenActivity.myPreferences.getString("mDisplayTheme", "Theme.Holo");
 		FullscreenActivity.whichSongFolder = FullscreenActivity.myPreferences.getString("whichSongFolder", FullscreenActivity.mainfoldername);
 		
-		
+		FullscreenActivity.chordInstrument = FullscreenActivity.myPreferences.getString("chordInstrument", "g");
+
 		// This bit purges old set details and puts in the newer format menu
 		// It is done to ensure that menu items are always written at the start of the saved set!
 		// Not any more!!!!!!!
@@ -220,7 +221,7 @@ public class Preferences extends Activity {
 
 		Log.d("Preferences","Saving");
 
-		Editor editor = FullscreenActivity.myPreferences.edit();
+		SharedPreferences.Editor editor = FullscreenActivity.myPreferences.edit();
 
 		editor.putString("capoDisplay", FullscreenActivity.capoDisplay);
 		editor.putString("languageToLoad", FullscreenActivity.languageToLoad);
@@ -320,6 +321,8 @@ public class Preferences extends Activity {
 		editor.putInt("custom2_lyricsChordsColor", FullscreenActivity.custom2_lyricsChordsColor);
 		editor.putInt("custom2_lyricsCustomColor", FullscreenActivity.custom2_lyricsCustomColor);
 		editor.putInt("custom2_metronome", FullscreenActivity.custom2_metronome);
+
+        editor.putString("chordInstrument", FullscreenActivity.chordInstrument);
 
 		editor.putString("hideactionbaronoff", FullscreenActivity.hideactionbaronoff);
 		editor.putString("mStorage", FullscreenActivity.mStorage);

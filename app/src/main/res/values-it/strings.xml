@@ -357,5 +357,12 @@
 	<string name="font_lyrics_line2">"amare senza misura"</string>
 	<string name="font_chords_line1">"G"</string>
 	<string name="font_chords_line2">"D / F #"</string>
-					
+    <string name="gesture4">Aggiorna brano corrente</string>
+    <string name="guitar">Chitarra</string>
+    <string name="ukulele">Ukulele</string>
+    <string name="piano">Pianoforte</string>
+    <string name="mandolin">Mandolino</string>
+    <string name="chords">Accordo</string>
+    <string name="instrument">Strumento</string>
+
 </resources>

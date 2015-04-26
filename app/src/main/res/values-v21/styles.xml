@@ -20,12 +20,12 @@
     <item name="android:textColor">#FFFFFF</item>
     
     </style>   
-    
+
     <style name="AltAppBaseTheme" parent="android:Theme.Holo">
-        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>        
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
         <item name="android:windowBackground">@null</item>
         <item name="buttonBarStyle">?android:attr/buttonBarStyle</item>
         <item name="buttonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
     </style>
-   
+
 </resources>

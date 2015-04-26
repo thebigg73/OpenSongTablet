@@ -357,5 +357,12 @@
 	<string name="font_lyrics_line2">"amar sem medida"</string>
 	<string name="font_chords_line1">"G"</string>
 	<string name="font_chords_line2">"D / F #"</string>
-					
+    <string name="gesture4">Refresque música atual</string>
+    <string name="guitar">Guitarra</string>
+    <string name="ukulele">Ukulele</string>
+    <string name="piano">Piano</string>
+    <string name="mandolin">Mandolim</string>
+    <string name="chords">Acorde</string>
+    <string name="instrument">Instrumento</string>
+
 </resources>

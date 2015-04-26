@@ -357,5 +357,12 @@
 	<string name="font_lyrics_line2">"любовь без меры"</string>
 	<string name="font_chords_line1">"С"</string>
 	<string name="font_chords_line2">"D / F #"</string>
+    <string name="gesture4">Обновить текущую песню</string>
+    <string name="guitar">гитара</string>
+    <string name="ukulele">гавайская гитара</string>
+    <string name="piano">пианино</string>
+    <string name="mandolin">мандолина</string>
+    <string name="chords">Аккорды</string>
+    <string name="instrument">инструмент</string>
 
 </resources>

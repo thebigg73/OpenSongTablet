@@ -356,5 +356,12 @@
 	<string name="font_lyrics_line2">"対策のない愛"</string>
 	<string name="font_chords_line1">"G	"</string>
 	<string name="font_chords_line2">"D / F＃の"</string>
-					
+    <string name="gesture4">現在の曲をリフレッシュ</string>
+    <string name="guitar">ギター</string>
+    <string name="ukulele">ウクレレ</string>
+    <string name="piano">ピアノ</string>
+    <string name="mandolin">マンドリン</string>
+    <string name="chords">和音</string>
+    <string name="instrument">楽器</string>
+
 </resources>

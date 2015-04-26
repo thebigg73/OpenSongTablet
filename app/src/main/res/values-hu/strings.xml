@@ -357,5 +357,12 @@
 	<string name="font_lyrics_line2">"Szeretem mérték nélkül"</string>
 	<string name="font_chords_line1">"G"</string>
 	<string name="font_chords_line2">"D / F #"</string>
-					
+    <string name="gesture4">Frissítés aktuális zeneszám</string>
+    <string name="guitar">Gitár</string>
+    <string name="ukulele">Ukulele</string>
+    <string name="piano">Zongora</string>
+    <string name="mandolin">Mandolin</string>
+    <string name="chords">Akkordok</string>
+    <string name="instrument">Eszköz</string>
+
 </resources>

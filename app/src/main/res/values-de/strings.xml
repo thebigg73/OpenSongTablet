@@ -356,5 +356,13 @@
 	<string name="font_lyrics_line2">love without measure</string>
 	<string name="font_chords_line1">"G"</string>
 	<string name="font_chords_line2">"D/F#"</string>
-					
+    <string name="gesture4">Aktualisieren aktuellen Song</string>
+    <string name="guitar">Gitarre</string>
+    <string name="ukulele">Ukulele</string>
+    <string name="ultimateguitarsearch">Online-Suche in Ultimate-Guitar.com</string>
+    <string name="piano">Klavier</string>
+    <string name="mandolin">Mandoline</string>
+    <string name="chords">Akkord</string>
+    <string name="instrument">Instrument</string>
+
 </resources>

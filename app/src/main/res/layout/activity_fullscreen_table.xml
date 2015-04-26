@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:background="#000"
+    android:background="#000000"
     android:focusable="true"
     android:clickable="true"
     android:focusableInTouchMode="true"
@@ -383,7 +383,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_toRightOf="@id/stickynotes"
+                android:layout_toRightOf="@id/chordbutton"
                 android:alpha="0.3"
                 android:contentDescription="@string/link"
                 android:src="@drawable/link"
@@ -1003,7 +1003,23 @@
                 android:contentDescription="@string/chords"
                 android:src="@drawable/blue_line" />
 
-			<TableLayout
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/instrument"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/popupchord_instrument"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#aaa"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <TableLayout
 			    android:id="@+id/chordimageshere"
 			    android:layout_width="match_parent"
 			    android:layout_height="match_parent"
@@ -1011,7 +1027,7 @@
 			</TableLayout>
         </LinearLayout>
     </ScrollView>
-    
+
     <ProgressBar
         android:id="@+id/mainProgressBar"
         style="?android:progressBarStyleLarge"

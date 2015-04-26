@@ -357,5 +357,12 @@
 	<string name="font_lyrics_line2">"aimer sans mesure"</string>
 	<string name="font_chords_line1">"SOL"</string>
 	<string name="font_chords_line2">"D / F #"</string>
-					
+    <string name="gesture4">Actualiser chanson en cours</string>
+    <string name="guitar">Guitare</string>
+    <string name="ukulele">Ukulele</string>
+    <string name="piano">Piano</string>
+    <string name="mandolin">Mandoline</string>
+    <string name="chords">Accords</string>
+    <string name="instrument">Instrument</string>
+
 </resources>

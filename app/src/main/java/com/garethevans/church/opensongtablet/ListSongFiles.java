@@ -1,10 +1,10 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-
-import android.app.Activity;
 
 public class ListSongFiles extends Activity {
 	
@@ -122,7 +122,10 @@ public class ListSongFiles extends Activity {
 		// List the items in the main storage location into a temporary array.
 		// What song folder is being viewed?
 		// If it is MAIN then it is the main one
-		if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+        if (FullscreenActivity.whichSongFolder==null) {
+            FullscreenActivity.whichSongFolder = "";
+        }
+        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
 			FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath()
 					+ "/documents/OpenSong/Songs");				
 		} else {

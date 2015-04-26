@@ -12,7 +12,6 @@
     	android:gravity="center_vertical"
     	android:layout_margin="0dp"
         android:textColor="#ffff00"
-        android:background="#121222"
     	android:textSize="16sp"/>
     
     <TextView 
