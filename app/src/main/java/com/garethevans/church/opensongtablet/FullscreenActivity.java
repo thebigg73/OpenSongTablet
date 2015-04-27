@@ -8928,6 +8928,16 @@ public class FullscreenActivity extends Activity {
                     }
                     return true;
 
+                case R.id.chords_menu_button:
+                    // Hide/show the chords, but only if song isn't a pdf!
+                    if (!isPDF) {
+                        popupChords_toggle(chordButton);
+                    } else {
+                        myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+                            ShowToast.showToast(FullscreenActivity.this);
+                    }
+                    return true;
+
                 case R.id.pageselect_menu_button:
                     // Hide/show the page select, but only if song is a pdf!
                     if (isPDF) {
@@ -9013,20 +9023,22 @@ public class FullscreenActivity extends Activity {
             if (gesture_doubletap.equals("1")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
-                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE) {
+                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE
+                    && popupChord.getVisibility()!=View.VISIBLE) {
                 gesture1();
             } else if (gesture_doubletap.equals("2")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
-                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE) {
+                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE
+                    && popupChord.getVisibility()!=View.VISIBLE) {
                 if (isPDF) {
                     // Can't do this action on a pdf!
                     myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
@@ -9038,20 +9050,22 @@ public class FullscreenActivity extends Activity {
             } else if (gesture_doubletap.equals("3")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
-                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE) {
+                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE
+                    && popupChord.getVisibility()!=View.VISIBLE) {
                 gesture3();
             } else if (gesture_doubletap.equals("4")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
-                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE) {
+                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE
+                    && popupChord.getVisibility()!=View.VISIBLE) {
                 gesture4();
             } else {
                 // Gesture is off!
@@ -9070,20 +9084,22 @@ public class FullscreenActivity extends Activity {
             if (gesture_longpress.equals("1")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
-                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE) {
+                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE
+                    && popupChord.getVisibility()!=View.VISIBLE) {
                 gesture1();
             } else if (gesture_longpress.equals("2")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
-                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE) {
+                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE
+                    && popupChord.getVisibility()!=View.VISIBLE) {
                 if (isPDF) {
                     // Can't do this action on a pdf!
                     myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
@@ -9094,20 +9110,22 @@ public class FullscreenActivity extends Activity {
             } else if (gesture_longpress.equals("3")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
-                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE) {
+                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE
+                    && popupChord.getVisibility()!=View.VISIBLE) {
                 gesture3();
             } else if (gesture_longpress.equals("4")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
-                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE) {
+                    && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE
+                    && popupChord.getVisibility()!=View.VISIBLE) {
                 gesture4();
             } else {// Gesture is off
                 // Do nothing
