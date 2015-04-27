@@ -84,13 +84,19 @@
           android:title="@string/stickynotes"
           android:showAsAction="ifRoom"/>
 
-    
-<!-- 
-    <item android:id="@+id/perform_mode"
-          android:icon="@drawable/action_perform"
-          android:title="@string/switchtoperformmode"
-          android:showAsAction="ifRoom"/>
--->
+
+    <item android:id="@+id/chords_menu_button"
+        android:icon="@drawable/chord"
+        android:title="@string/chords"
+        android:showAsAction="ifRoom"/>
+
+
+    <!--
+        <item android:id="@+id/perform_mode"
+              android:icon="@drawable/action_perform"
+              android:title="@string/switchtoperformmode"
+              android:showAsAction="ifRoom"/>
+    -->
  
     <item android:id="@+id/action_search"
           android:icon="@drawable/action_song"
