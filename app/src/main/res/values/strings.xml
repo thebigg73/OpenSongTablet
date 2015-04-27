@@ -462,7 +462,7 @@
 	<string name="font_chords_line1">G</string>
 	<string name="font_chords_line2">D/F#</string>
 			
-	<string-array name="capo">
+	<string-array name="capo" translatable="false">
 	    <item></item>
 	    <item>1</item>
 	    <item>2</item>
@@ -476,12 +476,12 @@
 	    <item>10</item>
 	    <item>11</item>
 	</string-array>
-	<string-array name="capoprint">
+	<string-array name="capoprint" translatable="false">
 	    <item></item>
 	    <item>Yes</item>
 	    <item>No</item>
 	</string-array>
-	<string-array name="timesig">
+	<string-array name="timesig" translatable="false">
 	    <item></item>
 	    <item>2/4</item>
 	    <item>3/4</item>
@@ -494,7 +494,7 @@
 	    <item>7/4</item>
 	    <item>7/8</item>
    	</string-array>
-	<string-array name="tempo">
+	<string-array name="tempo" translatable="false">
 	    <item></item>
 	    <item>Very Fast</item>
 	    <item>Fast</item>
