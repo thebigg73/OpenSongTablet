@@ -158,8 +158,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int LyricDisplay_twocoldisplay=0x7f0d0014;
         public static final int Title=0x7f0d0064;
         public static final int action_fullsearch=0x7f0d0194;
-        public static final int action_search=0x7f0d019e;
-        public static final int action_settings=0x7f0d019f;
+        public static final int action_search=0x7f0d019f;
+        public static final int action_settings=0x7f0d01a0;
         public static final int advanced_settings=0x7f0d011c;
         public static final int ambilwarna_alphaCheckered=0x7f0d0072;
         public static final int ambilwarna_alphaCursor=0x7f0d0075;
@@ -215,6 +215,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int chords_kaushanscript_button=0x7f0d0090;
         public static final int chords_latolight_button=0x7f0d0092;
         public static final int chords_latoregular_button=0x7f0d0094;
+        public static final int chords_menu_button=0x7f0d019e;
         public static final int chords_monospace_button=0x7f0d0086;
         public static final int chords_sans_button=0x7f0d0088;
         public static final int chords_serif_button=0x7f0d008a;
@@ -458,7 +459,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int pageselect=0x7f0d0025;
         public static final int pageselect_menu_button=0x7f0d019c;
         public static final int pdfView=0x7f0d000a;
-        public static final int perform_mode=0x7f0d01a0;
+        public static final int perform_mode=0x7f0d01a1;
         public static final int popupautoscroll=0x7f0d0032;
         public static final int popupautoscroll_delay=0x7f0d0033;
         public static final int popupautoscroll_delay_text=0x7f0d0034;
