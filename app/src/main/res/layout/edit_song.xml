@@ -1304,7 +1304,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:onClick="cancelEdit"
-            android:text="@string/edit_cancel" />
+            android:text="@string/cancel" />
 
         <Button
             android:id="@+id/delete_edit"
@@ -1330,7 +1330,7 @@
             android:layout_marginBottom="200dp"/>
         
         <TextView
-            android:layout_height="400dp"
+            android:layout_height="500dp"
             android:layout_width="1dp" />
         
         </LinearLayout>
