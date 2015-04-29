@@ -66,7 +66,7 @@ public class ChordDirectory {
 		}
 			
 		// Now fix any silly chords that shouldn't exist
-		chordtoworkon = chordtoworkon.replace("$B", "$C");
+		chordtoworkon = chordtoworkon.replace("$B#", "$C");
 		chordtoworkon = chordtoworkon.replace("$Cb", "$B");
 		chordtoworkon = chordtoworkon.replace("$E#", "$F");
 		chordtoworkon = chordtoworkon.replace("$Fb", "$E");
