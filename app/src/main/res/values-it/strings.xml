@@ -364,5 +364,9 @@
     <string name="mandolin">Mandolino</string>
     <string name="chords">Accordo</string>
     <string name="instrument">Strumento</string>
+    <string name="next">Prossimo</string>
+    <string name="shownextinset">Mostra brano successivo nel set</string>
+    <string name="top">Top</string>
+    <string name="bottom">fondo</string>
 
 </resources>

@@ -364,5 +364,9 @@
     <string name="mandolin">мандолина</string>
     <string name="chords">Аккорды</string>
     <string name="instrument">инструмент</string>
+    <string name="next">Cледующий</string>
+    <string name="shownextinset">Показать следующую песню в наборе</string>
+    <string name="top">верх</string>
+    <string name="bottom">дно</string>
 
 </resources>

@@ -393,5 +393,9 @@
     <string name="mandolin">Mandolien</string>
     <string name="chords">Akkoorde</string>
     <string name="instrument">Instrument</string>
+    <string name="next">Volgende</string>
+    <string name="shownextinset">Wys volgende liedjie in stel</string>
+    <string name="top">bopunt </string>
+    <string name="bottom">onderste</string>
 
 </resources>
