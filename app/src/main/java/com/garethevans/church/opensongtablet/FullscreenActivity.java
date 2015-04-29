@@ -138,7 +138,9 @@ public class FullscreenActivity extends Activity {
     Drawable r5;
     TableLayout chordimageshere;
     static String chordInstrument = "g";
-
+    static String showNextInSet= "top";
+    TableLayout thistable;
+    Typeface lyrics_useThisFont;
     static String allchords = "";
     static String allchordscapo = "";
     static String[] allchords_array = null;
@@ -749,6 +751,7 @@ public class FullscreenActivity extends Activity {
     static File dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
     static File dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
 
+    Locale locale;
 
     static String[][][] bibleVerse; // bibleVerse[book][chapter#][verse#]
 
@@ -762,9 +765,11 @@ public class FullscreenActivity extends Activity {
         myPreferences = getPreferences(MODE_PRIVATE);
         Preferences.loadPreferences();
 
+        locale = Locale.getDefault();
+
         // Try language locale change
         if (!languageToLoad.isEmpty()) {
-            Locale locale = null;
+            locale = null;
             locale = new Locale(languageToLoad);
             Locale.setDefault(locale);
             Configuration config = new Configuration();
@@ -3303,6 +3308,7 @@ public class FullscreenActivity extends Activity {
         options_options.add(getResources().getString(R.string.options_options_showchords));
         options_options.add(getResources().getString(R.string.options_options_menuswipe));
         options_options.add(getResources().getString(R.string.options_options_songswipe));
+        options_options.add(getResources().getString(R.string.shownextinset));
         options_options.add(getResources().getString(R.string.options_options_gestures));
         options_options.add(getResources().getString(R.string.options_options_hidebar));
         options_options.add(getResources().getString(R.string.options_options_colors));
@@ -4512,8 +4518,32 @@ public class FullscreenActivity extends Activity {
                                 ShowToast.showToast(FullscreenActivity.this);
                             }
 
-
                         } else if (childPosition==10) {
+                            // Toggle show next song in set
+                            // Options are top, bottom, off
+
+                            if (showNextInSet.equals("top")) {
+                                showNextInSet = "bottom";
+                                myToastMessage = getResources().getString(R.string.shownextinset)
+                                        + " - " + getResources().getString(R.string.on)
+                                        + " (" + getResources().getString(R.string.bottom).toUpperCase(locale) + ")";
+                                ShowToast.showToast(FullscreenActivity.this);
+                            } else if (showNextInSet.equals("bottom")) {
+                                showNextInSet = "off";
+                                myToastMessage = getResources().getString(R.string.shownextinset)
+                                        + " - " + getResources().getString(R.string.off);
+                                ShowToast.showToast(FullscreenActivity.this);
+                            } else {
+                                showNextInSet = "top";
+                                myToastMessage = getResources().getString(R.string.shownextinset)
+                                        + " - " + getResources().getString(R.string.on)
+                                        + " (" + getResources().getString(R.string.top).toUpperCase(locale) + ")";
+                                ShowToast.showToast(FullscreenActivity.this);
+                            }
+                            Preferences.savePreferences();
+                            redrawTheLyricsTable(main_page);
+
+                        } else if (childPosition==11) {
                             // Assign custom gestures
                             Intent intent = new Intent();
                             intent.setClass(FullscreenActivity.this, GestureOptions.class);
@@ -4522,7 +4552,7 @@ public class FullscreenActivity extends Activity {
                             startActivity(intent);
                             finish();
 
-                        } else if (childPosition==11) {
+                        } else if (childPosition==12) {
                             // Hide top menu bar on/off
                             if (hideactionbaronoff.equals("Y")) {
                                 hideactionbaronoff = "N";
@@ -4551,7 +4581,7 @@ public class FullscreenActivity extends Activity {
 
 
 
-                        } else if (childPosition==12) {
+                        } else if (childPosition==13) {
                             // Change colours
                             Intent intent = new Intent();
                             intent.setClass(FullscreenActivity.this,
@@ -4562,7 +4592,7 @@ public class FullscreenActivity extends Activity {
                             finish();
 
 
-                        } else if (childPosition==13) {
+                        } else if (childPosition==14) {
                             // Change fonts
                             Intent intent2 = new Intent();
                             intent2.setClass(FullscreenActivity.this, ChangeFonts.class);
@@ -4572,7 +4602,7 @@ public class FullscreenActivity extends Activity {
                             finish();
 
 
-                        } else if (childPosition==14) {
+                        } else if (childPosition==15) {
                             // Assign foot pedal
                             Intent intent = new Intent();
                             intent.setClass(FullscreenActivity.this, setPageTurns.class);
@@ -4581,7 +4611,7 @@ public class FullscreenActivity extends Activity {
                             startActivity(intent);
                             finish();
 
-                        } else if (childPosition==15) {
+                        } else if (childPosition==16) {
                             // Help (online)
                             String url = "https://sites.google.com/site/opensongtabletmusicviewer/home";
                             Intent i = new Intent(Intent.ACTION_VIEW);
@@ -4589,7 +4619,7 @@ public class FullscreenActivity extends Activity {
                             startActivity(i);
 
 
-                        } else if (childPosition==16) {
+                        } else if (childPosition==17) {
                             // Manage OpenSong storage
                             tryKillPads();
                             tryKillMetronome();
@@ -4598,11 +4628,11 @@ public class FullscreenActivity extends Activity {
                             startActivity(intent_stop);
                             finish();
 
-                        } else if (childPosition==17) {
+                        } else if (childPosition==18) {
                             // Import OnSong backup
                             onSongImport();
 
-                        } else if (childPosition==18) {
+                        } else if (childPosition==19) {
                             // Change language
 
                             int positionselected = -1;
@@ -4684,7 +4714,7 @@ public class FullscreenActivity extends Activity {
 
                             languageDialog.show();
 
-                        } else if (childPosition==19) {
+                        } else if (childPosition==20) {
                             // Refresh Songs folders
                             prepareSongMenu();
                             mDrawerLayout.closeDrawer(expListViewOption);
@@ -4692,7 +4722,7 @@ public class FullscreenActivity extends Activity {
 
 
 
-                        } else if (childPosition==20) {
+                        } else if (childPosition==21) {
                             // Splash screen
                             // First though, set the preference to show the current version
                             // Otherwise it won't show the splash screen
@@ -5666,9 +5696,6 @@ public class FullscreenActivity extends Activity {
             }
 
 
-
-
-
             // If metronome is playing and tempo and timesig are good,
             // Stop the original metronome and start a new one
             if (metroTask!=null) {
@@ -6170,7 +6197,8 @@ public class FullscreenActivity extends Activity {
                     m = x;
                 }
 
-                TableLayout thistable = lyricstable_onecolview;
+                //TableLayout thistable = lyricstable_onecolview;
+                thistable = lyricstable_onecolview;
                 // Specify the correct table to be used in drawing the stuff below....
                 if (columnTest==1 || mScreenOrientation==Configuration.ORIENTATION_PORTRAIT || !botherwithcolumns) {
                     thistable = lyricstable_onecolview;
@@ -6196,23 +6224,52 @@ public class FullscreenActivity extends Activity {
                 int capo_useThisBGColor = lyricsVerseColor;
                 float chords_useThisTextSize = tempfontsize;
                 float lyrics_useThisTextSize = tempfontsize;
-                Typeface lyrics_useThisFont = lyricsfont;
+                lyrics_useThisFont = lyricsfont;
 
                 if (x == 0) {
-                    // This is the first line.  If showCapo is true, add a comment line with the capo information
+                    // This is the first line.
+                    // If in a set view and option is on to show at top, show the title of the next song
+                    // If we are showing the last song already, say this instead
+                    if (setView.equals("Y") && showNextInSet.equals("top")) {
+                        // Get next title in set
+                        String next_title = getResources().getString(R.string.lastsong);
+                        if (setSize >= 2 && indexSongInSet >= 0 && indexSongInSet < (setSize - 1)) {
+                            next_title = getResources().getString(R.string.next) + ": " + mSetList[indexSongInSet+1];
+                        }
+                        RelativeLayout nextInSetBox = new RelativeLayout(this);
+                        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        nextInSetBox.setLayoutParams(lp);
+                        nextInSetBox.setHorizontalGravity(Gravity.RIGHT);
+                        TextView nextSongText = new TextView(this);
+                        nextSongText.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                        nextSongText.setText(next_title);
+                        nextSongText.setGravity(Gravity.RIGHT);
+                        nextSongText.setTypeface(lyrics_useThisFont);
+                        nextSongText.setBackgroundColor(lyricsCommentColor);
+                        nextInSetBox.setBackgroundColor(lyricsCommentColor);
+                        nextSongText.setTextColor(lyricsTextColor);
+                        nextSongText.setTextSize(tempfontsize*0.7f);
+                        nextInSetBox.addView(nextSongText);
+                        thistable.addView(nextInSetBox);
+                    }
+
+                    // If showCapo is true, add a comment line with the capo information
                     if (showCapo && showChords.equals("Y")) {
-                        TableLayout myCapoBox = new TableLayout(this);
-                        TableRow myCapoBoxRow = new TableRow(this);
-                        TableRow.LayoutParams lp = new TableRow.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-                        myCapoBoxRow.setLayoutParams(lp);
+
+                        RelativeLayout myCapoBox = new RelativeLayout(this);
+                        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        myCapoBox.setLayoutParams(lp);
+                        myCapoBox.setHorizontalGravity(Gravity.RIGHT);
                         TextView tCapoBox = new TextView(this);
+                        tCapoBox.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
                         tCapoBox.setText(getResources().getString(R.string.edit_song_capo).toString() + " " + mCapo);
+                        tCapoBox.setGravity(Gravity.RIGHT);
+                        tCapoBox.setTypeface(lyrics_useThisFont);
+                        tCapoBox.setBackgroundColor(lyricsBackgroundColor);
                         tCapoBox.setBackgroundColor(lyricsBackgroundColor);
                         tCapoBox.setTextColor(lyricsCapoColor);
-                        tCapoBox.setTextSize(tempfontsize);
-                        myCapoBoxRow.addView(tCapoBox);
-                        myCapoBox.addView(myCapoBoxRow);
-                        // Write the word CAPO if capo chords are being shown
+                        tCapoBox.setTextSize(tempfontsize*0.7f);
+                        myCapoBox.addView(tCapoBox);
                         thistable.addView(myCapoBox);
 
                     } else {
@@ -6226,10 +6283,7 @@ public class FullscreenActivity extends Activity {
                     // Right, we need to create a new table inside this row to hold 2 rows - chords and lyrics
                     TableLayout chords_n_lyrics = new TableLayout(this);
 
-/*					// Add this line of chords to the combined string
-					allchords = allchords + " " + myParsedLyrics[x];
-*/
-                    // Prepare this view
+                   // Prepare this view
                     //testTable.addView(chords_n_lyrics);
                     thistable.addView(chords_n_lyrics);
 
@@ -6382,14 +6436,6 @@ public class FullscreenActivity extends Activity {
                     }
 					
 					
-/*					chords_n_lyrics.addView(chords_row, 0);
-
-					if (showChords.equals("Y")) {
-						if (showCapo) {
-							chords_n_lyrics.addView(capo_chords_row, 1);
-						}
-					}
-*/
                     TableRow lyrics_row = new TableRow(this);
 
                     // Now we have the positions, split the words into substrings and write each 
@@ -6562,25 +6608,12 @@ public class FullscreenActivity extends Activity {
 
 					
 					
-/*					if (showChords.equals("Y")) {
-						if (showCapo) {
-							chords_n_lyrics.addView(lyrics_row, 2);
-						} else {
-							chords_n_lyrics.addView(lyrics_row, 1);
-						}
-					} else {
-						chords_n_lyrics.addView(lyrics_row, 0);
-					}
-*/
                 } else if (whatisthisline[x].equals("chords") && !whatisthisline[m].equals("lyrics")) {
                     // No blocking is needed, just add the entire row as one bit
                     TableLayout basicline = new TableLayout(this);
                     thistable.addView(basicline);
                     basicline.setPadding(0, 0, 0, 0);
 
-/*					// Add this line of chords to the combined string
-					allchords = allchords + " " + myParsedLyrics[x];
-*/
                     // create a new TableRow
                     TableRow normalrow = new TableRow(this);
                     TableRow caponormalrow = new TableRow(this);
@@ -6841,6 +6874,36 @@ public class FullscreenActivity extends Activity {
                 mTempAuthor = mAuthor.toString();
                 top_songtitle.setText(songfilename + "\n" + mTempAuthor);
             }
+
+            // If in a set view and option is on to show at bottom, show the title of the next song
+            // If we are showing the last song already, say this instead
+            if (setView.equals("Y") && showNextInSet.equals("bottom")) {
+                // Get next title in set
+                String next_title = getResources().getString(R.string.next) + ": " + getResources().getString(R.string.lastsong);
+                if (setView.equals("Y") && showNextInSet.equals("bottom")) {
+                    // Get next title in set
+                    next_title = getResources().getString(R.string.lastsong);
+                    if (setSize >= 2 && indexSongInSet >= 0 && indexSongInSet < (setSize - 1)) {
+                        next_title = getResources().getString(R.string.next) + ": " + mSetList[indexSongInSet+1];
+                    }
+                    RelativeLayout nextInSetBox = new RelativeLayout(this);
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    nextInSetBox.setLayoutParams(lp);
+                    nextInSetBox.setHorizontalGravity(Gravity.RIGHT);
+                    TextView nextSongText = new TextView(this);
+                    nextSongText.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                    nextSongText.setText(next_title);
+                    nextSongText.setGravity(Gravity.RIGHT);
+                    nextSongText.setTypeface(lyrics_useThisFont);
+                    nextSongText.setBackgroundColor(lyricsCommentColor);
+                    nextInSetBox.setBackgroundColor(lyricsCommentColor);
+                    nextSongText.setTextColor(lyricsTextColor);
+                    nextSongText.setTextSize(tempfontsize*0.7f);
+                    nextInSetBox.addView(nextSongText);
+                    thistable.addView(nextInSetBox);
+                }
+            }
+
 
         } else {
             Preferences.savePreferences();

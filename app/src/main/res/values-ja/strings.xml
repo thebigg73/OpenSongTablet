@@ -363,5 +363,9 @@
     <string name="mandolin">マンドリン</string>
     <string name="chords">和音</string>
     <string name="instrument">楽器</string>
+    <string name="next">次</string>
+    <string name="shownextinset">セット内の次の曲を表示します</string>
+    <string name="top">トップ</string>
+    <string name="bottom">ボトム</string>
 
 </resources>

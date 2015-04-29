@@ -364,5 +364,9 @@
     <string name="mandolin">Mandolin</string>
     <string name="chords">Akkordok</string>
     <string name="instrument">Eszköz</string>
+    <string name="next">Következő</string>
+    <string name="shownextinset">Mutasd következő számot set</string>
+    <string name="top">Felső</string>
+    <string name="bottom">alsó</string>
 
 </resources>

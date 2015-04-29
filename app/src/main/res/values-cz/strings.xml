@@ -365,5 +365,9 @@
     <string name="mandolin">Mandolína</string>
     <string name="chords">Akord</string>
     <string name="instrument">Nástroj</string>
+    <string name="next">Další</string>
+    <string name="shownextinset">Zobrazit další skladbu v sadě</string>
+    <string name="top">vrchol</string>
+    <string name="bottom">Konec</string>
 
 </resources>

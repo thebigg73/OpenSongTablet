@@ -39,7 +39,8 @@ public class Preferences extends Activity {
 		// Set to blank if not used before
 		
 		Log.d("Preferences","Loading");
-		
+
+        FullscreenActivity.showNextInSet = FullscreenActivity.myPreferences.getString("showNextInSet","bottom");
 		FullscreenActivity.capoDisplay = FullscreenActivity.myPreferences.getString("capoDisplay", "both");
 		FullscreenActivity.languageToLoad = FullscreenActivity.myPreferences.getString("languageToLoad", "");
 		FullscreenActivity.mylyricsfontnum = FullscreenActivity.myPreferences.getInt("mylyricsfontnum", 7);
@@ -323,6 +324,8 @@ public class Preferences extends Activity {
 		editor.putInt("custom2_metronome", FullscreenActivity.custom2_metronome);
 
         editor.putString("chordInstrument", FullscreenActivity.chordInstrument);
+
+        editor.putString("showNextInSet", FullscreenActivity.showNextInSet);
 
 		editor.putString("hideactionbaronoff", FullscreenActivity.hideactionbaronoff);
 		editor.putString("mStorage", FullscreenActivity.mStorage);
