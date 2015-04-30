@@ -7129,8 +7129,8 @@ public class FullscreenActivity extends Activity {
         mCustomChords = mCustomChords.trim();
         String[] tempCustomChordsArray = mCustomChords.split(" ");
         String tempCustomChordsToAdd = "";
-        int numcustomchords = 0;
-        if (tempCustomChordsArray.length>1) {
+        int numcustomchords;
+        if (tempCustomChordsArray.length>0) {
             numcustomchords = tempCustomChordsArray.length;
             for (int q = 0; q < numcustomchords; q++) {
                 if ((chordInstrument.equals("u") && tempCustomChordsArray[q].contains("_u_")) ||
