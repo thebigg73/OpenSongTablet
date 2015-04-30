@@ -38,6 +38,16 @@ public class OnSongConvert extends Activity {
 		FullscreenActivity.mLyrics = "";
 		FullscreenActivity.mStyle = "";
 		FullscreenActivity.mStyleIndex = "default_style";
+        FullscreenActivity.mLinkedSongs = "";
+        FullscreenActivity.mBooks = "";
+        FullscreenActivity.mMidi = "";
+        FullscreenActivity.mMidiIndex = "";
+        FullscreenActivity.mPitch = "";
+        FullscreenActivity.mRestrictions = "";
+        FullscreenActivity.mNotes = "";
+        FullscreenActivity.mPadFile = "";
+        FullscreenActivity.mCustomChords = "";
+
 
 		// Break the temp variable into an array split by line
 		// Check line endings are \n
@@ -724,7 +734,10 @@ public class OnSongConvert extends Activity {
 				+ "  <pitch>" + FullscreenActivity.mPitch + "</pitch>\r\n"
 				+ "  <restrictions>" + FullscreenActivity.mRestrictions + "</restrictions>\r\n"
 				+ "  <notes></notes>\r\n"
-				+ "<lyrics>" + parsedlines.trim() + "</lyrics>\r\n"
+				+ "  <lyrics>" + parsedlines.trim() + "</lyrics>\r\n"
+                + "  <linked_songs>" + FullscreenActivity.mLinkedSongs + "</linked_songs>\r\n"
+                + "  <pad_file>" + FullscreenActivity.mPadFile + "</pad_file>\r\n"
+                + "  <custom_chords>" + FullscreenActivity.mCustomChords + "</custom_chords>\r\n"
 				+ "</song>";
 		
 		// Save this song in the right format!

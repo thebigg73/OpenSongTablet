@@ -553,6 +553,7 @@ public class FullscreenActivity extends Activity {
     static String mExtraStuff1 = "";
     static String mExtraStuff2 = "";
     static String mPadFile = "";
+    static String mCustomChords = "";
 
     // Info for the lyrics table
     static float mScaleFactor = 1.0f;
@@ -1320,6 +1321,15 @@ public class FullscreenActivity extends Activity {
         }
     }
 
+    public void customChordEdit (View view) {
+        Intent docustomchord = new Intent();
+        docustomchord.setClass(FullscreenActivity.this, CustomChord.class);
+        tryKillPads();
+        tryKillMetronome();
+        startActivity(docustomchord);
+        FullscreenActivity.this.finish();
+
+    }
 
     public void popupPad_startstop (View view) {
         // This is called when the start/stop button has been pressed
@@ -7099,6 +7109,32 @@ public class FullscreenActivity extends Activity {
     }
 
     public void prepareChords() {
+
+        // Read in my custom chords
+        while (mCustomChords.contains("  ")) {
+            mCustomChords = mCustomChords.replace("  "," ");
+        }
+
+        String tempallchords = allchords;
+        mCustomChords = mCustomChords.trim();
+        String[] tempCustomChordsArray = mCustomChords.split(" ");
+        String tempCustomChordsToAdd = "";
+        int numcustomchords = 0;
+        if (tempCustomChordsArray.length>1) {
+            numcustomchords = tempCustomChordsArray.length;
+            for (int q = 0; q < numcustomchords; q++) {
+                Log.d("addcustom","chordInstrument="+chordInstrument);
+                Log.d("addcustom","tempCustomChordsArray[q]="+tempCustomChordsArray[q]);
+                if ((chordInstrument.equals("u") && tempCustomChordsArray[q].contains("_u_")) ||
+                        (chordInstrument.equals("m") && tempCustomChordsArray[q].contains("_m_")) ||
+                        (chordInstrument.equals("g") && tempCustomChordsArray[q].contains("_g_"))) {
+                    tempCustomChordsToAdd = tempCustomChordsToAdd + " $$$" + tempCustomChordsArray[q];
+                }
+            }
+        }
+
+        Log.d("addcustom","tempCustomChordsToAdd="+tempCustomChordsToAdd);
+
         // Remove all whitespace between chords
         while (allchords.contains("  ")) {
             allchords = allchords.replaceAll("  ", " ");
@@ -7113,9 +7149,12 @@ public class FullscreenActivity extends Activity {
         allchords = allchords.replace(":", "");
         allchords = allchords.replace("*", "");
 
+        // Add the identified custom chords (start with $$$) to the allchords
+        tempallchords = tempCustomChordsToAdd + " " + tempallchords;
+
         unique_chords = new ArrayList<String>();
-        allchords = allchords.trim();
-        allchords_array = allchords.split(" ");
+        tempallchords = tempallchords.trim();
+        allchords_array = tempallchords.split(" ");
         if (allchords_array.length>0) {
             for (int f=0;f<allchords_array.length;f++) {
                 if (!unique_chords.contains(allchords_array[f])) {
@@ -7127,15 +7166,29 @@ public class FullscreenActivity extends Activity {
         chordimageshere.removeAllViews();
         // Send the unique chords off to get the string layout
         // This will eventually be if guitar/ukelele/mandolin/piano/other
+        // Custom chords don't get sent for retrieval as they are already defined
         for (int l=0;l<unique_chords.size();l++) {
-            if (chordInstrument.equals("u")) {
+            if (chordInstrument.equals("u") && !unique_chords.get(l).contains("$$$")) {
                 ChordDirectory.ukuleleChords(unique_chords.get(l));
-            } else if (chordInstrument.equals("m")) {
+            } else if (chordInstrument.equals("m") && !unique_chords.get(l).contains("$$$")) {
                 ChordDirectory.mandolinChords(unique_chords.get(l));
-            } else {
+            } else if (chordInstrument.equals("g") && !unique_chords.get(l).contains("$$$")) {
                 ChordDirectory.guitarChords(unique_chords.get(l));
             }
 
+            // If chord is custom, prepare this prefix to the name
+            String iscustom = "";
+            if (unique_chords.get(l).contains("$$$")) {
+                iscustom = "\n" + getResources().getString(R.string.custom) + "";
+                chordnotes = unique_chords.get(l);
+                chordnotes = chordnotes.replace("$$$","");
+                unique_chords.set(l,unique_chords.get(l).replace("$$$",""));
+                int startposcname = unique_chords.get(l).lastIndexOf("_");
+                if (startposcname!=-1) {
+                    unique_chords.set(l,unique_chords.get(l).substring(startposcname+1));
+                }
+
+            }
 
             // Prepare a new Horizontal Linear Layout for each chord
             TableRow chordview = new TableRow(this);
@@ -7160,141 +7213,143 @@ public class FullscreenActivity extends Activity {
             ImageView image6 = new ImageView(this);
             ImageView image0 = new ImageView(this);
 
+
+            // Initialise 6 strings and frets
+            String string_6 = "";
+            String string_5 = "";
+            String string_4 = "";
+            String string_3 = "";
+            String string_2 = "";
+            String string_1 = "";
+            String fret = "";
+
             if (chordInstrument.equals("g")) {
-                // Initialise guitar strings
-                String e6 = "";
-                String a5 = "";
-                String d4 = "";
-                String g3 = "";
-                String b2 = "";
-                String e1 = "";
-                String fret = "";
 
                 if (chordnotes.length() > 0) {
-                    e6 = chordnotes.substring(0, 1);
+                    string_6 = chordnotes.substring(0, 1);
                 }
                 if (chordnotes.length() > 1) {
-                    a5 = chordnotes.substring(1, 2);
+                    string_5 = chordnotes.substring(1, 2);
                 }
                 if (chordnotes.length() > 2) {
-                    d4 = chordnotes.substring(2, 3);
+                    string_4 = chordnotes.substring(2, 3);
                 }
                 if (chordnotes.length() > 3) {
-                    g3 = chordnotes.substring(3, 4);
+                    string_3 = chordnotes.substring(3, 4);
                 }
                 if (chordnotes.length() > 4) {
-                    b2 = chordnotes.substring(4, 5);
+                    string_2 = chordnotes.substring(4, 5);
                 }
                 if (chordnotes.length() > 5) {
-                    e1 = chordnotes.substring(5, 6);
+                    string_1 = chordnotes.substring(5, 6);
                 }
                 if (chordnotes.length() > 7) {
                     fret = chordnotes.substring(7, 8);
                 }
 
-                // Prepare string e6
-                if (e6.equals("0")) {
+                // Prepare string_6
+                if (string_6.equals("0")) {
                     image6.setImageDrawable(l0);
-                } else if (e6.equals("1")) {
+                } else if (string_6.equals("1")) {
                     image6.setImageDrawable(l1);
-                } else if (e6.equals("2")) {
+                } else if (string_6.equals("2")) {
                     image6.setImageDrawable(l2);
-                } else if (e6.equals("3")) {
+                } else if (string_6.equals("3")) {
                     image6.setImageDrawable(l3);
-                } else if (e6.equals("4")) {
+                } else if (string_6.equals("4")) {
                     image6.setImageDrawable(l4);
-                } else if (e6.equals("5")) {
+                } else if (string_6.equals("5")) {
                     image6.setImageDrawable(l5);
                 } else {
                     image6.setImageDrawable(lx);
                 }
 
-                // Prepare string a5
-                if (a5.equals("0")) {
+                // Prepare string_5
+                if (string_5.equals("0")) {
                     image5.setImageDrawable(m0);
-                } else if (a5.equals("1")) {
+                } else if (string_5.equals("1")) {
                     image5.setImageDrawable(m1);
-                } else if (a5.equals("2")) {
+                } else if (string_5.equals("2")) {
                     image5.setImageDrawable(m2);
-                } else if (a5.equals("3")) {
+                } else if (string_5.equals("3")) {
                     image5.setImageDrawable(m3);
-                } else if (a5.equals("4")) {
+                } else if (string_5.equals("4")) {
                     image5.setImageDrawable(m4);
-                } else if (a5.equals("5")) {
+                } else if (string_5.equals("5")) {
                     image5.setImageDrawable(m5);
                 } else {
                     image5.setImageDrawable(mx);
                 }
 
-                // Prepare string d4
-                if (d4.equals("0")) {
+                // Prepare string_4
+                if (string_4.equals("0")) {
                     image4.setImageDrawable(m0);
-                } else if (d4.equals("1")) {
+                } else if (string_4.equals("1")) {
                     image4.setImageDrawable(m1);
-                } else if (d4.equals("2")) {
+                } else if (string_4.equals("2")) {
                     image4.setImageDrawable(m2);
-                } else if (d4.equals("3")) {
+                } else if (string_4.equals("3")) {
                     image4.setImageDrawable(m3);
-                } else if (d4.equals("4")) {
+                } else if (string_4.equals("4")) {
                     image4.setImageDrawable(m4);
-                } else if (d4.equals("5")) {
+                } else if (string_4.equals("5")) {
                     image4.setImageDrawable(m5);
                 } else {
                     image4.setImageDrawable(mx);
                 }
 
-                // Prepare string g3
-                if (g3.equals("0")) {
+                // Prepare string_3
+                if (string_3.equals("0")) {
                     image3.setImageDrawable(m0);
-                } else if (g3.equals("1")) {
+                } else if (string_3.equals("1")) {
                     image3.setImageDrawable(m1);
-                } else if (g3.equals("2")) {
+                } else if (string_3.equals("2")) {
                     image3.setImageDrawable(m2);
-                } else if (g3.equals("3")) {
+                } else if (string_3.equals("3")) {
                     image3.setImageDrawable(m3);
-                } else if (g3.equals("4")) {
+                } else if (string_3.equals("4")) {
                     image3.setImageDrawable(m4);
-                } else if (g3.equals("5")) {
+                } else if (string_3.equals("5")) {
                     image3.setImageDrawable(m5);
                 } else {
                     image3.setImageDrawable(mx);
                 }
 
-                // Prepare string b2
-                if (b2.equals("0")) {
+                // Prepare string_2
+                if (string_2.equals("0")) {
                     image2.setImageDrawable(m0);
-                } else if (b2.equals("1")) {
+                } else if (string_2.equals("1")) {
                     image2.setImageDrawable(m1);
-                } else if (b2.equals("2")) {
+                } else if (string_2.equals("2")) {
                     image2.setImageDrawable(m2);
-                } else if (b2.equals("3")) {
+                } else if (string_2.equals("3")) {
                     image2.setImageDrawable(m3);
-                } else if (b2.equals("4")) {
+                } else if (string_2.equals("4")) {
                     image2.setImageDrawable(m4);
-                } else if (b2.equals("5")) {
+                } else if (string_2.equals("5")) {
                     image2.setImageDrawable(m5);
                 } else {
                     image2.setImageDrawable(mx);
                 }
 
-                // Prepare string e1
-                if (e1.equals("0")) {
+                // Prepare string_1
+                if (string_1.equals("0")) {
                     image1.setImageDrawable(r0);
-                } else if (e1.equals("1")) {
+                } else if (string_1.equals("1")) {
                     image1.setImageDrawable(r1);
-                } else if (e1.equals("2")) {
+                } else if (string_1.equals("2")) {
                     image1.setImageDrawable(r2);
-                } else if (e1.equals("3")) {
+                } else if (string_1.equals("3")) {
                     image1.setImageDrawable(r3);
-                } else if (e1.equals("4")) {
+                } else if (string_1.equals("4")) {
                     image1.setImageDrawable(r4);
-                } else if (e1.equals("5")) {
+                } else if (string_1.equals("5")) {
                     image1.setImageDrawable(r5);
                 } else {
                     image1.setImageDrawable(rx);
                 }
 
-                // Prepare string e1
+                // Prepare fret
                 if (fret.equals("1")) {
                     image0.setImageDrawable(f1);
                 } else if (fret.equals("2")) {
@@ -7341,223 +7396,84 @@ public class FullscreenActivity extends Activity {
                 }
 
 
-            } else if (chordInstrument.equals("u")) {
-                // Initialise ukulele strings
-                String g4 = "";
-                String c3 = "";
-                String e2 = "";
-                String a1 = "";
-                String fret = "";
-
+            } else if (chordInstrument.equals("u") || chordInstrument.equals("m")) {
                 if (chordnotes.length() > 0) {
-                    g4 = chordnotes.substring(0, 1);
+                    string_4 = chordnotes.substring(0, 1);
                 }
                 if (chordnotes.length() > 1) {
-                    c3 = chordnotes.substring(1, 2);
+                    string_3 = chordnotes.substring(1, 2);
                 }
                 if (chordnotes.length() > 2) {
-                    e2 = chordnotes.substring(2, 3);
+                    string_2 = chordnotes.substring(2, 3);
                 }
                 if (chordnotes.length() > 3) {
-                    a1 = chordnotes.substring(3, 4);
+                    string_1 = chordnotes.substring(3, 4);
                 }
                 if (chordnotes.length() > 5) {
                     fret = chordnotes.substring(5, 6);
                 }
 
-                // Prepare string g4
-                if (g4.equals("0")) {
+                // Prepare string_4
+                if (string_4.equals("0")) {
                     image4.setImageDrawable(l0);
-                } else if (g4.equals("1")) {
+                } else if (string_4.equals("1")) {
                     image4.setImageDrawable(l1);
-                } else if (g4.equals("2")) {
+                } else if (string_4.equals("2")) {
                     image4.setImageDrawable(l2);
-                } else if (g4.equals("3")) {
+                } else if (string_4.equals("3")) {
                     image4.setImageDrawable(l3);
-                } else if (g4.equals("4")) {
+                } else if (string_4.equals("4")) {
                     image4.setImageDrawable(l4);
                 } else {
                     image4.setImageDrawable(lx);
                 }
 
-                // Prepare string c3
-                if (c3.equals("0")) {
+                // Prepare string_3
+                if (string_3.equals("0")) {
                     image3.setImageDrawable(m0);
-                } else if (c3.equals("1")) {
+                } else if (string_3.equals("1")) {
                     image3.setImageDrawable(m1);
-                } else if (c3.equals("2")) {
+                } else if (string_3.equals("2")) {
                     image3.setImageDrawable(m2);
-                } else if (c3.equals("3")) {
+                } else if (string_3.equals("3")) {
                     image3.setImageDrawable(m3);
-                } else if (c3.equals("4")) {
+                } else if (string_3.equals("4")) {
                     image3.setImageDrawable(m4);
-                } else if (c3.equals("5")) {
+                } else if (string_3.equals("5")) {
                     image3.setImageDrawable(m5);
                 } else {
                     image3.setImageDrawable(mx);
                 }
 
-                // Prepare string e2
-                if (e2.equals("0")) {
+                // Prepare string_2
+                if (string_2.equals("0")) {
                     image2.setImageDrawable(m0);
-                } else if (e2.equals("1")) {
+                } else if (string_2.equals("1")) {
                     image2.setImageDrawable(m1);
-                } else if (e2.equals("2")) {
+                } else if (string_2.equals("2")) {
                     image2.setImageDrawable(m2);
-                } else if (e2.equals("3")) {
+                } else if (string_2.equals("3")) {
                     image2.setImageDrawable(m3);
-                } else if (e2.equals("4")) {
+                } else if (string_2.equals("4")) {
                     image2.setImageDrawable(m4);
-                } else if (e2.equals("5")) {
+                } else if (string_2.equals("5")) {
                     image2.setImageDrawable(m5);
                 } else {
                     image2.setImageDrawable(mx);
                 }
 
-                // Prepare string a1
-                if (a1.equals("0")) {
+                // Prepare string_1
+                if (string_1.equals("0")) {
                     image1.setImageDrawable(r0);
-                } else if (a1.equals("1")) {
+                } else if (string_1.equals("1")) {
                     image1.setImageDrawable(r1);
-                } else if (a1.equals("2")) {
+                } else if (string_1.equals("2")) {
                     image1.setImageDrawable(r2);
-                } else if (a1.equals("3")) {
+                } else if (string_1.equals("3")) {
                     image1.setImageDrawable(r3);
-                } else if (a1.equals("4")) {
+                } else if (string_1.equals("4")) {
                     image1.setImageDrawable(r4);
-                } else if (a1.equals("5")) {
-                    image1.setImageDrawable(r5);
-                } else {
-                    image1.setImageDrawable(rx);
-                }
-
-                // Prepare fret
-                if (fret.equals("1")) {
-                    image0.setImageDrawable(f1);
-                } else if (fret.equals("2")) {
-                    image0.setImageDrawable(f2);
-                } else if (fret.equals("3")) {
-                    image0.setImageDrawable(f3);
-                } else if (fret.equals("4")) {
-                    image0.setImageDrawable(f4);
-                } else if (fret.equals("5")) {
-                    image0.setImageDrawable(f5);
-                } else if (fret.equals("6")) {
-                    image0.setImageDrawable(f6);
-                } else if (fret.equals("7")) {
-                    image0.setImageDrawable(f7);
-                } else if (fret.equals("8")) {
-                    image0.setImageDrawable(f8);
-                } else if (fret.equals("9")) {
-                    image0.setImageDrawable(f9);
-                } else {
-                    image0 = null;
-                }
-
-                chordview.addView(chordname);
-                if (image0 != null) {
-                    chordview.addView(image0);
-                }
-                if (image4 != null) {
-                    chordview.addView(image4);
-                }
-                if (image3 != null) {
-                    chordview.addView(image3);
-                }
-                if (image2 != null) {
-                    chordview.addView(image2);
-                }
-                if (image1 != null) {
-                    chordview.addView(image1);
-                }
-
-            } else if (chordInstrument.equals("m")) {
-                // Initialise ukulele strings
-                String g4 = "";
-                String d3 = "";
-                String a2 = "";
-                String e1 = "";
-                String fret = "";
-
-                if (chordnotes.length() > 0) {
-                    g4 = chordnotes.substring(0, 1);
-                }
-                if (chordnotes.length() > 1) {
-                    d3 = chordnotes.substring(1, 2);
-                }
-                if (chordnotes.length() > 2) {
-                    a2 = chordnotes.substring(2, 3);
-                }
-                if (chordnotes.length() > 3) {
-                    e1 = chordnotes.substring(3, 4);
-                }
-                if (chordnotes.length() > 5) {
-                    fret = chordnotes.substring(5, 6);
-                }
-
-                // Prepare string g4
-                if (g4.equals("0")) {
-                    image4.setImageDrawable(l0);
-                } else if (g4.equals("1")) {
-                    image4.setImageDrawable(l1);
-                } else if (g4.equals("2")) {
-                    image4.setImageDrawable(l2);
-                } else if (g4.equals("3")) {
-                    image4.setImageDrawable(l3);
-                } else if (g4.equals("4")) {
-                    image4.setImageDrawable(l4);
-                } else if (g4.equals("5")) {
-                    image4.setImageDrawable(l5);
-                } else {
-                    image4.setImageDrawable(lx);
-                }
-
-                // Prepare string d3
-                if (d3.equals("0")) {
-                    image3.setImageDrawable(m0);
-                } else if (d3.equals("1")) {
-                    image3.setImageDrawable(m1);
-                } else if (d3.equals("2")) {
-                    image3.setImageDrawable(m2);
-                } else if (d3.equals("3")) {
-                    image3.setImageDrawable(m3);
-                } else if (d3.equals("4")) {
-                    image3.setImageDrawable(m4);
-                } else if (d3.equals("5")) {
-                    image3.setImageDrawable(m5);
-                } else {
-                    image3.setImageDrawable(mx);
-                }
-
-                // Prepare string a2
-                if (a2.equals("0")) {
-                    image2.setImageDrawable(m0);
-                } else if (a2.equals("1")) {
-                    image2.setImageDrawable(m1);
-                } else if (a2.equals("2")) {
-                    image2.setImageDrawable(m2);
-                } else if (a2.equals("3")) {
-                    image2.setImageDrawable(m3);
-                } else if (a2.equals("4")) {
-                    image2.setImageDrawable(m4);
-                } else if (a2.equals("5")) {
-                    image2.setImageDrawable(m5);
-                } else {
-                    image2.setImageDrawable(mx);
-                }
-
-                // Prepare string e1
-                if (e1.equals("0")) {
-                    image1.setImageDrawable(r0);
-                } else if (e1.equals("1")) {
-                    image1.setImageDrawable(r1);
-                } else if (e1.equals("2")) {
-                    image1.setImageDrawable(r2);
-                } else if (e1.equals("3")) {
-                    image1.setImageDrawable(r3);
-                } else if (e1.equals("4")) {
-                    image1.setImageDrawable(r4);
-                } else if (e1.equals("5")) {
+                } else if (string_1.equals("5")) {
                     image1.setImageDrawable(r5);
                 } else {
                     image1.setImageDrawable(rx);
@@ -7604,15 +7520,14 @@ public class FullscreenActivity extends Activity {
                 }
 
             }
+
             if (!chordnotes.contains("xxxx_") && !chordnotes.contains("xxxxxx_")) {
                 chordimageshere.addView(chordview);
-                chordname.setText(unique_chords.get(l));
+                chordname.setText(unique_chords.get(l)+iscustom);
                 chordname.setTextColor(0xff000000);
                 chordname.setTextSize(20);
             }
-
         }
-
     }
 
 
@@ -7654,17 +7569,12 @@ public class FullscreenActivity extends Activity {
         myNEWXML += "  <restrictions>" + mRestrictions + "</restrictions>\n";
         myNEWXML += "  <notes>" + mNotes + "</notes>\n";
         myNEWXML += "  <lyrics>" + mLyrics + "</lyrics>\n";
-		/*if (!mStyle.equals("") && !mStyleIndex.equals("")) {
-			myNEWXML += "  <style index=\"" + mStyleIndex + "\">" + mStyle + "</style>\n";			
-		} else if (!mStyle.equals("") && mStyleIndex.equals("")){
-			myNEWXML += "  <style>" + mStyle + "</style>\n";	
-		}*/
         myNEWXML += "  <linked_songs>" + mLinkedSongs + "</linked_songs>\n";
         myNEWXML += "  <pad_file></pad_file>\n";
+        myNEWXML += "  <custom_chords>" + mCustomChords + "</custom_chords>\n";
         if (!mExtraStuff1.isEmpty()) {
             myNEWXML += "  " + mExtraStuff1 + "\n";
         }
-        myNEWXML += "  " + mExtraStuff1 + "\n";
         if (!mExtraStuff2.isEmpty()) {
             myNEWXML += "  " + mExtraStuff2 + "\n";
         }
@@ -7901,8 +7811,9 @@ public class FullscreenActivity extends Activity {
                                         + "  <restrictions></restrictions>\r\n"
                                         + "  <notes></notes>\r\n"
                                         + "  <lyrics>[V1]\n.C     F G\n Verse 1 lyrics\n\n[C]\n.C      G/B    Am\n Chorus lyrics here\n\n;This is a comment line</lyrics>\r\n"
-                                        + "  <linked_songs></linkedsongs>"
-                                        + "  <pad_file></pad_file>"
+                                        + "  <linked_songs></linkedsongs>\r\n"
+                                        + "  <pad_file></pad_file>\r\n"
+                                        + "  <custom_chords></custom_chords>\r\n"
                                         + "</song>");
 
                         // If song already exists - tell the user and do nothing

@@ -368,5 +368,14 @@
     <string name="shownextinset">Pokaż następny utwór w zestawie</string>
     <string name="top">Top</string>
     <string name="bottom">dolny</string>
+    <string name="custom">Niestandardowe</string>
+    <string name="customchords">Własne akordy</string>
+    <string name="customchords_code">Kod na zamówienie</string>
+    <string name="customchords_fret">Etykieta na pierwszym progu</string>
+    <string name="customchords_name">Nazwa akordu</string>
+    <string name="customchords_nochordname">Nazwa akordu nie został ustalony</string>
+    <string name="customchords_noinstrument">Instrument nie został wybrany</string>
+    <string name="customchords_save">Zapisz nowy niestandardowy akord do piosenki</string>
+    <string name="customchords_saved">Obecnie zapisane niestandardowych akordów</string>
 
 </resources>

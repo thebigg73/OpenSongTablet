@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="custom">Custom</string>
+    <string name="customchords">Custom chords</string>
+    <string name="customchords_saved">Currently saved custom chords</string>
+    <string name="customchords_name">Chord name</string>
+    <string name="customchords_save">Save new custom chord to song</string>
+    <string name="customchords_code">Custom code</string>
+    <string name="customchords_fret">Label for first fret</string>
+    <string name="customchords_noinstrument">Instrument has not been selected</string>
+    <string name="customchords_nochordname">Chord name has not been set</string>
     <string name="shownextinset">Show next song in set</string>
     <string name="top">Top</string>
     <string name="bottom">Bottom</string>

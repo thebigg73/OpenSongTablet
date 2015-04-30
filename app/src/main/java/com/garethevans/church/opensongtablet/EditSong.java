@@ -827,7 +827,9 @@ public class EditSong extends Activity {
 		myNEWXML += "  <lyrics>" + FullscreenActivity.mLyrics + "</lyrics>\n";
 		myNEWXML += "  <linked_songs>" + FullscreenActivity.mLinkedSongs + "</linked_songs>\n";
 		myNEWXML += "  <pad_file>" + FullscreenActivity.mPadFile + "</pad_file>\n";
-		if (!FullscreenActivity.mExtraStuff1.isEmpty()) {
+        myNEWXML += "  <custom_chords>" + FullscreenActivity.mCustomChords + "</custom_chords>\n";
+
+        if (!FullscreenActivity.mExtraStuff1.isEmpty()) {
 			myNEWXML += "  " + FullscreenActivity.mExtraStuff1 + "\n";
 		}
 		myNEWXML += "  " + FullscreenActivity.mExtraStuff1 + "\n";

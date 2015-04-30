@@ -368,5 +368,14 @@
     <string name="shownextinset">Показать следующую песню в наборе</string>
     <string name="top">верх</string>
     <string name="bottom">дно</string>
+    <string name="custom">Hастроили</string>
+    <string name="customchords">Пользовательские аккорды</string>
+    <string name="customchords_code">Пользовательский код</string>
+    <string name="customchords_fret">Этикетка для первого лада</string>
+    <string name="customchords_name">Hазвание аккорда</string>
+    <string name="customchords_nochordname">Название аккорда не был установлен</string>
+    <string name="customchords_noinstrument">Инструмент не был выбран</string>
+    <string name="customchords_save">Сохранить новый пользовательский аккорд в песне</string>
+    <string name="customchords_saved">В настоящее время сохраняется пользовательских аккордов</string>
 
 </resources>
