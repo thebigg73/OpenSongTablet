@@ -580,6 +580,7 @@ public class FullscreenActivity extends Activity {
     static String mStorage;
     static String myLyrics;
     static float mFontSize;
+    static int mMaxFontSize;
     static String toggleYScale;
     static String mySetXML;
     static String[] myParsedSet;
@@ -5987,6 +5988,7 @@ public class FullscreenActivity extends Activity {
                 } else if (needtoredraw && columnTest==0) {
 
                     if (threecolfontsize>onecolfontsize && threecolfontsize>twocolfontsize) {
+                        // 3 columns is best
                         tempfontsize = mainfontsize*threecolfontsize - 0.4f;
                         tempsectionsize = sectionfontsize*threecolfontsize - 0.4f;
                         scrollpage = scrollpage_threecol;
@@ -6001,6 +6003,14 @@ public class FullscreenActivity extends Activity {
                         tempsectionsize = sectionfontsize*onecolfontsize - 0.4f;
                         scrollpage = scrollpage_onecol;
                         columnTest = 1;
+                    }
+
+                    // Make sure font sizes don't exceed the max
+                    if (tempfontsize>mMaxFontSize) {
+                        tempfontsize=mMaxFontSize;
+                    }
+                    if (tempsectionsize>mMaxFontSize) {
+                        tempsectionsize=mMaxFontSize;
                     }
 
                     needtoredraw = false;
@@ -7123,8 +7133,6 @@ public class FullscreenActivity extends Activity {
         if (tempCustomChordsArray.length>1) {
             numcustomchords = tempCustomChordsArray.length;
             for (int q = 0; q < numcustomchords; q++) {
-                Log.d("addcustom","chordInstrument="+chordInstrument);
-                Log.d("addcustom","tempCustomChordsArray[q]="+tempCustomChordsArray[q]);
                 if ((chordInstrument.equals("u") && tempCustomChordsArray[q].contains("_u_")) ||
                         (chordInstrument.equals("m") && tempCustomChordsArray[q].contains("_m_")) ||
                         (chordInstrument.equals("g") && tempCustomChordsArray[q].contains("_g_"))) {
@@ -7132,8 +7140,6 @@ public class FullscreenActivity extends Activity {
                 }
             }
         }
-
-        Log.d("addcustom","tempCustomChordsToAdd="+tempCustomChordsToAdd);
 
         // Remove all whitespace between chords
         while (allchords.contains("  ")) {
@@ -7570,7 +7576,7 @@ public class FullscreenActivity extends Activity {
         myNEWXML += "  <notes>" + mNotes + "</notes>\n";
         myNEWXML += "  <lyrics>" + mLyrics + "</lyrics>\n";
         myNEWXML += "  <linked_songs>" + mLinkedSongs + "</linked_songs>\n";
-        myNEWXML += "  <pad_file></pad_file>\n";
+        myNEWXML += "  <pad_file>" + mPadFile + "</pad_file>\n";
         myNEWXML += "  <custom_chords>" + mCustomChords + "</custom_chords>\n";
         if (!mExtraStuff1.isEmpty()) {
             myNEWXML += "  " + mExtraStuff1 + "\n";

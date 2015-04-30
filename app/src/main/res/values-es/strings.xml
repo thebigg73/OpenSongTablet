@@ -377,5 +377,6 @@
     <string name="customchords_noinstrument">El instrumento no se ha seleccionado</string>
     <string name="customchords_save">Guardar nuevo acorde costumbre canción</string>
     <string name="customchords_saved">Actualmente guardado acordes personalizados</string>
+    <string name="maxfontsize">Autoescala Máximo tamaño de la fuente</string>
 
 </resources>

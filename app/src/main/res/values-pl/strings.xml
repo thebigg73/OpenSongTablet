@@ -377,5 +377,6 @@
     <string name="customchords_noinstrument">Instrument nie został wybrany</string>
     <string name="customchords_save">Zapisz nowy niestandardowy akord do piosenki</string>
     <string name="customchords_saved">Obecnie zapisane niestandardowych akordów</string>
+    <string name="maxfontsize">Maksymalna automatycznego skalowania rozmiar czcionki</string>
 
 </resources>

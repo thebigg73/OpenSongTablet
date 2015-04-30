@@ -148,6 +148,7 @@ public class Preferences extends Activity {
 		FullscreenActivity.custom2_metronome = FullscreenActivity.myPreferences.getInt("custom2_metronome", default_metronomeColor);
 
 		FullscreenActivity.mFontSize = FullscreenActivity.myPreferences.getFloat("mFontSize", 42.0f);
+        FullscreenActivity.mMaxFontSize = FullscreenActivity.myPreferences.getInt("mMaxFontSize", 50);
 
 		//Now activity resizes to fit the x scale - option to also fit to the Y scale
 		FullscreenActivity.toggleYScale = FullscreenActivity.myPreferences.getString("toggleYScale", "Y");
@@ -330,6 +331,7 @@ public class Preferences extends Activity {
 		editor.putString("hideactionbaronoff", FullscreenActivity.hideactionbaronoff);
 		editor.putString("mStorage", FullscreenActivity.mStorage);
 		editor.putFloat("mFontSize", FullscreenActivity.mFontSize);
+        editor.putInt("mMaxFontSize", FullscreenActivity.mMaxFontSize);
 		editor.putString("toggleYScale", FullscreenActivity.toggleYScale);
 		editor.putString("swipeSet", FullscreenActivity.swipeSet);
 		editor.putString("swipeDrawer", FullscreenActivity.swipeDrawer);

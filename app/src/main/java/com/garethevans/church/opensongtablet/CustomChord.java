@@ -345,8 +345,6 @@ public class CustomChord extends Activity implements View.OnClickListener {
             FullscreenActivity.mCustomChords = FullscreenActivity.mCustomChords.replace("  "," ");
         }
 
-        Log.d("custom_chords","currently="+FullscreenActivity.mCustomChords);
-
         tempCustomChords = FullscreenActivity.mCustomChords.split(" ");
         int numcustomchords = 0;
         if (tempCustomChords.length>1) {

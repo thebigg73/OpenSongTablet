@@ -378,5 +378,6 @@
     <string name="customchords_noinstrument">Nebyla vybrána Instrument</string>
     <string name="customchords_save">Uložit nový vlastní akord na písně</string>
     <string name="customchords_saved">V současné době uložen vlastní akordy</string>
+    <string name="maxfontsize">Maximální autoscale velikost písma</string>
 
 </resources>

@@ -377,5 +377,6 @@
     <string name="customchords_noinstrument">Инструмент не был выбран</string>
     <string name="customchords_save">Сохранить новый пользовательский аккорд в песне</string>
     <string name="customchords_saved">В настоящее время сохраняется пользовательских аккордов</string>
+    <string name="maxfontsize">Максимальная автомасштаба размер шрифта</string>
 
 </resources>

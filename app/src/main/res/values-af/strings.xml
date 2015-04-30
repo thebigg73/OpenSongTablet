@@ -406,5 +406,6 @@
     <string name="customchords_noinstrument">Instrument is nie gekies</string>
     <string name="customchords_save">Slaan nuwe persoonlike koord lied</string>
     <string name="customchords_saved">Tans gered persoonlike akkoorde</string>
+    <string name="maxfontsize">Maksimum autoscale lettergrootte</string>
 
 </resources>

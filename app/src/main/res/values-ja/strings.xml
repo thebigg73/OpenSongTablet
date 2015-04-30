@@ -376,5 +376,6 @@
     <string name="customchords_noinstrument">機器が選択されていません</string>
     <string name="customchords_save">歌に新しいカスタムコードを保存</string>
     <string name="customchords_saved">現在、カスタムコードを保存</string>
+    <string name="maxfontsize">最大オートスケールフォントサイズ</string>
 
 </resources>

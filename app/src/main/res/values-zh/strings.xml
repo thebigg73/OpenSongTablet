@@ -381,5 +381,6 @@
     <string name="customchords_noinstrument">仪器没有被选中</string>
     <string name="customchords_save">保存新的自定义和弦的歌曲</string>
     <string name="customchords_saved">目前保存的自定义和弦</string>
+    <string name="maxfontsize">最大的自动缩放字体大小</string>
 
 </resources>

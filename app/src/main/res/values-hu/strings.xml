@@ -377,5 +377,6 @@
     <string name="customchords_noinstrument">Eszköz nincs kiválasztva</string>
     <string name="customchords_save">Mentsd új egyéni akkord a dalt</string>
     <string name="customchords_saved">Jelenleg mentett egyéni akkordok</string>
+    <string name="maxfontsize">Maximális automatikus átméretezés betűméret</string>
 
 </resources>

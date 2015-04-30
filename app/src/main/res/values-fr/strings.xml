@@ -372,10 +372,11 @@
     <string name="customchords">Accords personnalisés</string>
     <string name="customchords_code">Le code personnalisé</string>
     <string name="customchords_fret">Étiquette pour première case</string>
-    <string name="customchords_name">Nom de l'accord</string>
-    <string name="customchords_nochordname">Nom de l'accord n'a pas été réglée</string>
-    <string name="customchords_noinstrument">Instrument n'a pas été sélectionné</string>
+    <string name="customchords_name">"Nom de l'accord"</string>
+    <string name="customchords_nochordname">"Nom de l'accord n'a pas été réglée"</string>
+    <string name="customchords_noinstrument">"Instrument n'a pas été sélectionné"</string>
     <string name="customchords_save">Enregistrer nouvel accord personnalisé à la chanson</string>
     <string name="customchords_saved">Actuellement sauvé personnalisés accords</string>
+    <string name="maxfontsize">Autoscale maximum la taille</string>
 
 </resources>

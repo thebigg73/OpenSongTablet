@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="maxfontsize">Maximum autoscale font size</string>
     <string name="custom">Custom</string>
     <string name="customchords">Custom chords</string>
     <string name="customchords_saved">Currently saved custom chords</string>

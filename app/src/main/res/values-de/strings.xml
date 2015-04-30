@@ -377,5 +377,6 @@
     <string name="customchords_noinstrument">Instrument nicht ausgewählt worden ist</string>
     <string name="customchords_save">Sparen Sie neue benutzerdefinierte Akkord Song</string>
     <string name="customchords_saved">Derzeit gespeicherten benutzerdefinierten Akkorden</string>
+    <string name="maxfontsize">Maximale automatische Skalierung Schriftgröße</string>
 
 </resources>
