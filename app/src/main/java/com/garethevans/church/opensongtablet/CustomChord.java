@@ -232,6 +232,13 @@ public class CustomChord extends Activity implements View.OnClickListener {
         this.finish();
     }
 
+    public void gotosongs(View view) {
+        Intent viewsong = new Intent();
+        viewsong.setClass(CustomChord.this, FullscreenActivity.class);
+        startActivity(viewsong);
+        this.finish();
+    }
+
     public void customChordSave(View view) {
         // The user is trying to save a custom chord
         // Find out what instrument we are using and get the appropriate string data
