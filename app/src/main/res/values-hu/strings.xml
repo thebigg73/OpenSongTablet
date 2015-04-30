@@ -368,5 +368,14 @@
     <string name="shownextinset">Mutasd következő számot set</string>
     <string name="top">Felső</string>
     <string name="bottom">alsó</string>
+    <string name="custom">Szabott</string>
+    <string name="customchords">Egyedi akkordok</string>
+    <string name="customchords_code">Egyedi kódot</string>
+    <string name="customchords_fret">Label első bund</string>
+    <string name="customchords_name">Akkordnevek</string>
+    <string name="customchords_nochordname">Akkordnevek nincs beállítva</string>
+    <string name="customchords_noinstrument">Eszköz nincs kiválasztva</string>
+    <string name="customchords_save">Mentsd új egyéni akkord a dalt</string>
+    <string name="customchords_saved">Jelenleg mentett egyéni akkordok</string>
 
 </resources>

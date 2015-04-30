@@ -367,5 +367,14 @@
     <string name="shownextinset">セット内の次の曲を表示します</string>
     <string name="top">トップ</string>
     <string name="bottom">ボトム</string>
+    <string name="custom">カスタマイズされた</string>
+    <string name="customchords">カスタムコード</string>
+    <string name="customchords_code">カスタムコード</string>
+    <string name="customchords_fret">最初のフレットのラベル</string>
+    <string name="customchords_name">コードネーム</string>
+    <string name="customchords_nochordname">コード名が設定されていません</string>
+    <string name="customchords_noinstrument">機器が選択されていません</string>
+    <string name="customchords_save">歌に新しいカスタムコードを保存</string>
+    <string name="customchords_saved">現在、カスタムコードを保存</string>
 
 </resources>

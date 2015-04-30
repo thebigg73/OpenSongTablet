@@ -102,7 +102,9 @@ public class LoadXML extends Activity {
 		FullscreenActivity.mLyrics = "";
 		FullscreenActivity.mNotes = "";
 		FullscreenActivity.mStyle = "";
-		FullscreenActivity.mStyle = "mLinkedSongs";
+		FullscreenActivity.mLinkedSongs = "";
+        FullscreenActivity.mPadFile = "";
+        FullscreenActivity.mCustomChords = "";
 
 		// If the song is OnSong format - try to import it
 		if (FullscreenActivity.songfilename.contains(".onsong")) {
@@ -204,12 +206,7 @@ public class LoadXML extends Activity {
 					FullscreenActivity.mAka = xpp.nextText();
 				} else if (xpp.getName().equals("key_line")) {
 					FullscreenActivity.mKeyLine = xpp.nextText();
-/*				} else if (xpp.getName().equals("style")) {
-					if (xpp.getAttributeCount()>0) {
-						FullscreenActivity.mStyleIndex = xpp.getAttributeValue(0);
-					}
-					FullscreenActivity.mStyle = xpp.nextText();
-*/				} else if (xpp.getName().equals("capo")) {
+				} else if (xpp.getName().equals("capo")) {
 					if (xpp.getAttributeCount()>0) {
 						FullscreenActivity.mCapoPrint = xpp.getAttributeValue(0);
 					}
@@ -235,7 +232,9 @@ public class LoadXML extends Activity {
 				} else if (xpp.getName().equals("linked_songs")) {
 					FullscreenActivity.mLinkedSongs = xpp.nextText();
 				} else if (xpp.getName().equals("pad_file")) {
-					FullscreenActivity.mLinkedSongs = xpp.nextText();
+					FullscreenActivity.mPadFile = xpp.nextText();
+                } else if (xpp.getName().equals("custom_chords")) {
+                    FullscreenActivity.mCustomChords = xpp.nextText();
 				}
 			}
 			eventType = xpp.next();

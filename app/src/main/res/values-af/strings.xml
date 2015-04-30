@@ -397,5 +397,14 @@
     <string name="shownextinset">Wys volgende liedjie in stel</string>
     <string name="top">bopunt </string>
     <string name="bottom">onderste</string>
+    <string name="custom">Persoonlike</string>
+    <string name="customchords">Custom akkoorde</string>
+    <string name="customchords_code" translatable="false">Custom kode</string>
+    <string name="customchords_fret">Etiket vir die eerste vertoorn</string>
+    <string name="customchords_name">Chord naam</string>
+    <string name="customchords_nochordname">Chord naam is nog nie vasgestel</string>
+    <string name="customchords_noinstrument">Instrument is nie gekies</string>
+    <string name="customchords_save">Slaan nuwe persoonlike koord lied</string>
+    <string name="customchords_saved">Tans gered persoonlike akkoorde</string>
 
 </resources>

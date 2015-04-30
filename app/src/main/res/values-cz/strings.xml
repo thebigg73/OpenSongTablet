@@ -369,5 +369,14 @@
     <string name="shownextinset">Zobrazit další skladbu v sadě</string>
     <string name="top">vrchol</string>
     <string name="bottom">Konec</string>
+    <string name="custom">Přizpůsobené</string>
+    <string name="customchords">Vlastní akordy</string>
+    <string name="customchords_code">Vlastní kód</string>
+    <string name="customchords_fret">Label pro první pražec</string>
+    <string name="customchords_name">Název Chord</string>
+    <string name="customchords_nochordname">Název Chord nebyl nastaven</string>
+    <string name="customchords_noinstrument">Nebyla vybrána Instrument</string>
+    <string name="customchords_save">Uložit nový vlastní akord na písně</string>
+    <string name="customchords_saved">V současné době uložen vlastní akordy</string>
 
 </resources>

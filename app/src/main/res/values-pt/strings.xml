@@ -368,5 +368,14 @@
     <string name="shownextinset">Mostre a próxima canção em conjunto</string>
     <string name="top">Top</string>
     <string name="bottom">fundo</string>
+    <string name="custom">Personalizado</string>
+    <string name="customchords">Acordes personalizados</string>
+    <string name="customchords_code">Código personalizado</string>
+    <string name="customchords_fret">Etiqueta para o primeiro traste</string>
+    <string name="customchords_name">Nome do acorde</string>
+    <string name="customchords_nochordname">Nome do acorde não foi definido</string>
+    <string name="customchords_noinstrument">Instrumento não foi selecionado</string>
+    <string name="customchords_save">Salve novo acorde personalizado para música</string>
+    <string name="customchords_saved">Atualmente salvo acordes personalizados</string>
 
 </resources>

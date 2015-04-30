@@ -372,5 +372,14 @@
     <string name="shownextinset">在显示设置下一首歌曲</string>
     <string name="top">顶</string>
     <string name="bottom">底部</string>
+    <string name="custom">自定义</string>
+    <string name="customchords">定制和弦</string>
+    <string name="customchords_code">自定义代码</string>
+    <string name="customchords_fret">标签第一音品</string>
+    <string name="customchords_name">和弦名称</string>
+    <string name="customchords_nochordname">和弦名称尚未设置</string>
+    <string name="customchords_noinstrument">仪器没有被选中</string>
+    <string name="customchords_save">保存新的自定义和弦的歌曲</string>
+    <string name="customchords_saved">目前保存的自定义和弦</string>
 
 </resources>
