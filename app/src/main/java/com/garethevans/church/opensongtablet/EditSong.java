@@ -832,7 +832,6 @@ public class EditSong extends Activity {
         if (!FullscreenActivity.mExtraStuff1.isEmpty()) {
 			myNEWXML += "  " + FullscreenActivity.mExtraStuff1 + "\n";
 		}
-		myNEWXML += "  " + FullscreenActivity.mExtraStuff1 + "\n";
 		if (!FullscreenActivity.mExtraStuff2.isEmpty()) {
 			myNEWXML += "  " + FullscreenActivity.mExtraStuff2 + "\n";
 		}

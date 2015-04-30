@@ -354,6 +354,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
 
         tempCustomChords = FullscreenActivity.mCustomChords.split(" ");
         int numcustomchords;
+        Log.d("custom","FullscreenActivity.mCustomChords="+FullscreenActivity.mCustomChords);
         if (tempCustomChords.length>0) {
             numcustomchords = tempCustomChords.length;
             for (int q=0;q<numcustomchords;q++) {
@@ -424,8 +425,10 @@ public class CustomChord extends Activity implements View.OnClickListener {
                 deleteChord.setText(getResources().getString(R.string.options_song_delete)+"\n"+tempCustomChords[q]);
                 deleteChord.setBackgroundDrawable(getResources().getDrawable(R.drawable.red_button));
                 deleteChord.setOnClickListener(this);
-                CustomChord_Buttons.addView(chordvalue);
-                CustomChord_Buttons.addView(deleteChord);
+                if (!workingChord.isEmpty() && !workingChord.equals("")) {
+                    CustomChord_Buttons.addView(chordvalue);
+                    CustomChord_Buttons.addView(deleteChord);
+                }
             }
         }
 
