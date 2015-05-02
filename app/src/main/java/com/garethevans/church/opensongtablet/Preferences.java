@@ -149,6 +149,7 @@ public class Preferences extends Activity {
 
 		FullscreenActivity.mFontSize = FullscreenActivity.myPreferences.getFloat("mFontSize", 42.0f);
         FullscreenActivity.mMaxFontSize = FullscreenActivity.myPreferences.getInt("mMaxFontSize", 50);
+		FullscreenActivity.usePresentationOrder = FullscreenActivity.myPreferences.getBoolean("usePresentationOrder",true);
 
 		//Now activity resizes to fit the x scale - option to also fit to the Y scale
 		FullscreenActivity.toggleYScale = FullscreenActivity.myPreferences.getString("toggleYScale", "Y");
@@ -221,7 +222,7 @@ public class Preferences extends Activity {
 	
 	public static void savePreferences() {
 
-		Log.d("Preferences","Saving");
+		Log.d("Preferences", "Saving");
 
 		SharedPreferences.Editor editor = FullscreenActivity.myPreferences.edit();
 
@@ -245,6 +246,7 @@ public class Preferences extends Activity {
 		editor.putString("alwaysPreferredChordFormat", FullscreenActivity.alwaysPreferredChordFormat);
 
 		editor.putString("presenterChords", FullscreenActivity.presenterChords);
+		editor.putBoolean("usePresentationOrder", FullscreenActivity.usePresentationOrder);
 
 		editor.putString("backgroundImage1", FullscreenActivity.backgroundImage1);
 		editor.putString("backgroundImage2", FullscreenActivity.backgroundImage2);

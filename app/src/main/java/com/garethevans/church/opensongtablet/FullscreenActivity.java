@@ -516,6 +516,7 @@ public class FullscreenActivity extends Activity {
     static String backgroundTypeToUse;
     static int xmargin_presentation;
     static int ymargin_presentation;
+    static boolean usePresentationOrder = false;
 
     // Song xml data
     static CharSequence mTitle = "";
