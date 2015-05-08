@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ListSongFiles extends Activity {
-	
+
+	static Collator coll;
+
 	public static void listSongFolders() {
 		File songfolder = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
 		File[] tempmyitems = null;
@@ -41,8 +43,8 @@ public class ListSongFiles extends Activity {
 
 		//Sort these arrays
 		// Add locale sort
-		Collator coll = Collator.getInstance(FullscreenActivity.locale);
-		coll.setStrength(Collator.PRIMARY);
+		coll = Collator.getInstance(FullscreenActivity.locale);
+		coll.setStrength(Collator.SECONDARY);
 		Collections.sort(tempProperDirectories,coll);
 		//Collections.sort(tempProperDirectories, String.CASE_INSENSITIVE_ORDER);
 		
@@ -77,8 +79,6 @@ public class ListSongFiles extends Activity {
 			
 		//Sort these arrays
 		// Add locale sort
-		Collator coll = Collator.getInstance(FullscreenActivity.locale);
-		coll.setStrength(Collator.PRIMARY);
 		Collections.sort(tempMainProperFiles,coll);
 		//Collections.sort(tempMainProperFiles, String.CASE_INSENSITIVE_ORDER);
 
@@ -115,8 +115,6 @@ public class ListSongFiles extends Activity {
 
 			//Sort these arrays
 			// Add locale sort
-			Collator coll = Collator.getInstance(FullscreenActivity.locale);
-			coll.setStrength(Collator.PRIMARY);
 			Collections.sort(tempProperFiles,coll);
 			//Collections.sort(tempProperFiles, String.CASE_INSENSITIVE_ORDER);
 
@@ -180,8 +178,13 @@ public class ListSongFiles extends Activity {
 		}
 
 		//Sort these arrays
-		Collections.sort(tempProperSongFiles, String.CASE_INSENSITIVE_ORDER);        
-		Collections.sort(tempProperDirectories, String.CASE_INSENSITIVE_ORDER);
+		// Add locale sort
+		coll = Collator.getInstance(FullscreenActivity.locale);
+		coll.setStrength(Collator.SECONDARY);
+		Collections.sort(tempProperSongFiles, coll);
+		Collections.sort(tempProperDirectories,coll);
+		//Collections.sort(tempProperSongFiles, String.CASE_INSENSITIVE_ORDER);
+		//Collections.sort(tempProperDirectories, String.CASE_INSENSITIVE_ORDER);
 		
 		//Make the arrays for the song id search
 		// NOT WORKING YET
