@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 
 import java.io.File;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -39,7 +40,11 @@ public class ListSongFiles extends Activity {
 		}
 
 		//Sort these arrays
-		Collections.sort(tempProperDirectories, String.CASE_INSENSITIVE_ORDER);
+		// Add locale sort
+		Collator coll = Collator.getInstance(FullscreenActivity.locale);
+		coll.setStrength(Collator.PRIMARY);
+		Collections.sort(tempProperDirectories,coll);
+		//Collections.sort(tempProperDirectories, String.CASE_INSENSITIVE_ORDER);
 		
 		FullscreenActivity.mSongFolderNames = new String[numactualdirs+1];
 		FullscreenActivity.mSongFolderNames = tempProperDirectories.toArray(FullscreenActivity.mSongFolderNames);
@@ -71,7 +76,11 @@ public class ListSongFiles extends Activity {
 		}
 			
 		//Sort these arrays
-		Collections.sort(tempMainProperFiles, String.CASE_INSENSITIVE_ORDER);
+		// Add locale sort
+		Collator coll = Collator.getInstance(FullscreenActivity.locale);
+		coll.setStrength(Collator.PRIMARY);
+		Collections.sort(tempMainProperFiles,coll);
+		//Collections.sort(tempMainProperFiles, String.CASE_INSENSITIVE_ORDER);
 
 		FullscreenActivity.childSongs[0] = new String[temp_mainnumfilescount];
 		FullscreenActivity.childSongs[0] = tempMainProperFiles.toArray(FullscreenActivity.childSongs[0]);
@@ -105,7 +114,11 @@ public class ListSongFiles extends Activity {
 			}
 
 			//Sort these arrays
-			Collections.sort(tempProperFiles, String.CASE_INSENSITIVE_ORDER);
+			// Add locale sort
+			Collator coll = Collator.getInstance(FullscreenActivity.locale);
+			coll.setStrength(Collator.PRIMARY);
+			Collections.sort(tempProperFiles,coll);
+			//Collections.sort(tempProperFiles, String.CASE_INSENSITIVE_ORDER);
 
 			FullscreenActivity.childSongs[w+1] = new String[numactualfiles];
 			FullscreenActivity.childSongs[w+1] = tempProperFiles.toArray(FullscreenActivity.childSongs[w+1]);
