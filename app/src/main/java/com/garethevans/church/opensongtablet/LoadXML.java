@@ -75,36 +75,7 @@ public class LoadXML extends Activity {
 
 
 		// Initialise all the xml tags a song should have
-		FullscreenActivity.mTitle = FullscreenActivity.songfilename;
-		FullscreenActivity.mAuthor = "";
-		FullscreenActivity.mCopyright = "";
-		FullscreenActivity.mPresentation = "";
-		FullscreenActivity.mHymnNumber = "";
-		FullscreenActivity.mCapo = "";
-		FullscreenActivity.mCapoPrint = "false";
-		FullscreenActivity.mTempo = "";
-		FullscreenActivity.mTimeSig = "";
-		FullscreenActivity.mDuration = "";
-		FullscreenActivity.mCCLI = "";
-		FullscreenActivity.mTheme = "";
-		FullscreenActivity.mAltTheme = "";
-		FullscreenActivity.mUser1 = "";
-		FullscreenActivity.mUser2 = "";
-		FullscreenActivity.mUser3 = "";
-		FullscreenActivity.mKey = "";
-		FullscreenActivity.mAka = "";
-		FullscreenActivity.mKeyLine = "";
-		FullscreenActivity.mBooks = "";
-		FullscreenActivity.mMidi = "";
-		FullscreenActivity.mMidiIndex = "";
-		FullscreenActivity.mPitch = "";
-		FullscreenActivity.mRestrictions = "";
-		FullscreenActivity.mLyrics = "";
-		FullscreenActivity.mNotes = "";
-		FullscreenActivity.mStyle = "";
-		FullscreenActivity.mLinkedSongs = "";
-        FullscreenActivity.mPadFile = "";
-        FullscreenActivity.mCustomChords = "";
+		initialiseSongTags();
 
 		// If the song is OnSong format - try to import it
 		if (FullscreenActivity.songfilename.contains(".onsong")) {
@@ -266,4 +237,37 @@ public class LoadXML extends Activity {
 		return outputStream.toString();
 	}
 	// END NEW
+
+	public static void initialiseSongTags() {
+		FullscreenActivity.mTitle = FullscreenActivity.songfilename;
+		FullscreenActivity.mAuthor = "";
+		FullscreenActivity.mCopyright = "";
+		FullscreenActivity.mPresentation = "";
+		FullscreenActivity.mHymnNumber = "";
+		FullscreenActivity.mCapo = "";
+		FullscreenActivity.mCapoPrint = "false";
+		FullscreenActivity.mTempo = "";
+		FullscreenActivity.mTimeSig = "";
+		FullscreenActivity.mDuration = "";
+		FullscreenActivity.mCCLI = "";
+		FullscreenActivity.mTheme = "";
+		FullscreenActivity.mAltTheme = "";
+		FullscreenActivity.mUser1 = "";
+		FullscreenActivity.mUser2 = "";
+		FullscreenActivity.mUser3 = "";
+		FullscreenActivity.mKey = "";
+		FullscreenActivity.mAka = "";
+		FullscreenActivity.mKeyLine = "";
+		FullscreenActivity.mBooks = "";
+		FullscreenActivity.mMidi = "";
+		FullscreenActivity.mMidiIndex = "";
+		FullscreenActivity.mPitch = "";
+		FullscreenActivity.mRestrictions = "";
+		FullscreenActivity.mLyrics = "";
+		FullscreenActivity.mNotes = "";
+		FullscreenActivity.mStyle = "";
+		FullscreenActivity.mLinkedSongs = "";
+		FullscreenActivity.mPadFile = "";
+		FullscreenActivity.mCustomChords = "";
+	}
 }

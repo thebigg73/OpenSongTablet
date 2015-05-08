@@ -140,7 +140,7 @@
     <string name="setxmargins">"Horizontal Randgröße"</string>
     <string name="setymargins">"Vertikale Randgröße"</string>
     <string name="update_projector">"Projektor\naktualisieren"</string>
-    <string name="black_screen">"Schwarzer\nBildschirm"</string>
+    <string name="black_screen">"Schwarzer Bildschirm"</string>
     <string name="choose_image1">"Hintergrundbild 1 wählen"</string>
     <string name="choose_image2">"Hintergrundbild 2 wählen"</string>
     <string name="choose_video1">"Hintergrundvideo 1 wählen"</string>
@@ -378,5 +378,10 @@
     <string name="customchords_save">Sparen Sie neue benutzerdefinierte Akkord Song</string>
     <string name="customchords_saved">Derzeit gespeicherten benutzerdefinierten Akkorden</string>
     <string name="maxfontsize">Maximale automatische Skalierung Schriftgröße</string>
+	<string name="tag_prechorus">Vorspiel</string>
+	<string name="tag_chorus">Refrain</string>
+	<string name="tag_bridge">Zwischenteil</string>
+	<string name="tag_tag">Markierung</string>
+	<string name="tag_verse">Strophe</string>
 
 </resources>

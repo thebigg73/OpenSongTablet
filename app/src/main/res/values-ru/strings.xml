@@ -140,9 +140,9 @@
     <string name="setxmargins">"Горизонтальная размер маржи"</string>
     <string name="setymargins">"Вертикальный размер маржи"</string>
     <string name="update_projector">"Обновление\nпроектор"</string>
-    <string name="black_screen">"Черный\nэкран"</string>
-    <string name="choose_image1">"Выберите\nфоновое\nизображение 1"</string>
-    <string name="choose_image2">"Выберите\nфоновое\nизображение 2"</string>
+    <string name="black_screen">"Черный экран"</string>
+    <string name="choose_image1">"Выберите фоновое изображение 1"</string>
+    <string name="choose_image2">"Выберите фоновое изображение 2"</string>
     <string name="choose_video1">"Выберите фоновое видео 1"</string>
     <string name="choose_video2">"Выберите фоновое видео 2"</string>
     
@@ -378,5 +378,10 @@
     <string name="customchords_save">Сохранить новый пользовательский аккорд в песне</string>
     <string name="customchords_saved">В настоящее время сохраняется пользовательских аккордов</string>
     <string name="maxfontsize">Максимальная автомасштаба размер шрифта</string>
+	<string name="tag_prechorus">Предприпев</string>
+	<string name="tag_chorus">Припев</string>
+	<string name="tag_bridge">Мост</string>
+	<string name="tag_tag">Тэг</string>
+	<string name="tag_verse">Куплет</string>
 
 </resources>

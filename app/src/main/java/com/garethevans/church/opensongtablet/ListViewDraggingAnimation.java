@@ -34,12 +34,12 @@ import java.util.ArrayList;
  */
 public class ListViewDraggingAnimation extends Activity {
 
-	boolean PresentMode = false; 
+	boolean PresenterMode = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        PresentMode = getIntent().getBooleanExtra("PresentMode", false);
+        PresenterMode = getIntent().getBooleanExtra("PresenterMode", false);
         
         setContentView(R.layout.activity_list_view);
 
@@ -72,8 +72,8 @@ public class ListViewDraggingAnimation extends Activity {
 	public void onBackPressed() {
 		Intent viewsong = new Intent();
 
-		if (PresentMode) {
-			viewsong.setClass(ListViewDraggingAnimation.this, PresentMode.class);			
+		if (PresenterMode) {
+			viewsong.setClass(ListViewDraggingAnimation.this, PresenterMode.class);
 			startActivity(viewsong);
 			this.finish();
 		} else {
@@ -90,8 +90,8 @@ public class ListViewDraggingAnimation extends Activity {
     	Preferences.savePreferences();
 		Intent editset = new Intent();
 		invalidateOptionsMenu();
-		if (PresentMode) {
-			editset.setClass(ListViewDraggingAnimation.this, PresentMode.class);			
+		if (PresenterMode) {
+			editset.setClass(ListViewDraggingAnimation.this, PresenterMode.class);
 			startActivity(editset);
 			this.finish();
 		} else {

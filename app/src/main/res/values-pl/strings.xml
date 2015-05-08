@@ -140,11 +140,11 @@
     <string name="setxmargins">"Wielkość marginesu poziomego"</string>
     <string name="setymargins">"Pionowy rozmiar margines"</string>
     <string name="update_projector">"Aktualizacja\nprojektor"</string>
-    <string name="black_screen">"Czarny\nekran"</string>
-    <string name="choose_image1">Wybierz obraz\ntła 1</string>
-    <string name="choose_image2">Wybierz obraz\ntła 2</string>
-    <string name="choose_video1">"Wybierz tło\nwideo 1"</string>
-    <string name="choose_video2">"Wybierz tło\nwideo 2"</string>
+    <string name="black_screen">"Czarny ekran"</string>
+    <string name="choose_image1">Wybierz obraz tła 1</string>
+    <string name="choose_image2">Wybierz obraz tła 2</string>
+    <string name="choose_video1">"Wybierz tło wideo 1"</string>
+    <string name="choose_video2">"Wybierz tło wideo 2"</string>
     
     <string name="choosechordformat">"Wybierz format akord ( używane tylko przy transpozycji utworu )"</string>
     
@@ -378,5 +378,10 @@
     <string name="customchords_save">Zapisz nowy niestandardowy akord do piosenki</string>
     <string name="customchords_saved">Obecnie zapisane niestandardowych akordów</string>
     <string name="maxfontsize">Maksymalna automatycznego skalowania rozmiar czcionki</string>
+	<string name="tag_prechorus">Przejście do refrenu</string>
+	<string name="tag_chorus">Refren</string>
+	<string name="tag_bridge">Przejście</string>
+	<string name="tag_tag">Dodatek</string>
+	<string name="tag_verse">Zwrotka</string>
 
 </resources>

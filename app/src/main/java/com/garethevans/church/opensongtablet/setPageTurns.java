@@ -18,14 +18,14 @@ public class setPageTurns extends Activity {
 	Button assignMetronome;
 	Button toggleScrollBeforeSwipeButton;
 	String assignWhich="";
-	private boolean PresentMode;
+	private boolean PresenterMode;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Load the user preferences
 		Preferences.loadPreferences();
-        PresentMode = getIntent().getBooleanExtra("PresentMode", false);
+        PresenterMode = getIntent().getBooleanExtra("PresenterMode", false);
 		// Set the screen and title
 		setContentView(R.layout.page_turn_buttons);
 		getActionBar().setTitle(getResources().getString(R.string.pageturn_title));
@@ -43,8 +43,8 @@ public class setPageTurns extends Activity {
 	@Override
 	public void onBackPressed() {
 		Intent viewsong = new Intent(this, FullscreenActivity.class);
-		if (PresentMode) {
-			viewsong.setClass(setPageTurns.this, PresentMode.class);			
+		if (PresenterMode) {
+			viewsong.setClass(setPageTurns.this, PresenterMode.class);
 			startActivity(viewsong);
 			this.finish();
 		} else {
@@ -243,8 +243,8 @@ public class setPageTurns extends Activity {
 	
 	public void closePedal (View view) {
 		Intent viewsong = new Intent(this, FullscreenActivity.class);
-		if (PresentMode) {
-			viewsong.setClass(setPageTurns.this, PresentMode.class);			
+		if (PresenterMode) {
+			viewsong.setClass(setPageTurns.this, PresenterMode.class);
 			startActivity(viewsong);
 			this.finish();
 		} else {

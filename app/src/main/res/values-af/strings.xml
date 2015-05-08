@@ -143,11 +143,11 @@
     <string name="setxmargins">"Horisontale marge grootte"</string>
     <string name="setymargins">"Vertikale marge grootte"</string>
     <string name="update_projector">"Werk\nprojektor"</string>
-    <string name="black_screen">"Swart\nskerm"</string>
-    <string name="choose_image1">"Kies agtergrond\nbeeld 1"</string>
-    <string name="choose_image2">"Kies agtergrond\nbeeld 2"</string>
-    <string name="choose_video1">"Kies agtergrond\nvideo 1"</string>
-    <string name="choose_video2">"Kies agtergrond\nvideo 2"</string>
+    <string name="black_screen">"Swart skerm"</string>
+    <string name="choose_image1">"Kies agtergrond beeld 1"</string>
+    <string name="choose_image2">"Kies agtergrond beeld 2"</string>
+    <string name="choose_video1">"Kies agtergrond video 1"</string>
+    <string name="choose_video2">"Kies agtergrond video 2"</string>
     
     <string name="choosechordformat">"Kies koord formaat (slegs gebruik wanneer omzetting 'n lied)"</string>
     
@@ -407,5 +407,10 @@
     <string name="customchords_save">Slaan nuwe persoonlike koord lied</string>
     <string name="customchords_saved">Tans gered persoonlike akkoorde</string>
     <string name="maxfontsize">Maksimum autoscale lettergrootte</string>
+	<string name="tag_verse">Vers</string>
+	<string name="tag_tag">Tag</string>
+	<string name="tag_prechorus">Pre-Koor</string>
+	<string name="tag_chorus">Koor</string>
+	<string name="tag_bridge">Brug</string>
 
 </resources>

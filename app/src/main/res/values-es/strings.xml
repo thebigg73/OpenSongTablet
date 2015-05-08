@@ -140,7 +140,7 @@
     <string name="setxmargins">"Tamaño del margen horizontal"</string>
     <string name="setymargins">"Tamaño del margen vertical"</string>
     <string name="update_projector">"Actualización\nproyector"</string>
-    <string name="black_screen">"Pantalla\nen negro"</string>
+    <string name="black_screen">"Pantalla en negro"</string>
     <string name="choose_image1">"Seleccione la imagen de fondo 1"</string>
     <string name="choose_image2">"Seleccione la imagen de fondo 2"</string>
     <string name="choose_video1">"Elija el fondo de vídeo 1"</string>
@@ -378,5 +378,10 @@
     <string name="customchords_save">Guardar nuevo acorde costumbre canción</string>
     <string name="customchords_saved">Actualmente guardado acordes personalizados</string>
     <string name="maxfontsize">Autoescala Máximo tamaño de la fuente</string>
+	<string name="tag_verse">Verso</string>
+	<string name="tag_tag">Etiqueta</string>
+	<string name="tag_prechorus">Pre-Coro</string>
+	<string name="tag_chorus">Coro</string>
+	<string name="tag_bridge">Puente</string>
 
 </resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015.
+  ~ The code is provided free of charge.  You can use, modify, contribute and improve it as long as this source is referenced.
+  ~ Commercial use should seek permission.
+  -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:state_pressed="true" >
+    <shape>
+      <solid
+          android:color="#161" />
+      <stroke
+          android:width="1dp"
+          android:color="#161" />
+      <corners
+          android:radius="5dp" />
+      <padding
+          android:left="5dp"
+          android:top="5dp"
+          android:right="5dp"
+          android:bottom="5dp" />
+    </shape>
+  </item>
+  <item>
+    <shape>
+      <gradient
+          android:startColor="#161"
+          android:endColor="#151"
+          android:angle="270" />
+      <stroke
+          android:width="1dp"
+          android:color="#161" />
+      <corners
+          android:radius="5dp" />
+      <padding
+          android:left="5dp"
+          android:top="5dp"
+          android:right="5dp"
+          android:bottom="5dp" />
+    </shape>
+  </item>
+</selector>

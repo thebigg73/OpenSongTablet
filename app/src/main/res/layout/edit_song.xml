@@ -236,7 +236,29 @@
             android:entries="@array/capoprint"
             android:textColor="#000"
             android:textSize="22sp" />
-         
+
+        <TextView
+            android:id="@+id/myPresentation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/edit_song_presentation"
+            android:textColor="#fff"
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/edit_song_presentation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="#aaa"
+            android:hint="@string/edit_song_presentation"
+            android:textColor="#000"
+            android:textSize="22sp" />
+
         <TextView
             android:id="@+id/myLyrics"
             android:layout_width="match_parent"
@@ -308,29 +330,7 @@
             android:hint="@string/edit_song_ccli"
             android:textColor="#000"
             android:textSize="22sp" />
-        
-        <TextView
-            android:id="@+id/myPresentation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:text="@string/edit_song_presentation"
-            android:textColor="#fff"
-            android:textSize="22sp" /> 
 
-        <EditText
-            android:id="@+id/edit_song_presentation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:background="#aaa"
-            android:hint="@string/edit_song_presentation"
-            android:textColor="#000"
-            android:textSize="22sp" />
-    
             
         <TextView
             android:id="@+id/myAka"

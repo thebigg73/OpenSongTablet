@@ -140,9 +140,9 @@
     <string name="setxmargins">"Vízszintes margó"</string>
     <string name="setymargins">"Függőleges margó"</string>
     <string name="update_projector">"Frissítés\nprojektor"</string>
-    <string name="black_screen">"Fekete\nképernyő"</string>
-    <string name="choose_image1">"Válassza ki a\nháttérképet 1"</string>
-    <string name="choose_image2">"Válassza ki a\nháttérképet 2"</string>
+    <string name="black_screen">"Fekete képernyő"</string>
+    <string name="choose_image1">"Válassza ki a háttérképet 1"</string>
+    <string name="choose_image2">"Válassza ki a háttérképet 2"</string>
     <string name="choose_video1">"Válassza ki a háttér video 1"</string>
     <string name="choose_video2">"Válassza ki a háttér video 2"</string>
     
@@ -378,5 +378,10 @@
     <string name="customchords_save">Mentsd új egyéni akkord a dalt</string>
     <string name="customchords_saved">Jelenleg mentett egyéni akkordok</string>
     <string name="maxfontsize">Maximális automatikus átméretezés betűméret</string>
+	<string name="tag_bridge">Híd</string>
+	<string name="tag_chorus">Kórus</string>
+	<string name="tag_prechorus">Pre-Kórus</string>
+	<string name="tag_tag">Címke</string>
+	<string name="tag_verse">Vers</string>
 
 </resources>

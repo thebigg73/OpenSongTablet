@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<string name="file_chooser">File chooser</string>
+	<string name="display_manager">Reconnect display</string>
+	<string name="song_sections">Song sections</string>
+	<string name="actions">Actions</string>
+	<string name="settings">Settings</string>
+	<string name="alert">Alert</string>
+	<string name="alert_text">Enter alert text</string>
+	<string name="layout">Layout</string>
+
+	<string name="error_notset">Not set</string>
+	<string name="error_missingsection">Missing sections</string>
+	<string name="tag_verse">Verse</string>
+	<string name="tag_chorus">Chorus</string>
+	<string name="tag_bridge">Bridge</string>
+	<string name="tag_prechorus">Pre-Chorus</string>
+	<string name="tag_tag">Tag</string>
+
     <string name="maxfontsize">Maximum autoscale font size</string>
     <string name="custom">Custom</string>
     <string name="customchords">Custom chords</string>
@@ -217,11 +234,11 @@
     <string name="setxmargins">Horizontal margin size</string>
     <string name="setymargins">Vertical margin size</string>
     <string name="update_projector">Update\nprojector</string>
-    <string name="black_screen">Black\nscreen</string>
-    <string name="choose_image1">Choose\nbackground\nimage 1</string>
-    <string name="choose_image2">Choose\nbackground\nimage 2</string>
-    <string name="choose_video1">Choose\nbackground\nvideo 1</string>
-    <string name="choose_video2">Choose\nbackground\nvideo 2</string>
+    <string name="black_screen">Black screen</string>
+    <string name="choose_image1">Choose background image 1</string>
+    <string name="choose_image2">Choose background image 2</string>
+    <string name="choose_video1">Choose background video 1</string>
+    <string name="choose_video2">Choose background video 2</string>
     
     <string name="choosechordformat">Choose chord format (important when transposing a song)</string>
     <string name="chordFormat1" translatable="false">C   C#/Db   D   D#/Eb   E   F   F#/Gb   G   G#/Ab   A   A#/Bb   B</string>
@@ -233,7 +250,7 @@
     <string name="switchtoperformmode">Switch to performance mode</string>
     <string name="presentermode">Presentation mode</string>
     <string name="sendtoprojector">Project</string>
-    <string name="presoBackground">Presentation background</string>
+    <string name="presoBackground">Background</string>
     <string name="presoShowLogo">Show logo</string>
     <string name="notcompatible">Unfortunately you need Android 4.2 or higher to use the dual screen presentation feature!</string>
 	<string name="nodisplays">No external displays connected.  Please connect to a secondary display using an HDMI output or MiraCast compatible wireless display.</string>

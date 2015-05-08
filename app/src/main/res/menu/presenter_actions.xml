@@ -37,7 +37,7 @@
           android:icon="@drawable/action_song"
           android:title="@string/action_search"
           android:showAsAction="always"/>
-    
+
     <!-- Show Options -->
     <item android:id="@+id/action_settings"
           android:icon="@drawable/ic_action_settings"

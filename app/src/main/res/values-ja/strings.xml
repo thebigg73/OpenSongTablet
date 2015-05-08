@@ -377,5 +377,10 @@
     <string name="customchords_save">歌に新しいカスタムコードを保存</string>
     <string name="customchords_saved">現在、カスタムコードを保存</string>
     <string name="maxfontsize">最大オートスケールフォントサイズ</string>
+	<string name="tag_verse">詩句</string>
+	<string name="tag_tag">荷札</string>
+	<string name="tag_prechorus">プリコーラス</string>
+	<string name="tag_chorus">折り返し</string>
+	<string name="tag_bridge">ブリッジ</string>
 
 </resources>

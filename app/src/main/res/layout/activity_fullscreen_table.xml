@@ -103,7 +103,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/lyrics_box"
                             android:padding="4dp"
-                            tools:context=".FullscreenActivity"></TableLayout>
+                            tools:context=".FullscreenActivity" />
                     </LinearLayout>
                 </HorizontalScrollView>
             </LinearLayout>
@@ -145,7 +145,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/lyrics_box"
                             android:padding="4dp"
-                            tools:context=".FullscreenActivity"></TableLayout>
+                            tools:context=".FullscreenActivity" />
 
                         <TableLayout
                             android:id="@+id/LyricDisplayCol2_twocoldisplay"
@@ -197,7 +197,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/lyrics_box"
                             android:padding="4dp"
-                            tools:context=".FullscreenActivity"></TableLayout>
+                            tools:context=".FullscreenActivity"/>
 
                         <TableLayout
                             android:id="@+id/LyricDisplayCol2_threecoldisplay"
@@ -207,7 +207,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/lyrics_box"
                             android:padding="4dp"
-                            tools:context=".FullscreenActivity"></TableLayout>
+                            tools:context=".FullscreenActivity"/>
 
                         <TableLayout
                             android:id="@+id/LyricDisplayCol3_threecoldisplay"
@@ -217,7 +217,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/lyrics_box"
                             android:padding="4dp"
-                            tools:context=".FullscreenActivity"></TableLayout>
+                            tools:context=".FullscreenActivity"/>
                     </LinearLayout>
                 </HorizontalScrollView>
             </LinearLayout>
@@ -232,7 +232,9 @@
             android:choiceMode="singleChoice"
             android:divider="#aaa"
             android:dividerHeight="1dp"
-            android:transcriptMode="disabled" />
+            android:fastScrollEnabled="false"
+            android:fastScrollAlwaysVisible="false"
+            android:headerDividersEnabled="false" />
 
         <ExpandableListView
             android:id="@+id/option_list_ex"
@@ -243,7 +245,9 @@
             android:choiceMode="singleChoice"
             android:divider="#aaa"
             android:dividerHeight="1dp"
-            android:transcriptMode="disabled" />
+            android:fastScrollEnabled="false"
+            android:fastScrollAlwaysVisible="false"
+            android:transitionGroup="false" />
     </android.support.v4.widget.DrawerLayout>
 
     <ImageView

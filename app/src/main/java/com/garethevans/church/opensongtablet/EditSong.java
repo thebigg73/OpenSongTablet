@@ -103,7 +103,7 @@ public class EditSong extends Activity {
 	CheckBox song_theme_worship_prayer_devotion;
 	CheckBox song_theme_worship_provision_deliverance;
 	CheckBox song_theme_worship_thankfulness;
-	private boolean PresentMode;
+	private boolean PresenterMode;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +111,7 @@ public class EditSong extends Activity {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        PresentMode = getIntent().getBooleanExtra("PresentMode", false);
+        PresenterMode = getIntent().getBooleanExtra("PresenterMode", false);
 
 		setContentView(R.layout.edit_song);
 		getActionBar().setTitle(FullscreenActivity.songfilename);
@@ -142,8 +142,8 @@ public class EditSong extends Activity {
 	public void onBackPressed() {
 		Intent viewsong = new Intent();
 
-		if (PresentMode) {
-			viewsong.setClass(EditSong.this, PresentMode.class);			
+		if (PresenterMode) {
+			viewsong.setClass(EditSong.this, PresenterMode.class);
 			startActivity(viewsong);
 			this.finish();
 		} else {
@@ -256,7 +256,7 @@ public class EditSong extends Activity {
 
 
 		// Get the lyrics into a temp string (so we can get rid of rubbish tabs, etc)
-		String editBoxLyrics = FullscreenActivity.myLyrics;
+		String editBoxLyrics = FullscreenActivity.mLyrics;
 		editBoxLyrics = editBoxLyrics.replaceAll("\r\n", "\n");
 		editBoxLyrics = editBoxLyrics.replaceAll("\n\r", "\n");
 		editBoxLyrics = editBoxLyrics.replaceAll("\t", "    ");
@@ -841,6 +841,7 @@ public class EditSong extends Activity {
 		
 
 	}
+
 	public void saveEdit(View view) throws IOException {
 		// Get the variables
 		// Set the newtext to the FullscreenActivity variables
@@ -1049,8 +1050,8 @@ public class EditSong extends Activity {
 		FullscreenActivity.mynewXML = "";
 		Intent viewsong = new Intent();
 
-		if (PresentMode) {
-			viewsong.setClass(EditSong.this, PresentMode.class);			
+		if (PresenterMode) {
+			viewsong.setClass(EditSong.this, PresenterMode.class);
 			startActivity(viewsong);
 			this.finish();
 		} else {
@@ -1060,4 +1061,18 @@ public class EditSong extends Activity {
 		}
 	}
 
+	public static void justSaveSongXML() throws IOException {
+		// Makes sure all & are replaced with &amp;
+		FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&amp;","&");
+		FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&","&amp;");
+
+		// Now write the modified song
+		FileOutputStream overWrite = new FileOutputStream(
+				FullscreenActivity.dir + "/" + FullscreenActivity.songfilename,
+				false);
+		overWrite.write(FullscreenActivity.mynewXML.getBytes());
+		overWrite.flush();
+		overWrite.close();
+
+	}
 }

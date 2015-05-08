@@ -41,7 +41,7 @@ public class ChangeFonts extends Activity {
     TextView chords1;
     TextView chords2;
     TextView linespacingtext;
-    private boolean PresentMode;
+    private boolean PresenterMode;
     SeekBar linespacing;
     SeekBar maxfontslider;
     TextView maxfonttext;
@@ -52,7 +52,7 @@ public class ChangeFonts extends Activity {
         view = findViewById(R.layout.choose_font);
         // Load the user preferences
         Preferences.loadPreferences();
-        PresentMode = getIntent().getBooleanExtra("PresentMode", false);
+        PresenterMode = getIntent().getBooleanExtra("PresenterMode", false);
 
         // Set the screen and title
         setContentView(R.layout.choose_font);
@@ -210,8 +210,8 @@ public class ChangeFonts extends Activity {
     @Override
     public void onBackPressed() {
         Intent viewsong = new Intent(this, FullscreenActivity.class);
-        if (PresentMode) {
-            viewsong.setClass(ChangeFonts.this, PresentMode.class);
+        if (PresenterMode) {
+            viewsong.setClass(ChangeFonts.this, PresenterMode.class);
             startActivity(viewsong);
             this.finish();
         } else {
@@ -228,8 +228,8 @@ public class ChangeFonts extends Activity {
     public void gotosongs(View view) {
         Intent intent = new Intent();
         intent.setClass(ChangeFonts.this, FullscreenActivity.class);
-        if (PresentMode) {
-            intent.setClass(ChangeFonts.this, PresentMode.class);
+        if (PresenterMode) {
+            intent.setClass(ChangeFonts.this, PresenterMode.class);
             startActivity(intent);
             this.finish();
         } else {

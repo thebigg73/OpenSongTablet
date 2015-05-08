@@ -506,6 +506,10 @@ public class FullscreenActivity extends Activity {
     static int nextSongIndex;
 
     // Presentation mode variables
+    static boolean presoAutoScale;
+    static boolean presoShowChords;
+    static int presoFontSize;
+    static String myAlert;
     static String dualDisplayCapable = "N";
     static int numdisplays;
     static String backgroundImage1;
@@ -519,6 +523,9 @@ public class FullscreenActivity extends Activity {
     static boolean usePresentationOrder = false;
 
     // Song xml data
+    static ArrayList<String> foundSongSections_heading = new ArrayList<> ();
+    static ArrayList<String> foundSongSections_content = new ArrayList<> ();
+
     static CharSequence mTitle = "";
     static CharSequence mTempTitle = "";
     static CharSequence mAuthor = "Gareth Evans";
@@ -640,6 +647,15 @@ public class FullscreenActivity extends Activity {
     static String mySearchText;
 
     // The following get in translation texts
+    static String edit_song_presentation;
+    static String error_notset;
+    static String error_missingsection;
+
+    static String tag_verse;
+    static String tag_chorus;
+    static String tag_prechorus;
+    static String tag_bridge;
+    static String tag_tag;
     static String set;
     static String song;
     static String slide;
@@ -689,12 +705,13 @@ public class FullscreenActivity extends Activity {
     static Runnable checkScrollPosition;
     static Runnable autoScrollRunnable;
 
-    ExpandableListAdapter listAdapterOption;
-    ExpandableListView expListViewOption;
+    public boolean manualScroll;
     List<String> listDataHeaderOption;
     HashMap<String, List<String>> listDataChildOption;
     ExpandableListAdapter listAdapterSong;
+    ExpandableListAdapterOptions listAdapterOption;
     ExpandableListView expListViewSong;
+    ExpandableListView expListViewOption;
     List<String> listDataHeaderSong;
     HashMap<String, List<String>> listDataChildSong;
     private FadeOutMusic1 mtask_fadeout_music1;
@@ -754,7 +771,7 @@ public class FullscreenActivity extends Activity {
     static File dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
     static File dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
 
-    Locale locale;
+    static Locale locale;
 
     static String[][][] bibleVerse; // bibleVerse[book][chapter#][verse#]
 
@@ -793,6 +810,16 @@ public class FullscreenActivity extends Activity {
         slide = getResources().getString(R.string.slide);
         scripture = getResources().getString(R.string.scripture);
 
+        tag_verse = getResources().getString(R.string.tag_verse);
+        tag_chorus = getResources().getString(R.string.tag_chorus);
+        tag_prechorus = getResources().getString(R.string.tag_prechorus);
+        tag_bridge = getResources().getString(R.string.tag_bridge);
+        tag_tag = getResources().getString(R.string.tag_tag);
+
+        edit_song_presentation =  getResources().getString(R.string.edit_song_presentation);
+        error_notset =  getResources().getString(R.string.error_notset);
+        error_missingsection = getResources().getString(R.string.error_missingsection);
+
         toastmessage_maxfont = getResources().getString(R.string.toastmessage_maxfont);
         toastmessage_minfont = getResources().getString(R.string.toastmessage_minfont);
         backtooptions = getResources().getString(R.string.options_backtooptions);
@@ -830,7 +857,7 @@ public class FullscreenActivity extends Activity {
         // If whichMode is Presentation, open that app instead
         if (whichMode.equals("Presentation") && dualDisplayCapable.equals("Y")) {
             Intent performmode = new Intent();
-            performmode.setClass(FullscreenActivity.this, PresentMode.class);
+            performmode.setClass(FullscreenActivity.this, PresenterMode.class);
             startActivity(performmode);
             finish();
         }
@@ -1138,12 +1165,6 @@ public class FullscreenActivity extends Activity {
         v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 
-        // Prepare the two media players (for crossfading)
-        //mPlayer1 = new MediaPlayer();		
-        //mPlayer2 = new MediaPlayer();			
-        //mPlayer1 = MediaPlayer.create(FullscreenActivity.this, R.raw.c);
-        //mPlayer2 = MediaPlayer.create(FullscreenActivity.this, R.raw.c);
-
         scaleGestureDetector = new ScaleGestureDetector(this, new simpleOnScaleGestureListener());
 
         audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -1151,7 +1172,7 @@ public class FullscreenActivity extends Activity {
         //initialVolume = (short) audio.getStreamVolume(AudioManager.STREAM_MUSIC);
         volume = (short) metronomevol;
         //volume = initialVolume;
-        metroTask = new MetronomeAsyncTask();
+        //metroTask = new MetronomeAsyncTask();
         Runtime.getRuntime().gc();
 
     }
@@ -3091,20 +3112,25 @@ public class FullscreenActivity extends Activity {
             listDataChildSong.put(listDataHeaderSong.get(s), song_folders);
         }
 
-        listAdapterSong = new ExpandableListAdapter(this, listDataHeaderSong, listDataChildSong);
+        listAdapterSong = new ExpandableListAdapter(expListViewSong, FullscreenActivity.this, listDataHeaderSong, listDataChildSong);
         expListViewSong.setAdapter(listAdapterSong);
-        expListViewSong.setFastScrollEnabled(true);
 
+        listAdapterSong.notifyDataSetInvalidated();
+        listAdapterSong.notifyDataSetChanged();
 
         // Listen for song folders being opened/expanded
         expListViewSong.setOnGroupExpandListener(new OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                if(groupPosition != lastExpandedGroupPositionSong){
+                if (groupPosition != lastExpandedGroupPositionSong) {
                     expListViewSong.collapseGroup(lastExpandedGroupPositionSong);
                 }
                 lastExpandedGroupPositionSong = groupPosition;
+                listAdapterSong.notifyDataSetInvalidated();
+                listAdapterSong.notifyDataSetChanged();
+
             }
+
         });
 
         // Listen for long clicks in the song menu (songs only, not folders) - ADD TO SET!!!!
@@ -3122,7 +3148,7 @@ public class FullscreenActivity extends Activity {
 
                     songfilename = listDataChildSong.get(listDataHeaderSong.get(groupPosition)).get(childPosition);
 
-                    if (listDataHeaderSong.get(groupPosition)==mainfoldername) {
+                    if (listDataHeaderSong.get(groupPosition).equals(mainfoldername)) {
                         dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
                         whichSongFolder = mainfoldername;
                         whatsongforsetwork = "$**_" + songfilename + "_**$";
@@ -3183,7 +3209,7 @@ public class FullscreenActivity extends Activity {
                 if (!addingtoset) {
                     // Set the appropriate folder name
 
-                    if (listDataHeaderSong.get(groupPosition)==mainfoldername) {
+                    if (listDataHeaderSong.get(groupPosition).equals(mainfoldername)) {
                         dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
                         whichSongFolder = mainfoldername;
                     } else {
@@ -3297,6 +3323,7 @@ public class FullscreenActivity extends Activity {
         List<String> options_song = new ArrayList<String>();
         options_song.add(getResources().getString(R.string.options_song_transpose));
         options_song.add(getResources().getString(R.string.capo_toggle));
+        options_song.add(getResources().getString(R.string.edit_song_presentation));
         options_song.add(getResources().getString(R.string.options_song_convert));
         options_song.add(getResources().getString(R.string.options_song_sharp));
         options_song.add(getResources().getString(R.string.options_song_flat));
@@ -3337,7 +3364,7 @@ public class FullscreenActivity extends Activity {
         listDataChildOption.put(listDataHeaderOption.get(1), options_song);
         listDataChildOption.put(listDataHeaderOption.get(2), options_options);
 
-        listAdapterOption = new ExpandableListAdapter(this, listDataHeaderOption, listDataChildOption);
+        listAdapterOption = new ExpandableListAdapterOptions(expListViewOption, this, listDataHeaderOption, listDataChildOption);
 
         // setting list adapter
         expListViewOption.setAdapter(listAdapterOption);
@@ -3436,7 +3463,7 @@ public class FullscreenActivity extends Activity {
                     m_titleView.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white) );
                     m_titleView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 
-                    if (chosenMenu==getResources().getString(R.string.options_set)) {
+                    if (chosenMenu.equals(getResources().getString(R.string.options_set))) {
 
                         // Load up a list of saved sets as it will likely be needed
                         SetActions.updateOptionListSets(FullscreenActivity.this, view);
@@ -3783,7 +3810,7 @@ public class FullscreenActivity extends Activity {
 
 
 
-                    } else if (chosenMenu==getResources().getString(R.string.options_song)) {
+                    } else if (chosenMenu.equals(getResources().getString(R.string.options_song))) {
                         linkclicked = listDataChildOption.get(listDataHeaderOption.get(groupPosition)).get(childPosition);
 
                         // Now check for song options clicks
@@ -3885,7 +3912,24 @@ public class FullscreenActivity extends Activity {
                             Preferences.savePreferences();
                             redrawTheLyricsTable(main_page);
 
+
                         } else if (childPosition==2) {
+                            // Toggle use Presentation order
+
+                            if (usePresentationOrder) {
+                                usePresentationOrder = false;
+                                myToastMessage = getResources().getString(R.string.edit_song_presentation) + " - "
+                                        + getResources().getString(R.string.off);
+                            } else {
+                                usePresentationOrder = true;
+                                myToastMessage = getResources().getString(R.string.edit_song_presentation) + " - "
+                                        + getResources().getString(R.string.on);
+                            }
+                            ShowToast.showToast(FullscreenActivity.this);
+                            Preferences.savePreferences();
+                            redrawTheLyricsTable(main_page);
+
+                        } else if (childPosition==3) {
                             // Convert to preferred chord format
 
                             if (isPDF) {
@@ -3899,7 +3943,7 @@ public class FullscreenActivity extends Activity {
                                 checkChordFormat();
                             }
 
-                        } else if (childPosition==3) {
+                        } else if (childPosition==4) {
 
                             if (isPDF) {
                                 // Can't do this action on a pdf!
@@ -3913,7 +3957,7 @@ public class FullscreenActivity extends Activity {
                                 checkChordFormat();
                             }
 
-                        } else if (childPosition==4) {
+                        } else if (childPosition==5) {
                             // Use b chords
 
                             if (isPDF) {
@@ -3927,7 +3971,7 @@ public class FullscreenActivity extends Activity {
                                 checkChordFormat();
                             }
 
-                        } else if (childPosition==5) {
+                        } else if (childPosition==6) {
                             // Edit
 
                             if (isPDF) {
@@ -3939,7 +3983,7 @@ public class FullscreenActivity extends Activity {
                                 openEditSong();
                             }
 
-                        } else if (childPosition==6) {
+                        } else if (childPosition==7) {
                             // Edit sticky notes
 
                             if (isPDF) {
@@ -3950,7 +3994,7 @@ public class FullscreenActivity extends Activity {
                                 editNotes(view);
                             }
 
-                        } else if (childPosition==7) {
+                        } else if (childPosition==8) {
                             // Rename
                             // This bit gives the user a prompt to change the song name
                             // First set the browsing directory back to the main one
@@ -4060,7 +4104,7 @@ public class FullscreenActivity extends Activity {
                             alert.show();
 
 
-                        } else if (childPosition==8) {
+                        } else if (childPosition==9) {
                             // Delete
                             // Give the user an are you sure prompt!
                             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -4148,7 +4192,7 @@ public class FullscreenActivity extends Activity {
                                                 dialogClickListener).show();
                             }
 
-                        } else if (childPosition==9) {
+                        } else if (childPosition==10) {
                             // New
                             try {
                                 promptNew();
@@ -4157,7 +4201,7 @@ public class FullscreenActivity extends Activity {
                             }
 
 
-                        } else if (childPosition==10) {
+                        } else if (childPosition==11) {
                             // Export
                             // The current song is the songfile
                             // Believe it or not, it works!!!!!
@@ -4197,7 +4241,7 @@ public class FullscreenActivity extends Activity {
 
                             }
 
-                        } else if (childPosition==11) {
+                        } else if (childPosition==12) {
                             // Create a new song folder
                             try {
                                 promptNewFolder();
@@ -4205,7 +4249,7 @@ public class FullscreenActivity extends Activity {
                                 e.printStackTrace();
                             }
 
-                        } else if (childPosition==12) {
+                        } else if (childPosition==13) {
                             // Edit the name of a song folder
                             try {
                                 editFolderName();
@@ -4217,7 +4261,7 @@ public class FullscreenActivity extends Activity {
 
 
 
-                    } else if (chosenMenu==getResources().getString(R.string.options_options)) {
+                    } else if (chosenMenu.equals(getResources().getString(R.string.options_options))) {
                         // Now check for option options clicks
                         if (childPosition==0) {
                             // Switch theme
@@ -4697,7 +4741,7 @@ public class FullscreenActivity extends Activity {
                                                 tempLanguage = "ru";
                                             } else if (arg1==12) { //zh
                                                 tempLanguage = "zh";
-                                            }
+                                             }
                                         }
                                     });
 
@@ -4706,7 +4750,11 @@ public class FullscreenActivity extends Activity {
                                         @Override
                                         public void onClick(DialogInterface dialog, int whichButton) {
                                             languageToLoad = tempLanguage;
+                                            if (whichSongFolder.equals(mainfoldername)) {
+                                                whichSongFolder = "";
+                                            }
                                             Preferences.savePreferences();
+                                            // Unfortunately this means the MAIN folder name isn't right!
                                             FullscreenActivity.this.recreate();
                                         }
                                     });
@@ -8697,7 +8745,7 @@ public class FullscreenActivity extends Activity {
                         Preferences.savePreferences();
                         Intent presentmode = new Intent();
                         presentmode.setClass(FullscreenActivity.this,
-                                PresentMode.class);
+                                PresenterMode.class);
                         tryKillPads();
                         tryKillMetronome();
                         startActivity(presentmode);

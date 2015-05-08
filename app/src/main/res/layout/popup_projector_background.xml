@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015.
+  ~ The code is provided free of charge.  You can use, modify, contribute and improve it as long as this source is referenced.
+  ~ Commercial use should seek permission.
+  -->
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView2"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_above="@+id/closeFragButtonBackground"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/choose_image1"
+                    android:id="@+id/textView"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="#fff"
+                    android:padding="10dp"
+                    android:layout_weight="0.3"
+                    android:layout_gravity="center_vertical" />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    android:id="@+id/chooseImage1Button"
+                    android:padding="10dp"
+                    android:contentDescription="@string/choose_image1"
+                    android:onClick="chooseImage1Button"
+                    android:layout_weight="0.4"
+                    android:src="@drawable/ic_action_picture"
+                    android:layout_gravity="center_vertical" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/image1CheckBox"
+                    android:padding="10dp"
+                    android:layout_weight="0.3"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/choose_image2"
+                    android:id="@+id/textView5"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="#fff"
+                    android:padding="10dp"
+                    android:layout_weight="0.3"
+                    android:layout_gravity="center_vertical" />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    android:id="@+id/chooseImage2Button"
+                    android:padding="10dp"
+                    android:contentDescription="@string/choose_image2"
+                    android:onClick="chooseImage2Button"
+                    android:layout_weight="0.4"
+                    android:src="@drawable/ic_action_picture"
+                    android:layout_gravity="center_vertical"
+                    android:scaleType="fitCenter" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/image2CheckBox"
+                    android:padding="10dp"
+                    android:layout_weight="0.3"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/choose_video1"
+                    android:id="@+id/textView6"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="#fff"
+                    android:padding="10dp"
+                    android:layout_weight="0.3"
+                    android:elegantTextHeight="false"
+                    android:layout_gravity="center_vertical" />
+
+                <VideoView
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    android:id="@+id/chooseVideo1Button"
+                    android:padding="10dp"
+                    android:contentDescription="@string/choose_video1"
+                    android:background="@drawable/ic_action_video"
+                    android:onClick="chooseVideo1Button"
+                    android:layout_weight="0.4"
+                    android:layout_gravity="center_vertical" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/video1CheckBox"
+                    android:padding="10dp"
+                    android:layout_weight="0.3"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/choose_video2"
+                    android:id="@+id/textView7"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="#fff"
+                    android:padding="10dp"
+                    android:layout_weight="0.3"
+                    android:layout_gravity="center_vertical" />
+
+                <VideoView
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    android:id="@+id/chooseVideo2Button"
+                    android:padding="10dp"
+                    android:contentDescription="@string/choose_video2"
+                    android:background="@drawable/ic_action_video"
+                    android:onClick="chooseVideo2Button"
+                    android:layout_weight="0.4"
+                    android:layout_gravity="center_vertical" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/video2CheckBox"
+                    android:padding="10dp"
+                    android:layout_weight="0.3"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/drawer_close"
+            android:id="@+id/closeFragButtonBackground"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/blue_button"
+            android:onClick="closeBackgroundPopUp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>

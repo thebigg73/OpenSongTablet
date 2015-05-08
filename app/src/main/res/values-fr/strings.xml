@@ -140,11 +140,11 @@
     <string name="setxmargins">"Taille de la marge horizontale"</string>
     <string name="setymargins">"Taille de la marge verticale"</string>
     <string name="update_projector">"Mise à jour\nprojecteur"</string>
-    <string name="black_screen">"écran\nnoir"</string>
-    <string name="choose_image1">"Choisissez background\nimage 1"</string>
-    <string name="choose_image2">"Choisissez background\nimage 2"</string>
-    <string name="choose_video1">"Choisir l'arrière\nplan vidéo 1"</string>
-    <string name="choose_video2">"Choisir l'arrière\nplan vidéo 2"</string>
+    <string name="black_screen">"écran noir"</string>
+    <string name="choose_image1">"Choisissez background image 1"</string>
+    <string name="choose_image2">"Choisissez background image 2"</string>
+    <string name="choose_video1">"Choisir l'arrière plan vidéo 1"</string>
+    <string name="choose_video2">"Choisir l'arrière plan vidéo 2"</string>
     
     <string name="choosechordformat">"Choisissez le format d'accord (seulement utilisé lors de la transposition d'une chanson)"</string>
     
@@ -378,5 +378,10 @@
     <string name="customchords_save">Enregistrer nouvel accord personnalisé à la chanson</string>
     <string name="customchords_saved">Actuellement sauvé personnalisés accords</string>
     <string name="maxfontsize">Autoscale maximum la taille</string>
+	<string name="tag_prechorus">Pre-refrain</string>
+	<string name="tag_chorus">Refrain</string>
+	<string name="tag_bridge">Pont</string>
+	<string name="tag_tag">Libellé</string>
+	<string name="tag_verse">Verset</string>
 
 </resources>
