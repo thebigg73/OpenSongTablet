@@ -13,15 +13,10 @@
         android:background="#000"
         android:visibility="visible">
 
-        <VideoView
-            android:id="@+id/videoBackground"
+        <TextureView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="0dp"
-            android:contentDescription="@string/presoBackground"
-            android:scaleType="fitCenter"
-            android:visibility="gone"
-            android:layout_gravity="center" />
+            android:id="@+id/presoBGVideo" />
 
         <ImageView
             android:id="@+id/presoBGImage"
@@ -50,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/bottomBit"
                 android:layout_alignParentTop="true"
-                android:id="@+id/lyricsHolder">
+                android:id="@+id/lyricsHolder"
+                android:layout_margin="8dp">
 
                 <TextView
                     android:id="@+id/presoLyrics1"

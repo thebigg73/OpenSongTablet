@@ -14,10 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-/**
- * Created by gareth on 05/05/15.
- */
-
 public class PopUpSongDetailsFragment extends DialogFragment {
 
     static PopUpSongDetailsFragment newInstance() {
@@ -31,7 +27,7 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         getDialog().setTitle(FullscreenActivity.songfilename);
         View V = inflater.inflate(R.layout.popup_song_details, container, false);
 
-        Button closeFragDialog = (Button) V.findViewById(R.id.closeFragButton);
+        Button closeFragDialog = (Button) V.findViewById(R.id.cancelPresentationOrder);
         closeFragDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

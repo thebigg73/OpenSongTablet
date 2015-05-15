@@ -6,7 +6,7 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent">
 
     <ScrollView
@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/scrollView4"
         android:layout_above="@+id/closeLayout"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:layout_margin="12dp">
 
         <LinearLayout
             android:orientation="vertical"
@@ -79,9 +80,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/toggleAutoScaleButton"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
                 android:layout_marginBottom="12dp" />
 
             <ImageView
@@ -115,7 +113,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
                 android:id="@+id/fontSizePreview"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="36dp" />
@@ -124,12 +121,14 @@
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/drawer_close"
         android:id="@+id/closeLayout"
+        android:background="@drawable/blue_button"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/blue_button" />
+        android:layout_alignRight="@+id/scrollView4"
+        android:layout_alignEnd="@+id/scrollView4"
+        android:layout_margin="12dp" />
 
 </RelativeLayout>

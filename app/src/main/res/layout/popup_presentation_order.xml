@@ -6,7 +6,7 @@
   -->
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
 
@@ -17,7 +17,8 @@
             android:id="@+id/popuppresorder_presorder_title"
             android:textColor="#ff0"
             android:textAppearance="@android:style/TextAppearance.Medium"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_margin="12dp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -27,15 +28,16 @@
         android:textAppearance="@android:style/TextAppearance.Large"
         android:layout_below="@+id/popuppresorder_presorder_title"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_margin="12dp" />
 
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/scrollView"
-        android:layout_above="@+id/closeFragButton"
         android:layout_below="@+id/popuppres_mPresentation"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="8dp"
+        android:layout_above="@+id/cancelPresentationOrder">
 
         <LinearLayout
             android:orientation="vertical"
@@ -44,7 +46,7 @@
             android:layout_below="@+id/popuppres_mPresentation"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_above="@+id/closeFragButton">
+            android:layout_above="@+id/cancelPresentationOrder">
 
             <TextView
                 android:layout_width="match_parent"
@@ -52,7 +54,8 @@
                 android:textAppearance="@android:style/TextAppearance.Medium"
                 android:text="@string/actions"
                 android:id="@+id/textView2"
-                android:textColor="#ff0" />
+                android:textColor="#ff0"
+                android:layout_margin="12dp" />
 
             <Button
                 android:layout_width="match_parent"
@@ -72,29 +75,43 @@
                 android:textAppearance="@android:style/TextAppearance.Medium"
                 android:text="@string/song_sections"
                 android:id="@+id/textView3"
-                android:textColor="#ff0" />
+                android:textColor="#ff0"
+                android:layout_margin="12dp" />
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                android:id="@+id/songsectionstoadd"></LinearLayout>
+                android:id="@+id/songsectionstoadd" />
         </LinearLayout>
     </ScrollView>
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/closeFragButton"
+        android:id="@+id/cancelPresentationOrder"
         android:enabled="true"
         android:background="@drawable/blue_button"
         android:textColor="#fff"
+        android:text="@string/cancel"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/savePresentationOrder"
+        android:layout_toStartOf="@+id/savePresentationOrder"
+        android:layout_margin="12dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/savePresentationOrder"
+        android:enabled="true"
+        android:background="@drawable/red_button"
+        android:textColor="#fff"
         android:text="@string/edit_save"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentStart="false"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="12dp" />
 
 
 </RelativeLayout>

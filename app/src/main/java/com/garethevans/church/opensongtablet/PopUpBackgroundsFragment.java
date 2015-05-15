@@ -19,18 +19,18 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import java.io.File;
-
-/**
- * Created by gareth on 05/05/15.
- */
 
 public class PopUpBackgroundsFragment extends DialogFragment {
 
     static int whichvideobgpressd;
     String whichCheckBox = "";
+    static TextView presoAlphaText;
+    static SeekBar presoAlphaProgressBar;
 
 
     static PopUpBackgroundsFragment newInstance() {
@@ -62,6 +62,12 @@ public class PopUpBackgroundsFragment extends DialogFragment {
         final CheckBox image2CheckBox = (CheckBox) V.findViewById(R.id.image2CheckBox);
         final CheckBox video1CheckBox = (CheckBox) V.findViewById(R.id.video1CheckBox);
         final CheckBox video2CheckBox = (CheckBox) V.findViewById(R.id.video2CheckBox);
+        presoAlphaProgressBar = (SeekBar) V.findViewById(R.id.presoAlphaProgressBar);
+        presoAlphaText = (TextView) V.findViewById(R.id.presoAlphaText);
+        presoAlphaText.setText((int) (FullscreenActivity.presoAlpha*100)+ " %");
+        presoAlphaProgressBar.setMax(100);
+        presoAlphaProgressBar.setProgress((int) (FullscreenActivity.presoAlpha * 100));
+        presoAlphaProgressBar.setOnSeekBarChangeListener(new setAlphaListener());
 
         // Set the images if they've already been set
         File img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
@@ -95,7 +101,6 @@ public class PopUpBackgroundsFragment extends DialogFragment {
         if (vid2File.isFile()) {
             //Ok file exists.  Try to load it (but beware of errors!
             String bgvid2 = vid2File.toString();
-            //String bgvid2 = android.os.Environment.getExternalStorageDirectory().getPath() + "/documents/OpenSong/Backgrounds/" + FullscreenActivity.backgroundVideo2;
             Uri videoUri = Uri.parse(bgvid2);
             chooseVideo2Button.setVideoURI(videoUri);
             chooseVideo2Button.seekTo(100);
@@ -145,14 +150,19 @@ public class PopUpBackgroundsFragment extends DialogFragment {
 
 
         // Check the appropriate background button
-        if (FullscreenActivity.backgroundToUse.equals("img1")) {
-            image1CheckBox.setChecked(true);
-        } else if (FullscreenActivity.backgroundToUse.equals("img2")) {
-            image2CheckBox.setChecked(true);
-        } else if (FullscreenActivity.backgroundToUse.equals("vid1")) {
-            video1CheckBox.setChecked(true);
-        } else if (FullscreenActivity.backgroundToUse.equals("vid2")) {
-            video2CheckBox.setChecked(true);
+        switch (FullscreenActivity.backgroundToUse) {
+            case "img1":
+                image1CheckBox.setChecked(true);
+                break;
+            case "img2":
+                image2CheckBox.setChecked(true);
+                break;
+            case "vid1":
+                video1CheckBox.setChecked(true);
+                break;
+            case "vid2":
+                video2CheckBox.setChecked(true);
+                break;
         }
 
         // Set the listeners for the CheckBoxes
@@ -303,6 +313,22 @@ public class PopUpBackgroundsFragment extends DialogFragment {
         DialogFragment newFragment = PopUpFileChooseFragment.newInstance();
         newFragment.show(getFragmentManager(), "dialog");
         dismiss();
+    }
+
+    private class setAlphaListener implements SeekBar.OnSeekBarChangeListener {
+
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            FullscreenActivity.presoAlpha = (float)progress / 100f;
+            presoAlphaText.setText(progress + " %");
+            MyPresentation.updateAlpha();
+        }
+
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            // Save preferences
+            Preferences.savePreferences();
+        }
     }
 
 }

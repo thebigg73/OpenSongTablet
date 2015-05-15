@@ -26,7 +26,7 @@ public class StableArrayAdapter extends ArrayAdapter<String> {
 
     final int INVALID_ID = -1;
 
-    HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+    HashMap<String, Integer> mIdMap = new HashMap<>();
 
      public StableArrayAdapter(Context context, int textViewResourceId, List<String> objects) {
         super(context, textViewResourceId, objects);

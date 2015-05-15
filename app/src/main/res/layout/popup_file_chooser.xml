@@ -16,7 +16,8 @@
         android:id="@+id/fileChooserTitle"
         android:text="@string/file_chooser"
         android:textColor="#ff0"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="12dp"
+        android:layout_margin="12dp" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -25,16 +26,18 @@
         android:choiceMode="singleChoice"
         android:fastScrollEnabled="true"
         android:layout_above="@+id/cancelFileButton"
-        android:layout_below="@+id/fileChooserTitle" />
+        android:layout_below="@+id/fileChooserTitle"
+        android:layout_margin="12dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cancel"
         android:id="@+id/cancelFileButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="false"
-        android:background="@drawable/red_button" />
+        android:background="@drawable/red_button"
+        android:layout_margin="12dp" />
 </RelativeLayout>

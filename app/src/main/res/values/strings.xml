@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<string name="preso_alpha">Background opacity</string>
 	<string name="file_chooser">File chooser</string>
 	<string name="display_manager">Reconnect display</string>
 	<string name="song_sections">Song sections</string>
@@ -116,7 +117,7 @@
     <string name="pad_onoroff">Use a pad with this song</string>
     <string name="pad_auto">Auto</string>
     <array name="key_choice">
-        <item></item>
+        <item />
         <item>A</item>
         <item>A#</item>
         <item>Bb</item>
@@ -494,7 +495,7 @@
 	<string name="font_chords_line2">D/F#</string>
 			
 	<string-array name="capo" translatable="false">
-	    <item></item>
+	    <item />
 	    <item>1</item>
 	    <item>2</item>
 	    <item>3</item>
@@ -508,12 +509,12 @@
 	    <item>11</item>
 	</string-array>
 	<string-array name="capoprint" translatable="false">
-	    <item></item>
+	    <item />
 	    <item>Yes</item>
 	    <item>No</item>
 	</string-array>
 	<string-array name="timesig" translatable="false">
-	    <item></item>
+	    <item />
 	    <item>2/4</item>
 	    <item>3/4</item>
 	    <item>3/8</item>
@@ -526,7 +527,7 @@
 	    <item>7/8</item>
    	</string-array>
 	<string-array name="tempo" translatable="false">
-	    <item></item>
+	    <item />
 	    <item>Very Fast</item>
 	    <item>Fast</item>
 	    <item>Moderate</item>

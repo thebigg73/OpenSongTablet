@@ -157,6 +157,7 @@ public class FullscreenActivity extends Activity {
 
     static String emailtext;
 
+    static String whattodo = "";
     ScrollView popupChord;
     Spinner popupChord_Instrument;
 
@@ -509,6 +510,7 @@ public class FullscreenActivity extends Activity {
     static boolean presoAutoScale;
     static boolean presoShowChords;
     static int presoFontSize;
+    static float presoAlpha;
     static String myAlert;
     static String dualDisplayCapable = "N";
     static int numdisplays;
@@ -979,7 +981,7 @@ public class FullscreenActivity extends Activity {
         instrument_choice[0] = getResources().getString(R.string.guitar);
         instrument_choice[1] = getResources().getString(R.string.ukulele);
         instrument_choice[2] = getResources().getString(R.string.mandolin);
-        ArrayAdapter<String> adapter_instrument = new ArrayAdapter<String>(this, R.layout.my_spinner, instrument_choice);
+        ArrayAdapter<String> adapter_instrument = new ArrayAdapter<>(this, R.layout.my_spinner, instrument_choice);
         adapter_instrument.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         popupChord_Instrument.setAdapter(adapter_instrument);
         popupChord_Instrument.setOnItemSelectedListener(new popupChord_InstrumentListener());
@@ -3466,7 +3468,7 @@ public class FullscreenActivity extends Activity {
                     if (chosenMenu.equals(getResources().getString(R.string.options_set))) {
 
                         // Load up a list of saved sets as it will likely be needed
-                        SetActions.updateOptionListSets(FullscreenActivity.this, view);
+                        SetActions.updateOptionListSets();
                         Arrays.sort(mySetsFiles);
                         Arrays.sort(mySetsDirectories);
                         Arrays.sort(mySetsFileNames);
@@ -4210,14 +4212,6 @@ public class FullscreenActivity extends Activity {
                                 myToastMessage = songdoesntexist;
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
-								/*								 Intent intent = new Intent(Intent.ACTION_SEND);
-								 intent.setType("application/xml");
-								 intent.putExtra(Intent.EXTRA_TITLE, songfilename);
-								 intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-								 startActivity(Intent.createChooser(intent,
-										 exportcurrentsong));
-
-								 */
                                 // Run the script that generates the email text which has the set details in it.
                                 try {
                                     ExportPreparer.songParser();
@@ -4233,7 +4227,13 @@ public class FullscreenActivity extends Activity {
                                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, songfilename);
                                 emailIntent.putExtra(Intent.EXTRA_TEXT, emailtext);
                                 emailtext = "";
-                                File file = new File(dir+"/" + songfilename);
+                                File file;
+                                if (whichSongFolder.equals("") || whichSongFolder.equals(mainfoldername) ||
+                                        whichSongFolder.equals("("+mainfoldername+")")) {
+                                    file = new File(dir+"/" + songfilename);
+                                } else {
+                                    file = new File(dir+"/" + whichSongFolder + "/" +songfilename);
+                                }
                                 Uri uri = Uri.fromFile(file);
                                 emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
                                 startActivity(Intent.createChooser(emailIntent,exportcurrentsong));
@@ -6213,6 +6213,9 @@ public class FullscreenActivity extends Activity {
             } else if (mylyricsfontnum == 8) {
                 lyricsfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-Reg.ttf");
                 commentfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-RegIta.ttf");
+            } else if (mylyricsfontnum == 9) {
+                lyricsfont = Typeface.createFromAsset(getAssets(),"fonts/LeagueGothic-Regular.otf");
+                commentfont = Typeface.createFromAsset(getAssets(),"fonts/LeagueGothic-Italic.otf");
             } else {
                 lyricsfont = Typeface.DEFAULT;
                 commentfont = Typeface.DEFAULT;
@@ -6233,6 +6236,8 @@ public class FullscreenActivity extends Activity {
                 chordsfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-Lig.ttf");
             } else if (mychordsfontnum == 8) {
                 chordsfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-Reg.ttf");
+            } else if (mychordsfontnum == 9) {
+                chordsfont = Typeface.createFromAsset(getAssets(),"fonts/LeagueGothic-Regular.otf");
             } else {
                 chordsfont = Typeface.DEFAULT;
             }
@@ -6328,11 +6333,24 @@ public class FullscreenActivity extends Activity {
                         RelativeLayout myCapoBox = new RelativeLayout(this);
                         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                         myCapoBox.setLayoutParams(lp);
-                        myCapoBox.setHorizontalGravity(Gravity.RIGHT);
+                        myCapoBox.setHorizontalGravity(Gravity.LEFT);
                         TextView tCapoBox = new TextView(this);
+                        String capocustomtext = "";
+                        // If key is set
+                        if (!mKey.isEmpty() && mKey!="") {
+                            capocustomtext = capocustomtext + getResources().getString(R.string.edit_song_key) + ": " + mKey + "  ";
+                        }
+                        capocustomtext = capocustomtext + getResources().getString(R.string.edit_song_capo) + " " + mCapo;
+                        if (!mKey.isEmpty() && mKey!="") {
+                            // set key to transpose
+                            temptranspChords = mKey;
+                            Transpose.capoTranspose();
+                            capocustomtext = capocustomtext + " (" + temptranspChords + ")";
+                        }
                         tCapoBox.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-                        tCapoBox.setText(getResources().getString(R.string.edit_song_capo).toString() + " " + mCapo);
-                        tCapoBox.setGravity(Gravity.RIGHT);
+                        //tCapoBox.setText(getResources().getString(R.string.edit_song_capo).toString() + " " + mCapo);
+                        tCapoBox.setText(capocustomtext);
+                        tCapoBox.setGravity(Gravity.LEFT);
                         tCapoBox.setTypeface(lyrics_useThisFont);
                         tCapoBox.setBackgroundColor(lyricsBackgroundColor);
                         tCapoBox.setBackgroundColor(lyricsBackgroundColor);
@@ -6807,7 +6825,6 @@ public class FullscreenActivity extends Activity {
                             android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
                             android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
                     lp.setMargins(0, 0, 0, 0);
-                    //normalrow.setPadding(0, -(int) ((float)tempfontsize/3.0f), 0, 0);
 
                     // create a new TextView
                     TextView tbasic = new TextView(this);
@@ -7948,7 +7965,7 @@ public class FullscreenActivity extends Activity {
         for (int x = 0; x < mSetList.length; x++) {
             // Only add the lines that aren't back to options,
             // save this set, clear this set, load set, edit set, export set or blank line
-            if (mSetList[x].equals(getResources().getString(R.string.options_backtooptions)) == false &&
+            if (!mSetList[x].equals(getResources().getString(R.string.options_backtooptions)) &&
                     mSetList[x].equals(getResources().getString(R.string.options_savethisset)) == false &&
                     mSetList[x].equals(getResources().getString(R.string.options_clearthisset)) == false &&
                     mSetList[x].equals(getResources().getString(R.string.set_edit)) == false &&
@@ -8356,7 +8373,8 @@ public class FullscreenActivity extends Activity {
 
     public void listSavedSets(View view) {
         // update the optionList to show the sets stored in the sets folder
-        SetActions.updateOptionListSets(FullscreenActivity.this, view);
+//        SetActions.updateOptionListSets(FullscreenActivity.this, view);
+        SetActions.updateOptionListSets();
         Arrays.sort(mySetsFiles);
         Arrays.sort(mySetsDirectories);
         Arrays.sort(mySetsFileNames);

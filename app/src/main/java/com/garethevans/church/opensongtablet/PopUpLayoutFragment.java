@@ -17,9 +17,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-/**
- * Created by gareth on 07/05/15.
- */
 public class PopUpLayoutFragment extends DialogFragment {
 
     static PopUpLayoutFragment newInstance() {
@@ -80,11 +77,7 @@ public class PopUpLayoutFragment extends DialogFragment {
                 // Grab the variables, save and close
                 FullscreenActivity.xmargin_presentation = setXMarginProgressBar.getProgress();
                 FullscreenActivity.ymargin_presentation = setYMarginProgressBar.getProgress();
-                if (toggleAutoScaleButton.isChecked()) {
-                    FullscreenActivity.presoAutoScale = true;
-                } else {
-                    FullscreenActivity.presoAutoScale = false;
-                }
+                FullscreenActivity.presoAutoScale = toggleAutoScaleButton.isChecked();
                 FullscreenActivity.presoFontSize = setFontSizeProgressBar.getProgress() + 4;
 
                 Preferences.savePreferences();
@@ -100,7 +93,8 @@ public class PopUpLayoutFragment extends DialogFragment {
                     PresenterMode.autoscale = true;
                     FullscreenActivity.presoAutoScale = true;
                     Preferences.savePreferences();
-                    MyPresentation.doScale();
+                    //MyPresentation.doScale();
+                    MyPresentation.resetFontSize();
                 } else {
                     setFontSizeProgressBar.setEnabled(true);
                     PresenterMode.autoscale = false;
@@ -135,9 +129,9 @@ public class PopUpLayoutFragment extends DialogFragment {
     private class setFontSizeListener implements SeekBar.OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            PresenterMode.tempfontsize = progress + 4;
+            FullscreenActivity.presoFontSize = progress + 4;
             fontSizePreview.setText((progress+4) + " sp");
-            fontSizePreview.setTextSize(progress+4);
+            fontSizePreview.setTextSize(progress + 4);
             MyPresentation.updateFontSize();
         }
 

@@ -6,7 +6,6 @@
 
 package com.garethevans.church.opensongtablet;
 
-import android.app.ActionBar;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,10 +19,6 @@ import android.widget.TextView;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
-
-/**
- * Created by gareth on 05/05/15.
- */
 
 public class PopUpPresentationOrderFragment extends DialogFragment {
 
@@ -72,8 +67,16 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
 
         m_mPresentation.setText(FullscreenActivity.mPresentation);
 
-        Button closeFragDialog = (Button) V.findViewById(R.id.closeFragButton);
-        closeFragDialog.setOnClickListener(new View.OnClickListener() {
+        Button cancelPresentationOrder = (Button) V.findViewById(R.id.cancelPresentationOrder);
+        cancelPresentationOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
+        Button savePresentationOrder = (Button) V.findViewById(R.id.savePresentationOrder);
+        savePresentationOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FullscreenActivity.mPresentation = m_mPresentation.getText().toString().trim();
@@ -89,9 +92,7 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
                 }
                 try {
                     LoadXML.loadXML();
-                } catch (XmlPullParserException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (XmlPullParserException | IOException e) {
                     e.printStackTrace();
                 }
                 dismiss();
