@@ -40,19 +40,26 @@ public class Preferences extends Activity {
 		
 		Log.d("Preferences","Loading");
 
-		FullscreenActivity.presoAlpha = myPreferences.getFloat("presoAlpha",1.0f);
+		FullscreenActivity.lastSetName = myPreferences.getString("lastSetName","");
+		FullscreenActivity.presoAlpha = myPreferences.getFloat("presoAlpha", 1.0f);
 		FullscreenActivity.presoAutoScale = myPreferences.getBoolean("presoAutoScale", true);
 		FullscreenActivity.presoFontSize = myPreferences.getInt("presoFontSize", 4);
 		FullscreenActivity.presoShowChords = myPreferences.getBoolean("presoShowChords", false);
 		FullscreenActivity.xmargin_presentation = myPreferences.getInt("xmargin_presentation", 50);
 		FullscreenActivity.ymargin_presentation = myPreferences.getInt("ymargin_presentation", 25);
-		FullscreenActivity.myAlert = myPreferences.getString("myAlert","");
-		FullscreenActivity.showNextInSet = myPreferences.getString("showNextInSet","bottom");
+		FullscreenActivity.myAlert = myPreferences.getString("myAlert", "");
+		FullscreenActivity.showNextInSet = myPreferences.getString("showNextInSet", "bottom");
 		FullscreenActivity.capoDisplay = myPreferences.getString("capoDisplay", "both");
 		FullscreenActivity.languageToLoad = myPreferences.getString("languageToLoad", "");
-		FullscreenActivity.mylyricsfontnum = myPreferences.getInt("mylyricsfontnum", 7);
+		FullscreenActivity.mylyricsfontnum = myPreferences.getInt("mylyricsfontnum", 8);
 		FullscreenActivity.mychordsfontnum = myPreferences.getInt("mychordsfontnum", 8);
+        FullscreenActivity.mypresofontnum = myPreferences.getInt("mypresofontnum", 8);
 		FullscreenActivity.linespacing = myPreferences.getInt("linespacing", 0);
+        FullscreenActivity.presoTitleSize = myPreferences.getInt("presoTitleSize",10);
+        FullscreenActivity.presoAuthorSize = myPreferences.getInt("presoAuthorSize",8);
+        FullscreenActivity.presoCopyrightSize = myPreferences.getInt("presoCopyrightSize",8);
+        FullscreenActivity.presoAlertSize = myPreferences.getInt("presoAlertSize",8);
+
 
 		FullscreenActivity.pageturner_NEXT = myPreferences.getInt("pageturner_NEXT", 22);
 		FullscreenActivity.pageturner_PREVIOUS = myPreferences.getInt("pageturner_PREVIOUS", 21);
@@ -223,16 +230,23 @@ public class Preferences extends Activity {
 
 		SharedPreferences.Editor editor = myPreferences.edit();
 
+		editor.putString("lastSetName", FullscreenActivity.lastSetName);
 		editor.putFloat("presoAlpha", FullscreenActivity.presoAlpha);
 		editor.putBoolean("presoAutoScale", FullscreenActivity.presoAutoScale);
 		editor.putInt("presoFontSize", FullscreenActivity.presoFontSize);
 		editor.putBoolean("presoShowChords", FullscreenActivity.presoShowChords);
+        editor.putInt("presoTitleSize", FullscreenActivity.presoTitleSize);
+        editor.putInt("presoAuthorSize", FullscreenActivity.presoAuthorSize);
+        editor.putInt("presoCopyrightSize", FullscreenActivity.presoCopyrightSize);
+        editor.putInt("presoAlertSize", FullscreenActivity.presoAlertSize);
+
 
 		editor.putString("myAlert", FullscreenActivity.myAlert);
 		editor.putString("capoDisplay", FullscreenActivity.capoDisplay);
 		editor.putString("languageToLoad", FullscreenActivity.languageToLoad);
 		editor.putInt("mylyricsfontnum", FullscreenActivity.mylyricsfontnum);
 		editor.putInt("mychordsfontnum", FullscreenActivity.mychordsfontnum);
+        editor.putInt("mypresofontnum", FullscreenActivity.mypresofontnum);
 		editor.putInt("linespacing", FullscreenActivity.linespacing);
 
 		editor.putInt("pageturner_NEXT", FullscreenActivity.pageturner_NEXT);

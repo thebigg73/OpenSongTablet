@@ -136,6 +136,24 @@ public class FullscreenActivity extends Activity {
     Drawable r3;
     Drawable r4;
     Drawable r5;
+
+    static Typeface typeface0;
+    static Typeface typeface1;
+    static Typeface typeface2;
+    static Typeface typeface3;
+    static Typeface typeface4;
+    static Typeface typeface5;
+    static Typeface typeface4i;
+    static Typeface typeface5i;
+    static Typeface typeface6;
+    static Typeface typeface7;
+    static Typeface typeface8;
+    static Typeface typeface9;
+    static Typeface typeface7i;
+    static Typeface typeface8i;
+    static Typeface typeface9i;
+
+    static String lastSetName;
     TableLayout chordimageshere;
     static String chordInstrument = "g";
     static String showNextInSet= "top";
@@ -510,6 +528,11 @@ public class FullscreenActivity extends Activity {
     static boolean presoAutoScale;
     static boolean presoShowChords;
     static int presoFontSize;
+    static int presoTitleSize;
+    static int presoAuthorSize;
+    static int presoCopyrightSize;
+    static int presoAlertSize;
+
     static float presoAlpha;
     static String myAlert;
     static String dualDisplayCapable = "N";
@@ -691,9 +714,12 @@ public class FullscreenActivity extends Activity {
     static String mainfoldername;
     static int mylyricsfontnum;
     static int mychordsfontnum;
-    Typeface lyricsfont;
-    Typeface commentfont;
-    Typeface chordsfont;
+    static int mypresofontnum;
+    static Typeface lyricsfont;
+    static Typeface commentfont;
+    static Typeface chordsfont;
+    static Typeface presofont;
+
     static Animation animationFadeIn;
     static Animation animationFadeOut;
     static View main_page;
@@ -851,6 +877,25 @@ public class FullscreenActivity extends Activity {
             // Capable of dual head presentations
             dualDisplayCapable = "Y";
         }
+
+        // Set up the available typefaces
+        // Initialise the typefaces available
+        typeface0 = Typeface.DEFAULT;
+        typeface1 = Typeface.MONOSPACE;
+        typeface2 = Typeface.SANS_SERIF;
+        typeface3 = Typeface.SERIF;
+        typeface4 = Typeface.createFromAsset(getAssets(),"fonts/FiraSansOT-Light.otf");
+        typeface4i = Typeface.createFromAsset(getAssets(),"fonts/FiraSans-LightItalic.otf");
+        typeface5 = Typeface.createFromAsset(getAssets(),"fonts/FiraSansOT-Regular.otf");
+        typeface5i = Typeface.createFromAsset(getAssets(),"fonts/FiraSans-Italic.otf");
+        typeface6 = Typeface.createFromAsset(getAssets(),"fonts/KaushanScript-Regular.otf");
+        typeface7 = Typeface.createFromAsset(getAssets(),"fonts/Lato-Lig.ttf");
+        typeface7i = Typeface.createFromAsset(getAssets(),"fonts/Lato-LigIta.ttf");
+        typeface8 = Typeface.createFromAsset(getAssets(),"fonts/Lato-Reg.ttf");
+        typeface8i = Typeface.createFromAsset(getAssets(),"fonts/Lato-RegIta.ttf");
+        typeface9 = Typeface.createFromAsset(getAssets(),"fonts/LeagueGothic-Regular.otf");
+        typeface9i = Typeface.createFromAsset(getAssets(),"fonts/LeagueGothic-Italic.otf");
+
 
         // If the user hasn't set the preferred storage location
         // Or the default storage location isn't available, ask them!
@@ -1174,15 +1219,13 @@ public class FullscreenActivity extends Activity {
         //initialVolume = (short) audio.getStreamVolume(AudioManager.STREAM_MUSIC);
         volume = (short) metronomevol;
         //volume = initialVolume;
-        //metroTask = new MetronomeAsyncTask();
+        metroTask = new MetronomeAsyncTask();
         Runtime.getRuntime().gc();
 
     }
 
-
     public void exportPDF() {
     }
-
 
     public void hideKeyboard() {
         InputMethodManager inputManager = (InputMethodManager)
@@ -3906,6 +3949,9 @@ public class FullscreenActivity extends Activity {
                             if (capoDisplay.equals("both")) {
                                 capoDisplay = "capoonly";
                                 myToastMessage = getResources().getString(R.string.capo_toggle_onlycapo);
+                            } else if (capoDisplay.equals("capoonly")) {
+                                capoDisplay = "native";
+                                myToastMessage = getResources().getString(R.string.capo_toggle_native);
                             } else {
                                 capoDisplay = "both";
                                 myToastMessage = getResources().getString(R.string.capo_toggle_bothcapo);
@@ -4790,7 +4836,7 @@ public class FullscreenActivity extends Activity {
                                     Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = settings.edit();
                             editor.putInt("showSplashVersion", 0);
-                            editor.commit();
+                            editor.apply();
                             Intent intent = new Intent();
                             intent.setClass(FullscreenActivity.this, SettingsActivity.class);
                             tryKillPads();
@@ -5501,6 +5547,10 @@ public class FullscreenActivity extends Activity {
             tempfontsize = mFontSize;
         }
 
+        Log.d("d","tempfontsize="+tempfontsize);
+        Log.d("d", "mainfontsize=" + mainfontsize);
+        Log.d("d", "onecolfontsize=" + onecolfontsize);
+
         // Get the autoscroll info initialised
         if (mtask_autoscroll_music!=null) {
             mtask_autoscroll_music.cancel(true);
@@ -6006,6 +6056,7 @@ public class FullscreenActivity extends Activity {
                         tempfontsize = mainfontsize*onecolfontsize - 0.4f;
                         tempsectionsize = sectionfontsize*onecolfontsize - 0.4f;
                         scrollpage = scrollpage_onecol;
+
                         try {
                             showLyrics(main_page);
                         } catch (IOException e) {
@@ -6055,6 +6106,9 @@ public class FullscreenActivity extends Activity {
                     }
 
                     // Make sure font sizes don't exceed the max
+                    if (mMaxFontSize<20) {
+                        mMaxFontSize = 20;
+                    }
                     if (tempfontsize>mMaxFontSize) {
                         tempfontsize=mMaxFontSize;
                     }
@@ -6180,7 +6234,7 @@ public class FullscreenActivity extends Activity {
         if (!isPDF) {
             // Set a variable to decide if capo chords should be shown
             showCapo = false;
-            if (mCapoPrint.equals("true") &&
+            if (mCapoPrint.equals("true") && !capoDisplay.equals("native") &&
                     (mCapo.equals("1") || mCapo.equals("2") || mCapo.equals("3") ||
                             mCapo.equals("4") || mCapo.equals("5") || mCapo.equals("6") ||
                             mCapo.equals("7") || mCapo.equals("8") || mCapo.equals("9") ||
@@ -6189,59 +6243,7 @@ public class FullscreenActivity extends Activity {
             }
 
             // Decide on the font being used
-            if (mylyricsfontnum == 1) {
-                lyricsfont = Typeface.MONOSPACE;
-                commentfont = Typeface.MONOSPACE;
-            } else if (mylyricsfontnum == 2) {
-                lyricsfont = Typeface.SANS_SERIF;
-                commentfont = Typeface.SANS_SERIF;
-            } else if (mylyricsfontnum == 3) {
-                lyricsfont = Typeface.SERIF;
-                commentfont = Typeface.SERIF;
-            } else if (mylyricsfontnum == 4) {
-                lyricsfont = Typeface.createFromAsset(getAssets(),"fonts/FiraSansOT-Light.otf");
-                commentfont = Typeface.createFromAsset(getAssets(),"fonts/FiraSans-LightItalic.otf");
-            } else if (mylyricsfontnum == 5) {
-                lyricsfont = Typeface.createFromAsset(getAssets(),"fonts/FiraSansOT-Regular.otf");
-                commentfont = Typeface.createFromAsset(getAssets(),"fonts/FiraSans-Italic.otf");
-            } else if (mylyricsfontnum == 6) {
-                lyricsfont = Typeface.createFromAsset(getAssets(),"fonts/KaushanScript-Regular.otf");
-                commentfont = Typeface.createFromAsset(getAssets(),"fonts/KaushanScript-Regular.otf");
-            } else if (mylyricsfontnum == 7) {
-                lyricsfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-Lig.ttf");
-                commentfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-LigIta.ttf");
-            } else if (mylyricsfontnum == 8) {
-                lyricsfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-Reg.ttf");
-                commentfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-RegIta.ttf");
-            } else if (mylyricsfontnum == 9) {
-                lyricsfont = Typeface.createFromAsset(getAssets(),"fonts/LeagueGothic-Regular.otf");
-                commentfont = Typeface.createFromAsset(getAssets(),"fonts/LeagueGothic-Italic.otf");
-            } else {
-                lyricsfont = Typeface.DEFAULT;
-                commentfont = Typeface.DEFAULT;
-            }
-            if (mychordsfontnum == 1) {
-                chordsfont = Typeface.MONOSPACE;
-            } else if (mychordsfontnum == 2) {
-                chordsfont = Typeface.SANS_SERIF;
-            } else if (mychordsfontnum == 3) {
-                chordsfont = Typeface.SERIF;
-            } else if (mychordsfontnum == 4) {
-                chordsfont = Typeface.createFromAsset(getAssets(),"fonts/FiraSansOT-Light.otf");
-            } else if (mychordsfontnum == 5) {
-                chordsfont = Typeface.createFromAsset(getAssets(),"fonts/FiraSansOT-Regular.otf");
-            } else if (mychordsfontnum == 6) {
-                chordsfont = Typeface.createFromAsset(getAssets(),"fonts/KaushanScript-Regular.otf");
-            } else if (mychordsfontnum == 7) {
-                chordsfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-Lig.ttf");
-            } else if (mychordsfontnum == 8) {
-                chordsfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-Reg.ttf");
-            } else if (mychordsfontnum == 9) {
-                chordsfont = Typeface.createFromAsset(getAssets(),"fonts/LeagueGothic-Regular.otf");
-            } else {
-                chordsfont = Typeface.DEFAULT;
-            }
-
+            SetTypeFace.setTypeface();
 
             // Go through each section with start and end lines
             // Split points are dealt with inline

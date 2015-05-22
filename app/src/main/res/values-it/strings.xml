@@ -383,5 +383,17 @@
 	<string name="tag_bridge">Ponte</string>
 	<string name="tag_tag">Tag</string>
 	<string name="tag_verse">Strofa</string>
+	<string name="actions">Azioni</string>
+	<string name="alert">Avviso</string>
+	<string name="alert_text">Inserisci il testo del messaggio</string>
+	<string name="capo_toggle_native">Mostra accordi solo nativi</string>
+	<string name="display_manager">Ricollegare Display</string>
+	<string name="error_missingsection">Sezioni mancanti</string>
+	<string name="error_notset">Non impostato</string>
+	<string name="file_chooser">chooser File</string>
+	<string name="layout">Impaginazione</string>
+	<string name="preso_alpha">Sfondo opacità</string>
+	<string name="settings">Impostazioni</string>
+	<string name="song_sections">Sezioni canzone</string>
 
 </resources>

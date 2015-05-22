@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView"
-                android:src="@drawable/blue_line"
+                android:src="@drawable/grey_line"
                 android:layout_margin="12dp"
                 android:contentDescription="@string/layout" />
 
@@ -86,9 +86,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView2"
-                android:src="@drawable/blue_line"
+                android:src="@drawable/grey_line"
                 android:layout_margin="12dp"
                 android:contentDescription="@string/layout" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/options_options_fonts"
+                android:id="@+id/textView23"
+                android:textColor="#ff0" />
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/presoFontSpinner"
+                android:layout_margin="8dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -116,6 +130,74 @@
                 android:id="@+id/fontSizePreview"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="36dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView4"
+                android:src="@drawable/grey_line"
+                android:layout_margin="12dp"
+                android:contentDescription="@string/layout" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/edit_song_title"
+                android:id="@+id/textView24"
+                android:textColor="#ff0"
+                android:layout_margin="8dp" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/presoTitleSizeSeekBar"
+                android:focusableInTouchMode="false"
+                android:layout_margin="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/edit_song_author"
+                android:id="@+id/textView25"
+                android:layout_margin="8dp" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/presoAuthorSizeSeekBar"
+                android:layout_margin="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/edit_song_copyright"
+                android:id="@+id/textView26"
+                android:textColor="#ff0"
+                android:layout_margin="8dp" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/presoCopyrightSizeSeekBar"
+                android:layout_margin="12dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/alert"
+                android:id="@+id/textView27"
+                android:textColor="#ff0"
+                android:layout_margin="8dp" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/presoAlertSizeSeekBar"
+                android:layout_margin="12dp" />
         </LinearLayout>
     </ScrollView>
 

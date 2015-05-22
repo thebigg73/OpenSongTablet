@@ -11,11 +11,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import java.util.ArrayList;
 
 public class PopUpLayoutFragment extends DialogFragment {
 
@@ -30,6 +35,11 @@ public class PopUpLayoutFragment extends DialogFragment {
     ToggleButton toggleAutoScaleButton;
     SeekBar setFontSizeProgressBar;
     TextView fontSizePreview;
+    Spinner presoFontSpinner;
+    SeekBar presoTitleSizeSeekBar;
+    SeekBar presoAuthorSizeSeekBar;
+    SeekBar presoCopyrightSizeSeekBar;
+    SeekBar presoAlertSizeSeekBar;
     Button closeLayout;
 
     @Override
@@ -43,13 +53,29 @@ public class PopUpLayoutFragment extends DialogFragment {
         setFontSizeProgressBar = (SeekBar) V.findViewById(R.id.setFontSizeProgressBar);
         fontSizePreview = (TextView) V.findViewById(R.id.fontSizePreview);
         closeLayout = (Button) V.findViewById(R.id.closeLayout);
+        presoFontSpinner = (Spinner) V.findViewById(R.id.presoFontSpinner);
+        presoTitleSizeSeekBar = (SeekBar) V.findViewById(R.id.presoTitleSizeSeekBar);
+        presoAuthorSizeSeekBar = (SeekBar) V.findViewById(R.id.presoAuthorSizeSeekBar);
+        presoCopyrightSizeSeekBar = (SeekBar) V.findViewById(R.id.presoCopyrightSizeSeekBar);
+        presoAlertSizeSeekBar = (SeekBar) V.findViewById(R.id.presoAlertSizeSeekBar);
+
+        SetTypeFace.setTypeface();
 
         // Set the stuff up to what it should be from preferences
+        fontSizePreview.setTypeface(FullscreenActivity.presofont);
         fontSizePreview.setText((FullscreenActivity.presoFontSize - 4) + " sp");
         fontSizePreview.setTextSize(FullscreenActivity.presoFontSize);
         setXMarginProgressBar.setMax(200);
         setYMarginProgressBar.setMax(200);
         setFontSizeProgressBar.setMax(50);
+        presoTitleSizeSeekBar.setMax(32);
+        presoAuthorSizeSeekBar.setMax(32);
+        presoCopyrightSizeSeekBar.setMax(32);
+        presoAlertSizeSeekBar.setMax(32);
+        presoTitleSizeSeekBar.setProgress(FullscreenActivity.presoTitleSize);
+        presoAuthorSizeSeekBar.setProgress(FullscreenActivity.presoAuthorSize);
+        presoCopyrightSizeSeekBar.setProgress(FullscreenActivity.presoCopyrightSize);
+        presoAlertSizeSeekBar.setProgress(FullscreenActivity.presoAlertSize);
 
         setXMarginProgressBar.setProgress(FullscreenActivity.xmargin_presentation);
         setYMarginProgressBar.setProgress(FullscreenActivity.ymargin_presentation);
@@ -67,10 +93,43 @@ public class PopUpLayoutFragment extends DialogFragment {
             fontSizePreview.setAlpha(1.0f);
         }
 
+        // Set up the font spinner
+        ArrayList<String> font_choices = new ArrayList<>();
+        font_choices.add(getResources().getString(R.string.font_default));
+        font_choices.add(getResources().getString(R.string.font_monospace));
+        font_choices.add(getResources().getString(R.string.font_sans));
+        font_choices.add(getResources().getString(R.string.font_serif));
+        font_choices.add(getResources().getString(R.string.font_firasanslight));
+        font_choices.add(getResources().getString(R.string.font_firasansregular));
+        font_choices.add(getResources().getString(R.string.font_kaushanscript));
+        font_choices.add(getResources().getString(R.string.font_latolight));
+        font_choices.add(getResources().getString(R.string.font_latoregular));
+        font_choices.add(getResources().getString(R.string.font_leaguegothic));
+        ArrayAdapter<String> choose_fonts = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, font_choices);
+        choose_fonts.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        presoFontSpinner.setAdapter(choose_fonts);
+        presoFontSpinner.setSelection(FullscreenActivity.mypresofontnum);
+
         // Set listeners
+        presoFontSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                FullscreenActivity.mypresofontnum = position;
+                SetTypeFace.setTypeface();
+                fontSizePreview.setTypeface(FullscreenActivity.presofont);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
         setXMarginProgressBar.setOnSeekBarChangeListener(new setMargin_Listener());
         setYMarginProgressBar.setOnSeekBarChangeListener(new setMargin_Listener());
         setFontSizeProgressBar.setOnSeekBarChangeListener(new setFontSizeListener());
+        presoTitleSizeSeekBar.setOnSeekBarChangeListener(new presoSectionSizeListener());
+        presoAuthorSizeSeekBar.setOnSeekBarChangeListener(new presoSectionSizeListener());
+        presoCopyrightSizeSeekBar.setOnSeekBarChangeListener(new presoSectionSizeListener());
+        presoAlertSizeSeekBar.setOnSeekBarChangeListener(new presoSectionSizeListener());
+
         closeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +167,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         return V;
     }
 
+
     private class setMargin_Listener implements SeekBar.OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -130,7 +190,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             FullscreenActivity.presoFontSize = progress + 4;
-            fontSizePreview.setText((progress+4) + " sp");
+            fontSizePreview.setText((progress + 4) + " sp");
             fontSizePreview.setTextSize(progress + 4);
             MyPresentation.updateFontSize();
         }
@@ -144,4 +204,22 @@ public class PopUpLayoutFragment extends DialogFragment {
         }
     }
 
+    private class presoSectionSizeListener implements SeekBar.OnSeekBarChangeListener {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            FullscreenActivity.presoTitleSize = presoTitleSizeSeekBar.getProgress();
+            FullscreenActivity.presoAuthorSize = presoAuthorSizeSeekBar.getProgress();
+            FullscreenActivity.presoCopyrightSize = presoCopyrightSizeSeekBar.getProgress();
+            FullscreenActivity.presoAlertSize = presoAlertSizeSeekBar.getProgress();
+            MyPresentation.updateFontSize();
+        }
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            // Save the preferences
+            Preferences.savePreferences();
+        }
+    }
 }

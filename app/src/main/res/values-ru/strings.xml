@@ -383,5 +383,17 @@
 	<string name="tag_bridge">Мост</string>
 	<string name="tag_tag">Тэг</string>
 	<string name="tag_verse">Куплет</string>
+	<string name="actions">действия</string>
+	<string name="alert">Предупреждение</string>
+	<string name="alert_text">Введите текст сообщения</string>
+	<string name="capo_toggle_native">Показать только родные аккорды</string>
+	<string name="display_manager">Снова дисплей</string>
+	<string name="error_missingsection">Недостающие участки</string>
+	<string name="error_notset">Не установлено</string>
+	<string name="file_chooser">кто выбирает файла</string>
+	<string name="layout">Pасположение</string>
+	<string name="preso_alpha">Фон непрозрачность</string>
+	<string name="settings">настройки</string>
+	<string name="song_sections">разделы песни</string>
 
 </resources>

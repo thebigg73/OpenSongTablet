@@ -382,5 +382,17 @@
 	<string name="tag_prechorus">プリコーラス</string>
 	<string name="tag_chorus">折り返し</string>
 	<string name="tag_bridge">ブリッジ</string>
+	<string name="actions">アクション</string>
+	<string name="alert">アラート</string>
+	<string name="alert_text">メッセージテキストを入力してください</string>
+	<string name="capo_toggle_native">唯一のネイティブコードを表示</string>
+	<string name="display_manager">ディスプレイを接続しなおし</string>
+	<string name="error_missingsection">不足しているセクション</string>
+	<string name="error_notset">設定されていません</string>
+	<string name="file_chooser">ファイルチュー</string>
+	<string name="layout">設計</string>
+	<string name="preso_alpha">背景の不透明度</string>
+	<string name="settings">[設定]</string>
+	<string name="song_sections">曲のセクション</string>
 
 </resources>

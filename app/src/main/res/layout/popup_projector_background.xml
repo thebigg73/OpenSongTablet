@@ -57,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageView3"
-                android:src="@drawable/blue_line"
+                android:src="@drawable/grey_line"
                 android:layout_margin="12dp"
                 android:contentDescription="@string/layout" />
 

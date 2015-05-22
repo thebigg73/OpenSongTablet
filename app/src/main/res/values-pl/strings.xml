@@ -383,5 +383,17 @@
 	<string name="tag_bridge">Przejście</string>
 	<string name="tag_tag">Dodatek</string>
 	<string name="tag_verse">Zwrotka</string>
+	<string name="actions">Akcje</string>
+	<string name="alert">Komunikat</string>
+	<string name="alert_text">Wprowadź tekst wiadomości</string>
+	<string name="capo_toggle_native">Pokaż tylko rodzimych akordy</string>
+	<string name="display_manager">Podłącz wyświetlacz</string>
+	<string name="error_missingsection">Brakujące odcinki</string>
+	<string name="error_notset">Nie ustawiony</string>
+	<string name="file_chooser">Wyboru pliku</string>
+	<string name="layout">układ</string>
+	<string name="preso_alpha">Zadymienie w tle</string>
+	<string name="settings">Ustawienia</string>
+	<string name="song_sections">Sekcje piosenki</string>
 
 </resources>

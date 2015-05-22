@@ -387,5 +387,17 @@
 	<string name="tag_prechorus">前合唱</string>
 	<string name="tag_chorus">副歌 </string>
 	<string name="tag_bridge">桥梁</string>
+	<string name="actions">行动</string>
+	<string name="alert">警报</string>
+	<string name="alert_text">输入文本消息</string>
+	<string name="capo_toggle_native">只显示本地和弦</string>
+	<string name="display_manager">重新连接显示器</string>
+	<string name="error_missingsection">缺少的部分</string>
+	<string name="error_notset">没有设置</string>
+	<string name="file_chooser">文件选择器</string>
+	<string name="layout">布局</string>
+	<string name="preso_alpha">背景透明度</string>
+	<string name="settings">设置</string>
+	<string name="song_sections">歌节</string>
 
 </resources>

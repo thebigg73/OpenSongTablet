@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import java.io.File;
 import java.io.IOException;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -11,7 +10,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.SurfaceTexture;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
@@ -19,7 +17,6 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.TextureView;
@@ -27,9 +24,11 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -64,10 +63,17 @@ public final class MyPresentation extends Presentation
     static FrameLayout preso;
     static FrameLayout lyricsHolder;
 
+    static View lyricsINVScrollHolder;
+    static View lyricsOUTVScrollHolder;
+    static View lyricsINHScrollHolder;
+    static View lyricsOUTHScrollHolder;
+    static View lyrics1VScrollHolder;
+    static View lyrics2VScrollHolder;
+    static View lyrics1HScrollHolder;
+    static View lyrics2HScrollHolder;
 
     int lyricsTextColor = FullscreenActivity.dark_lyricsTextColor;
     int lyricsShadowColor = FullscreenActivity.dark_lyricsBackgroundColor;
-    Typeface lyricsfont;
     static Drawable defimage;
     static Bitmap myBitmap;
     static Drawable dr;
@@ -111,86 +117,86 @@ public final class MyPresentation extends Presentation
         presoBGVideo.setSurfaceTextureListener(this);
         fixBackground();
 
-        if (FullscreenActivity.mylyricsfontnum == 1) {
-            lyricsfont = Typeface.MONOSPACE;
-        } else if (FullscreenActivity.mylyricsfontnum == 2) {
-            lyricsfont = Typeface.SANS_SERIF;
-        } else if (FullscreenActivity.mylyricsfontnum == 3) {
-            lyricsfont = Typeface.SERIF;
-        } else if (FullscreenActivity.mylyricsfontnum == 4) {
-            lyricsfont = Typeface.createFromAsset(getContext().getAssets(), "fonts/FiraSansOT-Light.otf");
-        } else if (FullscreenActivity.mylyricsfontnum == 5) {
-            lyricsfont = Typeface.createFromAsset(getContext().getAssets(), "fonts/FiraSansOT-Regular.otf");
-        } else if (FullscreenActivity.mylyricsfontnum == 6) {
-            lyricsfont = Typeface.createFromAsset(getContext().getAssets(), "fonts/KaushanScript-Regular.otf");
-        } else if (FullscreenActivity.mylyricsfontnum == 7) {
-            lyricsfont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Lato-Lig.ttf");
-        } else if (FullscreenActivity.mylyricsfontnum == 8) {
-            lyricsfont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Lato-Reg.ttf");
-        } else {
-            lyricsfont = Typeface.DEFAULT;
-        }
+        SetTypeFace.setTypeface();
 
         presoLyrics1 = (TextView) findViewById(R.id.presoLyrics1);
         presoLyrics1.setTextColor(0xffffffff);
-        presoLyrics1.setTypeface(lyricsfont);
+        presoLyrics1.setTypeface(FullscreenActivity.presofont);
         presoLyrics1.setText(" ");
-        presoLyrics1.setTextSize(8);
+        presoLyrics1.setTextSize(72);
         presoLyrics1.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
         presoLyrics1.setAlpha(0.0f);
         presoLyrics1.setVisibility(View.GONE);
+        presoLyrics1.setHorizontallyScrolling(true);
+        presoLyrics1.setPivotY(0);
+        presoLyrics1.setTranslationY(0);
+        presoLyrics1.setY(0);
         presoLyrics2 = (TextView) findViewById(R.id.presoLyrics2);
         presoLyrics2.setTextColor(0xffffffff);
-        presoLyrics2.setTypeface(lyricsfont);
+        presoLyrics2.setTypeface(FullscreenActivity.presofont);
         presoLyrics2.setText(" ");
-        presoLyrics2.setTextSize(8);
+        presoLyrics2.setTextSize(72);
         presoLyrics2.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
         presoLyrics2.setAlpha(0.0f);
         presoLyrics2.setVisibility(View.GONE);
+        presoLyrics2.setHorizontallyScrolling(true);
+        presoLyrics2.setPivotY(0);
+        presoLyrics2.setTranslationY(0);
+        presoLyrics2.setY(0);
         presoTitle1 = (TextView) findViewById(R.id.presoTitle1);
         presoTitle1.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
         presoTitle1.setTextColor(lyricsTextColor);
-        presoTitle1.setTextSize(10);
-        presoTitle1.setTypeface(lyricsfont);
+        presoTitle1.setTextSize(FullscreenActivity.presoTitleSize);
+        presoTitle1.setTypeface(FullscreenActivity.presofont);
         presoTitle1.setText(" ");
         presoTitle2 = (TextView) findViewById(R.id.presoTitle2);
         presoTitle2.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
         presoTitle2.setTextColor(lyricsTextColor);
-        presoTitle2.setTextSize(10);
-        presoTitle2.setTypeface(lyricsfont);
+        presoTitle2.setTextSize(FullscreenActivity.presoTitleSize);
+        presoTitle2.setTypeface(FullscreenActivity.presofont);
         presoTitle2.setText(" ");
         presoAuthor1 = (TextView) findViewById(R.id.presoAuthor1);
         presoAuthor1.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
         presoAuthor1.setTextColor(lyricsTextColor);
         presoAuthor1.setText(" ");
-        presoAuthor1.setTextSize(8);
-        presoAuthor1.setTypeface(lyricsfont);
+        presoAuthor1.setTextSize(FullscreenActivity.presoAuthorSize);
+        presoAuthor1.setTypeface(FullscreenActivity.presofont);
         presoAuthor2 = (TextView) findViewById(R.id.presoAuthor2);
         presoAuthor2.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
         presoAuthor2.setTextColor(lyricsTextColor);
         presoAuthor2.setText(" ");
-        presoAuthor2.setTextSize(8);
-        presoAuthor2.setTypeface(lyricsfont);
+        presoAuthor2.setTextSize(FullscreenActivity.presoAuthorSize);
+        presoAuthor2.setTypeface(FullscreenActivity.presofont);
         presoAlert = (TextView) findViewById(R.id.presoAlert);
         presoAlert.setVisibility(View.INVISIBLE);
         presoAlert.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
         presoAlert.setTextColor(lyricsTextColor);
-        presoAlert.setTextSize(8);
-        presoAlert.setTypeface(lyricsfont);
+        presoAlert.setTextSize(FullscreenActivity.presoAlertSize);
+        presoAlert.setTypeface(FullscreenActivity.presofont);
         presoAlert.setText("");
         presoCopyright1 = (TextView) findViewById(R.id.presoCopyright1);
         presoCopyright1.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
         presoCopyright1.setTextColor(lyricsTextColor);
-        presoCopyright1.setTextSize(8);
-        presoCopyright1.setTypeface(lyricsfont);
+        presoCopyright1.setTextSize(FullscreenActivity.presoCopyrightSize);
+        presoCopyright1.setTypeface(FullscreenActivity.presofont);
         presoCopyright1.setText(" ");
         presoCopyright2 = (TextView) findViewById(R.id.presoCopyright2);
         presoCopyright2.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
         presoCopyright2.setTextColor(lyricsTextColor);
-        presoCopyright2.setTextSize(8);
-        presoCopyright2.setTypeface(lyricsfont);
+        presoCopyright2.setTextSize(FullscreenActivity.presoCopyrightSize);
+        presoCopyright2.setTypeface(FullscreenActivity.presofont);
         presoCopyright2.setText(" ");
         presoLogo = (ImageView) findViewById(R.id.presoLogo);
+
+        lyrics1VScrollHolder = (ScrollView) findViewById(R.id.scrollView9);
+        lyrics2VScrollHolder = (ScrollView) findViewById(R.id.scrollView10);
+        lyrics1HScrollHolder = (HorizontalScrollView) findViewById(R.id.horizontalScrollView1);
+        lyrics2HScrollHolder = (HorizontalScrollView) findViewById(R.id.horizontalScrollView2);
+
+        lyricsINVScrollHolder = lyrics1VScrollHolder;
+        lyricsOUTVScrollHolder = lyrics2VScrollHolder;
+        lyricsINHScrollHolder = lyrics1HScrollHolder;
+        lyricsOUTHScrollHolder = lyrics2HScrollHolder;
 
         presoLyrics1.setPadding(FullscreenActivity.xmargin_presentation, FullscreenActivity.ymargin_presentation, FullscreenActivity.xmargin_presentation, 0);
         presoLyrics2.setPadding(FullscreenActivity.xmargin_presentation, FullscreenActivity.ymargin_presentation, FullscreenActivity.xmargin_presentation, 0);
@@ -211,12 +217,16 @@ public final class MyPresentation extends Presentation
         presoAuthorIN = presoAuthor1;
         presoTitleIN = presoTitle1;
         presoCopyrightIN = presoCopyright1;
+        presoLyricsIN.setHorizontallyScrolling(true);
+        presoLyricsIN.setTextSize(72);
 
         ViewTreeObserver vto = presoLyricsIN.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                presoLyricsIN.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 // Get the width and height of this text
+                //screenwidth = lyricsHolder.getWidth();
                 screenwidth = lyricsHolder.getWidth();
                 textwidth = presoLyricsIN.getWidth();
                 screenheight = lyricsHolder.getHeight();
@@ -224,8 +234,11 @@ public final class MyPresentation extends Presentation
                 if (PresenterMode.autoscale) {
                     doScale();
                 } else {
+                    presoLyricsIN.setTextSize(FullscreenActivity.presoFontSize);
                     updateFontSize();
                 }
+
+
             }
         });
         updateAlpha();
@@ -244,6 +257,13 @@ public final class MyPresentation extends Presentation
     }
 
     public static void doScale() {
+        presoLyricsIN.setHorizontallyScrolling(true);
+
+        lyricsINVScrollHolder.setScaleX(1.0f);
+        lyricsINVScrollHolder.setScaleY(1.0f);
+        lyricsINHScrollHolder.setScaleX(1.0f);
+        lyricsINHScrollHolder.setScaleY(1.0f);
+
         // Get possible xscale value
         float xscale;
         if (textwidth != 0 && screenwidth != 0) {
@@ -266,8 +286,21 @@ public final class MyPresentation extends Presentation
         } else {
             yscale = xscale;
         }
-        presoLyricsIN.setScaleX(xscale);
-        presoLyricsIN.setScaleY(yscale);
+        presoLyricsIN.setPivotY(0);
+        presoLyricsIN.setTranslationY(0);
+        presoLyrics1.setPivotY(0);
+        presoLyrics1.setTranslationY(0);
+        presoLyrics2.setPivotY(0);
+        presoLyrics2.setTranslationY(0);
+        presoLyricsIN.setY(0);
+        presoLyrics1.setY(0);
+        presoLyrics2.setY(0);
+        presoLyricsIN.setPivotX(textwidth / 2);
+        //presoLyricsIN.setScaleX(xscale);
+        //presoLyricsIN.setScaleY(yscale);
+        presoLyricsIN.setTextSize(72*xscale);
+
+
     }
 
     public static void fadeoutCopyright1() {
@@ -374,6 +407,8 @@ public final class MyPresentation extends Presentation
 
     public static void fadeinAlert() {
         presoAlert.setText(PresenterMode.myAlert);
+        presoAlert.setTypeface(FullscreenActivity.presofont);
+
         if (PresenterMode.alert_on.equals("Y") && presoAlert.getVisibility() == View.INVISIBLE) {
             presoAlert.setAlpha(0f);
             presoAlert.setVisibility(View.VISIBLE);
@@ -478,7 +513,7 @@ public final class MyPresentation extends Presentation
     }
 
     public static void crossFadeSong() {
-        // There are two views for each song element (presoLyrics, presoAuthor, presoCopyright, presoOther)
+        // There are two views for each song element (presoLyrics, presoAuthor, presoCopyright, presoAlert)
         // This is to allow for smooth crossfading.
 
         // If the logo is showing, fade it out then hide it
@@ -486,7 +521,7 @@ public final class MyPresentation extends Presentation
             fadeOutLogo();
         }
 
-        // If the user is on a blank screen need to fade back in the background image or video
+        // If the user is on a blank screen, we need to fade back in the background image or video
         if (preso.getVisibility() == View.INVISIBLE || preso.getVisibility() == View.GONE) {
             fadeInPage();
         }
@@ -501,6 +536,10 @@ public final class MyPresentation extends Presentation
         presoAuthorOUT = presoAuthor2;
         presoCopyrightIN = presoCopyright1;
         presoCopyrightOUT = presoCopyright2;
+        lyricsINVScrollHolder = lyrics1VScrollHolder;
+        lyricsOUTVScrollHolder = lyrics2VScrollHolder;
+        lyricsINHScrollHolder = lyrics1HScrollHolder;
+        lyricsOUTHScrollHolder = lyrics2HScrollHolder;
 
         if (presoLyrics1.getVisibility() == View.VISIBLE) {
             // 1st is on already, so we are fading in the 2nd view
@@ -513,35 +552,82 @@ public final class MyPresentation extends Presentation
             presoAuthorOUT = presoAuthor1;
             presoCopyrightIN = presoCopyright2;
             presoCopyrightOUT = presoCopyright1;
+            lyricsINVScrollHolder = lyrics2VScrollHolder;
+            lyricsOUTVScrollHolder = lyrics1VScrollHolder;
+            lyricsINHScrollHolder = lyrics2HScrollHolder;
+            lyricsOUTHScrollHolder = lyrics1HScrollHolder;
         }
 
-        // Make sure the visibilities and alphas of the fade in view
+        // Make sure the visibilities and alphas of the fade in view are ready
         presoLyricsIN.setAlpha(0.0f);
         presoLyricsIN.setVisibility(View.VISIBLE);
 
-        // Set the text of the view that is being faded in
-        presoLyricsIN.setText(PresenterMode.buttonPresentText);
         presoLyricsIN.setScaleX(1);
         presoLyricsIN.setScaleY(1);
 
-        // Animate the view in
-        presoLyricsIN.animate().alpha(1f).setDuration(1000).setListener(null);
+        // Decide on the font being used
+        SetTypeFace.setTypeface();
 
-        // Animate the other view out - ONLY IF IT IS VISIBLE
-        if (presoLyricsOUT.getVisibility() == View.VISIBLE) {
-            presoLyricsOUT.setAlpha(1.0f);
-            presoLyricsOUT.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    presoLyricsOUT.setVisibility(View.INVISIBLE);
+        presoLyricsIN.setTypeface(FullscreenActivity.presofont);
+        presoTitleIN.setTypeface(FullscreenActivity.presofont);
+        presoAuthorIN.setTypeface(FullscreenActivity.presofont);
+        presoCopyrightIN.setTypeface(FullscreenActivity.presofont);
+        presoAlert.setTypeface(FullscreenActivity.presofont);
+        presoLyricsIN.setTextSize(72);
+
+        // Make sure the listener is ready for the new text being drawn to deal with scaling
+        ViewTreeObserver vto = presoLyricsIN.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                presoLyricsIN.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                // Get the width and height of this text
+                screenwidth = lyricsHolder.getWidth();
+                textwidth = presoLyricsIN.getWidth();
+                screenheight = lyricsHolder.getHeight();
+                textheight = presoLyricsIN.getHeight();
+                if (PresenterMode.autoscale) {
+                    doScale();
+                } else {
+                    presoLyricsIN.setTextSize(FullscreenActivity.presoFontSize);
+                    presoLyricsOUT.setTextSize(FullscreenActivity.presoFontSize);
                 }
-            });
-        } else {
-            // Just hide the out one if wasn't already visible
-            presoLyricsOUT.setAlpha(0.0f);
-            presoLyricsOUT.setVisibility(View.INVISIBLE);
-        }
+                // Animate the view in
+                presoLyricsIN.animate().alpha(1f).setDuration(1000).setListener(null);
 
+                // Animate the other view out - ONLY IF IT IS VISIBLE
+                if (presoLyricsOUT.getVisibility() == View.VISIBLE) {
+                    presoLyricsOUT.setAlpha(1.0f);
+                    presoLyricsOUT.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            presoLyricsOUT.setVisibility(View.INVISIBLE);
+                            presoLyricsOUT.setScaleX(1);
+                            presoLyricsOUT.setScaleY(1);
+                            presoLyricsOUT.setPivotX(textwidth / 2);
+                            presoLyricsOUT.setPivotY(0);
+                            presoLyricsOUT.setY(0);
+                            presoLyricsOUT.setTranslationY(0);
+                        }
+                    });
+                } else {
+                    // Just hide the out one if wasn't already visible
+                    presoLyricsOUT.setAlpha(0.0f);
+                    presoLyricsOUT.setVisibility(View.INVISIBLE);
+                    presoLyricsOUT.setScaleX(1);
+                    presoLyricsOUT.setScaleY(1);
+                    presoLyricsOUT.setPivotX(textwidth / 2);
+                    presoLyricsOUT.setPivotY(0);
+                    presoLyricsOUT.setY(0);
+                    presoLyricsOUT.setTranslationY(0);
+                }
+
+            }
+        });
+
+        // Set the text of the view that is being faded in
+        // This should call the vto once updated
+        presoLyricsIN.setText(PresenterMode.buttonPresentText);
 
         // Now we can do the same to the title, author, copyright and other fields
         // We only need to crossfade if the contents have changed (i.e. a different song).
@@ -549,6 +635,9 @@ public final class MyPresentation extends Presentation
         presoTitleIN.setText(PresenterMode.presoTitle);
         presoAuthorIN.setText(PresenterMode.presoAuthor);
         presoCopyrightIN.setText(PresenterMode.presoCopyright);
+        presoTitleIN.setTypeface(FullscreenActivity.presofont);
+        presoAuthorIN.setTypeface(FullscreenActivity.presofont);
+        presoCopyrightIN.setTypeface(FullscreenActivity.presofont);
 
         if (presoTitleOUT.getVisibility() == View.VISIBLE && presoTitleOUT.getAlpha() > 0 && !presoTitleOUT.getText().toString().equals(PresenterMode.presoTitle)) {
             presoTitleOUT.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
@@ -706,21 +795,46 @@ public final class MyPresentation extends Presentation
         presoLyrics1.setScaleY(1.0f);
         presoLyrics2.setScaleX(1.0f);
         presoLyrics2.setScaleY(1.0f);
+        lyricsINVScrollHolder.setScaleX(1.0f);
+        lyricsINVScrollHolder.setScaleY(1.0f);
+        lyricsOUTVScrollHolder.setScaleX(1.0f);
+        lyricsOUTVScrollHolder.setScaleY(1.0f);
+        lyricsINHScrollHolder.setScaleX(1.0f);
+        lyricsINHScrollHolder.setScaleY(1.0f);
+        lyricsOUTHScrollHolder.setScaleX(1.0f);
+        lyricsOUTHScrollHolder.setScaleY(1.0f);
         presoLyrics1.setTextSize(FullscreenActivity.presoFontSize);
         presoLyrics2.setTextSize(FullscreenActivity.presoFontSize);
+        presoTitle1.setTextSize(FullscreenActivity.presoTitleSize);
+        presoTitle2.setTextSize(FullscreenActivity.presoTitleSize);
+        presoAuthor1.setTextSize(FullscreenActivity.presoAuthorSize);
+        presoAuthor2.setTextSize(FullscreenActivity.presoAuthorSize);
+        presoCopyright1.setTextSize(FullscreenActivity.presoCopyrightSize);
+        presoCopyright2.setTextSize(FullscreenActivity.presoCopyrightSize);
+        presoAlert.setTextSize(FullscreenActivity.presoAlertSize);
+
     }
 
     public static void resetFontSize() {
+        lyricsINVScrollHolder.setScaleX(1.0f);
+        lyricsINVScrollHolder.setScaleY(1.0f);
+        lyricsOUTVScrollHolder.setScaleX(1.0f);
+        lyricsOUTVScrollHolder.setScaleY(1.0f);
+        lyricsINHScrollHolder.setScaleX(1.0f);
+        lyricsINHScrollHolder.setScaleY(1.0f);
+        lyricsOUTHScrollHolder.setScaleX(1.0f);
+        lyricsOUTHScrollHolder.setScaleY(1.0f);
         presoLyricsIN.setScaleX(1.0f);
         presoLyricsIN.setScaleY(1.0f);
         presoLyricsOUT.setScaleX(1.0f);
         presoLyricsOUT.setScaleY(1.0f);
-        presoLyricsIN.setTextSize(10);
-        presoLyricsOUT.setTextSize(10);
+        presoLyricsIN.setTextSize(72);
+        presoLyricsOUT.setTextSize(72);
         ViewTreeObserver vto = presoLyricsIN.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                presoLyricsIN.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 // Get the width and height of this text
                 screenwidth = lyricsHolder.getWidth();
                 textwidth = presoLyricsIN.getWidth();
@@ -728,6 +842,9 @@ public final class MyPresentation extends Presentation
                 textheight = presoLyricsIN.getHeight();
                 if (PresenterMode.autoscale) {
                     doScale();
+                } else {
+                    presoLyricsIN.setTextSize(FullscreenActivity.presoFontSize);
+                    presoLyricsOUT.setTextSize(FullscreenActivity.presoFontSize);
                 }
             }
         });
@@ -735,9 +852,13 @@ public final class MyPresentation extends Presentation
 
     public static void changeMargins() {
         // Get width and height
+        presoLyricsIN.setTextSize(72);
         preso.setPadding(PresenterMode.tempxmargin, PresenterMode.tempymargin, PresenterMode.tempxmargin, PresenterMode.tempymargin);
         if (PresenterMode.autoscale) {
             doScale();
+        } else {
+            presoLyrics1.setTextSize(FullscreenActivity.presoFontSize);
+            presoLyrics2.setTextSize(FullscreenActivity.presoFontSize);
         }
     }
 
@@ -748,10 +869,7 @@ public final class MyPresentation extends Presentation
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        Log.d("textureview", "onSurfaceTextureAvailable");
         s = new Surface(surface);
-        Log.d("textureview", "vidFile=" + vidFile);
-        Log.d("textureview", "backgroundTypeToUse=" + FullscreenActivity.backgroundTypeToUse);
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setSurface(s);
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -759,7 +877,6 @@ public final class MyPresentation extends Presentation
         mMediaPlayer.setOnCompletionListener(this);
         if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
             try {
-                Log.d("textureview", "initialising mediaplayer");
                 mMediaPlayer.setDataSource(vidFile);
                 mMediaPlayer.prepareAsync();
             } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
@@ -787,7 +904,6 @@ public final class MyPresentation extends Presentation
 
     public static void reloadVideo(MediaPlayer mp) throws IOException {
         if (mMediaPlayer==null) {
-            Log.d("null","mMediaPlayer was null");
             mMediaPlayer = new MediaPlayer();
             mMediaPlayer.setSurface(s);
         }
@@ -821,6 +937,5 @@ public final class MyPresentation extends Presentation
             e.printStackTrace();
         }
     }
-
 
 }

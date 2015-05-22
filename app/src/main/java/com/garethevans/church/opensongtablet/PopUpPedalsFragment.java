@@ -152,6 +152,8 @@ public class PopUpPedalsFragment extends DialogFragment {
             }
         });
 
+        resetButtons();
+
         return V;
     }
 

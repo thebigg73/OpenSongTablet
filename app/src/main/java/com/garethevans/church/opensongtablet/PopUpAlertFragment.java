@@ -16,9 +16,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ToggleButton;
 
-/**
- * Created by gareth on 07/05/15.
- */
 public class PopUpAlertFragment extends DialogFragment {
 
     static EditText alertMessage;

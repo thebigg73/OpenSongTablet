@@ -1,11 +1,6 @@
-/*
- * Copyright (c) 2015.
- * The code is provided free of charge.  You can use, modify, contribute and improve it as long as this source is referenced.
- * Commercial use should seek permission.
- */
-
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,15 +17,42 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         return frag;
     }
 
+    public interface MyInterface {
+        void doEdit();
+    }
+
+    private MyInterface mListener;
+
+        @Override
+    public void onAttach(Activity activity) {
+        mListener = (MyInterface) activity;
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onDetach() {
+        mListener = null;
+        super.onDetach();
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(FullscreenActivity.songfilename);
         View V = inflater.inflate(R.layout.popup_song_details, container, false);
 
-        Button closeFragDialog = (Button) V.findViewById(R.id.cancelPresentationOrder);
+        Button closeFragDialog = (Button) V.findViewById(R.id.closeSongDetails);
         closeFragDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dismiss();
+            }
+        });
+        Button editSongDetails = (Button) V.findViewById(R.id.editSongDetails);
+        editSongDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.doEdit();
                 dismiss();
             }
         });

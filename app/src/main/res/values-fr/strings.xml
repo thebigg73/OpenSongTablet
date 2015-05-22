@@ -383,5 +383,17 @@
 	<string name="tag_bridge">Pont</string>
 	<string name="tag_tag">Libellé</string>
 	<string name="tag_verse">Verset</string>
+	<string name="actions">Actes</string>
+	<string name="alert">Message</string>
+	<string name="alert_text">Entrez le texte du message</string>
+	<string name="capo_toggle_native">Afficher des accords seulement indigènes</string>
+	<string name="display_manager">Rebranchez affichage</string>
+	<string name="error_missingsection">Sections manquantes</string>
+	<string name="error_notset">Pas encore défini</string>
+	<string name="file_chooser">Sélecteur de fichier</string>
+	<string name="layout">Plan</string>
+	<string name="preso_alpha">L\'opacité de fond</string>
+	<string name="settings">Paramètres</string>
+	<string name="song_sections">Sections de chansons</string>
 
 </resources>

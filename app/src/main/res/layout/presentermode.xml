@@ -187,7 +187,7 @@
                             android:inputType="textAutoCorrect|text|textMultiLine"
                             android:minLines="4"
                             android:textColor="#fff"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"/>
 
                         <ImageView
                             android:id="@+id/presenter_lyrics_image"

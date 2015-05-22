@@ -412,5 +412,17 @@
 	<string name="tag_prechorus">Pre-Koor</string>
 	<string name="tag_chorus">Koor</string>
 	<string name="tag_bridge">Brug</string>
+	<string name="actions">Aksies</string>
+	<string name="alert">Boodskap</string>
+	<string name="alert_text">Tik boodskap teks</string>
+	<string name="capo_toggle_native">Wys net moedertaal akkoorde</string>
+	<string name="display_manager">bande vertoon</string>
+	<string name="error_missingsection">Vermiste artikels</string>
+	<string name="error_notset">nie ingestel</string>
+	<string name="file_chooser">lêer chooser</string>
+	<string name="layout">uitleg</string>
+	<string name="preso_alpha">Agtergrond ondeursigtigheid</string>
+	<string name="settings">Instellings</string>
+	<string name="song_sections">Song artikels</string>
 
 </resources>

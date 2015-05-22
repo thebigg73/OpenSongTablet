@@ -273,7 +273,7 @@ public class SetActions extends Activity {
 						
 						// Ok go back through the array and add the non-empty lines back up
 						for (int x=0;x<add_text.length;x++) {
-							if (!add_text[x].equals("") && add_text[x]!=null) {
+							if (add_text[x]!=null && !add_text[x].equals("") ) {
 								if (add_text[x].contains("[]")) {
 									scripture_text = scripture_text + "\n" + add_text[x];
 								} else {
@@ -386,7 +386,7 @@ public class SetActions extends Activity {
 					
 					// Ok go back through the array and add the non-empty lines back up
 					for (int x=0;x<add_text.length;x++) {
-						if (!add_text[x].equals("") && add_text[x]!=null) {
+						if (add_text[x]!=null && !add_text[x].equals("")) {
 							if (add_text[x].contains("[]")) {
 								slide_text = slide_text + "\n" + add_text[x];
 							} else {

@@ -63,6 +63,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         newSetPromptTitle = (TextView) V.findViewById(R.id.newSetPromptTitle);
         Button listSetCancelButton = (Button) V.findViewById(R.id.listSetCancelButton);
         Button listSetOkButton = (Button) V.findViewById(R.id.listSetOkButton);
+        setListName.setText(FullscreenActivity.lastSetName);
 
         myTitle = getActivity().getResources().getString(R.string.options_set);
 
@@ -149,6 +150,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         // Load the set up
         FullscreenActivity.settoload = null;
         FullscreenActivity.settoload = FullscreenActivity.setnamechosen;
+        FullscreenActivity.lastSetName = FullscreenActivity.setnamechosen;
         try {
             SetActions.loadASet(getView());
         } catch (XmlPullParserException | IOException e) {
@@ -173,6 +175,7 @@ public class PopUpListSetsFragment extends DialogFragment {
     public void doSaveSet() {
         // Save the set into the settoload name
         FullscreenActivity.settoload = setListName.getText().toString().trim();
+        FullscreenActivity.lastSetName = setListName.getText().toString().trim();
 
         // Popup the are you sure alert into another dialog fragment
         String message = getResources().getString(R.string.options_set_save) + " \'" + setListName.getText().toString().trim() + "\"?";

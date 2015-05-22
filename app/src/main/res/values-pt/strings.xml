@@ -383,5 +383,17 @@
 	<string name="tag_prechorus">Pré-Refrão</string>
 	<string name="tag_tag">Etiqueta</string>
 	<string name="tag_verse">Verso</string>
+	<string name="actions">Ações</string>
+	<string name="alert">Alerta</string>
+	<string name="alert_text">Digite o texto da mensagem</string>
+	<string name="capo_toggle_native">Mostrar somente acordes nativas</string>
+	<string name="display_manager">Reconectar exibição</string>
+	<string name="error_missingsection">Seções que faltam</string>
+	<string name="error_notset">Não definido</string>
+	<string name="file_chooser">Seletor de arquivos</string>
+	<string name="layout">Traçado</string>
+	<string name="preso_alpha">Opacidade fundo</string>
+	<string name="settings">Definições</string>
+	<string name="song_sections">Seções da canção</string>
 
 </resources>

@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -44,9 +43,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-
 import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,8 +57,9 @@ import java.util.Locale;
 
 public class PresenterMode extends Activity implements PopUpEditSongFragment.MyInterface,
         PopUpListSetsFragment.MyInterface, PopUpAreYouSureFragment.MyInterface,
-        PopUpSongRenameFragment.MyInterface,
-        PopUpEditSetFragment.MyInterface, PopUpSongCreateFragment.MyInterface {
+        PopUpSongRenameFragment.MyInterface, PopUpSearchViewFragment.MyInterface,
+        PopUpEditSetFragment.MyInterface, PopUpSongCreateFragment.MyInterface,
+        PopUpSearchViewFragment.MyVibrator, PopUpSongDetailsFragment.MyInterface {
     // Set the variables used here
     // SharedPreferences myPreferences;
 
@@ -71,6 +69,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     private boolean isPDF;
     Menu menu;
     private boolean addingtoset;
+    private boolean endofset = false;
     AlertDialog.Builder popupAlert;
     AlertDialog alert;
     /* LinearLayout popupLayout; */
@@ -79,6 +78,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     static int whichsonginset;
     static int whichsongsection;
     static boolean pedalsenabled = true;
+
     // Variables used by the popups
     static String whatBackgroundLoaded;
 
@@ -218,11 +218,8 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         if (!isPDF) {
             try {
                 LoadXML.loadXML();
-            } catch (XmlPullParserException e) {
+            } catch (XmlPullParserException | IOException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                // General error
-                Log.d("General error", "IO Error loading song");
             }
             if (FullscreenActivity.mLyrics == null) {
                 FullscreenActivity.mLyrics = "";
@@ -256,7 +253,8 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         presenter_song_title = (TextView) findViewById(R.id.presenter_songtitle);
         presenter_song_author = (TextView) findViewById(R.id.presenter_author);
         presenter_song_copyright = (TextView) findViewById(R.id.presenter_copyright);
-
+        presenter_song_title.isFocusable();
+        presenter_song_title.requestFocus();
         // Presentation order
         presenter_order_view = (CheckBox) findViewById(R.id.presenter_order_text);
         presenter_order_view.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -461,7 +459,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                     // Set the appropriate song filename
                     FullscreenActivity.songfilename = listDataChildSong.get(listDataHeaderSong.get(groupPosition)).get(childPosition);
 
-                    if (FullscreenActivity.setView.equals("Y") && FullscreenActivity.setSize >= 8) {
+                    if (FullscreenActivity.setView.equals("Y") && FullscreenActivity.setSize >= 1) {
                         // Ok look for the song in the set.
                         if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
                             FullscreenActivity.whatsongforsetwork = FullscreenActivity.songfilename;
@@ -470,6 +468,8 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                                     + FullscreenActivity.linkclicked;
                         }
 
+                        Log.d("d","whatsongforsetwork="+FullscreenActivity.whatsongforsetwork);
+                        Log.d("d","mySet="+FullscreenActivity.mySet);
                         if (FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
                             // Song is in current set.  Find the song position in the current set and load it (and next/prev)
                             // The first song has an index of 6 (the 7th item as the rest are menu items)
@@ -714,6 +714,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
 
                         } else if (childPosition == 6) {
                             // Blank entry
+                            Log.d("set","blank line");
 
                         } else {
                             // Load song in set
@@ -818,6 +819,10 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                         }
 
                     } else if (chosenMenu.equals(getResources().getString(R.string.options_options))) {
+
+                        // Close the menu for now
+                        mDrawerLayout.closeDrawer(expListViewOption);
+
                         // Now check for option options clicks
                         if (childPosition == 0) {
                             // Toggle menu swipe on/off
@@ -846,18 +851,8 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                             DialogFragment newFragment = PopUpFontsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
-/*
-                            // Change fonts
-                            Intent intent2 = new Intent();
-                            intent2.setClass(PresentMode.this, ChangeFonts.class);
-                            intent2.putExtra("PresentMode", true);
-                            startActivity(intent2);
-                            finish();
-*/
-
 
                         } else if (childPosition == 2) {
-
                             // Assign foot pedal
                             FullscreenActivity.whattodo = "footpedal";
                             DialogFragment newFragment = PopUpPedalsFragment.newInstance();
@@ -870,7 +865,6 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                             Intent i = new Intent(Intent.ACTION_VIEW);
                             i.setData(Uri.parse(url));
                             startActivity(i);
-
 
                         } else if (childPosition == 4) {
                             // Splash screen
@@ -885,7 +879,6 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                             intent.setClass(PresenterMode.this, SettingsActivity.class);
                             startActivity(intent);
                             finish();
-
                         }
                     }
                 }
@@ -1378,9 +1371,11 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     }
 
     public void logoButtonClick(View view) {
+
+
         if (numdisplays > 0 && !blankButton_isSelected) {
 
-            if (logoButton_isSelected) {
+            if (logoButton_isSelected && !endofset) {
                 logoButton_isSelected = false;
                 presenter_logo_group.setBackgroundDrawable(null);
                 logo_on = "N";
@@ -1471,6 +1466,11 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             tempfiletosearch = FullscreenActivity.songfilename;
         }
 
+        if (tempfiletosearch.contains("../OpenSong Scripture/_cache/")) {
+            tempfiletosearch = tempfiletosearch.replace("../OpenSong Scripture/_cache/","Scripture/");
+        } else if (tempfiletosearch.contains("./Slides/_cache/")) {
+            tempfiletosearch = tempfiletosearch.replace("../Slides/_cache/","Slide/");
+        }
         whichsonginset = -1;
 
         for (int sis = 0; sis < FullscreenActivity.setSize; sis++) {
@@ -1491,9 +1491,6 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         // Otherwise, move to the next one.
         // If we are at the end, move to the nextsonginset
 
-        Log.d("d","indexsonginset="+FullscreenActivity.indexSongInSet);
-        Log.d("d","mSetList.length="+FullscreenActivity.mSetList.length);
-
         if (whichsongsection == -1) {
             whichsongsection = 0;
             previousSongInSet();
@@ -1508,27 +1505,31 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                 presenter_song_buttonsListView.findViewById(whichsongsection).performClick();
             }
         } else {
-            if (FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length) {
+            if (FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length-1) {
                 whichsongsection = 0;
                 nextSongInSet();
+                endofset = false;
             } else {
                 FullscreenActivity.myToastMessage = getResources().getString(R.string.lastsong);
                 ShowToast.showToast(PresenterMode.this);
+                endofset = true;
+                whichsongsection -= 1;
+                logoButtonClick(presenter_logo_group);
+
             }
         }
     }
 
     public void nextSongInSet() {
         FullscreenActivity.indexSongInSet = whichsonginset;
-        if (FullscreenActivity.indexSongInSet < FullscreenActivity.mSetList.length-1) {
-            whichsongsection = 0;
-            doMoveInSet();
-        }
+        FullscreenActivity.indexSongInSet += 1;
+        whichsongsection = 0;
+        doMoveInSet();
     }
 
     public void previousSongInSet() {
         FullscreenActivity.indexSongInSet = whichsonginset;
-        if (FullscreenActivity.indexSongInSet - 1 >= 0) {
+        if ((FullscreenActivity.indexSongInSet - 1) >= 0) {
             FullscreenActivity.indexSongInSet -= 1;
             whichsongsection = 0;
             doMoveInSet();
@@ -1596,7 +1597,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         // Try to open the appropriate Song folder on the left menu
         expListViewSong.expandGroup(0);
         expListViewSong.setFastScrollEnabled(false);
-        expListViewSong.setFastScrollEnabled(true);
+        //expListViewSong.setFastScrollEnabled(true);
         for (int z = 0; z < listDataHeaderSong.size() - 1; z++) {
             if (listDataHeaderSong.get(z).equals(FullscreenActivity.whichSongFolder)) {
                 expListViewSong.expandGroup(z);
@@ -1667,6 +1668,10 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                 return true;
 
             case R.id.action_fullsearch:
+                FullscreenActivity.whattodo = "exit";
+                DialogFragment newFragment = PopUpSearchViewFragment.newInstance();
+                newFragment.show(getFragmentManager(), "dialog");
+
 /*
             // Need to fix this as the SearchViewFilterMode returns to FullscreenActivity
 			Intent intent = new Intent();
@@ -1822,8 +1827,14 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                 },500);
                 whichsongsection += 1;
                 selectSectionButtonInSong();
-                presenter_project_group.performClick();
-                presenter_actions_buttons.smoothScrollTo(0, presenter_project_group.getTop());
+
+                if (endofset) {
+                    presenter_logo_group.performClick();
+                    presenter_actions_buttons.smoothScrollTo(0, presenter_logo_group.getTop());
+                } else {
+                    presenter_project_group.performClick();
+                    presenter_actions_buttons.smoothScrollTo(0, presenter_project_group.getTop());
+                }
             }
         }
 
@@ -1831,6 +1842,31 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     }
 
     // Listener for popups
+    @Override
+    public void doVibrate() {
+        // Vibrate to indicate something has happened
+        Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vb.vibrate(25);
+    }
+
+    @Override
+    public void doEdit() {
+        FullscreenActivity.whattodo = "editsong";
+        DialogFragment newFragment = PopUpEditSongFragment.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void searchResults() {
+        // Load up the song
+        try {
+            LoadXML.loadXML();
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
+        }
+        refreshAll();
+    }
+
     @Override
     public void refreshAll() {
         // Show the toast
@@ -1844,6 +1880,8 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         setupSetButtons();
         setupSongButtons();
         redrawPresenterPage();
+        SetActions.indexSongInSet();
+        invalidateOptionsMenu();
         findSongInFolder();
 
         // Reopen the set or song menu if something has changed here
