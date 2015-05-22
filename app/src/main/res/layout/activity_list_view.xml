@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:text="@string/set_edit_title"
         android:gravity="center_horizontal"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textColor="#ff0" />
 
         <TextView
         android:id="@+id/set_help"

@@ -3,13 +3,28 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class LyricsDisplay extends Activity {
+
+	static String tempPresentationOrder;
 
 	// This bit parses the lyrics
 	public static void parseLyrics() {
 		Log.d("LyricsDisplay","LyricsDisplay activity running");
 		// Keep myLyrics and mLyrics variables the same
 		FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+
+		// Does the user want to use the custom presentation order?
+		// If so, parse the song into an appropriate format first
+		parseToPresentationOrder();
+
+		// If the user doesn't want to use a custom presentation order, or it is blank,
+		// replace it back with the original
+		if (!FullscreenActivity.usePresentationOrder || FullscreenActivity.mPresentation.isEmpty() || FullscreenActivity.mPresentation.equals("")) {
+			FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+		}
+
 		// If chords aren't being shown, get rid of underscore spaces
 		if (FullscreenActivity.showChords.equals("N")) {
 			FullscreenActivity.myLyrics = FullscreenActivity.myLyrics.replace("_", "");
@@ -22,6 +37,7 @@ public class LyricsDisplay extends Activity {
 		FullscreenActivity.myParsedLyrics = FullscreenActivity.myLyrics.split("\n");
 		// Get the number of rows to write!
 		FullscreenActivity.numrowstowrite = FullscreenActivity.myParsedLyrics.length;
+
 	}
 
 	public static void replaceLyricsCode() {
@@ -47,7 +63,8 @@ public class LyricsDisplay extends Activity {
 				FullscreenActivity.whatisthisline[x] = "lyrics";
 				FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x]
 						.substring(1);
-			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("[V") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[v") == 0) {
+			} else if (((FullscreenActivity.myParsedLyrics[x].indexOf("[V") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[v") == 0) && FullscreenActivity.myParsedLyrics[x].indexOf("]") > 1 && FullscreenActivity.myParsedLyrics[x].indexOf("]") < 5) ||
+					(FullscreenActivity.myParsedLyrics[x].toLowerCase(FullscreenActivity.locale).contains("["+FullscreenActivity.tag_verse.toLowerCase(FullscreenActivity.locale)))) {
 				FullscreenActivity.whatisthisline[x] = "versetitle";
 				FullscreenActivity.whatisthisblock[x] = "verse";
 				holder_whatisthisblock = "verse";
@@ -67,10 +84,12 @@ public class LyricsDisplay extends Activity {
 						|| FullscreenActivity.myParsedLyrics[x].equals("V8")
 						|| FullscreenActivity.myParsedLyrics[x].equals("V9")
 						|| FullscreenActivity.myParsedLyrics[x].equals("V10")) {
-					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("V", "Verse ");
+					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("V", FullscreenActivity.tag_verse+" ");
 				}
 						
-			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("[T") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[t") == 0) {
+//			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("[T") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[t") == 0) {
+			} else if (((FullscreenActivity.myParsedLyrics[x].indexOf("[T") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[t") == 0) && FullscreenActivity.myParsedLyrics[x].indexOf("]") > 1 && FullscreenActivity.myParsedLyrics[x].indexOf("]") < 5) ||
+					(FullscreenActivity.myParsedLyrics[x].toLowerCase(FullscreenActivity.locale).contains("["+FullscreenActivity.tag_tag.toLowerCase(FullscreenActivity.locale)))) {
 				FullscreenActivity.whatisthisline[x] = "tagtitle";
 				FullscreenActivity.whatisthisblock[x] = "tag";
 				holder_whatisthisblock = "tag";
@@ -90,10 +109,13 @@ public class LyricsDisplay extends Activity {
 						|| FullscreenActivity.myParsedLyrics[x].equals("T8")
 						|| FullscreenActivity.myParsedLyrics[x].equals("T9")
 						|| FullscreenActivity.myParsedLyrics[x].equals("T10")) {
-					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("T", "Tag ");
+//					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("T", "Tag ");
+					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("T", FullscreenActivity.tag_tag+" ");
 				}
 				
-			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("[C") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[c") == 0) {
+//			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("[C") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[c") == 0) {
+			} else if (((FullscreenActivity.myParsedLyrics[x].indexOf("[C") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[c") == 0) && FullscreenActivity.myParsedLyrics[x].indexOf("]") > 1 && FullscreenActivity.myParsedLyrics[x].indexOf("]") < 5) ||
+					(FullscreenActivity.myParsedLyrics[x].toLowerCase(FullscreenActivity.locale).contains("["+FullscreenActivity.tag_chorus.toLowerCase(FullscreenActivity.locale)))) {
 				FullscreenActivity.whatisthisline[x] = "chorustitle";
 				FullscreenActivity.whatisthisblock[x] = "chorus";
 				holder_whatisthisblock = "chorus";
@@ -113,10 +135,13 @@ public class LyricsDisplay extends Activity {
 						|| FullscreenActivity.myParsedLyrics[x].equals("C8")
 						|| FullscreenActivity.myParsedLyrics[x].equals("C9")
 						|| FullscreenActivity.myParsedLyrics[x].equals("C10")) {
-					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("C", "Chorus ");
+//					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("C", "Chorus ");
+					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("C", FullscreenActivity.tag_chorus+" ");
 				}
 				
-			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("[B") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[b") == 0) {
+//			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("[B") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[b") == 0) {
+			} else if (((FullscreenActivity.myParsedLyrics[x].indexOf("[B") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[b") == 0) && FullscreenActivity.myParsedLyrics[x].indexOf("]") > 1 && FullscreenActivity.myParsedLyrics[x].indexOf("]") < 5) ||
+					(FullscreenActivity.myParsedLyrics[x].toLowerCase(FullscreenActivity.locale).contains("["+FullscreenActivity.tag_bridge.toLowerCase(FullscreenActivity.locale)))) {
 				FullscreenActivity.whatisthisline[x] = "bridgetitle";
 				FullscreenActivity.whatisthisblock[x] = "bridge";
 				holder_whatisthisblock = "bridge";
@@ -136,10 +161,13 @@ public class LyricsDisplay extends Activity {
 						|| FullscreenActivity.myParsedLyrics[x].equals("B8")
 						|| FullscreenActivity.myParsedLyrics[x].equals("B9")
 						|| FullscreenActivity.myParsedLyrics[x].equals("B10")) {
-					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("B", "Bridge ");
+//					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("B", "Bridge ");
+					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("B", FullscreenActivity.tag_bridge+" ");
 				}
 				
-			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("[P") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[p") == 0) {
+//			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("[P") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[p") == 0) {
+			} else if (((FullscreenActivity.myParsedLyrics[x].indexOf("[P") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[p") == 0) && FullscreenActivity.myParsedLyrics[x].indexOf("]") > 1 && FullscreenActivity.myParsedLyrics[x].indexOf("]") < 5) ||
+					(FullscreenActivity.myParsedLyrics[x].toLowerCase(FullscreenActivity.locale).contains("["+FullscreenActivity.tag_prechorus.toLowerCase(FullscreenActivity.locale)))) {
 				FullscreenActivity.whatisthisline[x] = "prechorustitle";
 				FullscreenActivity.whatisthisblock[x] = "prechorus";
 				holder_whatisthisblock = "prechorus";
@@ -159,7 +187,8 @@ public class LyricsDisplay extends Activity {
 						|| FullscreenActivity.myParsedLyrics[x].equals("P8")
 						|| FullscreenActivity.myParsedLyrics[x].equals("P9")
 						|| FullscreenActivity.myParsedLyrics[x].equals("P10")) {
-					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("P", "Prechorus ");
+//					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("P", "Prechorus ");
+					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("P", FullscreenActivity.tag_prechorus+" ");
 				}
 
 			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("[") == 0) {  // This is added for custom user defined tags
@@ -426,5 +455,371 @@ public class LyricsDisplay extends Activity {
 		} else {
 			FullscreenActivity.twothirdsplitpoint = splitpoint_pasttwothirdway;
 		}
+	}
+
+	public static void parseToPresentationOrder() {
+		// The presentation order is separated by spaces.  One issue is that custom tags might have spaces in them
+		// Go through the song and look for all tag.  Make a temp lyrics sting
+		FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+		String[] lookfortagslyrics = FullscreenActivity.myLyrics.split("\n");
+		ArrayList<String> temp_title = new ArrayList<> ();
+		ArrayList<String> temp_content = new ArrayList<> ();
+		String gathercontent = "";
+		int tagnum = -1;
+		int numtemplines = lookfortagslyrics.length;
+		// Have to deal with  multiple line verses 1,2,3,4,5,6,7,8,9 and matching chords, etc. seperately
+		boolean multilpleverselines = false;
+		boolean currentlyworkingthroughmultilineverse = false;
+		String verse1contents = "";
+		String verse2contents = "";
+		String verse3contents = "";
+		String verse4contents = "";
+		String verse5contents = "";
+		String verse6contents = "";
+		String verse7contents = "";
+		String verse8contents = "";
+		String verse9contents = "";
+		for (int z=0;z<numtemplines;z++) {
+			if (lookfortagslyrics[z].length()>1 && lookfortagslyrics[z].indexOf("1")==0) {
+				multilpleverselines = true;
+				currentlyworkingthroughmultilineverse = true;
+				lookfortagslyrics[z] = lookfortagslyrics[z].replaceFirst("1"," ");
+				// If line above has chords, add them
+				if (z>0) {
+					if (lookfortagslyrics[(z-1)].indexOf(".")==0) {
+						verse1contents = verse1contents + lookfortagslyrics[(z-1)] + "\n";
+					}
+				}
+				verse1contents = verse1contents + lookfortagslyrics[z] + "\n";
+				// Now empty this line
+				lookfortagslyrics[z] = "__REMOVED__";
+			} else if (lookfortagslyrics[z].length()>1 && lookfortagslyrics[z].indexOf("2")==0) {
+				multilpleverselines = true;
+				currentlyworkingthroughmultilineverse = true;
+				lookfortagslyrics[z] = lookfortagslyrics[z].replaceFirst("2"," ");
+				// If line above has chords, add them
+				if (z>1) {
+					if (lookfortagslyrics[(z-2)].indexOf(".")==0) {
+						verse2contents = verse2contents + lookfortagslyrics[(z-2)] + "\n";
+					}
+				}
+				verse2contents = verse2contents + lookfortagslyrics[z] + "\n";
+				// Now empty this line
+				lookfortagslyrics[z] = "__REMOVED__";
+
+			} else if (lookfortagslyrics[z].length()>1 && lookfortagslyrics[z].indexOf("3")==0) {
+				multilpleverselines = true;
+				currentlyworkingthroughmultilineverse = true;
+				lookfortagslyrics[z] = lookfortagslyrics[z].replaceFirst("3"," ");
+				// If line above has chords, add them
+				if (z>2) {
+					if (lookfortagslyrics[(z-3)].indexOf(".")==0) {
+						verse3contents = verse3contents + lookfortagslyrics[(z-3)] + "\n";
+					}
+				}
+				verse3contents = verse3contents + lookfortagslyrics[z] + "\n";
+				// Now empty this line
+				lookfortagslyrics[z] = "__REMOVED__";
+
+
+			} else if (lookfortagslyrics[z].length()>1 && lookfortagslyrics[z].indexOf("4")==0) {
+				multilpleverselines = true;
+				currentlyworkingthroughmultilineverse = true;
+				lookfortagslyrics[z] = lookfortagslyrics[z].replaceFirst("4"," ");
+				// If line above has chords, add them
+				if (z>3) {
+					if (lookfortagslyrics[(z-4)].indexOf(".")==0) {
+						verse4contents = verse4contents + lookfortagslyrics[(z-4)] + "\n";
+					}
+				}
+				verse4contents = verse4contents + lookfortagslyrics[z] + "\n";
+				// Now empty this line
+				lookfortagslyrics[z] = "__REMOVED__";
+
+
+			} else if (lookfortagslyrics[z].length()>1 && lookfortagslyrics[z].indexOf("5")==0) {
+				multilpleverselines = true;
+				currentlyworkingthroughmultilineverse = true;
+				lookfortagslyrics[z] = lookfortagslyrics[z].replaceFirst("5"," ");
+				// If line above has chords, add them
+				if (z>4) {
+					if (lookfortagslyrics[(z-5)].indexOf(".")==0) {
+						verse5contents = verse5contents + lookfortagslyrics[(z-5)] + "\n";
+					}
+				}
+				verse5contents = verse5contents + lookfortagslyrics[z] + "\n";
+				// Now empty this line
+				lookfortagslyrics[z] = "__REMOVED__";
+
+			} else if (lookfortagslyrics[z].length()>1 && lookfortagslyrics[z].indexOf("6")==0) {
+				multilpleverselines = true;
+				currentlyworkingthroughmultilineverse = true;
+				lookfortagslyrics[z] = lookfortagslyrics[z].replaceFirst("6"," ");
+				// If line above has chords, add them
+				if (z>5) {
+					if (lookfortagslyrics[(z-6)].indexOf(".")==0) {
+						verse6contents = verse6contents + lookfortagslyrics[(z-6)] + "\n";
+					}
+				}
+				verse6contents = verse6contents + lookfortagslyrics[z] + "\n";
+				// Now empty this line
+				lookfortagslyrics[z] = "__REMOVED__";
+
+			} else if (lookfortagslyrics[z].length()>1 && lookfortagslyrics[z].indexOf("7")==0) {
+				multilpleverselines = true;
+				currentlyworkingthroughmultilineverse = true;
+				lookfortagslyrics[z] = lookfortagslyrics[z].replaceFirst("7"," ");
+				// If line above has chords, add them
+				if (z>6) {
+					if (lookfortagslyrics[(z-7)].indexOf(".")==0) {
+						verse7contents = verse7contents + lookfortagslyrics[(z-7)] + "\n";
+					}
+				}
+				verse7contents = verse7contents + lookfortagslyrics[z] + "\n";
+				// Now empty this line
+				lookfortagslyrics[z] = "__REMOVED__";
+
+			} else if (lookfortagslyrics[z].length()>1 && lookfortagslyrics[z].indexOf("8")==0) {
+				multilpleverselines = true;
+				currentlyworkingthroughmultilineverse = true;
+				lookfortagslyrics[z] = lookfortagslyrics[z].replaceFirst("8"," ");
+				// If line above has chords, add them
+				if (z>7) {
+					if (lookfortagslyrics[(z-8)].indexOf(".")==0) {
+						verse8contents = verse8contents + lookfortagslyrics[(z-8)] + "\n";
+					}
+				}
+				verse8contents = verse8contents + lookfortagslyrics[z] + "\n";
+				// Now empty this line
+				lookfortagslyrics[z] = "__REMOVED__";
+
+			} else if (lookfortagslyrics[z].length()>1 && lookfortagslyrics[z].indexOf("9")==0) {
+				multilpleverselines = true;
+				currentlyworkingthroughmultilineverse = true;
+				lookfortagslyrics[z] = lookfortagslyrics[z].replaceFirst("9"," ");
+				// If line above has chords, add them
+				if (z>8) {
+					if (lookfortagslyrics[(z-9)].indexOf(".")==0) {
+						verse9contents = verse9contents + lookfortagslyrics[(z-9)] + "\n";
+					}
+				}
+				verse9contents = verse9contents + lookfortagslyrics[z] + "\n";
+				// Now empty this line
+				lookfortagslyrics[z] = "__REMOVED__";
+
+
+			} else if (lookfortagslyrics[z].length()>1 && (lookfortagslyrics[z].contains("[V]") || lookfortagslyrics[z].contains("[v]"))) {
+				// Remove the starting [V] tag and replace it with __MULTIPLEVERSES__
+				// Only if the next (or next again line starts with 1
+				if ((z+1)<=numtemplines) {
+					if (lookfortagslyrics[(z+1)].indexOf("1")==0) {
+						lookfortagslyrics[z] = "__MULTIPLEVERSES__";
+					}
+				}
+
+				if ((z+2)<=numtemplines) {
+					// Allows for z+1 being a chord line
+					if (lookfortagslyrics[(z+2)].indexOf("1")==0) {
+						lookfortagslyrics[z] = "__MULTIPLEVERSES__";
+					}
+				}
+
+
+			}
+		}
+
+		String newText = "";
+		String improvedText = "";
+		// OK, add the lines back together, but removing the lines that equal __REMOVED__
+		// Then add the verses to where the line is __MULTIPLEVERSES__
+		for (int s = 0; s < numtemplines;s++) {
+			if (lookfortagslyrics[s].equals("__MULTIPLEVERSES__")) {
+				if (!verse1contents.isEmpty() && !verse1contents.equals("")) {
+					newText = newText + verse1contents + "\n";
+				}
+				if (!verse2contents.isEmpty() && !verse2contents.equals("")) {
+					newText = newText + verse2contents + "\n";
+				}
+				if (!verse3contents.isEmpty() && !verse3contents.equals("")) {
+					newText = newText + verse3contents + "\n";
+				}
+				if (!verse4contents.isEmpty() && !verse4contents.equals("")) {
+					newText = newText + verse4contents + "\n";
+				}
+				if (!verse5contents.isEmpty() && !verse5contents.equals("")) {
+					newText = newText + verse5contents + "\n";
+				}
+				if (!verse6contents.isEmpty() && !verse6contents.equals("")) {
+					newText = newText + verse6contents + "\n";
+				}
+				if (!verse7contents.isEmpty() && !verse7contents.equals("")) {
+					newText = newText + verse7contents + "\n";
+				}
+				if (!verse8contents.isEmpty() && !verse8contents.equals("")) {
+					newText = newText + verse8contents + "\n";
+				}
+				if (!verse9contents.isEmpty() && !verse9contents.equals("")) {
+					newText = newText + verse9contents + "\n";
+				}
+
+				lookfortagslyrics[s] = newText;
+
+			}
+
+			if (!lookfortagslyrics[s].equals("__REMOVED__")) {
+				improvedText = improvedText + lookfortagslyrics[s] + "\n";
+			}
+		}
+
+
+		// Ok, now reprocess the improved version with multiple verse lines sorted
+		lookfortagslyrics = improvedText.split("\n");
+		numtemplines = lookfortagslyrics.length;
+		// Go through lines and look for tags
+		for (int z=0;z<numtemplines;z++) {
+			if (lookfortagslyrics[z].indexOf("[")==0) {
+				// Add the content to the arraylist before getting ready for the next one
+				if (tagnum>-1 && !currentlyworkingthroughmultilineverse) {
+					temp_content.add(tagnum, gathercontent);
+				}
+				gathercontent = "";
+				tagnum ++;
+				lookfortagslyrics[z] = lookfortagslyrics[z].replace("[","");
+				lookfortagslyrics[z] = lookfortagslyrics[z].replace("]","");
+				temp_title.add(tagnum,lookfortagslyrics[z]);
+
+			} else {
+					gathercontent = gathercontent + lookfortagslyrics[z] + "\n";
+					currentlyworkingthroughmultilineverse = false;
+			}
+		}
+
+
+		// Add the last content to the arraylist
+		if (tagnum>-1 && !currentlyworkingthroughmultilineverse) {
+			temp_content.add(tagnum, gathercontent);
+		}
+
+
+		// Add on the multilineverses
+		if (multilpleverselines) {
+			if (!verse1contents.isEmpty() && !verse1contents.equals("")) {
+				tagnum ++;
+				temp_title.add(tagnum, "V1");
+				temp_content.add(tagnum, verse1contents);
+			}
+			if (!verse2contents.isEmpty() && !verse2contents.equals("")) {
+				tagnum ++;
+				temp_title.add(tagnum, "V2");
+				temp_content.add(tagnum, verse2contents);
+			}
+			if (!verse3contents.isEmpty() && !verse3contents.equals("")) {
+				tagnum ++;
+				temp_title.add(tagnum, "V3");
+				temp_content.add(tagnum, verse3contents);
+			}
+			if (!verse4contents.isEmpty() && !verse4contents.equals("")) {
+				tagnum ++;
+				temp_title.add(tagnum, "V4");
+				temp_content.add(tagnum, verse4contents);
+			}
+			if (!verse5contents.isEmpty() && !verse5contents.equals("")) {
+				tagnum ++;
+				temp_title.add(tagnum, "V5");
+				temp_content.add(tagnum, verse5contents);
+			}
+			if (!verse6contents.isEmpty() && !verse6contents.equals("")) {
+				tagnum ++;
+				temp_title.add(tagnum, "V6");
+				temp_content.add(tagnum, verse6contents);
+			}
+			if (!verse7contents.isEmpty() && !verse7contents.equals("")) {
+				tagnum ++;
+				temp_title.add(tagnum, "V7");
+				temp_content.add(tagnum, verse7contents);
+			}
+			if (!verse8contents.isEmpty() && !verse8contents.equals("")) {
+				tagnum ++;
+				temp_title.add(tagnum, "V8");
+				temp_content.add(tagnum, verse8contents);
+			}
+			if (!verse9contents.isEmpty() && !verse9contents.equals("")) {
+				tagnum ++;
+				temp_title.add(tagnum, "V9");
+				temp_content.add(tagnum, verse9contents);
+			}
+		}
+
+
+		// Now look for the tags in the presentation order.  To fix the space stuff, split the orders with ___ rather than spaces
+		tempPresentationOrder = FullscreenActivity.mPresentation+ " ";
+		for (int w=0;w<temp_title.size();w++) {
+			if (tempPresentationOrder.contains((temp_title.get(w))+ " ")) {
+				// Replace this is the next character isn't a space
+				tempPresentationOrder = tempPresentationOrder.replace(temp_title.get(w)+" ", (temp_title.get(w)+"___"));
+			}
+		}
+
+		// Now split the tempPresentationOrder by the ___ delimiter
+		String[] parsedTempPresentationOrder = tempPresentationOrder.split("___");
+
+		// Now go through the parsedTempPresentationOrder and add the gathered text to the parsed lyrics
+		String newimprovedlyrics = "";
+		for (int y=0;y<parsedTempPresentationOrder.length;y++) {
+			// Look for a matching temp_title
+			// Iterate through the temp_title arraylist
+			// Trim out extra whitespace
+			parsedTempPresentationOrder[y] = parsedTempPresentationOrder[y].trim();
+			for (int u=0;u<temp_title.size();u++) {
+				if (temp_title.get(u).equals(parsedTempPresentationOrder[y])) {
+					// Add the title
+					newimprovedlyrics = newimprovedlyrics + "[" + temp_title.get(u) + "]\n";
+					// Add the contents
+					newimprovedlyrics = newimprovedlyrics + temp_content.get(u) + "\n";
+				}
+			}
+		}
+
+		String missingSectionInPresentationOrder = "";
+		String missingPresentationOrderItemInSong = "";
+
+		// Go through newImprovedLyrics and check that each section is there
+		for (int r=0;r<temp_title.size();r++) {
+			if (!tempPresentationOrder.contains(temp_title.get(r)+"___")) {
+				missingSectionInPresentationOrder = missingSectionInPresentationOrder + "'" + temp_title.get(r) + "'" + " not listed in presentation order\n";
+			}
+		}
+
+		for (int t=0;t<parsedTempPresentationOrder.length;t++) {
+			if (!newimprovedlyrics.contains("[" + parsedTempPresentationOrder[t] + "]")) {
+				missingPresentationOrderItemInSong = missingPresentationOrderItemInSong + "'" + parsedTempPresentationOrder[t] + "'" + " not found in song\n";
+			}
+
+		}
+
+		// Need to add this to a FullscreenActivity variable and tell the page to display it.
+		// Should also do the same for the Presentation mode
+
+/*		// Could just add these as a section?
+		String adderror = "";
+		if (!missingSectionInPresentationOrder.isEmpty() && !missingSectionInPresentationOrder.equals("")) {
+			adderror = adderror + ";"+missingSectionInPresentationOrder;
+		}
+		if (!missingPresentationOrderItemInSong.isEmpty() && !missingPresentationOrderItemInSong.equals("")) {
+			adderror = adderror + ";"+missingPresentationOrderItemInSong;
+		}
+		if (!adderror.isEmpty() && !adderror.equals("")) {
+			newimprovedlyrics = ";" + FullscreenActivity.edit_song_presentation + " - " + FullscreenActivity.error_missingsection + "\n\n" + newimprovedlyrics;
+			// newimprovedlyrics = ";Presentation order / song flow error\n" + adderror + "\n" + newimprovedlyrics;
+		}*/
+
+		// Replace the lyrics for processing
+		while (newimprovedlyrics.contains("\n\n\n")) {
+			newimprovedlyrics = newimprovedlyrics.replace("\n\n\n","\n\n");
+		}
+
+		FullscreenActivity.myLyrics = newimprovedlyrics;
+		FullscreenActivity.foundSongSections_heading = temp_title;
+		FullscreenActivity.foundSongSections_content = temp_content;
 	}
 }

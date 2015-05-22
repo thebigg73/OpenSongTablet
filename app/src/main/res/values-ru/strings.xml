@@ -140,9 +140,9 @@
     <string name="setxmargins">"Горизонтальная размер маржи"</string>
     <string name="setymargins">"Вертикальный размер маржи"</string>
     <string name="update_projector">"Обновление\nпроектор"</string>
-    <string name="black_screen">"Черный\nэкран"</string>
-    <string name="choose_image1">"Выберите\nфоновое\nизображение 1"</string>
-    <string name="choose_image2">"Выберите\nфоновое\nизображение 2"</string>
+    <string name="black_screen">"Черный экран"</string>
+    <string name="choose_image1">"Выберите фоновое изображение 1"</string>
+    <string name="choose_image2">"Выберите фоновое изображение 2"</string>
     <string name="choose_video1">"Выберите фоновое видео 1"</string>
     <string name="choose_video2">"Выберите фоновое видео 2"</string>
     
@@ -378,5 +378,22 @@
     <string name="customchords_save">Сохранить новый пользовательский аккорд в песне</string>
     <string name="customchords_saved">В настоящее время сохраняется пользовательских аккордов</string>
     <string name="maxfontsize">Максимальная автомасштаба размер шрифта</string>
+	<string name="tag_prechorus">Предприпев</string>
+	<string name="tag_chorus">Припев</string>
+	<string name="tag_bridge">Мост</string>
+	<string name="tag_tag">Тэг</string>
+	<string name="tag_verse">Куплет</string>
+	<string name="actions">действия</string>
+	<string name="alert">Предупреждение</string>
+	<string name="alert_text">Введите текст сообщения</string>
+	<string name="capo_toggle_native">Показать только родные аккорды</string>
+	<string name="display_manager">Снова дисплей</string>
+	<string name="error_missingsection">Недостающие участки</string>
+	<string name="error_notset">Не установлено</string>
+	<string name="file_chooser">кто выбирает файла</string>
+	<string name="layout">Pасположение</string>
+	<string name="preso_alpha">Фон непрозрачность</string>
+	<string name="settings">настройки</string>
+	<string name="song_sections">разделы песни</string>
 
 </resources>

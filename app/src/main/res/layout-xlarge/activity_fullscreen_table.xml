@@ -102,7 +102,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/lyrics_box"
                             android:padding="4dp"
-                            tools:context=".FullscreenActivity"></TableLayout>
+                            tools:context=".FullscreenActivity" />
                     </LinearLayout>
                 </HorizontalScrollView>
             </LinearLayout>
@@ -144,7 +144,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/lyrics_box"
                             android:padding="4dp"
-                            tools:context=".FullscreenActivity"></TableLayout>
+                            tools:context=".FullscreenActivity" />
 
                         <TableLayout
                             android:id="@+id/LyricDisplayCol2_twocoldisplay"
@@ -154,7 +154,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/lyrics_box"
                             android:padding="4dp"
-                            tools:context=".FullscreenActivity"></TableLayout>
+                            tools:context=".FullscreenActivity" />
                     </LinearLayout>
                 </HorizontalScrollView>
             </LinearLayout>
@@ -196,7 +196,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/lyrics_box"
                             android:padding="4dp"
-                            tools:context=".FullscreenActivity"></TableLayout>
+                            tools:context=".FullscreenActivity" />
 
                         <TableLayout
                             android:id="@+id/LyricDisplayCol2_threecoldisplay"
@@ -206,7 +206,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/lyrics_box"
                             android:padding="4dp"
-                            tools:context=".FullscreenActivity"></TableLayout>
+                            tools:context=".FullscreenActivity" />
 
                         <TableLayout
                             android:id="@+id/LyricDisplayCol3_threecoldisplay"
@@ -216,7 +216,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/lyrics_box"
                             android:padding="4dp"
-                            tools:context=".FullscreenActivity"></TableLayout>
+                            tools:context=".FullscreenActivity" />
                     </LinearLayout>
                 </HorizontalScrollView>
             </LinearLayout>
@@ -227,7 +227,7 @@
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_gravity="left"
-            android:background="#121222"
+            android:background="@drawable/drawer_bg"
             android:choiceMode="singleChoice"
             android:divider="#aaa"
             android:dividerHeight="1dp"
@@ -238,7 +238,7 @@
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
-            android:background="#121222"
+            android:background="@drawable/drawer_bg"
             android:choiceMode="singleChoice"
             android:divider="#aaa"
             android:dividerHeight="1dp"

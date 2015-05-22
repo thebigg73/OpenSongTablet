@@ -140,7 +140,7 @@
     <string name="setxmargins">"Tamaño del margen horizontal"</string>
     <string name="setymargins">"Tamaño del margen vertical"</string>
     <string name="update_projector">"Actualización\nproyector"</string>
-    <string name="black_screen">"Pantalla\nen negro"</string>
+    <string name="black_screen">"Pantalla en negro"</string>
     <string name="choose_image1">"Seleccione la imagen de fondo 1"</string>
     <string name="choose_image2">"Seleccione la imagen de fondo 2"</string>
     <string name="choose_video1">"Elija el fondo de vídeo 1"</string>
@@ -378,5 +378,22 @@
     <string name="customchords_save">Guardar nuevo acorde costumbre canción</string>
     <string name="customchords_saved">Actualmente guardado acordes personalizados</string>
     <string name="maxfontsize">Autoescala Máximo tamaño de la fuente</string>
+	<string name="tag_verse">Verso</string>
+	<string name="tag_tag">Etiqueta</string>
+	<string name="tag_prechorus">Pre-Coro</string>
+	<string name="tag_chorus">Coro</string>
+	<string name="tag_bridge">Puente</string>
+	<string name="actions">Acciones</string>
+	<string name="alert">Alerta</string>
+	<string name="alert_text">Introduzca el texto del mensaje</string>
+	<string name="capo_toggle_native">Mostrar solamente los acordes nativos</string>
+	<string name="display_manager">Vuelva a conectar la pantalla</string>
+	<string name="error_missingsection">Secciones que falta</string>
+	<string name="error_notset">No establecido</string>
+	<string name="file_chooser">Selector de archivos</string>
+	<string name="layout">Plan</string>
+	<string name="preso_alpha">Opacidad de fondo</string>
+	<string name="settings">Ajustes</string>
+	<string name="song_sections">Secciones de la canción</string>
 
 </resources>

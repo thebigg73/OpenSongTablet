@@ -140,11 +140,11 @@
     <string name="setxmargins">"Horizontální velikost marže"</string>
     <string name="setymargins">"Vertikální velikost marže"</string>
     <string name="update_projector">"aktualizace\nprojektor"</string>
-    <string name="black_screen">"černá\nobrazovka"</string>
-    <string name="choose_image1">"Vyberte obrázek\nna pozadí 1"</string>
-    <string name="choose_image2">"Vyberte obrázek\nna pozadí 2"</string>
-    <string name="choose_video1">"Vyberte si pozadí\nvideo 1"</string>
-    <string name="choose_video2">"Vyberte si pozadí\nvideo 2"</string>
+    <string name="black_screen">"černá obrazovka"</string>
+    <string name="choose_image1">"Vyberte obrázek na pozadí 1"</string>
+    <string name="choose_image2">"Vyberte obrázek na pozadí 2"</string>
+    <string name="choose_video1">"Vyberte si pozadí video 1"</string>
+    <string name="choose_video2">"Vyberte si pozadí video 2"</string>
     
     <string name="choosechordformat">"Zvolte formát akord (používá se pouze při provádění píseň)"</string>
     
@@ -379,5 +379,22 @@
     <string name="customchords_save">Uložit nový vlastní akord na písně</string>
     <string name="customchords_saved">V současné době uložen vlastní akordy</string>
     <string name="maxfontsize">Maximální autoscale velikost písma</string>
+	<string name="tag_chorus">Refrén</string>
+	<string name="tag_prechorus">Před-refrén</string>
+	<string name="tag_bridge">Přechod</string>
+	<string name="tag_tag">Tag</string>
+	<string name="tag_verse">Sloka</string>
+	<string name="actions">Akce</string>
+	<string name="alert">Hláška</string>
+	<string name="alert_text">Zadejte text zprávy</string>
+	<string name="capo_toggle_native">Ukázat pouze nativní akordy</string>
+	<string name="display_manager">Znovu displej</string>
+	<string name="error_missingsection">Chybějící sekce</string>
+	<string name="error_notset">Nenastaveno</string>
+	<string name="file_chooser">soubor chooser</string>
+	<string name="layout">dispozice</string>
+	<string name="preso_alpha">Pozadí neprůhlednost</string>
+	<string name="settings">Nastavení</string>
+	<string name="song_sections">sekce Song</string>
 
 </resources>

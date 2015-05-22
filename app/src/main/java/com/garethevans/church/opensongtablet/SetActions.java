@@ -17,7 +17,8 @@ import android.view.View;
 
 public class SetActions extends Activity {
 
-	public static void updateOptionListSets(Activity act, View view) {
+//	public static void updateOptionListSets(Activity act, View view) {
+	public static void updateOptionListSets() {
 		// Load up the songs in the Sets folder
 		File[] tempmyFiles = FullscreenActivity.dirsets.listFiles();
 		// Go through this list and check if the item is a directory or a file.
@@ -141,7 +142,7 @@ public class SetActions extends Activity {
 		// Test if file exists - the settoload is the link clicked so is still the set name
 		FullscreenActivity.setfile = new File(FullscreenActivity.dirsets + "/"
 				+ FullscreenActivity.settoload);
-		if (FullscreenActivity.setfile.exists() == false) {
+		if (!FullscreenActivity.setfile.exists()) {
 			return;
 		}
 
@@ -187,17 +188,17 @@ public class SetActions extends Activity {
 		FullscreenActivity.mySet = null;
 		FullscreenActivity.mySet = "";
 
-		XmlPullParserFactory factory = null;
+		XmlPullParserFactory factory;
 		factory = XmlPullParserFactory.newInstance();
 
 		factory.setNamespaceAware(true);
-		XmlPullParser xpp = null;
+		XmlPullParser xpp;
 		xpp = factory.newPullParser();
 
 		xpp.setInput(new StringReader(FullscreenActivity.mySetXML));
-		int eventType = 0;
+		int eventType;
 		String scripture_title = "";
-		String scripture_translation = "";
+		String scripture_translation;
 		String scripture_text = "";
 		String slide_name = "";
 		String slide_title = "";
@@ -255,7 +256,7 @@ public class SetActions extends Activity {
 							if (add_text[array_line]==null) {
 								add_text[array_line]="";
 							}
-							int check = 0;
+							int check;
 							check = add_text[array_line].length();
 							if (check>40 || temp_text[x].contains("[]")) {
 								array_line++;
@@ -272,7 +273,7 @@ public class SetActions extends Activity {
 						
 						// Ok go back through the array and add the non-empty lines back up
 						for (int x=0;x<add_text.length;x++) {
-							if (add_text[x]!="" && add_text[x]!=null) {
+							if (add_text[x]!=null && !add_text[x].equals("") ) {
 								if (add_text[x].contains("[]")) {
 									scripture_text = scripture_text + "\n" + add_text[x];
 								} else {
@@ -368,7 +369,7 @@ public class SetActions extends Activity {
 						if (add_text[array_line]==null) {
 							add_text[array_line]="";
 						}
-						int check = 0;
+						int check;
 						check = add_text[array_line].length();
 						if (check>40 || temp_text[x].contains("[]")) {
 							array_line++;
@@ -385,7 +386,7 @@ public class SetActions extends Activity {
 					
 					// Ok go back through the array and add the non-empty lines back up
 					for (int x=0;x<add_text.length;x++) {
-						if (add_text[x]!="" && add_text[x]!=null) {
+						if (add_text[x]!=null && !add_text[x].equals("")) {
 							if (add_text[x].contains("[]")) {
 								slide_text = slide_text + "\n" + add_text[x];
 							} else {
@@ -427,5 +428,26 @@ public class SetActions extends Activity {
 		}
 
 	}
-	
+
+	public static void indexSongInSet() {
+		FullscreenActivity.setSize = FullscreenActivity.mSetList.length;
+		FullscreenActivity.previousSongInSet = "";
+		FullscreenActivity.nextSongInSet = "";
+
+		// Go backwards through the setlist - this finishes with the first occurrence
+		// Useful for duplicate items, otherwise it returns the last occurrence
+		// Not yet tested, so left
+		for (int x = 0; x < FullscreenActivity.setSize; x++) {
+//		for (int x = FullscreenActivity.setSize-1; x<1; x--) {
+			if (FullscreenActivity.mSet[x].equals(FullscreenActivity.whatsongforsetwork)) {
+				FullscreenActivity.indexSongInSet = x;
+				if (x>0) {
+					FullscreenActivity.previousSongInSet = FullscreenActivity.mSet[x - 1];
+				}
+				if (x != FullscreenActivity.setSize - 1) {
+					FullscreenActivity.nextSongInSet = FullscreenActivity.mSet[x + 1];
+				}
+			}
+		}
+	}
 }

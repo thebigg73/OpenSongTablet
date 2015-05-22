@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015.
+  ~ The code is provided free of charge.  You can use, modify, contribute and improve it as long as this source is referenced.
+  ~ Commercial use should seek permission.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/fileChooserTitle"
+        android:text="@string/file_chooser"
+        android:textColor="#ff0"
+        android:layout_marginBottom="12dp"
+        android:layout_margin="12dp" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fileListView"
+        android:choiceMode="singleChoice"
+        android:fastScrollEnabled="true"
+        android:layout_above="@+id/cancelFileButton"
+        android:layout_below="@+id/fileChooserTitle"
+        android:layout_margin="12dp" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:id="@+id/cancelFileButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:background="@drawable/red_button"
+        android:layout_margin="12dp" />
+</RelativeLayout>

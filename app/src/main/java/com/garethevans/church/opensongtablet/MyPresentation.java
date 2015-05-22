@@ -1,580 +1,941 @@
 package com.garethevans.church.opensongtablet;
 
 import java.io.File;
-
+import java.io.IOException;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Presentation;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
+import android.graphics.SurfaceTexture;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnErrorListener;
-import android.media.MediaPlayer.OnPreparedListener;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
+import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.MediaController;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-public final class MyPresentation extends Presentation {
+public final class MyPresentation extends Presentation
+        implements TextureView.SurfaceTextureListener, MediaPlayer.OnBufferingUpdateListener,
+        MediaPlayer.OnVideoSizeChangedListener, MediaPlayer.OnPreparedListener,
+        MediaPlayer.OnCompletionListener{
 
-	// Views on the presentation window
-	static TextView presoLyrics;
-	static TextView presoAuthor;
-	static TextView presoCopyright;
-	static TextView presoTitle;
-	static TextView presoOther;
-	static ImageView presoLogo;
-	static LinearLayout bottomBit;
-	static FrameLayout preso;
-	static VideoView videoBackground;
-	static Animation animationFadeIn;
-	static Animation animationFadeOut;
-	static Drawable dr;
-	static Bitmap myBitmap;
-	int lyricsTextColor = FullscreenActivity.dark_lyricsTextColor;
-	int lyricsShadowColor = FullscreenActivity.dark_lyricsBackgroundColor;
-	Typeface lyricsfont;
-	static int myWidth;
-	static int myHeight;
+    // Views on the presentation window
+    static TextView presoLyrics1;
+    static TextView presoLyrics2;
+    static TextView presoLyricsOUT;
+    static TextView presoLyricsIN;
+    static TextView presoAuthor1;
+    static TextView presoAuthor2;
+    static TextView presoAuthorOUT;
+    static TextView presoAuthorIN;
+    static int whichPresoLyricsToUse = 1;
+    static TextView presoCopyright1;
+    static TextView presoCopyright2;
+    static TextView presoCopyrightOUT;
+    static TextView presoCopyrightIN;
+    static TextView presoTitle1;
+    static TextView presoTitle2;
+    static TextView presoTitleIN;
+    static TextView presoTitleOUT;
+    static TextView presoAlert;
+    static ImageView presoLogo;
+    static ImageView presoBGImage;
+    static TextureView presoBGVideo;
+    static RelativeLayout bottomBit;
+    static FrameLayout preso;
+    static FrameLayout lyricsHolder;
 
-	Context context;
-	
-	public MyPresentation(Context outerContext, Display display) {
-		super(outerContext, display);
-		// TODO Auto-generated constructor stub
-	}
+    static View lyricsINVScrollHolder;
+    static View lyricsOUTVScrollHolder;
+    static View lyricsINHScrollHolder;
+    static View lyricsOUTHScrollHolder;
+    static View lyrics1VScrollHolder;
+    static View lyrics2VScrollHolder;
+    static View lyrics1HScrollHolder;
+    static View lyrics2HScrollHolder;
 
-	@Override
-	protected void onCreate(Bundle savedinstancestate) {
-		// Notice that we get resources from the context of the Presentation
-		//Resources resources = getContext().getResources();
-		setContentView(R.layout.projector_screen);
-		context = getContext();
-		// Get width and height
-		DisplayMetrics metrics = new DisplayMetrics();
-		Display mDisplay = MyPresentation.this.getDisplay();
-		mDisplay.getMetrics(metrics);
+    int lyricsTextColor = FullscreenActivity.dark_lyricsTextColor;
+    int lyricsShadowColor = FullscreenActivity.dark_lyricsBackgroundColor;
+    static Drawable defimage;
+    static Bitmap myBitmap;
+    static Drawable dr;
+    static int screenwidth;
+    static int textwidth;
+    static int screenheight;
+    static int textheight;
 
-		preso = (FrameLayout) findViewById(R.id.preso);
-		bottomBit = (LinearLayout) findViewById(R.id.bottomBit);
-		
-		preso.setPadding(FullscreenActivity.xmargin_presentation,FullscreenActivity.ymargin_presentation,FullscreenActivity.xmargin_presentation,FullscreenActivity.ymargin_presentation);
-		LayoutParams params=preso.getLayoutParams();
-		params.width=metrics.widthPixels;
-		params.height=metrics.heightPixels;
-		preso.setLayoutParams(params);
-		
+    //MediaController
+    static MediaPlayer mMediaPlayer;
+    MediaController mController;
 
-		videoBackground = (VideoView) findViewById(R.id.videoBackground);
-		fixBackground();
-		
-		if (FullscreenActivity.mylyricsfontnum == 1) {
-			lyricsfont = Typeface.MONOSPACE;
-		} else if (FullscreenActivity.mylyricsfontnum == 2) {
-			lyricsfont = Typeface.SANS_SERIF;
-		} else if (FullscreenActivity.mylyricsfontnum == 3) {
-			lyricsfont = Typeface.SERIF;
-		} else if (FullscreenActivity.mylyricsfontnum == 4) {
-			lyricsfont = Typeface.createFromAsset(getContext().getAssets(), "fonts/FiraSansOT-Light.otf");
-		} else if (FullscreenActivity.mylyricsfontnum == 5) {
-			lyricsfont = Typeface.createFromAsset(getContext().getAssets(), "fonts/FiraSansOT-Regular.otf");
-		} else if (FullscreenActivity.mylyricsfontnum == 6) {
-			lyricsfont = Typeface.createFromAsset(getContext().getAssets(), "fonts/KaushanScript-Regular.otf");
-		} else if (FullscreenActivity.mylyricsfontnum == 7) {
-			lyricsfont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Lato-Lig.ttf");
-		} else if (FullscreenActivity.mylyricsfontnum == 8) {
-			lyricsfont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Lato-Reg.ttf");
-		} else {
-			lyricsfont = Typeface.DEFAULT;
-		}
+    static String vidFile;
+    static Surface s;
+    Context context;
 
-		// Temp override
-		lyricsfont = Typeface.createFromAsset(getContext().getAssets(), "fonts/FiraSansOT-Regular.otf");
+    public MyPresentation(Context outerContext, Display display) {
+        super(outerContext, display);
+        // TODO Auto-generated constructor stub
+    }
 
-		presoLyrics = (TextView) findViewById(R.id.presoLyrics);
-		presoLyrics.setTextColor(0xffffffff);
-		presoLyrics.setTypeface(lyricsfont);
-		presoLyrics.setTextSize(18);
-		presoLyrics.setShadowLayer(25.0f, -5 , 5, lyricsShadowColor);
-		presoTitle = (TextView) findViewById(R.id.presoTitle);
-		presoTitle.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
-		presoTitle.setTextColor(lyricsTextColor);
-		presoTitle.setTextSize(20);
-		presoTitle.setTypeface(lyricsfont);
-		presoAuthor = (TextView) findViewById(R.id.presoAuthor);
-		presoAuthor.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
-		presoAuthor.setTextColor(lyricsTextColor);
-		presoAuthor.setTextSize(16);
-		presoAuthor.setTypeface(lyricsfont);
-		presoOther = (TextView) findViewById(R.id.presoOther);
-		presoOther.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
-		presoOther.setTextColor(lyricsTextColor);
-		presoOther.setTextSize(16);
-		presoOther.setTypeface(lyricsfont);
-		presoCopyright = (TextView) findViewById(R.id.presoCopyright);
-		presoCopyright.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
-		presoCopyright.setTextColor(lyricsTextColor);
-		presoCopyright.setTextSize(16);
-		presoCopyright.setTypeface(lyricsfont);
-		presoLogo = (ImageView) findViewById(R.id.presoLogo);
-		File logoFile = new  File(FullscreenActivity.dirbackgrounds + "/ost_logo.png");
-		if(logoFile.exists()){
-			Bitmap myBitmap = BitmapFactory.decodeFile(logoFile.getAbsolutePath());
-			presoLogo.setImageBitmap(myBitmap);			
-		}
+    @Override
+    protected void onCreate(Bundle savedinstancestate) {
+        // Notice that we get resources from the context of the Presentation
+        //Resources resources = getContext().getResources();
+        setContentView(R.layout.projector_screen);
+        context = getContext();
+        // Get width and height
+        DisplayMetrics metrics = new DisplayMetrics();
+        Display mDisplay = MyPresentation.this.getDisplay();
+        mDisplay.getMetrics(metrics);
 
-	}
+        preso = (FrameLayout) findViewById(R.id.preso);
+        bottomBit = (RelativeLayout) findViewById(R.id.bottomBit);
 
-	public static void fixBackground() {
-		File img1File = new  File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
-		File img2File = new  File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
-		String vid1File = android.os.Environment.getExternalStorageDirectory().getPath()+"/documents/OpenSong/Backgrounds/"+FullscreenActivity.backgroundVideo1;
-		String vid2File = android.os.Environment.getExternalStorageDirectory().getPath()+"/documents/OpenSong/Backgrounds/"+FullscreenActivity.backgroundVideo2;
-		// Decide if user is using video or image for background
-		if (FullscreenActivity.backgroundTypeToUse.equals("image")) {
-			File imgFile;
-			if (FullscreenActivity.backgroundToUse.equals("img1")) {
-				imgFile = img1File;
-			} else {
-				imgFile = img2File;				
-			}
-			videoBackground.stopPlayback();
-			videoBackground.setVisibility(View.INVISIBLE);
-			if(imgFile.exists()){
-				Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-				@SuppressWarnings("deprecation")
-				Drawable dr = new BitmapDrawable(myBitmap);
-				preso.setBackground(dr);
-			}
-		} else {
-			String vidFile;
-			if (FullscreenActivity.backgroundToUse.equals("vid1")) {
-				vidFile = vid1File;
-			} else {
-				vidFile = vid2File;
-			}
-			Uri videoUri = Uri.parse(vidFile);
-			videoBackground.stopPlayback();
-			videoBackground.setVideoURI(videoUri);
-			videoBackground.setOnErrorListener(new OnErrorListener () {
-			    @Override
-			    public boolean onError(MediaPlayer mp, int what, int extra) {
-			        Log.e("VideoView", "Error playing video");		        
-			        mp.stop();
-			        mp.reset();
-			        mp.release();
-			        return false;
-			    }
-			});
-			preso.setBackgroundColor(0xff000000);
-			videoBackground.setVisibility(View.VISIBLE);
-			//videoBackground.start();
-			videoBackground.setOnPreparedListener(new OnPreparedListener() {
+        lyricsHolder = (FrameLayout) findViewById(R.id.lyricsHolder);
 
-	        @Override
-	        public void onPrepared(MediaPlayer mp) {
-	            // TODO Auto-generated method stub
-	            mp.setLooping(true);
-	            videoBackground.start();
-	            //mp.start();
-	            
-	        }
-	    });
-		}
+        presoBGImage = (ImageView) findViewById(R.id.presoBGImage);
+        presoBGVideo = (TextureView) findViewById(R.id.presoBGVideo);
 
-	}
-	
-	
-	
-	public static void UpDatePresentation() {
-		// See what has changed and fade those bits out/in
-		// Crossfade the views
-		crossFadeSong();
-	}
+        presoBGVideo.setSurfaceTextureListener(this);
+        fixBackground();
 
-	
-	
-	public static void blackoutPresentation() {
-		if (PresentMode.blackout.equals("Y")) {
-			fadeOutPage();
-		} else {
-			fadeInPage();
-		}			
-	}
-	
-	
-	
-	
-	
-	
-	public static void ShowLogo() {
-		if (PresentMode.logo_on.equals("Y")) {
-			if (presoLyrics.getText().toString().length()>0 || presoLyrics.getVisibility()==View.VISIBLE) {
-				presoLyrics.startAnimation(AnimationUtils.loadAnimation(presoLyrics.getContext(),R.anim.project_fadeout));
-			}
-			if (presoTitle.getText().toString().length()>0 || presoTitle.getVisibility()==View.VISIBLE) {
-				presoTitle.startAnimation(AnimationUtils.loadAnimation(presoTitle.getContext(),R.anim.project_fadeout));
-			}
-			if (presoAuthor.getText().toString().length()>0 || presoAuthor.getVisibility()==View.VISIBLE) {
-				presoAuthor.startAnimation(AnimationUtils.loadAnimation(presoAuthor.getContext(),R.anim.project_fadeout));
-			}
-			if (presoCopyright.getText().toString().length()>0 || presoCopyright.getVisibility()==View.VISIBLE) {
-				presoCopyright.startAnimation(AnimationUtils.loadAnimation(presoCopyright.getContext(),R.anim.project_fadeout));
-			}
-			if (presoOther.getText().toString().length()>0 || presoOther.getVisibility()==View.VISIBLE) {
-				presoOther.startAnimation(AnimationUtils.loadAnimation(presoOther.getContext(),R.anim.project_fadeout));
-			}
-			//After 250ms make them invisible
-				Handler delayfadeinredraw = new Handler();
-				delayfadeinredraw.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						presoLyrics.setVisibility(View.INVISIBLE);
-						presoLyrics.setText("");
-						presoTitle.setVisibility(View.INVISIBLE);
-						presoTitle.setText("");
-						presoAuthor.setVisibility(View.INVISIBLE);
-						presoAuthor.setText("");
-						presoCopyright.setVisibility(View.INVISIBLE);
-						presoCopyright.setText("");
-						presoOther.setVisibility(View.INVISIBLE);
-						presoOther.setText("");
-					}
-					}, 250); // 250ms delay
-			
-			presoLogo.setVisibility(View.VISIBLE);
-			//Fade in the logo
-			presoLogo.startAnimation(AnimationUtils.loadAnimation(presoLogo.getContext(),R.anim.project_fadein));
-		} else {
-			//Fade out the logo
-			presoLogo.startAnimation(AnimationUtils.loadAnimation(presoLogo.getContext(),R.anim.project_fadeout));
+        SetTypeFace.setTypeface();
 
-			//Fade in the other stuff
-			presoLyrics.setVisibility(View.VISIBLE);
-			presoTitle.setVisibility(View.VISIBLE);
-			presoAuthor.setVisibility(View.VISIBLE);
-			presoCopyright.setVisibility(View.VISIBLE);
-			presoOther.setVisibility(View.VISIBLE);
-			presoLyrics.startAnimation(AnimationUtils.loadAnimation(presoLyrics.getContext(),R.anim.project_fadein));
-			presoTitle.startAnimation(AnimationUtils.loadAnimation(presoTitle.getContext(),R.anim.project_fadein));
-			presoAuthor.startAnimation(AnimationUtils.loadAnimation(presoAuthor.getContext(),R.anim.project_fadein));
-			presoCopyright.startAnimation(AnimationUtils.loadAnimation(presoCopyright.getContext(),R.anim.project_fadein));
-			presoOther.startAnimation(AnimationUtils.loadAnimation(presoOther.getContext(),R.anim.project_fadein));
+        presoLyrics1 = (TextView) findViewById(R.id.presoLyrics1);
+        presoLyrics1.setTextColor(0xffffffff);
+        presoLyrics1.setTypeface(FullscreenActivity.presofont);
+        presoLyrics1.setText(" ");
+        presoLyrics1.setTextSize(72);
+        presoLyrics1.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
+        presoLyrics1.setAlpha(0.0f);
+        presoLyrics1.setVisibility(View.GONE);
+        presoLyrics1.setHorizontallyScrolling(true);
+        presoLyrics1.setPivotY(0);
+        presoLyrics1.setTranslationY(0);
+        presoLyrics1.setY(0);
+        presoLyrics2 = (TextView) findViewById(R.id.presoLyrics2);
+        presoLyrics2.setTextColor(0xffffffff);
+        presoLyrics2.setTypeface(FullscreenActivity.presofont);
+        presoLyrics2.setText(" ");
+        presoLyrics2.setTextSize(72);
+        presoLyrics2.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
+        presoLyrics2.setAlpha(0.0f);
+        presoLyrics2.setVisibility(View.GONE);
+        presoLyrics2.setHorizontallyScrolling(true);
+        presoLyrics2.setPivotY(0);
+        presoLyrics2.setTranslationY(0);
+        presoLyrics2.setY(0);
+        presoTitle1 = (TextView) findViewById(R.id.presoTitle1);
+        presoTitle1.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
+        presoTitle1.setTextColor(lyricsTextColor);
+        presoTitle1.setTextSize(FullscreenActivity.presoTitleSize);
+        presoTitle1.setTypeface(FullscreenActivity.presofont);
+        presoTitle1.setText(" ");
+        presoTitle2 = (TextView) findViewById(R.id.presoTitle2);
+        presoTitle2.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
+        presoTitle2.setTextColor(lyricsTextColor);
+        presoTitle2.setTextSize(FullscreenActivity.presoTitleSize);
+        presoTitle2.setTypeface(FullscreenActivity.presofont);
+        presoTitle2.setText(" ");
+        presoAuthor1 = (TextView) findViewById(R.id.presoAuthor1);
+        presoAuthor1.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
+        presoAuthor1.setTextColor(lyricsTextColor);
+        presoAuthor1.setText(" ");
+        presoAuthor1.setTextSize(FullscreenActivity.presoAuthorSize);
+        presoAuthor1.setTypeface(FullscreenActivity.presofont);
+        presoAuthor2 = (TextView) findViewById(R.id.presoAuthor2);
+        presoAuthor2.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
+        presoAuthor2.setTextColor(lyricsTextColor);
+        presoAuthor2.setText(" ");
+        presoAuthor2.setTextSize(FullscreenActivity.presoAuthorSize);
+        presoAuthor2.setTypeface(FullscreenActivity.presofont);
+        presoAlert = (TextView) findViewById(R.id.presoAlert);
+        presoAlert.setVisibility(View.INVISIBLE);
+        presoAlert.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
+        presoAlert.setTextColor(lyricsTextColor);
+        presoAlert.setTextSize(FullscreenActivity.presoAlertSize);
+        presoAlert.setTypeface(FullscreenActivity.presofont);
+        presoAlert.setText("");
+        presoCopyright1 = (TextView) findViewById(R.id.presoCopyright1);
+        presoCopyright1.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
+        presoCopyright1.setTextColor(lyricsTextColor);
+        presoCopyright1.setTextSize(FullscreenActivity.presoCopyrightSize);
+        presoCopyright1.setTypeface(FullscreenActivity.presofont);
+        presoCopyright1.setText(" ");
+        presoCopyright2 = (TextView) findViewById(R.id.presoCopyright2);
+        presoCopyright2.setShadowLayer(25.0f, -5, 5, lyricsShadowColor);
+        presoCopyright2.setTextColor(lyricsTextColor);
+        presoCopyright2.setTextSize(FullscreenActivity.presoCopyrightSize);
+        presoCopyright2.setTypeface(FullscreenActivity.presofont);
+        presoCopyright2.setText(" ");
+        presoLogo = (ImageView) findViewById(R.id.presoLogo);
 
-			
-			//After 250ms make it invisible
-			Handler delayfadeinredraw = new Handler();
-			delayfadeinredraw.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					presoLogo.setVisibility(View.INVISIBLE);
-				}
-				}, 250); // 250ms delay
-		}
+        lyrics1VScrollHolder = (ScrollView) findViewById(R.id.scrollView9);
+        lyrics2VScrollHolder = (ScrollView) findViewById(R.id.scrollView10);
+        lyrics1HScrollHolder = (HorizontalScrollView) findViewById(R.id.horizontalScrollView1);
+        lyrics2HScrollHolder = (HorizontalScrollView) findViewById(R.id.horizontalScrollView2);
 
-	}
-	
-	
-	public static void fadeOutSong() {
-		// If views are visible and not faded out, fade them out.  If they are invisible, do nothing
-		if (presoTitle.getVisibility()==View.VISIBLE && presoTitle.getAlpha()>0) {
-			presoTitle.startAnimation(AnimationUtils.loadAnimation(presoTitle.getContext(),R.anim.project_fadeout));			
-		}
-		if (presoLyrics.getVisibility()==View.VISIBLE && presoLyrics.getAlpha()>0) {
-			presoLyrics.startAnimation(AnimationUtils.loadAnimation(presoLyrics.getContext(),R.anim.project_fadeout));			
-		}
-		if (presoAuthor.getVisibility()==View.VISIBLE && presoAuthor.getAlpha()>0) {
-			presoAuthor.startAnimation(AnimationUtils.loadAnimation(presoAuthor.getContext(),R.anim.project_fadeout));			
-		}
-		if (presoCopyright.getVisibility()==View.VISIBLE && presoCopyright.getAlpha()>0) {
-			presoCopyright.startAnimation(AnimationUtils.loadAnimation(presoCopyright.getContext(),R.anim.project_fadeout));			
-		}
-		if (presoOther.getVisibility()==View.VISIBLE && presoOther.getAlpha()>0) {
-			presoOther.startAnimation(AnimationUtils.loadAnimation(presoOther.getContext(),R.anim.project_fadeout));			
-		}
-		// After 250ms, make the views invisible
-		Handler delayinvisible = new Handler();
-		delayinvisible.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				presoLyrics.setVisibility(View.INVISIBLE);
-				presoTitle.setVisibility(View.INVISIBLE);
-				presoAuthor.setVisibility(View.INVISIBLE);
-				presoCopyright.setVisibility(View.INVISIBLE);
-				presoOther.setVisibility(View.INVISIBLE);
-			}
-			}, 250); // 250ms delay		
-	}
-	
-	
-	
-	public static void fadeOutPage() {
-	
-		if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
-			// Make sure the background of preso is black
-			preso.setBackgroundColor(0xff000000);
-			// Fade out the video
-			videoBackground.startAnimation(AnimationUtils.loadAnimation(videoBackground.getContext(),R.anim.project_fadeout));
-		} else {
-		preso.startAnimation(AnimationUtils.loadAnimation(preso.getContext(),R.anim.project_fadeout));
-		}
-		// After 250ms, make the views invisible
-		Handler delayinvisible = new Handler();
-		delayinvisible.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				//presoLyrics.setAlpha(0.0f);
-				presoLyrics.setVisibility(View.INVISIBLE);
-				//presoTitle.setAlpha(0.0f);
-				presoTitle.setVisibility(View.INVISIBLE);
-				//presoAuthor.setAlpha(0.0f);
-				presoAuthor.setVisibility(View.INVISIBLE);
-				//presoCopyright.setAlpha(0.0f);
-				presoCopyright.setVisibility(View.INVISIBLE);
-				//presoOther.setAlpha(0.0f);
-				presoOther.setVisibility(View.INVISIBLE);
-				//videoBackground.setAlpha(0.0f);
-				videoBackground.setVisibility(View.INVISIBLE);
-				if (FullscreenActivity.backgroundTypeToUse.equals("image")) {
-				//	preso.setAlpha(0.0f);
-				}
-				preso.setVisibility(View.INVISIBLE);
-			}
-			}, 250); // 250ms delay
-	}
-	
-	
-	public static void fadeInPage() {
-		if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
-			// Fade in the video
-			videoBackground.setVisibility(View.VISIBLE);
-			videoBackground.startAnimation(AnimationUtils.loadAnimation(videoBackground.getContext(),R.anim.project_fadein));
-		}
-		preso.setVisibility(View.VISIBLE);
-		fixBackground();
-		preso.startAnimation(AnimationUtils.loadAnimation(preso.getContext(),R.anim.project_fadein));
-		//presoLogo.setVisibility(View.VISIBLE);
-		//presoLogo.setAlpha(1.0f);
-		//PresentMode.logo_on="Y";
-		//Fade in the other stuff
-		presoLyrics.setText("");
-		presoTitle.setText("");
-		presoAuthor.setText("");
-		presoCopyright.setText("");
-		presoOther.setText("");
-		presoLyrics.setVisibility(View.VISIBLE);
-		presoTitle.setVisibility(View.VISIBLE);
-		presoAuthor.setVisibility(View.VISIBLE);
-		presoCopyright.setVisibility(View.VISIBLE);
-		presoOther.setVisibility(View.VISIBLE);
-		presoLyrics.startAnimation(AnimationUtils.loadAnimation(presoLyrics.getContext(),R.anim.project_fadein));
-		presoTitle.startAnimation(AnimationUtils.loadAnimation(presoTitle.getContext(),R.anim.project_fadein));
-		presoAuthor.startAnimation(AnimationUtils.loadAnimation(presoAuthor.getContext(),R.anim.project_fadein));
-		presoCopyright.startAnimation(AnimationUtils.loadAnimation(presoCopyright.getContext(),R.anim.project_fadein));
-		presoOther.startAnimation(AnimationUtils.loadAnimation(presoOther.getContext(),R.anim.project_fadein));
+        lyricsINVScrollHolder = lyrics1VScrollHolder;
+        lyricsOUTVScrollHolder = lyrics2VScrollHolder;
+        lyricsINHScrollHolder = lyrics1HScrollHolder;
+        lyricsOUTHScrollHolder = lyrics2HScrollHolder;
 
-		
-	}
-	
-	public static void fadeInSong() {
-		// If views are invisible or are faded out, fade them in.
-		if (presoTitle.getVisibility()==View.INVISIBLE ||  presoTitle.getAlpha()<1) {
-			presoTitle.setAlpha(0.0f);
-			presoTitle.startAnimation(AnimationUtils.loadAnimation(presoTitle.getContext(),R.anim.project_fadein));			
-		} else {
-			presoTitle.setVisibility(View.VISIBLE);
-			presoTitle.setAlpha(1.0f);
-		}
-		if (presoLyrics.getVisibility()==View.INVISIBLE || presoLyrics.getAlpha()<1) {
-			presoLyrics.setAlpha(0.0f);
-			presoLyrics.startAnimation(AnimationUtils.loadAnimation(presoLyrics.getContext(),R.anim.project_fadein));			
-		} else {
-			presoLyrics.setVisibility(View.VISIBLE);
-			presoLyrics.setAlpha(1.0f);
-		}
-		if (presoAuthor.getVisibility()==View.INVISIBLE || presoAuthor.getAlpha()<1) {
-			presoAuthor.setAlpha(0.0f);
-			presoAuthor.startAnimation(AnimationUtils.loadAnimation(presoAuthor.getContext(),R.anim.project_fadein));			
-		} else {
-			presoAuthor.setVisibility(View.VISIBLE);
-			presoAuthor.setAlpha(1.0f);
-		}
-		if (presoCopyright.getVisibility()==View.INVISIBLE || presoCopyright.getAlpha()<1) {
-			presoCopyright.setAlpha(0.0f);
-			presoCopyright.startAnimation(AnimationUtils.loadAnimation(presoCopyright.getContext(),R.anim.project_fadein));			
-		} else {
-			presoCopyright.setVisibility(View.VISIBLE);
-			presoCopyright.setAlpha(1.0f);
-		}
-		if (presoOther.getVisibility()==View.INVISIBLE || presoOther.getAlpha()<1) {
-			presoOther.setAlpha(0.0f);
-			presoOther.startAnimation(AnimationUtils.loadAnimation(presoOther.getContext(),R.anim.project_fadein));			
-		} else {
-			presoOther.setVisibility(View.VISIBLE);
-			presoOther.setAlpha(1.0f);
-		}
-	}
-	
-	public static void fadeOutLogo() {
-		// If logo is visible and not faded out, fade it out
-		if (presoLogo.getVisibility()==View.VISIBLE &&  presoLogo.getAlpha()>00) {
-			presoLogo.startAnimation(AnimationUtils.loadAnimation(presoLogo.getContext(),R.anim.project_fadeout));
-		}
-		// After 250ms, make the logo invisible
-		Handler delayinvisible = new Handler();
-		delayinvisible.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				presoLogo.setVisibility(View.INVISIBLE);
-			}
-			}, 250); // 250ms delay		
-		PresentMode.logo_on="N";
-	}
+        presoLyrics1.setPadding(FullscreenActivity.xmargin_presentation, FullscreenActivity.ymargin_presentation, FullscreenActivity.xmargin_presentation, 0);
+        presoLyrics2.setPadding(FullscreenActivity.xmargin_presentation, FullscreenActivity.ymargin_presentation, FullscreenActivity.xmargin_presentation, 0);
+        presoLogo.setPadding(FullscreenActivity.xmargin_presentation, FullscreenActivity.ymargin_presentation, FullscreenActivity.xmargin_presentation, FullscreenActivity.ymargin_presentation);
+        bottomBit.setPadding(FullscreenActivity.xmargin_presentation, 0, FullscreenActivity.xmargin_presentation, FullscreenActivity.ymargin_presentation);
+        LayoutParams params = preso.getLayoutParams();
+        params.width = metrics.widthPixels;
+        params.height = metrics.heightPixels;
+        preso.setLayoutParams(params);
+
+        presoBGVideo.setSurfaceTextureListener(this);
+
+        defimage = getResources().getDrawable(R.drawable.preso_default_bg);
+
+        // Set a listener for the presoLyrics to listen for size changes
+        // This is used for the scale
+        presoLyricsIN = presoLyrics1;
+        presoAuthorIN = presoAuthor1;
+        presoTitleIN = presoTitle1;
+        presoCopyrightIN = presoCopyright1;
+        presoLyricsIN.setHorizontallyScrolling(true);
+        presoLyricsIN.setTextSize(72);
+
+        ViewTreeObserver vto = presoLyricsIN.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                presoLyricsIN.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                // Get the width and height of this text
+                //screenwidth = lyricsHolder.getWidth();
+                screenwidth = lyricsHolder.getWidth();
+                textwidth = presoLyricsIN.getWidth();
+                screenheight = lyricsHolder.getHeight();
+                textheight = presoLyricsIN.getHeight();
+                if (PresenterMode.autoscale) {
+                    doScale();
+                } else {
+                    presoLyricsIN.setTextSize(FullscreenActivity.presoFontSize);
+                    updateFontSize();
+                }
 
 
-	
-	public void fadeInLogo() {
-		// If logo is invisible or faded out, fade it in
-		if (presoLogo.getVisibility()==View.INVISIBLE ||  presoLogo.getAlpha()<1) {
-			presoLogo.setAlpha(0.0f);
-			presoLogo.setVisibility(View.VISIBLE);
-			presoLogo.startAnimation(AnimationUtils.loadAnimation(presoLogo.getContext(),R.anim.project_fadein));			
-		} else {
-			presoLogo.setAlpha(1.0f);
-			presoLogo.setVisibility(View.VISIBLE);
-		}
-		PresentMode.logo_on="Y";
-	}
+            }
+        });
+        updateAlpha();
+    }
+
+    public static void UpDatePresentation() {
+        // See what has changed and fade those bits out/in
+        // Crossfade the views
+        if (PresenterMode.blackout.equals("Y")) {
+            blackoutPresentation();
+        } else if (PresenterMode.logo_on.equals("Y")) {
+            fadeInLogo();
+        } else if (PresenterMode.song_on.equals("Y")) {
+            crossFadeSong();
+        }
+    }
+
+    public static void doScale() {
+        presoLyricsIN.setHorizontallyScrolling(true);
+
+        lyricsINVScrollHolder.setScaleX(1.0f);
+        lyricsINVScrollHolder.setScaleY(1.0f);
+        lyricsINHScrollHolder.setScaleX(1.0f);
+        lyricsINHScrollHolder.setScaleY(1.0f);
+
+        // Get possible xscale value
+        float xscale;
+        if (textwidth != 0 && screenwidth != 0) {
+            xscale = (float) screenwidth / (float) textwidth;
+        } else {
+            xscale = 1;
+        }
+
+        // Get possible yscale value
+        float yscale;
+        if (textheight != 0 && screenheight != 0) {
+            yscale = (float) screenheight / (float) textheight;
+        } else {
+            yscale = 1;
+        }
+
+        // We have to use the smallest scale factor to make sure both fit
+        if (xscale > yscale) {
+            xscale = yscale;
+        } else {
+            yscale = xscale;
+        }
+        presoLyricsIN.setPivotY(0);
+        presoLyricsIN.setTranslationY(0);
+        presoLyrics1.setPivotY(0);
+        presoLyrics1.setTranslationY(0);
+        presoLyrics2.setPivotY(0);
+        presoLyrics2.setTranslationY(0);
+        presoLyricsIN.setY(0);
+        presoLyrics1.setY(0);
+        presoLyrics2.setY(0);
+        presoLyricsIN.setPivotX(textwidth / 2);
+        //presoLyricsIN.setScaleX(xscale);
+        //presoLyricsIN.setScaleY(yscale);
+        presoLyricsIN.setTextSize(72*xscale);
 
 
-	public static void crossFadeSong() {
-		// If logo is being shown.... fade it out
-		if (presoLogo.getVisibility()==View.VISIBLE) {
-			fadeOutLogo();
-		}
-		// If views are visible and not faded out and are needing changed, fade them out. 
-		// If invisible, make changes and run fade in.
-		if (presoTitle.getVisibility()==View.VISIBLE && presoTitle.getAlpha()>0 && !presoTitle.getText().toString().equals(PresentMode.presoTitle)) {
-			presoTitle.startAnimation(AnimationUtils.loadAnimation(presoTitle.getContext(),R.anim.project_fadeout));			
-		}
-		if (presoLyrics.getVisibility()==View.VISIBLE && presoLyrics.getAlpha()>0 && !presoLyrics.getText().toString().equals(PresentMode.buttonPresentText)) {
-			presoLyrics.startAnimation(AnimationUtils.loadAnimation(presoLyrics.getContext(),R.anim.project_fadeout));			
-			// After 250ms, change the text as required and fade the changed stuff back in.
-			Handler delayscale = new Handler();
-			delayscale.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					//presoLyrics.setScaleX(1);
-					}
-			}, 250); // 250ms delay		
-		}
-		if (presoAuthor.getVisibility()==View.VISIBLE && presoAuthor.getAlpha()>0 && !presoAuthor.getText().toString().equals(PresentMode.presoAuthor)) {
-			presoAuthor.startAnimation(AnimationUtils.loadAnimation(presoAuthor.getContext(),R.anim.project_fadeout));			
-		}
-		if (presoCopyright.getVisibility()==View.VISIBLE && presoCopyright.getAlpha()>0 && !presoCopyright.getText().toString().equals(PresentMode.presoCopyright)) {
-			presoCopyright.startAnimation(AnimationUtils.loadAnimation(presoCopyright.getContext(),R.anim.project_fadeout));			
-		}
-		if (presoOther.getVisibility()==View.VISIBLE && presoOther.getAlpha()>0 && !presoOther.getText().toString().equals(PresentMode.presoOther)) {
-			presoOther.startAnimation(AnimationUtils.loadAnimation(presoOther.getContext(),R.anim.project_fadeout));			
-		}
-		
+    }
 
-		// After 250ms, change the text as required and fade the changed stuff back in.
-		Handler delayfadein = new Handler();
-		delayfadein.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				// Change the text 
-				if (!presoTitle.getText().toString().equals(PresentMode.presoTitle)) {
-					presoTitle.setAlpha(1.0f);
-					presoTitle.setVisibility(View.VISIBLE);
-					presoTitle.setText(PresentMode.presoTitle);
-					presoTitle.startAnimation(AnimationUtils.loadAnimation(presoTitle.getContext(),R.anim.project_fadein));								
-				}
+    public static void fadeoutCopyright1() {
+        // If presoCopyright1 is visible, fade it out
+        if (presoCopyright1.getVisibility() == View.VISIBLE && presoCopyright1.getAlpha() > 0.0f) {
+            presoCopyright1.setAlpha(1.0f);
+            presoCopyright1.setVisibility(View.VISIBLE);
+            presoCopyright1.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    presoCopyright1.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
+            presoCopyright1.setAlpha(0.0f);
+            presoCopyright1.setVisibility(View.INVISIBLE);
+        }
+    }
 
-				if (!presoLyrics.getText().toString().equals(PresentMode.buttonPresentText)) {
-					presoLyrics.setAlpha(1.0f);
-					presoLyrics.setVisibility(View.VISIBLE);
-					presoLyrics.setText(PresentMode.buttonPresentText);
-					presoLyrics.measure(0, 0);       //must call measure!
-					float templyricswidth = presoLyrics.getMeasuredWidth(); //get width
-					float templyricsheight = presoLyrics.getMeasuredHeight();
-					float tempbottombitheight = bottomBit.getMeasuredHeight();
-					float temppresowidth = preso.getMeasuredWidth() - 2*FullscreenActivity.xmargin_presentation;
-					float temppresoheight = preso.getMeasuredHeight() - tempbottombitheight - 2*FullscreenActivity.ymargin_presentation;
-					float xscale = temppresowidth/templyricswidth;
-					float yscale = temppresoheight/templyricsheight;
-					
-					if (xscale>yscale) {
-						presoLyrics.setScaleX(yscale);
-						presoLyrics.setScaleY(yscale);
-					} else {
-						presoLyrics.setScaleX(xscale);
-						presoLyrics.setScaleY(xscale);			
-					}
-					
-					
-					
-					presoLyrics.startAnimation(AnimationUtils.loadAnimation(presoLyrics.getContext(),R.anim.project_fadein));			
-				}
-				if (!presoAuthor.getText().toString().equals(PresentMode.presoAuthor)) {
-					presoAuthor.setAlpha(1.0f);
-					presoAuthor.setVisibility(View.VISIBLE);
-					presoAuthor.setText(PresentMode.presoAuthor);
-					presoAuthor.startAnimation(AnimationUtils.loadAnimation(presoAuthor.getContext(),R.anim.project_fadein));			
-				}
-				if (!presoCopyright.getText().toString().equals(PresentMode.presoCopyright)) {
-					presoCopyright.setAlpha(1.0f);
-					presoCopyright.setVisibility(View.VISIBLE);
-					presoCopyright.setText(PresentMode.presoCopyright);
-					presoCopyright.startAnimation(AnimationUtils.loadAnimation(presoCopyright.getContext(),R.anim.project_fadein));			
-				}
-				if (!presoOther.getText().toString().equals(PresentMode.presoOther)) {
-					presoOther.setAlpha(1.0f);
-					presoOther.setVisibility(View.VISIBLE);
-					presoOther.setText(PresentMode.presoOther);
-					presoOther.startAnimation(AnimationUtils.loadAnimation(presoOther.getContext(),R.anim.project_fadein));			
-				}
-			}
-			}, 250); // 250ms delay		
-	}
+    public static void fadeoutCopyright2() {
+        // If presoCopyright2 is visible, it out
+        if (presoCopyright2.getVisibility() == View.VISIBLE && presoCopyright2.getAlpha() > 0.0f) {
+            presoCopyright2.setAlpha(1.0f);
+            presoCopyright2.setVisibility(View.VISIBLE);
+            presoCopyright2.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    presoCopyright2.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
+            presoCopyright2.setAlpha(0.0f);
+            presoCopyright2.setVisibility(View.INVISIBLE);
+        }
+    }
 
-	public static void changeMargins() {
-		// Get width and height
-		preso.setPadding(PresentMode.tempxmargin,PresentMode.tempymargin,PresentMode.tempxmargin,PresentMode.tempymargin);
-		presoLyrics.measure(0, 0);       //must call measure!
-		float templyricswidth = presoLyrics.getMeasuredWidth(); //get width
-		float templyricsheight = presoLyrics.getMeasuredHeight();
-		float tempbottombitheight = bottomBit.getMeasuredHeight();
-		float temppresowidth = preso.getMeasuredWidth() - 2*PresentMode.tempxmargin;
-		float temppresoheight = preso.getMeasuredHeight() - tempbottombitheight - 2*PresentMode.tempymargin;
-		float xscale = temppresowidth/templyricswidth;
-		float yscale = temppresoheight/templyricsheight;
-	
-		if (xscale>yscale) {
-			presoLyrics.setScaleX(yscale);
-			presoLyrics.setScaleY(yscale);
-		} else {
-			presoLyrics.setScaleX(xscale);
-			presoLyrics.setScaleY(xscale);			
-		}
+    public static void fadeoutTitle1() {
+        // If presoTitle1 is visible, fade it out
+        if (presoTitle1.getVisibility() == View.VISIBLE && presoTitle1.getAlpha() > 0.0f) {
+            presoTitle1.setAlpha(1.0f);
+            presoTitle1.setVisibility(View.VISIBLE);
+            presoTitle1.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    presoTitle1.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
+            presoTitle1.setAlpha(0.0f);
+            presoTitle1.setVisibility(View.INVISIBLE);
+        }
+    }
 
-	}
-	
+    public static void fadeoutTitle2() {
+        // If presoTitle2 is visible, it out
+        if (presoTitle2.getVisibility() == View.VISIBLE && presoTitle2.getAlpha() > 0.0f) {
+            presoTitle2.setAlpha(1.0f);
+            presoTitle2.setVisibility(View.VISIBLE);
+            presoTitle2.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    presoTitle2.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
+            presoTitle2.setAlpha(0.0f);
+            presoTitle2.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void fadeoutAuthor1() {
+        // If presoAuthor1 is visible, fade it out
+        if (presoAuthor1.getVisibility() == View.VISIBLE && presoAuthor1.getAlpha() > 0.0f) {
+            presoAuthor1.setAlpha(1.0f);
+            presoAuthor1.setVisibility(View.VISIBLE);
+            presoAuthor1.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    presoAuthor1.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
+            presoAuthor1.setAlpha(0.0f);
+            presoAuthor1.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void fadeoutAuthor2() {
+        // If presoAuthor2 is visible, it out
+        if (presoAuthor2.getVisibility() == View.VISIBLE && presoAuthor2.getAlpha() > 0.0f) {
+            presoAuthor2.setAlpha(1.0f);
+            presoAuthor2.setVisibility(View.VISIBLE);
+            presoAuthor2.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    presoAuthor2.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
+            presoAuthor2.setAlpha(0.0f);
+            presoAuthor2.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void fadeinAlert() {
+        presoAlert.setText(PresenterMode.myAlert);
+        presoAlert.setTypeface(FullscreenActivity.presofont);
+
+        if (PresenterMode.alert_on.equals("Y") && presoAlert.getVisibility() == View.INVISIBLE) {
+            presoAlert.setAlpha(0f);
+            presoAlert.setVisibility(View.VISIBLE);
+            presoAlert.animate().alpha(1f).setDuration(1000).setListener(null);
+        } else {
+            presoAlert.setAlpha(0f);
+            presoAlert.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public static void fadeoutAlert() {
+        presoAlert.setText(PresenterMode.myAlert);
+        if (presoAlert.getVisibility() == View.VISIBLE) {
+            presoAlert.setAlpha(1f);
+            presoAlert.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    presoAlert.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
+            presoAlert.setAlpha(0f);
+            presoAlert.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void fadeoutLyrics2() {
+        // If presoLyrics are visible, fade them out
+        if (presoLyrics2.getVisibility() == View.VISIBLE && presoLyrics2.getAlpha() > 0.0f) {
+            presoLyrics2.setAlpha(1.0f);
+            presoLyrics2.setVisibility(View.VISIBLE);
+            presoLyrics2.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    presoLyrics2.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
+            presoLyrics2.setAlpha(0.0f);
+            presoLyrics2.setVisibility(View.INVISIBLE);
+        }
+
+    }
+
+    public static void fadeoutLyrics1() {
+        // If presoLyrics are visible, fade them out
+        if (presoLyrics1.getVisibility() == View.VISIBLE && presoLyrics1.getAlpha() > 0.0f) {
+            presoLyrics1.setAlpha(1.0f);
+            presoLyrics1.setVisibility(View.VISIBLE);
+            presoLyrics1.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    presoLyrics1.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
+            presoLyrics1.setAlpha(0.0f);
+            presoLyrics1.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void fadeInLogo() {
+        // If logo is invisible or faded out, fade it in
+        if (presoLogo.getVisibility() == View.INVISIBLE || presoLogo.getVisibility() == View.INVISIBLE || presoLogo.getAlpha() == 0f) {
+            presoLogo.setAlpha(0.0f);
+            presoLogo.setVisibility(View.VISIBLE);
+            presoLogo.animate().alpha(1f).setDuration(1000).setListener(null);
+        } else {
+            presoLogo.setAlpha(1.0f);
+            presoLogo.setVisibility(View.VISIBLE);
+        }
+
+        // We want to fade out the song details
+        fadeoutLyrics1();
+        fadeoutLyrics2();
+        fadeoutTitle1();
+        fadeoutTitle2();
+        fadeoutAuthor1();
+        fadeoutAuthor2();
+        fadeoutCopyright1();
+        fadeoutCopyright2();
+
+        PresenterMode.logo_on = "Y";
+
+    }
+
+    public static void fadeOutLogo() {
+        // If presoLogo is visible, fade it out
+        if (presoLogo.getVisibility() == View.VISIBLE && presoLogo.getAlpha() > 0.0f) {
+            presoLogo.setAlpha(1.0f);
+            presoLogo.setVisibility(View.VISIBLE);
+            presoLogo.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    presoLogo.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
+            presoLogo.setAlpha(0.0f);
+            presoLogo.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void crossFadeSong() {
+        // There are two views for each song element (presoLyrics, presoAuthor, presoCopyright, presoAlert)
+        // This is to allow for smooth crossfading.
+
+        // If the logo is showing, fade it out then hide it
+        if (presoLogo.getVisibility() == View.VISIBLE) {
+            fadeOutLogo();
+        }
+
+        // If the user is on a blank screen, we need to fade back in the background image or video
+        if (preso.getVisibility() == View.INVISIBLE || preso.getVisibility() == View.GONE) {
+            fadeInPage();
+        }
+
+        // Decide which view we are fading in.  By default its the 1st view
+        whichPresoLyricsToUse = 1;
+        presoLyricsIN = presoLyrics1;
+        presoLyricsOUT = presoLyrics2;
+        presoTitleIN = presoTitle1;
+        presoTitleOUT = presoTitle2;
+        presoAuthorIN = presoAuthor1;
+        presoAuthorOUT = presoAuthor2;
+        presoCopyrightIN = presoCopyright1;
+        presoCopyrightOUT = presoCopyright2;
+        lyricsINVScrollHolder = lyrics1VScrollHolder;
+        lyricsOUTVScrollHolder = lyrics2VScrollHolder;
+        lyricsINHScrollHolder = lyrics1HScrollHolder;
+        lyricsOUTHScrollHolder = lyrics2HScrollHolder;
+
+        if (presoLyrics1.getVisibility() == View.VISIBLE) {
+            // 1st is on already, so we are fading in the 2nd view
+            whichPresoLyricsToUse = 2;
+            presoLyricsIN = presoLyrics2;
+            presoLyricsOUT = presoLyrics1;
+            presoTitleIN = presoTitle2;
+            presoTitleOUT = presoTitle1;
+            presoAuthorIN = presoAuthor2;
+            presoAuthorOUT = presoAuthor1;
+            presoCopyrightIN = presoCopyright2;
+            presoCopyrightOUT = presoCopyright1;
+            lyricsINVScrollHolder = lyrics2VScrollHolder;
+            lyricsOUTVScrollHolder = lyrics1VScrollHolder;
+            lyricsINHScrollHolder = lyrics2HScrollHolder;
+            lyricsOUTHScrollHolder = lyrics1HScrollHolder;
+        }
+
+        // Make sure the visibilities and alphas of the fade in view are ready
+        presoLyricsIN.setAlpha(0.0f);
+        presoLyricsIN.setVisibility(View.VISIBLE);
+
+        presoLyricsIN.setScaleX(1);
+        presoLyricsIN.setScaleY(1);
+
+        // Decide on the font being used
+        SetTypeFace.setTypeface();
+
+        presoLyricsIN.setTypeface(FullscreenActivity.presofont);
+        presoTitleIN.setTypeface(FullscreenActivity.presofont);
+        presoAuthorIN.setTypeface(FullscreenActivity.presofont);
+        presoCopyrightIN.setTypeface(FullscreenActivity.presofont);
+        presoAlert.setTypeface(FullscreenActivity.presofont);
+        presoLyricsIN.setTextSize(72);
+
+        // Make sure the listener is ready for the new text being drawn to deal with scaling
+        ViewTreeObserver vto = presoLyricsIN.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                presoLyricsIN.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                // Get the width and height of this text
+                screenwidth = lyricsHolder.getWidth();
+                textwidth = presoLyricsIN.getWidth();
+                screenheight = lyricsHolder.getHeight();
+                textheight = presoLyricsIN.getHeight();
+                if (PresenterMode.autoscale) {
+                    doScale();
+                } else {
+                    presoLyricsIN.setTextSize(FullscreenActivity.presoFontSize);
+                    presoLyricsOUT.setTextSize(FullscreenActivity.presoFontSize);
+                }
+                // Animate the view in
+                presoLyricsIN.animate().alpha(1f).setDuration(1000).setListener(null);
+
+                // Animate the other view out - ONLY IF IT IS VISIBLE
+                if (presoLyricsOUT.getVisibility() == View.VISIBLE) {
+                    presoLyricsOUT.setAlpha(1.0f);
+                    presoLyricsOUT.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            presoLyricsOUT.setVisibility(View.INVISIBLE);
+                            presoLyricsOUT.setScaleX(1);
+                            presoLyricsOUT.setScaleY(1);
+                            presoLyricsOUT.setPivotX(textwidth / 2);
+                            presoLyricsOUT.setPivotY(0);
+                            presoLyricsOUT.setY(0);
+                            presoLyricsOUT.setTranslationY(0);
+                        }
+                    });
+                } else {
+                    // Just hide the out one if wasn't already visible
+                    presoLyricsOUT.setAlpha(0.0f);
+                    presoLyricsOUT.setVisibility(View.INVISIBLE);
+                    presoLyricsOUT.setScaleX(1);
+                    presoLyricsOUT.setScaleY(1);
+                    presoLyricsOUT.setPivotX(textwidth / 2);
+                    presoLyricsOUT.setPivotY(0);
+                    presoLyricsOUT.setY(0);
+                    presoLyricsOUT.setTranslationY(0);
+                }
+
+            }
+        });
+
+        // Set the text of the view that is being faded in
+        // This should call the vto once updated
+        presoLyricsIN.setText(PresenterMode.buttonPresentText);
+
+        // Now we can do the same to the title, author, copyright and other fields
+        // We only need to crossfade if the contents have changed (i.e. a different song).
+        // Otherwise just switch them over
+        presoTitleIN.setText(PresenterMode.presoTitle);
+        presoAuthorIN.setText(PresenterMode.presoAuthor);
+        presoCopyrightIN.setText(PresenterMode.presoCopyright);
+        presoTitleIN.setTypeface(FullscreenActivity.presofont);
+        presoAuthorIN.setTypeface(FullscreenActivity.presofont);
+        presoCopyrightIN.setTypeface(FullscreenActivity.presofont);
+
+        if (presoTitleOUT.getVisibility() == View.VISIBLE && presoTitleOUT.getAlpha() > 0 && !presoTitleOUT.getText().toString().equals(PresenterMode.presoTitle)) {
+            presoTitleOUT.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    presoTitleOUT.setVisibility(View.INVISIBLE);
+                }
+            }).start();
+            presoTitleIN.setAlpha(0f);
+            presoTitleIN.setVisibility(View.VISIBLE);
+            presoTitleIN.animate().alpha(1f).setDuration(1000).setListener(null);
+        } else {
+            presoTitleOUT.setAlpha(0f);
+            presoTitleOUT.setVisibility(View.INVISIBLE);
+            presoTitleIN.setAlpha(1f);
+            presoTitleIN.setVisibility(View.VISIBLE);
+        }
+
+        if (presoAuthorOUT.getVisibility() == View.VISIBLE && presoAuthorOUT.getAlpha() > 0 && !presoAuthorOUT.getText().toString().equals(PresenterMode.presoAuthor)) {
+            presoAuthorOUT.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    presoAuthorOUT.setVisibility(View.INVISIBLE);
+                }
+            }).start();
+            presoAuthorIN.setAlpha(0f);
+            presoAuthorIN.setVisibility(View.VISIBLE);
+            presoAuthorIN.animate().alpha(1f).setDuration(1000).setListener(null);
+        } else {
+            presoAuthorOUT.setAlpha(0f);
+            presoAuthorOUT.setVisibility(View.INVISIBLE);
+            presoAuthorIN.setAlpha(1f);
+            presoAuthorIN.setVisibility(View.VISIBLE);
+        }
+
+        if (presoCopyrightOUT.getVisibility() == View.VISIBLE && presoCopyrightOUT.getAlpha() > 0 && !presoCopyrightOUT.getText().toString().equals(PresenterMode.presoCopyright)) {
+            presoCopyrightOUT.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    presoCopyrightOUT.setVisibility(View.INVISIBLE);
+                }
+            }).start();
+            presoCopyrightIN.setAlpha(0f);
+            presoCopyrightIN.setVisibility(View.VISIBLE);
+            presoCopyrightIN.animate().alpha(1f).setDuration(1000).setListener(null).start();
+        } else {
+            presoCopyrightOUT.setAlpha(0f);
+            presoCopyrightOUT.setVisibility(View.INVISIBLE);
+            presoCopyrightIN.setAlpha(1f);
+            presoCopyrightIN.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public static void fadeInPage() {
+        // Simply fade in preso
+        PresenterMode.blackout = "N";
+        // Switch the logo button back off in case
+        PresenterMode.logo_on = "N";
+        presoLogo.setVisibility(View.GONE);
+        preso.setAlpha(0f);
+        preso.setVisibility(View.VISIBLE);
+        preso.animate().alpha(1f).setDuration(1000).setListener(null).start();
+    }
+
+    public static void fadeOutPage() {
+        // Simply fade out preso
+        preso.setAlpha(1f);
+        preso.setVisibility(View.VISIBLE);
+        preso.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                preso.setVisibility(View.GONE);
+                // Empty the string values on the presentation - resets it all
+                presoLyrics1.setText(" ");
+                presoLyrics2.setText(" ");
+                presoTitle1.setText(" ");
+                presoTitle2.setText(" ");
+                presoAuthor1.setText(" ");
+                presoAuthor2.setText(" ");
+                presoCopyright1.setText(" ");
+                presoCopyright2.setText(" ");
+                presoAlert.setText("");
+            }
+        }).start();
+    }
+
+    public static void fixBackground() {
+        File img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
+        File img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
+        String vid1File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
+        String vid2File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
+        // Decide if user is using video or image for background
+        switch (FullscreenActivity.backgroundTypeToUse) {
+            case "image":
+                presoBGImage.setVisibility(View.VISIBLE);
+                presoBGVideo.setVisibility(View.INVISIBLE);
+                if (mMediaPlayer != null) {
+                    mMediaPlayer.pause();
+                }
+                File imgFile;
+                if (FullscreenActivity.backgroundToUse.equals("img1")) {
+                    imgFile = img1File;
+                } else {
+                    imgFile = img2File;
+                }
+                if (imgFile.exists()) {
+                    if (imgFile.toString().contains("ost_bg.png")) {
+                        presoBGImage.setImageDrawable(defimage);
+                    } else {
+                        myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                        dr = new BitmapDrawable(myBitmap);
+                        presoBGImage.setImageDrawable(dr);
+                    }
+                    presoBGImage.setVisibility(View.VISIBLE);
+                }
+                break;
+            case "video":
+                presoBGImage.setVisibility(View.INVISIBLE);
+                presoBGVideo.setVisibility(View.VISIBLE);
+                if (mMediaPlayer != null) {
+                    mMediaPlayer.start();
+                }
+                if (FullscreenActivity.backgroundToUse.equals("vid1")) {
+                    vidFile = vid1File;
+                } else {
+                    vidFile = vid2File;
+                }
+                preso.setBackgroundColor(0xff000000);
+                myBitmap = null;
+                dr = null;
+                presoBGImage.setImageDrawable(null);
+                presoBGImage.setVisibility(View.GONE);
+                break;
+            default:
+                preso.setBackgroundColor(0xff000000);
+                myBitmap = null;
+                dr = null;
+                presoBGImage.setImageDrawable(null);
+                presoBGImage.setVisibility(View.GONE);
+                break;
+        }
+        updateAlpha();
+    }
+
+    public static void blackoutPresentation() {
+        if (preso.getVisibility() == View.GONE) {
+            fadeInPage();
+        } else {
+            fadeOutPage();
+        }
+    }
+
+    public static void updateFontSize() {
+        presoLyrics1.setScaleX(1.0f);
+        presoLyrics1.setScaleY(1.0f);
+        presoLyrics2.setScaleX(1.0f);
+        presoLyrics2.setScaleY(1.0f);
+        lyricsINVScrollHolder.setScaleX(1.0f);
+        lyricsINVScrollHolder.setScaleY(1.0f);
+        lyricsOUTVScrollHolder.setScaleX(1.0f);
+        lyricsOUTVScrollHolder.setScaleY(1.0f);
+        lyricsINHScrollHolder.setScaleX(1.0f);
+        lyricsINHScrollHolder.setScaleY(1.0f);
+        lyricsOUTHScrollHolder.setScaleX(1.0f);
+        lyricsOUTHScrollHolder.setScaleY(1.0f);
+        presoLyrics1.setTextSize(FullscreenActivity.presoFontSize);
+        presoLyrics2.setTextSize(FullscreenActivity.presoFontSize);
+        presoTitle1.setTextSize(FullscreenActivity.presoTitleSize);
+        presoTitle2.setTextSize(FullscreenActivity.presoTitleSize);
+        presoAuthor1.setTextSize(FullscreenActivity.presoAuthorSize);
+        presoAuthor2.setTextSize(FullscreenActivity.presoAuthorSize);
+        presoCopyright1.setTextSize(FullscreenActivity.presoCopyrightSize);
+        presoCopyright2.setTextSize(FullscreenActivity.presoCopyrightSize);
+        presoAlert.setTextSize(FullscreenActivity.presoAlertSize);
+
+    }
+
+    public static void resetFontSize() {
+        lyricsINVScrollHolder.setScaleX(1.0f);
+        lyricsINVScrollHolder.setScaleY(1.0f);
+        lyricsOUTVScrollHolder.setScaleX(1.0f);
+        lyricsOUTVScrollHolder.setScaleY(1.0f);
+        lyricsINHScrollHolder.setScaleX(1.0f);
+        lyricsINHScrollHolder.setScaleY(1.0f);
+        lyricsOUTHScrollHolder.setScaleX(1.0f);
+        lyricsOUTHScrollHolder.setScaleY(1.0f);
+        presoLyricsIN.setScaleX(1.0f);
+        presoLyricsIN.setScaleY(1.0f);
+        presoLyricsOUT.setScaleX(1.0f);
+        presoLyricsOUT.setScaleY(1.0f);
+        presoLyricsIN.setTextSize(72);
+        presoLyricsOUT.setTextSize(72);
+        ViewTreeObserver vto = presoLyricsIN.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                presoLyricsIN.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                // Get the width and height of this text
+                screenwidth = lyricsHolder.getWidth();
+                textwidth = presoLyricsIN.getWidth();
+                screenheight = lyricsHolder.getHeight();
+                textheight = presoLyricsIN.getHeight();
+                if (PresenterMode.autoscale) {
+                    doScale();
+                } else {
+                    presoLyricsIN.setTextSize(FullscreenActivity.presoFontSize);
+                    presoLyricsOUT.setTextSize(FullscreenActivity.presoFontSize);
+                }
+            }
+        });
+    }
+
+    public static void changeMargins() {
+        // Get width and height
+        presoLyricsIN.setTextSize(72);
+        preso.setPadding(PresenterMode.tempxmargin, PresenterMode.tempymargin, PresenterMode.tempxmargin, PresenterMode.tempymargin);
+        if (PresenterMode.autoscale) {
+            doScale();
+        } else {
+            presoLyrics1.setTextSize(FullscreenActivity.presoFontSize);
+            presoLyrics2.setTextSize(FullscreenActivity.presoFontSize);
+        }
+    }
+
+    public static void updateAlpha() {
+        presoBGImage.setAlpha(FullscreenActivity.presoAlpha);
+        presoBGVideo.setAlpha(FullscreenActivity.presoAlpha);
+    }
+
+    @Override
+    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+        s = new Surface(surface);
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setSurface(s);
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.setOnPreparedListener(this);
+        mMediaPlayer.setOnCompletionListener(this);
+        if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
+            try {
+                mMediaPlayer.setDataSource(vidFile);
+                mMediaPlayer.prepareAsync();
+            } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+    }
+
+    @Override
+    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        return false;
+    }
+
+    @Override
+    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+    }
+
+    @Override
+    public void onBufferingUpdate(MediaPlayer mp, int percent) {
+    }
+
+    public static void reloadVideo(MediaPlayer mp) throws IOException {
+        if (mMediaPlayer==null) {
+            mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setSurface(s);
+        }
+        mMediaPlayer.reset();
+        try {
+            mMediaPlayer.setDataSource(vidFile);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        mMediaPlayer.prepareAsync();
+    }
+
+    public static void restartVideo(MediaPlayer mp) {
+        mMediaPlayer.start();
+    }
+
+    @Override
+    public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+        restartVideo(mp);
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        try {
+            reloadVideo(mp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

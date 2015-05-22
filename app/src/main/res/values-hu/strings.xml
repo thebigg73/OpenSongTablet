@@ -140,9 +140,9 @@
     <string name="setxmargins">"Vízszintes margó"</string>
     <string name="setymargins">"Függőleges margó"</string>
     <string name="update_projector">"Frissítés\nprojektor"</string>
-    <string name="black_screen">"Fekete\nképernyő"</string>
-    <string name="choose_image1">"Válassza ki a\nháttérképet 1"</string>
-    <string name="choose_image2">"Válassza ki a\nháttérképet 2"</string>
+    <string name="black_screen">"Fekete képernyő"</string>
+    <string name="choose_image1">"Válassza ki a háttérképet 1"</string>
+    <string name="choose_image2">"Válassza ki a háttérképet 2"</string>
     <string name="choose_video1">"Válassza ki a háttér video 1"</string>
     <string name="choose_video2">"Válassza ki a háttér video 2"</string>
     
@@ -378,5 +378,22 @@
     <string name="customchords_save">Mentsd új egyéni akkord a dalt</string>
     <string name="customchords_saved">Jelenleg mentett egyéni akkordok</string>
     <string name="maxfontsize">Maximális automatikus átméretezés betűméret</string>
+	<string name="tag_bridge">Híd</string>
+	<string name="tag_chorus">Kórus</string>
+	<string name="tag_prechorus">Pre-Kórus</string>
+	<string name="tag_tag">Címke</string>
+	<string name="tag_verse">Vers</string>
+	<string name="actions">Hozzászólások</string>
+	<string name="alert">üzenet</string>
+	<string name="alert_text">Írja be az üzenet szövegét</string>
+	<string name="capo_toggle_native">Mutasd csak natív akkordok</string>
+	<string name="display_manager">Kösse vissza kijelző</string>
+	<string name="error_missingsection">Hiányzó szakaszok</string>
+	<string name="error_notset">Nincs beállítva</string>
+	<string name="file_chooser">fájlválasztó</string>
+	<string name="layout">Elrendezés</string>
+	<string name="preso_alpha">Háttér homályossága</string>
+	<string name="settings">Beállítások</string>
+	<string name="song_sections">Song szakaszok</string>
 
 </resources>

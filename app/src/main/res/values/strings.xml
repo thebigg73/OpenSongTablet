@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<string name="preso_alpha">Background opacity</string>
+	<string name="file_chooser">File chooser</string>
+	<string name="display_manager">Reconnect display</string>
+	<string name="song_sections">Song sections</string>
+	<string name="actions">Actions</string>
+	<string name="settings">Settings</string>
+	<string name="alert">Alert</string>
+	<string name="alert_text">Enter message text</string>
+	<string name="layout">Layout</string>
+
+	<string name="error_notset">Not set</string>
+	<string name="error_missingsection">Missing sections</string>
+	<string name="tag_verse">Verse</string>
+	<string name="tag_chorus">Chorus</string>
+	<string name="tag_bridge">Bridge</string>
+	<string name="tag_prechorus">Pre-Chorus</string>
+	<string name="tag_tag">Tag</string>
+
     <string name="maxfontsize">Maximum autoscale font size</string>
     <string name="custom">Custom</string>
     <string name="customchords">Custom chords</string>
@@ -25,6 +43,7 @@
     <string name="capo_toggle">Capo chords toggle</string>
     <string name="capo_toggle_onlycapo">Show only capo chords if available</string>
     <string name="capo_toggle_bothcapo">Show both capo and native chords if available</string>
+	<string name="capo_toggle_native">Show only native chords</string>
     <string name="language">Language</string>
     <string name="refreshsongs">Refresh song menu</string>
     <string name="custom1_theme">Custom 1</string>
@@ -99,7 +118,7 @@
     <string name="pad_onoroff">Use a pad with this song</string>
     <string name="pad_auto">Auto</string>
     <array name="key_choice">
-        <item></item>
+        <item />
         <item>A</item>
         <item>A#</item>
         <item>Bb</item>
@@ -217,11 +236,11 @@
     <string name="setxmargins">Horizontal margin size</string>
     <string name="setymargins">Vertical margin size</string>
     <string name="update_projector">Update\nprojector</string>
-    <string name="black_screen">Black\nscreen</string>
-    <string name="choose_image1">Choose\nbackground\nimage 1</string>
-    <string name="choose_image2">Choose\nbackground\nimage 2</string>
-    <string name="choose_video1">Choose\nbackground\nvideo 1</string>
-    <string name="choose_video2">Choose\nbackground\nvideo 2</string>
+    <string name="black_screen">Black screen</string>
+    <string name="choose_image1">Choose background image 1</string>
+    <string name="choose_image2">Choose background image 2</string>
+    <string name="choose_video1">Choose background video 1</string>
+    <string name="choose_video2">Choose background video 2</string>
     
     <string name="choosechordformat">Choose chord format (important when transposing a song)</string>
     <string name="chordFormat1" translatable="false">C   C#/Db   D   D#/Eb   E   F   F#/Gb   G   G#/Ab   A   A#/Bb   B</string>
@@ -233,7 +252,7 @@
     <string name="switchtoperformmode">Switch to performance mode</string>
     <string name="presentermode">Presentation mode</string>
     <string name="sendtoprojector">Project</string>
-    <string name="presoBackground">Presentation background</string>
+    <string name="presoBackground">Background</string>
     <string name="presoShowLogo">Show logo</string>
     <string name="notcompatible">Unfortunately you need Android 4.2 or higher to use the dual screen presentation feature!</string>
 	<string name="nodisplays">No external displays connected.  Please connect to a secondary display using an HDMI output or MiraCast compatible wireless display.</string>
@@ -471,13 +490,14 @@
 	<string name="font_kaushanscript">KaushanScript</string>
 	<string name="font_latolight">Lato Light</string>
 	<string name="font_latoregular">Lato Regular</string>
+	<string name="font_leaguegothic" translatable="false">League Gothic</string>
 	<string name="font_lyrics_line1">Love everlasting, </string>
 	<string name="font_lyrics_line2">love without measure</string>
 	<string name="font_chords_line1">G</string>
 	<string name="font_chords_line2">D/F#</string>
 			
 	<string-array name="capo" translatable="false">
-	    <item></item>
+	    <item />
 	    <item>1</item>
 	    <item>2</item>
 	    <item>3</item>
@@ -491,12 +511,12 @@
 	    <item>11</item>
 	</string-array>
 	<string-array name="capoprint" translatable="false">
-	    <item></item>
+	    <item />
 	    <item>Yes</item>
 	    <item>No</item>
 	</string-array>
 	<string-array name="timesig" translatable="false">
-	    <item></item>
+	    <item />
 	    <item>2/4</item>
 	    <item>3/4</item>
 	    <item>3/8</item>
@@ -509,7 +529,7 @@
 	    <item>7/8</item>
    	</string-array>
 	<string-array name="tempo" translatable="false">
-	    <item></item>
+	    <item />
 	    <item>Very Fast</item>
 	    <item>Fast</item>
 	    <item>Moderate</item>

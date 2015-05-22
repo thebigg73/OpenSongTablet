@@ -2,14 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000" >
+    android:background="#000"
+    android:id="@+id/mainpopupPage">
 
     <ScrollView
         android:id="@+id/setButtonsPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="#000" >
+        android:background="#000"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_above="@+id/closePedalButton">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -144,17 +148,20 @@
                 android:padding="4dp"
                 android:text="@string/metronomePedalText" />
 
-            <Button
-                android:id="@+id/closePedal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="32dp"
-                android:background="@drawable/red_button"
-                android:onClick="closePedal"
-                android:padding="4dp"
-                android:text="@string/drawer_close" />
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/closePedalButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
+        android:background="@drawable/red_button"
+        android:padding="4dp"
+        android:text="@string/drawer_close"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
 
 </RelativeLayout>

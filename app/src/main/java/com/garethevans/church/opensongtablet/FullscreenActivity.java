@@ -136,6 +136,24 @@ public class FullscreenActivity extends Activity {
     Drawable r3;
     Drawable r4;
     Drawable r5;
+
+    static Typeface typeface0;
+    static Typeface typeface1;
+    static Typeface typeface2;
+    static Typeface typeface3;
+    static Typeface typeface4;
+    static Typeface typeface5;
+    static Typeface typeface4i;
+    static Typeface typeface5i;
+    static Typeface typeface6;
+    static Typeface typeface7;
+    static Typeface typeface8;
+    static Typeface typeface9;
+    static Typeface typeface7i;
+    static Typeface typeface8i;
+    static Typeface typeface9i;
+
+    static String lastSetName;
     TableLayout chordimageshere;
     static String chordInstrument = "g";
     static String showNextInSet= "top";
@@ -157,6 +175,7 @@ public class FullscreenActivity extends Activity {
 
     static String emailtext;
 
+    static String whattodo = "";
     ScrollView popupChord;
     Spinner popupChord_Instrument;
 
@@ -506,6 +525,16 @@ public class FullscreenActivity extends Activity {
     static int nextSongIndex;
 
     // Presentation mode variables
+    static boolean presoAutoScale;
+    static boolean presoShowChords;
+    static int presoFontSize;
+    static int presoTitleSize;
+    static int presoAuthorSize;
+    static int presoCopyrightSize;
+    static int presoAlertSize;
+
+    static float presoAlpha;
+    static String myAlert;
     static String dualDisplayCapable = "N";
     static int numdisplays;
     static String backgroundImage1;
@@ -516,8 +545,12 @@ public class FullscreenActivity extends Activity {
     static String backgroundTypeToUse;
     static int xmargin_presentation;
     static int ymargin_presentation;
+    static boolean usePresentationOrder = false;
 
     // Song xml data
+    static ArrayList<String> foundSongSections_heading = new ArrayList<> ();
+    static ArrayList<String> foundSongSections_content = new ArrayList<> ();
+
     static CharSequence mTitle = "";
     static CharSequence mTempTitle = "";
     static CharSequence mAuthor = "Gareth Evans";
@@ -639,6 +672,15 @@ public class FullscreenActivity extends Activity {
     static String mySearchText;
 
     // The following get in translation texts
+    static String edit_song_presentation;
+    static String error_notset;
+    static String error_missingsection;
+
+    static String tag_verse;
+    static String tag_chorus;
+    static String tag_prechorus;
+    static String tag_bridge;
+    static String tag_tag;
     static String set;
     static String song;
     static String slide;
@@ -672,9 +714,12 @@ public class FullscreenActivity extends Activity {
     static String mainfoldername;
     static int mylyricsfontnum;
     static int mychordsfontnum;
-    Typeface lyricsfont;
-    Typeface commentfont;
-    Typeface chordsfont;
+    static int mypresofontnum;
+    static Typeface lyricsfont;
+    static Typeface commentfont;
+    static Typeface chordsfont;
+    static Typeface presofont;
+
     static Animation animationFadeIn;
     static Animation animationFadeOut;
     static View main_page;
@@ -688,12 +733,13 @@ public class FullscreenActivity extends Activity {
     static Runnable checkScrollPosition;
     static Runnable autoScrollRunnable;
 
-    ExpandableListAdapter listAdapterOption;
-    ExpandableListView expListViewOption;
+    public boolean manualScroll;
     List<String> listDataHeaderOption;
     HashMap<String, List<String>> listDataChildOption;
     ExpandableListAdapter listAdapterSong;
+    ExpandableListAdapterOptions listAdapterOption;
     ExpandableListView expListViewSong;
+    ExpandableListView expListViewOption;
     List<String> listDataHeaderSong;
     HashMap<String, List<String>> listDataChildSong;
     private FadeOutMusic1 mtask_fadeout_music1;
@@ -753,7 +799,7 @@ public class FullscreenActivity extends Activity {
     static File dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
     static File dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
 
-    Locale locale;
+    static Locale locale;
 
     static String[][][] bibleVerse; // bibleVerse[book][chapter#][verse#]
 
@@ -792,6 +838,16 @@ public class FullscreenActivity extends Activity {
         slide = getResources().getString(R.string.slide);
         scripture = getResources().getString(R.string.scripture);
 
+        tag_verse = getResources().getString(R.string.tag_verse);
+        tag_chorus = getResources().getString(R.string.tag_chorus);
+        tag_prechorus = getResources().getString(R.string.tag_prechorus);
+        tag_bridge = getResources().getString(R.string.tag_bridge);
+        tag_tag = getResources().getString(R.string.tag_tag);
+
+        edit_song_presentation =  getResources().getString(R.string.edit_song_presentation);
+        error_notset =  getResources().getString(R.string.error_notset);
+        error_missingsection = getResources().getString(R.string.error_missingsection);
+
         toastmessage_maxfont = getResources().getString(R.string.toastmessage_maxfont);
         toastmessage_minfont = getResources().getString(R.string.toastmessage_minfont);
         backtooptions = getResources().getString(R.string.options_backtooptions);
@@ -822,6 +878,25 @@ public class FullscreenActivity extends Activity {
             dualDisplayCapable = "Y";
         }
 
+        // Set up the available typefaces
+        // Initialise the typefaces available
+        typeface0 = Typeface.DEFAULT;
+        typeface1 = Typeface.MONOSPACE;
+        typeface2 = Typeface.SANS_SERIF;
+        typeface3 = Typeface.SERIF;
+        typeface4 = Typeface.createFromAsset(getAssets(),"fonts/FiraSansOT-Light.otf");
+        typeface4i = Typeface.createFromAsset(getAssets(),"fonts/FiraSans-LightItalic.otf");
+        typeface5 = Typeface.createFromAsset(getAssets(),"fonts/FiraSansOT-Regular.otf");
+        typeface5i = Typeface.createFromAsset(getAssets(),"fonts/FiraSans-Italic.otf");
+        typeface6 = Typeface.createFromAsset(getAssets(),"fonts/KaushanScript-Regular.otf");
+        typeface7 = Typeface.createFromAsset(getAssets(),"fonts/Lato-Lig.ttf");
+        typeface7i = Typeface.createFromAsset(getAssets(),"fonts/Lato-LigIta.ttf");
+        typeface8 = Typeface.createFromAsset(getAssets(),"fonts/Lato-Reg.ttf");
+        typeface8i = Typeface.createFromAsset(getAssets(),"fonts/Lato-RegIta.ttf");
+        typeface9 = Typeface.createFromAsset(getAssets(),"fonts/LeagueGothic-Regular.otf");
+        typeface9i = Typeface.createFromAsset(getAssets(),"fonts/LeagueGothic-Italic.otf");
+
+
         // If the user hasn't set the preferred storage location
         // Or the default storage location isn't available, ask them!
         checkDirectories();
@@ -829,7 +904,7 @@ public class FullscreenActivity extends Activity {
         // If whichMode is Presentation, open that app instead
         if (whichMode.equals("Presentation") && dualDisplayCapable.equals("Y")) {
             Intent performmode = new Intent();
-            performmode.setClass(FullscreenActivity.this, PresentMode.class);
+            performmode.setClass(FullscreenActivity.this, PresenterMode.class);
             startActivity(performmode);
             finish();
         }
@@ -951,7 +1026,7 @@ public class FullscreenActivity extends Activity {
         instrument_choice[0] = getResources().getString(R.string.guitar);
         instrument_choice[1] = getResources().getString(R.string.ukulele);
         instrument_choice[2] = getResources().getString(R.string.mandolin);
-        ArrayAdapter<String> adapter_instrument = new ArrayAdapter<String>(this, R.layout.my_spinner, instrument_choice);
+        ArrayAdapter<String> adapter_instrument = new ArrayAdapter<>(this, R.layout.my_spinner, instrument_choice);
         adapter_instrument.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         popupChord_Instrument.setAdapter(adapter_instrument);
         popupChord_Instrument.setOnItemSelectedListener(new popupChord_InstrumentListener());
@@ -1137,12 +1212,6 @@ public class FullscreenActivity extends Activity {
         v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 
-        // Prepare the two media players (for crossfading)
-        //mPlayer1 = new MediaPlayer();		
-        //mPlayer2 = new MediaPlayer();			
-        //mPlayer1 = MediaPlayer.create(FullscreenActivity.this, R.raw.c);
-        //mPlayer2 = MediaPlayer.create(FullscreenActivity.this, R.raw.c);
-
         scaleGestureDetector = new ScaleGestureDetector(this, new simpleOnScaleGestureListener());
 
         audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -1155,10 +1224,8 @@ public class FullscreenActivity extends Activity {
 
     }
 
-
     public void exportPDF() {
     }
-
 
     public void hideKeyboard() {
         InputMethodManager inputManager = (InputMethodManager)
@@ -3090,20 +3157,25 @@ public class FullscreenActivity extends Activity {
             listDataChildSong.put(listDataHeaderSong.get(s), song_folders);
         }
 
-        listAdapterSong = new ExpandableListAdapter(this, listDataHeaderSong, listDataChildSong);
+        listAdapterSong = new ExpandableListAdapter(expListViewSong, FullscreenActivity.this, listDataHeaderSong, listDataChildSong);
         expListViewSong.setAdapter(listAdapterSong);
-        expListViewSong.setFastScrollEnabled(true);
 
+        listAdapterSong.notifyDataSetInvalidated();
+        listAdapterSong.notifyDataSetChanged();
 
         // Listen for song folders being opened/expanded
         expListViewSong.setOnGroupExpandListener(new OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                if(groupPosition != lastExpandedGroupPositionSong){
+                if (groupPosition != lastExpandedGroupPositionSong) {
                     expListViewSong.collapseGroup(lastExpandedGroupPositionSong);
                 }
                 lastExpandedGroupPositionSong = groupPosition;
+                listAdapterSong.notifyDataSetInvalidated();
+                listAdapterSong.notifyDataSetChanged();
+
             }
+
         });
 
         // Listen for long clicks in the song menu (songs only, not folders) - ADD TO SET!!!!
@@ -3121,7 +3193,7 @@ public class FullscreenActivity extends Activity {
 
                     songfilename = listDataChildSong.get(listDataHeaderSong.get(groupPosition)).get(childPosition);
 
-                    if (listDataHeaderSong.get(groupPosition)==mainfoldername) {
+                    if (listDataHeaderSong.get(groupPosition).equals(mainfoldername)) {
                         dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
                         whichSongFolder = mainfoldername;
                         whatsongforsetwork = "$**_" + songfilename + "_**$";
@@ -3182,7 +3254,7 @@ public class FullscreenActivity extends Activity {
                 if (!addingtoset) {
                     // Set the appropriate folder name
 
-                    if (listDataHeaderSong.get(groupPosition)==mainfoldername) {
+                    if (listDataHeaderSong.get(groupPosition).equals(mainfoldername)) {
                         dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
                         whichSongFolder = mainfoldername;
                     } else {
@@ -3296,6 +3368,7 @@ public class FullscreenActivity extends Activity {
         List<String> options_song = new ArrayList<String>();
         options_song.add(getResources().getString(R.string.options_song_transpose));
         options_song.add(getResources().getString(R.string.capo_toggle));
+        options_song.add(getResources().getString(R.string.edit_song_presentation));
         options_song.add(getResources().getString(R.string.options_song_convert));
         options_song.add(getResources().getString(R.string.options_song_sharp));
         options_song.add(getResources().getString(R.string.options_song_flat));
@@ -3336,7 +3409,7 @@ public class FullscreenActivity extends Activity {
         listDataChildOption.put(listDataHeaderOption.get(1), options_song);
         listDataChildOption.put(listDataHeaderOption.get(2), options_options);
 
-        listAdapterOption = new ExpandableListAdapter(this, listDataHeaderOption, listDataChildOption);
+        listAdapterOption = new ExpandableListAdapterOptions(expListViewOption, this, listDataHeaderOption, listDataChildOption);
 
         // setting list adapter
         expListViewOption.setAdapter(listAdapterOption);
@@ -3435,10 +3508,10 @@ public class FullscreenActivity extends Activity {
                     m_titleView.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white) );
                     m_titleView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 
-                    if (chosenMenu==getResources().getString(R.string.options_set)) {
+                    if (chosenMenu.equals(getResources().getString(R.string.options_set))) {
 
                         // Load up a list of saved sets as it will likely be needed
-                        SetActions.updateOptionListSets(FullscreenActivity.this, view);
+                        SetActions.updateOptionListSets();
                         Arrays.sort(mySetsFiles);
                         Arrays.sort(mySetsDirectories);
                         Arrays.sort(mySetsFileNames);
@@ -3782,7 +3855,7 @@ public class FullscreenActivity extends Activity {
 
 
 
-                    } else if (chosenMenu==getResources().getString(R.string.options_song)) {
+                    } else if (chosenMenu.equals(getResources().getString(R.string.options_song))) {
                         linkclicked = listDataChildOption.get(listDataHeaderOption.get(groupPosition)).get(childPosition);
 
                         // Now check for song options clicks
@@ -3876,6 +3949,9 @@ public class FullscreenActivity extends Activity {
                             if (capoDisplay.equals("both")) {
                                 capoDisplay = "capoonly";
                                 myToastMessage = getResources().getString(R.string.capo_toggle_onlycapo);
+                            } else if (capoDisplay.equals("capoonly")) {
+                                capoDisplay = "native";
+                                myToastMessage = getResources().getString(R.string.capo_toggle_native);
                             } else {
                                 capoDisplay = "both";
                                 myToastMessage = getResources().getString(R.string.capo_toggle_bothcapo);
@@ -3884,7 +3960,24 @@ public class FullscreenActivity extends Activity {
                             Preferences.savePreferences();
                             redrawTheLyricsTable(main_page);
 
+
                         } else if (childPosition==2) {
+                            // Toggle use Presentation order
+
+                            if (usePresentationOrder) {
+                                usePresentationOrder = false;
+                                myToastMessage = getResources().getString(R.string.edit_song_presentation) + " - "
+                                        + getResources().getString(R.string.off);
+                            } else {
+                                usePresentationOrder = true;
+                                myToastMessage = getResources().getString(R.string.edit_song_presentation) + " - "
+                                        + getResources().getString(R.string.on);
+                            }
+                            ShowToast.showToast(FullscreenActivity.this);
+                            Preferences.savePreferences();
+                            redrawTheLyricsTable(main_page);
+
+                        } else if (childPosition==3) {
                             // Convert to preferred chord format
 
                             if (isPDF) {
@@ -3898,7 +3991,7 @@ public class FullscreenActivity extends Activity {
                                 checkChordFormat();
                             }
 
-                        } else if (childPosition==3) {
+                        } else if (childPosition==4) {
 
                             if (isPDF) {
                                 // Can't do this action on a pdf!
@@ -3912,7 +4005,7 @@ public class FullscreenActivity extends Activity {
                                 checkChordFormat();
                             }
 
-                        } else if (childPosition==4) {
+                        } else if (childPosition==5) {
                             // Use b chords
 
                             if (isPDF) {
@@ -3926,7 +4019,7 @@ public class FullscreenActivity extends Activity {
                                 checkChordFormat();
                             }
 
-                        } else if (childPosition==5) {
+                        } else if (childPosition==6) {
                             // Edit
 
                             if (isPDF) {
@@ -3938,7 +4031,7 @@ public class FullscreenActivity extends Activity {
                                 openEditSong();
                             }
 
-                        } else if (childPosition==6) {
+                        } else if (childPosition==7) {
                             // Edit sticky notes
 
                             if (isPDF) {
@@ -3949,7 +4042,7 @@ public class FullscreenActivity extends Activity {
                                 editNotes(view);
                             }
 
-                        } else if (childPosition==7) {
+                        } else if (childPosition==8) {
                             // Rename
                             // This bit gives the user a prompt to change the song name
                             // First set the browsing directory back to the main one
@@ -4059,7 +4152,7 @@ public class FullscreenActivity extends Activity {
                             alert.show();
 
 
-                        } else if (childPosition==8) {
+                        } else if (childPosition==9) {
                             // Delete
                             // Give the user an are you sure prompt!
                             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -4147,7 +4240,7 @@ public class FullscreenActivity extends Activity {
                                                 dialogClickListener).show();
                             }
 
-                        } else if (childPosition==9) {
+                        } else if (childPosition==10) {
                             // New
                             try {
                                 promptNew();
@@ -4156,7 +4249,7 @@ public class FullscreenActivity extends Activity {
                             }
 
 
-                        } else if (childPosition==10) {
+                        } else if (childPosition==11) {
                             // Export
                             // The current song is the songfile
                             // Believe it or not, it works!!!!!
@@ -4165,14 +4258,6 @@ public class FullscreenActivity extends Activity {
                                 myToastMessage = songdoesntexist;
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
-								/*								 Intent intent = new Intent(Intent.ACTION_SEND);
-								 intent.setType("application/xml");
-								 intent.putExtra(Intent.EXTRA_TITLE, songfilename);
-								 intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-								 startActivity(Intent.createChooser(intent,
-										 exportcurrentsong));
-
-								 */
                                 // Run the script that generates the email text which has the set details in it.
                                 try {
                                     ExportPreparer.songParser();
@@ -4188,7 +4273,13 @@ public class FullscreenActivity extends Activity {
                                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, songfilename);
                                 emailIntent.putExtra(Intent.EXTRA_TEXT, emailtext);
                                 emailtext = "";
-                                File file = new File(dir+"/" + songfilename);
+                                File file;
+                                if (whichSongFolder.equals("") || whichSongFolder.equals(mainfoldername) ||
+                                        whichSongFolder.equals("("+mainfoldername+")")) {
+                                    file = new File(dir+"/" + songfilename);
+                                } else {
+                                    file = new File(dir+"/" + whichSongFolder + "/" +songfilename);
+                                }
                                 Uri uri = Uri.fromFile(file);
                                 emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
                                 startActivity(Intent.createChooser(emailIntent,exportcurrentsong));
@@ -4196,7 +4287,7 @@ public class FullscreenActivity extends Activity {
 
                             }
 
-                        } else if (childPosition==11) {
+                        } else if (childPosition==12) {
                             // Create a new song folder
                             try {
                                 promptNewFolder();
@@ -4204,7 +4295,7 @@ public class FullscreenActivity extends Activity {
                                 e.printStackTrace();
                             }
 
-                        } else if (childPosition==12) {
+                        } else if (childPosition==13) {
                             // Edit the name of a song folder
                             try {
                                 editFolderName();
@@ -4216,7 +4307,7 @@ public class FullscreenActivity extends Activity {
 
 
 
-                    } else if (chosenMenu==getResources().getString(R.string.options_options)) {
+                    } else if (chosenMenu.equals(getResources().getString(R.string.options_options))) {
                         // Now check for option options clicks
                         if (childPosition==0) {
                             // Switch theme
@@ -4696,7 +4787,7 @@ public class FullscreenActivity extends Activity {
                                                 tempLanguage = "ru";
                                             } else if (arg1==12) { //zh
                                                 tempLanguage = "zh";
-                                            }
+                                             }
                                         }
                                     });
 
@@ -4705,7 +4796,11 @@ public class FullscreenActivity extends Activity {
                                         @Override
                                         public void onClick(DialogInterface dialog, int whichButton) {
                                             languageToLoad = tempLanguage;
+                                            if (whichSongFolder.equals(mainfoldername)) {
+                                                whichSongFolder = "";
+                                            }
                                             Preferences.savePreferences();
+                                            // Unfortunately this means the MAIN folder name isn't right!
                                             FullscreenActivity.this.recreate();
                                         }
                                     });
@@ -4741,7 +4836,7 @@ public class FullscreenActivity extends Activity {
                                     Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = settings.edit();
                             editor.putInt("showSplashVersion", 0);
-                            editor.commit();
+                            editor.apply();
                             Intent intent = new Intent();
                             intent.setClass(FullscreenActivity.this, SettingsActivity.class);
                             tryKillPads();
@@ -5452,6 +5547,10 @@ public class FullscreenActivity extends Activity {
             tempfontsize = mFontSize;
         }
 
+        Log.d("d","tempfontsize="+tempfontsize);
+        Log.d("d", "mainfontsize=" + mainfontsize);
+        Log.d("d", "onecolfontsize=" + onecolfontsize);
+
         // Get the autoscroll info initialised
         if (mtask_autoscroll_music!=null) {
             mtask_autoscroll_music.cancel(true);
@@ -5957,6 +6056,7 @@ public class FullscreenActivity extends Activity {
                         tempfontsize = mainfontsize*onecolfontsize - 0.4f;
                         tempsectionsize = sectionfontsize*onecolfontsize - 0.4f;
                         scrollpage = scrollpage_onecol;
+
                         try {
                             showLyrics(main_page);
                         } catch (IOException e) {
@@ -6006,6 +6106,9 @@ public class FullscreenActivity extends Activity {
                     }
 
                     // Make sure font sizes don't exceed the max
+                    if (mMaxFontSize<20) {
+                        mMaxFontSize = 20;
+                    }
                     if (tempfontsize>mMaxFontSize) {
                         tempfontsize=mMaxFontSize;
                     }
@@ -6131,7 +6234,7 @@ public class FullscreenActivity extends Activity {
         if (!isPDF) {
             // Set a variable to decide if capo chords should be shown
             showCapo = false;
-            if (mCapoPrint.equals("true") &&
+            if (mCapoPrint.equals("true") && !capoDisplay.equals("native") &&
                     (mCapo.equals("1") || mCapo.equals("2") || mCapo.equals("3") ||
                             mCapo.equals("4") || mCapo.equals("5") || mCapo.equals("6") ||
                             mCapo.equals("7") || mCapo.equals("8") || mCapo.equals("9") ||
@@ -6140,54 +6243,7 @@ public class FullscreenActivity extends Activity {
             }
 
             // Decide on the font being used
-            if (mylyricsfontnum == 1) {
-                lyricsfont = Typeface.MONOSPACE;
-                commentfont = Typeface.MONOSPACE;
-            } else if (mylyricsfontnum == 2) {
-                lyricsfont = Typeface.SANS_SERIF;
-                commentfont = Typeface.SANS_SERIF;
-            } else if (mylyricsfontnum == 3) {
-                lyricsfont = Typeface.SERIF;
-                commentfont = Typeface.SERIF;
-            } else if (mylyricsfontnum == 4) {
-                lyricsfont = Typeface.createFromAsset(getAssets(),"fonts/FiraSansOT-Light.otf");
-                commentfont = Typeface.createFromAsset(getAssets(),"fonts/FiraSans-LightItalic.otf");
-            } else if (mylyricsfontnum == 5) {
-                lyricsfont = Typeface.createFromAsset(getAssets(),"fonts/FiraSansOT-Regular.otf");
-                commentfont = Typeface.createFromAsset(getAssets(),"fonts/FiraSans-Italic.otf");
-            } else if (mylyricsfontnum == 6) {
-                lyricsfont = Typeface.createFromAsset(getAssets(),"fonts/KaushanScript-Regular.otf");
-                commentfont = Typeface.createFromAsset(getAssets(),"fonts/KaushanScript-Regular.otf");
-            } else if (mylyricsfontnum == 7) {
-                lyricsfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-Lig.ttf");
-                commentfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-LigIta.ttf");
-            } else if (mylyricsfontnum == 8) {
-                lyricsfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-Reg.ttf");
-                commentfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-RegIta.ttf");
-            } else {
-                lyricsfont = Typeface.DEFAULT;
-                commentfont = Typeface.DEFAULT;
-            }
-            if (mychordsfontnum == 1) {
-                chordsfont = Typeface.MONOSPACE;
-            } else if (mychordsfontnum == 2) {
-                chordsfont = Typeface.SANS_SERIF;
-            } else if (mychordsfontnum == 3) {
-                chordsfont = Typeface.SERIF;
-            } else if (mychordsfontnum == 4) {
-                chordsfont = Typeface.createFromAsset(getAssets(),"fonts/FiraSansOT-Light.otf");
-            } else if (mychordsfontnum == 5) {
-                chordsfont = Typeface.createFromAsset(getAssets(),"fonts/FiraSansOT-Regular.otf");
-            } else if (mychordsfontnum == 6) {
-                chordsfont = Typeface.createFromAsset(getAssets(),"fonts/KaushanScript-Regular.otf");
-            } else if (mychordsfontnum == 7) {
-                chordsfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-Lig.ttf");
-            } else if (mychordsfontnum == 8) {
-                chordsfont = Typeface.createFromAsset(getAssets(),"fonts/Lato-Reg.ttf");
-            } else {
-                chordsfont = Typeface.DEFAULT;
-            }
-
+            SetTypeFace.setTypeface();
 
             // Go through each section with start and end lines
             // Split points are dealt with inline
@@ -6279,11 +6335,24 @@ public class FullscreenActivity extends Activity {
                         RelativeLayout myCapoBox = new RelativeLayout(this);
                         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                         myCapoBox.setLayoutParams(lp);
-                        myCapoBox.setHorizontalGravity(Gravity.RIGHT);
+                        myCapoBox.setHorizontalGravity(Gravity.LEFT);
                         TextView tCapoBox = new TextView(this);
+                        String capocustomtext = "";
+                        // If key is set
+                        if (!mKey.isEmpty() && mKey!="") {
+                            capocustomtext = capocustomtext + getResources().getString(R.string.edit_song_key) + ": " + mKey + "  ";
+                        }
+                        capocustomtext = capocustomtext + getResources().getString(R.string.edit_song_capo) + " " + mCapo;
+                        if (!mKey.isEmpty() && mKey!="") {
+                            // set key to transpose
+                            temptranspChords = mKey;
+                            Transpose.capoTranspose();
+                            capocustomtext = capocustomtext + " (" + temptranspChords + ")";
+                        }
                         tCapoBox.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-                        tCapoBox.setText(getResources().getString(R.string.edit_song_capo).toString() + " " + mCapo);
-                        tCapoBox.setGravity(Gravity.RIGHT);
+                        //tCapoBox.setText(getResources().getString(R.string.edit_song_capo).toString() + " " + mCapo);
+                        tCapoBox.setText(capocustomtext);
+                        tCapoBox.setGravity(Gravity.LEFT);
                         tCapoBox.setTypeface(lyrics_useThisFont);
                         tCapoBox.setBackgroundColor(lyricsBackgroundColor);
                         tCapoBox.setBackgroundColor(lyricsBackgroundColor);
@@ -6758,7 +6827,6 @@ public class FullscreenActivity extends Activity {
                             android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
                             android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
                     lp.setMargins(0, 0, 0, 0);
-                    //normalrow.setPadding(0, -(int) ((float)tempfontsize/3.0f), 0, 0);
 
                     // create a new TextView
                     TextView tbasic = new TextView(this);
@@ -7899,7 +7967,7 @@ public class FullscreenActivity extends Activity {
         for (int x = 0; x < mSetList.length; x++) {
             // Only add the lines that aren't back to options,
             // save this set, clear this set, load set, edit set, export set or blank line
-            if (mSetList[x].equals(getResources().getString(R.string.options_backtooptions)) == false &&
+            if (!mSetList[x].equals(getResources().getString(R.string.options_backtooptions)) &&
                     mSetList[x].equals(getResources().getString(R.string.options_savethisset)) == false &&
                     mSetList[x].equals(getResources().getString(R.string.options_clearthisset)) == false &&
                     mSetList[x].equals(getResources().getString(R.string.set_edit)) == false &&
@@ -8307,7 +8375,8 @@ public class FullscreenActivity extends Activity {
 
     public void listSavedSets(View view) {
         // update the optionList to show the sets stored in the sets folder
-        SetActions.updateOptionListSets(FullscreenActivity.this, view);
+//        SetActions.updateOptionListSets(FullscreenActivity.this, view);
+        SetActions.updateOptionListSets();
         Arrays.sort(mySetsFiles);
         Arrays.sort(mySetsDirectories);
         Arrays.sort(mySetsFileNames);
@@ -8696,7 +8765,7 @@ public class FullscreenActivity extends Activity {
                         Preferences.savePreferences();
                         Intent presentmode = new Intent();
                         presentmode.setClass(FullscreenActivity.this,
-                                PresentMode.class);
+                                PresenterMode.class);
                         tryKillPads();
                         tryKillMetronome();
                         startActivity(presentmode);

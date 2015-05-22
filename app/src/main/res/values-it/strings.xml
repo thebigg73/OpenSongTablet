@@ -140,11 +140,11 @@
     <string name="setxmargins">"Dimensione del margine orizzontale"</string>
     <string name="setymargins">"Dimensione del margine verticale"</string>
     <string name="update_projector">"Aggiornamento\nproiettore"</string>
-    <string name="black_screen">"Schermo\nnero"</string>
-    <string name="choose_image1">"Scegli l'immagine\ndi sfondo 1"</string>
-    <string name="choose_image2">"Scegli l'immagine\ndi sfondo 2"</string>
-    <string name="choose_video1">"Scegli il video\ndi sfondo 1"</string>
-    <string name="choose_video2">"Scegli il video\ndi sfondo 2"</string>
+    <string name="black_screen">"Schermo nero"</string>
+    <string name="choose_image1">"Scegli l'immagine di sfondo 1"</string>
+    <string name="choose_image2">"Scegli l'immagine di sfondo 2"</string>
+    <string name="choose_video1">"Scegli il video di sfondo 1"</string>
+    <string name="choose_video2">"Scegli il video di sfondo 2"</string>
     
     <string name="choosechordformat">"Scegli il formato corda ( solo utilizzata per l'attuazione di una canzone )"</string>
     
@@ -378,5 +378,22 @@
     <string name="customchords_save">Salva nuovo accordo personalizzato per canzone</string>
     <string name="customchords_saved">Attualmente salvato accordi personalizzati</string>
     <string name="maxfontsize">Autoscale massima font size</string>
+	<string name="tag_prechorus">Pre-ritornello</string>
+	<string name="tag_chorus">Ritornello</string>
+	<string name="tag_bridge">Ponte</string>
+	<string name="tag_tag">Tag</string>
+	<string name="tag_verse">Strofa</string>
+	<string name="actions">Azioni</string>
+	<string name="alert">Avviso</string>
+	<string name="alert_text">Inserisci il testo del messaggio</string>
+	<string name="capo_toggle_native">Mostra accordi solo nativi</string>
+	<string name="display_manager">Ricollegare Display</string>
+	<string name="error_missingsection">Sezioni mancanti</string>
+	<string name="error_notset">Non impostato</string>
+	<string name="file_chooser">chooser File</string>
+	<string name="layout">Impaginazione</string>
+	<string name="preso_alpha">Sfondo opacità</string>
+	<string name="settings">Impostazioni</string>
+	<string name="song_sections">Sezioni canzone</string>
 
 </resources>

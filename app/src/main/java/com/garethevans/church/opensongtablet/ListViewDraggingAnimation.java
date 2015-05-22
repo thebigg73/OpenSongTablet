@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
-
 import java.util.ArrayList;
 
 /**
@@ -34,18 +33,18 @@ import java.util.ArrayList;
  */
 public class ListViewDraggingAnimation extends Activity {
 
-	boolean PresentMode = false; 
+	boolean PresenterMode = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        PresentMode = getIntent().getBooleanExtra("PresentMode", false);
+        PresenterMode = getIntent().getBooleanExtra("PresenterMode", false);
         
         setContentView(R.layout.activity_list_view);
 
         String tempCheck = "";
-        String tempCheckThis = "";
-        ArrayList<String>mCurrentSetList = new ArrayList<String>();
+        String tempCheckThis;
+        ArrayList<String>mCurrentSetList = new ArrayList<>();
         for (int i = 0; i < FullscreenActivity.mSetList.length; ++i) {
         	// Need to ensure that we don't use the same name twice.
         	// Add a $_duplicate_$ to the end
@@ -56,9 +55,7 @@ public class ListViewDraggingAnimation extends Activity {
         	tempCheck = tempCheck + "$**_" + tempCheckThis + "_**$";
         	//mCurrentSetList.add(FullscreenActivity.mSetList[i]);
         	mCurrentSetList.add(tempCheckThis);
-        	tempCheckThis = "";
-        	
-        }
+		}
 
         StableArrayAdapter adapter = new StableArrayAdapter(this, R.layout.text_view, mCurrentSetList);
         DynamicListView listView = (DynamicListView) findViewById(R.id.listview);
@@ -72,8 +69,8 @@ public class ListViewDraggingAnimation extends Activity {
 	public void onBackPressed() {
 		Intent viewsong = new Intent();
 
-		if (PresentMode) {
-			viewsong.setClass(ListViewDraggingAnimation.this, PresentMode.class);			
+		if (PresenterMode) {
+			viewsong.setClass(ListViewDraggingAnimation.this, PresenterMode.class);
 			startActivity(viewsong);
 			this.finish();
 		} else {
@@ -90,8 +87,8 @@ public class ListViewDraggingAnimation extends Activity {
     	Preferences.savePreferences();
 		Intent editset = new Intent();
 		invalidateOptionsMenu();
-		if (PresentMode) {
-			editset.setClass(ListViewDraggingAnimation.this, PresentMode.class);			
+		if (PresenterMode) {
+			editset.setClass(ListViewDraggingAnimation.this, PresenterMode.class);
 			startActivity(editset);
 			this.finish();
 		} else {

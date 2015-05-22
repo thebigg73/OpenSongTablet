@@ -15,7 +15,7 @@ public class PresentPrepareSong {
 		// NEED TO FIX EMPTY SECTIONS
 		// where there are double line spaces, new page tags and section tags
 		// also get rid of code we don't need like columns and new page (print only options)
-		tempLyrics = FullscreenActivity.mLyrics;
+		tempLyrics = FullscreenActivity.myLyrics;
 		
 		String v1 = "";
 		String v2 = "";
@@ -190,7 +190,8 @@ public class PresentPrepareSong {
 			}
 		}
 		// Put the sections back into the Present Activity
-		PresentMode.songSections = songSections;
-		PresentMode.songSectionsLabels = songSectionsLabels;
+		PresenterMode.songSections = songSections;
+		PresenterMode.songSectionsLabels = songSectionsLabels;
 	}
+
 }

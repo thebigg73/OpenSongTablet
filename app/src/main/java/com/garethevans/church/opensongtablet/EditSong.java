@@ -103,7 +103,7 @@ public class EditSong extends Activity {
 	CheckBox song_theme_worship_prayer_devotion;
 	CheckBox song_theme_worship_provision_deliverance;
 	CheckBox song_theme_worship_thankfulness;
-	private boolean PresentMode;
+	private boolean PresenterMode;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +111,7 @@ public class EditSong extends Activity {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        PresentMode = getIntent().getBooleanExtra("PresentMode", false);
+        PresenterMode = getIntent().getBooleanExtra("PresenterMode", false);
 
 		setContentView(R.layout.edit_song);
 		getActionBar().setTitle(FullscreenActivity.songfilename);
@@ -121,11 +121,7 @@ public class EditSong extends Activity {
 
 		try {
 			LoadXML.loadXML();
-		} catch (XmlPullParserException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+		} catch (XmlPullParserException | IOException e1) {
 			e1.printStackTrace();
 		}
 
@@ -134,7 +130,6 @@ public class EditSong extends Activity {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return;
 		}
 	}
 
@@ -142,8 +137,8 @@ public class EditSong extends Activity {
 	public void onBackPressed() {
 		Intent viewsong = new Intent();
 
-		if (PresentMode) {
-			viewsong.setClass(EditSong.this, PresentMode.class);			
+		if (PresenterMode) {
+			viewsong.setClass(EditSong.this, PresenterMode.class);
 			startActivity(viewsong);
 			this.finish();
 		} else {
@@ -256,7 +251,7 @@ public class EditSong extends Activity {
 
 
 		// Get the lyrics into a temp string (so we can get rid of rubbish tabs, etc)
-		String editBoxLyrics = FullscreenActivity.myLyrics;
+		String editBoxLyrics = FullscreenActivity.mLyrics;
 		editBoxLyrics = editBoxLyrics.replaceAll("\r\n", "\n");
 		editBoxLyrics = editBoxLyrics.replaceAll("\n\r", "\n");
 		editBoxLyrics = editBoxLyrics.replaceAll("\t", "    ");
@@ -267,11 +262,11 @@ public class EditSong extends Activity {
 		song_title.setText(FullscreenActivity.mTitle.toString());
 		song_author.setText(FullscreenActivity.mAuthor.toString());
 		song_copyright.setText(FullscreenActivity.mCopyright.toString());
-		song_lyrics.setText(editBoxLyrics.toString());
+		song_lyrics.setText(editBoxLyrics);
 		song_lyrics.setTypeface(Typeface.MONOSPACE);
 		song_lyrics.setTextSize(18.0f);
-		song_CCLI.setText(FullscreenActivity.mCCLI.toString());
-		song_presentation.setText(FullscreenActivity.mPresentation.toString());
+		song_CCLI.setText(FullscreenActivity.mCCLI);
+		song_presentation.setText(FullscreenActivity.mPresentation);
 
 
 		ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this,
@@ -293,11 +288,11 @@ public class EditSong extends Activity {
 		song_capo_print.setAdapter(adapter4);
 
 		// Pad file options
-		ArrayList<String> padoptions = new ArrayList<String>();
+		ArrayList<String> padoptions = new ArrayList<>();
 		padoptions.add(getResources().getString(R.string.off));
 		padoptions.add(getResources().getString(R.string.pad_auto));
 		
-		ArrayAdapter<String> adapter5 = new ArrayAdapter<String>(this,
+		ArrayAdapter<String> adapter5 = new ArrayAdapter<>(this,
 			     android.R.layout.simple_spinner_item, padoptions);
 		adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		song_pad_file.setAdapter(adapter5);
@@ -309,59 +304,129 @@ public class EditSong extends Activity {
 		song_key.setAdapter(adapter6);
 
 		// Advanced settings
-		song_aka.setText(FullscreenActivity.mAka.toString());
-		song_key_line.setText(FullscreenActivity.mKeyLine.toString());
-		song_hymn_number.setText(FullscreenActivity.mHymnNumber.toString());
-		song_user1.setText(FullscreenActivity.mUser1.toString());
-		song_user2.setText(FullscreenActivity.mUser2.toString());
-		song_user3.setText(FullscreenActivity.mUser3.toString());
+		song_aka.setText(FullscreenActivity.mAka);
+		song_key_line.setText(FullscreenActivity.mKeyLine);
+		song_hymn_number.setText(FullscreenActivity.mHymnNumber);
+		song_user1.setText(FullscreenActivity.mUser1);
+		song_user2.setText(FullscreenActivity.mUser2);
+		song_user3.setText(FullscreenActivity.mUser3);
 		
 		// Set song key
 		int keyindex=0;
-		if (FullscreenActivity.mKey.equals("A")) {keyindex=1;}
-		else if (FullscreenActivity.mKey.equals("A#")) {keyindex=2;}
-		else if (FullscreenActivity.mKey.equals("Bb")) {keyindex=3;}
-		else if (FullscreenActivity.mKey.equals("B")) {keyindex=4;}
-		else if (FullscreenActivity.mKey.equals("C")) {keyindex=5;}
-		else if (FullscreenActivity.mKey.equals("C#")) {keyindex=6;}
-		else if (FullscreenActivity.mKey.equals("Db")) {keyindex=7;}
-		else if (FullscreenActivity.mKey.equals("D")) {keyindex=8;}
-		else if (FullscreenActivity.mKey.equals("D#")) {keyindex=9;}
-		else if (FullscreenActivity.mKey.equals("Eb")) {keyindex=10;}
-		else if (FullscreenActivity.mKey.equals("E")) {keyindex=11;}
-		else if (FullscreenActivity.mKey.equals("F")) {keyindex=12;}
-		else if (FullscreenActivity.mKey.equals("F#")) {keyindex=13;}
-		else if (FullscreenActivity.mKey.equals("Gb")) {keyindex=14;}
-		else if (FullscreenActivity.mKey.equals("G")) {keyindex=15;}
-		else if (FullscreenActivity.mKey.equals("G#")) {keyindex=16;}
-		else if (FullscreenActivity.mKey.equals("Ab")) {keyindex=17;}
-		else if (FullscreenActivity.mKey.equals("Am")) {keyindex=18;}
-		else if (FullscreenActivity.mKey.equals("A#b")) {keyindex=19;}
-		else if (FullscreenActivity.mKey.equals("Bbm")) {keyindex=20;}
-		else if (FullscreenActivity.mKey.equals("Bm")) {keyindex=21;}
-		else if (FullscreenActivity.mKey.equals("Cm")) {keyindex=22;}
-		else if (FullscreenActivity.mKey.equals("C#m")) {keyindex=23;}
-		else if (FullscreenActivity.mKey.equals("Dbm")) {keyindex=24;}
-		else if (FullscreenActivity.mKey.equals("Dm")) {keyindex=25;}
-		else if (FullscreenActivity.mKey.equals("D#m")) {keyindex=26;}
-		else if (FullscreenActivity.mKey.equals("Ebm")) {keyindex=27;}
-		else if (FullscreenActivity.mKey.equals("Em")) {keyindex=28;}
-		else if (FullscreenActivity.mKey.equals("Fm")) {keyindex=29;}
-		else if (FullscreenActivity.mKey.equals("F#m")) {keyindex=30;}
-		else if (FullscreenActivity.mKey.equals("Gbm")) {keyindex=31;}
-		else if (FullscreenActivity.mKey.equals("Gm")) {keyindex=32;}
-		else if (FullscreenActivity.mKey.equals("G#m")) {keyindex=33;}
-		else if (FullscreenActivity.mKey.equals("Abm")) {keyindex=34;}
+		switch (FullscreenActivity.mKey) {
+			case "A":
+				keyindex = 1;
+				break;
+			case "A#":
+				keyindex = 2;
+				break;
+			case "Bb":
+				keyindex = 3;
+				break;
+			case "B":
+				keyindex = 4;
+				break;
+			case "C":
+				keyindex = 5;
+				break;
+			case "C#":
+				keyindex = 6;
+				break;
+			case "Db":
+				keyindex = 7;
+				break;
+			case "D":
+				keyindex = 8;
+				break;
+			case "D#":
+				keyindex = 9;
+				break;
+			case "Eb":
+				keyindex = 10;
+				break;
+			case "E":
+				keyindex = 11;
+				break;
+			case "F":
+				keyindex = 12;
+				break;
+			case "F#":
+				keyindex = 13;
+				break;
+			case "Gb":
+				keyindex = 14;
+				break;
+			case "G":
+				keyindex = 15;
+				break;
+			case "G#":
+				keyindex = 16;
+				break;
+			case "Ab":
+				keyindex = 17;
+				break;
+			case "Am":
+				keyindex = 18;
+				break;
+			case "A#b":
+				keyindex = 19;
+				break;
+			case "Bbm":
+				keyindex = 20;
+				break;
+			case "Bm":
+				keyindex = 21;
+				break;
+			case "Cm":
+				keyindex = 22;
+				break;
+			case "C#m":
+				keyindex = 23;
+				break;
+			case "Dbm":
+				keyindex = 24;
+				break;
+			case "Dm":
+				keyindex = 25;
+				break;
+			case "D#m":
+				keyindex = 26;
+				break;
+			case "Ebm":
+				keyindex = 27;
+				break;
+			case "Em":
+				keyindex = 28;
+				break;
+			case "Fm":
+				keyindex = 29;
+				break;
+			case "F#m":
+				keyindex = 30;
+				break;
+			case "Gbm":
+				keyindex = 31;
+				break;
+			case "Gm":
+				keyindex = 32;
+				break;
+			case "G#m":
+				keyindex = 33;
+				break;
+			case "Abm":
+				keyindex = 34;
+				break;
+		}
 		song_key.setSelection(keyindex);
 		//song_key.setText(FullscreenActivity.mKey.toString());
 		
-		song_duration.setText(FullscreenActivity.mDuration.toString());
-		song_notes.setText(FullscreenActivity.mNotes.toString());
-		song_midi.setText(FullscreenActivity.mMidi.toString());
-		song_midi_index.setText(FullscreenActivity.mMidiIndex.toString());
-		song_books.setText(FullscreenActivity.mBooks.toString());
-		song_restrictions.setText(FullscreenActivity.mRestrictions.toString());
-		song_pitch.setText(FullscreenActivity.mPitch.toString());
+		song_duration.setText(FullscreenActivity.mDuration);
+		song_notes.setText(FullscreenActivity.mNotes);
+		song_midi.setText(FullscreenActivity.mMidi);
+		song_midi_index.setText(FullscreenActivity.mMidiIndex);
+		song_books.setText(FullscreenActivity.mBooks);
+		song_restrictions.setText(FullscreenActivity.mRestrictions);
+		song_pitch.setText(FullscreenActivity.mPitch);
 		
 		String temp_tempo = FullscreenActivity.mTempo;
 		temp_tempo = temp_tempo.replace("Very Fast", "140");
@@ -373,7 +438,7 @@ public class EditSong extends Activity {
 		// Get numerical value for slider
 		
 		try {
-			temposlider = (int) Integer.parseInt(temp_tempo);
+			temposlider = Integer.parseInt(temp_tempo);
 		} catch(NumberFormatException nfe) {
 		   System.out.println("Could not parse " + nfe);
 		   temposlider = 39;
@@ -390,53 +455,76 @@ public class EditSong extends Activity {
 		song_tempo.setOnSeekBarChangeListener(new song_tempoListener());
     	
 		int timesigindex = 0;
-		if (FullscreenActivity.mTimeSig.equals("2/4")) {
-			timesigindex = 1;
-		} else if (FullscreenActivity.mTimeSig.equals("3/4")) {
-			timesigindex = 2;
-		} else if (FullscreenActivity.mTimeSig.equals("3/8")) {
-			timesigindex = 3;
-		} else if (FullscreenActivity.mTimeSig.equals("4/4")) {
-			timesigindex = 4;
-		} else if (FullscreenActivity.mTimeSig.equals("5/4")) {
-			timesigindex = 5;
-		} else if (FullscreenActivity.mTimeSig.equals("5/8")) {
-			timesigindex = 6;
-		} else if (FullscreenActivity.mTimeSig.equals("6/4")) {
-			timesigindex = 7;
-		} else if (FullscreenActivity.mTimeSig.equals("6/8")) {
-			timesigindex = 8;
-		} else if (FullscreenActivity.mTimeSig.equals("7/4")) {
-			timesigindex = 9;
-		} else if (FullscreenActivity.mTimeSig.equals("8/8")) {
-			timesigindex = 10;
+		switch (FullscreenActivity.mTimeSig) {
+			case "2/4":
+				timesigindex = 1;
+				break;
+			case "3/4":
+				timesigindex = 2;
+				break;
+			case "3/8":
+				timesigindex = 3;
+				break;
+			case "4/4":
+				timesigindex = 4;
+				break;
+			case "5/4":
+				timesigindex = 5;
+				break;
+			case "5/8":
+				timesigindex = 6;
+				break;
+			case "6/4":
+				timesigindex = 7;
+				break;
+			case "6/8":
+				timesigindex = 8;
+				break;
+			case "7/4":
+				timesigindex = 9;
+				break;
+			case "8/8":
+				timesigindex = 10;
+				break;
 		}
 
 		song_time_signature.setSelection(timesigindex);
 
 		int capoindex = 0;
-		if (FullscreenActivity.mCapo.equals("1")) {
-			capoindex = 1;
-		} else if (FullscreenActivity.mCapo.equals("2")) {
-			capoindex = 2;
-		} else if (FullscreenActivity.mCapo.equals("3")) {
-			capoindex = 3;
-		} else if (FullscreenActivity.mCapo.equals("4")) {
-			capoindex = 4;
-		} else if (FullscreenActivity.mCapo.equals("5")) {
-			capoindex = 5;
-		} else if (FullscreenActivity.mCapo.equals("6")) {
-			capoindex = 6;
-		} else if (FullscreenActivity.mCapo.equals("7")) {
-			capoindex = 7;
-		} else if (FullscreenActivity.mCapo.equals("8")) {
-			capoindex = 8;
-		} else if (FullscreenActivity.mCapo.equals("9")) {
-			capoindex = 9;
-		} else if (FullscreenActivity.mCapo.equals("10")) {
-			capoindex = 10;
-		} else if (FullscreenActivity.mCapo.equals("11")) {
-			capoindex = 11;
+		switch (FullscreenActivity.mCapo) {
+			case "1":
+				capoindex = 1;
+				break;
+			case "2":
+				capoindex = 2;
+				break;
+			case "3":
+				capoindex = 3;
+				break;
+			case "4":
+				capoindex = 4;
+				break;
+			case "5":
+				capoindex = 5;
+				break;
+			case "6":
+				capoindex = 6;
+				break;
+			case "7":
+				capoindex = 7;
+				break;
+			case "8":
+				capoindex = 8;
+				break;
+			case "9":
+				capoindex = 9;
+				break;
+			case "10":
+				capoindex = 10;
+				break;
+			case "11":
+				capoindex = 11;
+				break;
 		}
 		
 		song_capo.setSelection(capoindex);
@@ -449,197 +537,197 @@ public class EditSong extends Activity {
 		song_capo_print.setSelection(capoprintindex);
 
 		int padfileindex = 0;
-		if (FullscreenActivity.mPadFile.equals(findViewById(R.string.pad_auto))) {
+		if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.pad_auto))) {
 			capoprintindex = 1;
 		}
 		song_pad_file.setSelection(padfileindex);
 
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_christ_attributes)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_christ_attributes))) {
 			song_theme_christ_attributes.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_christ_birth)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_christ_birth))) {
 			song_theme_christ_birth.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_christ_death_atonement)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_christ_death_atonement))) {
 			song_theme_christ_death_atonement.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_christ_love_mercy)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_christ_love_mercy))) {
 			song_theme_christ_love_mercy.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_christ_power_majesty)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_christ_power_majesty))) {
 			song_theme_christ_power_majesty.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_christ_resurrection)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_christ_resurrection))) {
 			song_theme_christ_resurrection.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_christ_second_coming)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_christ_second_coming))) {
 			song_theme_christ_second_coming.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_christ_victory)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_christ_victory))) {
 			song_theme_christ_victory.setChecked(true);
 		}
 
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_church_commitment_obedience)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_church_commitment_obedience))) {
 			song_theme_church_commitment_obedience.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_church_country)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_church_country))) {
 			song_theme_church_country.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_church_eternal_life_heaven)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_church_eternal_life_heaven))) {
 			song_theme_church_eternal_life_heaven.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_church_evangelism)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_church_evangelism))) {
 			song_theme_church_evangelism.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_church_family_fellowship)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_church_family_fellowship))) {
 			song_theme_church_family_fellowship.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_church_fellowship_w_god)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_church_fellowship_w_god))) {
 			song_theme_church_fellowship_w_god.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_church_purity_holiness)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_church_purity_holiness))) {
 			song_theme_church_purity_holiness.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_church_renewal)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_church_renewal))) {
 			song_theme_church_renewal.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_church_repentance_salvation)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_church_repentance_salvation))) {
 			song_theme_church_repentance_salvation.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_church_service_ministry)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_church_service_ministry))) {
 			song_theme_church_service_ministry.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_church_spiritual_hunger)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_church_spiritual_hunger))) {
 			song_theme_church_spiritual_hunger.setChecked(true);
 		}
 
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_fruit_faith_hope)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_fruit_faith_hope))) {
 			song_theme_fruit_faith_hope.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_fruit_humility_meekness)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_fruit_humility_meekness))) {
 			song_theme_fruit_humility_meekness.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_fruit_joy)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_fruit_joy))) {
 			song_theme_fruit_joy.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_fruit_love)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_fruit_love))) {
 			song_theme_fruit_love.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_fruit_patience_kindness)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_fruit_patience_kindness))) {
 			song_theme_fruit_patience_kindness.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_fruit_peace_comfort)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_fruit_peace_comfort))) {
 			song_theme_fruit_peace_comfort.setChecked(true);
 		}
 
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_god_attributes)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_god_attributes))) {
 			song_theme_god_attributes.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_god_creator_creation)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_god_creator_creation))) {
 			song_theme_god_creator_creation.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_god_father)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_god_father))) {
 			song_theme_god_father.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_god_guidance_care)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_god_guidance_care))) {
 			song_theme_god_guidance_care.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_god_holiness)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_god_holiness))) {
 			song_theme_god_holiness.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_god_holy_spirit)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_god_holy_spirit))) {
 			song_theme_god_holy_spirit.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_god_love_mercy)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_god_love_mercy))) {
 			song_theme_god_love_mercy.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_god_power_majesty)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_god_power_majesty))) {
 			song_theme_god_power_majesty.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_god_promises)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_god_promises))) {
 			song_theme_god_promises.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_god_victory)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_god_victory))) {
 			song_theme_god_victory.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_god_word)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_god_word))) {
 			song_theme_god_word.setChecked(true);
 		}
 
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_worship_assurance_trust)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_worship_assurance_trust))) {
 			song_theme_worship_assurance_trust.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_worship_call_opening)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_worship_call_opening))) {
 			song_theme_worship_call_opening.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_worship_celebration)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_worship_celebration))) {
 			song_theme_worship_celebration.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_worship_declaration)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_worship_declaration))) {
 			song_theme_worship_declaration.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_worship_intimacy)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_worship_intimacy))) {
 			song_theme_worship_intimacy.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_worship_invitation)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_worship_invitation))) {
 			song_theme_worship_invitation.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_worship_praise_adoration)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_worship_praise_adoration))) {
 			song_theme_worship_praise_adoration.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_worship_prayer_devotion)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_worship_prayer_devotion))) {
 			song_theme_worship_prayer_devotion.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_worship_provision_deliverance)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_worship_provision_deliverance))) {
 			song_theme_worship_provision_deliverance.setChecked(true);
 		}
-		if (FullscreenActivity.mTheme.indexOf(getResources().getString(
-				R.string.theme_worship_thankfulness)) >= 0) {
+		if (FullscreenActivity.mTheme.contains(getResources().getString(
+				R.string.theme_worship_thankfulness))) {
 			song_theme_worship_thankfulness.setChecked(true);
 		}
 
@@ -841,6 +929,43 @@ public class EditSong extends Activity {
 		
 
 	}
+
+	public static void prepareBlankSongXML() {
+		// Prepare the new XML file
+		String myNEWXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+		myNEWXML += "<song>\n";
+		myNEWXML += "  <title>" + FullscreenActivity.songfilename + "</title>\n";
+		myNEWXML += "  <author></author>\n";
+		myNEWXML += "  <copyright></copyright>\n";
+		myNEWXML += "  <presentation></presentation>\n";
+		myNEWXML += "  <hymn_number></hymn_number>\n";
+		myNEWXML += "  <capo print=\"\"></capo>\n";
+		myNEWXML += "  <tempo></tempo>\n";
+		myNEWXML += "  <time_sig></time_sig>\n";
+		myNEWXML += "  <duration></duration>\n";
+		myNEWXML += "  <ccli></ccli>\n";
+		myNEWXML += "  <theme></theme>\n";
+		myNEWXML += "  <alttheme></alttheme>\n";
+		myNEWXML += "  <user1></user1>\n";
+		myNEWXML += "  <user2></user2>\n";
+		myNEWXML += "  <user3></user3>\n";
+		myNEWXML += "  <key></key>\n";
+		myNEWXML += "  <aka></aka>\n";
+		myNEWXML += "  <key_line></key_line>\n";
+		myNEWXML += "  <books></books>\n";
+		myNEWXML += "  <midi></midi>\n";
+		myNEWXML += "  <midi_index></midi_index>\n";
+		myNEWXML += "  <pitch></pitch>\n";
+		myNEWXML += "  <restrictions></restrictions>\n";
+		myNEWXML += "  <notes></notes>\n";
+		myNEWXML += "  <lyrics></lyrics>\n";
+		myNEWXML += "  <linked_songs></linked_songs>\n";
+		myNEWXML += "  <pad_file></pad_file>\n";
+		myNEWXML += "  <custom_chords></custom_chords>\n";
+		myNEWXML += "</song>";
+		FullscreenActivity.mynewXML = myNEWXML;
+	}
+
 	public void saveEdit(View view) throws IOException {
 		// Get the variables
 		// Set the newtext to the FullscreenActivity variables
@@ -1049,8 +1174,8 @@ public class EditSong extends Activity {
 		FullscreenActivity.mynewXML = "";
 		Intent viewsong = new Intent();
 
-		if (PresentMode) {
-			viewsong.setClass(EditSong.this, PresentMode.class);			
+		if (PresenterMode) {
+			viewsong.setClass(EditSong.this, PresenterMode.class);
 			startActivity(viewsong);
 			this.finish();
 		} else {
@@ -1060,4 +1185,24 @@ public class EditSong extends Activity {
 		}
 	}
 
+	public static void justSaveSongXML() throws IOException {
+		// Makes sure all & are replaced with &amp;
+		FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&amp;","&");
+		FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&","&amp;");
+
+		// Now write the modified song
+		String filename;
+		if (FullscreenActivity.whichSongFolder.equals("") || FullscreenActivity.whichSongFolder.isEmpty()
+				|| FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)
+				|| FullscreenActivity.whichSongFolder.equals("("+FullscreenActivity.mainfoldername+")")) {
+			filename = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
+		} else {
+			filename = FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename;
+		}
+
+		FileOutputStream overWrite = new FileOutputStream(filename,	false);
+		overWrite.write(FullscreenActivity.mynewXML.getBytes());
+		overWrite.flush();
+		overWrite.close();
+	}
 }

@@ -32,6 +32,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -42,7 +43,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
-//import com.garethevans.church.opensongtablet.StableArrayAdapter;
 
 /**
  * The dynamic listview is an extension of listview that supports cell dragging
@@ -67,9 +67,7 @@ import android.widget.ListView;
  */
 public class DynamicListView extends ListView {
 
-    private final int SMOOTH_SCROLL_AMOUNT_AT_EDGE = 15;
     private final int MOVE_DURATION = 150;
-    private final int LINE_THICKNESS = 15;
 
     public static ArrayList<String> mCurrentSetList;
 
@@ -118,6 +116,7 @@ public class DynamicListView extends ListView {
         setOnItemLongClickListener(mOnItemLongClickListener);
         setOnScrollListener(mScrollListener);
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        int SMOOTH_SCROLL_AMOUNT_AT_EDGE = 15;
         mSmoothScrollAmountAtEdge = (int)(SMOOTH_SCROLL_AMOUNT_AT_EDGE / metrics.density);
     }
 
@@ -179,6 +178,7 @@ public class DynamicListView extends ListView {
 
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
+        int LINE_THICKNESS = 15;
         paint.setStrokeWidth(LINE_THICKNESS);
         paint.setColor(Color.BLACK);
 
@@ -240,7 +240,7 @@ public class DynamicListView extends ListView {
      *  over the listview's items whenever the listview is redrawn.
      */
     @Override
-    protected void dispatchDraw(Canvas canvas) {
+    protected void dispatchDraw(@NonNull Canvas canvas) {
         super.dispatchDraw(canvas);
         if (mHoverCell != null) {
             mHoverCell.draw(canvas);
@@ -249,7 +249,7 @@ public class DynamicListView extends ListView {
 
     @SuppressLint("ClickableViewAccessibility")
 	@Override
-    public boolean onTouchEvent (MotionEvent event) {
+    public boolean onTouchEvent (@NonNull MotionEvent event) {
 
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
@@ -600,11 +600,11 @@ public class DynamicListView extends ListView {
     	// Use the mCurrentSetList to populate the new mySet
     	// Then save the preferences and close this window
     	String tempmySet = "";
-    	String tempItem = "";
+    	String tempItem;
     	for (int z=0; z<mCurrentSetList.size(); z++) {
-    		tempItem = mCurrentSetList.get(z).toString().replace("$_duplicate_$", "");
+    		tempItem = mCurrentSetList.get(z).replace("$_duplicate_$", "");
+            tempItem = tempItem.replace(" *", "");
     		tempmySet = tempmySet + "$**_"+ tempItem + "_**$";
-    		tempItem = "";
     	}
     	FullscreenActivity.mySet = null;
     	FullscreenActivity.mySet = tempmySet;
