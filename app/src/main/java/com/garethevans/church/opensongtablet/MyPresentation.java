@@ -62,6 +62,7 @@ public final class MyPresentation extends Presentation
     static RelativeLayout bottomBit;
     static FrameLayout preso;
     static FrameLayout lyricsHolder;
+    static ImageView slideImage;
 
     static View lyricsINVScrollHolder;
     static View lyricsOUTVScrollHolder;
@@ -115,6 +116,10 @@ public final class MyPresentation extends Presentation
         presoBGVideo = (TextureView) findViewById(R.id.presoBGVideo);
 
         presoBGVideo.setSurfaceTextureListener(this);
+
+        slideImage = (ImageView) findViewById(R.id.slideImage);
+        slideImage.setVisibility(View.GONE);
+
         fixBackground();
 
         SetTypeFace.setTypeface();

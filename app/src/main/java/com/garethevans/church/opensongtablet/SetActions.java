@@ -450,4 +450,14 @@ public class SetActions extends Activity {
 			}
 		}
 	}
+
+	public static void getSongForSetWork() {
+		if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)
+				|| FullscreenActivity.whichSongFolder.equals("") ) {
+			FullscreenActivity.whatsongforsetwork = FullscreenActivity.songfilename;
+		} else {
+			FullscreenActivity.whatsongforsetwork = FullscreenActivity.whichSongFolder + "/"
+					+ FullscreenActivity.songfilename;
+		}
+	}
 }

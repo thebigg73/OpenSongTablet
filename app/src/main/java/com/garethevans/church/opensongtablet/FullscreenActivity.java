@@ -1,10 +1,12 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,7 +27,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -94,6 +95,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -102,9 +104,10 @@ import java.util.zip.ZipInputStream;
 
 @SuppressWarnings("deprecation")
 @SuppressLint({ "DefaultLocale", "InlinedApi", "RtlHardcoded", "NewApi", "InflateParams", "SdCardPath" })
-public class FullscreenActivity extends Activity {
+public class FullscreenActivity extends Activity implements PopUpListSetsFragment.MyInterface {
     /** First up, declare all of the variables needed by this application **/
 
+    @SuppressWarnings("unused")
     // Identify the chord images
     Drawable f1;
     Drawable f2;
@@ -190,7 +193,6 @@ public class FullscreenActivity extends Activity {
 
     ScrollView popupAutoscroll;
     static String popupAutoscroll_stoporstart = "stop";
-    static int popupAutoscroll_tempduration;
     SeekBar popupAutoscroll_delay;
     TextView popupAutoscroll_delay_text;
     TextView popupAutoscroll_duration;
@@ -286,11 +288,8 @@ public class FullscreenActivity extends Activity {
     public static ImageView chordButton;
     public static ImageView autoscrollButton;
     public static ImageView metronomeButton;
-    public static boolean padAcrossSet = false;
     public static boolean padPlayingToggle = false;
     public static boolean orientationchanged = false;
-    public static int wasshowing_uparrow;
-    public static int wasshowing_downarrow;
     public static int wasshowing_pdfselectpage;
     public static int wasshowing_stickynotes;
     public static int alreadyshowingpage;
@@ -312,8 +311,6 @@ public class FullscreenActivity extends Activity {
     public static boolean removingfromset = false;
     static int fontsizeseekar;
     static int pageseekbarpos;
-
-    public View presseditem;
 
     static Handler delayautoscroll;
 
@@ -366,7 +363,7 @@ public class FullscreenActivity extends Activity {
     boolean doanimate = false;
 
     // Colours
-    static int dark_background;
+    //static int dark_background;
     static int dark_lyricsTextColor;
     static int dark_lyricsBackgroundColor;
     static int dark_lyricsVerseColor;
@@ -380,7 +377,7 @@ public class FullscreenActivity extends Activity {
     static int dark_lyricsCapoColor;
     static int dark_metronome;
 
-    static int light_background;
+    //static int light_background;
     static int light_lyricsTextColor;
     static int light_lyricsBackgroundColor;
     static int light_lyricsVerseColor;
@@ -394,7 +391,7 @@ public class FullscreenActivity extends Activity {
     static int light_lyricsCapoColor;
     static int light_metronome;
 
-    static int custom1_background;
+    //static int custom1_background;
     static int custom1_lyricsTextColor;
     static int custom1_lyricsBackgroundColor;
     static int custom1_lyricsVerseColor;
@@ -408,7 +405,7 @@ public class FullscreenActivity extends Activity {
     static int custom1_lyricsCapoColor;
     static int custom1_metronome;
 
-    static int custom2_background;
+    // static int custom2_background;
     static int custom2_lyricsTextColor;
     static int custom2_lyricsBackgroundColor;
     static int custom2_lyricsVerseColor;
@@ -729,7 +726,7 @@ public class FullscreenActivity extends Activity {
     static TextView songTitleHolder;
 
     static Runnable hideActionBarRunnable;
-    static Runnable hideButtonRunnable;
+    //static Runnable hideButtonRunnable;
     static Runnable checkScrollPosition;
     static Runnable autoScrollRunnable;
 
@@ -959,8 +956,14 @@ public class FullscreenActivity extends Activity {
             mTempAuthor = mAuthor.toString();
         }
 
+
         //getActionBar().setTitle(songfilename + " by " + mAuthor);
-        top_songtitle.setText(songfilename + "\n" + mAuthor);
+        // If key is set
+        String keytext = "";
+        if (!mKey.isEmpty() && mKey!="") {
+            keytext = " " + getResources().getString(R.string.edit_song_key) + ": " + mKey + "  ";
+        }
+        top_songtitle.setText(songfilename + keytext + "\n" + mAuthor);
         main_page = (RelativeLayout) findViewById(R.id.main_page);
         // Set a listener for the main_page.
         // If a popup is open, clicking on the main page will hide it.
@@ -1443,11 +1446,7 @@ public class FullscreenActivity extends Activity {
         mKey = popupPad_key.getItemAtPosition(popupPad_key.getSelectedItemPosition()).toString();
         try {
             togglePlayPads(view);
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IllegalStateException | InterruptedException |IOException e) {
             e.printStackTrace();
         }
     }
@@ -1496,7 +1495,7 @@ public class FullscreenActivity extends Activity {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             popupPad_volume_text.setText(popupPad_volume.getProgress()+" %");
-            float temp_padvol = (float) ((float) popupPad_volume.getProgress() / 100);
+            float temp_padvol = popupPad_volume.getProgress() / 100;
             String temp_padpan = "both";
             if (popupPad_pan.getProgress()==0) {
                 temp_padpan = "left";
@@ -1549,7 +1548,7 @@ public class FullscreenActivity extends Activity {
 
         public void onStopTrackingTouch(SeekBar seekBar) {
             int temp_padvol = popupPad_volume.getProgress();
-            padvol = (float) ((float) temp_padvol/100);
+            padvol = temp_padvol /100;
             if (popupPad_pan.getProgress()==0) {
                 padpan = "left";
             } else if (popupPad_pan.getProgress()==2) {
@@ -1628,7 +1627,7 @@ public class FullscreenActivity extends Activity {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             popupMetronome_volume_text.setText(popupMetronome_volume.getProgress()+" %");
-            metronomevol = (float) ((float) popupMetronome_volume.getProgress() / 100);
+            metronomevol = popupMetronome_volume.getProgress() / 100;
             if (fromUser) {
                 if (popupMetronome_pan.getProgress()==0) {
                     metronomepan = "left";
@@ -1641,7 +1640,6 @@ public class FullscreenActivity extends Activity {
                     metronomepan = "both";
                 }
             }
-
         }
 
         public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -1699,47 +1697,61 @@ public class FullscreenActivity extends Activity {
         public void onItemSelected(AdapterView<?> parent, View view,
                                    int position, long id) {
             String temp_sig = popupMetronome_timesig.getItemAtPosition(popupMetronome_timesig.getSelectedItemPosition()).toString();
-            if (temp_sig.equals("2/4")) {
-                noteValue = 4;
-                beats = 2;
-            } else if (temp_sig.equals("3/4")) {
-                noteValue = 4;
-                beats = 3;
-            } else if (temp_sig.equals("3/8")) {
-                noteValue = 8;
-                beats = 3;
-            } else if (temp_sig.equals("4/4")) {
-                noteValue = 4;
-                beats = 4;
-            } else if (temp_sig.equals("5/4")) {
-                noteValue = 4;
-                beats = 5;
-            } else if (temp_sig.equals("5/8")) {
-                noteValue = 8;
-                beats = 5;
-            } else if (temp_sig.equals("6/4")) {
-                noteValue = 4;
-                beats = 6;
-            } else if (temp_sig.equals("6/8")) {
-                noteValue = 8;
-                beats = 6;
-            } else if (temp_sig.equals("7/4")) {
-                noteValue = 4;
-                beats = 7;
-            } else if (temp_sig.equals("7/8")) {
-                noteValue = 8;
-                beats = 7;
-            } else {
-                noteValue = 4;
-                beats = 4;
-                if (metroTask!=null) {
-                    metroTask.cancel(true);
-                    metroTask.stop();
-                }
+            switch (temp_sig) {
+                case "2/4":
+                    noteValue = 4;
+                    beats = 2;
+                    break;
+                case "3/4":
+                    noteValue = 4;
+                    beats = 3;
+                    break;
+                case "3/8":
+                    noteValue = 8;
+                    beats = 3;
+                    break;
+                case "4/4":
+                    noteValue = 4;
+                    beats = 4;
+                    break;
+                case "5/4":
+                    noteValue = 4;
+                    beats = 5;
+                    break;
+                case "5/8":
+                    noteValue = 8;
+                    beats = 5;
+                    break;
+                case "6/4":
+                    noteValue = 4;
+                    beats = 6;
+                    break;
+                case "6/8":
+                    noteValue = 8;
+                    beats = 6;
+                    break;
+                case "7/4":
+                    noteValue = 4;
+                    beats = 7;
+                    break;
+                case "7/8":
+                    noteValue = 8;
+                    beats = 7;
+                    break;
+                default:
+                    noteValue = 4;
+                    beats = 4;
+                    if (metroTask != null) {
+                        metroTask.cancel(true);
+                        metroTask.stop();
+                    }
+                    break;
             }
 
             mTimeSig = temp_sig;
-            metroTask.setNoteValue(noteValue);
+            if (metroTask != null) {
+                metroTask.setNoteValue(noteValue);
+            }
             metroTask.setBeat(beats);
             metroTask.setBpm(bpm);
             Log.d("metronome","getting here");
@@ -1774,17 +1786,24 @@ public class FullscreenActivity extends Activity {
             if (secStorage.contains(":")) {
                 secStorage = secStorage.substring(0,secStorage.indexOf(":"));
             }
-            if (secStorage.contains("storage")) {
-                // Valid external SD card directory
-            }
         } else {
             // Lets look for alternative secondary storage positions
+            for (String secStorageOption : secStorageOptions) {
+                File testaltsecstorage = new File(secStorageOption);
+                if (testaltsecstorage.exists() && testaltsecstorage.canWrite()) {
+                    secStorage = secStorageOption;
+                }
+            }
+
+/*
             for (int z=0;z<secStorageOptions.length;z++) {
                 File testaltsecstorage = new File(secStorageOptions[z]);
                 if (testaltsecstorage.exists() && testaltsecstorage.canWrite()) {
                     secStorage = secStorageOptions[z];
                 }
             }
+*/
+
         }
 
         // If secondary and default storage are the same thing, hide secStorage
@@ -1881,76 +1900,87 @@ public class FullscreenActivity extends Activity {
                 metroTask.cancel(true);
                 metroTask.stop();
             }
-            //metroTask = new MetronomeAsyncTask();
-            //Runtime.getRuntime().gc();
+
         } else {
             boolean mTimeSigValid = false;
             if (mTimeSig.isEmpty() || mTimeSig.equals("")) {
                 promptTimeSig();
             } else {
-                if (mTimeSig.equals("1/4")) {
-                    //mPeriod = 1;
-                    beats = 1;
-                    noteValue = 4;
-                    mTimeSigValid = true;
-                } else if (mTimeSig.equals("2/4")) {
-                    //mPeriod = 2;
-                    beats = 2;
-                    noteValue = 4;
-                    mTimeSigValid = true;
-                } else if (mTimeSig.equals("3/4")) {
-                    //mPeriod = 3;
-                    beats = 3;
-                    noteValue = 4;
-                    mTimeSigValid = true;
-                } else if (mTimeSig.equals("3/8")) {
-                    //mPeriod = 3;
-                    beats = 3;
-                    noteValue = 8;
-                    mTimeSigValid = true;
-                } else if (mTimeSig.equals("4/4")) {
-                    //mPeriod = 4;
-                    beats = 4;
-                    noteValue = 4;
-                    mTimeSigValid = true;
-                } else if (mTimeSig.equals("5/4")) {
-                    //mPeriod = 5;
-                    beats = 5;
-                    noteValue = 4;
-                    mTimeSigValid = true;
-                } else if (mTimeSig.equals("5/8")) {
-                    //mPeriod = 5;
-                    //mNoteVal = mNoteVal*2;
-                    beats = 5;
-                    noteValue = 8;
-                    mTimeSigValid = true;
-                } else if (mTimeSig.equals("6/4")) {
-                    //mPeriod = 6;
-                    beats = 6;
-                    noteValue = 4;
-                    mTimeSigValid = true;
-                } else if (mTimeSig.equals("6/8")) {
-                    //mPeriod = 6;
-                    //mNoteVal = mNoteVal*2;
-                    beats = 6;
-                    noteValue = 8;
-                    mTimeSigValid = true;
-                } else if (mTimeSig.equals("7/4")) {
-                    //mPeriod = 7;
-                    beats = 7;
-                    noteValue = 4;
-                    mTimeSigValid = true;
-                } else if (mTimeSig.equals("7/8")) {
-                    //mPeriod = 7;
-                    //mNoteVal = mNoteVal*2;
-                    beats = 7;
-                    noteValue = 8;
-                    mTimeSigValid = true;
+                switch (mTimeSig) {
+                    case "1/4":
+                        //mPeriod = 1;
+                        beats = 1;
+                        noteValue = 4;
+                        mTimeSigValid = true;
+                        break;
+                    case "2/4":
+                        //mPeriod = 2;
+                        beats = 2;
+                        noteValue = 4;
+                        mTimeSigValid = true;
+                        break;
+                    case "3/4":
+                        //mPeriod = 3;
+                        beats = 3;
+                        noteValue = 4;
+                        mTimeSigValid = true;
+                        break;
+                    case "3/8":
+                        //mPeriod = 3;
+                        beats = 3;
+                        noteValue = 8;
+                        mTimeSigValid = true;
+                        break;
+                    case "4/4":
+                        //mPeriod = 4;
+                        beats = 4;
+                        noteValue = 4;
+                        mTimeSigValid = true;
+                        break;
+                    case "5/4":
+                        //mPeriod = 5;
+                        beats = 5;
+                        noteValue = 4;
+                        mTimeSigValid = true;
+                        break;
+                    case "5/8":
+                        //mPeriod = 5;
+                        //mNoteVal = mNoteVal*2;
+                        beats = 5;
+                        noteValue = 8;
+                        mTimeSigValid = true;
+                        break;
+                    case "6/4":
+                        //mPeriod = 6;
+                        beats = 6;
+                        noteValue = 4;
+                        mTimeSigValid = true;
+                        break;
+                    case "6/8":
+                        //mPeriod = 6;
+                        //mNoteVal = mNoteVal*2;
+                        beats = 6;
+                        noteValue = 8;
+                        mTimeSigValid = true;
+                        break;
+                    case "7/4":
+                        //mPeriod = 7;
+                        beats = 7;
+                        noteValue = 4;
+                        mTimeSigValid = true;
+                        break;
+                    case "7/8":
+                        //mPeriod = 7;
+                        //mNoteVal = mNoteVal*2;
+                        beats = 7;
+                        noteValue = 8;
+                        mTimeSigValid = true;
+                        break;
                 }
             }
 
 
-            boolean mTempoValid = false;
+            boolean mTempoValid;
             if (mTempo.isEmpty()) {
                 promptTempo();
             } else {
@@ -1968,11 +1998,7 @@ public class FullscreenActivity extends Activity {
                     bpm = 39;
                 }
             }
-            if (bpm>minBpm && bpm<maxBpm) {
-                mTempoValid = true;
-            } else {
-                mTempoValid = false;
-            }
+            mTempoValid = bpm > minBpm && bpm < maxBpm;
 
             if (mTempo.equals("") || mTempo == null) {
                 mTempoValid = false;
@@ -1988,8 +2014,6 @@ public class FullscreenActivity extends Activity {
             }
         }
     }
-
-
 
     private class MetronomeAsyncTask extends AsyncTask<Void,Void,String> {
         Metronome metronome;
@@ -2127,7 +2151,6 @@ public class FullscreenActivity extends Activity {
         }
     }
 
-
     public void popupAutoscroll_startstop (View view) {
         if (popupAutoscroll_stoporstart.equals("start")) {
             // user now wants to stop
@@ -2145,10 +2168,6 @@ public class FullscreenActivity extends Activity {
         popupAutoscroll_toggle(view);
         autoScroll(view);
     }
-
-
-
-
 
     public void autoScroll (View view) {
         if (autoscrollonoff.equals("on")) {
@@ -2261,8 +2280,6 @@ public class FullscreenActivity extends Activity {
 
     }
 
-
-
     public void getAutoScrollValues () {
         if (mDuration.isEmpty()) {
             // Duration not set.  Ask the user to add a time
@@ -2303,9 +2320,6 @@ public class FullscreenActivity extends Activity {
         }
 
     }
-
-
-
 
     public class AutoScrollMusic extends AsyncTask<String,Integer,String> {
         @Override
@@ -2379,7 +2393,6 @@ public class FullscreenActivity extends Activity {
         Preferences.savePreferences();
     }
 
-
     public void tryKillMetronome() {
         if (metronomeonoff.equals("on")) {
             metronomeonoff="off";
@@ -2414,7 +2427,6 @@ public class FullscreenActivity extends Activity {
             padButton.setAlpha(0.3f);
         }
     }
-
 
     public void killPad1 (View view) throws InterruptedException {
         // This releases mPlayer1 if it has finished fading out only
@@ -2626,54 +2638,89 @@ public class FullscreenActivity extends Activity {
         pad_filename = "null";
 
         // Determine the key of the song and therefore which auto pad track to use
-        if (mKey.equals("A")) {
-            pad_filename = "a";
-        } else if (mKey.equals("A#") || mKey.equals("Bb")) {
-            pad_filename = "asharp";
-        } else if (mKey.equals("B")) {
-            pad_filename = "b";
-        } else if (mKey.equals("C")) {
-            pad_filename = "c";
-        } else if (mKey.equals("C#") || mKey.equals("Db")) {
-            pad_filename = "csharp";
-        } else if (mKey.equals("D")) {
-            pad_filename = "d";
-        } else if (mKey.equals("D#") || mKey.equals("Eb")) {
-            pad_filename = "dsharp";
-        } else if (mKey.equals("E")) {
-            pad_filename = "e";
-        } else if (mKey.equals("F")) {
-            pad_filename = "f";
-        } else if (mKey.equals("F#") || mKey.equals("Gb")) {
-            pad_filename = "fsharp";
-        } else if (mKey.equals("G")) {
-            pad_filename = "g";
-        } else if (mKey.equals("G#") || mKey.equals("Ab")) {
-            pad_filename = "gsharp";
-        } else if (mKey.equals("Am")) {
-            pad_filename = "am";
-        } else if (mKey.equals("A#m") || mKey.equals("Bbm")) {
-            pad_filename = "asharpm";
-        } else if (mKey.equals("Bm")) {
-            pad_filename = "bm";
-        } else if (mKey.equals("Cm")) {
-            pad_filename = "cm";
-        } else if (mKey.equals("C#m") || mKey.equals("Dbm")) {
-            pad_filename = "csharpm";
-        } else if (mKey.equals("Dm")) {
-            pad_filename = "dm";
-        } else if (mKey.equals("D#m") || mKey.equals("Ebm")) {
-            pad_filename = "dsharpm";
-        } else if (mKey.equals("Em")) {
-            pad_filename = "em";
-        } else if (mKey.equals("Fm")) {
-            pad_filename = "fm";
-        } else if (mKey.equals("F#m") || mKey.equals("Gbm")) {
-            pad_filename = "fsharpm";
-        } else if (mKey.equals("Gm")) {
-            pad_filename = "gm";
-        } else if (mKey.equals("G#m") || mKey.equals("Abm")) {
-            pad_filename = "gsharpm";
+        switch (mKey) {
+            case "A":
+                pad_filename = "a";
+                break;
+            case "A#":
+            case "Bb":
+                pad_filename = "asharp";
+                break;
+            case "B":
+                pad_filename = "b";
+                break;
+            case "C":
+                pad_filename = "c";
+                break;
+            case "C#":
+            case "Db":
+                pad_filename = "csharp";
+                break;
+            case "D":
+                pad_filename = "d";
+                break;
+            case "D#":
+            case "Eb":
+                pad_filename = "dsharp";
+                break;
+            case "E":
+                pad_filename = "e";
+                break;
+            case "F":
+                pad_filename = "f";
+                break;
+            case "F#":
+            case "Gb":
+                pad_filename = "fsharp";
+                break;
+            case "G":
+                pad_filename = "g";
+                break;
+            case "G#":
+            case "Ab":
+                pad_filename = "gsharp";
+                break;
+            case "Am":
+                pad_filename = "am";
+                break;
+            case "A#m":
+            case "Bbm":
+                pad_filename = "asharpm";
+                break;
+            case "Bm":
+                pad_filename = "bm";
+                break;
+            case "Cm":
+                pad_filename = "cm";
+                break;
+            case "C#m":
+            case "Dbm":
+                pad_filename = "csharpm";
+                break;
+            case "Dm":
+                pad_filename = "dm";
+                break;
+            case "D#m":
+            case "Ebm":
+                pad_filename = "dsharpm";
+                break;
+            case "Em":
+                pad_filename = "em";
+                break;
+            case "Fm":
+                pad_filename = "fm";
+                break;
+            case "F#m":
+            case "Gbm":
+                pad_filename = "fsharpm";
+                break;
+            case "Gm":
+                pad_filename = "gm";
+                break;
+            case "G#m":
+            case "Abm":
+                pad_filename = "gsharpm";
+                break;
         }
 
         int path = -1;
@@ -2788,12 +2835,16 @@ public class FullscreenActivity extends Activity {
             if (!pad_filename.equals("null") && padson) {
                 mPlayer1 = MediaPlayer.create(FullscreenActivity.this,path);
                 mPlayer1.setLooping(true);
-                if (padpan.equals("left")) {
-                    mPlayer1.setVolume(padvol, 0.0f);
-                } else if (padpan.equals("right")) {
-                    mPlayer1.setVolume(0.0f, padvol);
-                } else {
-                    mPlayer1.setVolume(padvol, padvol);
+                switch (padpan) {
+                    case "left":
+                        mPlayer1.setVolume(padvol, 0.0f);
+                        break;
+                    case "right":
+                        mPlayer1.setVolume(0.0f, padvol);
+                        break;
+                    default:
+                        mPlayer1.setVolume(padvol, padvol);
+                        break;
                 }
                 mPlayer1.start();
                 padson = true;
@@ -2817,7 +2868,6 @@ public class FullscreenActivity extends Activity {
         }
     }
 
-
     public void fadeOutBackgroundMusic1(){
         killfadeout1 = false;
         isfading1 = true;
@@ -2829,7 +2879,6 @@ public class FullscreenActivity extends Activity {
         isfading2 = true;
         mtask_fadeout_music2 = (FadeOutMusic2) new FadeOutMusic2().execute();
     }
-
 
     public class FadeOutMusic1 extends AsyncTask<String,Integer,String> {
         @Override
@@ -2917,8 +2966,6 @@ public class FullscreenActivity extends Activity {
             }
         }
     }
-
-
 
     public class FadeOutMusic2 extends AsyncTask<String,Integer,String> {
         @Override
@@ -3009,8 +3056,6 @@ public class FullscreenActivity extends Activity {
         }
     }
 
-
-
     public void editNotes(View view) {
         // This calls the edit song sticky notes dialogue
         // Once user clicks OK, the notes are saved to the song.
@@ -3089,6 +3134,7 @@ public class FullscreenActivity extends Activity {
 
 
     }
+
     public void hidepagebuttons() {
         delaycheckscroll.removeCallbacks(checkScrollPosition);
         wasshowing_pdfselectpage = pdf_selectpage.getVisibility();
@@ -3145,15 +3191,11 @@ public class FullscreenActivity extends Activity {
             childSongs= new String[1][1];
             childSongs[0][0] = "";
         }
-        for (int w=0;w<mSongFolderNames.length-1;w++) {
-            listDataHeaderSong.add(mSongFolderNames[w]);
-        }
+        listDataHeaderSong.addAll(Arrays.asList(mSongFolderNames).subList(0, mSongFolderNames.length - 1));
 
         for (int s=0;s<mSongFolderNames.length;s++) {
-            List<String> song_folders = new ArrayList<String>();
-            for (int t=0;t<childSongs[s].length;t++) {
-                song_folders.add(childSongs[s][t]);
-            }
+            List<String> song_folders = new ArrayList<>();
+            Collections.addAll(song_folders, childSongs[s]);
             listDataChildSong.put(listDataHeaderSong.get(s), song_folders);
         }
 
@@ -3264,16 +3306,12 @@ public class FullscreenActivity extends Activity {
                     // Set the appropriate song filename
                     songfilename = listDataChildSong.get(listDataHeaderSong.get(groupPosition)).get(childPosition);
 
-                    if (setView.equals("Y") && setSize >= 8) {
-                        // Ok look for the song in the set.
-                        if (whichSongFolder.equals(mainfoldername)) {
-                            whatsongforsetwork = songfilename;
-                        } else {
-                            whatsongforsetwork = whichSongFolder + "/"
-                                    + linkclicked;
-                        }
+                    if (setView.equals("Y") && setSize > 0) {
 
-                        if (mySet.indexOf(whatsongforsetwork) >= 0) {
+                        // Get the name of the song to look for (including folders if need be)
+                        SetActions.getSongForSetWork();
+
+                        if (mySet.contains(whatsongforsetwork)) {
                             // Song is in current set.  Find the song position in the current set and load it (and next/prev)
                             // The first song has an index of 6 (the 7th item as the rest are menu items)
 
@@ -3281,17 +3319,11 @@ public class FullscreenActivity extends Activity {
                             nextSongInSet = "";
                             showCurrentSet(view);
 
-                            for (int x = 7; x < setSize; x++) {
-                                if (mSet[x].equals(whatsongforsetwork)) {
-                                    indexSongInSet = x;
-                                    previousSongInSet = mSet[x - 1];
-                                    if (x == setSize - 1) {
-                                        nextSongInSet = "";
-                                    } else {
-                                        nextSongInSet = mSet[x + 1];
-                                    }
-                                }
-                            }
+                            // Get the song index
+                            SetActions.indexSongInSet();
+
+                            // Redraw the actionbar set arrows
+                            invalidateOptionsMenu();
 
                         } else {
                             // Song isn't in the set, so just show the song
@@ -3330,7 +3362,7 @@ public class FullscreenActivity extends Activity {
     public void prepareOptionMenu() {
         // preparing list data
         listDataHeaderOption = new ArrayList<String>();
-        listDataChildOption = new HashMap<String, List<String>>();
+        listDataChildOption = new HashMap<>();
 
         // Adding headers for option menu data
         listDataHeaderOption.add(getResources().getString(R.string.options_set));
@@ -3338,7 +3370,7 @@ public class FullscreenActivity extends Activity {
         listDataHeaderOption.add(getResources().getString(R.string.options_options));
 
         // Adding child data
-        List<String> options_set = new ArrayList<String>();
+        List<String> options_set = new ArrayList<>();
         options_set.add(getResources().getString(R.string.options_set_load));
         options_set.add(getResources().getString(R.string.options_set_save));
         options_set.add(getResources().getString(R.string.options_set_clear));
@@ -3452,9 +3484,9 @@ public class FullscreenActivity extends Activity {
                         }
 
                         mySet = "";
-                        for (int w=0;w<mSetList.length;w++) {
-                            if (!mSetList[w].isEmpty()) {
-                                mySet = mySet + "$**_" + mSetList[w] + "_**$";
+                        for (String aMSetList : mSetList) {
+                            if (!aMSetList.isEmpty()) {
+                                mySet = mySet + "$**_" + aMSetList + "_**$";
                             }
                         }
 
@@ -3498,6 +3530,7 @@ public class FullscreenActivity extends Activity {
 
                     String chosenMenu = listDataHeaderOption.get(groupPosition);
 
+
                     // Build a dialogue window and related bits that get modified/shown if needed
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(FullscreenActivity.this);
                     LinearLayout titleLayout = new LinearLayout(FullscreenActivity.this);
@@ -3507,6 +3540,7 @@ public class FullscreenActivity extends Activity {
                     m_titleView.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Large);
                     m_titleView.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white) );
                     m_titleView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+
 
                     if (chosenMenu.equals(getResources().getString(R.string.options_set))) {
 
@@ -3519,6 +3553,13 @@ public class FullscreenActivity extends Activity {
 
                         // First up check for set options clicks
                         if (childPosition==0) {
+                             // Load a set
+                            FullscreenActivity.whattodo = "loadset";
+                            DialogFragment newFragment = PopUpListSetsFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
+
+
+/*
                             // Load a set
                             // Pull up a dialogue with a list of all saved sets available
                             m_titleView.setText(getResources().getString(R.string.options_set) + " - " + getResources().getString(R.string.options_set_load));
@@ -3563,9 +3604,16 @@ public class FullscreenActivity extends Activity {
                             });
 
                             dialogBuilder.show();
+*/
 
 
                         } else if (childPosition==1) {
+                            // Save current set
+                            FullscreenActivity.whattodo = "saveset";
+                            DialogFragment newFragment = PopUpListSetsFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
+
+/*
                             // Save current set
                             m_titleView.setText(getResources().getString(R.string.options_set) + " - " + getResources().getString(R.string.options_set_save));
                             titleLayout.addView(m_titleView);
@@ -3615,9 +3663,17 @@ public class FullscreenActivity extends Activity {
                             });
 
                             dialogBuilder.show();
+*/
 
 
                         } else if (childPosition==2) {
+                            // Clear current set
+                            FullscreenActivity.whattodo = "clearset";
+                            String message = getResources().getString(R.string.options_clearthisset);
+                            DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+                            newFragment.show(getFragmentManager(), "dialog");
+
+/*
                             // Clear current set
                             m_titleView.setText(getResources().getString(R.string.options_set) + " - " + getResources().getString(R.string.options_set_clear));
                             titleLayout.addView(m_titleView);
@@ -3655,10 +3711,17 @@ public class FullscreenActivity extends Activity {
                             });
 
                             dialogBuilder.show();
+*/
 
 
 
                         } else if (childPosition==3) {
+                            // Delete saved set
+                            FullscreenActivity.whattodo = "deleteset";
+                            DialogFragment newFragment = PopUpListSetsFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
+
+/*
                             // Delete saved set
                             // Pull up a dialogue with a list of all saved sets available
                             m_titleView.setText(getResources().getString(R.string.options_set) + " - " + getResources().getString(R.string.options_set_delete));
@@ -3700,11 +3763,18 @@ public class FullscreenActivity extends Activity {
 
                             dialogBuilder.show();
 
+*/
 
 
 
 
                         } else if (childPosition==4) {
+                            // Export current set
+                            FullscreenActivity.whattodo = "exportset";
+                            DialogFragment newFragment = PopUpListSetsFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
+
+/*
                             // Export current set
                             // Pull up a dialogue with a list of all saved sets available
                             m_titleView.setText(getResources().getString(R.string.options_set) + " - " + getResources().getString(R.string.options_set_export));
@@ -3759,9 +3829,17 @@ public class FullscreenActivity extends Activity {
 
                             dialogBuilder.show();
 
+*/
 
 
                         } else if (childPosition==5) {
+                            // Edit current set
+                            // Only works for ICS or above
+                            FullscreenActivity.whattodo = "editset";
+                            DialogFragment newFragment = PopUpEditSetFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
+
+/*
                             // Edit current set
                             // Only works for ICS or above
 
@@ -3778,6 +3856,7 @@ public class FullscreenActivity extends Activity {
                                 myToastMessage = getResources().getText(R.string.nothighenoughapi).toString();
                                 ShowToast.showToast(FullscreenActivity.this);
                             }
+*/
 
                         } else if (childPosition==6) {
                             // Blank entry
@@ -3936,7 +4015,6 @@ public class FullscreenActivity extends Activity {
                                             public void onClick(DialogInterface dialog,
                                                                 int whichButton) {
                                                 // Cancelled.
-                                                return;
                                             }
                                         });
 
@@ -3946,15 +4024,19 @@ public class FullscreenActivity extends Activity {
                         } else if (childPosition==1) {
                             // Capo display toggle
 
-                            if (capoDisplay.equals("both")) {
-                                capoDisplay = "capoonly";
-                                myToastMessage = getResources().getString(R.string.capo_toggle_onlycapo);
-                            } else if (capoDisplay.equals("capoonly")) {
-                                capoDisplay = "native";
-                                myToastMessage = getResources().getString(R.string.capo_toggle_native);
-                            } else {
-                                capoDisplay = "both";
-                                myToastMessage = getResources().getString(R.string.capo_toggle_bothcapo);
+                            switch (capoDisplay) {
+                                case "both":
+                                    capoDisplay = "capoonly";
+                                    myToastMessage = getResources().getString(R.string.capo_toggle_onlycapo);
+                                    break;
+                                case "capoonly":
+                                    capoDisplay = "native";
+                                    myToastMessage = getResources().getString(R.string.capo_toggle_native);
+                                    break;
+                                default:
+                                    capoDisplay = "both";
+                                    myToastMessage = getResources().getString(R.string.capo_toggle_bothcapo);
+                                    break;
                             }
                             ShowToast.showToast(FullscreenActivity.this);
                             Preferences.savePreferences();
@@ -4067,7 +4149,7 @@ public class FullscreenActivity extends Activity {
                             //By default the folder is set to the main one
                             int folderposition = 0;
                             for (int z=0;z<numfolders;z++) {
-                                if (mSongFolderNames[z].toString().equals(currentFolder)) {
+                                if (mSongFolderNames[z].equals(currentFolder)) {
                                     // Set this as the folder
                                     folderposition = z;
                                     mSongFolderNames[z] = currentFolder;
@@ -4261,11 +4343,9 @@ public class FullscreenActivity extends Activity {
                                 // Run the script that generates the email text which has the set details in it.
                                 try {
                                     ExportPreparer.songParser();
-                                } catch (IOException e) {
+                                } catch (IOException | XmlPullParserException e) {
                                     e.printStackTrace();
-                                } catch (XmlPullParserException e) {
-                                    e.printStackTrace();
-                                }
+                               }
 
                                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
                                 emailIntent.setType("text/plain");
@@ -4319,26 +4399,33 @@ public class FullscreenActivity extends Activity {
                             } else {
 
                                 myToastMessage = "";
-                                if (mDisplayTheme.equals("Theme_Holo_Light") || mDisplayTheme.equals("Theme.Holo.Light")) {
-                                    mDisplayTheme = "Theme_Holo";
-                                    newbgColor = dark_lyricsBackgroundColor;
-                                    myToastMessage = getResources().getString(R.string.dark_theme);
-                                    Preferences.savePreferences();
-                                } else if (mDisplayTheme.equals("Theme_Holo") || mDisplayTheme.equals("Theme.Holo")) {
-                                    mDisplayTheme = "custom1";
-                                    newbgColor = custom1_lyricsBackgroundColor;
-                                    myToastMessage = getResources().getString(R.string.custom1_theme);
-                                    Preferences.savePreferences();
-                                } else if (mDisplayTheme.equals("custom1")) {
-                                    mDisplayTheme = "custom2";
-                                    newbgColor = custom2_lyricsBackgroundColor;
-                                    myToastMessage = getResources().getString(R.string.custom2_theme);
-                                    Preferences.savePreferences();
-                                } else if (mDisplayTheme.equals("custom2")) {
-                                    mDisplayTheme = "Theme_Holo_Light";
-                                    newbgColor = light_lyricsBackgroundColor;
-                                    myToastMessage = getResources().getString(R.string.light_theme);
-                                    Preferences.savePreferences();
+                                switch (mDisplayTheme) {
+                                    case "Theme_Holo_Light":
+                                    case "Theme.Holo.Light":
+                                        mDisplayTheme = "Theme_Holo";
+                                        newbgColor = dark_lyricsBackgroundColor;
+                                        myToastMessage = getResources().getString(R.string.dark_theme);
+                                        Preferences.savePreferences();
+                                        break;
+                                    case "Theme_Holo":
+                                    case "Theme.Holo":
+                                        mDisplayTheme = "custom1";
+                                        newbgColor = custom1_lyricsBackgroundColor;
+                                        myToastMessage = getResources().getString(R.string.custom1_theme);
+                                        Preferences.savePreferences();
+                                        break;
+                                    case "custom1":
+                                        mDisplayTheme = "custom2";
+                                        newbgColor = custom2_lyricsBackgroundColor;
+                                        myToastMessage = getResources().getString(R.string.custom2_theme);
+                                        Preferences.savePreferences();
+                                        break;
+                                    case "custom2":
+                                        mDisplayTheme = "Theme_Holo_Light";
+                                        newbgColor = light_lyricsBackgroundColor;
+                                        myToastMessage = getResources().getString(R.string.light_theme);
+                                        Preferences.savePreferences();
+                                        break;
                                 }
                                 ShowToast.showToast(FullscreenActivity.this);
                                 main_page = findViewById(R.id.main_page);
@@ -4428,21 +4515,25 @@ public class FullscreenActivity extends Activity {
 
                         } else if (childPosition==4) {
                             // Toggle autoscale
-                            if (toggleYScale.equals("Y")) {
-                                toggleYScale = "W";
-                                myToastMessage = getResources().getString(R.string.scaleY)
-                                        + " " + getResources().getString(R.string.on_width);
-                                ShowToast.showToast(FullscreenActivity.this);
-                            } else if (toggleYScale.equals("W")) {
-                                toggleYScale = "N";
-                                myToastMessage = getResources().getString(R.string.scaleY)
-                                        + " " + getResources().getString(R.string.off);
-                                ShowToast.showToast(FullscreenActivity.this);
-                            } else {
-                                toggleYScale = "Y";
-                                myToastMessage = getResources().getString(R.string.scaleY)
-                                        + " " + getResources().getString(R.string.on);
-                                ShowToast.showToast(FullscreenActivity.this);
+                            switch (toggleYScale) {
+                                case "Y":
+                                    toggleYScale = "W";
+                                    myToastMessage = getResources().getString(R.string.scaleY)
+                                            + " " + getResources().getString(R.string.on_width);
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
+                                case "W":
+                                    toggleYScale = "N";
+                                    myToastMessage = getResources().getString(R.string.scaleY)
+                                            + " " + getResources().getString(R.string.off);
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
+                                default:
+                                    toggleYScale = "Y";
+                                    myToastMessage = getResources().getString(R.string.scaleY)
+                                            + " " + getResources().getString(R.string.on);
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
                             }
                             Preferences.savePreferences();
                             redrawTheLyricsTable(view);
@@ -4594,53 +4685,61 @@ public class FullscreenActivity extends Activity {
 
                         } else if (childPosition==9) {
                             // Toggle song move swipe
-                            if (swipeSet.equals("Y")) {
-                                swipeSet = "S";
-                                Preferences.savePreferences();
-                                myToastMessage = getResources()
-                                        .getString(R.string.swipeSet)
-                                        + " "
-                                        + getResources().getString(R.string.on_set);
-                                ShowToast.showToast(FullscreenActivity.this);
-                            } else if (swipeSet.equals("S")) {
-                                swipeSet = "N";
-                                Preferences.savePreferences();
-                                myToastMessage = getResources()
-                                        .getString(R.string.swipeSet)
-                                        + " "
-                                        + getResources().getString(R.string.off);
-                                ShowToast.showToast(FullscreenActivity.this);
-                            } else {
-                                swipeSet = "Y";
-                                Preferences.savePreferences();
-                                myToastMessage = getResources()
-                                        .getString(R.string.swipeSet)
-                                        + " "
-                                        + getResources().getString(R.string.on);
-                                ShowToast.showToast(FullscreenActivity.this);
+                            switch (swipeSet) {
+                                case "Y":
+                                    swipeSet = "S";
+                                    Preferences.savePreferences();
+                                    myToastMessage = getResources()
+                                            .getString(R.string.swipeSet)
+                                            + " "
+                                            + getResources().getString(R.string.on_set);
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
+                                case "S":
+                                    swipeSet = "N";
+                                    Preferences.savePreferences();
+                                    myToastMessage = getResources()
+                                            .getString(R.string.swipeSet)
+                                            + " "
+                                            + getResources().getString(R.string.off);
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
+                                default:
+                                    swipeSet = "Y";
+                                    Preferences.savePreferences();
+                                    myToastMessage = getResources()
+                                            .getString(R.string.swipeSet)
+                                            + " "
+                                            + getResources().getString(R.string.on);
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
                             }
 
                         } else if (childPosition==10) {
                             // Toggle show next song in set
                             // Options are top, bottom, off
 
-                            if (showNextInSet.equals("top")) {
-                                showNextInSet = "bottom";
-                                myToastMessage = getResources().getString(R.string.shownextinset)
-                                        + " - " + getResources().getString(R.string.on)
-                                        + " (" + getResources().getString(R.string.bottom).toUpperCase(locale) + ")";
-                                ShowToast.showToast(FullscreenActivity.this);
-                            } else if (showNextInSet.equals("bottom")) {
-                                showNextInSet = "off";
-                                myToastMessage = getResources().getString(R.string.shownextinset)
-                                        + " - " + getResources().getString(R.string.off);
-                                ShowToast.showToast(FullscreenActivity.this);
-                            } else {
-                                showNextInSet = "top";
-                                myToastMessage = getResources().getString(R.string.shownextinset)
-                                        + " - " + getResources().getString(R.string.on)
-                                        + " (" + getResources().getString(R.string.top).toUpperCase(locale) + ")";
-                                ShowToast.showToast(FullscreenActivity.this);
+                            switch (showNextInSet) {
+                                case "top":
+                                    showNextInSet = "bottom";
+                                    myToastMessage = getResources().getString(R.string.shownextinset)
+                                            + " - " + getResources().getString(R.string.on)
+                                            + " (" + getResources().getString(R.string.bottom).toUpperCase(locale) + ")";
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
+                                case "bottom":
+                                    showNextInSet = "off";
+                                    myToastMessage = getResources().getString(R.string.shownextinset)
+                                            + " - " + getResources().getString(R.string.off);
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
+                                default:
+                                    showNextInSet = "top";
+                                    myToastMessage = getResources().getString(R.string.shownextinset)
+                                            + " - " + getResources().getString(R.string.on)
+                                            + " (" + getResources().getString(R.string.top).toUpperCase(locale) + ")";
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
                             }
                             Preferences.savePreferences();
                             redrawTheLyricsTable(main_page);
@@ -4742,19 +4841,47 @@ public class FullscreenActivity extends Activity {
                             mDrawerLayout.closeDrawer(expListViewOption);
                             mDrawerLayout.closeDrawer(expListViewSong);
                             if (!languageToLoad.isEmpty()) {
-                                if (languageToLoad.equals("af")) {positionselected = 0;}
-                                else if (languageToLoad.equals("cz")) {positionselected = 1;}
-                                else if (languageToLoad.equals("de")) {positionselected = 2;}
-                                else if (languageToLoad.equals("en")) {positionselected = 3;}
-                                else if (languageToLoad.equals("es")) {positionselected = 4;}
-                                else if (languageToLoad.equals("fr")) {positionselected = 5;}
-                                else if (languageToLoad.equals("hu")) {positionselected = 6;}
-                                else if (languageToLoad.equals("it")) {positionselected = 7;}
-                                else if (languageToLoad.equals("ja")) {positionselected = 8;}
-                                else if (languageToLoad.equals("pl")) {positionselected = 9;}
-                                else if (languageToLoad.equals("pt")) {positionselected = 10;}
-                                else if (languageToLoad.equals("ru")) {positionselected = 11;}
-                                else if (languageToLoad.equals("zh")) {positionselected = 12;}
+                                switch (languageToLoad) {
+                                    case "af":
+                                        positionselected = 0;
+                                        break;
+                                    case "cz":
+                                        positionselected = 1;
+                                        break;
+                                    case "de":
+                                        positionselected = 2;
+                                        break;
+                                    case "en":
+                                        positionselected = 3;
+                                        break;
+                                    case "es":
+                                        positionselected = 4;
+                                        break;
+                                    case "fr":
+                                        positionselected = 5;
+                                        break;
+                                    case "hu":
+                                        positionselected = 6;
+                                        break;
+                                    case "it":
+                                        positionselected = 7;
+                                        break;
+                                    case "ja":
+                                        positionselected = 8;
+                                        break;
+                                    case "pl":
+                                        positionselected = 9;
+                                        break;
+                                    case "pt":
+                                        positionselected = 10;
+                                        break;
+                                    case "ru":
+                                        positionselected = 11;
+                                        break;
+                                    case "zh":
+                                        positionselected = 12;
+                                        break;
+                                }
                             }
                             AlertDialog.Builder languageDialog = new AlertDialog.Builder(FullscreenActivity.this);
                             languageDialog.setTitle(getResources().getString(R.string.language))
@@ -4814,7 +4941,6 @@ public class FullscreenActivity extends Activity {
                                         public void onClick(DialogInterface dialog,
                                                             int whichButton) {
                                             // Cancelled.
-                                            return;
                                         }
                                     });
 
@@ -4902,8 +5028,6 @@ public class FullscreenActivity extends Activity {
         redrawTheLyricsTable(main_page);
     }
 
-
-
     private void toggleActionBar() {
         ActionBar actionBar = getActionBar();
         delayactionBarHide.removeCallbacks(hideActionBarRunnable);
@@ -4947,13 +5071,16 @@ public class FullscreenActivity extends Activity {
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-
+            if (currentapiVersion >= 16) {
+                v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+                v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+            }
+            if (currentapiVersion >= 14) {
+                v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+            }
         }
     }
 
@@ -5258,9 +5385,6 @@ public class FullscreenActivity extends Activity {
     }
 
     public void stickyNotes(View view) {
-        if (view==mySticky) {
-            // mySticky will be hidden
-        }
         if (mySticky.getVisibility()==View.VISIBLE) {
             // Hide the sticky
             scrollstickyholder.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_out_top));
@@ -5358,9 +5482,6 @@ public class FullscreenActivity extends Activity {
 
 
     }
-
-
-
 
     public void doScrollUp(View view) {
         // Scroll the screen up
@@ -5504,7 +5625,6 @@ public class FullscreenActivity extends Activity {
 
     }
 
-
     @Override
     public void onResume() {
         //mPlayer.release();
@@ -5520,15 +5640,6 @@ public class FullscreenActivity extends Activity {
 
         super.onResume();
     }
-
-
-
-
-
-
-
-
-
 
     // This bit draws the lyrics stored in the variable to the page.
     public void showLyrics(View view) throws IOException, IllegalStateException, InterruptedException {
@@ -5546,10 +5657,6 @@ public class FullscreenActivity extends Activity {
             columnTest = 1;
             tempfontsize = mFontSize;
         }
-
-        Log.d("d","tempfontsize="+tempfontsize);
-        Log.d("d", "mainfontsize=" + mainfontsize);
-        Log.d("d", "onecolfontsize=" + onecolfontsize);
 
         // Get the autoscroll info initialised
         if (mtask_autoscroll_music!=null) {
@@ -5756,7 +5863,7 @@ public class FullscreenActivity extends Activity {
             popupMetronome_timesig.setSelection(timesigindex);
             int temposlider;
             try {
-                temposlider = (int) Integer.parseInt(mTempo.replaceAll("[\\D]",""));
+                temposlider = Integer.parseInt(mTempo.replaceAll("[\\D]",""));
             } catch(NumberFormatException nfe) {
                 System.out.println("Could not parse " + nfe);
                 temposlider = 39;
@@ -5988,8 +6095,8 @@ public class FullscreenActivity extends Activity {
             public void onGlobalLayout() {
                 scrollpage.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 if (needtoredraw && columnTest != 0) {
-                    int width = 0;
-                    int height = 0;
+                    int width;
+                    int height;
                     pageWidth = main_page.getMeasuredWidth();
                     pageHeight = main_page.getMeasuredHeight();
 
@@ -6059,11 +6166,7 @@ public class FullscreenActivity extends Activity {
 
                         try {
                             showLyrics(main_page);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (IllegalStateException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
+                        } catch (IOException | IllegalStateException | InterruptedException e) {
                             e.printStackTrace();
                         }
                     } else if (columnTest==2) {
@@ -6078,11 +6181,7 @@ public class FullscreenActivity extends Activity {
                     doanimate = false;
                     try {
                         showLyrics(main_page);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (IllegalStateException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
+                    } catch (IOException | IllegalStateException | InterruptedException e) {
                         e.printStackTrace();
                     }
                 } else if (needtoredraw && columnTest==0) {
@@ -6119,13 +6218,9 @@ public class FullscreenActivity extends Activity {
                     needtoredraw = false;
                     try {
                         showLyrics(main_page);
-                    } catch (IOException e) {
+                    } catch (IOException | IllegalStateException | InterruptedException e) {
                         e.printStackTrace();
-                    } catch (IllegalStateException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                     }
 
                 } else {
                     tempfontsize = mainfontsize;
@@ -6137,7 +6232,6 @@ public class FullscreenActivity extends Activity {
                     if (columnTest == 1) {
                         scrollpage_onecol.setVisibility(View.VISIBLE);
                         scrollpage_pdf.setVisibility(View.GONE);
-                        //pdf_selectpage.setVisibility(View.GONE);
                         scrollpage_twocol.setVisibility(View.GONE);
                         scrollpage_threecol.setVisibility(View.GONE);
                     } else if (columnTest == 2) {
@@ -6170,62 +6264,69 @@ public class FullscreenActivity extends Activity {
         });
 
         // Set the default view!  Set the theme colours
-        if (mDisplayTheme.equals("Theme_Holo_Light") || mDisplayTheme.equals("Theme.Holo.Light")) {
-            lyricsTextColor = light_lyricsTextColor;
-            lyricsCapoColor = light_lyricsCapoColor;
-            lyricsBackgroundColor = light_lyricsBackgroundColor;
-            lyricsVerseColor = light_lyricsVerseColor;
-            lyricsChorusColor = light_lyricsChorusColor;
-            lyricsBridgeColor = light_lyricsBridgeColor;
-            lyricsCommentColor = light_lyricsCommentColor;
-            lyricsPreChorusColor = light_lyricsPreChorusColor;
-            lyricsTagColor = light_lyricsTagColor;
-            lyricsChordsColor = light_lyricsChordsColor;
-            lyricsCustomColor = light_lyricsCustomColor;
-            lyricsBoxColor = light_lyricsTextColor;
-            metronomeColor = light_metronome;
-        } else if (mDisplayTheme.equals("Theme_Holo") || mDisplayTheme.equals("Theme.Holo")) {
-            lyricsTextColor = dark_lyricsTextColor;
-            lyricsCapoColor = dark_lyricsCapoColor;
-            lyricsBackgroundColor = dark_lyricsBackgroundColor;
-            lyricsVerseColor = dark_lyricsVerseColor;
-            lyricsChorusColor = dark_lyricsChorusColor;
-            lyricsBridgeColor = dark_lyricsBridgeColor;
-            lyricsCommentColor = dark_lyricsCommentColor;
-            lyricsPreChorusColor = dark_lyricsPreChorusColor;
-            lyricsTagColor = dark_lyricsTagColor;
-            lyricsChordsColor = dark_lyricsChordsColor;
-            lyricsCustomColor = dark_lyricsCustomColor;
-            lyricsBoxColor = dark_lyricsTextColor;
-            metronomeColor = dark_metronome;
-        } else if (mDisplayTheme.equals("custom1")) {
-            lyricsTextColor = custom1_lyricsTextColor;
-            lyricsCapoColor = custom1_lyricsCapoColor;
-            lyricsBackgroundColor = custom1_lyricsBackgroundColor;
-            lyricsVerseColor = custom1_lyricsVerseColor;
-            lyricsChorusColor = custom1_lyricsChorusColor;
-            lyricsBridgeColor = custom1_lyricsBridgeColor;
-            lyricsCommentColor = custom1_lyricsCommentColor;
-            lyricsPreChorusColor = custom1_lyricsPreChorusColor;
-            lyricsTagColor = custom1_lyricsTagColor;
-            lyricsChordsColor = custom1_lyricsChordsColor;
-            lyricsCustomColor = custom1_lyricsCustomColor;
-            lyricsBoxColor = custom1_lyricsTextColor;
-            metronomeColor = custom1_metronome;
-        } else if (mDisplayTheme.equals("custom2")) {
-            lyricsTextColor = custom2_lyricsTextColor;
-            lyricsCapoColor = custom2_lyricsCapoColor;
-            lyricsBackgroundColor = custom2_lyricsBackgroundColor;
-            lyricsVerseColor = custom2_lyricsVerseColor;
-            lyricsChorusColor = custom2_lyricsChorusColor;
-            lyricsBridgeColor = custom2_lyricsBridgeColor;
-            lyricsCommentColor = custom2_lyricsCommentColor;
-            lyricsPreChorusColor = custom2_lyricsPreChorusColor;
-            lyricsTagColor = custom2_lyricsTagColor;
-            lyricsChordsColor = custom2_lyricsChordsColor;
-            lyricsCustomColor = custom2_lyricsCustomColor;
-            lyricsBoxColor = custom2_lyricsTextColor;
-            metronomeColor = custom2_metronome;
+        switch (mDisplayTheme) {
+            case "Theme_Holo_Light":
+            case "Theme.Holo.Light":
+                lyricsTextColor = light_lyricsTextColor;
+                lyricsCapoColor = light_lyricsCapoColor;
+                lyricsBackgroundColor = light_lyricsBackgroundColor;
+                lyricsVerseColor = light_lyricsVerseColor;
+                lyricsChorusColor = light_lyricsChorusColor;
+                lyricsBridgeColor = light_lyricsBridgeColor;
+                lyricsCommentColor = light_lyricsCommentColor;
+                lyricsPreChorusColor = light_lyricsPreChorusColor;
+                lyricsTagColor = light_lyricsTagColor;
+                lyricsChordsColor = light_lyricsChordsColor;
+                lyricsCustomColor = light_lyricsCustomColor;
+                lyricsBoxColor = light_lyricsTextColor;
+                metronomeColor = light_metronome;
+                break;
+            case "Theme_Holo":
+            case "Theme.Holo":
+                lyricsTextColor = dark_lyricsTextColor;
+                lyricsCapoColor = dark_lyricsCapoColor;
+                lyricsBackgroundColor = dark_lyricsBackgroundColor;
+                lyricsVerseColor = dark_lyricsVerseColor;
+                lyricsChorusColor = dark_lyricsChorusColor;
+                lyricsBridgeColor = dark_lyricsBridgeColor;
+                lyricsCommentColor = dark_lyricsCommentColor;
+                lyricsPreChorusColor = dark_lyricsPreChorusColor;
+                lyricsTagColor = dark_lyricsTagColor;
+                lyricsChordsColor = dark_lyricsChordsColor;
+                lyricsCustomColor = dark_lyricsCustomColor;
+                lyricsBoxColor = dark_lyricsTextColor;
+                metronomeColor = dark_metronome;
+                break;
+            case "custom1":
+                lyricsTextColor = custom1_lyricsTextColor;
+                lyricsCapoColor = custom1_lyricsCapoColor;
+                lyricsBackgroundColor = custom1_lyricsBackgroundColor;
+                lyricsVerseColor = custom1_lyricsVerseColor;
+                lyricsChorusColor = custom1_lyricsChorusColor;
+                lyricsBridgeColor = custom1_lyricsBridgeColor;
+                lyricsCommentColor = custom1_lyricsCommentColor;
+                lyricsPreChorusColor = custom1_lyricsPreChorusColor;
+                lyricsTagColor = custom1_lyricsTagColor;
+                lyricsChordsColor = custom1_lyricsChordsColor;
+                lyricsCustomColor = custom1_lyricsCustomColor;
+                lyricsBoxColor = custom1_lyricsTextColor;
+                metronomeColor = custom1_metronome;
+                break;
+            case "custom2":
+                lyricsTextColor = custom2_lyricsTextColor;
+                lyricsCapoColor = custom2_lyricsCapoColor;
+                lyricsBackgroundColor = custom2_lyricsBackgroundColor;
+                lyricsVerseColor = custom2_lyricsVerseColor;
+                lyricsChorusColor = custom2_lyricsChorusColor;
+                lyricsBridgeColor = custom2_lyricsBridgeColor;
+                lyricsCommentColor = custom2_lyricsCommentColor;
+                lyricsPreChorusColor = custom2_lyricsPreChorusColor;
+                lyricsTagColor = custom2_lyricsTagColor;
+                lyricsChordsColor = custom2_lyricsChordsColor;
+                lyricsCustomColor = custom2_lyricsCustomColor;
+                lyricsBoxColor = custom2_lyricsTextColor;
+                metronomeColor = custom2_metronome;
+                break;
         }
 
         findViewById(R.id.main_page).setBackgroundColor(lyricsBackgroundColor);
@@ -6338,12 +6439,8 @@ public class FullscreenActivity extends Activity {
                         myCapoBox.setHorizontalGravity(Gravity.LEFT);
                         TextView tCapoBox = new TextView(this);
                         String capocustomtext = "";
-                        // If key is set
-                        if (!mKey.isEmpty() && mKey!="") {
-                            capocustomtext = capocustomtext + getResources().getString(R.string.edit_song_key) + ": " + mKey + "  ";
-                        }
                         capocustomtext = capocustomtext + getResources().getString(R.string.edit_song_capo) + " " + mCapo;
-                        if (!mKey.isEmpty() && mKey!="") {
+                        if (!mKey.isEmpty() && !mKey.equals("")) {
                             // set key to transpose
                             temptranspChords = mKey;
                             Transpose.capoTranspose();
@@ -6360,9 +6457,6 @@ public class FullscreenActivity extends Activity {
                         tCapoBox.setTextSize(tempfontsize*0.7f);
                         myCapoBox.addView(tCapoBox);
                         thistable.addView(myCapoBox);
-
-                    } else {
-                        // No capo, do nothing
                     }
                 }
 
@@ -6561,7 +6655,7 @@ public class FullscreenActivity extends Activity {
 
                         t2.setBackgroundColor(temp_useThisBGColor);
 
-                        String  temp_lyricstext = "";
+                        String  temp_lyricstext;
                         if (i == 0) {
                             temp_lyricstext = myParsedLyrics[x + 1].substring(0,chord_pos[1]);
                             // Multilines
@@ -6657,7 +6751,7 @@ public class FullscreenActivity extends Activity {
                         t2.setText(temp_lyricstext);
                         lyrics_row.addView(t2);
                     }
-                    lyrics_useThisBGColor = lyricsVerseColor;
+                    //lyrics_useThisBGColor = lyricsVerseColor;
 
                     // Decide on the lyrics row background colour
                     if (whatisthisblock[x + 1].equals("chorus")) {
@@ -6757,32 +6851,33 @@ public class FullscreenActivity extends Activity {
                     lyrics_useThisTextSize = tempfontsize;
 
                     // Decide on the block of text
-                    if (whatisthisblock[x].equals("verse")) {
-                        lyrics_useThisBGColor = lyricsVerseColor;
-
-                    } else if (whatisthisblock[x].equals("prechorus")) {
-                        lyrics_useThisBGColor = lyricsPreChorusColor;
-
-                    } else if (whatisthisblock[x].equals("chorus")) {
-                        lyrics_useThisBGColor = lyricsPreChorusColor;
-
-                    } else if (whatisthisblock[x].equals("bridge")) {
-                        lyrics_useThisBGColor = lyricsBridgeColor;
-
-                    } else if (whatisthisblock[x].equals("tag")) {
-                        lyrics_useThisBGColor = lyricsTagColor;
-
-                    } else if (whatisthisblock[x].equals("comment")) {
-                        lyrics_useThisBGColor = lyricsCommentColor;
-                        lyrics_useThisFont = commentfont;
-                        lyrics_useThisTextSize = tempsectionsize;
-
-                    } else if (whatisthisblock[x].equals("custom")) {
-                        lyrics_useThisBGColor = lyricsCustomColor;
-
-                    } else {
-                        lyrics_useThisBGColor = lyricsVerseColor;
-
+                    switch (whatisthisblock[x]) {
+                        case "verse":
+                            lyrics_useThisBGColor = lyricsVerseColor;
+                            break;
+                        case "prechorus":
+                            lyrics_useThisBGColor = lyricsPreChorusColor;
+                            break;
+                        case "chorus":
+                            lyrics_useThisBGColor = lyricsPreChorusColor;
+                            break;
+                        case "bridge":
+                            lyrics_useThisBGColor = lyricsBridgeColor;
+                            break;
+                        case "tag":
+                            lyrics_useThisBGColor = lyricsTagColor;
+                            break;
+                        case "comment":
+                            lyrics_useThisBGColor = lyricsCommentColor;
+                            lyrics_useThisFont = commentfont;
+                            lyrics_useThisTextSize = tempsectionsize;
+                            break;
+                        case "custom":
+                            lyrics_useThisBGColor = lyricsCustomColor;
+                            break;
+                        default:
+                            lyrics_useThisBGColor = lyricsVerseColor;
+                            break;
                     }
 
                     tbasic.setBackgroundColor(lyrics_useThisBGColor);
@@ -6905,37 +7000,38 @@ public class FullscreenActivity extends Activity {
 
                     }
 
-                    lyrics_useThisBGColor = lyricsVerseColor;
-                    lyrics_useThisTextSize = tempfontsize;
+                    //lyrics_useThisBGColor = lyricsVerseColor;
+                    //lyrics_useThisTextSize = tempfontsize;
                     lyrics_useThisFont = lyricsfont;
 
                     // Decide on the block of text
-                    if (whatisthisblock[x].equals("verse")) {
-                        lyrics_useThisBGColor = lyricsVerseColor;
-
-                    } else if (whatisthisblock[x].equals("prechorus")) {
-                        lyrics_useThisBGColor = lyricsPreChorusColor;
-
-                    } else if (whatisthisblock[x].equals("chorus")) {
-                        lyrics_useThisBGColor = lyricsChorusColor;
-
-                    } else if (whatisthisblock[x].equals("bridge")) {
-                        lyrics_useThisBGColor = lyricsBridgeColor;
-
-                    } else if (whatisthisblock[x].equals("tag")) {
-                        lyrics_useThisBGColor = lyricsTagColor;
-
-                    } else if (whatisthisblock[x].equals("comment")) {
-                        lyrics_useThisBGColor = lyricsCommentColor;
-                        lyrics_useThisFont = commentfont;
-                        lyrics_useThisTextSize = tempsectionsize;
-
-                    } else if (whatisthisblock[x].equals("custom")) {
-                        lyrics_useThisBGColor = lyricsCustomColor;
-
-                    } else {
-                        lyrics_useThisBGColor = lyricsVerseColor;
-
+                    switch (whatisthisblock[x]) {
+                        case "verse":
+                            lyrics_useThisBGColor = lyricsVerseColor;
+                            break;
+                        case "prechorus":
+                            lyrics_useThisBGColor = lyricsPreChorusColor;
+                            break;
+                        case "chorus":
+                            lyrics_useThisBGColor = lyricsChorusColor;
+                            break;
+                        case "bridge":
+                            lyrics_useThisBGColor = lyricsBridgeColor;
+                            break;
+                        case "tag":
+                            lyrics_useThisBGColor = lyricsTagColor;
+                            break;
+                        case "comment":
+                            lyrics_useThisBGColor = lyricsCommentColor;
+                            lyrics_useThisFont = commentfont;
+                            //lyrics_useThisTextSize = tempsectionsize;
+                            break;
+                        case "custom":
+                            lyrics_useThisBGColor = lyricsCustomColor;
+                            break;
+                        default:
+                            lyrics_useThisBGColor = lyricsVerseColor;
+                            break;
                     }
 
                     tbasic.setBackgroundColor(lyrics_useThisBGColor);
@@ -6960,7 +7056,12 @@ public class FullscreenActivity extends Activity {
                 mTempAuthor = "Unknown";
             } else {
                 mTempAuthor = mAuthor.toString();
-                top_songtitle.setText(songfilename + "\n" + mTempAuthor);
+                // If key is set
+                String keytext = "";
+                if (!mKey.isEmpty() && !mKey.equals("")) {
+                    keytext = " " + getResources().getString(R.string.edit_song_key) + ": " + mKey + "  ";
+                }
+                top_songtitle.setText(songfilename + keytext + "\n" + mTempAuthor);
             }
 
             // If in a set view and option is on to show at bottom, show the title of the next song
@@ -7055,7 +7156,7 @@ public class FullscreenActivity extends Activity {
                 scrollstickyholder.setVisibility(View.GONE);
                 stickynotes.setAlpha(0.3f);
                 // Open page 0
-                PdfRenderer.Page mCurrentPage = null;;
+                PdfRenderer.Page mCurrentPage = null;
                 if (currentapiVersion>=21) {
                     mCurrentPage = mPdfRenderer.openPage(pdfPageCurrent);
                 }
@@ -7604,9 +7705,6 @@ public class FullscreenActivity extends Activity {
         }
     }
 
-
-
-
     public void openEditSong() {
         Intent editsong = new Intent(this, EditSong.class);
         tryKillPads();
@@ -7666,7 +7764,6 @@ public class FullscreenActivity extends Activity {
         overWrite.flush();
         overWrite.close();
     }
-
 
     public void promptNewFolder() throws IOException {
         // Create a dialogue and get the users new song folder name
@@ -7731,7 +7828,6 @@ public class FullscreenActivity extends Activity {
         newfolderprompt.show();
 
     }
-
 
     public void editFolderName() throws IOException {
         // First set the browsing directory back to the main one
@@ -7808,7 +7904,6 @@ public class FullscreenActivity extends Activity {
         folderdialogBuilder.show();
 
     }
-
 
     public void promptNew() throws IOException {
         // First set the browsing directory back to the main one
@@ -8158,8 +8253,6 @@ public class FullscreenActivity extends Activity {
 
     }
 
-
-
     public void showSongMenu() {
 
     }
@@ -8311,8 +8404,6 @@ public class FullscreenActivity extends Activity {
     }
 
     public void searchYouTube() {
-
-
         startActivity(new Intent(Intent.ACTION_VIEW,
                 Uri.parse("https://www.youtube.com/results?search_query="+mTitle+"+"+mAuthor)));
     }
@@ -8321,9 +8412,7 @@ public class FullscreenActivity extends Activity {
         invalidateOptionsMenu();
         linkclicked = mSetList[indexSongInSet];
         pdfPageCurrent = 0;
-        if (linkclicked.indexOf("/") >= 0) {
-            // Ok so it does!
-        } else {
+        if (!linkclicked.contains("/")) {
             // Right it doesn't, so add the /
             linkclicked = "/" + linkclicked;
         }
@@ -8370,7 +8459,6 @@ public class FullscreenActivity extends Activity {
         songfilename = songpart[1];
         redrawTheLyricsTable(view);
         return;
-
     }
 
     public void listSavedSets(View view) {
@@ -8698,10 +8786,6 @@ public class FullscreenActivity extends Activity {
         }
     }
 
-
-
-
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -8724,7 +8808,6 @@ public class FullscreenActivity extends Activity {
             redrawTheLyricsTable(main_page);
         }
     }
-
 
     @Override
     public boolean onMenuOpened(int featureId, Menu menu) {
@@ -9179,7 +9262,7 @@ public class FullscreenActivity extends Activity {
             } else {// Gesture is off
                 // Do nothing
             }
-            super.onLongPress(e);;
+            super.onLongPress(e);
         }
 
         @Override
@@ -9345,20 +9428,6 @@ public class FullscreenActivity extends Activity {
         }
     }
 
-    public void onScrollChanged() {
-        // Hide the actionbar because we're just scrolling
-
-        //View mainpage = findViewById(R.id.main_page);
-        //mainpage.requestFocus();
-        delayactionBarHide.removeCallbacks(hideActionBarRunnable);
-        if (getActionBar().isShowing()) {
-            //getActionBar().hide();		
-        }
-        // Set a runnable to check the scroll position
-        delaycheckscroll.post(checkScrollPosition);
-
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         scaleGestureDetector.onTouchEvent(event);
@@ -9406,5 +9475,23 @@ public class FullscreenActivity extends Activity {
         }
         return super.dispatchTouchEvent(ev);
     }
-}
 
+    @Override
+    public void refreshAll() {
+        // Show the toast
+        ShowToast.showToast(FullscreenActivity.this);
+        SetActions.prepareSetList();
+        prepareSongMenu();
+        prepareOptionMenu();
+        SetActions.indexSongInSet();
+        invalidateOptionsMenu();
+        redrawTheLyricsTable(main_page);
+
+        // Reopen the set or song menu if something has changed here
+        if (whattodo.equals("loadset") || FullscreenActivity.whattodo.equals("clearset")) {
+            expListViewOption.expandGroup(0);
+            mDrawerLayout.openDrawer(expListViewOption);
+        }
+
+    }
+}

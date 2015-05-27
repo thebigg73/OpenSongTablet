@@ -60,8 +60,6 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         PopUpSongRenameFragment.MyInterface, PopUpSearchViewFragment.MyInterface,
         PopUpEditSetFragment.MyInterface, PopUpSongCreateFragment.MyInterface,
         PopUpSearchViewFragment.MyVibrator, PopUpSongDetailsFragment.MyInterface {
-    // Set the variables used here
-    // SharedPreferences myPreferences;
 
     // General variables
     static int numdisplays;
@@ -459,17 +457,10 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                     // Set the appropriate song filename
                     FullscreenActivity.songfilename = listDataChildSong.get(listDataHeaderSong.get(groupPosition)).get(childPosition);
 
-                    if (FullscreenActivity.setView.equals("Y") && FullscreenActivity.setSize >= 1) {
-                        // Ok look for the song in the set.
-                        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                            FullscreenActivity.whatsongforsetwork = FullscreenActivity.songfilename;
-                        } else {
-                            FullscreenActivity.whatsongforsetwork = FullscreenActivity.whichSongFolder + "/"
-                                    + FullscreenActivity.linkclicked;
-                        }
+                    if (FullscreenActivity.setView.equals("Y") && FullscreenActivity.setSize > 0) {
+                        // Get the name of the song to look for (including folders if need be)
+                        SetActions.getSongForSetWork();
 
-                        Log.d("d","whatsongforsetwork="+FullscreenActivity.whatsongforsetwork);
-                        Log.d("d","mySet="+FullscreenActivity.mySet);
                         if (FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
                             // Song is in current set.  Find the song position in the current set and load it (and next/prev)
                             // The first song has an index of 6 (the 7th item as the rest are menu items)
@@ -1238,9 +1229,6 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     }
 
     public void songDetailsButtonClick(View view) {
-        if (numdisplays > 0 && !blankButton_isSelected) {
-            layoutButton_isSelected = true;
-
             findViewById(R.id.pres_details).setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_blue_active));
 
             DialogFragment newFragment = PopUpSongDetailsFragment.newInstance();
@@ -1255,8 +1243,6 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                     findViewById(R.id.pres_details).setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_blue));
                 }
             }, 500);
-        }
-
     }
 
     public void popupPresentationOrder(View view) {
@@ -1539,9 +1525,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     public void doMoveInSet() {
         invalidateOptionsMenu();
         FullscreenActivity.linkclicked = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet];
-        if (FullscreenActivity.linkclicked.contains("/")) {
-            // Ok so it does!
-        } else {
+        if (!FullscreenActivity.linkclicked.contains("/")) {
             // Right it doesn't, so add the /
             FullscreenActivity.linkclicked = "/" + FullscreenActivity.linkclicked;
         }
@@ -1777,6 +1761,19 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         }
         // Be sure to call the super class.
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        numdisplays = presentationDisplays.length;
+        if (numdisplays != 0) {
+            for (Display display : presentationDisplays) {
+                MyPresentation mPresentation = new MyPresentation(this, display);
+                mPresentation.dismiss();
+            }
+        }
+        // Be sure to call the super class.
+        super.onDestroy();
     }
 
     @Override

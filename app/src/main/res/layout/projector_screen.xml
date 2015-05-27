@@ -28,6 +28,14 @@
             android:visibility="gone" />
 
         <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/slideImage"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/slide" />
+
+        <ImageView
             android:id="@+id/presoLogo"
             android:layout_width="200dp"
             android:layout_height="150dp"
