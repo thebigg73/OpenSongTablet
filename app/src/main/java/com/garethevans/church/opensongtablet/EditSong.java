@@ -926,7 +926,6 @@ public class EditSong extends Activity {
 		myNEWXML += "</song>";
 
 		FullscreenActivity.mynewXML = myNEWXML;
-		
 
 	}
 
