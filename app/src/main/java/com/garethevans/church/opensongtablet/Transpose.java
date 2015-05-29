@@ -1183,4 +1183,60 @@ public class Transpose extends Activity {
 		return FullscreenActivity.temptranspChords;
 	}
 
+	public static void checkChordFormat() {
+		FullscreenActivity.transposedLyrics = null;
+		FullscreenActivity.transposedLyrics = "";
+		FullscreenActivity.myTransposedLyrics = null;
+		FullscreenActivity.myTransposedLyrics = FullscreenActivity.myLyrics.split("\n");
+
+		FullscreenActivity.oldchordformat = FullscreenActivity.chordFormat;
+
+		boolean contains_es_is = false;
+		boolean contains_H = false;
+		boolean contains_do = false;
+
+		// Check if the user is using the same chord format as the song
+		// Go through the chord lines and look for clues
+		for (int x = 0; x < FullscreenActivity.numrowstowrite; x++) {
+			if (FullscreenActivity.myTransposedLyrics[x].indexOf(".")==0) {
+				// Chord line
+				if (FullscreenActivity.myTransposedLyrics[x].contains("es") || FullscreenActivity.myTransposedLyrics[x].contains("is") ||
+						FullscreenActivity.myTransposedLyrics[x].contains(" a") || FullscreenActivity.myTransposedLyrics[x].contains(".a") ||
+						FullscreenActivity.myTransposedLyrics[x].contains(" b") || FullscreenActivity.myTransposedLyrics[x].contains(".b") ||
+						FullscreenActivity.myTransposedLyrics[x].contains(" h") || FullscreenActivity.myTransposedLyrics[x].contains(".h") ||
+						FullscreenActivity.myTransposedLyrics[x].contains(" c") || FullscreenActivity.myTransposedLyrics[x].contains(".c") ||
+						FullscreenActivity.myTransposedLyrics[x].contains(" d") || FullscreenActivity.myTransposedLyrics[x].contains(".d") ||
+						FullscreenActivity.myTransposedLyrics[x].contains(" e") || FullscreenActivity.myTransposedLyrics[x].contains(".e") ||
+						FullscreenActivity.myTransposedLyrics[x].contains(" f") || FullscreenActivity.myTransposedLyrics[x].contains(".f") ||
+						FullscreenActivity.myTransposedLyrics[x].contains(" g") || FullscreenActivity.myTransposedLyrics[x].contains(".g"))	{
+					contains_es_is = true;
+				} else if (FullscreenActivity.myTransposedLyrics[x].contains("H")) {
+					contains_H = true;
+				} else if (FullscreenActivity.myTransposedLyrics[x].contains("Do") || FullscreenActivity.myTransposedLyrics[x].contains("Re") ||
+						FullscreenActivity.myTransposedLyrics[x].contains("Me") || FullscreenActivity.myTransposedLyrics[x].contains("Fa") ||
+						FullscreenActivity.myTransposedLyrics[x].contains("Sol") || FullscreenActivity.myTransposedLyrics[x].contains("La") ||
+						FullscreenActivity.myTransposedLyrics[x].contains("Si")) {
+					contains_do = true;
+				}
+			}
+		}
+
+		int detected = 0;
+		// Set the chord style detected
+		if (contains_do) {
+			FullscreenActivity.oldchordformat="4";
+			detected = 3;
+		} else if (contains_H && !contains_es_is) {
+			FullscreenActivity.oldchordformat="2";
+			detected = 1;
+		} else if (contains_H || contains_es_is) {
+			FullscreenActivity.oldchordformat="3";
+			detected = 2;
+		} else {
+			FullscreenActivity.oldchordformat="1";
+			detected = 0;
+		}
+
+		// Ok so the user chord format may not quite match the song - it might though!
+	}
 }

@@ -11,7 +11,10 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:textColor="#ff0"
-        android:layout_margin="12dp" />
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_above="@+id/areyousureNoButton" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -20,10 +23,10 @@
         android:text="@string/no"
         android:id="@+id/areyousureNoButton"
         android:background="@drawable/blue_button"
-        android:layout_below="@+id/areyousurePrompt"
         android:layout_toLeftOf="@+id/renameSongOkButton"
         android:layout_toStartOf="@+id/renameSongOkButton"
-        android:layout_margin="12dp" />
+        android:layout_margin="12dp"
+        android:layout_alignParentBottom="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -31,9 +34,9 @@
         android:layout_height="wrap_content"
         android:text="@string/yes"
         android:id="@+id/renameSongOkButton"
-        android:layout_below="@+id/areyousurePrompt"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:background="@drawable/red_button"
-        android:layout_margin="12dp" />
+        android:layout_margin="12dp"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>
