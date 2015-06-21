@@ -40,7 +40,8 @@ public class Preferences extends Activity {
 		
 		Log.d("Preferences","Loading");
 
-		FullscreenActivity.lastSetName = myPreferences.getString("lastSetName","");
+		FullscreenActivity.mediaStore = myPreferences.getString("mediaStore","int");
+		FullscreenActivity.lastSetName = myPreferences.getString("lastSetName", "");
 		FullscreenActivity.presoAlpha = myPreferences.getFloat("presoAlpha", 1.0f);
 		FullscreenActivity.presoAutoScale = myPreferences.getBoolean("presoAutoScale", true);
 		FullscreenActivity.presoFontSize = myPreferences.getInt("presoFontSize", 4);
@@ -59,7 +60,6 @@ public class Preferences extends Activity {
         FullscreenActivity.presoAuthorSize = myPreferences.getInt("presoAuthorSize",8);
         FullscreenActivity.presoCopyrightSize = myPreferences.getInt("presoCopyrightSize",8);
         FullscreenActivity.presoAlertSize = myPreferences.getInt("presoAlertSize",8);
-
 
 		FullscreenActivity.pageturner_NEXT = myPreferences.getInt("pageturner_NEXT", 22);
 		FullscreenActivity.pageturner_PREVIOUS = myPreferences.getInt("pageturner_PREVIOUS", 21);
@@ -96,6 +96,7 @@ public class Preferences extends Activity {
 		FullscreenActivity.prefStorage = myPreferences.getString("prefStorage", "");
 
 		FullscreenActivity.autoScrollDelay = myPreferences.getInt("autoScrollDelay", 10);
+        FullscreenActivity.autostartautoscroll = myPreferences.getBoolean("autostartautoscroll", false);
 
 		FullscreenActivity.metronomepan = myPreferences.getString("metronomepan", "both");
 		FullscreenActivity.padpan = myPreferences.getString("padpan", "both");
@@ -230,6 +231,7 @@ public class Preferences extends Activity {
 
 		SharedPreferences.Editor editor = myPreferences.edit();
 
+		editor.putString("mediaStore", FullscreenActivity.mediaStore);
 		editor.putString("lastSetName", FullscreenActivity.lastSetName);
 		editor.putFloat("presoAlpha", FullscreenActivity.presoAlpha);
 		editor.putBoolean("presoAutoScale", FullscreenActivity.presoAutoScale);
@@ -280,6 +282,7 @@ public class Preferences extends Activity {
 		editor.putString("chordFormat", FullscreenActivity.chordFormat);
 
 		editor.putInt("autoScrollDelay", FullscreenActivity.autoScrollDelay);
+		editor.putBoolean("autostartautoscroll", FullscreenActivity.autostartautoscroll);
 
 		editor.putString("metronomepan", FullscreenActivity.metronomepan);
 		editor.putString("padpan", FullscreenActivity.padpan);

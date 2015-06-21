@@ -193,6 +193,18 @@ public class StorageChooser extends Activity {
 		}
 	}	
 
+	public void onBackPressed() {
+        if (FullscreenActivity.prefStorage.equals("ext") || FullscreenActivity.prefStorage.equals("int")) {
+            Intent intent_stop = new Intent();
+            intent_stop.setClass(this, FullscreenActivity.class);
+            startActivity(intent_stop);
+            super.onBackPressed();
+        } else {
+            FullscreenActivity.myToastMessage = getResources().getString(R.string.storage_choose);
+            ShowToast.showToast(StorageChooser.this);
+        }
+    }
+
 	public void saveStorageLocation (View view) {
 		//Rewrite the shared preference
 		if (numeral.equals("2")) {

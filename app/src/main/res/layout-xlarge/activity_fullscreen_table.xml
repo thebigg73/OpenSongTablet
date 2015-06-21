@@ -224,7 +224,7 @@
 
         <ExpandableListView
             android:id="@+id/song_list_ex"
-            android:layout_width="240dp"
+            android:layout_width="320dp"
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:background="@drawable/drawer_bg"
@@ -235,7 +235,7 @@
 
         <ExpandableListView
             android:id="@+id/option_list_ex"
-            android:layout_width="240dp"
+            android:layout_width="320dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:background="@drawable/drawer_bg"

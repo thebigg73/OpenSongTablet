@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<string name="page_toggles">Page toggles</string>
+    <string name="options_options_autostartscroll">Autostart autoscroll</string>
+	<string name="media_chooser">Media chooser</string>
+    <string name="media_selected">Media loaded</string>
+    <string name="media_play">Play</string>
+    <string name="media_pause">Pause</string>
+    <string name="media_stop">Stop</string>
+	<string name="media">Audio</string>
+
 	<string name="preso_alpha">Background opacity</string>
 	<string name="file_chooser">File chooser</string>
 	<string name="display_manager">Reconnect display</string>

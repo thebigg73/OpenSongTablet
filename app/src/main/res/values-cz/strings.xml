@@ -396,5 +396,13 @@
 	<string name="preso_alpha">Pozadí neprůhlednost</string>
 	<string name="settings">Nastavení</string>
 	<string name="song_sections">sekce Song</string>
+	<string name="media">Audio</string>
+	<string name="media_chooser">Media chooser</string>
+	<string name="media_pause">Pauza</string>
+	<string name="media_play">hrát</string>
+	<string name="media_selected">Media naloženo</string>
+	<string name="media_stop">Stop</string>
+	<string name="options_options_autostartscroll">Autostart autoscroll</string>
+	<string name="page_toggles">Page přepíná</string>
 
 </resources>

@@ -399,5 +399,13 @@
 	<string name="preso_alpha">背景透明度</string>
 	<string name="settings">设置</string>
 	<string name="song_sections">歌节</string>
+	<string name="media">音频</string>
+	<string name="media_chooser">媒体选择器</string>
+	<string name="media_pause">暂停</string>
+	<string name="media_play">玩</string>
+	<string name="media_selected">媒体装</string>
+	<string name="media_stop">停止</string>
+	<string name="options_options_autostartscroll">Autostart autoscroll</string>
+	<string name="page_toggles">页面切换</string>
 
 </resources>

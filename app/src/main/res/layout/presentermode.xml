@@ -391,6 +391,35 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/presenter_audio_group"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="4dp"
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginRight="0dp"
+                                android:layout_marginTop="4dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:onClick="audioButtonClick">
+
+                                <ImageView
+                                    android:id="@+id/presenter_audio_image"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/alert"
+                                    android:src="@drawable/ic_action_volume_on" />
+
+                                <TextView
+                                    android:id="@+id/presenter_audio_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_vertical"
+                                    android:text="@string/media"
+                                    android:textColor="#fff"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:id="@+id/presenter_slide_group"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

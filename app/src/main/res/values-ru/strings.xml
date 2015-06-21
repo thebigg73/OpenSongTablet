@@ -395,5 +395,13 @@
 	<string name="preso_alpha">Фон непрозрачность</string>
 	<string name="settings">настройки</string>
 	<string name="song_sections">разделы песни</string>
+	<string name="media">Aудио</string>
+	<string name="media_chooser">Медиа броузер</string>
+	<string name="media_pause">пауза</string>
+	<string name="media_play">играть</string>
+	<string name="media_selected">Медиа загружен</string>
+	<string name="media_stop">стоп</string>
+	<string name="options_options_autostartscroll">Autostart autoscroll</string>
+	<string name="page_toggles">Page переключает</string>
 
 </resources>

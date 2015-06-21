@@ -394,5 +394,13 @@
 	<string name="preso_alpha">背景の不透明度</string>
 	<string name="settings">[設定]</string>
 	<string name="song_sections">曲のセクション</string>
+	<string name="media">オーディオ</string>
+	<string name="media_chooser">メディアチュー</string>
+	<string name="media_pause">ポーズ</string>
+	<string name="media_play">遊びます</string>
+	<string name="media_selected">メディアがロードされました</string>
+	<string name="media_stop">停止</string>
+	<string name="options_options_autostartscroll">Autostart autoscroll</string>
+	<string name="page_toggles">ページトグル</string>
 
 </resources>

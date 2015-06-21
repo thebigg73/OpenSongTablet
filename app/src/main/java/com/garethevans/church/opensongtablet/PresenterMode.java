@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.hardware.display.DisplayManager;
+import android.media.MediaPlayer;
 import android.media.MediaRouter;
 import android.net.Uri;
 import android.os.Build;
@@ -59,9 +60,12 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         PopUpListSetsFragment.MyInterface, PopUpAreYouSureFragment.MyInterface,
         PopUpSongRenameFragment.MyInterface, PopUpSearchViewFragment.MyInterface,
         PopUpEditSetFragment.MyInterface, PopUpSongCreateFragment.MyInterface,
-        PopUpSearchViewFragment.MyVibrator, PopUpSongDetailsFragment.MyInterface {
+        PopUpSearchViewFragment.MyVibrator, PopUpSongDetailsFragment.MyInterface,
+        PopUpFontsFragment.MyInterface {
 
     // General variables
+    public static MediaPlayer mp;
+    public static String mpTitle = "";
     static int numdisplays;
     boolean firsttime = true;
     private boolean isPDF;
@@ -88,6 +92,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     //boolean scriptureButton_isSelected = false;
     //boolean slideButton_isSelected = false;
     boolean alertButton_isSelected = false;
+    boolean audioButton_isSelected = false;
     boolean layoutButton_isSelected = false;
     boolean backgroundButton_isSelected = false;
 
@@ -170,6 +175,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     LinearLayout presenter_blank_group;
     LinearLayout presenter_scripture_group;
     LinearLayout presenter_alert_group;
+    LinearLayout presenter_audio_group;
     LinearLayout presenter_slide_group;
 
     // Settings buttons
@@ -180,6 +186,8 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        mp = new MediaPlayer();
 
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -300,6 +308,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         // Hide slide for now until I get it working
         presenter_slide_group.setVisibility(View.GONE);
         presenter_alert_group = (LinearLayout) findViewById(R.id.presenter_alert_group);
+        presenter_audio_group = (LinearLayout) findViewById(R.id.presenter_audio_group);
 
         // Settings buttons
         presenter_settings_buttons = (ScrollView) findViewById(R.id.preso_settings_scroll);
@@ -337,6 +346,12 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
 
     @Override
     public void onBackPressed() {
+        if (mp.isPlaying()) {
+            // Stop the media player
+            mp.stop();
+            mp.reset();
+            mpTitle = "";
+        }
         String message = getResources().getString(R.string.exit);
         FullscreenActivity.whattodo = "exit";
         DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
@@ -1386,6 +1401,26 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         }
     }
 
+    public void audioButtonClick(View view) {
+        audioButton_isSelected = true;
+
+        presenter_audio_group.setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_blue_active));
+        presenter_actions_buttons.smoothScrollTo(0, presenter_audio_group.getTop());
+
+        DialogFragment newFragment = PopUpMediaStoreFragment.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
+
+        // After a short time, turn off the button
+        Handler delay = new Handler();
+        delay.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                alertButton_isSelected = false;
+                presenter_audio_group.setBackgroundDrawable(null);
+            }
+        }, 500);
+    }
+
     public void turnOffLogoButton() {
         // if button is already selected, unselect it
         if (logoButton_isSelected) {
@@ -1835,7 +1870,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             }
         }
 
-        return true;
+        return super.onKeyUp(keyCode,event);
     }
 
     // Listener for popups

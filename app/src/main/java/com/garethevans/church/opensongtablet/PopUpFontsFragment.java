@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,24 @@ public class PopUpFontsFragment extends DialogFragment {
         PopUpFontsFragment frag;
         frag = new PopUpFontsFragment();
         return frag;
+    }
+
+    public interface MyInterface {
+        void refreshAll();
+    }
+
+    private MyInterface mListener;
+
+    @Override
+    public void onAttach(Activity activity) {
+        mListener = (MyInterface) activity;
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onDetach() {
+        mListener = null;
+        super.onDetach();
     }
 
     int temp_mylyricsfontnum = FullscreenActivity.mylyricsfontnum;
@@ -68,6 +87,7 @@ public class PopUpFontsFragment extends DialogFragment {
                 FullscreenActivity.linespacing = lineSpacingSeekBar.getProgress();
                 FullscreenActivity.mMaxFontSize = maxAutoScaleSeekBar.getProgress();
                 Preferences.savePreferences();
+                mListener.refreshAll();
                 dismiss();
             }
         });

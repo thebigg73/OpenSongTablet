@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:background="#000000"
-    android:clickable="true"
+    android:background="#000"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:gravity="center_horizontal">

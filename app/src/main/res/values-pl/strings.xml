@@ -395,5 +395,13 @@
 	<string name="preso_alpha">Zadymienie w tle</string>
 	<string name="settings">Ustawienia</string>
 	<string name="song_sections">Sekcje piosenki</string>
+	<string name="media">Audio</string>
+	<string name="media_chooser">Selektor mediów</string>
+	<string name="media_pause">Pauza</string>
+	<string name="media_play">Grać</string>
+	<string name="media_selected">załadowane nośniki</string>
+	<string name="media_stop">Stop</string>
+	<string name="options_options_autostartscroll">Autostart autoscroll</string>
+	<string name="page_toggles">Strona przełącza</string>
 
 </resources>

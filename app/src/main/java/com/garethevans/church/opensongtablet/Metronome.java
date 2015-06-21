@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 public class Metronome {
 	
@@ -33,8 +34,14 @@ public class Metronome {
 	
 	public void calcSilence() {
 		resolutionmeter = (int) ((float)noteValue/4.0f);
-		//silence = (int) (((60/bpm)*8000)-tick);		
-		silence = (int) (((60/bpm)*(8000/resolutionmeter)-tick));		
+		//silence = (int) (((60/bpm)*8000)-tick);
+        if (noteValue==0) {
+            noteValue=4;
+        }
+        if (resolutionmeter==0) {
+            resolutionmeter=1;
+        }
+		silence = (int) (((60/bpm)*(8000/resolutionmeter)-tick));
 		soundTickArray = new double[this.tick];	
 		soundTockArray = new double[this.tick];
 		silenceSoundArray = new double[this.silence];
@@ -84,6 +91,7 @@ public class Metronome {
 	public double getBpm() {
 		return bpm;
 	}
+
 	public void setBpm(int bpm) {
 		this.bpm = bpm;
 	}
@@ -91,6 +99,7 @@ public class Metronome {
 	public short getNoteValue() {
 		return noteValue;
 	}
+
 	public void setNoteValue(short noteValue) {
 		this.noteValue = noteValue;
 	}

@@ -395,5 +395,13 @@
 	<string name="preso_alpha">Hintergrund Deckkraft</string>
 	<string name="settings">Einstellungen</string>
 	<string name="song_sections">Song Abschnitte</string>
+	<string name="media">Audio-</string>
+	<string name="media_chooser">Medienauswahl</string>
+	<string name="media_pause">Pause</string>
+	<string name="media_play">Spielen</string>
+	<string name="media_selected">Medien geladen</string>
+	<string name="media_stop">Stopp</string>
+	<string name="options_options_autostartscroll">Autostart autoscroll</string>
+	<string name="page_toggles">Seite wechselt</string>
 
 </resources>

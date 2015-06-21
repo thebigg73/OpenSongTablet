@@ -79,9 +79,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
 import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -102,41 +100,48 @@ import java.util.zip.ZipInputStream;
 @SuppressLint({ "DefaultLocale", "InlinedApi", "RtlHardcoded", "NewApi", "InflateParams", "SdCardPath" })
 public class FullscreenActivity extends Activity implements PopUpListSetsFragment.MyInterface,
         PopUpAreYouSureFragment.MyInterface, PopUpEditSetFragment.MyInterface,
-        PopUpTransposeFragment.MyInterface, PopUpEditSongFragment.MyInterface {
+        PopUpTransposeFragment.MyInterface, PopUpEditSongFragment.MyInterface,
+        PopUpSongDetailsFragment.MyInterface, PopUpSongRenameFragment.MyInterface,
+        PopUpSongCreateFragment.MyInterface, PopUpFontsFragment.MyInterface,
+        PopUpEditStickyFragment.MyInterface {
     /** First up, declare all of the variables needed by this application **/
 
-    @SuppressWarnings("unused")
+    public int slideout_time = 500;
+    public int checkscroll_time = 1000;
+    public int delayswipe_time = 1800;
+
+    @SuppressWarnings("unused|NewApi")
     // Identify the chord images
-    Drawable f1;
-    Drawable f2;
-    Drawable f3;
-    Drawable f4;
-    Drawable f5;
-    Drawable f6;
-    Drawable f7;
-    Drawable f8;
-    Drawable f9;
-    Drawable lx;
-    Drawable l0;
-    Drawable l1;
-    Drawable l2;
-    Drawable l3;
-    Drawable l4;
-    Drawable l5;
-    Drawable mx;
-    Drawable m0;
-    Drawable m1;
-    Drawable m2;
-    Drawable m3;
-    Drawable m4;
-    Drawable m5;
-    Drawable rx;
-    Drawable r0;
-    Drawable r1;
-    Drawable r2;
-    Drawable r3;
-    Drawable r4;
-    Drawable r5;
+    private Drawable f1;
+    private Drawable f2;
+    private Drawable f3;
+    private Drawable f4;
+    private Drawable f5;
+    private Drawable f6;
+    private Drawable f7;
+    private Drawable f8;
+    private Drawable f9;
+    private Drawable lx;
+    private Drawable l0;
+    private Drawable l1;
+    private Drawable l2;
+    private Drawable l3;
+    private Drawable l4;
+    private Drawable l5;
+    private Drawable mx;
+    private Drawable m0;
+    private Drawable m1;
+    private Drawable m2;
+    private Drawable m3;
+    private Drawable m4;
+    private Drawable m5;
+    private Drawable rx;
+    private Drawable r0;
+    private Drawable r1;
+    private Drawable r2;
+    private Drawable r3;
+    private Drawable r4;
+    private Drawable r5;
 
     static Typeface typeface0;
     static Typeface typeface1;
@@ -155,82 +160,90 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static Typeface typeface9i;
 
     static String lastSetName;
-    TableLayout chordimageshere;
+    private TableLayout chordimageshere;
     static String chordInstrument = "g";
     static String showNextInSet= "top";
-    TableLayout thistable;
-    Typeface lyrics_useThisFont;
-    static String allchords = "";
-    static String allchordscapo = "";
-    static String[] allchords_array = null;
-    static ArrayList<String> unique_chords = null;
+    private TableLayout thistable;
+    private Typeface lyrics_useThisFont;
+    private static String allchords = "";
+    private static String allchordscapo = "";
+    private static String[] allchords_array = null;
+    private static ArrayList<String> unique_chords = null;
     public static String chordnotes = "";
     static String capoDisplay;
     static String languageToLoad;
-    static String tempLanguage;
-    SQLiteDatabase db;
-    String[] backUpFiles;
-    String backupchosen = "";
+    private static String tempLanguage;
+    private SQLiteDatabase db;
+    private String[] backUpFiles;
+    private String backupchosen = "";
 
-    static int currentapiVersion;
+    private static int currentapiVersion;
+
+    public static String mediaStore;
 
     static String emailtext;
 
     static String whattodo = "";
-    ScrollView popupChord;
-    Spinner popupChord_Instrument;
+    private ScrollView popupChord;
+    private Spinner popupChord_Instrument;
 
-    ScrollView popupPad;
-    static String popupPad_stoporstart = "stop";
-    Spinner popupPad_key;
-    SeekBar popupPad_volume;
-    TextView popupPad_volume_text;
-    SeekBar popupPad_pan;
-    TextView popupPad_pan_text;
-    Button popupPad_startstopbutton ;
+    private ScrollView popupPad;
+    private static String popupPad_stoporstart = "stop";
+    private Spinner popupPad_key;
+    private SeekBar popupPad_volume;
+    private TextView popupPad_volume_text;
+    private SeekBar popupPad_pan;
+    private TextView popupPad_pan_text;
+    private Button popupPad_startstopbutton ;
 
-    ScrollView popupAutoscroll;
-    static String popupAutoscroll_stoporstart = "stop";
-    SeekBar popupAutoscroll_delay;
-    TextView popupAutoscroll_delay_text;
-    TextView popupAutoscroll_duration;
-    Button popupAutoscroll_startstopbutton;
-    static int newPos;
+    private ScrollView popupAutoscroll;
+    private static String popupAutoscroll_stoporstart = "stop";
+    private SeekBar popupAutoscroll_delay;
+    private TextView popupAutoscroll_delay_text;
+    private TextView popupAutoscroll_duration;
+    private Button popupAutoscroll_startstopbutton;
+    private static int newPos;
+    public static boolean autostartautoscroll;
+    public boolean autoscrollactivated = false;
+
 
     ScrollView popupMetronome;
     static String popupMetronome_stoporstart = "stop";
     Spinner popupMetronome_timesig;
-    SeekBar popupMetronome_tempo;
+    public SeekBar popupMetronome_tempo;
     TextView popupMetronome_tempo_text;
-    SeekBar popupMetronome_volume;
+    public SeekBar popupMetronome_volume;
     TextView popupMetronome_volume_text;
     SeekBar popupMetronome_pan;
     TextView popupMetronome_pan_text;
     Button popupMetronome_startstopbutton ;
-    int beatoffcolour = 0xff121222;
-    String whichbeat = "a";
+    private final int beatoffcolour = 0xff121222;
+    private String whichbeat = "a";
     static boolean visualmetronome = false;
-    ToggleButton popupMetronome_visualmetronometoggle;
+    private ToggleButton popupMetronome_visualmetronometoggle;
 
+    @SuppressWarnings("unused")
     public boolean fadeout1 = false;
+    @SuppressWarnings("unused")
     public boolean fadeout2 = false;
     private final short minBpm = 40;
     private final short maxBpm = 199;
     private short bpm = 100;
-    private short noteValue = 4;
-    private short beats = 4;
+    public static short noteValue = 4;
+    public static short beats = 4;
     public int currentBeat = 1;
     @SuppressWarnings("unused")
     private short volume;
     private float metrovol;
     @SuppressWarnings("unused")
-    private short initialVolume;
-    private double beatSound = 1200; //1200
-    private double sound = 1600; //1600
+    public short initialVolume;
+    public double beatSound = 1200; //1200
+    public double sound = 1600; //1600
     @SuppressWarnings("unused")
     private AudioManager audio;
     private MetronomeAsyncTask metroTask;
     private Handler mHandler;
+
     @SuppressLint("HandlerLeak")
     private Handler getHandler() {
         return new Handler() {
@@ -247,7 +260,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         getActionBar().setDisplayShowTitleEnabled(true);
                     } else {
                         whichbeat = "a";
-                        //metronomebeat.setBackgroundDrawable(beat_b);					
+                        //metronomebeat.setBackgroundDrawable(beat_b);
                         getActionBar().setBackgroundDrawable(new ColorDrawable(metronomeColor));
                         getActionBar().setDisplayShowTitleEnabled(false);
                         getActionBar().setDisplayShowTitleEnabled(true);
@@ -263,54 +276,57 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     public static float metronomevol = 1.0f;
     public static float padvol = 1.0f;
     public static String padpan = "both";
-
-    public int autoscroll_pause_time = 2000;
-    public boolean pauseautoscroll = true;
-    public boolean autoscrollispaused = false;
-    public static boolean isautoscrolling = false;
-    public static float autoscroll_pixels = 0.0f;
-    public static int song_duration = 0;
-    public static int total_pixels_to_scroll = 0;
-    public static String autoscrollonoff = "false";
+    public static int timesigindex;
+    public static boolean mTimeSigValid = false;
+    public static int temposlider;
+    private final int autoscroll_pause_time = 2000;
+    private boolean pauseautoscroll = true;
+    private boolean autoscrollispaused = false;
+    private static boolean isautoscrolling = false;
+    private static float autoscroll_pixels = 0.0f;
+    private static int song_duration = 0;
+    private static int total_pixels_to_scroll = 0;
+    private static String autoscrollonoff = "false";
     public static String pad_filename = "null";
-    public static boolean killfadeout1 = false;
-    public static boolean killfadeout2 = false;
-    public static boolean isfading1 = false;
-    public static boolean isfading2 = false;
-    public static boolean padson = false;
+    private static boolean killfadeout1 = false;
+    private static boolean killfadeout2 = false;
+    private static boolean isfading1 = false;
+    private static boolean isfading2 = false;
+    private static boolean padson = false;
     public static boolean needtorefreshsongmenu = false;
-    public static MediaPlayer mPlayer1 = null;
-    public static MediaPlayer mPlayer2 = null;
-    public static ImageView padButton;
-    public static ImageView linkButton;
-    public static ImageView chordButton;
-    public static ImageView autoscrollButton;
-    public static ImageView metronomeButton;
-    public static boolean padPlayingToggle = false;
-    public static boolean orientationchanged = false;
-    public static int wasshowing_pdfselectpage;
-    public static int wasshowing_stickynotes;
-    public static int alreadyshowingpage;
+    private static MediaPlayer mPlayer1 = null;
+    private static MediaPlayer mPlayer2 = null;
+    private static ImageView padButton;
+    private static ImageView linkButton;
+    private static ImageView chordButton;
+    private static ImageView autoscrollButton;
+    private static ImageView metronomeButton;
+    private static boolean padPlayingToggle = false;
+    private static boolean orientationchanged = false;
+    private static int wasshowing_pdfselectpage;
+    private static int wasshowing_stickynotes;
+    private static int alreadyshowingpage;
+    public static int keyindex;
 
-    public static int pdfPageCurrent = 0;
-    public static int pdfPageCount = 0;
-    public static boolean isPDF = false;
-    public static boolean isSong = false;
-    public static ImageView pdf_selectpage;
-    public static ImageView stickynotes;
-    public static TextView mySticky;
-    public static ScrollView scrollstickyholder;
+    private static int pdfPageCurrent = 0;
+    private static int pdfPageCount = 0;
+    private static boolean isPDF = false;
+    private static boolean isSong = false;
+    private static ImageView pdf_selectpage;
+    private static ImageView stickynotes;
+    private static TextView mySticky;
+    private static ScrollView scrollstickyholder;
     public static String hideactionbaronoff;
-    public int lastExpandedGroupPositionOption;
-    public int lastExpandedGroupPositionSong;
+    private int lastExpandedGroupPositionOption;
+    private int lastExpandedGroupPositionSong;
     public static String[][] childSongs;
     public static String setnamechosen;
-    public static boolean addingtoset = false;
-    public static boolean removingfromset = false;
-    static int fontsizeseekar;
-    static int pageseekbarpos;
+    private static boolean addingtoset = false;
+    private static boolean removingfromset = false;
+    private static int fontsizeseekar;
+    private static int pageseekbarpos;
 
-    static Handler delayautoscroll;
+    private static Handler delayautoscroll;
 
     // Swipe
     private static final int SWIPE_MIN_DISTANCE = 250;
@@ -321,44 +337,44 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String whichMode;
 
     // Views and bits on the pages
-    static int mScreenOrientation;
-    static int columnTest = 1;
-    static float onecolfontsize;
-    static float twocolfontsize;
-    static float threecolfontsize;
-    ScrollView scrollpage;
-    ScrollView scrollpage_pdf;
-    ScrollView scrollpage_onecol;
-    ScrollView scrollpage_twocol;
-    ScrollView scrollpage_threecol;
-    static View view;
+    private static int mScreenOrientation;
+    private static int columnTest = 1;
+    private static float onecolfontsize;
+    private static float twocolfontsize;
+    private static float threecolfontsize;
+    private ScrollView scrollpage;
+    private ScrollView scrollpage_pdf;
+    private ScrollView scrollpage_onecol;
+    private ScrollView scrollpage_twocol;
+    private ScrollView scrollpage_threecol;
+    private static View view;
     static int maxcharsinline;
-    static ActionBarDrawerToggle actionBarDrawerToggle;
-    static Handler delayactionBarHide;
-    static Handler delaycheckscroll;
-    static Handler doautoScroll;
+    private static ActionBarDrawerToggle actionBarDrawerToggle;
+    private static Handler delayactionBarHide;
+    private static Handler delaycheckscroll;
+    private static Handler doautoScroll;
 
-    static boolean scrollbutton = false;
-    static boolean actionbarbutton = false;
+    private static boolean scrollbutton = false;
+    private static boolean actionbarbutton = false;
 
     // Font sizes (relative)
-    boolean alreadyloaded = false;
-    float mainfontsize = 16;
-    float sectionfontsize = 10;
+    private boolean alreadyloaded = false;
+    private final float mainfontsize = 16;
+    private final float sectionfontsize = 10;
     static int linespacing;
-    float tempfontsize;
+    private float tempfontsize;
     //float oldtempfontsize;
-    float tempsectionsize;
+    private float tempsectionsize;
     //float oldtempsectionsize;
-    boolean doScaling = false;
-    float scaleX;
-    float scaleY;
+    private boolean doScaling = false;
+    private float scaleX;
+    private float scaleY;
     //float bestfontsize;
     //float bestcolumnnumber;
-    float pageWidth;
-    float pageHeight;
-    boolean needtoredraw = true;
-    boolean doanimate = false;
+    private float pageWidth;
+    private float pageHeight;
+    private boolean needtoredraw = true;
+    private boolean doanimate = false;
 
     // Colours
     //static int dark_background;
@@ -430,8 +446,14 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static int lyricsChordsColor;
     static int lyricsCustomColor;
     static int lyricsCapoColor;
-    static int newbgColor;
+    private static int newbgColor;
     static int metronomeColor;
+    static int chords_useThisBGColor;
+    static int capo_useThisBGColor;
+    static int lyrics_useThisBGColor;
+    static float lyrics_useThisTextSize;
+    static float chords_useThisTextSize;
+    static int temp_useThisBGColor;
 
     // Page turner
     static int pageturner_NEXT;
@@ -446,10 +468,10 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     // Set variables
     static int autoScrollDelay;
-    static int temp_autoScrollDelay = 0;
-    static int make_temp_autoScrollDelay = 0;
+    private static int temp_autoScrollDelay = 0;
+    private static int make_temp_autoScrollDelay = 0;
     public static String prefStorage;
-    static boolean wasscrolling = false;
+    private static boolean wasscrolling = false;
     static String alwaysPreferredChordFormat;
     static String gesture_doubletap;
     static String gesture_longpress;
@@ -458,14 +480,14 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String bibleFileContents;
     //static String[] bibleBooks;
     static String chordFormat;
-    static String chord_converting = "N";
+    private static String chord_converting = "N";
     static String oldchordformat;
     static String presenterChords;
     //static String toggleColumns;
     static String swipeDrawer;
     static String swipeSet;
-    static String tempswipeSet = "enable";
-    static String whichDirection = "R2L";
+    private static String tempswipeSet = "enable";
+    private static String whichDirection = "R2L";
     //public static int editSetSelectedIndex;
     //public static String editSetSelectedValue;
     //public static String editSetPreviousValue;
@@ -479,7 +501,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String setView = "N";
     //MenuItem set_back;
     //MenuItem set_forward;
-    MenuItem presentationMode;
+    private MenuItem presentationMode;
     static int setSize;
     static boolean showingSetsToLoad = false;
     static String whatsongforsetwork = "";
@@ -492,8 +514,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     // Song filenames, folders, set filenames, folders
     static String currentFolder;
     static String newFolder;
-    static int next_song;
-    static int prev_song;
+    private static int next_song;
+    private static int prev_song;
     static String whichSongFolder;
     //static String textWhichSongFolder;
     static String[] mySetsFileNames;
@@ -513,7 +535,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     //static String[] search_songid;
     //static String[] search_content;
 
-    static String[] mTempFolderNames;
+    // static String[] mTempFolderNames;
 
     static int currentSongIndex;
     static int previousSongIndex;
@@ -530,7 +552,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     static float presoAlpha;
     static String myAlert;
-    static String dualDisplayCapable = "N";
+    private static String dualDisplayCapable = "N";
     //static int numdisplays;
     static String backgroundImage1;
     static String backgroundImage2;
@@ -549,7 +571,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static CharSequence mTitle = "";
     //static CharSequence mTempTitle = "";
     static CharSequence mAuthor = "Gareth Evans";
-    static String mTempAuthor = "";
+    private static String mTempAuthor = "";
     static CharSequence mCopyright = "";
     static String mLyrics = "";
     static String mCCLI = "";
@@ -576,7 +598,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String mRestrictions = "";
     static String mNotes = "";
     static String temptranspChords = "";
-    static String tempChords = "";
+    private static String tempChords = "";
     static String mLinkedSongs = "";
     static String mExtraStuff1 = "";
     static String mExtraStuff2 = "";
@@ -584,8 +606,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String mCustomChords = "";
 
     // Info for the lyrics table
-    static float mScaleFactor = 1.0f;
-    ScaleGestureDetector scaleGestureDetector;
+    private static float mScaleFactor = 1.0f;
+    private ScaleGestureDetector scaleGestureDetector;
     //static BitmapDrawable[] songSectionBitmap;
     //static float scaleonecolview;
     //static float scaletwocolview;
@@ -618,13 +640,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String[] myParsedLyrics;
     static String[] myTransposedLyrics;
     static String songfilename;
-    DrawerLayout mDrawerLayout;
+    private DrawerLayout mDrawerLayout;
     //ListView mDrawerList;
     //ListView mOptionList;
     //ActionBarDrawerToggle mDrawerToggle;
     private Menu menu;
     static String linkclicked;
-    static int myOptionListClickedItem;
+    private static int myOptionListClickedItem;
     //static String whichOptionsView = "options_main";
     //static String changeWhichOptionsView;
     static SharedPreferences myPreferences;
@@ -651,38 +673,38 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     //LinearLayout lyricstableall_onecol;
     //LinearLayout lyricstableall_twocol;
     //LinearLayout lyricstableall_threecol;
-    TableLayout lyricstable_onecolview;
-    TableLayout lyricstable_twocolview;
-    TableLayout lyricstable2_twocolview;
-    TableLayout lyricstable_threecolview;
-    TableLayout lyricstable2_threecolview;
-    TableLayout lyricstable3_threecolview;
-    static ImageView uparrow;
-    static ImageView downarrow;
+    private TableLayout lyricstable_onecolview;
+    private TableLayout lyricstable_twocolview;
+    private TableLayout lyricstable2_twocolview;
+    private TableLayout lyricstable_threecolview;
+    private TableLayout lyricstable2_threecolview;
+    private TableLayout lyricstable3_threecolview;
+    private static ImageView uparrow;
+    private static ImageView downarrow;
     static String myToastMessage;
-    static boolean showCapo;
-    static TextView top_songtitle;
+    private static boolean showCapo;
+    private static TextView top_songtitle;
 
     // Search function
     //static String mySearchText;
 
     // The following get in translation texts
-    static String edit_song_presentation;
-    static String error_notset;
-    static String error_missingsection;
+    private static String edit_song_presentation;
+    private static String error_notset;
+    private static String error_missingsection;
 
     static String tag_verse;
     static String tag_chorus;
     static String tag_prechorus;
     static String tag_bridge;
     static String tag_tag;
-    static String set;
+    private static String set;
     static String song;
     static String slide;
     static String scripture;
     //static String unknown_format;
-    static String toastmessage_maxfont;
-    static String toastmessage_minfont;
+    private static String toastmessage_maxfont;
+    private static String toastmessage_minfont;
     static String set_menutitle;
     //static String setload_menutitle;
     //static String setexport_menutitle;
@@ -699,13 +721,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String menu_menutitle;
     static String sethasbeendeleted;
     static String deleteerror_start;
-    static String deleteerror_end_song;
+    private static String deleteerror_end_song;
     static String deleteerror_end_sets;
     static String songdoesntexist;
     static String exportcurrentsong;
-    static String importnewsong;
+    private static String importnewsong;
     static String exportsavedset;
-    static String importnewset;
+    private static String importnewset;
     static String mainfoldername;
     static int mylyricsfontnum;
     static int mychordsfontnum;
@@ -717,35 +739,35 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     //static Animation animationFadeIn;
     //static Animation animationFadeOut;
-    static View main_page;
-    static View main_lyrics;
-    static View songLoadingProgressBar;
-    static View onsongImportProgressBar;
-    static TextView songTitleHolder;
+    private static View main_page;
+    private static View main_lyrics;
+    private static View songLoadingProgressBar;
+    private static View onsongImportProgressBar;
+    private static TextView songTitleHolder;
 
-    static Runnable hideActionBarRunnable;
+    private static Runnable hideActionBarRunnable;
     //static Runnable hideButtonRunnable;
-    static Runnable checkScrollPosition;
-    static Runnable autoScrollRunnable;
+    private static Runnable checkScrollPosition;
+    private static Runnable autoScrollRunnable;
 
     //public boolean manualScroll;
-    List<String> listDataHeaderOption;
-    HashMap<String, List<String>> listDataChildOption;
-    ExpandableListAdapter listAdapterSong;
-    ExpandableListAdapterOptions listAdapterOption;
-    ExpandableListView expListViewSong;
-    ExpandableListView expListViewOption;
-    List<String> listDataHeaderSong;
-    HashMap<String, List<String>> listDataChildSong;
+    private List<String> listDataHeaderOption;
+    private HashMap<String, List<String>> listDataChildOption;
+    private ExpandableListAdapter listAdapterSong;
+    private ExpandableListAdapterOptions listAdapterOption;
+    private ExpandableListView expListViewSong;
+    private ExpandableListView expListViewOption;
+    private List<String> listDataHeaderSong;
+    private HashMap<String, List<String>> listDataChildSong;
     private FadeOutMusic1 mtask_fadeout_music1;
     private FadeOutMusic2 mtask_fadeout_music2;
     private AutoScrollMusic mtask_autoscroll_music;
-    public static int whichtofadeout;
+    private static int whichtofadeout;
 
     // Try to determine internal or external storage
-    String secStorage = System.getenv("SECONDARY_STORAGE");
-    String defStorage = Environment.getExternalStorageDirectory().getAbsolutePath();
-    String[] secStorageOptions = {"/mnt/emmc/",
+    private String secStorage = System.getenv("SECONDARY_STORAGE");
+    private final String defStorage = Environment.getExternalStorageDirectory().getAbsolutePath();
+    private final String[] secStorageOptions = {"/mnt/emmc/",
             "/FAT",
             "/Removable/MicroSD",
             "/Removable/SD",
@@ -775,20 +797,20 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             "/mnt/external_sdcard",
             "/mnt/extSdCard"};
 
-    boolean extStorageExists = false;
-    boolean defStorageExists = false;
+    private boolean extStorageExists = false;
+    private boolean defStorageExists = false;
 
-    public static File extStorCheck;
-    public static File intStorCheck;
+    private static File extStorCheck;
+    private static File intStorCheck;
 
-    boolean storageIsValid = true;
+    private boolean storageIsValid = true;
 
     static File root = android.os.Environment.getExternalStorageDirectory();
     static File homedir = new File(root.getAbsolutePath() + "/documents/OpenSong");
     static File dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
-    static File dironsong = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong");
+    private static File dironsong = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong");
     static File dirsets = new File(root.getAbsolutePath() + "/documents/OpenSong/Sets");
-    static File dirPads = new File(root.getAbsolutePath() + "/documents/OpenSong/Pads");
+    private static File dirPads = new File(root.getAbsolutePath() + "/documents/OpenSong/Pads");
     static File dirbackgrounds = new File(root.getAbsolutePath() + "/documents/OpenSong/Backgrounds");
     static File dirbibles = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture");
     static File dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
@@ -949,7 +971,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         autoScrollRunnable = new Runnable() {
             @Override
             public void run() {
-                scrollpage.smoothScrollBy(0,(int) autoscroll_pixels);
+                scrollpage.smoothScrollBy(0, (int) autoscroll_pixels);
             }};
 
         // If key is set
@@ -957,7 +979,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         if (!mKey.isEmpty() && !mKey.equals("")) {
             keytext = " (" + mKey + ")";
         }
-
+        top_songtitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragment = PopUpSongDetailsFragment.newInstance();
+                newFragment.show(getFragmentManager(), "dialog");
+            }
+        });
         top_songtitle.setText(songfilename + keytext + "\n" + mAuthor);
         main_page = findViewById(R.id.main_page);
         // Set a listener for the main_page.
@@ -1112,13 +1140,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 int height = scrollpage.getChildAt(0).getMeasuredHeight() - scrollpage.getHeight();
 
                 // Decide if the down arrow should be displayed.
-                if (height > scrollpage.getScrollY()) {
+                if (height > scrollpage.getScrollY() && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerOpen(expListViewSong)) {
                     downarrow.setVisibility(View.VISIBLE);
                 } else {
                     downarrow.setVisibility(View.INVISIBLE);
                 }
                 // Decide if the up arrow should be displayed.
-                if (scrollpage.getScrollY() > 0) {
+                if (scrollpage.getScrollY() > 0 && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerOpen(expListViewSong)) {
                     uparrow.setVisibility(View.VISIBLE);
                 } else {
                     uparrow.setVisibility(View.INVISIBLE);
@@ -1224,14 +1252,14 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     }
 
-    public void hideKeyboard() {
+    private void hideKeyboard() {
         InputMethodManager inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow((null == getCurrentFocus()) ? null : getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    public void hidepopupPad() {
+    private void hidepopupPad() {
         if (popupPad.getVisibility()==View.VISIBLE) {
             popupPad.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_out_top));
             // After 500ms, make them invisible
@@ -1252,7 +1280,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         scrollpage.requestFocus();
     }
 
-    public void hidepopupAutoscroll() {
+    private void hidepopupAutoscroll() {
         if (popupAutoscroll.getVisibility()==View.VISIBLE) {
             popupAutoscroll.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_out_top));
             // After 500ms, make them invisible
@@ -1273,7 +1301,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         scrollpage.requestFocus();
     }
 
-    public void hidepopupMetronome() {
+    private void hidepopupMetronome() {
         if (popupMetronome.getVisibility()==View.VISIBLE) {
             popupMetronome.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_out_top));
             // After 500ms, make them invisible
@@ -1294,7 +1322,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         scrollpage.requestFocus();
     }
 
-    public void hidepopupSticky() {
+    private void hidepopupSticky() {
         if (scrollstickyholder.getVisibility()==View.VISIBLE) {
             scrollstickyholder.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_out_top));
             // After 500ms, make them invisible
@@ -1311,7 +1339,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         scrollpage.requestFocus();
     }
 
-    public void hidepopupChord() {
+    private void hidepopupChord() {
         if (popupChord.getVisibility()==View.VISIBLE) {
             popupChord.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_out_top));
             // After 500ms, make them invisible
@@ -1363,7 +1391,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         scrollpage.requestFocus();
         if (popupPad.getVisibility()==View.VISIBLE) {
             // If popupPad is visible, it is about to be hidden
-            // Also fade the padButton if the pad isn't playing, otherwise keep it bright 
+            // Also fade the padButton if the pad isn't playing, otherwise keep it bright
             if (popupPad_stoporstart.equals("stop")) {
                 padButton.setAlpha(0.3f);
             } else {
@@ -1431,9 +1459,14 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         mKey = popupPad_key.getItemAtPosition(popupPad_key.getSelectedItemPosition()).toString();
         try {
             togglePlayPads(view);
-        } catch (IllegalStateException | InterruptedException |IOException e) {
+        } catch (IllegalStateException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void stickyNotesUpdate() {
+        mySticky.setText(mNotes);
     }
 
     private class popupChord_InstrumentListener implements OnItemSelectedListener {
@@ -1483,7 +1516,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             popupPad_volume_text.setText(popupPad_volume.getProgress()+" %");
-            float temp_padvol = popupPad_volume.getProgress() / 100;
+            float temp_padvol = (float) popupPad_volume.getProgress() / 100.0f;
             String temp_padpan = "both";
             if (popupPad_pan.getProgress()==0) {
                 temp_padpan = "left";
@@ -1616,7 +1649,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             popupMetronome_volume_text.setText(popupMetronome_volume.getProgress()+" %");
-            metronomevol = popupMetronome_volume.getProgress() / 100;
+            metronomevol = (float) popupMetronome_volume.getProgress() / 100.0f;
             if (fromUser) {
                 if (popupMetronome_pan.getProgress()==0) {
                     metronomepan = "left";
@@ -1642,7 +1675,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     private class popupMetronome_tempoListener implements SeekBar.OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            int temposlider = popupMetronome_tempo.getProgress()+39;
+            temposlider = popupMetronome_tempo.getProgress()+39;
             short newbpm = (short) temposlider;
             if (temposlider>39) {
                 popupMetronome_tempo_text.setText(temposlider+" "+getResources().getString(R.string.bpm));
@@ -1661,9 +1694,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     metroTask.setBpm(newbpm);
                     metroTask.setBeat(beats);
                     metroTask.setNoteValue(noteValue);
-                    metroTask.setCurrentBeat(currentBeat);
+                    //metroTask.setCurrentBeat(currentBeat);
                 } catch (Exception e) {
-                    // Catch error here
+                    e.printStackTrace();
                 }
             }
         }
@@ -1685,59 +1718,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         @Override
         public void onItemSelected(AdapterView<?> parent, View view,
                                    int position, long id) {
-            String temp_sig = popupMetronome_timesig.getItemAtPosition(popupMetronome_timesig.getSelectedItemPosition()).toString();
-            switch (temp_sig) {
-                case "2/4":
-                    noteValue = 4;
-                    beats = 2;
-                    break;
-                case "3/4":
-                    noteValue = 4;
-                    beats = 3;
-                    break;
-                case "3/8":
-                    noteValue = 8;
-                    beats = 3;
-                    break;
-                case "4/4":
-                    noteValue = 4;
-                    beats = 4;
-                    break;
-                case "5/4":
-                    noteValue = 4;
-                    beats = 5;
-                    break;
-                case "5/8":
-                    noteValue = 8;
-                    beats = 5;
-                    break;
-                case "6/4":
-                    noteValue = 4;
-                    beats = 6;
-                    break;
-                case "6/8":
-                    noteValue = 8;
-                    beats = 6;
-                    break;
-                case "7/4":
-                    noteValue = 4;
-                    beats = 7;
-                    break;
-                case "7/8":
-                    noteValue = 8;
-                    beats = 7;
-                    break;
-                default:
-                    noteValue = 4;
-                    beats = 4;
-                    if (metroTask != null) {
-                        metroTask.cancel(true);
-                        metroTask.stop();
-                    }
-                    break;
-            }
+            // Hold mTimeSig as a temp value
+            String temp_sig = mTimeSig;
+            mTimeSig = popupMetronome_timesig.getItemAtPosition(popupMetronome_timesig.getSelectedItemPosition()).toString();
+            ProcessSong.processTimeSig();
 
-            mTimeSig = temp_sig;
             if (metroTask != null) {
                 metroTask.setNoteValue(noteValue);
                 metroTask.setBeat(beats);
@@ -1772,7 +1757,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         ShowToast.showToast(FullscreenActivity.this);
     }
 
-    public void checkDirectories() {
+    private void checkDirectories() {
         if (secStorage!=null) {
             if (secStorage.contains(":")) {
                 secStorage = secStorage.substring(0,secStorage.indexOf(":"));
@@ -1848,7 +1833,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     }
 
-    public void promptTempo() {
+    private void promptTempo() {
         if (popupMetronome.getVisibility()!=View.VISIBLE) {
             metronomeButton.setAlpha(0.3f);
         }
@@ -1859,7 +1844,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         ShowToast.showToast(FullscreenActivity.this);
     }
 
-    public void promptTimeSig() {
+    private void promptTimeSig() {
         if (popupMetronome.getVisibility()!=View.VISIBLE) {
             metronomeButton.setAlpha(0.3f);
         }
@@ -1870,7 +1855,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         ShowToast.showToast(FullscreenActivity.this);
     }
 
-    public void metronomeToggle (View view) {
+    private void metronomeToggle (View view) {
         if (metronomeonoff.equals("on")) {
             metronomeonoff = "off";
             //metronomeButton.setAlpha(0.3f);
@@ -1880,81 +1865,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             }
 
         } else {
-            boolean mTimeSigValid = false;
+            mTimeSigValid = false;
             if (mTimeSig.isEmpty() || mTimeSig.equals("")) {
                 promptTimeSig();
             } else {
-                switch (mTimeSig) {
-                    case "1/4":
-                        //mPeriod = 1;
-                        beats = 1;
-                        noteValue = 4;
-                        mTimeSigValid = true;
-                        break;
-                    case "2/4":
-                        //mPeriod = 2;
-                        beats = 2;
-                        noteValue = 4;
-                        mTimeSigValid = true;
-                        break;
-                    case "3/4":
-                        //mPeriod = 3;
-                        beats = 3;
-                        noteValue = 4;
-                        mTimeSigValid = true;
-                        break;
-                    case "3/8":
-                        //mPeriod = 3;
-                        beats = 3;
-                        noteValue = 8;
-                        mTimeSigValid = true;
-                        break;
-                    case "4/4":
-                        //mPeriod = 4;
-                        beats = 4;
-                        noteValue = 4;
-                        mTimeSigValid = true;
-                        break;
-                    case "5/4":
-                        //mPeriod = 5;
-                        beats = 5;
-                        noteValue = 4;
-                        mTimeSigValid = true;
-                        break;
-                    case "5/8":
-                        //mPeriod = 5;
-                        //mNoteVal = mNoteVal*2;
-                        beats = 5;
-                        noteValue = 8;
-                        mTimeSigValid = true;
-                        break;
-                    case "6/4":
-                        //mPeriod = 6;
-                        beats = 6;
-                        noteValue = 4;
-                        mTimeSigValid = true;
-                        break;
-                    case "6/8":
-                        //mPeriod = 6;
-                        //mNoteVal = mNoteVal*2;
-                        beats = 6;
-                        noteValue = 8;
-                        mTimeSigValid = true;
-                        break;
-                    case "7/4":
-                        //mPeriod = 7;
-                        beats = 7;
-                        noteValue = 4;
-                        mTimeSigValid = true;
-                        break;
-                    case "7/8":
-                        //mPeriod = 7;
-                        //mNoteVal = mNoteVal*2;
-                        beats = 7;
-                        noteValue = 8;
-                        mTimeSigValid = true;
-                        break;
-                }
+                ProcessSong.processTimeSig();
             }
 
             boolean mTempoValid;
@@ -1975,7 +1890,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     bpm = 39;
                 }
             }
-            mTempoValid = bpm > minBpm && bpm < maxBpm;
+            mTempoValid = bpm >= minBpm && bpm <= maxBpm;
 
             if (mTempo.equals("") || mTempo == null) {
                 mTempoValid = false;
@@ -2032,7 +1947,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
 
         public void setNoteValue(short noteVal) {
-            if (metronome!=null && bpm>=minBpm && bpm<=maxBpm && noteValue>0) {
+            if (metronome!=null && bpm>=minBpm && bpm<=maxBpm && noteVal>0) {
                 metronome.setNoteValue(noteVal);
                 try {
                     metronome.calcSilence();
@@ -2043,13 +1958,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
 
         public void setBeat(short beat) {
-            if(metronome != null)
+            if(metronome != null) {
                 metronome.setBeat(beat);
-            try {
-                assert metronome != null;
-                metronome.calcSilence();
-            } catch (Exception e) {
-                e.printStackTrace();
+                try {
+                    metronome.calcSilence();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -2057,7 +1972,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             if(metronome != null)
                 metronome.setCurrentBeat(currentBeat);
             try {
-                assert metronome != null;
                 metronome.calcSilence();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2069,7 +1983,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             if(metronome != null)
                 metronome.setVolume(metrovol);
         }
-
     }
 
     private class textWatcher implements TextWatcher {
@@ -2141,10 +2054,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             // user now wants to stop
             popupAutoscroll_stoporstart = "stop";
             popupAutoscroll_startstopbutton.setText(getResources().getString(R.string.start));
+            autoscrollactivated =false;
         } else {
             // user now wants to start
             popupAutoscroll_stoporstart = "start";
             popupAutoscroll_startstopbutton.setText(getResources().getString(R.string.stop));
+            autoscrollactivated = true;
         }
 
         autoScrollDelay = popupAutoscroll_delay.getProgress();
@@ -2153,7 +2068,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         autoScroll(view);
     }
 
-    public void autoScroll (View view) {
+    private void autoScroll (View view) {
         if (autoscrollonoff.equals("on")) {
             autoscrollonoff = "off";
             isautoscrolling = false;
@@ -2168,11 +2083,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         } else {
             if (mDuration.isEmpty()) {
                 // Prompt
-                try {
-                    promptSongDuration();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                promptSongDuration();
+
             } else {
                 autoscrollonoff = "on";
                 pauseautoscroll = true;
@@ -2202,7 +2114,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
     }
 
-    public void promptSongDuration() {
+    private void promptSongDuration() {
         // Create a dialogue and get the song duration
         // Close the menus
         autoscrollButton.setAlpha(0.3f);
@@ -2257,7 +2169,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         songdurationprompt.show();
     }
 
-    public void getAutoScrollValues () {
+    private void getAutoScrollValues () {
         if (!mDuration.isEmpty()) {
             // Get the numerical version of mDuration
             try {
@@ -2294,10 +2206,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
     }
 
-    public class AutoScrollMusic extends AsyncTask<String,Integer,String> {
+    private class AutoScrollMusic extends AsyncTask<String,Integer,String> {
         @Override
         protected String doInBackground(String... args) {
             int height = scrollpage.getChildAt(0).getMeasuredHeight() - scrollpage.getHeight();
+            Log.d("autoscroll","height="+height);
             while(isautoscrolling){
                 long starttime = System.currentTimeMillis();
                 newPos = (int) (scrollpage.getScrollY()+autoscroll_pixels);
@@ -2364,7 +2277,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         Preferences.savePreferences();
     }
 
-    public void tryKillMetronome() {
+    private void tryKillMetronome() {
         if (metronomeonoff.equals("on")) {
             metronomeonoff="off";
             if (metroTask!=null) {
@@ -2375,7 +2288,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         metronomeButton.setAlpha(0.3f);
     }
 
-    public void tryKillPads() {
+    private void tryKillPads() {
         // Hard stop all pads - leaving
         killfadeout1 = true;
         killfadeout2 = true;
@@ -2403,7 +2316,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
     }
 
-    public void killPad1 (View view) {
+    private void killPad1 (View view) {
         // This releases mPlayer1 if it has finished fading out only
         if (mPlayer1!=null) {
             if (mPlayer1.isPlaying()) {
@@ -2420,20 +2333,16 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         if (mtask_fadeout_music1!=null) {
             mtask_fadeout_music1 = null;
         }
-        if (mPlayer1==null & mPlayer2==null) {
+        if (mPlayer2 == null) {
             popupPad_startstopbutton.setText(getResources().getString(R.string.start));
-            if (currentapiVersion>=16) {
-                popupPad_startstopbutton.setBackground(getResources().getDrawable(R.drawable.blue_button));
-            } else {
-                popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
-            }
+            popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
             popupPad_startstopbutton.setEnabled(true);
             popupPad_stoporstart="stop";
             padson = false;
         }
     }
 
-    public void killPad2 (View view) {
+    private void killPad2 (View view) {
         // This releases mPlayer2 if it has finished fading out only
         if (mPlayer2!=null) {
             if (mPlayer2.isPlaying()) {
@@ -2450,20 +2359,16 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         if (mtask_fadeout_music2!=null) {
             mtask_fadeout_music2 = null;
         }
-        if (mPlayer1==null & mPlayer2==null) {
+        if (mPlayer1 == null) {
             popupPad_startstopbutton.setText(getResources().getString(R.string.start));
-            if (currentapiVersion>=16) {
-                popupPad_startstopbutton.setBackground(getResources().getDrawable(R.drawable.blue_button));
-            } else {
-                popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
-            }
+            popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
             popupPad_startstopbutton.setEnabled(true);
             popupPad_stoporstart="stop";
             padson = false;
         }
     }
 
-    public void togglePlayPads (View view) throws InterruptedException, IllegalStateException, IOException {
+    private void togglePlayPads (View view) throws IllegalStateException {
         // This is called when the user clicks on the padButton start/stop button.
         // If padson is true, user has tried to stop playing (fade out)
         // If padson is false, user has tried to start playing (only after any previous fade out)
@@ -2588,94 +2493,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
     }
 
-    public void playPads(View view) throws IllegalStateException, InterruptedException {
+    private void playPads(View view) throws IllegalStateException {
         pad_filename = "null";
 
         // Determine the key of the song and therefore which auto pad track to use
-        switch (mKey) {
-            case "A":
-                pad_filename = "a";
-                break;
-            case "A#":
-            case "Bb":
-                pad_filename = "asharp";
-                break;
-            case "B":
-                pad_filename = "b";
-                break;
-            case "C":
-                pad_filename = "c";
-                break;
-            case "C#":
-            case "Db":
-                pad_filename = "csharp";
-                break;
-            case "D":
-                pad_filename = "d";
-                break;
-            case "D#":
-            case "Eb":
-                pad_filename = "dsharp";
-                break;
-            case "E":
-                pad_filename = "e";
-                break;
-            case "F":
-                pad_filename = "f";
-                break;
-            case "F#":
-            case "Gb":
-                pad_filename = "fsharp";
-                break;
-            case "G":
-                pad_filename = "g";
-                break;
-            case "G#":
-            case "Ab":
-                pad_filename = "gsharp";
-                break;
-            case "Am":
-                pad_filename = "am";
-                break;
-            case "A#m":
-            case "Bbm":
-                pad_filename = "asharpm";
-                break;
-            case "Bm":
-                pad_filename = "bm";
-                break;
-            case "Cm":
-                pad_filename = "cm";
-                break;
-            case "C#m":
-            case "Dbm":
-                pad_filename = "csharpm";
-                break;
-            case "Dm":
-                pad_filename = "dm";
-                break;
-            case "D#m":
-            case "Ebm":
-                pad_filename = "dsharpm";
-                break;
-            case "Em":
-                pad_filename = "em";
-                break;
-            case "Fm":
-                pad_filename = "fm";
-                break;
-            case "F#m":
-            case "Gbm":
-                pad_filename = "fsharpm";
-                break;
-            case "Gm":
-                pad_filename = "gm";
-                break;
-            case "G#m":
-            case "Abm":
-                pad_filename = "gsharpm";
-                break;
-        }
+        ProcessSong.processKey();
 
         int path = -1;
 
@@ -2731,7 +2553,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     break;
             }
             mPlayer1.start();
-            Log.d("mPlayer", "starting player 1 - both mPlayers were live - killed them");
 
             // Now kill the 2nd player if still needed
             if (mPlayer2!=null && mPlayer2.isPlaying()) {
@@ -2747,7 +2568,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             fadeout2 = false;
             killfadeout2 = false;
 
-        } else if (mPlayer1!=null && mPlayer2==null) {
+        } else if (mPlayer1 != null) {
             // We need to fade out mPlayer1 and start playing mPlayer2
             if (mPlayer1.isPlaying()) {
                 // We need to fade this out over the next 8 seconds, then load and start mPlayer2
@@ -2772,9 +2593,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 }
                 mPlayer2.start();
                 padson = true;
-                Log.d("mPlayer", "starting player 2 - mPlayer 1 was already live");
             }
-        } else if (mPlayer2!=null && mPlayer1==null) {
+        } else if (mPlayer2 != null) {
             if (mPlayer2.isPlaying()) {
                 // We need to fade this out over the next 8 seconds, then load and start mPlayer1
                 // After 10seconds, release mPlayer1
@@ -2798,10 +2618,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 }
                 mPlayer1.start();
                 padson = true;
-                Log.d("mPlayer", "starting player 1 - mPlayer 2 was already live");
 
             }
-        } else if (mPlayer1==null && mPlayer2==null){
+        } else {
             // Nothing was playing already, so start mPlayer 1
             mPlayer1 = MediaPlayer.create(FullscreenActivity.this,path);
             mPlayer1.setLooping(true);
@@ -2818,29 +2637,27 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             }
             mPlayer1.start();
             padson = true;
-            Log.d("mPlayer", "starting player 1 - no mPlayers were live");
         }
     }
 
-    public void fadeOutBackgroundMusic1(){
+    private void fadeOutBackgroundMusic1(){
         killfadeout1 = false;
         isfading1 = true;
         mtask_fadeout_music1 = (FadeOutMusic1) new FadeOutMusic1().execute();
     }
 
-    public void fadeOutBackgroundMusic2(){
+    private void fadeOutBackgroundMusic2(){
         killfadeout2 = false;
         isfading2 = true;
         mtask_fadeout_music2 = (FadeOutMusic2) new FadeOutMusic2().execute();
     }
 
-    public class FadeOutMusic1 extends AsyncTask<String,Integer,String> {
+    private class FadeOutMusic1 extends AsyncTask<String,Integer,String> {
         @Override
         protected String doInBackground(String... args) {
             float level1 = padvol;
             int i = 1;
             isfading1 = true;
-            Log.d("fade", "fading mPlayer 1");
             while(i<50 && !orientationchanged && !killfadeout1){
                 i++;
                 level1=level1*0.9f;
@@ -2857,7 +2674,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     }
                 } catch (Exception e) {
                     // Problem!
-                    Log.d("d","Struggling to set volume of mPlayer1");
+                    e.printStackTrace();
                 }
 
                 // Pause before next fade increment
@@ -2888,11 +2705,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 popupPad_stoporstart="stop";
                 popupPad_startstopbutton.setEnabled(true);
                 popupPad_startstopbutton.setText(getResources().getString(R.string.start));
-                if (currentapiVersion>=16) {
-                    popupPad_startstopbutton.setBackground(getResources().getDrawable(R.drawable.blue_button));
-                } else {
-                    popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
-                }
+                popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
                 popupPad_stoporstart="stop";
                 padson = false;
             }
@@ -2913,11 +2726,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 popupPad_stoporstart="stop";
                 popupPad_startstopbutton.setEnabled(true);
                 popupPad_startstopbutton.setText(getResources().getString(R.string.start));
-                if (currentapiVersion>=16) {
-                    popupPad_startstopbutton.setBackground(getResources().getDrawable(R.drawable.blue_button));
-                } else {
-                    popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
-                }
+                popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
                 popupPad_stoporstart="stop";
                 padson = false;
 
@@ -2925,13 +2734,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
     }
 
-    public class FadeOutMusic2 extends AsyncTask<String,Integer,String> {
+    private class FadeOutMusic2 extends AsyncTask<String,Integer,String> {
         @Override
         protected String doInBackground(String... args) {
             float level2 = padvol;
             int i = 1;
             isfading2 = true;
-            Log.d("fade", "fading mPlayer 2");
             while(i<50 && !orientationchanged && !killfadeout2){
                 i++;
                 level2=level2*0.9f;
@@ -2948,7 +2756,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     }
                 } catch (Exception e) {
                     // Problem!
-                    Log.d("d","Struggling to set volume of mPlayer2");
+                    e.printStackTrace();
                 }
 
                 // Pause before next fade increment
@@ -3012,80 +2820,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         // This calls the edit song sticky notes dialogue
         // Once user clicks OK, the notes are saved to the song.
 
-        // Close the menus
-        mDrawerLayout.closeDrawer(expListViewOption);
-        mDrawerLayout.closeDrawer(expListViewOption);
-
-        // Hide the note if it is currently showing
-        mySticky.setVisibility(View.INVISIBLE);
-        scrollstickyholder.setVisibility(View.GONE);
-
-        // Return the alpha to the note button
-        stickynotes.setAlpha(0.3f);
-
-        // Set up the Alert Dialogue
-        // This bit gives the user a prompt to create a new song
-        AlertDialog.Builder editmynotes = new AlertDialog.Builder(this);
-
-        editmynotes.setTitle(getResources().getString(R.string.options_song_stickynotes));
-        // Set an EditText view to get user input
-        final EditText editnotesinput = new EditText(this);
-        editnotesinput.setText(mNotes);
-        editnotesinput.setTextColor(0xff000000);
-        editnotesinput.setBackgroundColor(0xfffcf0ad);
-        editmynotes.setView(editnotesinput);
-        editnotesinput.requestFocus();
-        InputMethodManager mgr = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        mgr.showSoftInput(editnotesinput, InputMethodManager.SHOW_IMPLICIT);
-
-        editmynotes.setPositiveButton(getResources().getString(R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Get the text for the new sticky note
-                        mNotes = editnotesinput.getText().toString();
-
-                        // Save the file
-                        EditSong.prepareSongXML();
-                        try {
-                            EditSong.justSaveSongXML();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        // Open the sticky back up if it isn't empty
-                        if (mNotes==null) {
-                            mNotes="";
-                        }
-                        if (mNotes.length()>0) {
-                            stickynotes.setVisibility(View.VISIBLE);
-                            stickynotes.setAlpha(0.5f);
-                            mySticky.setText(mNotes);
-                            mySticky.setVisibility(View.VISIBLE);
-                            scrollstickyholder.setVisibility(View.VISIBLE);
-                            scrollstickyholder.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_bottom));
-                        } else {
-                            stickynotes.setVisibility(View.INVISIBLE);
-                            stickynotes.setAlpha(0.3f);
-                            mySticky.setText(mNotes);
-                            mySticky.setVisibility(View.INVISIBLE);
-                            scrollstickyholder.setVisibility(View.GONE);
-                        }
-                    }
-                });
-
-        editmynotes.setNegativeButton(getResources().getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Cancelled.
-                    }
-                });
-
-        editmynotes.show();
+        whattodo = "editnotes";
+        DialogFragment newFragment = PopUpEditStickyFragment.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
     }
 
-    public void hidepagebuttons() {
+    private void hidepagebuttons() {
         delaycheckscroll.removeCallbacks(checkScrollPosition);
         wasshowing_pdfselectpage = pdf_selectpage.getVisibility();
         wasshowing_stickynotes = stickynotes.getVisibility();
@@ -3096,7 +2836,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         uparrow.setVisibility(View.GONE);
     }
 
-    public void showpagebuttons() {
+    private void showpagebuttons() {
         findViewById(R.id.bottombar).setVisibility(View.VISIBLE);
         // if PDF and page count is bigger than 1, show pdf button
         if (isPDF && pdfPageCount>1 && togglePageButtons.equals("Y")) {
@@ -3125,7 +2865,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         //padButton.setVisibility(View.VISIBLE);
     }
 
-    public void prepareSongMenu() {
+    private void prepareSongMenu() {
         // Initialise Songs menu
         listDataHeaderSong = new ArrayList<>();
         listDataChildSong = new HashMap<>();
@@ -3254,36 +2994,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     // Set the appropriate song filename
                     songfilename = listDataChildSong.get(listDataHeaderSong.get(groupPosition)).get(childPosition);
 
-                    if (setView.equals("Y") && setSize > 0) {
-
-                        // Get the name of the song to look for (including folders if need be)
-                        SetActions.getSongForSetWork();
-
-                        if (mySet.contains(whatsongforsetwork)) {
-                            // Song is in current set.  Find the song position in the current set and load it (and next/prev)
-                            // The first song has an index of 6 (the 7th item as the rest are menu items)
-
-                            previousSongInSet = "";
-                            nextSongInSet = "";
-                            showCurrentSet(view);
-
-                            // Get the song index
-                            SetActions.indexSongInSet();
-
-                            // Redraw the actionbar set arrows
-                            invalidateOptionsMenu();
-
-                        } else {
-                            // Song isn't in the set, so just show the song
-                            // Switch off the set view (buttons in action bar)
-                            setView = "N";
-                        }
-                    } else {
-                        // User wasn't in set view, or the set was empty
-                        // Switch off the set view (buttons in action bar)
-                        setView = "N";
-                    }
-
                     // Set the swipe direction to right to left
                     whichDirection = "R2L";
 
@@ -3305,7 +3015,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         });
     }
 
-    public void prepareOptionMenu() {
+    private void prepareOptionMenu() {
         // preparing list data
         listDataHeaderOption = new ArrayList<>();
         listDataChildOption = new HashMap<>();
@@ -3362,7 +3072,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         options_options.add(getResources().getString(R.string.options_options_theme));
         options_options.add(getResources().getString(R.string.songbuttons_toggle));
         options_options.add(getResources().getString(R.string.autoscroll_time));
-        options_options.add(getResources().getString(R.string.metronomepadsettings));
+        options_options.add(getResources().getString(R.string.options_options_autostartscroll));
         options_options.add(getResources().getString(R.string.options_options_scale));
         options_options.add(getResources().getString(R.string.options_options_fontsize));
         options_options.add(getResources().getString(R.string.options_options_chordformat));
@@ -3494,7 +3204,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                         // First up check for set options clicks
                         if (childPosition==0) {
-                             // Load a set
+                            // Load a set
                             whattodo = "loadset";
                             DialogFragment newFragment = PopUpListSetsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
@@ -3729,7 +3439,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 whattodo = "editsong";
                                 DialogFragment newFragment = PopUpEditSongFragment.newInstance();
                                 newFragment.show(getFragmentManager(), "dialog");
-                                //openEditSong();
                             }
 
                         } else if (childPosition==7) {
@@ -3740,273 +3449,72 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
-                                editNotes(view);
+                                whattodo = "editnotes";
+                                DialogFragment newFragment = PopUpEditStickyFragment.newInstance();
+                                newFragment.show(getFragmentManager(), "dialog");
                             }
 
                         } else if (childPosition==8) {
                             // Rename
-                            // This bit gives the user a prompt to change the song name
-                            // First set the browsing directory back to the main one
-                            dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Songs");
-                            currentFolder = whichSongFolder;
-                            newFolder = whichSongFolder;
-                            whichSongFolder = mainfoldername;
-                            ListSongFiles.listSongs();
-
-                            Log.d("rename","whichSongFolder="+whichSongFolder);
-                            Log.d("rename","currentFolder="+currentFolder);
-                            // This bit gives the user a prompt to create a new song
-                            AlertDialog.Builder alert = new AlertDialog.Builder(
-                                    FullscreenActivity.this);
-
-                            m_titleView.setText(getResources().getString(R.string.renametitle));
-                            titleLayout.addView(m_titleView);
-                            alert.setCustomTitle(titleLayout);
-
-                            // Get current folder
-                            int numfolders = mSongFolderNames.length;
-                            //By default the folder is set to the main one
-                            int folderposition = 0;
-                            for (int z=0;z<numfolders;z++) {
-                                if (mSongFolderNames[z].equals(currentFolder)) {
-                                    // Set this as the folder
-                                    folderposition = z;
-                                    mSongFolderNames[z] = currentFolder;
-                                }
-                            }
-
-                            alert.setSingleChoiceItems(mSongFolderNames, folderposition,  new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    newFolder = mSongFolderNames[arg1];
-                                }
-                            });
-
-                            // Set an EditText view to get user input
-                            final LinearLayout renameSong = new LinearLayout(FullscreenActivity.this);
-                            renameSong.setOrientation(LinearLayout.VERTICAL);
-                            final TextView blurb = new TextView(FullscreenActivity.this);
-                            blurb.setText("\n"+ getResources().getString(R.string.rename));
-                            blurb.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Medium);
-                            blurb.setTextColor(lyricsChordsColor);
-                            final EditText inputnewsongname = new EditText(FullscreenActivity.this);
-                            inputnewsongname.setText(songfilename);
-                            renameSong.addView(blurb);
-                            renameSong.addView(inputnewsongname);
-                            alert.setView(renameSong);
-
-                            alert.setPositiveButton(getResources().getString(R.string.ok),
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog,
-                                                            int whichButton) {
-                                            String newSongTitle = inputnewsongname.getText().toString();
-                                            // Rename
-                                            String tempCurrentFolder = currentFolder + "/";
-                                            String tempNewFolder = newFolder + "/";
-
-                                            if (newFolder.equals(mainfoldername) || newFolder.equals("("+mainfoldername+")")) {
-                                                tempNewFolder = "";
-                                                whichSongFolder = "";
-                                                newFolder = "";
-                                            } else {
-                                                whichSongFolder = newFolder;
-                                            }
-
-                                            if (currentFolder.equals(mainfoldername)) {
-                                                tempCurrentFolder = "";
-                                            }
-
-                                            whichSongFolder = newFolder;
-
-                                            if (isPDF && (!newSongTitle.contains(".pdf") || !newSongTitle.contains(".PDF"))) {
-                                                newSongTitle = newSongTitle + ".pdf";
-                                            }
-
-                                            File from = new File(dir + "/" + tempCurrentFolder + songfilename);
-                                            File to = new File(dir + "/" + tempNewFolder + newSongTitle);
-                                            if (from.renameTo(to)) {
-                                                Log.d("file","success");
-                                            }
-                                            songfilename = newSongTitle;
-
-                                            // Load the songs
-                                            ListSongFiles.listSongs();
-
-                                            // Get the song indexes
-                                            ListSongFiles.getCurrentSongIndex();
-                                            prepareSongMenu();
-                                            redrawTheLyricsTable(null);
-                                            mDrawerLayout.closeDrawer(expListViewOption);
-                                        }
-                                    });
-
-                            alert.setNegativeButton(
-                                    getResources().getString(R.string.cancel),
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog,
-                                                            int whichButton) {
-                                            // Cancelled.
-                                        }
-                                    });
-
-                            alert.show();
-
+                            whattodo = "renamesong";
+                            DialogFragment newFragment = PopUpSongRenameFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
 
                         } else if (childPosition==9) {
                             // Delete
                             // Give the user an are you sure prompt!
-                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    switch (which) {
-                                        case DialogInterface.BUTTON_POSITIVE:
-                                            // Yes button clicked
-                                            // Exit set mode
-                                            setView = "N";
-                                            String setFileLocation = dir + "/" + songfilename;
-                                            File filetoremove = new File(setFileLocation);
-                                            // Don't allow the user to delete Love Everlasting
-                                            // This is to stop there being no song to show after
-                                            // deleting the currently viewed one
-                                            if (songfilename.equals("Love everlasting")) {
-                                                myToastMessage = "\"Love everlasting\" "
-                                                        + getResources().getString(
-                                                        R.string.shouldnotbedeleted);
-                                                ShowToast.showToast(FullscreenActivity.this);
-                                            } else {
-                                                boolean deleted = filetoremove.delete();
-                                                if (deleted) {
-                                                    myToastMessage = "\""
-                                                            + FullscreenActivity.songfilename
-                                                            + "\" "
-                                                            + getResources()
-                                                            .getString(
-                                                                    R.string.songhasbeendeleted);
-                                                } else {
-                                                    myToastMessage = getResources().getString(
-                                                            R.string.deleteerror_start)
-                                                            + " \""
-                                                            + FullscreenActivity.songfilename
-                                                            + "\" "
-                                                            + getResources()
-                                                            .getString(
-                                                                    R.string.deleteerror_end_song);
-                                                }
-                                                ShowToast.showToast(FullscreenActivity.this);
-                                            }
-
-                                            // Now save the preferences
-                                            Preferences.savePreferences();
-                                            redrawTheLyricsTable(null);
-
-                                            // Need to reload the song list
-                                            // Match the song folder
-                                            ListSongFiles.listSongs();
-                                            prepareSongMenu();
-                                            mDrawerLayout.closeDrawer(expListViewOption);
-                                            mDrawerLayout.openDrawer(expListViewSong);
-                                            // 1000ms second after opening the Songs menu, close it
-                                            Handler songMenuFlickClosed = new Handler();
-                                            songMenuFlickClosed.postDelayed(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    mDrawerLayout.closeDrawer(expListViewSong);
-                                                }
-                                            }, 1000); // 1000ms delay
-
-                                            break;
-
-                                        case DialogInterface.BUTTON_NEGATIVE:
-                                            // No button clicked
-                                            break;
-                                    }
-                                }
-                            };
-
-                            if (myLyrics.equals("ERROR!")) {
-                                // Tell the user they can't edit a song with an error!
-                                myToastMessage = songdoesntexist;
-                                ShowToast.showToast(FullscreenActivity.this);
-                            } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(
-                                        FullscreenActivity.this);
-                                builder.setMessage(
-                                        getResources().getString(R.string.areyousure))
-                                        .setPositiveButton(
-                                                getResources().getString(R.string.yes),
-                                                dialogClickListener)
-                                        .setNegativeButton(
-                                                getResources().getString(R.string.no),
-                                                dialogClickListener).show();
-                            }
+                            whattodo = "deletesong";
+                            String message = getResources().getString(R.string.options_song_delete) +
+                                    " \"" + FullscreenActivity.songfilename + "\"?";
+                            DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+                            newFragment.show(getFragmentManager(), "dialog");
 
                         } else if (childPosition==10) {
                             // New
-                            try {
-                                promptNew();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
+                            whattodo = "createsong";
+                            DialogFragment newFragment = PopUpSongCreateFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
 
                         } else if (childPosition==11) {
                             // Export
                             // The current song is the songfile
                             // Believe it or not, it works!!!!!
-                            if (myLyrics.equals("ERROR!")) {
-                                // Tell the user they can't edit a song with an error!
-                                myToastMessage = songdoesntexist;
-                                ShowToast.showToast(FullscreenActivity.this);
-                            } else {
-                                // Run the script that generates the email text which has the set details in it.
-                                try {
-                                    ExportPreparer.songParser();
-                                } catch (IOException | XmlPullParserException e) {
-                                    e.printStackTrace();
-                               }
 
-                                Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                                emailIntent.setType("text/plain");
-                                emailIntent.putExtra(Intent.EXTRA_TITLE, songfilename);
-                                emailIntent.putExtra(Intent.EXTRA_SUBJECT, songfilename);
-                                emailIntent.putExtra(Intent.EXTRA_TEXT, emailtext);
-                                emailtext = "";
-                                File file;
-                                if (whichSongFolder.equals("") || whichSongFolder.equals(mainfoldername) ||
-                                        whichSongFolder.equals("("+mainfoldername+")")) {
-                                    file = new File(dir+"/" + songfilename);
-                                } else {
-                                    file = new File(dir+"/" + whichSongFolder + "/" +songfilename);
-                                }
-                                Uri uri = Uri.fromFile(file);
-                                emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                                startActivity(Intent.createChooser(emailIntent,exportcurrentsong));
-
-
+                            // Run the script that generates the email text which has the set details in it.
+                            try {
+                                ExportPreparer.songParser();
+                            } catch (IOException | XmlPullParserException e) {
+                                e.printStackTrace();
                             }
+
+                            Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                            emailIntent.setType("text/plain");
+                            emailIntent.putExtra(Intent.EXTRA_TITLE, FullscreenActivity.songfilename);
+                            emailIntent.putExtra(Intent.EXTRA_SUBJECT, FullscreenActivity.songfilename);
+                            emailIntent.putExtra(Intent.EXTRA_TEXT, FullscreenActivity.emailtext);
+                            FullscreenActivity.emailtext = "";
+                            File file;
+                            if (FullscreenActivity.whichSongFolder.equals("") ||
+                                    FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) ||
+                                    FullscreenActivity.whichSongFolder.equals("("+FullscreenActivity.mainfoldername+")")) {
+                                file = new File(FullscreenActivity.dir+"/" + FullscreenActivity.songfilename);
+                            } else {
+                                file = new File(FullscreenActivity.dir+"/" + FullscreenActivity.whichSongFolder + "/" +FullscreenActivity.songfilename);
+                            }
+                            Uri uri = Uri.fromFile(file);
+                            emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                            startActivity(Intent.createChooser(emailIntent,FullscreenActivity.exportcurrentsong));
+
+
 
                         } else if (childPosition==12) {
                             // Create a new song folder
-                            try {
-                                promptNewFolder();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            promptNewFolder();
 
                         } else if (childPosition==13) {
                             // Edit the name of a song folder
-                            try {
-                                editFolderName();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            editFolderName();
                         }
-
-
-
 
                     } else if (chosenMenu.equals(getResources().getString(R.string.options_options))) {
                         // Now check for option options clicks
@@ -4125,15 +3633,20 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
 
                         } else if (childPosition==3) {
-                            // Open Metronome and Pad settings page
-                            Intent intent = new Intent();
-                            intent.setClass(FullscreenActivity.this, MetronomePadSettings.class);
-                            tryKillPads();
-                            tryKillMetronome();
-                            startActivity(intent);
-                            finish();
-
-
+                            // Toggle autostart autoscroll on/off
+                            if (autostartautoscroll) {
+                                autostartautoscroll = false;
+                                Preferences.savePreferences();
+                                myToastMessage = getResources().getString(R.string.options_options_autostartscroll) + " - " + getResources().getString(R.string.off);
+                                ShowToast.showToast(FullscreenActivity.this);
+                                redrawTheLyricsTable(view);
+                            } else {
+                                autostartautoscroll = true;
+                                Preferences.savePreferences();
+                                myToastMessage = getResources().getString(R.string.options_options_autostartscroll) + " - " + getResources().getString(R.string.on);
+                                ShowToast.showToast(FullscreenActivity.this);
+                                redrawTheLyricsTable(view);
+                            }
 
                         } else if (childPosition==4) {
                             // Toggle autoscale
@@ -4417,22 +3930,17 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                         } else if (childPosition==14) {
                             // Change fonts
-                            Intent intent2 = new Intent();
-                            intent2.setClass(FullscreenActivity.this, ChangeFonts.class);
-                            tryKillPads();
-                            tryKillMetronome();
-                            startActivity(intent2);
-                            finish();
+                            whattodo = "changefonts";
+                            DialogFragment newFragment = PopUpFontsFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
 
 
                         } else if (childPosition==15) {
                             // Assign foot pedal
-                            Intent intent = new Intent();
-                            intent.setClass(FullscreenActivity.this, setPageTurns.class);
-                            tryKillPads();
-                            tryKillMetronome();
-                            startActivity(intent);
-                            finish();
+                            FullscreenActivity.whattodo = "footpedal";
+                            DialogFragment newFragment = PopUpPedalsFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
+
 
                         } else if (childPosition==16) {
                             // Help (online)
@@ -4536,7 +4044,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                                 tempLanguage = "ru";
                                             } else if (arg1==12) { //zh
                                                 tempLanguage = "zh";
-                                             }
+                                            }
                                         }
                                     });
 
@@ -4598,14 +4106,14 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         });
     }
 
-    public void gesture1() {
+    private void gesture1() {
         mDrawerLayout.openDrawer(expListViewSong);
         mDrawerLayout.openDrawer(expListViewOption);
         wasscrolling = false;
         delayactionBarHide.removeCallbacks(hideActionBarRunnable);
     }
 
-    public void gesture3() {
+    private void gesture3() {
         if (whichSongFolder.equals(mainfoldername)) {
             whatsongforsetwork = "$**_" + songfilename + "_**$";
         } else {
@@ -4643,7 +4151,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }, 1000); // 1000ms delay
     }
 
-    public void gesture4() {
+    private void gesture4() {
         redrawTheLyricsTable(main_page);
     }
 
@@ -4741,16 +4249,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
                                 // Yes button clicked
-                                try {
-                                    killPad1(padButton);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                try {
-                                    killPad2(padButton);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+                                killPad1(padButton);
+                                killPad2(padButton);
                                 finish();
                                 break;
 
@@ -4774,7 +4274,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             if (tempswipeSet.equals("disable")) {
                 return false; // Currently disabled swiping to let screen finish drawing.
             }
-            tempswipeSet = "disable"; // Temporarily suspend swiping or next song			
+            tempswipeSet = "disable"; // Temporarily suspend swiping or next song
             // Set a runnable to re-enable swipe
             Handler allowswipe = new Handler();
             allowswipe.postDelayed(new Runnable() {
@@ -4782,7 +4282,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 public void run() {
                     tempswipeSet = "enable"; // enable swipe after short delay
                 }
-            }, 1800); // 1800ms delay
+            }, delayswipe_time); // 1800ms delay
 
             // If we are viewing a set, move to the next song.
             // If we are not in a set, check for the next song. If it doesn't exist, do nothing
@@ -4806,7 +4306,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     scrollpage.smoothScrollBy(0,(int) (0.9 * metrics.heightPixels));
 
                     // Set a runnable to check the scroll position after 1 second
-                    delaycheckscroll.postDelayed(checkScrollPosition, 1000);
+                    delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
                     return false;
                 }
             }
@@ -4856,7 +4356,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             if (tempswipeSet.equals("disable")) {
                 return false; // Currently disabled swiping to let screen finish drawing.
             }
-            tempswipeSet = "disable"; // Temporarily suspend swiping or next song			
+            tempswipeSet = "disable"; // Temporarily suspend swiping or next song
             // Set a runnable to re-enable swipe
             Handler allowswipe = new Handler();
             allowswipe.postDelayed(new Runnable() {
@@ -4864,7 +4364,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 public void run() {
                     tempswipeSet = "enable"; // enable swipe after short delay
                 }
-            }, 1800); // 1800ms delay
+            }, delayswipe_time); // 1800ms delay
 
             // If we are viewing a set, move to the next song.
             // If we are not in a set, check for the next song. If it doesn't exist, do nothing
@@ -4888,7 +4388,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     scrollpage.smoothScrollBy(0, (int) (-0.9 * metrics.heightPixels));
 
                     // Set a runnable to check the scroll position after 1 second
-                    delaycheckscroll.postDelayed(checkScrollPosition, 1000);
+                    delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
                     return false;
                 }
             }
@@ -4937,7 +4437,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             if (tempswipeSet.equals("disable")) {
                 return false; // Currently disabled swiping to let screen finish drawing.
             }
-            tempswipeSet = "disable"; // Temporarily suspend swiping or next song			
+            tempswipeSet = "disable"; // Temporarily suspend swiping or next song
             // Set a runnable to re-enable swipe
             Handler allowswipe = new Handler();
             allowswipe.postDelayed(new Runnable() {
@@ -4945,7 +4445,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 public void run() {
                     tempswipeSet = "enable"; // enable swipe after short delay
                 }
-            }, 1800); // 1800ms delay
+            }, delayswipe_time); // 1800ms delay
 
             //main_page.requestFocus();
             // Scroll the screen up
@@ -4953,13 +4453,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             getWindowManager().getDefaultDisplay().getMetrics(metrics);
             scrollpage.smoothScrollBy(0, (int) (-0.9 * metrics.heightPixels));
             // Set a runnable to check the scroll position after 1 second
-            delaycheckscroll.postDelayed(checkScrollPosition, 1000);
+            delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
 
         } else if (keyCode == pageturner_DOWN) {
             if (tempswipeSet.equals("disable")) {
                 return false; // Currently disabled swiping to let screen finish drawing.
             }
-            tempswipeSet = "disable"; // Temporarily suspend swiping or next song			
+            tempswipeSet = "disable"; // Temporarily suspend swiping or next song
             // Set a runnable to re-enable swipe
             Handler allowswipe = new Handler();
             allowswipe.postDelayed(new Runnable() {
@@ -4967,14 +4467,14 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 public void run() {
                     tempswipeSet = "enable"; // enable swipe after short delay
                 }
-            }, 1800); // 1800ms delay
+            }, delayswipe_time); // 1800ms delay
 
             // Scroll the screen up
             DisplayMetrics metrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(metrics);
             scrollpage.smoothScrollBy(0, (int) (0.9 * metrics.heightPixels));
             // Set a runnable to check the scroll position after 1 second
-            delaycheckscroll.postDelayed(checkScrollPosition, 1000);
+            delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
 
         } else if (keyCode == pageturner_PAD) {
             popupPad_startstop(padButton);
@@ -4984,10 +4484,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 // user now wants to stop
                 popupAutoscroll_stoporstart = "stop";
                 popupAutoscroll_startstopbutton.setText(getResources().getString(R.string.start));
+                autoscrollactivated = false;
             } else {
                 // user now wants to start
                 popupAutoscroll_stoporstart = "start";
                 popupAutoscroll_startstopbutton.setText(getResources().getString(R.string.stop));
+                autoscrollactivated = true;
             }
             autoScroll(autoscrollButton);
 
@@ -5104,7 +4606,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         scrollpage.smoothScrollBy(0, (int) (-0.9 * metrics.heightPixels));
         // Set a runnable to check the scroll position after 1 second
-        delaycheckscroll.postDelayed(checkScrollPosition, 1000);
+        delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
         toggleActionBar();
     }
 
@@ -5117,13 +4619,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         scrollpage.smoothScrollBy(0, (int) (+0.9 * metrics.heightPixels));
         // Set a runnable to check the scroll position after 1 second
-        delaycheckscroll.postDelayed(checkScrollPosition, 1000);
+        delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
         toggleActionBar();
     }
 
-    public void fixSetActionButtons(Menu menu) {
-        // If the saved preference to showSet is Y and the size of the current set isn't 0 
-        // display the appropriate arrows in the title bar. 
+    private void fixSetActionButtons(Menu menu) {
+        // If the saved preference to showSet is Y and the size of the current set isn't 0
+        // display the appropriate arrows in the title bar.
         // If not, hide them (since they are there by default.
         // Use the stored mySet variable to make a new list for the Options menu.
         // Add a delimiter between songs
@@ -5152,7 +4654,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     public boolean onCreateOptionsMenu(Menu menu) {
         ActionBar actionBar = getActionBar();
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-
         if (currentapiVersion>=14 && actionBar != null) {
             actionBar.setHomeButtonEnabled(false); // disable the button
             actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
@@ -5208,16 +4709,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     @Override
     public void onPause() {
-        try {
-            killPad1(padButton);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        try {
-            killPad2(padButton);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        killPad1(padButton);
+        killPad2(padButton);
         super.onPause();
     }
 
@@ -5241,7 +4734,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     }
 
     // This bit draws the lyrics stored in the variable to the page.
-    public void showLyrics(View view) throws IOException, IllegalStateException, InterruptedException {
+    private void showLyrics(View view) throws IOException, IllegalStateException {
 
         chordimageshere.removeAllViews();
         allchords = "";
@@ -5257,19 +4750,20 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             tempfontsize = mFontSize;
         }
 
+
         // Get the autoscroll info initialised
         if (mtask_autoscroll_music!=null) {
             mtask_autoscroll_music.cancel(true);
-            //mtask_autoscroll_music = null;
         }
-        autoscrollonoff = "off";
         autoscrollispaused = false;
-        isautoscrolling = false;
         scrollpage.smoothScrollTo(0, 0);
+
+        autoscrollonoff = "off";
+        isautoscrolling = false;
+
         if (popupAutoscroll.getVisibility()!=View.VISIBLE) {
             autoscrollButton.setAlpha(0.3f);
         }
-
 
         if (!alreadyloaded && !isPDF) {
             // Load up the song
@@ -5287,6 +4781,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 needtorefreshsongmenu = false;
             }
 
+            // Find out if the song is in the current set
+            if (SetActions.isSongInSet()) {
+                invalidateOptionsMenu();
+            }
+
             // If there isn't a key specified, make sure the padButton is turned off
             // User will be prompted to specify a key if they press the button again
             if ((mKey.isEmpty() || mKey.equals("")) && padson) {
@@ -5299,11 +4798,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         whichtofadeout = 1;
                         fadeout1 = true;
                         popupPad_startstopbutton.setText(getResources().getString(R.string.wait));
-                        if (currentapiVersion>=16) {
-                            popupPad_startstopbutton.setBackground(getResources().getDrawable(R.drawable.grey_button));
-                        } else {
-                            popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.grey_button));
-                        }
+                        popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.grey_button));
                         popupPad_startstopbutton.setEnabled(false);
                         isfading1=false;
                         fadeOutBackgroundMusic1();
@@ -5314,11 +4809,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         whichtofadeout = 2;
                         fadeout2=true;
                         popupPad_startstopbutton.setText(getResources().getString(R.string.wait));
-                        if (currentapiVersion>=16) {
-                            popupPad_startstopbutton.setBackground(getResources().getDrawable(R.drawable.grey_button));
-                        } else {
-                            popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.grey_button));
-                        }
+                        popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.grey_button));
                         popupPad_startstopbutton.setEnabled(false);
                         isfading2=false;
                         fadeOutBackgroundMusic2();
@@ -5334,11 +4825,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 padson=false;
                 popupPad_startstopbutton.setEnabled(true);
                 popupPad_startstopbutton.setText(getResources().getString(R.string.start));
-                if (currentapiVersion>=16) {
-                    popupPad_startstopbutton.setBackground(getResources().getDrawable(R.drawable.blue_button));
-                } else {
-                    popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
-                }
+                popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
                 if (popupPad.getVisibility()!=View.VISIBLE) {
                     padButton.setAlpha(0.3f);
                 }
@@ -5347,111 +4834,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             }
 
             // Set song key
-            int keyindex=0;
-            switch (mKey) {
-                case "A":
-                    keyindex = 1;
-                    break;
-                case "A#":
-                    keyindex = 2;
-                    break;
-                case "Bb":
-                    keyindex = 3;
-                    break;
-                case "B":
-                    keyindex = 4;
-                    break;
-                case "C":
-                    keyindex = 5;
-                    break;
-                case "C#":
-                    keyindex = 6;
-                    break;
-                case "Db":
-                    keyindex = 7;
-                    break;
-                case "D":
-                    keyindex = 8;
-                    break;
-                case "D#":
-                    keyindex = 9;
-                    break;
-                case "Eb":
-                    keyindex = 10;
-                    break;
-                case "E":
-                    keyindex = 11;
-                    break;
-                case "F":
-                    keyindex = 12;
-                    break;
-                case "F#":
-                    keyindex = 13;
-                    break;
-                case "Gb":
-                    keyindex = 14;
-                    break;
-                case "G":
-                    keyindex = 15;
-                    break;
-                case "G#":
-                    keyindex = 16;
-                    break;
-                case "Ab":
-                    keyindex = 17;
-                    break;
-                case "Am":
-                    keyindex = 18;
-                    break;
-                case "A#b":
-                    keyindex = 19;
-                    break;
-                case "Bbm":
-                    keyindex = 20;
-                    break;
-                case "Bm":
-                    keyindex = 21;
-                    break;
-                case "Cm":
-                    keyindex = 22;
-                    break;
-                case "C#m":
-                    keyindex = 23;
-                    break;
-                case "Dbm":
-                    keyindex = 24;
-                    break;
-                case "Dm":
-                    keyindex = 25;
-                    break;
-                case "D#m":
-                    keyindex = 26;
-                    break;
-                case "Ebm":
-                    keyindex = 27;
-                    break;
-                case "Em":
-                    keyindex = 28;
-                    break;
-                case "Fm":
-                    keyindex = 29;
-                    break;
-                case "F#m":
-                    keyindex = 30;
-                    break;
-                case "Gbm":
-                    keyindex = 31;
-                    break;
-                case "Gm":
-                    keyindex = 32;
-                    break;
-                case "G#m":
-                    keyindex = 33;
-                    break;
-                case "Abm":
-                    keyindex = 34;
-                    break;
-            }
+            ProcessSong.processKey();
             popupPad_key.setSelection(keyindex);
 
             // Set the pad volume and pan
@@ -5473,76 +4856,18 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     break;
             }
 
-
             // Set the autoscroll values
             popupAutoscroll_delay.setProgress(autoScrollDelay);
-            popupAutoscroll_delay_text.setText(autoScrollDelay+" s");
+            popupAutoscroll_delay_text.setText(autoScrollDelay + " s");
             popupAutoscroll_duration.setText(mDuration.replaceAll("[\\D]", ""));
 
-
             // Set time signature
-            int timesigindex = 0;
-            switch (mTimeSig) {
-                case "2/4":
-                    timesigindex = 1;
-                    beats = 2;
-                    noteValue = 4;
-                    break;
-                case "3/4":
-                    timesigindex = 2;
-                    beats = 3;
-                    noteValue = 4;
-                    break;
-                case "3/8":
-                    timesigindex = 3;
-                    beats = 3;
-                    noteValue = 8;
-                    break;
-                case "4/4":
-                    timesigindex = 4;
-                    beats = 4;
-                    noteValue = 4;
-                    break;
-                case "5/4":
-                    timesigindex = 5;
-                    beats = 5;
-                    noteValue = 4;
-                    break;
-                case "5/8":
-                    timesigindex = 6;
-                    beats = 5;
-                    noteValue = 8;
-                    break;
-                case "6/4":
-                    timesigindex = 7;
-                    beats = 6;
-                    noteValue = 4;
-                    break;
-                case "6/8":
-                    timesigindex = 8;
-                    beats = 6;
-                    noteValue = 8;
-                    break;
-                case "7/4":
-                    timesigindex = 9;
-                    beats = 7;
-                    noteValue = 4;
-                    break;
-                case "7/8":
-                    timesigindex = 10;
-                    beats = 7;
-                    noteValue = 8;
-                    break;
-            }
+            timesigindex = 0;
+            ProcessSong.processTimeSig();
             popupMetronome_timesig.setSelection(timesigindex);
-            int temposlider;
-            try {
-                temposlider = Integer.parseInt(mTempo.replaceAll("[\\D]",""));
-            } catch(NumberFormatException nfe) {
-                System.out.println("Could not parse " + nfe);
-                temposlider = 39;
-            }
-            temposlider = temposlider - 39;
+
+            // Process tempo
+            ProcessSong.processTempo();
 
             if (temposlider<1) {
                 temposlider=0;
@@ -5579,7 +4904,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         promptTimeSig();
                     }
                 }
-
             } else if (temposlider==0) {
                 if (metroTask!=null) {
                     metroTask.cancel(true);
@@ -5589,7 +4913,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     }
                 }
             }
-
 
             // If metronome is playing and tempo and timesig are good,
             // Stop the original metronome and start a new one
@@ -5607,20 +4930,17 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 metroTask.execute();
             }
 
-
-
             // Stop restarting the pads if changing portrait/landscape
+            // Only play if this isn't called by an orientation change
             if (!orientationchanged && padson) {
                 playPads(view);
-                Log.d("showLyrics","playPads command");
             }
-
 
             // Now, reset the orientation.
             orientationchanged = false;
 
-
-            // If song and sticky note exists, show it
+            // Make the page buttons visible for a song
+            // The whole group can still be hidden if the user specified it
             if (!isPDF && togglePageButtons.equals("Y")) {
                 stickynotes.setVisibility(View.VISIBLE);
                 autoscrollButton.setVisibility(View.VISIBLE);
@@ -5637,9 +4957,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 chordButton.setVisibility(View.INVISIBLE);
             }
 
-
-            // Refresh the song list
-            expListViewSong.setSelection(currentSongIndex);
+            // Refresh the song list to the current song.
+            findSongInFolder();
 
             // Strip out the lyrics, author, etc.
             LyricsDisplay.parseLyrics();
@@ -5672,6 +4991,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             downarrow.setVisibility(View.INVISIBLE);
         }
 
+        // If the song is a PDF, turn stuff off that won't work
         if (isPDF) {
             hidepopupAutoscroll();
             hidepopupMetronome();
@@ -5706,12 +5026,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             popupPad_startstopbutton.setEnabled(true);
             popupMetronome_startstopbutton.setEnabled(true);
             popupAutoscroll_startstopbutton.setEnabled(true);
-            if (currentapiVersion>=16) {
-                popupPad_startstopbutton.setBackground(getResources().getDrawable(R.drawable.blue_button));
-            } else {
-                popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
-            }
-
+            popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
         }
 
         if (isPDF && padson) {
@@ -5749,12 +5064,15 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             }
         }
 
+        // Now, decide which column we are writing to
         if (columnTest == 1) {
             scrollpage = scrollpage_onecol;
         } else if (columnTest == 2) {
             scrollpage = scrollpage_twocol;
         } else if (columnTest == 3) {
             scrollpage = scrollpage_threecol;
+        } else {
+            scrollpage = scrollpage_onecol;
         }
 
         if (isPDF) {
@@ -5763,150 +5081,132 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             columnTest = 99;
         }
 
+        // Set the default view!  Set the theme colours
+        SetUpColours.colours();
 
+        main_page.setBackgroundColor(lyricsBackgroundColor);
+        scrollpage.setBackgroundColor(lyricsBackgroundColor);
 
-        // Set up a listener to wait for the tables to draw - one for each of the tables!
-
-        ViewTreeObserver vto = scrollpage.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                scrollpage.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                if (needtoredraw && columnTest != 0) {
+        // Set up a listener to wait for the tables to draw
+            ViewTreeObserver vto = scrollpage.getViewTreeObserver();
+            vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    scrollpage.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                     int width;
                     int height;
                     pageWidth = main_page.getMeasuredWidth();
                     pageHeight = main_page.getMeasuredHeight();
 
-                    if (columnTest==1) {
-                        width  = lyricstable_onecolview.getMeasuredWidth() + 8;
-                        height = lyricstable_onecolview.getMeasuredHeight() + 8;
-                        scaleX = pageWidth/width;
-                        scaleY = pageHeight/height;
-                        if (toggleYScale.equals("Y")) {
-                            if (scaleX>scaleY) {
-                                scaleX=scaleY;
-                            } else if (toggleYScale.equals("W")) {
-                                scaleY=scaleX;
-                            }
+                    // Get the scale for 1 col view
+                    width = lyricstable_onecolview.getMeasuredWidth() + 8;
+                    height = lyricstable_onecolview.getMeasuredHeight() + 8;
+                    scaleX = pageWidth / width;
+                    scaleY = pageHeight / height;
+                    if (toggleYScale.equals("Y")) {
+                        if (scaleX > scaleY) {
+                            scaleX = scaleY;
+                        } else if (toggleYScale.equals("W")) {
+                            scaleY = scaleX;
                         }
-                        onecolfontsize = scaleX;
-
-                    } else if (columnTest==2) {
-                        width  = lyricstable_twocolview.getMeasuredWidth() + lyricstable2_twocolview.getMeasuredWidth() + 16;
-                        height = lyricstable_twocolview.getMeasuredHeight() + 8;
-                        int height2 = lyricstable2_twocolview.getMeasuredHeight() + 8;
-                        if (height2>height) {
-                            height=height2;
-                        }
-                        scaleX = pageWidth/width;
-                        scaleY = pageHeight/height;
-                        if (toggleYScale.equals("Y")) {
-                            if (scaleX>scaleY) {
-                                scaleX=scaleY;
-                            } else if (toggleYScale.equals("W")) {
-                                scaleY=scaleX;
-                            }
-                        }
-                        twocolfontsize = scaleX;
-
-                    } else {
-                        width  = lyricstable_threecolview.getMeasuredWidth() + lyricstable2_threecolview.getMeasuredWidth() + lyricstable3_threecolview.getMeasuredWidth() + 36;
-                        height = lyricstable_threecolview.getMeasuredHeight() + 12;
-                        int height2 = lyricstable2_threecolview.getMeasuredHeight() + 12;
-                        int height3 = lyricstable3_threecolview.getMeasuredHeight() + 12;
-                        if (height2>height) {
-                            height = height2;
-                        }
-                        if (height3>height) {
-                            height = height3;
-                        }
-                        scaleX = pageWidth/width;
-                        scaleY = pageHeight/height;
-                        if (toggleYScale.equals("Y")) {
-                            if (scaleX>scaleY) {
-                                scaleX=scaleY;
-                            } else if (toggleYScale.equals("W")){
-                                scaleY=scaleX;
-                            }
-                        }
-                        threecolfontsize = scaleX;
                     }
-                    if (columnTest==1 && toggleYScale.equals("Y")) {
-                        needtoredraw = true;
-                        columnTest=2;
-                    } else if (columnTest==1 && !toggleYScale.equals("Y")) {
-                        columnTest=1;
-                        needtoredraw = false;
-                        tempfontsize = mainfontsize*onecolfontsize - 0.4f;
-                        tempsectionsize = sectionfontsize*onecolfontsize - 0.4f;
-                        scrollpage = scrollpage_onecol;
+                    onecolfontsize = scaleX;
 
-                        try {
-                            showLyrics(main_page);
-                        } catch (IOException | IllegalStateException | InterruptedException e) {
-                            e.printStackTrace();
+                    // Get the scale for 2 col view
+                    width = lyricstable_twocolview.getMeasuredWidth() + lyricstable2_twocolview.getMeasuredWidth() + 16;
+                    height = lyricstable_twocolview.getMeasuredHeight() + 8;
+                    int height2 = lyricstable2_twocolview.getMeasuredHeight() + 8;
+                    if (height2 > height) {
+                        height = height2;
+                    }
+                    scaleX = pageWidth / width;
+                    scaleY = pageHeight / height;
+                    if (toggleYScale.equals("Y")) {
+                        if (scaleX > scaleY) {
+                            scaleX = pageHeight / height;
+                        } else if (toggleYScale.equals("W")) {
+                            scaleY = pageWidth / width;
                         }
-                    } else if (columnTest==2) {
-                        needtoredraw = true;
-                        columnTest=3;
-                    } else if (columnTest==3) {
-                        needtoredraw = true;
-                        columnTest=0;
-                    } else if (columnTest==0){
-                        needtoredraw = true;
                     }
-                    doanimate = false;
-                    try {
-                        showLyrics(main_page);
-                    } catch (IOException | IllegalStateException | InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                } else if (needtoredraw && columnTest==0) {
+                    twocolfontsize = scaleX;
 
-                    if (threecolfontsize>onecolfontsize && threecolfontsize>twocolfontsize) {
+                    // Get the scale for 3 col view
+                    width = lyricstable_threecolview.getMeasuredWidth() + lyricstable2_threecolview.getMeasuredWidth() + lyricstable3_threecolview.getMeasuredWidth() + 36;
+                    height = lyricstable_threecolview.getMeasuredHeight() + 12;
+                    height2 = lyricstable2_threecolview.getMeasuredHeight() + 12;
+                    int height3 = lyricstable3_threecolview.getMeasuredHeight() + 12;
+                    if (height2 > height) {
+                        height = height2;
+                    }
+                    if (height3 > height) {
+                        height = height3;
+                    }
+                    scaleX = pageWidth / width;
+                    scaleY = pageHeight / height;
+                    if (toggleYScale.equals("Y")) {
+                        if (scaleX > scaleY) {
+                            scaleX = pageHeight / height;
+                        } else if (toggleYScale.equals("W")) {
+                            scaleY = pageWidth / width;
+                        }
+                    }
+                    threecolfontsize = scaleX;
+
+                    // Which view ia the best one then?  Save the font scale size
+                    if (threecolfontsize > onecolfontsize && threecolfontsize > twocolfontsize) {
                         // 3 columns is best
-                        tempfontsize = mainfontsize*threecolfontsize - 0.4f;
-                        tempsectionsize = sectionfontsize*threecolfontsize - 0.4f;
+                        tempfontsize = mainfontsize * threecolfontsize - 0.6f;
+                        tempsectionsize = sectionfontsize * threecolfontsize - 0.6f;
                         scrollpage = scrollpage_threecol;
                         columnTest = 3;
-                    } else if (twocolfontsize>onecolfontsize && twocolfontsize>threecolfontsize) {
-                        tempfontsize = mainfontsize*twocolfontsize - 0.4f;
-                        tempsectionsize = sectionfontsize*twocolfontsize - 0.4f;
+                    } else if (twocolfontsize > onecolfontsize && twocolfontsize > threecolfontsize) {
+                        tempfontsize = mainfontsize * twocolfontsize - 0.6f;
+                        tempsectionsize = sectionfontsize * twocolfontsize - 0.6f;
                         scrollpage = scrollpage_twocol;
                         columnTest = 2;
                     } else {
-                        tempfontsize = mainfontsize*onecolfontsize - 0.4f;
-                        tempsectionsize = sectionfontsize*onecolfontsize - 0.4f;
+                        tempfontsize = mainfontsize * onecolfontsize - 0.6f;
+                        tempsectionsize = sectionfontsize * onecolfontsize - 0.6f;
                         scrollpage = scrollpage_onecol;
                         columnTest = 1;
                     }
 
-                    // Make sure font sizes don't exceed the max
-                    if (mMaxFontSize<20) {
+                    // Make sure font sizes don't exceed the max specified by the user
+                    if (mMaxFontSize < 20) {
                         mMaxFontSize = 20;
                     }
-                    if (tempfontsize>mMaxFontSize) {
-                        tempfontsize=mMaxFontSize;
+                    if (tempfontsize > mMaxFontSize) {
+                        tempfontsize = mMaxFontSize;
                     }
-                    if (tempsectionsize>mMaxFontSize) {
-                        tempsectionsize=mMaxFontSize;
+                    if (tempsectionsize > mMaxFontSize) {
+                        tempsectionsize = mMaxFontSize * 0.7f;
+                    }
+
+                    if (toggleYScale.equals("N")) {
+                        tempfontsize = mFontSize;
+                        tempsectionsize = mFontSize * 0.7f;
+                        columnTest = 1;
                     }
 
                     needtoredraw = false;
-                    try {
-                        showLyrics(main_page);
-                    } catch (IOException | IllegalStateException | InterruptedException e) {
-                        e.printStackTrace();
-                     }
+                    if (!isPDF) {
+                        writeSongToPage();
+                    } else {
+                        columnTest = 99;
+                        scrollpage = scrollpage_pdf;
+                    }
 
-                } else {
                     tempfontsize = mainfontsize;
                     tempsectionsize = sectionfontsize;
-                    songTitleHolder.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fadeout));
-                    songLoadingProgressBar.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fadeout));
+                    songTitleHolder.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadeout));
+                    songLoadingProgressBar.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadeout));
                     songLoadingProgressBar.setVisibility(View.INVISIBLE);
                     songTitleHolder.setVisibility(View.INVISIBLE);
+                    if (whichDirection.equals("L2R")) {
+                        scrollpage.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
+                    } else {
+                        scrollpage.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
+                    }
                     if (columnTest == 1) {
                         scrollpage_onecol.setVisibility(View.VISIBLE);
                         scrollpage_pdf.setVisibility(View.GONE);
@@ -5915,41 +5215,49 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     } else if (columnTest == 2) {
                         scrollpage_twocol.setVisibility(View.VISIBLE);
                         scrollpage_pdf.setVisibility(View.GONE);
-                        //pdf_selectpage.setVisibility(View.GONE);
                         scrollpage_onecol.setVisibility(View.GONE);
                         scrollpage_threecol.setVisibility(View.GONE);
                     } else if (columnTest == 3) {
                         scrollpage_threecol.setVisibility(View.VISIBLE);
                         scrollpage_pdf.setVisibility(View.GONE);
-                        //pdf_selectpage.setVisibility(View.GONE);
                         scrollpage_onecol.setVisibility(View.GONE);
                         scrollpage_twocol.setVisibility(View.GONE);
                     } else {
                         scrollpage_pdf.setVisibility(View.VISIBLE);
-                        //pdf_selectpage.setVisibility(View.VISIBLE);
                         scrollpage_onecol.setVisibility(View.GONE);
                         scrollpage_twocol.setVisibility(View.GONE);
                         scrollpage_threecol.setVisibility(View.GONE);
-
                     }
-                    if (whichDirection.equals("L2R")) {
-                        scrollpage.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_left));
-                    } else {
-                        scrollpage.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_right));
+
+                    // Restart the autoscroll if it was already on and the song has a duration
+                    // Get the autoscroll info initialised
+                    if (autostartautoscroll && autoscrollactivated) {
+                        autoscrollispaused = true;
+                        popupAutoscroll_stoporstart = "start";
+                        popupAutoscroll_startstopbutton.setText(getResources().getString(R.string.stop));
+                        autoscrollButton.setAlpha(0.5f);
+                        autoscrollonoff = "off";
+                        autoscrollispaused = false;
+                        isautoscrolling = true;
+                        pauseautoscroll = false;
+
+                        if (mtask_autoscroll_music!=null) {
+                            mtask_autoscroll_music.cancel(true);
+                            mtask_autoscroll_music=null;
+                        }
+                        delayautoscroll.removeCallbacks(autoScrollRunnable);
+                        autoScrollDelay = popupAutoscroll_delay.getProgress();
+                        mDuration = popupAutoscroll_duration.getText().toString();
+                        getAutoScrollValues();
+                        autoScroll(autoscrollButton);
                     }
                 }
-            }
-        });
+            });
 
-        // Set the default view!  Set the theme colours
-        SetUpColours.colours();
-
-        findViewById(R.id.main_page).setBackgroundColor(lyricsBackgroundColor);
-        scrollpage.setBackgroundColor(lyricsBackgroundColor);
 
         if (!isPDF) {
             // Set a variable to decide if capo chords should be shown
-            showCapo = mCapoPrint.equals("true") && !capoDisplay.equals("native") &&
+            showCapo = !capoDisplay.equals("native") &&
                     (mCapo.equals("1") || mCapo.equals("2") || mCapo.equals("3") ||
                             mCapo.equals("4") || mCapo.equals("5") || mCapo.equals("6") ||
                             mCapo.equals("7") || mCapo.equals("8") || mCapo.equals("9") ||
@@ -5958,734 +5266,10 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             // Decide on the font being used
             SetTypeFace.setTypeface();
 
-            // Go through each section with start and end lines
-            // Split points are dealt with inline
-            int startatline = 0;
-            int endatline = numrowstowrite;
 
-            lyricstable_onecolview.removeAllViews();
-            lyricstable_twocolview.removeAllViews();
-            lyricstable2_twocolview.removeAllViews();
-            lyricstable_threecolview.removeAllViews();
-            lyricstable2_threecolview.removeAllViews();
-            lyricstable3_threecolview.removeAllViews();
-            chordimageshere.removeAllViews();
-
-            // This bit gets repeated for each colyricstable_onecolviewlumn (in 1, 2 and three col view)
-
-            for (int x = startatline; x < endatline; x++) {
-                int n = 0;
-                if (x == 0) {
-                    n = 0;
-                } else {
-                    n = x - 1;
-                }
-                // This is to avoid errors when there isn't a line+1
-                int m = x + 1;
-                if (x + 1 >= endatline) {
-                    m = x;
-                }
-
-                //TableLayout thistable = lyricstable_onecolview;
-                thistable = lyricstable_onecolview;
-                // Specify the correct table to be used in drawing the stuff below....
-                if (columnTest==1 || mScreenOrientation==Configuration.ORIENTATION_PORTRAIT || !botherwithcolumns) {
-                    thistable = lyricstable_onecolview;
-                }
-                if (columnTest==2 && x<splitpoint) {
-                    thistable = lyricstable_twocolview;
-                }
-                if (columnTest==2 && x>=splitpoint) {
-                    thistable = lyricstable2_twocolview;
-                }
-                if (columnTest==3 && x<thirdsplitpoint) {
-                    thistable = lyricstable_threecolview;
-                }
-                if (columnTest==3 && x>=thirdsplitpoint && x<twothirdsplitpoint) {
-                    thistable = lyricstable2_threecolview;
-                }
-                if (columnTest==3 && x>=twothirdsplitpoint) {
-                    thistable = lyricstable3_threecolview;
-                }
-
-                int lyrics_useThisBGColor = lyricsTextColor;
-                int chords_useThisBGColor;
-                int capo_useThisBGColor;
-                float chords_useThisTextSize = tempfontsize;
-                float lyrics_useThisTextSize = tempfontsize;
-                lyrics_useThisFont = lyricsfont;
-
-                if (x == 0) {
-                    // This is the first line.
-                    // If in a set view and option is on to show at top, show the title of the next song
-                    // If we are showing the last song already, say this instead
-                    if (setView.equals("Y") && showNextInSet.equals("top")) {
-                        // Get next title in set
-                        String next_title = getResources().getString(R.string.lastsong);
-                        if (setSize >= 2 && indexSongInSet >= 0 && indexSongInSet < (setSize - 1)) {
-                            next_title = getResources().getString(R.string.next) + ": " + mSetList[indexSongInSet+1];
-                        }
-                        RelativeLayout nextInSetBox = new RelativeLayout(this);
-                        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        nextInSetBox.setLayoutParams(lp);
-                        nextInSetBox.setHorizontalGravity(Gravity.RIGHT);
-                        TextView nextSongText = new TextView(this);
-                        nextSongText.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-                        nextSongText.setText(next_title);
-                        nextSongText.setGravity(Gravity.RIGHT);
-                        nextSongText.setTypeface(lyrics_useThisFont);
-                        nextSongText.setBackgroundColor(lyricsCommentColor);
-                        nextInSetBox.setBackgroundColor(lyricsCommentColor);
-                        nextSongText.setTextColor(lyricsTextColor);
-                        nextSongText.setTextSize(tempfontsize*0.7f);
-                        nextInSetBox.addView(nextSongText);
-                        thistable.addView(nextInSetBox);
-                    }
-
-                    // If showCapo is true, add a comment line with the capo information
-                    if (showCapo && showChords.equals("Y")) {
-
-                        RelativeLayout myCapoBox = new RelativeLayout(this);
-                        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        myCapoBox.setLayoutParams(lp);
-                        myCapoBox.setHorizontalGravity(Gravity.LEFT);
-                        TextView tCapoBox = new TextView(this);
-                        String capocustomtext = "";
-                        capocustomtext = capocustomtext + getResources().getString(R.string.edit_song_capo) + " " + mCapo;
-                        if (!mKey.isEmpty() && !mKey.equals("")) {
-                            // set key to transpose
-                            temptranspChords = mKey;
-                            Transpose.capoTranspose();
-                            capocustomtext = capocustomtext + " (" + temptranspChords + ")";
-                        }
-                        tCapoBox.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-                        //tCapoBox.setText(getResources().getString(R.string.edit_song_capo).toString() + " " + mCapo);
-                        tCapoBox.setText(capocustomtext);
-                        tCapoBox.setGravity(Gravity.LEFT);
-                        tCapoBox.setTypeface(lyrics_useThisFont);
-                        tCapoBox.setBackgroundColor(lyricsBackgroundColor);
-                        tCapoBox.setBackgroundColor(lyricsBackgroundColor);
-                        tCapoBox.setTextColor(lyricsCapoColor);
-                        tCapoBox.setTextSize(tempfontsize*0.7f);
-                        myCapoBox.addView(tCapoBox);
-                        thistable.addView(myCapoBox);
-                    }
-                }
-
-                // Decide if this line is a chord line followed by a lyric line.
-                // If so, we need to split it up so the spacing is right.
-                if (whatisthisline[x].equals("chords") && (whatisthisline[m].equals("lyrics") || whatisthisline[m].equals("comment"))) {
-                    // Right, we need to create a new table inside this row to hold 2 rows - chords and lyrics
-                    TableLayout chords_n_lyrics = new TableLayout(this);
-
-                   // Prepare this view
-                    //testTable.addView(chords_n_lyrics);
-                    thistable.addView(chords_n_lyrics);
-
-                    // Ok, so we have a chord line first. Let's break it into an array each 1 character big
-                    char[] chars = (myParsedLyrics[x]).toCharArray();
-                    // Make it into an array
-                    String[] chord_chars = new String[chars.length + 1]; // Added 1 to check 2nd last char (last is empty)
-                    chord_chars[chord_chars.length - 1] = " "; // Set last one as empty
-                    // chordnum 0 is the start of the line
-                    int chordnum = 1;
-
-                    // Go through the chord_chars array and count the chords
-                    for (int i = 0; i < chord_chars.length - 2; i++) {
-                        chord_chars[i] = String.valueOf(chars[i]);
-                        chord_chars[i + 1] = String.valueOf(chars[i + 1]);
-                        if (!chord_chars[i].equals(" ") && i == 0) {
-                            // First char is a chord, so set the start chordnum to 1
-                            chordnum = 1;
-
-                        } else if (chord_chars[i].equals(" ") && !chord_chars[i + 1].equals(" ") && i != 0) {
-                            // Found another chord (space then non-space) not at the start.
-                            chordnum += 1;
-                        }
-                    }
-
-                    // Set up the chord_chunk array size based on the number of chords
-                    // Also, set up the character position of each chord
-                    int[] chord_pos = new int[chordnum + 2];
-                    chord_pos[0] = 0;
-                    chord_pos[chordnum] = maxcharsinline;
-                    int z = 1;
-                    // Go back through the array and identify the start positions
-                    for (int i = 1; i < chord_chars.length - 1; i++) {
-                        if (!chord_chars[i].equals(" ") && i == 0) {
-                            // First char is a chord, so set the start chord_pos to 0
-                            chord_pos[z] = i;
-                            z++;
-
-                        } else if (chord_chars[i].equals(" ") && !chord_chars[i + 1].equals(" ") && i != 0) {
-                            // Found another chord (space then non-space). Chord pos is i+1
-                            chord_pos[z] = i + 1;
-                            z++;
-                        }
-                    }
-
-                    TableRow capo_chords_row = new TableRow(this);
-                    TableRow chords_row = new TableRow(this);
-                    capo_chords_row.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-                    chords_row.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-                    TableRow.LayoutParams lp = new TableRow.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                    chords_row.setLayoutParams(lp);
-                    capo_chords_row.setLayoutParams(lp);
-
-                    switch (whatisthisblock[x]) {
-                        case "chorus":
-                            chords_useThisBGColor = lyricsChorusColor;
-                            capo_useThisBGColor = lyricsChorusColor;
-                            break;
-                        case "verse":
-                            chords_useThisBGColor = lyricsVerseColor;
-                            capo_useThisBGColor = lyricsVerseColor;
-                            break;
-                        case "prechorus":
-                            chords_useThisBGColor = lyricsPreChorusColor;
-                            capo_useThisBGColor = lyricsPreChorusColor;
-                            break;
-                        case "bridge":
-                            chords_useThisBGColor = lyricsBridgeColor;
-                            capo_useThisBGColor = lyricsBridgeColor;
-                            break;
-                        case "tag":
-                            chords_useThisBGColor = lyricsTagColor;
-                            capo_useThisBGColor = lyricsTagColor;
-                            break;
-                        case "comment":
-                            chords_useThisBGColor = lyricsCommentColor;
-                            capo_useThisBGColor = lyricsCommentColor;
-                            break;
-                        case "custom":
-                            chords_useThisBGColor = lyricsCustomColor;
-                            capo_useThisBGColor = lyricsCustomColor;
-                            break;
-                        default:
-                            chords_useThisBGColor = lyricsVerseColor;
-                            capo_useThisBGColor = lyricsVerseColor;
-                            break;
-                    }
-
-                    for (int i = 0; i < chordnum; i++) {
-                        // create a new TextView for each chord
-                        TextView t = new TextView(this);
-                        TextView tcapo = new TextView(this);
-
-                        String chord;
-                        tempChords = "";
-                        temptranspChords = "";
-
-                        if (i == 0) {
-                            chord = myParsedLyrics[x].substring(0, chord_pos[1]);
-                            tempChords = chord;
-                            if (showCapo) {
-                                temptranspChords = chord;
-                                Transpose.capoTranspose();
-                                allchordscapo = allchordscapo + " " + temptranspChords;
-                            }
-
-                        } else {
-                            chord = myParsedLyrics[x].substring(chord_pos[i], chord_pos[i + 1]);
-                            tempChords = chord;
-                            if (showCapo) {
-                                temptranspChords = chord;
-                                Transpose.capoTranspose();
-                                allchordscapo = allchordscapo + " " + temptranspChords;
-                            }
-                        }
-
-                        // Set the appropriate formats for the chord line
-
-                        t.setText(chord);
-                        tcapo.setText(temptranspChords);
-                        t.setTypeface(chordsfont);
-                        tcapo.setTypeface(chordsfont);
-                        t.setTextSize(chords_useThisTextSize);
-                        tcapo.setTextSize(chords_useThisTextSize);
-                        t.setBackgroundColor(chords_useThisBGColor);
-                        tcapo.setBackgroundColor(capo_useThisBGColor);
-                        t.setTextColor(lyricsChordsColor);
-                        tcapo.setTextColor(lyricsCapoColor);
-
-                        if (showCapo && showChords.equals("Y")) {
-                            capo_chords_row.addView(tcapo);
-                        }
-                        chords_row.addView(t);
-                    }
-
-                    chords_row.setBackgroundColor(chords_useThisBGColor);
-                    capo_chords_row.setBackgroundColor(capo_useThisBGColor);
-
-                    // What should we be showing?
-                    // First option is that there are no capo chords, but the user wants chords
-                    // This displays the normal chords only
-                    if (showChords.equals("Y") && !showCapo) {
-                        chords_n_lyrics.addView(chords_row, 0);
-                        // Add this line of chords to the combined string
-                        allchords = allchords + " " + myParsedLyrics[x];
-
-                    } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("both")) {
-                        chords_n_lyrics.addView(chords_row, 0);
-                        chords_n_lyrics.addView(capo_chords_row, 1);
-                        // Add this line of chords to the combined string
-                        allchords = allchords + " " + myParsedLyrics[x];
-                        allchords = allchords + " " + allchordscapo;
-
-                    } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("capoonly")) {
-                        chords_n_lyrics.addView(capo_chords_row, 0);
-                        // Add this line of chords to the combined string
-                        allchords = allchords + " " + allchordscapo;
-                    }
-					
-					
-                    TableRow lyrics_row = new TableRow(this);
-
-                    // Now we have the positions, split the words into substrings and write each 
-                    // substring as a textview within the row
-                    // If this is a multiline verse, we need to sort the next verse lines as well
-                    for (int i = 0; i < chordnum; i++) {
-                        // create a new TextView
-                        TextView t2 = new TextView(this);
-
-                        t2.setTextColor(lyricsTextColor);
-                        t2.setTypeface(lyrics_useThisFont);
-                        t2.setTextSize(lyrics_useThisTextSize);
-                        int temp_useThisBGColor;
-
-                        switch (whatisthisblock[x + 1]) {
-                            case "chorus":
-                                temp_useThisBGColor = lyricsChorusColor;
-                                break;
-                            case "verse":
-                                temp_useThisBGColor = lyricsVerseColor;
-                                break;
-                            case "prechorus":
-                                temp_useThisBGColor = lyricsPreChorusColor;
-                                break;
-                            case "bridge":
-                                temp_useThisBGColor = lyricsBridgeColor;
-                                break;
-                            case "tag":
-                                temp_useThisBGColor = lyricsTagColor;
-                                break;
-                            case "comment":
-                                temp_useThisBGColor = lyricsCommentColor;
-                                t2.setTypeface(commentfont);
-                                t2.setTextSize(tempsectionsize);
-                                break;
-                            case "custom":
-                                temp_useThisBGColor = lyricsCustomColor;
-                                break;
-                            default:
-                                temp_useThisBGColor = lyricsVerseColor;
-                                break;
-                        }
-
-                        t2.setBackgroundColor(temp_useThisBGColor);
-
-                        String  temp_lyricstext;
-                        if (i == 0) {
-                            temp_lyricstext = myParsedLyrics[x + 1].substring(0,chord_pos[1]);
-                            // Multilines
-                            if (myParsedLyrics[x+1].indexOf("1")==0) {
-                                if ((x+2)<numrowstowrite) {
-                                    if (myParsedLyrics[x+2].indexOf("2")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 2].substring(0,chord_pos[1]);
-                                    }
-                                }
-                                if ((x+3)<numrowstowrite) {
-                                    if (myParsedLyrics[x+3].indexOf("3")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 3].substring(0,chord_pos[1]);
-                                    }
-                                }
-                                if ((x+4)<numrowstowrite) {
-                                    if (myParsedLyrics[x+4].indexOf("4")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 4].substring(0,chord_pos[1]);
-                                    }
-                                }
-                                if ((x+5)<numrowstowrite) {
-                                    if (myParsedLyrics[x+5].indexOf("5")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 5].substring(0,chord_pos[1]);
-                                    }
-                                }
-                                if ((x+6)<numrowstowrite) {
-                                    if (myParsedLyrics[x+6].indexOf("6")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 6].substring(0,chord_pos[1]);
-                                    }
-                                }
-                                if ((x+7)<numrowstowrite) {
-                                    if (myParsedLyrics[x+7].indexOf("7")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 7].substring(0,chord_pos[1]);
-                                    }
-                                }
-                                if ((x+8)<numrowstowrite) {
-                                    if (myParsedLyrics[x+8].indexOf("8")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 8].substring(0,chord_pos[1]);
-                                    }
-                                }
-                                if ((x+9)<numrowstowrite) {
-                                    if (myParsedLyrics[x+9].indexOf("9")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 9].substring(0,chord_pos[1]);
-                                    }
-                                }
-                            }
-                        } else {
-                            temp_lyricstext = myParsedLyrics[x + 1].substring(chord_pos[i], chord_pos[i+1]);
-                            // Multilines
-                            if (myParsedLyrics[x+1].indexOf("1")==0) {
-                                if ((x+2)<numrowstowrite) {
-                                    if (myParsedLyrics[x+2].indexOf("2")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 2].substring(chord_pos[i], chord_pos[i+1]);
-                                    }
-                                }
-                                if ((x+3)<numrowstowrite) {
-                                    if (myParsedLyrics[x+3].indexOf("3")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 3].substring(chord_pos[i], chord_pos[i+1]);
-                                    }
-                                }
-                                if ((x+4)<numrowstowrite) {
-                                    if (myParsedLyrics[x+4].indexOf("4")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 4].substring(chord_pos[i], chord_pos[i+1]);
-                                    }
-                                }
-                                if ((x+5)<numrowstowrite) {
-                                    if (myParsedLyrics[x+5].indexOf("5")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 5].substring(chord_pos[i], chord_pos[i+1]);
-                                    }
-                                }
-                                if ((x+6)<numrowstowrite) {
-                                    if (myParsedLyrics[x+6].indexOf("6")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 6].substring(chord_pos[i], chord_pos[i+1]);
-                                    }
-                                }
-                                if ((x+7)<numrowstowrite) {
-                                    if (myParsedLyrics[x+7].indexOf("7")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 7].substring(chord_pos[i], chord_pos[i+1]);
-                                    }
-                                }
-                                if ((x+8)<numrowstowrite) {
-                                    if (myParsedLyrics[x+8].indexOf("8")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 8].substring(chord_pos[i], chord_pos[i+1]);
-                                    }
-                                }
-                                if ((x+9)<numrowstowrite) {
-                                    if (myParsedLyrics[x+9].indexOf("9")==0) {
-                                        temp_lyricstext = temp_lyricstext + "\n"+ myParsedLyrics[x + 9].substring(chord_pos[i], chord_pos[i+1]);
-                                    }
-                                }
-                            }
-                        }
-
-                        t2.setText(temp_lyricstext);
-                        lyrics_row.addView(t2);
-                    }
-                    //lyrics_useThisBGColor = lyricsVerseColor;
-
-                    // Decide on the lyrics row background colour
-                    switch (whatisthisblock[x + 1]) {
-                        case "chorus":
-                            lyrics_useThisBGColor = lyricsChorusColor;
-                            break;
-                        case "verse":
-                            lyrics_useThisBGColor = lyricsVerseColor;
-                            break;
-                        case "prechorus":
-                            lyrics_useThisBGColor = lyricsPreChorusColor;
-                            break;
-                        case "bridge":
-                            lyrics_useThisBGColor = lyricsBridgeColor;
-                            break;
-                        case "tag":
-                            lyrics_useThisBGColor = lyricsTagColor;
-                            break;
-                        case "comment":
-                            lyrics_useThisBGColor = lyricsCommentColor;
-                            break;
-                        case "custom":
-                            lyrics_useThisBGColor = lyricsCustomColor;
-                            break;
-                        default:
-                            lyrics_useThisBGColor = lyricsVerseColor;
-                            break;
-                    }
-
-                    lyrics_row.setBackgroundColor(lyrics_useThisBGColor);
-                    lyrics_row.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-
-
-                    // What should we be showing?
-                    // First option is that there are no capo chords, but the user wants chords
-                    // This displays the normal chords only
-                    if (showChords.equals("Y") && !showCapo) {
-                        chords_n_lyrics.addView(lyrics_row, 1);
-                    } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("both")) {
-                        chords_n_lyrics.addView(lyrics_row, 2);
-                    } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("capoonly")) {
-                        chords_n_lyrics.addView(lyrics_row, 1);
-                    } else {
-                        chords_n_lyrics.addView(lyrics_row, 0);
-                    }
-
-					
-					
-                } else if (whatisthisline[x].equals("chords") && !whatisthisline[m].equals("lyrics")) {
-                    // No blocking is needed, just add the entire row as one bit
-                    TableLayout basicline = new TableLayout(this);
-                    thistable.addView(basicline);
-                    basicline.setPadding(0, 0, 0, 0);
-
-                    // create a new TableRow
-                    TableRow normalrow = new TableRow(this);
-                    TableRow caponormalrow = new TableRow(this);
-                    TableRow.LayoutParams lp = new TableRow.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-                            android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-                    lp.setMargins(0, 0, 0, 0);
-                    normalrow.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-                    caponormalrow.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-
-
-                    // create a new TextView
-                    TextView tbasic = new TextView(this);
-                    TextView capotbasic = new TextView(this);
-                    tbasic.setLayoutParams(lp);
-                    capotbasic.setLayoutParams(lp);
-                    tbasic.setText(myParsedLyrics[x]);
-                    tbasic.setTextColor(lyricsChordsColor);
-                    tbasic.setTypeface(chordsfont);
-                    tbasic.setTextSize(tempfontsize);
-                    tbasic.setPadding(0, 0, 0, 0);
-
-                    if (showCapo) {
-                        temptranspChords = myParsedLyrics[x];
-                        Transpose.capoTranspose();
-                        allchordscapo = allchordscapo + " " + temptranspChords;
-                        capotbasic.setText(temptranspChords);
-                        capotbasic.setTextColor(lyricsCapoColor);
-                        capotbasic.setTypeface(chordsfont);
-                        capotbasic.setTextSize(tempfontsize);
-                        capotbasic.setPadding(0, 0, 0, 0);
-                    }
-
-                    // If line is a title, need to make the text size smaller
-                    if (whatisthisline[x].equals("versetitle")
-                            || whatisthisline[x].equals("chorustitle")
-                            || whatisthisline[x].equals("prechorustitle")
-                            || whatisthisline[x].equals("bridgetitle")
-                            || whatisthisline[x].equals("tagtitle")
-                            || whatisthisline[x].equals("customtitle")) {
-                        tbasic.setTextColor(lyricsTextColor);
-                        tbasic.setAlpha(0.8f);
-                        tbasic.setTextSize(tempsectionsize);
-                    }
-                    // add the TextView new TableRow
-                    normalrow.addView(tbasic);
-                    if (showCapo && showChords.equals("Y")) {
-                        caponormalrow.addView(capotbasic);
-                    }
-
-                    lyrics_useThisBGColor = lyricsVerseColor;
-                    lyrics_useThisFont = lyricsfont;
-                    lyrics_useThisTextSize = tempfontsize;
-
-                    // Decide on the block of text
-                    switch (whatisthisblock[x]) {
-                        case "verse":
-                            lyrics_useThisBGColor = lyricsVerseColor;
-                            break;
-                        case "prechorus":
-                            lyrics_useThisBGColor = lyricsPreChorusColor;
-                            break;
-                        case "chorus":
-                            lyrics_useThisBGColor = lyricsPreChorusColor;
-                            break;
-                        case "bridge":
-                            lyrics_useThisBGColor = lyricsBridgeColor;
-                            break;
-                        case "tag":
-                            lyrics_useThisBGColor = lyricsTagColor;
-                            break;
-                        case "comment":
-                            lyrics_useThisBGColor = lyricsCommentColor;
-                            lyrics_useThisFont = commentfont;
-                            lyrics_useThisTextSize = tempsectionsize;
-                            break;
-                        case "custom":
-                            lyrics_useThisBGColor = lyricsCustomColor;
-                            break;
-                        default:
-                            lyrics_useThisBGColor = lyricsVerseColor;
-                            break;
-                    }
-
-                    tbasic.setBackgroundColor(lyrics_useThisBGColor);
-                    normalrow.setBackgroundColor(lyrics_useThisBGColor);
-                    capotbasic.setBackgroundColor(lyrics_useThisBGColor);
-                    caponormalrow.setBackgroundColor(lyrics_useThisBGColor);
-                    //tbasic.setTypeface(lyrics_useThisFont);
-                    tbasic.setTextSize(lyrics_useThisTextSize);
-                    //capotbasic.setTypeface(lyrics_useThisFont);
-                    capotbasic.setTextSize(lyrics_useThisTextSize);
-
-                    if (!whatisthisline[x].equals("chords")) {
-                        basicline.addView(normalrow);
-                    } else if (whatisthisline[x].equals("chords") && showChords.equals("Y")) {
-                        if (!showCapo) {
-                            // Add this line of chords to the combined string
-                            allchords = allchords + " " + myParsedLyrics[x];
-                            basicline.addView(normalrow);
-                        } else if (showCapo && capoDisplay.equals("both")) {
-                            // Add this line of chords to the combined string
-                            allchords = allchords + " " + myParsedLyrics[x];
-                            allchords = allchords + " " + allchordscapo;
-                            basicline.addView(normalrow);
-                            basicline.addView(caponormalrow);
-                        } else if (showCapo && capoDisplay.equals("capoonly")) {
-                            // Add this line of chords to the combined string
-                            allchords = allchords + " " + allchordscapo;
-                            basicline.addView(caponormalrow);
-                        }
-                    }
-
-
-                } else if (!whatisthisline[n].equals("chords")||whatisthisline[x].contains("title")) {
-                    // No blocking is needed, just add the entire row as one bit
-                    TableLayout basicline = new TableLayout(this);
-                    thistable.addView(basicline);
-                    basicline.setPadding(0, 0, 0, 0);
-
-                    // create a new TableRow
-                    TableRow normalrow = new TableRow(this);
-                    TableRow.LayoutParams lp = new TableRow.LayoutParams(
-                            android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-                            android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
-                    lp.setMargins(0, 0, 0, 0);
-
-                    // create a new TextView
-                    TextView tbasic = new TextView(this);
-                    tbasic.setLayoutParams(lp);
-                    tbasic.setText(myParsedLyrics[x]);
-                    tbasic.setTextColor(lyricsTextColor);
-                    tbasic.setTypeface(lyricsfont);
-                    tbasic.setTextSize(tempfontsize);
-                    tbasic.setPadding(0, 0, 0, 0);
-
-                    // If line is a title, need to make the text size smaller
-                    if (whatisthisline[x].equals("versetitle")
-                            || whatisthisline[x].equals("chorustitle")
-                            || whatisthisline[x].equals("prechorustitle")
-                            || whatisthisline[x].equals("bridgetitle")
-                            || whatisthisline[x].equals("tagtitle")
-                            || whatisthisline[x].equals("customtitle")) {
-                        tbasic.setTextColor(lyricsTextColor);
-                        tbasic.setAlpha(0.8f);
-                        tbasic.setTextSize(tempfontsize*0.6f);
-                        tbasic.setPaintFlags(tbasic.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-                    }
-                    // add the TextView new TableRow
-                    // As long as it isn't a multiline 2-9 beginning
-                    if (myParsedLyrics[x].indexOf("1")!=0 && myParsedLyrics[x].indexOf("2")!=0 && myParsedLyrics[x].indexOf("3")!=0 &&
-                            myParsedLyrics[x].indexOf("4")!=0 && myParsedLyrics[x].indexOf("5")!=0 &&
-                            myParsedLyrics[x].indexOf("6")!=0 && myParsedLyrics[x].indexOf("7")!=0 &&
-                            myParsedLyrics[x].indexOf("8")!=0 && myParsedLyrics[x].indexOf("9")!=0) {
-                        normalrow.addView(tbasic);
-
-                    } else if (myParsedLyrics[x].indexOf("1")==0) {
-                        // Since we have a multiline section, add the remaining lines needed
-                        String newtext = myParsedLyrics[x];
-                        if ((x+1)<numrowstowrite) {
-                            if (myParsedLyrics[x+1].indexOf("2")==0) {
-                                newtext = newtext + "\n"+ myParsedLyrics[x + 1];
-                            }
-                        }
-                        if ((x+2)<numrowstowrite) {
-                            if (myParsedLyrics[x+2].indexOf("3")==0) {
-                                newtext = newtext + "\n"+ myParsedLyrics[x + 2];
-                            }
-                        }
-                        if ((x+3)<numrowstowrite) {
-                            if (myParsedLyrics[x+3].indexOf("4")==0) {
-                                newtext = newtext + "\n"+ myParsedLyrics[x + 3];
-                            }
-                        }
-                        if ((x+4)<numrowstowrite) {
-                            if (myParsedLyrics[x+4].indexOf("5")==0) {
-                                newtext = newtext + "\n"+ myParsedLyrics[x + 4];
-                            }
-                        }
-                        if ((x+5)<numrowstowrite) {
-                            if (myParsedLyrics[x+5].indexOf("6")==0) {
-                                newtext = newtext + "\n"+ myParsedLyrics[x + 5];
-                            }
-                        }
-                        if ((x+6)<numrowstowrite) {
-                            if (myParsedLyrics[x+6].indexOf("7")==0) {
-                                newtext = newtext + "\n"+ myParsedLyrics[x + 6];
-                            }
-                        }
-                        if ((x+7)<numrowstowrite) {
-                            if (myParsedLyrics[x+7].indexOf("8")==0) {
-                                newtext = newtext + "\n"+ myParsedLyrics[x + 7];
-                            }
-                        }
-                        if ((x+8)<numrowstowrite) {
-                            if (myParsedLyrics[x+8].indexOf("9")==0) {
-                                newtext = newtext + "\n"+ myParsedLyrics[x + 8];
-                            }
-                        }
-                        tbasic.setText(newtext);
-                        normalrow.addView(tbasic);
-
-                    }
-
-                    //lyrics_useThisBGColor = lyricsVerseColor;
-                    //lyrics_useThisTextSize = tempfontsize;
-                    lyrics_useThisFont = lyricsfont;
-
-                    // Decide on the block of text
-                    switch (whatisthisblock[x]) {
-                        case "verse":
-                            lyrics_useThisBGColor = lyricsVerseColor;
-                            break;
-                        case "prechorus":
-                            lyrics_useThisBGColor = lyricsPreChorusColor;
-                            break;
-                        case "chorus":
-                            lyrics_useThisBGColor = lyricsChorusColor;
-                            break;
-                        case "bridge":
-                            lyrics_useThisBGColor = lyricsBridgeColor;
-                            break;
-                        case "tag":
-                            lyrics_useThisBGColor = lyricsTagColor;
-                            break;
-                        case "comment":
-                            lyrics_useThisBGColor = lyricsCommentColor;
-                            lyrics_useThisFont = commentfont;
-                            //lyrics_useThisTextSize = tempsectionsize;
-                            break;
-                        case "custom":
-                            lyrics_useThisBGColor = lyricsCustomColor;
-                            break;
-                        default:
-                            lyrics_useThisBGColor = lyricsVerseColor;
-                            break;
-                    }
-
-                    tbasic.setBackgroundColor(lyrics_useThisBGColor);
-                    if (whatisthisline[x].equals("comment")) {
-                        tbasic.setTextSize(tempsectionsize);
-                    }
-                    normalrow.setBackgroundColor(lyrics_useThisBGColor);
-
-                    if (!whatisthisline[x].equals("chords")) {
-                        basicline.addView(normalrow);
-                    } else if (whatisthisline[x].equals("chords") && showChords.equals("Y")) {
-                        basicline.addView(normalrow);
-                    }
-                }
-            }
+            // Write the song to the tables
+            columnTest = 0;
+            writeSongToPage();
 
             top_songtitle.setText("");
 
@@ -6701,36 +5285,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 }
                 top_songtitle.setText(songfilename + keytext + "\n" + mTempAuthor);
             }
-
-            // If in a set view and option is on to show at bottom, show the title of the next song
-            // If we are showing the last song already, say this instead
-            if (setView.equals("Y") && showNextInSet.equals("bottom")) {
-                // Get next title in set
-                String next_title = getResources().getString(R.string.next) + ": " + getResources().getString(R.string.lastsong);
-                if (setView.equals("Y") && showNextInSet.equals("bottom")) {
-                    // Get next title in set
-                    next_title = getResources().getString(R.string.lastsong);
-                    if (setSize >= 2 && indexSongInSet >= 0 && indexSongInSet < (setSize - 1)) {
-                        next_title = getResources().getString(R.string.next) + ": " + mSetList[indexSongInSet+1];
-                    }
-                    RelativeLayout nextInSetBox = new RelativeLayout(this);
-                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    nextInSetBox.setLayoutParams(lp);
-                    nextInSetBox.setHorizontalGravity(Gravity.RIGHT);
-                    TextView nextSongText = new TextView(this);
-                    nextSongText.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-                    nextSongText.setText(next_title);
-                    nextSongText.setGravity(Gravity.RIGHT);
-                    nextSongText.setTypeface(lyrics_useThisFont);
-                    nextSongText.setBackgroundColor(lyricsCommentColor);
-                    nextInSetBox.setBackgroundColor(lyricsCommentColor);
-                    nextSongText.setTextColor(lyricsTextColor);
-                    nextSongText.setTextSize(tempfontsize*0.7f);
-                    nextInSetBox.addView(nextSongText);
-                    thistable.addView(nextInSetBox);
-                }
-            }
-
 
         } else {
             Preferences.savePreferences();
@@ -6780,7 +5334,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 if (pdfPageCurrent>pdfPageCount) {
                     pdfPageCurrent = 0;
                 }
-                //				getActionBar().setTitle(tempsongtitle + "   " + (pdfPageCurrent+1)+"/"+pdfPageCount);
                 top_songtitle.setText(tempsongtitle + "\n" + (pdfPageCurrent+1)+"/"+pdfPageCount);
 
                 if (pdfPageCount>1 && togglePageButtons.equals("Y")) {
@@ -6821,8 +5374,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         } else {
                             yscale = xscale;
                         }
-                        pdfheight = (int) ((float) pdfheight * (float) yscale);
-                        pdfwidth = (int) ((float) pdfwidth * (float) xscale);
+                        pdfheight = (int) ((float) pdfheight * yscale);
+                        pdfwidth = (int) ((float) pdfwidth * xscale);
                         holderheight = pageheight;
                         holderwidth = pagewidth;
 
@@ -6865,7 +5418,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 pdfView.getLayoutParams().height = holderheight;
                 pdfView.getLayoutParams().width = holderwidth;
 
-
                 if (currentapiVersion>=21) {
                     assert mCurrentPage != null;
                     mCurrentPage.close();
@@ -6901,13 +5453,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 Preferences.savePreferences();
                 invalidateOptionsMenu();
 
-
             }
-
-
-
-
-
         }
 
         FrameLayout.LayoutParams params_fix = new FrameLayout.LayoutParams(
@@ -6922,7 +5468,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
         findViewById(R.id.linearLayout2_onecolview).setLayoutParams(params_fix);
 
-
         // Organise the chords.
         // Only do this if needtoredraw = false;
         if (!needtoredraw) {
@@ -6930,7 +5475,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
     }
 
-    public void prepareChords() {
+    private void prepareChords() {
         // Read in my custom chords
         while (mCustomChords.contains("  ")) {
             mCustomChords = mCustomChords.replace("  "," ");
@@ -6982,7 +5527,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
         chordimageshere.removeAllViews();
         // Send the unique chords off to get the string layout
-        // This will eventually be if guitar/ukelele/mandolin/piano/other
+        // This will eventually be if guitar/ukulele/mandolin/piano/other
         // Custom chords don't get sent for retrieval as they are already defined
         for (int l=0;l<unique_chords.size();l++) {
             if (chordInstrument.equals("u") && !unique_chords.get(l).contains("$$$")) {
@@ -7424,7 +5969,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
     }
 
-    public void promptNewFolder() {
+    private void promptNewFolder() {
         // Create a dialogue and get the users new song folder name
         // Close the menus
         mDrawerLayout.closeDrawer(expListViewOption);
@@ -7454,9 +5999,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                             // Make the folder
                             File newsongdir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/"+tempnewfoldername);
-                            if (newsongdir.exists()) {
-                                // Song folder exists, do nothing
-                            } else {
+                            if (!newsongdir.exists()) {
                                 // Tell the user we're creating the Songs directory
                                 if (newsongdir.mkdirs()) {
                                     myToastMessage = getResources().getString(R.string.songfoldercreate)+" - "+tempnewfoldername;
@@ -7486,7 +6029,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         newfolderprompt.show();
     }
 
-    public void editFolderName() {
+    private void editFolderName() {
         // First set the browsing directory back to the main one
         dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Songs");
         currentFolder = whichSongFolder;
@@ -7501,7 +6044,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         TextView f_titleView = new TextView(FullscreenActivity.this);
         f_titleView.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
         f_titleView.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Large);
-        f_titleView.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white) );
+        f_titleView.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white));
         f_titleView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
         f_titleView.setText(getResources().getString(R.string.options_song_editfolder));
         foldertitleLayout.addView(f_titleView);
@@ -7509,7 +6052,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         final EditText f_editbox = new EditText(FullscreenActivity.this);
         f_editbox.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
         f_editbox.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Large);
-        f_editbox.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white) );
+        f_editbox.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white));
         f_editbox.setBackgroundColor(FullscreenActivity.this.getResources().getColor(android.R.color.darker_gray));
         f_editbox.setHint(getResources().getString(R.string.newfoldername));
         f_editbox.requestFocus();
@@ -7533,7 +6076,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     public void onClick(DialogInterface dialog,
                                         int whichButton) {
                         String newFolderTitle = f_editbox.getText().toString();
-                        if (currentFolder.length()>0) {
+                        if (currentFolder.length() > 0) {
                             // Isn't main folder, so allow rename
                             File from = new File(dir + "/" + currentFolder);
                             File to = new File(dir + "/" + newFolderTitle);
@@ -7560,308 +6103,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
         folderdialogBuilder.show();
     }
-
-    public void promptNew() {
-        // First set the browsing directory back to the main one
-        dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Songs");
-        newFolder = whichSongFolder;
-        whichSongFolder = mainfoldername;
-        currentFolder = mainfoldername;
-        ListSongFiles.listSongs();
-
-        // Build a dialogue window and related bits that get modified/shown if needed
-        AlertDialog.Builder newsongdialogBuilder = new AlertDialog.Builder(FullscreenActivity.this);
-        LinearLayout newsongtitleLayout = new LinearLayout(FullscreenActivity.this);
-        newsongtitleLayout.setOrientation(LinearLayout.VERTICAL);
-        TextView s_titleView = new TextView(FullscreenActivity.this);
-        s_titleView.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-        s_titleView.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Large);
-        s_titleView.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white) );
-        s_titleView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-        s_titleView.setText(getResources().getString(R.string.createanewsong));
-        newsongtitleLayout.addView(s_titleView);
-        newsongdialogBuilder.setCustomTitle(newsongtitleLayout);
-        final EditText s_editbox = new EditText(FullscreenActivity.this);
-        s_editbox.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-        s_editbox.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Large);
-        s_editbox.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white) );
-        s_editbox.setBackgroundColor(FullscreenActivity.this.getResources().getColor(android.R.color.darker_gray));
-        s_editbox.setHint(getResources().getString(R.string.newsongtitleprompt));
-        s_editbox.requestFocus();
-        newsongdialogBuilder.setView(s_editbox);
-        newsongdialogBuilder.setSingleChoiceItems(mSongFolderNames, 0, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                if (arg1==0) {
-                    currentFolder = mainfoldername;
-                } else {
-                    currentFolder = mSongFolderNames[arg1];
-                }
-            }
-        });
-
-        newsongdialogBuilder.setPositiveButton(getResources().getString(R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog,
-                                        int whichButton) {
-                        String newSongTitle = s_editbox.getText().toString();
-                        // Create the file with the song title
-                        songfilename = newSongTitle;
-                        EditSong.prepareBlankSongXML();
-
-                        // If song already exists - tell the user and do nothing
-                        boolean isitanokfilename = true;
-                        if (isitanokfilename) {
-                            // Write the string to the file
-                            FileOutputStream newFile;
-
-                            if (currentFolder.equals(mainfoldername)) {
-                                dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
-                            } else {
-                                dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/" + currentFolder);
-                            }
-
-                            File checkfile = new File(dir+"/"+newSongTitle);
-
-                            if (checkfile.exists()) {
-                                // Song is already there.  Sorry!
-                                myToastMessage = getResources().getText(R.string.songnamealreadytaken).toString();
-                                ShowToast.showToast(FullscreenActivity.this);
-                                myToastMessage = "";
-                            } else {
-                                try {
-                                    newFile = new FileOutputStream(dir + "/" + newSongTitle, false);
-                                    newFile.write(mynewXML.getBytes());
-                                    newFile.flush();
-                                    newFile.close();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                // Exit set mode
-                                setView = "N";
-                                songfilename = newSongTitle;
-                                whichSongFolder = currentFolder;
-                                myLyrics = "[V1]\n.C     F G\n Verse 1 lyrics\n\n[C]\n.C      G/B    Am\n Chorus lyrics here\n\n;This is a comment line";
-                                redrawTheLyricsTable(null);
-                                Intent editsong = new Intent(FullscreenActivity.this, EditSong.class);
-                                Bundle newextras = new Bundle();
-                                newextras.putString("songfilename", newSongTitle);
-                                editsong.putExtras(newextras);
-                                tryKillPads();
-                                tryKillMetronome();
-                                startActivity(editsong);
-                                finish();
-                            }
-                        }
-                    }
-                });
-
-        newsongdialogBuilder.setNegativeButton(
-                getResources().getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog,
-                                        int whichButton) {
-                        // Cancelled.
-                    }
-                });
-
-        newsongdialogBuilder.show();
-    }
-
-/*
-    public void promptNewSet() throws IOException {
-        String newSetTitle = settoload;
-        // Create the file with the song title
-        // Now create the song set file
-        // Have to include the file path
-        // If the song name includes a / it is in a sub-folder
-        // If not, add a / to the start to signify no sub-folder
-        // Split the string into two bits - sub-folder and
-        // songname
-        newSetContents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
-                + "<set name=\""
-                + newSetTitle
-                + "\">\r\n<slide_groups>\r\n";
-
-        for (int x = 0; x < mSetList.length; x++) {
-            // Only add the lines that aren't back to options,
-            // save this set, clear this set, load set, edit set, export set or blank line
-            if (!mSetList[x].equals(getResources().getString(R.string.options_backtooptions)) &&
-                    !mSetList[x].equals(getResources().getString(R.string.options_savethisset)) &&
-                    !mSetList[x].equals(getResources().getString(R.string.options_clearthisset)) &&
-                    !mSetList[x].equals(getResources().getString(R.string.set_edit)) &&
-                    //mSetList[x].equals(getResources().getString(R.string.set_menutitle)) == false && 
-                    //mSetList[x].equals(getResources().getString(R.string.menu_menutitle)) == false && 
-                    !mSetList[x].equals(getResources().getString(R.string.set_save)) &&
-                    !mSetList[x].equals(getResources().getString(R.string.set_clear)) &&
-                    !mSetList[x].equals(getResources().getString(R.string.set_export)) &&
-                    !mSetList[x].equals(getResources().getString(R.string.set_load)) &&
-                    mSetList[x].length() > 0) {
-
-                // Check if song is in subfolder
-                if (!mSetList[x].contains("/")) {
-                    mSetList[x] = "/" + mSetList[x];
-                }
-
-                // Split the string into two
-                String[] songparts;
-                songparts = mSetList[x].split("/");
-                // If the path isn't empty, add a forward slash
-                // to the end
-                if (songparts[0].length() > 0) {
-                    songparts[0] = songparts[0] + "/";
-                }
-                if (!songparts[0].contains("Scripture") && !songparts[0].contains("Slide")) {
-                    // Adding a song
-                    newSetContents = newSetContents
-                            + "  <slide_group name=\""
-                            + songparts[1]
-                            + "\" type=\"song\" presentation=\"\" path=\""
-                            + songparts[0] + "\"/>\n";
-                } else if (songparts[0].contains("Scripture")  & !songparts[0].contains("Slide")) {
-                    // Adding a scripture
-                    // Load the scripture file up
-                    // Keep the songfile as a temp
-                    String tempsongfilename = songfilename;
-                    File tempdir = dir;
-                    dir = dirbibleverses;
-                    songfilename = songparts[1];
-                    try {
-                        LoadXML.loadXML();
-                    } catch (XmlPullParserException | IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (needtorefreshsongmenu) {
-                        prepareSongMenu();
-                        needtorefreshsongmenu = false;
-                    }
-
-                    String scripture_lyrics = mLyrics;
-
-                    // Parse the lyrics into individual slides;
-                    scripture_lyrics = scripture_lyrics.replace("[]","_SPLITHERE_");
-                    scripture_lyrics = scripture_lyrics.replace("\\n "," ");
-                    scripture_lyrics = scripture_lyrics.replace("\n "," ");
-                    scripture_lyrics = scripture_lyrics.replace("\n"," ");
-                    scripture_lyrics = scripture_lyrics.replace("\\n"," ");
-                    scripture_lyrics = scripture_lyrics.replace("  "," ");
-                    scripture_lyrics = scripture_lyrics.replace(". ",". ");
-
-                    String[] mySlides = scripture_lyrics.split("_SPLITHERE_");
-
-                    newSetContents = newSetContents
-                            + "  <slide_group type=\"scripture\" name=\""
-                            + songparts[1] + "|" + mAuthor
-                            + "\" print=\"true\">\r\n"
-                            + "  <title>" + songparts[1] + "</title>\r\n"
-                            + "  <slides>\r\n";
-
-                    for (int w=1;w<mySlides.length;w++) {
-                        if (mySlides[w]!=null && mySlides[w].length()>0){
-                            newSetContents = newSetContents
-                                    + "  <slide>\r\n"
-                                    + "  <body>"+mySlides[w].trim()+"</body>\r\n"
-                                    + "  </slide>\r\n";
-                        }
-                    }
-                    newSetContents = newSetContents + "</slides>\r\n"
-                            + "  <subtitle>" + "</subtitle>\r\n"
-                            + "  <notes />\r\n"
-                            + "</slide_group>\r\n";
-                    //Put the original songfilename back
-                    songfilename = tempsongfilename;
-                    dir = tempdir;
-                    try {
-                        LoadXML.loadXML();
-                    } catch (XmlPullParserException | IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (needtorefreshsongmenu) {
-                        prepareSongMenu();
-                        needtorefreshsongmenu = false;
-                    }
-
-                } else if (songparts[0].contains("Slide") && !songparts[0].contains("Scripture")) {
-                    // Adding a custom slide
-                    // Load the slide file up
-                    // Keep the songfile as a temp
-                    String tempsongfilename = songfilename;
-                    File tempdir = dir;
-                    dir = dircustomslides;
-                    songfilename = songparts[1];
-                    try {
-                        LoadXML.loadXML();
-                    } catch (XmlPullParserException | IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (needtorefreshsongmenu) {
-                        prepareSongMenu();
-                        needtorefreshsongmenu = false;
-                    }
-
-                    String slide_lyrics = mLyrics;
-
-                    // Parse the lyrics into individual slides;
-                    slide_lyrics = slide_lyrics.replace("[]","_SPLITHERE_");
-                    slide_lyrics = slide_lyrics.replace("\\n "," ");
-                    slide_lyrics = slide_lyrics.replace("\n "," ");
-                    slide_lyrics = slide_lyrics.replace("\n"," ");
-                    slide_lyrics = slide_lyrics.replace("\\n"," ");
-                    slide_lyrics = slide_lyrics.replace("  "," ");
-                    slide_lyrics = slide_lyrics.replace(". ",".  ");
-
-                    String[] mySlides = slide_lyrics.split("_SPLITHERE_");
-
-                    newSetContents = newSetContents
-                            + "  <slide_group name=\"" + songparts[1]
-                            + "\" type=\"custom\" print=\"true\""
-                            + " seconds=\"" + mUser1 + "\""
-                            + " loop=\"" + mUser2 + "\""
-                            + " transition=\"" + mUser3 + "\">\r\n"
-                            + "<title>"+mTitle+"</title>\r\n"
-                            + "<subtitle>" + mCopyright + "</subtitle>\r\n"
-                            + "<notes>" + mKeyLine + "</notes>\r\n"
-                            + "<slides>\r\n";
-
-                    for (int w=1;w<mySlides.length;w++) {
-                        if (mySlides[w]!=null && mySlides[w].length()>0){
-                            newSetContents = newSetContents
-                                    + "  <slide>\r\n"
-                                    + "  <body>"+mySlides[w].trim()+"</body>\r\n"
-                                    + "  </slide>\r\n";
-                        }
-                    }
-                    newSetContents = newSetContents + "</slides>\r\n"
-                            + "</slide_group>\r\n";
-                    //Put the original songfilename back
-                    songfilename = tempsongfilename;
-                    dir = tempdir;
-                    try {
-                        LoadXML.loadXML();
-                    } catch (XmlPullParserException | IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (needtorefreshsongmenu) {
-                        prepareSongMenu();
-                        needtorefreshsongmenu = false;
-                    }
-                }
-            }
-        }
-        newSetContents = newSetContents
-                + "</slide_groups>\r\n</set>";
-
-        // Write the string to the file
-        FileOutputStream newFile;
-        newFile = new FileOutputStream(dirsets + "/"
-                + newSetTitle, false);
-        newFile.write(newSetContents.getBytes());
-        newFile.flush();
-        newFile.close();
-    }
-*/
 
     public void showCurrentSet(View view) {
         // Use the stored mySet variable to make a new list for the Options
@@ -7891,7 +6132,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     }
 
-    public void redrawTheLyricsTable(View view) {
+    private void redrawTheLyricsTable(View view) {
         isPDF = false;
         File checkfile = new File(dir+"/"+songfilename);
         if ((songfilename.contains(".pdf") || songfilename.contains(".PDF")) && checkfile.exists()) {
@@ -7966,18 +6207,33 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 myXML = null;
                 myXML = "";
 
+                scrollpage_onecol.setVisibility(View.INVISIBLE);
+                scrollpage_twocol.setVisibility(View.INVISIBLE);
+                scrollpage_threecol.setVisibility(View.INVISIBLE);
+                lyricstable_onecolview.setVisibility(View.INVISIBLE);
+                lyricstable_twocolview.setVisibility(View.INVISIBLE);
+                lyricstable_threecolview.setVisibility(View.INVISIBLE);
+
+                lyricstable_onecolview.removeAllViews();
+                lyricstable_twocolview.removeAllViews();
+                lyricstable2_twocolview.removeAllViews();
+                lyricstable_threecolview.removeAllViews();
+                lyricstable2_threecolview.removeAllViews();
+                lyricstable3_threecolview.removeAllViews();
+                chordimageshere.removeAllViews();
+
                 try {
                     showLyrics(main_page);
-                } catch (IOException | IllegalStateException | InterruptedException e) {
+                } catch (IOException | IllegalStateException e) {
                     e.printStackTrace();
                 }
             }
-        }, 500); // 500ms delay
+        }, slideout_time); // 600ms delay
 
         doScaling = false;
 
         // Set a runnable to check the scroll position after 1 second
-        delaycheckscroll.postDelayed(checkScrollPosition, 1000); // 1000ms delay
+        delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time); // 1000ms delay
 
         // Try to open the appropriate Song folder on the left menu
         for (int z=0;z<listDataHeaderSong.size()-1;z++) {
@@ -8001,12 +6257,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
     }
 
-    public void searchYouTube() {
+    private void searchYouTube() {
         startActivity(new Intent(Intent.ACTION_VIEW,
                 Uri.parse("https://www.youtube.com/results?search_query="+mTitle+"+"+mAuthor)));
     }
 
-    public void doMoveInSet() {
+    private void doMoveInSet() {
         invalidateOptionsMenu();
         linkclicked = mSetList[indexSongInSet];
         pdfPageCurrent = 0;
@@ -8048,8 +6304,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
         // Match the song folder
         ListSongFiles.listSongs();
-        showSongMenu();
-        // Actually - changed my mind, close it immediately
         mDrawerLayout.closeDrawer(expListViewSong);
         // Redraw the Lyrics View
         songfilename = null;
@@ -8058,19 +6312,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         redrawTheLyricsTable(view);
     }
 
-    public void listSavedSets(View view) {
-        // update the optionList to show the sets stored in the sets folder
-        SetActions.updateOptionListSets();
-        Arrays.sort(mySetsFiles);
-        Arrays.sort(mySetsDirectories);
-        Arrays.sort(mySetsFileNames);
-        Arrays.sort(mySetsFolderNames);
-
-        // Open the Optionlist drawer up again so we can see the set
-        mDrawerLayout.openDrawer(expListViewOption);
-    }
-
-    public void onSongImport() {
+    private void onSongImport() {
         // Give an alert box that asks the user to specify the backup file (must be in OpenSong/folder)
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(FullscreenActivity.this);
         LinearLayout titleLayout = new LinearLayout(FullscreenActivity.this);
@@ -8100,12 +6342,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 backups.add(aBackupfilecheck.getName());
             }
         }
-		/*		 for (File f : backupfilecheck) {
-			 if (f.isFile() && f.getPath().endsWith(".backup")) {
-				 backups.add(f.getName());
-			 }
-		 }
-		 */		 if (backups.size()>0) {
+        if (backups.size()>0) {
             backUpFiles = new String[backups.size()];
             for (int r=0;r<backups.size();r++) {
                 backUpFiles[r] = backups.get(r);
@@ -8188,7 +6425,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
             File dbfile = new File(homedir + "/OnSong.Backup.sqlite3" );
             db = SQLiteDatabase.openOrCreateDatabase(dbfile, null);
-            int numRows = (int) DatabaseUtils.queryNumEntries(db, "Song");
+            //int numRows = (int) DatabaseUtils.queryNumEntries(db, "Song");
             // Go through each row and read in the content field
             // Save the files with the .onsong extension
 
@@ -8200,8 +6437,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             // Move to first row
             cursor.moveToFirst();
 
-            String str_title = "";
-            String str_content = "";
+            String str_title;
+            String str_content;
 
             while (cursor.moveToNext()) {
                 // Extract data.
@@ -8246,6 +6483,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         mDrawerLayout.closeDrawer(expListViewSong);
         mDrawerLayout.closeDrawer(expListViewOption);
         if (orientationchanged ) {
+            mDrawerLayout.closeDrawers();
             redrawTheLyricsTable(main_page);
         }
     }
@@ -8461,7 +6699,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     if (!isPDF) {
                         try {
                             togglePlayPads(padButton);
-                        } catch (IllegalStateException | InterruptedException | IOException e) {
+                        } catch (IllegalStateException e) {
                             e.printStackTrace();
                         }
                     } else {
@@ -8497,7 +6735,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         popupChords_toggle(chordButton);
                     } else {
                         myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
-                            ShowToast.showToast(FullscreenActivity.this);
+                        ShowToast.showToast(FullscreenActivity.this);
                     }
                     return true;
 
@@ -8522,7 +6760,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             public void run() {
                                 tempswipeSet = "enable";
                             }
-                        }, 1800); // 1800ms delay
+                        }, delayswipe_time); // 1800ms delay
 
                         // Set the swipe direction to right to left
                         whichDirection = "L2R";
@@ -8550,7 +6788,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             public void run() {
                                 tempswipeSet = "enable";
                             }
-                        }, 1800); // 1800ms delay
+                        }, delayswipe_time); // 1800ms delay
 
                         // Set the swipe direction to right to left
                         whichDirection = "R2L";
@@ -8693,8 +6931,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     && popupMetronome.getVisibility()!=View.VISIBLE && scrollstickyholder.getVisibility()!=View.VISIBLE
                     && popupChord.getVisibility()!=View.VISIBLE) {
                 gesture4();
-            } else {// Gesture is off
-                // Do nothing
             }
             super.onLongPress(e);
         }
@@ -8745,8 +6981,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     pdfPageCurrent = pdfPageCurrent + 1;
                     redrawTheLyricsTable(main_page);
                     return false;
-                } else {
-                    //pdfPageCurrent = 0;
                 }
 
                 if (setSize > 1 && setView.equals("Y") && indexSongInSet >= 0
@@ -8763,16 +6997,14 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         public void run() {
                             tempswipeSet = "enable";
                         }
-                    }, 1800); // 1800ms delay
+                    }, delayswipe_time); // 1800ms delay
 
                 }
                 // If not in a set, see if we can move to the next song in the
                 // list
                 // Only if swipeSet is Y (not S)
                 if (setView.equals("N") && swipeSet.equals("Y")) {
-                    if (songfilename.equals(mSongFileNames[nextSongIndex])) {
-                        // Already on the last song, do nothing
-                    } else {
+                    if (!songfilename.equals(mSongFileNames[nextSongIndex])) {
                         // Move to the next song
                         // temporarily disable swipe
                         tempswipeSet = "disable";
@@ -8788,7 +7020,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             public void run() {
                                 tempswipeSet = "enable";
                             }
-                        }, 1800); // 1800ms delay
+                        }, delayswipe_time); // 1800ms delay
                     }
                 }
                 return true;
@@ -8828,15 +7060,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         public void run() {
                             tempswipeSet = "enable";
                         }
-                    }, 1800); // 1800ms delay
+                    }, delayswipe_time); // 1800ms delay
                 }
                 // If not in a set, see if we can move to the previous song in
                 // the list
                 // Only if swipeSet is Y (not S)
                 if (setView.equals("N") && swipeSet.equals("Y")) {
-                    if (songfilename.equals(mSongFileNames[previousSongIndex])) {
-                        // Already on the first song, do nothing
-                    } else {
+                    if (!songfilename.equals(mSongFileNames[previousSongIndex])) {
                         // temporarily disable swipe
                         tempswipeSet = "disable";
 
@@ -8852,7 +7082,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             public void run() {
                                 tempswipeSet = "enable";
                             }
-                        }, 1800); // 1800ms delay
+                        }, delayswipe_time); // 1800ms delay
                     }
                 }
                 return true;
@@ -8868,7 +7098,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         return true;
     }
 
-    public class simpleOnScaleGestureListener extends
+    private class simpleOnScaleGestureListener extends
             SimpleOnScaleGestureListener {
 
     }
@@ -8881,22 +7111,16 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         switch (action) {
 
             case (MotionEvent.ACTION_MOVE):
-                //View mainpage = findViewById(R.id.main_page);
-                //mainpage.requestFocus();
-
                 // Set a runnable to check the scroll position
                 delaycheckscroll.post(checkScrollPosition);
 
                 // Set a runnable to check the scroll position after 1 second
-                delaycheckscroll.postDelayed(checkScrollPosition, 1000); // 1000ms delay
+                delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time); // 1000ms delay
         }
 
         // TouchEvent dispatcher.
         if (gestureDetector != null) {
-            if (gestureDetector.onTouchEvent(ev)) {
-                // If the gestureDetector handles the event, a swipe has been
-                // executed and no more needs to be done.
-            } else {
+            if (!gestureDetector.onTouchEvent(ev)) {
                 if (action == MotionEvent.ACTION_UP && !scrollbutton) {
                     toggleActionBar();
 
@@ -8908,6 +7132,1599 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    public void findSongInFolder() {
+        // Try to open the appropriate Song folder on the left menu
+        expListViewSong.setFastScrollEnabled(false);
+        for (int z = 0; z < listDataHeaderSong.size() - 1; z++) {
+            if (listDataHeaderSong.get(z).equals(FullscreenActivity.whichSongFolder)) {
+                expListViewSong.expandGroup(z);
+            }
+        }
+        expListViewSong.setSelection(currentSongIndex);
+    }
+
+    public void writeSongToPage() {
+
+        lyricstable_onecolview.removeAllViews();
+        lyricstable_twocolview.removeAllViews();
+        lyricstable2_twocolview.removeAllViews();
+        lyricstable_threecolview.removeAllViews();
+        lyricstable2_threecolview.removeAllViews();
+        lyricstable3_threecolview.removeAllViews();
+
+        // columnTest lets us know what we are doing
+        // if columTest = 0 or 1, prepare 1 column view
+        // if columTest = 0 or 2, prepare 1 column view
+        // if columTest = 0 or 3, prepare 1 column view
+
+        int startatline = 0;
+        int endatline = numrowstowrite;
+        for (int x = startatline; x < endatline; x++) {
+            int n;
+            if (x == 0) {
+                n = 0;
+            } else {
+                n = x - 1;
+            }
+            // This is to avoid errors when there isn't a line+1
+            int m = x + 1;
+            if (x + 1 >= endatline) {
+                m = x;
+            }
+            // x = current line
+            // n = previous line (or x if at the beginning)
+            // m = next line (or x if at the end)
+
+            // Decide where the written stuff can go
+            boolean writetocol1_1 = true;
+            boolean writetocol1_2 = false;
+            boolean writetocol2_2 = false;
+            boolean writetocol1_3 = false;
+            boolean writetocol2_3 = false;
+            boolean writetocol3_3 = false;
+
+            if (x<splitpoint) {
+                writetocol1_2 = true;
+            } else {
+                writetocol2_2 = true;
+            }
+            if (x<thirdsplitpoint) {
+                writetocol1_3 = true;
+            } else if (x>=thirdsplitpoint && x<twothirdsplitpoint) {
+                writetocol2_3 = true;
+            } else {
+                writetocol3_3 = true;
+            }
+
+            chords_useThisTextSize = tempfontsize;
+            lyrics_useThisTextSize = tempfontsize;
+            lyrics_useThisFont = lyricsfont;
+
+            if (x == 0) {
+                // This is the first line.
+                // If in a set view and option is on to show at top, show the title of the next song
+                // If we are showing the last song already, say this instead
+                if (setView.equals("Y") && showNextInSet.equals("top")) {
+                    // Get next title in set
+                    String next_title = getResources().getString(R.string.lastsong);
+                    if (setSize >= 2 && indexSongInSet >= 0 && indexSongInSet < (setSize - 1)) {
+                        next_title = getResources().getString(R.string.next) + ": " + mSetList[indexSongInSet+1];
+                    }
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    if (writetocol1_1 || columnTest==1 || columnTest==0) {
+                        RelativeLayout nextInSetBox1_1 = new RelativeLayout(this);
+                        nextInSetBox1_1.setLayoutParams(lp);
+                        nextInSetBox1_1.setHorizontalGravity(Gravity.RIGHT);
+                        TextView nextSongText1_1 = new TextView(this);
+                        nextSongText1_1.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                        nextSongText1_1.setText(next_title);
+                        nextSongText1_1.setGravity(Gravity.RIGHT);
+                        nextSongText1_1.setTypeface(lyrics_useThisFont);
+                        nextSongText1_1.setBackgroundColor(lyricsCommentColor);
+                        nextInSetBox1_1.setBackgroundColor(lyricsCommentColor);
+                        nextSongText1_1.setTextColor(lyricsTextColor);
+                        nextSongText1_1.setTextSize(tempfontsize * 0.7f);
+                        nextInSetBox1_1.addView(nextSongText1_1);
+                        lyricstable_onecolview.addView(nextInSetBox1_1);
+                    }
+
+                    if (writetocol1_2 || columnTest==2 || columnTest==0) {
+                        RelativeLayout nextInSetBox1_2 = new RelativeLayout(this);
+                        nextInSetBox1_2.setLayoutParams(lp);
+                        nextInSetBox1_2.setHorizontalGravity(Gravity.RIGHT);
+                        TextView nextSongText1_2 = new TextView(this);
+                        nextSongText1_2.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                        nextSongText1_2.setText(next_title);
+                        nextSongText1_2.setGravity(Gravity.RIGHT);
+                        nextSongText1_2.setTypeface(lyrics_useThisFont);
+                        nextSongText1_2.setBackgroundColor(lyricsCommentColor);
+                        nextInSetBox1_2.setBackgroundColor(lyricsCommentColor);
+                        nextSongText1_2.setTextColor(lyricsTextColor);
+                        nextSongText1_2.setTextSize(tempfontsize * 0.7f);
+                        nextInSetBox1_2.addView(nextSongText1_2);
+                        lyricstable_twocolview.addView(nextInSetBox1_2);
+                    }
+
+                    if (writetocol1_1 || columnTest==3 || columnTest==0) {
+                        RelativeLayout nextInSetBox1_3 = new RelativeLayout(this);
+                        nextInSetBox1_3.setLayoutParams(lp);
+                        nextInSetBox1_3.setHorizontalGravity(Gravity.RIGHT);
+                        TextView nextSongText1_3 = new TextView(this);
+                        nextSongText1_3.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                        nextSongText1_3.setText(next_title);
+                        nextSongText1_3.setGravity(Gravity.RIGHT);
+                        nextSongText1_3.setTypeface(lyrics_useThisFont);
+                        nextSongText1_3.setBackgroundColor(lyricsCommentColor);
+                        nextInSetBox1_3.setBackgroundColor(lyricsCommentColor);
+                        nextSongText1_3.setTextColor(lyricsTextColor);
+                        nextSongText1_3.setTextSize(tempfontsize * 0.7f);
+                        nextInSetBox1_3.addView(nextSongText1_3);
+                        lyricstable_threecolview.addView(nextInSetBox1_3);
+                    }
+                }
+
+                // If showCapo is true, add a comment line with the capo information
+                if (showCapo && showChords.equals("Y")) {
+
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                    String capocustomtext = "";
+                    capocustomtext = capocustomtext + getResources().getString(R.string.edit_song_capo) + " " + mCapo;
+                    if (!mKey.isEmpty() && !mKey.equals("")) {
+                        // set key to transpose
+                        temptranspChords = mKey;
+                        Transpose.capoTranspose();
+                        capocustomtext = capocustomtext + " (" + temptranspChords + ")";
+                    }
+
+                    if (writetocol1_1 || columnTest==1 || columnTest==0) {
+                        RelativeLayout myCapoBox1_1 = new RelativeLayout(this);
+                        myCapoBox1_1.setLayoutParams(lp);
+                        myCapoBox1_1.setHorizontalGravity(Gravity.LEFT);
+                        TextView tCapoBox1_1 = new TextView(this);
+                        tCapoBox1_1.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                        tCapoBox1_1.setText(capocustomtext);
+                        tCapoBox1_1.setGravity(Gravity.LEFT);
+                        tCapoBox1_1.setTypeface(lyrics_useThisFont);
+                        tCapoBox1_1.setBackgroundColor(lyricsBackgroundColor);
+                        tCapoBox1_1.setTextColor(lyricsCapoColor);
+                        tCapoBox1_1.setTextSize(tempfontsize * 0.7f);
+                        myCapoBox1_1.addView(tCapoBox1_1);
+                        lyricstable_onecolview.addView(myCapoBox1_1);
+                    }
+
+                    if (writetocol1_2 || columnTest==2 || columnTest==0) {
+                        RelativeLayout myCapoBox1_2 = new RelativeLayout(this);
+                        myCapoBox1_2.setLayoutParams(lp);
+                        myCapoBox1_2.setHorizontalGravity(Gravity.LEFT);
+                        TextView tCapoBox1_2 = new TextView(this);
+                        tCapoBox1_2.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                        tCapoBox1_2.setText(capocustomtext);
+                        tCapoBox1_2.setGravity(Gravity.LEFT);
+                        tCapoBox1_2.setTypeface(lyrics_useThisFont);
+                        tCapoBox1_2.setBackgroundColor(lyricsBackgroundColor);
+                        tCapoBox1_2.setTextColor(lyricsCapoColor);
+                        tCapoBox1_2.setTextSize(tempfontsize * 0.7f);
+                        myCapoBox1_2.addView(tCapoBox1_2);
+                        lyricstable_twocolview.addView(myCapoBox1_2);
+                    }
+
+                    if (writetocol1_3 || columnTest==3 || columnTest==0) {
+                        RelativeLayout myCapoBox1_3 = new RelativeLayout(this);
+                        myCapoBox1_3.setLayoutParams(lp);
+                        myCapoBox1_3.setHorizontalGravity(Gravity.LEFT);
+                        TextView tCapoBox1_3 = new TextView(this);
+                        tCapoBox1_3.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                        tCapoBox1_3.setText(capocustomtext);
+                        tCapoBox1_3.setGravity(Gravity.LEFT);
+                        tCapoBox1_3.setTypeface(lyrics_useThisFont);
+                        tCapoBox1_3.setBackgroundColor(lyricsBackgroundColor);
+                        tCapoBox1_3.setTextColor(lyricsCapoColor);
+                        tCapoBox1_3.setTextSize(tempfontsize * 0.7f);
+                        myCapoBox1_3.addView(tCapoBox1_3);
+                        lyricstable_threecolview.addView(myCapoBox1_3);
+                    }
+                }
+            }
+
+            // Decide if this line is a chord line followed by a lyric line.
+            // If so, we need to split it up so the spacing is right.
+            if (whatisthisline[x].equals("chords") && (whatisthisline[m].equals("lyrics") || whatisthisline[m].equals("comment"))) {
+
+                // Ok, so we have a chord line first. Let's break it into an array each 1 character big
+                char[] chars = (myParsedLyrics[x]).toCharArray();
+                // Make it into an array
+                String[] chord_chars = new String[chars.length + 1]; // Added 1 to check 2nd last char (last is empty)
+                chord_chars[chord_chars.length - 1] = " "; // Set last one as empty
+                // chordnum 0 is the start of the line
+                int chordnum = 1;
+
+                // Go through the chord_chars array and count the chords
+                for (int i = 0; i < chord_chars.length - 2; i++) {
+                    chord_chars[i] = String.valueOf(chars[i]);
+                    chord_chars[i + 1] = String.valueOf(chars[i + 1]);
+                    if (!chord_chars[i].equals(" ") && i == 0) {
+                        // First char is a chord, so set the start chordnum to 1
+                        chordnum = 1;
+
+                    } else if (chord_chars[i].equals(" ") && !chord_chars[i + 1].equals(" ") && i != 0) {
+                        // Found another chord (space then non-space) not at the start.
+                        chordnum += 1;
+                    }
+                }
+
+                // Set up the chord_chunk array size based on the number of chords
+                // Also, set up the character position of each chord
+                int[] chord_pos = new int[chordnum + 2];
+                chord_pos[0] = 0;
+                chord_pos[chordnum] = maxcharsinline;
+                int z = 1;
+                // Go back through the array and identify the start positions
+                for (int i = 1; i < chord_chars.length - 1; i++) {
+                    if (!chord_chars[i].equals(" ") && i == 0) {
+                        // First char is a chord, so set the start chord_pos to 0
+                        chord_pos[z] = i;
+                        z++;
+
+                    } else if (chord_chars[i].equals(" ") && !chord_chars[i + 1].equals(" ") && i != 0) {
+                        // Found another chord (space then non-space). Chord pos is i+1
+                        chord_pos[z] = i + 1;
+                        z++;
+                    }
+                }
+
+                // Get the colours for the block
+                getBlock(whatisthisblock[x]);
+
+                // Right, we need to create a new table inside this row to hold 2 rows - chords and lyrics
+                TableRow.LayoutParams lp = new TableRow.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                TableLayout chords_n_lyrics1_1 = new TableLayout(this);
+                TableLayout chords_n_lyrics1_2 = new TableLayout(this);
+                TableLayout chords_n_lyrics2_2 = new TableLayout(this);
+                TableLayout chords_n_lyrics1_3 = new TableLayout(this);
+                TableLayout chords_n_lyrics2_3 = new TableLayout(this);
+                TableLayout chords_n_lyrics3_3 = new TableLayout(this);
+                TableRow capo_chords_row1_1 = new TableRow(this);
+                TableRow capo_chords_row1_2 = new TableRow(this);
+                TableRow capo_chords_row2_2 = new TableRow(this);
+                TableRow capo_chords_row1_3 = new TableRow(this);
+                TableRow capo_chords_row2_3 = new TableRow(this);
+                TableRow capo_chords_row3_3 = new TableRow(this);
+                TableRow chords_row1_1 = new TableRow(this);
+                TableRow chords_row1_2 = new TableRow(this);
+                TableRow chords_row2_2 = new TableRow(this);
+                TableRow chords_row1_3 = new TableRow(this);
+                TableRow chords_row2_3 = new TableRow(this);
+                TableRow chords_row3_3 = new TableRow(this);
+
+                if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                    capo_chords_row1_1.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                    chords_row1_1.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                    chords_row1_1.setLayoutParams(lp);
+                    capo_chords_row1_1.setLayoutParams(lp);
+                }
+
+                if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                    capo_chords_row1_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                    chords_row1_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                    chords_row1_2.setLayoutParams(lp);
+                    capo_chords_row1_2.setLayoutParams(lp);
+                }
+
+                if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                    capo_chords_row2_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                    chords_row2_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                    chords_row2_2.setLayoutParams(lp);
+                    capo_chords_row2_2.setLayoutParams(lp);
+                }
+
+                if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                    capo_chords_row1_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                    chords_row1_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                    chords_row1_3.setLayoutParams(lp);
+                    capo_chords_row1_3.setLayoutParams(lp);
+                }
+
+                if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                    capo_chords_row2_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                    chords_row2_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                    chords_row2_3.setLayoutParams(lp);
+                    capo_chords_row2_3.setLayoutParams(lp);
+                }
+
+                if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                    capo_chords_row3_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                    chords_row3_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                    chords_row3_3.setLayoutParams(lp);
+                    capo_chords_row3_3.setLayoutParams(lp);
+                }
+
+                for (int i = 0; i < chordnum; i++) {
+                    String chord;
+                    tempChords = "";
+                    temptranspChords = "";
+
+                    if (i == 0) {
+                        chord = myParsedLyrics[x].substring(0, chord_pos[1]);
+                        tempChords = chord;
+                        if (showCapo) {
+                            temptranspChords = chord;
+                            Transpose.capoTranspose();
+                            allchordscapo = allchordscapo + " " + temptranspChords;
+                        }
+
+                    } else {
+                        chord = myParsedLyrics[x].substring(chord_pos[i], chord_pos[i + 1]);
+                        tempChords = chord;
+                        if (showCapo) {
+                            temptranspChords = chord;
+                            Transpose.capoTranspose();
+                            allchordscapo = allchordscapo + " " + temptranspChords;
+                        }
+                    }
+
+                    if (i==chordnum) {
+                        chord = chord.trim();
+                        temptranspChords = temptranspChords.trim();
+                    }
+
+                    // Set the appropriate formats for the chord line
+                    // create a new TextView for each chord
+                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                        TextView t1_1 = new TextView(this);
+                        TextView tcapo1_1 = new TextView(this);
+                        t1_1.setText(chord);
+                        t1_1.setTypeface(chordsfont);
+                        t1_1.setTextSize(chords_useThisTextSize);
+                        t1_1.setBackgroundColor(chords_useThisBGColor);
+                        t1_1.setTextColor(lyricsChordsColor);
+                        tcapo1_1.setText(temptranspChords);
+                        tcapo1_1.setTypeface(chordsfont);
+                        tcapo1_1.setTextSize(chords_useThisTextSize);
+                        tcapo1_1.setBackgroundColor(capo_useThisBGColor);
+                        tcapo1_1.setTextColor(lyricsCapoColor);
+                        if (showCapo && showChords.equals("Y")) {
+                            capo_chords_row1_1.addView(tcapo1_1);
+                        }
+                        chords_row1_1.addView(t1_1);
+                    }
+
+                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                        TextView t1_2 = new TextView(this);
+                        TextView tcapo1_2 = new TextView(this);
+                        t1_2.setText(chord);
+                        t1_2.setTypeface(chordsfont);
+                        t1_2.setTextSize(chords_useThisTextSize);
+                        t1_2.setBackgroundColor(chords_useThisBGColor);
+                        t1_2.setTextColor(lyricsChordsColor);
+                        tcapo1_2.setText(temptranspChords);
+                        tcapo1_2.setTypeface(chordsfont);
+                        tcapo1_2.setTextSize(chords_useThisTextSize);
+                        tcapo1_2.setBackgroundColor(capo_useThisBGColor);
+                        tcapo1_2.setTextColor(lyricsCapoColor);
+                        if (showCapo && showChords.equals("Y")) {
+                            capo_chords_row1_2.addView(tcapo1_2);
+                        }
+                        chords_row1_2.addView(t1_2);
+                    }
+
+                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                        TextView t2_2 = new TextView(this);
+                        TextView tcapo2_2 = new TextView(this);
+                        t2_2.setText(chord);
+                        t2_2.setTypeface(chordsfont);
+                        t2_2.setTextSize(chords_useThisTextSize);
+                        t2_2.setBackgroundColor(chords_useThisBGColor);
+                        t2_2.setTextColor(lyricsChordsColor);
+                        tcapo2_2.setText(temptranspChords);
+                        tcapo2_2.setTypeface(chordsfont);
+                        tcapo2_2.setTextSize(chords_useThisTextSize);
+                        tcapo2_2.setBackgroundColor(capo_useThisBGColor);
+                        tcapo2_2.setTextColor(lyricsCapoColor);
+                        if (showCapo && showChords.equals("Y")) {
+                            capo_chords_row2_2.addView(tcapo2_2);
+                        }
+                        chords_row2_2.addView(t2_2);
+                    }
+
+                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                        TextView t1_3 = new TextView(this);
+                        TextView tcapo1_3 = new TextView(this);
+                        t1_3.setText(chord);
+                        t1_3.setTypeface(chordsfont);
+                        t1_3.setTextSize(chords_useThisTextSize);
+                        t1_3.setBackgroundColor(chords_useThisBGColor);
+                        t1_3.setTextColor(lyricsChordsColor);
+                        tcapo1_3.setText(temptranspChords);
+                        tcapo1_3.setTypeface(chordsfont);
+                        tcapo1_3.setTextSize(chords_useThisTextSize);
+                        tcapo1_3.setBackgroundColor(capo_useThisBGColor);
+                        tcapo1_3.setTextColor(lyricsCapoColor);
+                        if (showCapo && showChords.equals("Y")) {
+                            capo_chords_row1_3.addView(tcapo1_3);
+                        }
+                        chords_row1_3.addView(t1_3);
+                    }
+
+                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                        TextView t2_3 = new TextView(this);
+                        TextView tcapo2_3 = new TextView(this);
+                        t2_3.setText(chord);
+                        t2_3.setTypeface(chordsfont);
+                        t2_3.setTextSize(chords_useThisTextSize);
+                        t2_3.setBackgroundColor(chords_useThisBGColor);
+                        t2_3.setTextColor(lyricsChordsColor);
+                        tcapo2_3.setText(temptranspChords);
+                        tcapo2_3.setTypeface(chordsfont);
+                        tcapo2_3.setTextSize(chords_useThisTextSize);
+                        tcapo2_3.setBackgroundColor(capo_useThisBGColor);
+                        tcapo2_3.setTextColor(lyricsCapoColor);
+                        if (showCapo && showChords.equals("Y")) {
+                            capo_chords_row2_3.addView(tcapo2_3);
+                        }
+                        chords_row2_3.addView(t2_3);
+                    }
+
+                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                        TextView t3_3 = new TextView(this);
+                        TextView tcapo3_3 = new TextView(this);
+                        t3_3.setText(chord);
+                        t3_3.setTypeface(chordsfont);
+                        t3_3.setTextSize(chords_useThisTextSize);
+                        t3_3.setBackgroundColor(chords_useThisBGColor);
+                        t3_3.setTextColor(lyricsChordsColor);
+                        tcapo3_3.setText(temptranspChords);
+                        tcapo3_3.setTypeface(chordsfont);
+                        tcapo3_3.setTextSize(chords_useThisTextSize);
+                        tcapo3_3.setBackgroundColor(capo_useThisBGColor);
+                        tcapo3_3.setTextColor(lyricsCapoColor);
+                        if (showCapo && showChords.equals("Y")) {
+                            capo_chords_row3_3.addView(tcapo3_3);
+                        }
+                        chords_row3_3.addView(t3_3);
+                    }
+                }
+
+                if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                    chords_row1_1.setBackgroundColor(chords_useThisBGColor);
+                    capo_chords_row1_1.setBackgroundColor(capo_useThisBGColor);
+                }
+
+                if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                    chords_row1_2.setBackgroundColor(chords_useThisBGColor);
+                    capo_chords_row1_2.setBackgroundColor(capo_useThisBGColor);
+                }
+
+                if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                    chords_row2_2.setBackgroundColor(chords_useThisBGColor);
+                    capo_chords_row2_2.setBackgroundColor(capo_useThisBGColor);
+                }
+
+                if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                    chords_row1_3.setBackgroundColor(chords_useThisBGColor);
+                    capo_chords_row1_3.setBackgroundColor(capo_useThisBGColor);
+                }
+
+                if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                    chords_row2_3.setBackgroundColor(chords_useThisBGColor);
+                    capo_chords_row2_3.setBackgroundColor(capo_useThisBGColor);
+                }
+
+                if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                    chords_row3_3.setBackgroundColor(chords_useThisBGColor);
+                    capo_chords_row3_3.setBackgroundColor(capo_useThisBGColor);
+                }
+
+                // What should we be showing?
+                // First option is that there are no capo chords, but the user wants chords
+                // This displays the normal chords only
+                if (showChords.equals("Y") && !showCapo) {
+                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                        chords_n_lyrics1_1.addView(chords_row1_1, 0);
+                    }
+
+                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                        chords_n_lyrics1_2.addView(chords_row1_2, 0);
+                    }
+
+                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                        chords_n_lyrics2_2.addView(chords_row2_2, 0);
+                    }
+
+                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics1_3.addView(chords_row1_3, 0);
+                    }
+
+                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics2_3.addView(chords_row2_3, 0);
+                    }
+
+                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics3_3.addView(chords_row3_3, 0);
+                    }
+
+                    // Add this line of chords to the combined string
+                    allchords = allchords + " " + myParsedLyrics[x];
+
+                } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("both")) {
+                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                        chords_n_lyrics1_1.addView(chords_row1_1, 0);
+                        chords_n_lyrics1_1.addView(capo_chords_row1_1, 1);
+                    }
+                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                        chords_n_lyrics1_2.addView(chords_row1_2, 0);
+                        chords_n_lyrics1_2.addView(capo_chords_row1_2, 1);
+                    }
+                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                        chords_n_lyrics2_2.addView(chords_row2_2, 0);
+                        chords_n_lyrics2_2.addView(capo_chords_row2_2, 1);
+                    }
+                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics1_3.addView(chords_row1_3, 0);
+                        chords_n_lyrics1_3.addView(capo_chords_row1_3, 1);
+                    }
+                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics2_3.addView(chords_row2_3, 0);
+                        chords_n_lyrics2_3.addView(capo_chords_row2_3, 1);
+                    }
+                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics3_3.addView(chords_row3_3, 0);
+                        chords_n_lyrics3_3.addView(capo_chords_row3_3, 1);
+                    }
+
+                    // Add this line of chords to the combined string
+                    allchords = allchords + " " + myParsedLyrics[x];
+                    allchords = allchords + " " + allchordscapo;
+
+                } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("capoonly")) {
+                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                        chords_n_lyrics1_1.addView(capo_chords_row1_1, 0);
+                    }
+                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                        chords_n_lyrics1_2.addView(capo_chords_row1_2, 0);
+                    }
+                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                        chords_n_lyrics2_2.addView(capo_chords_row2_2, 0);
+                    }
+                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics1_3.addView(capo_chords_row1_3, 0);
+                    }
+                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics2_3.addView(capo_chords_row2_3, 0);
+                    }
+                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics3_3.addView(capo_chords_row3_3, 0);
+                    }
+                    // Add this line of chords to the combined string
+                    allchords = allchords + " " + allchordscapo;
+                }
+
+                TableRow lyrics_row1_1 = new TableRow(this);
+                TableRow lyrics_row1_2 = new TableRow(this);
+                TableRow lyrics_row2_2 = new TableRow(this);
+                TableRow lyrics_row1_3 = new TableRow(this);
+                TableRow lyrics_row2_3 = new TableRow(this);
+                TableRow lyrics_row3_3 = new TableRow(this);
+
+                String temp_lyricstext="";
+
+                // Now we have the positions, split the words into substrings and write each
+                // substring as a textview within the row
+                // If this is a multiline verse, we need to sort the next verse lines as well
+                lyrics_row1_1 = new TableRow(this);
+                lyrics_row1_2 = new TableRow(this);
+                lyrics_row2_2 = new TableRow(this);
+                lyrics_row1_3 = new TableRow(this);
+                lyrics_row2_3 = new TableRow(this);
+                lyrics_row3_3 = new TableRow(this);
+                for (int i = 0; i < chordnum; i++) {
+                    // create a new TextView
+                    TextView t21_1 = new TextView(this);
+                    TextView t21_2 = new TextView(this);
+                    TextView t22_2 = new TextView(this);
+                    TextView t21_3 = new TextView(this);
+                    TextView t22_3 = new TextView(this);
+                    TextView t23_3 = new TextView(this);
+
+                    if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
+                        t21_1.setTextColor(lyricsTextColor);
+                        t21_1.setTypeface(lyrics_useThisFont);
+                        t21_1.setTextSize(lyrics_useThisTextSize);
+                    }
+
+                    if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
+                        t21_2.setTextColor(lyricsTextColor);
+                        t21_2.setTypeface(lyrics_useThisFont);
+                        t21_2.setTextSize(lyrics_useThisTextSize);
+                    }
+
+                    if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
+                        t22_2.setTextColor(lyricsTextColor);
+                        t22_2.setTypeface(lyrics_useThisFont);
+                        t22_2.setTextSize(lyrics_useThisTextSize);
+                    }
+
+                    if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
+                        t21_3.setTextColor(lyricsTextColor);
+                        t21_3.setTypeface(lyrics_useThisFont);
+                        t21_3.setTextSize(lyrics_useThisTextSize);
+                    }
+
+                    if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
+                        t22_3.setTextColor(lyricsTextColor);
+                        t22_3.setTypeface(lyrics_useThisFont);
+                        t22_3.setTextSize(lyrics_useThisTextSize);
+                    }
+
+                    if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
+                        t23_3.setTextColor(lyricsTextColor);
+                        t23_3.setTypeface(lyrics_useThisFont);
+                        t23_3.setTextSize(lyrics_useThisTextSize);
+                    }
+
+                    // Get the block colours
+                    getBlock(whatisthisblock[x + 1]);
+
+                    if (whatisthisblock[x+1].equals("comment")) {
+                        if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
+                            t21_1.setTypeface(commentfont);
+                            t21_1.setTextSize(tempsectionsize);
+                        }
+                        if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
+                            t21_2.setTypeface(commentfont);
+                            t21_2.setTextSize(tempsectionsize);
+                        }
+                        if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
+                            t22_2.setTypeface(commentfont);
+                            t22_2.setTextSize(tempsectionsize);
+                        }
+                        if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
+                            t21_3.setTypeface(commentfont);
+                            t21_3.setTextSize(tempsectionsize);
+                        }
+                        if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
+                            t22_3.setTypeface(commentfont);
+                            t22_3.setTextSize(tempsectionsize);
+                        }
+                        if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
+                            t23_3.setTypeface(commentfont);
+                            t23_3.setTextSize(tempsectionsize);
+                        }
+                    }
+
+                    if (i == 0) {
+                        temp_lyricstext = myParsedLyrics[x + 1].substring(0, chord_pos[1]);
+                        // Multilines
+                        if (myParsedLyrics[x + 1].indexOf("1") == 0) {
+                            if ((x + 2) < numrowstowrite) {
+                                if (myParsedLyrics[x + 2].indexOf("2") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 2].substring(0, chord_pos[1]);
+                                }
+                            }
+                            if ((x + 3) < numrowstowrite) {
+                                if (myParsedLyrics[x + 3].indexOf("3") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 3].substring(0, chord_pos[1]);
+                                }
+                            }
+                            if ((x + 4) < numrowstowrite) {
+                                if (myParsedLyrics[x + 4].indexOf("4") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 4].substring(0, chord_pos[1]);
+                                }
+                            }
+                            if ((x + 5) < numrowstowrite) {
+                                if (myParsedLyrics[x + 5].indexOf("5") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 5].substring(0, chord_pos[1]);
+                                }
+                            }
+                            if ((x + 6) < numrowstowrite) {
+                                if (myParsedLyrics[x + 6].indexOf("6") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 6].substring(0, chord_pos[1]);
+                                }
+                            }
+                            if ((x + 7) < numrowstowrite) {
+                                if (myParsedLyrics[x + 7].indexOf("7") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 7].substring(0, chord_pos[1]);
+                                }
+                            }
+                            if ((x + 8) < numrowstowrite) {
+                                if (myParsedLyrics[x + 8].indexOf("8") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 8].substring(0, chord_pos[1]);
+                                }
+                            }
+                            if ((x + 9) < numrowstowrite) {
+                                if (myParsedLyrics[x + 9].indexOf("9") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 9].substring(0, chord_pos[1]);
+                                }
+                            }
+                        }
+                    } else {
+                        temp_lyricstext = myParsedLyrics[x + 1].substring(chord_pos[i], chord_pos[i + 1]);
+                        // Multilines
+                        if (myParsedLyrics[x + 1].indexOf("1") == 0) {
+                            if ((x + 2) < numrowstowrite) {
+                                if (myParsedLyrics[x + 2].indexOf("2") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 2].substring(chord_pos[i], chord_pos[i + 1]);
+                                }
+                            }
+                            if ((x + 3) < numrowstowrite) {
+                                if (myParsedLyrics[x + 3].indexOf("3") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 3].substring(chord_pos[i], chord_pos[i + 1]);
+                                }
+                            }
+                            if ((x + 4) < numrowstowrite) {
+                                if (myParsedLyrics[x + 4].indexOf("4") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 4].substring(chord_pos[i], chord_pos[i + 1]);
+                                }
+                            }
+                            if ((x + 5) < numrowstowrite) {
+                                if (myParsedLyrics[x + 5].indexOf("5") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 5].substring(chord_pos[i], chord_pos[i + 1]);
+                                }
+                            }
+                            if ((x + 6) < numrowstowrite) {
+                                if (myParsedLyrics[x + 6].indexOf("6") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 6].substring(chord_pos[i], chord_pos[i + 1]);
+                                }
+                            }
+                            if ((x + 7) < numrowstowrite) {
+                                if (myParsedLyrics[x + 7].indexOf("7") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 7].substring(chord_pos[i], chord_pos[i + 1]);
+                                }
+                            }
+                            if ((x + 8) < numrowstowrite) {
+                                if (myParsedLyrics[x + 8].indexOf("8") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 8].substring(chord_pos[i], chord_pos[i + 1]);
+                                }
+                            }
+                            if ((x + 9) < numrowstowrite) {
+                                if (myParsedLyrics[x + 9].indexOf("9") == 0) {
+                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 9].substring(chord_pos[i], chord_pos[i + 1]);
+                                }
+                            }
+                        }
+                    }
+
+                    if (i==chordnum) {
+                        temp_lyricstext = temp_lyricstext;
+                    }
+
+                    if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
+                        t21_1.setText(temp_lyricstext);
+                        t21_1.setBackgroundColor(temp_useThisBGColor);
+                        lyrics_row1_1.addView(t21_1);
+                    }
+                    if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
+                        t21_2.setText(temp_lyricstext);
+                        t21_2.setBackgroundColor(temp_useThisBGColor);
+                        lyrics_row1_2.addView(t21_2);
+                    }
+                    if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
+                        t22_2.setText(temp_lyricstext);
+                        t22_2.setBackgroundColor(temp_useThisBGColor);
+                        lyrics_row2_2.addView(t22_2);
+                    }
+                    if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
+                        t21_3.setText(temp_lyricstext);
+                        t21_3.setBackgroundColor(temp_useThisBGColor);
+                        lyrics_row1_3.addView(t21_3);
+                    }
+                    if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
+                        t22_3.setText(temp_lyricstext);
+                        t22_3.setBackgroundColor(temp_useThisBGColor);
+                        lyrics_row2_3.addView(t22_3);
+                    }
+                    if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
+                        t23_3.setText(temp_lyricstext);
+                        t23_3.setBackgroundColor(temp_useThisBGColor);
+                        lyrics_row3_3.addView(t23_3);
+                    }
+                }
+
+                // Decide on the lyrics row background colour
+                getBlock(whatisthisblock[x + 1]);
+
+                if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                    lyrics_row1_1.setBackgroundColor(lyrics_useThisBGColor);
+                    lyrics_row1_1.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                }
+                if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                    lyrics_row1_2.setBackgroundColor(lyrics_useThisBGColor);
+                    lyrics_row1_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                }
+                if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                    lyrics_row2_2.setBackgroundColor(lyrics_useThisBGColor);
+                    lyrics_row2_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                }
+                if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                    lyrics_row1_3.setBackgroundColor(lyrics_useThisBGColor);
+                    lyrics_row1_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                }
+                if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                    lyrics_row2_3.setBackgroundColor(lyrics_useThisBGColor);
+                    lyrics_row2_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                }
+                if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                    lyrics_row3_3.setBackgroundColor(lyrics_useThisBGColor);
+                    lyrics_row3_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                }
+
+                // What should we be showing?
+                // First option is that there are no capo chords, but the user wants chords
+                // This displays the normal chords only
+                if (showChords.equals("Y") && !showCapo) {
+                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                        chords_n_lyrics1_1.addView(lyrics_row1_1, 1);
+                    }
+                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                        chords_n_lyrics1_2.addView(lyrics_row1_2, 1);
+                    }
+                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                        chords_n_lyrics2_2.addView(lyrics_row2_2, 1);
+                    }
+                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics1_3.addView(lyrics_row1_3, 1);
+                    }
+                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics2_3.addView(lyrics_row2_3, 1);
+                    }
+                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics3_3.addView(lyrics_row3_3, 1);
+                    }
+                } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("both")) {
+                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                        chords_n_lyrics1_1.addView(lyrics_row1_1, 2);
+                    }
+                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                        chords_n_lyrics1_2.addView(lyrics_row1_2, 2);
+                    }
+                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                        chords_n_lyrics2_2.addView(lyrics_row2_2, 2);
+                    }
+                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics1_3.addView(lyrics_row1_3, 2);
+                    }
+                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics2_3.addView(lyrics_row2_3, 2);
+                    }
+                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics3_3.addView(lyrics_row3_3, 2);
+                    }
+                } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("capoonly")) {
+                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                        chords_n_lyrics1_1.addView(lyrics_row1_1, 1);
+                    }
+                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                        chords_n_lyrics1_2.addView(lyrics_row1_2, 1);
+                    }
+                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                        chords_n_lyrics2_2.addView(lyrics_row2_2, 1);
+                    }
+                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics1_3.addView(lyrics_row1_3, 1);
+                    }
+                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics2_3.addView(lyrics_row2_3, 1);
+                    }
+                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics3_3.addView(lyrics_row3_3, 1);
+                    }
+                } else {
+                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                        chords_n_lyrics1_1.addView(lyrics_row1_1, 0);
+                    }
+                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                        chords_n_lyrics1_2.addView(lyrics_row1_2, 0);
+                    }
+                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                        chords_n_lyrics2_2.addView(lyrics_row2_2, 0);
+                    }
+                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics1_3.addView(lyrics_row1_3, 0);
+                    }
+                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics2_3.addView(lyrics_row2_3, 0);
+                    }
+                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                        chords_n_lyrics3_3.addView(lyrics_row3_3, 0);
+                    }
+                }
+
+                // Prepare this view
+                if (writetocol1_1) {
+                    lyricstable_onecolview.addView(chords_n_lyrics1_1);
+                }
+                if (writetocol1_2) {
+                    lyricstable_twocolview.addView(chords_n_lyrics1_2);
+                } else if (writetocol2_2) {
+                    lyricstable2_twocolview.addView(chords_n_lyrics2_2);
+                }
+                if (writetocol1_3) {
+                    lyricstable_threecolview.addView(chords_n_lyrics1_3);
+                } else if (writetocol2_3) {
+                    lyricstable2_threecolview.addView(chords_n_lyrics2_3);
+                } else if (writetocol3_3) {
+                    lyricstable3_threecolview.addView(chords_n_lyrics3_3);
+                }
+
+            } else if (whatisthisline[x].equals("chords") && !whatisthisline[m].equals("lyrics")) {
+                // No blocking is needed, just add the entire row as one bit
+                TableLayout basicline1_1 = new TableLayout(this);
+                TableLayout basicline1_2 = new TableLayout(this);
+                TableLayout basicline2_2 = new TableLayout(this);
+                TableLayout basicline1_3 = new TableLayout(this);
+                TableLayout basicline2_3 = new TableLayout(this);
+                TableLayout basicline3_3 = new TableLayout(this);
+
+                basicline1_1.setPadding(0, 0, 0, 0);
+                basicline1_2.setPadding(0, 0, 0, 0);
+                basicline2_2.setPadding(0, 0, 0, 0);
+                basicline1_3.setPadding(0, 0, 0, 0);
+                basicline2_3.setPadding(0, 0, 0, 0);
+                basicline3_3.setPadding(0, 0, 0, 0);
+
+                // create a new TableRow
+                TableRow normalrow1_1 = new TableRow(this);
+                TableRow normalrow1_2 = new TableRow(this);
+                TableRow normalrow2_2 = new TableRow(this);
+                TableRow normalrow1_3 = new TableRow(this);
+                TableRow normalrow2_3 = new TableRow(this);
+                TableRow normalrow3_3 = new TableRow(this);
+                TableRow caponormalrow1_1 = new TableRow(this);
+                TableRow caponormalrow1_2 = new TableRow(this);
+                TableRow caponormalrow2_2 = new TableRow(this);
+                TableRow caponormalrow1_3 = new TableRow(this);
+                TableRow caponormalrow2_3 = new TableRow(this);
+                TableRow caponormalrow3_3 = new TableRow(this);
+                TableRow.LayoutParams lp = new TableRow.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                        android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(0, 0, 0, 0);
+                normalrow1_1.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                normalrow1_2.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
+                normalrow2_2.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
+                normalrow1_3.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
+                normalrow2_3.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
+                normalrow3_3.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
+                caponormalrow1_1.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
+                caponormalrow1_2.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
+                caponormalrow2_2.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
+                caponormalrow1_3.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
+                caponormalrow2_3.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
+                caponormalrow3_3.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
+
+                // create a new TextView
+                TextView tbasic1_1 = new TextView(this);
+                TextView tbasic1_2 = new TextView(this);
+                TextView tbasic2_2 = new TextView(this);
+                TextView tbasic1_3 = new TextView(this);
+                TextView tbasic2_3 = new TextView(this);
+                TextView tbasic3_3 = new TextView(this);
+                TextView capotbasic1_1 = new TextView(this);
+                TextView capotbasic1_2 = new TextView(this);
+                TextView capotbasic2_2 = new TextView(this);
+                TextView capotbasic1_3 = new TextView(this);
+                TextView capotbasic2_3 = new TextView(this);
+                TextView capotbasic3_3 = new TextView(this);
+                tbasic1_1.setLayoutParams(lp);
+                tbasic1_2.setLayoutParams(lp);
+                tbasic2_2.setLayoutParams(lp);
+                tbasic1_3.setLayoutParams(lp);
+                tbasic2_3.setLayoutParams(lp);
+                tbasic3_3.setLayoutParams(lp);
+                capotbasic1_1.setLayoutParams(lp);
+                capotbasic1_2.setLayoutParams(lp);
+                capotbasic2_2.setLayoutParams(lp);
+                capotbasic1_3.setLayoutParams(lp);
+                capotbasic2_3.setLayoutParams(lp);
+                capotbasic3_3.setLayoutParams(lp);
+                tbasic1_1.setText(myParsedLyrics[x]);
+                tbasic1_1.setTextColor(lyricsChordsColor);
+                tbasic1_1.setTypeface(chordsfont);
+                tbasic1_1.setTextSize(tempfontsize);
+                tbasic1_1.setPadding(0, 0, 0, 0);
+                tbasic1_2.setText(myParsedLyrics[x]);
+                tbasic1_2.setTextColor(lyricsChordsColor);
+                tbasic1_2.setTypeface(chordsfont);
+                tbasic1_2.setTextSize(tempfontsize);
+                tbasic1_2.setPadding(0, 0, 0, 0);
+                tbasic2_2.setText(myParsedLyrics[x]);
+                tbasic2_2.setTextColor(lyricsChordsColor);
+                tbasic2_2.setTypeface(chordsfont);
+                tbasic2_2.setTextSize(tempfontsize);
+                tbasic2_2.setPadding(0, 0, 0, 0);
+                tbasic1_3.setText(myParsedLyrics[x]);
+                tbasic1_3.setTextColor(lyricsChordsColor);
+                tbasic1_3.setTypeface(chordsfont);
+                tbasic1_3.setTextSize(tempfontsize);
+                tbasic1_3.setPadding(0, 0, 0, 0);
+                tbasic2_3.setText(myParsedLyrics[x]);
+                tbasic2_3.setTextColor(lyricsChordsColor);
+                tbasic2_3.setTypeface(chordsfont);
+                tbasic2_3.setTextSize(tempfontsize);
+                tbasic2_3.setPadding(0, 0, 0, 0);
+                tbasic3_3.setText(myParsedLyrics[x]);
+                tbasic3_3.setTextColor(lyricsChordsColor);
+                tbasic3_3.setTypeface(chordsfont);
+                tbasic3_3.setTextSize(tempfontsize);
+                tbasic3_3.setPadding(0, 0, 0, 0);
+
+                if (showCapo) {
+                    temptranspChords = myParsedLyrics[x];
+                    Transpose.capoTranspose();
+                    allchordscapo = allchordscapo + " " + temptranspChords;
+                    capotbasic1_1.setText(temptranspChords);
+                    capotbasic1_1.setTextColor(lyricsCapoColor);
+                    capotbasic1_1.setTypeface(chordsfont);
+                    capotbasic1_1.setTextSize(tempfontsize);
+                    capotbasic1_1.setPadding(0, 0, 0, 0);
+                    capotbasic1_2.setText(temptranspChords);
+                    capotbasic1_2.setTextColor(lyricsCapoColor);
+                    capotbasic1_2.setTypeface(chordsfont);
+                    capotbasic1_2.setTextSize(tempfontsize);
+                    capotbasic1_2.setPadding(0, 0, 0, 0);
+                    capotbasic2_2.setText(temptranspChords);
+                    capotbasic2_2.setTextColor(lyricsCapoColor);
+                    capotbasic2_2.setTypeface(chordsfont);
+                    capotbasic2_2.setTextSize(tempfontsize);
+                    capotbasic2_2.setPadding(0, 0, 0, 0);
+                    capotbasic1_3.setText(temptranspChords);
+                    capotbasic1_3.setTextColor(lyricsCapoColor);
+                    capotbasic1_3.setTypeface(chordsfont);
+                    capotbasic1_3.setTextSize(tempfontsize);
+                    capotbasic1_3.setPadding(0, 0, 0, 0);
+                    capotbasic2_3.setText(temptranspChords);
+                    capotbasic2_3.setTextColor(lyricsCapoColor);
+                    capotbasic2_3.setTypeface(chordsfont);
+                    capotbasic2_3.setTextSize(tempfontsize);
+                    capotbasic2_3.setPadding(0, 0, 0, 0);
+                    capotbasic3_3.setText(temptranspChords);
+                    capotbasic3_3.setTextColor(lyricsCapoColor);
+                    capotbasic3_3.setTypeface(chordsfont);
+                    capotbasic3_3.setTextSize(tempfontsize);
+                    capotbasic3_3.setPadding(0, 0, 0, 0);
+                }
+
+                // If line is a title, need to make the text size smaller
+                if (whatisthisline[x].equals("versetitle")
+                        || whatisthisline[x].equals("chorustitle")
+                        || whatisthisline[x].equals("prechorustitle")
+                        || whatisthisline[x].equals("bridgetitle")
+                        || whatisthisline[x].equals("tagtitle")
+                        || whatisthisline[x].equals("customtitle")) {
+                    tbasic1_1.setTextColor(lyricsTextColor);
+                    tbasic1_1.setAlpha(0.8f);
+                    tbasic1_1.setTextSize(tempsectionsize);
+                    tbasic1_2.setTextColor(lyricsTextColor);
+                    tbasic1_2.setAlpha(0.8f);
+                    tbasic1_2.setTextSize(tempsectionsize);
+                    tbasic2_2.setTextColor(lyricsTextColor);
+                    tbasic2_2.setAlpha(0.8f);
+                    tbasic2_2.setTextSize(tempsectionsize);
+                    tbasic1_3.setTextColor(lyricsTextColor);
+                    tbasic1_3.setAlpha(0.8f);
+                    tbasic1_3.setTextSize(tempsectionsize);
+                    tbasic2_3.setTextColor(lyricsTextColor);
+                    tbasic2_3.setAlpha(0.8f);
+                    tbasic2_3.setTextSize(tempsectionsize);
+                    tbasic3_3.setTextColor(lyricsTextColor);
+                    tbasic3_3.setAlpha(0.8f);
+                    tbasic3_3.setTextSize(tempsectionsize);
+                }
+                // add the TextView new TableRow
+                normalrow1_1.addView(tbasic1_1);
+                normalrow1_2.addView(tbasic1_2);
+                normalrow2_2.addView(tbasic2_2);
+                normalrow1_3.addView(tbasic1_3);
+                normalrow2_3.addView(tbasic2_3);
+                normalrow3_3.addView(tbasic3_3);
+                if (showCapo && showChords.equals("Y")) {
+                    caponormalrow1_1.addView(capotbasic1_1);
+                    caponormalrow1_2.addView(capotbasic1_2);
+                    caponormalrow2_2.addView(capotbasic2_2);
+                    caponormalrow1_3.addView(capotbasic1_3);
+                    caponormalrow2_3.addView(capotbasic2_3);
+                    caponormalrow3_3.addView(capotbasic3_3);
+                }
+
+                lyrics_useThisFont = lyricsfont;
+                lyrics_useThisTextSize = tempfontsize;
+
+                // Decide on the block of text
+                getBlock(whatisthisblock[x]);
+
+                tbasic1_1.setBackgroundColor(lyrics_useThisBGColor);
+                tbasic1_2.setBackgroundColor(lyrics_useThisBGColor);
+                tbasic2_2.setBackgroundColor(lyrics_useThisBGColor);
+                tbasic1_3.setBackgroundColor(lyrics_useThisBGColor);
+                tbasic2_3.setBackgroundColor(lyrics_useThisBGColor);
+                tbasic3_3.setBackgroundColor(lyrics_useThisBGColor);
+                normalrow1_1.setBackgroundColor(lyrics_useThisBGColor);
+                normalrow1_2.setBackgroundColor(lyrics_useThisBGColor);
+                normalrow2_2.setBackgroundColor(lyrics_useThisBGColor);
+                normalrow1_3.setBackgroundColor(lyrics_useThisBGColor);
+                normalrow2_3.setBackgroundColor(lyrics_useThisBGColor);
+                normalrow3_3.setBackgroundColor(lyrics_useThisBGColor);
+                capotbasic1_1.setBackgroundColor(lyrics_useThisBGColor);
+                capotbasic1_2.setBackgroundColor(lyrics_useThisBGColor);
+                capotbasic2_2.setBackgroundColor(lyrics_useThisBGColor);
+                capotbasic1_3.setBackgroundColor(lyrics_useThisBGColor);
+                capotbasic2_3.setBackgroundColor(lyrics_useThisBGColor);
+                capotbasic3_3.setBackgroundColor(lyrics_useThisBGColor);
+                caponormalrow1_1.setBackgroundColor(lyrics_useThisBGColor);
+                caponormalrow1_2.setBackgroundColor(lyrics_useThisBGColor);
+                caponormalrow2_2.setBackgroundColor(lyrics_useThisBGColor);
+                caponormalrow1_3.setBackgroundColor(lyrics_useThisBGColor);
+                caponormalrow2_3.setBackgroundColor(lyrics_useThisBGColor);
+                caponormalrow3_3.setBackgroundColor(lyrics_useThisBGColor);
+                //tbasic.setTypeface(lyrics_useThisFont);
+                tbasic1_1.setTextSize(lyrics_useThisTextSize);
+                tbasic1_2.setTextSize(lyrics_useThisTextSize);
+                tbasic2_2.setTextSize(lyrics_useThisTextSize);
+                tbasic1_3.setTextSize(lyrics_useThisTextSize);
+                tbasic2_3.setTextSize(lyrics_useThisTextSize);
+                tbasic3_3.setTextSize(lyrics_useThisTextSize);
+                //capotbasic.setTypeface(lyrics_useThisFont);
+                capotbasic1_1.setTextSize(lyrics_useThisTextSize);
+                capotbasic1_2.setTextSize(lyrics_useThisTextSize);
+                capotbasic2_2.setTextSize(lyrics_useThisTextSize);
+                capotbasic1_3.setTextSize(lyrics_useThisTextSize);
+                capotbasic2_3.setTextSize(lyrics_useThisTextSize);
+                capotbasic3_3.setTextSize(lyrics_useThisTextSize);
+
+                if (!whatisthisline[x].equals("chords")) {
+                    basicline1_1.addView(normalrow1_1);
+                    basicline1_2.addView(normalrow1_2);
+                    basicline2_2.addView(normalrow2_2);
+                    basicline1_3.addView(normalrow1_3);
+                    basicline2_3.addView(normalrow2_3);
+                    basicline3_3.addView(normalrow3_3);
+                } else if (whatisthisline[x].equals("chords") && showChords.equals("Y")) {
+                    if (!showCapo) {
+                        // Add this line of chords to the combined string
+                        allchords = allchords + " " + myParsedLyrics[x];
+                        basicline1_1.addView(normalrow1_1);
+                        basicline1_2.addView(normalrow1_2);
+                        basicline2_2.addView(normalrow2_2);
+                        basicline1_3.addView(normalrow1_3);
+                        basicline2_3.addView(normalrow2_3);
+                        basicline3_3.addView(normalrow3_3);
+                    } else if (showCapo && capoDisplay.equals("both")) {
+                        // Add this line of chords to the combined string
+                        allchords = allchords + " " + myParsedLyrics[x];
+                        allchords = allchords + " " + allchordscapo;
+                        basicline1_1.addView(normalrow1_1);
+                        basicline1_2.addView(normalrow1_2);
+                        basicline2_2.addView(normalrow2_2);
+                        basicline1_3.addView(normalrow1_3);
+                        basicline2_3.addView(normalrow2_3);
+                        basicline3_3.addView(normalrow3_3);
+                        basicline1_1.addView(caponormalrow1_1);
+                        basicline1_2.addView(caponormalrow1_2);
+                        basicline2_2.addView(caponormalrow2_2);
+                        basicline1_3.addView(caponormalrow1_3);
+                        basicline2_3.addView(caponormalrow2_3);
+                        basicline3_3.addView(caponormalrow3_3);
+                    } else if (showCapo && capoDisplay.equals("capoonly")) {
+                        // Add this line of chords to the combined string
+                        allchords = allchords + " " + allchordscapo;
+                        basicline1_1.addView(caponormalrow1_1);
+                        basicline1_2.addView(caponormalrow1_2);
+                        basicline2_2.addView(caponormalrow2_2);
+                        basicline1_3.addView(caponormalrow1_3);
+                        basicline2_3.addView(caponormalrow2_3);
+                        basicline3_3.addView(caponormalrow3_3);
+                    }
+                }
+                // Prepare this view
+                if (writetocol1_1) {
+                    lyricstable_onecolview.addView(basicline1_1);
+                }
+                if (writetocol1_2) {
+                    lyricstable_twocolview.addView(basicline1_2);
+                } else if (writetocol2_2) {
+                    lyricstable2_twocolview.addView(basicline2_2);
+                }
+                if (writetocol1_3) {
+                    lyricstable_threecolview.addView(basicline1_3);
+                } else if (writetocol2_3) {
+                    lyricstable2_threecolview.addView(basicline2_3);
+                } else if (writetocol3_3) {
+                    lyricstable3_threecolview.addView(basicline3_3);
+                }
+
+
+            } else if (!whatisthisline[n].equals("chords")||whatisthisline[x].contains("title")) {
+                // No blocking is needed, just add the entire row as one bit
+                TableLayout basicline1_1 = new TableLayout(this);
+                TableLayout basicline1_2 = new TableLayout(this);
+                TableLayout basicline2_2 = new TableLayout(this);
+                TableLayout basicline1_3 = new TableLayout(this);
+                TableLayout basicline2_3 = new TableLayout(this);
+                TableLayout basicline3_3 = new TableLayout(this);
+                basicline1_1.setPadding(0, 0, 0, 0);
+                basicline1_2.setPadding(0, 0, 0, 0);
+                basicline2_2.setPadding(0, 0, 0, 0);
+                basicline1_3.setPadding(0, 0, 0, 0);
+                basicline2_3.setPadding(0, 0, 0, 0);
+                basicline3_3.setPadding(0, 0, 0, 0);
+
+                // create a new TableRow
+                TableRow normalrow1_1 = new TableRow(this);
+                TableRow normalrow1_2 = new TableRow(this);
+                TableRow normalrow2_2 = new TableRow(this);
+                TableRow normalrow1_3 = new TableRow(this);
+                TableRow normalrow2_3 = new TableRow(this);
+                TableRow normalrow3_3 = new TableRow(this);
+                TableRow.LayoutParams lp = new TableRow.LayoutParams(
+                        android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                        android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(0, 0, 0, 0);
+
+                if (!whatisthisline[x].contains("title")) {
+                    myParsedLyrics[x] = myParsedLyrics[x];
+                }
+
+                // create a new TextView
+                TextView tbasic1_1 = new TextView(this);
+                tbasic1_1.setLayoutParams(lp);
+                tbasic1_1.setText(myParsedLyrics[x]);
+                tbasic1_1.setTextColor(lyricsTextColor);
+                tbasic1_1.setTypeface(lyricsfont);
+                tbasic1_1.setTextSize(tempfontsize);
+                tbasic1_1.setPadding(0, 0, 0, 0);
+                TextView tbasic1_2 = new TextView(this);
+                tbasic1_2.setLayoutParams(lp);
+                tbasic1_2.setText(myParsedLyrics[x]);
+                tbasic1_2.setTextColor(lyricsTextColor);
+                tbasic1_2.setTypeface(lyricsfont);
+                tbasic1_2.setTextSize(tempfontsize);
+                tbasic1_2.setPadding(0, 0, 0, 0);
+                TextView tbasic2_2 = new TextView(this);
+                tbasic2_2.setLayoutParams(lp);
+                tbasic2_2.setText(myParsedLyrics[x]);
+                tbasic2_2.setTextColor(lyricsTextColor);
+                tbasic2_2.setTypeface(lyricsfont);
+                tbasic2_2.setTextSize(tempfontsize);
+                tbasic2_2.setPadding(0, 0, 0, 0);
+                TextView tbasic1_3 = new TextView(this);
+                tbasic1_3.setLayoutParams(lp);
+                tbasic1_3.setText(myParsedLyrics[x]);
+                tbasic1_3.setTextColor(lyricsTextColor);
+                tbasic1_3.setTypeface(lyricsfont);
+                tbasic1_3.setTextSize(tempfontsize);
+                tbasic1_3.setPadding(0, 0, 0, 0);
+                TextView tbasic2_3 = new TextView(this);
+                tbasic2_3.setLayoutParams(lp);
+                tbasic2_3.setText(myParsedLyrics[x]);
+                tbasic2_3.setTextColor(lyricsTextColor);
+                tbasic2_3.setTypeface(lyricsfont);
+                tbasic2_3.setTextSize(tempfontsize);
+                tbasic2_3.setPadding(0, 0, 0, 0);
+                TextView tbasic3_3 = new TextView(this);
+                tbasic3_3.setLayoutParams(lp);
+                tbasic3_3.setText(myParsedLyrics[x]);
+                tbasic3_3.setTextColor(lyricsTextColor);
+                tbasic3_3.setTypeface(lyricsfont);
+                tbasic3_3.setTextSize(tempfontsize);
+                tbasic3_3.setPadding(0, 0, 0, 0);
+
+                // If line is a title, need to make the text size smaller
+                if (whatisthisline[x].equals("versetitle")
+                        || whatisthisline[x].equals("chorustitle")
+                        || whatisthisline[x].equals("prechorustitle")
+                        || whatisthisline[x].equals("bridgetitle")
+                        || whatisthisline[x].equals("tagtitle")
+                        || whatisthisline[x].equals("customtitle")) {
+                    tbasic1_1.setTextColor(lyricsTextColor);
+                    tbasic1_1.setAlpha(0.8f);
+                    tbasic1_1.setTextSize(tempfontsize*0.6f);
+                    tbasic1_1.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                    tbasic1_2.setTextColor(lyricsTextColor);
+                    tbasic1_2.setAlpha(0.8f);
+                    tbasic1_2.setTextSize(tempfontsize*0.6f);
+                    tbasic1_2.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                    tbasic2_2.setTextColor(lyricsTextColor);
+                    tbasic2_2.setAlpha(0.8f);
+                    tbasic2_2.setTextSize(tempfontsize*0.6f);
+                    tbasic2_2.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                    tbasic1_3.setTextColor(lyricsTextColor);
+                    tbasic1_3.setAlpha(0.8f);
+                    tbasic1_3.setTextSize(tempfontsize*0.6f);
+                    tbasic1_3.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                    tbasic2_3.setTextColor(lyricsTextColor);
+                    tbasic2_3.setAlpha(0.8f);
+                    tbasic2_3.setTextSize(tempfontsize*0.6f);
+                    tbasic2_3.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                    tbasic3_3.setTextColor(lyricsTextColor);
+                    tbasic3_3.setAlpha(0.8f);
+                    tbasic3_3.setTextSize(tempfontsize*0.6f);
+                    tbasic3_3.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                }
+                // add the TextView new TableRow
+                // As long as it isn't a multiline 2-9 beginning
+                if (myParsedLyrics[x].indexOf("1")!=0 && myParsedLyrics[x].indexOf("2")!=0 && myParsedLyrics[x].indexOf("3")!=0 &&
+                        myParsedLyrics[x].indexOf("4")!=0 && myParsedLyrics[x].indexOf("5")!=0 &&
+                        myParsedLyrics[x].indexOf("6")!=0 && myParsedLyrics[x].indexOf("7")!=0 &&
+                        myParsedLyrics[x].indexOf("8")!=0 && myParsedLyrics[x].indexOf("9")!=0) {
+                    normalrow1_1.addView(tbasic1_1);
+                    normalrow1_2.addView(tbasic1_2);
+                    normalrow2_2.addView(tbasic2_2);
+                    normalrow1_3.addView(tbasic1_3);
+                    normalrow2_3.addView(tbasic2_3);
+                    normalrow3_3.addView(tbasic3_3);
+
+                } else if (myParsedLyrics[x].indexOf("1")==0) {
+                    // Since we have a multiline section, add the remaining lines needed
+                    String newtext = myParsedLyrics[x];
+                    if ((x+1)<numrowstowrite) {
+                        if (myParsedLyrics[x+1].indexOf("2")==0) {
+                            newtext = newtext + "\n"+ myParsedLyrics[x + 1];
+                        }
+                    }
+                    if ((x+2)<numrowstowrite) {
+                        if (myParsedLyrics[x+2].indexOf("3")==0) {
+                            newtext = newtext + "\n"+ myParsedLyrics[x + 2];
+                        }
+                    }
+                    if ((x+3)<numrowstowrite) {
+                        if (myParsedLyrics[x+3].indexOf("4")==0) {
+                            newtext = newtext + "\n"+ myParsedLyrics[x + 3];
+                        }
+                    }
+                    if ((x+4)<numrowstowrite) {
+                        if (myParsedLyrics[x+4].indexOf("5")==0) {
+                            newtext = newtext + "\n"+ myParsedLyrics[x + 4];
+                        }
+                    }
+                    if ((x+5)<numrowstowrite) {
+                        if (myParsedLyrics[x+5].indexOf("6")==0) {
+                            newtext = newtext + "\n"+ myParsedLyrics[x + 5];
+                        }
+                    }
+                    if ((x+6)<numrowstowrite) {
+                        if (myParsedLyrics[x+6].indexOf("7")==0) {
+                            newtext = newtext + "\n"+ myParsedLyrics[x + 6];
+                        }
+                    }
+                    if ((x+7)<numrowstowrite) {
+                        if (myParsedLyrics[x+7].indexOf("8")==0) {
+                            newtext = newtext + "\n"+ myParsedLyrics[x + 7];
+                        }
+                    }
+                    if ((x+8)<numrowstowrite) {
+                        if (myParsedLyrics[x+8].indexOf("9")==0) {
+                            newtext = newtext + "\n"+ myParsedLyrics[x + 8];
+                        }
+                    }
+
+                    tbasic1_1.setText(newtext);
+                    tbasic1_2.setText(newtext);
+                    tbasic2_2.setText(newtext);
+                    tbasic1_3.setText(newtext);
+                    tbasic2_3.setText(newtext);
+                    tbasic3_3.setText(newtext);
+                    normalrow1_1.addView(tbasic1_1);
+                    normalrow1_2.addView(tbasic1_2);
+                    normalrow2_2.addView(tbasic2_2);
+                    normalrow1_3.addView(tbasic1_3);
+                    normalrow2_3.addView(tbasic2_3);
+                    normalrow3_3.addView(tbasic3_3);
+                }
+
+                //lyrics_useThisBGColor = lyricsVerseColor;
+                //lyrics_useThisTextSize = tempfontsize;
+                lyrics_useThisFont = lyricsfont;
+
+                // Decide on the block of text
+                getBlock(whatisthisblock[x]);
+
+                tbasic1_1.setBackgroundColor(lyrics_useThisBGColor);
+                tbasic1_2.setBackgroundColor(lyrics_useThisBGColor);
+                tbasic2_2.setBackgroundColor(lyrics_useThisBGColor);
+                tbasic1_3.setBackgroundColor(lyrics_useThisBGColor);
+                tbasic2_3.setBackgroundColor(lyrics_useThisBGColor);
+                tbasic3_3.setBackgroundColor(lyrics_useThisBGColor);
+
+                if (whatisthisline[x].equals("comment")) {
+                    tbasic1_1.setTextSize(tempsectionsize);
+                    tbasic1_2.setTextSize(tempsectionsize);
+                    tbasic1_2.setTextSize(tempsectionsize);
+                    tbasic1_3.setTextSize(tempsectionsize);
+                    tbasic1_3.setTextSize(tempsectionsize);
+                    tbasic1_3.setTextSize(tempsectionsize);
+                }
+                normalrow1_1.setBackgroundColor(lyrics_useThisBGColor);
+                normalrow1_2.setBackgroundColor(lyrics_useThisBGColor);
+                normalrow2_2.setBackgroundColor(lyrics_useThisBGColor);
+                normalrow1_3.setBackgroundColor(lyrics_useThisBGColor);
+                normalrow2_3.setBackgroundColor(lyrics_useThisBGColor);
+                normalrow3_3.setBackgroundColor(lyrics_useThisBGColor);
+
+                if (!whatisthisline[x].equals("chords")) {
+                    basicline1_1.addView(normalrow1_1);
+                    basicline1_2.addView(normalrow1_2);
+                    basicline2_2.addView(normalrow2_2);
+                    basicline1_3.addView(normalrow1_3);
+                    basicline2_3.addView(normalrow2_3);
+                    basicline3_3.addView(normalrow3_3);
+                } else if (whatisthisline[x].equals("chords") && showChords.equals("Y")) {
+                    basicline1_1.addView(normalrow1_1);
+                    basicline1_2.addView(normalrow1_2);
+                    basicline2_2.addView(normalrow2_2);
+                    basicline1_3.addView(normalrow1_3);
+                    basicline2_3.addView(normalrow2_3);
+                    basicline3_3.addView(normalrow3_3);
+                }
+
+                // Prepare this view
+                if (writetocol1_1) {
+                    lyricstable_onecolview.addView(basicline1_1);
+                }
+                if (writetocol1_2) {
+                    lyricstable_twocolview.addView(basicline1_2);
+                } else if (writetocol2_2) {
+                    lyricstable2_twocolview.addView(basicline2_2);
+                }
+                if (writetocol1_3) {
+                    lyricstable_threecolview.addView(basicline1_3);
+                } else if (writetocol2_3) {
+                    lyricstable2_threecolview.addView(basicline2_3);
+                } else if (writetocol3_3) {
+                    lyricstable3_threecolview.addView(basicline3_3);
+                }
+            }
+        }
+        // If in a set view and option is on to show at bottom, show the title of the next song
+        // If we are showing the last song already, say this instead
+        if (setView.equals("Y") && showNextInSet.equals("bottom")) {
+            // Get next title in set
+            String next_title = getResources().getString(R.string.next) + ": " + getResources().getString(R.string.lastsong);
+            if (setView.equals("Y") && showNextInSet.equals("bottom")) {
+                // Get next title in set
+                next_title = getResources().getString(R.string.lastsong);
+                if (setSize >= 2 && indexSongInSet >= 0 && indexSongInSet < (setSize - 1)) {
+                    next_title = getResources().getString(R.string.next) + ": " + mSetList[indexSongInSet+1];
+                }
+                RelativeLayout nextInSetBox1_1 = new RelativeLayout(this);
+                RelativeLayout nextInSetBox1_2 = new RelativeLayout(this);
+                RelativeLayout nextInSetBox2_2 = new RelativeLayout(this);
+                RelativeLayout nextInSetBox1_3 = new RelativeLayout(this);
+                RelativeLayout nextInSetBox2_3 = new RelativeLayout(this);
+                RelativeLayout nextInSetBox3_3 = new RelativeLayout(this);
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                nextInSetBox1_1.setLayoutParams(lp);
+                nextInSetBox1_1.setHorizontalGravity(Gravity.RIGHT);
+                nextInSetBox1_2.setLayoutParams(lp);
+                nextInSetBox1_2.setHorizontalGravity(Gravity.RIGHT);
+                nextInSetBox2_2.setLayoutParams(lp);
+                nextInSetBox2_2.setHorizontalGravity(Gravity.RIGHT);
+                nextInSetBox1_3.setLayoutParams(lp);
+                nextInSetBox1_3.setHorizontalGravity(Gravity.RIGHT);
+                nextInSetBox2_3.setLayoutParams(lp);
+                nextInSetBox2_3.setHorizontalGravity(Gravity.RIGHT);
+                nextInSetBox3_3.setLayoutParams(lp);
+                nextInSetBox3_3.setHorizontalGravity(Gravity.RIGHT);
+                TextView nextSongText1_1 = new TextView(this);
+                nextSongText1_1.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                nextSongText1_1.setText(next_title);
+                nextSongText1_1.setGravity(Gravity.RIGHT);
+                nextSongText1_1.setTypeface(lyrics_useThisFont);
+                nextSongText1_1.setBackgroundColor(lyricsCommentColor);
+                nextSongText1_1.setTextColor(lyricsTextColor);
+                nextSongText1_1.setTextSize(tempfontsize * 0.7f);
+                nextInSetBox1_1.addView(nextSongText1_1);
+                TextView nextSongText2_2 = new TextView(this);
+                nextSongText2_2.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                nextSongText2_2.setText(next_title);
+                nextSongText2_2.setGravity(Gravity.RIGHT);
+                nextSongText2_2.setTypeface(lyrics_useThisFont);
+                nextSongText2_2.setBackgroundColor(lyricsCommentColor);
+                nextSongText2_2.setTextColor(lyricsTextColor);
+                nextSongText2_2.setTextSize(tempfontsize * 0.7f);
+                nextInSetBox2_2.addView(nextSongText2_2);
+                TextView nextSongText3_3 = new TextView(this);
+                nextSongText3_3.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                nextSongText3_3.setText(next_title);
+                nextSongText3_3.setGravity(Gravity.RIGHT);
+                nextSongText3_3.setTypeface(lyrics_useThisFont);
+                nextSongText3_3.setBackgroundColor(lyricsCommentColor);
+                nextSongText3_3.setTextColor(lyricsTextColor);
+                nextSongText3_3.setTextSize(tempfontsize * 0.7f);
+                nextInSetBox3_3.addView(nextSongText3_3);
+
+                // Prepare this view
+                lyricstable_onecolview.addView(nextInSetBox1_1);
+                lyricstable2_twocolview.addView(nextInSetBox2_2);
+                lyricstable3_threecolview.addView(nextInSetBox3_3);
+            }
+        }
+    }
+
+    @Override
+    public void openSongEdit() {
+        // This is called from the create a new song popup
+        ListSongFiles.listSongFolders();
+        // Now load the appropriate song folder
+        ListSongFiles.listSongs();
+        invalidateOptionsMenu();
+        try {
+            LoadXML.loadXML();
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
+        }
+
+        redrawTheLyricsTable(main_page);
+        Log.d("openSongEdit", "mTitle="+mTitle);
+        Log.d("openSongEdit", "songfilename=" + songfilename);
+        Log.d("openSongEdit","whichsongfolder="+whichSongFolder);
+
+        whattodo = "editsong";
+        DialogFragment newFragment = PopUpEditSongFragment.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
+    }
+
+    public void getBlock(String what) {
+        switch (what) {
+            case "chorus":
+                chords_useThisBGColor = lyricsChorusColor;
+                capo_useThisBGColor = lyricsChorusColor;
+                lyrics_useThisBGColor = lyricsChorusColor;
+                temp_useThisBGColor = lyricsChorusColor;
+                break;
+            case "verse":
+                chords_useThisBGColor = lyricsVerseColor;
+                capo_useThisBGColor = lyricsVerseColor;
+                lyrics_useThisBGColor = lyricsVerseColor;
+                temp_useThisBGColor = lyricsVerseColor;
+                break;
+            case "prechorus":
+                chords_useThisBGColor = lyricsPreChorusColor;
+                capo_useThisBGColor = lyricsPreChorusColor;
+                lyrics_useThisBGColor = lyricsPreChorusColor;
+                temp_useThisBGColor = lyricsPreChorusColor;
+                break;
+            case "bridge":
+                chords_useThisBGColor = lyricsBridgeColor;
+                capo_useThisBGColor = lyricsBridgeColor;
+                lyrics_useThisBGColor = lyricsBridgeColor;
+                temp_useThisBGColor = lyricsBridgeColor;
+                break;
+            case "tag":
+                chords_useThisBGColor = lyricsTagColor;
+                capo_useThisBGColor = lyricsTagColor;
+                lyrics_useThisBGColor = lyricsTagColor;
+                temp_useThisBGColor = lyricsTagColor;
+                break;
+            case "comment":
+                chords_useThisBGColor = lyricsCommentColor;
+                capo_useThisBGColor = lyricsCommentColor;
+                lyrics_useThisBGColor = lyricsCommentColor;
+                temp_useThisBGColor = lyricsCommentColor;
+                lyrics_useThisFont = commentfont;
+                lyrics_useThisTextSize = tempsectionsize;
+                break;
+            case "custom":
+                chords_useThisBGColor = lyricsCustomColor;
+                capo_useThisBGColor = lyricsCustomColor;
+                lyrics_useThisBGColor = lyricsCustomColor;
+                temp_useThisBGColor = lyricsCustomColor;
+                break;
+            default:
+                chords_useThisBGColor = lyricsVerseColor;
+                capo_useThisBGColor = lyricsVerseColor;
+                lyrics_useThisBGColor = lyricsVerseColor;
+                temp_useThisBGColor = lyricsVerseColor;
+                break;
+        }
+    }
+
+    @Override
+    public void doEdit() {
+        whattodo = "editsong";
+        DialogFragment newFragment = PopUpEditSongFragment.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
     }
 
     @Override
@@ -8926,6 +8743,22 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             expListViewOption.expandGroup(0);
             mDrawerLayout.openDrawer(expListViewOption);
         }
+
+        if (whattodo.equals("renamesong") || whattodo.equals("createsong")) {
+            findSongInFolder();
+            mDrawerLayout.openDrawer(expListViewSong);
+        }
+
+        // If menus are open, close them after 1 second
+        Handler closeMenus = new Handler();
+        closeMenus.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerLayout.closeDrawer(expListViewSong);
+                mDrawerLayout.closeDrawer(expListViewOption);
+            }
+        }, 1000); // 1000ms delay
+
     }
 
     @Override
@@ -8955,6 +8788,28 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 Preferences.savePreferences();
 
                 myToastMessage = getResources().getString(R.string.options_set_clear) + " " + getResources().getString(R.string.ok);
+
+                // Refresh all stuff needed
+                refreshAll();
+                break;
+
+            case "deletesong":
+                // Delete current song
+                setView = "N";
+                String setFileLocation = dir + "/" + songfilename;
+                File filetoremove = new File(setFileLocation);
+                if (filetoremove.delete()) {
+                    myToastMessage = "\"" + songfilename + "\" "
+                            + getResources().getString(R.string.songhasbeendeleted);
+                } else {
+                    myToastMessage = getResources().getString(R.string.deleteerror_start)
+                            + " \"" + songfilename + "\" "
+                            + getResources().getString(R.string.deleteerror_end_song);
+                }
+                invalidateOptionsMenu();
+
+                // Save the new, empty, set
+                Preferences.savePreferences();
 
                 // Refresh all stuff needed
                 refreshAll();

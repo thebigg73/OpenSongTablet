@@ -395,5 +395,13 @@
 	<string name="preso_alpha">Háttér homályossága</string>
 	<string name="settings">Beállítások</string>
 	<string name="song_sections">Song szakaszok</string>
+	<string name="media">Hang-</string>
+	<string name="media_chooser">Media-választó</string>
+	<string name="media_pause">Szünet</string>
+	<string name="media_play">játék</string>
+	<string name="media_selected">Media betöltött</string>
+	<string name="media_stop">Stop</string>
+	<string name="options_options_autostartscroll">Autostart autoscroll</string>
+	<string name="page_toggles">oldal válthat</string>
 
 </resources>

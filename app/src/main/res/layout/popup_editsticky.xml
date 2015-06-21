@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editStickyText"
+        android:inputType="textAutoCorrect"
+        android:editable="false"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/editStickySave"
+        android:layout_margin="8dp"
+        android:hint="@string/stickynotes"
+        android:gravity="top|left"
+        android:background="#FCF0AD"
+        android:textColor="#000"
+        android:textColorHint="#555" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ok"
+        android:id="@+id/editStickySave"
+        android:layout_gravity="right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/green_button"
+        android:layout_margin="8dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/editStickySave"
+        android:layout_toStartOf="@+id/editStickySave"
+        android:background="@drawable/blue_button"
+        android:layout_margin="8dp"
+        android:id="@+id/editStickyCancel" />
+</RelativeLayout>

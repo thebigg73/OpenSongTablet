@@ -95,19 +95,6 @@ public class SetActions extends Activity {
 		}
 	}
 
-	public static void removeASet(View view) throws IOException {
-		// Set the file to delete
-		String setFileLocation = FullscreenActivity.dirsets + "/" + FullscreenActivity.settodelete;
-		File filetoremove = new File(setFileLocation);
-		boolean deleted = filetoremove.delete();
-		if (deleted) {
-			FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.settodelete + "\" " + FullscreenActivity.sethasbeendeleted;
-		} else {
-			FullscreenActivity.myToastMessage = FullscreenActivity.deleteerror_start + " \"" 
-					+ FullscreenActivity.settodelete + "\" " + FullscreenActivity.deleteerror_end_sets;
-		}
-	}
-
 	public static void loadASet(View view) throws XmlPullParserException, IOException{
 		// Get the linkclicked and load the set into memory
 		// Update the savedpreferences to include this set
@@ -460,4 +447,34 @@ public class SetActions extends Activity {
 					+ FullscreenActivity.songfilename;
 		}
 	}
+
+	public static boolean isSongInSet() {
+        if (FullscreenActivity.setSize > 0) {
+            // Get the name of the song to look for (including folders if need be)
+            getSongForSetWork();
+
+            if (FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
+                // Song is in current set.  Find the song position in the current set and load it (and next/prev)
+                // The first song has an index of 6 (the 7th item as the rest are menu items)
+                FullscreenActivity.setView = "Y";
+                FullscreenActivity.previousSongInSet = "";
+                FullscreenActivity.nextSongInSet = "";
+
+                // Get the song index
+                indexSongInSet();
+                return true;
+
+            } else {
+                // Song isn't in the set, so just show the song
+                // Switch off the set view (buttons in action bar)
+                FullscreenActivity.setView = "N";
+                return false;
+            }
+        } else {
+            // User wasn't in set view, or the set was empty
+            // Switch off the set view (buttons in action bar)
+            FullscreenActivity.setView = "N";
+            return false;
+        }
+    }
 }

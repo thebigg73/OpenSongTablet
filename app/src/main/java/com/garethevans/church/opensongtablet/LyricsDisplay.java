@@ -37,7 +37,6 @@ public class LyricsDisplay extends Activity {
 		FullscreenActivity.myParsedLyrics = FullscreenActivity.myLyrics.split("\n");
 		// Get the number of rows to write!
 		FullscreenActivity.numrowstowrite = FullscreenActivity.myParsedLyrics.length;
-
 	}
 
 	public static void replaceLyricsCode() {
@@ -796,22 +795,6 @@ public class LyricsDisplay extends Activity {
 			}
 
 		}
-
-		// Need to add this to a FullscreenActivity variable and tell the page to display it.
-		// Should also do the same for the Presentation mode
-
-/*		// Could just add these as a section?
-		String adderror = "";
-		if (!missingSectionInPresentationOrder.isEmpty() && !missingSectionInPresentationOrder.equals("")) {
-			adderror = adderror + ";"+missingSectionInPresentationOrder;
-		}
-		if (!missingPresentationOrderItemInSong.isEmpty() && !missingPresentationOrderItemInSong.equals("")) {
-			adderror = adderror + ";"+missingPresentationOrderItemInSong;
-		}
-		if (!adderror.isEmpty() && !adderror.equals("")) {
-			newimprovedlyrics = ";" + FullscreenActivity.edit_song_presentation + " - " + FullscreenActivity.error_missingsection + "\n\n" + newimprovedlyrics;
-			// newimprovedlyrics = ";Presentation order / song flow error\n" + adderror + "\n" + newimprovedlyrics;
-		}*/
 
 		// Replace the lyrics for processing
 		while (newimprovedlyrics.contains("\n\n\n")) {

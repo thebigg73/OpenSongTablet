@@ -141,8 +141,13 @@ public class PopUpSongCreateFragment extends DialogFragment {
                         tempNewSong = tempNewSong.replace(".PDF", "");
                     }
 
+                    LoadXML.initialiseSongTags();
+
                     // Prepare the XML
                     FullscreenActivity.songfilename = tempNewSong;
+                    FullscreenActivity.mTitle = tempNewSong;
+                    Preferences.savePreferences();
+
                     EditSong.prepareBlankSongXML();
 
                     // Save the file

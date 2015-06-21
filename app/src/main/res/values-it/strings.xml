@@ -395,5 +395,13 @@
 	<string name="preso_alpha">Sfondo opacità</string>
 	<string name="settings">Impostazioni</string>
 	<string name="song_sections">Sezioni canzone</string>
+	<string name="media">Audio</string>
+	<string name="media_chooser">Chooser media</string>
+	<string name="media_pause">Pausa</string>
+	<string name="media_play">giocare</string>
+	<string name="media_selected">Media caricati</string>
+	<string name="media_stop">Stop</string>
+	<string name="options_options_autostartscroll">Autostart autoscroll</string>
+	<string name="page_toggles">alterna Pagina</string>
 
 </resources>

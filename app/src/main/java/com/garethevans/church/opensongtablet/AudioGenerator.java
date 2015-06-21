@@ -31,7 +31,6 @@ public class AudioGenerator {
 			// in 16 bit wav PCM, first byte is the low order byte
 			generatedSound[index++] = (byte) (maxSample & 0x00ff);
 			generatedSound[index++] = (byte) ((maxSample & 0xff00) >>> 8);
-
 		}
 		return generatedSound;
 	}
@@ -82,27 +81,32 @@ public class AudioGenerator {
 			     // This will catch any exception, because they are all descended from Exception
 				Log.d("whoops","error writing sound");
 			}
-			if (FullscreenActivity.metronomepan.equals("left")) {
-				try {
-					audioTrack.setStereoVolume(FullscreenActivity.metronomevol, 0.0f);			
-				} catch (Exception e) {
-				     // This will catch any exception, because they are all descended from Exception
-					Log.d("whoops","error setting volume");
-				}
-			} else if (FullscreenActivity.metronomepan.equals("right")) {
-				try {
-					audioTrack.setStereoVolume(0.0f, FullscreenActivity.metronomevol);						
-				} catch (Exception e) {
-				     // This will catch any exception, because they are all descended from Exception
-					Log.d("whoops","error setting volume");
-				}
-			} else {
-				try {
-					audioTrack.setStereoVolume(FullscreenActivity.metronomevol, FullscreenActivity.metronomevol);						
-				} catch (Exception e) {
-				     // This will catch any exception, because they are all descended from Exception
-					Log.d("whoops","error setting volume");
-				}
+			switch (FullscreenActivity.metronomepan) {
+				case "left":
+					try {
+						audioTrack.setStereoVolume(FullscreenActivity.metronomevol, 0.0f);
+					} catch (Exception e) {
+						// This will catch any exception, because they are all descended from Exception
+						Log.d("whoops", "error setting volume left");
+					}
+					break;
+				case "right":
+					try {
+						audioTrack.setStereoVolume(0.0f, FullscreenActivity.metronomevol);
+					} catch (Exception e) {
+						// This will catch any exception, because they are all descended from Exception
+						Log.d("whoops", "error setting volume right");
+					}
+					break;
+				default:
+					try {
+						audioTrack.setStereoVolume(FullscreenActivity.metronomevol, FullscreenActivity.metronomevol);
+					} catch (Exception e) {
+						// This will catch any exception, because they are all descended from Exception
+						Log.d("whoops", "error setting volume both");
+						Log.d("AudioGenerator","metronomevol="+FullscreenActivity.metronomevol);
+					}
+					break;
 			}
 		}
 	}

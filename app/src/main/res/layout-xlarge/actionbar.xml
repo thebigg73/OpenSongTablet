@@ -12,13 +12,13 @@
     	android:gravity="center_vertical"
     	android:layout_margin="0dp"
         android:textColor="#ffff00"
-    	android:textSize="16sp"/>
+    	android:textSize="12sp"/>
     
     <TextView 
         android:id="@+id/songtitle_top"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textColor="#ffffff"
     	android:gravity="center_vertical"
         android:layout_alignParentLeft="true"

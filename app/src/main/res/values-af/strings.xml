@@ -424,5 +424,13 @@
 	<string name="preso_alpha">Agtergrond ondeursigtigheid</string>
 	<string name="settings">Instellings</string>
 	<string name="song_sections">Song artikels</string>
+	<string name="media">Audio</string>
+	<string name="media_chooser">Media chooser</string>
+	<string name="media_pause">Stop</string>
+	<string name="media_play">speel</string>
+	<string name="media_selected">media gelaai</string>
+	<string name="media_stop">Stop</string>
+	<string name="options_options_autostartscroll">Autostart autoscroll</string>
+	<string name="page_toggles">Page afgeskeur</string>
 
 </resources>

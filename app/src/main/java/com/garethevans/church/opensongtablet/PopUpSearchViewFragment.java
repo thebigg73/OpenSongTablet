@@ -129,8 +129,9 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             String query = (String) mListView.getItemAtPosition(position);
+            FullscreenActivity.songfilename = query;
             FullscreenActivity.setView = "N";
-            FullscreenActivity.myToastMessage = FullscreenActivity.songfilename;
+            FullscreenActivity.myToastMessage = query;
             //Save preferences
             Preferences.savePreferences();
             // Vibrate to indicate something has happened
@@ -147,6 +148,7 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             String linkclicked = (String) mListView.getItemAtPosition(position);
+            FullscreenActivity.songfilename = linkclicked;
 
             // Each song is saved in the set string as $**_Love everlasting_**$
             // Check if this song is already there. If it isn't, add it.
@@ -162,13 +164,13 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
             // Save the set and other preferences
             Preferences.savePreferences();
 
-            String query = (String) ((TextView) view).getText();
+            //String query = (String) ((TextView) view).getText();
             FullscreenActivity.setView = "Y";
             //Save preferences
             Preferences.savePreferences();
             // Vibrate to indicate something has happened
             mVibrator.doVibrate();
-            FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.songfilename + "\" " + getResources().getString(R.string.addedtoset);
+            FullscreenActivity.myToastMessage = "\"" + linkclicked + "\" " + getResources().getString(R.string.addedtoset);
             mListener.searchResults();
             dismiss();
             return true;

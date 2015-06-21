@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Switch
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/storage_ext"
+        android:id="@+id/externalSwitch"
+        android:checked="false"
+        android:padding="8dp"
+        android:textColor="#ff0"
+        android:textSize="16sp"
+        android:layout_margin="8dp" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mediaStore_ListView"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/linearLayout"
+        android:layout_below="@+id/externalSwitch" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/startPlay"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/media_selected"
+            android:id="@+id/textView28"
+            android:textSize="14sp"
+            android:textColor="#ff0"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/mediaSelected"
+            android:layout_below="@+id/textView28"
+            android:layout_above="@+id/startPlay"/>
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/startPlay"
+        android:src="@drawable/ic_action_play"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/media_play" />
+
+</RelativeLayout>
