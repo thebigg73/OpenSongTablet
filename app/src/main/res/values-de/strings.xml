@@ -406,5 +406,6 @@
 	<string name="scrollbuttons_double">Doppelpfeile</string>
 	<string name="scrollbuttons_single">Einzelpfeile</string>
 	<string name="scrollbuttons_toggle">Toggle Scroll-Tasten</string>
+	<string name="crossfade_time">Überblendzeit</string>
 
 </resources>

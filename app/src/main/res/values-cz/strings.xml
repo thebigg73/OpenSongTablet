@@ -407,5 +407,6 @@
 	<string name="scrollbuttons_double">Dvojité šipky</string>
 	<string name="scrollbuttons_single">Jednotlivé šípy</string>
 	<string name="scrollbuttons_toggle">Přepnout rolovací tlačítka</string>
+	<string name="crossfade_time">Crossfade čas</string>
 
 </resources>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="crossfade_time">Cross-fade time</string>
 	<string name="scrollbuttons_toggle">Toggle scroll buttons</string>
     <string name="scrollbuttons_single">Single arrows</string>
     <string name="scrollbuttons_double">Double arrows</string>

@@ -406,5 +406,6 @@
 	<string name="scrollbuttons_double">flechas dobles</string>
 	<string name="scrollbuttons_single">flechas individuales</string>
 	<string name="scrollbuttons_toggle">Botones de desplazamiento Toggle</string>
+	<string name="crossfade_time">tiempo crossfade</string>
 
 </resources>

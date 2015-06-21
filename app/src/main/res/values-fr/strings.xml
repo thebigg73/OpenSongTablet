@@ -406,5 +406,6 @@
 	<string name="scrollbuttons_double">flèches doubles</string>
 	<string name="scrollbuttons_single">flèches simples</string>
 	<string name="scrollbuttons_toggle">Boutons de défilement bascule</string>
+	<string name="crossfade_time">temps de transfert</string>
 
 </resources>

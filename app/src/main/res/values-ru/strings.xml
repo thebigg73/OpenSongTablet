@@ -406,5 +406,6 @@
 	<string name="scrollbuttons_double">Двойные стрелки</string>
 	<string name="scrollbuttons_single">Холост стрелки</string>
 	<string name="scrollbuttons_toggle">Переключение кнопки прокрутки</string>
+	<string name="crossfade_time">Crossfade время</string>
 
 </resources>

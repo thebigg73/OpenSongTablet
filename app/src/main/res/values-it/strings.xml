@@ -406,5 +406,6 @@
 	<string name="scrollbuttons_double">doppie frecce</string>
 	<string name="scrollbuttons_single">frecce singole</string>
 	<string name="scrollbuttons_toggle">Pulsanti di scorrimento Toggle</string>
+	<string name="crossfade_time">tempo Crossfade</string>
 
 </resources>

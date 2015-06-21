@@ -410,5 +410,6 @@
 	<string name="scrollbuttons_double">双箭头</string>
 	<string name="scrollbuttons_single">单箭头</string>
 	<string name="scrollbuttons_toggle">切换滚动按钮</string>
+	<string name="crossfade_time">交叉淡入淡出的时间</string>
 
 </resources>

@@ -109,7 +109,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     public int slideout_time = 500;
     public int checkscroll_time = 1000;
     public int delayswipe_time = 1800;
-
+    public static int crossFadeTime = 8000;
     public static String toggleScrollArrows;
 
     @SuppressWarnings("unused|NewApi")
@@ -2464,7 +2464,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         mPlayer2=null;
                     }
                 }
-            }, 10000); // 1000ms delay
+            }, (crossFadeTime+2000)); // 1000ms delay
 
         } else {
             // User wants to play the pad
@@ -2705,7 +2705,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                 // Pause before next fade increment
                 long nowtime = System.currentTimeMillis();
-                long thentime = nowtime + 150;
+                long thentime = nowtime + (int) (crossFadeTime/50);
                 while (System.currentTimeMillis()<thentime) {
                     // Do nothing......
                 }
@@ -2787,7 +2787,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                 // Pause before next fade increment
                 long nowtime = System.currentTimeMillis();
-                long thentime = nowtime + 150;
+                long thentime = nowtime + (int) (crossFadeTime/50);
                 while (System.currentTimeMillis()<thentime) {
                     // Do nothing......
                 }
@@ -3100,6 +3100,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         options_options.add(getResources().getString(R.string.options_options_theme));
         options_options.add(getResources().getString(R.string.songbuttons_toggle));
         options_options.add(getResources().getString(R.string.scrollbuttons_toggle));
+        options_options.add(getResources().getString(R.string.crossfade_time));
         options_options.add(getResources().getString(R.string.autoscroll_time));
         options_options.add(getResources().getString(R.string.options_options_autostartscroll));
         options_options.add(getResources().getString(R.string.options_options_scale));
@@ -3609,6 +3610,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 redrawTheLyricsTable(view);
                             }
 
+
                         } else if (childPosition==2) {
                             // Toggle scroll arrows single/double
                             if (toggleScrollArrows.equals("S")) {
@@ -3625,8 +3627,14 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 redrawTheLyricsTable(view);
                             }
 
-
                         } else if (childPosition==3) {
+                            // Crossfade adjust
+                            whattodo = "crossfade";
+                            DialogFragment newFragment = PopUpCrossFadeFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
+
+
+                        } else if (childPosition==4) {
                             // Set autoscroll delay time (0-30 seconds)
                             final int storeautoscrolldelay = autoScrollDelay;
 
@@ -3677,7 +3685,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             dialogBuilder.show();
 
 
-                        } else if (childPosition==4) {
+                        } else if (childPosition==5) {
                             // Toggle autostart autoscroll on/off
                             if (autostartautoscroll) {
                                 autostartautoscroll = false;
@@ -3693,7 +3701,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 redrawTheLyricsTable(view);
                             }
 
-                        } else if (childPosition==5) {
+                        } else if (childPosition==6) {
                             // Toggle autoscale
                             switch (toggleYScale) {
                                 case "Y":
@@ -3720,7 +3728,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
 
 
-                        } else if (childPosition==6) {
+                        } else if (childPosition==7) {
                             // Choose font size
 
                             if (isPDF) {
@@ -3812,7 +3820,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             }
 
 
-                        } else if (childPosition==7) {
+                        } else if (childPosition==8) {
                             // Choose chord format
                             Intent intent = new Intent();
                             intent.setClass(FullscreenActivity.this, ChordFormat.class);
@@ -3822,7 +3830,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             finish();
 
 
-                        } else if (childPosition==8) {
+                        } else if (childPosition==9) {
                             // Show/Hide chords
 
                             if (isPDF) {
@@ -3842,7 +3850,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 redrawTheLyricsTable(view);
                             }
 
-                        } else if (childPosition==9) {
+                        } else if (childPosition==10) {
                             // Toggle menu swipe on/off
                             if (swipeDrawer.equals("Y")) {
                                 swipeDrawer = "N";
@@ -3863,7 +3871,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             Preferences.savePreferences();
 
 
-                        } else if (childPosition==10) {
+                        } else if (childPosition==11) {
                             // Toggle song move swipe
                             switch (swipeSet) {
                                 case "Y":
@@ -3895,7 +3903,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                     break;
                             }
 
-                        } else if (childPosition==11) {
+                        } else if (childPosition==12) {
                             // Toggle show next song in set
                             // Options are top, bottom, off
 
@@ -3924,7 +3932,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             Preferences.savePreferences();
                             redrawTheLyricsTable(main_page);
 
-                        } else if (childPosition==12) {
+                        } else if (childPosition==13) {
                             // Assign custom gestures
                             Intent intent = new Intent();
                             intent.setClass(FullscreenActivity.this, GestureOptions.class);
@@ -3933,7 +3941,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             startActivity(intent);
                             finish();
 
-                        } else if (childPosition==13) {
+                        } else if (childPosition==14) {
                             // Hide top menu bar on/off
                             if (hideactionbaronoff.equals("Y")) {
                                 hideactionbaronoff = "N";
@@ -3962,7 +3970,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
 
 
-                        } else if (childPosition==14) {
+                        } else if (childPosition==15) {
                             // Change colours
                             Intent intent = new Intent();
                             intent.setClass(FullscreenActivity.this,
@@ -3973,21 +3981,21 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             finish();
 
 
-                        } else if (childPosition==15) {
+                        } else if (childPosition==16) {
                             // Change fonts
                             whattodo = "changefonts";
                             DialogFragment newFragment = PopUpFontsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
 
-                        } else if (childPosition==16) {
+                        } else if (childPosition==17) {
                             // Assign foot pedal
                             FullscreenActivity.whattodo = "footpedal";
                             DialogFragment newFragment = PopUpPedalsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
 
-                        } else if (childPosition==17) {
+                        } else if (childPosition==18) {
                             // Help (online)
                             String url = "https://sites.google.com/site/opensongtabletmusicviewer/home";
                             Intent i = new Intent(Intent.ACTION_VIEW);
@@ -3995,7 +4003,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             startActivity(i);
 
 
-                        } else if (childPosition==18) {
+                        } else if (childPosition==19) {
                             // Manage OpenSong storage
                             tryKillPads();
                             tryKillMetronome();
@@ -4004,11 +4012,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             startActivity(intent_stop);
                             finish();
 
-                        } else if (childPosition==19) {
+                        } else if (childPosition==20) {
                             // Import OnSong backup
                             onSongImport();
 
-                        } else if (childPosition==20) {
+                        } else if (childPosition==21) {
                             // Change language
 
                             int positionselected = -1;
@@ -4119,7 +4127,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                             languageDialog.show();
 
-                        } else if (childPosition==21) {
+                        } else if (childPosition==22) {
                             // Refresh Songs folders
                             prepareSongMenu();
                             mDrawerLayout.closeDrawer(expListViewOption);
@@ -4127,7 +4135,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
 
 
-                        } else if (childPosition==22) {
+                        } else if (childPosition==23) {
                             // Splash screen
                             // First though, set the preference to show the current version
                             // Otherwise it won't show the splash screen

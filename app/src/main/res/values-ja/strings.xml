@@ -405,5 +405,6 @@
 	<string name="scrollbuttons_double">二重矢印</string>
 	<string name="scrollbuttons_single">シングル矢印</string>
 	<string name="scrollbuttons_toggle">トグルスクロールボタン</string>
+	<string name="crossfade_time">クロスフェード時間</string>
 
 </resources>

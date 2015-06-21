@@ -406,5 +406,6 @@
 	<string name="scrollbuttons_double">setas duplas</string>
 	<string name="scrollbuttons_single">setas simples</string>
 	<string name="scrollbuttons_toggle">Botões de rolagem de alternância</string>
+	<string name="crossfade_time">tempo Crossfade</string>
 
 </resources>

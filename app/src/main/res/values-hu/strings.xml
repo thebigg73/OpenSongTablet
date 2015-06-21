@@ -406,5 +406,6 @@
 	<string name="scrollbuttons_double">Dupla nyilak</string>
 	<string name="scrollbuttons_single">Single nyilak</string>
 	<string name="scrollbuttons_toggle">Váltás gördítőgombokat</string>
+	<string name="crossfade_time">Crossfade idő</string>
 
 </resources>

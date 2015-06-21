@@ -435,5 +435,6 @@
 	<string name="scrollbuttons_double">Double pyle</string>
 	<string name="scrollbuttons_single">Enkele pyle</string>
 	<string name="scrollbuttons_toggle">Toggle scroll knoppies</string>
+	<string name="crossfade_time">cross tyd</string>
 
 </resources>

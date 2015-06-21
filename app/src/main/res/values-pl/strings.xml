@@ -406,5 +406,6 @@
 	<string name="scrollbuttons_double">podwójne strzałki</string>
 	<string name="scrollbuttons_single">pojedyncze strzały</string>
 	<string name="scrollbuttons_toggle">Przełącz przycisków przewijania</string>
+	<string name="crossfade_time">to czas przejścia</string>
 
 </resources>
