@@ -3,19 +3,27 @@
   <title>Gifted response (we will worship You)</title>
   <author>Matt Redman</author>
   <copyright>2004 Thankyou Music</copyright>
-  <hymn_number>399</hymn_number>
   <presentation></presentation>
-  <ccli>4301570</ccli>
+  <hymn_number>399</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>4301570</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 .D2 D2aug D2 D2aug (D2aug D)
 
@@ -52,4 +60,8 @@
 .        Em7
  Singing songs of everlasting praise
 .        G2                   Gm6        (D2 As intro)
- We will worship You, We will worship You</lyrics></song>
+ We will worship You, We will worship You</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

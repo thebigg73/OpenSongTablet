@@ -407,5 +407,8 @@
 	<string name="media_stop">停止</string>
 	<string name="options_options_autostartscroll">Autostart autoscroll</string>
 	<string name="page_toggles">页面切换</string>
+	<string name="scrollbuttons_double">双箭头</string>
+	<string name="scrollbuttons_single">单箭头</string>
+	<string name="scrollbuttons_toggle">切换滚动按钮</string>
 
 </resources>

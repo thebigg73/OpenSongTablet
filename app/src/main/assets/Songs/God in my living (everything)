@@ -3,19 +3,27 @@
   <title>God in my living (everything)</title>
   <author>Tim Hughes</author>
   <copyright>2005 Kingsway's ThankYou Music</copyright>
-  <hymn_number>406</hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>406</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>B</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .B                             E
  God in my living, there in my breathing
@@ -54,4 +62,8 @@
 .G#m
  Christ in me the hope of glory
 .E F#         G#m
-   Be my everything</lyrics></song>
+   Be my everything</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

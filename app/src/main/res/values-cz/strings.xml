@@ -404,5 +404,8 @@
 	<string name="media_stop">Stop</string>
 	<string name="options_options_autostartscroll">Autostart autoscroll</string>
 	<string name="page_toggles">Page přepíná</string>
+	<string name="scrollbuttons_double">Dvojité šipky</string>
+	<string name="scrollbuttons_single">Jednotlivé šípy</string>
+	<string name="scrollbuttons_toggle">Přepnout rolovací tlačítka</string>
 
 </resources>

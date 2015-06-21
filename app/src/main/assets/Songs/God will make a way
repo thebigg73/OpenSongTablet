@@ -4,17 +4,26 @@
   <author>Don Moen</author>
   <copyright>1990 Integrity's Hosanna Music</copyright>
   <presentation></presentation>
-  <ccli>458620</ccli>
+  <hymn_number>229</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>458620</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>229</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 .G   D/F#   C/E   G/D
 .C   G/B    Am7   Cmaj7/D  D
@@ -40,4 +49,7 @@
  Heaven and earth will fade, but His word will still remain
 .Am7        D               Esus4 E   D/F#
  He will do something new today</lyrics>
-  <hymn_number>229</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

@@ -3,31 +3,39 @@
   <title>All right now</title>
   <author>Free</author>
   <copyright></copyright>
-  <hymn_number></hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number></hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>A</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .          A        D   A
  There she stood in the street
 .D/G              D/F#        A
  Smiling from her head to her feet
-.       A         D  A    	
+.       A         D  A        
  I said hey, what is this now baby
 .D/G             D/F#      A
  Maybe, she's in need of a kiss
 .       A           D    A  
  I said hey, what's your name baby
-.D/G          D/F#           A 	
+.D/G          D/F#           A     
  Maybe we can see things the same
 .              A    D  A
  Now don't you wait or hesitate
@@ -55,4 +63,8 @@
 [Instrumental]
 .A   A/G  A/F#.... etc.    A  A/G  A/F# E (last time)
  
-[Chorus to end]</lyrics></song>
+[Chorus to end]</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

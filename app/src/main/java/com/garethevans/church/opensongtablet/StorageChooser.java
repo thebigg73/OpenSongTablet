@@ -354,7 +354,6 @@ public class StorageChooser extends Activity {
 		FullscreenActivity.myToastMessage = getResources().getString(R.string.installingsongs);
 		ShowToast.showToast(StorageChooser.this);
 
-
 		// Do the stuff async to stop the app slowing down
 		CopyAssetsTask task = new CopyAssetsTask();
 		task.execute();
@@ -414,15 +413,18 @@ public class StorageChooser extends Activity {
 				InputStream in = null;
 				OutputStream out = null;
 				try {
-					in = assetManager.open("Songs"+File.separator+filename);
-					File outFile = new File(dir, filename);
-					out = new FileOutputStream(outFile);
-					copyFile(in, out);
-					in.close();
-					in = null;
-					out.flush();
-					out.close();
-					out = null;
+                    File checkFile = new File(dir+"/"+filename);
+                    if (!checkFile.exists()) {
+                        in = assetManager.open("Songs" + File.separator + filename);
+                        File outFile = new File(dir, filename);
+                        out = new FileOutputStream(outFile);
+                        copyFile(in, out);
+                        in.close();
+                        in = null;
+                        out.flush();
+                        out.close();
+                        out = null;
+                    }
 				} catch (IOException e) {
 					Log.e("tag", "Failed to copy asset file: " + filename, e);
 				}
@@ -439,15 +441,18 @@ public class StorageChooser extends Activity {
 				InputStream in = null;
 				OutputStream out = null;
 				try {
-					in = assetManager.open("Songs"+File.separator+"Band"+File.separator+filename);
-					File outFile = new File(band, filename);
-					out = new FileOutputStream(outFile);
-					copyFile(in, out);
-					in.close();
-					in = null;
-					out.flush();
-					out.close();
-					out = null;
+                    File checkFile = new File(dir+"/Band/"+filename);
+                    if (!checkFile.exists()) {
+                        in = assetManager.open("Songs" + File.separator + "Band" + File.separator + filename);
+                        File outFile = new File(band, filename);
+                        out = new FileOutputStream(outFile);
+                        copyFile(in, out);
+                        in.close();
+                        in = null;
+                        out.flush();
+                        out.close();
+                        out = null;
+                    }
 				} catch (IOException e) {
 					Log.e("tag", "Failed to copy asset file: " + filename, e);
 				}
@@ -464,15 +469,18 @@ public class StorageChooser extends Activity {
 				InputStream in = null;
 				OutputStream out = null;
 				try {
-					in = assetManager.open("Songs"+File.separator+"Various"+File.separator+filename);
-					File outFile = new File(various, filename);
-					out = new FileOutputStream(outFile);
-					copyFile(in, out);
-					in.close();
-					in = null;
-					out.flush();
-					out.close();
-					out = null;
+                    File checkFile = new File(dir+"/Various/"+filename);
+                    if (!checkFile.exists()) {
+                        in = assetManager.open("Songs" + File.separator + "Various" + File.separator + filename);
+                        File outFile = new File(various, filename);
+                        out = new FileOutputStream(outFile);
+                        copyFile(in, out);
+                        in.close();
+                        in = null;
+                        out.flush();
+                        out.close();
+                        out = null;
+                    }
 				} catch (IOException e) {
 					Log.e("tag", "Failed to copy asset file: " + filename, e);
 				}

@@ -4,17 +4,26 @@
   <author>Steve McEwan</author>
   <copyright>1985 Friends First Music / Word Music</copyright>
   <presentation></presentation>
-  <ccli>10769</ccli>
+  <hymn_number>86</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>10769</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>86</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>A</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 .A     D/A      A     D/A
 
@@ -45,4 +54,7 @@
  For You alone are God eternal
 .Bm7                  D/E     A  D/A   (A)
  Throughout earth and heaven above</lyrics>
-  <hymn_number>86</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

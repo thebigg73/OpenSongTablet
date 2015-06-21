@@ -4,17 +4,26 @@
   <author>Brenton Brown and Brian Doerksen</author>
   <copyright>2000 Mercy / Vineyard Publishing</copyright>
   <presentation></presentation>
-  <ccli>2573623</ccli>
+  <hymn_number>366</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>2573623</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>366</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>A</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 .A    D/A   E/A   D/A   x2
 
@@ -53,4 +62,7 @@
  You are the One who came to me
 .          F#m   E  D     F#m  E   D
  You set me free</lyrics>
-  <hymn_number>366</hymn_number></song>
+  <linked_songs>OFF</linked_songs>
+  <pad_file></pad_file>
+  
+</song>

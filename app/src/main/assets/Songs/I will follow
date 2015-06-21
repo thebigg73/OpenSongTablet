@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
- <title>I will follow</title>
+  <title>I will follow</title>
   <author>Chris Tomlin</author>
   <copyright>Copyright 2010 Six steps Music</copyright>
   <presentation></presentation>
@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>G</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[T]
 .Em7                      C/E                  
     Where You go, I'll go;    Where You stay, I'll stay;
@@ -64,5 +71,8 @@
  Whom You love, I'll love;  How You serve, I'll serve;
  If this life I lose,  I will follow You, yeah, I will follow You, yeah
  I will follow You, yeah, I will follow You, yeah</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <style index="default_style"></style>
   <style index="default_style"></style>
 </song>

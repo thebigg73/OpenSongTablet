@@ -4,8 +4,26 @@
   <author>Tim Hughes</author>
   <copyright>2000 Kingsway's Thankyou Music</copyright>
   <presentation></presentation>
+  <hymn_number>360</hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>3266032</ccli>
   <theme>Worship: Call/Opening; Worship: Invitation; </theme>
+  <alttheme></alttheme>
+  <user1>360</user1>
+  <user2></user2>
+  <user3></user3>
+  <key>E</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .E            Bsus4              F#m
  Light of the world, You stepped down into darkness,
@@ -41,13 +59,7 @@
  And I'll never know how much it cost
 .   B/D#   E/G# A        Bsus4/A
  To see my sin upon that cross.  ______ x2</lyrics>
-  <capo print="false"></capo>
-  <user1>360</user1>
-  <user2></user2>
-  <user3></user3>
-  <tempo></tempo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <time_sig></time_sig>
-  <hymn_number>360</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

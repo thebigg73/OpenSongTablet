@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>1109394</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>241</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>F</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[C]
 .F             C           Dm Bb      F  C
  My lips shall praise You, my great Redeemer
@@ -40,4 +47,7 @@
  You're the source of happiness
  Bringing peace when I am in distress
  You are the restorer of my soul</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

@@ -4,8 +4,26 @@
   <author>Robert Lowry</author>
   <copyright>Public Domain</copyright>
   <presentation>V1 C V2 C V3 C</presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>21332</ccli>
   <theme>Christ: Death/Atonement</theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>E</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .E              C#m7        A2                       Bsus E
  What can wash away my sin? Nothing but the blood of Je___sus;
@@ -32,4 +50,8 @@
 .E              C#m7            A2                       Bsus E
  This is all my hope and peace, nothing but the blood of Je___sus;
 .E              C#m7           A2                       Bsus E
- This is all my righteousness, nothing but the blood of Je___sus.</lyrics></song>
+ This is all my righteousness, nothing but the blood of Je___sus.</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

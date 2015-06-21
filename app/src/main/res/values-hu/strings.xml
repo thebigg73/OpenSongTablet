@@ -403,5 +403,8 @@
 	<string name="media_stop">Stop</string>
 	<string name="options_options_autostartscroll">Autostart autoscroll</string>
 	<string name="page_toggles">oldal válthat</string>
+	<string name="scrollbuttons_double">Dupla nyilak</string>
+	<string name="scrollbuttons_single">Single nyilak</string>
+	<string name="scrollbuttons_toggle">Váltás gördítőgombokat</string>
 
 </resources>

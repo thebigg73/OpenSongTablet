@@ -4,17 +4,26 @@
   <author>Stuart Garrard</author>
   <copyright>1995 Curious? Music / Kingsway's Thankyou Music</copyright>
   <presentation></presentation>
-  <ccli>1580580</ccli>
+  <hymn_number>222</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>1580580</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>222</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>F</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 .F    Dm   x4
 
@@ -43,4 +52,7 @@
  A hope for those in desperation
  We have a future if only we believe
  He works in every situation</lyrics>
-  <hymn_number>222</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

@@ -6,9 +6,9 @@
   <presentation>V1 V2 B V3 V1</presentation>
   <hymn_number>256</hymn_number>
   <capo print="false"></capo>
-  <tempo>Slow</tempo>
+  <tempo>78</tempo>
   <time_sig>4/4</time_sig>
-  <duration></duration>
+  <duration>200</duration>
   <ccli>12345</ccli>
   <theme>Christ: Attributes; Christ: Love/Mercy; Church: Evangelism; Church: Fruit: God: Attributes; God: Father; God: Love/Mercy; Worship: Intimacy; </theme>
   <alttheme>Christ: Attributes; Christ: Love/Mercy; Church: Evangelism; Church: Fruit: God: Attributes; God: Father; God: Love/Mercy; Worship: Intimacy; </alttheme>
@@ -58,4 +58,7 @@
 .C          G/B             Am7        C/D      D  
  Sharing my Saviour's love, showing my Father's heart.
  </lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

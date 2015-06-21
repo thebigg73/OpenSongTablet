@@ -3,8 +3,27 @@
   <title>Lord I come to You (Power of Your love)</title>
   <author>Geoff Bullock</author>
   <copyright>1992 Word, Inc.</copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>917491</ccli>
   <theme>Church: Spiritual Hunger; God: Love/Mercy; </theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .G       D/F#    Em   Em/D            Bm         Em
  Lord, I come to You, let my heart be changed, renewed,
@@ -36,17 +55,8 @@
  Lord renew my mind, As Your will unfolds in my life,
 .   D            C   D                     G    G7
  In living every day, In the power of Your love.</lyrics>
-  <hymn_number></hymn_number>
-  <presentation></presentation>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

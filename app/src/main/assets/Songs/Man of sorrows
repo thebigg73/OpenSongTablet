@@ -2,8 +2,28 @@
 <song>
   <title>Man Of Sorrows</title>
   <author>Philip P. Bliss</author>
-  <theme>Christ: Death/Atonement</theme>
+  <copyright></copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
   <capo print="false">1</capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme>Christ: Death/Atonement</theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>A</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>. A                  F#m      C#    D        A          E/B  B   E
 1 Man of Sorrows,    what a   name! For the  Son of     God, Who came
 2 Bearing shame and  scoffing rude, In my    place con__demned He stood;
@@ -16,4 +36,8 @@
 2 Sealed my pardon with His   blood. Hallelujah! What a Savior!
 3 Full atonement!  Can it     be? Hallelu___jah! What a Savior!
 4 Now in heaven ex_alted      high. Hallelu_jah! What a Savior!
-5 Then anew His    song we’ll sing: Hallelu_jah! What a Savior!</lyrics></song>
+5 Then anew His    song we’ll sing: Hallelu_jah! What a Savior!</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

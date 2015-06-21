@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>1041801</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>219</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>E</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .E        A         B    E                     A        B 
  Touch my lips with holy fire, from the altar, from the throne.
@@ -36,4 +43,7 @@
  And always honouring, preferring in love each other,
 .           F#m               B                    A/C#   B/Eb
  Love never boasts, it always covers; touch my lips.</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

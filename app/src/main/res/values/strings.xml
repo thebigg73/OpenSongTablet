@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<string name="scrollbuttons_toggle">Toggle scroll buttons</string>
+    <string name="scrollbuttons_single">Single arrows</string>
+    <string name="scrollbuttons_double">Double arrows</string>
 	<string name="page_toggles">Page toggles</string>
     <string name="options_options_autostartscroll">Autostart autoscroll</string>
 	<string name="media_chooser">Media chooser</string>

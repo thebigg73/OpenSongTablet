@@ -4,17 +4,26 @@
   <author>Arthur Tannous</author>
   <copyright>1984, 1987 Acts Music / Thankyou Music</copyright>
   <presentation></presentation>
-  <ccli>28452</ccli>
+  <hymn_number>75</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>28452</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>75</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>E</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .E              C#m         F#m               B     B7/A
  I just want to praise You, Lift my hands and say I love You
@@ -46,4 +55,7 @@
  I exalt Your Holy name
 .Am           D            C  G 
  I exalt Your Holy name on high</lyrics>
-  <hymn_number>75</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

@@ -4,8 +4,26 @@
   <author>Darlene Zschech</author>
   <copyright>1993 Darlene Zschech / Hillsongs Australia</copyright>
   <presentation></presentation>
+  <hymn_number>274</hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>1406918</ccli>
   <theme>Christ: Power/Majesty; Worship: Praise/Adoration; </theme>
+  <alttheme></alttheme>
+  <user1>274</user1>
+  <user2></user2>
+  <user3></user3>
+  <key>A</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .A        E           F#m             E         D
  My Jesus, my Saviour, Lord, there is none like you;
@@ -32,13 +50,7 @@
 .F#m         F#m/E         D        E       A
  Nothing compares to the promise I have in You
 </lyrics>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1>274</user1>
-  <user2></user2>
-  <user3></user3>
-  <tempo></tempo>
-  <time_sig></time_sig>
-  <hymn_number>274</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

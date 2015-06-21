@@ -4,13 +4,26 @@
   <author>Paul Oakley</author>
   <copyright>1997 Kingsway’s Thankyou Music</copyright>
   <presentation></presentation>
-  <ccli>2492577</ccli>
+  <hymn_number>362</hymn_number>
   <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>2492577</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>362</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 .G    Am7    G/B    C       G    Am7    G/B    F2
  
@@ -49,8 +62,7 @@
  But Your's is the kingdom and the power, 
 .Cm/Eb                  F                   G   Am7   G/B   C    G   Am7  G/B  C
  Forever and ever, Your glory will always remain.</lyrics>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <time_sig></time_sig>
-  <hymn_number>362</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

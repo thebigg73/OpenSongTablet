@@ -403,5 +403,8 @@
 	<string name="media_stop">Arrêter</string>
 	<string name="options_options_autostartscroll">Autostart autoscroll</string>
 	<string name="page_toggles">page bascule</string>
+	<string name="scrollbuttons_double">flèches doubles</string>
+	<string name="scrollbuttons_single">flèches simples</string>
+	<string name="scrollbuttons_toggle">Boutons de défilement bascule</string>
 
 </resources>

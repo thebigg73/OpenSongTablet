@@ -2,9 +2,28 @@
 <song>
   <title>I will sing of the mercies</title>
   <author>James H. Fillmore</author>
-  <theme>Fruit: Joy; God: Attributes; </theme>
+  <copyright></copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
   <capo print="true">2</capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme>Fruit: Joy; God: Attributes; </theme>
+  <alttheme></alttheme>
   <user1>Psalm 89:1</user1>
+  <user2></user2>
+  <user3></user3>
+  <key>B</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .       B
  I will sing of the mercies of the Lord forever,
@@ -24,17 +43,8 @@
  With my mouth will I make make known
 .    F#                      C# F#
  Thy faithfulness to all genera_tions!</lyrics>
-  <copyright></copyright>
-  <hymn_number></hymn_number>
-  <presentation></presentation>
-  <ccli></ccli>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user2></user2>
-  <user3></user3>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

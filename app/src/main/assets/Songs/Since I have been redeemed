@@ -2,7 +2,28 @@
 <song>
   <title>Since I Have Been Redeemed</title>
   <author>Edwin O. Excell</author>
+  <copyright></copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
   <theme>Church: Repentance/Salvation</theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .  D             A       D                         A
  I have a song I love to sing, since I have been redeemed;
@@ -33,4 +54,8 @@
 .  D              A         D                       A
  I have a home prepared for me, since I have been redeemed;
 .      D              A     D         G      A      D
- Where I shall dwell eternally, since I have been redeemed.</lyrics></song>
+ Where I shall dwell eternally, since I have been redeemed.</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

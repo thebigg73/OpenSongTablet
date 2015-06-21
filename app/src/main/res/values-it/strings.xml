@@ -403,5 +403,8 @@
 	<string name="media_stop">Stop</string>
 	<string name="options_options_autostartscroll">Autostart autoscroll</string>
 	<string name="page_toggles">alterna Pagina</string>
+	<string name="scrollbuttons_double">doppie frecce</string>
+	<string name="scrollbuttons_single">frecce singole</string>
+	<string name="scrollbuttons_toggle">Pulsanti di scorrimento Toggle</string>
 
 </resources>

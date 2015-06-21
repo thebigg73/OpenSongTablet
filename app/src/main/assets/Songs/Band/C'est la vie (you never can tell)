@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
   <title>C'est la vie (you never can tell)</title>
+  <author>Chuck Berry</author>
+  <copyright></copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>C</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .         C
  It was a teenage wedding, and the old folks wished them well 
@@ -34,21 +57,8 @@
  You could see that Pierre did truly love the madamoiselle 
  And now the young monsieur and madame have rung the chapel bell 
  "C'est la vie", say the old folks, it goes to show you never can tell</lyrics>
-  <author>Chuck Berry</author>
-  <copyright></copyright>
-  <hymn_number></hymn_number>
-  <presentation></presentation>
-  <ccli></ccli>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <theme></theme>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

@@ -4,17 +4,26 @@
   <author>Kevin Prosch</author>
   <copyright>1991 Mercy / Vineyard Publishing</copyright>
   <presentation></presentation>
-  <ccli>768097</ccli>
+  <hymn_number>230</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>768097</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>230</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .   G
  He brought me to His banqueting table
@@ -52,4 +61,7 @@
  His banner over me, His banner over you
 .    G/B               C     C/B   Am7     D
  His banner over us is love, love, love ......</lyrics>
-  <hymn_number>230</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

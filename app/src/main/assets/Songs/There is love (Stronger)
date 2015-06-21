@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
   <title>There is love (Stronger)</title>
+  <author>Ben Fielding and Reuben Morgan</author>
+  <copyright>2007 Hillsong Publishing</copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>5060810</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>C</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .F             G            C
  There is Love that came for us
@@ -48,21 +71,8 @@
  Be lifted higher
 .G
  Be lifted higher</lyrics>
-  <author>Ben Fielding and Reuben Morgan</author>
-  <copyright>2007 Hillsong Publishing</copyright>
-  <hymn_number></hymn_number>
-  <presentation></presentation>
-  <ccli>5060810</ccli>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <theme></theme>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

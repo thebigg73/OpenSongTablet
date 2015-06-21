@@ -4,17 +4,26 @@
   <author>Gareth Evans</author>
   <copyright>2005 NewLife Music Ministries</copyright>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>372</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>372</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 .D   Db5  Dsus4  D    D/A  Db5/B  Dsus4/B   D/A
 
@@ -51,4 +60,7 @@
 ;LAST TIME
 .               G                A7sus4 D
 ;Lord You have been good to me</lyrics>
-  <hymn_number>372</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

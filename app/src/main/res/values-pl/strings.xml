@@ -403,5 +403,8 @@
 	<string name="media_stop">Stop</string>
 	<string name="options_options_autostartscroll">Autostart autoscroll</string>
 	<string name="page_toggles">Strona przełącza</string>
+	<string name="scrollbuttons_double">podwójne strzałki</string>
+	<string name="scrollbuttons_single">pojedyncze strzały</string>
+	<string name="scrollbuttons_toggle">Przełącz przycisków przewijania</string>
 
 </resources>

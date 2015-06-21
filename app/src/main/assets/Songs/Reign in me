@@ -4,13 +4,26 @@
   <author>Chris Bowater</author>
   <copyright>1985 Sovereign Lifestyle Music Ltd.</copyright>
   <presentation></presentation>
-  <ccli>20704</ccli>
+  <hymn_number>1</hymn_number>
   <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>20704</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>1</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .(G)     Am  D7                G         
  Reign in me, Sovereign Lord, reign in me
@@ -23,8 +36,7 @@
 .E7/G#                Am  D7                   G
  Establish there Your throne, let Your will be done
 </lyrics>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <time_sig></time_sig>
-  <hymn_number>1</hymn_number></song>
+  <linked_songs>OFF</linked_songs>
+  <pad_file></pad_file>
+  
+</song>

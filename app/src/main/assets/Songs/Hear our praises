@@ -4,15 +4,26 @@
   <author>Joel Houston </author>
   <copyright>2002 Joel Houston / Hillsong Publishing</copyright>
   <presentation>V1 B C V2 B C T T2 C T3</presentation>
-  <ccli></ccli>
+  <hymn_number></hymn_number>
   <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <alttheme></alttheme>
-  <tempo></tempo>
-  <timesig></timesig>
+  <key>A</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[I]
 .\ A / / / \ A/G# / / / { A/D / / / } 
 
@@ -83,4 +94,8 @@
  And all the world will hear this shout
 .        D2
  Can you hear the sound of faith?
-</lyrics></song>
+</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

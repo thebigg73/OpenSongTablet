@@ -3,19 +3,27 @@
   <title>Sing a song, sing a joyful song</title>
   <author></author>
   <copyright></copyright>
-  <hymn_number>395</hymn_number>
   <presentation>V1 C V2 C V3 C V4 C V5</presentation>
-  <ccli></ccli>
+  <hymn_number>395</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>381</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .D                   G                   A              D
  Sing a song, sing a joyful song,|Sing a joyful song to celebrate
@@ -43,4 +51,8 @@
 [V5]
  Clap your hands, clap your hands like this.|Clap your hands like this to celebrate
  Clap your hands, clap your hands like this.|Clap your hands like this to celebrate
-</lyrics></song>
+</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

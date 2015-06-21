@@ -3,19 +3,27 @@
   <title>Give thanks unto the Lord</title>
   <author>Andy Park</author>
   <copyright>1992 Mercy Publishing</copyright>
-  <hymn_number>436</hymn_number>
   <presentation></presentation>
-  <ccli>861918</ccli>
+  <hymn_number>436</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>861918</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .G            D              C           D
  Give thanks unto the Lord, call on His name
@@ -46,4 +54,8 @@
  Tell all the nations what He has done
  Tell all the nations what He has done
  Tell of His mighty deeds, all His mighty deeds
- Glory in His holy name</lyrics></song>
+ Glory in His holy name</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

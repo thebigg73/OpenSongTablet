@@ -4,17 +4,26 @@
   <author>Leona von Brethorst</author>
   <copyright>1976 / 1983 Maranatha! Music</copyright>
   <presentation></presentation>
-  <ccli>1493</ccli>
+  <hymn_number>31</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>1493</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>31</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .       D         G                D
  I will enter His gates with thanksgiving in my heart
@@ -38,4 +47,7 @@
  He has made me glad
 .  Em               A              D   G   D   A
  I will rejoice for He has made me glad</lyrics>
-  <hymn_number>31</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

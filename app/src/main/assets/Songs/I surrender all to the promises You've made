@@ -8,15 +8,22 @@
   <capo print="true">2</capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli></ccli>
   <theme>Church: Commitment/Obedience; Worship: Declaration; </theme>
   <alttheme>Church: Commitment/Obedience; Worship: Declaration; </alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>A</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[C]
 .F#m         A/C# D9 A
  I surrender all,
@@ -46,4 +53,7 @@
  He doesn't love us 'cause of who we are
 .D9      A                  D9     A
  He only loves us 'cause of who He is (2x)</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

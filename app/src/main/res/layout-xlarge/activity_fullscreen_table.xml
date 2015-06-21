@@ -245,17 +245,34 @@
             android:transcriptMode="disabled" />
     </android.support.v4.widget.DrawerLayout>
 
-    <ImageView
-        android:id="@+id/uparrow"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:alpha="0.4"
-        android:contentDescription="@string/set_back"
-        android:onClick="doScrollUp"
-        android:src="@drawable/ambilwarna_arrow_up"
-        android:visibility="visible" />
+        android:layout_centerInParent="true">
+        <ImageView
+            android:id="@+id/uparrow_top"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:alpha="0.4"
+            android:contentDescription="@string/set_back"
+            android:onClick="doScrollUp"
+            android:src="@drawable/ambilwarna_arrow_up"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/downarrow_top"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_toRightOf="@id/uparrow_top"
+            android:alpha="0.4"
+            android:contentDescription="@string/set_forward"
+            android:onClick="doScrollDown"
+            android:src="@drawable/ambilwarna_arrow_down"
+            android:visibility="visible" />
+
+    </RelativeLayout>
 
     <HorizontalScrollView
         android:id="@+id/bottombar"
@@ -311,13 +328,25 @@
                 android:visibility="invisible" />
 
             <ImageView
-                android:id="@+id/downarrow"
+                android:id="@+id/uparrow_bottom"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_alignParentBottom="true"
                 android:layout_toRightOf="@id/metronomebutton"
                 android:alpha="0.4"
                 android:contentDescription="@string/set_back"
+                android:onClick="doScrollUp"
+                android:src="@drawable/ambilwarna_arrow_up"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/downarrow_bottom"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/uparrow_bottom"
+                android:alpha="0.4"
+                android:contentDescription="@string/set_forward"
                 android:onClick="doScrollDown"
                 android:src="@drawable/ambilwarna_arrow_down"
                 android:visibility="invisible" />
@@ -329,7 +358,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_toRightOf="@id/downarrow"
+                android:layout_toRightOf="@id/downarrow_bottom"
                 android:alpha="0.3"
                 android:contentDescription="@string/pdf_selectpage"
                 android:onClick="pdfSelectPage"
@@ -343,7 +372,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_toRightOf="@id/downarrow"
+                android:layout_toRightOf="@id/downarrow_bottom"
                 android:alpha="0.3"
                 android:contentDescription="@string/stickynotes"
                 android:onClick="stickyNotes"

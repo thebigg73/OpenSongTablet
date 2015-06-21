@@ -4,31 +4,43 @@
   <author>Jamie Owens-Collins</author>
   <copyright>1984 Fairhill / Word Music UK</copyright>
   <presentation></presentation>
-  <ccli>21583</ccli>
+  <hymn_number>51</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>21583</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>51</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>Gm</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[V1]
-.   Em                    D         Em
+.   Gm                    F         Gm
  In Heavenly armour we'll enter the land
-.    C        D            Em
+.    Eb        F            Gm
  The battle belongs to the Lord
-.   Em                       D              Em
+.   Gm                       F              Gm
  No weapon that's fashioned against us will stand
-.    C        D            Em
+.    Eb        F            Gm
  The battle belongs to the Lord
 
 [C]
-.    C  D    G  D   C D G 
+.    Eb  F    Bb  F   Eb F Bb 
  And we sing Glory, Honour
-.C         D               Em
+.Eb         F               Gm
  Power and strength to the Lord      x2
 
 [V2]
@@ -41,5 +53,6 @@
  When the enemy presses in hard do not fear
  The battle belongs to the Lord
  Take courage my friend your redemption is near
- The battle belongs to the Lord</lyrics>
-  <hymn_number>51</hymn_number></song>
+ The battle belongs to the Lord
+</lyrics>
+</song>

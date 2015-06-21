@@ -4,13 +4,26 @@
   <author>Iain Craig</author>
   <copyright>1993 Daybreak Music Ltd</copyright>
   <presentation></presentation>
-  <ccli>1255963</ccli>
+  <hymn_number>340</hymn_number>
   <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>1255963</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>340</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .G             D
  God’s love is deeper than the deepest ocean,
@@ -48,8 +61,7 @@
  Deeper, wider, higher,
 .   C  D   G
  Is God to me.</lyrics>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <time_sig></time_sig>
-  <hymn_number>340</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

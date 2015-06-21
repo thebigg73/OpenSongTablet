@@ -4,17 +4,26 @@
   <author>Robert C. Evans</author>
   <copyright>1991 Integrity's Hosanna! Music</copyright>
   <presentation></presentation>
-  <ccli>785025</ccli>
+  <hymn_number></hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>785025</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 .G   C/G   G   D
 
@@ -48,4 +57,8 @@
 .                   Cm/G   F7/A
  And it’s all about You
 .               Bbm7  Eb7             Ab  (Db/A  Ab  Eb  to repeat)
- Happy birthday Jesus,   Jesus I love You</lyrics></song>
+ Happy birthday Jesus,   Jesus I love You</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

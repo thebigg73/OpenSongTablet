@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
- <title>There's a cry in my heart</title>
+  <title>There's a cry in my heart</title>
   <author>Starfield</author>
   <copyright></copyright>
   <presentation></presentation>
@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>D</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .D                         A
  There's a cry in my heart for your glory to fall 
@@ -46,5 +53,8 @@
  You are my rock, You are my glory 
 .A G Bm 
  You are the lifter of my head</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <style index="default_style"></style>
   <style index="default_style"></style>
 </song>

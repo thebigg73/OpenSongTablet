@@ -4,19 +4,28 @@
   <author>Brian Doerksen</author>
   <copyright>1990 Mercy Publishing / Thankyou Music</copyright>
   <presentation></presentation>
-  <ccli>426298</ccli>
+  <hymn_number>45</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>426298</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>45</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
-.E  A/F#  E/G#  A   x2
+.D  A/E  D/F#  G   x2
  
 [V]
 .D  A/E    Bm                  Em/G
@@ -43,4 +52,7 @@
  And make me Holy
  Purify my heart, cleanse me from my sin
  Deep within</lyrics>
-  <hymn_number>45</hymn_number></song>
+  <linked_songs>OFF</linked_songs>
+  <pad_file></pad_file>
+  
+</song>

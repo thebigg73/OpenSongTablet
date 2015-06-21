@@ -3,19 +3,27 @@
   <title>Hallelujah</title>
   <author>Ben Cantelon</author>
   <copyright>2006 Thankyou Music</copyright>
-  <hymn_number>467</hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>467</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>Em</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .Em        C       G      D/F#
  Hallelujah Hallelujah
@@ -35,4 +43,8 @@
  It’s you we’re lifting high
 .G             D/F#
  Your name be glorified
- </lyrics></song>
+ </lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

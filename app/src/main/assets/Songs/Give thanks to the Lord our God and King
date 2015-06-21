@@ -4,8 +4,26 @@
   <author>Jesse Reeves and Chris Tomlin</author>
   <copyright>2001 Six Steps Music</copyright>
   <presentation>V1 V2 C V3 C</presentation>
+  <hymn_number>388</hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>3148428</ccli>
   <theme>God: Attributes; God: Guidance/Care; </theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .     G
  Give thanks to the Lord our God and King,|His love endures forever;
@@ -35,13 +53,7 @@
  By the grace of God we will carry on,|His love endures forever;
 .     D            C/E          D            C/E
  Sing praise, sing praise;|Sing praise, sing praise.</lyrics>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <tempo></tempo>
-  <time_sig></time_sig>
-  <hymn_number>388</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

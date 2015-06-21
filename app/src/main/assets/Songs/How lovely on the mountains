@@ -3,8 +3,27 @@
   <title>How lovely on the mountains</title>
   <author>Leonard E. Smith Jr.</author>
   <copyright>1974,1978 New Jerusalem Music</copyright>
+  <presentation></presentation>
+  <hymn_number>390</hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>8458</ccli>
   <theme>God: Power/Majesty; Worship: Praise/Adoration; </theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>E</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .E/G#       A      B                 A       E
  How lovely on the mountains are the feet of Him,
@@ -40,14 +59,7 @@
  God loves us so, see here His hands, His feet, His side,
 .       F#m  B       E    A E
  Yes we know, He is alive.</lyrics>
-  <presentation></presentation>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <tempo></tempo>
-  <time_sig></time_sig>
-  <hymn_number>390</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

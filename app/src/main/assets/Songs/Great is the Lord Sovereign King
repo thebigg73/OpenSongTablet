@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>1083829</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>262</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>E</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[C]
 .E A   E B        E A   C#m B
  Great ___ is the Lord;
@@ -50,4 +57,7 @@
  Great is the Lord.
 .E     Eb     G#m
  Great is the Lord.</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

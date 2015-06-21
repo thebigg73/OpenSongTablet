@@ -40,6 +40,7 @@ public class Preferences extends Activity {
 		
 		Log.d("Preferences","Loading");
 
+		FullscreenActivity.toggleScrollArrows = myPreferences.getString("toggleScrollArrows","S");
 		FullscreenActivity.mediaStore = myPreferences.getString("mediaStore","int");
 		FullscreenActivity.lastSetName = myPreferences.getString("lastSetName", "");
 		FullscreenActivity.presoAlpha = myPreferences.getFloat("presoAlpha", 1.0f);
@@ -231,7 +232,9 @@ public class Preferences extends Activity {
 
 		SharedPreferences.Editor editor = myPreferences.edit();
 
-		editor.putString("mediaStore", FullscreenActivity.mediaStore);
+        editor.putString("toggleScrollArrows",FullscreenActivity.toggleScrollArrows);
+
+        editor.putString("mediaStore", FullscreenActivity.mediaStore);
 		editor.putString("lastSetName", FullscreenActivity.lastSetName);
 		editor.putFloat("presoAlpha", FullscreenActivity.presoAlpha);
 		editor.putBoolean("presoAutoScale", FullscreenActivity.presoAutoScale);

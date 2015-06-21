@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>1083764</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>223</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>D</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 .Em7  D/F# G    x4   
 
@@ -57,4 +64,7 @@
  What can I give, what can I bring,
 .G                              Em7  D/F#  G .....
  What can I sing as an offering Lord?</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

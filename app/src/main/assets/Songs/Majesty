@@ -3,8 +3,27 @@
   <title>Majesty</title>
   <author>Jack Hayford</author>
   <copyright>1981 Rocksmith Music</copyright>
+  <presentation></presentation>
+  <hymn_number>101</hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>1527</ccli>
   <theme>Christ: Power/Majesty; </theme>
+  <alttheme></alttheme>
+  <user1>101</user1>
+  <user2></user2>
+  <user3></user3>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .G                    C
  Majesty, worship His Majesty;
@@ -26,14 +45,7 @@
  Jesus who died, now glorified,
 .            G
  King of all kings.</lyrics>
-  <presentation></presentation>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1>101</user1>
-  <user2></user2>
-  <user3></user3>
-  <tempo></tempo>
-  <time_sig></time_sig>
-  <hymn_number>101</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

@@ -402,5 +402,8 @@
 	<string name="media_stop">停止</string>
 	<string name="options_options_autostartscroll">Autostart autoscroll</string>
 	<string name="page_toggles">ページトグル</string>
+	<string name="scrollbuttons_double">二重矢印</string>
+	<string name="scrollbuttons_single">シングル矢印</string>
+	<string name="scrollbuttons_toggle">トグルスクロールボタン</string>
 
 </resources>

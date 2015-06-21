@@ -4,17 +4,26 @@
   <author>John Watson</author>
   <copyright>1989 Ampelos Music (UK) / Thankyou Music</copyright>
   <presentation></presentation>
-  <ccli>446357</ccli>
+  <hymn_number>81</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>446357</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>81</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>C</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>.C            G/B
  Peace like a river
 .F/A         C
@@ -27,4 +36,7 @@
  Healing springs of life
 .Am   E/G# Am F            C/G G C    (F  G) 
  Come Holy Spirit let Your fire  fall.</lyrics>
-  <hymn_number>81</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

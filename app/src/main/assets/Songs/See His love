@@ -3,19 +3,27 @@
   <title>See His love</title>
   <author>Tom Lockley</author>
   <copyright>2004 Tom Lockley</copyright>
-  <hymn_number>473</hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>473</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>Am</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .Am                  G
  See His love nailed on to a cross
@@ -50,4 +58,8 @@
 .Am          G/B
  Such love, such love
 .Em                     F 
- Such love is this for me</lyrics></song>
+ Such love is this for me</lyrics>
+  <linked_songs>OFF</linked_songs>
+  <pad_file></pad_file>
+  
+</song>

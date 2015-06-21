@@ -3,8 +3,27 @@
   <title>I'm forgiven because You were forsaken (Amazing Love)</title>
   <author>Billy James Foote</author>
   <copyright>1997 Worshiptogether.com Songs</copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>2456623</ccli>
   <theme>Christ: Death/Atonement; Worship: Declaration; </theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .D/F#   G2       Asus              A
  I'm forgiven, because You were forsaken,
@@ -34,17 +53,8 @@
  You are my King,
 .       D  G       D
  Jesus, You are my King.</lyrics>
-  <hymn_number></hymn_number>
-  <presentation></presentation>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

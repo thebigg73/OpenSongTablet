@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>2100354</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>289</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>F</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .F               Bb/F       F           C
  Love songs from heaven are filling the earth,
@@ -48,4 +55,7 @@
  This is the cry of your people.
  We will not settle for anything less,
  In this dark world our light must shine.</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

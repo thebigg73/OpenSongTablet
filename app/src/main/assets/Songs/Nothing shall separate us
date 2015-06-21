@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>1109978</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>242</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>G</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[C]
 .G             C G D/G     G        C       D
  Nothing shall separate us from the love of God
@@ -44,4 +51,7 @@
  A life set free from sin
  We shall deny all that destroys
  Our union with Him</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

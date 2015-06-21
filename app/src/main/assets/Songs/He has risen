@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>1045252</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>231</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>E</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[C]
 .E      A/E E  B      A  E
  He has risen, he has risen
@@ -56,4 +63,7 @@
  We shall see Him face to face
  Through eternity we'll praise Him
  Christ the champion of our faith</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

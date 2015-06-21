@@ -4,13 +4,26 @@
   <author>Evelyn Tarner</author>
   <copyright>1967 Word Music, Inc.</copyright>
   <presentation></presentation>
-  <ccli>15692</ccli>
+  <hymn_number>206</hymn_number>
   <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>15692</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>206</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
+  <key>C</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>.  C                            G             C
  Rejoice in the Lord always and again I say rejoice 
 .  C                            G             C
@@ -19,8 +32,7 @@
  Rejoice, rejoice, and again I say rejoice
 .  C                   G             C
  Rejoice, rejoice, and again I say rejoice</lyrics>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <time_sig></time_sig>
-  <hymn_number>206</hymn_number></song>
+  <linked_songs>OFF</linked_songs>
+  <pad_file></pad_file>
+  
+</song>

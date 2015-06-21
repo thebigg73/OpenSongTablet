@@ -4,17 +4,26 @@
   <author>D. Lundy</author>
   <copyright>1978 Kevin Mayhew Ltd</copyright>
   <presentation></presentation>
-  <ccli>2134598</ccli>
+  <hymn_number>351</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>2134598</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>351</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .    G      Bm       C      G     Am7   D7   G
  The Spirit lives to set us free, walk, walk in the light.
@@ -46,4 +55,7 @@
 [V6]
  The Spirit lives in you and me,  walk, walk in the light.
  His light will shine for all to see,  walk, walk in the light.</lyrics>
-  <hymn_number>351</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

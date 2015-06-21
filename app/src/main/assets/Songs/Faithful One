@@ -4,13 +4,26 @@
   <author>Brian Doerkson</author>
   <copyright>1989 Mercy / Vineyard Publishing</copyright>
   <presentation></presentation>
-  <ccli>465840</ccli>
+  <hymn_number>333</hymn_number>
   <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>465840</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>333</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .D                  Em7/D
  Faithful One, so unchanging;
@@ -28,7 +41,7 @@
  Again and again.
 
 [C]
-.    D/F# Bm7 A	 G        D
+.    D/F# Bm7 A     G        D
  You are  my  Rock in times of trouble,
 .            A  G           D
  You lift me up when I fall down;
@@ -36,8 +49,7 @@
  All through the storm Your love  is the an___chor,
 .   D/F# G  D/A Asus4 A  D
  My hope is in  You     alone.</lyrics>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <time_sig></time_sig>
-  <hymn_number>333</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

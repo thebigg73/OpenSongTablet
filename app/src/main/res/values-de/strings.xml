@@ -403,5 +403,8 @@
 	<string name="media_stop">Stopp</string>
 	<string name="options_options_autostartscroll">Autostart autoscroll</string>
 	<string name="page_toggles">Seite wechselt</string>
+	<string name="scrollbuttons_double">Doppelpfeile</string>
+	<string name="scrollbuttons_single">Einzelpfeile</string>
+	<string name="scrollbuttons_toggle">Toggle Scroll-Tasten</string>
 
 </resources>

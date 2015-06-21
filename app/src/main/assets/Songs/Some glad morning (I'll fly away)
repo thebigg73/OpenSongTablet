@@ -4,8 +4,26 @@
   <author>Albert E. Brumley</author>
   <copyright>1932 Hartford Music Company. 1960 Albert E. Brumley and Sons</copyright>
   <presentation>V1 C V2 C V3 C</presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>26399</ccli>
   <theme>Christ: Second Coming; Worship: Celebration; </theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .G                                         C         G
  Some glad morning when this life is o’er, I’ll fly away!
@@ -31,16 +49,8 @@
  Just a few more weary days and then, I’ll fly away!
 .G                                     G    D    G
  To a land where joys shall never end, I’ll fly away.</lyrics>
-  <hymn_number></hymn_number>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

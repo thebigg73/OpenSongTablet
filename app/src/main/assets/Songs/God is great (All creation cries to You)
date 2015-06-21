@@ -3,19 +3,27 @@
   <title>God is great (All creation cries to You)</title>
   <author>Marty Sampson</author>
   <copyright>2001 Marty Sampson/Hillsong Publishing</copyright>
-  <hymn_number>409</hymn_number>
   <presentation></presentation>
-  <ccli>1596342</ccli>
+  <hymn_number>409</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>1596342</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .G        C             D   G              C              D
  All creation cries to You,|Worshipping in spirit and in truth
@@ -50,4 +58,8 @@
 .G    C        D                    Em  C
  Holy is the Lord, the whole earth sings
 .                 D
- The whole earth sings</lyrics></song>
+ The whole earth sings</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

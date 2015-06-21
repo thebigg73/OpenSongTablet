@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
- <title>See what a morning</title>
+  <title>See what a morning</title>
   <author>Stuart Townend</author>
   <copyright></copyright>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number></hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .D           A/D      G/D        D
  See, what a morning, gloriously bright, 
@@ -52,5 +61,7 @@
  Death is dead, love has won, Christ has conquered; 
  And we shall reign with Him, 
  For He lives: Christ is risen from the dead!</lyrics>
-  <hymn_number></hymn_number>
+  <linked_songs>OFF</linked_songs>
+  <pad_file></pad_file>
+  
 </song>

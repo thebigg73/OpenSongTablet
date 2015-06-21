@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>906536</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>184</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>C</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 .C   C/E  F  Dm7
 .G   G/B  C  G      x2
@@ -42,4 +49,7 @@
  Love and mercy dawns:|Grace, forgiveness and salvation.
  Light for revelation,|Glory to Your people;
  Son of the Most High,|God's love gift to all.</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

@@ -4,8 +4,26 @@
   <author>Darryl Evans</author>
   <copyright>1998 Integrity's Hosanna! Music</copyright>
   <presentation>C T V C T V</presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>2574653</ccli>
   <theme>Fruit: Peace/Comfort; God: Victory; </theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>A</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[C]
 .A   D          F#m  E     A   D          F#m  E
  I'm trading my sor__rows, I'm trading my sha__me,
@@ -35,16 +53,8 @@
  That His joy's gonna be my strength.||
 .E                     Esus4        E          G                  D
  Though the sorrow may last for the night,|His joy comes with the morning.</lyrics>
-  <hymn_number></hymn_number>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>102141</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>10</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>E</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .E          E7     A          B7
  God is our Father and He has made us His own
@@ -42,4 +49,7 @@
  La la la la la la la la
 .E     A     E     B7        E  A  E  B7
  La la la la la la la la la la</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

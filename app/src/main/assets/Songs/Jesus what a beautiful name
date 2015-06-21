@@ -4,17 +4,26 @@
   <author>Tanya Riches</author>
   <copyright>1995 Tanya Riches / Hillsongs Australia / Kingsway's Thankyou Music</copyright>
   <presentation></presentation>
-  <ccli>1866235</ccli>
+  <hymn_number>325</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>1866235</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>325</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .D             Em        D/F#
  Jesus, what a beautiful name.
@@ -40,4 +49,7 @@
  Forgiveness, security, power and love,
  Grace that blows all fear away.
  Jesus, what a beautiful name.</lyrics>
-  <hymn_number>325</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

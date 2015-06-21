@@ -3,8 +3,27 @@
   <title>I Exalt Thee</title>
   <author>Pete Sanchez, Jr.</author>
   <copyright>1977 Pete Sanchez, Jr.</copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>17803</ccli>
   <theme>Worship: Praise/Adoration</theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .D           G         A                  D Bm
  For Thou, O Lord, art high above all the earth,
@@ -19,4 +38,8 @@
 .    D             A             G         A D
  I exalt Thee, I exalt Thee, I exalt Thee, O Lord.
 .    D             A             G         A D
- I exalt Thee, I exalt Thee, I exalt Thee, O Lord.</lyrics></song>
+ I exalt Thee, I exalt Thee, I exalt Thee, O Lord.</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

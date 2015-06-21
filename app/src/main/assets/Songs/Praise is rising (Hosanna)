@@ -3,19 +3,27 @@
   <title>Praise is rising (Hosanna)</title>
   <author>Paul Baloche</author>
   <copyright></copyright>
-  <hymn_number>421</hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>421</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>F</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .F                                     Bb2              F
  Praise is rising, eyes are turning to You, we turn to You
@@ -43,4 +51,8 @@
  In Your kingdom, broken lives are made new, You make us new
  'Cause when we see You, we find strength to face the day
  In Your Presence all our fears are washed away, washed away
- </lyrics></song>
+ </lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

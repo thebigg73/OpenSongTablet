@@ -4,17 +4,26 @@
   <author>Edward Caswall</author>
   <copyright>Public Domain</copyright>
   <presentation></presentation>
-  <ccli>2797045</ccli>
+  <hymn_number></hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>2797045</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .G    Am G/B  C        G          D   C  G     A7  D
  See amid the winter’s snow, born for us on earth below,
@@ -49,4 +58,8 @@
 
 [V6]
  Teach, O teach us, holy child, by Thy face so meek and mild,
- Teach us to resemble Thee in Thy sweet humility.</lyrics></song>
+ Teach us to resemble Thee in Thy sweet humility.</lyrics>
+  <linked_songs>OFF</linked_songs>
+  <pad_file></pad_file>
+  
+</song>

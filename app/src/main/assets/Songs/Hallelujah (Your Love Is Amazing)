@@ -4,8 +4,26 @@
   <author>Brenton Brown and Brian Doerksen</author>
   <copyright>2000 Vineyard Songs</copyright>
   <presentation>C V1 C V2 C</presentation>
+  <hymn_number>361</hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>3091812</ccli>
   <theme>God: Love/Mercy; Worship: Celebration; </theme>
+  <alttheme></alttheme>
+  <user1>361</user1>
+  <user2></user2>
+  <user3></user3>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[C]
 .     G           D
  Hallelujah, hallelujah,
@@ -35,13 +53,7 @@
  Every time I see You, all Your goodness shines through,
 .                    D                      C2
  And I can feel this God song, rising up in me.</lyrics>
-  <capo print="false"></capo>
-  <user1>361</user1>
-  <user2></user2>
-  <user3></user3>
-  <tempo></tempo>
-  <hymn_number>361</hymn_number>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <time_sig></time_sig></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

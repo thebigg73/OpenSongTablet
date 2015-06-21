@@ -15,7 +15,7 @@
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>F</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -76,4 +76,7 @@
 .       Bb
  I will let the walls come down 
 </lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

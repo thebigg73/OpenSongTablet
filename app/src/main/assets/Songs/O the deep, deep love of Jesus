@@ -3,19 +3,27 @@
   <title>O the deep, deep love of Jesus</title>
   <author>Samuel Trevor Francis</author>
   <copyright></copyright>
-  <hymn_number>450</hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>450</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>Em</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .Em    D    Cmaj7 B       Em
  O the deep, deep love of Jesus,
@@ -52,4 +60,8 @@
  O the deep, deep love of Jesus,
  ’Tis a heaven of heavens to me;
  And it lifts me up to glory,
- For it lifts me up to Thee!</lyrics></song>
+ For it lifts me up to Thee!</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

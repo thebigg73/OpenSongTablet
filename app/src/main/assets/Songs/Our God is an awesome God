@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
- <title>Our God is an awesome God</title>
+  <title>Our God is an awesome God</title>
   <author>Michael W. Smith</author>
   <copyright></copyright>
   <presentation></presentation>
@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>Cm</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .        Cm
  When He rolls up His sleeves He ain't puttin' on the ritz
@@ -55,5 +62,8 @@
  I hope that we have not too quickly forgotten
  That our God is an awesome God!
 </lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <style index="default_style"></style>
   <style index="default_style"></style>
 </song>

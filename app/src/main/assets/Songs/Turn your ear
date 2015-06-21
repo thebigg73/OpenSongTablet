@@ -3,19 +3,27 @@
   <title>Turn your ear to heaven</title>
   <author>David Crowder</author>
   <copyright></copyright>
-  <hymn_number></hymn_number>
   <presentation>FACE</presentation>
-  <ccli></ccli>
+  <hymn_number></hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>Bb</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .Bb               F/A                 Eb           
  Turn your ear to heaven and hear the noise inside
@@ -50,4 +58,8 @@
 
 [C2]
  Hallelujah, Hallelujah,
- He is Holy, He is Holy</lyrics></song>
+ He is Holy, He is Holy</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

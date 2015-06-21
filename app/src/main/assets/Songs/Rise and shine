@@ -4,13 +4,26 @@
   <author>Unknown</author>
   <copyright></copyright>
   <presentation></presentation>
-  <ccli>68137</ccli>
+  <hymn_number>203</hymn_number>
   <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>68137</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>203</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
+  <key>C</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[C]
 .C                                  
  Rise and shine and give God the glory, glory
@@ -43,8 +56,7 @@
 4Almost drove those animals crazies, crazies, children of the Lord
 5Everything was fine and dandy, dandy, children of the Lord
 6Everything is hunky-dorey, dorey, children of the Lord</lyrics>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <time_sig></time_sig>
-  <hymn_number>203</hymn_number></song>
+  <linked_songs>OFF</linked_songs>
+  <pad_file></pad_file>
+  
+</song>

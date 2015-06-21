@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
   <title>Dance with me tonight</title>
+  <author>Olly Murs</author>
+  <copyright></copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .D
  My name is Olly nice to meet you can I tell you baby
@@ -12,7 +35,7 @@
  I was wondering if you and me could spend a minute,
 .Bm
  On the floor up and close getting lost in it,
-.G            A	           D
+.G            A               D
  I won't give up without a fight.
 
 [C]
@@ -58,21 +81,8 @@
 [Outro]
  Everybody just close your eyes, shake your body all through the night
  I just want you to dance with me tonight</lyrics>
-  <author>Olly Murs</author>
-  <copyright></copyright>
-  <hymn_number></hymn_number>
-  <presentation></presentation>
-  <ccli></ccli>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <theme></theme>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

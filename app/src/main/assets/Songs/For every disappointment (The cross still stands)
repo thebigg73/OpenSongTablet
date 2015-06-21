@@ -6,9 +6,9 @@
   <presentation></presentation>
   <hymn_number></hymn_number>
   <capo print="false"></capo>
-  <tempo></tempo>
-  <time_sig></time_sig>
-  <duration></duration>
+  <tempo>76</tempo>
+  <time_sig>4/4</time_sig>
+  <duration>240</duration>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -77,5 +77,5 @@
  I bow down, I bow down.</lyrics>
   <linked_songs></linked_songs>
   <pad_file></pad_file>
-  
+  <custom_chords></custom_chords>
 </song>

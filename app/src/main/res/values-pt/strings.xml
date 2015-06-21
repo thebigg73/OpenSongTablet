@@ -403,5 +403,8 @@
 	<string name="media_stop">Pare</string>
 	<string name="options_options_autostartscroll">Autostart autoscroll</string>
 	<string name="page_toggles">alterna página</string>
+	<string name="scrollbuttons_double">setas duplas</string>
+	<string name="scrollbuttons_single">setas simples</string>
+	<string name="scrollbuttons_toggle">Botões de rolagem de alternância</string>
 
 </resources>

@@ -4,17 +4,26 @@
   <author>David Ruis</author>
   <copyright>1993 Mercy/VineYard Publishing</copyright>
   <presentation></presentation>
-  <ccli>785489</ccli>
+  <hymn_number>272</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo>65</tempo>
+  <time_sig>4/4</time_sig>
+  <duration>300</duration>
+  <ccli>785489</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>272</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .G/B C     D   D/F# G    C           D   D/F#  G
  ____Father of creation, unfold Your sovereign plan.
@@ -57,4 +66,7 @@
 .F         C       Dsus4  D
  The glory of Your Son
 </lyrics>
-  <hymn_number>272</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

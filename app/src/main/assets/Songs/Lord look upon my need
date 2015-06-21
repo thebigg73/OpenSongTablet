@@ -4,17 +4,26 @@
   <author>Rick Founds</author>
   <copyright>1989 Maranatha! Music</copyright>
   <presentation></presentation>
-  <ccli>116034</ccli>
+  <hymn_number>186</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>116034</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>186</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>C</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .C     Em/B         Am Am/G  
  Lord, look upon my need,  
@@ -36,4 +45,7 @@
  O Lord,   You know the number of my days,
 .Am        D                G  G7
  I want to live my life for You.</lyrics>
-  <hymn_number>186</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

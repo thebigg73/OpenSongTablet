@@ -2,8 +2,28 @@
 <song>
   <title>O Little Town Of Bethlehem</title>
   <author>Phillip Brooks, Lewis H. Redner, 1868</author>
+  <copyright>Public Domain</copyright>
   <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>2684622</ccli>
   <theme>Christ: Birth; </theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>F</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .  F                             Gm       C       F    
  O little town of Bethlehem, how still we see you lie!
@@ -32,14 +52,7 @@
  We hear the Christmas angels the great glad tidings tell;
  O come to us, abide with us, our Lord Immanuel.
 </lyrics>
-  <copyright>Public Domain</copyright>
-  <ccli>2684622</ccli>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <tempo></tempo>
-  <time_sig></time_sig></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

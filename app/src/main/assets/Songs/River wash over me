@@ -4,17 +4,26 @@
   <author>Dougie Brown</author>
   <copyright>1980 Thankyou Music</copyright>
   <presentation></presentation>
-  <ccli>121366</ccli>
+  <hymn_number>216</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>121366</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>216</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .D     A         G  D 
  River wash over me
@@ -36,4 +45,7 @@
  Reign over all my heart
  Teach me to praise You and fill me anew
  Jesus rule over me</lyrics>
-  <hymn_number>216</hymn_number></song>
+  <linked_songs>OFF</linked_songs>
+  <pad_file></pad_file>
+  
+</song>

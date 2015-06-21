@@ -4,13 +4,26 @@
   <author>Bryn Haworth</author>
   <copyright>1991 Kingsway's Thankyou Music</copyright>
   <presentation></presentation>
-  <ccli>11051106</ccli>
+  <hymn_number>209</hymn_number>
   <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>11051106</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>209</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
+  <key>Em</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .Em Em/D C C/B Am   B7   B7/Eb  Em
  Holy,   holy,     |holy is the Lord.
@@ -34,8 +47,7 @@
  Glory, I give glory,    |to the Lamb of God.
 .Em Em/D       C C/B Am   B7     B7/Eb   Em
  Glory, I give glory,    |to the Lamb of God.</lyrics>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <time_sig></time_sig>
-  <hymn_number>209</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

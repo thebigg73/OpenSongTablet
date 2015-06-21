@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>28995</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>157</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>C</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .      C      F        F/G  C         Am   Em          Dm7  G
  I can almost see Your Holiness, as I look around this place
@@ -42,4 +49,7 @@
  Fill me again with Your love
 .                C  F/C  C
  Sweet Spirit of God</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

@@ -4,17 +4,26 @@
   <author>Wendy Churchill</author>
   <copyright>1982 Springtide/Word Music (UK)</copyright>
   <presentation></presentation>
-  <ccli>56558</ccli>
+  <hymn_number>175</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>56558</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>175</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>F</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .F        Am       Bb       F
  Jesus is King and I will extol Him
@@ -42,4 +51,7 @@
  Thrilled with Your goodness we give You our praise
  Angels in light with worship surround Him
  Jesus, our Saviour, for ever the same</lyrics>
-  <hymn_number>175</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

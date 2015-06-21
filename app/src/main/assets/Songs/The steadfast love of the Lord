@@ -4,17 +4,26 @@
   <author>Edith McNeil</author>
   <copyright>1974 Celebration / Thankyou Music</copyright>
   <presentation></presentation>
-  <ccli>21590</ccli>
+  <hymn_number>142</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>21590</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>142</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>F</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .    F         Dm          Gm7        F/C  Csus4   C
  The steadfast love of the Lord never ceases
@@ -28,4 +37,7 @@
  Great is Thy faithfulness O Lord
 .Gm           Bb/C  C  F  Fsus4  F
  Great is Thy faithfulness</lyrics>
-  <hymn_number>142</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

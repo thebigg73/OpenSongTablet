@@ -403,5 +403,8 @@
 	<string name="media_stop">стоп</string>
 	<string name="options_options_autostartscroll">Autostart autoscroll</string>
 	<string name="page_toggles">Page переключает</string>
+	<string name="scrollbuttons_double">Двойные стрелки</string>
+	<string name="scrollbuttons_single">Холост стрелки</string>
+	<string name="scrollbuttons_toggle">Переключение кнопки прокрутки</string>
 
 </resources>

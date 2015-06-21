@@ -5,7 +5,7 @@
   <copyright></copyright>
   <presentation></presentation>
   <hymn_number>517</hymn_number>
-  <capo print="false"></capo>
+  <capo print=""></capo>
   <tempo></tempo>
   <time_sig></time_sig>
   <duration></duration>
@@ -24,6 +24,9 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[V1]
 .F#m                 D2         A/C#          Esus
  Crown Him with many crowns the Lamb upon His throne
@@ -71,8 +74,6 @@
  The King of kings, O come adore our God who reigns for evermore!
 .       C#m7     B/D#       F#sus  B              C#m7    B/D#       F#sus   B
  Praise God, who reigns for evermore!  You're the God who reigns for evermore!
- </lyrics>
-  <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+ 
+</lyrics>
 </song>

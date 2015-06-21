@@ -432,5 +432,8 @@
 	<string name="media_stop">Stop</string>
 	<string name="options_options_autostartscroll">Autostart autoscroll</string>
 	<string name="page_toggles">Page afgeskeur</string>
+	<string name="scrollbuttons_double">Double pyle</string>
+	<string name="scrollbuttons_single">Enkele pyle</string>
+	<string name="scrollbuttons_toggle">Toggle scroll knoppies</string>
 
 </resources>

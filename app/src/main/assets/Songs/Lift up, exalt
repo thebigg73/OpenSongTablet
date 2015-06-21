@@ -3,19 +3,27 @@
   <title>Lift up, exalt</title>
   <author>Derek Beavis</author>
   <copyright>1997 Sonsongs</copyright>
-  <hymn_number>483</hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>483</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>E</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[C]
 .E    B   C#m7 F#  A   C#m7 A      B
  Lift up, ex__alt, the name of the Lord
@@ -42,4 +50,8 @@
  Can you hear the sound of the coming rain
  Can you see the clouds, salvation comes
  There'll be songs of joy on our streets tonight
- Where death was, now there's life</lyrics></song>
+ Where death was, now there's life</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

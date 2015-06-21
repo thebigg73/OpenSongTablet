@@ -4,8 +4,26 @@
   <author>Keith Green</author>
   <copyright>1980 Birdwing Music</copyright>
   <presentation>V1 V2 C V1 C V2</presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>14514</ccli>
   <theme>Church: Renewal; Worship: Intimacy; </theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .   D            G/D   D   Asus A
 1Oh Lord, You're beau__ti__ful;
@@ -29,16 +47,8 @@
  And when I'm doing  well, help me to never seek a crown,
 .         Bm             A        G2 D
  For my reward is giving glory to You.</lyrics>
-  <hymn_number></hymn_number>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

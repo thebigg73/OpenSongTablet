@@ -3,9 +3,27 @@
   <title>The name of the Lord is (Blessed be the name of the Lord)</title>
   <author>Clinton Utterbach</author>
   <copyright>1989 Universal - Polygram International Publishing, Inc.</copyright>
+  <presentation></presentation>
+  <hymn_number>108</hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>265239</ccli>
   <theme></theme>
-  <tempo></tempo>
+  <alttheme></alttheme>
+  <user1>108</user1>
+  <user2></user2>
+  <user3></user3>
+  <key>E</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[C]
 .                E      A         E
  The name of the Lord is a strong tower,
@@ -48,13 +66,7 @@
 
 
 </lyrics>
-  <presentation></presentation>
-  <capo print="false"></capo>
-  <user1>108</user1>
-  <user2></user2>
-  <user3></user3>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <time_sig></time_sig>
-  <hymn_number>108</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

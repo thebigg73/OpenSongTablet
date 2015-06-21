@@ -4,17 +4,26 @@
   <author>Charles H. Gabriel</author>
   <copyright>The Rodeheaver Company / Word Music</copyright>
   <presentation></presentation>
-  <ccli>25297</ccli>
+  <hymn_number>353</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>25297</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>353</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .  G                               D             G     G7
  I stand amazed in the presence of Jesus the Nazarene,
@@ -56,4 +65,7 @@
  His face at last I'll see,
  'Twill be my joy through the ages
  To sing of His love for me.</lyrics>
-  <hymn_number>353</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

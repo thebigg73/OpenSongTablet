@@ -3,19 +3,27 @@
   <title>How great is our God</title>
   <author>Chris Tomlin, Ed Cash and Jesse Reeves</author>
   <copyright>2004 Six Steps Music</copyright>
-  <hymn_number>400</hymn_number>
   <presentation></presentation>
-  <ccli>4348399</ccli>
+  <hymn_number>400</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>4348399</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>A</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .    A                      F#m7
  The splendour of the King, clothed in majesty,
@@ -52,4 +60,8 @@
 .   Dmaj7
  My heart will sing
 .    E            A  Asus A
- How great is our God</lyrics></song>
+ How great is our God</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

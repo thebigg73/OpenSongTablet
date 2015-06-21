@@ -5,13 +5,13 @@
   <copyright>1981, 1982 Mole End Music</copyright>
   <presentation></presentation>
   <hymn_number>385</hymn_number>
-  <capo print="false"></capo>
+  <capo print=""></capo>
   <tempo></tempo>
   <time_sig></time_sig>
   <duration></duration>
   <ccli>26856</ccli>
   <theme>Worship: Praise/Adoration; </theme>
-  <alttheme></alttheme>
+  <alttheme>Worship: Praise/Adoration; </alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
@@ -31,7 +31,7 @@
  Age to age You're still the same, by the power of the name.
 .       Dm          G         C       F
  El Shaddai, El Shaddai, erkamkana Adonai,
-.        Bb              Dm  G     Gsus   C
+.        Bb                  G     Gsus   C
  We will praise and lift You high, El Shaddai.
 
 [V1]
@@ -49,7 +49,7 @@
 [V2]
 .            Dm                G              C                  F
  Through the years You made it clear that the time of Christ was near,
-.           Bb              G           Am   G/B      A/C#
+.           Bb              E7          Am   G/B      A/C#
  Though the people couldn't see what Messiah ought to be.
 .            Dm                 G               C              F
  Though Your Word contained the plan, they just could not understand,
@@ -58,6 +58,6 @@
 
 [C]</lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
 </song>

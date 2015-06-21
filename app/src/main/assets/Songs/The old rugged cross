@@ -3,8 +3,27 @@
   <title>The Old Rugged Cross</title>
   <author>George Bennard</author>
   <copyright>Public Domain</copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>19722</ccli>
   <theme>Christ: Death/Atonement</theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>A</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .     A                      D                     E7                      A
  On a hill far away stood an old rugged cross, The emblem of suff'ring and shame;
@@ -37,4 +56,8 @@
 .       A                       D                 E7                        A
  To the old rugged cross I will ever be true, Its shame and reproach gladly bear;
 .           A                      D                        E7                 A
- Then He'll call me some day to my home far away, Where his glory forever I'll share.</lyrics></song>
+ Then He'll call me some day to my home far away, Where his glory forever I'll share.</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

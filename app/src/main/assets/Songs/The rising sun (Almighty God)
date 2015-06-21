@@ -3,19 +3,27 @@
   <title>The rising sun (Almighty God)</title>
   <author>Tim Hughes</author>
   <copyright>Thankyou Music</copyright>
-  <hymn_number>442</hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>442</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>A</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .A
  The rising Sun that fills the sky
@@ -54,4 +62,8 @@
 .       D         E
  What a Glorious God.
 .F#m E/G#  A        D       Bm7 E
- So  far  above all earthly things</lyrics></song>
+ So  far  above all earthly things</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

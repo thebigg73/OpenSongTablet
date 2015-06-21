@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli></ccli>
   <theme>God: Guidance/Care; </theme>
   <alttheme>God: Guidance/Care; </alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>D</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .       D             D/F# G                   D                           A
 1 He    leadeth me!   O    blessed thought! O  words with heavenly comfort fraught!
@@ -33,4 +40,7 @@
  He leadeth me, He leadeth me; By His own hand He leadeth me:
 .    D        A        D G     D       Bm     D       A       D
  His faithful follower I would be, For by His hand He leadeth me.</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

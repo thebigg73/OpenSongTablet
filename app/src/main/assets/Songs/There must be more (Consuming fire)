@@ -3,19 +3,27 @@
   <title>There must be more (Consuming fire)</title>
   <author>Tim Hughes</author>
   <copyright>2002 Thankyou Music</copyright>
-  <hymn_number>407</hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>407</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .Em            D/F#      G
  There must be more than this
@@ -48,4 +56,8 @@
  Now set the captives free
  Leave us abandoned to Your praise||
  Lord let Your glory fall
- Lord let Your glory fall</lyrics></song>
+ Lord let Your glory fall</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

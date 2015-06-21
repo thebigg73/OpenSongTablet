@@ -3,19 +3,27 @@
   <title>There's a song that's rising up inside (We celebrate)</title>
   <author>Ben Cantelon</author>
   <copyright>2006 Thankyou Music</copyright>
-  <hymn_number>412</hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>412</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>A</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 . A  E  D  F#m  E
  
@@ -56,4 +64,8 @@
 .      A/C#         D            F#m          E
  We’ll dance, We’ll Sing,|Giving glory to the King
 .       A/C#       D             E
- We’ll Praise your name,|For you reign</lyrics></song>
+ We’ll Praise your name,|For you reign</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

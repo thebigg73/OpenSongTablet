@@ -4,17 +4,26 @@
   <author>Gareth Evans</author>
   <copyright>2005 New Life Music Ministries</copyright>
   <presentation>V1 C V2 C V3 C V4 C2 T</presentation>
-  <ccli></ccli>
+  <hymn_number>374</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>374</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>A</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .     A      E/G#     D/F# E     A    E/G#   D/F# E
  This song I sing for Jesus,|The Holy Son of God;
@@ -51,4 +60,7 @@
 .     D         E        A
  That blood was shed for me. 
 </lyrics>
-  <hymn_number>374</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

@@ -4,17 +4,26 @@
   <author>Daniel Schutte</author>
   <copyright>1981 New Dawn Music</copyright>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>384</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .G             C/G     G    G      C/G      G      D
  I the Lord of sea and sky,|I have heard my people cry;
@@ -46,4 +55,7 @@
  I will set a feast for them, my hand will save.||
  Finest bread I will provide,|Till their hearts are satisfied;
  I will give my life to them. Whom shall I send?</lyrics>
-  <hymn_number>384</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

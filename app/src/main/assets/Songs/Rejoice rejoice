@@ -4,17 +4,26 @@
   <author>Graham Kendrick</author>
   <copyright>1983 Thankyou Music</copyright>
   <presentation></presentation>
-  <ccli>1338</ccli>
+  <hymn_number>176</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>1338</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>176</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 .D    Dmaj7/C#    Em7/B   Dmaj7/A  Dmaj7/C#
 
@@ -49,4 +58,7 @@
  We're made of clay, but this treasure is within
  He turns our weaknesses into His opportunities 
  So that the glory goes to Him</lyrics>
-  <hymn_number>176</hymn_number></song>
+  <linked_songs>OFF</linked_songs>
+  <pad_file></pad_file>
+  
+</song>

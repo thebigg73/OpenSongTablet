@@ -403,5 +403,8 @@
 	<string name="media_stop">Deténgase</string>
 	<string name="options_options_autostartscroll">Autostart autoscroll</string>
 	<string name="page_toggles">alterna Página</string>
+	<string name="scrollbuttons_double">flechas dobles</string>
+	<string name="scrollbuttons_single">flechas individuales</string>
+	<string name="scrollbuttons_toggle">Botones de desplazamiento Toggle</string>
 
 </resources>

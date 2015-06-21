@@ -110,6 +110,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     public int checkscroll_time = 1000;
     public int delayswipe_time = 1800;
 
+    public static String toggleScrollArrows;
+
     @SuppressWarnings("unused|NewApi")
     // Identify the chord images
     private Drawable f1;
@@ -679,8 +681,10 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     private TableLayout lyricstable_threecolview;
     private TableLayout lyricstable2_threecolview;
     private TableLayout lyricstable3_threecolview;
-    private static ImageView uparrow;
-    private static ImageView downarrow;
+    private static ImageView uparrow_top;
+    private static ImageView downarrow_top;
+    private static ImageView uparrow_bottom;
+    private static ImageView downarrow_bottom;
     static String myToastMessage;
     private static boolean showCapo;
     private static TextView top_songtitle;
@@ -1131,8 +1135,10 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         popupChord.setVisibility(View.GONE);
 
 
-        uparrow = (ImageView) findViewById(R.id.uparrow);
-        downarrow = (ImageView) findViewById(R.id.downarrow);
+        uparrow_top = (ImageView) findViewById(R.id.uparrow_top);
+        uparrow_bottom = (ImageView) findViewById(R.id.uparrow_bottom);
+        downarrow_top = (ImageView) findViewById(R.id.downarrow_top);
+        downarrow_bottom = (ImageView) findViewById(R.id.downarrow_bottom);
 
         checkScrollPosition = new Runnable() {
             @Override
@@ -1141,15 +1147,35 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                 // Decide if the down arrow should be displayed.
                 if (height > scrollpage.getScrollY() && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerOpen(expListViewSong)) {
-                    downarrow.setVisibility(View.VISIBLE);
+                    if (toggleScrollArrows.equals("D")) {
+                        downarrow_top.setVisibility(View.VISIBLE);
+                    } else {
+                        downarrow_top.setVisibility(View.GONE);
+                    }
+                    downarrow_bottom.setVisibility(View.VISIBLE);
                 } else {
-                    downarrow.setVisibility(View.INVISIBLE);
+                    if (toggleScrollArrows.equals("D")) {
+                        downarrow_top.setVisibility(View.INVISIBLE);
+                    } else {
+                        downarrow_top.setVisibility(View.GONE);
+                    }
+                    downarrow_bottom.setVisibility(View.INVISIBLE);
                 }
                 // Decide if the up arrow should be displayed.
                 if (scrollpage.getScrollY() > 0 && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerOpen(expListViewSong)) {
-                    uparrow.setVisibility(View.VISIBLE);
+                    uparrow_top.setVisibility(View.VISIBLE);
+                    if (toggleScrollArrows.equals("D")) {
+                        uparrow_bottom.setVisibility(View.VISIBLE);
+                    } else {
+                        uparrow_bottom.setVisibility(View.GONE);
+                    }
                 } else {
-                    uparrow.setVisibility(View.INVISIBLE);
+                    uparrow_top.setVisibility(View.INVISIBLE);
+                    if (toggleScrollArrows.equals("D")) {
+                        uparrow_bottom.setVisibility(View.INVISIBLE);
+                    } else {
+                        uparrow_bottom.setVisibility(View.GONE);
+                    }
                 }
             }
         };
@@ -2831,9 +2857,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         wasshowing_stickynotes = stickynotes.getVisibility();
         scrollstickyholder.setVisibility(View.GONE);
 
-        //downarrow.setVisibility(View.GONE);
         findViewById(R.id.bottombar).setVisibility(View.GONE);
-        uparrow.setVisibility(View.GONE);
+        uparrow_top.setVisibility(View.GONE);
+        uparrow_bottom.setVisibility(View.GONE);
+        downarrow_bottom.setVisibility(View.GONE);
+        downarrow_top.setVisibility(View.GONE);
     }
 
     private void showpagebuttons() {
@@ -3071,6 +3099,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         List<String> options_options = new ArrayList<>();
         options_options.add(getResources().getString(R.string.options_options_theme));
         options_options.add(getResources().getString(R.string.songbuttons_toggle));
+        options_options.add(getResources().getString(R.string.scrollbuttons_toggle));
         options_options.add(getResources().getString(R.string.autoscroll_time));
         options_options.add(getResources().getString(R.string.options_options_autostartscroll));
         options_options.add(getResources().getString(R.string.options_options_scale));
@@ -3580,8 +3609,24 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 redrawTheLyricsTable(view);
                             }
 
-
                         } else if (childPosition==2) {
+                            // Toggle scroll arrows single/double
+                            if (toggleScrollArrows.equals("S")) {
+                                toggleScrollArrows = "D";
+                                Preferences.savePreferences();
+                                myToastMessage = getResources().getString(R.string.scrollbuttons_toggle) + " - " + getResources().getString(R.string.scrollbuttons_double);
+                                ShowToast.showToast(FullscreenActivity.this);
+                                redrawTheLyricsTable(view);
+                            } else {
+                                toggleScrollArrows = "S";
+                                Preferences.savePreferences();
+                                myToastMessage = getResources().getString(R.string.scrollbuttons_toggle) + " - " + getResources().getString(R.string.scrollbuttons_single);
+                                ShowToast.showToast(FullscreenActivity.this);
+                                redrawTheLyricsTable(view);
+                            }
+
+
+                        } else if (childPosition==3) {
                             // Set autoscroll delay time (0-30 seconds)
                             final int storeautoscrolldelay = autoScrollDelay;
 
@@ -3632,7 +3677,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             dialogBuilder.show();
 
 
-                        } else if (childPosition==3) {
+                        } else if (childPosition==4) {
                             // Toggle autostart autoscroll on/off
                             if (autostartautoscroll) {
                                 autostartautoscroll = false;
@@ -3648,7 +3693,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 redrawTheLyricsTable(view);
                             }
 
-                        } else if (childPosition==4) {
+                        } else if (childPosition==5) {
                             // Toggle autoscale
                             switch (toggleYScale) {
                                 case "Y":
@@ -3675,7 +3720,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
 
 
-                        } else if (childPosition==5) {
+                        } else if (childPosition==6) {
                             // Choose font size
 
                             if (isPDF) {
@@ -3767,7 +3812,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             }
 
 
-                        } else if (childPosition==6) {
+                        } else if (childPosition==7) {
                             // Choose chord format
                             Intent intent = new Intent();
                             intent.setClass(FullscreenActivity.this, ChordFormat.class);
@@ -3777,7 +3822,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             finish();
 
 
-                        } else if (childPosition==7) {
+                        } else if (childPosition==8) {
                             // Show/Hide chords
 
                             if (isPDF) {
@@ -3797,7 +3842,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 redrawTheLyricsTable(view);
                             }
 
-                        } else if (childPosition==8) {
+                        } else if (childPosition==9) {
                             // Toggle menu swipe on/off
                             if (swipeDrawer.equals("Y")) {
                                 swipeDrawer = "N";
@@ -3818,7 +3863,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             Preferences.savePreferences();
 
 
-                        } else if (childPosition==9) {
+                        } else if (childPosition==10) {
                             // Toggle song move swipe
                             switch (swipeSet) {
                                 case "Y":
@@ -3850,7 +3895,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                     break;
                             }
 
-                        } else if (childPosition==10) {
+                        } else if (childPosition==11) {
                             // Toggle show next song in set
                             // Options are top, bottom, off
 
@@ -3879,7 +3924,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             Preferences.savePreferences();
                             redrawTheLyricsTable(main_page);
 
-                        } else if (childPosition==11) {
+                        } else if (childPosition==12) {
                             // Assign custom gestures
                             Intent intent = new Intent();
                             intent.setClass(FullscreenActivity.this, GestureOptions.class);
@@ -3888,7 +3933,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             startActivity(intent);
                             finish();
 
-                        } else if (childPosition==12) {
+                        } else if (childPosition==13) {
                             // Hide top menu bar on/off
                             if (hideactionbaronoff.equals("Y")) {
                                 hideactionbaronoff = "N";
@@ -3917,7 +3962,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
 
 
-                        } else if (childPosition==13) {
+                        } else if (childPosition==14) {
                             // Change colours
                             Intent intent = new Intent();
                             intent.setClass(FullscreenActivity.this,
@@ -3928,21 +3973,21 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             finish();
 
 
-                        } else if (childPosition==14) {
+                        } else if (childPosition==15) {
                             // Change fonts
                             whattodo = "changefonts";
                             DialogFragment newFragment = PopUpFontsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
 
-                        } else if (childPosition==15) {
+                        } else if (childPosition==16) {
                             // Assign foot pedal
                             FullscreenActivity.whattodo = "footpedal";
                             DialogFragment newFragment = PopUpPedalsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
 
-                        } else if (childPosition==16) {
+                        } else if (childPosition==17) {
                             // Help (online)
                             String url = "https://sites.google.com/site/opensongtabletmusicviewer/home";
                             Intent i = new Intent(Intent.ACTION_VIEW);
@@ -3950,7 +3995,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             startActivity(i);
 
 
-                        } else if (childPosition==17) {
+                        } else if (childPosition==18) {
                             // Manage OpenSong storage
                             tryKillPads();
                             tryKillMetronome();
@@ -3959,11 +4004,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             startActivity(intent_stop);
                             finish();
 
-                        } else if (childPosition==18) {
+                        } else if (childPosition==19) {
                             // Import OnSong backup
                             onSongImport();
 
-                        } else if (childPosition==19) {
+                        } else if (childPosition==20) {
                             // Change language
 
                             int positionselected = -1;
@@ -4074,7 +4119,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                             languageDialog.show();
 
-                        } else if (childPosition==20) {
+                        } else if (childPosition==21) {
                             // Refresh Songs folders
                             prepareSongMenu();
                             mDrawerLayout.closeDrawer(expListViewOption);
@@ -4082,7 +4127,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
 
 
-                        } else if (childPosition==21) {
+                        } else if (childPosition==22) {
                             // Splash screen
                             // First though, set the preference to show the current version
                             // Otherwise it won't show the splash screen
@@ -4097,7 +4142,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             tryKillMetronome();
                             startActivity(intent);
                             finish();
-
                         }
                     }
                 }
@@ -4987,8 +5031,15 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             scrollpage_twocol.setVisibility(View.INVISIBLE);
             scrollpage_threecol.setVisibility(View.INVISIBLE);
 
-            uparrow.setVisibility(View.INVISIBLE);
-            downarrow.setVisibility(View.INVISIBLE);
+            if (toggleScrollArrows.equals("D")) {
+                uparrow_bottom.setVisibility(View.INVISIBLE);
+                downarrow_top.setVisibility(View.INVISIBLE);
+            } else {
+                uparrow_bottom.setVisibility(View.GONE);
+                downarrow_top.setVisibility(View.GONE);
+            }
+            uparrow_top.setVisibility(View.INVISIBLE);
+            downarrow_bottom.setVisibility(View.INVISIBLE);
         }
 
         // If the song is a PDF, turn stuff off that won't work
@@ -6158,8 +6209,15 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         columnTest = 1;
 
         // Set up and down arrows to invisible
-        uparrow.setVisibility(View.INVISIBLE);
-        downarrow.setVisibility(View.INVISIBLE);
+        if (toggleScrollArrows.equals("D")) {
+            uparrow_bottom.setVisibility(View.INVISIBLE);
+            downarrow_top.setVisibility(View.INVISIBLE);
+        } else {
+            uparrow_bottom.setVisibility(View.GONE);
+            downarrow_top.setVisibility(View.GONE);
+        }
+        uparrow_top.setVisibility(View.INVISIBLE);
+        downarrow_bottom.setVisibility(View.INVISIBLE);
         songLoadingProgressBar.setVisibility(View.VISIBLE);
         songTitleHolder.setVisibility(View.VISIBLE);
 
@@ -6201,8 +6259,15 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             @Override
             public void run() {
 
-                uparrow.setVisibility(View.INVISIBLE);
-                downarrow.setVisibility(View.INVISIBLE);
+                if (toggleScrollArrows.equals("D")) {
+                    uparrow_bottom.setVisibility(View.INVISIBLE);
+                    downarrow_top.setVisibility(View.INVISIBLE);
+                } else {
+                    uparrow_bottom.setVisibility(View.GONE);
+                    downarrow_top.setVisibility(View.GONE);
+                }
+                uparrow_top.setVisibility(View.INVISIBLE);
+                downarrow_bottom.setVisibility(View.INVISIBLE);
 
                 myXML = null;
                 myXML = "";
@@ -6824,7 +6889,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             if (gesture_doubletap.equals("1")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow_top.isFocused() && !downarrow_bottom.isFocused() && !uparrow_bottom.isFocused() && !uparrow_top.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
@@ -6834,7 +6899,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             } else if (gesture_doubletap.equals("2")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow_top.isFocused() && !downarrow_bottom.isFocused() && !uparrow_bottom.isFocused() && !uparrow_top.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
@@ -6854,7 +6919,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             } else if (gesture_doubletap.equals("3")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow_top.isFocused() && !downarrow_bottom.isFocused() && !uparrow_bottom.isFocused() && !uparrow_top.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
@@ -6864,7 +6929,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             } else if (gesture_doubletap.equals("4")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow_top.isFocused() && !downarrow_bottom.isFocused() && !uparrow_bottom.isFocused() && !uparrow_top.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
@@ -6885,7 +6950,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             if (gesture_longpress.equals("1")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow_top.isFocused() && !downarrow_bottom.isFocused() && !uparrow_bottom.isFocused() && !uparrow_top.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
@@ -6895,7 +6960,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             } else if (gesture_longpress.equals("2")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow_top.isFocused() && !downarrow_bottom.isFocused() && !uparrow_bottom.isFocused() && !uparrow_top.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
@@ -6914,7 +6979,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             } else if (gesture_longpress.equals("3")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow_top.isFocused() && !downarrow_bottom.isFocused() && !uparrow_bottom.isFocused() && !uparrow_top.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
@@ -6924,7 +6989,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             } else if (gesture_longpress.equals("4")
                     && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
-                    && !chordButton.isFocused() && !downarrow.isFocused() && !uparrow.isFocused()
+                    && !chordButton.isFocused() && !downarrow_top.isFocused() && !downarrow_bottom.isFocused() && !uparrow_bottom.isFocused() && !uparrow_top.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
                     && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerVisible(expListViewOption)
                     && popupPad.getVisibility()!=View.VISIBLE && popupAutoscroll.getVisibility()!=View.VISIBLE
