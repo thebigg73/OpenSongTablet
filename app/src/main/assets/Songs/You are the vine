@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>52538</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>152</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>D</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .D           Em    D  D7      G
  You are the vine, we are the branches
@@ -36,4 +43,7 @@
  That the world will surely know
 .              Em                   Em/A   A
  That You have power to heal and to save</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

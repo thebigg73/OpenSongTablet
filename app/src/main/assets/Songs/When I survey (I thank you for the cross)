@@ -3,12 +3,12 @@
   <title>When I survey (I thank you for the cross)</title>
   <author>Tim Hughes &amp; Isaac Watts</author>
   <copyright>Copyright 2007 Thank You Music</copyright>
-  <presentation></presentation>
+  <presentation>V1 C V2 C V3 C C</presentation>
   <hymn_number></hymn_number>
   <capo print="false"></capo>
-  <tempo></tempo>
-  <time_sig></time_sig>
-  <duration></duration>
+  <tempo>80</tempo>
+  <time_sig>4/4</time_sig>
+  <duration>30</duration>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -63,5 +63,5 @@
 ;Repeat chorus then back to verse 1</lyrics>
   <linked_songs></linked_songs>
   <pad_file></pad_file>
-  
+  <custom_chords></custom_chords>
 </song>

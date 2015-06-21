@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>1598967</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>303</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>E</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 .A/E  G#m/E  F#m7/E   A/E     G#m/E  F#m7/E       E
 
@@ -55,4 +62,7 @@
  We're praying for Your word to bear fruit
 .A             B                    E     (or INTRO)
  In all of the earth, in all of the earth.</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

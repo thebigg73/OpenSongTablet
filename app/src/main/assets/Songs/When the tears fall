@@ -3,19 +3,27 @@
   <title>When the tears fall</title>
   <author>Tim Hughes</author>
   <copyright>2003 Thankyou Music</copyright>
-  <hymn_number>408</hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>408</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .Gmaj7               Asus4   Bm7
  I've had questions,|Without answers
@@ -48,4 +56,8 @@
 .Gmaj7              Asus4  D/F#
  I will praise You,|Jesus praise You
 .Gmaj7                 Asus4        D/F#
- Through the suffering|Still I will sing</lyrics></song>
+ Through the suffering|Still I will sing</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

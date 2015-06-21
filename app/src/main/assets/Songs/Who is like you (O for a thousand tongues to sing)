@@ -3,19 +3,27 @@
   <title>Who is like you (O for a thousand tongues to sing)</title>
   <author>Neil Bennetts</author>
   <copyright>2004 Kingsway</copyright>
-  <hymn_number>417</hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>417</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>Eb</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .Eb
  Who is like You, Lord of heaven
@@ -46,4 +54,8 @@
  
 [B]
 .Cm          Bbsus         Ab2
- For You are holy, You are holy (repeat 3x's)</lyrics></song>
+ For You are holy, You are holy (repeat 3x's)</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

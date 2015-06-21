@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>1047298</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>220</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>A</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[INTRO]
 .A    A/C#    D    D/C#  x3
 .Bm     E      A
@@ -56,4 +63,7 @@
  Making the most of each moment He gives
  And pressing on for the prize
  Wake up sleeper!</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

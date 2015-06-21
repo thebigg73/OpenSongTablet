@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>1537935</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>251</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>E</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V]
 .E          B/D#     E/G#       A9
  You are my passion, love of my life
@@ -36,4 +43,7 @@
  Let me hear the beating of Your heart,
 .B/D# A9/C# B/D# E  B/D# A9/C# B E 
  O    my    Jesus,  O    my    Jesus.</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

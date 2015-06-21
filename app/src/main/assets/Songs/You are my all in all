@@ -4,8 +4,26 @@
   <author>Dennis Jernigan</author>
   <copyright>1991 Shepherd's Heart Music, Inc.</copyright>
   <presentation></presentation>
+  <hymn_number>365</hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>825356</ccli>
   <theme>Church: Commitment/Obedience; Worship: Declaration; </theme>
+  <alttheme></alttheme>
+  <user1>365</user1>
+  <user2></user2>
+  <user3></user3>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .G          D                  Em 
  You are my Strength when I am weak,
@@ -43,13 +61,7 @@
  When I am dry You fill my cup;
 .           G   D  G   Dsus4  D
  You are my all in all.</lyrics>
-  <capo print="false"></capo>
-  <user1>365</user1>
-  <user2></user2>
-  <user3></user3>
-  <tempo></tempo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <time_sig></time_sig>
-  <hymn_number>365</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

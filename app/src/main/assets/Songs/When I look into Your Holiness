@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli>16347</ccli>
   <theme>God: Holiness; Worship: Invitation; </theme>
   <alttheme>God: Holiness; Worship: Invitation; </alttheme>
   <user1>166</user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>C</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .       C                  Dm7
  When I look into Your Holiness  
@@ -46,4 +53,7 @@
  I worship You, I worship You
 .    Dm7          G              C   F   C   G
  The reason I live is to worship You</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
 </song>

@@ -3,19 +3,27 @@
   <title>You are God in heaven (let my words be few)</title>
   <author>Matt and Beth Redman</author>
   <copyright>2000 Kingsway's Thankyou Music</copyright>
-  <hymn_number>404</hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>404</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .G              G+          Em           C
  You are God in heaven, and here am I on earth,
@@ -37,4 +45,8 @@
 [V2]
  The simplest of all love songs, I want to bring to You,
  So I'll let my words be few.
- Jesus, I am so in love with You.</lyrics></song>
+ Jesus, I am so in love with You.</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

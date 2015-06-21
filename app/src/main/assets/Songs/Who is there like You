@@ -3,19 +3,27 @@
   <title>Who is there like You</title>
   <author>Paul Oakley</author>
   <copyright>1995 Kingsway's Thankyou Music</copyright>
-  <hymn_number>401</hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number>401</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>F</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 .F2 Gm7 Bb C7sus4
 
@@ -45,4 +53,8 @@
 .                 F/A                        Bb
  Trusting in Your blood and all Your faithfulness,
 .         Gm7              C7sus4         F2 Gm7 Bb C7sus4 (F2)
- For Your power at work in me in changing me.</lyrics></song>
+ For Your power at work in me in changing me.</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

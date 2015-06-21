@@ -5,28 +5,35 @@
   <copyright>1982 Mercy/Vineyard Publishing/Adm. by CopyCare.</copyright>
   <presentation>V1 C1 V2 C1 V3 C2 V4 C2</presentation>
   <hymn_number></hymn_number>
-  <capo print="false"></capo>
+  <capo print=""></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>Eb</key>
   <aka></aka>
   <key_line></key_line>
-  <lyrics>[V1]
-.Ab   Bb       Eb      Cm    Ab   Bb      Eb   Eb7
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
+  <lyrics>[V1
+.Ab  Bb      Eb     Cm    Ab  Bb     Eb   Eb7
  You are the mighty king, the living Word;
-.Ab  Bb      Eb    Cm     Fm7 Bb       Eb
+.Ab Bb     Eb   Cm     Fm7 Bb      Eb
  Master of everything, You are the Lord.
 
 [C1]
-.Fm7   Bb           Eb  Eb7
+.Fm7   Bb          Eb  Eb7
  And I praise Your name,
-.Fm7   Bb           Eb  Eb7
+.Fm7   Bb          Eb  Eb7
  And I praise Your name.
 
 [V2]
@@ -46,4 +53,7 @@
  Master of everything, You are the Lord. 
   
 </lyrics>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
 </song>

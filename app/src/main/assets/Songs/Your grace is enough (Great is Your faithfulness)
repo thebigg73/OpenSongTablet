@@ -3,19 +3,27 @@
   <title>Your grace is enough (Great is Your faithfulness)</title>
   <author>Matt Maher</author>
   <copyright>spiritandsong.com</copyright>
-  <hymn_number>519</hymn_number>
   <presentation></presentation>
-  <ccli>4477026</ccli>
+  <hymn_number>519</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>4477026</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .G             G/B            C
  Great is Your faithfulness O God.
@@ -51,4 +59,8 @@
  Yeah Your grace is enough, Heaven reaches out to us
  Your grace is enough for me
  God I sing Your grace is enough, I'm covered in Your love
- Your grace is enough for me</lyrics></song>
+ Your grace is enough for me</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>

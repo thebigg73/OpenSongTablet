@@ -4,8 +4,26 @@
   <author>Horatio Spafford and Philip Bliss</author>
   <copyright>Public Domain</copyright>
   <presentation>V1 C V2 C V3 C V4 C</presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>25376</ccli>
   <theme>Fruit: Peace/Comfort; Worship: Assurance/Trust; </theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>C</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .     C                    F          C         Am           D           G
  When peace like a river attendeth my way,|When sorrows like sea billows roll;
@@ -37,16 +55,8 @@
  And, Lord, haste the day when my faith shall be sight,|The clouds be rolled back as a scroll;
 .    C             F              D            G           C         F    G       C
  The trump shall resound, and the Lord shall descend,|Even so, it is well with my soul.</lyrics>
-  <hymn_number></hymn_number>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

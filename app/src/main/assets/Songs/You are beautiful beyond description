@@ -4,8 +4,26 @@
   <author>Mark Altrogge</author>
   <copyright>1987 People of Destiny International</copyright>
   <presentation>V1 C V2 C</presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>23914</ccli>
   <theme>God: Power/Majesty; Worship: Praise/Adoration; </theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>A</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .        A                   E             D2/A          A
  You are beautiful beyond description, Too marvelous for words,
@@ -35,16 +53,8 @@
  Who can grasp such tender compassion? Who can fathom this mercy so free?
 .        A                   E                 D       E        A
  You are beautiful beyond description, Lamb of God who died for me.</lyrics>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <tempo></tempo>
-  <time_sig></time_sig>
-  <hymn_number></hymn_number>
-  <linked_songs/>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

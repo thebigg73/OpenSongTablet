@@ -3,9 +3,27 @@
   <title>We will glorify</title>
   <author>Twila Paris</author>
   <copyright>1982 Singspiration Music</copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
   <ccli>19038</ccli>
   <theme>God: Power/Majesty; Worship: Praise/Adoration; </theme>
+  <alttheme></alttheme>
   <user1>Revelation 15:4</user1>
+  <user2></user2>
+  <user3></user3>
+  <key>D</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .D/F#    G    A      A/D     D
  We will glorify the King of Kings
@@ -45,16 +63,8 @@
  Hallelujah to the Lord of Lords
 .E/G# A      E/B   B E
  Who  is the great I Am</lyrics>
-  <hymn_number></hymn_number>
-  <presentation></presentation>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user2></user2>
-  <user3></user3>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

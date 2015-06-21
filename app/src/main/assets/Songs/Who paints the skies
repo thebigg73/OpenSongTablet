@@ -4,17 +4,26 @@
   <author>Stuart Townend</author>
   <copyright>1995 Kingsway's Thankyou Music</copyright>
   <presentation></presentation>
-  <ccli>1540764</ccli>
+  <hymn_number>284</hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli>1540764</ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1>284</user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .G                         D        G
  Who paints the skies into glorious day?
@@ -54,4 +63,7 @@
  Purchasing souls for eternity?|Only the mercy of Jesus||
  Teach every nation His marvellous ways;
  Each generation shall sing His praise.</lyrics>
-  <hymn_number>284</hymn_number></song>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  
+</song>
