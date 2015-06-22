@@ -13,6 +13,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 
 public class SetActions extends Activity {
@@ -420,6 +421,10 @@ public class SetActions extends Activity {
 		FullscreenActivity.setSize = FullscreenActivity.mSetList.length;
 		FullscreenActivity.previousSongInSet = "";
 		FullscreenActivity.nextSongInSet = "";
+
+        // Fix whatsongforsetwork
+        Log.d("d", "whatsongforsetwork=" + FullscreenActivity.whatsongforsetwork);
+
 
 		// Go backwards through the setlist - this finishes with the first occurrence
 		// Useful for duplicate items, otherwise it returns the last occurrence

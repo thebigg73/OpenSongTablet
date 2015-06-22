@@ -610,13 +610,13 @@ public class LyricsDisplay extends Activity {
 			} else if (lookfortagslyrics[z].length()>1 && (lookfortagslyrics[z].contains("[V]") || lookfortagslyrics[z].contains("[v]"))) {
 				// Remove the starting [V] tag and replace it with __MULTIPLEVERSES__
 				// Only if the next (or next again line starts with 1
-				if ((z+1)<=numtemplines) {
+				if ((z+1)<numtemplines) {
 					if (lookfortagslyrics[(z+1)].indexOf("1")==0) {
 						lookfortagslyrics[z] = "__MULTIPLEVERSES__";
 					}
 				}
 
-				if ((z+2)<=numtemplines) {
+				if ((z+2)<numtemplines) {
 					// Allows for z+1 being a chord line
 					if (lookfortagslyrics[(z+2)].indexOf("1")==0) {
 						lookfortagslyrics[z] = "__MULTIPLEVERSES__";

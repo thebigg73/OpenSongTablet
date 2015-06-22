@@ -4745,6 +4745,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
         // Now decide if the song being viewed has a song after it.  Otherwise disable the forward button
         // Also need to check if last item in set is a pdf, does it have more pages?
+        Log.d("d","indexSongInSet="+indexSongInSet);
+        Log.d("d","setSize="+setSize);
         if (indexSongInSet >= (setSize - 1) && (!isPDF || (pdfPageCurrent >= (pdfPageCount - 1)))) {
             set_forward.setEnabled(false);
             set_forward.getIcon().setAlpha(30);
