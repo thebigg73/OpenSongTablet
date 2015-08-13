@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<song>
+  <title>Lady</title>
+  <author>Modjo</author>
+  <copyright></copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig>4/4</time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>Am</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
+  <lyrics>[Intro]
+.Am9 Am7 x4   \
+.Dm6 Dm7 x2    - x1  
+.G7 G7sus4 x2
+
+[V]
+.Am9 Am7        Am9 Am7
+   Lady hear me tonight
+.        Am9 Am7         Am9 Am7
+ Coz' my feeling is just so right
+.      Dm6 Dm7      Dm6 Dm7
+ As we dance by the moonlight
+.          G7 G7sus4     G7 G7sus4
+ Can't you see you're my daylight
+ 
+.Am9 Am7       Am9 Am7
+   Lady i just feel like
+.        Am9 Am7        Am9 Am7
+ I won't get you out of my mind
+.       Dm6 Dm7      Dm6 Dm7
+ I feel love for the first time
+       Dj Djsus4
+ And i know that it is true
+.      G7 G7sus4
+ I can tell by the look in your eyes
+ 
+ 
+[P]
+.Ddim7, Fm6, (Eaug x5)
+ 
+;Repeat</lyrics>
+  <linked_songs>OFF</linked_songs>
+  <pad_file>OFF</pad_file>
+  <style>mLinkedSongs</style>
+  <style>mLinkedSongs</style>
+</song>
