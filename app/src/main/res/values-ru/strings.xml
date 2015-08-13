@@ -418,6 +418,6 @@
 	<string name="simple_note">"Простой примечание / заполнитель"</string>
 	<string name="slide_separator">"Добавить слайд-разделитель (для проекции)"</string>
 	<string name="title">"название"</string>
-	<string name="add_custom_slide" translatable="false">"Добавить слайд / примечание"</string>
+	<string name="add_custom_slide">"Добавить слайд / примечание"</string>
 
 </resources>

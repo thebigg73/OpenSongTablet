@@ -422,6 +422,6 @@
 	<string name="simple_note">"简单的音符/占位"</string>
 	<string name="slide_separator">"添加幻灯片分隔符（投影）"</string>
 	<string name="title">"称号"</string>
-	<string name="add_custom_slide" translatable="false">"添加幻灯片/笔记"</string>
+	<string name="add_custom_slide">"添加幻灯片/笔记"</string>
 
 </resources>
