@@ -279,4 +279,16 @@ public class PopUpPedalsFragment extends DialogFragment {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // safety check
+        if (getDialog() == null) {
+            return;
+        }
+
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+    }
 }

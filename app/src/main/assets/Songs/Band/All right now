@@ -24,6 +24,9 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[V1]
 .          A        D   A
  There she stood in the street
@@ -63,8 +66,6 @@
 [Instrumental]
 .A   A/G  A/F#.... etc.    A  A/G  A/F# E (last time)
  
-[Chorus to end]</lyrics>
-  <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+[Chorus to end]
+</lyrics>
 </song>

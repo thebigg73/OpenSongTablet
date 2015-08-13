@@ -142,8 +142,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         super.onDetach();
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.options_song_edit));
@@ -229,8 +227,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         edit_song_theme_worship_provision_deliverance = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_provision_deliverance);
         edit_song_theme_worship_thankfulness = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_thankfulness);
         advancedSettings = (LinearLayout) V.findViewById(R.id.advanced_settings);
-
-
 
         // Listeners for the buttons
         cancelEdit.setOnClickListener(new View.OnClickListener() {
@@ -507,9 +503,15 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
                 // Now write the modified song
                 try {
                     FileOutputStream overWrite;
-                    overWrite = new FileOutputStream(
-                            FullscreenActivity.dir + "/" + FullscreenActivity.songfilename,
-                            false);
+                    if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+                        overWrite = new FileOutputStream(
+                                FullscreenActivity.dir + "/" + FullscreenActivity.songfilename,
+                                false);
+                    } else {
+                        overWrite = new FileOutputStream(
+                                FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
+                                false);
+                    }
                     overWrite.write(FullscreenActivity.mynewXML.getBytes());
                     overWrite.flush();
                     overWrite.close();
@@ -755,7 +757,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
             edit_song_theme_worship_thankfulness.setChecked(true);
         }
 
-
         // Now the Spinners
         // The Key
         ArrayAdapter<CharSequence> song_key = ArrayAdapter.createFromResource(getActivity(),
@@ -922,4 +923,16 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         FullscreenActivity.mynewXML = myNEWXML;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // safety check
+        if (getDialog() == null) {
+            return;
+        }
+
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+    }
 }

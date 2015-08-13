@@ -132,7 +132,7 @@
 	<string name="oldchordformat">"Bespeur huidige koord formaat"</string>
 	
     <string name="firstsong">"Vertoon eerste liedjie"</string>
-    <string name="lastsong">"Vertoon laaste lied"</string>
+    <string name="lastsong">"Vertoon laaste item in stel"</string>
     
     <string name="set_edit">"WYSIG"</string>
     <string name="set_edit_title">"Verander jou huidige stel"</string>
@@ -213,7 +213,7 @@
 	<string name="renametitle">"Hernoem"</string>
 			
 	
-	<string name="copyresources">"Klik hier verskeie liedjies te kopieer \ n U is verantwoordelik vir die Copyright"</string>
+	<string name="copyresources">"Klik hier verskeie liedjies te installeer / werk \n U is verantwoordelik vir die Copyright"</string>
 	<string name="gotosong">"KLIK HIER \ n OOP SONG kyker BEGIN"</string>
 	<string name="wipesongs">"Herstel my plaaslike liedjies gids"</string>
 	<string name="dropsync">"Aflaai DropSync App (gratis)"</string>
@@ -436,5 +436,17 @@
 	<string name="scrollbuttons_single">Enkele pyle</string>
 	<string name="scrollbuttons_toggle">Toggle scroll knoppies</string>
 	<string name="crossfade_time">cross tyd</string>
+	<string name="content">"Inhoud"</string>
+	<string name="custom_slide">"Custom slide (met inhoud)"</string>
+	<string name="not_allowed">"Hierdie funksie is nie toegelaat om hierdie item"</string>
+	<string name="note">"Nota"</string>
+	<string name="options_display">"vertoon"</string>
+	<string name="options_gesturesandmenus">"Gebare en spyskaarte"</string>
+	<string name="options_other">"ander"</string>
+	<string name="options_storage">"stoor"</string>
+	<string name="simple_note">"Eenvoudige noot / plekhouer"</string>
+	<string name="slide_separator">"Voeg slide separator (vir projeksie)"</string>
+	<string name="title">"titel"</string>
+	<string name="add_custom_slide">"Voeg skyfie / nota"</string>
 
 </resources>

@@ -129,7 +129,7 @@
 	<string name="oldchordformat">"Zjištěno Současný formát akord"</string>
 	
     <string name="firstsong">"Zobrazení první píseň"</string>
-    <string name="lastsong">"Zobrazení poslední píseň"</string>
+    <string name="lastsong">"Zobrazení poslední položku v sadě"</string>
     
     <string name="set_edit">"EDITOVAT"</string>
     <string name="set_edit_title">"Upravte stávající soubor"</string>
@@ -408,5 +408,17 @@
 	<string name="scrollbuttons_single">Jednotlivé šípy</string>
 	<string name="scrollbuttons_toggle">Přepnout rolovací tlačítka</string>
 	<string name="crossfade_time">Crossfade čas</string>
+	<string name="content">"Obsah"</string>
+	<string name="custom_slide">"Vlastní slide (s obsahem)"</string>
+	<string name="not_allowed">"Tato funkce není povolena pro tuto položku"</string>
+	<string name="note">"Poznámka"</string>
+	<string name="options_display">"zobrazit"</string>
+	<string name="options_gesturesandmenus">"Gesta a menu"</string>
+	<string name="options_other">"ostatní"</string>
+	<string name="options_storage">"skladování"</string>
+	<string name="simple_note">"Simple note / zástupný"</string>
+	<string name="slide_separator">"Přidat oddělovač snímek (projekci)"</string>
+	<string name="title">"nadpis"</string>
+	<string name="add_custom_slide">"Přidat snímek / poznámky"</string>
 
 </resources>

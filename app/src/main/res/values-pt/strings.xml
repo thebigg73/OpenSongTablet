@@ -129,7 +129,7 @@
 	<string name="oldchordformat">"Formato acorde atual Detectado"</string>
 	
     <string name="firstsong">"Resultados primeira canção"</string>
-    <string name="lastsong">"Resultados última canção"</string>
+    <string name="lastsong">"Resultados último item em conjunto"</string>
     
     <string name="set_edit">"EDITAR"</string>
     <string name="set_edit_title">"Edite seu conjunto atual"</string>
@@ -192,7 +192,7 @@
 	<string name="rename">"Digite um novo nome de arquivo para essa música (é assim que ele vai aparecer no seu menu canção)"</string>
 	<string name="renametitle">"Renomear"</string>
 
-	<string name="copyresources">"Clique aqui para copiar várias canções \n Você é responsável pela de Direitos Autorais"</string>
+	<string name="copyresources">"Clique aqui para instalação / atualização várias canções \n Você é responsável pela de Direitos Autorais"</string>
 	<string name="gotosong">"Clique aqui para começar \n ABERTA CANÇÃO VIEWER"</string>
 	<string name="wipesongs">"Redefinição de minha pasta músicas locais"</string>
 	<string name="dropsync">"Baixe Dropsync App (grátis)"</string>
@@ -407,5 +407,17 @@
 	<string name="scrollbuttons_single">setas simples</string>
 	<string name="scrollbuttons_toggle">Botões de rolagem de alternância</string>
 	<string name="crossfade_time">tempo Crossfade</string>
+	<string name="content">"Conteúdo"</string>
+	<string name="custom_slide">"Slides personalizada (com conteúdo)"</string>
+	<string name="not_allowed">"Esta função não é permitido para este item"</string>
+	<string name="note">"Nota"</string>
+	<string name="options_display">"exibição"</string>
+	<string name="options_gesturesandmenus">"Gestos e menus"</string>
+	<string name="options_other">"De outros"</string>
+	<string name="options_storage">"armazenamento"</string>
+	<string name="simple_note">"Nota simples / espaço reservado"</string>
+	<string name="slide_separator">"Adicionar separador de slides (para projeção)"</string>
+	<string name="title">"título"</string>
+	<string name="add_custom_slide">"Adicionar diapositivo / nota"</string>
 
 </resources>

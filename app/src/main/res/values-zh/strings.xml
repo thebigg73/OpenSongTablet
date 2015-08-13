@@ -129,7 +129,7 @@
 	<string name="oldchordformat">"检测当前的和弦格式"</string>
 	
     <string name="firstsong">"显示的第一首歌曲"</string>
-    <string name="lastsong">"显示最后一首歌曲"</string>
+    <string name="lastsong">"显示在设定最后一个项目"</string>
     
     <string name="set_edit">"编辑"</string>
     <string name="set_edit_title">"编辑您的当前设置"</string>
@@ -411,5 +411,17 @@
 	<string name="scrollbuttons_single">单箭头</string>
 	<string name="scrollbuttons_toggle">切换滚动按钮</string>
 	<string name="crossfade_time">交叉淡入淡出的时间</string>
+	<string name="content">"内容"</string>
+	<string name="custom_slide">"自定义幻灯片（有内容）"</string>
+	<string name="not_allowed">"此功能是不允许此项目"</string>
+	<string name="note">"注意"</string>
+	<string name="options_display">"显示"</string>
+	<string name="options_gesturesandmenus">"手势和菜单"</string>
+	<string name="options_other">"其他"</string>
+	<string name="options_storage">"存储"</string>
+	<string name="simple_note">"简单的音符/占位"</string>
+	<string name="slide_separator">"添加幻灯片分隔符（投影）"</string>
+	<string name="title">"称号"</string>
+	<string name="add_custom_slide" translatable="false">"添加幻灯片/笔记"</string>
 
 </resources>

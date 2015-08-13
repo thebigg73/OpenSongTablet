@@ -46,6 +46,7 @@ import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,7 +62,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         PopUpSongRenameFragment.MyInterface, PopUpSearchViewFragment.MyInterface,
         PopUpEditSetFragment.MyInterface, PopUpSongCreateFragment.MyInterface,
         PopUpSearchViewFragment.MyVibrator, PopUpSongDetailsFragment.MyInterface,
-        PopUpFontsFragment.MyInterface {
+        PopUpFontsFragment.MyInterface, PopUpCustomSlideFragment.MyInterface {
 
     // General variables
     public static MediaPlayer mp;
@@ -69,6 +70,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     static int numdisplays;
     boolean firsttime = true;
     private boolean isPDF;
+    private boolean isSong;
     Menu menu;
     private boolean addingtoset;
     private boolean endofset = false;
@@ -215,10 +217,21 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
 
         // Load the current song and Prepare it
         isPDF = false;
-        File checkfile = new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename);
+        isSong = true;
+        File checkfile;
+        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            checkfile = new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename);
+        } else {
+            checkfile = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename);
+        }
         if ((FullscreenActivity.songfilename.contains(".pdf") || FullscreenActivity.songfilename.contains(".PDF")) && checkfile.exists()) {
             // File is pdf
             isPDF = true;
+            isSong = false;
+        }
+
+        if (FullscreenActivity.whichSongFolder.contains("../OpenSong Scripture") || FullscreenActivity.whichSongFolder.contains("../Slides") || FullscreenActivity.whichSongFolder.contains("../Notes")) {
+            isSong = false;
         }
 
         if (!isPDF) {
@@ -407,11 +420,11 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                     FullscreenActivity.songfilename = listDataChildSong.get(listDataHeaderSong.get(groupPosition)).get(childPosition);
 
                     if (listDataHeaderSong.get(groupPosition).equals(FullscreenActivity.mainfoldername)) {
-                        FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
+                        //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
                         FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
                         FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.songfilename + "_**$";
                     } else {
-                        FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/" + listDataHeaderSong.get(groupPosition));
+                        //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/" + listDataHeaderSong.get(groupPosition));
                         FullscreenActivity.whichSongFolder = listDataHeaderSong.get(groupPosition);
                         FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename + "_**$";
                     }
@@ -463,10 +476,10 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                     // Set the appropriate folder name
 
                     if (listDataHeaderSong.get(groupPosition).equals(FullscreenActivity.mainfoldername)) {
-                        FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
+                        //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
                         FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
                     } else {
-                        FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/" + listDataHeaderSong.get(groupPosition));
+                        //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/" + listDataHeaderSong.get(groupPosition));
                         FullscreenActivity.whichSongFolder = listDataHeaderSong.get(groupPosition);
                     }
                     // Set the appropriate song filename
@@ -548,6 +561,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         options_set.add(getResources().getString(R.string.options_set_clear));
         options_set.add(getResources().getString(R.string.options_set_delete));
         options_set.add(getResources().getString(R.string.options_set_export));
+        options_set.add(getResources().getString(R.string.add_custom_slide));
         options_set.add(getResources().getString(R.string.options_set_edit));
         options_set.add("");
 
@@ -612,16 +626,16 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                     int groupPosition = ExpandableListView.getPackedPositionGroup(id);
                     int childPosition = ExpandableListView.getPackedPositionChild(id);
                     myOptionListClickedItem = position;
-                    if (myOptionListClickedItem > 7 && groupPosition == 0) {
-                        // Long clicking on the 7th or later options will remove the
+                    if (myOptionListClickedItem > 8 && groupPosition == 0) {
+                        // Long clicking on the 8th or later options will remove the
                         // song from the set
                         // Remove this song from the set. Remember it has tags at the start and end
                         Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         vb.vibrate(25);
 
-                        // Take away the menu items (7)
-                        String tempSong = FullscreenActivity.mSetList[childPosition - 7];
-                        FullscreenActivity.mSetList[childPosition - 7] = "";
+                        // Take away the menu items (8)
+                        String tempSong = FullscreenActivity.mSetList[childPosition - 8];
+                        FullscreenActivity.mSetList[childPosition - 8] = "";
 
                         FullscreenActivity.mySet = "";
                         for (int w = 0; w < FullscreenActivity.mSetList.length; w++) {
@@ -632,6 +646,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
 
                         // Save set
                         SetActions.prepareSetList();
+
                         SetActions.indexSongInSet();
                         Preferences.savePreferences();
 
@@ -712,21 +727,26 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                             newFragment.show(getFragmentManager(), "dialog");
 
                         } else if (childPosition == 5) {
+                            // Add a custom slide
+                            DialogFragment newFragment = PopUpCustomSlideFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
+
+                        } else if (childPosition == 6) {
                             // Edit current set
                             // Only works for ICS or above
                             FullscreenActivity.whattodo = "editset";
                             DialogFragment newFragment = PopUpEditSetFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
-                        } else if (childPosition == 6) {
+                        } else if (childPosition == 7) {
                             // Blank entry
                             Log.d("set","blank line");
 
                         } else {
                             // Load song in set
                             FullscreenActivity.setView = "Y";
-                            // Set item is 7 less than childPosition
-                            FullscreenActivity.indexSongInSet = childPosition - 7;
+                            // Set item is 8 less than childPosition
+                            FullscreenActivity.indexSongInSet = childPosition - 8;
                             if (FullscreenActivity.indexSongInSet == 0) {
                                 // Already first item
                                 FullscreenActivity.previousSongInSet = "";
@@ -765,6 +785,10 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                                 // Can't do this action on a pdf!
                                 FullscreenActivity.myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                                 ShowToast.showToast(PresenterMode.this);
+                            } else if (!isSong) {
+                                // Can't do this action on a scripture/slide/note!
+                                FullscreenActivity.myToastMessage = getResources().getString(R.string.not_allowed);
+                                ShowToast.showToast(PresenterMode.this);
                             } else {
                                 FullscreenActivity.whattodo = "editsong";
                                 DialogFragment newFragment = PopUpEditSongFragment.newInstance();
@@ -773,19 +797,30 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
 
                         } else if (childPosition == 1) {
                             // Rename
-                            FullscreenActivity.whattodo = "renamesong";
-                            DialogFragment newFragment = PopUpSongRenameFragment.newInstance();
-                            newFragment.show(getFragmentManager(), "dialog");
-
+                            if (!isPDF && !isSong) {
+                                // Can't do this action on a scripture/slide/note!
+                                FullscreenActivity.myToastMessage = getResources().getString(R.string.not_allowed);
+                                ShowToast.showToast(PresenterMode.this);
+                                FullscreenActivity.whattodo = "renamesong";
+                            } else {
+                                DialogFragment newFragment = PopUpSongRenameFragment.newInstance();
+                                newFragment.show(getFragmentManager(), "dialog");
+                            }
 
                         } else if (childPosition == 2) {
                             // Delete
                             // Give the user an are you sure prompt!
-                            FullscreenActivity.whattodo = "deletesong";
-                            String message = getResources().getString(R.string.options_song_delete) +
-                                    " \"" + FullscreenActivity.songfilename + "\"?";
-                            DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
-                            newFragment.show(getFragmentManager(), "dialog");
+                            if (!isSong && !isPDF) {
+                                // Can't do this action on a scripture/slide/note!
+                                FullscreenActivity.myToastMessage = getResources().getString(R.string.not_allowed);
+                                ShowToast.showToast(PresenterMode.this);
+                                FullscreenActivity.whattodo = "deletesong";
+                            } else {
+                                String message = getResources().getString(R.string.options_song_delete) +
+                                        " \"" + FullscreenActivity.songfilename + "\"?";
+                                DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+                                newFragment.show(getFragmentManager(), "dialog");
+                            }
 
                         } else if (childPosition == 3) {
                             // New
@@ -797,31 +832,34 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                             // Export
                             // The current song is the songfile
                             // Believe it or not, it works!!!!!
-
-                            // Run the script that generates the email text which has the set details in it.
-                            try {
-                                ExportPreparer.songParser();
-                            } catch (IOException | XmlPullParserException e) {
-                                e.printStackTrace();
-                            }
-
-                            Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                            emailIntent.setType("text/plain");
-                            emailIntent.putExtra(Intent.EXTRA_TITLE, FullscreenActivity.songfilename);
-                            emailIntent.putExtra(Intent.EXTRA_SUBJECT, FullscreenActivity.songfilename);
-                            emailIntent.putExtra(Intent.EXTRA_TEXT, FullscreenActivity.emailtext);
-                            FullscreenActivity.emailtext = "";
-                            File file;
-                            if (FullscreenActivity.whichSongFolder.equals("") ||
-                                    FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) ||
-                                    FullscreenActivity.whichSongFolder.equals("("+FullscreenActivity.mainfoldername+")")) {
-                                file = new File(FullscreenActivity.dir+"/" + FullscreenActivity.songfilename);
+                            if (!isSong && !isPDF) {
+                                // Can't do this action on a scripture/slide/note!
+                                FullscreenActivity.myToastMessage = getResources().getString(R.string.not_allowed);
+                                ShowToast.showToast(PresenterMode.this);
                             } else {
-                                file = new File(FullscreenActivity.dir+"/" + FullscreenActivity.whichSongFolder + "/" +FullscreenActivity.songfilename);
+                                // Run the script that generates the email text which has the set details in it.
+                                try {
+                                    ExportPreparer.songParser();
+                                } catch (IOException | XmlPullParserException e) {
+                                    e.printStackTrace();
+                                }
+
+                                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                                emailIntent.setType("text/plain");
+                                emailIntent.putExtra(Intent.EXTRA_TITLE, FullscreenActivity.songfilename);
+                                emailIntent.putExtra(Intent.EXTRA_SUBJECT, FullscreenActivity.songfilename);
+                                emailIntent.putExtra(Intent.EXTRA_TEXT, FullscreenActivity.emailtext);
+                                FullscreenActivity.emailtext = "";
+                                File file;
+                                if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+                                    file = new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename);
+                                } else {
+                                    file = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename);
+                                }
+                                Uri uri = Uri.fromFile(file);
+                                emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                                startActivity(Intent.createChooser(emailIntent, FullscreenActivity.exportcurrentsong));
                             }
-                            Uri uri = Uri.fromFile(file);
-                            emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                            startActivity(Intent.createChooser(emailIntent,FullscreenActivity.exportcurrentsong));
                         }
 
                     } else if (chosenMenu.equals(getResources().getString(R.string.options_options))) {
@@ -1035,24 +1073,26 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         songpart = tempSongLocation.split("/");
 
         // If the folder length isn't 0, it is a folder
-        // Decide if it is a song, scripture or slide and get the actual file location
-        if (songpart[0].length() > 0 && !songpart[0].contains("Scripture") && !songpart[0].contains("Slide")) {
+        // Decide if it is a song, scripture, slide or note and get the actual file location
+        if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
             FullscreenActivity.whichSongFolder = songpart[0];
-            FullscreenActivity.dir = new File(
-                    FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/" + songpart[0]);
+            //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/" + songpart[0]);
 
-        } else if (songpart[0].length() > 0 && songpart[0].contains("Scripture") && !songpart[0].contains("Slide")) {
+        } else if (songpart[0].length() > 0 && songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
             FullscreenActivity.whichSongFolder = "../OpenSong Scripture/_cache";
             songpart[0] = "../OpenSong Scripture/_cache";
 
-        } else if (songpart[0].length() > 0 && !songpart[0].contains("Scripture") && songpart[0].contains("Slide")) {
+        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.scripture) && songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
             FullscreenActivity.whichSongFolder = "../Slides/_cache";
             songpart[0] = "../Slides/_cache";
 
+        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && songpart[0].contains(FullscreenActivity.note)) {
+            FullscreenActivity.whichSongFolder = "../Notes/_cache";
+            songpart[0] = "../Notes/_cache";
+
         } else {
             FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
-            FullscreenActivity.dir = new File(
-                    FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
+            //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
         }
     }
 
@@ -1073,7 +1113,12 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         invalidateOptionsMenu();
         // Redraw the Lyrics View
         isPDF = false;
-        File checkfile = new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename);
+        File checkfile;
+        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            checkfile = new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename);
+        } else {
+            checkfile = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename);
+        }
         if ((FullscreenActivity.songfilename.contains(".pdf") || FullscreenActivity.songfilename.contains(".PDF")) && checkfile.exists()) {
             // File is pdf
             isPDF = true;
@@ -1114,6 +1159,87 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         FullscreenActivity.whattodo = "editsong";
         DialogFragment newFragment = PopUpEditSongFragment.newInstance();
         newFragment.show(getFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void addSlideToSet() {
+        String filename;
+        String templocator;
+
+        if (FullscreenActivity.noteorslide.equals("note")) {
+            filename = FullscreenActivity.dircustomnotes + "/" + FullscreenActivity.customslide_title;
+            templocator = FullscreenActivity.note;
+        } else {
+            filename = FullscreenActivity.dircustomslides + "/" + FullscreenActivity.customslide_title;
+            templocator = FullscreenActivity.slide;
+        }
+
+        // If slide content is empty - put the title in
+        if (FullscreenActivity.customslide_content.isEmpty()) {
+            FullscreenActivity.customslide_content = FullscreenActivity.customslide_title;
+        }
+
+        // Prepare the custom slide so it can be viewed in the app
+        // When exporting/saving the set, the contents get grabbed from this
+        FullscreenActivity.mynewXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        FullscreenActivity.mynewXML += "<song>\n";
+        FullscreenActivity.mynewXML += "  <title>" + FullscreenActivity.customslide_title + "</title>\n";
+        FullscreenActivity.mynewXML += "  <author></author>\n";
+        FullscreenActivity.mynewXML += "  <user1></user1>\n";
+        FullscreenActivity.mynewXML += "  <user2></user2>\n";
+        FullscreenActivity.mynewXML += "  <user3></user3>\n";
+        FullscreenActivity.mynewXML += "  <aka></aka>\n";
+        FullscreenActivity.mynewXML += "  <key_line></key_line>\n";
+        FullscreenActivity.mynewXML += "  <lyrics>" + FullscreenActivity.customslide_content +"</lyrics>\n";
+        FullscreenActivity.mynewXML += "</song>";
+
+        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&amp;","&");
+        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&","&amp;");
+
+        // Now write the modified song
+        FileOutputStream overWrite;
+        try {
+            overWrite = new FileOutputStream(filename,	false);
+            overWrite.write(FullscreenActivity.mynewXML.getBytes());
+            overWrite.flush();
+            overWrite.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Add to set
+        FullscreenActivity.whatsongforsetwork = "$**_" + templocator + "/" + FullscreenActivity.customslide_title + "_**$";
+
+        // Allow the song to be added, even if it is already there
+        FullscreenActivity.mySet = FullscreenActivity.mySet + FullscreenActivity.whatsongforsetwork;
+
+        // Tell the user that the song has been added.
+        FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.customslide_title + "\" " + getResources().getString(R.string.addedtoset);
+        ShowToast.showToast(PresenterMode.this);
+
+        // Save the set and other preferences
+        Preferences.savePreferences();
+
+        // Show the current set
+        SetActions.prepareSetList();
+        invalidateOptionsMenu();
+        prepareOptionMenu();
+        mDrawerLayout.openDrawer(expListViewOption);
+        expListViewOption.expandGroup(0);
+
+        // Hide the menus - 1 second after opening the Option menu,
+        // close it (1000ms total)
+        Handler optionMenuFlickClosed = new Handler();
+        optionMenuFlickClosed.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerLayout.closeDrawer(expListViewOption);
+                addingtoset = false;
+            }
+        }, 1000); // 1000ms delay
+
+        refreshAll();
+
     }
 
     public class sectionButtonClick implements View.OnClickListener {
@@ -1202,6 +1328,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             currentsetbutton = v;
             whichsonginset = whichviewSetSection;
             FullscreenActivity.indexSongInSet = whichsonginset;
+            FullscreenActivity.whatsongforsetwork = FullscreenActivity.mSetList[whichsonginset];
 
             tempSongLocation = FullscreenActivity.mSetList[whichviewSetSection];
             FullscreenActivity.setView = "Y";
@@ -1488,9 +1615,11 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         }
 
         if (tempfiletosearch.contains("../OpenSong Scripture/_cache/")) {
-            tempfiletosearch = tempfiletosearch.replace("../OpenSong Scripture/_cache/","Scripture/");
-        } else if (tempfiletosearch.contains("./Slides/_cache/")) {
-            tempfiletosearch = tempfiletosearch.replace("../Slides/_cache/","Slide/");
+            tempfiletosearch = tempfiletosearch.replace("../OpenSong Scripture/_cache/",FullscreenActivity.scripture+"/");
+        } else if (tempfiletosearch.contains("../Slides/_cache/")) {
+            tempfiletosearch = tempfiletosearch.replace("../Slides/_cache/",FullscreenActivity.slide+"/");
+        } else if (tempfiletosearch.contains("../Notes/_cache/")) {
+            tempfiletosearch = tempfiletosearch.replace("../Notes/_cache/",FullscreenActivity.note+"/");
         }
         whichsonginset = -1;
 
@@ -1501,6 +1630,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                 //presenter_set_buttons.smoothScrollTo(0, whichsongtoclick.getTop());
                 whichsongsection = 0;
                 whichsonginset = sis;
+
                 FullscreenActivity.indexSongInSet = whichsonginset;
                 selectSectionButtonInSong();
             }
@@ -1569,26 +1699,25 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         String[] songpart = FullscreenActivity.linkclicked.split("/");
 
         // If the folder length isn't 0, it is a folder
-        if (songpart[0].length() > 0 && !songpart[0].contains("Scripture") && !songpart[0].contains("Slide")) {
+        if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
             FullscreenActivity.whichSongFolder = songpart[0];
-            FullscreenActivity.dir = new File(
-                    FullscreenActivity.root.getAbsolutePath()
-                            + "/documents/OpenSong/Songs/"
-                            + songpart[0]);
+            //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/"+ songpart[0]);
 
-        } else if (songpart[0].length() > 0 && songpart[0].contains("Scripture") && !songpart[0].contains("Slide")) {
+        } else if (songpart[0].length() > 0 && songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
             FullscreenActivity.whichSongFolder = "../OpenSong Scripture/_cache";
             songpart[0] = "../OpenSong Scripture/_cache";
 
-        } else if (songpart[0].length() > 0 && songpart[0].contains("Slide") && !songpart[0].contains("Scripture")) {
+        } else if (songpart[0].length() > 0 && songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note) && !songpart[0].contains(FullscreenActivity.scripture)) {
             FullscreenActivity.whichSongFolder = "../Slides/_cache";
             songpart[0] = "../Slides/_cache";
 
+        } else if (songpart[0].length() > 0 && songpart[0].contains(FullscreenActivity.note) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.scripture)) {
+            FullscreenActivity.whichSongFolder = "../Notes/_cache";
+            songpart[0] = "../Notes/_cache";
+
         } else {
             FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
-            FullscreenActivity.dir = new File(
-                    FullscreenActivity.root.getAbsolutePath()
-                            + "/documents/OpenSong/Songs");
+            //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
         }
 
         FullscreenActivity.songfilename = songpart[1];
@@ -1984,7 +2113,12 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             case "deletesong":
                 // Delete current song
                 FullscreenActivity.setView = "N";
-                String setFileLocation = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
+                String setFileLocation;
+                if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+                    setFileLocation = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
+                } else {
+                    setFileLocation = FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename;
+                }
                 File filetoremove = new File(setFileLocation);
                 if (filetoremove.delete()) {
                     FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.songfilename + "\" "

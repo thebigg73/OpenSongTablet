@@ -62,8 +62,6 @@ public class PresentPrepareSong {
 			} else if (checkForVerseLines[i].indexOf("10")==0) {
 				v10= v10+checkForVerseLines[i].substring(1)+"\n";
 				checkForVerseLines[i] = "";
-			} else {
-				// Leave line as it is
 			}
 			if (checkForVerseLines[i].length()>0) {
 				tempLyrics = tempLyrics + checkForVerseLines[i] + "\n";
@@ -130,13 +128,13 @@ public class PresentPrepareSong {
 	}
 		//Ok add the lines back up now
 		tempLyrics = "";
-		for (int x=0;x<tempLyricsLineByLine.length;x++) {
+		for (String aTempLyricsLineByLine : tempLyricsLineByLine) {
 			//Only add it if the line isn't empty
-			if (tempLyricsLineByLine[x].length()!=0 && !tempLyricsLineByLine[x].equals("\n")) {
-				tempLyrics = tempLyrics + tempLyricsLineByLine[x] + "\n";
+			if (aTempLyricsLineByLine.length() != 0 && !aTempLyricsLineByLine.equals("\n")) {
+				tempLyrics = tempLyrics + aTempLyricsLineByLine + "\n";
 			}
 
-}
+		}
 		// Again, get rid of double line breaks and now double split points
 		tempLyrics = tempLyrics.replace("\n\n", "%%__SPLITHERE__%%");
 		tempLyrics = tempLyrics.replace("%%__SPLITHERE__%%\n", "%%__SPLITHERE__%%");
@@ -161,7 +159,7 @@ public class PresentPrepareSong {
 					songSections[x] = songSections[x].replace("  "," ");
 				}
 				//Break up into lines
-				String[] tempLines = null;
+				String[] tempLines;
 				String tempSongSections = "";
 				tempLines = songSections[x].split("\n");
 				for (int z=0;z<tempLines.length;z++) {

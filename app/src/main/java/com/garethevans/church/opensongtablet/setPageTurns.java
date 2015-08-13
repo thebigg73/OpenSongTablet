@@ -52,7 +52,6 @@ public class setPageTurns extends Activity {
 			startActivity(viewsong);
 			this.finish();
 		}
-	    return;
 	}
 	
 	@Override

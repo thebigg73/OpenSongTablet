@@ -59,7 +59,17 @@
         	android:layout_height="wrap_content"
         	android:layout_gravity="center"
         	android:visibility="invisible" />
-        
+
+        <Button
+            android:id="@+id/copySongs"
+            android:background="@drawable/red_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="copymyassets"
+            android:layout_margin="20dp"
+            android:text="@string/copyresources"
+            android:layout_gravity="center_horizontal" />
+
         <Button
             android:id="@+id/exitStorage"
             android:layout_width="wrap_content"
@@ -81,17 +91,7 @@
             android:layout_margin="20dp"
             android:text="@string/wipesongs"/>
 
-        <Button
-            android:id="@+id/copySongs"
-            android:background="@drawable/red_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:onClick="copymyassets"
-            android:layout_margin="20dp"
-            android:text="@string/copyresources"/>
 
-        
     </LinearLayout>
 
 </ScrollView>

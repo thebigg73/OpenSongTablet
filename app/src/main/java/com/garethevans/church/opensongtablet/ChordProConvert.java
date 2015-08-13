@@ -14,7 +14,7 @@ public class ChordProConvert extends Activity {
 		// This tries to extract the relevant stuff and reformat the
 		// <lyrics>...</lyrics>
 		String temp = FullscreenActivity.myXML;
-		String parsedlines = "";
+		String parsedlines;
 		// Initialise all the xml tags a song should have
 		FullscreenActivity.mTitle = FullscreenActivity.songfilename;
 		FullscreenActivity.mAuthor = "";
@@ -369,8 +369,14 @@ public class ChordProConvert extends Activity {
 
 		// Now write the modified song
 		FileOutputStream overWrite;
-		overWrite = new FileOutputStream(FullscreenActivity.dir + "/"
-				+ FullscreenActivity.songfilename, false);
+
+		if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            overWrite = new FileOutputStream(FullscreenActivity.dir + "/"
+                    + FullscreenActivity.songfilename, false);
+        } else {
+            overWrite = new FileOutputStream(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
+                    + FullscreenActivity.songfilename, false);
+        }
 		overWrite.write(FullscreenActivity.myXML.getBytes());
 		overWrite.flush();
 		overWrite.close();
@@ -391,16 +397,28 @@ public class ChordProConvert extends Activity {
 		newSongTitle = newSongTitle.replace(".cho", "");
 		newSongTitle = newSongTitle.replace(".crd", "");
 
+        File from;
+        File to;
 
-		File from = new File(FullscreenActivity.dir + "/"
-				+ FullscreenActivity.songfilename);
-		File to = new File(FullscreenActivity.dir + "/" + newSongTitle);
-		
-		// IF THE FILENAME ALREADY EXISTS, REALLY SHOULD ASK THE USER FOR A NEW FILENAME
+        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            from = new File(FullscreenActivity.dir + "/"
+                    + FullscreenActivity.songfilename);
+            to = new File(FullscreenActivity.dir + "/" + newSongTitle);
+        } else {
+            from = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
+                    + FullscreenActivity.songfilename);
+            to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + newSongTitle);
+        }
+
+        // IF THE FILENAME ALREADY EXISTS, REALLY SHOULD ASK THE USER FOR A NEW FILENAME
 		// OR append _ to the end - STILL TO DO!!!!!
 		while(to.exists()) {
 			newSongTitle = newSongTitle+"_";
-			to = new File(FullscreenActivity.dir + "/" + newSongTitle );
+            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+                to = new File(FullscreenActivity.dir + "/" + newSongTitle);
+            } else {
+                to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + newSongTitle);
+            }
 		}
 		
 		// Do the renaming

@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class PopUpListSetsFragment extends DialogFragment {
 
@@ -152,7 +154,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         FullscreenActivity.settoload = FullscreenActivity.setnamechosen;
         FullscreenActivity.lastSetName = FullscreenActivity.setnamechosen;
         try {
-            SetActions.loadASet(getView());
+            SetActions.loadASet();
         } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
         }
@@ -213,7 +215,7 @@ public class PopUpListSetsFragment extends DialogFragment {
             e.printStackTrace();
         }
 
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
         emailIntent.setType("text/plain");
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, FullscreenActivity.settoload);
         emailIntent.putExtra(Intent.EXTRA_TITLE, FullscreenActivity.settoload);
@@ -223,9 +225,21 @@ public class PopUpListSetsFragment extends DialogFragment {
         if (!file.exists() || !file.canRead()) {
             return;
         }
+
         Uri uri = Uri.fromFile(file);
-        emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        startActivity(Intent.createChooser(emailIntent, FullscreenActivity.exportsavedset));
+
+        ArrayList<Uri> uris = new ArrayList<>();
+        uris.add(uri);
+
+        // Go through each song in the set and attach them
+        for (int q=0; q<FullscreenActivity.exportsetfilenames.size(); q++) {
+            File songtoload = new File(FullscreenActivity.dir + "/" + FullscreenActivity.exportsetfilenames.get(q));
+            Uri urisongs = Uri.fromFile(songtoload);
+            uris.add(urisongs);
+         }
+
+        emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        startActivityForResult(Intent.createChooser(emailIntent, FullscreenActivity.exportsavedset), 12345);
 
         // Close this dialog
         dismiss();

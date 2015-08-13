@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-/**
- * Created by gareth on 20/06/15.
- */
 public class PopUpTogglesFragment extends DialogFragment {
 
     static PopUpTogglesFragment newInstance() {

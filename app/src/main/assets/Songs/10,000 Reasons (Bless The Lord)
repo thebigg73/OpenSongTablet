@@ -5,7 +5,7 @@
   <copyright>2011 Thankyou Music</copyright>
   <presentation></presentation>
   <hymn_number></hymn_number>
-  <capo print="false"></capo>
+  <capo print=""></capo>
   <tempo></tempo>
   <time_sig></time_sig>
   <duration></duration>
@@ -15,7 +15,7 @@
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key>G</key>
+  <key>E</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -24,56 +24,57 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[C]
-.          C          G    D    Em
+.          A          E    B    C#m
  Bless the Lord O my soul, O my soul
-.C            G   Dsus4  D
+.A            E   Bsus4  B
  Worship His holy name
-.           C      Em    C  D  Em
+.           A      C#m    A  B  C#m
  Sing like never before, O my soul
-.      C            D     C  G  C  G
+.      A            B     A  E
  I'll worship Your holy name
 
 [V1]
-.    C         G          D        Em
+.    A         E          B        C#m
  The sun comes up, It's a new day dawning
-.C            G          D     Em
+.A            E          B     C#m
  It's time to sing Your song again
-.    C         G            D            Em
+.    A         E            B            C#m...
  Whatever may pass, And whatever lies before me
-.C          G               Dsus4   D   G      Gsus4    G
+.A          E               Bsus4   B   E      Esus4
  Let me be singing when the even - ing comes
 
 [V2]
-.        C       G               D      Em
+.        A       E               B      C#m
  You're rich in love and You're slow to anger
-.      C       G              D        Em
+.      A       E              B        C#m
  Your name is great and Your heart is kind
-.    C         G               D       Em
+.    A         E               B       C#m...
  For all Your goodness I will keep on singing
-.C            G              Dsus4  D   G     Gsus4   G
+.A            E              Bsus4  B   E     Esus4 
  Ten thousand reasons for my heart  to find
 
 [V3]
-.    C        G           D           Em
+.    A        E           B           C#m
  And on that day when my strength is failing
-.    C         G           D        Em
+.    A         E           B        C#m
  The end draws near and my time has come
-.C        G                   D        Em
+.A        E                   B        C#m...
  Still my soul will sing Your praise unending
-.C             G                  Dsus4  D    G     Gsus4    G
+.A             E                  Bsus4  B    E     Esus4    E
  Ten thousand years and then for - ev  - er - more
 
 [Outro]
-.          C      Em     C  D  Em
+.          A      C#m     A  B  C#m
  Sing like never before, O my soul
-.      C           D    Em
+.      A           B    C#m
  I'll worship Your holy name
-.            C            D   Em
+.            A            B   C#m
  Yes I will worship Your holy name
-.           C           D     G
- Lord I'll worship Your holy name</lyrics>
-  <linked_songs></linked_songs>
-  <pad_file>OFF</pad_file>
-  <custom_chords></custom_chords>
+.           A           B     E
+ Lord I'll worship Your holy name
+</lyrics>
 </song>

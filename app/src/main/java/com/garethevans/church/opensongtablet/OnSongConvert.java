@@ -15,10 +15,11 @@ public class OnSongConvert extends Activity {
 		// This tries to extract the relevant stuff and reformat the
 		// <lyrics>...</lyrics>
 		String temp = FullscreenActivity.myXML;
-		String parsedlines = "";
+		String parsedlines;
 		// Initialise all the xml tags a song should have
-		FullscreenActivity.mTitle = FullscreenActivity.songfilename;
-		FullscreenActivity.mAuthor = "";
+        Log.d("d","temp="+temp);
+        FullscreenActivity.mTitle = FullscreenActivity.songfilename.replaceAll("[\\x0-\\x9]", "");
+        FullscreenActivity.mAuthor = "";
 		FullscreenActivity.mCopyright = "";
 		FullscreenActivity.mPresentation = "";
 		FullscreenActivity.mHymnNumber = "";
@@ -48,23 +49,33 @@ public class OnSongConvert extends Activity {
         FullscreenActivity.mPadFile = "";
         FullscreenActivity.mCustomChords = "";
 
-
-		// Break the temp variable into an array split by line
+        // Break the temp variable into an array split by line
 		// Check line endings are \n
-		temp = temp.replace("\r\n", "\n");
-		temp = temp.replace("\r", "\n");
-		temp = temp.replace("\n\n\n", "\n\n");
+        temp = temp.replaceAll("[\\x0-\\x9]", "");
+        //temp = temp.replace("\\x0","");
+        temp = temp.replace("\0", "");
+        while (temp.contains("\r\n") || temp.contains("\r") || temp.contains("\n\n\n")) {
+            temp = temp.replace("\r\n","\n");
+            temp = temp.replace("\r", "\n");
+            temp = temp.replace("\n\n\n", "\n\n");
+        }
+        temp = temp.replace("\t", "    ");
 		temp = temp.replace("\'", "'");
 		temp = temp.replace("&quot;", "\"");
 		temp = temp.replace("\\'", "'");
 		temp = temp.replace("&quot;", "\"");
-
 		String[] line = temp.split("\n");
 		int numlines = line.length;
 		if (numlines < 0) {
 			numlines = 1;
 			temp = " ";
 		}
+
+        //Go through the lines and get rid of rubbish
+        for (int c=0;c<numlines;c++) {
+            line[c] = line[c].replaceAll("[^\\x20-\\x7e]", "");
+        }
+
 
 		// Extract the metadata
 		// This is all the lines before the first blank line
@@ -709,7 +720,8 @@ public class OnSongConvert extends Activity {
 			parsedlines = parsedlines + line2[x] + "\n";
 		}
 
-		FullscreenActivity.myXML = "<song>\r\n"
+		FullscreenActivity.myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+				+ "<song>\r\n"
 				+ "<title>" + FullscreenActivity.mTitle + "</title>\r\n"
 				+ "<author>" + FullscreenActivity.mAuthor + "</author>\r\n" 
 				+ "<copyright>" + FullscreenActivity.mCopyright + "</copyright>\r\n"
@@ -756,8 +768,13 @@ public class OnSongConvert extends Activity {
 
 		// Now write the modified song
 		FileOutputStream overWrite;
-		overWrite = new FileOutputStream(FullscreenActivity.dir + "/"
-				+ FullscreenActivity.songfilename, false);
+		if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            overWrite = new FileOutputStream(FullscreenActivity.dir + "/"
+                    + FullscreenActivity.songfilename, false);
+        } else {
+            overWrite = new FileOutputStream(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
+                    + FullscreenActivity.songfilename, false);
+        }
 		overWrite.write(FullscreenActivity.myXML.getBytes());
 		overWrite.flush();
 		overWrite.close();
@@ -773,16 +790,29 @@ public class OnSongConvert extends Activity {
 
 		newSongTitle = newSongTitle.replace(".onsong", "");
 
-		File from = new File(FullscreenActivity.dir + "/"
-				+ FullscreenActivity.songfilename);
-		File to = new File(FullscreenActivity.dir + "/" + newSongTitle);
-		
-		// IF THE FILENAME ALREADY EXISTS, REALLY SHOULD ASK THE USER FOR A NEW FILENAME
+		File from;
+		File to;
+
+        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            from = new File(FullscreenActivity.dir + "/"
+                    + FullscreenActivity.songfilename);
+            to = new File(FullscreenActivity.dir + "/" + newSongTitle);
+        } else {
+            from = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
+                    + FullscreenActivity.songfilename);
+            to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + newSongTitle);
+        }
+
+        // IF THE FILENAME ALREADY EXISTS, REALLY SHOULD ASK THE USER FOR A NEW FILENAME
 		// OR append _ to the end - STILL TO DO!!!!!
 		while(to.exists()) {
 			newSongTitle = newSongTitle+"_";
-			to = new File(FullscreenActivity.dir + "/" + newSongTitle );
-		}
+            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+                to = new File(FullscreenActivity.dir + "/" + newSongTitle);
+            } else {
+                to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + newSongTitle);
+            }
+        }
 		
 		// Do the renaming
 		from.renameTo(to);

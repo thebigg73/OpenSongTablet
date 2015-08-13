@@ -129,7 +129,7 @@
 	<string name="oldchordformat">"Észlelt aktuális akkord formátumban"</string>
 	
     <string name="firstsong">"Megjelenítve első dal"</string>
-    <string name="lastsong">"Megjelenítve utolsó dal"</string>
+    <string name="lastsong">"Bemutatás utolsó eleme szett"</string>
     
     <string name="set_edit">"EZERKESZTÉS"</string>
     <string name="set_edit_title">"Szerkesztheti a jelenlegi készlet"</string>
@@ -407,5 +407,17 @@
 	<string name="scrollbuttons_single">Single nyilak</string>
 	<string name="scrollbuttons_toggle">Váltás gördítőgombokat</string>
 	<string name="crossfade_time">Crossfade idő</string>
+	<string name="content">"Tartalom"</string>
+	<string name="custom_slide">"Egyedi slide (tartalommal)"</string>
+	<string name="not_allowed">"Ez a funkció nem engedélyezett ehhez a termékhez"</string>
+	<string name="note">"Hangjegy"</string>
+	<string name="options_display">"képernyő"</string>
+	<string name="options_gesturesandmenus">"Gesztusok és menük"</string>
+	<string name="options_other">"más"</string>
+	<string name="options_storage">"tárolás"</string>
+	<string name="simple_note">"Egyszerű jegyzet / helykitöltő"</string>
+	<string name="slide_separator">"Add slide elválasztó (vetítő)"</string>
+	<string name="title">"cím"</string>
+	<string name="add_custom_slide">"Add slide / megjegyzés"</string>
 
 </resources>

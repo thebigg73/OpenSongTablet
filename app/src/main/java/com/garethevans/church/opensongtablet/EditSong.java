@@ -43,6 +43,7 @@ public class EditSong extends Activity {
 	Spinner song_pad_file;
 	Spinner song_key;
 	TextView song_CCLI;
+	@SuppressWarnings("unused")
 	TextView song_theme;
 	TextView song_user1;
 	TextView song_user2;
@@ -128,7 +129,6 @@ public class EditSong extends Activity {
 		try {
 			showLyrics(null);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -1191,9 +1191,7 @@ public class EditSong extends Activity {
 
 		// Now write the modified song
 		String filename;
-		if (FullscreenActivity.whichSongFolder.equals("") || FullscreenActivity.whichSongFolder.isEmpty()
-				|| FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)
-				|| FullscreenActivity.whichSongFolder.equals("("+FullscreenActivity.mainfoldername+")")) {
+		if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
 			filename = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
 		} else {
 			filename = FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename;

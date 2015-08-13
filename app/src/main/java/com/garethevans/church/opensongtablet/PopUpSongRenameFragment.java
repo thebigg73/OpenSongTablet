@@ -70,10 +70,10 @@ public class PopUpSongRenameFragment extends DialogFragment {
         // Set up the folderspinner
         // Populate the list view with the current song folders
         // Reset to the main songs folder, so we can list them
-        FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
+        //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
         FullscreenActivity.currentFolder = FullscreenActivity.whichSongFolder;
         FullscreenActivity.newFolder = FullscreenActivity.whichSongFolder;
-        FullscreenActivity.whichSongFolder = "";
+        //FullscreenActivity.whichSongFolder = "";
         ListSongFiles.listSongFolders();
 
         // The song folder
@@ -131,17 +131,14 @@ public class PopUpSongRenameFragment extends DialogFragment {
                 String tempNewFolder = FullscreenActivity.newFolder;
 
                 File to;
-                if (tempNewFolder.equals("("+FullscreenActivity.mainfoldername+")") ||
-                        tempNewFolder.equals(FullscreenActivity.mainfoldername)) {
-                    tempNewFolder = FullscreenActivity.mainfoldername;
+                if (tempNewFolder.equals(FullscreenActivity.mainfoldername)) {
                     to = new File(FullscreenActivity.dir + "/" + tempNewSong);
                 } else {
                     to = new File(FullscreenActivity.dir + "/" + tempNewFolder + "/" + tempNewSong);
                 }
 
                 File from;
-                if (tempOldFolder.equals("") || tempOldFolder.equals(FullscreenActivity.mainfoldername)
-                        || tempOldFolder.equals("("+FullscreenActivity.mainfoldername+")")) {
+                if (tempOldFolder.equals("") || tempOldFolder.equals(FullscreenActivity.mainfoldername)) {
                     from = new File(FullscreenActivity.dir + "/" + oldsongname);
                 } else {
                     from = new File(FullscreenActivity.dir + "/" + tempOldFolder + "/" + oldsongname);
@@ -149,8 +146,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
 
                 if (!tempNewSong.equals("") && !tempNewSong.isEmpty()
                         && !tempNewSong.contains("/") && !to.exists()
-                        && !tempNewSong.equals(FullscreenActivity.mainfoldername)
-                        && !tempNewSong.equals("(" + FullscreenActivity.mainfoldername + ")")) {
+                        && !tempNewSong.equals(FullscreenActivity.mainfoldername)) {
 
                     // Try to rename
                     if (isPDF) {

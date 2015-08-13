@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
+import android.widget.Adapter;
 
 import java.io.File;
 import java.text.Collator;
@@ -12,13 +13,14 @@ public class ListSongFiles extends Activity {
 	static Collator coll;
 
 	public static void listSongFolders() {
-		File songfolder = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
+        FullscreenActivity.allfilesforsearch.clear();
+        File songfolder = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
 		File[] tempmyitems = null;
 		if (songfolder.isDirectory() && songfolder!=null) {
 				tempmyitems = songfolder.listFiles();
 		}
 		// Go through this list and check if the item is a directory or a file.
-		int tempnumitems=0;
+		int tempnumitems;
 		if (tempmyitems != null && tempmyitems.length>0) {
 			tempnumitems = tempmyitems.length;
 		} else {
@@ -32,7 +34,7 @@ public class ListSongFiles extends Activity {
 		}
 		
 		//Now set the size of the temp arrays
-		ArrayList<String> tempProperDirectories = new ArrayList<String>();
+		ArrayList<String> tempProperDirectories = new ArrayList<>();
 
 		//Now read the stuff into the temp array
 		for (int x=0; x<tempnumitems; x++) {
@@ -45,7 +47,7 @@ public class ListSongFiles extends Activity {
 		// Add locale sort
 		coll = Collator.getInstance(FullscreenActivity.locale);
 		coll.setStrength(Collator.SECONDARY);
-		Collections.sort(tempProperDirectories,coll);
+		Collections.sort(tempProperDirectories, coll);
 		//Collections.sort(tempProperDirectories, String.CASE_INSENSITIVE_ORDER);
 		
 		FullscreenActivity.mSongFolderNames = new String[numactualdirs+1];
@@ -68,12 +70,13 @@ public class ListSongFiles extends Activity {
 				main_numfiles = 0;
 			}
 		//Now set the size of the temp arrays
-		ArrayList<String> tempMainProperFiles= new ArrayList<String>();
+		ArrayList<String> tempMainProperFiles= new ArrayList<>();
 		int temp_mainnumfilescount = 0;
 		for (int x=0; x<main_numfiles; x++) {
 			if (temp_mainfiles[x] != null && !temp_mainfiles[x].isDirectory() && temp_mainfiles[x].isFile()){
 				tempMainProperFiles.add(temp_mainfiles[x].getName());
-				temp_mainnumfilescount++;
+                FullscreenActivity.allfilesforsearch.add(temp_mainfiles[x].getName() + " %%% " + FullscreenActivity.mainfoldername);
+                temp_mainnumfilescount++;
 			}
 		}
 			
@@ -85,12 +88,11 @@ public class ListSongFiles extends Activity {
 		FullscreenActivity.childSongs[0] = new String[temp_mainnumfilescount];
 		FullscreenActivity.childSongs[0] = tempMainProperFiles.toArray(FullscreenActivity.childSongs[0]);
 		
-		
 		for (int w=0;w<numactualdirs;w++) {
 			File currsongfolder = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/"+FullscreenActivity.mSongFolderNames[w]);
 			File[] tempmyfiles = currsongfolder.listFiles();		
 			// Go through this list and check if the item is a directory or a file.
-			int tempnumfiles=0;
+			int tempnumfiles;
 			if (tempmyfiles != null && tempmyfiles.length>0) {
 				tempnumfiles = tempmyfiles.length;
 			} else {
@@ -104,7 +106,7 @@ public class ListSongFiles extends Activity {
 			}
 			
 			//Now set the size of the temp arrays
-			ArrayList<String> tempProperFiles= new ArrayList<String>();
+			ArrayList<String> tempProperFiles= new ArrayList<>();
 
 			//Now read the stuff into the temp array
 			for (int x=0; x<numactualfiles; x++) {
@@ -121,6 +123,11 @@ public class ListSongFiles extends Activity {
 			FullscreenActivity.childSongs[w+1] = new String[numactualfiles];
 			FullscreenActivity.childSongs[w+1] = tempProperFiles.toArray(FullscreenActivity.childSongs[w+1]);
 
+            for (int f=0; f<numactualfiles; f++) {
+                FullscreenActivity.allfilesforsearch_folder.add(FullscreenActivity.mSongFolderNames[w]);
+                FullscreenActivity.allfilesforsearch_song.add(tempProperFiles.get(f));
+                FullscreenActivity.allfilesforsearch.add(tempProperFiles.get(f) + " %%% " + FullscreenActivity.mSongFolderNames[w]);
+            }
 		}
 	}
 	
@@ -133,20 +140,16 @@ public class ListSongFiles extends Activity {
 		// List the items in the main storage location into a temporary array.
 		// What song folder is being viewed?
 		// If it is MAIN then it is the main one
-        if (FullscreenActivity.whichSongFolder==null) {
-            FullscreenActivity.whichSongFolder = "";
-        }
+		File foldertoindex;
         if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-			FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath()
-					+ "/documents/OpenSong/Songs");				
+			foldertoindex = FullscreenActivity.dir;
 		} else {
-			FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath()
-					+ "/documents/OpenSong/Songs/" + FullscreenActivity.whichSongFolder);
+			foldertoindex = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder);
 		}
-		File[] tempmyFiles = FullscreenActivity.dir.listFiles();		
+		File[] tempmyFiles = foldertoindex.listFiles();
 		// Go through this list and check if the item is a directory or a file.
 		// Add these to the correct array
-		int tempnumfiles=0;
+		int tempnumfiles;
 		if (tempmyFiles != null && tempmyFiles.length>0) {
 			tempnumfiles = tempmyFiles.length;
 		} else {
@@ -163,10 +166,8 @@ public class ListSongFiles extends Activity {
 		}
 		
 			//Now set the size of the temp arrays
-			ArrayList<String> tempProperSongFiles = new ArrayList<String>();
-			ArrayList<String> tempProperDirectories = new ArrayList<String>();
-
-		
+			ArrayList<String> tempProperSongFiles = new ArrayList<>();
+			ArrayList<String> tempProperDirectories = new ArrayList<>();
 
 		//Now read the stuff into the temp arrays
 		for (int x=0; x<tempnumfiles; x++) {
@@ -194,8 +195,8 @@ public class ListSongFiles extends Activity {
 		
 
 		//Add folder name to first item of songlist
-		tempProperSongFiles.add(0, "(" + FullscreenActivity.whichSongFolder + ")");
-		tempProperDirectories.add(0, "(" + FullscreenActivity.mainfoldername + ")");
+		tempProperSongFiles.add(0, FullscreenActivity.whichSongFolder);
+		tempProperDirectories.add(0, FullscreenActivity.mainfoldername);
 		
 		//Make the real arrays one bigger
 		FullscreenActivity.mSongFileNames = new String[numactualfiles+1];
@@ -204,7 +205,7 @@ public class ListSongFiles extends Activity {
 		FullscreenActivity.mSongFileNames = tempProperSongFiles.toArray(FullscreenActivity.mSongFileNames);
 		FullscreenActivity.mSongFolderNames = tempProperDirectories.toArray(FullscreenActivity.mSongFolderNames);
 	}
-	
+
 	public static void getCurrentSongIndex() {
 		// Find the current song index from the song filename
 		// Set them all to 1

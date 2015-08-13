@@ -2,12 +2,8 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 public class PopUpSearchViewFragment extends DialogFragment implements SearchView.OnQueryTextListener {
 
@@ -153,7 +148,7 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
             // Each song is saved in the set string as $**_Love everlasting_**$
             // Check if this song is already there. If it isn't, add it.
             // We need to figure out the file name and the folder (if any) it is in
-            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) || FullscreenActivity.whichSongFolder.isEmpty()) {
+            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
                 FullscreenActivity.whatsongforsetwork = "$**_" + linkclicked + "_**$";
             } else {
                 FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.whichSongFolder + "/"	+ linkclicked + "_**$";

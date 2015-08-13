@@ -129,7 +129,7 @@
 	<string name="oldchordformat">"Formato accordo corrente rilevato"</string>
 	
     <string name="firstsong">"Visualizzazione prima canzone"</string>
-    <string name="lastsong">"Visualizzazione ultima canzone"</string>
+    <string name="lastsong">"Visualizzazione ultimo elemento nel set"</string>
     
     <string name="set_edit">"MODIFICA"</string>
     <string name="set_edit_title">"Modificare il set corrente"</string>
@@ -192,7 +192,7 @@
 	<string name="rename">"Immettere un nuovo nome di file per questa canzone ( questo è come apparirà nel vostro menu canzone )"</string>
 	<string name="renametitle">"Rinominare"</string>
 			
-	<string name="copyresources">"Cliccate qui per copiare le varie canzoni \n Lei è responsabile per il Copyright"</string>
+	<string name="copyresources">"Cliccate qui per installazione / aggiornamento le varie canzoni \n Lei è responsabile per il Copyright"</string>
 	<string name="gotosong">"Clicca qui per iniziare \n APERTO SONG VIEWER"</string>
 	<string name="wipesongs">"Aggiorna la mia cartella canzoni locale"</string>
 	<string name="dropsync">"Scarica DropSync App (gratuito)"</string>
@@ -407,5 +407,17 @@
 	<string name="scrollbuttons_single">frecce singole</string>
 	<string name="scrollbuttons_toggle">Pulsanti di scorrimento Toggle</string>
 	<string name="crossfade_time">tempo Crossfade</string>
+	<string name="content">"Contenuto"</string>
+	<string name="custom_slide">"Scivolo personalizzato (con contenuto)"</string>
+	<string name="not_allowed">"Questa funzione non è consentita per questo articolo"</string>
+	<string name="note">"Nota"</string>
+	<string name="options_display">"display"</string>
+	<string name="options_gesturesandmenus">"Gesti e menu"</string>
+	<string name="options_other">"Altro"</string>
+	<string name="options_storage">"immagazzinamento"</string>
+	<string name="simple_note">"Semplice nota / segnaposto"</string>
+	<string name="slide_separator">"Aggiungi separatore scivolo (per la proiezione)"</string>
+	<string name="title">"titolo"</string>
+	<string name="add_custom_slide">"Aggiungi diapositiva / note"</string>
 
 </resources>

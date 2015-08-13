@@ -408,6 +408,18 @@
         </RelativeLayout>
     </HorizontalScrollView>
 
+    <ImageView
+        android:id="@+id/setbutton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/options_set"
+        android:src="@drawable/setlist"
+        android:alpha="0.3"
+        android:onClick="popUpSetList"/>
+
     <ScrollView
         android:id="@+id/scrollstickyholder"
         android:layout_width="match_parent"
@@ -438,16 +450,16 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="64sp"
-                    android:layout_height="64sp"
+                    android:layout_width="48sp"
+                    android:layout_height="48sp"
                     android:layout_marginRight="16dp"
                     android:contentDescription="@string/cancel"
                     android:onClick="stickyNotes"
                     android:src="@drawable/ic_action_cancel" />
 
                 <ImageView
-                    android:layout_width="64sp"
-                    android:layout_height="64sp"
+                    android:layout_width="48sp"
+                    android:layout_height="48sp"
                     android:layout_marginRight="16dp"
                     android:contentDescription="@string/edit_song_notes"
                     android:onClick="editNotes"
@@ -459,7 +471,7 @@
                     android:contentDescription="@string/stickynotes"
                     android:text="@string/stickynotes"
                     android:textColor="#0000AA"
-                    android:textSize="28sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -476,7 +488,7 @@
                 android:contentDescription="@string/stickynotes"
                 android:text="@string/stickynotes"
                 android:textColor="#000000"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
         </LinearLayout>
     </ScrollView>
 
@@ -511,8 +523,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="64sp"
-                    android:layout_height="64sp"
+                    android:layout_width="48sp"
+                    android:layout_height="48sp"
                     android:layout_marginRight="16dp"
                     android:contentDescription="@string/cancel"
                     android:onClick="popupPad_toggle"
@@ -524,7 +536,7 @@
                     android:contentDescription="@string/pad"
                     android:text="@string/pad"
                     android:textColor="#0000AA"
-                    android:textSize="28sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -666,8 +678,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="64sp"
-                    android:layout_height="64sp"
+                    android:layout_width="48sp"
+                    android:layout_height="48sp"
                     android:layout_marginRight="16dp"
                     android:contentDescription="@string/cancel"
                     android:onClick="popupAutoscroll_toggle"
@@ -679,7 +691,7 @@
                     android:contentDescription="@string/autoscroll"
                     android:text="@string/autoscroll"
                     android:textColor="#0000AA"
-                    android:textSize="28sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -797,8 +809,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="64sp"
-                    android:layout_height="64sp"
+                    android:layout_width="48sp"
+                    android:layout_height="48sp"
                     android:layout_marginRight="16dp"
                     android:contentDescription="@string/cancel"
                     android:onClick="popupMetronome_toggle"
@@ -810,7 +822,7 @@
                     android:contentDescription="@string/metronome"
                     android:text="@string/metronome"
                     android:textColor="#0000AA"
-                    android:textSize="28sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -997,16 +1009,16 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="64sp"
-                    android:layout_height="64sp"
+                    android:layout_width="48sp"
+                    android:layout_height="48sp"
                     android:layout_marginRight="16dp"
                     android:contentDescription="@string/cancel"
                     android:onClick="popupChords_toggle"
                     android:src="@drawable/ic_action_cancel" />
 
                 <ImageView
-                    android:layout_width="64sp"
-                    android:layout_height="64sp"
+                    android:layout_width="48sp"
+                    android:layout_height="48sp"
                     android:layout_marginRight="16dp"
                     android:contentDescription="@string/edit_song_notes"
                     android:onClick="customChordEdit"

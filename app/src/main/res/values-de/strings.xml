@@ -129,7 +129,7 @@
 	<string name="oldchordformat">"Aktuelles Akkord-Format ermitteln"</string>
 	
     <string name="firstsong">"Erster Song wird angezeigt"</string>
-    <string name="lastsong">"Letzter Song wird angezeigt"</string>
+    <string name="lastsong">"Angezeigte letzte Element im Set"</string>
     
     <string name="set_edit">"BEARBEITEN"</string>
     <string name="set_edit_title">"Aktuelles Set bearbeiten"</string>
@@ -191,7 +191,7 @@
 	<string name="rename">"Geben Sie einen neuen Dateinamen für dieses Lied ein (das Lied wird später so im Song-Menü angezeigt)"</string>
 	<string name="renametitle">"Umbenennen"</string>
 			
-	<string name="copyresources">"Klicken Sie hier, um mehrere Lieder zu kopieren \n Sie sind verantwortlich für das Urheberrecht"</string>
+	<string name="copyresources">"Klicken Sie hier, um mehrere Lieder zu installieren / aktualisieren \n Sie sind verantwortlich für das Urheberrecht"</string>
 	<string name="gotosong">"HIER ZUM STARTEN KLICKEN \n OPENSONG&#8230;STARTEN"</string>
 	<string name="wipesongs">"Zurücksetzen des lokalen Songs-Ordners"</string>
 	<string name="dropsync">"Laden Sie DropSync App herunter (kostenlos)"</string>
@@ -407,5 +407,17 @@
 	<string name="scrollbuttons_single">Einzelpfeile</string>
 	<string name="scrollbuttons_toggle">Toggle Scroll-Tasten</string>
 	<string name="crossfade_time">Überblendzeit</string>
+	<string name="content">"Inhalt"</string>
+	<string name="custom_slide">"Benutzerdefinierte Schieber (mit Inhalt)"</string>
+	<string name="not_allowed">"Diese Funktion wird nicht für diesen Titel erlaubt"</string>
+	<string name="note">"Notiz"</string>
+	<string name="options_display">"Anzeige"</string>
+	<string name="options_gesturesandmenus">"Gesten und Menüs"</string>
+	<string name="options_other">"andere"</string>
+	<string name="options_storage">"Lagerung"</string>
+	<string name="simple_note">"Einfache note / Platzhalter"</string>
+	<string name="slide_separator">"In slide Separator (für die Projektion)"</string>
+	<string name="title">"Titel"</string>
+	<string name="add_custom_slide">"In slide / note"</string>
 
 </resources>

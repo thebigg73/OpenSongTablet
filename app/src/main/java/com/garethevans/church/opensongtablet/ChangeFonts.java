@@ -12,7 +12,7 @@ import android.widget.TextView;
 public class ChangeFonts extends Activity {
 
     // Set the defaults
-    View view;
+    // View view;
     Button lyrics_default_button;
     Button lyrics_monospace_button;
     Button lyrics_sans_button;
@@ -49,7 +49,6 @@ public class ChangeFonts extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        view = findViewById(R.layout.choose_font);
         // Load the user preferences
         Preferences.loadPreferences();
         PresenterMode = getIntent().getBooleanExtra("PresenterMode", false);
@@ -124,7 +123,7 @@ public class ChangeFonts extends Activity {
         maxfonttext.setTextSize((FullscreenActivity.mMaxFontSize));
 
         // Update the preview bit
-        updatePreview(view);
+        updatePreview(maxfonttext);
 
     }
 
@@ -222,7 +221,6 @@ public class ChangeFonts extends Activity {
 
         startActivity(viewsong);
         finish();
-        return;
     }
 
     public void gotosongs(View view) {
@@ -237,7 +235,6 @@ public class ChangeFonts extends Activity {
             startActivity(intent);
             this.finish();
         }
-        return;
     }
 
     public void lyrics_default(View view) {
@@ -398,7 +395,7 @@ public class ChangeFonts extends Activity {
             FullscreenActivity.linespacing = linespacing.getProgress();
             // Save preferences
             Preferences.savePreferences();
-            updatePreview(view);
+            updatePreview(maxfonttext);
         }
     }
 
@@ -406,7 +403,7 @@ public class ChangeFonts extends Activity {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             maxfonttext.setText((progress + 20) + " sp");
-            maxfonttext.setTextSize((float) (progress + 20.0f));
+            maxfonttext.setTextSize(progress + 20.0f);
         }
 
         public void onStartTrackingTouch(SeekBar seekBar) {

@@ -18,6 +18,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
@@ -34,18 +36,27 @@ public class Chordie extends Activity{
 	
 	@SuppressWarnings("unused")
 	private Menu menu;
+	@SuppressWarnings("unused")
 	static String foldername;
+	@SuppressWarnings("unused")
 	static String result;
 	static String response;
+	@SuppressWarnings("unused")
 	static String weblink;
+	@SuppressWarnings("unused")
 	static String webSource;
+	@SuppressWarnings("unused")
 	static WebView chordieWeb;
+	@SuppressWarnings("unused")
 	static String resultposted;
-	static String whatfolderselected="(MAIN)";
+	@SuppressWarnings("unused")
+	static String whatfolderselected=FullscreenActivity.mainfoldername;
 	ProgressBar progressbar;
 	static String[] availableFolders;
 	AlertDialog.Builder dialogBuilder;
 	String filenametosave;
+    String authorname = "";
+	@SuppressWarnings("unused")
 	String resultfinal;
 	
 	@Override
@@ -87,7 +98,6 @@ public class Chordie extends Activity{
 		Intent viewsong = new Intent(this, FullscreenActivity.class);
 		startActivity(viewsong);
 		finish();
-		return;
 	}
 	
 	
@@ -119,7 +129,7 @@ public class Chordie extends Activity{
 		          InputStream content = execute.getEntity().getContent();
 
 		          BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-		          String s = "";
+		          String s;
 		          while ((s = buffer.readLine()) != null) {
 		            response += "\n" + s;
 		          }
@@ -233,7 +243,7 @@ public class Chordie extends Activity{
 					// Ask the user to specify the folder to save the file into			
 					// Get a list of folders available
 					// First set the browsing directory back to the main one
-					FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath()+"/documents/OpenSong/Songs");
+					// FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath()+"/documents/OpenSong/Songs");
 				    String currentFolder = FullscreenActivity.whichSongFolder;
 					FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
 					ListSongFiles.listSongs();
@@ -256,7 +266,6 @@ public class Chordie extends Activity{
 				    newDirButton.setOnClickListener(new View.OnClickListener() {			
 						@Override
 						public void onClick(View v) {
-							// TODO Auto-generated method stub
 							makeNewFolder();
 						}
 					});
@@ -272,7 +281,7 @@ public class Chordie extends Activity{
 				    //By default the folder is set to the main one
 				    int folderposition = 0;
 				    for (int z=0;z<numfolders;z++) {
-				    	if (availableFolders[z].toString().equals(currentFolder)) {
+				    	if (availableFolders[z].equals(currentFolder)) {
 				    		// Set this as the folder
 				    		folderposition = z;
 				    		whatfolderselected = currentFolder;
@@ -293,13 +302,12 @@ public class Chordie extends Activity{
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									// TODO Auto-generated method stub
-																	
+
 									FileOutputStream newFile;
 									String filenameandlocation;
 									
 									try {
-										if (whatfolderselected.equals("(MAIN)")) {
+										if (whatfolderselected.equals(FullscreenActivity.mainfoldername)) {
 											filenameandlocation = FullscreenActivity.dir + "/"
 													+ "chordie_import.chopro";
 										} else {
@@ -312,7 +320,6 @@ public class Chordie extends Activity{
 										newFile.flush();
 										newFile.close();
 									} catch (IOException e) {
-										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
 
@@ -330,7 +337,7 @@ public class Chordie extends Activity{
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									// TODO Auto-generated method stub	
+
 								}				    
 				    });
 				    dialogBuilder.show();
@@ -360,24 +367,36 @@ public class Chordie extends Activity{
 					} else {
 						filenametosave = "*temp*";
 					}
-					
-					// Find the position of the start of this section
-					startpos = resultposted.indexOf("<div class=\"tb_ct\">");
-					if (startpos<0) {
-						startpos=0;
-					}
-					// Remove everything before this position
-					resultposted = resultposted.substring(startpos);
-					
 
-					// Find the position of the start of this section
+                    // Try to find the author
+                    startpos = resultposted.indexOf("artist:");
+                    if (startpos<0) {
+                        startpos=0;
+                    }
+                    // Remove everything before this position
+                    String author_resultposted = resultposted.substring(startpos);
+
+                    endpos = author_resultposted.indexOf(",\n");
+                    if (endpos<0) {
+                        endpos=0;
+                    }
+                    //Bit with author is in here hopefully
+                    if (endpos>7) {
+                        authorname = author_resultposted.substring(7, endpos);
+                        authorname = authorname.replace("\"", "");
+                        authorname = authorname.trim();
+                    } else {
+                        authorname = "";
+                    }
+
+                    // Find the position of the start of this section
 					startpos = resultposted.indexOf("<div class=\"tb_ct\">");
 					if (startpos<0) {
 						startpos=0;
 					}
 					// Remove everything before this position
 					resultposted = resultposted.substring(startpos);
-					
+
 					// Find the ultimate guitar promo text start
 					startpos = resultposted.indexOf("<pre class=\"print-visible\">");
 					if (startpos<0) {
@@ -401,8 +420,10 @@ public class Chordie extends Activity{
 					}
 					resultposted = resultposted.substring(0,endpos);
 
+					Log.d("crd", "resultposted=" + resultposted);
+
 					//Replace all \r with \n
-					resultposted = resultposted.replace("\r","\n");
+					resultposted = resultposted.replace("\r", "\n");
 					resultposted = resultposted.replace("\'","'");
 					
 					// Split into lines
@@ -422,25 +443,37 @@ public class Chordie extends Activity{
 						}
 						newtext = newtext + templines[q] + "\n";
 					}
-					
-					// Ok remove all html tags
+                    Log.d("chorded","newtext="+newtext);
+
+                    // Ok remove all html tags
 					newtext = newtext.replace("<span>","");
 					newtext = newtext.replace("</span>","");
 					newtext = newtext.replace("<i>","");
 					newtext = newtext.replace("</i>","");
 					newtext = newtext.replace("<b>","");
 					newtext = newtext.replace("</b>","");
-					
-					resultfinal = "<song>\n<title>" + filenametosave
-							+ "</title>\n<author></author>\n<copyright></copyright>\n<lyrics>[]\n"
+                    newtext = newtext.replace("</","");
+                    newtext = newtext.replace("/>","");
+                    newtext = newtext.replace("<","");
+                    newtext = newtext.replace(">","");
+                    newtext = newtext.replace("&","&amp;");
+					newtext = TextUtils.htmlEncode(newtext);
+
+                    Log.d("parsed","newtext="+newtext);
+
+					resultfinal = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<song>\n<title>" + filenametosave
+							+ "</title>\n<author>"
+                            + authorname + "</author>\n<copyright></copyright>\n<lyrics>[]\n"
 							+ newtext
 							+ "</lyrics>\n</song>";
+
+                    Log.d("xml","resultfinal="+resultfinal);
 
 					// Success if this far - prompt for save
 					// Ask the user to specify the folder to save the file into			
 					// Get a list of folders available
 					// First set the browsing directory back to the main one
-					FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath()+"/documents/OpenSong/Songs");
+					//FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath()+"/documents/OpenSong/Songs");
 				    String currentFolder = FullscreenActivity.whichSongFolder;
 					FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
 					ListSongFiles.listSongs();
@@ -463,7 +496,6 @@ public class Chordie extends Activity{
 				    newDirButton.setOnClickListener(new View.OnClickListener() {			
 						@Override
 						public void onClick(View v) {
-							// TODO Auto-generated method stub
 							makeNewFolder();
 						}
 					});
@@ -479,7 +511,7 @@ public class Chordie extends Activity{
 				    //By default the folder is set to the main one
 				    int folderposition = 0;
 				    for (int z=0;z<numfolders;z++) {
-				    	if (availableFolders[z].toString().equals(currentFolder)) {
+				    	if (availableFolders[z].equals(currentFolder)) {
 				    		// Set this as the folder
 				    		folderposition = z;
 				    		whatfolderselected = currentFolder;
@@ -500,13 +532,17 @@ public class Chordie extends Activity{
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									// TODO Auto-generated method stub
-																	
+
 									FileOutputStream newFile;
 									String filenameandlocation;
 									
 									try {
-										if (whatfolderselected.equals("(MAIN)")) {
+                                        boolean ismainfolder = false;
+                                    	if (whatfolderselected.equals(getResources().getString(R.string.mainfoldername))) {
+                                            ismainfolder=true;
+                                     	}
+
+										if (ismainfolder) {
 											filenameandlocation = FullscreenActivity.dir + "/"
 													+ filenametosave;
 										} else {
@@ -514,12 +550,19 @@ public class Chordie extends Activity{
 													+ whatfolderselected + "/"+filenametosave;
 											FullscreenActivity.whichSongFolder = whatfolderselected;
 										}
+
+                                        // Don't overwrite any existing files
+                                        File testFile = new File(filenameandlocation);
+                                        while(testFile.exists()) {
+                                            filenameandlocation = filenameandlocation + "_";
+                                            testFile = new File(filenameandlocation);
+                                        }
+
 										newFile = new FileOutputStream(filenameandlocation, false);
 										newFile.write(resultfinal.getBytes());
 										newFile.flush();
 										newFile.close();
 									} catch (IOException e) {
-										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
 
@@ -537,7 +580,7 @@ public class Chordie extends Activity{
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
-									// TODO Auto-generated method stub	
+
 								}				    
 				    });
 				    dialogBuilder.show();

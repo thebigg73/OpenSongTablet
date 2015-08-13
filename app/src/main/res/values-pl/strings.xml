@@ -129,7 +129,7 @@
 	<string name="oldchordformat">"Wykryto Format akord prądu"</string>
 	
     <string name="firstsong">"Wyświetlanie pierwszy utwór"</string>
-    <string name="lastsong">"Wyświetlanie ostatnią piosenkę"</string>
+    <string name="lastsong">"Wyświetlanie ostatni element w zestawie"</string>
     
     <string name="set_edit">"EDYTUJ"</string>
     <string name="set_edit_title">"Edytuj swoje aktualny zestaw"</string>
@@ -407,5 +407,17 @@
 	<string name="scrollbuttons_single">pojedyncze strzały</string>
 	<string name="scrollbuttons_toggle">Przełącz przycisków przewijania</string>
 	<string name="crossfade_time">to czas przejścia</string>
+	<string name="content">"Treść"</string>
+	<string name="custom_slide">"Niestandardowe slajdów (z zawartością)"</string>
+	<string name="not_allowed">"Ta funkcja nie jest dozwolone dla tej pozycji"</string>
+	<string name="note">"Notatka"</string>
+	<string name="options_display">"wystawa"</string>
+	<string name="options_gesturesandmenus">"Gesty i menu"</string>
+	<string name="options_other">"inny"</string>
+	<string name="options_storage">"Przechowywanie"</string>
+	<string name="simple_note">"Proste nuty / zastępczy"</string>
+	<string name="slide_separator">"Dodaj separator slajdów (do projekcji)"</string>
+	<string name="title">"tytuł"</string>
+	<string name="add_custom_slide">"Dodaj slajdów / notatka"</string>
 
 </resources>

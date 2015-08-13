@@ -21,9 +21,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * Created by gareth on 07/05/15.
- */
 public class PopUpFileChooseFragment extends DialogFragment {
 
     static ArrayList<String> tempBackgroundImageFiles;
@@ -41,14 +38,19 @@ public class PopUpFileChooseFragment extends DialogFragment {
 
         // Decide on the title of the file chooser
         String myTitle = "";
-        if (PresenterMode.whatBackgroundLoaded.equals("image1")) {
-            myTitle = getActivity().getResources().getString(R.string.choose_image1);
-        } else if (PresenterMode.whatBackgroundLoaded.equals("image2")) {
-            myTitle = getActivity().getResources().getString(R.string.choose_image2);
-        } else if (PresenterMode.whatBackgroundLoaded.equals("video1")) {
-            myTitle = getActivity().getResources().getString(R.string.choose_video1);
-        } else if (PresenterMode.whatBackgroundLoaded.equals("video2")) {
-            myTitle = getActivity().getResources().getString(R.string.choose_video2);
+        switch (PresenterMode.whatBackgroundLoaded) {
+            case "image1":
+                myTitle = getActivity().getResources().getString(R.string.choose_image1);
+                break;
+            case "image2":
+                myTitle = getActivity().getResources().getString(R.string.choose_image2);
+                break;
+            case "video1":
+                myTitle = getActivity().getResources().getString(R.string.choose_video1);
+                break;
+            case "video2":
+                myTitle = getActivity().getResources().getString(R.string.choose_video2);
+                break;
         }
 
         getDialog().setTitle(getActivity().getResources().getString(R.string.file_chooser));
@@ -75,21 +77,26 @@ public class PopUpFileChooseFragment extends DialogFragment {
         }
 
         // Populate the file list view
-        fileListView.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, BackgroundImageFiles));
+        fileListView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, BackgroundImageFiles));
 
         // Listen for clicks inside
         fileListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the appropriate file
-                if (PresenterMode.whatBackgroundLoaded.equals("image1")) {
-                    FullscreenActivity.backgroundImage1 = BackgroundImageFiles[position];
-                } else if (PresenterMode.whatBackgroundLoaded.equals("image2")) {
-                    FullscreenActivity.backgroundImage2 = BackgroundImageFiles[position];
-                } else if (PresenterMode.whatBackgroundLoaded.equals("video1")) {
-                    FullscreenActivity.backgroundVideo1 = BackgroundImageFiles[position];
-                } else if (PresenterMode.whatBackgroundLoaded.equals("video2")) {
-                    FullscreenActivity.backgroundVideo2 = BackgroundImageFiles[position];
+                switch (PresenterMode.whatBackgroundLoaded) {
+                    case "image1":
+                        FullscreenActivity.backgroundImage1 = BackgroundImageFiles[position];
+                        break;
+                    case "image2":
+                        FullscreenActivity.backgroundImage2 = BackgroundImageFiles[position];
+                        break;
+                    case "video1":
+                        FullscreenActivity.backgroundVideo1 = BackgroundImageFiles[position];
+                        break;
+                    case "video2":
+                        FullscreenActivity.backgroundVideo2 = BackgroundImageFiles[position];
+                        break;
                 }
                 Preferences.savePreferences();
                 reOpenBackgrounds();
@@ -111,14 +118,14 @@ public class PopUpFileChooseFragment extends DialogFragment {
             File[] tempmyFiles = FullscreenActivity.dirbackgrounds.listFiles();
             // Go through this list and check if the item is a directory or a file.
             // Add these to the correct array
-            int tempnumfiles=0;
+            int tempnumfiles;
             if (tempmyFiles != null && tempmyFiles.length>0) {
                 tempnumfiles = tempmyFiles.length;
             } else {
                 tempnumfiles = 0;
             }
 
-            tempBackgroundImageFiles = new ArrayList<String>();
+            tempBackgroundImageFiles = new ArrayList<>();
 
             for (int x=0; x<tempnumfiles; x++) {
                 if (tempmyFiles[x] != null && tempmyFiles[x].isFile() && (
@@ -146,14 +153,14 @@ public class PopUpFileChooseFragment extends DialogFragment {
         File[] tempmyFiles = FullscreenActivity.dirbackgrounds.listFiles();
         // Go through this list and check if the item is a directory or a file.
         // Add these to the correct array
-        int tempnumfiles=0;
+        int tempnumfiles;
         if (tempmyFiles != null && tempmyFiles.length>0) {
             tempnumfiles = tempmyFiles.length;
         } else {
             tempnumfiles = 0;
         }
 
-        tempBackgroundVideoFiles = new ArrayList<String>();
+        tempBackgroundVideoFiles = new ArrayList<>();
 
         for (int x=0; x<tempnumfiles; x++) {
             if (tempmyFiles[x] != null && tempmyFiles[x].isFile() && (

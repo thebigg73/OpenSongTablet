@@ -87,9 +87,9 @@ public class StorageChooser extends Activity {
 		radioGroup = (RadioGroup) findViewById(R.id.storageOptions);
 		intStorageButton = (RadioButton) findViewById(R.id.intStorage);
 		extStorageButton = (RadioButton) findViewById(R.id.extStorage);
-		copyAssets = (ProgressBar) findViewById(R.id.copyProgressBar);
-		docopy = (Button) findViewById(R.id.copySongs);
-		dowipe = (Button) findViewById(R.id.wipeSongs);
+		copyAssets = findViewById(R.id.copyProgressBar);
+		docopy = findViewById(R.id.copySongs);
+		dowipe = findViewById(R.id.wipeSongs);
 
 		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -371,7 +371,6 @@ public class StorageChooser extends Activity {
 
 		@Override
 		protected String doInBackground(String... params) {
-			// TODO Auto-generated method stub
 			// Check the Band Directory exists
 			// External
 			if (numeral.equals("2")) {

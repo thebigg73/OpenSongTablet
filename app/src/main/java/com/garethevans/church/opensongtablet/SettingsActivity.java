@@ -96,6 +96,7 @@ public class SettingsActivity extends Activity {
 	File int_dirbibles = new File(int_root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture");
 	File int_dirbibleverses = new File(int_root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
 	File int_dircustomslides = new File(int_root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
+	File int_dircustomnotes = new File(int_root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
 
 	File ext_root;
 	File ext_dir;
@@ -111,6 +112,7 @@ public class SettingsActivity extends Activity {
 	File ext_dirbibles;
 	File ext_dirbibleverses;
 	File ext_dircustomslides;
+	File ext_dircustomnotes;
 
 
 	// This class is called when the application first opens.
@@ -124,7 +126,6 @@ public class SettingsActivity extends Activity {
 			pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
 			version = pInfo.versionCode;
 		} catch (NameNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		myPreferences = getSharedPreferences("mysettings",MODE_PRIVATE);
@@ -175,6 +176,7 @@ public class SettingsActivity extends Activity {
 				ext_dirbibles = new File(ext_root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture");
 				ext_dirbibleverses = new File(ext_root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
 				ext_dircustomslides = new File(ext_root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
+				ext_dircustomnotes = new File(ext_root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
 			}
 		}
 
@@ -218,6 +220,12 @@ public class SettingsActivity extends Activity {
 		// External
 		if (extStorageExists) {if (!ext_dircustomslides.exists()) {ext_dircustomslides.mkdirs();}}
 
+		// Check the Notes _cache Directory exists
+		// Internal
+		if (defStorageExists) {if (!int_dircustomnotes.exists()) {int_dircustomnotes.mkdirs();}}
+		// External
+		if (extStorageExists) {if (!ext_dircustomnotes.exists()) {ext_dircustomnotes.mkdirs();}}
+
 		// Check the OpenSong Backgrounds Directory exists
 		// Internal
 		if (defStorageExists) {if (!int_dirbgs.exists()) {int_dirbgs.mkdirs();}}
@@ -226,8 +234,8 @@ public class SettingsActivity extends Activity {
 
 		// Look for default background image
 		AssetManager assetManager_bg = getAssets();
-		InputStream in = null;
-		OutputStream out = null;
+		InputStream in;
+		OutputStream out;
 		String filename = "ost_bg.png";
 		// Internal
 		if (defStorageExists) {
@@ -309,8 +317,8 @@ public class SettingsActivity extends Activity {
 		}
 
 		AssetManager assetManager_song = getAssets();
-		InputStream in_song = null;
-		OutputStream out_song = null;
+		InputStream in_song;
+		OutputStream out_song;
 		String filename_song = "Love everlasting";
 		if (defStorageExists) {
 			int_myFiles = int_dir.listFiles();
@@ -377,7 +385,7 @@ public class SettingsActivity extends Activity {
 					//Rewrite the shared preference
 					Editor editor = myPreferences.edit();
 					editor.putInt("showSplashVersion", showSplashVersion);
-					editor.commit();
+					editor.apply();
 					gotothesongs(null);
 					return;
 				} else {
@@ -386,7 +394,7 @@ public class SettingsActivity extends Activity {
 					//Rewrite the shared preference
 					Editor editor = myPreferences.edit();
 					editor.putInt("showSplashVersion", showSplashVersion);
-					editor.commit();
+					editor.apply();
 				}
 				setContentView(R.layout.activity_splashscreen);
 
@@ -395,7 +403,6 @@ public class SettingsActivity extends Activity {
 				try {
 					pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
 				} catch (NameNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				int versionNumber = pinfo.versionCode;

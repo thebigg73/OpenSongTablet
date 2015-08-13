@@ -2,17 +2,24 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import org.xmlpull.v1.XmlPullParserException;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class CreateNewSet extends Activity {
 
+    public static String tempsongfilename;
+    public static String tempdir;
+
     public static void doCreation() {
-        FullscreenActivity.newSetContents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n"
+
+        // Keep the current song and directory aside for now
+        tempsongfilename = FullscreenActivity.songfilename;
+        tempdir = FullscreenActivity.whichSongFolder;
+
+        FullscreenActivity.newSetContents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                 + "<set name=\""
                 + FullscreenActivity.settoload
-                + "\">\r\n<slide_groups>\r\n";
+                + "\">\n<slide_groups>\n";
 
         for (int x = 0; x < FullscreenActivity.mSetList.length; x++) {
             // Only add the lines that aren't back to options,
@@ -29,20 +36,17 @@ public class CreateNewSet extends Activity {
             if (songparts[0].length() > 0) {
                 songparts[0] = songparts[0] + "/";
             }
-            if (!songparts[0].contains("Scripture") && !songparts[0].contains("Slide")) {
+            if (!songparts[0].contains(FullscreenActivity.text_scripture) && !songparts[0].contains(FullscreenActivity.text_slide) && !songparts[0].contains(FullscreenActivity.text_note)) {
                 // Adding a song
                 FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
                         + "  <slide_group name=\""
                         + songparts[1]
                         + "\" type=\"song\" presentation=\"\" path=\""
                         + songparts[0] + "\"/>\n";
-            } else if (songparts[0].contains("Scripture") & !songparts[0].contains("Slide")) {
+            } else if (songparts[0].contains(FullscreenActivity.text_scripture) && !songparts[0].contains(FullscreenActivity.text_slide) && !songparts[0].contains(FullscreenActivity.text_note)) {
                 // Adding a scripture
                 // Load the scripture file up
-                // Keep the songfile as a temp
-                String tempsongfilename = FullscreenActivity.songfilename;
-                File tempdir = FullscreenActivity.dir;
-                FullscreenActivity.dir = FullscreenActivity.dirbibleverses;
+                FullscreenActivity.whichSongFolder = "../OpenSong Scripture/_cache";
                 FullscreenActivity.songfilename = songparts[1];
                 try {
                     LoadXML.loadXML();
@@ -56,52 +60,42 @@ public class CreateNewSet extends Activity {
 
                 // Parse the lyrics into individual slides;
                 scripture_lyrics = scripture_lyrics.replace("[]", "_SPLITHERE_");
+/*
                 scripture_lyrics = scripture_lyrics.replace("\\n ", " ");
                 scripture_lyrics = scripture_lyrics.replace("\n ", " ");
                 scripture_lyrics = scripture_lyrics.replace("\n", " ");
                 scripture_lyrics = scripture_lyrics.replace("\\n", " ");
                 scripture_lyrics = scripture_lyrics.replace("  ", " ");
                 scripture_lyrics = scripture_lyrics.replace(". ", ". ");
+*/
 
                 String[] mySlides = scripture_lyrics.split("_SPLITHERE_");
 
                 FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
                         + "  <slide_group type=\"scripture\" name=\""
                         + songparts[1] + "|" + FullscreenActivity.mAuthor
-                        + "\" print=\"true\">\r\n"
-                        + "  <title>" + songparts[1] + "</title>\r\n"
-                        + "  <slides>\r\n";
+                        + "\" print=\"true\">\n"
+                        + "    <title>" + songparts[1] + "</title>\n"
+                        + "    <slides>\n";
 
                 for (int w = 1; w < mySlides.length; w++) {
                     if (mySlides[w] != null && mySlides[w].length() > 0) {
                         FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
-                                + "  <slide>\r\n"
-                                + "  <body>" + mySlides[w].trim() + "</body>\r\n"
-                                + "  </slide>\r\n";
+                                + "      <slide>\n"
+                                + "      <body>" + mySlides[w].trim() + "</body>\n"
+                                + "      </slide>\n";
                     }
                 }
-                FullscreenActivity.newSetContents = FullscreenActivity.newSetContents + "</slides>\r\n"
-                        + "  <subtitle>" + "</subtitle>\r\n"
-                        + "  <notes />\r\n"
-                        + "</slide_group>\r\n";
-                //Put the original songfilename back
-                FullscreenActivity.songfilename = tempsongfilename;
-                FullscreenActivity.dir = tempdir;
-                try {
-                    LoadXML.loadXML();
-                } catch (XmlPullParserException | IOException e) {
-                    e.printStackTrace();
-                }
+                FullscreenActivity.newSetContents = FullscreenActivity.newSetContents + "    </slides>\n"
+                        + "    <subtitle>" + "</subtitle>\n"
+                        + "    <notes />\n"
+                        + "  </slide_group>\n";
 
-                FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
-
-            } else if (songparts[0].contains("Slide") && !songparts[0].contains("Scripture")) {
+            } else if (songparts[0].contains(FullscreenActivity.text_slide) && !songparts[0].contains(FullscreenActivity.text_note) && !songparts[0].contains(FullscreenActivity.text_scripture)) {
                 // Adding a custom slide
                 // Load the slide file up
                 // Keep the songfile as a temp
-                String tempsongfilename = FullscreenActivity.songfilename;
-                File tempdir = FullscreenActivity.dir;
-                FullscreenActivity.dir = FullscreenActivity.dircustomslides;
+                FullscreenActivity.whichSongFolder = "../Slides/_cache";
                 FullscreenActivity.songfilename = songparts[1];
                 try {
                     LoadXML.loadXML();
@@ -113,14 +107,19 @@ public class CreateNewSet extends Activity {
 
                 String slide_lyrics = FullscreenActivity.mLyrics;
 
+                if (slide_lyrics.indexOf("---\n")==0) {
+                    slide_lyrics = slide_lyrics.replaceFirst("---\n","");
+                }
                 // Parse the lyrics into individual slides;
-                slide_lyrics = slide_lyrics.replace("[]", "_SPLITHERE_");
+                slide_lyrics = slide_lyrics.replace("---", "_SPLITHERE_");
+/*
                 slide_lyrics = slide_lyrics.replace("\\n ", " ");
                 slide_lyrics = slide_lyrics.replace("\n ", " ");
                 slide_lyrics = slide_lyrics.replace("\n", " ");
                 slide_lyrics = slide_lyrics.replace("\\n", " ");
                 slide_lyrics = slide_lyrics.replace("  ", " ");
                 slide_lyrics = slide_lyrics.replace(". ", ".  ");
+*/
 
                 String[] mySlides = slide_lyrics.split("_SPLITHERE_");
 
@@ -129,25 +128,31 @@ public class CreateNewSet extends Activity {
                         + "\" type=\"custom\" print=\"true\""
                         + " seconds=\"" + FullscreenActivity.mUser1 + "\""
                         + " loop=\"" + FullscreenActivity.mUser2 + "\""
-                        + " transition=\"" + FullscreenActivity.mUser3 + "\">\r\n"
-                        + "<title>" + FullscreenActivity.mTitle + "</title>\r\n"
-                        + "<subtitle>" + FullscreenActivity.mCopyright + "</subtitle>\r\n"
-                        + "<notes>" + FullscreenActivity.mKeyLine + "</notes>\r\n"
-                        + "<slides>\r\n";
+                        + " transition=\"" + FullscreenActivity.mUser3 + "\">\n"
+                        + "    <title>" + FullscreenActivity.mTitle + "</title>\n"
+                        + "    <subtitle>" + FullscreenActivity.mCopyright + "</subtitle>\n"
+                        + "    <notes>" + FullscreenActivity.mKeyLine + "</notes>\n"
+                        + "    <slides>\n";
 
-                for (int w = 1; w < mySlides.length; w++) {
-                    if (mySlides[w] != null && mySlides[w].length() > 0) {
+                for (String mySlide : mySlides) {
+                    if (mySlide != null && mySlide.length() > 0) {
                         FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
-                                + "  <slide>\r\n"
-                                + "  <body>" + mySlides[w].trim() + "</body>\r\n"
-                                + "  </slide>\r\n";
+                                + "      <slide>\n"
+                                + "        <body>" + mySlide.trim() + "</body>\n"
+                                + "      </slide>\n";
                     }
                 }
-                FullscreenActivity.newSetContents = FullscreenActivity.newSetContents + "</slides>\r\n"
-                        + "</slide_group>\r\n";
-                //Put the original songfilename back
-                FullscreenActivity.songfilename = tempsongfilename;
-                FullscreenActivity.dir = tempdir;
+
+                FullscreenActivity.newSetContents = FullscreenActivity.newSetContents + "    </slides>\n"
+                        + "  </slide_group>\n";
+
+
+            } else if (songparts[0].contains(FullscreenActivity.text_note) && !songparts[0].contains(FullscreenActivity.text_slide) && !songparts[0].contains(FullscreenActivity.text_scripture)) {
+                // Adding a custom note
+
+                // Load the note up to grab the contents
+                FullscreenActivity.whichSongFolder = "../Notes/_cache";
+                FullscreenActivity.songfilename = songparts[1];
                 try {
                     LoadXML.loadXML();
                 } catch (XmlPullParserException | IOException e) {
@@ -155,11 +160,23 @@ public class CreateNewSet extends Activity {
                 }
 
                 FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+
+                String slide_lyrics = FullscreenActivity.mLyrics;
+
+                FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
+                        + "  <slide_group name=\"# " + FullscreenActivity.text_note+" # - " + songparts[1] + "\""
+                        + " type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n"
+                        + "    <title></title>\n"
+                        + "    <subtitle></subtitle>\n"
+                        + "    <notes>" + slide_lyrics + "</notes>\n"
+                        + "    <slides></slides>\n"
+                        + "  </slide_group>\n";
             }
 
         }
+
         FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
-                + "</slide_groups>\r\n</set>";
+                + "</slide_groups>\n</set>";
 
         // Write the string to the file
         FileOutputStream newFile;
@@ -174,5 +191,17 @@ public class CreateNewSet extends Activity {
             FullscreenActivity.myToastMessage = "no";
             e.printStackTrace();
         }
+
+        // Now we are finished, put the original songfilename back
+        FullscreenActivity.songfilename = tempsongfilename;
+        FullscreenActivity.whichSongFolder= tempdir;
+        try {
+            LoadXML.loadXML();
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
+        }
+
+        FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+
     }
 }

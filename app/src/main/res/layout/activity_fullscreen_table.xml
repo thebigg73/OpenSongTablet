@@ -224,7 +224,7 @@
 
         <ExpandableListView
             android:id="@+id/song_list_ex"
-            android:layout_width="180dp"
+            android:layout_width="220dp"
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:background="@drawable/drawer_bg"
@@ -237,7 +237,7 @@
 
         <ExpandableListView
             android:id="@+id/option_list_ex"
-            android:layout_width="180dp"
+            android:layout_width="220dp"
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:background="@drawable/drawer_bg"
@@ -411,6 +411,18 @@
                 android:visibility="invisible" />
         </RelativeLayout>
     </HorizontalScrollView>
+
+    <ImageView
+        android:id="@+id/setbutton"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="8dp"
+        android:contentDescription="@string/options_set"
+        android:src="@drawable/setlist"
+        android:alpha="0.3"
+        android:onClick="popUpSetList"/>
 
     <ScrollView
         android:id="@+id/scrollstickyholder"

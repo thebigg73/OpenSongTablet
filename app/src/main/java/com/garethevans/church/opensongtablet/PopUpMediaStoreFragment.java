@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.database.Cursor;
 import android.media.MediaPlayer;

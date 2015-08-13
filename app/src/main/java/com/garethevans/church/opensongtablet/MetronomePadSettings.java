@@ -36,23 +36,31 @@ public class MetronomePadSettings extends Activity {
 		padPan.setOnSeekBarChangeListener(new seekbarListener());
 		close = (Button) findViewById(R.id.closeMetronomePadSettings);
 
-		metronomeVol.setProgress((int) (100*(float)FullscreenActivity.metronomevol));
-		padVol.setProgress((int) (100*(float)FullscreenActivity.padvol));
-		
-		if (FullscreenActivity.metronomepan.equals("left")) {
-			metronomePan.setProgress(0);
-		} else if (FullscreenActivity.metronomepan.equals("right")) {
-			metronomePan.setProgress(2);
-		} else {
-			metronomePan.setProgress(1);
+		metronomeVol.setProgress((int) (100* FullscreenActivity.metronomevol));
+		padVol.setProgress((int) (100* FullscreenActivity.padvol));
+
+		switch (FullscreenActivity.metronomepan) {
+			case "left":
+				metronomePan.setProgress(0);
+				break;
+			case "right":
+				metronomePan.setProgress(2);
+				break;
+			default:
+				metronomePan.setProgress(1);
+				break;
 		}
 
-		if (FullscreenActivity.padpan.equals("left")) {
-			padPan.setProgress(0);
-		} else if (FullscreenActivity.padpan.equals("right")) {
-			padPan.setProgress(2);
-		} else {
-			padPan.setProgress(1);
+		switch (FullscreenActivity.padpan) {
+			case "left":
+				padPan.setProgress(0);
+				break;
+			case "right":
+				padPan.setProgress(2);
+				break;
+			default:
+				padPan.setProgress(1);
+				break;
 		}
 
 	}

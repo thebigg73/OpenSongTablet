@@ -93,7 +93,6 @@ public final class MyPresentation extends Presentation
 
     public MyPresentation(Context outerContext, Display display) {
         super(outerContext, display);
-        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -193,10 +192,10 @@ public final class MyPresentation extends Presentation
         presoCopyright2.setText(" ");
         presoLogo = (ImageView) findViewById(R.id.presoLogo);
 
-        lyrics1VScrollHolder = (ScrollView) findViewById(R.id.scrollView9);
-        lyrics2VScrollHolder = (ScrollView) findViewById(R.id.scrollView10);
-        lyrics1HScrollHolder = (HorizontalScrollView) findViewById(R.id.horizontalScrollView1);
-        lyrics2HScrollHolder = (HorizontalScrollView) findViewById(R.id.horizontalScrollView2);
+        lyrics1VScrollHolder = findViewById(R.id.scrollView9);
+        lyrics2VScrollHolder = findViewById(R.id.scrollView10);
+        lyrics1HScrollHolder = findViewById(R.id.horizontalScrollView1);
+        lyrics2HScrollHolder = findViewById(R.id.horizontalScrollView2);
 
         lyricsINVScrollHolder = lyrics1VScrollHolder;
         lyricsOUTVScrollHolder = lyrics2VScrollHolder;

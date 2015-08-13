@@ -36,8 +36,7 @@ public class GestureOptions extends Activity {
 			
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				// TODO Auto-generated method stub
-	            switch (checkedId) {
+				switch (checkedId) {
 	            case R.id.doubleTap1:
 	                    numeral = "1";
 	                    break;
@@ -61,8 +60,7 @@ public class GestureOptions extends Activity {
 			
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				// TODO Auto-generated method stub
-	            switch (checkedId) {
+				switch (checkedId) {
 	            case R.id.longPress1:
 	                    numeral2 = "1";
 	                    break;
@@ -94,28 +92,40 @@ public class GestureOptions extends Activity {
 		RadioButton radioButton10 = (RadioButton) findViewById(R.id.longPress5);
 		
 		// Set the appropriate radiobutton
-		if (FullscreenActivity.gesture_doubletap.equals("1")) {
-			radioButton1.setChecked(true);
-		} else if (FullscreenActivity.gesture_doubletap.equals("2")) {
-			radioButton2.setChecked(true);
-		} else if (FullscreenActivity.gesture_doubletap.equals("3")) {
-			radioButton3.setChecked(true);
-		} else if (FullscreenActivity.gesture_doubletap.equals("4")) {
-			radioButton4.setChecked(true);
-		} else {
-			radioButton5.setChecked(true);
+		switch (FullscreenActivity.gesture_doubletap) {
+			case "1":
+				radioButton1.setChecked(true);
+				break;
+			case "2":
+				radioButton2.setChecked(true);
+				break;
+			case "3":
+				radioButton3.setChecked(true);
+				break;
+			case "4":
+				radioButton4.setChecked(true);
+				break;
+			default:
+				radioButton5.setChecked(true);
+				break;
 		}
-		
-		if (FullscreenActivity.gesture_longpress.equals("1")) {
-			radioButton6.setChecked(true);
-		} else if (FullscreenActivity.gesture_longpress.equals("2")) {
-			radioButton7.setChecked(true);
-		} else if (FullscreenActivity.gesture_longpress.equals("3")) {
-			radioButton8.setChecked(true);
-		} else if (FullscreenActivity.gesture_longpress.equals("4")) {
-			radioButton9.setChecked(true);
-		} else {
-			radioButton10.setChecked(true);
+
+		switch (FullscreenActivity.gesture_longpress) {
+			case "1":
+				radioButton6.setChecked(true);
+				break;
+			case "2":
+				radioButton7.setChecked(true);
+				break;
+			case "3":
+				radioButton8.setChecked(true);
+				break;
+			case "4":
+				radioButton9.setChecked(true);
+				break;
+			default:
+				radioButton10.setChecked(true);
+				break;
 		}
 }
 	
@@ -124,7 +134,6 @@ public class GestureOptions extends Activity {
 		Intent viewsong = new Intent(GestureOptions.this, FullscreenActivity.class);
 		startActivity(viewsong);
 		finish();
-	    return;
 	}
 
 	

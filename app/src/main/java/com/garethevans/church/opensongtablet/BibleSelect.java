@@ -43,7 +43,7 @@ public class BibleSelect extends Activity {
 	}
 	
 	@SuppressWarnings("unused")
-	public void loadBible()  throws XmlPullParserException, IOException {
+	public void loadBible() throws XmlPullParserException, IOException {
 		// Load the bible up if the bibleFile exists
 		File myFile = new File(FullscreenActivity.dirbibles+"/"+FullscreenActivity.bibleFile);	
 		if (myFile.exists()) {

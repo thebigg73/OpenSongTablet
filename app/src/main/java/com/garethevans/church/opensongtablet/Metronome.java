@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 public class Metronome {
 	

@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="options_display">Display</string>
+    <string name="options_gesturesandmenus">Gestures and menus</string>
+    <string name="options_storage">Storage</string>
+    <string name="options_other">Other</string>
+	<string name="not_allowed">This function is not allowed for this item</string>
+	<string name="add_custom_slide">Add slide/note</string>
+	<string name="simple_note">Simple note / placeholder</string>
+    <string name="custom_slide">Custom slide (with content)</string>
+    <string name="title">Title</string>
+	<string name="content">Content</string>
+    <string name="slide_separator">Add slide separator (for projection)</string>
+	<string name="note">Note</string>
+
     <string name="crossfade_time">Cross-fade time</string>
 	<string name="scrollbuttons_toggle">Toggle scroll buttons</string>
     <string name="scrollbuttons_single">Single arrows</string>
@@ -238,7 +251,7 @@
 	<string name="oldchordformat">Detected current chord format</string>
 	
     <string name="firstsong">Displaying first song</string>
-    <string name="lastsong">Displaying last song</string>
+    <string name="lastsong">Displaying last item in set</string>
         
     <string name="set_edit">EDIT</string>
     <string name="set_edit_title">Edit your current set</string>
@@ -330,8 +343,7 @@
     <string name="rename">Enter a new file name for this song (this is how it will appear in your song menu)</string>
 	<string name="renametitle">Rename</string>
 	
-	<string name="copyresources">Click here to copy various songs \n You are
-		responsible for the Copyright</string>
+	<string name="copyresources">Click here to install / update various songs \n You are responsible for the Copyright</string>
 	<string name="gotosong">CLICK HERE TO START \n OPEN SONG VIEWER</string>
 	<string name="wipesongs">Reset my local songs folder</string>
 	<string name="dropsync">Download DropSync App (free)</string>

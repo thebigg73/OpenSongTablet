@@ -129,7 +129,7 @@
 	<string name="oldchordformat">"Format de l'accord actuel détecté"</string>
 	
     <string name="firstsong">"Affichage première chanson"</string>
-    <string name="lastsong">"Affichage dernière chanson"</string>
+    <string name="lastsong">"Affichage dernier élément dans la série"</string>
     
     <string name="set_edit">"ÉDITER"</string>
     <string name="set_edit_title">"Editez votre jeu actuel"</string>
@@ -192,7 +192,7 @@
 	<string name="rename">"Entrez un nouveau nom de fichier pour cette chanson (c'est ainsi qu'il apparaîtra dans votre menu de la chanson )"</string>
 	<string name="renametitle">"Rebaptiser"</string>
 			
-	<string name="copyresources">"Cliquez ici pour copier des chansons différentes \n Vous êtes responsable de l'auteur"</string>
+	<string name="copyresources">"Cliquez ici pour installer / mettre à jour des chansons différentes \n Vous êtes responsable de l'auteur"</string>
 	<string name="gotosong">"Cliquez ici pour commencer \n Open Song VIEWER"</string>
 	<string name="wipesongs">"Réinitialiser mon dossier chansons locale"</string>
 	<string name="dropsync">"Télécharger Dropsync App (gratuit)"</string>
@@ -407,5 +407,17 @@
 	<string name="scrollbuttons_single">flèches simples</string>
 	<string name="scrollbuttons_toggle">Boutons de défilement bascule</string>
 	<string name="crossfade_time">temps de transfert</string>
+	<string name="content">"Contenu"</string>
+	<string name="custom_slide">"Des diaporamas personnalisés (avec contenu)"</string>
+	<string name="not_allowed">"Cette fonction est pas autorisée pour cet article"</string>
+	<string name="note">"Note"</string>
+	<string name="options_display">"exposition"</string>
+	<string name="options_gesturesandmenus">"Les gestes et les menus"</string>
+	<string name="options_other">"autre"</string>
+	<string name="options_storage">"stockage"</string>
+	<string name="simple_note">"Simple note / espace réservé"</string>
+	<string name="slide_separator">"Ajouter séparateur coulissant (pour la projection)"</string>
+	<string name="title">"titre"</string>
+	<string name="add_custom_slide">"Ajouter diapo / Note"</string>
 
 </resources>

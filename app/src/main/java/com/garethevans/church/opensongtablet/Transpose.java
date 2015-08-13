@@ -451,13 +451,9 @@ public class Transpose extends Activity {
 					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.10.$", "$.9.$");
 					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.11.$", "$.10.$");
 					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.-1.$", "$.11.$");
-
-				
 					}
 				}
 
-
-				
 				// Put the correct key back
 				FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.0.$", "A");
 				FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.2.$", "B");
@@ -481,9 +477,6 @@ public class Transpose extends Activity {
 					FullscreenActivity.mKey = FullscreenActivity.mKey	.replace("$.11.$", "G#");
 				}
 
-				
-				
-				
 				// Normal chord format
 				switch (FullscreenActivity.chordFormat) {
 					case "1":
@@ -796,9 +789,17 @@ public class Transpose extends Activity {
 		FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&","&amp;");
 
 		// Now write the modified song
-		FileOutputStream overWrite = new FileOutputStream(
-				FullscreenActivity.dir + "/" + FullscreenActivity.songfilename,
-				false);
+		FileOutputStream overWrite;
+
+		if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+			overWrite = new FileOutputStream(
+					FullscreenActivity.dir + "/" + FullscreenActivity.songfilename,
+					false);
+		} else {
+			overWrite = new FileOutputStream(
+					FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
+					false);
+		}
 		overWrite.write(FullscreenActivity.mynewXML.getBytes());
 		overWrite.flush();
 		overWrite.close();
@@ -1223,16 +1224,16 @@ public class Transpose extends Activity {
 
 		int detected = 0;
 		// Set the chord style detected
-		if (contains_do) {
+		if (contains_do && FullscreenActivity.alwaysPreferredChordFormat.equals("N")) {
 			FullscreenActivity.oldchordformat="4";
 			detected = 3;
-		} else if (contains_H && !contains_es_is) {
+		} else if (contains_H && !contains_es_is && FullscreenActivity.alwaysPreferredChordFormat.equals("N")) {
 			FullscreenActivity.oldchordformat="2";
 			detected = 1;
-		} else if (contains_H || contains_es_is) {
+		} else if (contains_H || contains_es_is && FullscreenActivity.alwaysPreferredChordFormat.equals("N")) {
 			FullscreenActivity.oldchordformat="3";
 			detected = 2;
-		} else {
+		} else if (FullscreenActivity.alwaysPreferredChordFormat.equals("N")){
 			FullscreenActivity.oldchordformat="1";
 			detected = 0;
 		}

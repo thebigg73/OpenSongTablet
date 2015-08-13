@@ -18,9 +18,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-/**
- * Created by gareth on 29/04/15.
- */
 public class CustomChord extends Activity implements View.OnClickListener {
 
     String string6_text = "x";
@@ -344,7 +341,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         // Try to decipher any custom chords that have been saved.
         // Split the mCustomChords into an array separated by a space
         CustomChord_Buttons.removeAllViews();
-        String[] tempCustomChords = null;
+        String[] tempCustomChords;
 
         //Get rid of excessive spaces
         FullscreenActivity.mCustomChords = FullscreenActivity.mCustomChords.trim();
@@ -361,7 +358,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
                 String workingChord = tempCustomChords[q];
                 TextView chordvalue = new TextView(this);
                 Button deleteChord = new Button(this);
-                String chorddetails = "";
+                String chorddetails;
                 if (tempCustomChords[q].contains("_u")) {
                     chorddetails = getResources().getString(R.string.ukulele) + "\n";
                     workingChord = workingChord.replace("_u", "");
@@ -1105,12 +1102,17 @@ public class CustomChord extends Activity implements View.OnClickListener {
 
     public void updateChordText() {
         chord_name = customchord_name.getText().toString();
-        if (instrument_text.equals("u") || instrument_text.equals("m")) {
-            chord_text = string4_text+string3_text+string2_text+string1_text;
-        } else if (instrument_text.equals("g") || instrument_text.equals("u")) {
-            chord_text = string6_text+string5_text+string4_text+string3_text+string2_text+string1_text;
-        } else {
-            chord_text = "xxxxxx";
+        switch (instrument_text) {
+            case "u":
+            case "m":
+                chord_text = string4_text + string3_text + string2_text + string1_text;
+                break;
+            case "g":
+                chord_text = string6_text + string5_text + string4_text + string3_text + string2_text + string1_text;
+                break;
+            default:
+                chord_text = "xxxxxx";
+                break;
         }
         customchord_code.setText(chord_text + "_" + fret_text + "_" + instrument_text + "_" + chord_name);
     }
@@ -1275,16 +1277,17 @@ public class CustomChord extends Activity implements View.OnClickListener {
     }
 
     public void doSave() {
-        FileOutputStream overWrite = null;
+        FileOutputStream overWrite;
         try {
-            overWrite = new FileOutputStream(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename,false);
+            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+                overWrite = new FileOutputStream(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename,false);
+            } else {
+                overWrite = new FileOutputStream(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,false);
+            }
             overWrite.write(FullscreenActivity.mynewXML.getBytes());
             overWrite.flush();
             overWrite.close();
             FullscreenActivity.myToastMessage = getResources().getString(R.string.ok);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.no);
         } catch (IOException e) {
             e.printStackTrace();
             FullscreenActivity.myToastMessage = getResources().getString(R.string.no);

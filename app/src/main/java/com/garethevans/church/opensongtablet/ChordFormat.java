@@ -36,8 +36,8 @@ public class ChordFormat extends Activity {
 			
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				// TODO Auto-generated method stub
-	            switch (checkedId) {
+
+				switch (checkedId) {
 	            case R.id.chordFormat1:
 	                    numeral = "1";
 	                    break;
@@ -58,8 +58,7 @@ public class ChordFormat extends Activity {
 			
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				// TODO Auto-generated method stub
-	            switch (checkedId) {
+				switch (checkedId) {
 	            case R.id.chordformat_check:
 	                    numeral2 = "N";
 	                    break;
@@ -78,15 +77,20 @@ public class ChordFormat extends Activity {
 		RadioButton radioButton6 = (RadioButton) findViewById(R.id.chordformat_default);
 		
 		// Set the appropriate radiobutton
-		if (FullscreenActivity.chordFormat.equals("1")) {
-			radioButton1.setChecked(true);
-		} else if (FullscreenActivity.chordFormat.equals("2")) {
-			radioButton2.setChecked(true);
-		} else if (FullscreenActivity.chordFormat.equals("3")) {
-			radioButton3.setChecked(true);
-		} else if (FullscreenActivity.chordFormat.equals("4")) {
-			radioButton4.setChecked(true);
-		}
+        switch (FullscreenActivity.chordFormat) {
+            case "1":
+                radioButton1.setChecked(true);
+                break;
+            case "2":
+                radioButton2.setChecked(true);
+                break;
+            case "3":
+                radioButton3.setChecked(true);
+                break;
+            case "4":
+                radioButton4.setChecked(true);
+                break;
+        }
 		
 		if (FullscreenActivity.alwaysPreferredChordFormat.equals("N")) {
 			radioButton5.setChecked(true);
@@ -100,8 +104,7 @@ public class ChordFormat extends Activity {
 		Intent viewsong = new Intent(ChordFormat.this, FullscreenActivity.class);
 		startActivity(viewsong);
 		finish();
-	    return;
-	}
+    }
 
 	
 	public void exitChordFormat(View view) {

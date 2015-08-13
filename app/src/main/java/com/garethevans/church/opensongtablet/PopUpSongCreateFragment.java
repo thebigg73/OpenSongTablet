@@ -61,10 +61,10 @@ public class PopUpSongCreateFragment extends DialogFragment {
         // Set up the folderspinner
         // Populate the list view with the current song folders
         // Reset to the main songs folder, so we can list them
-        FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
+        //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
         FullscreenActivity.currentFolder = FullscreenActivity.whichSongFolder;
         FullscreenActivity.newFolder = FullscreenActivity.whichSongFolder;
-        FullscreenActivity.whichSongFolder = "";
+        //FullscreenActivity.whichSongFolder = "";
         ListSongFiles.listSongFolders();
 
         // The song folder
@@ -119,9 +119,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 String tempNewSong = newSongNameEditText.getText().toString().trim();
 
                 File to;
-                if (FullscreenActivity.newFolder.equals("(" + FullscreenActivity.mainfoldername + ")") ||
-                        FullscreenActivity.newFolder.equals(FullscreenActivity.mainfoldername)) {
-                    FullscreenActivity.newFolder = FullscreenActivity.mainfoldername;
+                if (FullscreenActivity.newFolder.equals(FullscreenActivity.mainfoldername)) {
                     to = new File(FullscreenActivity.dir + "/" + tempNewSong);
                 } else {
                     to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.newFolder + "/" + tempNewSong);
@@ -129,8 +127,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
                 if (!tempNewSong.equals("") && !tempNewSong.isEmpty()
                         && !tempNewSong.contains("/") && !to.exists()
-                        && !tempNewSong.equals(FullscreenActivity.mainfoldername)
-                        && !tempNewSong.equals("(" + FullscreenActivity.mainfoldername + ")")) {
+                        && !tempNewSong.equals(FullscreenActivity.mainfoldername)) {
 
                     FullscreenActivity.whichSongFolder = FullscreenActivity.newFolder;
 

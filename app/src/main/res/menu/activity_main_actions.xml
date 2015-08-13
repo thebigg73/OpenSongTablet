@@ -3,12 +3,12 @@
     <!-- Show Songs -->
   
      <item android:id="@+id/set_back"
-          android:icon="@drawable/ic_action_rewind"
+          android:icon="@drawable/ic_action_previous_item"
           android:title="@string/set_back"
           android:showAsAction="always"/>
  
     <item android:id="@+id/set_forward"
-          android:icon="@drawable/ic_action_fast_forward"
+          android:icon="@drawable/ic_action_next_item"
           android:title="@string/set_forward"
           android:showAsAction="always"/>
 

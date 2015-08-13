@@ -8,12 +8,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import android.app.Activity;
+import android.util.Log;
 
 public class ExportPreparer extends Activity {
 
@@ -28,12 +30,16 @@ public class ExportPreparer extends Activity {
 	static String song_lyrics_withchords = "";
 	static String song_lyrics_withoutchords = "";
 	static File songfile = null;
+	static ArrayList<String> filesinset = new ArrayList<>();
 
 	public static void songParser() throws XmlPullParserException, IOException {
 
 		songfile = null;
-		songfile = new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename);
-
+		if (!FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            songfile = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename);
+        } else {
+			songfile = new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename);
+		}
 		getSongData();
 		songtext = "";
 		if (!song_title.isEmpty()) {
@@ -55,6 +61,9 @@ public class ExportPreparer extends Activity {
 
 	public static boolean setParser() throws IOException, XmlPullParserException {
 
+        settext = "";
+        FullscreenActivity.exportsetfilenames.clear();
+
 		// First up, load the set
 		File settoparse = new File(FullscreenActivity.dirsets + "/" + FullscreenActivity.settoload);
 		if (!settoparse.isFile() || !settoparse.exists()) {
@@ -74,19 +83,18 @@ public class ExportPreparer extends Activity {
 		} catch (java.io.FileNotFoundException e) {
 			// file doesn't exist
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		XmlPullParserFactory factory = null;
+		XmlPullParserFactory factory;
 		factory = XmlPullParserFactory.newInstance();
 
 		factory.setNamespaceAware(true);
-		XmlPullParser xpp = null;
+		XmlPullParser xpp;
 		xpp = factory.newPullParser();
 
 		xpp.setInput(new StringReader(setxml));
-		int eventType = 0;
+		int eventType;
 
 		eventType = xpp.getEventType();
 		while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -94,8 +102,16 @@ public class ExportPreparer extends Activity {
 				if (xpp.getName().equals("slide_group")) {
 					if (xpp.getAttributeValue(1).equals("song")) {
 						songfile = null;
+                        String thisline = "";
 						songfile = new File(FullscreenActivity.homedir + "/Songs/" + xpp.getAttributeValue(3) + xpp.getAttributeValue(0));
-						song_title = xpp.getAttributeValue(0);
+						if (xpp.getAttributeValue(3).equals("")) {
+                            thisline = "/" + xpp.getAttributeValue(0);
+                        } else {
+                            thisline = xpp.getAttributeValue(3) + xpp.getAttributeValue(0);
+                        }
+                        filesinset.add(thisline);
+
+                        song_title = xpp.getAttributeValue(0);
 						song_author = "";
 						song_hymnnumber = "";
 						song_key = "";
@@ -133,9 +149,9 @@ public class ExportPreparer extends Activity {
 
 		// Send the settext back to the FullscreenActivity as emailtext
 		FullscreenActivity.emailtext = settext;
+        FullscreenActivity.exportsetfilenames = filesinset;
 		return true;
 	}
-
 
 	public static void getSongData() throws XmlPullParserException, IOException {
 		// Parse the song xml.
@@ -165,10 +181,9 @@ public class ExportPreparer extends Activity {
 			// file doesn't exist
 			//song_title = songfile.toString();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
 			//song_title = songfile.toString();
 		}
-
 
 		//Change the line breaks and Slides to better match OpenSong
 		songxml = songxml.replaceAll("\r\n", "\n");
@@ -181,18 +196,19 @@ public class ExportPreparer extends Activity {
 		songxml = songxml.replace("\t", "    ");
 		songxml = songxml.replace("\b", "    ");
 		songxml = songxml.replace("\f", "    ");
+        songxml = songxml.replace("&#0;","");
 
 		// Extract all of the key bits of the song
-		XmlPullParserFactory factorySong = null;
+		XmlPullParserFactory factorySong;
 		factorySong = XmlPullParserFactory.newInstance();
 
 		factorySong.setNamespaceAware(true);
-		XmlPullParser xppSong = null;
+		XmlPullParser xppSong;
 		xppSong = factorySong.newPullParser();
 
 		xppSong.setInput(new StringReader(songxml));
 
-		int eventType = 0;
+		int eventType;
 		eventType = xppSong.getEventType();
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 			if (eventType == XmlPullParser.START_TAG) {
@@ -217,11 +233,11 @@ public class ExportPreparer extends Activity {
 		// Only add the lines that don't start with a .
 		int numlines = templyrics.length;
 		if (numlines>0) {
-			for (int d=0;d<numlines;d++) {
-				if (!templyrics[d].startsWith(".")) {
-					song_lyrics_withoutchords = song_lyrics_withoutchords + templyrics[d] + "\n";
-				}
-			}
+            for (String templyric : templyrics) {
+                if (!templyric.startsWith(".")) {
+                    song_lyrics_withoutchords = song_lyrics_withoutchords + templyric + "\n";
+                }
+            }
 		}
 	}
 
@@ -237,7 +253,7 @@ public class ExportPreparer extends Activity {
 			outputStream.close();
 			inputStream.close();
 		} catch (IOException e) {
-
+            e.printStackTrace();
 		}
 		return outputStream.toString();
 	}

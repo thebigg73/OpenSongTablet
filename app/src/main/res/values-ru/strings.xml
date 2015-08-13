@@ -129,7 +129,7 @@
 	<string name="oldchordformat">"Обнаружен нынешний формат аккорд"</string>
 	
     <string name="firstsong">"Показано первую песню"</string>
-    <string name="lastsong">"Показано последнюю песню"</string>
+    <string name="lastsong">"Показано последний элемент в наборе"</string>
     
     <string name="set_edit">"Редактировать"</string>
     <string name="set_edit_title">"Редактировать текущий набор"</string>
@@ -407,5 +407,17 @@
 	<string name="scrollbuttons_single">Холост стрелки</string>
 	<string name="scrollbuttons_toggle">Переключение кнопки прокрутки</string>
 	<string name="crossfade_time">Crossfade время</string>
+	<string name="content">"Cодержание"</string>
+	<string name="custom_slide">"Пользовательские слайд (с содержанием)"</string>
+	<string name="not_allowed">"Эта функция не имеет для этого пункта"</string>
+	<string name="note">"Заметка"</string>
+	<string name="options_display">"дисплей"</string>
+	<string name="options_gesturesandmenus">"Жесты и меню"</string>
+	<string name="options_other">"другой"</string>
+	<string name="options_storage">"хранение"</string>
+	<string name="simple_note">"Простой примечание / заполнитель"</string>
+	<string name="slide_separator">"Добавить слайд-разделитель (для проекции)"</string>
+	<string name="title">"название"</string>
+	<string name="add_custom_slide" translatable="false">"Добавить слайд / примечание"</string>
 
 </resources>

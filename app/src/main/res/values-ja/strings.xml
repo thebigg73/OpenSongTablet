@@ -129,7 +129,7 @@
 	<string name="oldchordformat">"検出された現在の和音フォーマット"</string>
 	
     <string name="firstsong">"最初の曲を表示する"</string>
-    <string name="lastsong">"最後の曲を表示する"</string>
+    <string name="lastsong">"セット内の最後の項目を表示します"</string>
     
     <string name="set_edit">"編集"</string>
     <string name="set_edit_title">"あなたの現在のセットを編集"</string>
@@ -406,5 +406,17 @@
 	<string name="scrollbuttons_single">シングル矢印</string>
 	<string name="scrollbuttons_toggle">トグルスクロールボタン</string>
 	<string name="crossfade_time">クロスフェード時間</string>
+	<string name="content">"コンテンツ"</string>
+	<string name="custom_slide">"カスタムスライド（コンテンツを含みます）"</string>
+	<string name="not_allowed">"この関数は、この項目のため許可されていません"</string>
+	<string name="note">"注意"</string>
+	<string name="options_display">"ディスプレイ"</string>
+	<string name="options_gesturesandmenus">"ジェスチャーとメニュー"</string>
+	<string name="options_other">"その他"</string>
+	<string name="options_storage">"ストレージ"</string>
+	<string name="simple_note">"シンプルなノート/プレースホルダ"</string>
+	<string name="slide_separator">"（投影用）スライドセパレータを追加"</string>
+	<string name="title">"タイトル"</string>
+	<string name="add_custom_slide">"スライド/メモを追加"</string>
 
 </resources>

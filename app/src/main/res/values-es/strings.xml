@@ -129,7 +129,7 @@
 	<string name="oldchordformat">"Formato acorde actual Detectado"</string>
 	
     <string name="firstsong">"Viendo primera canción"</string>
-    <string name="lastsong">"Viendo última canción"</string>
+    <string name="lastsong">"Viendo último elemento de conjunto"</string>
     
     <string name="set_edit">"EDITAR"</string>
     <string name="set_edit_title">"Editar su conjunto actual"</string>
@@ -192,7 +192,7 @@
 	<string name="rename">"Introduzca un nuevo nombre de archivo para esta canción (así es como aparecerá en el menú de la canción)"</string>
 	<string name="renametitle">"Cambiar el nombre de"</string>
 			
-	<string name="copyresources">"Haga clic aquí para copiar varias canciones \n Usted es responsable por el Derecho de Autor"</string>
+	<string name="copyresources">"Haga clic aquí para instalar / actualizar varias canciones \n Usted es responsable por el Derecho de Autor"</string>
 	<string name="gotosong">"HAGA CLIC AQUÍ PARA \n OPEN SONG ESPECTADOR"</string>
 	<string name="wipesongs">"Restablecer mi carpeta de canciones locales"</string>
 	<string name="dropsync">"Descarga DropSync App (gratis)"</string>
@@ -407,5 +407,17 @@
 	<string name="scrollbuttons_single">flechas individuales</string>
 	<string name="scrollbuttons_toggle">Botones de desplazamiento Toggle</string>
 	<string name="crossfade_time">tiempo crossfade</string>
+	<string name="content">"Contenido"</string>
+	<string name="custom_slide">"Diapositivas personalizada (con contenido)"</string>
+	<string name="not_allowed">"Esta función no está permitido para este artículo"</string>
+	<string name="note">"Nota"</string>
+	<string name="options_display">"visualización"</string>
+	<string name="options_gesturesandmenus">"Gestos y menús"</string>
+	<string name="options_other">"nu lain"</string>
+	<string name="options_storage">"almacenamiento"</string>
+	<string name="simple_note">"Nota simple / marcador de posición"</string>
+	<string name="slide_separator">"Añadir separador de corredera (para la proyección)"</string>
+	<string name="title">"título"</string>
+	<string name="add_custom_slide">"Añadir diapositiva / nota"</string>
 
 </resources>

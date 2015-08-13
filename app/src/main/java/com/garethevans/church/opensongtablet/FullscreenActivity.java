@@ -6,13 +6,13 @@ import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -37,6 +37,7 @@ import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -103,8 +104,20 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         PopUpTransposeFragment.MyInterface, PopUpEditSongFragment.MyInterface,
         PopUpSongDetailsFragment.MyInterface, PopUpSongRenameFragment.MyInterface,
         PopUpSongCreateFragment.MyInterface, PopUpFontsFragment.MyInterface,
-        PopUpEditStickyFragment.MyInterface {
+        PopUpEditStickyFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
+        PopUpSetView.MyInterface {
     /** First up, declare all of the variables needed by this application **/
+
+    // Screencapure variables
+    static Bitmap bmScreen;
+
+    // Custom note/slide variables
+    public static String noteorslide = "";
+    public static String customslide_title = "";
+    public static String customslide_content = "";
+    static String text_slide;
+    static String text_scripture;
+    static String text_note;
 
     public int slideout_time = 500;
     public int checkscroll_time = 1000;
@@ -161,6 +174,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static Typeface typeface8i;
     static Typeface typeface9i;
 
+    static ArrayList<String> exportsetfilenames = new ArrayList<>();
     static String lastSetName;
     private TableLayout chordimageshere;
     static String chordInstrument = "g";
@@ -205,6 +219,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     private TextView popupAutoscroll_duration;
     private Button popupAutoscroll_startstopbutton;
     private static int newPos;
+    private static int scrollpageHeight;
     public static boolean autostartautoscroll;
     public boolean autoscrollactivated = false;
 
@@ -312,7 +327,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     private static int pdfPageCurrent = 0;
     private static int pdfPageCount = 0;
-    private static boolean isPDF = false;
+    public static boolean isPDF = false;
     private static boolean isSong = false;
     private static ImageView pdf_selectpage;
     private static ImageView stickynotes;
@@ -539,6 +554,10 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     // static String[] mTempFolderNames;
 
+    static ArrayList<String> allfilesforsearch = new ArrayList<>();
+    static ArrayList<String> allfilesforsearch_folder = new ArrayList<>();
+    static ArrayList<String> allfilesforsearch_song = new ArrayList<>();
+
     static int currentSongIndex;
     static int previousSongIndex;
     static int nextSongIndex;
@@ -705,6 +724,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     private static String set;
     static String song;
     static String slide;
+    static String note;
     static String scripture;
     //static String unknown_format;
     private static String toastmessage_maxfont;
@@ -819,6 +839,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static File dirbibles = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture");
     static File dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
     static File dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
+    static File dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
 
     static Locale locale;
 
@@ -834,6 +855,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         myPreferences = getPreferences(MODE_PRIVATE);
         Preferences.loadPreferences();
 
+        mainfoldername = getResources().getString(R.string.mainfoldername);
+
+        // If whichSongFolder is empty, reset to main
+        if (whichSongFolder==null || whichSongFolder.isEmpty() || whichSongFolder.equals("")) {
+            whichSongFolder = mainfoldername;
+            Preferences.savePreferences();
+        }
         locale = Locale.getDefault();
 
         // Try language locale change
@@ -858,6 +886,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         song = getResources().getString(R.string.options_song);
         slide = getResources().getString(R.string.slide);
         scripture = getResources().getString(R.string.scripture);
+        note = getResources().getString(R.string.note);
 
         tag_verse = getResources().getString(R.string.tag_verse);
         tag_chorus = getResources().getString(R.string.tag_chorus);
@@ -891,6 +920,10 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         exportsavedset = getResources().getString(R.string.exportsavedset);
         importnewset = getResources().getString(R.string.importnewset);
         mainfoldername = getResources().getString(R.string.mainfoldername);
+
+        text_slide = slide;
+        text_scripture = scripture;
+        text_note = note;
 
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 
@@ -1199,6 +1232,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 super.onDrawerClosed(view);
                 toggleActionBar();
                 showpagebuttons();
+                //if (setView.equals("Y")) {
+                    findViewById(R.id.setbutton).setVisibility(View.VISIBLE);
+                //}
             }
 
 
@@ -1215,6 +1251,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 hidepopupAutoscroll();
                 hidepopupMetronome();
                 hidepopupSticky();
+                findViewById(R.id.setbutton).setVisibility(View.INVISIBLE);
 
                 if (!getActionBar().isShowing()) {
                     getActionBar().show();
@@ -1493,6 +1530,91 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     @Override
     public void stickyNotesUpdate() {
         mySticky.setText(mNotes);
+    }
+
+    @Override
+    public void addSlideToSet() {
+        String filename;
+        String templocator;
+
+        if (noteorslide.equals("note")) {
+            filename = dircustomnotes + "/" + FullscreenActivity.customslide_title;
+            templocator = note;
+        } else {
+            filename = dircustomslides + "/" + FullscreenActivity.customslide_title;
+            templocator = slide;
+        }
+
+        // If slide content is empty - put the title in
+        if (customslide_content.isEmpty()) {
+            customslide_content = customslide_title;
+        }
+
+        // Prepare the custom slide so it can be viewed in the app
+        // When exporting/saving the set, the contents get grabbed from this
+        mynewXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        mynewXML += "<song>\n";
+        mynewXML += "  <title>" + customslide_title + "</title>\n";
+        mynewXML += "  <author></author>\n";
+        mynewXML += "  <user1></user1>\n";
+        mynewXML += "  <user2></user2>\n";
+        mynewXML += "  <user3></user3>\n";
+        mynewXML += "  <aka></aka>\n";
+        mynewXML += "  <key_line></key_line>\n";
+        mynewXML += "  <lyrics>" + customslide_content +"</lyrics>\n";
+        mynewXML += "</song>";
+
+        mynewXML = mynewXML.replace("&amp;","&");
+        mynewXML = mynewXML.replace("&","&amp;");
+
+        // Now write the modified song
+        FileOutputStream overWrite;
+        try {
+            overWrite = new FileOutputStream(filename,	false);
+            overWrite.write(mynewXML.getBytes());
+            overWrite.flush();
+            overWrite.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Add to set
+        whatsongforsetwork = "$**_" + templocator + "/" + customslide_title + "_**$";
+
+        // Allow the song to be added, even if it is already there
+        mySet = mySet + whatsongforsetwork;
+
+        // Tell the user that the song has been added.
+        myToastMessage = "\"" + customslide_title + "\" " + getResources().getString(R.string.addedtoset);
+        ShowToast.showToast(FullscreenActivity.this);
+
+        // Save the set and other preferences
+        Preferences.savePreferences();
+
+        // Show the current set
+        SetActions.prepareSetList();
+        invalidateOptionsMenu();
+        prepareOptionMenu();
+        mDrawerLayout.openDrawer(expListViewOption);
+        expListViewOption.expandGroup(0);
+
+        // Hide the menus - 1 second after opening the Option menu,
+        // close it (1000ms total)
+        Handler optionMenuFlickClosed = new Handler();
+        optionMenuFlickClosed.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerLayout.closeDrawer(expListViewOption);
+                addingtoset = false;
+            }
+        }, 1000); // 1000ms delay
+
+    }
+
+    @Override
+    public void loadSongFromSet() {
+        Preferences.savePreferences();
+        redrawTheLyricsTable(view);
     }
 
     private class popupChord_InstrumentListener implements OnItemSelectedListener {
@@ -1819,6 +1941,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         dirbibles = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture");
         dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
         dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
+        dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
 
         if (secStorage!=null) {
             extStorCheck = new File(secStorage);
@@ -1835,6 +1958,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     dirbibles = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture");
                     dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
                     dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
+                    dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
                 }
             }
         }
@@ -1869,6 +1993,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         myToastMessage = getResources().getString(R.string.temponotset);
         ShowToast.showToast(FullscreenActivity.this);
     }
+
+    public void popUpSetList(View view) {
+        // Show set
+        DialogFragment newFragment = PopUpSetView.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
+    }
+
 
     private void promptTimeSig() {
         if (popupMetronome.getVisibility()!=View.VISIBLE) {
@@ -2234,19 +2365,24 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     private class AutoScrollMusic extends AsyncTask<String,Integer,String> {
         @Override
+        protected void onPreExecute() {
+            scrollpageHeight = scrollpage.getChildAt(0).getMeasuredHeight() - scrollpage.getHeight();
+        }
+
+        @Override
         protected String doInBackground(String... args) {
-            int height = scrollpage.getChildAt(0).getMeasuredHeight() - scrollpage.getHeight();
-            Log.d("autoscroll","height="+height);
+            //int height = scrollpage.getChildAt(0).getMeasuredHeight() - scrollpage.getHeight();
             while(isautoscrolling){
                 long starttime = System.currentTimeMillis();
-                newPos = (int) (scrollpage.getScrollY()+autoscroll_pixels);
+                publishProgress(1);
+                //newPos = (int) (scrollpage.getScrollY()+autoscroll_pixels);
                 // don't scroll first time
                 if (!pauseautoscroll) {
                     doautoScroll.post(autoScrollRunnable);
                 } else {
                     pauseautoscroll = false;
                 }
-                if (newPos>=height) {
+                if (newPos>=scrollpageHeight) {
                     autoscrollispaused = false;
                     isautoscrolling = false;
                 }
@@ -2256,6 +2392,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 }
             }
             return "dummy";
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... intg) {
+            newPos = (int) (scrollpage.getScrollY()+autoscroll_pixels);
         }
 
         @Override
@@ -2872,7 +3013,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
         // If song and sticky note exists, show it
         //if (!isPDF && mNotes.length()>0) {
-        if (!isPDF && togglePageButtons.equals("Y") && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerOpen(expListViewSong)) {
+        if (!isPDF && isSong && togglePageButtons.equals("Y") && !mDrawerLayout.isDrawerOpen(expListViewOption) && !mDrawerLayout.isDrawerOpen(expListViewSong)) {
             stickynotes.setVisibility(View.VISIBLE);
             autoscrollButton.setVisibility(View.VISIBLE);
             metronomeButton.setVisibility(View.VISIBLE);
@@ -2952,11 +3093,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     songfilename = listDataChildSong.get(listDataHeaderSong.get(groupPosition)).get(childPosition);
 
                     if (listDataHeaderSong.get(groupPosition).equals(mainfoldername)) {
-                        dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
+                        //dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
                         whichSongFolder = mainfoldername;
                         whatsongforsetwork = "$**_" + songfilename + "_**$";
                     } else {
-                        dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/" + listDataHeaderSong.get(groupPosition));
+                        //dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/" + listDataHeaderSong.get(groupPosition));
                         whichSongFolder = listDataHeaderSong.get(groupPosition);
                         whatsongforsetwork = "$**_" + whichSongFolder + "/" + songfilename + "_**$";
                     }
@@ -3013,10 +3154,10 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     // Set the appropriate folder name
 
                     if (listDataHeaderSong.get(groupPosition).equals(mainfoldername)) {
-                        dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
+                        // dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
                         whichSongFolder = mainfoldername;
                     } else {
-                        dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/" + listDataHeaderSong.get(groupPosition));
+                        // dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/" + listDataHeaderSong.get(groupPosition));
                         whichSongFolder = listDataHeaderSong.get(groupPosition);
                     }
                     // Set the appropriate song filename
@@ -3049,9 +3190,15 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         listDataChildOption = new HashMap<>();
 
         // Adding headers for option menu data
-        listDataHeaderOption.add(getResources().getString(R.string.options_set));
-        listDataHeaderOption.add(getResources().getString(R.string.options_song));
-        listDataHeaderOption.add(getResources().getString(R.string.options_options));
+        listDataHeaderOption.add(getResources().getString(R.string.options_set).toUpperCase(locale));
+        listDataHeaderOption.add(getResources().getString(R.string.options_song).toUpperCase(locale));
+        listDataHeaderOption.add(getResources().getString(R.string.chords).toUpperCase(locale));
+        listDataHeaderOption.add(getResources().getString(R.string.options_display).toUpperCase(locale));
+        listDataHeaderOption.add(getResources().getString(R.string.options_gesturesandmenus).toUpperCase(locale));
+        listDataHeaderOption.add(getResources().getString(R.string.options_storage).toUpperCase(locale));
+        listDataHeaderOption.add(getResources().getString(R.string.pad).toUpperCase(locale));
+        listDataHeaderOption.add(getResources().getString(R.string.autoscroll).toUpperCase(locale));
+        listDataHeaderOption.add(getResources().getString(R.string.options_other).toUpperCase(locale));
 
         // Adding child data
         List<String> options_set = new ArrayList<>();
@@ -3060,6 +3207,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         options_set.add(getResources().getString(R.string.options_set_clear));
         options_set.add(getResources().getString(R.string.options_set_delete));
         options_set.add(getResources().getString(R.string.options_set_export));
+        options_set.add(getResources().getString(R.string.add_custom_slide).toUpperCase(locale));
         options_set.add(getResources().getString(R.string.options_set_edit));
         options_set.add("");
 
@@ -3072,59 +3220,77 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         setSize = mSetList.length;
         invalidateOptionsMenu();
 
-        for (int r=0;r<mSetList.length;r++) {
-            mSetList[r] = mSetList[r].replace("$**_","");
-            mSetList[r] = mSetList[r].replace("_**$","");
+        for (int r = 0; r < mSetList.length; r++) {
+            mSetList[r] = mSetList[r].replace("$**_", "");
+            mSetList[r] = mSetList[r].replace("_**$", "");
             if (!mSetList[r].isEmpty()) {
                 options_set.add(mSetList[r]);
             }
         }
 
         List<String> options_song = new ArrayList<>();
-        options_song.add(getResources().getString(R.string.options_song_transpose));
-        options_song.add(getResources().getString(R.string.capo_toggle));
-        options_song.add(getResources().getString(R.string.edit_song_presentation));
-        options_song.add(getResources().getString(R.string.options_song_convert));
-        options_song.add(getResources().getString(R.string.options_song_sharp));
-        options_song.add(getResources().getString(R.string.options_song_flat));
         options_song.add(getResources().getString(R.string.options_song_edit));
         options_song.add(getResources().getString(R.string.options_song_stickynotes));
         options_song.add(getResources().getString(R.string.options_song_rename));
         options_song.add(getResources().getString(R.string.options_song_delete));
         options_song.add(getResources().getString(R.string.options_song_new));
         options_song.add(getResources().getString(R.string.options_song_export));
-        options_song.add(getResources().getString(R.string.options_song_newfolder));
-        options_song.add(getResources().getString(R.string.options_song_editfolder));
 
-        List<String> options_options = new ArrayList<>();
-        options_options.add(getResources().getString(R.string.options_options_theme));
-        options_options.add(getResources().getString(R.string.songbuttons_toggle));
-        options_options.add(getResources().getString(R.string.scrollbuttons_toggle));
-        options_options.add(getResources().getString(R.string.crossfade_time));
-        options_options.add(getResources().getString(R.string.autoscroll_time));
-        options_options.add(getResources().getString(R.string.options_options_autostartscroll));
-        options_options.add(getResources().getString(R.string.options_options_scale));
-        options_options.add(getResources().getString(R.string.options_options_fontsize));
-        options_options.add(getResources().getString(R.string.options_options_chordformat));
-        options_options.add(getResources().getString(R.string.options_options_showchords));
-        options_options.add(getResources().getString(R.string.options_options_menuswipe));
-        options_options.add(getResources().getString(R.string.options_options_songswipe));
-        options_options.add(getResources().getString(R.string.shownextinset));
-        options_options.add(getResources().getString(R.string.options_options_gestures));
-        options_options.add(getResources().getString(R.string.options_options_hidebar));
-        options_options.add(getResources().getString(R.string.options_options_colors));
-        options_options.add(getResources().getString(R.string.options_options_fonts));
-        options_options.add(getResources().getString(R.string.options_options_pedal));
-        options_options.add(getResources().getString(R.string.options_options_help));
-        options_options.add(getResources().getString(R.string.storage_choose));
-        options_options.add(getResources().getString(R.string.import_onsong_choose));
-        options_options.add(getResources().getString(R.string.language));
-        options_options.add(getResources().getString(R.string.refreshsongs));
-        options_options.add(getResources().getString(R.string.options_options_start));
+        List<String> options_chords = new ArrayList<>();
+        options_chords.add(getResources().getString(R.string.options_song_transpose));
+        options_chords.add(getResources().getString(R.string.capo_toggle));
+        options_chords.add(getResources().getString(R.string.options_song_sharp));
+        options_chords.add(getResources().getString(R.string.options_song_flat));
+        options_chords.add(getResources().getString(R.string.options_options_chordformat));
+        options_chords.add(getResources().getString(R.string.options_song_convert));
+        options_chords.add(getResources().getString(R.string.options_options_showchords));
+
+        List<String> options_display = new ArrayList<>();
+        options_display.add(getResources().getString(R.string.options_options_theme));
+        options_display.add(getResources().getString(R.string.options_options_scale));
+        options_display.add(getResources().getString(R.string.options_options_fontsize));
+        options_display.add(getResources().getString(R.string.options_options_colors));
+        options_display.add(getResources().getString(R.string.options_options_fonts));
+        options_display.add(getResources().getString(R.string.shownextinset));
+        options_song.add(getResources().getString(R.string.edit_song_presentation));
+        options_display.add(getResources().getString(R.string.scrollbuttons_toggle));
+        options_display.add(getResources().getString(R.string.songbuttons_toggle));
+        options_display.add(getResources().getString(R.string.options_options_hidebar));
+
+        List<String> options_gesturesandmenus = new ArrayList<>();
+        options_gesturesandmenus.add(getResources().getString(R.string.options_options_pedal));
+        options_gesturesandmenus.add(getResources().getString(R.string.options_options_gestures));
+        options_gesturesandmenus.add(getResources().getString(R.string.options_options_menuswipe));
+        options_gesturesandmenus.add(getResources().getString(R.string.options_options_songswipe));
+
+        List<String> options_storage = new ArrayList<>();
+        options_storage.add(getResources().getString(R.string.options_song_newfolder));
+        options_storage.add(getResources().getString(R.string.options_song_editfolder));
+        options_storage.add(getResources().getString(R.string.storage_choose));
+        options_storage.add(getResources().getString(R.string.import_onsong_choose));
+        options_storage.add(getResources().getString(R.string.refreshsongs));
+
+        List<String> options_pad = new ArrayList<>();
+        options_pad.add(getResources().getString(R.string.crossfade_time));
+
+        List<String> options_autoscroll = new ArrayList<>();
+        options_autoscroll.add(getResources().getString(R.string.autoscroll_time));
+        options_autoscroll.add(getResources().getString(R.string.options_options_autostartscroll));
+
+        List<String> options_other = new ArrayList<>();
+        options_other.add(getResources().getString(R.string.options_options_help));
+        options_other.add(getResources().getString(R.string.language));
+        options_other.add(getResources().getString(R.string.options_options_start));
 
         listDataChildOption.put(listDataHeaderOption.get(0), options_set); // Header, Child data
         listDataChildOption.put(listDataHeaderOption.get(1), options_song);
-        listDataChildOption.put(listDataHeaderOption.get(2), options_options);
+        listDataChildOption.put(listDataHeaderOption.get(2), options_chords);
+        listDataChildOption.put(listDataHeaderOption.get(3), options_display);
+        listDataChildOption.put(listDataHeaderOption.get(4), options_gesturesandmenus);
+        listDataChildOption.put(listDataHeaderOption.get(5), options_storage);
+        listDataChildOption.put(listDataHeaderOption.get(6), options_pad);
+        listDataChildOption.put(listDataHeaderOption.get(7), options_autoscroll);
+        listDataChildOption.put(listDataHeaderOption.get(8), options_other);
 
         listAdapterOption = new ExpandableListAdapterOptions(expListViewOption, this, listDataHeaderOption, listDataChildOption);
 
@@ -3135,7 +3301,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         expListViewOption.setOnGroupExpandListener(new OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                if(groupPosition != lastExpandedGroupPositionOption){
+                if (groupPosition != lastExpandedGroupPositionOption) {
                     expListViewOption.collapseGroup(lastExpandedGroupPositionOption);
                 }
                 lastExpandedGroupPositionOption = groupPosition;
@@ -3152,18 +3318,18 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     int childPosition = ExpandableListView.getPackedPositionChild(id);
                     myOptionListClickedItem = position;
 
-                    if (myOptionListClickedItem > 6 && groupPosition==0) {
-                        // Long clicking on the 7th or later options will remove the
+                    if (myOptionListClickedItem > 7 && groupPosition == 0) {
+                        // Long clicking on the 8th or later options will remove the
                         // song from the set (all occurrences)
                         // Remove this song from the set. Remember it has tags at the start and end
                         Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         vb.vibrate(25);
 
-                        // Take away the menu items (7)
-                        String tempSong = mSetList[childPosition-7];
-                        mSetList[childPosition-7] = "";
+                        // Take away the menu items (8)
+                        String tempSong = mSetList[childPosition - 8];
+                        mSetList[childPosition - 8] = "";
 
-                        if (indexSongInSet == (childPosition-7)) {
+                        if (indexSongInSet == (childPosition - 8)) {
                             setView = "N";
                         }
 
@@ -3218,10 +3384,10 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     TextView m_titleView = new TextView(FullscreenActivity.this);
                     m_titleView.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
                     m_titleView.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Large);
-                    m_titleView.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white) );
+                    m_titleView.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white));
                     m_titleView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
 
-                    if (chosenMenu.equals(getResources().getString(R.string.options_set))) {
+                    if (chosenMenu.equals(getResources().getString(R.string.options_set).toUpperCase(locale))) {
 
                         // Load up a list of saved sets as it will likely be needed
                         SetActions.updateOptionListSets();
@@ -3233,38 +3399,43 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         mDrawerLayout.closeDrawer(expListViewOption);
 
                         // First up check for set options clicks
-                        if (childPosition==0) {
+                        if (childPosition == 0) {
                             // Load a set
                             whattodo = "loadset";
                             DialogFragment newFragment = PopUpListSetsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
-                        } else if (childPosition==1) {
+                        } else if (childPosition == 1) {
                             // Save current set
                             whattodo = "saveset";
                             DialogFragment newFragment = PopUpListSetsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
-                        } else if (childPosition==2) {
+                        } else if (childPosition == 2) {
                             // Clear current set
                             whattodo = "clearset";
                             String message = getResources().getString(R.string.options_clearthisset);
                             DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
                             newFragment.show(getFragmentManager(), "dialog");
 
-                        } else if (childPosition==3) {
+                        } else if (childPosition == 3) {
                             // Delete saved set
                             whattodo = "deleteset";
                             DialogFragment newFragment = PopUpListSetsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
-                        } else if (childPosition==4) {
+                        } else if (childPosition == 4) {
                             // Export current set
                             whattodo = "exportset";
                             DialogFragment newFragment = PopUpListSetsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
-                        } else if (childPosition==5) {
+                        } else if (childPosition == 5) {
+                            // Add a custom slide
+                            DialogFragment newFragment = PopUpCustomSlideFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
+
+                        } else if (childPosition == 6) {
                             // Edit current set
                             // Only works for ICS or above
                             int currentapiVersion = android.os.Build.VERSION.SDK_INT;
@@ -3278,25 +3449,25 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 ShowToast.showToast(FullscreenActivity.this);
                             }
 
-                        } else if (childPosition>6) {
+                        } else if (childPosition > 7) {
                             // Load song in set
                             setView = "Y";
                             pdfPageCurrent = 0;
-                            // Set item is 7 less than childPosition
-                            indexSongInSet = childPosition - 7;
+                            // Set item is 8 less than childPosition
+                            indexSongInSet = childPosition - 8;
                             String linkclicked = mSetList[indexSongInSet];
-                            if (indexSongInSet==0) {
+                            if (indexSongInSet == 0) {
                                 // Already first item
                                 previousSongInSet = "";
                             } else {
-                                previousSongInSet = mSetList[indexSongInSet-1];
+                                previousSongInSet = mSetList[indexSongInSet - 1];
                             }
 
-                            if (indexSongInSet==(setSize-1)) {
+                            if (indexSongInSet == (setSize - 1)) {
                                 // Last item
                                 nextSongInSet = "";
                             } else {
-                                nextSongInSet = mSetList[indexSongInSet+1];
+                                nextSongInSet = mSetList[indexSongInSet + 1];
                             }
                             whichDirection = "R2L";
                             invalidateOptionsMenu();
@@ -3310,28 +3481,28 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             String[] songpart = linkclicked.split("/");
 
                             // If the folder length isn't 0, it is a folder
-                            if (songpart[0].length() > 0 && !songpart[0].contains("Scripture") && !songpart[0].contains("Slide")) {
+                            if (songpart[0].length() > 0 && !songpart[0].contains(text_scripture) && !songpart[0].contains(text_slide) && !songpart[0].contains(text_note)) {
                                 whichSongFolder = songpart[0];
-                                FullscreenActivity.dir = new File(
-                                        FullscreenActivity.root.getAbsolutePath()
-                                                + "/documents/OpenSong/Songs/"
-                                                + songpart[0]);
+                                // dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Songs/"+songpart[0]);
 
-                            } else if (songpart[0].length() > 0 && songpart[0].contains("Scripture")) {
+                            } else if (songpart[0].length() > 0 && songpart[0].contains(text_scripture)) {
                                 whichSongFolder = "../OpenSong Scripture/_cache";
                                 songpart[0] = "../OpenSong Scripture/_cache";
-                                //FullscreenActivity.dir = FullscreenActivity.dirbibleverses;
+                                // dir = new File(root.getAbsolutePath()+"/documents/OpenSong/OpenSong Scripture/_cache");
 
-                            } else if (songpart[0].length() > 0 && songpart[0].contains("Slide")) {
+                            } else if (songpart[0].length() > 0 && songpart[0].contains(text_slide)) {
                                 whichSongFolder = "../Slides/_cache";
                                 songpart[0] = "../Slides/_cache";
-                                //FullscreenActivity.dir = FullscreenActivity.dircustomslides;
+                                // dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Slides/_cache");
+
+                            } else if (songpart[0].length() > 0 && songpart[0].contains(text_note)) {
+                                whichSongFolder = "../Notes/_cache";
+                                songpart[0] = "../Notes/_cache";
+                                //dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Slides/_cache");
 
                             } else {
                                 whichSongFolder = mainfoldername;
-                                FullscreenActivity.dir = new File(
-                                        FullscreenActivity.root.getAbsolutePath()
-                                                + "/documents/OpenSong/Songs");
+                                //dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Songs");
                             }
 
                             songfilename = null;
@@ -3347,19 +3518,178 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             mDrawerLayout.closeDrawer(expListViewOption);
                         }
 
-                    } else if (chosenMenu.equals(getResources().getString(R.string.options_song))) {
+                    } else if (chosenMenu.equals(getResources().getString(R.string.options_song).toUpperCase(locale))) {
                         linkclicked = listDataChildOption.get(listDataHeaderOption.get(groupPosition)).get(childPosition);
-
                         mDrawerLayout.closeDrawer(expListViewOption);
                         // Now check for song options clicks
-                        if (childPosition==0) {
-                            // Transpose
+
+                        // 0 = Edit song
+                        // 1 = Edit sticky notes
+                        // 2 = Rename song
+                        // 3 = Delete song
+                        // 4 = New song
+                        // 5 = Export song
+                        // 6 = Presentation order
+
+                        if (childPosition == 0) {//Edit song
+                            if (isPDF) {// Can't do this action on a pdf!
+                                myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+                                ShowToast.showToast(FullscreenActivity.this);
+                            } else if (!isSong) {// Editing a slide / note / scripture
+                                myToastMessage = getResources().getString(R.string.not_allowed);
+                                ShowToast.showToast(FullscreenActivity.this);
+                            } else {
+                                whattodo = "editsong";
+                                DialogFragment newFragment = PopUpEditSongFragment.newInstance();
+                                newFragment.show(getFragmentManager(), "dialog");
+                            }
+
+                        } else if (childPosition == 1) {// Edit sticky notes
+                            if (isPDF) {
+                                // Can't do this action on a pdf!
+                                myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+                                ShowToast.showToast(FullscreenActivity.this);
+                            } else if (!isSong) {
+                                // Editing a slide / note / scripture
+                                myToastMessage = getResources().getString(R.string.not_allowed);
+                                ShowToast.showToast(FullscreenActivity.this);
+                            } else {
+                                whattodo = "editnotes";
+                                DialogFragment newFragment = PopUpEditStickyFragment.newInstance();
+                                newFragment.show(getFragmentManager(), "dialog");
+                            }
+
+                        } else if (childPosition == 2) {// Rename song
+                            if (!isPDF && !isSong) {
+                                // Editing a slide / note / scripture
+                                myToastMessage = getResources().getString(R.string.not_allowed);
+                                ShowToast.showToast(FullscreenActivity.this);
+                            } else {
+                                whattodo = "renamesong";
+                                DialogFragment newFragment = PopUpSongRenameFragment.newInstance();
+                                newFragment.show(getFragmentManager(), "dialog");
+                            }
+
+
+                        } else if (childPosition == 3) {// Delete song
+                            if (!isPDF && !isSong) {
+                                // Editing a slide / note / scripture
+                                myToastMessage = getResources().getString(R.string.not_allowed);
+                                ShowToast.showToast(FullscreenActivity.this);
+                            } else {
+                                // Delete
+                                // Give the user an are you sure prompt!
+                                whattodo = "deletesong";
+                                String message = getResources().getString(R.string.options_song_delete) +
+                                        " \"" + songfilename + "\"?";
+                                DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+                                newFragment.show(getFragmentManager(), "dialog");
+                            }
+
+
+                        } else if (childPosition == 4) {// New song
+                            whattodo = "createsong";
+                            DialogFragment newFragment = PopUpSongCreateFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
+
+
+                        } else if (childPosition == 5) {// Export song
+                            if (!isSong) {
+                                // Editing a slide / note / scripture
+                                myToastMessage = getResources().getString(R.string.not_allowed);
+                                ShowToast.showToast(FullscreenActivity.this);
+                            } else {
+                                // Export
+                                // The current song is the songfile
+                                // Believe it or not, it works!!!!!
+                                // Take a screenshot as a bitmap
+                                scrollpage.setDrawingCacheEnabled(true);
+                                bmScreen = scrollpage.getDrawingCache();
+                                File saved_image_file = new File(
+                                        dirbackgrounds + "/captured_Bitmap.png");
+                                if (saved_image_file.exists())
+                                    saved_image_file.delete();
+                                try {
+                                    FileOutputStream out = new FileOutputStream(saved_image_file);
+                                    bmScreen.compress(Bitmap.CompressFormat.PNG, 100, out);
+                                    out.flush();
+                                    out.close();
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                // Run the script that generates the email text which has the set details in it.
+                                try {
+                                    ExportPreparer.songParser();
+                                } catch (IOException | XmlPullParserException e) {
+                                    e.printStackTrace();
+                                }
+
+                                Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                                emailIntent.setType("text/plain");
+                                emailIntent.putExtra(Intent.EXTRA_TITLE, songfilename);
+                                emailIntent.putExtra(Intent.EXTRA_SUBJECT, songfilename);
+                                emailIntent.putExtra(Intent.EXTRA_TEXT, emailtext);
+                                emailtext = "";
+                                Uri uri;
+                                if (!dir.toString().contains("/" + whichSongFolder + "/")
+                                        && !whichSongFolder.equals(mainfoldername)) {
+                                    uri = Uri.fromFile(new File(dir + "/" + whichSongFolder + "/" + songfilename));
+                                } else {
+                                    uri = Uri.fromFile(new File(dir + "/" + songfilename));
+                                }
+
+                                Uri uri2 = Uri.fromFile(saved_image_file);
+
+                                ArrayList<Uri> uris = new ArrayList<Uri>();
+                                uris.add(uri);
+                                uris.add(uri2);
+                                emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+                                startActivityForResult(Intent.createChooser(emailIntent, exportcurrentsong), 12345);
+                            }
+
+
+                        } else if (childPosition == 6) {// Presentation order
+                            if (usePresentationOrder) {
+                                usePresentationOrder = false;
+                                myToastMessage = getResources().getString(R.string.edit_song_presentation) + " - "
+                                        + getResources().getString(R.string.off);
+                            } else {
+                                usePresentationOrder = true;
+                                myToastMessage = getResources().getString(R.string.edit_song_presentation) + " - "
+                                        + getResources().getString(R.string.on);
+                            }
+                            ShowToast.showToast(FullscreenActivity.this);
+                            Preferences.savePreferences();
+                            redrawTheLyricsTable(main_page);
+                        }
+
+
+                    } else if (chosenMenu.equals(getResources().getString(R.string.chords).toUpperCase(locale))) {
+                        linkclicked = listDataChildOption.get(listDataHeaderOption.get(groupPosition)).get(childPosition);
+                        mDrawerLayout.closeDrawer(expListViewOption);
+                        // Now check for chord options clicks
+
+                        // 0 = Transpose
+                        // 1 = Capo toggle
+                        // 2 = Use # chords
+                        // 3 = Use b chords
+                        // 4 = Choose chord format
+                        // 5 = Convert to preferred chord format
+                        // 6 = Show/hide chords
+
+                        if (childPosition == 0) {// Transpose
                             // First ask the user how many steps to transpose by
                             // Default is +1
 
                             if (isPDF) {
                                 // Can't do this action on a pdf!
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+                                ShowToast.showToast(FullscreenActivity.this);
+                            } else if (!isSong) {
+                                // Editing a slide / note / scripture
+                                myToastMessage = getResources().getString(R.string.not_allowed);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
                                 transposeDirection = "+1";
@@ -3370,8 +3700,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 newFragment.show(getFragmentManager(), "dialog");
                             }
 
-                        } else if (childPosition==1) {
-                            // Capo display toggle
+
+                        } else if (childPosition == 1) {// Capo toggle
                             switch (capoDisplay) {
                                 case "both":
                                     capoDisplay = "capoonly";
@@ -3390,44 +3720,15 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             Preferences.savePreferences();
                             redrawTheLyricsTable(main_page);
 
-                        } else if (childPosition==2) {
-                            // Toggle use Presentation order
-                            if (usePresentationOrder) {
-                                usePresentationOrder = false;
-                                myToastMessage = getResources().getString(R.string.edit_song_presentation) + " - "
-                                        + getResources().getString(R.string.off);
-                            } else {
-                                usePresentationOrder = true;
-                                myToastMessage = getResources().getString(R.string.edit_song_presentation) + " - "
-                                        + getResources().getString(R.string.on);
-                            }
-                            ShowToast.showToast(FullscreenActivity.this);
-                            Preferences.savePreferences();
-                            redrawTheLyricsTable(main_page);
 
-                        } else if (childPosition==3) {
-                            // Convert to preferred chord format
+                        } else if (childPosition == 2) {// Use # chords
                             if (isPDF) {
                                 // Can't do this action on a pdf!
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                                 ShowToast.showToast(FullscreenActivity.this);
-                            } else {
-                                transposeDirection = "0";
-                                chord_converting = "Y";
-                                Transpose.checkChordFormat();
-                                try {
-                                    Transpose.doTranspose();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                redrawTheLyricsTable(main_page);
-                            }
-
-                        } else if (childPosition==4) {
-                            // Use # chords
-                            if (isPDF) {
-                                // Can't do this action on a pdf!
-                                myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+                            } else if (!isSong) {
+                                // Editing a slide / note / scripture
+                                myToastMessage = getResources().getString(R.string.not_allowed);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
                                 transposeStyle = "sharps";
@@ -3441,11 +3742,15 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 redrawTheLyricsTable(main_page);
                             }
 
-                        } else if (childPosition==5) {
-                            // Use b chords
+
+                        } else if (childPosition == 3) {// Use b chords
                             if (isPDF) {
                                 // Can't do this action on a pdf!
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+                                ShowToast.showToast(FullscreenActivity.this);
+                            } else if (!isSong) {
+                                // Editing a slide / note / scripture
+                                myToastMessage = getResources().getString(R.string.not_allowed);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
                                 transposeStyle = "flats";
@@ -3459,98 +3764,76 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 redrawTheLyricsTable(main_page);
                             }
 
-                        } else if (childPosition==6) {
-                            // Edit
+
+                        } else if (childPosition == 4) {// Choose chord format
+                            Intent intent = new Intent();
+                            intent.setClass(FullscreenActivity.this, ChordFormat.class);
+                            tryKillPads();
+                            tryKillMetronome();
+                            startActivity(intent);
+                            finish();
+
+
+                        } else if (childPosition == 5) {// Convert to preferred chord format
+                            if (isPDF) {
+                                // Can't do this action on a pdf!
+                                myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+                                ShowToast.showToast(FullscreenActivity.this);
+                            } else if (!isSong) {
+                                // Editing a slide / note / scripture
+                                myToastMessage = getResources().getString(R.string.not_allowed);
+                                ShowToast.showToast(FullscreenActivity.this);
+                            } else {
+                                transposeDirection = "0";
+                                chord_converting = "Y";
+                                Transpose.checkChordFormat();
+                                try {
+                                    Transpose.doTranspose();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                redrawTheLyricsTable(main_page);
+                            }
+
+
+                        } else if (childPosition == 6) {// Show/hide chords
                             if (isPDF) {
                                 // Can't do this action on a pdf!
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
-                                whattodo = "editsong";
-                                DialogFragment newFragment = PopUpEditSongFragment.newInstance();
-                                newFragment.show(getFragmentManager(), "dialog");
+
+
+                                if (showChords.equals("Y")) {
+                                    showChords = "N";
+                                } else {
+                                    showChords = "Y";
+                                }
+                                // Save the preferences
+                                Preferences.savePreferences();
+                                redrawTheLyricsTable(view);
                             }
 
-                        } else if (childPosition==7) {
-                            // Edit sticky notes
 
-                            if (isPDF) {
-                                // Can't do this action on a pdf!
-                                myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
-                                ShowToast.showToast(FullscreenActivity.this);
-                            } else {
-                                whattodo = "editnotes";
-                                DialogFragment newFragment = PopUpEditStickyFragment.newInstance();
-                                newFragment.show(getFragmentManager(), "dialog");
-                            }
-
-                        } else if (childPosition==8) {
-                            // Rename
-                            whattodo = "renamesong";
-                            DialogFragment newFragment = PopUpSongRenameFragment.newInstance();
-                            newFragment.show(getFragmentManager(), "dialog");
-
-                        } else if (childPosition==9) {
-                            // Delete
-                            // Give the user an are you sure prompt!
-                            whattodo = "deletesong";
-                            String message = getResources().getString(R.string.options_song_delete) +
-                                    " \"" + FullscreenActivity.songfilename + "\"?";
-                            DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
-                            newFragment.show(getFragmentManager(), "dialog");
-
-                        } else if (childPosition==10) {
-                            // New
-                            whattodo = "createsong";
-                            DialogFragment newFragment = PopUpSongCreateFragment.newInstance();
-                            newFragment.show(getFragmentManager(), "dialog");
-
-                        } else if (childPosition==11) {
-                            // Export
-                            // The current song is the songfile
-                            // Believe it or not, it works!!!!!
-
-                            // Run the script that generates the email text which has the set details in it.
-                            try {
-                                ExportPreparer.songParser();
-                            } catch (IOException | XmlPullParserException e) {
-                                e.printStackTrace();
-                            }
-
-                            Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                            emailIntent.setType("text/plain");
-                            emailIntent.putExtra(Intent.EXTRA_TITLE, FullscreenActivity.songfilename);
-                            emailIntent.putExtra(Intent.EXTRA_SUBJECT, FullscreenActivity.songfilename);
-                            emailIntent.putExtra(Intent.EXTRA_TEXT, FullscreenActivity.emailtext);
-                            FullscreenActivity.emailtext = "";
-                            File file;
-                            if (FullscreenActivity.whichSongFolder.equals("") ||
-                                    FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) ||
-                                    FullscreenActivity.whichSongFolder.equals("("+FullscreenActivity.mainfoldername+")")) {
-                                file = new File(FullscreenActivity.dir+"/" + FullscreenActivity.songfilename);
-                            } else {
-                                file = new File(FullscreenActivity.dir+"/" + FullscreenActivity.whichSongFolder + "/" +FullscreenActivity.songfilename);
-                            }
-                            Uri uri = Uri.fromFile(file);
-                            emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                            startActivity(Intent.createChooser(emailIntent,FullscreenActivity.exportcurrentsong));
-
-
-
-                        } else if (childPosition==12) {
-                            // Create a new song folder
-                            promptNewFolder();
-
-                        } else if (childPosition==13) {
-                            // Edit the name of a song folder
-                            editFolderName();
                         }
 
-                    } else if (chosenMenu.equals(getResources().getString(R.string.options_options))) {
-                        // Now check for option options clicks
-                        if (childPosition==0) {
-                            // Switch theme
 
+                    } else if (chosenMenu.equals(getResources().getString(R.string.options_display).toUpperCase(locale))) {
+                        linkclicked = listDataChildOption.get(listDataHeaderOption.get(groupPosition)).get(childPosition);
+                        mDrawerLayout.closeDrawer(expListViewOption);
+                        // Now check for display options clicks
+
+                        // 0 = Change theme
+                        // 1 = Toggle autoscale
+                        // 2 = Change font size
+                        // 3 = Colour
+                        // 4 = Fonts
+                        // 5 = Show next
+                        // 6 = Toggle scroll buttons
+                        // 7 = Toggle song buttons
+                        // 8 = Show/hide menu bar
+
+                        if (childPosition == 0) {// Change theme
                             if (isPDF) {
                                 // Can't do this action on a pdf!
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
@@ -3594,115 +3877,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 redrawTheLyricsTable(view);
                             }
 
-                        } else if (childPosition==1) {
-                            // Toggle song buttons on page on/off
-                            if (togglePageButtons.equals("Y")) {
-                                togglePageButtons = "N";
-                                Preferences.savePreferences();
-                                myToastMessage = getResources().getString(R.string.songbuttons_toggle) + " - " + getResources().getString(R.string.off);
-                                ShowToast.showToast(FullscreenActivity.this);
-                                redrawTheLyricsTable(view);
-                            } else {
-                                togglePageButtons = "Y";
-                                Preferences.savePreferences();
-                                myToastMessage = getResources().getString(R.string.songbuttons_toggle) + " - " + getResources().getString(R.string.on);
-                                ShowToast.showToast(FullscreenActivity.this);
-                                redrawTheLyricsTable(view);
-                            }
 
-
-                        } else if (childPosition==2) {
-                            // Toggle scroll arrows single/double
-                            if (toggleScrollArrows.equals("S")) {
-                                toggleScrollArrows = "D";
-                                Preferences.savePreferences();
-                                myToastMessage = getResources().getString(R.string.scrollbuttons_toggle) + " - " + getResources().getString(R.string.scrollbuttons_double);
-                                ShowToast.showToast(FullscreenActivity.this);
-                                redrawTheLyricsTable(view);
-                            } else {
-                                toggleScrollArrows = "S";
-                                Preferences.savePreferences();
-                                myToastMessage = getResources().getString(R.string.scrollbuttons_toggle) + " - " + getResources().getString(R.string.scrollbuttons_single);
-                                ShowToast.showToast(FullscreenActivity.this);
-                                redrawTheLyricsTable(view);
-                            }
-
-                        } else if (childPosition==3) {
-                            // Crossfade adjust
-                            whattodo = "crossfade";
-                            DialogFragment newFragment = PopUpCrossFadeFragment.newInstance();
-                            newFragment.show(getFragmentManager(), "dialog");
-
-
-                        } else if (childPosition==4) {
-                            // Set autoscroll delay time (0-30 seconds)
-                            final int storeautoscrolldelay = autoScrollDelay;
-
-                            dialogBuilder.setTitle(getResources().getText(R.string.autoscroll_time).toString());
-
-                            LinearLayout setastime = new LinearLayout(FullscreenActivity.this);
-                            setastime.setOrientation(LinearLayout.VERTICAL);
-                            final TextView text_time = new TextView(FullscreenActivity.this);
-                            text_time.setText(autoScrollDelay+ " s");
-                            text_time.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Medium);
-                            text_time.setGravity(1);
-                            final SeekBar autoscrollpauseseekbar = new SeekBar(FullscreenActivity.this);
-                            autoscrollpauseseekbar.setMax(30);
-                            setastime.addView(text_time);
-                            setastime.addView(autoscrollpauseseekbar);
-                            dialogBuilder.setView(setastime);
-                            autoscrollpauseseekbar.setProgress(autoScrollDelay);
-
-                            autoscrollpauseseekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-                                public void onStopTrackingTouch(SeekBar seekBar) {
-                                    autoScrollDelay = seekBar.getProgress();
-                                    text_time.setText(autoScrollDelay+ " s");
-                                }
-                                public void onStartTrackingTouch(SeekBar seekBar) {
-                                    // Do nothing
-                                }
-                                public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
-                                    autoScrollDelay = seekBar.getProgress();
-                                    text_time.setText(autoScrollDelay+ " s");
-                                }
-                            });
-                            dialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    autoScrollDelay = storeautoscrolldelay;
-                                }
-                            });
-                            dialogBuilder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    // Save the preferences
-                                    Preferences.savePreferences();
-                                    mDrawerLayout.closeDrawer(expListViewOption);
-                                }
-                            });
-                            dialogBuilder.show();
-
-
-                        } else if (childPosition==5) {
-                            // Toggle autostart autoscroll on/off
-                            if (autostartautoscroll) {
-                                autostartautoscroll = false;
-                                Preferences.savePreferences();
-                                myToastMessage = getResources().getString(R.string.options_options_autostartscroll) + " - " + getResources().getString(R.string.off);
-                                ShowToast.showToast(FullscreenActivity.this);
-                                redrawTheLyricsTable(view);
-                            } else {
-                                autostartautoscroll = true;
-                                Preferences.savePreferences();
-                                myToastMessage = getResources().getString(R.string.options_options_autostartscroll) + " - " + getResources().getString(R.string.on);
-                                ShowToast.showToast(FullscreenActivity.this);
-                                redrawTheLyricsTable(view);
-                            }
-
-                        } else if (childPosition==6) {
-                            // Toggle autoscale
+                        } else if (childPosition == 1) {// Toggle autoscale
                             switch (toggleYScale) {
                                 case "Y":
                                     toggleYScale = "W";
@@ -3727,19 +3903,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             redrawTheLyricsTable(view);
 
 
-
-                        } else if (childPosition==7) {
-                            // Choose font size
-
+                        } else if (childPosition == 2) {// Change font size
                             if (isPDF) {
                                 // Can't do this action on a pdf!
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
-
-
                                 final float storefontsize = mFontSize;
-
                                 // Decide where the font size progress bar should be
                                 if (mFontSize>80) {
                                     mFontSize = 42;
@@ -3809,49 +3979,147 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                                         int which) {
                                         // Save the preferences
                                         Preferences.savePreferences();
-
                                         redrawTheLyricsTable(null);
-
                                         mDrawerLayout.closeDrawer(expListViewOption);
                                     }
                                 });
                                 dialogBuilder.show();
-
                             }
 
 
-                        } else if (childPosition==8) {
-                            // Choose chord format
+                        } else if (childPosition == 3) {// Colour
                             Intent intent = new Intent();
-                            intent.setClass(FullscreenActivity.this, ChordFormat.class);
+                            intent.setClass(FullscreenActivity.this,
+                                    ChangeDisplayPreferences.class);
                             tryKillPads();
                             tryKillMetronome();
                             startActivity(intent);
                             finish();
 
 
-                        } else if (childPosition==9) {
-                            // Show/Hide chords
-
-                            if (isPDF) {
-                                // Can't do this action on a pdf!
-                                myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
-                                ShowToast.showToast(FullscreenActivity.this);
-                            } else {
+                        } else if (childPosition == 4) {// Fonts
+                            whattodo = "changefonts";
+                            DialogFragment newFragment = PopUpFontsFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
 
 
-                                if (showChords.equals("Y")) {
-                                    showChords = "N";
-                                } else {
-                                    showChords = "Y";
-                                }
-                                // Save the preferences
+                        } else if (childPosition == 5) {// Show next
+                            // Options are top, bottom, off
+
+                            switch (showNextInSet) {
+                                case "top":
+                                    showNextInSet = "bottom";
+                                    myToastMessage = getResources().getString(R.string.shownextinset)
+                                            + " - " + getResources().getString(R.string.on)
+                                            + " (" + getResources().getString(R.string.bottom).toUpperCase(locale) + ")";
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
+                                case "bottom":
+                                    showNextInSet = "off";
+                                    myToastMessage = getResources().getString(R.string.shownextinset)
+                                            + " - " + getResources().getString(R.string.off);
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
+                                default:
+                                    showNextInSet = "top";
+                                    myToastMessage = getResources().getString(R.string.shownextinset)
+                                            + " - " + getResources().getString(R.string.on)
+                                            + " (" + getResources().getString(R.string.top).toUpperCase(locale) + ")";
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
+                            }
+                            Preferences.savePreferences();
+                            redrawTheLyricsTable(main_page);
+
+
+                        } else if (childPosition == 6) {// Toggle scroll buttons
+                            if (toggleScrollArrows.equals("S")) {
+                                toggleScrollArrows = "D";
                                 Preferences.savePreferences();
+                                myToastMessage = getResources().getString(R.string.scrollbuttons_toggle) + " - " + getResources().getString(R.string.scrollbuttons_double);
+                                ShowToast.showToast(FullscreenActivity.this);
+                                redrawTheLyricsTable(view);
+                            } else {
+                                toggleScrollArrows = "S";
+                                Preferences.savePreferences();
+                                myToastMessage = getResources().getString(R.string.scrollbuttons_toggle) + " - " + getResources().getString(R.string.scrollbuttons_single);
+                                ShowToast.showToast(FullscreenActivity.this);
                                 redrawTheLyricsTable(view);
                             }
 
-                        } else if (childPosition==10) {
-                            // Toggle menu swipe on/off
+
+                        } else if (childPosition == 7) {// Toggle song buttons
+                            if (togglePageButtons.equals("Y")) {
+                                togglePageButtons = "N";
+                                Preferences.savePreferences();
+                                myToastMessage = getResources().getString(R.string.songbuttons_toggle) + " - " + getResources().getString(R.string.off);
+                                ShowToast.showToast(FullscreenActivity.this);
+                                redrawTheLyricsTable(view);
+                            } else {
+                                togglePageButtons = "Y";
+                                Preferences.savePreferences();
+                                myToastMessage = getResources().getString(R.string.songbuttons_toggle) + " - " + getResources().getString(R.string.on);
+                                ShowToast.showToast(FullscreenActivity.this);
+                                redrawTheLyricsTable(view);
+                            }
+
+
+                        } else if (childPosition == 8) {// Show/hide menu bar
+                            if (hideactionbaronoff.equals("Y")) {
+                                hideactionbaronoff = "N";
+                                myToastMessage = getResources()
+                                        .getString(R.string.options_options_hidebar)
+                                        + " - "
+                                        + getResources().getString(R.string.off);
+                                ShowToast.showToast(FullscreenActivity.this);
+                                getActionBar().show();
+                            } else {
+                                hideactionbaronoff = "Y";
+                                myToastMessage = getResources()
+                                        .getString(R.string.options_options_hidebar)
+                                        + " - "
+                                        + getResources().getString(R.string.on);
+                                ShowToast.showToast(FullscreenActivity.this);
+                                getActionBar().hide();
+                            }
+                            Preferences.savePreferences();
+                            Intent intent = new Intent();
+                            intent.setClass(FullscreenActivity.this, FullscreenActivity.class);
+                            tryKillPads();
+                            tryKillMetronome();
+                            startActivity(intent);
+                            finish();
+
+
+                        }
+
+
+                    } else if (chosenMenu.equals(getResources().getString(R.string.options_gesturesandmenus).toUpperCase(locale))) {
+                        linkclicked = listDataChildOption.get(listDataHeaderOption.get(groupPosition)).get(childPosition);
+                        mDrawerLayout.closeDrawer(expListViewOption);
+                        // Now check for gestures and menus options clicks
+
+                        // 0 = Assign pedals
+                        // 1 = Custom gestures
+                        // 2 = Toggle menu swipe on/off
+                        // 3 = Toggle song swipe on/off
+
+                        if (childPosition == 0) {// Assign pedals
+                            whattodo = "footpedal";
+                            DialogFragment newFragment = PopUpPedalsFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
+
+
+                        } else if (childPosition == 1) {// Custom gestures
+                            Intent intent = new Intent();
+                            intent.setClass(FullscreenActivity.this, GestureOptions.class);
+                            tryKillPads();
+                            tryKillMetronome();
+                            startActivity(intent);
+                            finish();
+
+
+                        } else if (childPosition == 2) {// Toggle menu swipe on/off
                             if (swipeDrawer.equals("Y")) {
                                 swipeDrawer = "N";
                                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -3871,8 +4139,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             Preferences.savePreferences();
 
 
-                        } else if (childPosition==11) {
-                            // Toggle song move swipe
+                        } else if (childPosition == 3) {// Toggle song swipe on/off
                             switch (swipeSet) {
                                 case "Y":
                                     swipeSet = "S";
@@ -3903,108 +4170,30 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                     break;
                             }
 
-                        } else if (childPosition==12) {
-                            // Toggle show next song in set
-                            // Options are top, bottom, off
 
-                            switch (showNextInSet) {
-                                case "top":
-                                    showNextInSet = "bottom";
-                                    myToastMessage = getResources().getString(R.string.shownextinset)
-                                            + " - " + getResources().getString(R.string.on)
-                                            + " (" + getResources().getString(R.string.bottom).toUpperCase(locale) + ")";
-                                    ShowToast.showToast(FullscreenActivity.this);
-                                    break;
-                                case "bottom":
-                                    showNextInSet = "off";
-                                    myToastMessage = getResources().getString(R.string.shownextinset)
-                                            + " - " + getResources().getString(R.string.off);
-                                    ShowToast.showToast(FullscreenActivity.this);
-                                    break;
-                                default:
-                                    showNextInSet = "top";
-                                    myToastMessage = getResources().getString(R.string.shownextinset)
-                                            + " - " + getResources().getString(R.string.on)
-                                            + " (" + getResources().getString(R.string.top).toUpperCase(locale) + ")";
-                                    ShowToast.showToast(FullscreenActivity.this);
-                                    break;
-                            }
-                            Preferences.savePreferences();
-                            redrawTheLyricsTable(main_page);
-
-                        } else if (childPosition==13) {
-                            // Assign custom gestures
-                            Intent intent = new Intent();
-                            intent.setClass(FullscreenActivity.this, GestureOptions.class);
-                            tryKillPads();
-                            tryKillMetronome();
-                            startActivity(intent);
-                            finish();
-
-                        } else if (childPosition==14) {
-                            // Hide top menu bar on/off
-                            if (hideactionbaronoff.equals("Y")) {
-                                hideactionbaronoff = "N";
-                                myToastMessage = getResources()
-                                        .getString(R.string.options_options_hidebar)
-                                        + " - "
-                                        + getResources().getString(R.string.off);
-                                ShowToast.showToast(FullscreenActivity.this);
-                                getActionBar().show();
-                            } else {
-                                hideactionbaronoff = "Y";
-                                myToastMessage = getResources()
-                                        .getString(R.string.options_options_hidebar)
-                                        + " - "
-                                        + getResources().getString(R.string.on);
-                                ShowToast.showToast(FullscreenActivity.this);
-                                getActionBar().hide();
-                            }
-                            Preferences.savePreferences();
-                            Intent intent = new Intent();
-                            intent.setClass(FullscreenActivity.this, FullscreenActivity.class);
-                            tryKillPads();
-                            tryKillMetronome();
-                            startActivity(intent);
-                            finish();
+                        }
 
 
+                    } else if (chosenMenu.equals(getResources().getString(R.string.options_storage).toUpperCase(locale))) {
+                        linkclicked = listDataChildOption.get(listDataHeaderOption.get(groupPosition)).get(childPosition);
+                        mDrawerLayout.closeDrawer(expListViewOption);
+                        // Now check for storage options clicks
 
-                        } else if (childPosition==15) {
-                            // Change colours
-                            Intent intent = new Intent();
-                            intent.setClass(FullscreenActivity.this,
-                                    ChangeDisplayPreferences.class);
-                            tryKillPads();
-                            tryKillMetronome();
-                            startActivity(intent);
-                            finish();
+                        // 0 = Create new song folder
+                        // 1 = Edit song folder name
+                        // 2 = Manage storage
+                        // 3 = Import OnSong
+                        // 4 = Refresh songs menu
 
-
-                        } else if (childPosition==16) {
-                            // Change fonts
-                            whattodo = "changefonts";
-                            DialogFragment newFragment = PopUpFontsFragment.newInstance();
-                            newFragment.show(getFragmentManager(), "dialog");
+                        if (childPosition == 0) {// Create new song folder
+                            promptNewFolder();
 
 
-                        } else if (childPosition==17) {
-                            // Assign foot pedal
-                            FullscreenActivity.whattodo = "footpedal";
-                            DialogFragment newFragment = PopUpPedalsFragment.newInstance();
-                            newFragment.show(getFragmentManager(), "dialog");
+                        } else if (childPosition == 1) {// Edit song folder name
+                            editFolderName();
 
 
-                        } else if (childPosition==18) {
-                            // Help (online)
-                            String url = "https://sites.google.com/site/opensongtabletmusicviewer/home";
-                            Intent i = new Intent(Intent.ACTION_VIEW);
-                            i.setData(Uri.parse(url));
-                            startActivity(i);
-
-
-                        } else if (childPosition==19) {
-                            // Manage OpenSong storage
+                        } else if (childPosition == 2) {// Manage storage
                             tryKillPads();
                             tryKillMetronome();
                             Intent intent_stop = new Intent();
@@ -4012,13 +4201,131 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             startActivity(intent_stop);
                             finish();
 
-                        } else if (childPosition==20) {
-                            // Import OnSong backup
+
+                        } else if (childPosition == 3) {// Import OnSong
                             onSongImport();
 
-                        } else if (childPosition==21) {
-                            // Change language
 
+                        } else if (childPosition == 4) {// Refresh songs menu
+                            prepareSongMenu();
+                            mDrawerLayout.closeDrawer(expListViewOption);
+                            mDrawerLayout.openDrawer(expListViewSong);
+
+
+                        }
+
+
+                    } else if (chosenMenu.equals(getResources().getString(R.string.pad).toUpperCase(locale))) {
+                        linkclicked = listDataChildOption.get(listDataHeaderOption.get(groupPosition)).get(childPosition);
+                        mDrawerLayout.closeDrawer(expListViewOption);
+                        // Now check for pad options clicks
+
+                        // 0 = Cross fade time
+
+                        if (childPosition == 0) {// Crossfade time
+                            whattodo = "crossfade";
+                            DialogFragment newFragment = PopUpCrossFadeFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
+
+
+                        }
+
+
+                    } else if (chosenMenu.equals(getResources().getString(R.string.autoscroll).toUpperCase(locale))) {
+                        linkclicked = listDataChildOption.get(listDataHeaderOption.get(groupPosition)).get(childPosition);
+                        mDrawerLayout.closeDrawer(expListViewOption);
+                        // Now check for autoscroll options clicks
+
+                        // 0 = Autoscroll delay time
+                        // 1 = Autostart autoscroll
+
+                        if (childPosition == 0) {// Autoscroll delay time
+                            // Set autoscroll delay time (0-30 seconds)
+                            final int storeautoscrolldelay = autoScrollDelay;
+
+                            dialogBuilder.setTitle(getResources().getText(R.string.autoscroll_time).toString());
+
+                            LinearLayout setastime = new LinearLayout(FullscreenActivity.this);
+                            setastime.setOrientation(LinearLayout.VERTICAL);
+                            final TextView text_time = new TextView(FullscreenActivity.this);
+                            text_time.setText(autoScrollDelay+ " s");
+                            text_time.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Medium);
+                            text_time.setGravity(1);
+                            final SeekBar autoscrollpauseseekbar = new SeekBar(FullscreenActivity.this);
+                            autoscrollpauseseekbar.setMax(30);
+                            setastime.addView(text_time);
+                            setastime.addView(autoscrollpauseseekbar);
+                            dialogBuilder.setView(setastime);
+                            autoscrollpauseseekbar.setProgress(autoScrollDelay);
+
+                            autoscrollpauseseekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+                                public void onStopTrackingTouch(SeekBar seekBar) {
+                                    autoScrollDelay = seekBar.getProgress();
+                                    text_time.setText(autoScrollDelay+ " s");
+                                }
+                                public void onStartTrackingTouch(SeekBar seekBar) {
+                                    // Do nothing
+                                }
+                                public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+                                    autoScrollDelay = seekBar.getProgress();
+                                    text_time.setText(autoScrollDelay+ " s");
+                                }
+                            });
+                            dialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    autoScrollDelay = storeautoscrolldelay;
+                                }
+                            });
+                            dialogBuilder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,
+                                                    int which) {
+                                    // Save the preferences
+                                    Preferences.savePreferences();
+                                    mDrawerLayout.closeDrawer(expListViewOption);
+                                }
+                            });
+                            dialogBuilder.show();
+
+
+                        } else if (childPosition == 1) {// Autostart autoscroll
+                            if (autostartautoscroll) {
+                                autostartautoscroll = false;
+                                Preferences.savePreferences();
+                                myToastMessage = getResources().getString(R.string.options_options_autostartscroll) + " - " + getResources().getString(R.string.off);
+                                ShowToast.showToast(FullscreenActivity.this);
+                                redrawTheLyricsTable(view);
+                            } else {
+                                autostartautoscroll = true;
+                                Preferences.savePreferences();
+                                myToastMessage = getResources().getString(R.string.options_options_autostartscroll) + " - " + getResources().getString(R.string.on);
+                                ShowToast.showToast(FullscreenActivity.this);
+                                redrawTheLyricsTable(view);
+                            }
+
+
+                        }
+
+
+                    } else if (chosenMenu.equals(getResources().getString(R.string.options_other).toUpperCase(locale))) {
+                        linkclicked = listDataChildOption.get(listDataHeaderOption.get(groupPosition)).get(childPosition);
+                        mDrawerLayout.closeDrawer(expListViewOption);
+                        // Now check for other options clicks
+
+                        // 0 = Help
+                        // 1 = Language
+                        // 2 = Start/splash screen
+
+                        if (childPosition == 0) {// Help
+                            String url = "https://sites.google.com/site/opensongtabletmusicviewer/home";
+                            Intent i = new Intent(Intent.ACTION_VIEW);
+                            i.setData(Uri.parse(url));
+                            startActivity(i);
+
+
+                        } else if (childPosition == 1) {// Language
                             int positionselected = -1;
 
                             mDrawerLayout.closeDrawer(expListViewOption);
@@ -4106,9 +4413,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                         @Override
                                         public void onClick(DialogInterface dialog, int whichButton) {
                                             languageToLoad = tempLanguage;
-                                            if (whichSongFolder.equals(mainfoldername)) {
-                                                whichSongFolder = "";
-                                            }
                                             Preferences.savePreferences();
                                             // Unfortunately this means the MAIN folder name isn't right!
                                             FullscreenActivity.this.recreate();
@@ -4127,16 +4431,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                             languageDialog.show();
 
-                        } else if (childPosition==22) {
-                            // Refresh Songs folders
-                            prepareSongMenu();
-                            mDrawerLayout.closeDrawer(expListViewOption);
-                            mDrawerLayout.openDrawer(expListViewSong);
 
-
-
-                        } else if (childPosition==23) {
-                            // Splash screen
+                        } else if (childPosition == 2) {// Start/splash screen
                             // First though, set the preference to show the current version
                             // Otherwise it won't show the splash screen
                             SharedPreferences settings = getSharedPreferences("mysettings",
@@ -4151,8 +4447,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             startActivity(intent);
                             finish();
                         }
+
+
                     }
+
                 }
+
                 return false;
             }
         });
@@ -4166,41 +4466,43 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     }
 
     private void gesture3() {
-        if (whichSongFolder.equals(mainfoldername)) {
-            whatsongforsetwork = "$**_" + songfilename + "_**$";
-        } else {
-            whatsongforsetwork = "$**_" + whichSongFolder + "/"
-                    + songfilename + "_**$";
-        }
-
-        // Allow the song to be added, even if it is already there
-        mySet = mySet + whatsongforsetwork;
-        // Tell the user that the song has been added.
-        myToastMessage = "\"" + songfilename + "\" "
-                + getResources().getString(R.string.addedtoset);
-        Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        vb.vibrate(25);
-        ShowToast.showToast(FullscreenActivity.this);
-
-        // Save the set and other preferences
-        Preferences.savePreferences();
-
-        SetActions.prepareSetList();
-        invalidateOptionsMenu();
-        prepareOptionMenu();
-
-        // Show the current set
-        showCurrentSet(view);
-
-        // Hide the menus - 1 second after opening the Option menu,
-        // close it (1000ms total)
-        Handler optionMenuFlickClosed = new Handler();
-        optionMenuFlickClosed.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mDrawerLayout.closeDrawer(expListViewOption);
+        if (isSong) {
+            if (whichSongFolder.equals(mainfoldername)) {
+                whatsongforsetwork = "$**_" + songfilename + "_**$";
+            } else {
+                whatsongforsetwork = "$**_" + whichSongFolder + "/"
+                        + songfilename + "_**$";
             }
-        }, 1000); // 1000ms delay
+
+            // Allow the song to be added, even if it is already there
+            mySet = mySet + whatsongforsetwork;
+            // Tell the user that the song has been added.
+            myToastMessage = "\"" + songfilename + "\" "
+                    + getResources().getString(R.string.addedtoset);
+            Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vb.vibrate(25);
+            ShowToast.showToast(FullscreenActivity.this);
+
+            // Save the set and other preferences
+            Preferences.savePreferences();
+
+            SetActions.prepareSetList();
+            invalidateOptionsMenu();
+            prepareOptionMenu();
+
+            // Show the current set
+            showCurrentSet(view);
+
+            // Hide the menus - 1 second after opening the Option menu,
+            // close it (1000ms total)
+            Handler optionMenuFlickClosed = new Handler();
+            optionMenuFlickClosed.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mDrawerLayout.closeDrawer(expListViewOption);
+                }
+            }, 1000); // 1000ms delay
+        }
     }
 
     private void gesture4() {
@@ -4577,7 +4879,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             mySticky.setText(mNotes);
             mySticky.setVisibility(View.VISIBLE);
             scrollstickyholder.setVisibility(View.VISIBLE);
-            scrollstickyholder.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_in_bottom));
+            scrollstickyholder.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_bottom));
             stickynotes.setAlpha(0.5f);
         }
     }
@@ -4692,7 +4994,17 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         invalidateOptionsMenu();
 
         // Get the index in the set in case it has changed
-        SetActions.indexSongInSet();
+        // Only if there is only one occurence of the song in the set
+        int count=0;
+        for (int e=0;e<mSet.length;e++) {
+            if (mSet[e].equals(whatsongforsetwork)) {
+                count++;
+            }
+        }
+
+        if (count<2) {
+            SetActions.indexSongInSet();
+        }
 
         if (indexSongInSet<0) {
             setView = "N";
@@ -4733,10 +5045,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             set_forward.setVisible(true);
             set_back.getIcon().setAlpha(255);
             set_forward.getIcon().setAlpha(255);
+            //findViewById(R.id.setbutton).setVisibility(View.VISIBLE);
 
         } else {
             set_back.setVisible(false);
             set_forward.setVisible(false);
+            //findViewById(R.id.setbutton).setVisibility(View.INVISIBLE);
+
         }
         // Now decide if the song being viewed has a song before it.  Otherwise disable the back button
         if (indexSongInSet < 1) {
@@ -4745,8 +5060,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
         // Now decide if the song being viewed has a song after it.  Otherwise disable the forward button
         // Also need to check if last item in set is a pdf, does it have more pages?
-        Log.d("d","indexSongInSet="+indexSongInSet);
-        Log.d("d","setSize="+setSize);
         if (indexSongInSet >= (setSize - 1) && (!isPDF || (pdfPageCurrent >= (pdfPageCount - 1)))) {
             set_forward.setEnabled(false);
             set_forward.getIcon().setAlpha(30);
@@ -4836,8 +5149,18 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             }
 
             // Find out if the song is in the current set
-            if (SetActions.isSongInSet()) {
-                invalidateOptionsMenu();
+            // Only if there is only one occurence of the song in the set
+            int count=0;
+            for (int e=0;e<mSet.length;e++) {
+                if (mSet[e].equals(whatsongforsetwork)) {
+                    count++;
+                }
+            }
+
+            if (count<2) {
+                if (SetActions.isSongInSet()) {
+                    invalidateOptionsMenu();
+                }
             }
 
             // If there isn't a key specified, make sure the padButton is turned off
@@ -4995,7 +5318,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
             // Make the page buttons visible for a song
             // The whole group can still be hidden if the user specified it
-            if (!isPDF && togglePageButtons.equals("Y")) {
+            if (!isPDF && isSong && togglePageButtons.equals("Y")) {
                 stickynotes.setVisibility(View.VISIBLE);
                 autoscrollButton.setVisibility(View.VISIBLE);
                 metronomeButton.setVisibility(View.VISIBLE);
@@ -5513,6 +5836,25 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 top_songtitle.setText(tempsongtitle + "\n" + getResources().getString(R.string.nothighenoughapi));
                 Preferences.savePreferences();
                 invalidateOptionsMenu();
+
+                // Run an intent to try to show the pdf externally
+                Intent target = new Intent(Intent.ACTION_VIEW);
+                File pdffile;
+                if (whichSongFolder.equals(mainfoldername)) {
+                    pdffile = new File(dir + "/" + songfilename);
+                } else {
+                    pdffile = new File(dir + "/" + whichSongFolder + "/" + songfilename);
+                }
+                target.setDataAndType(Uri.fromFile(pdffile),"application/pdf");
+                target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+                Intent intent = Intent.createChooser(target, getResources().getString(R.string.options_set_load));
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    // Instruct the user to install a PDF reader here, or something
+                    Log.d("error","no pdf viewer");
+                }
 
             }
         }
@@ -6092,7 +6434,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     private void editFolderName() {
         // First set the browsing directory back to the main one
-        dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Songs");
+        // dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Songs");
         currentFolder = whichSongFolder;
         newFolder = whichSongFolder;
         whichSongFolder = mainfoldername;
@@ -6121,7 +6463,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         folderdialogBuilder.setSingleChoiceItems(mSongFolderNames, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
-                if (arg1==0) {
+                if (arg1 == 0) {
                     // Main folder, so unselect it
                     currentFolder = "";
                 } else {
@@ -6200,6 +6542,10 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             // File is pdf
             isPDF = true;
             isSong = false;
+        } else if (whichSongFolder.equals("../OpenSong Scripture/_cache") || whichSongFolder.equals("../Slides/_cache") || whichSongFolder.equals("../Notes/_cache")) {
+            // File is slide, note or scripture
+            isPDF = false;
+            isSong = false;
         } else {
             isPDF = false;
             isSong = true;
@@ -6235,8 +6581,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         scrollpage.smoothScrollTo(0, 0);
 
         songTitleHolder.setText(songfilename);
-        songTitleHolder.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fadein));
-        songLoadingProgressBar.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fadein));
+        songTitleHolder.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein));
+        songLoadingProgressBar.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein));
 
         // Get the song index numbers
         ListSongFiles.listSongs();
@@ -6299,7 +6645,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                 try {
                     showLyrics(main_page);
-                } catch (IOException | IllegalStateException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -6350,28 +6696,28 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         String[] songpart = linkclicked.split("/");
 
         // If the folder length isn't 0, it is a folder
-        if (songpart[0].length() > 0 && !songpart[0].contains("Scripture") && !songpart[0].contains("Slide")) {
+        if (songpart[0].length() > 0 && !songpart[0].contains(text_scripture) && !songpart[0].contains(text_slide) && !songpart[0].contains(text_note)) {
             whichSongFolder = songpart[0];
-            FullscreenActivity.dir = new File(
-                    FullscreenActivity.root.getAbsolutePath()
-                            + "/documents/OpenSong/Songs/"
-                            + songpart[0]);
+            //dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Songs/"+songpart[0]);
 
-        } else if (songpart[0].length() > 0 && songpart[0].contains("Scripture") && !songpart[0].contains("Slide")) {
+        } else if (songpart[0].length() > 0 && songpart[0].contains(text_scripture) && !songpart[0].contains(text_slide) && !songpart[0].contains(text_note)) {
             whichSongFolder = "../OpenSong Scripture/_cache";
             songpart[0] = "../OpenSong Scripture/_cache";
-            //FullscreenActivity.dir = FullscreenActivity.dirbibleverses;
+            //dir = dirbibleverses;
 
-        } else if (songpart[0].length() > 0 && songpart[0].contains("Slide") && !songpart[0].contains("Scripture")) {
+        } else if (songpart[0].length() > 0 && songpart[0].contains(text_slide) && !songpart[0].contains(text_note) && !songpart[0].contains(text_scripture)) {
             whichSongFolder = "../Slides/_cache";
             songpart[0] = "../Slides/_cache";
-            //FullscreenActivity.dir = FullscreenActivity.dircustomslides;
+            //dir = dircustomslides;
+
+        } else if (songpart[0].length() > 0 && !songpart[0].contains(text_slide) && songpart[0].contains(text_note) && !songpart[0].contains(text_scripture)) {
+            whichSongFolder = "../Notes/_cache";
+            songpart[0] = "../Notes/_cache";
+            //dir = dircustomslides;
 
         } else {
             whichSongFolder = mainfoldername;
-            FullscreenActivity.dir = new File(
-                    FullscreenActivity.root.getAbsolutePath()
-                            + "/documents/OpenSong/Songs");
+            //dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Songs");
         }
 
         // Save the preferences
@@ -6520,6 +6866,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 str_title = cursor.getString(cursor.getColumnIndex("title"));
                 // Make sure title doesn't have /
                 str_title = str_title.replace("/","_");
+                str_title = TextUtils.htmlEncode(str_title);
                 str_content = cursor.getString(cursor.getColumnIndex("content"));
 
                 try {
@@ -6730,48 +7077,50 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     }
 
                 case R.id.set_add:
-                    if (whichSongFolder.equals(mainfoldername)) {
-                        whatsongforsetwork = "$**_" + songfilename + "_**$";
-                    } else {
-                        whatsongforsetwork = "$**_" + whichSongFolder + "/"
-                                + songfilename + "_**$";
-                    }
-                    // Allow the song to be added, even if it is already there
-                    mySet = mySet + whatsongforsetwork;
-                    // Tell the user that the song has been added.
-                    myToastMessage = "\"" + songfilename + "\" "
-                            + getResources().getString(R.string.addedtoset);
-                    ShowToast.showToast(FullscreenActivity.this);
-                    // Vibrate to indicate something has happened
-                    Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                    vb.vibrate(25);
-
-                    SetActions.prepareSetList();
-                    invalidateOptionsMenu();
-                    prepareOptionMenu();
-
-                    // Save the set and other preferences
-                    Preferences.savePreferences();
-
-                    // Show the current set
-                    showCurrentSet(view);
-
-                    fixSetActionButtons(menu);
-
-                    // Hide the menus - 1 second after opening the Option menu,
-                    // close it (1000ms total)
-                    Handler optionMenuFlickClosed = new Handler();
-                    optionMenuFlickClosed.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mDrawerLayout.closeDrawer(expListViewOption);
+                    if (isSong || isPDF) {
+                        if (whichSongFolder.equals(mainfoldername)) {
+                            whatsongforsetwork = "$**_" + songfilename + "_**$";
+                        } else {
+                            whatsongforsetwork = "$**_" + whichSongFolder + "/"
+                                    + songfilename + "_**$";
                         }
-                    }, 1000); // 1000ms delay
-                    return true;
+                        // Allow the song to be added, even if it is already there
+                        mySet = mySet + whatsongforsetwork;
+                        // Tell the user that the song has been added.
+                        myToastMessage = "\"" + songfilename + "\" "
+                                + getResources().getString(R.string.addedtoset);
+                        ShowToast.showToast(FullscreenActivity.this);
+                        // Vibrate to indicate something has happened
+                        Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        vb.vibrate(25);
+
+                        SetActions.prepareSetList();
+                        invalidateOptionsMenu();
+                        prepareOptionMenu();
+
+                        // Save the set and other preferences
+                        Preferences.savePreferences();
+
+                        // Show the current set
+                        showCurrentSet(view);
+
+                        fixSetActionButtons(menu);
+
+                        // Hide the menus - 1 second after opening the Option menu,
+                        // close it (1000ms total)
+                        Handler optionMenuFlickClosed = new Handler();
+                        optionMenuFlickClosed.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mDrawerLayout.closeDrawer(expListViewOption);
+                            }
+                        }, 1000); // 1000ms delay
+                        return true;
+                    }
 
                 case R.id.pad_menu_button:
                     // Run the pad start/stop, but only if song isn't a pdf!
-                    if (!isPDF) {
+                    if (!isPDF && isSong) {
                         try {
                             togglePlayPads(padButton);
                         } catch (IllegalStateException e) {
@@ -6786,7 +7135,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                 case R.id.autoscroll_menu_button:
                     // Run the autoscroll start/stop, but only if song isn't a pdf!
-                    if (!isPDF) {
+                    if (!isPDF && isSong) {
                         autoScroll(autoscrollButton);
                     } else {
                         myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
@@ -6796,7 +7145,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                 case R.id.stickynotes_menu_button:
                     // Hide/show the sticky notes, but only if song isn't a pdf!
-                    if (!isPDF) {
+                    if (!isPDF && isSong) {
                         stickyNotes(stickynotes);
                     } else {
                         myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
@@ -6806,7 +7155,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                 case R.id.chords_menu_button:
                     // Hide/show the chords, but only if song isn't a pdf!
-                    if (!isPDF) {
+                    if (!isPDF && isSong) {
                         popupChords_toggle(chordButton);
                     } else {
                         myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
@@ -6919,8 +7268,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     // Can't do this action on a pdf!
                     myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                     ShowToast.showToast(FullscreenActivity.this);
+                } else if (!isSong) {
+                    // Editing a slide / note / scripture
+                    myToastMessage = getResources().getString(R.string.not_allowed);
+                    ShowToast.showToast(FullscreenActivity.this);
                 } else {
-                    FullscreenActivity.whattodo = "editsong";
+                    whattodo = "editsong";
                     DialogFragment newFragment = PopUpEditSongFragment.newInstance();
                     newFragment.show(getFragmentManager(), "dialog");
                     //openEditSong();
@@ -6980,8 +7333,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     // Can't do this action on a pdf!
                     myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                     ShowToast.showToast(FullscreenActivity.this);
+                } else if (!isSong) {
+                    // Editing a slide / note / scripture
+                    myToastMessage = getResources().getString(R.string.not_allowed);
+                    ShowToast.showToast(FullscreenActivity.this);
                 } else {
-                    FullscreenActivity.whattodo = "editsong";
+                    whattodo = "editsong";
                     DialogFragment newFragment = PopUpEditSongFragment.newInstance();
                     newFragment.show(getFragmentManager(), "dialog");
                     //openEditSong();
@@ -7078,7 +7435,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 // If not in a set, see if we can move to the next song in the
                 // list
                 // Only if swipeSet is Y (not S)
-                if (setView.equals("N") && swipeSet.equals("Y")) {
+                if (setView.equals("N") && swipeSet.equals("Y") && !whichSongFolder.equals("../OpenSong Scripture/_cache") && !whichSongFolder.equals("../Slides/_cache") && !whichSongFolder.equals("../Notes/_cache")) {
                     if (!songfilename.equals(mSongFileNames[nextSongIndex])) {
                         // Move to the next song
                         // temporarily disable swipe
@@ -7140,7 +7497,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 // If not in a set, see if we can move to the previous song in
                 // the list
                 // Only if swipeSet is Y (not S)
-                if (setView.equals("N") && swipeSet.equals("Y")) {
+                if (setView.equals("N") && swipeSet.equals("Y") && !whichSongFolder.equals("../OpenSong Scripture/_cache") && !whichSongFolder.equals("../Slides/_cache") && !whichSongFolder.equals("../Notes/_cache")) {
+
                     if (!songfilename.equals(mSongFileNames[previousSongIndex])) {
                         // temporarily disable swipe
                         tempswipeSet = "disable";
@@ -7213,7 +7571,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         // Try to open the appropriate Song folder on the left menu
         expListViewSong.setFastScrollEnabled(false);
         for (int z = 0; z < listDataHeaderSong.size() - 1; z++) {
-            if (listDataHeaderSong.get(z).equals(FullscreenActivity.whichSongFolder)) {
+            if (listDataHeaderSong.get(z).equals(whichSongFolder)) {
                 expListViewSong.expandGroup(z);
             }
         }
@@ -8731,9 +9089,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
 
         redrawTheLyricsTable(main_page);
-        Log.d("openSongEdit", "mTitle="+mTitle);
-        Log.d("openSongEdit", "songfilename=" + songfilename);
-        Log.d("openSongEdit","whichsongfolder="+whichSongFolder);
 
         whattodo = "editsong";
         DialogFragment newFragment = PopUpEditSongFragment.newInstance();
@@ -8838,7 +9193,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     @Override
     public void confirmedAction() {
-        switch (FullscreenActivity.whattodo) {
+        switch (whattodo) {
             case "saveset":
                 whattodo = "";
                 CreateNewSet.doCreation();
@@ -8871,7 +9226,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             case "deletesong":
                 // Delete current song
                 setView = "N";
-                String setFileLocation = dir + "/" + songfilename;
+                String setFileLocation;
+                if (whichSongFolder.equals(mainfoldername)) {
+                    setFileLocation = dir + "/" + songfilename;
+                } else {
+                    setFileLocation = dir + "/" + whichSongFolder + "/" + songfilename;
+                }
                 File filetoremove = new File(setFileLocation);
                 if (filetoremove.delete()) {
                     myToastMessage = "\"" + songfilename + "\" "

@@ -611,16 +611,24 @@ public class LyricsDisplay extends Activity {
 				// Remove the starting [V] tag and replace it with __MULTIPLEVERSES__
 				// Only if the next (or next again line starts with 1
 				if ((z+1)<numtemplines) {
-					if (lookfortagslyrics[(z+1)].indexOf("1")==0) {
-						lookfortagslyrics[z] = "__MULTIPLEVERSES__";
+					try {
+						if (lookfortagslyrics[(z + 1)].indexOf("1") == 0) {
+							lookfortagslyrics[z] = "__MULTIPLEVERSES__";
+						}
+					} catch (Exception e) {
+						// There was a problem!
 					}
 				}
 
 				if ((z+2)<numtemplines) {
 					// Allows for z+1 being a chord line
-					if (lookfortagslyrics[(z+2)].indexOf("1")==0) {
-						lookfortagslyrics[z] = "__MULTIPLEVERSES__";
-					}
+                    try {
+                        if (lookfortagslyrics[(z + 2)].indexOf("1") == 0) {
+                            lookfortagslyrics[z] = "__MULTIPLEVERSES__";
+                        }
+                    } catch (Exception e) {
+                        // There was a problem!
+                    }
 				}
 
 
@@ -789,11 +797,10 @@ public class LyricsDisplay extends Activity {
 			}
 		}
 
-		for (int t=0;t<parsedTempPresentationOrder.length;t++) {
-			if (!newimprovedlyrics.contains("[" + parsedTempPresentationOrder[t] + "]")) {
-				missingPresentationOrderItemInSong = missingPresentationOrderItemInSong + "'" + parsedTempPresentationOrder[t] + "'" + " not found in song\n";
+		for (String aParsedTempPresentationOrder : parsedTempPresentationOrder) {
+			if (!newimprovedlyrics.contains("[" + aParsedTempPresentationOrder + "]")) {
+				missingPresentationOrderItemInSong = missingPresentationOrderItemInSong + "'" + aParsedTempPresentationOrder + "'" + " not found in song\n";
 			}
-
 		}
 
 		// Replace the lyrics for processing
