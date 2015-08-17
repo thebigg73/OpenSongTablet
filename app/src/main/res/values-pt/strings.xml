@@ -419,5 +419,9 @@
 	<string name="slide_separator">"Adicionar separador de slides (para projeção)"</string>
 	<string name="title">"título"</string>
 	<string name="add_custom_slide">"Adicionar diapositivo / nota"</string>
+	<string name="file_exists">"O arquivo já existe. Por favor, renomeá-lo."</string>
+	<string name="file_type">"Tipo de arquivo"</string>
+	<string name="file_type_unknown">"desconhecido"</string>
+	<string name="toggle_autoshow_stickynotes">"AutoApresentação alternância notas pegajosas"</string>
 
 </resources>

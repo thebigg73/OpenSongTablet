@@ -419,5 +419,9 @@
 	<string name="slide_separator">"Add slide elválasztó (vetítő)"</string>
 	<string name="title">"cím"</string>
 	<string name="add_custom_slide">"Add slide / megjegyzés"</string>
+	<string name="file_exists">"A fájl már létezik. Kérjük, nevezze át."</string>
+	<string name="file_type">"Fájltípus"</string>
+	<string name="file_type_unknown">"ismeretlen"</string>
+	<string name="toggle_autoshow_stickynotes">"Toggle autoshow cetlik"</string>
 
 </resources>

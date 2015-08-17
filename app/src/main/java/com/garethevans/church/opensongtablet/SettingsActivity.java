@@ -28,10 +28,10 @@ public class SettingsActivity extends Activity {
 
 	// Let's define the variables needed for the Settings Page.
 	Handler delayfadeinredraw;
-	View importOnSong;
+	//View importOnSong;
 	SQLiteDatabase db;
-	String[] backUpFiles;
-	String backupchosen = "";
+	//String[] backUpFiles;
+	//String backupchosen = "";
 	File[] int_myFiles;
 	File[] ext_myFiles;
 	//File[] mySets;
@@ -46,7 +46,7 @@ public class SettingsActivity extends Activity {
 
 	// Try to determine internal or external storage
 	String secStorage = System.getenv("SECONDARY_STORAGE");
-	String defStorage = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
+	String defStorage = Environment.getExternalStorageDirectory().getAbsolutePath();
 	String[] secStorageOptions = {"/mnt/emmc/",
 			"/FAT",
 			"/Removable/MicroSD",
@@ -140,10 +140,10 @@ public class SettingsActivity extends Activity {
 			}
 		} else {
 			// Lets look for alternative secondary storage positions
-			for (int z=0;z<secStorageOptions.length;z++) {
-				File testaltsecstorage = new File(secStorageOptions[z]);
+			for (String secStorageOption : secStorageOptions) {
+				File testaltsecstorage = new File(secStorageOption);
 				if (testaltsecstorage.exists() && testaltsecstorage.canWrite()) {
-					secStorage = secStorageOptions[z];
+					secStorage = secStorageOption;
 				}
 			}
 		}
@@ -276,8 +276,8 @@ public class SettingsActivity extends Activity {
 
 		// Look for default logo image
 		AssetManager assetManager_logo = getAssets();
-		InputStream in_logo = null;
-		OutputStream out_logo = null;
+		InputStream in_logo;
+		OutputStream out_logo;
 		String filename_logo = "ost_logo.png";
 		// Internal
 		if (defStorageExists) {
@@ -398,7 +398,6 @@ public class SettingsActivity extends Activity {
 				}
 				setContentView(R.layout.activity_splashscreen);
 
-
 				PackageInfo pinfo = null;
 				try {
 					pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -410,8 +409,6 @@ public class SettingsActivity extends Activity {
 
 				TextView showVersion = (TextView) findViewById(R.id.version);
 				showVersion.setText("V"+versionName+" ("+versionNumber+")");
-
-
 
 			}
 		}, 2000); // 2000ms delay

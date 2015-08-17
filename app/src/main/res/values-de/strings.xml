@@ -408,16 +408,20 @@
 	<string name="scrollbuttons_toggle">Toggle Scroll-Tasten</string>
 	<string name="crossfade_time">Überblendzeit</string>
 	<string name="content">"Inhalt"</string>
-	<string name="custom_slide">"Benutzerdefinierte Schieber (mit Inhalt)"</string>
-	<string name="not_allowed">"Diese Funktion wird nicht für diesen Titel erlaubt"</string>
+	<string name="custom_slide">"Benutzerdefinierte Folien (mit Inhalt)"</string>
+	<string name="not_allowed">"Diese Funktion ist für diesen Titel nicht erlaubt"</string>
 	<string name="note">"Notiz"</string>
 	<string name="options_display">"Anzeige"</string>
 	<string name="options_gesturesandmenus">"Gesten und Menüs"</string>
-	<string name="options_other">"andere"</string>
-	<string name="options_storage">"Lagerung"</string>
-	<string name="simple_note">"Einfache note / Platzhalter"</string>
-	<string name="slide_separator">"In slide Separator (für die Projektion)"</string>
+	<string name="options_other">"Sonstige"</string>
+	<string name="options_storage">"Speicher"</string>
+	<string name="simple_note">"Einfache Notiz / Platzhalter"</string>
+	<string name="slide_separator">"Folien-Trenner zufügen (für die Projektion)"</string>
 	<string name="title">"Titel"</string>
-	<string name="add_custom_slide">"In slide / note"</string>
+	<string name="add_custom_slide">"Folie / Notiz"</string>
+	<string name="file_exists">"Datei existiert bereits. Bitte umbenennen."</string>
+	<string name="file_type">"Dateityp"</string>
+	<string name="file_type_unknown">"unbekannt"</string>
+	<string name="toggle_autoshow_stickynotes">"Toggle autoshow Song Notizen"</string>
 
 </resources>

@@ -31,6 +31,7 @@ public class ExportPreparer extends Activity {
 	static String song_lyrics_withoutchords = "";
 	static File songfile = null;
 	static ArrayList<String> filesinset = new ArrayList<>();
+	static ArrayList<String> filesinset_ost = new ArrayList<>();
 
 	public static void songParser() throws XmlPullParserException, IOException {
 
@@ -63,6 +64,9 @@ public class ExportPreparer extends Activity {
 
         settext = "";
         FullscreenActivity.exportsetfilenames.clear();
+        FullscreenActivity.exportsetfilenames_ost.clear();
+        filesinset.clear();
+        filesinset_ost.clear();
 
 		// First up, load the set
 		File settoparse = new File(FullscreenActivity.dirsets + "/" + FullscreenActivity.settoload);
@@ -110,6 +114,7 @@ public class ExportPreparer extends Activity {
                             thisline = xpp.getAttributeValue(3) + xpp.getAttributeValue(0);
                         }
                         filesinset.add(thisline);
+						filesinset_ost.add(xpp.getAttributeValue(0));
 
                         song_title = xpp.getAttributeValue(0);
 						song_author = "";
@@ -150,7 +155,8 @@ public class ExportPreparer extends Activity {
 		// Send the settext back to the FullscreenActivity as emailtext
 		FullscreenActivity.emailtext = settext;
         FullscreenActivity.exportsetfilenames = filesinset;
-		return true;
+        FullscreenActivity.exportsetfilenames_ost = filesinset_ost;
+        return true;
 	}
 
 	public static void getSongData() throws XmlPullParserException, IOException {

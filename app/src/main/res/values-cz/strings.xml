@@ -420,5 +420,9 @@
 	<string name="slide_separator">"Přidat oddělovač snímek (projekci)"</string>
 	<string name="title">"nadpis"</string>
 	<string name="add_custom_slide">"Přidat snímek / poznámky"</string>
+	<string name="file_exists">"Soubor již existuje. Prosím přejmenovat."</string>
+	<string name="file_type">"Typ souboru"</string>
+	<string name="file_type_unknown">"neznámo"</string>
+	<string name="toggle_autoshow_stickynotes">"Přepnout Autoshow Sticky Notes"</string>
 
 </resources>

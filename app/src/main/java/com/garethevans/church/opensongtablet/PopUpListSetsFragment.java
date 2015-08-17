@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -221,21 +223,73 @@ public class PopUpListSetsFragment extends DialogFragment {
         emailIntent.putExtra(Intent.EXTRA_TITLE, FullscreenActivity.settoload);
         emailIntent.putExtra(Intent.EXTRA_TEXT, FullscreenActivity.settoload + "\n\n" + FullscreenActivity.emailtext);
         FullscreenActivity.emailtext = "";
-        File file = new File(FullscreenActivity.dirsets + "/" + FullscreenActivity.settoload);
-        if (!file.exists() || !file.canRead()) {
+        File setfile  = new File(FullscreenActivity.dirsets + "/" + FullscreenActivity.settoload);
+        File ostsfile = new File(FullscreenActivity.homedir + "/Notes/_cache/" + FullscreenActivity.settoload + ".osts");
+
+        if (!setfile.exists() || !setfile.canRead()) {
             return;
         }
 
-        Uri uri = Uri.fromFile(file);
+        // Copy the set file to an .osts file
+        try {
+            FileInputStream in = new FileInputStream(setfile);
+            FileOutputStream out = new FileOutputStream(ostsfile);
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+            in = null;
+            // write the output file (You have now copied the file)
+            out.flush();
+            out.close();
+            out = null;
+        } catch (Exception e) {
+            // Error
+            e.printStackTrace();
+        }
+
+        Uri uri_set  = Uri.fromFile(setfile);
+        Uri uri_osts = Uri.fromFile(ostsfile);
 
         ArrayList<Uri> uris = new ArrayList<>();
-        uris.add(uri);
+        uris.add(uri_set);
+        uris.add(uri_osts);
 
         // Go through each song in the set and attach them
+        // Also try to attach a copy of the song ending in .ost
         for (int q=0; q<FullscreenActivity.exportsetfilenames.size(); q++) {
-            File songtoload = new File(FullscreenActivity.dir + "/" + FullscreenActivity.exportsetfilenames.get(q));
-            Uri urisongs = Uri.fromFile(songtoload);
-            uris.add(urisongs);
+            File songtoload  = new File(FullscreenActivity.dir + "/" + FullscreenActivity.exportsetfilenames.get(q));
+            File ostsongcopy = new File(FullscreenActivity.homedir + "/Notes/_cache/" + FullscreenActivity.exportsetfilenames_ost.get(q) + ".ost");
+            // Copy the song
+            try {
+                FileInputStream in = new FileInputStream(songtoload);
+                FileOutputStream out = new FileOutputStream(ostsongcopy);
+
+                byte[] buffer = new byte[1024];
+                int read;
+                while ((read = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, read);
+                }
+                in.close();
+                in = null;
+
+                // write the output file (You have now copied the file)
+                out.flush();
+                out.close();
+                out = null;
+
+                Uri urisongs = Uri.fromFile(songtoload);
+                Uri urisongs_ost = Uri.fromFile(ostsongcopy);
+                uris.add(urisongs);
+                uris.add(urisongs_ost);
+
+            } catch (Exception e) {
+                // Error
+                e.printStackTrace();
+            }
+
          }
 
         emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
-    android:versionCode="66"
-    android:versionName="3.5.0"
+    android:versionCode="68"
+    android:versionName="3.5.2"
     android:installLocation="auto" >
 
     <uses-sdk
@@ -54,6 +54,82 @@
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:label="@string/app_name">
+
+            <intent-filter android:label="@string/app_name"
+                android:icon="@drawable/ic_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="text/xml" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_name"
+                android:icon="@drawable/ic_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="application/xml" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_name"
+                android:icon="@drawable/ic_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:mimeType="application/octet-stream" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_name"
+                android:icon="@drawable/ic_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern="/.*\\.ost" />
+                <data android:pathPattern="/.*\\..*\\.ost"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.ost"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.ost"/>
+                <data android:host="*" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_name"
+                android:icon="@drawable/ic_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern="/.*\\.onsong" />
+                <data android:pathPattern="/.*\\..*\\.onsong"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.onsong"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.onsong"/>
+                <data android:host="*" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_name"
+                android:icon="@drawable/ic_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern="/.*\\.backup" />
+                <data android:pathPattern="/.*\\..*\\.backup"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.backup"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.backup"/>
+                <data android:host="*" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_name"
+                android:icon="@drawable/ic_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern="/.*\\.osts" />
+                <data android:pathPattern="/.*\\..*\\.osts"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.osts"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.osts"/>
+                <data android:host="*" />
+            </intent-filter>
 
         </activity>
         <activity
@@ -128,6 +204,7 @@
             android:name="com.garethevans.church.opensongtablet.MetronomePadSettings"
             android:label="@string/app_name" >
         </activity>
+
     </application>
 
 </manifest>

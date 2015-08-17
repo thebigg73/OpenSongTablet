@@ -419,5 +419,9 @@
 	<string name="slide_separator">"Aggiungi separatore scivolo (per la proiezione)"</string>
 	<string name="title">"titolo"</string>
 	<string name="add_custom_slide">"Aggiungi diapositiva / note"</string>
+	<string name="file_exists">"Il file esiste già. Si prega di rinominarlo."</string>
+	<string name="file_type">"Tipo di file"</string>
+	<string name="file_type_unknown">"sconosciuto"</string>
+	<string name="toggle_autoshow_stickynotes">"Autoshow Toggle sticky notes"</string>
 
 </resources>

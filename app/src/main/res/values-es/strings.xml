@@ -419,5 +419,9 @@
 	<string name="slide_separator">"Añadir separador de corredera (para la proyección)"</string>
 	<string name="title">"título"</string>
 	<string name="add_custom_slide">"Añadir diapositiva / nota"</string>
+	<string name="file_exists">"El archivo ya existe. Por favor, cambie su nombre."</string>
+	<string name="file_type">"Tipo de archivo"</string>
+	<string name="file_type_unknown">"desconocido"</string>
+	<string name="toggle_autoshow_stickynotes">"Autoshow Toggle notas adhesivas"</string>
 
 </resources>

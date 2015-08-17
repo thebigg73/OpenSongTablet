@@ -40,6 +40,7 @@ public class Preferences extends Activity {
 		
 		Log.d("Preferences","Loading");
 
+		FullscreenActivity.toggleAutoSticky = myPreferences.getString("toggleAutoSticky","N");
 		FullscreenActivity.toggleScrollArrows = myPreferences.getString("toggleScrollArrows","S");
 		FullscreenActivity.mediaStore = myPreferences.getString("mediaStore","int");
 		FullscreenActivity.lastSetName = myPreferences.getString("lastSetName", "");
@@ -232,6 +233,7 @@ public class Preferences extends Activity {
 
 		SharedPreferences.Editor editor = myPreferences.edit();
 
+        editor.putString("toggleAutoSticky",FullscreenActivity.toggleAutoSticky);
         editor.putString("toggleScrollArrows",FullscreenActivity.toggleScrollArrows);
 
         editor.putString("mediaStore", FullscreenActivity.mediaStore);

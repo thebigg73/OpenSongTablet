@@ -32,6 +32,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -53,6 +54,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -88,6 +90,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -98,15 +102,24 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 @SuppressWarnings("deprecation")
-@SuppressLint({ "DefaultLocale", "InlinedApi", "RtlHardcoded", "NewApi", "InflateParams", "SdCardPath" })
+@SuppressLint({ "DefaultLocale", "RtlHardcoded", "InflateParams", "SdCardPath" })
 public class FullscreenActivity extends Activity implements PopUpListSetsFragment.MyInterface,
         PopUpAreYouSureFragment.MyInterface, PopUpEditSetFragment.MyInterface,
         PopUpTransposeFragment.MyInterface, PopUpEditSongFragment.MyInterface,
         PopUpSongDetailsFragment.MyInterface, PopUpSongRenameFragment.MyInterface,
         PopUpSongCreateFragment.MyInterface, PopUpFontsFragment.MyInterface,
         PopUpEditStickyFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
-        PopUpSetView.MyInterface {
+        PopUpSetView.MyInterface, PopUpImportExternalFile.MyInterface {
     /** First up, declare all of the variables needed by this application **/
+
+    // This is for trying to automatically open songs via intent
+    public static Intent incomingfile;
+    public static String file_name;
+    public static String file_location;
+    public static String file_type;
+    public static Uri    file_uri;
+    public static String file_contents;
+    public static String file_to_folder;
 
     // Screencapure variables
     static Bitmap bmScreen;
@@ -125,7 +138,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     public static int crossFadeTime = 8000;
     public static String toggleScrollArrows;
 
-    @SuppressWarnings("unused|NewApi")
+    @SuppressWarnings("unused")
     // Identify the chord images
     private Drawable f1;
     private Drawable f2;
@@ -175,6 +188,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static Typeface typeface9i;
 
     static ArrayList<String> exportsetfilenames = new ArrayList<>();
+    static ArrayList<String> exportsetfilenames_ost = new ArrayList<>();
     static String lastSetName;
     private TableLayout chordimageshere;
     static String chordInstrument = "g";
@@ -332,6 +346,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     private static ImageView pdf_selectpage;
     private static ImageView stickynotes;
     private static TextView mySticky;
+    public static String toggleAutoSticky;
     private static ScrollView scrollstickyholder;
     public static String hideactionbaronoff;
     private int lastExpandedGroupPositionOption;
@@ -380,21 +395,16 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     private final float sectionfontsize = 10;
     static int linespacing;
     private float tempfontsize;
-    //float oldtempfontsize;
     private float tempsectionsize;
-    //float oldtempsectionsize;
     private boolean doScaling = false;
     private float scaleX;
     private float scaleY;
-    //float bestfontsize;
-    //float bestcolumnnumber;
     private float pageWidth;
     private float pageHeight;
     private boolean needtoredraw = true;
     private boolean doanimate = false;
 
     // Colours
-    //static int dark_background;
     static int dark_lyricsTextColor;
     static int dark_lyricsBackgroundColor;
     static int dark_lyricsVerseColor;
@@ -408,7 +418,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static int dark_lyricsCapoColor;
     static int dark_metronome;
 
-    //static int light_background;
     static int light_lyricsTextColor;
     static int light_lyricsBackgroundColor;
     static int light_lyricsVerseColor;
@@ -422,7 +431,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static int light_lyricsCapoColor;
     static int light_metronome;
 
-    //static int custom1_background;
     static int custom1_lyricsTextColor;
     static int custom1_lyricsBackgroundColor;
     static int custom1_lyricsVerseColor;
@@ -436,7 +444,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static int custom1_lyricsCapoColor;
     static int custom1_metronome;
 
-    // static int custom2_background;
     static int custom2_lyricsTextColor;
     static int custom2_lyricsBackgroundColor;
     static int custom2_lyricsVerseColor;
@@ -449,7 +456,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static int custom2_lyricsCustomColor;
     static int custom2_lyricsCapoColor;
     static int custom2_metronome;
-
 
     static int lyricsBoxColor;
     static int lyricsTextColor;
@@ -495,29 +501,20 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String bibleFile;
     static boolean bibleLoaded = false;
     static String bibleFileContents;
-    //static String[] bibleBooks;
     static String chordFormat;
     private static String chord_converting = "N";
     static String oldchordformat;
     static String presenterChords;
-    //static String toggleColumns;
     static String swipeDrawer;
     static String swipeSet;
     private static String tempswipeSet = "enable";
     private static String whichDirection = "R2L";
-    //public static int editSetSelectedIndex;
-    //public static String editSetSelectedValue;
-    //public static String editSetPreviousValue;
-    //public static String editSetNextValue;
-    //public static String[] tempSet;
     static int indexSongInSet;
     static String previousSongInSet;
     static String nextSongInSet;
     static String mTheme;
     public static String mDisplayTheme = "Theme.Holo";
     static String setView = "N";
-    //MenuItem set_back;
-    //MenuItem set_forward;
     private MenuItem presentationMode;
     static int setSize;
     static boolean showingSetsToLoad = false;
@@ -526,7 +523,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String newSetContents;
     static String[] mSet;
     static String[] mSetList;
-    //static View currentView;
 
     // Song filenames, folders, set filenames, folders
     static String currentFolder;
@@ -534,25 +530,16 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     private static int next_song;
     private static int prev_song;
     static String whichSongFolder;
-    //static String textWhichSongFolder;
     static String[] mySetsFileNames;
     static File[] mySetsFiles;
     static String[] mySetsFolderNames;
     static File[] mySetsDirectories;
-    //static File[] myFiles;
-    //static File[] myDirectories;
     static File file;
     static File setfile;
     static String settoload;
     static String settodelete;
-    //static String[] mSongTitles;
-    //static String[] mSongTitlesForSorting;
     static String[] mSongFileNames;
     static String[] mSongFolderNames;
-    //static String[] search_songid;
-    //static String[] search_content;
-
-    // static String[] mTempFolderNames;
 
     static ArrayList<String> allfilesforsearch = new ArrayList<>();
     static ArrayList<String> allfilesforsearch_folder = new ArrayList<>();
@@ -574,7 +561,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static float presoAlpha;
     static String myAlert;
     private static String dualDisplayCapable = "N";
-    //static int numdisplays;
     static String backgroundImage1;
     static String backgroundImage2;
     static String backgroundVideo1;
@@ -590,7 +576,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static ArrayList<String> foundSongSections_content = new ArrayList<> ();
 
     static CharSequence mTitle = "";
-    //static CharSequence mTempTitle = "";
     static CharSequence mAuthor = "Gareth Evans";
     private static String mTempAuthor = "";
     static CharSequence mCopyright = "";
@@ -629,25 +614,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     // Info for the lyrics table
     private static float mScaleFactor = 1.0f;
     private ScaleGestureDetector scaleGestureDetector;
-    //static BitmapDrawable[] songSectionBitmap;
-    //static float scaleonecolview;
-    //static float scaletwocolview;
-    //static float scalethreecolview;
-    //static int onecolview_width;
-    //static int onecolview_height;
-    //static int twocolview_width;
-    //static int twocolview_height;
-    //static int threecolview_width;
-    //static int threecolview_height;
     static boolean botherwithcolumns;
-    //static int numcolstouse = 1;
     static int splitpoint;
     static int thirdsplitpoint;
     static int twothirdsplitpoint;
-    //static String whatvieworientation;
     static String[] whatisthisblock;
     static String[] whatisthisline;
-    //static String mFileToLoad;
     static String mStorage;
     static String myLyrics;
     static float mFontSize;
@@ -656,44 +628,22 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String mySetXML;
     static String[] myParsedSet;
     static String myXML;
-    //static String myTempXML;
     static String mynewXML;
     static String[] myParsedLyrics;
     static String[] myTransposedLyrics;
     static String songfilename;
     private DrawerLayout mDrawerLayout;
-    //ListView mDrawerList;
-    //ListView mOptionList;
-    //ActionBarDrawerToggle mDrawerToggle;
     private Menu menu;
     static String linkclicked;
     private static int myOptionListClickedItem;
-    //static String whichOptionsView = "options_main";
-    //static String changeWhichOptionsView;
     static SharedPreferences myPreferences;
-    //static int lyricsstartpos;
-    //static int lyricsendpos;
     static int numrowstowrite;
-    //static int authstartpos;
-    //static int authendpos;
-    //static int copystartpos;
-    //static int copyendpos;
-    //static int titlestartpos;
-    //static int titleendpos;
-    //static int temptitlestartpos;
-    //static int temptitleendpos;
     static String transposeDirection = "0";
     static String[] transposeSteps = {"-6","-5","-4","-3","-2","-1","+1","+2","+3","+4","+5","+6"};
-    //static String[] keyChoice = {"A","A#","Bb","B","C","C#","Db","D","D#","Eb","E","F","F#","Gb","G","G#","Ab","Am","A#m","Bbm","Bm","Cm","C#m","Dbm","Dm","D#m","Ebm","Em","Fm","F#m","Gbm","Gm","G#m","Abm"};
     static int transposeTimes = 1;
     static String transposeStyle = "sharps";
     static String transposedLyrics;
     static String showChords;
-    //TableLayout testTable;
-    //LinearLayout lyricstableall;
-    //LinearLayout lyricstableall_onecol;
-    //LinearLayout lyricstableall_twocol;
-    //LinearLayout lyricstableall_threecol;
     private TableLayout lyricstable_onecolview;
     private TableLayout lyricstable_twocolview;
     private TableLayout lyricstable2_twocolview;
@@ -726,14 +676,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String slide;
     static String note;
     static String scripture;
-    //static String unknown_format;
     private static String toastmessage_maxfont;
     private static String toastmessage_minfont;
     static String set_menutitle;
-    //static String setload_menutitle;
-    //static String setexport_menutitle;
-    //static String song_menutitle;
-    //static String options_menutitle;
     static String backtooptions;
     static String savethisset;
     static String clearthisset;
@@ -761,8 +706,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static Typeface chordsfont;
     static Typeface presofont;
 
-    //static Animation animationFadeIn;
-    //static Animation animationFadeOut;
     private static View main_page;
     private static View main_lyrics;
     private static View songLoadingProgressBar;
@@ -770,7 +713,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     private static TextView songTitleHolder;
 
     private static Runnable hideActionBarRunnable;
-    //static Runnable hideButtonRunnable;
     private static Runnable checkScrollPosition;
     private static Runnable autoScrollRunnable;
 
@@ -875,6 +817,18 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     getBaseContext().getResources().getDisplayMetrics());
         }
 
+        // If we have opened the app by an intent (clicking on an ost or osts file)
+        // Get the popup
+        boolean needtoimport = false;
+        try {
+            incomingfile = getIntent();
+            if (incomingfile!=null) {
+                needtoimport = true;
+            }
+        } catch (Exception e) {
+            // No file
+            Log.d("d","noIntentFile");
+        }
 
         gestureDetector = new GestureDetector(new SwipeDetector());
 
@@ -959,7 +913,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         checkDirectories();
 
         // If whichMode is Presentation, open that app instead
-        if (whichMode.equals("Presentation") && dualDisplayCapable.equals("Y")) {
+        if (whichMode.equals("Presentation") && dualDisplayCapable.equals("Y") && !needtoimport) {
             Intent performmode = new Intent();
             performmode.setClass(FullscreenActivity.this, PresenterMode.class);
             startActivity(performmode);
@@ -974,6 +928,23 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
         // Load the page
         setContentView(R.layout.activity_fullscreen_table);
+
+        // If we have opened the app by an intent (clicking on an ost or osts file)
+        // Get the popup
+        try {
+            incomingfile = getIntent();
+            if (incomingfile!=null) {
+                file_location = incomingfile.getData().getPath();
+                file_name = incomingfile.getData().getLastPathSegment();
+                file_uri = incomingfile.getData();
+                DialogFragment newFragment = PopUpImportExternalFile.newInstance();
+                newFragment.show(getFragmentManager(), "dialog");
+            }
+        } catch (Exception e) {
+            // No file
+            Log.d("d","noIntentFile");
+        }
+
 
         // Make the ActionBar translucent
         ActionBar mActionBar = getActionBar();
@@ -1543,6 +1514,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         } else {
             filename = dircustomslides + "/" + FullscreenActivity.customslide_title;
             templocator = slide;
+        }
+
+        // Check if the slide / note already exists, if it does, keep adding _ to the name
+        File checkfileexists = new File(filename);
+        while (checkfileexists.exists()) {
+            filename = filename + "_";
+            checkfileexists = new File(filename);
         }
 
         // If slide content is empty - put the title in
@@ -2928,7 +2906,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                 // Pause before next fade increment
                 long nowtime = System.currentTimeMillis();
-                long thentime = nowtime + (int) (crossFadeTime/50);
+                long thentime = nowtime + crossFadeTime/50;
                 while (System.currentTimeMillis()<thentime) {
                     // Do nothing......
                 }
@@ -3090,6 +3068,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                     vb.vibrate(25);
 
+
+                    // Just in case users running older than lollipop, we don't want to open the file
+                    // In this case, store the current song as a string so we can go back to it
+                    String currentsong = songfilename;
+                    String currentfolder = whichSongFolder;
+
                     songfilename = listDataChildSong.get(listDataHeaderSong.get(groupPosition)).get(childPosition);
 
                     if (listDataHeaderSong.get(groupPosition).equals(mainfoldername)) {
@@ -3110,6 +3094,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     // Tell the user that the song has been added.
                     myToastMessage = "\"" + songfilename + "\" " + getResources().getString(R.string.addedtoset);
                     ShowToast.showToast(FullscreenActivity.this);
+
+                    // If the user isn't running lollipop and they've added a pdf - don't open it
+                    if (currentapiVersion<Build.VERSION_CODES.LOLLIPOP) {
+                        songfilename = currentsong;
+                        whichSongFolder = currentfolder;
+                    }
 
                     // Save the set and other preferences
                     Preferences.savePreferences();
@@ -3154,10 +3144,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     // Set the appropriate folder name
 
                     if (listDataHeaderSong.get(groupPosition).equals(mainfoldername)) {
-                        // dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
                         whichSongFolder = mainfoldername;
                     } else {
-                        // dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/" + listDataHeaderSong.get(groupPosition));
                         whichSongFolder = listDataHeaderSong.get(groupPosition);
                     }
                     // Set the appropriate song filename
@@ -3255,6 +3243,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         options_song.add(getResources().getString(R.string.edit_song_presentation));
         options_display.add(getResources().getString(R.string.scrollbuttons_toggle));
         options_display.add(getResources().getString(R.string.songbuttons_toggle));
+        options_display.add(getResources().getString(R.string.toggle_autoshow_stickynotes));
         options_display.add(getResources().getString(R.string.options_options_hidebar));
 
         List<String> options_gesturesandmenus = new ArrayList<>();
@@ -3279,6 +3268,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
         List<String> options_other = new ArrayList<>();
         options_other.add(getResources().getString(R.string.options_options_help));
+        options_other.add("@OpenSongApp");
         options_other.add(getResources().getString(R.string.language));
         options_other.add(getResources().getString(R.string.options_options_start));
 
@@ -3438,7 +3428,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         } else if (childPosition == 6) {
                             // Edit current set
                             // Only works for ICS or above
-                            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
                             mDrawerLayout.closeDrawer(expListViewOption);
                             if (currentapiVersion >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                                 FullscreenActivity.whattodo = "editset";
@@ -3480,25 +3469,28 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             // Now split the linkclicked into two song parts 0=folder 1=file
                             String[] songpart = linkclicked.split("/");
 
+                            if (songpart.length<2) {
+                                songpart = new String[2];
+                                songpart[0] = "";
+                                songpart[1] = "";
+                            }
+
+
                             // If the folder length isn't 0, it is a folder
                             if (songpart[0].length() > 0 && !songpart[0].contains(text_scripture) && !songpart[0].contains(text_slide) && !songpart[0].contains(text_note)) {
                                 whichSongFolder = songpart[0];
-                                // dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Songs/"+songpart[0]);
 
                             } else if (songpart[0].length() > 0 && songpart[0].contains(text_scripture)) {
                                 whichSongFolder = "../OpenSong Scripture/_cache";
                                 songpart[0] = "../OpenSong Scripture/_cache";
-                                // dir = new File(root.getAbsolutePath()+"/documents/OpenSong/OpenSong Scripture/_cache");
 
                             } else if (songpart[0].length() > 0 && songpart[0].contains(text_slide)) {
                                 whichSongFolder = "../Slides/_cache";
                                 songpart[0] = "../Slides/_cache";
-                                // dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Slides/_cache");
 
                             } else if (songpart[0].length() > 0 && songpart[0].contains(text_note)) {
                                 whichSongFolder = "../Notes/_cache";
                                 songpart[0] = "../Notes/_cache";
-                                //dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Slides/_cache");
 
                             } else {
                                 whichSongFolder = mainfoldername;
@@ -3606,7 +3598,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 scrollpage.setDrawingCacheEnabled(true);
                                 bmScreen = scrollpage.getDrawingCache();
                                 File saved_image_file = new File(
-                                        dirbackgrounds + "/captured_Bitmap.png");
+                                        homedir + "/Notes/_cache/" + songfilename + ".png");
                                 if (saved_image_file.exists())
                                     saved_image_file.delete();
                                 try {
@@ -3632,21 +3624,60 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, songfilename);
                                 emailIntent.putExtra(Intent.EXTRA_TEXT, emailtext);
                                 emailtext = "";
+                                String songlocation = dir + "/";
+                                String tolocation = homedir + "/Notes/_cache/";
                                 Uri uri;
                                 if (!dir.toString().contains("/" + whichSongFolder + "/")
                                         && !whichSongFolder.equals(mainfoldername)) {
                                     uri = Uri.fromFile(new File(dir + "/" + whichSongFolder + "/" + songfilename));
+                                    songlocation = songlocation + whichSongFolder + "/" + songfilename;
+                                    tolocation = tolocation + "/" + songfilename + ".ost";
                                 } else {
                                     uri = Uri.fromFile(new File(dir + "/" + songfilename));
+                                    songlocation = songlocation + songfilename;
+                                    tolocation = tolocation + "/" + songfilename + ".ost";
                                 }
 
                                 Uri uri2 = Uri.fromFile(saved_image_file);
+                                Uri uri3 = null;
+                                // Also add an .ost version of the file
+                                try {
+                                    FileInputStream in = new FileInputStream(new File(songlocation));
+                                    FileOutputStream out = new FileOutputStream(new File(tolocation));
 
-                                ArrayList<Uri> uris = new ArrayList<Uri>();
-                                uris.add(uri);
-                                uris.add(uri2);
+                                    byte[] buffer = new byte[1024];
+                                    int read;
+                                    while ((read = in.read(buffer)) != -1) {
+                                        out.write(buffer, 0, read);
+                                    }
+                                    in.close();
+                                    in = null;
+
+                                    // write the output file (You have now copied the file)
+                                    out.flush();
+                                    out.close();
+                                    out = null;
+
+                                    uri3 = Uri.fromFile(new File(tolocation));
+
+                                } catch (Exception e) {
+                                    // Error
+                                    e.printStackTrace();
+                                }
+                                ArrayList<Uri> uris = new ArrayList<>();
+                                if (uri!=null) {
+                                    uris.add(uri);
+                                }
+                                if (uri2!=null) {
+                                    uris.add(uri2);
+                                }
+                                if (uri3!=null) {
+                                    uris.add(uri3);
+                                }
                                 emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
                                 startActivityForResult(Intent.createChooser(emailIntent, exportcurrentsong), 12345);
+
+                                // These .ost and .png files will be removed when a user loads a new set
                             }
 
 
@@ -3831,7 +3862,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         // 5 = Show next
                         // 6 = Toggle scroll buttons
                         // 7 = Toggle song buttons
-                        // 8 = Show/hide menu bar
+                        // 8 = Toggle autosticky
+                        // 9 = Show/hide menu bar
 
                         if (childPosition == 0) {// Change theme
                             if (isPDF) {
@@ -4064,7 +4096,28 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             }
 
 
-                        } else if (childPosition == 8) {// Show/hide menu bar
+                        } else if (childPosition == 8) {// Toggle autosticky
+                            if (toggleAutoSticky.equals("N")) {
+                                toggleAutoSticky = "Y";
+                                myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.on);
+                            } else if (toggleAutoSticky.equals("Y")) {
+                                toggleAutoSticky = "T";
+                                myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.top);
+                            } else if (toggleAutoSticky.equals("T")) {
+                                toggleAutoSticky = "B";
+                                myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.bottom);
+                            } else {
+                                // Keep sticky notes hidden in normal sticky note view
+                                toggleAutoSticky = "N";
+                                myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.off);
+                            }
+                            // Save preferences
+                            Preferences.savePreferences();
+                            ShowToast.showToast(FullscreenActivity.this);
+                            redrawTheLyricsTable(view);
+
+
+                        } else if (childPosition == 9) {// Show/hide menu bar
                             if (hideactionbaronoff.equals("Y")) {
                                 hideactionbaronoff = "N";
                                 myToastMessage = getResources()
@@ -4315,8 +4368,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         // Now check for other options clicks
 
                         // 0 = Help
-                        // 1 = Language
-                        // 2 = Start/splash screen
+                        // 1 = Twitter
+                        // 2 = Language
+                        // 3 = Start/splash screen
 
                         if (childPosition == 0) {// Help
                             String url = "https://sites.google.com/site/opensongtabletmusicviewer/home";
@@ -4325,7 +4379,14 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             startActivity(i);
 
 
-                        } else if (childPosition == 1) {// Language
+                        } else if (childPosition == 1) {// Twitter
+                            try {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=opensongapp")));
+                            } catch (ActivityNotFoundException e) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/opensongapp")));
+                            }
+
+                        } else if (childPosition == 2) {// Language
                             int positionselected = -1;
 
                             mDrawerLayout.closeDrawer(expListViewOption);
@@ -4432,7 +4493,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             languageDialog.show();
 
 
-                        } else if (childPosition == 2) {// Start/splash screen
+                        } else if (childPosition == 3) {// Start/splash screen
                             // First though, set the preference to show the current version
                             // Otherwise it won't show the splash screen
                             SharedPreferences settings = getSharedPreferences("mysettings",
@@ -4996,8 +5057,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         // Get the index in the set in case it has changed
         // Only if there is only one occurence of the song in the set
         int count=0;
-        for (int e=0;e<mSet.length;e++) {
-            if (mSet[e].equals(whatsongforsetwork)) {
+        for (String aMSet : mSet) {
+            if (aMSet.equals(whatsongforsetwork)) {
                 count++;
             }
         }
@@ -5034,6 +5095,37 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
             actionBar.setDisplayShowHomeEnabled(false); // remove the icon
         }
+
+        // Force overflow icon to show, even if hardware key is present
+        try {
+            ViewConfiguration config = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if(menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception ex) {
+            // Ignore
+        }
+
+        // Force icons to show in overflow menu
+        if (actionBar!=null && menu != null){
+            if(menu.getClass().getSimpleName().equals("MenuBuilder")){
+                try{
+                    Method m = menu.getClass().getDeclaredMethod(
+                            "setOptionalIconsVisible", Boolean.TYPE);
+                    m.setAccessible(true);
+                    m.invoke(menu, true);
+                }
+                catch(NoSuchMethodException e){
+                    Log.e("menu", "onMenuOpened", e);
+                }
+                catch(Exception e){
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
         menu.clear();
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_main_actions, menu);
@@ -5613,6 +5705,22 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         scrollpage_threecol.setVisibility(View.GONE);
                     }
 
+                    // If autoStickyNotes is set to yes and they aren't empty, display them
+                    if (toggleAutoSticky.equals("Y") && !mNotes.isEmpty() && !mNotes.equals("")) {
+                        // Opening a sticky note!
+                        // Hide other popups
+                        hidepopupPad();
+                        hidepopupChord();
+                        hidepopupAutoscroll();
+                        hidepopupMetronome();
+
+                        mySticky.setText(mNotes);
+                        mySticky.setVisibility(View.VISIBLE);
+                        scrollstickyholder.setVisibility(View.VISIBLE);
+                        scrollstickyholder.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_bottom));
+                        stickynotes.setAlpha(0.5f);
+                    }
+
                     // Restart the autoscroll if it was already on and the song has a duration
                     // Get the autoscroll info initialised
                     if (autostartautoscroll && autoscrollactivated) {
@@ -5675,7 +5783,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             // is a pdf file
             // if we are able, render pdf to image
             // filePath represent path of Pdf document on storage
-            File file = new File(dir+"/" + songfilename);
+            File file;
+            if (whichSongFolder.equals(mainfoldername)) {
+                file = new File(dir + "/" + songfilename);
+            } else {
+                file = new File(dir + "/" + whichSongFolder + "/" + songfilename);
+            }
             String tempsongtitle = songfilename.replace(".pdf", "");
             tempsongtitle = tempsongtitle.replace(".PDF", "");
             mTitle = tempsongtitle;
@@ -5691,7 +5804,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 e.printStackTrace();
             }
 
-            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+            currentapiVersion = android.os.Build.VERSION.SDK_INT;
             if (currentapiVersion >= 21) {
                 // Capable of pdf rendering
                 // PdfRenderer enables rendering a PDF document
@@ -5703,21 +5816,18 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 scrollstickyholder.setVisibility(View.GONE);
 
                 PdfRenderer mPdfRenderer = null;
-                if (currentapiVersion>=21) {
-                    try {
-                        mPdfRenderer = new PdfRenderer(mFileDescriptor);
+                try {
+                    mPdfRenderer= new PdfRenderer(mFileDescriptor);
+                    pdfPageCount = mPdfRenderer.getPageCount();
                     } catch (IOException e) {
                         e.printStackTrace();
+                        pdfPageCount = 0;
                     }
-                }
-                pdfPageCount = 0;
-                if (currentapiVersion>=21) {
-                    pdfPageCount = mPdfRenderer.getPageCount();
-                }
 
                 if (pdfPageCurrent>pdfPageCount) {
                     pdfPageCurrent = 0;
                 }
+
                 top_songtitle.setText(tempsongtitle + "\n" + (pdfPageCurrent+1)+"/"+pdfPageCount);
 
                 if (pdfPageCount>1 && togglePageButtons.equals("Y")) {
@@ -5731,10 +5841,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 scrollstickyholder.setVisibility(View.GONE);
                 stickynotes.setAlpha(0.3f);
                 // Open page 0
-                PdfRenderer.Page mCurrentPage = null;
-                if (currentapiVersion>=21) {
-                    mCurrentPage = mPdfRenderer.openPage(pdfPageCurrent);
-                }
+                PdfRenderer.Page mCurrentPage;
+                //noinspection AndroidLintNewApi
+                mCurrentPage = mPdfRenderer.openPage(pdfPageCurrent);
 
                 // Get pdf size from page
                 int pdfwidth = 1;
@@ -5791,9 +5900,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 Bitmap bitmap = Bitmap.createBitmap(pdfwidth, pdfheight, Bitmap.Config.ARGB_8888);
 
                 // Pdf page is rendered on Bitmap
-                if (currentapiVersion>=21) {
-                    mCurrentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
-                }
+                //noinspection AndroidLintNewApi
+                mCurrentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
 
                 // Set rendered bitmap to ImageView (pdfView in my case)
                 ImageView pdfView = (ImageView) findViewById(R.id.pdfView);
@@ -5848,14 +5956,18 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 target.setDataAndType(Uri.fromFile(pdffile),"application/pdf");
                 target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-                Intent intent = Intent.createChooser(target, getResources().getString(R.string.options_set_load));
+                //Intent intent = Intent.createChooser(target, getResources().getString(R.string.options_set_load));
                 try {
-                    startActivity(intent);
+                    //startActivity(intent);
+                    startActivity(target);
                 } catch (ActivityNotFoundException e) {
                     // Instruct the user to install a PDF reader here, or something
-                    Log.d("error","no pdf viewer");
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.apps.pdfviewer")));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.pdfviewer")));
+                    }
                 }
-
             }
         }
 
@@ -6434,7 +6546,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     private void editFolderName() {
         // First set the browsing directory back to the main one
-        // dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Songs");
         currentFolder = whichSongFolder;
         newFolder = whichSongFolder;
         whichSongFolder = mainfoldername;
@@ -6463,8 +6574,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         folderdialogBuilder.setSingleChoiceItems(mSongFolderNames, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
-                if (arg1 == 0) {
-                    // Main folder, so unselect it
+                if (arg1==0) {
+                    myToastMessage = getResources().getString(R.string.not_allowed);
+                    ShowToast.showToast(FullscreenActivity.this);
                     currentFolder = "";
                 } else {
                     currentFolder = mSongFolderNames[arg1];
@@ -6490,6 +6602,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             prepareSongMenu();
                             mDrawerLayout.closeDrawer(expListViewOption);
                             mDrawerLayout.openDrawer(expListViewSong);
+                        } else {
+                            myToastMessage = getResources().getString(R.string.not_allowed);
+                            ShowToast.showToast(FullscreenActivity.this);
                         }
                     }
                 });
@@ -6537,7 +6652,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     private void redrawTheLyricsTable(View view) {
         isPDF = false;
-        File checkfile = new File(dir+"/"+songfilename);
+        File checkfile;
+        if (whichSongFolder.equals(mainfoldername)) {
+            checkfile = new File(dir + "/"+songfilename);
+        } else {
+            checkfile = new File(dir + "/"+whichSongFolder+"/"+songfilename);
+        }
+
         if ((songfilename.contains(".pdf") || songfilename.contains(".PDF")) && checkfile.exists()) {
             // File is pdf
             isPDF = true;
@@ -6698,26 +6819,21 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         // If the folder length isn't 0, it is a folder
         if (songpart[0].length() > 0 && !songpart[0].contains(text_scripture) && !songpart[0].contains(text_slide) && !songpart[0].contains(text_note)) {
             whichSongFolder = songpart[0];
-            //dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Songs/"+songpart[0]);
 
         } else if (songpart[0].length() > 0 && songpart[0].contains(text_scripture) && !songpart[0].contains(text_slide) && !songpart[0].contains(text_note)) {
             whichSongFolder = "../OpenSong Scripture/_cache";
             songpart[0] = "../OpenSong Scripture/_cache";
-            //dir = dirbibleverses;
 
         } else if (songpart[0].length() > 0 && songpart[0].contains(text_slide) && !songpart[0].contains(text_note) && !songpart[0].contains(text_scripture)) {
             whichSongFolder = "../Slides/_cache";
             songpart[0] = "../Slides/_cache";
-            //dir = dircustomslides;
 
         } else if (songpart[0].length() > 0 && !songpart[0].contains(text_slide) && songpart[0].contains(text_note) && !songpart[0].contains(text_scripture)) {
             whichSongFolder = "../Notes/_cache";
             songpart[0] = "../Notes/_cache";
-            //dir = dircustomslides;
 
         } else {
             whichSongFolder = mainfoldername;
-            //dir = new File(root.getAbsolutePath()+"/documents/OpenSong/Songs");
         }
 
         // Save the preferences
@@ -7127,7 +7243,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             e.printStackTrace();
                         }
                     } else {
-                        myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+                        myToastMessage = getResources().getString(R.string.not_allowed);
                         ShowToast.showToast(FullscreenActivity.this);
                     }
                     return true;
@@ -7138,7 +7254,17 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     if (!isPDF && isSong) {
                         autoScroll(autoscrollButton);
                     } else {
-                        myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+                        myToastMessage = getResources().getString(R.string.not_allowed);
+                        ShowToast.showToast(FullscreenActivity.this);
+                    }
+                    return true;
+
+                case R.id.metronome_menu_button:
+                    // Run the metronome start/stop, but only if the song insn't a pdf!
+                    if (!isPDF && isSong) {
+                        metronomeToggle(metronomeButton);
+                    } else {
+                        myToastMessage = getResources().getString(R.string.not_allowed);
                         ShowToast.showToast(FullscreenActivity.this);
                     }
                     return true;
@@ -7148,7 +7274,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     if (!isPDF && isSong) {
                         stickyNotes(stickynotes);
                     } else {
-                        myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+                        myToastMessage = getResources().getString(R.string.not_allowed);
                         ShowToast.showToast(FullscreenActivity.this);
                     }
                     return true;
@@ -7158,7 +7284,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     if (!isPDF && isSong) {
                         popupChords_toggle(chordButton);
                     } else {
-                        myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+                        myToastMessage = getResources().getString(R.string.not_allowed);
                         ShowToast.showToast(FullscreenActivity.this);
                     }
                     return true;
@@ -7537,7 +7663,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
+    public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
         int action = MotionEventCompat.getActionMasked(ev);
         // WOULD BE BETTER IF THIS WAS CALLED ON SOME KIND OF ONSCROLL LISTENER
         scaleGestureDetector.onTouchEvent(ev);
@@ -7637,7 +7763,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
             if (x == 0) {
                 // This is the first line.
-                // If in a set view and option is on to show at top, show the title of the next song
+               // If in a set view and option is on to show at top, show the title of the next song
                 // If we are showing the last song already, say this instead
                 if (setView.equals("Y") && showNextInSet.equals("top")) {
                     // Get next title in set
@@ -7696,6 +7822,53 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         nextInSetBox1_3.addView(nextSongText1_3);
                         lyricstable_threecolview.addView(nextInSetBox1_3);
                     }
+                }
+
+                // If the user wants to show sticky notes at the top of the page
+                if (toggleAutoSticky.equals("T")) {
+                    String notetoadd = getResources().getString(R.string.stickynotes)+":\n"+mNotes+"\n\n";
+                    RelativeLayout stickyNotes1_1 = new RelativeLayout(this);
+                    RelativeLayout stickyNotes1_2 = new RelativeLayout(this);
+                    RelativeLayout stickyNotes1_3 = new RelativeLayout(this);
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    stickyNotes1_1.setLayoutParams(lp);
+                    stickyNotes1_1.setHorizontalGravity(Gravity.LEFT);
+                    stickyNotes1_2.setLayoutParams(lp);
+                    stickyNotes1_2.setHorizontalGravity(Gravity.LEFT);
+                    stickyNotes1_3.setLayoutParams(lp);
+                    stickyNotes1_3.setHorizontalGravity(Gravity.LEFT);
+                    TextView nextSongText1_1 = new TextView(this);
+                    nextSongText1_1.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                    nextSongText1_1.setText(notetoadd);
+                    nextSongText1_1.setGravity(Gravity.LEFT);
+                    nextSongText1_1.setTypeface(lyrics_useThisFont);
+                    nextSongText1_1.setBackgroundColor(lyricsCommentColor);
+                    nextSongText1_1.setTextColor(lyricsTextColor);
+                    nextSongText1_1.setTextSize(tempfontsize);
+                    stickyNotes1_1.addView(nextSongText1_1);
+                    TextView nextSongText1_2 = new TextView(this);
+                    nextSongText1_2.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                    nextSongText1_2.setText(notetoadd);
+                    nextSongText1_2.setGravity(Gravity.LEFT);
+                    nextSongText1_2.setTypeface(lyrics_useThisFont);
+                    nextSongText1_2.setBackgroundColor(lyricsCommentColor);
+                    nextSongText1_2.setTextColor(lyricsTextColor);
+                    nextSongText1_2.setTextSize(tempfontsize);
+                    stickyNotes1_2.addView(nextSongText1_2);
+                    TextView nextSongText1_3 = new TextView(this);
+                    nextSongText1_3.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+                    nextSongText1_3.setText(notetoadd);
+                    nextSongText1_3.setGravity(Gravity.LEFT);
+                    nextSongText1_3.setTypeface(lyrics_useThisFont);
+                    nextSongText1_3.setBackgroundColor(lyricsCommentColor);
+                    nextSongText1_3.setTextColor(lyricsTextColor);
+                    nextSongText1_3.setTextSize(tempfontsize);
+                    stickyNotes1_3.addView(nextSongText1_3);
+
+                    // Prepare this view
+                    lyricstable_onecolview.addView(stickyNotes1_1);
+                    lyricstable_twocolview.addView(stickyNotes1_2);
+                    lyricstable_threecolview.addView(stickyNotes1_3);
                 }
 
                 // If showCapo is true, add a comment line with the capo information
@@ -9009,6 +9182,54 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 }
             }
         }
+
+        // If the user wants to show sticky notes at the bottom of the page
+        if (toggleAutoSticky.equals("B")) {
+            String notetoadd = "\n\n"+getResources().getString(R.string.stickynotes)+":\n"+mNotes;
+            RelativeLayout stickyNotes1_1 = new RelativeLayout(this);
+            RelativeLayout stickyNotes2_2 = new RelativeLayout(this);
+            RelativeLayout stickyNotes3_3 = new RelativeLayout(this);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            stickyNotes1_1.setLayoutParams(lp);
+            stickyNotes1_1.setHorizontalGravity(Gravity.LEFT);
+            stickyNotes2_2.setLayoutParams(lp);
+            stickyNotes2_2.setHorizontalGravity(Gravity.LEFT);
+            stickyNotes3_3.setLayoutParams(lp);
+            stickyNotes3_3.setHorizontalGravity(Gravity.LEFT);
+            TextView nextSongText1_1 = new TextView(this);
+            nextSongText1_1.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            nextSongText1_1.setText(notetoadd);
+            nextSongText1_1.setGravity(Gravity.LEFT);
+            nextSongText1_1.setTypeface(lyrics_useThisFont);
+            nextSongText1_1.setBackgroundColor(lyricsCommentColor);
+            nextSongText1_1.setTextColor(lyricsTextColor);
+            nextSongText1_1.setTextSize(tempfontsize);
+            stickyNotes1_1.addView(nextSongText1_1);
+            TextView nextSongText2_2 = new TextView(this);
+            nextSongText2_2.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            nextSongText2_2.setText(notetoadd);
+            nextSongText2_2.setGravity(Gravity.LEFT);
+            nextSongText2_2.setTypeface(lyrics_useThisFont);
+            nextSongText2_2.setBackgroundColor(lyricsCommentColor);
+            nextSongText2_2.setTextColor(lyricsTextColor);
+            nextSongText2_2.setTextSize(tempfontsize);
+            stickyNotes2_2.addView(nextSongText2_2);
+            TextView nextSongText3_3 = new TextView(this);
+            nextSongText3_3.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            nextSongText3_3.setText(notetoadd);
+            nextSongText3_3.setGravity(Gravity.LEFT);
+            nextSongText3_3.setTypeface(lyrics_useThisFont);
+            nextSongText3_3.setBackgroundColor(lyricsCommentColor);
+            nextSongText3_3.setTextColor(lyricsTextColor);
+            nextSongText3_3.setTextSize(tempfontsize);
+            stickyNotes3_3.addView(nextSongText3_3);
+
+            // Prepare this view
+            lyricstable_onecolview.addView(stickyNotes1_1);
+            lyricstable2_twocolview.addView(stickyNotes2_2);
+            lyricstable3_threecolview.addView(stickyNotes3_3);
+        }
+
         // If in a set view and option is on to show at bottom, show the title of the next song
         // If we are showing the last song already, say this instead
         if (setView.equals("Y") && showNextInSet.equals("bottom")) {
@@ -9021,22 +9242,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     next_title = getResources().getString(R.string.next) + ": " + mSetList[indexSongInSet+1];
                 }
                 RelativeLayout nextInSetBox1_1 = new RelativeLayout(this);
-                RelativeLayout nextInSetBox1_2 = new RelativeLayout(this);
                 RelativeLayout nextInSetBox2_2 = new RelativeLayout(this);
-                RelativeLayout nextInSetBox1_3 = new RelativeLayout(this);
-                RelativeLayout nextInSetBox2_3 = new RelativeLayout(this);
                 RelativeLayout nextInSetBox3_3 = new RelativeLayout(this);
                 RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 nextInSetBox1_1.setLayoutParams(lp);
                 nextInSetBox1_1.setHorizontalGravity(Gravity.RIGHT);
-                nextInSetBox1_2.setLayoutParams(lp);
-                nextInSetBox1_2.setHorizontalGravity(Gravity.RIGHT);
                 nextInSetBox2_2.setLayoutParams(lp);
                 nextInSetBox2_2.setHorizontalGravity(Gravity.RIGHT);
-                nextInSetBox1_3.setLayoutParams(lp);
-                nextInSetBox1_3.setHorizontalGravity(Gravity.RIGHT);
-                nextInSetBox2_3.setLayoutParams(lp);
-                nextInSetBox2_3.setHorizontalGravity(Gravity.RIGHT);
                 nextInSetBox3_3.setLayoutParams(lp);
                 nextInSetBox3_3.setHorizontalGravity(Gravity.RIGHT);
                 TextView nextSongText1_1 = new TextView(this);
@@ -9189,6 +9401,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             }
         }, 1000); // 1000ms delay
 
+    }
+
+    @Override
+    public void onSongInstall() {
+        // Called when a user clicks on a .backup file and intent runs app
+        onSongImport();
     }
 
     @Override

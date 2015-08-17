@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<string name="toggle_autoshow_stickynotes">Toggle autoshow sticky notes</string>
+	<string name="file_type">File type</string>
+    <string name="file_type_unknown">Unknown</string>
+    <string name="file_exists">File already exists.  Please rename it.</string>
+
     <string name="options_display">Display</string>
     <string name="options_gesturesandmenus">Gestures and menus</string>
     <string name="options_storage">Storage</string>

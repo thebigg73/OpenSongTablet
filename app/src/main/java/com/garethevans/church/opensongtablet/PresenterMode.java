@@ -31,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -48,6 +49,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -561,7 +564,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         options_set.add(getResources().getString(R.string.options_set_clear));
         options_set.add(getResources().getString(R.string.options_set_delete));
         options_set.add(getResources().getString(R.string.options_set_export));
-        options_set.add(getResources().getString(R.string.add_custom_slide));
+        options_set.add(getResources().getString(R.string.add_custom_slide).toUpperCase(FullscreenActivity.locale));
         options_set.add(getResources().getString(R.string.options_set_edit));
         options_set.add("");
 
@@ -1766,6 +1769,37 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.presenter_actions, menu);
         this.menu = menu;
+
+        // Force overflow icon to show, even if hardware key is present
+        try {
+            ViewConfiguration config = ViewConfiguration.get(PresenterMode.this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if(menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(config, false);
+            }
+        } catch (Exception ex) {
+            // Ignore
+        }
+
+        // Force icons to show in overflow menu
+        if (getActionBar()!=null && menu != null){
+            if(menu.getClass().getSimpleName().equals("MenuBuilder")){
+                try{
+                    Method m = menu.getClass().getDeclaredMethod(
+                            "setOptionalIconsVisible", Boolean.TYPE);
+                    m.setAccessible(true);
+                    m.invoke(menu, true);
+                }
+                catch(NoSuchMethodException e){
+                    Log.e("menu", "onMenuOpened", e);
+                }
+                catch(Exception e){
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
         MenuItem set_back = menu.findItem(R.id.set_back);
         MenuItem set_forward = menu.findItem(R.id.set_forward);
         if (FullscreenActivity.setSize > 0 && FullscreenActivity.setView.equals("Y")) {

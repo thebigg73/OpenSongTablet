@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class PopUpSetView extends DialogFragment {
@@ -72,46 +73,84 @@ public class PopUpSetView extends DialogFragment {
         String tempTitle;
         if (FullscreenActivity.mSetList!=null && FullscreenActivity.mSetList.length>0) {
             for (int i = 0; i < FullscreenActivity.mSetList.length; i++) {
+                try {
+                    // Just a check
+                    // noinspection unchecked
+                    String temp = FullscreenActivity.mSetList[i];
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    break;
+                }
                 if (!FullscreenActivity.mSetList[i].contains("/")) {
                     tempTitle = "/" + FullscreenActivity.mSetList[i];
                 } else {
                     tempTitle = FullscreenActivity.mSetList[i];
                 }
                 String[] splitsongname = tempTitle.split("/");
-                if (splitsongname.length != 0 && (splitsongname[0] == null || splitsongname[0].isEmpty())) {
-                    mFolderName.add(getResources().getString(R.string.mainfoldername));
-                } else if (splitsongname==null || splitsongname.length==0) {
-                    mFolderName.add("");
-                } else {
-                    mFolderName.add(splitsongname[0]);
-                }
-                if (splitsongname==null || splitsongname.length==0) {
-                    mSongName.add("");
-                } else {
-                    mSongName.add(splitsongname[1]);
+                String mysongtitle = "";
+                String mysongfolder = "";
+                if (splitsongname.length>1) {
+                    // If works
+                    mysongtitle = splitsongname[1];
+                    mysongfolder = splitsongname[0];
                 }
 
+                if (mysongfolder.isEmpty() || mysongfolder.equals("")) {
+                    mysongfolder = getResources().getString(R.string.mainfoldername);
+                }
+
+                if (mysongtitle.isEmpty() || mysongfolder.equals("")) {
+                    mysongtitle = "!ERROR!";
+                }
+
+                mSongName.add(i, mysongtitle);
+                mFolderName.add(i,mysongfolder);
             }
 
             final ArrayList<String> mCurrentSetList = new ArrayList<>();
             Collections.addAll(mCurrentSetList, FullscreenActivity.mSetList);
 
+            // Check colours to use
+            final int normal_bg  = FullscreenActivity.lyricsVerseColor;
+            final int notes_bg   = FullscreenActivity.lyricsChorusColor;
+            final int normal_txt = FullscreenActivity.lyricsTextColor;
+            final int notes_txt  = FullscreenActivity.lyricsChordsColor;
             ArrayAdapter adapter;
-            adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_2, android.R.id.text1, mCurrentSetList) {
+            //noinspection AndroidLintUnchecked
+            adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_2, android.R.id.text1, mCurrentSetList) {
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
                     View view = super.getView(position, convertView, parent);
                     TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                     TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-                    text1.setTextColor(FullscreenActivity.lyricsTextColor);
-                    text2.setTextColor(FullscreenActivity.lyricsChordsColor);
-                    text1.setText(mSongName.get(position));
-                    text2.setText(mFolderName.get(position));
+                    text1.setTextColor(normal_txt);
+                    view.setBackgroundColor(normal_bg);
+                    text2.setTextColor(notes_txt);
+                    try {
+                        text1.setText(mSongName.get(position));
+                        text2.setText(mFolderName.get(position));
+                    } catch (Exception e) {
+                        // Strange error
+                        mSongName.add(position, "");
+                        mFolderName.add(position,"");
+                        text1.setText("error");
+                        text2.setText("error");
+                    }
+                    if (mFolderName.get(position).equals(FullscreenActivity.text_slide) ||
+                            mFolderName.get(position).equals(FullscreenActivity.text_note) ||
+                            mFolderName.get(position).equals(FullscreenActivity.text_scripture)) {
+                        view.setBackgroundColor(notes_bg);
+                    }
                     return view;
                 }
             };
 
             setList_ListView.setAdapter(adapter);
+
+            // If set list is empty, remove this view
+            if (mCurrentSetList.size()==1 && mSongName.get(0).equals("!ERROR!")) {
+                setList_ListView.setVisibility(View.INVISIBLE);
+            }
             setList_ListView.setFastScrollAlwaysVisible(true);
             setList_ListView.setFastScrollEnabled(true);
             setList_ListView.setSelection(FullscreenActivity.indexSongInSet);

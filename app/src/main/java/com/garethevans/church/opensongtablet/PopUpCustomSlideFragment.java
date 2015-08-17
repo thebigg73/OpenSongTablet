@@ -12,6 +12,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.io.File;
+
 public class PopUpCustomSlideFragment extends DialogFragment {
 
     static PopUpCustomSlideFragment newInstance() {
@@ -87,6 +89,10 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 FullscreenActivity.noteorslide = whattype;
                 FullscreenActivity.customslide_title = slideTitleEditText.getText().toString();
                 FullscreenActivity.customslide_content = slideContentEditText.getText().toString();
+                // Check the slide has a title.  If not, use _
+                if (FullscreenActivity.customslide_title==null || FullscreenActivity.customslide_title.equals("") || FullscreenActivity.customslide_title.isEmpty()) {
+                    FullscreenActivity.customslide_title = "_";
+                }
                 mListener.addSlideToSet();
                 dismiss();
             }

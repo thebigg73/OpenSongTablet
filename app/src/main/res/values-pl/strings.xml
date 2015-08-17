@@ -419,5 +419,9 @@
 	<string name="slide_separator">"Dodaj separator slajdów (do projekcji)"</string>
 	<string name="title">"tytuł"</string>
 	<string name="add_custom_slide">"Dodaj slajdów / notatka"</string>
+	<string name="file_exists">"Plik już istnieje. Proszę zmienić jego nazwę."</string>
+	<string name="file_type">"Typ pliku"</string>
+	<string name="file_type_unknown">"nieznany"</string>
+	<string name="toggle_autoshow_stickynotes">"Przełącz Autoshow karteczki"</string>
 
 </resources>

@@ -418,5 +418,9 @@
 	<string name="slide_separator">"（投影用）スライドセパレータを追加"</string>
 	<string name="title">"タイトル"</string>
 	<string name="add_custom_slide">"スライド/メモを追加"</string>
+	<string name="file_exists">"ファイルが既に存在します。その名前を変更してください。"</string>
+	<string name="file_type">"ファイルの種類"</string>
+	<string name="file_type_unknown">"不明"</string>
+	<string name="toggle_autoshow_stickynotes">"トグルautoshow付箋"</string>
 
 </resources>

@@ -448,5 +448,9 @@
 	<string name="slide_separator">"Voeg slide separator (vir projeksie)"</string>
 	<string name="title">"titel"</string>
 	<string name="add_custom_slide">"Voeg skyfie / nota"</string>
+	<string name="file_exists">"Lêer bestaan reeds. Asseblief hernoem nie."</string>
+	<string name="file_type">"lêer tipe"</string>
+	<string name="file_type_unknown">"onbekend"</string>
+	<string name="toggle_autoshow_stickynotes">"Toggle autoshow taai notas"</string>
 
 </resources>

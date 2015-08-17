@@ -423,5 +423,9 @@
 	<string name="slide_separator">"添加幻灯片分隔符（投影）"</string>
 	<string name="title">"称号"</string>
 	<string name="add_custom_slide">"添加幻灯片/笔记"</string>
+	<string name="file_exists">"文件已经存在。请重新命名。"</string>
+	<string name="file_type">"文件类型"</string>
+	<string name="file_type_unknown">"未知"</string>
+	<string name="toggle_autoshow_stickynotes">"切换自动显示即时贴"</string>
 
 </resources>

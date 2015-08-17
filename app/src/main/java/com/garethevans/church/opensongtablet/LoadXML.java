@@ -237,7 +237,7 @@ public class LoadXML extends Activity {
 
     }
 	// NEW
-	private static String readTextFile(InputStream inputStream) {
+	public static String readTextFile(InputStream inputStream) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
 		byte buf[] = new byte[1024];
