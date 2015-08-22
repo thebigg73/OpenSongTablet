@@ -424,5 +424,7 @@
 	<string name="file_type">"Typ souboru"</string>
 	<string name="file_type_unknown">"neznámo"</string>
 	<string name="toggle_autoshow_stickynotes">"Přepnout Autoshow Sticky Notes"</string>
+	<string name="storage_issues">"Pokud budete mít nějaké problémy se spuštěním aplikace, přepněte na interní úložiště"</string>
+	<string name="overwrite">"Přepsat existující položku"</string>
 
 </resources>

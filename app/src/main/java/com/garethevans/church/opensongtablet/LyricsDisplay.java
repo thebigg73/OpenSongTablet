@@ -86,7 +86,6 @@ public class LyricsDisplay extends Activity {
 					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("V", FullscreenActivity.tag_verse+" ");
 				}
 						
-//			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("[T") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[t") == 0) {
 			} else if (((FullscreenActivity.myParsedLyrics[x].indexOf("[T") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[t") == 0) && FullscreenActivity.myParsedLyrics[x].indexOf("]") > 1 && FullscreenActivity.myParsedLyrics[x].indexOf("]") < 5) ||
 					(FullscreenActivity.myParsedLyrics[x].toLowerCase(FullscreenActivity.locale).contains("["+FullscreenActivity.tag_tag.toLowerCase(FullscreenActivity.locale)))) {
 				FullscreenActivity.whatisthisline[x] = "tagtitle";
@@ -607,7 +606,7 @@ public class LyricsDisplay extends Activity {
 				lookfortagslyrics[z] = "__REMOVED__";
 
 
-			} else if (lookfortagslyrics[z].length()>1 && (lookfortagslyrics[z].contains("[V]") || lookfortagslyrics[z].contains("[v]"))) {
+			} else if (lookfortagslyrics[z].length()>1 && (lookfortagslyrics[z].contains("[V]") || lookfortagslyrics[z].contains("[v]") || lookfortagslyrics[z].contains("[Verse]"))) {
 				// Remove the starting [V] tag and replace it with __MULTIPLEVERSES__
 				// Only if the next (or next again line starts with 1
 				if ((z+1)<numtemplines) {

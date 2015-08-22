@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<string name="overwrite">Overwrite existing item</string>
+	<string name="storage_issues">If you experience any problems running the app, please switch to internal storage</string>
 	<string name="toggle_autoshow_stickynotes">Toggle autoshow sticky notes</string>
 	<string name="file_type">File type</string>
     <string name="file_type_unknown">Unknown</string>

@@ -207,7 +207,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     private String[] backUpFiles;
     private String backupchosen = "";
 
-    private static int currentapiVersion;
+    public static int currentapiVersion;
 
     public static String mediaStore;
 
@@ -879,7 +879,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         text_scripture = scripture;
         text_note = note;
 
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        // Initialise api
+        currentapiVersion = Build.VERSION.SDK_INT;
 
         if (currentapiVersion >= 17) {
             // Capable of dual head presentations
@@ -4604,8 +4605,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
             View v = getWindow().getDecorView();
 
-            int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-
             if (currentapiVersion >= 17) {
                 // Capable of dual head presentations
                 dualDisplayCapable = "Y";
@@ -5078,7 +5077,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         ActionBar actionBar = getActionBar();
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         if (currentapiVersion>=14 && actionBar != null) {
             actionBar.setHomeButtonEnabled(false); // disable the button
             actionBar.setDisplayHomeAsUpEnabled(false); // remove the left caret
@@ -5804,7 +5802,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 e.printStackTrace();
             }
 
-            currentapiVersion = android.os.Build.VERSION.SDK_INT;
             if (currentapiVersion >= 21) {
                 // Capable of pdf rendering
                 // PdfRenderer enables rendering a PDF document
@@ -7825,7 +7822,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 }
 
                 // If the user wants to show sticky notes at the top of the page
-                if (toggleAutoSticky.equals("T")) {
+                if (toggleAutoSticky.equals("T") && !mNotes.isEmpty() && !mNotes.equals("")) {
                     String notetoadd = getResources().getString(R.string.stickynotes)+":\n"+mNotes+"\n\n";
                     RelativeLayout stickyNotes1_1 = new RelativeLayout(this);
                     RelativeLayout stickyNotes1_2 = new RelativeLayout(this);
@@ -9184,7 +9181,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
 
         // If the user wants to show sticky notes at the bottom of the page
-        if (toggleAutoSticky.equals("B")) {
+        if (toggleAutoSticky.equals("B") && !mNotes.isEmpty() && !mNotes.equals("")) {
             String notetoadd = "\n\n"+getResources().getString(R.string.stickynotes)+":\n"+mNotes;
             RelativeLayout stickyNotes1_1 = new RelativeLayout(this);
             RelativeLayout stickyNotes2_2 = new RelativeLayout(this);

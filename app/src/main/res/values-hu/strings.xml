@@ -423,5 +423,7 @@
 	<string name="file_type">"Fájltípus"</string>
 	<string name="file_type_unknown">"ismeretlen"</string>
 	<string name="toggle_autoshow_stickynotes">"Toggle autoshow cetlik"</string>
+	<string name="storage_issues">"Ha bármilyen probléma fut az alkalmazás, kapcsolja a belső tárhelyre"</string>
+	<string name="overwrite">"Felülírja a meglévő elem"</string>
 
 </resources>

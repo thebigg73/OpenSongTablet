@@ -82,8 +82,7 @@ public class PopUpSongFolderCreateFragment extends DialogFragment {
         oldtempfolders = new ArrayList<>();
         for (int e=0;e<FullscreenActivity.mSongFolderNames.length;e++) {
             if (FullscreenActivity.mSongFolderNames[e]!=null &&
-                    !FullscreenActivity.mSongFolderNames[e].equals(FullscreenActivity.mainfoldername) &&
-                    !FullscreenActivity.mSongFolderNames[e].equals("("+FullscreenActivity.mainfoldername+")")) {
+                    !FullscreenActivity.mSongFolderNames[e].equals(FullscreenActivity.mainfoldername)) {
                 oldtempfolders.add(FullscreenActivity.mSongFolderNames[e]);
             }
         }
@@ -133,7 +132,9 @@ public class PopUpSongFolderCreateFragment extends DialogFragment {
                 String tempNewFolder = newFolderNameEditText.getText().toString().trim();
                 File checkExists = new File(FullscreenActivity.dir + "/" + tempNewFolder);
 
-                if (!tempNewFolder.equals("") && !tempNewFolder.isEmpty() && !tempNewFolder.contains("/") && !checkExists.exists() && !tempNewFolder.equals(FullscreenActivity.mainfoldername)) {
+                if (!tempNewFolder.equals("") && !tempNewFolder.isEmpty() && !tempNewFolder.contains("/") &&
+                        !checkExists.exists() &&
+                        !tempNewFolder.equals(FullscreenActivity.mainfoldername)) {
                     FullscreenActivity.newFolder = tempNewFolder;
                     String tempOldFolder = FullscreenActivity.currentFolder;
 

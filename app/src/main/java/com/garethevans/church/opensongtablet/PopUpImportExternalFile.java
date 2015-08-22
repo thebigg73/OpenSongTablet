@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -58,10 +59,10 @@ public class PopUpImportExternalFile extends DialogFragment {
     Spinner chooseFolder_Spinner;
     Button importFile_Cancel;
     Button importFile_Save;
+    CheckBox overWrite_CheckBox;
 
     static ArrayList<String> newtempfolders;
     static String moveToFolder;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         chooseFolder_Spinner = (Spinner) V.findViewById(R.id.chooseFolder_Spinner);
         importFile_Cancel = (Button) V.findViewById(R.id.importFile_Cancel);
         importFile_Save = (Button) V.findViewById(R.id.importFile_Save);
+        overWrite_CheckBox = (CheckBox) V.findViewById(R.id.overWrite_CheckBox);
 
         // By default, we will assume this is a song
         FullscreenActivity.file_type = getResources().getString(R.string.options_song);
@@ -238,7 +240,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                 }
 
                 // Does it exist?
-                if (testfile.exists()) {
+                if (testfile.exists() && !overWrite_CheckBox.isChecked()) {
                     Toast.makeText(getActivity(), getResources().getString(R.string.file_exists), Toast.LENGTH_LONG).show();
                 } else {
                     FullscreenActivity.myToastMessage = getResources().getString(R.string.ok);

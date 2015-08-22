@@ -78,11 +78,10 @@ public class PopUpSongRenameFragment extends DialogFragment {
 
         // The song folder
         newtempfolders = new ArrayList<>();
-        newtempfolders.add("("+FullscreenActivity.mainfoldername+")");
+        newtempfolders.add(FullscreenActivity.mainfoldername);
         for (int e = 0; e < FullscreenActivity.mSongFolderNames.length; e++) {
             if (FullscreenActivity.mSongFolderNames[e] != null &&
-                    !FullscreenActivity.mSongFolderNames[e].equals(FullscreenActivity.mainfoldername) &&
-                    !FullscreenActivity.mSongFolderNames[e].equals("(" + FullscreenActivity.mainfoldername + ")")) {
+                    !FullscreenActivity.mSongFolderNames[e].equals(FullscreenActivity.mainfoldername)) {
                 newtempfolders.add(FullscreenActivity.mSongFolderNames[e]);
             }
         }

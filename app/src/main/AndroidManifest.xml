@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
-    android:versionCode="68"
-    android:versionName="3.5.2"
+    android:versionCode="70"
+    android:versionName="3.5.4"
     android:installLocation="auto" >
 
     <uses-sdk
@@ -130,6 +130,69 @@
                 <data android:pathPattern="/.*\\..*\\..*\\..*\\.osts"/>
                 <data android:host="*" />
             </intent-filter>
+
+            <intent-filter android:label="@string/app_name"
+                android:icon="@drawable/ic_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+                <data android:host="*" />
+            </intent-filter>
+
+            <intent-filter android:label="@string/app_name"
+                android:icon="@drawable/ic_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern="/.*\\.pro" />
+                <data android:pathPattern="/.*\\..*\\.pro"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.pro"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.pro"/>
+                <data android:pathPattern="/.*\\.PRO" />
+                <data android:pathPattern="/.*\\..*\\.PRO"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.PRO"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.PRO"/>
+                <data android:pathPattern="/.*\\.chopro" />
+                <data android:pathPattern="/.*\\..*\\.chopro"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.chopro"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.chopro"/>
+                <data android:pathPattern="/.*\\.CHOPRO" />
+                <data android:pathPattern="/.*\\..*\\.CHOPRO"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.CHOPRO"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.CHOPRO"/>
+                <data android:pathPattern="/.*\\.chordpro" />
+                <data android:pathPattern="/.*\\..*\\.chordpro"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.chordpro"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.chordpro"/>
+                <data android:pathPattern="/.*\\.CHORDPRO" />
+                <data android:pathPattern="/.*\\..*\\.CHORDPRO"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.CHORDPRO"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.CHORDPRO"/>
+                <data android:host="*" />
+            </intent-filter>
+
+            <intent-filter android:label="@string/app_name"
+                android:icon="@drawable/ic_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern="/.*\\.txt" />
+                <data android:pathPattern="/.*\\..*\\.txt"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.txt"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.txt"/>
+                <data android:pathPattern="/.*\\.TXT" />
+                <data android:pathPattern="/.*\\..*\\.TXT"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.TXT"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.TXT"/>
+                <data android:host="*" />
+            </intent-filter>
+
 
         </activity>
         <activity

@@ -54,9 +54,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/chooseFolder_Spinner"
-        android:layout_marginBottom="12sp" />
+        android:layout_margin="8dp" />
 
-    <RelativeLayout
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/overwrite"
+            android:id="@+id/overWrite_CheckBox"
+            android:layout_margin="8dp" />
+
+        <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

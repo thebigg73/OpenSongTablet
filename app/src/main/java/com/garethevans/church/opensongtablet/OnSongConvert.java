@@ -623,7 +623,49 @@ public class OnSongConvert extends Activity {
 				line[x] = line[x].replace("Prechorus 3:", "[P3]");
 				line[x] = line[x].replace("Bridge:", "[B]");
 				line[x] = line[x].replace("Tag:", "[T]");
-				
+				line[x] = line[x].replace(" Intro:", "[Intro]");
+				line[x] = line[x].replace(" Outro:", "[Outro]");
+				line[x] = line[x].replace(" V:", "[V]");
+				line[x] = line[x].replace(" V1:", "[V1]");
+				line[x] = line[x].replace(" V2:", "[V2]");
+				line[x] = line[x].replace(" V3:", "[V3]");
+				line[x] = line[x].replace(" V4:", "[V4]");
+				line[x] = line[x].replace(" V5:", "[V5]");
+				line[x] = line[x].replace(" V6:", "[V6]");
+				line[x] = line[x].replace(" V7:", "[V7]");
+				line[x] = line[x].replace(" V8:", "[V8]");
+				line[x] = line[x].replace(" V9:", "[V9]");
+				line[x] = line[x].replace(" Verse:", "[V]");
+				line[x] = line[x].replace(" Verse 1:", "[V1]");
+				line[x] = line[x].replace(" Verse 2:", "[V2]");
+				line[x] = line[x].replace(" Verse 3:", "[V3]");
+				line[x] = line[x].replace(" Verse 4:", "[V4]");
+				line[x] = line[x].replace(" (Verse)", "[V]");
+				line[x] = line[x].replace(" (Verse 1)", "[V1]");
+				line[x] = line[x].replace(" (Verse 2)", "[V2]");
+				line[x] = line[x].replace(" (Verse 3)", "[V3]");
+				line[x] = line[x].replace(" (Chorus)", "[C]");
+				line[x] = line[x].replace(" C:", "[C]");
+				line[x] = line[x].replace(" C1:", "[C1]");
+				line[x] = line[x].replace(" C2:", "[C2]");
+				line[x] = line[x].replace(" C3:", "[C3]");
+				line[x] = line[x].replace(" C4:", "[C4]");
+				line[x] = line[x].replace(" C5:", "[C5]");
+				line[x] = line[x].replace(" C6:", "[C6]");
+				line[x] = line[x].replace(" C7:", "[C7]");
+				line[x] = line[x].replace(" C8:", "[C8]");
+				line[x] = line[x].replace(" C9:", "[C9]");
+				line[x] = line[x].replace(" Chorus:", "[C]");
+				line[x] = line[x].replace(" Chorus 1:", "[C1]");
+				line[x] = line[x].replace(" Chorus 2:", "[C2]");
+				line[x] = line[x].replace(" Chorus 3:", "[C3]");
+				line[x] = line[x].replace(" Prechorus:", "[P]");
+				line[x] = line[x].replace(" Prechorus 1:", "[P1]");
+				line[x] = line[x].replace(" Prechorus 2:", "[P2]");
+				line[x] = line[x].replace(" Prechorus 3:", "[P3]");
+				line[x] = line[x].replace(" Bridge:", "[B]");
+				line[x] = line[x].replace(" Tag:", "[T]");
+
 				// Guess custom tags - will be a short line with :
 				if (line[x].length()<15 && line[x].contains(":") && line[x].indexOf("{")!=0) {
 					line[x] = "[" + line[x].replace(":","") + "]";
@@ -789,6 +831,10 @@ public class OnSongConvert extends Activity {
 		}
 
 		newSongTitle = newSongTitle.replace(".onsong", "");
+		newSongTitle = newSongTitle.replace(".pro", "");
+		newSongTitle = newSongTitle.replace(".cho", "");
+		newSongTitle = newSongTitle.replace(".chopro", "");
+		newSongTitle = newSongTitle.replace(".chordpro", "");
 
 		File from;
 		File to;

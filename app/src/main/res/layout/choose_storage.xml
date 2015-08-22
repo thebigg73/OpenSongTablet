@@ -24,7 +24,16 @@
             android:text="@string/storage_help"
             android:textColor="#ffff00"
             android:textSize="22sp" />
-        
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView30"
+            android:text="@string/storage_issues"
+            android:textColor="#f55"
+            android:textSize="22sp"
+            android:layout_margin="20dp" />
+
         <RadioGroup
             android:id="@+id/storageOptions"
             android:layout_width="match_parent"

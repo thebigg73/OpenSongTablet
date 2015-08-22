@@ -423,5 +423,7 @@
 	<string name="file_type">"Tipo di file"</string>
 	<string name="file_type_unknown">"sconosciuto"</string>
 	<string name="toggle_autoshow_stickynotes">"Autoshow Toggle sticky notes"</string>
+	<string name="storage_issues">"Se si verificano problemi in esecuzione l'applicazione, si prega di passare alla memoria interna"</string>
+	<string name="overwrite">"Sovrascrivi elemento esistente"</string>
 
 </resources>

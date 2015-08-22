@@ -423,5 +423,7 @@
 	<string name="file_type">"Tipo de arquivo"</string>
 	<string name="file_type_unknown">"desconhecido"</string>
 	<string name="toggle_autoshow_stickynotes">"AutoApresentação alternância notas pegajosas"</string>
+	<string name="storage_issues">"Se você tiver quaisquer problemas ao executar o aplicativo, por favor mudar para o armazenamento interno"</string>
+	<string name="overwrite">"Substituir item existente"</string>
 
 </resources>

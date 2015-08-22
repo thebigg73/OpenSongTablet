@@ -423,5 +423,7 @@
 	<string name="file_type">"Dateityp"</string>
 	<string name="file_type_unknown">"unbekannt"</string>
 	<string name="toggle_autoshow_stickynotes">"Toggle autoshow Song Notizen"</string>
+	<string name="storage_issues">"Wenn Sie irgendwelche Probleme läuft die App haben, lesen Sie internen Speicher wechseln"</string>
+	<string name="overwrite">"Überschreibe existierende Artikel"</string>
 
 </resources>

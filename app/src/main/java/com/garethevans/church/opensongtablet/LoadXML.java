@@ -90,7 +90,10 @@ public class LoadXML extends Activity {
             initialiseSongTags();
 
             // If the song is OnSong format - try to import it
-            if (FullscreenActivity.songfilename.contains(".onsong")) {
+            if (FullscreenActivity.songfilename.contains(".onsong") ||
+                    FullscreenActivity.songfilename.toLowerCase().contains(".pro") ||
+                    FullscreenActivity.songfilename.toLowerCase().contains(".chopro") ||
+                    FullscreenActivity.songfilename.toLowerCase().contains(".chordpro")) {
                 // Run the ChordProConvert script
                 OnSongConvert.doExtract();
                 ListSongFiles.listSongs();

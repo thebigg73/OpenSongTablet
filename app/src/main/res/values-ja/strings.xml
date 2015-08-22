@@ -422,5 +422,7 @@
 	<string name="file_type">"ファイルの種類"</string>
 	<string name="file_type_unknown">"不明"</string>
 	<string name="toggle_autoshow_stickynotes">"トグルautoshow付箋"</string>
+	<string name="storage_issues">"アプリを実行しているすべての問題が発生した場合は、内部ストレージに切り替えてください"</string>
+	<string name="overwrite">"既存のアイテムを上書き"</string>
 
 </resources>

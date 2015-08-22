@@ -452,5 +452,7 @@
 	<string name="file_type">"lêer tipe"</string>
 	<string name="file_type_unknown">"onbekend"</string>
 	<string name="toggle_autoshow_stickynotes">"Toggle autoshow taai notas"</string>
+	<string name="storage_issues">"As jy enige probleme loop van die jeug ervaar, stuur oorskakel na interne berging"</string>
+	<string name="overwrite">"Oorskryf bestaande item"</string>
 
 </resources>

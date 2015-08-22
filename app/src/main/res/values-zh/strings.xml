@@ -427,5 +427,7 @@
 	<string name="file_type">"文件类型"</string>
 	<string name="file_type_unknown">"未知"</string>
 	<string name="toggle_autoshow_stickynotes">"切换自动显示即时贴"</string>
+	<string name="storage_issues">"如果您遇到运行的应用程序的任何问题，请切换到内部存储"</string>
+	<string name="overwrite">"覆盖现有项目"</string>
 
 </resources>

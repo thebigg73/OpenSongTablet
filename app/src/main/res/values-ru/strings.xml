@@ -423,5 +423,7 @@
 	<string name="file_type">"Тип файла"</string>
 	<string name="file_type_unknown">"неизвестный"</string>
 	<string name="toggle_autoshow_stickynotes">"Переключить Автошоу заметки"</string>
+	<string name="storage_issues">"Если вы испытываете какие-либо проблемы с запуском приложения, пожалуйста, переключитесь на внутреннюю память"</string>
+	<string name="overwrite">"Переписать существующий элемент"</string>
 
 </resources>

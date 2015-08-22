@@ -23,8 +23,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PopUpEditSetFragment extends DialogFragment {
 
@@ -52,6 +54,11 @@ public class PopUpEditSetFragment extends DialogFragment {
         super.onDetach();
     }
 
+    ArrayList<String> mCurrentSetList;
+    DynamicListView listView;
+    StableArrayAdapter adapter;
+    ImageButton set_shuffle;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -62,7 +69,7 @@ public class PopUpEditSetFragment extends DialogFragment {
         String tempCheck = "";
         String tempCheckThis;
 
-        ArrayList<String>mCurrentSetList = new ArrayList<>();
+        mCurrentSetList = new ArrayList<>();
 
         for (int i = 0; i < FullscreenActivity.mSetList.length; ++i) {
             // Need to ensure that we don't use the same name twice.
@@ -75,8 +82,8 @@ public class PopUpEditSetFragment extends DialogFragment {
             mCurrentSetList.add(tempCheckThis);
         }
 
-        StableArrayAdapter adapter = new StableArrayAdapter(getActivity(), R.layout.text_view, mCurrentSetList);
-        DynamicListView listView = (DynamicListView) V.findViewById(R.id.listview);
+        adapter = new StableArrayAdapter(getActivity(), R.layout.text_view, mCurrentSetList);
+        listView = (DynamicListView) V.findViewById(R.id.listview);
 
         listView.setSetList(mCurrentSetList);
         listView.setAdapter(adapter);
@@ -98,6 +105,17 @@ public class PopUpEditSetFragment extends DialogFragment {
             }
         });
 
+        set_shuffle = (ImageButton) V.findViewById(R.id.set_shuffle);
+        set_shuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Shuffle the set list
+                Collections.shuffle(mCurrentSetList);
+                // Redraw the lists
+                listView.setSetList(mCurrentSetList);
+                listView.setAdapter(adapter);
+            }
+        });
         return V;
     }
 
@@ -109,4 +127,5 @@ public class PopUpEditSetFragment extends DialogFragment {
         mListener.refreshAll();
         dismiss();
     }
+
 }

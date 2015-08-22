@@ -423,5 +423,7 @@
 	<string name="file_type">"Typ pliku"</string>
 	<string name="file_type_unknown">"nieznany"</string>
 	<string name="toggle_autoshow_stickynotes">"Przełącz Autoshow karteczki"</string>
+	<string name="storage_issues">"Jeśli wystąpią jakiekolwiek problemy z uruchomieniem aplikacji, należy przejść do pamięci wewnętrznej"</string>
+	<string name="overwrite">"Zastąp istniejący element"</string>
 
 </resources>
