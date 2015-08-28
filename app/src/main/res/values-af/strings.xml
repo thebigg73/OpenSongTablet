@@ -454,5 +454,13 @@
 	<string name="toggle_autoshow_stickynotes">"Toggle autoshow taai notas"</string>
 	<string name="storage_issues">"As jy enige probleme loop van die jeug ervaar, stuur oorskakel na interne berging"</string>
 	<string name="overwrite">"Oorskryf bestaande item"</string>
+	<string name="convert_song">"Asseblief omskep hierdie lied in OpenSong formaat (deur die lees van dit) voordat dit by 'n stel"</string>
+	<string name="link_audio">"Audio lêer skakel"</string>
+	<string name="link_file">"ander lêer"</string>
+	<string name="link_web">"Online skakel"</string>
+	<string name="link_youtube">"YouTube-skakel"</string>
+	<string name="no_audioplayer">"Geen klank speler geïnstalleer"</string>
+	<string name="no_filemanager">"Geen lêer bestuurder geïnstalleer"</string>
+	<string name="tap_tempo">"Tik tempo stel"</string>
 
 </resources>

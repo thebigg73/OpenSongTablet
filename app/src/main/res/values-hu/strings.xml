@@ -425,5 +425,13 @@
 	<string name="toggle_autoshow_stickynotes">"Toggle autoshow cetlik"</string>
 	<string name="storage_issues">"Ha bármilyen probléma fut az alkalmazás, kapcsolja a belső tárhelyre"</string>
 	<string name="overwrite">"Felülírja a meglévő elem"</string>
+	<string name="convert_song">"Kérjük, átalakítani ezt a dalt OpenSong formátumban (megtekintésével is), mielőtt hozzáadja a beállított"</string>
+	<string name="link_audio">"Audio file linket"</string>
+	<string name="link_file">"más fájl"</string>
+	<string name="link_web">"Online kapcsolat"</string>
+	<string name="link_youtube">"YouTube linket"</string>
+	<string name="no_audioplayer">"Nincs hang lejátszó telepítve"</string>
+	<string name="no_filemanager">"Nem fájlkezelő telepítve"</string>
+	<string name="tap_tempo">"Érintse meg, hogy a tempó"</string>
 
 </resources>

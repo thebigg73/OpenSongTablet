@@ -404,7 +404,8 @@
                 android:alpha="0.3"
                 android:contentDescription="@string/link"
                 android:src="@drawable/link"
-                android:visibility="invisible" />
+                android:onClick="popupLink"
+                android:visibility="visible" />
         </RelativeLayout>
     </HorizontalScrollView>
 
@@ -555,6 +556,22 @@
 
             <Spinner
                 android:id="@+id/popuppad_key"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#aaa"
+                android:textColor="#000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/backing_track"
+                android:textColor="#000"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/popuppad_file"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -875,6 +892,12 @@
                     android:textColor="#000"
                     android:textSize="18sp" />
             </LinearLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tap_tempo"
+                android:onClick="tapTempo"/>
 
             <TextView
                 android:layout_width="match_parent"

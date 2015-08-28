@@ -425,5 +425,13 @@
 	<string name="toggle_autoshow_stickynotes">"AutoApresentação alternância notas pegajosas"</string>
 	<string name="storage_issues">"Se você tiver quaisquer problemas ao executar o aplicativo, por favor mudar para o armazenamento interno"</string>
 	<string name="overwrite">"Substituir item existente"</string>
+	<string name="convert_song">"Por favor, converter essa música em formato OpenSong (por vê-lo) antes de adicioná-la a um conjunto"</string>
+	<string name="link_audio">"Link do arquivo de áudio"</string>
+	<string name="link_file">"outro arquivo"</string>
+	<string name="link_web">"ligação on-line"</string>
+	<string name="link_youtube">"link do YouTube"</string>
+	<string name="no_audioplayer">"Nenhum jogador de áudio instalado"</string>
+	<string name="no_filemanager">"Sem gerenciador de arquivos instalados"</string>
+	<string name="tap_tempo">"Toque para definir andamento"</string>
 
 </resources>

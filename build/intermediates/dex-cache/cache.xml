@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/home/gareth/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.1.1/support-annotations-22.1.1.jar"
+        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/libs/internal_impl-22.1.1.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
-        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/support-annotations-22.1.1-85a05be67aa5816a26c1e798e48087a29a1d1c42.jar" />
+        sha1="9e070ad32b2700b0343e8e0cccc437733d91ba3a">
+        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/internal_impl-22.1.1-0a6683441a7e1b36d386e2b26d7acedf8e991e59.jar" />
     </item>
     <item
         jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/jars/classes.jar"
@@ -16,18 +16,18 @@
         <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-2b2a7aa1876327da94ed810f64aa118cd88e2f92.jar" />
     </item>
     <item
+        jar="/home/gareth/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.1.1/support-annotations-22.1.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
+        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/support-annotations-22.1.1-85a05be67aa5816a26c1e798e48087a29a1d1c42.jar" />
+    </item>
+    <item
         jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/classes.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="c95ba8152923e4872e86a82cfcba9a51c0214328">
         <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-4bdde49bade3b708d3d4e6ac877aa2192b38ff2f.jar" />
-    </item>
-    <item
-        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/libs/internal_impl-22.1.1.jar"
-        jumboMode="false"
-        revision="21.1.2"
-        sha1="9e070ad32b2700b0343e8e0cccc437733d91ba3a">
-        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/internal_impl-22.1.1-0a6683441a7e1b36d386e2b26d7acedf8e991e59.jar" />
     </item>
 
 </items>

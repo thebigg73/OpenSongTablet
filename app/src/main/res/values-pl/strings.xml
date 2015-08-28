@@ -425,5 +425,13 @@
 	<string name="toggle_autoshow_stickynotes">"Przełącz Autoshow karteczki"</string>
 	<string name="storage_issues">"Jeśli wystąpią jakiekolwiek problemy z uruchomieniem aplikacji, należy przejść do pamięci wewnętrznej"</string>
 	<string name="overwrite">"Zastąp istniejący element"</string>
+	<string name="convert_song">"Proszę przekonwertować do formatu tej piosenki OpenSong (oglądając go) przed dodaniem go do zestawu"</string>
+	<string name="link_audio">"Plik audio Link"</string>
+	<string name="link_file">"Inne pliki"</string>
+	<string name="link_web">"Link w Internecie"</string>
+	<string name="link_youtube">"Link YouTube"</string>
+	<string name="no_audioplayer">"Nie zainstalowano odtwarzacz audio"</string>
+	<string name="no_filemanager">"Nie zainstalowano menedżer plików"</string>
+	<string name="tap_tempo">"Dotknij, aby ustawić tempo"</string>
 
 </resources>

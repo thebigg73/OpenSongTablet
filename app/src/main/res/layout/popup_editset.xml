@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/set_shuffle"
         android:background="@drawable/grey_button"
-        android:src="@drawable/shuffle"
+        android:src="@drawable/ic_action_shuffle"
         android:layout_alignTop="@+id/set_cancel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"

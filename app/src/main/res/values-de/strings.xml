@@ -425,5 +425,13 @@
 	<string name="toggle_autoshow_stickynotes">"Toggle autoshow Song Notizen"</string>
 	<string name="storage_issues">"Wenn Sie irgendwelche Probleme läuft die App haben, lesen Sie internen Speicher wechseln"</string>
 	<string name="overwrite">"Überschreibe existierende Artikel"</string>
+	<string name="convert_song">"Bitte konvertiert das Lied in Opensong Format (indem Sie es), bevor Sie die Ware in einer Reihe"</string>
+	<string name="link_audio">"Audiodatei Link"</string>
+	<string name="link_file">"andere Datei"</string>
+	<string name="link_web">"Online Verbindung"</string>
+	<string name="link_youtube">"YouTube-Link"</string>
+	<string name="no_audioplayer">"Keine Audio-Player installiert"</string>
+	<string name="no_filemanager">"Keine Dateimanager installiert"</string>
+	<string name="tap_tempo">"Tippen Sie, um Tempo"</string>
 
 </resources>

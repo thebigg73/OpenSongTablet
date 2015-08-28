@@ -425,5 +425,13 @@
 	<string name="toggle_autoshow_stickynotes">"Autoshow Toggle sticky notes"</string>
 	<string name="storage_issues">"Se si verificano problemi in esecuzione l'applicazione, si prega di passare alla memoria interna"</string>
 	<string name="overwrite">"Sovrascrivi elemento esistente"</string>
+	<string name="convert_song">"Si prega di convertire questo brano in formato OpenSong (visualizzando esso) prima di aggiungerlo al set"</string>
+	<string name="link_audio">"Link file audio"</string>
+	<string name="link_file">"altro file"</string>
+	<string name="link_web">"Link online"</string>
+	<string name="link_youtube">"link di YouTube"</string>
+	<string name="no_audioplayer">"Nessun giocatore audio installato"</string>
+	<string name="no_filemanager">"Nessun file Manager installato"</string>
+	<string name="tap_tempo">"Toccare per impostare il tempo"</string>
 
 </resources>

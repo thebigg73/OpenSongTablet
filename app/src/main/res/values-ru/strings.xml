@@ -425,5 +425,13 @@
 	<string name="toggle_autoshow_stickynotes">"Переключить Автошоу заметки"</string>
 	<string name="storage_issues">"Если вы испытываете какие-либо проблемы с запуском приложения, пожалуйста, переключитесь на внутреннюю память"</string>
 	<string name="overwrite">"Переписать существующий элемент"</string>
+	<string name="convert_song">"Пожалуйста, преобразовать эту песню в формате OpenSong (путем просмотра его) перед добавлением его к набору"</string>
+	<string name="link_audio">"Аудио файл ссылку"</string>
+	<string name="link_file">"Другое файл"</string>
+	<string name="link_web">"Интернет ссылка"</string>
+	<string name="link_youtube">"YouTube ссылку"</string>
+	<string name="no_audioplayer">"Не установлена аудио-плеер"</string>
+	<string name="no_filemanager">"Не установлена файловый менеджер"</string>
+	<string name="tap_tempo">"Нажмите, чтобы установить темп"</string>
 
 </resources>

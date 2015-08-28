@@ -429,5 +429,13 @@
 	<string name="toggle_autoshow_stickynotes">"切换自动显示即时贴"</string>
 	<string name="storage_issues">"如果您遇到运行的应用程序的任何问题，请切换到内部存储"</string>
 	<string name="overwrite">"覆盖现有项目"</string>
+	<string name="convert_song">"请将它添加到一组转换之前这首歌为OpenSong格式（通过查看它）"</string>
+	<string name="link_audio">"音频文件链接"</string>
+	<string name="link_file">"其他文件"</string>
+	<string name="link_web">"在线链接"</string>
+	<string name="link_youtube">"YouTube链接"</string>
+	<string name="no_audioplayer">"未安装音频播放器"</string>
+	<string name="no_filemanager">"未安装文件管理器"</string>
+	<string name="tap_tempo">"轻按以设定的速度"</string>
 
 </resources>

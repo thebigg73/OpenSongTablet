@@ -35,6 +35,11 @@
         android:title="@string/add_song_to_set"
         android:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/song_share"
+        android:icon="@drawable/ic_action_share"
+        android:title="@string/options_song_export"
+        android:showAsAction="ifRoom"/>
+
     <item android:id="@+id/youtube_websearch"
         android:title="@string/youtube"
         android:icon="@drawable/action_youtube"
@@ -59,43 +64,57 @@
     <item android:id="@+id/present_mode"
         android:icon="@drawable/action_present"
         android:title="@string/switchtopresentmode"
+        android:label="@string/switchtopresentmode"
+        android:hint="@string/switchtopresentmode"
         android:showAsAction="ifRoom"/>
 
     <item android:id="@+id/pad_menu_button"
         android:icon="@drawable/pad"
         android:title="@string/pad_onoroff"
+        android:label="@string/pad_onoroff"
+        android:hint="@string/pad_onoroff"
         android:showAsAction="never"/>
 
     <item android:id="@+id/autoscroll_menu_button"
         android:icon="@drawable/autoscroll"
         android:title="@string/autoscroll"
+        android:label="@string/autoscroll"
+        android:hint="@string/autoscroll"
         android:showAsAction="never"/>
 
     <item android:id="@+id/metronome_menu_button"
         android:icon="@drawable/metronome"
         android:title="@string/metronome"
+        android:label="@string/metronome"
+        android:hint="@string/metronome"
         android:showAsAction="never"/>
 
-    <!--
-        <item android:id="@+id/link_menu_button"
-              android:icon="@drawable/link"
-              android:title="@string/backing_track"
-              android:showAsAction="never"/>
-    -->
+    <item android:id="@+id/link_menu_button"
+        android:icon="@drawable/link"
+        android:title="@string/link"
+        android:label="@string/link"
+        android:hint="@string/link"
+        android:showAsAction="never"/>
 
     <item android:id="@+id/pageselect_menu_button"
         android:icon="@drawable/pdf_page"
         android:title="@string/pdf_selectpage"
+        android:label="@string/pdf_selectpage"
+        android:hint="@string/pdf_selectpage"
         android:showAsAction="never"/>
 
     <item android:id="@+id/stickynotes_menu_button"
         android:icon="@drawable/note_bw"
         android:title="@string/stickynotes"
+        android:label="@string/stickynotes"
+        android:hint="@string/stickynotes"
         android:showAsAction="never"/>
 
     <item android:id="@+id/chords_menu_button"
         android:icon="@drawable/chord"
         android:title="@string/chords"
+        android:label="@string/chords"
+        android:hint="@string/chords"
         android:showAsAction="never"/>
 
 </menu>

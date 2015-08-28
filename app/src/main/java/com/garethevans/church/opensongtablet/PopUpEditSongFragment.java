@@ -820,12 +820,21 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
                 index = w;
             }
         }
-        edit_song_capo_print.setSelection(index);
+        if (FullscreenActivity.mCapoPrint.equals("true")) {
+            edit_song_capo_print.setSelection(1);
+        } else if (FullscreenActivity.mCapoPrint.equals("false")) {
+            edit_song_capo_print.setSelection(2);
+        } else {
+            edit_song_capo_print.setSelection(0);
+        }
+        //edit_song_capo_print.setSelection(index);
 
         // The pad file
         // Currently only auto or off
         ArrayList<String> pad_option = new ArrayList<>();
         pad_option.add(getResources().getString(R.string.pad_auto));
+        pad_option.add(getResources().getString(R.string.link_audio));
+        pad_option.add(getResources().getString(R.string.off));
         ArrayAdapter<String> pad_file;
         pad_file = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, pad_option);
         pad_file.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

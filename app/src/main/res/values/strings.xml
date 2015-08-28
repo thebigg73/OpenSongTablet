@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<string name="tap_tempo">Tap to set tempo</string>
+	<string name="convert_song">Please convert this song into OpenSong format (by viewing it) before adding it to a set</string>
+    <string name="no_filemanager">No file manager installed</string>
+    <string name="no_audioplayer">No audio player installed</string>
+	<string name="link_youtube">YouTube link</string>
+    <string name="link_web">Online link</string>
+    <string name="link_audio">Audio file link</string>
+    <string name="link_file">Other file</string>
 	<string name="overwrite">Overwrite existing item</string>
 	<string name="storage_issues">If you experience any problems running the app, please switch to internal storage</string>
 	<string name="toggle_autoshow_stickynotes">Toggle autoshow sticky notes</string>

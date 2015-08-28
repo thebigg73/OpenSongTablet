@@ -291,9 +291,10 @@ public class EditSong extends Activity {
 		ArrayList<String> padoptions = new ArrayList<>();
 		padoptions.add(getResources().getString(R.string.off));
 		padoptions.add(getResources().getString(R.string.pad_auto));
+		padoptions.add(getResources().getString(R.string.link_audio));
 		
 		ArrayAdapter<String> adapter5 = new ArrayAdapter<>(this,
-			     android.R.layout.simple_spinner_item, padoptions);
+                android.R.layout.simple_spinner_item, padoptions);
 		adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		song_pad_file.setAdapter(adapter5);
 
@@ -538,9 +539,11 @@ public class EditSong extends Activity {
 
 		int padfileindex = 0;
 		if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.pad_auto))) {
-			capoprintindex = 1;
-		}
-		song_pad_file.setSelection(padfileindex);
+			padfileindex = 1;
+		} else if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.link_audio))) {
+            padfileindex = 2;
+        }
+		//song_pad_file.setSelection(padfileindex);
 
 		if (FullscreenActivity.mTheme.contains(getResources().getString(
 				R.string.theme_christ_attributes))) {
@@ -916,6 +919,10 @@ public class EditSong extends Activity {
 		myNEWXML += "  <linked_songs>" + FullscreenActivity.mLinkedSongs + "</linked_songs>\n";
 		myNEWXML += "  <pad_file>" + FullscreenActivity.mPadFile + "</pad_file>\n";
         myNEWXML += "  <custom_chords>" + FullscreenActivity.mCustomChords + "</custom_chords>\n";
+        myNEWXML += "  <link_youtube>" + FullscreenActivity.mLinkYouTube + "</link_youtube>\n";
+        myNEWXML += "  <link_web>" + FullscreenActivity.mLinkWeb + "</link_web>\n";
+        myNEWXML += "  <link_audio>" + FullscreenActivity.mLinkAudio + "</link_audio>\n";
+        myNEWXML += "  <link_other>" + FullscreenActivity.mLinkOther + "</link_other>\n";
 
         if (!FullscreenActivity.mExtraStuff1.isEmpty()) {
 			myNEWXML += "  " + FullscreenActivity.mExtraStuff1 + "\n";
@@ -961,6 +968,10 @@ public class EditSong extends Activity {
 		myNEWXML += "  <linked_songs></linked_songs>\n";
 		myNEWXML += "  <pad_file></pad_file>\n";
 		myNEWXML += "  <custom_chords></custom_chords>\n";
+		myNEWXML += "  <link_youtube></link_youtube>\n";
+        myNEWXML += "  <link_web></link_web>\n";
+        myNEWXML += "  <link_audio></link_audio>\n";
+        myNEWXML += "  <link_other></link_other>\n";
 		myNEWXML += "</song>";
 		FullscreenActivity.mynewXML = myNEWXML;
 	}

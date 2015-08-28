@@ -426,5 +426,13 @@
 	<string name="toggle_autoshow_stickynotes">"Přepnout Autoshow Sticky Notes"</string>
 	<string name="storage_issues">"Pokud budete mít nějaké problémy se spuštěním aplikace, přepněte na interní úložiště"</string>
 	<string name="overwrite">"Přepsat existující položku"</string>
+	<string name="convert_song">"Prosím, převést tuto píseň do formátu OpenSong (zobrazením to) před přidáním do souboru"</string>
+	<string name="link_audio">"Audio file link"</string>
+	<string name="link_file">"Další soubor"</string>
+	<string name="link_web">"Online odkaz"</string>
+	<string name="link_youtube">"odkaz YouTube"</string>
+	<string name="no_audioplayer">"Instalován žádný audio přehrávač"</string>
+	<string name="no_filemanager">"Instalován žádný správce souborů"</string>
+	<string name="tap_tempo">"Klepnutím nastavte tempo"</string>
 
 </resources>

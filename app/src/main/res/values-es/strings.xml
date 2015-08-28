@@ -425,5 +425,13 @@
 	<string name="toggle_autoshow_stickynotes">"Autoshow Toggle notas adhesivas"</string>
 	<string name="storage_issues">"Si experimenta problemas al ejecutar la aplicación, por favor, cambie a almacenamiento interno"</string>
 	<string name="overwrite">"Sobrescribir elemento existente"</string>
+	<string name="convert_song">"Por favor, convertir la canción en formato OpenSong (viéndolo) antes de añadir a un conjunto"</string>
+	<string name="link_audio">"Vínculo de archivo de audio"</string>
+	<string name="link_file">"Otros archivos"</string>
+	<string name="link_web">"enlace Online"</string>
+	<string name="link_youtube">"enlace de YouTube"</string>
+	<string name="no_audioplayer">"Ningún jugador de audio instalado"</string>
+	<string name="no_filemanager">"Sin administrador de archivos instalado"</string>
+	<string name="tap_tempo">"Toque para establecer el tempo"</string>
 
 </resources>

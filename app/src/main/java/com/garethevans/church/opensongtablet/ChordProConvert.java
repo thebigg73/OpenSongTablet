@@ -17,26 +17,7 @@ public class ChordProConvert extends Activity {
 		String parsedlines;
 		// Initialise all the xml tags a song should have
 		FullscreenActivity.mTitle = FullscreenActivity.songfilename;
-		FullscreenActivity.mAuthor = "";
-		FullscreenActivity.mCopyright = "";
-		FullscreenActivity.mPresentation = "";
-		FullscreenActivity.mHymnNumber = "";
-		FullscreenActivity.mCapo = "";
-		FullscreenActivity.mCapoPrint = "false";
-		FullscreenActivity.mTempo = "";
-		FullscreenActivity.mTimeSig = "";
-		FullscreenActivity.mCCLI = "";
-		FullscreenActivity.mTheme = "";
-		FullscreenActivity.mAltTheme = "";
-		FullscreenActivity.mUser1 = "";
-		FullscreenActivity.mUser2 = "";
-		FullscreenActivity.mUser3 = "";
-		FullscreenActivity.mKey = "";
-		FullscreenActivity.mAka = "";
-		FullscreenActivity.mKeyLine = "";
-		FullscreenActivity.mLyrics = "";
-		FullscreenActivity.mStyle = "";
-		FullscreenActivity.mStyleIndex = "default_style";
+		LoadXML.initialiseSongTags();
 
 		// Break the temp variable into an array split by line
 		// Check line endings are \n
@@ -58,13 +39,10 @@ public class ChordProConvert extends Activity {
 		String temptitle = "";
 		String tempsubtitle = "";
 
-		
 		// Go through individual lines and fix simple stuff
 		for (int x = 0; x < numlines; x++) {
-
 			// Get rid of any extra whitespace
 			line[x] = line[x].trim();
-			
 			
 			// Make tag lines common
 			line[x] = line[x].replace("{ns", "{new_song");
@@ -221,8 +199,7 @@ public class ChordProConvert extends Activity {
 			}
 			tempchordline = "";
 		}
-		
-		
+
 		// Join the individual lines back up
 		parsedlines = "";
 		for (int x = 0; x < numlines; x++) {
@@ -254,7 +231,6 @@ public class ChordProConvert extends Activity {
 			parsedlines = parsedlines + line[x] + "\n";
 		}
 
-		
 		// Remove start and end of tabs
 		while (parsedlines.contains("{start_of_tab") && parsedlines.contains("{end_of_tab")) {
 			int startoftabpos = -1;
@@ -267,9 +243,7 @@ public class ChordProConvert extends Activity {
 				String endbit = parsedlines.substring(endoftabpos);
 				parsedlines = startbit + endbit;
 			}
-
 		}
-		
 		
 		// Change start and end of chorus
 		while (parsedlines.contains("{start_of_chorus")) {
@@ -290,7 +264,6 @@ public class ChordProConvert extends Activity {
 			parsedlines = parsedlines.replace("}","");
 		}
 
-		
 		// Get rid of double line breaks
 		while (parsedlines.contains("\n\n\n")) {
 			parsedlines = parsedlines.replace("\n\n\n","\n\n");
@@ -300,8 +273,6 @@ public class ChordProConvert extends Activity {
 			parsedlines = parsedlines.replace(";\n\n;",";\n");
 		}
 
-		
-		
 		// Ok, go back through the parsed lines and add spaces to the beginning
 		// of lines that aren't comments, chords or tags
 		String[] line2 = parsedlines.split("\n");
@@ -350,7 +321,14 @@ public class ChordProConvert extends Activity {
 				+ "  <pitch></pitch>\r\n"
 				+ "  <restrictions></restrictions>\r\n"
 				+ "  <notes></notes>\r\n"
-				+ "<lyrics>" + parsedlines.trim() + "</lyrics>\r\n"
+				+ "  <lyrics>" + parsedlines.trim() + "</lyrics>\r\n"
+                + "  <linked_songs></linked_songs>\n"
+                + "  <pad_file></pad_file>\n"
+                + "  <custom_chords></custom_chords>\n"
+                + "  <link_youtube></custom_chords>\n"
+                + "  <link_web></link_web>\n"
+                + "  <link_audio></link_audio>\n"
+                + "  <link_other></link_other>\n"
 				+ "</song>";
 		
 		// Save this song in the right format!
@@ -390,12 +368,17 @@ public class ChordProConvert extends Activity {
 			newSongTitle = temptitle;
 		}
 
-		
-	
-		newSongTitle = newSongTitle.replace(".chordpro", "");
-		newSongTitle = newSongTitle.replace(".chopro", "");
+
+		newSongTitle = newSongTitle.replace(".pro", "");
+        newSongTitle = newSongTitle.replace(".PRO", "");
 		newSongTitle = newSongTitle.replace(".cho", "");
-		newSongTitle = newSongTitle.replace(".crd", "");
+		newSongTitle = newSongTitle.replace(".chopro", "");
+		newSongTitle = newSongTitle.replace(".chordpro", "");
+        newSongTitle = newSongTitle.replace(".CHO", "");
+        newSongTitle = newSongTitle.replace(".CHOPRO", "");
+        newSongTitle = newSongTitle.replace(".CHORDPRO", "");
+        newSongTitle = newSongTitle.replace(".txt", "");
+        newSongTitle = newSongTitle.replace(".TXT", "");
 
         File from;
         File to;
@@ -407,7 +390,8 @@ public class ChordProConvert extends Activity {
         } else {
             from = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
                     + FullscreenActivity.songfilename);
-            to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + newSongTitle);
+            to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
+                    + newSongTitle);
         }
 
         // IF THE FILENAME ALREADY EXISTS, REALLY SHOULD ASK THE USER FOR A NEW FILENAME
@@ -417,7 +401,7 @@ public class ChordProConvert extends Activity {
             if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
                 to = new File(FullscreenActivity.dir + "/" + newSongTitle);
             } else {
-                to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + newSongTitle);
+                to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + newSongTitle);
             }
 		}
 		
@@ -430,9 +414,11 @@ public class ChordProConvert extends Activity {
 
 		// Get the song indexes
 		ListSongFiles.getCurrentSongIndex();
-
 		Preferences.savePreferences();
-		
+
+        // Prepare the app to fix the song menu with the new file
+        FullscreenActivity.converting = true;
+
 		return true;
 	}
 }

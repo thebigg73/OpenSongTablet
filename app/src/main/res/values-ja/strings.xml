@@ -424,5 +424,13 @@
 	<string name="toggle_autoshow_stickynotes">"トグルautoshow付箋"</string>
 	<string name="storage_issues">"アプリを実行しているすべての問題が発生した場合は、内部ストレージに切り替えてください"</string>
 	<string name="overwrite">"既存のアイテムを上書き"</string>
+	<string name="convert_song">"セットに追加する前に（それを見て）OpenSong形式にこの曲を変換してください"</string>
+	<string name="link_audio">"オーディオファイルリンク"</string>
+	<string name="link_file">"その他のファイル"</string>
+	<string name="link_web">"オンラインリンク"</string>
+	<string name="link_youtube">"YouTubeのリンク"</string>
+	<string name="no_audioplayer">"いいえオーディオプレーヤーがインストールされていません"</string>
+	<string name="no_filemanager">"いいえファイルマネージャがインストールされていません"</string>
+	<string name="tap_tempo">"テンポを設定するタップ"</string>
 
 </resources>

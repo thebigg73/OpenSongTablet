@@ -19,35 +19,8 @@ public class OnSongConvert extends Activity {
 		// Initialise all the xml tags a song should have
         Log.d("d","temp="+temp);
         FullscreenActivity.mTitle = FullscreenActivity.songfilename.replaceAll("[\\x0-\\x9]", "");
-        FullscreenActivity.mAuthor = "";
-		FullscreenActivity.mCopyright = "";
-		FullscreenActivity.mPresentation = "";
-		FullscreenActivity.mHymnNumber = "";
-		FullscreenActivity.mCapo = "";
-		FullscreenActivity.mCapoPrint = "false";
-		FullscreenActivity.mTempo = "";
-		FullscreenActivity.mTimeSig = "";
-		FullscreenActivity.mCCLI = "";
-		FullscreenActivity.mTheme = "";
-		FullscreenActivity.mAltTheme = "";
-		FullscreenActivity.mUser1 = "";
-		FullscreenActivity.mUser2 = "";
-		FullscreenActivity.mUser3 = "";
-		FullscreenActivity.mKey = "";
-		FullscreenActivity.mAka = "";
-		FullscreenActivity.mKeyLine = "";
-		FullscreenActivity.mLyrics = "";
-		FullscreenActivity.mStyle = "";
-		FullscreenActivity.mStyleIndex = "default_style";
-        FullscreenActivity.mLinkedSongs = "";
-        FullscreenActivity.mBooks = "";
-        FullscreenActivity.mMidi = "";
-        FullscreenActivity.mMidiIndex = "";
-        FullscreenActivity.mPitch = "";
-        FullscreenActivity.mRestrictions = "";
-        FullscreenActivity.mNotes = "";
-        FullscreenActivity.mPadFile = "";
-        FullscreenActivity.mCustomChords = "";
+        // Initialise all the other tags
+        LoadXML.initialiseSongTags();
 
         // Break the temp variable into an array split by line
 		// Check line endings are \n
@@ -76,10 +49,8 @@ public class OnSongConvert extends Activity {
             line[c] = line[c].replaceAll("[^\\x20-\\x7e]", "");
         }
 
-
 		// Extract the metadata
 		// This is all the lines before the first blank line
-		
 		int metadatastart = 0;
 		int metadataend = 0;
 		
@@ -574,8 +545,7 @@ public class OnSongConvert extends Activity {
 			}
 			tempchordline = "";
 		}
-		
-		
+
 		// Join the individual lines back up
 		parsedlines = "";
 		for (int x = 0; x < numlines; x++) {
@@ -687,9 +657,7 @@ public class OnSongConvert extends Activity {
 				String endbit = parsedlines.substring(endoftabpos);
 				parsedlines = startbit + endbit;
 			}
-
 		}
-		
 		
 		// Change start and end of chorus
 		while (parsedlines.contains("{start_of_chorus")) {
@@ -728,7 +696,6 @@ public class OnSongConvert extends Activity {
 			parsedlines = parsedlines.replace(":","");
 			parsedlines = parsedlines.replace("}","");
 		}
-
 		
 		// Get rid of double line breaks
 		while (parsedlines.contains("\n\n\n")) {
@@ -763,35 +730,39 @@ public class OnSongConvert extends Activity {
 		}
 
 		FullscreenActivity.myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-				+ "<song>\r\n"
-				+ "<title>" + FullscreenActivity.mTitle + "</title>\r\n"
-				+ "<author>" + FullscreenActivity.mAuthor + "</author>\r\n" 
-				+ "<copyright>" + FullscreenActivity.mCopyright + "</copyright>\r\n"
-				+ "  <presentation>" + FullscreenActivity.mPresentation + "</presentation>\r\n"
-				+ "  <hymn_number>" + FullscreenActivity.mHymnNumber + "</hymn_number>\r\n"
-				+ "  <capo print=\"" + FullscreenActivity.mCapoPrint + "\">" + FullscreenActivity.mCapo + "</capo>\r\n"
-				+ "  <tempo>" + FullscreenActivity.mTempo + "</tempo>\r\n"
-				+ "  <time_sig>" + FullscreenActivity.mTimeSig + "</time_sig>\r\n"
-				+ "  <duration>" + FullscreenActivity.mDuration + "</duration>\r\n"
-				+ "  <ccli>" + FullscreenActivity.mCCLI + "</ccli>\r\n"
-				+ "  <theme>" + FullscreenActivity.mTheme + "</theme>\r\n"
-				+ "  <alttheme></alttheme>\r\n"
-				+ "  <user1>" + FullscreenActivity.mUser1 + "</user1>\r\n"
-				+ "  <user2></user2>\r\n"
-				+ "  <user3></user3>\r\n"
-				+ "  <key>" + FullscreenActivity.mKey + "</key>\r\n"
-				+ "  <aka></aka>\r\n"
-				+ "  <key_line></key_line>\r\n"
-				+ "  <books>" + FullscreenActivity.mBooks + "</books>\r\n"
-				+ "  <midi>" + FullscreenActivity.mMidi + "</midi>\r\n"
-				+ "  <midi_index>" + FullscreenActivity.mMidiIndex + "</midi_index>\r\n"
-				+ "  <pitch>" + FullscreenActivity.mPitch + "</pitch>\r\n"
-				+ "  <restrictions>" + FullscreenActivity.mRestrictions + "</restrictions>\r\n"
-				+ "  <notes></notes>\r\n"
-				+ "  <lyrics>" + parsedlines.trim() + "</lyrics>\r\n"
-                + "  <linked_songs>" + FullscreenActivity.mLinkedSongs + "</linked_songs>\r\n"
-                + "  <pad_file>" + FullscreenActivity.mPadFile + "</pad_file>\r\n"
-                + "  <custom_chords>" + FullscreenActivity.mCustomChords + "</custom_chords>\r\n"
+				+ "<song>\n"
+				+ "<title>" + FullscreenActivity.mTitle + "</title>\n"
+				+ "<author>" + FullscreenActivity.mAuthor + "</author>\n"
+				+ "<copyright>" + FullscreenActivity.mCopyright + "</copyright>\n"
+				+ "  <presentation>" + FullscreenActivity.mPresentation + "</presentation>\n"
+				+ "  <hymn_number>" + FullscreenActivity.mHymnNumber + "</hymn_number>\n"
+				+ "  <capo print=\"" + FullscreenActivity.mCapoPrint + "\">" + FullscreenActivity.mCapo + "</capo>\n"
+				+ "  <tempo>" + FullscreenActivity.mTempo + "</tempo>\n"
+				+ "  <time_sig>" + FullscreenActivity.mTimeSig + "</time_sig>\n"
+				+ "  <duration>" + FullscreenActivity.mDuration + "</duration>\n"
+				+ "  <ccli>" + FullscreenActivity.mCCLI + "</ccli>\n"
+				+ "  <theme>" + FullscreenActivity.mTheme + "</theme>\n"
+				+ "  <alttheme></alttheme>\n"
+				+ "  <user1>" + FullscreenActivity.mUser1 + "</user1>\n"
+				+ "  <user2></user2>\n"
+				+ "  <user3></user3>\n"
+				+ "  <key>" + FullscreenActivity.mKey + "</key>\n"
+				+ "  <aka></aka>\n"
+				+ "  <key_line></key_line>\n"
+				+ "  <books>" + FullscreenActivity.mBooks + "</books>\n"
+				+ "  <midi>" + FullscreenActivity.mMidi + "</midi>\n"
+				+ "  <midi_index>" + FullscreenActivity.mMidiIndex + "</midi_index>\n"
+				+ "  <pitch>" + FullscreenActivity.mPitch + "</pitch>\n"
+				+ "  <restrictions>" + FullscreenActivity.mRestrictions + "</restrictions>\n"
+				+ "  <notes></notes>\n"
+				+ "  <lyrics>" + parsedlines.trim() + "</lyrics>\n"
+                + "  <linked_songs>" + FullscreenActivity.mLinkedSongs + "</linked_songs>\n"
+                + "  <pad_file>" + FullscreenActivity.mPadFile + "</pad_file>\n"
+                + "  <custom_chords>" + FullscreenActivity.mCustomChords + "</custom_chords>\n"
+                + "  <link_youtube>" + FullscreenActivity.mLinkYouTube + "</custom_chords>\n"
+                + "  <link_web>" + FullscreenActivity.mLinkWeb + "</link_web>\n"
+                + "  <link_audio>" + FullscreenActivity.mLinkAudio + "</link_audio>\n"
+                + "  <link_other>" + FullscreenActivity.mLinkOther + "</link_other>\n"
 				+ "</song>";
 		
 		// Save this song in the right format!
@@ -831,17 +802,12 @@ public class OnSongConvert extends Activity {
 		}
 
 		newSongTitle = newSongTitle.replace(".onsong", "");
-		newSongTitle = newSongTitle.replace(".pro", "");
-		newSongTitle = newSongTitle.replace(".cho", "");
-		newSongTitle = newSongTitle.replace(".chopro", "");
-		newSongTitle = newSongTitle.replace(".chordpro", "");
 
 		File from;
 		File to;
 
         if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-            from = new File(FullscreenActivity.dir + "/"
-                    + FullscreenActivity.songfilename);
+            from = new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename);
             to = new File(FullscreenActivity.dir + "/" + newSongTitle);
         } else {
             from = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
@@ -872,7 +838,10 @@ public class OnSongConvert extends Activity {
 
 		FullscreenActivity.needtorefreshsongmenu = true;
 		Preferences.savePreferences();
-		
+
+        // Prepare the app to fix the song menu with the new file
+        FullscreenActivity.converting = true;
+
 		return true;
 	}
 }

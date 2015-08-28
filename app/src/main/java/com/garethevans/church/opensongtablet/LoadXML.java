@@ -90,10 +90,7 @@ public class LoadXML extends Activity {
             initialiseSongTags();
 
             // If the song is OnSong format - try to import it
-            if (FullscreenActivity.songfilename.contains(".onsong") ||
-                    FullscreenActivity.songfilename.toLowerCase().contains(".pro") ||
-                    FullscreenActivity.songfilename.toLowerCase().contains(".chopro") ||
-                    FullscreenActivity.songfilename.toLowerCase().contains(".chordpro")) {
+            if (FullscreenActivity.songfilename.contains(".onsong")) {
                 // Run the ChordProConvert script
                 OnSongConvert.doExtract();
                 ListSongFiles.listSongs();
@@ -109,9 +106,13 @@ public class LoadXML extends Activity {
                     FullscreenActivity.myXML.contains("{comment") ||
                     FullscreenActivity.myXML.contains("{c:") ||
                     FullscreenActivity.myXML.contains("{new_song") ||
-                    FullscreenActivity.myXML.contains("{ns")) {
+                    FullscreenActivity.myXML.contains("{ns") ||
+                    FullscreenActivity.songfilename.toLowerCase().contains(".pro") ||
+                    FullscreenActivity.songfilename.toLowerCase().contains(".chopro") ||
+                    FullscreenActivity.songfilename.toLowerCase().contains(".chordpro")) {
                 // Run the ChordProConvert script
                 ChordProConvert.doExtract();
+                ListSongFiles.listSongs();
             }
 
 
@@ -220,6 +221,14 @@ public class LoadXML extends Activity {
                         FullscreenActivity.mPadFile = xpp.nextText();
                     } else if (xpp.getName().equals("custom_chords")) {
                         FullscreenActivity.mCustomChords = xpp.nextText();
+                    } else if (xpp.getName().equals("link_youtube")) {
+                        FullscreenActivity.mLinkYouTube = xpp.nextText();
+                    } else if (xpp.getName().equals("link_web")) {
+                        FullscreenActivity.mLinkWeb = xpp.nextText();
+                    } else if (xpp.getName().equals("link_audio")) {
+                        FullscreenActivity.mLinkAudio = xpp.nextText();
+                    } else if (xpp.getName().equals("link_other")) {
+                        FullscreenActivity.mLinkOther = xpp.nextText();
                     }
                 }
                 eventType = xpp.next();
@@ -289,5 +298,9 @@ public class LoadXML extends Activity {
 		FullscreenActivity.mLinkedSongs = "";
 		FullscreenActivity.mPadFile = "";
 		FullscreenActivity.mCustomChords = "";
+        FullscreenActivity.mLinkYouTube = "";
+        FullscreenActivity.mLinkWeb = "";
+        FullscreenActivity.mLinkAudio = "";
+        FullscreenActivity.mLinkOther = "";
 	}
 }

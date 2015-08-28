@@ -138,6 +138,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     public static int crossFadeTime = 8000;
     public static String toggleScrollArrows;
 
+    public static boolean converting = false;
+
     @SuppressWarnings("unused")
     // Identify the chord images
     private Drawable f1;
@@ -220,6 +222,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     private ScrollView popupPad;
     private static String popupPad_stoporstart = "stop";
     private Spinner popupPad_key;
+    private Spinner popupPad_file;
     private SeekBar popupPad_volume;
     private TextView popupPad_volume_text;
     private SeekBar popupPad_pan;
@@ -239,6 +242,14 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
 
     ScrollView popupMetronome;
+    static long tap_tempo = 0;
+    static int total_calc_bpm;
+    int total_counts = 0;
+    static int av_bpm;
+    static long new_time = 0;
+    static long time_passed = 0;
+    static long old_time = 0;
+    static int calc_bpm;
     static String popupMetronome_stoporstart = "stop";
     Spinner popupMetronome_timesig;
     public SeekBar popupMetronome_tempo;
@@ -610,6 +621,10 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String mExtraStuff2 = "";
     static String mPadFile = "";
     static String mCustomChords = "";
+    static String mLinkYouTube = "";
+    static String mLinkWeb = "";
+    static String mLinkAudio = "";
+    static String mLinkOther = "";
 
     // Info for the lyrics table
     private static float mScaleFactor = 1.0f;
@@ -827,7 +842,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             }
         } catch (Exception e) {
             // No file
-            Log.d("d","noIntentFile");
+            Log.d("d","noIntentFile - fine, start app normally");
         }
 
         gestureDetector = new GestureDetector(new SwipeDetector());
@@ -943,7 +958,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             }
         } catch (Exception e) {
             // No file
-            Log.d("d","noIntentFile");
+            Log.d("d","noIntentFile - fine, start app normally");
         }
 
 
@@ -1074,6 +1089,15 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         adapter_key.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         popupPad_key.setAdapter(adapter_key);
         popupPad_key.setOnItemSelectedListener(new popupPad_keyListener());
+        popupPad_file = (Spinner) findViewById(R.id.popuppad_file);
+        ArrayList<String> padfiles = new ArrayList<>();
+        padfiles.add(getResources().getString(R.string.pad_auto));
+        padfiles.add(getResources().getString(R.string.link_audio));
+        padfiles.add(getResources().getString(R.string.off));
+        ArrayAdapter<String> adapter_file = new ArrayAdapter<>(this, R.layout.my_spinner, padfiles);
+        adapter_file.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        popupPad_file.setAdapter(adapter_file);
+        popupPad_file.setOnItemSelectedListener(new popupPad_fileListener());
         popupPad_volume = (SeekBar) findViewById(R.id.popuppad_volume);
         popupPad_volume.setOnSeekBarChangeListener(new popupPad_volumeListener());
         popupPad_volume_text = (TextView) findViewById(R.id.popuppad_volume_text);
@@ -1374,6 +1398,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         scrollpage.requestFocus();
     }
 
+    public void popupLink (View view) {
+        DialogFragment newFragment = PopUpLinks.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
+    }
+
     private void hidepopupChord() {
         if (popupChord.getVisibility()==View.VISIBLE) {
             popupChord.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.slide_out_top));
@@ -1635,6 +1664,28 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
             Log.e ("popupPad", "Nothing selected");
+        }
+    }
+
+    private class popupPad_fileListener implements OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view,
+                                   int position, long id) {
+            if (position==1) {
+                if (mLinkAudio.isEmpty() || mLinkAudio.equals("")) {
+                    mPadFile = getResources().getString(R.string.pad_auto);
+                    popupPad_file.setSelection(0);
+                    myToastMessage = getResources().getString(R.string.notset);
+                    ShowToast.showToast(FullscreenActivity.this);
+                }
+            }
+            FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+            Log.e ("popupFile", "Nothing selected");
         }
 
     }
@@ -1959,7 +2010,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             startActivity(intent_stop);
             finish();
         }
-
     }
 
     private void promptTempo() {
@@ -1978,7 +2028,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         DialogFragment newFragment = PopUpSetView.newInstance();
         newFragment.show(getFragmentManager(), "dialog");
     }
-
 
     private void promptTimeSig() {
         if (popupMetronome.getVisibility()!=View.VISIBLE) {
@@ -2607,19 +2656,62 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 killfadeout2 = false;
             }
 
-            if (!mKey.isEmpty() && !mKey.equals("")) {
+            // test linkaudio file with mediaplayer
+            MediaPlayer testMPlayer = new MediaPlayer();
+            boolean testfile = true;
+            try {
+                testMPlayer.setDataSource(this,Uri.parse(mLinkAudio));
+                testMPlayer.prepareAsync();
+            } catch (Exception e) {
+                testfile = false;
+            }
+
+
+            if ((!mKey.isEmpty() && !mKey.equals("") && !mPadFile.equals(getResources().getString(R.string.off)) && !mPadFile.equals(getResources().getString(R.string.link_audio)))) {
                 // So far so good, change the button (valid key is checked later).
+                // This will be an auto pad backing track
                 padson = true;
                 padPlayingToggle = true;
                 padButton.setAlpha(0.5f);
                 popupPad_startstopbutton.setText(getResources().getString(R.string.stop));
                 popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
                 popupPad_startstopbutton.setEnabled(true);
-                popupPad_stoporstart="start";
+                popupPad_stoporstart = "start";
 
                 myToastMessage = getResources().getString(R.string.pad_playing);
                 ShowToast.showToast(FullscreenActivity.this);
                 playPads(view);
+
+            } else if (mPadFile.equals(getResources().getString(R.string.link_audio)) && testfile && !mLinkAudio.isEmpty() && !mLinkAudio.equals("")) {
+                // This is a valid audio link file
+                padson = true;
+                padPlayingToggle = true;
+                padButton.setAlpha(0.5f);
+                popupPad_startstopbutton.setText(getResources().getString(R.string.stop));
+                popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
+                popupPad_startstopbutton.setEnabled(true);
+                popupPad_stoporstart = "start";
+
+                myToastMessage = getResources().getString(R.string.pad_playing);
+                ShowToast.showToast(FullscreenActivity.this);
+                playPads(view);
+
+            } else if (mPadFile.equals(getResources().getString(R.string.link_audio)) && (!testfile || mLinkAudio.isEmpty() || mLinkAudio.equals(""))) {
+                // Tried to use a link file, but it is empty or not valid
+                myToastMessage = getResources().getString(R.string.link_audio) + " - " + getResources().getString(R.string.file_type_unknown);
+                ShowToast.showToast(FullscreenActivity.this);
+                // Do nothing until key is specified
+                if (popupPad.getVisibility()!=View.VISIBLE) {
+                    // User has probably pressed the foot pedal - don't show prompt
+                    padButton.setAlpha(0.3f);
+                }
+                popupPad_startstopbutton.setText(getResources().getString(R.string.start));
+                popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
+                popupPad_startstopbutton.setEnabled(true);
+                popupPad_stoporstart="stop";
+                padPlayingToggle = false;
+                padson=false;
+
             } else {
                 // Key isn't set / is empty
                 myToastMessage = getResources().getString(R.string.pad_error);
@@ -2647,7 +2739,47 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
         int path = -1;
 
-        if (pad_filename.equals("null") && padson) {
+        // validlinkaudio is true for valid link files and mPadFile=link, always false otherwise
+        boolean validlinkaudio = false;
+        MediaPlayer testMPlayer = new MediaPlayer();
+        if (mPadFile.equals(getResources().getString(R.string.link_audio)) && !mLinkAudio.isEmpty() && !mLinkAudio.equals("")) {
+            try {
+                testMPlayer.setDataSource(this, Uri.parse(mLinkAudio));
+                testMPlayer.prepare();
+                validlinkaudio = true;
+            } catch (Exception e) {
+                validlinkaudio = false;
+            }
+        }
+        testMPlayer.reset();
+        testMPlayer.release();
+
+        // off
+        if (mPadFile.equals(getResources().getString(R.string.off)) && padson) {
+            // Pad shouldn't play
+            popupPad_stoporstart = "stop";
+            popupPad_startstopbutton.setText(getResources().getString(R.string.start));
+            popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
+            popupPad_startstopbutton.setEnabled(true);
+            padson = false;
+        }
+
+        // linkaudio + notvalid
+        if (mPadFile.equals(getResources().getString(R.string.link_audio)) && !validlinkaudio && padson) {
+            // Problem with link audio so don't use it
+            myToastMessage = getResources().getString(R.string.link_audio) + " - " + getResources().getString(R.string.file_type_unknown);
+            ShowToast.showToast(FullscreenActivity.this);
+            popupPad_stoporstart = "stop";
+            popupPad_startstopbutton.setText(getResources().getString(R.string.start));
+            popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
+            popupPad_startstopbutton.setEnabled(true);
+            padson = false;
+        }
+
+        // pads + notvalid
+        if (!mPadFile.equals(getResources().getString(R.string.off)) &&
+                !mPadFile.equals(getResources().getString(R.string.link_audio)) &&
+                pad_filename.equals("null") && padson) {
             // No key specified in the song - play nothing
             myToastMessage = getResources().getString(R.string.pad_error);
             ShowToast.showToast(FullscreenActivity.this);
@@ -2656,17 +2788,21 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
             popupPad_startstopbutton.setEnabled(true);
             padson = false;
+        }
 
-        } else {
-            path = getResources().getIdentifier(pad_filename,"raw", getPackageName());
+        // pads + valid
+        if (!mPadFile.equals(getResources().getString(R.string.off)) &&
+                !mPadFile.equals(getResources().getString(R.string.link_audio)) &&
+                !pad_filename.equals("null") && padson) {
+                path = getResources().getIdentifier(pad_filename, "raw", getPackageName());
         }
 
         // If both players are playing - currently in the process of a fade out of both players!
-        if (mPlayer1!=null && mPlayer2!=null) {
+        if (mPlayer1 != null && mPlayer2 != null && padson) {
             if (mPlayer1.isPlaying()) {
                 if (isfading1) {
                     killfadeout1 = true;
-                    if(mtask_fadeout_music1!=null) {
+                    if (mtask_fadeout_music1 != null) {
                         mtask_fadeout_music1 = null;
                     }
                     killPad1(padButton);
@@ -2683,28 +2819,49 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             popupPad_startstopbutton.setText(getResources().getString(R.string.stop));
             popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
             popupPad_startstopbutton.setEnabled(true);
-            popupPad_stoporstart="start";
+            popupPad_stoporstart = "start";
 
-            mPlayer1 = MediaPlayer.create(FullscreenActivity.this,path);
-            mPlayer1.setLooping(true);
-            switch (padpan) {
-                case "left":
-                    mPlayer1.setVolume(padvol, 0.0f);
-                    break;
-                case "right":
-                    mPlayer1.setVolume(0.0f, padvol);
-                    break;
-                default:
-                    mPlayer1.setVolume(padvol, padvol);
-                    break;
+            if (mPadFile.equals(getResources().getString(R.string.link_audio)) && validlinkaudio) {
+                try {
+                    mPlayer1 = new MediaPlayer();
+                    mPlayer1.setDataSource(this, Uri.parse(mLinkAudio));
+                    mPlayer1.prepareAsync();
+                } catch (Exception e) {
+                }
+            } else {
+                try {
+                    mPlayer1 = MediaPlayer.create(this, path);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            mPlayer1.start();
+
+            mPlayer1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mPlayer1.setLooping(true);
+                    switch (padpan) {
+                        case "left":
+                            mPlayer1.setVolume(padvol, 0.0f);
+                            break;
+                        case "right":
+                            mPlayer1.setVolume(0.0f, padvol);
+                            break;
+                        default:
+                            mPlayer1.setVolume(padvol, padvol);
+                            break;
+                    }
+                    mPlayer1.start();
+                    padson = true;
+                }
+            });
+
 
             // Now kill the 2nd player if still needed
-            if (mPlayer2!=null && mPlayer2.isPlaying()) {
+            if (mPlayer2 != null && mPlayer2.isPlaying()) {
                 if (isfading2) {
                     killfadeout2 = true;
-                    if(mtask_fadeout_music2!=null) {
+                    if (mtask_fadeout_music2 != null) {
                         mtask_fadeout_music2 = null;
                     }
                     killPad2(padButton);
@@ -2714,75 +2871,135 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             fadeout2 = false;
             killfadeout2 = false;
 
-        } else if (mPlayer1 != null) {
+        } else if (mPlayer1 != null && padson) {
             // We need to fade out mPlayer1 and start playing mPlayer2
             if (mPlayer1.isPlaying()) {
                 // We need to fade this out over the next 8 seconds, then load and start mPlayer2
                 // After 10seconds, release mPlayer1
-                whichtofadeout=1;
+                whichtofadeout = 1;
                 fadeout1 = true;
                 fadeOutBackgroundMusic1();
             }
-            if (!pad_filename.equals("null") && padson) {
-                mPlayer2 = MediaPlayer.create(FullscreenActivity.this,path);
-                mPlayer2.setLooping(true);
-                switch (padpan) {
-                    case "left":
-                        mPlayer2.setVolume(padvol, 0.0f);
-                        break;
-                    case "right":
-                        mPlayer2.setVolume(0.0f, padvol);
-                        break;
-                    default:
-                        mPlayer2.setVolume(padvol, padvol);
-                        break;
+            if (mPadFile.equals(getResources().getString(R.string.link_audio)) && validlinkaudio) {
+                try {
+                    mPlayer2 = new MediaPlayer();
+                    mPlayer2.setDataSource(this, Uri.parse(mLinkAudio));
+                    mPlayer2.prepareAsync();
+                } catch (Exception e) {
                 }
-                mPlayer2.start();
-                padson = true;
+            } else {
+                try {
+                    mPlayer2 = MediaPlayer.create(this, path);
+                    //mPlayer2.prepareAsync();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        } else if (mPlayer2 != null) {
+
+            mPlayer2.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mPlayer2.setLooping(true);
+                    switch (padpan) {
+                        case "left":
+                            mPlayer2.setVolume(padvol, 0.0f);
+                            break;
+                        case "right":
+                            mPlayer2.setVolume(0.0f, padvol);
+                            break;
+                        default:
+                            mPlayer2.setVolume(padvol, padvol);
+                            break;
+                    }
+                    mPlayer2.start();
+                    padson = true;
+                }
+            });
+
+
+        } else if (mPlayer2 != null && padson) {
             if (mPlayer2.isPlaying()) {
                 // We need to fade this out over the next 8 seconds, then load and start mPlayer1
                 // After 10seconds, release mPlayer1
-                whichtofadeout=2;
+                whichtofadeout = 2;
                 fadeout2 = true;
                 fadeOutBackgroundMusic2();
             }
-            if (!pad_filename.equals("null") && padson) {
-                mPlayer1 = MediaPlayer.create(FullscreenActivity.this,path);
-                mPlayer1.setLooping(true);
-                switch (padpan) {
-                    case "left":
-                        mPlayer1.setVolume(padvol, 0.0f);
-                        break;
-                    case "right":
-                        mPlayer1.setVolume(0.0f, padvol);
-                        break;
-                    default:
-                        mPlayer1.setVolume(padvol, padvol);
-                        break;
-                }
-                mPlayer1.start();
-                padson = true;
 
+            if (mPadFile.equals(getResources().getString(R.string.link_audio)) && validlinkaudio) {
+                try {
+                    mPlayer1 = new MediaPlayer();
+                    mPlayer1.setDataSource(this, Uri.parse(mLinkAudio));
+                    mPlayer1.prepareAsync();
+
+                } catch (Exception e) {
+                }
+            } else {
+                try {
+                    mPlayer1 = MediaPlayer.create(this, path);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+
+            mPlayer1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mPlayer1.setLooping(true);
+                    switch (padpan) {
+                        case "left":
+                            mPlayer1.setVolume(padvol, 0.0f);
+                            break;
+                        case "right":
+                            mPlayer1.setVolume(0.0f, padvol);
+                            break;
+                        default:
+                            mPlayer1.setVolume(padvol, padvol);
+                            break;
+                    }
+                    mPlayer1.start();
+                    padson = true;
+                }
+            });
+
         } else {
             // Nothing was playing already, so start mPlayer 1
-            mPlayer1 = MediaPlayer.create(FullscreenActivity.this,path);
-            mPlayer1.setLooping(true);
-            switch (padpan) {
-                case "left":
-                    mPlayer1.setVolume(padvol, 0.0f);
-                    break;
-                case "right":
-                    mPlayer1.setVolume(0.0f, padvol);
-                    break;
-                default:
-                    mPlayer1.setVolume(padvol, padvol);
-                    break;
+
+            if (mPadFile.equals(getResources().getString(R.string.link_audio)) && validlinkaudio && padson) {
+                try {
+                    mPlayer1 = new MediaPlayer();
+                    mPlayer1.setDataSource(this, Uri.parse(mLinkAudio));
+                    mPlayer1.prepareAsync();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    mPlayer1 = MediaPlayer.create(this, path);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            mPlayer1.start();
-            padson = true;
+
+            mPlayer1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mPlayer1.setLooping(true);
+                    switch (padpan) {
+                        case "left":
+                            mPlayer1.setVolume(padvol, 0.0f);
+                            break;
+                        case "right":
+                            mPlayer1.setVolume(0.0f, padvol);
+                            break;
+                        default:
+                            mPlayer1.setVolume(padvol, padvol);
+                            break;
+                    }
+                    mPlayer1.start();
+                    padson = true;
+                }
+            });
         }
     }
 
@@ -2971,6 +3188,31 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         newFragment.show(getFragmentManager(), "dialog");
     }
 
+    public void tapTempo(View view) {
+        // This function checks the previous tap_tempo time and calculates the bpm
+        new_time = System.currentTimeMillis();
+        time_passed = new_time - old_time;
+        calc_bpm = Math.round((1 / ((float) time_passed / 1000)) * 60);
+        if (time_passed<2000) {
+            total_calc_bpm += calc_bpm;
+            total_counts++;
+        } else {
+            // Waited too long, reset count
+            total_calc_bpm = 0;
+            total_counts = 0;
+        }
+
+        av_bpm = Math.round((float) total_calc_bpm / (float) total_counts);
+
+        if (av_bpm < 200 && av_bpm >= 39) {
+            popupMetronome_tempo_text.setText(av_bpm + " " + getResources().getString(R.string.bpm));
+            mTempo = "" + av_bpm;
+            popupMetronome_tempo.setProgress(av_bpm - 39);
+        }
+        old_time = new_time;
+    }
+
+
     private void hidepagebuttons() {
         delaycheckscroll.removeCallbacks(checkScrollPosition);
         wasshowing_pdfselectpage = pdf_selectpage.getVisibility();
@@ -2997,7 +3239,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             autoscrollButton.setVisibility(View.VISIBLE);
             metronomeButton.setVisibility(View.VISIBLE);
             padButton.setVisibility(View.VISIBLE);
-            linkButton.setVisibility(View.INVISIBLE);
+            linkButton.setVisibility(View.VISIBLE);
             chordButton.setVisibility(View.VISIBLE);
         } else {
             stickynotes.setVisibility(View.INVISIBLE);
@@ -3013,7 +3255,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         //padButton.setVisibility(View.VISIBLE);
     }
 
-    private void prepareSongMenu() {
+    public void prepareSongMenu() {
         // Initialise Songs menu
         listDataHeaderSong = new ArrayList<>();
         listDataChildSong = new HashMap<>();
@@ -3069,6 +3311,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                     vb.vibrate(25);
 
+                    // If the song is in .pro, .onsong, .txt format, tell the user to convert it first
+                    // This is done by viewing it (avoids issues with file extension renames)
 
                     // Just in case users running older than lollipop, we don't want to open the file
                     // In this case, store the current song as a string so we can go back to it
@@ -3077,51 +3321,66 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                     songfilename = listDataChildSong.get(listDataHeaderSong.get(groupPosition)).get(childPosition);
 
-                    if (listDataHeaderSong.get(groupPosition).equals(mainfoldername)) {
-                        //dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
-                        whichSongFolder = mainfoldername;
-                        whatsongforsetwork = "$**_" + songfilename + "_**$";
+                    // If the song is in .pro, .onsong, .txt format, tell the user to convert it first
+                    // This is done by viewing it (avoids issues with file extension renames)
+                    if (songfilename.toLowerCase(locale).endsWith(".pro") ||
+                            songfilename.toLowerCase(locale).endsWith(".chopro") ||
+                            songfilename.toLowerCase(locale).endsWith(".cho") ||
+                            songfilename.toLowerCase(locale).endsWith(".chordpro") ||
+                            songfilename.toLowerCase(locale).endsWith(".onsong") ||
+                            songfilename.toLowerCase(locale).endsWith(".txt")) {
+
+                        // Don't add song yet, but tell the user
+                        myToastMessage = getResources().getString(R.string.convert_song);
+                        ShowToast.showToast(FullscreenActivity.this);
                     } else {
-                        //dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/" + listDataHeaderSong.get(groupPosition));
-                        whichSongFolder = listDataHeaderSong.get(groupPosition);
-                        whatsongforsetwork = "$**_" + whichSongFolder + "/" + songfilename + "_**$";
-                    }
-                    // Set the appropriate song filename
-                    songfilename = listDataChildSong.get(listDataHeaderSong.get(groupPosition)).get(childPosition);
 
-                    // Allow the song to be added, even if it is already there
-                    mySet = mySet + whatsongforsetwork;
-
-                    // Tell the user that the song has been added.
-                    myToastMessage = "\"" + songfilename + "\" " + getResources().getString(R.string.addedtoset);
-                    ShowToast.showToast(FullscreenActivity.this);
-
-                    // If the user isn't running lollipop and they've added a pdf - don't open it
-                    if (currentapiVersion<Build.VERSION_CODES.LOLLIPOP) {
-                        songfilename = currentsong;
-                        whichSongFolder = currentfolder;
-                    }
-
-                    // Save the set and other preferences
-                    Preferences.savePreferences();
-
-                    // Show the current set
-                    SetActions.prepareSetList();
-                    invalidateOptionsMenu();
-                    prepareOptionMenu();
-                    mDrawerLayout.openDrawer(expListViewOption);
-                    expListViewOption.expandGroup(0);
-
-                    // Hide the menus - 1 second after opening the Option menu,
-                    // close it (1000ms total)
-                    Handler optionMenuFlickClosed = new Handler();
-                    optionMenuFlickClosed.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mDrawerLayout.closeDrawer(expListViewOption);
-                            addingtoset = false;
+                        if (listDataHeaderSong.get(groupPosition).equals(mainfoldername)) {
+                            //dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
+                            whichSongFolder = mainfoldername;
+                            whatsongforsetwork = "$**_" + songfilename + "_**$";
+                        } else {
+                            //dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/" + listDataHeaderSong.get(groupPosition));
+                            whichSongFolder = listDataHeaderSong.get(groupPosition);
+                            whatsongforsetwork = "$**_" + whichSongFolder + "/" + songfilename + "_**$";
                         }
-                    }, 1000); // 1000ms delay
+                        // Set the appropriate song filename
+                        songfilename = listDataChildSong.get(listDataHeaderSong.get(groupPosition)).get(childPosition);
+
+                        // Allow the song to be added, even if it is already there
+                        mySet = mySet + whatsongforsetwork;
+
+                        // Tell the user that the song has been added.
+                        myToastMessage = "\"" + songfilename + "\" " + getResources().getString(R.string.addedtoset);
+                        ShowToast.showToast(FullscreenActivity.this);
+
+                        // If the user isn't running lollipop and they've added a pdf - don't open it
+                        if (currentapiVersion < Build.VERSION_CODES.LOLLIPOP) {
+                            songfilename = currentsong;
+                            whichSongFolder = currentfolder;
+                        }
+
+                        // Save the set and other preferences
+                        Preferences.savePreferences();
+
+                        // Show the current set
+                        SetActions.prepareSetList();
+                        invalidateOptionsMenu();
+                        prepareOptionMenu();
+                        mDrawerLayout.openDrawer(expListViewOption);
+                        expListViewOption.expandGroup(0);
+
+                        // Hide the menus - 1 second after opening the Option menu,
+                        // close it (1000ms total)
+                        Handler optionMenuFlickClosed = new Handler();
+                        optionMenuFlickClosed.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mDrawerLayout.closeDrawer(expListViewOption);
+                                addingtoset = false;
+                            }
+                        }, 1000); // 1000ms delay
+                    }
                 }
                 return false;
             }
@@ -3587,100 +3846,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
 
                         } else if (childPosition == 5) {// Export song
-                            if (!isSong) {
-                                // Editing a slide / note / scripture
-                                myToastMessage = getResources().getString(R.string.not_allowed);
-                                ShowToast.showToast(FullscreenActivity.this);
-                            } else {
-                                // Export
-                                // The current song is the songfile
-                                // Believe it or not, it works!!!!!
-                                // Take a screenshot as a bitmap
-                                scrollpage.setDrawingCacheEnabled(true);
-                                bmScreen = scrollpage.getDrawingCache();
-                                File saved_image_file = new File(
-                                        homedir + "/Notes/_cache/" + songfilename + ".png");
-                                if (saved_image_file.exists())
-                                    saved_image_file.delete();
-                                try {
-                                    FileOutputStream out = new FileOutputStream(saved_image_file);
-                                    bmScreen.compress(Bitmap.CompressFormat.PNG, 100, out);
-                                    out.flush();
-                                    out.close();
-
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                                // Run the script that generates the email text which has the set details in it.
-                                try {
-                                    ExportPreparer.songParser();
-                                } catch (IOException | XmlPullParserException e) {
-                                    e.printStackTrace();
-                                }
-
-                                Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-                                emailIntent.setType("text/plain");
-                                emailIntent.putExtra(Intent.EXTRA_TITLE, songfilename);
-                                emailIntent.putExtra(Intent.EXTRA_SUBJECT, songfilename);
-                                emailIntent.putExtra(Intent.EXTRA_TEXT, emailtext);
-                                emailtext = "";
-                                String songlocation = dir + "/";
-                                String tolocation = homedir + "/Notes/_cache/";
-                                Uri uri;
-                                if (!dir.toString().contains("/" + whichSongFolder + "/")
-                                        && !whichSongFolder.equals(mainfoldername)) {
-                                    uri = Uri.fromFile(new File(dir + "/" + whichSongFolder + "/" + songfilename));
-                                    songlocation = songlocation + whichSongFolder + "/" + songfilename;
-                                    tolocation = tolocation + "/" + songfilename + ".ost";
-                                } else {
-                                    uri = Uri.fromFile(new File(dir + "/" + songfilename));
-                                    songlocation = songlocation + songfilename;
-                                    tolocation = tolocation + "/" + songfilename + ".ost";
-                                }
-
-                                Uri uri2 = Uri.fromFile(saved_image_file);
-                                Uri uri3 = null;
-                                // Also add an .ost version of the file
-                                try {
-                                    FileInputStream in = new FileInputStream(new File(songlocation));
-                                    FileOutputStream out = new FileOutputStream(new File(tolocation));
-
-                                    byte[] buffer = new byte[1024];
-                                    int read;
-                                    while ((read = in.read(buffer)) != -1) {
-                                        out.write(buffer, 0, read);
-                                    }
-                                    in.close();
-                                    in = null;
-
-                                    // write the output file (You have now copied the file)
-                                    out.flush();
-                                    out.close();
-                                    out = null;
-
-                                    uri3 = Uri.fromFile(new File(tolocation));
-
-                                } catch (Exception e) {
-                                    // Error
-                                    e.printStackTrace();
-                                }
-                                ArrayList<Uri> uris = new ArrayList<>();
-                                if (uri!=null) {
-                                    uris.add(uri);
-                                }
-                                if (uri2!=null) {
-                                    uris.add(uri2);
-                                }
-                                if (uri3!=null) {
-                                    uris.add(uri3);
-                                }
-                                emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-                                startActivityForResult(Intent.createChooser(emailIntent, exportcurrentsong), 12345);
-
-                                // These .ost and .png files will be removed when a user loads a new set
-                            }
-
+                            shareSong();
 
                         } else if (childPosition == 6) {// Presentation order
                             if (usePresentationOrder) {
@@ -5253,10 +5419,43 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 }
             }
 
-            // If there isn't a key specified, make sure the padButton is turned off
+            // If there isn't a key specified, or the user wants the pad off, or an invalid linkAudio,
+            // make sure the padButton is turned off
             // User will be prompted to specify a key if they press the button again
-            if ((mKey.isEmpty() || mKey.equals("")) && padson) {
+            boolean stoppad = false;
+            boolean badlinkaudio = false;
+            // Test the audio file is there by assigning it to a temp mediaplayer
+            MediaPlayer testMPlayer = new MediaPlayer();
+            try {
+                testMPlayer.setDataSource(this,Uri.parse(mLinkAudio));
+                testMPlayer.prepare();
+                testMPlayer.reset();
+            } catch (Exception e) {
+                // Problem with link audio so don't use it
+                badlinkaudio = true;
+            }
+            testMPlayer.release();
+
+            if (!mPadFile.equals(getResources().getString(R.string.off)) &&
+                    !mPadFile.equals(getResources().getString(R.string.link_audio)) &&
+                            (mKey.isEmpty() || mKey.equals("")) && padson) {
+                // Trying to play a pad and the key isn't set
                 myToastMessage = getResources().getString(R.string.pad_error);
+                stoppad = true;
+
+            } else if (mPadFile.equals(getResources().getString(R.string.off)) && padson) {
+                // Pad has been turned off for this song
+                myToastMessage = getResources().getString(R.string.pad) + " - " + getResources().getString(R.string.off);
+                stoppad = true;
+
+            } else if (mPadFile.equals(getResources().getString(R.string.link_audio)) && (mLinkAudio.isEmpty() || badlinkaudio) && padson) {
+                // Want a link audio, but the audio link is either empty or invalid audio
+                myToastMessage = getResources().getString(R.string.link_audio) + " - " + getResources().getString(R.string.file_type_unknown);
+                stoppad = true;
+
+            }
+
+            if (stoppad) {
                 ShowToast.showToast(FullscreenActivity.this);
                 padPlayingToggle = false;
                 padson = false;
@@ -5303,6 +5502,15 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             // Set song key
             ProcessSong.processKey();
             popupPad_key.setSelection(keyindex);
+
+            // Set the pad / backing track
+            if (mPadFile.equals(getResources().getString(R.string.off))) {
+                popupPad_file.setSelection(2);
+            } else if (mPadFile.equals(getResources().getString(R.string.link_audio)) && !mLinkAudio.isEmpty() && !mLinkAudio.equals("")) {
+                popupPad_file.setSelection(1);
+            } else {
+                popupPad_file.setSelection(0);
+            }
 
             // Set the pad volume and pan
             int temp_padvol = (int) (100*padvol);
@@ -5413,7 +5621,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 autoscrollButton.setVisibility(View.VISIBLE);
                 metronomeButton.setVisibility(View.VISIBLE);
                 padButton.setVisibility(View.VISIBLE);
-                linkButton.setVisibility(View.INVISIBLE);
+                linkButton.setVisibility(View.VISIBLE);
                 chordButton.setVisibility(View.VISIBLE);
             } else {
                 stickynotes.setVisibility(View.INVISIBLE);
@@ -5814,7 +6022,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                 PdfRenderer mPdfRenderer = null;
                 try {
-                    mPdfRenderer= new PdfRenderer(mFileDescriptor);
+                    mPdfRenderer = new PdfRenderer(mFileDescriptor);
                     pdfPageCount = mPdfRenderer.getPageCount();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -5984,6 +6192,108 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         // Only do this if needtoredraw = false;
         if (!needtoredraw) {
             prepareChords();
+        }
+
+        // If we have just converted a song from .pro or .onsong, we need to fix the song menu
+        if (converting) {
+            converting = false;
+            prepareSongMenu();
+        }
+    }
+
+    public void shareSong() {
+        if (!isSong) {
+            // Editing a slide / note / scripture
+            myToastMessage = getResources().getString(R.string.not_allowed);
+            ShowToast.showToast(FullscreenActivity.this);
+        } else {
+            // Export
+            // The current song is the songfile
+            // Believe it or not, it works!!!!!
+            // Take a screenshot as a bitmap
+            scrollpage.setDrawingCacheEnabled(true);
+            bmScreen = scrollpage.getDrawingCache();
+            File saved_image_file = new File(
+                    homedir + "/Notes/_cache/" + songfilename + ".png");
+            if (saved_image_file.exists())
+                saved_image_file.delete();
+            try {
+                FileOutputStream out = new FileOutputStream(saved_image_file);
+                bmScreen.compress(Bitmap.CompressFormat.PNG, 100, out);
+                out.flush();
+                out.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Run the script that generates the email text which has the set details in it.
+            try {
+                ExportPreparer.songParser();
+            } catch (IOException | XmlPullParserException e) {
+                e.printStackTrace();
+            }
+
+            Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+            emailIntent.setType("text/plain");
+            emailIntent.putExtra(Intent.EXTRA_TITLE, songfilename);
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, songfilename);
+            emailIntent.putExtra(Intent.EXTRA_TEXT, emailtext);
+            emailtext = "";
+            String songlocation = dir + "/";
+            String tolocation = homedir + "/Notes/_cache/";
+            Uri uri;
+            if (!dir.toString().contains("/" + whichSongFolder + "/")
+                    && !whichSongFolder.equals(mainfoldername)) {
+                uri = Uri.fromFile(new File(dir + "/" + whichSongFolder + "/" + songfilename));
+                songlocation = songlocation + whichSongFolder + "/" + songfilename;
+                tolocation = tolocation + "/" + songfilename + ".ost";
+            } else {
+                uri = Uri.fromFile(new File(dir + "/" + songfilename));
+                songlocation = songlocation + songfilename;
+                tolocation = tolocation + "/" + songfilename + ".ost";
+            }
+
+            Uri uri2 = Uri.fromFile(saved_image_file);
+            Uri uri3 = null;
+            // Also add an .ost version of the file
+            try {
+                FileInputStream in = new FileInputStream(new File(songlocation));
+                FileOutputStream out = new FileOutputStream(new File(tolocation));
+
+                byte[] buffer = new byte[1024];
+                int read;
+                while ((read = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, read);
+                }
+                in.close();
+                in = null;
+
+                // write the output file (You have now copied the file)
+                out.flush();
+                out.close();
+                out = null;
+
+                uri3 = Uri.fromFile(new File(tolocation));
+
+            } catch (Exception e) {
+                // Error
+                e.printStackTrace();
+            }
+            ArrayList<Uri> uris = new ArrayList<>();
+            if (uri!=null) {
+                uris.add(uri);
+            }
+            if (uri2!=null) {
+                uris.add(uri2);
+            }
+            if (uri3!=null) {
+                uris.add(uri3);
+            }
+            emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+            startActivityForResult(Intent.createChooser(emailIntent, exportcurrentsong), 12345);
+
+            // These .ost and .png files will be removed when a user loads a new set
         }
     }
 
@@ -7076,6 +7386,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         mDrawerLayout.openDrawer(expListViewSong);
                         return true;
                     }
+
+                case R.id.song_share:
+                    shareSong();
+                    return true;
+
                 case R.id.action_fullsearch:
                     Intent intent = new Intent();
                     intent.setClass(FullscreenActivity.this,
@@ -7245,6 +7560,10 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     }
                     return true;
 
+                case R.id.link_menu_button:
+                    // Run the link menu popup page
+                    popupLink(linkButton);
+                    return true;
 
                 case R.id.autoscroll_menu_button:
                     // Run the autoscroll start/stop, but only if song isn't a pdf!
@@ -9475,7 +9794,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 // Refresh all stuff needed
                 refreshAll();
                 break;
-
         }
     }
 }

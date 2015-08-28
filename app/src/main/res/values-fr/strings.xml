@@ -425,5 +425,13 @@
 	<string name="toggle_autoshow_stickynotes">"Autoshow Basculer notes autocollantes"</string>
 	<string name="storage_issues">"Si vous rencontrez des problèmes d'exécution de l'application, s'il vous plaît passer à stockage interne"</string>
 	<string name="overwrite">"Ecraser élément existant"</string>
+	<string name="convert_song">"S'il vous plaît convertir cette chanson au format OpenSong (en l'affichant) avant de l'ajouter à un ensemble"</string>
+	<string name="link_audio">"Lien du fichier audio"</string>
+	<string name="link_file">"autre fichier"</string>
+	<string name="link_web">"lien en ligne"</string>
+	<string name="link_youtube">"lien YouTube"</string>
+	<string name="no_audioplayer">"Pas de lecteur audio installé"</string>
+	<string name="no_filemanager">"Aucun gestionnaire de fichiers installé"</string>
+	<string name="tap_tempo">"Touchez pour régler le tempo"</string>
 
 </resources>
