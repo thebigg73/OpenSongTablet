@@ -7,11 +7,10 @@
         android:id="@+id/setListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
         android:layout_above="@+id/newSetPromptTitle"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:choiceMode="singleChoice" />
+        android:layout_alignLeft="@+id/newSetPromptTitle"
+        android:layout_alignStart="@+id/newSetPromptTitle" />
 
     <TextView
         android:id="@+id/newSetPromptTitle"
@@ -66,5 +65,6 @@
         android:layout_margin="12dp"
         android:background="@drawable/green_button"
         android:text="@string/ok" />
+
 
 </RelativeLayout>

@@ -136,6 +136,11 @@ public class PopUpImportExternalFile extends DialogFragment {
             FullscreenActivity.file_type = getResources().getString(R.string.options_song);
             FullscreenActivity.file_name = FullscreenActivity.file_name.replace(".ost", "");
 
+        } else if (FullscreenActivity.file_name.endsWith(".usr") || FullscreenActivity.file_name.endsWith(".USR")) {
+            // This is a song from SongSelect
+            FullscreenActivity.file_type = "USR";
+            FullscreenActivity.file_name = FullscreenActivity.file_name.replace("_", " ");
+
         } else if (FullscreenActivity.file_name.endsWith(".osts")) {
             // This is definitely a set
             FullscreenActivity.file_type = getResources().getString(R.string.options_set);

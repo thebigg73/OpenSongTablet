@@ -2,10 +2,12 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,10 @@ public class PopUpListSetsFragment extends DialogFragment {
 
     static String myTitle;
 
+    static FetchDataTask dataTask;
+
+    static ProgressDialog prog;
+
     public interface MyInterface {
         void refreshAll();
     }
@@ -52,6 +58,15 @@ public class PopUpListSetsFragment extends DialogFragment {
         mListener = null;
         super.onDetach();
     }
+
+    public static String val;
+    public static Handler mHandler = new Handler();
+
+    public static Runnable runnable = new Runnable() {
+        public void run() {
+            prog.setMessage(val);
+        }
+    };
 
 
     @Override
@@ -152,28 +167,19 @@ public class PopUpListSetsFragment extends DialogFragment {
     // Actions to do with the selected set
     public void doLoadSet() {
         // Load the set up
+        // Show the progress bar
+        prog= new ProgressDialog(getActivity());//Assuming that you are using fragments.
+        prog.setTitle(getString(R.string.options_set_load));
+        prog.setMessage(getString(R.string.wait));
+        prog.setCancelable(false);
+        prog.setIndeterminate(true);
+        prog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        prog.show();
         FullscreenActivity.settoload = null;
         FullscreenActivity.settoload = FullscreenActivity.setnamechosen;
         FullscreenActivity.lastSetName = FullscreenActivity.setnamechosen;
-        try {
-            SetActions.loadASet();
-        } catch (XmlPullParserException | IOException e) {
-            e.printStackTrace();
-        }
-
-        // Reset the options menu
-        SetActions.prepareSetList();
-        SetActions.indexSongInSet();
-        FullscreenActivity.setView = "Y";
-
-        // Save the new set to the preferences
-        Preferences.savePreferences();
-
-        // Tell the listener to do something
-        mListener.refreshAll();
-
-        //Close this dialog
-        dismiss();
+        dataTask = new FetchDataTask();
+        dataTask.execute();
     }
 
     public void doSaveSet() {
@@ -240,11 +246,11 @@ public class PopUpListSetsFragment extends DialogFragment {
                 out.write(buffer, 0, read);
             }
             in.close();
-            in = null;
+            //in = null;
             // write the output file (You have now copied the file)
             out.flush();
             out.close();
-            out = null;
+            //out = null;
         } catch (Exception e) {
             // Error
             e.printStackTrace();
@@ -273,12 +279,12 @@ public class PopUpListSetsFragment extends DialogFragment {
                     out.write(buffer, 0, read);
                 }
                 in.close();
-                in = null;
+                //in = null;
 
                 // write the output file (You have now copied the file)
                 out.flush();
                 out.close();
-                out = null;
+                //out = null;
 
                 Uri urisongs = Uri.fromFile(songtoload);
                 Uri urisongs_ost = Uri.fromFile(ostsongcopy);
@@ -299,4 +305,43 @@ public class PopUpListSetsFragment extends DialogFragment {
         dismiss();
     }
 
+    private class FetchDataTask extends AsyncTask<String,Integer,String> {
+
+        @Override
+        protected String doInBackground(String... args) {
+            try {
+                SetActions.loadASet();
+            } catch (XmlPullParserException | IOException e) {
+                e.printStackTrace();
+            }
+            // Reset the options menu
+            SetActions.prepareSetList();
+            SetActions.indexSongInSet();
+
+            return "LOADED";
+        }
+
+        protected void onCancelled() {
+            prog.dismiss();
+        }
+
+        protected void onPostExecute(String result) {
+            FullscreenActivity.setView = "Y";
+
+            // Save the new set to the preferences
+            Preferences.savePreferences();
+
+            // Tell the listener to do something
+            mListener.refreshAll();
+
+            //Close this dialog
+            prog.dismiss();
+            dismiss();
+        }
+
+    }
+
+    public static void updateProgress(String val) {
+        prog.setMessage(val);
+    }
 }

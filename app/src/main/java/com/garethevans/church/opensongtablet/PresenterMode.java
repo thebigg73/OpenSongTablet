@@ -233,7 +233,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             isSong = false;
         }
 
-        if (FullscreenActivity.whichSongFolder.contains("../OpenSong Scripture") || FullscreenActivity.whichSongFolder.contains("../Slides") || FullscreenActivity.whichSongFolder.contains("../Notes")) {
+        if (FullscreenActivity.whichSongFolder.contains("../OpenSong Scripture") || FullscreenActivity.whichSongFolder.contains("../Images") || FullscreenActivity.whichSongFolder.contains("../Slides") || FullscreenActivity.whichSongFolder.contains("../Notes")) {
             isSong = false;
         }
 

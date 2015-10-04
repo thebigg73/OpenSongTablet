@@ -96,6 +96,16 @@ public class LoadXML extends Activity {
                 ListSongFiles.listSongs();
             }
 
+            // If the song is usr format - try to import it
+            if (FullscreenActivity.songfilename.contains(".usr")
+                    || FullscreenActivity.myXML.contains("[File]")
+                    || FullscreenActivity.myXML.contains("Type=")
+                    || FullscreenActivity.myXML.contains("Words=")) {
+                // Run the UsrConvert script
+                UsrConvert.doExtract();
+                ListSongFiles.listSongs();
+            }
+
             // If the song is in ChordPro format - try to import it
             if (FullscreenActivity.myXML.contains("{title") ||
                     FullscreenActivity.myXML.contains("{t:") ||

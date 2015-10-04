@@ -131,6 +131,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String text_slide;
     static String text_scripture;
     static String text_note;
+    static String text_image;
 
     public int slideout_time = 500;
     public int checkscroll_time = 1000;
@@ -680,6 +681,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     private static String edit_song_presentation;
     private static String error_notset;
     private static String error_missingsection;
+    public static String set_loading;
+    public static String set_processing;
 
     static String tag_verse;
     static String tag_chorus;
@@ -691,6 +694,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String slide;
     static String note;
     static String scripture;
+    static String image;
     private static String toastmessage_maxfont;
     private static String toastmessage_minfont;
     static String set_menutitle;
@@ -789,14 +793,15 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static File root = android.os.Environment.getExternalStorageDirectory();
     static File homedir = new File(root.getAbsolutePath() + "/documents/OpenSong");
     static File dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
-    private static File dironsong = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong");
+    static File dironsong = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong");
     static File dirsets = new File(root.getAbsolutePath() + "/documents/OpenSong/Sets");
-    private static File dirPads = new File(root.getAbsolutePath() + "/documents/OpenSong/Pads");
+    static File dirPads = new File(root.getAbsolutePath() + "/documents/OpenSong/Pads");
     static File dirbackgrounds = new File(root.getAbsolutePath() + "/documents/OpenSong/Backgrounds");
     static File dirbibles = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture");
     static File dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
     static File dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
     static File dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
+    static File dircustomimages = new File(root.getAbsolutePath() + "/documents/OpenSong/Images/_cache");
 
     static Locale locale;
 
@@ -832,18 +837,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     getBaseContext().getResources().getDisplayMetrics());
         }
 
-        // If we have opened the app by an intent (clicking on an ost or osts file)
-        // Get the popup
-        boolean needtoimport = false;
-        try {
-            incomingfile = getIntent();
-            if (incomingfile!=null) {
-                needtoimport = true;
-            }
-        } catch (Exception e) {
-            // No file
-            Log.d("d","noIntentFile - fine, start app normally");
-        }
 
         gestureDetector = new GestureDetector(new SwipeDetector());
 
@@ -851,11 +844,14 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         // Load up the translations
+        set_loading = getResources().getString(R.string.set_loading);
+        set_processing = getResources().getString(R.string.set_processing);
         set = getResources().getString(R.string.options_set);
         song = getResources().getString(R.string.options_song);
         slide = getResources().getString(R.string.slide);
         scripture = getResources().getString(R.string.scripture);
         note = getResources().getString(R.string.note);
+        image = getResources().getString(R.string.image);
 
         tag_verse = getResources().getString(R.string.tag_verse);
         tag_chorus = getResources().getString(R.string.tag_chorus);
@@ -893,6 +889,19 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         text_slide = slide;
         text_scripture = scripture;
         text_note = note;
+
+        // If we have opened the app by an intent (clicking on an ost or osts file)
+        // Get the popup
+        boolean needtoimport = false;
+        try {
+            incomingfile = getIntent();
+            if (incomingfile!=null) {
+                needtoimport = true;
+            }
+        } catch (Exception e) {
+            // No file
+            Log.d("d","noIntentFile - fine, start app normally");
+        }
 
         // Initialise api
         currentapiVersion = Build.VERSION.SDK_INT;
@@ -1564,9 +1573,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         mynewXML += "<song>\n";
         mynewXML += "  <title>" + customslide_title + "</title>\n";
         mynewXML += "  <author></author>\n";
-        mynewXML += "  <user1></user1>\n";
-        mynewXML += "  <user2></user2>\n";
-        mynewXML += "  <user3></user3>\n";
+        mynewXML += "  <user1></user1>\n";  // This is used as a link to a background image
+        mynewXML += "  <user2></user2>\n";  // This is used for loop on or off
+        mynewXML += "  <user3></user3>\n";  // This is used for auto advance time
         mynewXML += "  <aka></aka>\n";
         mynewXML += "  <key_line></key_line>\n";
         mynewXML += "  <lyrics>" + customslide_content +"</lyrics>\n";

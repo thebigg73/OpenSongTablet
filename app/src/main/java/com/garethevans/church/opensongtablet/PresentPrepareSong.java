@@ -16,7 +16,7 @@ public class PresentPrepareSong {
 		// where there are double line spaces, new page tags and section tags
 		// also get rid of code we don't need like columns and new page (print only options)
 		tempLyrics = FullscreenActivity.myLyrics;
-		
+
 		String v1 = "";
 		String v2 = "";
 		String v3 = "";
@@ -27,7 +27,7 @@ public class PresentPrepareSong {
 		String v8 = "";
 		String v9 = "";
 		String v10 = "";
-		
+
 		//Go through lyrics line by line and extract data into verses if lines begin with number
 		String[] checkForVerseLines = tempLyrics.split("\n");
 		tempLyrics = "";
@@ -68,7 +68,7 @@ public class PresentPrepareSong {
 			}
 		}
 		//Add back any verses in reverse as they're going to the start
-		if (v10.length()>0) {		
+		if (v10.length()>0) {
 			tempLyrics = "[V10]\n"+v10+tempLyrics;
 		}
 		if (v9.length()>0) {
@@ -98,9 +98,9 @@ public class PresentPrepareSong {
 		if (v1.length()>0) {
 			tempLyrics = "[V1]\n"+v1+tempLyrics;
 		}
-		
-		
-		
+
+
+
 		tempLyrics = tempLyrics.replace("---", "");
 		tempLyrics = tempLyrics.replace("-!!", "");
 		tempLyrics = tempLyrics.replace("\n\n", "%%__SPLITHERE__%%");
@@ -121,11 +121,11 @@ public class PresentPrepareSong {
 		}
 		//Get rid of a split right at the start and the end
 		if (tempLyricsLineByLine[0].indexOf("%%__SPLITHERE__%%")==0) {
-				tempLyricsLineByLine[0].replaceFirst("%%__SPLITHERE__%%", "");
+			tempLyricsLineByLine[0].replaceFirst("%%__SPLITHERE__%%", "");
 		}
 		if (tempLyricsLineByLine[tempLyricsLineByLine.length-1].equals("%%__SPLITHERE__%%")) {
 			tempLyricsLineByLine[tempLyricsLineByLine.length-1] = "";
-	}
+		}
 		//Ok add the lines back up now
 		tempLyrics = "";
 		for (String aTempLyricsLineByLine : tempLyricsLineByLine) {
@@ -165,10 +165,10 @@ public class PresentPrepareSong {
 				for (int z=0;z<tempLines.length;z++) {
 					if (tempLines[z].indexOf(".")==0 && FullscreenActivity.presenterChords.equals("N")) {
 						tempLines[z] = "";
-						} else {
-					tempLines[z] = tempLines[z].trim();
-					tempSongSections = tempSongSections + tempLines[z] + "\n";
-						}
+					} else {
+						tempLines[z] = tempLines[z].trim();
+						tempSongSections = tempSongSections + tempLines[z] + "\n";
+					}
 				}
 				songSections[x] = tempSongSections;
 			}

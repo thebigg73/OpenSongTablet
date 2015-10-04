@@ -26,6 +26,7 @@
                 android:text="@string/custom_slide"
                 android:id="@+id/slideRadioButton"
                 android:textSize="18sp" />
+
         </RadioGroup>
 
         <TextView

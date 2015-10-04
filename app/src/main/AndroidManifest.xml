@@ -138,16 +138,6 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="file" />
                 <data android:mimeType="*/*" />
-                <data android:host="*" />
-            </intent-filter>
-
-            <intent-filter android:label="@string/app_name"
-                android:icon="@drawable/ic_launcher">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="file" />
-                <data android:mimeType="*/*" />
                 <data android:pathPattern="/.*\\.pro" />
                 <data android:pathPattern="/.*\\..*\\.pro"/>
                 <data android:pathPattern="/.*\\..*\\..*\\.pro"/>
@@ -190,6 +180,24 @@
                 <data android:pathPattern="/.*\\..*\\.TXT"/>
                 <data android:pathPattern="/.*\\..*\\..*\\.TXT"/>
                 <data android:pathPattern="/.*\\..*\\..*\\..*\\.TXT"/>
+                <data android:host="*" />
+            </intent-filter>
+
+            <intent-filter android:label="@string/app_name"
+                android:icon="@drawable/ic_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="file" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern="/.*\\.usr" />
+                <data android:pathPattern="/.*\\..*\\.usr"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.usr"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.USR"/>
+                <data android:pathPattern="/.*\\.USR" />
+                <data android:pathPattern="/.*\\..*\\.USR"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.USR"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.USR"/>
                 <data android:host="*" />
             </intent-filter>
 

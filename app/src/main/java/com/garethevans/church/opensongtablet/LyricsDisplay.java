@@ -761,7 +761,7 @@ public class LyricsDisplay extends Activity {
 		tempPresentationOrder = FullscreenActivity.mPresentation+ " ";
 		for (int w=0;w<temp_title.size();w++) {
 			if (tempPresentationOrder.contains((temp_title.get(w))+ " ")) {
-				// Replace this is the next character isn't a space
+				// Replace this if the next character isn't a space
 				tempPresentationOrder = tempPresentationOrder.replace(temp_title.get(w)+" ", (temp_title.get(w)+"___"));
 			}
 		}

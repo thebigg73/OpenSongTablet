@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<string name="set_loading">Loading set</string>
+	<string name="set_processing">Processing</string>
+	<string name="image">Image</string>
+    <string name="slide_properties_only_presentation">The options below are only used during presentation mode</string>
+    <string name="slide_remove_page">Remove page from custom slide</string>
+    <string name="slide_add_page">Insert new page to custom slide</string>
+    <string name="loop_slide_pages">Loop pages in custom slide</string>
+	<string name="slide_background_image">Background image for all pages in this group (leave blank for default)</string>
+    <string name="slide_page_background_image">Background image for this page (leave blank for default)</string>
 	<string name="tap_tempo">Tap to set tempo</string>
 	<string name="convert_song">Please convert this song into OpenSong format (by viewing it) before adding it to a set</string>
     <string name="no_filemanager">No file manager installed</string>
