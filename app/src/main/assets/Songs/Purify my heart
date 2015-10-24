@@ -15,7 +15,7 @@
   <user1>45</user1>
   <user2></user2>
   <user3></user3>
-  <key>D</key>
+  <key>E</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -24,35 +24,36 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs>OFF</linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[Intro]
-.D  A/E  D/F#  G   x2
+.E  B/F#  E/G#  A   x2
  
 [V]
-.D  A/E    Bm                  Em/G
+.E  B/F#    C#m                  F#m/A
  Purify my heart, let me be as gold
-.       A        A7/G
+.       B        B7/A
  And as precious silver
-.D  A/E    Bm                  Em/G
+.E  B/F#    C#m                  F#m/A
  Purify my heart, let me be as gold
-.A    A7/G
+.B    B7/A
  Pure gold
  
 [C]
-.D  Em     A7    D          Em    A   A7/G
+.E  F#m     B7    E          F#m    B   B7/A
  Refiner's fire, my heart's one desire
-.      D  A     D/F# Em/G     A       A7/G
+.      E  B     E/G# F#m/A     B       B7/A
  Is to be Holy, set apart for You Lord
-.            D  A     D/F# Em/G     Bm     A7
+.            E  B     E/G# F#m/A     C#m     B7
  I choose to be Holy, set apart for You my Master
-.Em/G     A7      G  D (B7)
+.F#m/A     B7      A  E (C#7)
  Ready to do Your will
  
 [V2]
  Purify my heart, cleanse me from within
  And make me Holy
  Purify my heart, cleanse me from my sin
- Deep within</lyrics>
-  <linked_songs>OFF</linked_songs>
-  <pad_file></pad_file>
-  
+ Deep within
+</lyrics>
 </song>

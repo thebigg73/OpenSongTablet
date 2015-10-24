@@ -6,6 +6,7 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -27,7 +28,8 @@
         android:fastScrollEnabled="true"
         android:layout_above="@+id/cancelFileButton"
         android:layout_below="@+id/fileChooserTitle"
-        android:layout_margin="12dp" />
+        android:layout_margin="12dp"
+        tools:listitem="@android:layout/simple_list_item_single_choice" />
 
     <Button
         style="?android:attr/buttonStyleSmall"

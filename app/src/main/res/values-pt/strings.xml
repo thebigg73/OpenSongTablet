@@ -433,5 +433,19 @@
 	<string name="no_audioplayer">"Nenhum jogador de áudio instalado"</string>
 	<string name="no_filemanager">"Sem gerenciador de arquivos instalados"</string>
 	<string name="tap_tempo">"Toque para definir andamento"</string>
+	<string name="add_reusable">"Salvar como um slide reutilizável"</string>
+	<string name="bad_time">"Tempo do slide não foi definido corretamente"</string>
+	<string name="image">"imagem"</string>
+	<string name="image_slide">"slideshow imagem"</string>
+	<string name="load_reusable">"Coloque um slide reutilizável"</string>
+	<string name="loop">"dar laços"</string>
+	<string name="loop_slide_pages">"Páginas de loop em slides personalizada"</string>
+	<string name="set_loading">"Carregando set"</string>
+	<string name="set_processing">"processamento"</string>
+	<string name="slide_add_page">"Insira nova página com o costume de slides"</string>
+	<string name="time">"Tempo"</string>
+	<string name="time_slide_pages">"Tempo para cada slide (s)"</string>
+	<string name="time_slide_pages_help">"Deixe em branco para slideshow Manual"</string>
+	<string name="warning">"Esta opção só deve ser usado para o modo de apresentação. Esteja ciente de que esse recurso usa muita memória e pode causar acidentes. Você foi avisado!"</string>
 
 </resources>

@@ -10,12 +10,10 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Locale;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import android.app.Activity;
-import android.util.Log;
 
 public class ExportPreparer extends Activity {
 
@@ -76,13 +74,11 @@ public class ExportPreparer extends Activity {
 
 		try {
 			FileInputStream inputStreamSet = new FileInputStream(settoparse);
-			if (inputStreamSet != null) {
-				InputStreamReader streamReaderSet = new InputStreamReader(inputStreamSet);
-				BufferedReader bufferedReaderSet = new BufferedReader(streamReaderSet);
-				setxml = readTextFile(inputStreamSet);
-				inputStreamSet.close();
-				bufferedReaderSet.close();
-			}
+			InputStreamReader streamReaderSet = new InputStreamReader(inputStreamSet);
+			BufferedReader bufferedReaderSet = new BufferedReader(streamReaderSet);
+			setxml = readTextFile(inputStreamSet);
+			inputStreamSet.close();
+			bufferedReaderSet.close();
 			inputStreamSet.close(); // close the file
 		} catch (java.io.FileNotFoundException e) {
 			// file doesn't exist
@@ -104,22 +100,26 @@ public class ExportPreparer extends Activity {
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 			if (eventType == XmlPullParser.START_TAG) {
 				if (xpp.getName().equals("slide_group")) {
-					if (xpp.getAttributeValue(1).equals("song")) {
+					if (xpp.getAttributeValue(null,"type").equals("song")) {
 						songfile = null;
-                        String thisline = "";
-						songfile = new File(FullscreenActivity.homedir + "/Songs/" + xpp.getAttributeValue(3) + xpp.getAttributeValue(0));
-						if (xpp.getAttributeValue(3).equals("")) {
-                            thisline = "/" + xpp.getAttributeValue(0);
+                        String thisline;
+						songfile = new File(FullscreenActivity.homedir + "/Songs/" + xpp.getAttributeValue(null,"path") + xpp.getAttributeValue(null,"name"));
+						// Ensure there is a folder '/'
+                        if (xpp.getAttributeValue(null,"path").equals("")) {
+                            thisline = "/" + xpp.getAttributeValue(null,"name");
                         } else {
-                            thisline = xpp.getAttributeValue(3) + xpp.getAttributeValue(0);
+                            thisline = xpp.getAttributeValue(null,"path") + xpp.getAttributeValue(null,"name");
                         }
                         filesinset.add(thisline);
-						filesinset_ost.add(xpp.getAttributeValue(0));
+						//filesinset_ost.add(xpp.getAttributeValue(0));
+                        filesinset_ost.add(thisline);
 
-                        song_title = xpp.getAttributeValue(0);
+                        // Set the default values exported with the text for the set
+                        song_title = xpp.getAttributeValue(null,"name");
 						song_author = "";
 						song_hymnnumber = "";
 						song_key = "";
+                        // Now try to improve on this info
 						if (songfile.exists() && songfile.isFile()) {
 							// Read in the song title, author, copyright, hymnnumber, key
 							getSongData();
@@ -135,17 +135,46 @@ public class ExportPreparer extends Activity {
 							settext = settext + " (" + song_key + ")";
 						}
 						settext = settext + "\n";
-					} else if (xpp.getAttributeValue(0).equals("scripture")) {
-						settext = settext + FullscreenActivity.scripture.toUpperCase(Locale.getDefault()) + " : " + xpp.getAttributeValue(1) + "\n";
+					} else if (xpp.getAttributeValue(null,"type").equals("scripture")) {
+						settext = settext + FullscreenActivity.scripture.toUpperCase(Locale.getDefault()) + " : " + xpp.getAttributeValue(null,"name") + "\n";
 
-					} else if (xpp.getAttributeValue(1).equals("scripture")) {
-						settext = settext + FullscreenActivity.scripture.toUpperCase(Locale.getDefault()) + " : " + xpp.getAttributeValue(0) + "\n";
+					} else if (xpp.getAttributeValue(null,"type").equals("custom")) {
+                        // Decide if this is a note or a slide
+                        if (xpp.getAttributeValue(null,"name").contains("# " + FullscreenActivity.text_note + " # - ")) {
+                            String nametemp = xpp.getAttributeValue(null,"name");
+                            nametemp = nametemp.replace("# " + FullscreenActivity.note + " # - ","");
+                            settext = settext + FullscreenActivity.note.toUpperCase(Locale.getDefault()) + " : " + nametemp + "\n";
+                        } else {
+                            settext = settext + FullscreenActivity.slide.toUpperCase(Locale.getDefault()) + " : " + xpp.getAttributeValue(null, "name") + "\n";
+                        }
+					} else if (xpp.getAttributeValue(null,"type").equals("image")) {
+                        // Go through the descriptions of each image and extract the absolute file locations
+                        boolean allimagesdone = false;
+                        ArrayList<String> theseimages = new ArrayList<>();
+						String imgname = "";
+						imgname = xpp.getAttributeValue(null,"name");
+                        while (!allimagesdone) { // Keep iterating unless the current eventType is the end of the document
+                            if (eventType == XmlPullParser.START_TAG) {
+                                if (xpp.getName().equals("description")) {
+                                    eventType = xpp.next();
+                                    theseimages.add(xpp.getText());
+                                    filesinset.add(xpp.getText());
+                                    filesinset_ost.add(xpp.getText());
+                                }
 
-					} else if (xpp.getAttributeValue(0).equals("custom")) {
-						settext = settext + FullscreenActivity.slide.toUpperCase(Locale.getDefault()) + " : " + xpp.getAttributeValue(1) + "\n";
+                            } else if (eventType == XmlPullParser.END_TAG) {
+                                if (xpp.getName().equals("slide_group")) {
+                                    allimagesdone = true;
+                                }
+                            }
 
-					} else if (xpp.getAttributeValue(1).equals("custom")) {
-						settext = settext + FullscreenActivity.slide.toUpperCase(Locale.getDefault()) + " : " + xpp.getAttributeValue(0) + "\n";
+                            eventType = xpp.next(); // Set the current event type from the return value of next()
+                        }
+                        // Go through each of these images and add a line for each one
+                        settext = settext + FullscreenActivity.image.toUpperCase(Locale.getDefault()) + " : " + imgname + "\n";
+                        for (int im=0;im<theseimages.size();im++) {
+                            settext = settext + "     - " + theseimages.get(im) + "\n";
+                        }
 					}
 				}
 			}
@@ -175,13 +204,11 @@ public class ExportPreparer extends Activity {
 
 		try {
 			FileInputStream inputStreamSong = new FileInputStream(songfile);
-			if (inputStreamSong != null) {
-				InputStreamReader streamReaderSong = new InputStreamReader(inputStreamSong);
-				BufferedReader bufferedReaderSong = new BufferedReader(streamReaderSong);
-				songxml = readTextFile(inputStreamSong);
-				inputStreamSong.close();
-				bufferedReaderSong.close();
-			}
+			InputStreamReader streamReaderSong = new InputStreamReader(inputStreamSong);
+            BufferedReader bufferedReaderSong = new BufferedReader(streamReaderSong);
+			songxml = readTextFile(inputStreamSong);
+			inputStreamSong.close();
+			bufferedReaderSong.close();
 			inputStreamSong.close(); // close the file
 		} catch (java.io.FileNotFoundException e) {
 			// file doesn't exist

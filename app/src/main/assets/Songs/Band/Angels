@@ -6,8 +6,8 @@
   <presentation></presentation>
   <hymn_number></hymn_number>
   <capo print="false"></capo>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <tempo>72</tempo>
+  <time_sig>4/4</time_sig>
   <duration></duration>
   <ccli></ccli>
   <theme></theme>
@@ -66,6 +66,10 @@
 ;Chorus</lyrics>
   <linked_songs></linked_songs>
   <pad_file></pad_file>
-  
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

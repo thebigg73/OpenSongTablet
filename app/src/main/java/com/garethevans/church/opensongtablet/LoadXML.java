@@ -19,6 +19,19 @@ import android.util.Log;
 
 public class LoadXML extends Activity {
 
+    static String temp_myXML;
+    static String temp_songfilename;
+    static String temp_whichSongFolder;
+    static CharSequence temp_mTitle;
+    static CharSequence temp_mAuthor;
+    static String temp_mUser1;
+    static String temp_mUser2;
+    static String temp_mUser3;
+    static String temp_mAka;
+    static String temp_mKeyLine;
+    static String temp_mHymnNumber;
+    static String temp_mLyrics;
+
 	// This bit loads the lyrics from the required file
 	public static void loadXML() throws XmlPullParserException, IOException {
         Log.d("LoadXML", "LoadXML activity running");
@@ -137,7 +150,7 @@ public class LoadXML extends Activity {
             FullscreenActivity.myXML = FullscreenActivity.myXML.replace("\t", "    ");
             FullscreenActivity.myXML = FullscreenActivity.myXML.replace("\b", "    ");
             FullscreenActivity.myXML = FullscreenActivity.myXML.replace("\f", "    ");
-            if (!FullscreenActivity.whichSongFolder.contains(FullscreenActivity.slide) && !FullscreenActivity.whichSongFolder.contains(FullscreenActivity.note) && !FullscreenActivity.whichSongFolder.contains(FullscreenActivity.scripture)) {
+            if (!FullscreenActivity.whichSongFolder.contains(FullscreenActivity.slide) && !FullscreenActivity.whichSongFolder.contains(FullscreenActivity.image) && !FullscreenActivity.whichSongFolder.contains(FullscreenActivity.note) && !FullscreenActivity.whichSongFolder.contains(FullscreenActivity.scripture)) {
                 FullscreenActivity.myXML = FullscreenActivity.myXML.replace("Slide 1", "[V1]");
                 FullscreenActivity.myXML = FullscreenActivity.myXML.replace("Slide 2", "[V2]");
                 FullscreenActivity.myXML = FullscreenActivity.myXML.replace("Slide 3", "[V3]");
@@ -276,6 +289,80 @@ public class LoadXML extends Activity {
         return outputStream.toString();
 	}
 	// END NEW
+
+    public static void prepareLoadCustomReusable(String what) {
+
+        temp_myXML = FullscreenActivity.myXML;
+        temp_songfilename = FullscreenActivity.songfilename;
+        temp_whichSongFolder = FullscreenActivity.whichSongFolder;
+        temp_mTitle = FullscreenActivity.mTitle;
+        temp_mAuthor = FullscreenActivity.mAuthor;
+        temp_mUser1 = FullscreenActivity.mUser1;
+        temp_mUser2 = FullscreenActivity.mUser2;
+        temp_mUser3 = FullscreenActivity.mUser3;
+        temp_mAka = FullscreenActivity.mAka;
+        temp_mKeyLine = FullscreenActivity.mKeyLine;
+        temp_mHymnNumber = FullscreenActivity.mHymnNumber;
+        temp_mLyrics = FullscreenActivity.mLyrics;
+
+        String[] tempfile = what.split("/");
+        if (tempfile.length>0) {
+            FullscreenActivity.songfilename = tempfile[tempfile.length - 1];
+        }
+        // Get the new whichSongFolder
+        if (what.contains("Notes/")) {
+            FullscreenActivity.whichSongFolder = "../Notes";
+            FullscreenActivity.whattodo = "customreusable_note";
+        } else if (what.contains("Slides/")) {
+            FullscreenActivity.whichSongFolder = "../Slides";
+            FullscreenActivity.whattodo = "customreusable_slide";
+        } else if (what.contains("Images/")) {
+            FullscreenActivity.whichSongFolder = "../Images";
+            FullscreenActivity.whattodo = "customreusable_image";
+        }
+
+        Log.d("loadXML","folder="+tempfile[0]);
+        Log.d("loadXML","songfilename="+tempfile[1]);
+        Log.d("loadXML","whichSongFolder="+FullscreenActivity.whichSongFolder);
+
+        // Load up the XML
+        try {
+            loadXML();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Put the values in
+        FullscreenActivity.customslide_title = FullscreenActivity.mTitle.toString();
+        FullscreenActivity.customimage_time = FullscreenActivity.mUser1;
+        FullscreenActivity.customimage_loop = FullscreenActivity.mUser2;
+        FullscreenActivity.customimage_list = FullscreenActivity.mUser3;
+        FullscreenActivity.customslide_content = FullscreenActivity.mLyrics;
+
+        // Reset the main song variables back to their former glory
+        FullscreenActivity.myXML = temp_myXML;
+        FullscreenActivity.songfilename = temp_songfilename;
+        FullscreenActivity.whichSongFolder = temp_whichSongFolder;
+        FullscreenActivity.mTitle = temp_mTitle;
+        FullscreenActivity.mAuthor = temp_mAuthor;
+        FullscreenActivity.mUser1 = temp_mUser1;
+        FullscreenActivity.mUser2 = temp_mUser2;
+        FullscreenActivity.mUser3 = temp_mUser3;
+        FullscreenActivity.mAka = temp_mAka;
+        FullscreenActivity.mKeyLine = temp_mKeyLine;
+        FullscreenActivity.mHymnNumber = temp_mHymnNumber;
+        FullscreenActivity.mLyrics = temp_mLyrics;
+        Preferences.savePreferences();
+
+        Log.d("load", "customreusable loaded");
+        Log.d("load","customslide_title="+FullscreenActivity.customslide_title);
+        Log.d("load","customslide_content="+FullscreenActivity.customslide_content);
+        Log.d("load","customimage_time="+FullscreenActivity.customimage_time);
+        Log.d("load","customimage_loop="+FullscreenActivity.customimage_loop);
+        Log.d("load","customimage_list="+FullscreenActivity.customimage_list);
+        Log.d("load","whattodo="+FullscreenActivity.whattodo);
+
+    }
 
 	public static void initialiseSongTags() {
 		FullscreenActivity.mTitle = FullscreenActivity.songfilename;

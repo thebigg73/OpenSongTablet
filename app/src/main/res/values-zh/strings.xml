@@ -437,5 +437,19 @@
 	<string name="no_audioplayer">"未安装音频播放器"</string>
 	<string name="no_filemanager">"未安装文件管理器"</string>
 	<string name="tap_tempo">"轻按以设定的速度"</string>
+	<string name="add_reusable">"保存为可重复使用的幻灯片"</string>
+	<string name="bad_time">"幻灯片的时间尚未确定正确"</string>
+	<string name="image">"像"</string>
+	<string name="image_slide">"图像幻灯片"</string>
+	<string name="load_reusable">"装入可重复使用的幻灯片"</string>
+	<string name="loop">"循环"</string>
+	<string name="loop_slide_pages">"在自定义幻灯片循环播放页面"</string>
+	<string name="set_loading">"装载集"</string>
+	<string name="set_processing">"处理"</string>
+	<string name="slide_add_page">"插入新的页面自定义幻灯片"</string>
+	<string name="time">"时刻"</string>
+	<string name="time_slide_pages">"时间为每个幻灯片（S）"</string>
+	<string name="time_slide_pages_help">"留空为手动幻灯片"</string>
+	<string name="warning">"应该仅用于演示模式这个选项。请注意，此功能使用大量内存，并可能导致崩溃。 你被警告了！"</string>
 
 </resources>

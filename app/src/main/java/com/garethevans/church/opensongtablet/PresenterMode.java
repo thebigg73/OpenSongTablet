@@ -14,10 +14,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.hardware.display.DisplayManager;
 import android.media.MediaPlayer;
 import android.media.MediaRouter;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,6 +47,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -65,7 +73,8 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         PopUpSongRenameFragment.MyInterface, PopUpSearchViewFragment.MyInterface,
         PopUpEditSetFragment.MyInterface, PopUpSongCreateFragment.MyInterface,
         PopUpSearchViewFragment.MyVibrator, PopUpSongDetailsFragment.MyInterface,
-        PopUpFontsFragment.MyInterface, PopUpCustomSlideFragment.MyInterface {
+        PopUpFontsFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
+        PopUpFileChooseFragment.MyInterface {
 
     // General variables
     public static MediaPlayer mp;
@@ -85,6 +94,11 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     static int whichsonginset;
     static int whichsongsection;
     static boolean pedalsenabled = true;
+
+    String[] imagelocs;
+    boolean isImage = false;
+    boolean isSlide = false;
+    static String imageAddress;
 
     // Variables used by the popups
     static String whatBackgroundLoaded;
@@ -121,7 +135,6 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     protected int myOptionListClickedItem;
     protected View view;
     protected String linkclicked;
-
 
     // Song values
     // Lyrics are previewed in the EditText box before being presented
@@ -183,6 +196,19 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     LinearLayout presenter_audio_group;
     LinearLayout presenter_slide_group;
 
+    // Auto slideshow
+    static boolean isplayingautoslideshow = false;
+    LinearLayout loopandtimeLinearLayout;
+    LinearLayout loopcontrolsLinearLayout;
+    EditText timeEditText;
+    CheckBox loopCheckBox;
+    ImageButton stopSlideShow;
+    ImageButton playSlideShow;
+    static int autoslidetime = 0;
+    static boolean autoslideloop = false;
+    AsyncTask autoslideshowtask;
+    Handler mHandler;
+
     // Settings buttons
     ScrollView presenter_settings_buttons;
     LinearLayout presenter_backgrounds_group;
@@ -191,6 +217,8 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        System.gc();
 
         mp = new MediaPlayer();
 
@@ -332,6 +360,26 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         presenter_backgrounds_group = (LinearLayout) findViewById(R.id.presenter_backgrounds_group);
         presenter_layout_group = (LinearLayout) findViewById(R.id.presenter_layout_group);
         presenter_displays_group = (LinearLayout) findViewById(R.id.presenter_display_group);
+
+        // Auto slideshow stuff
+        loopandtimeLinearLayout = (LinearLayout) findViewById(R.id.loopandtimeLinearLayout);
+        loopcontrolsLinearLayout = (LinearLayout) findViewById(R.id.loopcontrolsLinearLayout);
+        timeEditText = (EditText) findViewById(R.id.timeEditText);
+        loopCheckBox = (CheckBox) findViewById(R.id.loopCheckBox);
+        stopSlideShow = (ImageButton) findViewById(R.id.stopSlideShow);
+        playSlideShow = (ImageButton) findViewById(R.id.playSlideShow);
+        stopSlideShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prepareStopAutoSlideShow();
+            }
+        });
+        playSlideShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prepareStartAutoSlideShow();
+            }
+        });
 
         // Set up the navigation drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -973,6 +1021,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
 
     public void setupSongButtons() {
         // Create a new button for each songSection
+        // If the 'song' is custom images, set them as the background
         presenter_song_buttonsListView.removeAllViews();
         presenter_song_title.setText(FullscreenActivity.mTitle);
         presenter_song_author.setText(FullscreenActivity.mAuthor);
@@ -988,6 +1037,21 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             presenter_order_view.setChecked(true);
         } else {
             presenter_order_view.setChecked(false);
+        }
+
+        imagelocs = null;
+        isImage = false;
+        isSlide = false;
+
+        if (FullscreenActivity.whichSongFolder.contains("../Images")) {
+            // Custom images so split the mUser3 field by newline.  Each value is image location
+            imagelocs = FullscreenActivity.mUser3.split("\n");
+            isImage = true;
+        }
+
+        if (FullscreenActivity.whichSongFolder.contains("../Slides")) {
+            // Custom slide
+            isSlide = true;
         }
 
         numsectionbuttons = songSections.length;
@@ -1007,7 +1071,64 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             newSongButton = new Button(PresenterMode.this);
             newSongButton.setText(buttonText.trim());
             newSongButton.setTransformationMethod(null);
-            newSongButton.setBackgroundResource(R.drawable.present_section_button);
+            if (isImage) {
+                // By default, the image should be the not found one
+                Drawable drw = getResources().getDrawable(R.drawable.notfound);
+
+                File checkfile = new File(imagelocs[x]);
+                Bitmap ThumbImage;
+                Resources res;
+                BitmapDrawable bd;
+
+                if (checkfile.exists()) {
+                    try {
+                        ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(imagelocs[x]), 160, 120);
+                        res = getResources();
+                        bd = new BitmapDrawable(res, ThumbImage);
+                        newSongButton.setBackground(bd);
+
+                    } catch (Exception e) {
+                        // Didn't work
+                        newSongButton.setBackground(drw);
+                    }
+                } else {
+                    newSongButton.setBackground(drw);
+                }
+
+                //newSongButton.setHeight(120);
+                //newSongButton.setWidth(160);
+                newSongButton.setAlpha(0.4f);
+                newSongButton.setMaxWidth(200);
+                newSongButton.setMaxHeight(150);
+                LinearLayout.LayoutParams layoutSongButton = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutSongButton.width = 200;
+                layoutSongButton.height = 150;
+                newSongButton.setLayoutParams(layoutSongButton);
+
+            } else {
+                newSongButton.setBackgroundResource(R.drawable.present_section_button);
+            }
+
+            if (isImage || isSlide) {
+                // Make sure the time, loop and autoslideshow buttons are visible
+                loopandtimeLinearLayout.setVisibility(View.VISIBLE);
+                loopcontrolsLinearLayout.setVisibility(View.VISIBLE);
+                // Set the appropiate values
+                if (FullscreenActivity.mUser1!=null) {
+                    timeEditText.setText(FullscreenActivity.mUser1);
+                }
+                if (FullscreenActivity.mUser2!=null && FullscreenActivity.mUser2.equals("true")) {
+                    loopCheckBox.setChecked(true);
+                } else {
+                    loopCheckBox.setChecked(false);
+                }
+
+            } else {
+                // Otherwise, hide them
+                loopandtimeLinearLayout.setVisibility(View.GONE);
+                loopcontrolsLinearLayout.setVisibility(View.GONE);
+            }
+
             newSongButton.setTextSize(10.0f);
             newSongButton.setTextColor(0xffffffff);
             newSongButton.setPadding(10, 10, 10, 10);
@@ -1076,22 +1197,26 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         songpart = tempSongLocation.split("/");
 
         // If the folder length isn't 0, it is a folder
-        // Decide if it is a song, scripture, slide or note and get the actual file location
-        if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
+        // Decide if it is a song, scripture, slide, image or note and get the actual file location
+        if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
             FullscreenActivity.whichSongFolder = songpart[0];
             //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/" + songpart[0]);
 
-        } else if (songpart[0].length() > 0 && songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
+        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
             FullscreenActivity.whichSongFolder = "../OpenSong Scripture/_cache";
             songpart[0] = "../OpenSong Scripture/_cache";
 
-        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.scripture) && songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
+        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.scripture) && songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
             FullscreenActivity.whichSongFolder = "../Slides/_cache";
             songpart[0] = "../Slides/_cache";
 
-        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && songpart[0].contains(FullscreenActivity.note)) {
+        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && songpart[0].contains(FullscreenActivity.note)) {
             FullscreenActivity.whichSongFolder = "../Notes/_cache";
             songpart[0] = "../Notes/_cache";
+
+        } else if (songpart[0].length() > 0 && songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
+            FullscreenActivity.whichSongFolder = "../Images/_cache";
+            songpart[0] = "../Images/_cache";
 
         } else {
             FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
@@ -1127,6 +1252,8 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             isPDF = true;
             presenter_slide_text.setVisibility(View.GONE);
             presenter_slide_image.setVisibility(View.VISIBLE);
+            presenter_slide_image.setBackground(getResources().getDrawable(R.drawable.unhappy_android));
+
         }
 
         if (!isPDF) {
@@ -1167,18 +1294,27 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     @Override
     public void addSlideToSet() {
         String filename;
+        String reusablefilename;
         String templocator;
 
         if (FullscreenActivity.noteorslide.equals("note")) {
             filename = FullscreenActivity.dircustomnotes + "/" + FullscreenActivity.customslide_title;
+            reusablefilename = FullscreenActivity.homedir + "/Notes/" + FullscreenActivity.customslide_title;
             templocator = FullscreenActivity.note;
-        } else {
+            FullscreenActivity.customimage_list = "";
+        } else if (FullscreenActivity.noteorslide.equals("slide")) {
             filename = FullscreenActivity.dircustomslides + "/" + FullscreenActivity.customslide_title;
+            reusablefilename = FullscreenActivity.homedir + "/Slides/" + FullscreenActivity.customslide_title;
             templocator = FullscreenActivity.slide;
+            FullscreenActivity.customimage_list = "";
+        } else {
+            filename = FullscreenActivity.dircustomimages + "/" + FullscreenActivity.customslide_title;
+            reusablefilename = FullscreenActivity.homedir + "/Images/" + FullscreenActivity.customslide_title;
+            templocator = FullscreenActivity.image;
         }
 
         // If slide content is empty - put the title in
-        if (FullscreenActivity.customslide_content.isEmpty()) {
+        if (FullscreenActivity.customslide_content.isEmpty() && !FullscreenActivity.noteorslide.equals("image")) {
             FullscreenActivity.customslide_content = FullscreenActivity.customslide_title;
         }
 
@@ -1188,11 +1324,12 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         FullscreenActivity.mynewXML += "<song>\n";
         FullscreenActivity.mynewXML += "  <title>" + FullscreenActivity.customslide_title + "</title>\n";
         FullscreenActivity.mynewXML += "  <author></author>\n";
-        FullscreenActivity.mynewXML += "  <user1></user1>\n";
-        FullscreenActivity.mynewXML += "  <user2></user2>\n";
-        FullscreenActivity.mynewXML += "  <user3></user3>\n";
+        FullscreenActivity.mynewXML += "  <user1>" + FullscreenActivity.customimage_time + "</user1>\n";  // This is used for auto advance time
+        FullscreenActivity.mynewXML += "  <user2>" + FullscreenActivity.customimage_loop + "</user2>\n";  // This is used for loop on or off
+        FullscreenActivity.mynewXML += "  <user3>" + FullscreenActivity.customimage_list + "</user3>\n";  // This is used as links to a background images
         FullscreenActivity.mynewXML += "  <aka></aka>\n";
         FullscreenActivity.mynewXML += "  <key_line></key_line>\n";
+        FullscreenActivity.mynewXML += "  <hymn_number></hymn_number>\n";
         FullscreenActivity.mynewXML += "  <lyrics>" + FullscreenActivity.customslide_content +"</lyrics>\n";
         FullscreenActivity.mynewXML += "</song>";
 
@@ -1202,12 +1339,27 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         // Now write the modified song
         FileOutputStream overWrite;
         try {
-            overWrite = new FileOutputStream(filename,	false);
+            overWrite = new FileOutputStream(filename, false);
             overWrite.write(FullscreenActivity.mynewXML.getBytes());
             overWrite.flush();
             overWrite.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        // If this is to be a reusable custom slide
+        if (FullscreenActivity.customreusable) {
+            // Now write the modified song
+            FileOutputStream overWriteResuable;
+            try {
+                overWriteResuable = new FileOutputStream(reusablefilename, false);
+                overWriteResuable.write(FullscreenActivity.mynewXML.getBytes());
+                overWriteResuable.flush();
+                overWriteResuable.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            FullscreenActivity.customreusable = false;
         }
 
         // Add to set
@@ -1242,7 +1394,17 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         }, 1000); // 1000ms delay
 
         refreshAll();
+    }
 
+    @Override
+    public void loadCustomReusable() {
+        // This is called from the file chooser fragment.
+        // Load in the custom reusable, then reopen the custom slide editor
+        // Put the old myXML and song fields into temporary memory while we load in the new ones
+        LoadXML.prepareLoadCustomReusable(FullscreenActivity.customreusabletoload);
+        // This reopens the choose backgrounds popupFragment
+        DialogFragment newFragment = PopUpCustomSlideFragment.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
     }
 
     public class sectionButtonClick implements View.OnClickListener {
@@ -1251,12 +1413,16 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             // Re-enable the disabled button
             if (currentsectionbutton != null) {
                 Button oldbutton = (Button) currentsectionbutton;
-                oldbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.present_section_button));
-                oldbutton.setTextSize(10.0f);
-                oldbutton.setTextColor(0xffffffff);
-                oldbutton.setPadding(10, 10, 10, 10);
-                oldbutton.setMinimumHeight(0);
-                oldbutton.setMinHeight(0);
+                if (isImage) {
+                    oldbutton.setAlpha(0.4f);
+                    oldbutton.setMaxWidth(160);
+                    oldbutton.setMaxHeight(120);
+                } else {
+                    oldbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.present_section_button));
+                    oldbutton.setTextSize(10.0f);
+                    oldbutton.setTextColor(0xffffffff);
+                    oldbutton.setPadding(10, 10, 10, 10);
+                }
             }
 
             // Get button id
@@ -1274,12 +1440,38 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
 
             presenter_song_buttons.smoothScrollTo(0, totalheight);
 
-            // Set the text of the button into the slide window
-            presenter_slide_text.setText(songSections[whichviewSongSection].trim());
+            // If this is an image, hide the text, show the image, otherwise show the text in the slide window
+            if (isImage) {
+                presenter_slide_text.setVisibility(View.GONE);
+                presenter_slide_image.setVisibility(View.VISIBLE);
+                presenter_slide_image.setBackground(v.getBackground());
+                presenter_slide_image.setMaxWidth(200);
+                presenter_slide_image.setMaxHeight(150);
+                LinearLayout.LayoutParams layoutSongButton = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutSongButton.width = 200;
+                layoutSongButton.height = 150;
+                presenter_slide_image.setLayoutParams(layoutSongButton);
+                imageAddress = imagelocs[v.getId()];
+
+            } else {
+                presenter_slide_image.setVisibility(View.GONE);
+                presenter_slide_text.setVisibility(View.VISIBLE);
+                presenter_slide_text.setText(songSections[whichviewSongSection].trim());
+            }
 
             // Change the background colour of this button to show it is active
             Button newbutton = (Button) v;
-            newbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.present_section_button_active));
+            if (isImage) {
+                newbutton.setAlpha(1.0f);
+                LinearLayout.LayoutParams layoutSongButton = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutSongButton.width = 200;
+                layoutSongButton.height = 150;
+                newbutton.setLayoutParams(layoutSongButton);
+                newbutton.setMaxWidth(200);
+                newbutton.setMaxHeight(150);
+            } else {
+                newbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.present_section_button_active));
+            }
             newbutton.setTextSize(10.0f);
             newbutton.setTextColor(0xff000000);
             newbutton.setPadding(10, 10, 10, 10);
@@ -1404,8 +1596,10 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             presenter_project_group.setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_blue_active));
             presenter_actions_buttons.smoothScrollTo(0, presenter_project_group.getTop());
 
-            if (!isPDF) {
+            if (!isPDF && !isImage) {
                 buttonPresentText = presenter_slide_text.getText().toString().trim();
+            } else if (!isPDF && isImage) {
+                buttonPresentText = "$$_IMAGE_$$";
             } else {
                 buttonPresentText = "";
             }
@@ -1623,6 +1817,8 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             tempfiletosearch = tempfiletosearch.replace("../Slides/_cache/",FullscreenActivity.slide+"/");
         } else if (tempfiletosearch.contains("../Notes/_cache/")) {
             tempfiletosearch = tempfiletosearch.replace("../Notes/_cache/",FullscreenActivity.note+"/");
+        } else if (tempfiletosearch.contains("../Images/_cache/")) {
+            tempfiletosearch = tempfiletosearch.replace("../Images/_cache/",FullscreenActivity.image+"/");
         }
         whichsonginset = -1;
 
@@ -1702,21 +1898,24 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         String[] songpart = FullscreenActivity.linkclicked.split("/");
 
         // If the folder length isn't 0, it is a folder
-        if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
+        if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
             FullscreenActivity.whichSongFolder = songpart[0];
-            //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/"+ songpart[0]);
 
-        } else if (songpart[0].length() > 0 && songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
+        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
             FullscreenActivity.whichSongFolder = "../OpenSong Scripture/_cache";
             songpart[0] = "../OpenSong Scripture/_cache";
 
-        } else if (songpart[0].length() > 0 && songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note) && !songpart[0].contains(FullscreenActivity.scripture)) {
+        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note) && !songpart[0].contains(FullscreenActivity.scripture)) {
             FullscreenActivity.whichSongFolder = "../Slides/_cache";
             songpart[0] = "../Slides/_cache";
 
-        } else if (songpart[0].length() > 0 && songpart[0].contains(FullscreenActivity.note) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.scripture)) {
+        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && songpart[0].contains(FullscreenActivity.note) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.scripture)) {
             FullscreenActivity.whichSongFolder = "../Notes/_cache";
             songpart[0] = "../Notes/_cache";
+
+        } else if (songpart[0].length() > 0 && songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.note) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.scripture)) {
+            FullscreenActivity.whichSongFolder = "../Images/_cache";
+            songpart[0] = "../Images/_cache";
 
         } else {
             FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
@@ -2180,6 +2379,92 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                 viewsong.setClass(PresenterMode.this, FullscreenActivity.class);
                 startActivity(viewsong);
                 this.finish();
+        }
+    }
+
+    public void prepareStopAutoSlideShow() {
+        if (autoslideshowtask!=null) {
+            try {
+                autoslideshowtask.cancel(true);
+                autoslideshowtask = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            isplayingautoslideshow = false;
+        }
+        //playSlideShow.setClickable(true);
+
+    }
+
+    public void prepareStartAutoSlideShow() {
+        // Stop the slideshow if it already happening
+        prepareStopAutoSlideShow();
+
+        if (timeEditText.getText().toString()!=null) {
+            try {
+                autoslidetime = Integer.parseInt(timeEditText.getText().toString());
+            } catch (Exception e) {
+                autoslidetime = 0;
+            }
+        } else {
+            autoslidetime = 0;
+        }
+        autoslideloop = loopCheckBox.isChecked();
+
+        if (autoslidetime>0) {
+            // Start asynctask that recalls every autoslidetime
+            // Once we have reached the end of the slide group we either
+            // Start again (if autoslideloop)
+            // Or we exit autoslideshow
+            projectButtonClick(presenter_project_group);
+            isplayingautoslideshow = true;
+            autoslideshowtask = new AutoSlideShow();
+            autoslideshowtask.execute();
+
+        } else {
+            FullscreenActivity.myToastMessage = getResources().getString(R.string.bad_time);
+            ShowToast.showToast(PresenterMode.this);
+        }
+    }
+
+    private class AutoSlideShow extends AsyncTask <Object,Void,String> {
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            // Check if we can move to the next section in the song
+           if (whichsongsection < songSections.length-1 && isplayingautoslideshow) {
+                // Move to next song section
+                whichsongsection ++;
+                selectSectionButtonInSong();
+                prepareStopAutoSlideShow();
+                prepareStartAutoSlideShow();
+            } else if (autoslideloop && whichsongsection>=(songSections.length-1) && isplayingautoslideshow) {
+                // Go back to first song section
+                whichsongsection = 0;
+                selectSectionButtonInSong();
+                prepareStopAutoSlideShow();
+                prepareStartAutoSlideShow();
+            } else {
+                // Stop autoplay
+                prepareStopAutoSlideShow();
+            }
+        }
+
+        @Override
+        protected String doInBackground(Object[] params) {
+            // Get clock time
+            long start = System.currentTimeMillis();
+            long end = start;
+            while (end<(start+(autoslidetime*1000)) && isplayingautoslideshow) {
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    Log.d("e","Error="+e);
+                }
+                end = System.currentTimeMillis();
+            }
+            return null;
         }
     }
 

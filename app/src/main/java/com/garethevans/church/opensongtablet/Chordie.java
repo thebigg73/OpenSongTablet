@@ -65,15 +65,16 @@ public class Chordie extends Activity{
 		Bundle bundle = getIntent().getExtras();
 		String thissearch = bundle.getString("thissearch");
 		String engine = bundle.getString("engine");
-		
-		if (engine.equals("chordie")) {
-			weblink = "http://www.chordie.com/?np=0&ps=100&wf=531&ul=.pro&ul=.cho&ul=.crd&ul=.tab&chordie=ref&q="+thissearch;
-		} else if (engine.equals("ultimate-guitar")) {
-			weblink = "http://www.ultimate-guitar.com/search.php?page=1&tab_type_group=text&app_name=ugt&order=myweight&type=300&title="+thissearch;
-		}
-		
 
-		setContentView(R.layout.chordie_preview);
+        if (engine != null) {
+            if (engine.equals("chordie")) {
+                weblink = "http://www.chordie.com/?np=0&ps=100&wf=531&ul=.pro&ul=.cho&ul=.crd&ul=.tab&chordie=ref&q="+thissearch;
+            } else if (engine.equals("ultimate-guitar")) {
+                weblink = "http://www.ultimate-guitar.com/search.php?page=1&tab_type_group=text&app_name=ugt&order=myweight&type=300&title="+thissearch;
+            }
+        }
+
+        setContentView(R.layout.chordie_preview);
 		
 		chordieWeb = (WebView) findViewById(R.id.webView1);
 		
@@ -114,7 +115,8 @@ public class Chordie extends Activity{
 		toast.show();
 		
 		DownloadWebPageTask task = new DownloadWebPageTask();
-	    task.execute(new String[] { weblink });
+	    //task.execute(new String[] { weblink });
+        task.execute(weblink);
 	}
 
 	 private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
@@ -347,47 +349,70 @@ public class Chordie extends Activity{
 					
 					progressbar.setVisibility(View.INVISIBLE);
 
+					String title_resultposted;
+					String author_resultposted;
+
 					// Try to find the title
-					int startpos = resultposted.indexOf("song:");
-					if (startpos<0) {
-						startpos=0;
-					}
-					// Remove everything before this position
-					String title_resultposted = resultposted.substring(startpos);
+					// By default use the title of the page as a default
+					int startpos = resultposted.indexOf("<title>");
+					int endpos = resultposted.indexOf("</title>");
+					if (startpos>-1 && endpos>-1 && startpos<endpos) {
+						title_resultposted = resultposted.substring(startpos+7,endpos);
+						filenametosave = title_resultposted;
+                        filenametosave = filenametosave.replace(" @ Ultimate-Guitar.Com","");
+                        filenametosave = filenametosave.replace(" Chords","");
+                        int authstart = filenametosave.indexOf(" by ");
+                        if (authstart>-1) {
+                            authorname = filenametosave.substring(authstart+4);
+                            filenametosave = filenametosave.substring(0,authstart);
 
-					int endpos = title_resultposted.indexOf(",\n");
-					if (endpos<0) {
-						endpos=0;
-					}
-					//Bit with song title is in here hopefully
-					if (endpos>5) {
-						filenametosave = title_resultposted.substring(5, endpos);
-						filenametosave = filenametosave.replace("\"", "");
-						filenametosave = filenametosave.trim();
-					} else {
-						filenametosave = "*temp*";
+                        }
 					}
 
-                    // Try to find the author
+					// Look for a better title
+					startpos = resultposted.indexOf("song:");
+					if (startpos>-1) {
+                        // Remove everything before this position
+                        if (startpos != 0) {
+                            title_resultposted = resultposted.substring(startpos);
+                            endpos = title_resultposted.indexOf(",\n");
+                            if (endpos < 0) {
+                                endpos = 0;
+                            }
+                            //Bit with song title is in here hopefully
+                            if (endpos > 5) {
+                                filenametosave = title_resultposted.substring(5, endpos);
+                                filenametosave = filenametosave.replace("\"", "");
+                                filenametosave = filenametosave.trim();
+                            } else {
+                                filenametosave = "*temp*";
+                            }
+                        }
+                    }
+
+
+                    // Look for a better author
                     startpos = resultposted.indexOf("artist:");
-                    if (startpos<0) {
-                        startpos=0;
-                    }
-                    // Remove everything before this position
-                    String author_resultposted = resultposted.substring(startpos);
+                    if (startpos>-1) {
 
-                    endpos = author_resultposted.indexOf(",\n");
-                    if (endpos<0) {
-                        endpos=0;
+                        // Remove everything before this position
+                        if (startpos != 0) {
+                            author_resultposted = resultposted.substring(startpos);
+                            endpos = author_resultposted.indexOf(",\n");
+                            if (endpos < 0) {
+                                endpos = 0;
+                            }
+                            //Bit with song author is in here hopefully
+                            if (endpos > 6) {
+                                authorname = author_resultposted.substring(6, endpos);
+                                authorname = authorname.replace("\"", "");
+                                authorname = authorname.trim();
+                            } else {
+                                authorname = "";
+                            }
+                        }
                     }
-                    //Bit with author is in here hopefully
-                    if (endpos>7) {
-                        authorname = author_resultposted.substring(7, endpos);
-                        authorname = authorname.replace("\"", "");
-                        authorname = authorname.trim();
-                    } else {
-                        authorname = "";
-                    }
+
 
                     // Find the position of the start of this section
 					startpos = resultposted.indexOf("<div class=\"tb_ct\">");

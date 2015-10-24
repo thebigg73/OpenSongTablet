@@ -3,19 +3,27 @@
   <title>What a wonderful world</title>
   <author>Louis Armstrong</author>
   <copyright></copyright>
-  <hymn_number></hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number></hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo>115</tempo>
+  <time_sig>6/8</time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>F</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[INTRO]
 .F   Gm   Am   Gm
 
@@ -53,4 +61,12 @@
 .      Db               Gm/C   C         F   Eb   D   D
  And I think to myself, what a wonderful world
 .       Gm               Gm     C         F  
- Yes, I think to myself, what a wonderful world</lyrics></song>
+ Yes, I think to myself, what a wonderful world</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
+</song>

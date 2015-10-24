@@ -6,7 +6,7 @@
   <presentation>V1 V2 B V3 V1</presentation>
   <hymn_number>256</hymn_number>
   <capo print="false"></capo>
-  <tempo>78</tempo>
+  <tempo>72</tempo>
   <time_sig>4/4</time_sig>
   <duration>200</duration>
   <ccli>12345</ccli>
@@ -59,6 +59,10 @@
  Sharing my Saviour's love, showing my Father's heart.
  </lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

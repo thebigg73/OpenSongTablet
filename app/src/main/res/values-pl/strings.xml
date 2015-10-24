@@ -433,5 +433,19 @@
 	<string name="no_audioplayer">"Nie zainstalowano odtwarzacz audio"</string>
 	<string name="no_filemanager">"Nie zainstalowano menedżer plików"</string>
 	<string name="tap_tempo">"Dotknij, aby ustawić tempo"</string>
+	<string name="add_reusable">"Zapisz jako wielokrotnego użytku slajdu"</string>
+	<string name="bad_time">"Czas slajdów nie został prawidłowo ustawiony"</string>
+	<string name="image">"obraz"</string>
+	<string name="image_slide">"pokaz obrazu"</string>
+	<string name="load_reusable">"Załaduj wielokrotnego użytku slajd"</string>
+	<string name="loop">"zrobić pętlę"</string>
+	<string name="loop_slide_pages">"Strony pętli w niestandardowym slajdu"</string>
+	<string name="set_loading">"Ładowanie zestawu"</string>
+	<string name="set_processing">"przetwarzanie"</string>
+	<string name="slide_add_page">"Włóż nową stronę obyczajowa slajdu"</string>
+	<string name="time">"czas"</string>
+	<string name="time_slide_pages">"Czas dla każdego slajdu (s)"</string>
+	<string name="time_slide_pages_help">"Pozostaw puste do ręcznego pokazu slajdów"</string>
+	<string name="warning">"Ta opcja powinna być używana tylko w trybie prezentacji. Należy pamiętać, że funkcja ta używa dużo pamięci i mogą powodować awarie. Zostałeś ostrzeżony!"</string>
 
 </resources>

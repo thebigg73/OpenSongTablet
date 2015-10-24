@@ -433,5 +433,19 @@
 	<string name="no_audioplayer">"Не установлена аудио-плеер"</string>
 	<string name="no_filemanager">"Не установлена файловый менеджер"</string>
 	<string name="tap_tempo">"Нажмите, чтобы установить темп"</string>
+	<string name="add_reusable">"Сохранить как многоразового слайд"</string>
+	<string name="bad_time">"Время показа не были установлены правильно"</string>
+	<string name="image">"изображение"</string>
+	<string name="image_slide">"изображение слайд-шоу"</string>
+	<string name="load_reusable">"Загрузите многоразовый слайд"</string>
+	<string name="loop">"делать петлю"</string>
+	<string name="loop_slide_pages">"Страницы Loop в собственные слайд"</string>
+	<string name="set_loading">"Загрузка множество"</string>
+	<string name="set_processing">"обработка"</string>
+	<string name="slide_add_page">"Вставьте новую страницу в пользовательской слайд"</string>
+	<string name="time">"время"</string>
+	<string name="time_slide_pages">"Время для каждого слайда (ы)"</string>
+	<string name="time_slide_pages_help">"Оставьте пустым для ручной слайд-шоу"</string>
+	<string name="warning">"Эта опция должна использоваться только в режиме презентации. Помните, что эта функция использует много памяти и может привести к аварии. Вы были предупреждены!"</string>
 
 </resources>

@@ -6,8 +6,8 @@
   <presentation></presentation>
   <hymn_number></hymn_number>
   <capo print=""></capo>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <tempo>75</tempo>
+  <time_sig>4/4</time_sig>
   <duration></duration>
   <ccli>6016351</ccli>
   <theme></theme>
@@ -24,9 +24,6 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
-  <linked_songs></linked_songs>
-  <pad_file>Auto</pad_file>
-  <custom_chords></custom_chords>
   <lyrics>[C]
 .          A          E    B    C#m
  Bless the Lord O my soul, O my soul
@@ -77,4 +74,7 @@
 .           A           B     E
  Lord I'll worship Your holy name
 </lyrics>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
 </song>

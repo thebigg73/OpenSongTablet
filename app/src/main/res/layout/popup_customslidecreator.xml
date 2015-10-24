@@ -11,7 +11,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="12dp"
-            android:id="@+id/customRadioGroup">
+            android:id="@+id/customRadioGroup"
+            android:background="@drawable/presenter_box_red">
 
             <RadioButton
                 android:layout_width="match_parent"
@@ -27,52 +28,188 @@
                 android:id="@+id/slideRadioButton"
                 android:textSize="18sp" />
 
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/image_slide"
+                android:id="@+id/imageRadioButton"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/warning"
+                android:id="@+id/warningTextView" />
+
         </RadioGroup>
 
-        <TextView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/title"
-            android:id="@+id/slideTitleTextView"
-            android:textColor="#ff0"
-            android:textSize="18sp" />
+            android:layout_height="match_parent"
+            android:background="@drawable/presenter_box_blue"
+            android:layout_margin="8dp">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/slideTitleEditText"
-            android:hint="@string/title"
-            android:layout_marginBottom="16dp"
-            android:textColor="#000"
-            android:textCursorDrawable="@null"
-            android:singleLine="true"
-            android:inputType="text"
-            android:background="#fff"
-            android:textColorHint="#888"
-            android:textSize="18sp" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_reusable"
+                android:id="@+id/saveReusableCheckBox"
+                android:textSize="18sp"
+                android:layout_gravity="center_horizontal" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/content"
-            android:id="@+id/slideContentTextView"
-            android:textColor="#ff0"
-            android:textSize="18sp" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/load_reusable"
+                android:id="@+id/loadReusableButton"
+                android:layout_gravity="center"
+                android:background="@drawable/grey_button"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp" />
 
-        <EditText
+        </LinearLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/slideContentEditText"
-            android:hint="@string/content"
-            android:layout_marginBottom="16dp"
-            android:textColor="#000"
-            android:textCursorDrawable="@null"
-            android:minLines="8"
-            android:inputType="textMultiLine"
-            android:gravity="top|left"
-            android:background="#fff"
-            android:textColorHint="#888"
-            android:textSize="18sp" />
+            android:background="@drawable/presenter_box_black"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title"
+                android:id="@+id/slideTitleTextView"
+                android:textColor="#ff0"
+                android:textSize="18sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="4dp"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/slideTitleEditText"
+                android:hint="@string/title"
+                android:layout_marginBottom="16dp"
+                android:textColor="#000"
+                android:textCursorDrawable="@null"
+                android:singleLine="true"
+                android:inputType="text"
+                android:background="#fff"
+                android:textColorHint="#888"
+                android:textSize="18sp"
+                android:layout_below="@+id/slideTitleTextView"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="0dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/timeTextView"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="#ff0"
+                android:text="@string/time_slide_pages"
+                android:textSize="18sp"
+                android:layout_below="@+id/slideTitleEditText" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/timeEditText"
+                android:layout_below="@+id/timeTextView"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:inputType="number"
+                android:singleLine="true"
+                android:textSize="18sp"
+                android:textCursorDrawable="@null"
+                android:hint="@string/time_slide_pages_help"
+                android:textColor="#000"
+                android:textColorHint="#888"
+                android:background="#fff" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loop_slide_pages"
+                android:id="@+id/loopCheckBox"
+                android:textSize="18sp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_below="@+id/timeEditText" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/content"
+                android:id="@+id/slideContentTextView"
+                android:textColor="#ff0"
+                android:textSize="18sp"
+                android:layout_below="@+id/loopCheckBox"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="4dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/slide_add_page"
+                android:id="@+id/addPageButton"
+                android:background="@drawable/yellow_button"
+                android:layout_gravity="center_horizontal"
+                android:layout_below="@+id/slideContentTextView"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentRight="false"
+                android:layout_centerHorizontal="true" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/slideImageTable"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="16sp"
+                android:layout_below="@+id/addPageButton"
+                android:layout_alignParentEnd="false"
+                android:layout_centerHorizontal="true"></TableLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/slideContentEditText"
+                android:hint="@string/content"
+                android:layout_marginBottom="16dp"
+                android:textColor="#000"
+                android:textCursorDrawable="@null"
+                android:minLines="8"
+                android:inputType="textMultiLine"
+                android:gravity="top|left"
+                android:background="#fff"
+                android:textColorHint="#888"
+                android:textSize="18sp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_below="@+id/addPageButton" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:orientation="horizontal"

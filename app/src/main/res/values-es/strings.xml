@@ -433,5 +433,19 @@
 	<string name="no_audioplayer">"Ningún jugador de audio instalado"</string>
 	<string name="no_filemanager">"Sin administrador de archivos instalado"</string>
 	<string name="tap_tempo">"Toque para establecer el tempo"</string>
+	<string name="add_reusable">"Guardar como una diapositiva reutilizable"</string>
+	<string name="bad_time">"Tiempo de diapositivas no se ha ajustado correctamente"</string>
+	<string name="image">"imagen"</string>
+	<string name="image_slide">"imagen slideshow"</string>
+	<string name="load_reusable">"Cargar un portaobjetos reutilizable"</string>
+	<string name="loop">"lazo"</string>
+	<string name="loop_slide_pages">"Páginas Loop en diapositivas personalizada"</string>
+	<string name="set_loading">"Cargando conjunto"</string>
+	<string name="set_processing">"Procesamiento"</string>
+	<string name="slide_add_page">"Insertar nueva página de presentación personalizada"</string>
+	<string name="time">"Hora"</string>
+	<string name="time_slide_pages">"Tiempo para cada diapositiva (s)"</string>
+	<string name="time_slide_pages_help">"Dejar en blanco para el manual de diapositivas"</string>
+	<string name="warning">"Esta opción sólo se debe utilizar para el modo de presentación. Tenga en cuenta que esta función utiliza mucha memoria y puede causar accidentes. ¡Usted ha sido advertido!"</string>
 
 </resources>

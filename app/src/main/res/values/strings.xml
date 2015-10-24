@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<string name="warning">This option should only be used for presentation mode.  Be aware that this feature uses lots of memory and can cause crashes.  You have been warned!</string>
+	<string name="loop">Loop</string>
+	<string name="time">Time</string>
+    <string name="bad_time">Slide time has not been set correctly</string>
+	<string name="add_reusable">Save as a reusable slide</string>
+    <string name="load_reusable">Load a reusable slide</string>
+	<string name="image_slide">Image slideshow</string>
+	<string name="time_slide_pages">Time for each slide (s)</string>
+    <string name="time_slide_pages_help">Leave blank for manual slideshow</string>
+
 	<string name="set_loading">Loading set</string>
 	<string name="set_processing">Processing</string>
 	<string name="image">Image</string>
-    <string name="slide_properties_only_presentation">The options below are only used during presentation mode</string>
-    <string name="slide_remove_page">Remove page from custom slide</string>
     <string name="slide_add_page">Insert new page to custom slide</string>
     <string name="loop_slide_pages">Loop pages in custom slide</string>
-	<string name="slide_background_image">Background image for all pages in this group (leave blank for default)</string>
-    <string name="slide_page_background_image">Background image for this page (leave blank for default)</string>
 	<string name="tap_tempo">Tap to set tempo</string>
 	<string name="convert_song">Please convert this song into OpenSong format (by viewing it) before adding it to a set</string>
     <string name="no_filemanager">No file manager installed</string>
@@ -30,7 +36,7 @@
     <string name="options_storage">Storage</string>
     <string name="options_other">Other</string>
 	<string name="not_allowed">This function is not allowed for this item</string>
-	<string name="add_custom_slide">Add slide/note</string>
+	<string name="add_custom_slide">Add custom slide to set</string>
 	<string name="simple_note">Simple note / placeholder</string>
     <string name="custom_slide">Custom slide (with content)</string>
     <string name="title">Title</string>
@@ -250,9 +256,7 @@
 	<string name="options_options_pedal">Assign foot pedal</string>
 	<string name="options_options_help">Help (Online)</string>
 	<string name="options_options_start">Go back to start screen</string>
-							
-			
-	
+
     <string name="customgestures">Assign custom gestures</string>   
     <string name="doubleTap">Select double tap action</string>
     <string name="longPress">Select long press action</string>

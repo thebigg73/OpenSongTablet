@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -64,7 +65,9 @@ public class PopUpBackgroundsFragment extends DialogFragment {
         final CheckBox video2CheckBox = (CheckBox) V.findViewById(R.id.video2CheckBox);
         presoAlphaProgressBar = (SeekBar) V.findViewById(R.id.presoAlphaProgressBar);
         presoAlphaText = (TextView) V.findViewById(R.id.presoAlphaText);
-        presoAlphaText.setText((int) (FullscreenActivity.presoAlpha*100)+ " %");
+        int getpresoalpha = (int) (FullscreenActivity.presoAlpha*100);
+        String valuetext = getpresoalpha+ " %";
+        presoAlphaText.setText(valuetext);
         presoAlphaProgressBar.setMax(100);
         presoAlphaProgressBar.setProgress((int) (FullscreenActivity.presoAlpha * 100));
         presoAlphaProgressBar.setOnSeekBarChangeListener(new setAlphaListener());
@@ -163,6 +166,9 @@ public class PopUpBackgroundsFragment extends DialogFragment {
             case "vid2":
                 video2CheckBox.setChecked(true);
                 break;
+            case "none":
+                // No checked buttons
+                break;
         }
 
         // Set the listeners for the CheckBoxes
@@ -182,6 +188,8 @@ public class PopUpBackgroundsFragment extends DialogFragment {
                     FullscreenActivity.backgroundTypeToUse = "image";
                     FullscreenActivity.backgroundToUse = whichCheckBox;
                     Preferences.savePreferences();
+                    MyPresentation.img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
+                    MyPresentation.imgFile = MyPresentation.img1File;
                     // Try to change the background!
                     if (PresenterMode.numdisplays > 0) {
                         MyPresentation.fixBackground();
@@ -216,6 +224,8 @@ public class PopUpBackgroundsFragment extends DialogFragment {
                     FullscreenActivity.backgroundTypeToUse = "image";
                     FullscreenActivity.backgroundToUse = whichCheckBox;
                     Preferences.savePreferences();
+                    MyPresentation.img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
+                    MyPresentation.imgFile = MyPresentation.img2File;
                     // Try to change the background!
                     if (PresenterMode.numdisplays > 0) {
                         MyPresentation.fixBackground();
@@ -252,6 +262,12 @@ public class PopUpBackgroundsFragment extends DialogFragment {
                     Preferences.savePreferences();
                     // Try to change the background!
                     if (PresenterMode.numdisplays > 0) {
+                        MyPresentation.vidFile = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
+                        try {
+                            MyPresentation.reloadVideo();
+                        } catch (Exception e) {
+                            Log.d("e","Problem preparing video");
+                        }
                         MyPresentation.fixBackground();
                     }
 
@@ -286,6 +302,12 @@ public class PopUpBackgroundsFragment extends DialogFragment {
                     Preferences.savePreferences();
                     // Try to change the background!
                     if (PresenterMode.numdisplays > 0) {
+                        MyPresentation.vidFile = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
+                        try {
+                            MyPresentation.reloadVideo();
+                        } catch (Exception e) {
+                            Log.d("e","Problem preparing video");
+                        }
                         MyPresentation.fixBackground();
                     }
 
@@ -299,8 +321,8 @@ public class PopUpBackgroundsFragment extends DialogFragment {
                         if (PresenterMode.numdisplays > 0) {
                             MyPresentation.fixBackground();
                         }
+                        // Been uncheck by checking another option, so do nothing
                     }
-                    // Been uncheck by checking another option, so do nothing
                 }
             }
         });
@@ -319,7 +341,8 @@ public class PopUpBackgroundsFragment extends DialogFragment {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             FullscreenActivity.presoAlpha = (float)progress / 100f;
-            presoAlphaText.setText(progress + " %");
+            String update = progress + " %";
+            presoAlphaText.setText(update);
             MyPresentation.updateAlpha();
         }
 

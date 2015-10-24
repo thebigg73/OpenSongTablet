@@ -6,23 +6,24 @@
   <presentation>C C V1 C B C</presentation>
   <hymn_number>378</hymn_number>
   <capo print="false"></capo>
-  <tempo></tempo>
-  <time_sig></time_sig>
-  <duration/>
+  <tempo>84</tempo>
+  <time_sig>4/4</time_sig>
+  <duration></duration>
   <ccli></ccli>
   <theme></theme>
+  <alttheme></alttheme>
   <user1>378</user1>
   <user2></user2>
   <user3></user3>
   <key>A</key>
   <aka></aka>
   <key_line></key_line>
-  <books/>
-  <midi/>
-  <midi_index/>
-  <pitch/>
-  <restrictions/>
-  <notes/>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[C]
 .          A               F#m
  A love so dear, a love so strong
@@ -55,7 +56,8 @@
  Yet you died there for me, Your love set me free 
   
  </lyrics>
-  <linked_songs/>
-  <pad_file/>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

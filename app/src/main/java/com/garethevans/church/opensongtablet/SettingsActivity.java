@@ -97,6 +97,7 @@ public class SettingsActivity extends Activity {
 	File int_dirbibleverses = new File(int_root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
 	File int_dircustomslides = new File(int_root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
 	File int_dircustomnotes = new File(int_root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
+	File int_images = new File(int_root.getAbsolutePath() + "/documents/OpenSong/Images/_cache");
 
 	File ext_root;
 	File ext_dir;
@@ -113,6 +114,7 @@ public class SettingsActivity extends Activity {
 	File ext_dirbibleverses;
 	File ext_dircustomslides;
 	File ext_dircustomnotes;
+	File ext_images;
 
 
 	// This class is called when the application first opens.
@@ -177,6 +179,7 @@ public class SettingsActivity extends Activity {
 				ext_dirbibleverses = new File(ext_root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
 				ext_dircustomslides = new File(ext_root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
 				ext_dircustomnotes = new File(ext_root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
+				ext_images = new File(ext_root.getAbsolutePath() + "/documents/OpenSong/Images/_cache");
 			}
 		}
 
@@ -232,7 +235,13 @@ public class SettingsActivity extends Activity {
 		// External
 		if (extStorageExists) {if (!ext_dirbgs.exists()) {ext_dirbgs.mkdirs();}}
 
-		// Look for default background image
+        // Check the OpenSong Images Directory exists
+        // Internal
+        if (defStorageExists) {if (!int_images.exists()) {int_images.mkdirs();}}
+        // External
+        if (extStorageExists) {if (!ext_images.exists()) {ext_images.mkdirs();}}
+
+        // Look for default background image
 		AssetManager assetManager_bg = getAssets();
 		InputStream in;
 		OutputStream out;

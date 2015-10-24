@@ -6,8 +6,8 @@
   <presentation></presentation>
   <hymn_number>384</hymn_number>
   <capo print="false"></capo>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <tempo>92</tempo>
+  <time_sig>4/4</time_sig>
   <duration></duration>
   <ccli></ccli>
   <theme></theme>
@@ -57,5 +57,9 @@
  I will give my life to them. Whom shall I send?</lyrics>
   <linked_songs></linked_songs>
   <pad_file></pad_file>
-  
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

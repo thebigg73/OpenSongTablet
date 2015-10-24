@@ -30,10 +30,18 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/slideImage"
+            android:id="@+id/slideImage1"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
             android:contentDescription="@string/slide" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/slideImage2"
+            android:contentDescription="@string/slide"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter" />
 
         <ImageView
             android:id="@+id/presoLogo"
@@ -50,31 +58,32 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_above="@+id/bottomBit"
                 android:layout_alignParentTop="true"
                 android:id="@+id/lyricsHolder"
                 android:layout_margin="8dp"
-                android:layout_centerHorizontal="true">
+                android:layout_centerInParent="true">
 
                 <ScrollView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/scrollView9"
-                    android:layout_gravity="top|center_horizontal">
+                    android:layout_gravity="center">
 
                     <HorizontalScrollView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/horizontalScrollView1"
-                        android:layout_gravity="top|center_horizontal">
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:fillViewport="false">
 
                         <TextView
                             android:id="@+id/presoLyrics1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center_horizontal"
+                            android:gravity="center_vertical|center_horizontal"
                             android:textColor="#fff"
                             android:textSize="40sp"
                             android:visibility="visible" />
@@ -85,20 +94,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/scrollView10"
-                    android:layout_gravity="top|center_horizontal">
+                    android:layout_gravity="center">
 
                     <HorizontalScrollView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/horizontalScrollView2"
-                        android:layout_gravity="top|center_horizontal">
+                        android:layout_gravity="center_vertical|center_horizontal">
 
                         <TextView
                             android:id="@+id/presoLyrics2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:gravity="center_horizontal"
+                            android:gravity="center_vertical|center_horizontal"
                             android:textColor="#fff"
                             android:textSize="40sp"
                             android:visibility="visible" />

@@ -15,7 +15,7 @@
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key>F</key>
+  <key>G</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -24,26 +24,29 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[V1]
-.F                                     Bb2              F
+.G                                     C2              G
  Praise is rising, eyes are turning to You, we turn to You
-.                                          Bb2               F5
+.                                          C2               G5
  Hope is stirring, hearts are yearning for You, we long for You
-.                 C               Bb                  F
+.                 D               C                  G
  'Cause when we see You, we find strength to face the day
-.           C              Bb              F            Csus
+.           D              C              G            Dsus
  In Your Presence all our fears are washed away, washed away
  
 [C]
-. Fsus F   Dm7  Bb2
+. Gsus G   Em7  C2
  Hosanna, hosanna
-.              F5             Csus         Dm7       Bb2
+.              G5             Dsus         Em7       C2
  You are the God Who saves us, worthy of all our praises
-. Fsus F   Dm7  Bb2
+. Gsus G   Em7  C2
  Hosanna, hosanna
-.                 F5       Csus
+.                 G5       Dsus
  Come have Your way among us
-.                  Dm7         Bb2
+.                  Em7         C2
  We welcome You here, Lord Jesus
  
 [V2]
@@ -51,8 +54,6 @@
  In Your kingdom, broken lives are made new, You make us new
  'Cause when we see You, we find strength to face the day
  In Your Presence all our fears are washed away, washed away
- </lyrics>
-  <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+ 
+</lyrics>
 </song>

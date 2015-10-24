@@ -3,11 +3,13 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,15 +33,14 @@ public class PopUpListSetsFragment extends DialogFragment {
         frag = new PopUpListSetsFragment();
         return frag;
     }
-
     static EditText setListName;
     static TextView newSetPromptTitle;
-
     static String myTitle;
-
     static FetchDataTask dataTask;
-
     static ProgressDialog prog;
+    public static String val;
+    public static Handler mHandler;
+    public static Runnable runnable;
 
     public interface MyInterface {
         void refreshAll();
@@ -59,23 +60,31 @@ public class PopUpListSetsFragment extends DialogFragment {
         super.onDetach();
     }
 
-    public static String val;
-    public static Handler mHandler = new Handler();
-
-    public static Runnable runnable = new Runnable() {
-        public void run() {
-            prog.setMessage(val);
-        }
-    };
-
-
     @Override
+    public void onDismiss(final DialogInterface dialog) {
+        super.onDismiss(dialog);
+        Log.d("PuSl", "main dismiss");
+        try {
+            dataTask.cancel(true);
+        } catch (Exception e) {
+            // Don't worry
+        }
+
+        try {
+            dataTask = null;
+        } catch (Exception e) {
+            // Don't worry
+        }
+    }
+
+        @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View V = inflater.inflate(R.layout.popup_setlists, container, false);
 
         // Reset the setname chosen
         FullscreenActivity.setnamechosen = "";
+        FullscreenActivity.abort = false;
 
         ListView setListView = (ListView) V.findViewById(R.id.setListView);
         setListName = (EditText) V.findViewById(R.id.setListName);
@@ -95,26 +104,25 @@ public class PopUpListSetsFragment extends DialogFragment {
                 setListName.setVisibility(View.GONE);
                 newSetPromptTitle.setVisibility(View.GONE);
                 adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_checked, FullscreenActivity.mySetsFileNames);
-
                 break;
+
             case "saveset":
                 myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_save);
                 adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, FullscreenActivity.mySetsFileNames);
-
                 break;
+
             case "deleteset":
                 myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_delete);
                 setListName.setVisibility(View.GONE);
                 newSetPromptTitle.setVisibility(View.GONE);
                 adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_checked, FullscreenActivity.mySetsFileNames);
-
                 break;
+
             case "exportset":
                 myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_export);
                 setListName.setVisibility(View.GONE);
                 newSetPromptTitle.setVisibility(View.GONE);
                 adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_checked, FullscreenActivity.mySetsFileNames);
-
                 break;
         }
 
@@ -161,6 +169,8 @@ public class PopUpListSetsFragment extends DialogFragment {
             }
         });
 
+        dataTask = new FetchDataTask();
+
         return V;
     }
 
@@ -168,16 +178,43 @@ public class PopUpListSetsFragment extends DialogFragment {
     public void doLoadSet() {
         // Load the set up
         // Show the progress bar
-        prog= new ProgressDialog(getActivity());//Assuming that you are using fragments.
+        prog = null;
+        prog = new ProgressDialog(getActivity()); //Assuming that you are using fragments.
         prog.setTitle(getString(R.string.options_set_load));
         prog.setMessage(getString(R.string.wait));
-        prog.setCancelable(false);
+        prog.setCancelable(true);
         prog.setIndeterminate(true);
         prog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        prog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                Log.d("doLoadSet", "onDismissListener");
+                FullscreenActivity.abort = true;
+                try {
+                    dataTask.cancel(true);
+                } catch (Exception e) {
+                }
+                try {
+                    //dataTask = null;
+                } catch (Exception e) {
+                }
+            }
+        });
+        mHandler = new Handler();
+        runnable = new Runnable() {
+            public void run() {
+                prog.setMessage(val);
+            }
+        };
         prog.show();
+
         FullscreenActivity.settoload = null;
+        FullscreenActivity.abort = false;
+
         FullscreenActivity.settoload = FullscreenActivity.setnamechosen;
         FullscreenActivity.lastSetName = FullscreenActivity.setnamechosen;
+        dataTask = null;
         dataTask = new FetchDataTask();
         dataTask.execute();
     }
@@ -264,38 +301,51 @@ public class PopUpListSetsFragment extends DialogFragment {
         uris.add(uri_osts);
 
         // Go through each song in the set and attach them
-        // Also try to attach a copy of the song ending in .ost
+        // Also try to attach a copy of the song ending in .ost, as long as they aren't images
+        Log.d("Export set","exportsetfilenames="+FullscreenActivity.exportsetfilenames);
         for (int q=0; q<FullscreenActivity.exportsetfilenames.size(); q++) {
             File songtoload  = new File(FullscreenActivity.dir + "/" + FullscreenActivity.exportsetfilenames.get(q));
             File ostsongcopy = new File(FullscreenActivity.homedir + "/Notes/_cache/" + FullscreenActivity.exportsetfilenames_ost.get(q) + ".ost");
-            // Copy the song
-            try {
-                FileInputStream in = new FileInputStream(songtoload);
-                FileOutputStream out = new FileOutputStream(ostsongcopy);
-
-                byte[] buffer = new byte[1024];
-                int read;
-                while ((read = in.read(buffer)) != -1) {
-                    out.write(buffer, 0, read);
-                }
-                in.close();
-                //in = null;
-
-                // write the output file (You have now copied the file)
-                out.flush();
-                out.close();
-                //out = null;
-
-                Uri urisongs = Uri.fromFile(songtoload);
-                Uri urisongs_ost = Uri.fromFile(ostsongcopy);
-                uris.add(urisongs);
-                uris.add(urisongs_ost);
-
-            } catch (Exception e) {
-                // Error
-                e.printStackTrace();
+            boolean isimage = false;
+            if (songtoload.toString().endsWith(".jpg") || songtoload.toString().endsWith(".JPG") ||
+                    songtoload.toString().endsWith(".jpeg") || songtoload.toString().endsWith(".JPEG") ||
+                    songtoload.toString().endsWith(".gif") || songtoload.toString().endsWith(".GIF") ||
+                    songtoload.toString().endsWith(".png") || songtoload.toString().endsWith(".PNG") ||
+                    songtoload.toString().endsWith(".bmp") || songtoload.toString().endsWith(".BMP")) {
+                songtoload = new File(FullscreenActivity.exportsetfilenames.get(q));
+                isimage = true;
             }
 
+            // Copy the song
+            if (songtoload.exists()) {
+                try {
+                    if (!isimage) {
+                        FileInputStream in = new FileInputStream(songtoload);
+                        FileOutputStream out = new FileOutputStream(ostsongcopy);
+
+                        byte[] buffer = new byte[1024];
+                        int read;
+                        while ((read = in.read(buffer)) != -1) {
+                            out.write(buffer, 0, read);
+                        }
+                        in.close();
+                        //in = null;
+
+                        // write the output file (You have now copied the file)
+                        out.flush();
+                        out.close();
+                        //out =
+                        Uri urisongs_ost = Uri.fromFile(ostsongcopy);
+                        uris.add(urisongs_ost);
+                    }
+                    Uri urisongs = Uri.fromFile(songtoload);
+                    uris.add(urisongs);
+
+                } catch (Exception e) {
+                    // Error
+                    e.printStackTrace();
+                }
+            }
          }
 
         emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
@@ -305,43 +355,52 @@ public class PopUpListSetsFragment extends DialogFragment {
         dismiss();
     }
 
-    private class FetchDataTask extends AsyncTask<String,Integer,String> {
+    public class FetchDataTask extends AsyncTask<String,Integer,String> {
 
         @Override
         protected String doInBackground(String... args) {
-            try {
-                SetActions.loadASet();
-            } catch (XmlPullParserException | IOException e) {
-                e.printStackTrace();
-            }
-            // Reset the options menu
-            SetActions.prepareSetList();
-            SetActions.indexSongInSet();
+            Log.d("dataTask","doInBackground");
+                try {
+                    SetActions.loadASet();
+                } catch (XmlPullParserException | IOException e) {
+                    e.printStackTrace();
+                }
+                // Reset the options menu
+                SetActions.prepareSetList();
+                SetActions.indexSongInSet();
 
-            return "LOADED";
+                return "LOADED";
+
         }
 
-        protected void onCancelled() {
-            prog.dismiss();
+        @Override
+        protected void onCancelled(String result) {
+            Log.d("dataTask","onCancelled");
+            //FullscreenActivity.abort = true;
+            //running = false;
+            //prog.dismiss();
+            //dismiss();
         }
 
+        @Override
         protected void onPostExecute(String result) {
+            Log.d("dataTask", "onPostExecute");
             FullscreenActivity.setView = "Y";
 
-            // Save the new set to the preferences
-            Preferences.savePreferences();
+            if (result.equals("LOADED") && !dataTask.isCancelled()) {
+                // Get the set first item
+                SetActions.prepareFirstItem();
 
-            // Tell the listener to do something
-            mListener.refreshAll();
+                // Save the new set to the preferences
+                Preferences.savePreferences();
 
-            //Close this dialog
+                // Tell the listener to do something
+                mListener.refreshAll();
+                FullscreenActivity.abort = false;
+                //Close this dialog
+                dismiss();
+            }
             prog.dismiss();
-            dismiss();
         }
-
-    }
-
-    public static void updateProgress(String val) {
-        prog.setMessage(val);
     }
 }

@@ -434,5 +434,19 @@
 	<string name="no_audioplayer">"Instalován žádný audio přehrávač"</string>
 	<string name="no_filemanager">"Instalován žádný správce souborů"</string>
 	<string name="tap_tempo">"Klepnutím nastavte tempo"</string>
+	<string name="add_reusable">"Uložit jako opakovaně použitelný snímek"</string>
+	<string name="bad_time">"Slide čas nebyl správně nastaven"</string>
+	<string name="image">"Obraz"</string>
+	<string name="image_slide">"Image slideshow"</string>
+	<string name="load_reusable">"Vložte opakovaně použitelný snímek"</string>
+	<string name="loop">"upevnit smyčkou"</string>
+	<string name="loop_slide_pages">"Loop stránky v vlastní prezentace"</string>
+	<string name="set_loading">"Loading set"</string>
+	<string name="set_processing">"Zpracování"</string>
+	<string name="slide_add_page">"Vložit novou stránku na vlastní snímek"</string>
+	<string name="time">"doba"</string>
+	<string name="time_slide_pages">"Čas pro každý snímek (y)"</string>
+	<string name="time_slide_pages_help">"Nechte prázdné pro ruční prezentaci"</string>
+	<string name="warning">"Tato možnost by měla být použita pouze v režimu prezentace. Uvědomte si, že tato funkce používá velké množství paměti a může způsobit zhroucení. Byli jste varováni!"</string>
 
 </resources>

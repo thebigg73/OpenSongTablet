@@ -25,18 +25,31 @@ public class LyricsDisplay extends Activity {
 			FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
 		}
 
-		// If chords aren't being shown, get rid of underscore spaces
-		if (FullscreenActivity.showChords.equals("N")) {
-			FullscreenActivity.myLyrics = FullscreenActivity.myLyrics.replace("_", "");
-		} else {
-			FullscreenActivity.myLyrics = FullscreenActivity.myLyrics.replace("_", " ");
-		}
 		// Now create an array from the myLyrics variable, using the new line as
 		// a break point."
 		//This gets rid of the tabs and stuff to make the display look better
 		FullscreenActivity.myParsedLyrics = FullscreenActivity.myLyrics.split("\n");
 		// Get the number of rows to write!
 		FullscreenActivity.numrowstowrite = FullscreenActivity.myParsedLyrics.length;
+
+		// Go through the lines and remove underscores if the line isn't and image location
+		for (int l=0;l<FullscreenActivity.numrowstowrite;l++) {
+			if (FullscreenActivity.myParsedLyrics[l].contains("_")) {
+				if (l>0 && !FullscreenActivity.myParsedLyrics[l].contains("["+FullscreenActivity.image+"_") && !FullscreenActivity.myParsedLyrics[l-1].contains("["+FullscreenActivity.image+"_")) {
+					if (FullscreenActivity.showChords.equals("N")) {
+						FullscreenActivity.myParsedLyrics[l] = FullscreenActivity.myParsedLyrics[l].replace("_","");
+					} else {
+						FullscreenActivity.myParsedLyrics[l] = FullscreenActivity.myParsedLyrics[l].replace("_"," ");
+					}
+				} else if (l==0 && !FullscreenActivity.myParsedLyrics[l].contains("["+FullscreenActivity.image+"_")) {
+					if (FullscreenActivity.showChords.equals("N")) {
+						FullscreenActivity.myParsedLyrics[l] = FullscreenActivity.myParsedLyrics[l].replace("_","");
+					} else {
+						FullscreenActivity.myParsedLyrics[l] = FullscreenActivity.myParsedLyrics[l].replace("_"," ");
+					}
+				}
+			}
+		}
 	}
 
 	public static void replaceLyricsCode() {
@@ -107,12 +120,23 @@ public class LyricsDisplay extends Activity {
 						|| FullscreenActivity.myParsedLyrics[x].equals("T8")
 						|| FullscreenActivity.myParsedLyrics[x].equals("T9")
 						|| FullscreenActivity.myParsedLyrics[x].equals("T10")) {
-//					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("T", "Tag ");
 					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("T", FullscreenActivity.tag_tag+" ");
 				}
-				
-//			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("[C") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[c") == 0) {
-			} else if (((FullscreenActivity.myParsedLyrics[x].indexOf("[C") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[c") == 0) && FullscreenActivity.myParsedLyrics[x].indexOf("]") > 1 && FullscreenActivity.myParsedLyrics[x].indexOf("]") < 5) ||
+
+
+            } else if (FullscreenActivity.myParsedLyrics[x].indexOf("["+FullscreenActivity.image+"_") == 0) {
+                FullscreenActivity.whatisthisline[x] = "imagetitle";
+                FullscreenActivity.whatisthisblock[x] = "image";
+                holder_whatisthisblock = "image";
+                FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x]
+                        .replace("[", "");
+                FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x]
+                        .replace("]", "");
+                FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].trim();
+
+
+
+            } else if (((FullscreenActivity.myParsedLyrics[x].indexOf("[C") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[c") == 0) && FullscreenActivity.myParsedLyrics[x].indexOf("]") > 1 && FullscreenActivity.myParsedLyrics[x].indexOf("]") < 5) ||
 					(FullscreenActivity.myParsedLyrics[x].toLowerCase(FullscreenActivity.locale).contains("["+FullscreenActivity.tag_chorus.toLowerCase(FullscreenActivity.locale)))) {
 				FullscreenActivity.whatisthisline[x] = "chorustitle";
 				FullscreenActivity.whatisthisblock[x] = "chorus";
@@ -133,11 +157,9 @@ public class LyricsDisplay extends Activity {
 						|| FullscreenActivity.myParsedLyrics[x].equals("C8")
 						|| FullscreenActivity.myParsedLyrics[x].equals("C9")
 						|| FullscreenActivity.myParsedLyrics[x].equals("C10")) {
-//					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("C", "Chorus ");
 					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("C", FullscreenActivity.tag_chorus+" ");
 				}
 				
-//			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("[B") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[b") == 0) {
 			} else if (((FullscreenActivity.myParsedLyrics[x].indexOf("[B") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[b") == 0) && FullscreenActivity.myParsedLyrics[x].indexOf("]") > 1 && FullscreenActivity.myParsedLyrics[x].indexOf("]") < 5) ||
 					(FullscreenActivity.myParsedLyrics[x].toLowerCase(FullscreenActivity.locale).contains("["+FullscreenActivity.tag_bridge.toLowerCase(FullscreenActivity.locale)))) {
 				FullscreenActivity.whatisthisline[x] = "bridgetitle";
@@ -159,11 +181,9 @@ public class LyricsDisplay extends Activity {
 						|| FullscreenActivity.myParsedLyrics[x].equals("B8")
 						|| FullscreenActivity.myParsedLyrics[x].equals("B9")
 						|| FullscreenActivity.myParsedLyrics[x].equals("B10")) {
-//					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("B", "Bridge ");
 					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("B", FullscreenActivity.tag_bridge+" ");
 				}
 				
-//			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("[P") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[p") == 0) {
 			} else if (((FullscreenActivity.myParsedLyrics[x].indexOf("[P") == 0 || FullscreenActivity.myParsedLyrics[x].indexOf("[p") == 0) && FullscreenActivity.myParsedLyrics[x].indexOf("]") > 1 && FullscreenActivity.myParsedLyrics[x].indexOf("]") < 5) ||
 					(FullscreenActivity.myParsedLyrics[x].toLowerCase(FullscreenActivity.locale).contains("["+FullscreenActivity.tag_prechorus.toLowerCase(FullscreenActivity.locale)))) {
 				FullscreenActivity.whatisthisline[x] = "prechorustitle";
@@ -185,7 +205,6 @@ public class LyricsDisplay extends Activity {
 						|| FullscreenActivity.myParsedLyrics[x].equals("P8")
 						|| FullscreenActivity.myParsedLyrics[x].equals("P9")
 						|| FullscreenActivity.myParsedLyrics[x].equals("P10")) {
-//					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("P", "Prechorus ");
 					FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x].replace("P", FullscreenActivity.tag_prechorus+" ");
 				}
 
@@ -202,7 +221,6 @@ public class LyricsDisplay extends Activity {
 			} else if (FullscreenActivity.myParsedLyrics[x].indexOf(";") == 0) {
 				FullscreenActivity.whatisthisline[x] = "comment";
 				FullscreenActivity.whatisthisblock[x] = "comment";
-				//holder_whatisthisblock = "comment";
 				FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x]
 						.replace(";", "");
 			} else if (FullscreenActivity.myParsedLyrics[x].indexOf("1") == 0) {
@@ -299,17 +317,19 @@ public class LyricsDisplay extends Activity {
 		}
 		
 		// NOW WE HAVE THE LONGEST LINE, GO THROUGH EACH ONE AND MAKE IT THIS LONG
-		for (int x = 0; x < FullscreenActivity.numrowstowrite; x++) {
-			// Get the length of the line
-			int charsinthisline = FullscreenActivity.myParsedLyrics[x].length();
-			if (charsinthisline < FullscreenActivity.maxcharsinline) {
-				// Ok, it isn't as long as the others.  Add spaces
-				int numspacesneeded = (FullscreenActivity.maxcharsinline - charsinthisline);
-				for (int i=0;i<numspacesneeded;i++) {
-					FullscreenActivity.myParsedLyrics[x] += " ";
-				}				
-			}
-		}
+		if (!FullscreenActivity.whichSongFolder.contains("../Images/")) {
+            for (int x = 0; x < FullscreenActivity.numrowstowrite; x++) {
+                // Get the length of the line
+                int charsinthisline = FullscreenActivity.myParsedLyrics[x].length();
+                if (charsinthisline < FullscreenActivity.maxcharsinline) {
+                    // Ok, it isn't as long as the others.  Add spaces
+                    int numspacesneeded = (FullscreenActivity.maxcharsinline - charsinthisline);
+                    for (int i = 0; i < numspacesneeded; i++) {
+                        FullscreenActivity.myParsedLyrics[x] += " ";
+                    }
+                }
+            }
+        }
 
 	}
 	

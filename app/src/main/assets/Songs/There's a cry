@@ -32,11 +32,11 @@
     There's a cry that is rising from the depths of creation
 .          C           Dm7           C/E           F
  There's a call on the lips of every people, every nation
-.                    G                C  G/B   Am....
+.                    G                C  G/B   Am
  It's the cry of the children for the Father's heart
-.Em/G         F           G                  C   G/B    Am
+.Em/G         F           G                  C   G/B    Am...
      It's the call of the lost sheep for the Shepherd's voice...
-.Em         Am                    G     Em         Am                 F   G
+.Em         Am                    G     Em         Am           F        G
  Hear their cry from the depths O Lord, hear their cry from the depths O Lord
 
 [V2]
@@ -54,12 +54,14 @@
  Those who seek shall find the Lord of lords
 .      G                        Am
  Jesus Christ desire of all the nations
+
 [V3]
  As a watchman is waiting for the sun in it's dawning
  And his heart is rejoicing at the light of the morning
  So my soul waits for You and Your unfailing love
  For the Lord our Redeemer has become their hope
  Hear our cry from the depths O Lord, hear our cry from the depths O Lord
+
 [B]
 .Am             Fmaj7             G                  Em7
     Your kingdom,   Your name and   Your throne will last forever
@@ -74,7 +76,7 @@
 .Am             Fmaj7             G                  Em7      Am
     Your kingdom,   Your name and   Your throne will last forever</lyrics>
   <linked_songs>OFF</linked_songs>
-  <pad_file></pad_file>
-  <style index="default_style"></style>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
   <style index="default_style"></style>
 </song>

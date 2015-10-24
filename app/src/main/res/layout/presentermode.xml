@@ -170,34 +170,104 @@
                         android:textColor="#ff0"
                         android:textSize="14sp" />
 
-                    <RelativeLayout
+            <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal">
+
 
                         <EditText
                             android:id="@+id/presenter_lyrics"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="false"
-                            android:layout_alignParentTop="true"
+                            android:layout_height="wrap_content"
                             android:editable="false"
                             android:gravity="top"
                             android:hint="@string/edit_song_lyrics"
                             android:inputType="textAutoCorrect|text|textMultiLine"
                             android:minLines="4"
                             android:textColor="#fff"
-                            android:textSize="12sp"/>
+                            android:textSize="12sp"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginRight="4dp" />
 
                         <ImageView
                             android:id="@+id/presenter_lyrics_image"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
                             android:contentDescription="@string/page_background"
-                            android:src="@drawable/unhappy_android" />
-                    </RelativeLayout>
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginRight="4dp" />
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/loopandtimeLinearLayout"
+                            android:layout_margin="4dp">
+
+                            <CheckBox
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/loop"
+                                android:id="@+id/loopCheckBox"
+                                android:textSize="12sp"
+                                android:textColor="#ff0" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/timeTextView"
+                                android:textSize="12sp"
+                                android:textColor="#ff0"
+                                android:text="@string/time"
+                                android:layout_marginLeft="16dp" />
+
+                            <EditText
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/timeEditText"
+                                android:inputType="number"
+                                android:textSize="12sp"
+                                android:textColor="#000"
+                                android:background="#fff"
+                                android:minWidth="16dp"
+                                android:layout_marginLeft="8dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/loopcontrolsLinearLayout"
+                            android:gravity="center_horizontal"
+                            android:layout_margin="4dp">
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/stopSlideShow"
+                                android:layout_margin="8dp"
+                                android:src="@drawable/ic_action_stop"
+                                android:contentDescription="@string/media_stop" />
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/playSlideShow"
+                                android:layout_margin="8dp"
+                                android:src="@android:drawable/ic_media_play"
+                                android:contentDescription="@string/media_play" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+            </ScrollView>
                 </LinearLayout>
 
                 <LinearLayout

@@ -433,5 +433,19 @@
 	<string name="no_audioplayer">"Nincs hang lejátszó telepítve"</string>
 	<string name="no_filemanager">"Nem fájlkezelő telepítve"</string>
 	<string name="tap_tempo">"Érintse meg, hogy a tempó"</string>
+	<string name="add_reusable">"Mentés másként újrafelhasználható dia"</string>
+	<string name="bad_time">"Dia idő nincs beállítva rendesen"</string>
+	<string name="image">"Kép"</string>
+	<string name="image_slide">"kép slideshow"</string>
+	<string name="load_reusable">"Töltsön be egy újrafelhasználható slide"</string>
+	<string name="loop">"hurkol"</string>
+	<string name="loop_slide_pages">"Hurok oldalak egyedi dia"</string>
+	<string name="set_loading">"Töltés szett"</string>
+	<string name="set_processing">"Feldolgozás"</string>
+	<string name="slide_add_page">"Helyezze be az új oldalt egyedi dia"</string>
+	<string name="time">"Idő"</string>
+	<string name="time_slide_pages">"Idő az egyes diák (ok)"</string>
+	<string name="time_slide_pages_help">"Hagyja üresen a kézi diavetítés"</string>
+	<string name="warning">"Ez a lehetőség csak akkor használható, prezentációs üzemmódban. Legyen tudatában annak, hogy ez a funkció sok memória és összeomlást okozhat. Ön már figyelmeztette!"</string>
 
 </resources>

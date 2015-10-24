@@ -462,5 +462,19 @@
 	<string name="no_audioplayer">"Geen klank speler geïnstalleer"</string>
 	<string name="no_filemanager">"Geen lêer bestuurder geïnstalleer"</string>
 	<string name="tap_tempo">"Tik tempo stel"</string>
+	<string name="add_reusable">"Slaan as 'n herbruikbare slide"</string>
+	<string name="bad_time">"Skyfie tyd nie korrek gestel"</string>
+	<string name="image">"Image"</string>
+	<string name="image_slide">"Image skyfievertoning"</string>
+	<string name="load_reusable">"Laai 'n herbruikbare slide"</string>
+	<string name="loop">"lus"</string>
+	<string name="loop_slide_pages">"Loop bladsye in persoonlike slide"</string>
+	<string name="set_loading">"laai stel"</string>
+	<string name="set_processing">"verwerking"</string>
+	<string name="slide_add_page">"Voeg nuwe bladsy om persoonlike slide"</string>
+	<string name="time">"tyd"</string>
+	<string name="time_slide_pages">"Tyd vir elke skyfie (s)"</string>
+	<string name="time_slide_pages_help">"Laat leeg vir die handleiding skyfievertoning"</string>
+	<string name="warning">"Hierdie opsie moet slegs gebruik word vir die aanbieding af. Wees bewus daarvan dat hierdie funksie maak gebruik van baie van die geheue en kan ineenstort veroorsaak. Julle is gewaarsku!"</string>
 
 </resources>

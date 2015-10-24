@@ -3,7 +3,7 @@
   <title>Salvation belongs to our God</title>
   <author>Adrian Howard and Pat Turner</author>
   <copyright>1985 Restoration Music</copyright>
-  <presentation></presentation>
+  <presentation>C V1 C V2 C</presentation>
   <hymn_number>455</hymn_number>
   <capo print="false"></capo>
   <tempo></tempo>
@@ -60,6 +60,6 @@
 .G         D/F#       E
  Honour and power and strength.</lyrics>
   <linked_songs>OFF</linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
 </song>

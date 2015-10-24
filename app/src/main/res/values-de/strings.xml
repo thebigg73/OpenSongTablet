@@ -433,5 +433,19 @@
 	<string name="no_audioplayer">"Keine Audio-Player installiert"</string>
 	<string name="no_filemanager">"Keine Dateimanager installiert"</string>
 	<string name="tap_tempo">"Tippen Sie, um Tempo"</string>
+	<string name="add_reusable">"Speichern als wiederverwendbare slide"</string>
+	<string name="bad_time">"Schieben Sie die Zeit nicht richtig eingestellt"</string>
+	<string name="image">"image"</string>
+	<string name="image_slide">"Bild Diaschau"</string>
+	<string name="load_reusable">"Legen Sie eine wiederverwendbare slide"</string>
+	<string name="loop">"eine Schleife machen"</string>
+	<string name="loop_slide_pages">"Loop-Seiten in benutzerdefinierte Bildschirm"</string>
+	<string name="set_loading">"Loading Set"</string>
+	<string name="set_processing">"Verarbeitung"</string>
+	<string name="slide_add_page">"Legen Sie eine neue Seite, um benutzerdefinierte Bildschirm"</string>
+	<string name="time">"Zeit"</string>
+	<string name="time_slide_pages">"Zeit für jede Folie (n)"</string>
+	<string name="time_slide_pages_help">"Leer lassen für die manuelle Diashow"</string>
+	<string name="warning">"Diese Option sollte nur für Präsentationsmodus verwendet werden. Seien Sie sich bewusst, dass diese Funktion verwendet viel Speicher und kann zu Abstürzen führen. Du wurdest gewarnt!"</string>
 
 </resources>

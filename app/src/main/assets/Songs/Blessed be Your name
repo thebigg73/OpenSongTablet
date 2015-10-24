@@ -5,7 +5,7 @@
   <copyright>2002 Kingsway's Thankyou Music </copyright>
   <presentation></presentation>
   <hymn_number>434</hymn_number>
-  <capo print="false"></capo>
+  <capo print="true">2</capo>
   <tempo></tempo>
   <time_sig></time_sig>
   <duration></duration>
@@ -15,7 +15,7 @@
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key>G</key>
+  <key>B</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -24,30 +24,33 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs>OFF</linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[V1]
-.G          D                 Em7           C
+.B          F#                 G#m7           E
  Blessed be Your name in the land that is plentiful
-.           G           D
+.           B           F#
  Where Your streams of abundance flow
-.       C
+.       E
  Blessed be Your name
-.G              D                   Em7          C
+.B              F#                   G#m7          E
  And blessed be Your name when I'm found in the desert place
-.         G                D
+.         B                F#
  Though I walk through the wilderness
-.       C
+.       E
  Blessed be Your name
  
 [P]
-.G               D                Em           C
+.B               F#                G#m           E
  Every blessing You pour out I'll turn back to praise
-.G                     D                Em           C
+.B                     F#                G#m           E
  And when the darkness closes in, Lord, still I will say
  
 [C]
-.               G           D                     Em  C
+.               B           F#                     G#m  E
  Blessed be the name of the Lord,|Blessed be Your name
-.               G           D                     Em       C
+.               B           F#                     G#m       E
  Blessed be the name of the Lord,|Blessed be Your glorious name
  
 [V2]
@@ -59,11 +62,9 @@
  Blessed be Your name
  
 [B]
-.    G              D        Em7           C
+.    B              F#        G#m7           E
  You give and take away,|You give and take away
-.   G                    D          Em7             C
- My heart will choose to say,|Lord, blessed be Your name</lyrics>
-  <linked_songs>OFF</linked_songs>
-  <pad_file></pad_file>
-  
+.   B                    F#          G#m7             E
+ My heart will choose to say,|Lord, blessed be Your name
+</lyrics>
 </song>

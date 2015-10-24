@@ -3,19 +3,27 @@
   <title>Fly me to the moon</title>
   <author>Frank Sinatra</author>
   <copyright></copyright>
-  <hymn_number></hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number></hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo>118</tempo>
+  <time_sig>4/4</time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>Am</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[INTRO AS VERSE]
 
 [V1]
@@ -33,7 +41,7 @@
  Fill my heart with song and let me sing forevermore
 .F             Dm/B            E            Am7  A
  You are all I long for, all I worship and adore
-.   Dm	       G           Em    A
+.   Dm           G           Em    A
  In other words, please be true !
 .   Dm         G        C     Bm  E
  In other words, I love you !
@@ -47,7 +55,15 @@
  You are all I long for, all I worship and adore
 .   Dm         G           Em   A
  In other words, please be true !
-.   Dm         G    Em          A    	 
+.   Dm         G    Em          A         
  In other words, in other words,      
 .   Dm         G        C
- In other words, I love you !</lyrics></song>
+ In other words, I love you !</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
+</song>

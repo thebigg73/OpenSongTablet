@@ -138,6 +138,7 @@ public class PopUpSetView extends DialogFragment {
                     }
                     if (mFolderName.get(position).equals(FullscreenActivity.text_slide) ||
                             mFolderName.get(position).equals(FullscreenActivity.text_note) ||
+                            mFolderName.get(position).equals(FullscreenActivity.image) ||
                             mFolderName.get(position).equals(FullscreenActivity.text_scripture)) {
                         view.setBackgroundColor(notes_bg);
                     }
@@ -160,9 +161,11 @@ public class PopUpSetView extends DialogFragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // Fix folders for Scriptures, Notes and Slides
                     if (mFolderName.get(position).equals(getResources().getString(R.string.scripture))) {
-                        FullscreenActivity.whichSongFolder = "../OpenSong Scripture";
+                        FullscreenActivity.whichSongFolder = "../OpenSong Scripture/_cache";
                     } else if (mFolderName.get(position).equals(getResources().getString(R.string.slide))) {
                         FullscreenActivity.whichSongFolder = "../Slides/_cache";
+                    } else if (mFolderName.get(position).equals(getResources().getString(R.string.image))) {
+                        FullscreenActivity.whichSongFolder = "../Images/_cache";
                     } else if (mFolderName.get(position).equals(getResources().getString(R.string.note))) {
                         FullscreenActivity.whichSongFolder = "../Notes/_cache";
                     } else {

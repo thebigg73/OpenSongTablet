@@ -432,5 +432,19 @@
 	<string name="no_audioplayer">"いいえオーディオプレーヤーがインストールされていません"</string>
 	<string name="no_filemanager">"いいえファイルマネージャがインストールされていません"</string>
 	<string name="tap_tempo">"テンポを設定するタップ"</string>
+	<string name="add_reusable">"再利用可能なスライドとして保存"</string>
+	<string name="bad_time">"スライド時間が正しく設定されていません"</string>
+	<string name="image">"像"</string>
+	<string name="image_slide">"画像スライドショー"</string>
+	<string name="load_reusable">"再利用可能なスライドをロードします"</string>
+	<string name="loop">"ループ"</string>
+	<string name="loop_slide_pages">"カスタムスライドのループページ"</string>
+	<string name="set_loading">"ロードセット"</string>
+	<string name="set_processing">"処理"</string>
+	<string name="slide_add_page">"カスタムスライドに新しいページを挿入"</string>
+	<string name="time">"タイム"</string>
+	<string name="time_slide_pages">"各スライドの時間（s）"</string>
+	<string name="time_slide_pages_help">"手動スライドショーの空白のまま"</string>
+	<string name="warning">"このオプションは、プレゼンテーションモードを使用する必要があります。この機能は多くのメモリを使用するとクラッシュを引き起こす可能性があることに注意してください。あなたは警告されています！"</string>
 
 </resources>

@@ -433,5 +433,19 @@
 	<string name="no_audioplayer">"Pas de lecteur audio installé"</string>
 	<string name="no_filemanager">"Aucun gestionnaire de fichiers installé"</string>
 	<string name="tap_tempo">"Touchez pour régler le tempo"</string>
+	<string name="add_reusable">"Enregistrer comme une diapositive réutilisables"</string>
+	<string name="bad_time">"Temps de diapositives n'a pas été réglé correctement"</string>
+	<string name="image">"image"</string>
+	<string name="image_slide">"image diaporama"</string>
+	<string name="load_reusable">"Charger une diapositive réutilisables"</string>
+	<string name="loop">"boucle"</string>
+	<string name="loop_slide_pages">"Pages de boucle des diaporamas personnalisés"</string>
+	<string name="set_loading">"Chargement ensemble"</string>
+	<string name="set_processing">"traitement"</string>
+	<string name="slide_add_page">"Insérer nouvelle page de diaporamas personnalisés"</string>
+	<string name="time">"Temps"</string>
+	<string name="time_slide_pages">"Durée de chaque diapositive (s)"</string>
+	<string name="time_slide_pages_help">"Laissez ce champ vide pour le diaporama manuel"</string>
+	<string name="warning">"Cette option ne doit être utilisé pour le mode de présentation. Soyez conscient que cette fonction utilise beaucoup de mémoire et peut causer des accidents. Tu as été prévenu!"</string>
 
 </resources>

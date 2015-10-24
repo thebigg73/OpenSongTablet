@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
   <title>Don't dream it's over</title>
+  <author>Crowded House</author>
+  <copyright></copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key></key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[INTRO]
 .Eb   Eb7sus4     x2
 
 [V1]
 .Eb                       Cm                              
  There is freedom within, there is freedom without
-.Ab                                 G  Bb 
+.Ab                                 G  Gsus
  Try to catch the deluge in a paper cup
 .Eb                      Cm          
  There's a battle ahead, many battles are lost
@@ -86,21 +109,8 @@
 
 [OUTRO]
 .Eb   Eb7sus4     x2</lyrics>
-  <author>Crowded House</author>
-  <copyright></copyright>
-  <hymn_number></hymn_number>
-  <presentation></presentation>
-  <ccli></ccli>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <theme></theme>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

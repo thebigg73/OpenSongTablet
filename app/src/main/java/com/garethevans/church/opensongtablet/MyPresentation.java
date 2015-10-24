@@ -14,9 +14,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.TextureView;
@@ -24,11 +26,8 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -36,6 +35,13 @@ public final class MyPresentation extends Presentation
         implements TextureView.SurfaceTextureListener, MediaPlayer.OnBufferingUpdateListener,
         MediaPlayer.OnVideoSizeChangedListener, MediaPlayer.OnPreparedListener,
         MediaPlayer.OnCompletionListener{
+
+    static File img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
+    static File img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
+    static String vid1File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
+    static String vid2File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
+    static String vidFile;
+    static File imgFile;
 
     // Views on the presentation window
     static TextView presoLyrics1;
@@ -62,7 +68,10 @@ public final class MyPresentation extends Presentation
     static RelativeLayout bottomBit;
     static FrameLayout preso;
     static FrameLayout lyricsHolder;
-    static ImageView slideImage;
+    static ImageView slideImage1;
+    static ImageView slideImage2;
+    static ImageView slideImageIN;
+    static ImageView slideImageOUT;
 
     static View lyricsINVScrollHolder;
     static View lyricsOUTVScrollHolder;
@@ -85,9 +94,7 @@ public final class MyPresentation extends Presentation
 
     //MediaController
     static MediaPlayer mMediaPlayer;
-    MediaController mController;
 
-    static String vidFile;
     static Surface s;
     Context context;
 
@@ -116,8 +123,12 @@ public final class MyPresentation extends Presentation
 
         presoBGVideo.setSurfaceTextureListener(this);
 
-        slideImage = (ImageView) findViewById(R.id.slideImage);
-        slideImage.setVisibility(View.GONE);
+        slideImage1 = (ImageView) findViewById(R.id.slideImage1);
+        slideImage1.setVisibility(View.GONE);
+        slideImage2 = (ImageView) findViewById(R.id.slideImage2);
+        slideImage2.setVisibility(View.GONE);
+        slideImageIN = slideImage1;
+        slideImageOUT = slideImage2;
 
         fixBackground();
 
@@ -287,9 +298,8 @@ public final class MyPresentation extends Presentation
         // We have to use the smallest scale factor to make sure both fit
         if (xscale > yscale) {
             xscale = yscale;
-        } else {
-            yscale = xscale;
         }
+
         presoLyricsIN.setPivotY(0);
         presoLyricsIN.setTranslationY(0);
         presoLyrics1.setPivotY(0);
@@ -300,11 +310,43 @@ public final class MyPresentation extends Presentation
         presoLyrics1.setY(0);
         presoLyrics2.setY(0);
         presoLyricsIN.setPivotX(textwidth / 2);
-        //presoLyricsIN.setScaleX(xscale);
-        //presoLyricsIN.setScaleY(yscale);
         presoLyricsIN.setTextSize(72*xscale);
 
 
+    }
+
+    public static void fadeoutImage1() {
+        // If slideImage1 is visible, fade it out
+        if (slideImage1.getVisibility() == View.VISIBLE && slideImage1.getAlpha() > 0.0f) {
+            slideImage1.setAlpha(1.0f);
+            slideImage1.setVisibility(View.VISIBLE);
+            slideImage1.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    slideImage1.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
+            slideImage1.setAlpha(0.0f);
+            slideImage1.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void fadeoutImage2() {
+        // If slideImage2 is visible, fade it out
+        if (slideImage2.getVisibility() == View.VISIBLE && slideImage2.getAlpha() > 0.0f) {
+            slideImage2.setAlpha(1.0f);
+            slideImage2.setVisibility(View.VISIBLE);
+            slideImage2.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    slideImage2.setVisibility(View.INVISIBLE);
+                }
+            });
+        } else {
+            slideImage2.setAlpha(0.0f);
+            slideImage2.setVisibility(View.INVISIBLE);
+        }
     }
 
     public static void fadeoutCopyright1() {
@@ -476,7 +518,7 @@ public final class MyPresentation extends Presentation
 
     public static void fadeInLogo() {
         // If logo is invisible or faded out, fade it in
-        if (presoLogo.getVisibility() == View.INVISIBLE || presoLogo.getVisibility() == View.INVISIBLE || presoLogo.getAlpha() == 0f) {
+        if (presoLogo.getVisibility() == View.INVISIBLE || presoLogo.getVisibility() == View.GONE || presoLogo.getAlpha() == 0f) {
             presoLogo.setAlpha(0.0f);
             presoLogo.setVisibility(View.VISIBLE);
             presoLogo.animate().alpha(1f).setDuration(1000).setListener(null);
@@ -494,6 +536,8 @@ public final class MyPresentation extends Presentation
         fadeoutAuthor2();
         fadeoutCopyright1();
         fadeoutCopyright2();
+        fadeoutImage1();
+        fadeoutImage2();
 
         PresenterMode.logo_on = "Y";
 
@@ -517,7 +561,7 @@ public final class MyPresentation extends Presentation
     }
 
     public static void crossFadeSong() {
-        // There are two views for each song element (presoLyrics, presoAuthor, presoCopyright, presoAlert)
+        // There are two views for each song element (presoLyrics, presoAuthor, presoCopyright, presoAlert, slideImage)
         // This is to allow for smooth crossfading.
 
         // If the logo is showing, fade it out then hide it
@@ -532,6 +576,8 @@ public final class MyPresentation extends Presentation
 
         // Decide which view we are fading in.  By default its the 1st view
         whichPresoLyricsToUse = 1;
+        slideImageIN = slideImage1;
+        slideImageOUT = slideImage2;
         presoLyricsIN = presoLyrics1;
         presoLyricsOUT = presoLyrics2;
         presoTitleIN = presoTitle1;
@@ -548,6 +594,8 @@ public final class MyPresentation extends Presentation
         if (presoLyrics1.getVisibility() == View.VISIBLE) {
             // 1st is on already, so we are fading in the 2nd view
             whichPresoLyricsToUse = 2;
+            slideImageIN = slideImage2;
+            slideImageOUT = slideImage1;
             presoLyricsIN = presoLyrics2;
             presoLyricsOUT = presoLyrics1;
             presoTitleIN = presoTitle2;
@@ -568,6 +616,13 @@ public final class MyPresentation extends Presentation
 
         presoLyricsIN.setScaleX(1);
         presoLyricsIN.setScaleY(1);
+
+        if (PresenterMode.buttonPresentText.equals("$$_IMAGE_$$!")) {
+            slideImageIN.setAlpha(0.0f);
+            slideImageIN.setVisibility(View.VISIBLE);
+            presoBGImage.setVisibility(View.INVISIBLE);
+            presoBGVideo.setVisibility(View.INVISIBLE);
+        }
 
         // Decide on the font being used
         SetTypeFace.setTypeface();
@@ -625,7 +680,6 @@ public final class MyPresentation extends Presentation
                     presoLyricsOUT.setY(0);
                     presoLyricsOUT.setTranslationY(0);
                 }
-
             }
         });
 
@@ -642,6 +696,44 @@ public final class MyPresentation extends Presentation
         presoTitleIN.setTypeface(FullscreenActivity.presofont);
         presoAuthorIN.setTypeface(FullscreenActivity.presofont);
         presoCopyrightIN.setTypeface(FullscreenActivity.presofont);
+
+        if (PresenterMode.buttonPresentText.equals("$$_IMAGE_$$")) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            Bitmap ThumbImage;
+
+            // Check if the image exists
+            File checkImgFile = new File(PresenterMode.imageAddress);
+            if (checkImgFile.exists()) {
+                //Returns null, sizes are in the options variable
+                BitmapFactory.decodeFile(PresenterMode.imageAddress, options);
+                int width = options.outWidth;
+                int height = options.outHeight;
+
+                if (width > 1024) {
+                    width = 1024;
+                    float newheight = height / ((float) width / 1024.0f);
+                    height = Math.round(newheight);
+                }
+                if (height > 768) {
+                    height = 768;
+                    float newwidth = width / ((float) height / 768.0f);
+                    width = Math.round(newwidth);
+                }
+
+                ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(PresenterMode.imageAddress), width, height);
+            } else {
+                ThumbImage = null;
+            }
+
+            slideImageIN.setImageBitmap(ThumbImage);
+            slideImageIN.setAlpha(0.0f);
+            slideImageIN.setVisibility(View.VISIBLE);
+            presoLyricsIN.setText("");
+            presoTitleIN.setText("");
+            presoAuthorIN.setText("");
+            presoCopyrightIN.setText("");
+        }
 
         if (presoTitleOUT.getVisibility() == View.VISIBLE && presoTitleOUT.getAlpha() > 0 && !presoTitleOUT.getText().toString().equals(PresenterMode.presoTitle)) {
             presoTitleOUT.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
@@ -693,6 +785,26 @@ public final class MyPresentation extends Presentation
             presoCopyrightIN.setAlpha(1f);
             presoCopyrightIN.setVisibility(View.VISIBLE);
         }
+
+        if (slideImageOUT.getVisibility() == View.VISIBLE && slideImageOUT.getAlpha() > 0) {
+            slideImageOUT.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    slideImageOUT.setVisibility(View.INVISIBLE);
+                    slideImageOUT.setImageDrawable(null);
+                }
+            }).start();
+        } else {
+            slideImageOUT.setVisibility(View.INVISIBLE);
+            slideImageOUT.setAlpha(0.0f);
+            slideImageOUT.setImageDrawable(null);
+        }
+
+        if (PresenterMode.buttonPresentText.equals("$$_IMAGE_$$")) {
+            slideImageIN.setAlpha(0f);
+            slideImageIN.setVisibility(View.VISIBLE);
+            slideImageIN.animate().alpha(1f).setDuration(1000).setListener(null).start();
+        }
     }
 
     public static void fadeInPage() {
@@ -729,19 +841,14 @@ public final class MyPresentation extends Presentation
     }
 
     public static void fixBackground() {
-        File img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
-        File img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
-        String vid1File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
-        String vid2File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
         // Decide if user is using video or image for background
         switch (FullscreenActivity.backgroundTypeToUse) {
             case "image":
                 presoBGImage.setVisibility(View.VISIBLE);
                 presoBGVideo.setVisibility(View.INVISIBLE);
-                if (mMediaPlayer != null) {
+                if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
                     mMediaPlayer.pause();
                 }
-                File imgFile;
                 if (FullscreenActivity.backgroundToUse.equals("img1")) {
                     imgFile = img1File;
                 } else {
@@ -761,13 +868,14 @@ public final class MyPresentation extends Presentation
             case "video":
                 presoBGImage.setVisibility(View.INVISIBLE);
                 presoBGVideo.setVisibility(View.VISIBLE);
-                if (mMediaPlayer != null) {
-                    mMediaPlayer.start();
-                }
+
                 if (FullscreenActivity.backgroundToUse.equals("vid1")) {
                     vidFile = vid1File;
                 } else {
                     vidFile = vid2File;
+                }
+                if (mMediaPlayer != null) {
+                    mMediaPlayer.start();
                 }
                 preso.setBackgroundColor(0xff000000);
                 myBitmap = null;
@@ -906,7 +1014,7 @@ public final class MyPresentation extends Presentation
     public void onBufferingUpdate(MediaPlayer mp, int percent) {
     }
 
-    public static void reloadVideo(MediaPlayer mp) throws IOException {
+    public static void reloadVideo() throws IOException {
         if (mMediaPlayer==null) {
             mMediaPlayer = new MediaPlayer();
             mMediaPlayer.setSurface(s);
@@ -917,11 +1025,11 @@ public final class MyPresentation extends Presentation
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-        mMediaPlayer.prepareAsync();
-    }
-
-    public static void restartVideo(MediaPlayer mp) {
-        mMediaPlayer.start();
+        try {
+            mMediaPlayer.prepareAsync();
+         } catch (Exception e) {
+            Log.e("Presentation window","media player error");
+        }
     }
 
     @Override
@@ -930,13 +1038,19 @@ public final class MyPresentation extends Presentation
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-        restartVideo(mp);
+        mp.start();
     }
 
     @Override
     public void onCompletion(MediaPlayer mp) {
+        if (mp!=null) {
+            if (mp.isPlaying()) {
+                mp.stop();
+            }
+            mp.reset();
+        }
         try {
-            reloadVideo(mp);
+            reloadVideo();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -12,17 +12,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfRenderer;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -109,7 +113,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         PopUpSongDetailsFragment.MyInterface, PopUpSongRenameFragment.MyInterface,
         PopUpSongCreateFragment.MyInterface, PopUpFontsFragment.MyInterface,
         PopUpEditStickyFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
-        PopUpSetView.MyInterface, PopUpImportExternalFile.MyInterface {
+        PopUpSetView.MyInterface, PopUpImportExternalFile.MyInterface,
+        PopUpFileChooseFragment.MyInterface {
     /** First up, declare all of the variables needed by this application **/
 
     // This is for trying to automatically open songs via intent
@@ -124,10 +129,19 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     // Screencapure variables
     static Bitmap bmScreen;
 
+    static boolean abort = false;
+
     // Custom note/slide variables
     public static String noteorslide = "";
     public static String customslide_title = "";
     public static String customslide_content = "";
+    public static String customimage_list = "";
+    public static String customimage_loop = "";
+    public static String customimage_time = "";
+    public static boolean customreusable = false;
+    public static String customreusabletoload = "";
+    public static boolean isImageSection = false;
+    public static String imagetext = "";
     static String text_slide;
     static String text_scripture;
     static String text_note;
@@ -351,7 +365,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     private static int alreadyshowingpage;
     public static int keyindex;
 
-    private static int pdfPageCurrent = 0;
+    public static int pdfPageCurrent = 0;
     private static int pdfPageCount = 0;
     public static boolean isPDF = false;
     private static boolean isSong = false;
@@ -1317,7 +1331,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         //volume = initialVolume;
         metroTask = new MetronomeAsyncTask();
         Runtime.getRuntime().gc();
-
     }
 
     private void hideKeyboard() {
@@ -1545,25 +1558,27 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     @Override
     public void addSlideToSet() {
         String filename;
+        String reusablefilename;
         String templocator;
 
         if (noteorslide.equals("note")) {
-            filename = dircustomnotes + "/" + FullscreenActivity.customslide_title;
+            filename = dircustomnotes + "/" + customslide_title;
+            reusablefilename = homedir + "/Notes/" + customslide_title;
             templocator = note;
-        } else {
-            filename = dircustomslides + "/" + FullscreenActivity.customslide_title;
+            customimage_list = "";
+        } else if (noteorslide.equals("slide")) {
+            filename = dircustomslides + "/" + customslide_title;
+            reusablefilename = homedir + "/Slides/" + customslide_title;
             templocator = slide;
-        }
-
-        // Check if the slide / note already exists, if it does, keep adding _ to the name
-        File checkfileexists = new File(filename);
-        while (checkfileexists.exists()) {
-            filename = filename + "_";
-            checkfileexists = new File(filename);
+            customimage_list = "";
+        } else {
+            filename = dircustomimages + "/" + customslide_title;
+            reusablefilename = homedir + "/Images/" + customslide_title;
+            templocator = image;
         }
 
         // If slide content is empty - put the title in
-        if (customslide_content.isEmpty()) {
+        if (customslide_content.isEmpty() && !noteorslide.equals("image")) {
             customslide_content = customslide_title;
         }
 
@@ -1572,12 +1587,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         mynewXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         mynewXML += "<song>\n";
         mynewXML += "  <title>" + customslide_title + "</title>\n";
-        mynewXML += "  <author></author>\n";
-        mynewXML += "  <user1></user1>\n";  // This is used as a link to a background image
-        mynewXML += "  <user2></user2>\n";  // This is used for loop on or off
-        mynewXML += "  <user3></user3>\n";  // This is used for auto advance time
+        mynewXML += "  <author> </author>\n";
+        mynewXML += "  <user1>" + customimage_time + "</user1>\n";  // This is used for auto advance time
+        mynewXML += "  <user2>" + customimage_loop + "</user2>\n";  // This is used for loop on or off
+        mynewXML += "  <user3>" + customimage_list + "</user3>\n";  // This is used as links to a background images
         mynewXML += "  <aka></aka>\n";
         mynewXML += "  <key_line></key_line>\n";
+        mynewXML += "  <hymn_number></hymn_number>\n";
         mynewXML += "  <lyrics>" + customslide_content +"</lyrics>\n";
         mynewXML += "</song>";
 
@@ -1587,12 +1603,27 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         // Now write the modified song
         FileOutputStream overWrite;
         try {
-            overWrite = new FileOutputStream(filename,	false);
+            overWrite = new FileOutputStream(filename, false);
             overWrite.write(mynewXML.getBytes());
             overWrite.flush();
             overWrite.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        // If this is to be a reusable custom slide
+        if (customreusable) {
+            // Now write the modified song
+            FileOutputStream overWriteResuable;
+            try {
+                overWriteResuable = new FileOutputStream(reusablefilename, false);
+                overWriteResuable.write(mynewXML.getBytes());
+                overWriteResuable.flush();
+                overWriteResuable.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            customreusable = false;
         }
 
         // Add to set
@@ -1632,6 +1663,17 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     public void loadSongFromSet() {
         Preferences.savePreferences();
         redrawTheLyricsTable(view);
+    }
+
+    @Override
+    public void loadCustomReusable() {
+        // This is called from the file chooser fragment.
+        // Load in the custom reusable, then reopen the custom slide editor
+        // Put the old myXML and song fields into temporary memory while we load in the new ones
+        LoadXML.prepareLoadCustomReusable(customreusabletoload);
+        // This reopens the choose backgrounds popupFragment
+        DialogFragment newFragment = PopUpCustomSlideFragment.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
     }
 
     private class popupChord_InstrumentListener implements OnItemSelectedListener {
@@ -3746,7 +3788,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
 
                             // If the folder length isn't 0, it is a folder
-                            if (songpart[0].length() > 0 && !songpart[0].contains(text_scripture) && !songpart[0].contains(text_slide) && !songpart[0].contains(text_note)) {
+                            if (songpart[0].length() > 0 && !songpart[0].contains(text_scripture) && !songpart[0].contains(image) && !songpart[0].contains(text_slide) && !songpart[0].contains(text_note)) {
                                 whichSongFolder = songpart[0];
 
                             } else if (songpart[0].length() > 0 && songpart[0].contains(text_scripture)) {
@@ -3760,6 +3802,10 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             } else if (songpart[0].length() > 0 && songpart[0].contains(text_note)) {
                                 whichSongFolder = "../Notes/_cache";
                                 songpart[0] = "../Notes/_cache";
+
+                            } else if (songpart[0].length() > 0 && songpart[0].contains(image)) {
+                                whichSongFolder = "../Images/_cache";
+                                songpart[0] = "../Images/_cache";
 
                             } else {
                                 whichSongFolder = mainfoldername;
@@ -3796,7 +3842,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             if (isPDF) {// Can't do this action on a pdf!
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                                 ShowToast.showToast(FullscreenActivity.this);
-                            } else if (!isSong) {// Editing a slide / note / scripture
+                            } else if (!isSong) {// Editing a slide / note / scripture / image
                                 myToastMessage = getResources().getString(R.string.not_allowed);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
@@ -3811,7 +3857,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else if (!isSong) {
-                                // Editing a slide / note / scripture
+                                // Editing a slide / note / scripture / image
                                 myToastMessage = getResources().getString(R.string.not_allowed);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
@@ -3822,7 +3868,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                         } else if (childPosition == 2) {// Rename song
                             if (!isPDF && !isSong) {
-                                // Editing a slide / note / scripture
+                                // Editing a slide / note / scripture / image
                                 myToastMessage = getResources().getString(R.string.not_allowed);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
@@ -3834,7 +3880,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                         } else if (childPosition == 3) {// Delete song
                             if (!isPDF && !isSong) {
-                                // Editing a slide / note / scripture
+                                // Editing a slide / note / scripture / image
                                 myToastMessage = getResources().getString(R.string.not_allowed);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
@@ -3895,7 +3941,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else if (!isSong) {
-                                // Editing a slide / note / scripture
+                                // Editing a slide / note / scripture / image
                                 myToastMessage = getResources().getString(R.string.not_allowed);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
@@ -3934,7 +3980,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else if (!isSong) {
-                                // Editing a slide / note / scripture
+                                // Editing a slide / note / scripture / image
                                 myToastMessage = getResources().getString(R.string.not_allowed);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
@@ -3956,7 +4002,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else if (!isSong) {
-                                // Editing a slide / note / scripture
+                                // Editing a slide / note / scripture / image
                                 myToastMessage = getResources().getString(R.string.not_allowed);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
@@ -3987,7 +4033,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else if (!isSong) {
-                                // Editing a slide / note / scripture
+                                // Editing a slide / note / scripture / image
                                 myToastMessage = getResources().getString(R.string.not_allowed);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
@@ -6212,7 +6258,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     public void shareSong() {
         if (!isSong) {
-            // Editing a slide / note / scripture
+            // Editing a slide / note / scripture / image
             myToastMessage = getResources().getString(R.string.not_allowed);
             ShowToast.showToast(FullscreenActivity.this);
         } else {
@@ -6979,8 +7025,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             // File is pdf
             isPDF = true;
             isSong = false;
-        } else if (whichSongFolder.equals("../OpenSong Scripture/_cache") || whichSongFolder.equals("../Slides/_cache") || whichSongFolder.equals("../Notes/_cache")) {
-            // File is slide, note or scripture
+        } else if (whichSongFolder.equals("../OpenSong Scripture/_cache") || whichSongFolder.equals("../Images/_cache") || whichSongFolder.equals("../Slides/_cache") || whichSongFolder.equals("../Notes/_cache")) {
+            // File is slide, note, image or scripture
             isPDF = false;
             isSong = false;
         } else {
@@ -7120,7 +7166,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 Uri.parse("https://www.youtube.com/results?search_query="+mTitle+"+"+mAuthor)));
     }
 
-    private void doMoveInSet() {
+    public void doMoveInSet() {
         invalidateOptionsMenu();
         linkclicked = mSetList[indexSongInSet];
         pdfPageCurrent = 0;
@@ -7133,20 +7179,24 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         String[] songpart = linkclicked.split("/");
 
         // If the folder length isn't 0, it is a folder
-        if (songpart[0].length() > 0 && !songpart[0].contains(text_scripture) && !songpart[0].contains(text_slide) && !songpart[0].contains(text_note)) {
+        if (songpart[0].length() > 0 && !songpart[0].contains(text_scripture) && !songpart[0].contains(image) && !songpart[0].contains(text_slide) && !songpart[0].contains(text_note)) {
             whichSongFolder = songpart[0];
 
-        } else if (songpart[0].length() > 0 && songpart[0].contains(text_scripture) && !songpart[0].contains(text_slide) && !songpart[0].contains(text_note)) {
+        } else if (songpart[0].length() > 0 && songpart[0].contains(text_scripture) && !songpart[0].contains(image) && !songpart[0].contains(text_slide) && !songpart[0].contains(text_note)) {
             whichSongFolder = "../OpenSong Scripture/_cache";
             songpart[0] = "../OpenSong Scripture/_cache";
 
-        } else if (songpart[0].length() > 0 && songpart[0].contains(text_slide) && !songpart[0].contains(text_note) && !songpart[0].contains(text_scripture)) {
+        } else if (songpart[0].length() > 0 && songpart[0].contains(text_slide) && !songpart[0].contains(image) && !songpart[0].contains(text_note) && !songpart[0].contains(text_scripture)) {
             whichSongFolder = "../Slides/_cache";
             songpart[0] = "../Slides/_cache";
 
-        } else if (songpart[0].length() > 0 && !songpart[0].contains(text_slide) && songpart[0].contains(text_note) && !songpart[0].contains(text_scripture)) {
+        } else if (songpart[0].length() > 0 && !songpart[0].contains(text_slide) && !songpart[0].contains(image) && songpart[0].contains(text_note) && !songpart[0].contains(text_scripture)) {
             whichSongFolder = "../Notes/_cache";
             songpart[0] = "../Notes/_cache";
+
+        } else if (songpart[0].length() > 0 && !songpart[0].contains(text_slide) && songpart[0].contains(image) && !songpart[0].contains(text_note) && !songpart[0].contains(text_scripture)) {
+            whichSongFolder = "../Images/_cache";
+            songpart[0] = "../Images/_cache";
 
         } else {
             whichSongFolder = mainfoldername;
@@ -7720,7 +7770,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                     ShowToast.showToast(FullscreenActivity.this);
                 } else if (!isSong) {
-                    // Editing a slide / note / scripture
+                    // Editing a slide / note / scripture / image
                     myToastMessage = getResources().getString(R.string.not_allowed);
                     ShowToast.showToast(FullscreenActivity.this);
                 } else {
@@ -7785,7 +7835,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                     ShowToast.showToast(FullscreenActivity.this);
                 } else if (!isSong) {
-                    // Editing a slide / note / scripture
+                    // Editing a slide / note / scripture / image
                     myToastMessage = getResources().getString(R.string.not_allowed);
                     ShowToast.showToast(FullscreenActivity.this);
                 } else {
@@ -7886,8 +7936,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 // If not in a set, see if we can move to the next song in the
                 // list
                 // Only if swipeSet is Y (not S)
-                if (setView.equals("N") && swipeSet.equals("Y") && !whichSongFolder.equals("../OpenSong Scripture/_cache") && !whichSongFolder.equals("../Slides/_cache") && !whichSongFolder.equals("../Notes/_cache")) {
-                    if (!songfilename.equals(mSongFileNames[nextSongIndex])) {
+                if (setView.equals("N") && swipeSet.equals("Y") && !whichSongFolder.equals("../OpenSong Scripture/_cache") && !whichSongFolder.equals("../Images/_cache") && !whichSongFolder.equals("../Slides/_cache") && !whichSongFolder.equals("../Notes/_cache")) {
+                    if (nextSongIndex<mSongFileNames.length && nextSongIndex!=-1 && !songfilename.equals(mSongFileNames[nextSongIndex])) {
                         // Move to the next song
                         // temporarily disable swipe
                         tempswipeSet = "disable";
@@ -7948,9 +7998,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 // If not in a set, see if we can move to the previous song in
                 // the list
                 // Only if swipeSet is Y (not S)
-                if (setView.equals("N") && swipeSet.equals("Y") && !whichSongFolder.equals("../OpenSong Scripture/_cache") && !whichSongFolder.equals("../Slides/_cache") && !whichSongFolder.equals("../Notes/_cache")) {
+                if (setView.equals("N") && swipeSet.equals("Y") && !whichSongFolder.equals("../OpenSong Scripture/_cache") && !whichSongFolder.equals("../Images/_cache")&& !whichSongFolder.equals("../Slides/_cache") && !whichSongFolder.equals("../Notes/_cache")) {
 
-                    if (!songfilename.equals(mSongFileNames[previousSongIndex])) {
+                    if (previousSongIndex<mSongFileNames.length && previousSongIndex!=-1 && !songfilename.equals(mSongFileNames[previousSongIndex])) {
                         // temporarily disable swipe
                         tempswipeSet = "disable";
 
@@ -8042,6 +8092,10 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         // if columTest = 0 or 1, prepare 1 column view
         // if columTest = 0 or 2, prepare 1 column view
         // if columTest = 0 or 3, prepare 1 column view
+
+        if (whichSongFolder.contains("../Images/")) {
+            columnTest = 1;
+        }
 
         int startatline = 0;
         int endatline = numrowstowrite;
@@ -9123,6 +9177,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         || whatisthisline[x].equals("prechorustitle")
                         || whatisthisline[x].equals("bridgetitle")
                         || whatisthisline[x].equals("tagtitle")
+                        || whatisthisline[x].equals("imagetitle")
                         || whatisthisline[x].equals("customtitle")) {
                     tbasic1_1.setTextColor(lyricsTextColor);
                     tbasic1_1.setAlpha(0.8f);
@@ -9189,14 +9244,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 caponormalrow1_3.setBackgroundColor(lyrics_useThisBGColor);
                 caponormalrow2_3.setBackgroundColor(lyrics_useThisBGColor);
                 caponormalrow3_3.setBackgroundColor(lyrics_useThisBGColor);
-                //tbasic.setTypeface(lyrics_useThisFont);
                 tbasic1_1.setTextSize(lyrics_useThisTextSize);
                 tbasic1_2.setTextSize(lyrics_useThisTextSize);
                 tbasic2_2.setTextSize(lyrics_useThisTextSize);
                 tbasic1_3.setTextSize(lyrics_useThisTextSize);
                 tbasic2_3.setTextSize(lyrics_useThisTextSize);
                 tbasic3_3.setTextSize(lyrics_useThisTextSize);
-                //capotbasic.setTypeface(lyrics_useThisFont);
                 capotbasic1_1.setTextSize(lyrics_useThisTextSize);
                 capotbasic1_2.setTextSize(lyrics_useThisTextSize);
                 capotbasic2_2.setTextSize(lyrics_useThisTextSize);
@@ -9347,32 +9400,41 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         || whatisthisline[x].equals("prechorustitle")
                         || whatisthisline[x].equals("bridgetitle")
                         || whatisthisline[x].equals("tagtitle")
+                        || whatisthisline[x].equals("imagetitle")
                         || whatisthisline[x].equals("customtitle")) {
                     tbasic1_1.setTextColor(lyricsTextColor);
                     tbasic1_1.setAlpha(0.8f);
-                    tbasic1_1.setTextSize(tempfontsize*0.6f);
+                    tbasic1_1.setTextSize(tempfontsize * 0.6f);
                     tbasic1_1.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                     tbasic1_2.setTextColor(lyricsTextColor);
                     tbasic1_2.setAlpha(0.8f);
-                    tbasic1_2.setTextSize(tempfontsize*0.6f);
+                    tbasic1_2.setTextSize(tempfontsize * 0.6f);
                     tbasic1_2.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                     tbasic2_2.setTextColor(lyricsTextColor);
                     tbasic2_2.setAlpha(0.8f);
-                    tbasic2_2.setTextSize(tempfontsize*0.6f);
+                    tbasic2_2.setTextSize(tempfontsize * 0.6f);
                     tbasic2_2.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                     tbasic1_3.setTextColor(lyricsTextColor);
                     tbasic1_3.setAlpha(0.8f);
-                    tbasic1_3.setTextSize(tempfontsize*0.6f);
+                    tbasic1_3.setTextSize(tempfontsize * 0.6f);
                     tbasic1_3.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                     tbasic2_3.setTextColor(lyricsTextColor);
                     tbasic2_3.setAlpha(0.8f);
-                    tbasic2_3.setTextSize(tempfontsize*0.6f);
+                    tbasic2_3.setTextSize(tempfontsize * 0.6f);
                     tbasic2_3.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                     tbasic3_3.setTextColor(lyricsTextColor);
                     tbasic3_3.setAlpha(0.8f);
-                    tbasic3_3.setTextSize(tempfontsize*0.6f);
+                    tbasic3_3.setTextSize(tempfontsize * 0.6f);
                     tbasic3_3.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+                    if (myParsedLyrics[x].contains(image+"_")) {
+                        isImageSection = true;
+                        if (myParsedLyrics[x+1]!=null) {
+                            imagetext = myParsedLyrics[x+1];
+                        }
+                    }
                 }
+
                 // add the TextView new TableRow
                 // As long as it isn't a multiline 2-9 beginning
                 if (myParsedLyrics[x].indexOf("1")!=0 && myParsedLyrics[x].indexOf("2")!=0 && myParsedLyrics[x].indexOf("3")!=0 &&
@@ -9444,8 +9506,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     normalrow3_3.addView(tbasic3_3);
                 }
 
-                //lyrics_useThisBGColor = lyricsVerseColor;
-                //lyrics_useThisTextSize = tempfontsize;
                 lyrics_useThisFont = lyricsfont;
 
                 // Decide on the block of text
@@ -9505,6 +9565,46 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 } else if (writetocol3_3) {
                     lyricstable3_threecolview.addView(basicline3_3);
                 }
+            }
+
+            if (isImageSection) {
+                isImageSection = false;
+                TableRow rowimage1_1 = new TableRow(this);
+
+                ImageView img1_1 = new ImageView(this);
+
+                // By default, the image should be the not found one
+                Drawable drw = getResources().getDrawable(R.drawable.notfound);
+
+                img1_1.setMaxWidth(320);
+                img1_1.setMaxHeight(240);
+
+                File checkfile = new File(imagetext);
+                if (checkfile.exists()) {
+                    try {
+                        Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(imagetext), 240, 180);
+                        Resources res = getResources();
+                        BitmapDrawable bd = new BitmapDrawable(res, ThumbImage);
+                        img1_1.setImageDrawable(bd);
+
+                    } catch (Exception e) {
+                        // Didn't work
+                        img1_1.setImageDrawable(drw);
+                    }
+                } else {
+                    img1_1.setImageDrawable(drw);
+                    TableLayout.LayoutParams layoutParams = new TableLayout.LayoutParams(240, 180);
+                    img1_1.setLayoutParams(layoutParams);
+                    img1_1.requestLayout();
+                }
+                TableRow.LayoutParams layoutImage = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+                layoutImage.width = 320;
+                layoutImage.height = 240;
+                img1_1.setLayoutParams(layoutImage);
+                rowimage1_1.setGravity(Gravity.CENTER_HORIZONTAL);
+                rowimage1_1.addView(img1_1);
+                lyricstable_onecolview.addView(rowimage1_1);
+                imagetext = "";
             }
         }
 
@@ -9634,6 +9734,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     public void getBlock(String what) {
         switch (what) {
+            case "image":
+                chords_useThisBGColor = lyricsVerseColor;
+                capo_useThisBGColor = lyricsVerseColor;
+                lyrics_useThisBGColor = lyricsVerseColor;
+                temp_useThisBGColor = lyricsVerseColor;
+                break;
             case "chorus":
                 chords_useThisBGColor = lyricsChorusColor;
                 capo_useThisBGColor = lyricsChorusColor;

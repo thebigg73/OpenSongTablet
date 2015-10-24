@@ -8,22 +8,21 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
-  <duration></duration>
+  <duration/>
   <ccli>38686</ccli>
-  <theme></theme>
-  <alttheme></alttheme>
+  <theme>Christ: Attributes; </theme>
   <user1>133</user1>
   <user2></user2>
   <user3></user3>
   <key>G</key>
   <aka></aka>
   <key_line></key_line>
-  <books></books>
-  <midi></midi>
-  <midi_index></midi_index>
-  <pitch></pitch>
-  <restrictions></restrictions>
-  <notes></notes>
+  <books/>
+  <midi/>
+  <midi_index/>
+  <pitch/>
+  <restrictions/>
+  <notes/>
   <lyrics>[V]
 .G    C       D      G   C         D      G 
  Abba Father, let me be, Yours and Yours alone
@@ -33,8 +32,9 @@
  Never let my heart grow cold, never let me go
 .G    C       D      G   C         D      G  C  G  D
  Abba Father, let me be, Yours and Yours alone
-</lyrics>
-  <linked_songs></linked_songs>
-  <pad_file></pad_file>
+ </lyrics>
+  <linked_songs/>
+  <pad_file/>
   <custom_chords>320203_0_g_Gadd2</custom_chords>
+  <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

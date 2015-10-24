@@ -19,9 +19,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/transposeValTextView"
             android:gravity="center_horizontal"
-            android:textColor="#00f"
-            android:textSize="22sp"
-            android:layout_margin="8dp" />
+            android:textColor="#ff0"
+            android:textSize="28sp"
+            android:layout_margin="8dp"
+            android:textIsSelectable="true" />
 
         <TextView
             android:id="@+id/detectedChordFormatText"

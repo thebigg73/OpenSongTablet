@@ -15,7 +15,7 @@
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key>G</key>
+  <key>Ab</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -24,31 +24,31 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[V]
-.G        D/F#      C/E    G
+.Ab        Eb/G      Db/F    Ab
  There is none like You
-.C      G/B               Am7            Dsus  D
+.Db      Ab/C               Bbm7            Ebsus  Eb
  No one else can touch my heart like You do
-.G       D/F#            Dm/F    C/E
+.Ab       Eb/G            Ebm/Gb    Db/F
  I could search for all eternity long and find
-.G        D         G
+.Ab        Eb         Ab
  There is none like You
 ;(repeat at your own choice)
 
 [Break]
-.Em7  C   G  D/F#
+.Fm7  Db   Ab  Eb/G
 
 [T]
-.     Cmaj7 C            G     Em7
+.     Dbmaj7 Db            Ab     Fm7
  Your mercy flows like a river wide
-.    Am7     D/F#            G
+.    Bbm7     Eb/G            Ab
  And healing comes from Your hands
-.Cmaj7      C           G             Em7
+.Dbmaj7      Db           Ab             Fm7
  Suffering children are safe in Your arms
-.Am7         C         D
+.Bbm7         Db         Eb
     There is none like You
 </lyrics>
-  <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
 </song>

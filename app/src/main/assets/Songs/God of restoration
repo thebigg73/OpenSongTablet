@@ -15,7 +15,7 @@
   <user1>315</user1>
   <user2></user2>
   <user3></user3>
-  <key>E</key>
+  <key>F</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -24,31 +24,34 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[Intro]
-.E   B/D#   A/C#     E   B/D#   A/C#   x2
+.F   C/E   Bb/D     F   C/E   Bb/D   x2
 
 [V1]
-.E           E/D#     A/C#              B/D#               E
+.F           F/E     Bb/D              C/E               F
  God of restoration, my hope is in the life You bring to me.
-.E            E/D#       A/C#             B/D#
+.F            F/E       Bb/D             C/E
  Healer of my wounds, I thank You, oh, I thank You.
-.E         E/D#        A/C#                 B/D#            E
+.F         F/E        Bb/D                 C/E            F
  God of my salvation, with saving love You came to rescue me.
-.E            E/D#     A/C#             B/D#        A        E/G#   Bsus4
+.F            F/E     Bb/D             C/E        Bb        F/A   Csus4
  Healer of my soul, I thank You, oh, I thank You, today and every day 
   
 [C]
-.     E           B/D#
+.     F           C/E
  I am Yours. I am Yours
-.      A/C#                         B/D#
+.      Bb/D                         C/E
  Every breath that I breathe, every moment that's lived.
-.     E           B/D#
+.     F           C/E
  I am Yours, I am Yours,
-.           A/C#                          B/D#
+.           Bb/D                          C/E
  You're the reason to breathe, You're the reason to live,
-.    B                  C#/F         
+.    C                  D/Gb         
  And now every one that You have saved
-.     A      E/G#      Bsus4 B      E   (E  B/D#  A/C#   E   B/D#  A/C#)
+.     Bb      F/A      Csus4 C      F   (F  C/E  Bb/D   F   C/E  Bb/D)
  Will come to be  Your praise, I am Yours. 
 
 [V2]                      
@@ -60,19 +63,16 @@
  Every day I'll live to thank You. oh, to thank You, today and every day.
 
 [B]
-.          A                 E/G#
+.          Bb                 F/A
  And if my food is to do Your will
-.         B             E/G#
+.         C             F/A
  Then I'm hungry, still hungry;
-.                A                  E/G#
+.                Bb                  F/A
  There's so much more that I need to give
-.   B             E/G#
+.   C             F/A
  To thank You, to thank You.    x2         
  |
-.A        E/G#   Bsus4  B       E
+.Bb        F/A   Csus4  C       F
  Today and every day,      I am Yours....
 </lyrics>
-  <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
 </song>

@@ -15,7 +15,7 @@
   <user1>266</user1>
   <user2></user2>
   <user3></user3>
-  <key>C</key>
+  <key>A</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -24,18 +24,21 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[V1]
-.  C               F         C               G
+.  A               D         A               E
  O God of burning, cleansing flame: send the fire!
-.     C                   F      C      F        G      C
+.     A                   D      A      D        E      A
  Your blood bought gift today we claim: send the fire today!
-.     G                 F       C
+.     E                 D       A
  Look down and see this waiting host,
-.    G                 F    C
+.    E                 D    A
  And send the promised Holy Ghost;
-.C/B Am           G    C
+.A/G# F#m           E    A
  We  need another Pentecost!
-.F        G      C   C/B Am G F        G      C
+.D        E      A   A/G# F#m E D        E      A
  Send the fire today!         Send the fire today!
  
 [V2]
@@ -60,8 +63,6 @@
  Oh, see us in Your altar lay,
  We give our lives to You today,
  So crown the offering now we pray:
- Send the fire today!  Send the fire today!</lyrics>
-  <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+ Send the fire today!  Send the fire today!
+</lyrics>
 </song>
