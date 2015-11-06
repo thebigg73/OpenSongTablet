@@ -5,7 +5,6 @@ import android.app.DialogFragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,23 +90,31 @@ public class PopUpImportExternalFile extends DialogFragment {
                 Cursor cursor = getActivity().getContentResolver().query(FullscreenActivity.file_uri, new String[]{
                         MediaStore.MediaColumns.DISPLAY_NAME
                 }, null, null, null);
-                cursor.moveToFirst();
-                int nameIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
-                if (nameIndex >= 0) {
-                    FullscreenActivity.file_name = cursor.getString(nameIndex);
+
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    int nameIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
+                    if (nameIndex >= 0) {
+                        FullscreenActivity.file_name = cursor.getString(nameIndex);
+                    }
+                    cursor.close();
                 }
-                cursor.close();
+
                 try {
                     InputStream is = getActivity().getContentResolver().openInputStream(FullscreenActivity.file_uri);
                     OutputStream os = new FileOutputStream(FullscreenActivity.homedir + "/" + FullscreenActivity.file_name);
                     FullscreenActivity.file_location = FullscreenActivity.homedir + "/" + FullscreenActivity.file_name;
                     byte[] buffer = new byte[4096];
                     int count;
-                    while ((count = is.read(buffer)) > 0) {
-                        os.write(buffer, 0, count);
+                    if (is != null) {
+                        while ((count = is.read(buffer)) > 0) {
+                            os.write(buffer, 0, count);
+                        }
                     }
                     os.close();
-                    is.close();
+                    if (is != null) {
+                        is.close();
+                    }
                     inputStream = new FileInputStream(FullscreenActivity.file_location);
                     FullscreenActivity.file_contents = LoadXML.readTextFile(inputStream);
                 } catch (Exception e) {

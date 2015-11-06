@@ -461,7 +461,8 @@ public class OnSongConvert extends Activity {
 
 		// Change guitar comments into comment lines
 		if (line[x].indexOf("{guitar_comment:") == 0) {
-			line[x] = line[x].replaceFirst("{guitar_comment:", ";");
+//			line[x] = line[x].replaceFirst("{guitar_comment:", ";");
+			line[x] = line[x].replaceFirst("\\{guitar_comment:", ";");
 			line[x] = line[x].replaceFirst("}", "");
 			// Get rid of any extra whitespace
 			line[x] = line[x].trim();			
@@ -647,8 +648,8 @@ public class OnSongConvert extends Activity {
 		
 		// Remove start and end of tabs
 		while (parsedlines.contains("{start_of_tab") && parsedlines.contains("{end_of_tab")) {
-			int startoftabpos = -1;
-			int endoftabpos = -1;
+			int startoftabpos;
+			int endoftabpos;
 			startoftabpos = parsedlines.indexOf("{start_of_tab");
 			endoftabpos = parsedlines.indexOf("{end_of_tab") + 12;
 			

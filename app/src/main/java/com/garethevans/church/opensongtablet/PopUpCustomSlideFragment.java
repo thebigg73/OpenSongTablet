@@ -33,7 +33,7 @@ import java.io.File;
 
 public class PopUpCustomSlideFragment extends DialogFragment {
 
-   static PopUpCustomSlideFragment newInstance() {
+    static PopUpCustomSlideFragment newInstance() {
         PopUpCustomSlideFragment frag;
         frag = new PopUpCustomSlideFragment();
         return frag;
@@ -81,8 +81,8 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     // Declare variables used
     static String whattype = "note";
 
-   @Override
-   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.options_song_edit));
         V = inflater.inflate(R.layout.popup_customslidecreator, container, false);
 
@@ -106,17 +106,17 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         timeEditText = (EditText) V.findViewById(R.id.timeEditText);
         warningTextView = (TextView) V.findViewById(R.id.warningTextView);
 
-       if (FullscreenActivity.whattodo.contains("customreusable_")) {
-           updateFields();
-       } else {
-           // By default we want to make a brief note/placeholder
-           noteRadioButton.setChecked(true);
-           FullscreenActivity.whattodo = "customnote";
-           slideRadioButton.setChecked(false);
-           imageRadioButton.setChecked(false);
-           saveReusableCheckBox.setChecked(false);
-           switchViewToNote();
-       }
+        if (FullscreenActivity.whattodo.contains("customreusable_")) {
+            updateFields();
+        } else {
+            // By default we want to make a brief note/placeholder
+            noteRadioButton.setChecked(true);
+            FullscreenActivity.whattodo = "customnote";
+            slideRadioButton.setChecked(false);
+            imageRadioButton.setChecked(false);
+            saveReusableCheckBox.setChecked(false);
+            switchViewToNote();
+        }
 
         // Set button listeners
         addPageButton.setOnClickListener(new View.OnClickListener() {
@@ -223,10 +223,10 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             }
         });
 
-       return V;
+        return V;
     }
 
-   public void updateFields() {
+    public void updateFields() {
         switch (FullscreenActivity.whattodo) {
             case "customreusable_note":
                 // Fill in the details

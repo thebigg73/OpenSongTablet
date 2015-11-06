@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -205,7 +204,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         instrument_choice[0] = getResources().getString(R.string.guitar);
         instrument_choice[1] = getResources().getString(R.string.ukulele);
         instrument_choice[2] = getResources().getString(R.string.mandolin);
-        ArrayAdapter<String> adapter_instrument = new ArrayAdapter<String>(this, R.layout.my_spinner, instrument_choice);
+        ArrayAdapter<String> adapter_instrument = new ArrayAdapter<>(this, R.layout.my_spinner, instrument_choice);
         adapter_instrument.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         CustomChord_Instrument.setAdapter(adapter_instrument);
         CustomChord_Instrument.setOnItemSelectedListener(new InstrumentListener());
@@ -214,7 +213,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
 
         CustomChord_Fret = (Spinner) findViewById(R.id.customchords_fret);
         String[] fret_choice = {"","1","2","3","4","5","6","7","8","9"};
-        ArrayAdapter<String> adapter_fret = new ArrayAdapter<String>(this, R.layout.my_spinner, fret_choice);
+        ArrayAdapter<String> adapter_fret = new ArrayAdapter<>(this, R.layout.my_spinner, fret_choice);
         adapter_fret.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         CustomChord_Fret.setAdapter(adapter_fret);
         CustomChord_Fret.setOnItemSelectedListener(new FretListener());
@@ -327,7 +326,6 @@ public class CustomChord extends Activity implements View.OnClickListener {
             if (fret_text.equals("") || fret_text.isEmpty()) {
                 fret_text = "0";
             }
-
             updateChordText();
         }
 
@@ -417,9 +415,11 @@ public class CustomChord extends Activity implements View.OnClickListener {
                     workingChord = workingChord.replace("_", "");
                 }
                 chorddetails = chorddetails + chordname + " (" + workingChord + ")";
-                chordvalue.setText("\n\n" + chorddetails);
+                String newtext = "\n\n" + chorddetails;
+                chordvalue.setText(newtext);
                 deleteChord.setTransformationMethod(null);
-                deleteChord.setText(getResources().getString(R.string.options_song_delete)+"\n"+tempCustomChords[q]);
+                newtext = getResources().getString(R.string.options_song_delete)+"\n"+tempCustomChords[q];
+                deleteChord.setText(newtext);
                 deleteChord.setBackgroundDrawable(getResources().getDrawable(R.drawable.red_button));
                 deleteChord.setOnClickListener(this);
                 if (!workingChord.isEmpty() && !workingChord.equals("")) {
@@ -428,7 +428,6 @@ public class CustomChord extends Activity implements View.OnClickListener {
                 }
             }
         }
-
     }
 
     //This is the code to handle the user clicking on the strings/frets
@@ -448,6 +447,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         resetString6Values();
         updateChordText();
     }
+
     public void string6_f1 (View view) {
         resetString6Drawables();
         if (string6_f1_on) {
@@ -464,6 +464,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
          }
         updateChordText();
     }
+
     public void string6_f2 (View view) {
         resetString6Drawables();
         if (string6_f2_on) {
@@ -480,6 +481,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string6_f3 (View view) {
         resetString6Drawables();
         if (string6_f3_on) {
@@ -496,6 +498,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string6_f4 (View view) {
         resetString6Drawables();
         if (string6_f4_on) {
@@ -512,6 +515,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
    }
+
     public void string6_f5 (View view) {
         resetString6Drawables();
         if (string6_f5_on) {
@@ -528,6 +532,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string5_top (View view) {
         resetString5Drawables();
         if (string5_O) {
@@ -544,6 +549,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         resetString5Values();
         updateChordText();
     }
+
     public void string5_f1 (View view) {
         resetString5Drawables();
         if (string5_f1_on) {
@@ -560,6 +566,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string5_f2 (View view) {
         resetString5Drawables();
         if (string5_f2_on) {
@@ -576,6 +583,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string5_f3 (View view) {
         resetString5Drawables();
         if (string5_f3_on) {
@@ -592,6 +600,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string5_f4 (View view) {
         resetString5Drawables();
         if (string5_f4_on) {
@@ -608,6 +617,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string5_f5 (View view) {
         resetString5Drawables();
         if (string5_f5_on) {
@@ -624,6 +634,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string4_top (View view) {
         resetString4Drawables();
         if (string4_O) {
@@ -640,6 +651,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         resetString4Values();
         updateChordText();
     }
+
     public void string4_f1 (View view) {
         resetString4Drawables();
         if (string4_f1_on) {
@@ -656,6 +668,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string4_f2 (View view) {
         resetString4Drawables();
         if (string4_f2_on) {
@@ -672,6 +685,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string4_f3 (View view) {
         resetString4Drawables();
         if (string4_f3_on) {
@@ -688,6 +702,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string4_f4 (View view) {
         resetString4Drawables();
         if (string4_f4_on) {
@@ -704,6 +719,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string4_f5 (View view) {
         resetString4Drawables();
         if (string4_f5_on) {
@@ -720,6 +736,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string3_top (View view) {
         resetString3Drawables();
         if (string3_O) {
@@ -736,6 +753,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         resetString3Values();
         updateChordText();
     }
+
     public void string3_f1 (View view) {
         resetString3Drawables();
         if (string3_f1_on) {
@@ -752,6 +770,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string3_f2 (View view) {
         resetString3Drawables();
         if (string3_f2_on) {
@@ -768,6 +787,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string3_f3 (View view) {
         resetString3Drawables();
         if (string3_f3_on) {
@@ -784,6 +804,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string3_f4 (View view) {
         resetString3Drawables();
         if (string3_f4_on) {
@@ -800,6 +821,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string3_f5 (View view) {
         resetString3Drawables();
         if (string3_f5_on) {
@@ -816,6 +838,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string2_top (View view) {
         resetString2Drawables();
         if (string2_O) {
@@ -832,6 +855,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         resetString2Values();
         updateChordText();
     }
+
     public void string2_f1 (View view) {
         resetString2Drawables();
         if (string2_f1_on) {
@@ -848,6 +872,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string2_f2 (View view) {
         resetString2Drawables();
         if (string2_f2_on) {
@@ -864,6 +889,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string2_f3 (View view) {
         resetString2Drawables();
         if (string2_f3_on) {
@@ -880,6 +906,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string2_f4 (View view) {
         resetString2Drawables();
         if (string2_f4_on) {
@@ -896,6 +923,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string2_f5 (View view) {
         resetString2Drawables();
         if (string2_f5_on) {
@@ -912,6 +940,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string1_top (View view) {
         resetString1Drawables();
         if (string1_O) {
@@ -928,6 +957,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         resetString1Values();
         updateChordText();
     }
+
     public void string1_f1 (View view) {
         resetString1Drawables();
         if (string1_f1_on) {
@@ -944,6 +974,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string1_f2 (View view) {
         resetString1Drawables();
         if (string1_f2_on) {
@@ -960,6 +991,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string1_f3 (View view) {
         resetString1Drawables();
         if (string1_f3_on) {
@@ -976,6 +1008,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string1_f4 (View view) {
         resetString1Drawables();
         if (string1_f4_on) {
@@ -992,6 +1025,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
         updateChordText();
     }
+
     public void string1_f5 (View view) {
         resetString1Drawables();
         if (string1_f5_on) {
@@ -1017,6 +1051,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         string6_f4.setImageDrawable(string6);
         string6_f5.setImageDrawable(string6);
     }
+
     public void resetString6Values() {
         string6_f1_on = false;
         string6_f2_on = false;
@@ -1024,6 +1059,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         string6_f4_on = false;
         string6_f5_on = false;
     }
+
     public void resetString5Drawables() {
         string5_top.setImageDrawable(stringtop);
         string5_f1.setImageDrawable(string5);
@@ -1032,6 +1068,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         string5_f4.setImageDrawable(string5);
         string5_f5.setImageDrawable(string5);
     }
+
     public void resetString5Values() {
         string5_f1_on = false;
         string5_f2_on = false;
@@ -1039,6 +1076,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         string5_f4_on = false;
         string5_f5_on = false;
     }
+
     public void resetString4Drawables() {
         string4_top.setImageDrawable(stringtop);
         string4_f1.setImageDrawable(string4);
@@ -1047,6 +1085,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         string4_f4.setImageDrawable(string4);
         string4_f5.setImageDrawable(string4);
     }
+
     public void resetString4Values() {
         string4_f1_on = false;
         string4_f2_on = false;
@@ -1054,6 +1093,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         string4_f4_on = false;
         string4_f5_on = false;
     }
+
     public void resetString3Drawables() {
         string3_top.setImageDrawable(stringtop);
         string3_f1.setImageDrawable(string3);
@@ -1062,6 +1102,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         string3_f4.setImageDrawable(string3);
         string3_f5.setImageDrawable(string3);
     }
+
     public void resetString3Values() {
         string3_f1_on = false;
         string3_f2_on = false;
@@ -1069,6 +1110,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         string3_f4_on = false;
         string3_f5_on = false;
     }
+
     public void resetString2Drawables() {
         string2_top.setImageDrawable(stringtop);
         string2_f1.setImageDrawable(string2);
@@ -1077,6 +1119,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         string2_f4.setImageDrawable(string2);
         string2_f5.setImageDrawable(string2);
     }
+
     public void resetString2Values() {
         string2_f1_on = false;
         string2_f2_on = false;
@@ -1084,6 +1127,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         string2_f4_on = false;
         string2_f5_on = false;
     }
+
     public void resetString1Drawables() {
         string1_top.setImageDrawable(stringtop);
         string1_f1.setImageDrawable(string1);
@@ -1092,6 +1136,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         string1_f4.setImageDrawable(string1);
         string1_f5.setImageDrawable(string1);
     }
+
     public void resetString1Values() {
         string1_f1_on = false;
         string1_f2_on = false;

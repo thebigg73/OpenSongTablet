@@ -19,7 +19,6 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
 import java.util.ArrayList;
 
 public class PopUpLayoutFragment extends DialogFragment {
@@ -63,7 +62,8 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         // Set the stuff up to what it should be from preferences
         fontSizePreview.setTypeface(FullscreenActivity.presofont);
-        fontSizePreview.setText((FullscreenActivity.presoFontSize - 4) + " sp");
+        String newtext = (FullscreenActivity.presoFontSize - 4) + " sp";
+        fontSizePreview.setText(newtext);
         fontSizePreview.setTextSize(FullscreenActivity.presoFontSize);
         setXMarginProgressBar.setMax(200);
         setYMarginProgressBar.setMax(200);
@@ -167,7 +167,6 @@ public class PopUpLayoutFragment extends DialogFragment {
         return V;
     }
 
-
     private class setMargin_Listener implements SeekBar.OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -190,7 +189,8 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             FullscreenActivity.presoFontSize = progress + 4;
-            fontSizePreview.setText((progress + 4) + " sp");
+            String newtext = (progress + 4) + " sp";
+            fontSizePreview.setText(newtext);
             fontSizePreview.setTextSize(progress + 4);
             MyPresentation.updateFontSize();
         }
@@ -213,6 +213,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             FullscreenActivity.presoAlertSize = presoAlertSizeSeekBar.getProgress();
             MyPresentation.updateFontSize();
         }
+
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {}
 

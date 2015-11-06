@@ -95,8 +95,7 @@ public class BibleSelect extends Activity {
 		 int chaptnum = 0;
 		 int versenum = 0;
 		 String bookname = "";	 
-		 
-		 
+
 		 while (eventType != XmlPullParser.END_DOCUMENT) {
 			if (eventType == XmlPullParser.START_TAG) {
 				if (xpp.getName().equals("b")) {
@@ -119,14 +118,7 @@ public class BibleSelect extends Activity {
 				}
 				eventType = xpp.next();
 			}
-
-		
-		
-		
-		}
-		
+		 }
 	}
-	
-	
 }
 

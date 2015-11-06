@@ -32,7 +32,6 @@ public class PopUpAreYouSureFragment extends DialogFragment {
         super.onAttach(activity);
     }
 
-
     @Override
     public void onDetach() {
         mListener = null;

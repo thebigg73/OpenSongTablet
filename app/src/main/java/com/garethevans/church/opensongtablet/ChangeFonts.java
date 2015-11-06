@@ -112,19 +112,20 @@ public class ChangeFonts extends Activity {
 
         linespacing.setProgress(FullscreenActivity.linespacing);
         linespacing.setOnSeekBarChangeListener(new linespacingListener());
-        linespacingtext.setText(FullscreenActivity.linespacing + " %");
+        String newtext = FullscreenActivity.linespacing + " %";
+        linespacingtext.setText(newtext);
 
         // Max value can be 100, min value can be 20
         // Add 20 to whatever value slider is at
         maxfontslider.setMax(80);
         maxfontslider.setProgress(FullscreenActivity.mMaxFontSize - 20);
         maxfontslider.setOnSeekBarChangeListener(new maxfontListener());
-        maxfonttext.setText((FullscreenActivity.mMaxFontSize) + " sp");
+        newtext = FullscreenActivity.mMaxFontSize + " sp";
+        maxfonttext.setText(newtext);
         maxfonttext.setTextSize((FullscreenActivity.mMaxFontSize));
 
         // Update the preview bit
         updatePreview(maxfonttext);
-
     }
 
     public void updatePreview(View view) {
@@ -203,7 +204,6 @@ public class ChangeFonts extends Activity {
             chords1.setTypeface(Typeface.DEFAULT);
             chords2.setTypeface(Typeface.DEFAULT);
         }
-
     }
 
     @Override
@@ -381,11 +381,11 @@ public class ChangeFonts extends Activity {
         updatePreview(view);
     }
 
-
     private class linespacingListener implements SeekBar.OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            linespacingtext.setText(progress + " %");
+            String newtext = progress + " %";
+            linespacingtext.setText(newtext);
         }
 
         public void onStartTrackingTouch(SeekBar seekBar) {
@@ -402,7 +402,8 @@ public class ChangeFonts extends Activity {
     private class maxfontListener implements SeekBar.OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            maxfonttext.setText((progress + 20) + " sp");
+            String newtext = (progress + 20) + " sp";
+            maxfonttext.setText(newtext);
             maxfonttext.setTextSize(progress + 20.0f);
         }
 
@@ -415,5 +416,4 @@ public class ChangeFonts extends Activity {
             Preferences.savePreferences();
         }
     }
-
 }

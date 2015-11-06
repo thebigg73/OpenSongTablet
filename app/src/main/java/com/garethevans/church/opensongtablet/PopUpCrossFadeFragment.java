@@ -27,7 +27,8 @@ public class PopUpCrossFadeFragment extends DialogFragment {
         crossFadeSeekBar.setMax(10);
         crossFadeSeekBar.setProgress((FullscreenActivity.crossFadeTime/1000)-2);
         final TextView crossFadeText = (TextView) V.findViewById(R.id.crossFadeText);
-        crossFadeText.setText((FullscreenActivity.crossFadeTime/1000)+ " s");
+        String newtext = (FullscreenActivity.crossFadeTime/1000)+ " s";
+        crossFadeText.setText(newtext);
         Button crossFadeClose = (Button) V.findViewById(R.id.crossFadeClose);
 
         // Set Listeners
@@ -41,7 +42,8 @@ public class PopUpCrossFadeFragment extends DialogFragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 FullscreenActivity.crossFadeTime = (progress + 2) * 1000;
-                crossFadeText.setText((progress+2)+ "s");
+                String newtext = (progress+2)+ "s";
+                crossFadeText.setText(newtext);
             }
 
             @Override

@@ -151,7 +151,7 @@ public class ExportPreparer extends Activity {
                         // Go through the descriptions of each image and extract the absolute file locations
                         boolean allimagesdone = false;
                         ArrayList<String> theseimages = new ArrayList<>();
-						String imgname = "";
+						String imgname;
 						imgname = xpp.getAttributeValue(null,"name");
                         while (!allimagesdone) { // Keep iterating unless the current eventType is the end of the document
                             if (eventType == XmlPullParser.START_TAG) {

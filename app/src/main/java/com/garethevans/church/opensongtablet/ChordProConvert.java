@@ -33,7 +33,6 @@ public class ChordProConvert extends Activity {
 		int numlines = line.length;
 		if (numlines < 0) {
 			numlines = 1;
-			temp = " ";
 		}
 
 		String temptitle = "";
@@ -197,7 +196,6 @@ public class ChordProConvert extends Activity {
 			if (tempchordline.length() > 0) {
 				line[x] = "." + tempchordline + "\n" + line[x];
 			}
-			tempchordline = "";
 		}
 
 		// Join the individual lines back up
@@ -233,8 +231,8 @@ public class ChordProConvert extends Activity {
 
 		// Remove start and end of tabs
 		while (parsedlines.contains("{start_of_tab") && parsedlines.contains("{end_of_tab")) {
-			int startoftabpos = -1;
-			int endoftabpos = -1;
+			int startoftabpos;
+			int endoftabpos;
 			startoftabpos = parsedlines.indexOf("{start_of_tab");
 			endoftabpos = parsedlines.indexOf("{end_of_tab") + 12;
 			

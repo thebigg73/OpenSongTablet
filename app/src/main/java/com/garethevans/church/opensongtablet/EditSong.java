@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import org.xmlpull.v1.XmlPullParserException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -446,12 +444,14 @@ public class EditSong extends Activity {
 		}
 		temposlider = temposlider - 39;
 
+		String newtext;
 		if (temposlider<1) {
 			temposlider=0;
-	    	song_tempo_text.setText(getResources().getString(R.string.notset));
+            newtext = getResources().getString(R.string.notset);
 		} else {
-			song_tempo_text.setText(temp_tempo+" "+getResources().getString(R.string.bpm));
+            newtext = temp_tempo + " " + getResources().getString(R.string.bpm);
 		}
+        song_tempo_text.setText(newtext);
 		song_tempo.setProgress(temposlider);	
 		song_tempo.setOnSeekBarChangeListener(new song_tempoListener());
     	
@@ -543,7 +543,7 @@ public class EditSong extends Activity {
 		} else if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.link_audio))) {
             padfileindex = 2;
         }
-		//song_pad_file.setSelection(padfileindex);
+		song_pad_file.setSelection(padfileindex);
 
 		if (FullscreenActivity.mTheme.contains(getResources().getString(
 				R.string.theme_christ_attributes))) {
@@ -740,11 +740,11 @@ public class EditSong extends Activity {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         	temposlider = song_tempo.getProgress()+39;
+            String newtext = getResources().getString(R.string.notset);
         	if (temposlider>39) {
-            	song_tempo_text.setText(temposlider+" "+getResources().getString(R.string.bpm));
-        	} else {
-            	song_tempo_text.setText(getResources().getString(R.string.notset));
+                newtext = temposlider+" "+getResources().getString(R.string.bpm);
         	}
+            song_tempo_text.setText(newtext);
         }
 
         public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -756,7 +756,6 @@ public class EditSong extends Activity {
 		Intent viewsong = new Intent(this, FullscreenActivity.class);
 		startActivity(viewsong);
 		finish();
-
 	}
 
 	public void showGeneralAdvanced(View view) {
@@ -933,7 +932,6 @@ public class EditSong extends Activity {
 		myNEWXML += "</song>";
 
 		FullscreenActivity.mynewXML = myNEWXML;
-
 	}
 
 	public static void prepareBlankSongXML() {

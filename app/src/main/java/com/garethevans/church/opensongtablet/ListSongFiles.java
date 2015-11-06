@@ -14,7 +14,7 @@ public class ListSongFiles extends Activity {
         FullscreenActivity.allfilesforsearch.clear();
         File songfolder = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
         File[] tempmyitems = null;
-        if (songfolder.isDirectory() && songfolder!=null) {
+        if (songfolder.isDirectory()) {
             tempmyitems = songfolder.listFiles();
         }
         // Go through this list and check if the item is a directory or a file.
@@ -46,7 +46,6 @@ public class ListSongFiles extends Activity {
         coll = Collator.getInstance(FullscreenActivity.locale);
         coll.setStrength(Collator.SECONDARY);
         Collections.sort(tempProperDirectories, coll);
-        //Collections.sort(tempProperDirectories, String.CASE_INSENSITIVE_ORDER);
 
         // Because the MAIN folder doesn't exist as a listed folder, it is just the root,
         // We need to add it as the first folder manually.

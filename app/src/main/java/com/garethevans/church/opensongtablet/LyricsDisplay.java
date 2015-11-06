@@ -58,12 +58,39 @@ public class LyricsDisplay extends Activity {
 		FullscreenActivity.whatisthisblock = new String[FullscreenActivity.numrowstowrite];
 		FullscreenActivity.whatisthisline = new String[FullscreenActivity.numrowstowrite];
 
+        // THIS BIT MAKES EACH LINE THE SAME LENGTH
+        // FIRST COUNT THE CHARS IN EACH LINE AND IF IT IS BIGGER THAN PREVIOUS, CHANGE IT
+        // SET TO 0 to start
+        FullscreenActivity.maxcharsinline = 0;
+
 		// Set holders for the whatisthisblock as it should only change if it is
 		// declared
 		String holder_whatisthisblock = "lyrics";
 		for (int x = 0; x < FullscreenActivity.numrowstowrite; x++) {
 
-			// Set the defaults
+            // Get the length of the line
+            int charsinthisline = FullscreenActivity.myParsedLyrics[x].length();
+            if (charsinthisline > FullscreenActivity.maxcharsinline) {
+                // Set the new biggest line size
+                FullscreenActivity.maxcharsinline = charsinthisline;
+            }
+
+            // If this isn't a chord line, replace lyric codings.  This means chord lines can have bar lines in them
+            if (FullscreenActivity.myParsedLyrics[x].indexOf(".")!=0) {
+                FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x]
+                        .replace("||", " ");
+
+                FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x]
+                        .replace("|", " ");
+
+                FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x]
+                        .replace("---", "");
+
+                FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x]
+                        .replace("-!!", "");
+            }
+
+            // Set the defaults
 			FullscreenActivity.whatisthisline[x] = "lyrics";
 			FullscreenActivity.whatisthisblock[x] = holder_whatisthisblock;
 			
@@ -287,35 +314,8 @@ public class LyricsDisplay extends Activity {
 					}
 				}
 			}
+        }
 
-
-			FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x]
-					.replace("||", " ");
-
-			FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x]
-					.replace("|", " ");
-
-			FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x]
-					.replace("---", "");
-
-			FullscreenActivity.myParsedLyrics[x] = FullscreenActivity.myParsedLyrics[x]
-					.replace("-!!", "");
-
-		}
-		
-		// THIS BIT MAKES EACH LINE THE SAME LENGTH
-		// FIRST COUNT THE CHARS IN EACH LINE AND IF IT IS BIGGER THAN PREVIOUS, CHANGE IT
-		// SET TO 0 to start
-		FullscreenActivity.maxcharsinline = 0;
-		for (int x = 0; x < FullscreenActivity.numrowstowrite; x++) {
-			// Get the length of the line
-			int charsinthisline = FullscreenActivity.myParsedLyrics[x].length();
-			if (charsinthisline > FullscreenActivity.maxcharsinline) {
-				// Set the new biggest line size
-				FullscreenActivity.maxcharsinline = charsinthisline;
-			}
-		}
-		
 		// NOW WE HAVE THE LONGEST LINE, GO THROUGH EACH ONE AND MAKE IT THIS LONG
 		if (!FullscreenActivity.whichSongFolder.contains("../Images/")) {
             for (int x = 0; x < FullscreenActivity.numrowstowrite; x++) {
@@ -330,7 +330,6 @@ public class LyricsDisplay extends Activity {
                 }
             }
         }
-
 	}
 	
 	public static void lookForSplitPoints() {

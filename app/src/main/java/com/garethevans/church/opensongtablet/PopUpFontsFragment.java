@@ -146,19 +146,20 @@ public class PopUpFontsFragment extends DialogFragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 lyricnchordsPreviewUpdate();
-
             }
         });
 
         // Listen for seekbar changes
         maxAutoScaleSeekBar.setMax(80);
         maxAutoScaleSeekBar.setProgress(temp_mMaxFontSize - 20);
-        maxAutoScaleText.setText((temp_mMaxFontSize) + " sp");
+        String newtext = (temp_mMaxFontSize) + " sp";
+        maxAutoScaleText.setText(newtext);
         maxAutoScaleText.setTextSize((temp_mMaxFontSize));
         maxAutoScaleSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                maxAutoScaleText.setText((progress + 20) + " sp");
+                String newtext = (progress + 20) + " sp";
+                maxAutoScaleText.setText(newtext);
                 maxAutoScaleText.setTextSize(progress + 20.0f);
             }
 
@@ -178,7 +179,8 @@ public class PopUpFontsFragment extends DialogFragment {
         lineSpacingSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                lineSpacingText.setText(progress + " %");
+                String newtext = progress + " %";
+                lineSpacingText.setText(newtext);
                 lyricsPreview1.setPadding(0, -(int) ((float) progress / 3.0f), 0, 0);
                 lyricsPreview2.setPadding(0, -(int) ((float) progress / 3.0f), 0, 0);
                 chordPreview1.setPadding(0, -(int) ((float) progress / 3.0f), 0, 0);

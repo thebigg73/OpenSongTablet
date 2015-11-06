@@ -44,7 +44,7 @@ public class ExpandableListAdapterOptions extends BaseExpandableListAdapter impl
 
     @Override
     public Object[] getSections() {
-        Log.d("getSections_options", new StringBuilder().append("groups = ").append(_listDataHeader).toString());
+        Log.d("getSections_options", "groups = " + _listDataHeader);
         return new String[0];
     }
 

@@ -813,21 +813,18 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         capo_print.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         edit_song_capo_print.setAdapter(capo_print);
         // Where is the key in the available array
-        index = -1;
         List<String> capoprint_choice = Arrays.asList(getResources().getStringArray(R.array.capoprint));
-        for (int w=0;w<capoprint_choice.size();w++) {
-            if (FullscreenActivity.mCapoPrint.equals(capoprint_choice.get(w))) {
-                index = w;
-            }
+        switch (FullscreenActivity.mCapoPrint) {
+            case "true":
+                edit_song_capo_print.setSelection(1);
+                break;
+            case "false":
+                edit_song_capo_print.setSelection(2);
+                break;
+            default:
+                edit_song_capo_print.setSelection(0);
+                break;
         }
-        if (FullscreenActivity.mCapoPrint.equals("true")) {
-            edit_song_capo_print.setSelection(1);
-        } else if (FullscreenActivity.mCapoPrint.equals("false")) {
-            edit_song_capo_print.setSelection(2);
-        } else {
-            edit_song_capo_print.setSelection(0);
-        }
-        //edit_song_capo_print.setSelection(index);
 
         // The pad file
         // Currently only auto or off
@@ -859,12 +856,13 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         }
         temposlider = temposlider - 39;
 
+        String newtext = getResources().getString(R.string.notset);
         if (temposlider<1) {
             temposlider=0;
-            tempo_text.setText(getResources().getString(R.string.notset));
         } else {
-            tempo_text.setText(temp_tempo+" "+getResources().getString(R.string.bpm));
+            newtext = temp_tempo + " " + getResources().getString(R.string.bpm);
         }
+        tempo_text.setText(newtext);
         edit_song_tempo.setProgress(temposlider);
         edit_song_tempo.setOnSeekBarChangeListener(new seekBarListener());
 
@@ -874,13 +872,12 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
     private class seekBarListener implements SeekBar.OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+            String newtext = getResources().getString(R.string.notset);
             temposlider = edit_song_tempo.getProgress()+39;
             if (temposlider>39) {
-                tempo_text.setText(temposlider+" "+getResources().getString(R.string.bpm));
-            } else {
-                tempo_text.setText(getResources().getString(R.string.notset));
+                newtext = temposlider+" "+getResources().getString(R.string.bpm);
             }
+            tempo_text.setText(newtext);
         }
 
         public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -940,8 +937,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         if (getDialog() == null) {
             return;
         }
-
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
     }
 }

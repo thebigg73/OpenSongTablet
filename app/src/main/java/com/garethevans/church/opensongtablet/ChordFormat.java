@@ -106,7 +106,6 @@ public class ChordFormat extends Activity {
 		finish();
     }
 
-	
 	public void exitChordFormat(View view) {
         FullscreenActivity.chordFormat = numeral;
         FullscreenActivity.alwaysPreferredChordFormat = numeral2;
@@ -117,28 +116,5 @@ public class ChordFormat extends Activity {
 		finish();
 		
 	}
-/*    @Override
-    public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-            String numeral = null;
-            switch (checkedId) {
-            case R.id.chordFormat1:
-                    numeral = "1";
-                    break;
-            case R.id.chordFormat2:
-                    numeral = "2";
-                    break;
-            case R.id.chordFormat3:
-                    numeral = "3";
-                    break;
-            case R.id.chordFormat4:
-                numeral = "4";
-                break;
-            }
-            FullscreenActivity.chordFormat = numeral;
-            Preferences.savePreferences();
-            Intent main = new Intent();
-			main.setClass(ChordFormat.this, FullscreenActivity.class);
-			startActivity(main);
-			finish();
-    }*/
+
 }

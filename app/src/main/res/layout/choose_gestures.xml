@@ -44,9 +44,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/gesture4" />
-            
+
             <RadioButton
-                android:id="@+id/doubleTap5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/autoscrollPedalText"
+                android:id="@+id/doubleTap5" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/padPedalText"
+                android:id="@+id/doubleTap6" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/metronomePedalText"
+                android:id="@+id/doubleTap7" />
+
+            <RadioButton
+                android:id="@+id/doubleTap8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/off" />
@@ -90,7 +108,25 @@
                 android:text="@string/gesture4" />
 
             <RadioButton
-                android:id="@+id/longPress5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/autoscrollPedalText"
+                android:id="@+id/longPress5" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/padPedalText"
+                android:id="@+id/longPress6" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/metronomePedalText"
+                android:id="@+id/longPress7" />
+
+            <RadioButton
+                android:id="@+id/longPress8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/off" />

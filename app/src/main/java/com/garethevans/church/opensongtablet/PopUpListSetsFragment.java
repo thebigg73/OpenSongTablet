@@ -77,7 +77,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         }
     }
 
-        @Override
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View V = inflater.inflate(R.layout.popup_setlists, container, false);
@@ -194,10 +194,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 try {
                     dataTask.cancel(true);
                 } catch (Exception e) {
-                }
-                try {
-                    //dataTask = null;
-                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -346,7 +343,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                     e.printStackTrace();
                 }
             }
-         }
+        }
 
         emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
         startActivityForResult(Intent.createChooser(emailIntent, FullscreenActivity.exportsavedset), 12345);
@@ -359,18 +356,17 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         @Override
         protected String doInBackground(String... args) {
-            Log.d("dataTask","doInBackground");
-                try {
-                    SetActions.loadASet();
-                } catch (XmlPullParserException | IOException e) {
-                    e.printStackTrace();
-                }
-                // Reset the options menu
-                SetActions.prepareSetList();
-                SetActions.indexSongInSet();
+            Log.d("dataTask", "doInBackground");
+            try {
+                SetActions.loadASet();
+            } catch (XmlPullParserException | IOException e) {
+                e.printStackTrace();
+            }
+            // Reset the options menu
+            SetActions.prepareSetList();
+            SetActions.indexSongInSet();
 
-                return "LOADED";
-
+            return "LOADED";
         }
 
         @Override
