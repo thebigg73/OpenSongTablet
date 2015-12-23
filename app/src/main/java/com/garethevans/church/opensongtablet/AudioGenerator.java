@@ -8,7 +8,7 @@ import android.util.Log;
 public class AudioGenerator {
 
 	private int sampleRate;
-	private AudioTrack audioTrack;
+	public AudioTrack audioTrack;
 
 	public AudioGenerator(int sampleRate) {
 		this.sampleRate = sampleRate;
@@ -39,8 +39,20 @@ public class AudioGenerator {
 	public void createPlayer(){
 		//FIXME sometimes audioTrack isn't initialized
 		boolean isready = false;
-		
-		while (!isready) {
+
+        try {
+            audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
+                    sampleRate, AudioFormat.CHANNEL_OUT_MONO,
+                    AudioFormat.ENCODING_PCM_16BIT, sampleRate,
+                    AudioTrack.MODE_STREAM);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("audiotrack","Can't initialise");
+        }
+
+
+
+		/*while (!isready) {
 			audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
 					sampleRate, AudioFormat.CHANNEL_OUT_MONO,
 					AudioFormat.ENCODING_PCM_16BIT, sampleRate,
@@ -49,9 +61,10 @@ public class AudioGenerator {
 				isready = true;
 			} else {
 				audioTrack = null;
+				Log.d("test","issue is here");
 				Log.i("audioTrack","unable to initialise - trying again...");
 			}
-		}
+		}*/
 		
 		float leftVolume = FullscreenActivity.metronomevol;
 		float rightVolume = FullscreenActivity.metronomevol;
@@ -67,6 +80,7 @@ public class AudioGenerator {
 			audioTrack.setStereoVolume(leftVolume, rightVolume);						
 			audioTrack.play();
 		} catch (Exception e) {
+            Log.d("audioTrack","Can't play it");
 			// Catches temp errors
 		}
 	}
@@ -112,8 +126,10 @@ public class AudioGenerator {
 	}
 
 	public void destroyAudioTrack() {
-		audioTrack.stop();
-		audioTrack.release();
+        if (audioTrack!=null && audioTrack.getPlayState()==AudioTrack.PLAYSTATE_PLAYING) {
+            audioTrack.stop();
+            audioTrack.release();
+        }
 	}
 
 }

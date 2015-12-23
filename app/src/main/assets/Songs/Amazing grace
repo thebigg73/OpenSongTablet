@@ -11,11 +11,11 @@
   <duration></duration>
   <ccli>1037882</ccli>
   <theme>God: Attributes; </theme>
-  <alttheme></alttheme>
+  <alttheme>God: Attributes; </alttheme>
   <user1>36</user1>
   <user2></user2>
   <user3></user3>
-  <key>E</key>
+  <key>G</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -25,13 +25,13 @@
   <restrictions></restrictions>
   <notes></notes>
   <lyrics>[V1]
-.E                 A         E
+.G                 C         G
  Amazing grace how sweet the sound
-.                         B7
+.                         D7
  That saved a wretch like me
-.  E                  A      E 
+.  G                  C      G 
  I once was lost, but now am found
-.    F#m       B7    A  E/G# F#m E (B7)
+.    Am       D7    C  G/B Am G (D7)
  Was blind but now I see
 
 [V2]
@@ -48,11 +48,12 @@
 
 [V4]
  When we've been there ten thousand years
- Bright as the shining sun
+ Bright shining as the sun
  We've no less days too sing God's praise
- Than when we first began</lyrics>
+ Than when we first begun
+</lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

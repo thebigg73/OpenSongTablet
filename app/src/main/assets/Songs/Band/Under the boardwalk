@@ -8,15 +8,22 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>F</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .            F                                          C
  Oh when the sun beats down and melts the tar up on the roof
@@ -59,4 +66,7 @@
  On a blanket with my baby that's where I'll be
 
 [C]</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
 </song>

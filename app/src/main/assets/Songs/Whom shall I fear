@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
-  <title>CRCWhom shall I fear</title>
+  <title>Whom shall I fear</title>
   <author>Chris Tomlin</author>
   <copyright></copyright>
   <presentation></presentation>
@@ -74,6 +74,6 @@
 ;Chorus
 </lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
 </song>

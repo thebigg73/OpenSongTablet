@@ -106,7 +106,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 @SuppressWarnings("deprecation")
-@SuppressLint({ "DefaultLocale", "RtlHardcoded", "InflateParams", "SdCardPath" })
+@SuppressLint({"DefaultLocale", "RtlHardcoded", "InflateParams", "SdCardPath"})
 public class FullscreenActivity extends Activity implements PopUpListSetsFragment.MyInterface,
         PopUpAreYouSureFragment.MyInterface, PopUpEditSetFragment.MyInterface,
         PopUpTransposeFragment.MyInterface, PopUpEditSongFragment.MyInterface,
@@ -115,9 +115,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         PopUpEditStickyFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
         PopUpSetView.MyInterface, PopUpImportExternalFile.MyInterface,
         PopUpFileChooseFragment.MyInterface {
-    /**
-     * First up, declare all of the variables needed by this application
-     **/
+
+    //First up, declare all of the variables needed by this application
 
     // This is for trying to automatically open songs via intent
     public static Intent incomingfile;
@@ -126,7 +125,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     public static String file_type;
     public static Uri file_uri;
     public static String file_contents;
-    //public static String file_to_folder;
 
     // Screencapure variables
     static Bitmap bmScreen;
@@ -147,8 +145,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static String text_slide;
     static String text_scripture;
     static String text_note;
-    //static String text_image;
-
     public int slideout_time = 500;
     public int checkscroll_time = 1000;
     public int delayswipe_time = 1800;
@@ -212,17 +208,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     private TableLayout chordimageshere;
     static String chordInstrument = "g";
     static String showNextInSet = "top";
-    //private TableLayout thistable;
     private Typeface lyrics_useThisFont;
     private static String allchords = "";
     private static String allchordscapo = "";
-    private static String[] allchords_array = null;
-    private static ArrayList<String> unique_chords = null;
     public static String chordnotes = "";
     static String capoDisplay;
     static String languageToLoad;
     private static String tempLanguage;
-    private SQLiteDatabase db;
     private String[] backUpFiles;
     private String backupchosen = "";
 
@@ -234,8 +226,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     static String whattodo = "";
     private ScrollView popupChord;
-    private Spinner popupChord_Instrument;
-
     private ScrollView popupPad;
     private static String popupPad_stoporstart = "stop";
     private Spinner popupPad_key;
@@ -259,7 +249,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
 
     ScrollView popupMetronome;
-    //static long tap_tempo = 0;
     static int total_calc_bpm;
     int total_counts = 0;
     static int av_bpm;
@@ -292,14 +281,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     public static short beats = 4;
     public int currentBeat = 1;
     @SuppressWarnings("unused")
-    private short volume;
-    @SuppressWarnings("unused")
     private float metrovol;
     @SuppressWarnings("unused")
     public short initialVolume;
     public double beatSound = 1200; //1200
     public double sound = 1600; //1600
-    @SuppressWarnings("unused")
     private AudioManager audio;
     private MetronomeAsyncTask metroTask;
     private Handler mHandler;
@@ -314,17 +300,18 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 if (visualmetronome) {
                     if (whichbeat.equals("a")) {
                         whichbeat = "b";
-                        //metronomebeat.setBackgroundDrawable(beat_a);
-                        getActionBar().setBackgroundDrawable(new ColorDrawable(beatoffcolour));
-                        getActionBar().setDisplayShowTitleEnabled(false);
-                        getActionBar().setDisplayShowTitleEnabled(true);
+                        if (getActionBar()!=null) {
+                            getActionBar().setBackgroundDrawable(new ColorDrawable(beatoffcolour));
+                            getActionBar().setDisplayShowTitleEnabled(false);
+                            getActionBar().setDisplayShowTitleEnabled(true);
+                        }
                     } else {
                         whichbeat = "a";
-                        //metronomebeat.setBackgroundDrawable(beat_b);
-                        getActionBar().setBackgroundDrawable(new ColorDrawable(metronomeColor));
-                        getActionBar().setDisplayShowTitleEnabled(false);
-                        getActionBar().setDisplayShowTitleEnabled(true);
-
+                        if (getActionBar()!=null) {
+                            getActionBar().setBackgroundDrawable(new ColorDrawable(metronomeColor));
+                            getActionBar().setDisplayShowTitleEnabled(false);
+                            getActionBar().setDisplayShowTitleEnabled(true);
+                        }
                     }
                 }
             }
@@ -361,7 +348,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     private static ImageView chordButton;
     private static ImageView autoscrollButton;
     private static ImageView metronomeButton;
-    //private static boolean padPlayingToggle = false;
     private static boolean orientationchanged = false;
     private static int wasshowing_pdfselectpage;
     private static int wasshowing_stickynotes;
@@ -498,7 +484,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static int lyricsChordsColor;
     static int lyricsCustomColor;
     static int lyricsCapoColor;
-    //private static int newbgColor;
     static int metronomeColor;
     static int chords_useThisBGColor;
     static int capo_useThisBGColor;
@@ -672,7 +657,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
     static SharedPreferences myPreferences;
     static int numrowstowrite;
     static String transposeDirection = "0";
-    static String[] transposeSteps = {"-6", "-5", "-4", "-3", "-2", "-1", "+1", "+2", "+3", "+4", "+5", "+6"};
+    //static String[] transposeSteps = {"-6", "-5", "-4", "-3", "-2", "-1", "+1", "+2", "+3", "+4", "+5", "+6"};
     static int transposeTimes = 1;
     static String transposeStyle = "sharps";
     static String transposedLyrics;
@@ -807,7 +792,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     private boolean storageIsValid = true;
 
-    static File root = android.os.Environment.getExternalStorageDirectory();
+    // P2P Wifi
+
+    static File root = Environment.getExternalStorageDirectory();
     static File homedir = new File(root.getAbsolutePath() + "/documents/OpenSong");
     static File dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
     static File dironsong = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong");
@@ -1040,7 +1027,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 newFragment.show(getFragmentManager(), "dialog");
             }
         });
-        top_songtitle.setText(songfilename + keytext + "\n" + mAuthor);
+        String text = songfilename + keytext + "\n" + mAuthor;
+        top_songtitle.setText(text);
         main_page = findViewById(R.id.main_page);
         // Set a listener for the main_page.
         // If a popup is open, clicking on the main page will hide it.
@@ -1101,7 +1089,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         chordimageshere = (TableLayout) findViewById(R.id.chordimageshere);
         popupChord = (ScrollView) findViewById(R.id.popupchords);
         chordButton = (ImageView) findViewById(R.id.chordbutton);
-        popupChord_Instrument = (Spinner) findViewById(R.id.popupchord_instrument);
+        Spinner popupChord_Instrument = (Spinner) findViewById(R.id.popupchord_instrument);
         String[] instrument_choice = new String[3];
         instrument_choice[0] = getResources().getString(R.string.guitar);
         instrument_choice[1] = getResources().getString(R.string.ukulele);
@@ -1285,7 +1273,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         };
 
         mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getActionBar()!=null) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         if (swipeDrawer.equals("N")) {
             mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -1298,14 +1288,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         // Before redrawing the lyrics table, split the song into sections
         redrawTheLyricsTable(main_page);
 
-        if (setView.equals("Y")) {
-            fixSetActionButtons(menu);
-        }
-
-        invalidateOptionsMenu();
-
-        fixSetActionButtons(menu);
-
+        fixSetActionButtons();
 
         main_page = findViewById(R.id.main_page);
         mDrawerLayout.closeDrawer(expListViewOption);
@@ -1317,11 +1300,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         tempsectionsize = sectionfontsize;
 
         View v = getWindow().getDecorView();
-        if (currentapiVersion >= 16) {
-            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+                v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         }
         if (currentapiVersion >= 14) {
             v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
@@ -1332,30 +1315,32 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
         audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
-        //initialVolume = (short) audio.getStreamVolume(AudioManager.STREAM_MUSIC);
-        volume = (short) metronomevol;
+        short volume = (short) metronomevol;
         //volume = initialVolume;
         metroTask = new MetronomeAsyncTask();
         Runtime.getRuntime().gc();
 
-/*
         // Start to index all the songs as an asynctask
         AsyncTask indexmysongs;
         indexmysongs = new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] params) {
                 try {
-                    IndexSongs.doIndex();
+                    Log.d("indexmysong", "AsyncTask running");
+                    indexMySongs();
+                    Log.d("indexmysong", "AsyncTask done");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 return null;
             }
         };
-        indexmysongs.execute();
-*/
+        //indexmysongs.execute();
+
+        // WiFi Direct / P2P
 
     }
+
 
     private void hideKeyboard() {
         InputMethodManager inputManager = (InputMethodManager)
@@ -1585,20 +1570,24 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         String reusablefilename;
         String templocator;
 
-        if (noteorslide.equals("note")) {
-            filename = dircustomnotes + "/" + customslide_title;
-            reusablefilename = homedir + "/Notes/" + customslide_title;
-            templocator = note;
-            customimage_list = "";
-        } else if (noteorslide.equals("slide")) {
-            filename = dircustomslides + "/" + customslide_title;
-            reusablefilename = homedir + "/Slides/" + customslide_title;
-            templocator = slide;
-            customimage_list = "";
-        } else {
-            filename = dircustomimages + "/" + customslide_title;
-            reusablefilename = homedir + "/Images/" + customslide_title;
-            templocator = image;
+        switch (noteorslide) {
+            case "note":
+                filename = dircustomnotes + "/" + customslide_title;
+                reusablefilename = homedir + "/Notes/" + customslide_title;
+                templocator = note;
+                customimage_list = "";
+                break;
+            case "slide":
+                filename = dircustomslides + "/" + customslide_title;
+                reusablefilename = homedir + "/Slides/" + customslide_title;
+                templocator = slide;
+                customimage_list = "";
+                break;
+            default:
+                filename = dircustomimages + "/" + customslide_title;
+                reusablefilename = homedir + "/Images/" + customslide_title;
+                templocator = image;
+                break;
         }
 
         // If slide content is empty - put the title in
@@ -1765,7 +1754,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     }
 
-    private class popupPad_volumeListener implements SeekBar.OnSeekBarChangeListener {
+    private class popupPad_volumeListener implements OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             popupPad_volume_text.setText(popupPad_volume.getProgress() + " %");
@@ -1899,7 +1888,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
     }
 
-    private class popupMetronome_volumeListener implements SeekBar.OnSeekBarChangeListener {
+    private class popupMetronome_volumeListener implements OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             popupMetronome_volume_text.setText(popupMetronome_volume.getProgress() + " %");
@@ -1927,7 +1916,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
     }
 
-    private class popupMetronome_tempoListener implements SeekBar.OnSeekBarChangeListener {
+    private class popupMetronome_tempoListener implements OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             temposlider = popupMetronome_tempo.getProgress() + 39;
@@ -2039,7 +2028,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             defStorageExists = true;
         }
 
-        root = android.os.Environment.getExternalStorageDirectory();
+        root = Environment.getExternalStorageDirectory();
         homedir = new File(root.getAbsolutePath() + "/documents/OpenSong");
         dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
         dironsong = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong");
@@ -2267,7 +2256,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
     }
 
-    private class popupAutoscroll_delayListener implements SeekBar.OnSeekBarChangeListener {
+    private class popupAutoscroll_delayListener implements OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             popupAutoscroll_delay_text.setText(progress + " s");
@@ -2933,7 +2922,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 }
             });
 
-
             // Now kill the 2nd player if still needed
             if (mPlayer2 != null && mPlayer2.isPlaying()) {
                 if (isfading2) {
@@ -2963,6 +2951,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     mPlayer2.setDataSource(this, Uri.parse(mLinkAudio));
                     mPlayer2.prepareAsync();
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             } else {
                 try {
@@ -3119,7 +3108,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                 // Pause before next fade increment
                 long nowtime = System.currentTimeMillis();
-                long thentime = nowtime + (int) (crossFadeTime / 50);
+                long thentime = nowtime + crossFadeTime / 50;
                 while (System.currentTimeMillis() < thentime) {
                     // Do nothing......
                 }
@@ -3128,6 +3117,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
 
         @Override
+        @SuppressWarnings("deprecation")
         protected void onPostExecute(String dummy) {
             isfading1 = false;
             fadeout1 = false;
@@ -3282,7 +3272,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         av_bpm = Math.round((float) total_calc_bpm / (float) total_counts);
 
         if (av_bpm < 200 && av_bpm >= 39) {
-            popupMetronome_tempo_text.setText(av_bpm + " " + getResources().getString(R.string.bpm));
+            String text = av_bpm + " " + getResources().getString(R.string.bpm);
+            popupMetronome_tempo_text.setText(text);
             mTempo = "" + av_bpm;
             popupMetronome_tempo.setProgress(av_bpm - 39);
         }
@@ -3674,7 +3665,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         //Check to see if our set list is still valid
                         SetActions.prepareSetList();
                         showCurrentSet(view);
-                        fixSetActionButtons(menu);
+                        fixSetActionButtons();
                         prepareOptionMenu();
                         invalidateOptionsMenu();
                         expListViewOption.expandGroup(0);
@@ -3708,7 +3699,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     LinearLayout titleLayout = new LinearLayout(FullscreenActivity.this);
                     titleLayout.setOrientation(LinearLayout.VERTICAL);
                     TextView m_titleView = new TextView(FullscreenActivity.this);
-                    m_titleView.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+                    m_titleView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                     m_titleView.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Large);
                     m_titleView.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white));
                     m_titleView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
@@ -4200,7 +4191,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                 LinearLayout scalefont = new LinearLayout(FullscreenActivity.this);
                                 scalefont.setOrientation(LinearLayout.VERTICAL);
                                 final TextView text_size = new TextView(FullscreenActivity.this);
-                                text_size.setText("" + mFontSize);
+                                String text = "" + mFontSize;
+                                text_size.setText(text);
                                 text_size.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Medium);
                                 text_size.setGravity(1);
                                 final SeekBar fontseekbar = new SeekBar(FullscreenActivity.this);
@@ -4222,7 +4214,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                         val = Math.round(val);
                                         val = val / 10;
                                         mFontSize = 4 + val;
-                                        text_size.setText("" + mFontSize);
+                                        String text = "" + mFontSize;
+                                        text_size.setText(text);
                                         redrawTheLyricsTable(view);
 
                                     }
@@ -4243,7 +4236,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                         val = Math.round(val);
                                         val = val / 10;
                                         mFontSize = 4 + val;
-                                        text_size.setText("" + mFontSize);
+                                        String text = "" + mFontSize;
+                                        text_size.setText(text);
                                     }
                                 });
                                 dialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -4346,19 +4340,24 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
 
                         } else if (childPosition == 8) {// Toggle autosticky
-                            if (toggleAutoSticky.equals("N")) {
-                                toggleAutoSticky = "Y";
-                                myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.on);
-                            } else if (toggleAutoSticky.equals("Y")) {
-                                toggleAutoSticky = "T";
-                                myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.top);
-                            } else if (toggleAutoSticky.equals("T")) {
-                                toggleAutoSticky = "B";
-                                myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.bottom);
-                            } else {
-                                // Keep sticky notes hidden in normal sticky note view
-                                toggleAutoSticky = "N";
-                                myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.off);
+                            switch (toggleAutoSticky) {
+                                case "N":
+                                    toggleAutoSticky = "Y";
+                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.on);
+                                    break;
+                                case "Y":
+                                    toggleAutoSticky = "T";
+                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.top);
+                                    break;
+                                case "T":
+                                    toggleAutoSticky = "B";
+                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.bottom);
+                                    break;
+                                default:
+                                    // Keep sticky notes hidden in normal sticky note view
+                                    toggleAutoSticky = "N";
+                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.off);
+                                    break;
                             }
                             // Save preferences
                             Preferences.savePreferences();
@@ -4374,7 +4373,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                         + " - "
                                         + getResources().getString(R.string.off);
                                 ShowToast.showToast(FullscreenActivity.this);
-                                getActionBar().show();
+                                if (getActionBar()!=null) {
+                                    getActionBar().show();
+                                }
                             } else {
                                 hideactionbaronoff = "Y";
                                 myToastMessage = getResources()
@@ -4382,7 +4383,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                         + " - "
                                         + getResources().getString(R.string.on);
                                 ShowToast.showToast(FullscreenActivity.this);
-                                getActionBar().hide();
+                                if (getActionBar()!= null) {
+                                    getActionBar().hide();
+                                }
                             }
                             Preferences.savePreferences();
                             Intent intent = new Intent();
@@ -4550,7 +4553,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             LinearLayout setastime = new LinearLayout(FullscreenActivity.this);
                             setastime.setOrientation(LinearLayout.VERTICAL);
                             final TextView text_time = new TextView(FullscreenActivity.this);
-                            text_time.setText(autoScrollDelay + " s");
+                            String text = autoScrollDelay + " s";
+                            text_time.setText(text);
                             text_time.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Medium);
                             text_time.setGravity(1);
                             final SeekBar autoscrollpauseseekbar = new SeekBar(FullscreenActivity.this);
@@ -4563,7 +4567,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             autoscrollpauseseekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                                 public void onStopTrackingTouch(SeekBar seekBar) {
                                     autoScrollDelay = seekBar.getProgress();
-                                    text_time.setText(autoScrollDelay + " s");
+                                    String text = autoScrollDelay + " s";
+                                    text_time.setText(text);
                                 }
 
                                 public void onStartTrackingTouch(SeekBar seekBar) {
@@ -4572,7 +4577,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                                     autoScrollDelay = seekBar.getProgress();
-                                    text_time.setText(autoScrollDelay + " s");
+                                    String text = autoScrollDelay + " s";
+                                    text_time.setText(text);
                                 }
                             });
                             dialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -4680,8 +4686,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                     case "ru":
                                         positionselected = 11;
                                         break;
-                                    case "zh":
+                                    case "sr":
                                         positionselected = 12;
+                                        break;
+                                    case "zh":
+                                        positionselected = 13;
                                         break;
                                 }
                             }
@@ -4714,7 +4723,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                                 tempLanguage = "pt";
                                             } else if (arg1 == 11) { //ru
                                                 tempLanguage = "ru";
-                                            } else if (arg1 == 12) { //zh
+                                            } else if (arg1 == 12) { //sr
+                                                tempLanguage = "sr";
+                                            } else if (arg1 == 13) { //zh
                                                 tempLanguage = "zh";
                                             }
                                         }
@@ -4742,7 +4753,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                                     });
 
                             languageDialog.show();
-
 
                         } else if (childPosition == 3) {// Start/splash screen
                             // First though, set the preference to show the current version
@@ -4846,7 +4856,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         popupMetronome_startstop(metronomeButton);
     }
 
-
     private void toggleActionBar() {
         ActionBar actionBar = getActionBar();
         delayactionBarHide.removeCallbacks(hideActionBarRunnable);
@@ -4888,13 +4897,13 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            if (currentapiVersion >= 16) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
                 v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
                 v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
                 v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
             }
-            if (currentapiVersion >= 14) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                 v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
                 v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
             }
@@ -5230,7 +5239,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         LinearLayout titleLayout = new LinearLayout(FullscreenActivity.this);
         titleLayout.setOrientation(LinearLayout.VERTICAL);
         TextView m_titleView = new TextView(FullscreenActivity.this);
-        m_titleView.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+        m_titleView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         m_titleView.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Large);
         m_titleView.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white));
         m_titleView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
@@ -5238,7 +5247,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         LinearLayout pickpage = new LinearLayout(FullscreenActivity.this);
         pickpage.setOrientation(LinearLayout.VERTICAL);
         final TextView page_num = new TextView(FullscreenActivity.this);
-        page_num.setText((1 + pdfPageCurrent) + " / " + pdfPageCount);
+        String text = (1 + pdfPageCurrent) + " / " + pdfPageCount;
+        page_num.setText(text);
         page_num.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Medium);
         page_num.setGravity(1);
         final SeekBar pageseekbar = new SeekBar(FullscreenActivity.this);
@@ -5256,7 +5266,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     alreadyshowingpage = pdfPageCurrent;
                     redrawTheLyricsTable(main_page);
                 }
-
             }
 
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -5265,7 +5274,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 pdfPageCurrent = seekBar.getProgress();
-                page_num.setText((1 + pdfPageCurrent) + " / " + (pdfPageCount));
+                String text = (1 + pdfPageCurrent) + " / " + (pdfPageCount);
+                page_num.setText(text);
             }
         });
         dialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -5315,7 +5325,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         toggleActionBar();
     }
 
-    private void fixSetActionButtons(Menu menu) {
+    private void fixSetActionButtons() {
         // If the saved preference to showSet is Y and the size of the current set isn't 0
         // display the appropriate arrows in the title bar.
         // If not, hide them (since they are there by default.
@@ -5400,35 +5410,51 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             }
         }
 
-        menu.clear();
+        if (menu != null) {
+            menu.clear();
+        }
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_main_actions, menu);
         this.menu = menu;
-        MenuItem set_back = menu.findItem(R.id.set_back);
-        MenuItem set_forward = menu.findItem(R.id.set_forward);
+        MenuItem set_back = null;
+        MenuItem set_forward = null;
+        if (menu != null) {
+            set_back = menu.findItem(R.id.set_back);
+            set_forward = menu.findItem(R.id.set_forward);
+        }
+
         if (setSize > 0 && setView.equals("Y")) {
-            set_back.setVisible(true);
-            set_forward.setVisible(true);
-            set_back.getIcon().setAlpha(255);
-            set_forward.getIcon().setAlpha(255);
-            //findViewById(R.id.setbutton).setVisibility(View.VISIBLE);
+            if (set_back!=null) {
+                set_back.setVisible(true);
+                set_back.getIcon().setAlpha(255);
+            }
+            if (set_forward!=null) {
+                set_forward.setVisible(true);
+                set_forward.getIcon().setAlpha(255);
+            }
 
         } else {
-            set_back.setVisible(false);
-            set_forward.setVisible(false);
-            //findViewById(R.id.setbutton).setVisibility(View.INVISIBLE);
-
+            if (set_back!=null) {
+                set_back.setVisible(false);
+            }
+            if (set_forward!=null) {
+                set_forward.setVisible(false);
+            }
         }
         // Now decide if the song being viewed has a song before it.  Otherwise disable the back button
         if (indexSongInSet < 1) {
-            set_back.setEnabled(false);
-            set_back.getIcon().setAlpha(30);
+            if (set_back!=null) {
+                set_back.setEnabled(false);
+                set_back.getIcon().setAlpha(30);
+            }
         }
         // Now decide if the song being viewed has a song after it.  Otherwise disable the forward button
         // Also need to check if last item in set is a pdf, does it have more pages?
         if (indexSongInSet >= (setSize - 1) && (!isPDF || (pdfPageCurrent >= (pdfPageCount - 1)))) {
-            set_forward.setEnabled(false);
-            set_forward.getIcon().setAlpha(30);
+            if (set_forward!=null) {
+                set_forward.setEnabled(false);
+                set_forward.getIcon().setAlpha(30);
+            }
         }
 
         // Decide if presenter button is greyed out or not
@@ -5442,18 +5468,19 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
     @Override
     public void onPause() {
+        super.onPause();
         killPad1(padButton);
         killPad2(padButton);
-        super.onPause();
     }
 
     @Override
     public void onResume() {
+        super.onResume();
         View v = getWindow().getDecorView();
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        if (currentapiVersion >= 16) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
             v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
@@ -5463,7 +5490,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
             v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
         }
-        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     // This bit draws the lyrics stored in the variable to the page.
@@ -5517,8 +5548,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             // Find out if the song is in the current set
             // Only if there is only one occurence of the song in the set
             int count = 0;
-            for (int e = 0; e < mSet.length; e++) {
-                if (mSet[e].equals(whatsongforsetwork)) {
+            for (String aMSet : mSet) {
+                if (aMSet.equals(whatsongforsetwork)) {
                     count++;
                 }
             }
@@ -5881,6 +5912,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         // Set up a listener to wait for the tables to draw
         ViewTreeObserver vto = scrollpage.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+            @SuppressWarnings("SuspiciousNameCombination")
             @Override
             public void onGlobalLayout() {
                 scrollpage.getViewTreeObserver().removeGlobalOnLayoutListener(this);
@@ -5896,6 +5928,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 scaleY = pageHeight / height;
                 if (toggleYScale.equals("Y")) {
                     if (scaleX > scaleY) {
+                        //noinspection SuspiciousNameCombination
                         scaleX = scaleY;
                     } else if (toggleYScale.equals("W")) {
                         scaleY = scaleX;
@@ -6080,7 +6113,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             top_songtitle.setText("");
 
             if (mAuthor.equals("")) {
-                top_songtitle.setText(songfilename + "\n");
+                String text = songfilename + "\n";
+                top_songtitle.setText(text);
                 mTempAuthor = "Unknown";
             } else {
                 mTempAuthor = mAuthor.toString();
@@ -6089,7 +6123,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 if (!mKey.isEmpty() && !mKey.equals("")) {
                     keytext = " (" + mKey + ")";
                 }
-                top_songtitle.setText(songfilename + keytext + "\n" + mTempAuthor);
+                String text = songfilename + keytext + "\n" + mTempAuthor;
+                top_songtitle.setText(text);
             }
 
         } else {
@@ -6118,7 +6153,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 e.printStackTrace();
             }
 
-            if (currentapiVersion >= 21) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 // Capable of pdf rendering
                 // PdfRenderer enables rendering a PDF document
                 padButton.setVisibility(View.INVISIBLE);
@@ -6141,7 +6176,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     pdfPageCurrent = 0;
                 }
 
-                top_songtitle.setText(tempsongtitle + "\n" + (pdfPageCurrent + 1) + "/" + pdfPageCount);
+                String text = tempsongtitle + "\n" + (pdfPageCurrent + 1) + "/" + pdfPageCount;
+                top_songtitle.setText(text);
 
                 if (pdfPageCount > 1 && togglePageButtons.equals("Y")) {
                     // Show page select button
@@ -6154,17 +6190,18 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 scrollstickyholder.setVisibility(View.GONE);
                 stickynotes.setAlpha(0.3f);
                 // Open page 0
-                PdfRenderer.Page mCurrentPage;
-                //noinspection AndroidLintNewApi
-                mCurrentPage = mPdfRenderer.openPage(pdfPageCurrent);
+                PdfRenderer.Page mCurrentPage = null;
+                if (mPdfRenderer != null) {
+                    //noinspection AndroidLintNewApi
+                    mCurrentPage = mPdfRenderer.openPage(pdfPageCurrent);
+                }
 
                 // Get pdf size from page
                 int pdfwidth = 1;
                 int pdfheight = 1;
-                if (currentapiVersion >= 21) {
-                    pdfwidth = mCurrentPage.getWidth();
-                    pdfheight = mCurrentPage.getHeight();
-                }
+                pdfwidth = mCurrentPage.getWidth();
+                pdfheight = mCurrentPage.getHeight();
+
                 int holderwidth = pdfwidth;
                 int holderheight = pdfheight;
 
@@ -6213,7 +6250,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 Bitmap bitmap = Bitmap.createBitmap(pdfwidth, pdfheight, Bitmap.Config.ARGB_8888);
 
                 // Pdf page is rendered on Bitmap
-                //noinspection AndroidLintNewApi
                 mCurrentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
 
                 // Set rendered bitmap to ImageView (pdfView in my case)
@@ -6223,11 +6259,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 pdfView.getLayoutParams().height = holderheight;
                 pdfView.getLayoutParams().width = holderwidth;
 
-                if (currentapiVersion >= 21) {
-                    assert mCurrentPage != null;
-                    mCurrentPage.close();
-                    mPdfRenderer.close();
-                }
+                mCurrentPage.close();
+                mPdfRenderer.close();
 
                 try {
                     mFileDescriptor.close();
@@ -6277,7 +6310,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     // Instruct the user to install a PDF reader here, or something
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.apps.pdfviewer")));
-                    } catch (android.content.ActivityNotFoundException anfe) {
+                    } catch (ActivityNotFoundException anfe) {
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.pdfviewer")));
                     }
                 }
@@ -6446,9 +6479,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         // Add the identified custom chords (start with $$$) to the allchords
         tempallchords = tempCustomChordsToAdd + " " + tempallchords;
 
-        unique_chords = new ArrayList<>();
+        ArrayList<String> unique_chords = new ArrayList<>();
         tempallchords = tempallchords.trim();
-        allchords_array = tempallchords.split(" ");
+        String[] allchords_array = tempallchords.split(" ");
         if (allchords_array.length > 0) {
             for (String anAllchords_array : allchords_array) {
                 if (!unique_chords.contains(anAllchords_array)) {
@@ -6894,7 +6927,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
             if (!chordnotes.contains("xxxx_") && !chordnotes.contains("xxxxxx_")) {
                 chordimageshere.addView(chordview);
-                chordname.setText(unique_chords.get(l) + iscustom);
+                String text = unique_chords.get(l) + iscustom;
+                chordname.setText(text);
                 chordname.setTextColor(0xff000000);
                 chordname.setTextSize(20);
             }
@@ -6973,7 +7007,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         LinearLayout foldertitleLayout = new LinearLayout(FullscreenActivity.this);
         foldertitleLayout.setOrientation(LinearLayout.VERTICAL);
         TextView f_titleView = new TextView(FullscreenActivity.this);
-        f_titleView.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+        f_titleView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         f_titleView.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Large);
         f_titleView.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white));
         f_titleView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
@@ -6981,7 +7015,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         foldertitleLayout.addView(f_titleView);
         folderdialogBuilder.setCustomTitle(foldertitleLayout);
         final EditText f_editbox = new EditText(FullscreenActivity.this);
-        f_editbox.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+        f_editbox.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         f_editbox.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Large);
         f_editbox.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white));
         f_editbox.setBackgroundColor(FullscreenActivity.this.getResources().getColor(android.R.color.darker_gray));
@@ -7094,7 +7128,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
         // Show the ActionBar
         delayactionBarHide.removeCallbacks(hideActionBarRunnable);
-        getActionBar().show();
+        if (getActionBar()!=null) {
+            getActionBar().show();
+        }
         if (hideactionbaronoff.equals("Y")) {
             delayactionBarHide.postDelayed(hideActionBarRunnable, 1000); // 1000ms delay
         }
@@ -7278,8 +7314,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         titleLayout.setOrientation(LinearLayout.VERTICAL);
         TextView m_titleView = new TextView(FullscreenActivity.this);
         TextView m_subtitleView = new TextView(FullscreenActivity.this);
-        m_titleView.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-        m_subtitleView.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+        m_titleView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        m_subtitleView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         m_titleView.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Large);
         m_subtitleView.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Medium);
         m_titleView.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white));
@@ -7356,6 +7392,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             try {
                 String filename;
                 is = new FileInputStream(homedir + "/" + backupchosen);
+                Log.d("backup", "is=" + is);
                 zis = new ZipInputStream(new BufferedInputStream(is));
                 ZipEntry ze;
                 byte[] buffer = new byte[1024];
@@ -7363,16 +7400,18 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                 while ((ze = zis.getNextEntry()) != null) {
                     filename = ze.getName();
-
+                    FileOutputStream fout;
                     if (filename.equals("OnSong.Backup.sqlite3")) {
-                        FileOutputStream fout = new FileOutputStream(homedir + "/" + filename);
-
-                        while ((count = zis.read(buffer)) != -1) {
-                            fout.write(buffer, 0, count);
-                        }
-                        fout.close();
-                        zis.closeEntry();
+                        fout = new FileOutputStream(homedir + "/" + filename);
+                    } else {
+                        fout = new FileOutputStream(dironsong + "/" + filename);
                     }
+                    while ((count = zis.read(buffer)) != -1) {
+                        fout.write(buffer, 0, count);
+                    }
+                    Log.d("onsongbackup", "filename=" + ze);
+                    fout.close();
+                    zis.closeEntry();
                 }
                 zis.close();
             } catch (IOException e) {
@@ -7381,7 +7420,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             }
 
             File dbfile = new File(homedir + "/OnSong.Backup.sqlite3");
-            db = SQLiteDatabase.openOrCreateDatabase(dbfile, null);
+            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbfile, null);
             //int numRows = (int) DatabaseUtils.queryNumEntries(db, "Song");
             // Go through each row and read in the content field
             // Save the files with the .onsong extension
@@ -7415,7 +7454,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     e.printStackTrace();
                 }
             }
+            cursor.close();
             return "doneit";
+
         }
 
         @Override
@@ -7646,7 +7687,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         // Show the current set
                         showCurrentSet(view);
 
-                        fixSetActionButtons(menu);
+                        fixSetActionButtons();
 
                         // Hide the menus - 1 second after opening the Option menu,
                         // close it (1000ms total)
@@ -7784,11 +7825,9 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                     }
                     return true;
-
             }
             return super.onOptionsItemSelected(item);
         }
-
     }
 
     private class SwipeDetector extends SimpleOnGestureListener {
@@ -7830,10 +7869,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         myToastMessage = getResources().getString(R.string.not_allowed);
                         ShowToast.showToast(FullscreenActivity.this);
                     } else {
-                        whattodo = "editsong";
-                        DialogFragment newFragment = PopUpEditSongFragment.newInstance();
-                        newFragment.show(getFragmentManager(), "dialog");
-                        //openEditSong();
+                        gesture2();
                     }
 
                 } else if (gesture_doubletap.equals("3")) {
@@ -7881,41 +7917,44 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     && popupChord.getVisibility() != View.VISIBLE) {
 
                 // Now find out which gesture we've gone for
+                switch (gesture_longpress) {
+                    case "1":
+                        gesture1();
 
+                        break;
+                    case "2":
+                        if (isPDF) {
+                            // Can't do this action on a pdf!
+                            myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+                            ShowToast.showToast(FullscreenActivity.this);
+                        } else if (!isSong) {
+                            // Editing a slide / note / scripture / image
+                            myToastMessage = getResources().getString(R.string.not_allowed);
+                            ShowToast.showToast(FullscreenActivity.this);
+                        } else {
+                            gesture2();
+                        }
 
-                if (gesture_longpress.equals("1")) {
-                    gesture1();
+                        break;
+                    case "3":
+                        gesture3();
 
-                } else if (gesture_longpress.equals("2")) {
-                    if (isPDF) {
-                        // Can't do this action on a pdf!
-                        myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
-                        ShowToast.showToast(FullscreenActivity.this);
-                    } else if (!isSong) {
-                        // Editing a slide / note / scripture / image
-                        myToastMessage = getResources().getString(R.string.not_allowed);
-                        ShowToast.showToast(FullscreenActivity.this);
-                    } else {
-                        whattodo = "editsong";
-                        DialogFragment newFragment = PopUpEditSongFragment.newInstance();
-                        newFragment.show(getFragmentManager(), "dialog");
-                        //openEditSong();
-                    }
+                        break;
+                    case "4":
+                        gesture4();
 
-                } else if (gesture_longpress.equals("3")) {
-                    gesture3();
+                        break;
+                    case "5":
+                        gesture5();
 
-                } else if (gesture_longpress.equals("4")) {
-                    gesture4();
+                        break;
+                    case "6":
+                        gesture6();
 
-                } else if (gesture_longpress.equals("5")) {
-                    gesture5();
-
-                } else if (gesture_longpress.equals("6")) {
-                    gesture6();
-
-                } else if (gesture_longpress.equals("7")) {
-                    gesture7();
+                        break;
+                    case "7":
+                        gesture7();
+                        break;
                 }
             }
             super.onLongPress(e);
@@ -8074,7 +8113,6 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 }
                 return true;
             }
-
             return false;
         }
     }
@@ -8176,14 +8214,14 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
             boolean writetocol2_3 = false;
             boolean writetocol3_3 = false;
 
-            if (x<splitpoint) {
+            if (x < splitpoint) {
                 writetocol1_2 = true;
             } else {
                 writetocol2_2 = true;
             }
-            if (x<thirdsplitpoint) {
+            if (x < thirdsplitpoint) {
                 writetocol1_3 = true;
-            } else if (x>=thirdsplitpoint && x<twothirdsplitpoint) {
+            } else if (x >= thirdsplitpoint && x < twothirdsplitpoint) {
                 writetocol2_3 = true;
             } else {
                 writetocol3_3 = true;
@@ -8195,16 +8233,16 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
             if (x == 0) {
                 // This is the first line.
-               // If in a set view and option is on to show at top, show the title of the next song
+                // If in a set view and option is on to show at top, show the title of the next song
                 // If we are showing the last song already, say this instead
                 if (setView.equals("Y") && showNextInSet.equals("top")) {
                     // Get next title in set
                     String next_title = getResources().getString(R.string.lastsong);
                     if (setSize >= 2 && indexSongInSet >= 0 && indexSongInSet < (setSize - 1)) {
-                        next_title = getResources().getString(R.string.next) + ": " + mSetList[indexSongInSet+1];
+                        next_title = getResources().getString(R.string.next) + ": " + mSetList[indexSongInSet + 1];
                     }
-                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    if (writetocol1_1 || columnTest==1 || columnTest==0) {
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    if (writetocol1_1 || columnTest == 1 || columnTest == 0) {
                         RelativeLayout nextInSetBox1_1 = new RelativeLayout(this);
                         nextInSetBox1_1.setLayoutParams(lp);
                         nextInSetBox1_1.setHorizontalGravity(Gravity.RIGHT);
@@ -8221,7 +8259,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         lyricstable_onecolview.addView(nextInSetBox1_1);
                     }
 
-                    if (writetocol1_2 || columnTest==2 || columnTest==0) {
+                    if (writetocol1_2 || columnTest == 2 || columnTest == 0) {
                         RelativeLayout nextInSetBox1_2 = new RelativeLayout(this);
                         nextInSetBox1_2.setLayoutParams(lp);
                         nextInSetBox1_2.setHorizontalGravity(Gravity.RIGHT);
@@ -8238,7 +8276,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         lyricstable_twocolview.addView(nextInSetBox1_2);
                     }
 
-                    if (writetocol1_1 || columnTest==3 || columnTest==0) {
+                    if (writetocol1_1 || columnTest == 3 || columnTest == 0) {
                         RelativeLayout nextInSetBox1_3 = new RelativeLayout(this);
                         nextInSetBox1_3.setLayoutParams(lp);
                         nextInSetBox1_3.setHorizontalGravity(Gravity.RIGHT);
@@ -8258,11 +8296,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
                 // If the user wants to show sticky notes at the top of the page
                 if (toggleAutoSticky.equals("T") && !mNotes.isEmpty() && !mNotes.equals("")) {
-                    String notetoadd = getResources().getString(R.string.stickynotes)+":\n"+mNotes+"\n\n";
+                    String notetoadd = getResources().getString(R.string.stickynotes) + ":\n" + mNotes + "\n\n";
                     RelativeLayout stickyNotes1_1 = new RelativeLayout(this);
                     RelativeLayout stickyNotes1_2 = new RelativeLayout(this);
                     RelativeLayout stickyNotes1_3 = new RelativeLayout(this);
-                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     stickyNotes1_1.setLayoutParams(lp);
                     stickyNotes1_1.setHorizontalGravity(Gravity.LEFT);
                     stickyNotes1_2.setLayoutParams(lp);
@@ -8306,7 +8344,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 // If showCapo is true, add a comment line with the capo information
                 if (showCapo && showChords.equals("Y")) {
 
-                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
                     String capocustomtext = "";
                     capocustomtext = capocustomtext + getResources().getString(R.string.edit_song_capo) + " " + mCapo;
@@ -8317,7 +8355,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         capocustomtext = capocustomtext + " (" + temptranspChords + ")";
                     }
 
-                    if (writetocol1_1 || columnTest==1 || columnTest==0) {
+                    if (writetocol1_1 || columnTest == 1 || columnTest == 0) {
                         RelativeLayout myCapoBox1_1 = new RelativeLayout(this);
                         myCapoBox1_1.setLayoutParams(lp);
                         myCapoBox1_1.setHorizontalGravity(Gravity.LEFT);
@@ -8333,7 +8371,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         lyricstable_onecolview.addView(myCapoBox1_1);
                     }
 
-                    if (writetocol1_2 || columnTest==2 || columnTest==0) {
+                    if (writetocol1_2 || columnTest == 2 || columnTest == 0) {
                         RelativeLayout myCapoBox1_2 = new RelativeLayout(this);
                         myCapoBox1_2.setLayoutParams(lp);
                         myCapoBox1_2.setHorizontalGravity(Gravity.LEFT);
@@ -8349,7 +8387,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         lyricstable_twocolview.addView(myCapoBox1_2);
                     }
 
-                    if (writetocol1_3 || columnTest==3 || columnTest==0) {
+                    if (writetocol1_3 || columnTest == 3 || columnTest == 0) {
                         RelativeLayout myCapoBox1_3 = new RelativeLayout(this);
                         myCapoBox1_3.setLayoutParams(lp);
                         myCapoBox1_3.setHorizontalGravity(Gravity.LEFT);
@@ -8417,7 +8455,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 getBlock(whatisthisblock[x]);
 
                 // Right, we need to create a new table inside this row to hold 2 rows - chords and lyrics
-                TableRow.LayoutParams lp = new TableRow.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+                TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT);
 
                 TableLayout chords_n_lyrics1_1 = new TableLayout(this);
                 TableLayout chords_n_lyrics1_2 = new TableLayout(this);
@@ -8438,42 +8476,42 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 TableRow chords_row2_3 = new TableRow(this);
                 TableRow chords_row3_3 = new TableRow(this);
 
-                if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                     capo_chords_row1_1.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                     chords_row1_1.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                     chords_row1_1.setLayoutParams(lp);
                     capo_chords_row1_1.setLayoutParams(lp);
                 }
 
-                if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
                     capo_chords_row1_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                     chords_row1_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                     chords_row1_2.setLayoutParams(lp);
                     capo_chords_row1_2.setLayoutParams(lp);
                 }
 
-                if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
                     capo_chords_row2_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                     chords_row2_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                     chords_row2_2.setLayoutParams(lp);
                     capo_chords_row2_2.setLayoutParams(lp);
                 }
 
-                if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
                     capo_chords_row1_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                     chords_row1_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                     chords_row1_3.setLayoutParams(lp);
                     capo_chords_row1_3.setLayoutParams(lp);
                 }
 
-                if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
                     capo_chords_row2_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                     chords_row2_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                     chords_row2_3.setLayoutParams(lp);
                     capo_chords_row2_3.setLayoutParams(lp);
                 }
 
-                if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
                     capo_chords_row3_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                     chords_row3_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                     chords_row3_3.setLayoutParams(lp);
@@ -8495,7 +8533,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         }
 
                     } else {
-                        chord = myParsedLyrics[x].substring(chord_pos[i], chord_pos[i + 1]);
+                        try {
+                            chord = myParsedLyrics[x].substring(chord_pos[i], chord_pos[i + 1]);
+                        } catch (Exception e) {
+                            chord = " ";
+                        }
                         tempChords = chord;
                         if (showCapo) {
                             temptranspChords = chord;
@@ -8504,14 +8546,14 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         }
                     }
 
-                    if (i==chordnum) {
+                    if (i == chordnum) {
                         chord = chord.trim();
                         temptranspChords = temptranspChords.trim();
                     }
 
                     // Set the appropriate formats for the chord line
                     // create a new TextView for each chord
-                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                    if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                         TextView t1_1 = new TextView(this);
                         TextView tcapo1_1 = new TextView(this);
                         t1_1.setText(chord);
@@ -8530,7 +8572,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         chords_row1_1.addView(t1_1);
                     }
 
-                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
                         TextView t1_2 = new TextView(this);
                         TextView tcapo1_2 = new TextView(this);
                         t1_2.setText(chord);
@@ -8549,7 +8591,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         chords_row1_2.addView(t1_2);
                     }
 
-                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
                         TextView t2_2 = new TextView(this);
                         TextView tcapo2_2 = new TextView(this);
                         t2_2.setText(chord);
@@ -8568,7 +8610,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         chords_row2_2.addView(t2_2);
                     }
 
-                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
                         TextView t1_3 = new TextView(this);
                         TextView tcapo1_3 = new TextView(this);
                         t1_3.setText(chord);
@@ -8587,7 +8629,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         chords_row1_3.addView(t1_3);
                     }
 
-                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
                         TextView t2_3 = new TextView(this);
                         TextView tcapo2_3 = new TextView(this);
                         t2_3.setText(chord);
@@ -8606,7 +8648,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                         chords_row2_3.addView(t2_3);
                     }
 
-                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
                         TextView t3_3 = new TextView(this);
                         TextView tcapo3_3 = new TextView(this);
                         t3_3.setText(chord);
@@ -8626,32 +8668,32 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     }
                 }
 
-                if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                     chords_row1_1.setBackgroundColor(chords_useThisBGColor);
                     capo_chords_row1_1.setBackgroundColor(capo_useThisBGColor);
                 }
 
-                if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
                     chords_row1_2.setBackgroundColor(chords_useThisBGColor);
                     capo_chords_row1_2.setBackgroundColor(capo_useThisBGColor);
                 }
 
-                if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
                     chords_row2_2.setBackgroundColor(chords_useThisBGColor);
                     capo_chords_row2_2.setBackgroundColor(capo_useThisBGColor);
                 }
 
-                if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
                     chords_row1_3.setBackgroundColor(chords_useThisBGColor);
                     capo_chords_row1_3.setBackgroundColor(capo_useThisBGColor);
                 }
 
-                if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
                     chords_row2_3.setBackgroundColor(chords_useThisBGColor);
                     capo_chords_row2_3.setBackgroundColor(capo_useThisBGColor);
                 }
 
-                if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
                     chords_row3_3.setBackgroundColor(chords_useThisBGColor);
                     capo_chords_row3_3.setBackgroundColor(capo_useThisBGColor);
                 }
@@ -8660,27 +8702,27 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 // First option is that there are no capo chords, but the user wants chords
                 // This displays the normal chords only
                 if (showChords.equals("Y") && !showCapo) {
-                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                    if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                         chords_n_lyrics1_1.addView(chords_row1_1, 0);
                     }
 
-                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
                         chords_n_lyrics1_2.addView(chords_row1_2, 0);
                     }
 
-                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
                         chords_n_lyrics2_2.addView(chords_row2_2, 0);
                     }
 
-                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics1_3.addView(chords_row1_3, 0);
                     }
 
-                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics2_3.addView(chords_row2_3, 0);
                     }
 
-                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics3_3.addView(chords_row3_3, 0);
                     }
 
@@ -8688,27 +8730,27 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     allchords = allchords + " " + myParsedLyrics[x];
 
                 } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("both")) {
-                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                    if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                         chords_n_lyrics1_1.addView(chords_row1_1, 0);
                         chords_n_lyrics1_1.addView(capo_chords_row1_1, 1);
                     }
-                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
                         chords_n_lyrics1_2.addView(chords_row1_2, 0);
                         chords_n_lyrics1_2.addView(capo_chords_row1_2, 1);
                     }
-                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
                         chords_n_lyrics2_2.addView(chords_row2_2, 0);
                         chords_n_lyrics2_2.addView(capo_chords_row2_2, 1);
                     }
-                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics1_3.addView(chords_row1_3, 0);
                         chords_n_lyrics1_3.addView(capo_chords_row1_3, 1);
                     }
-                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics2_3.addView(chords_row2_3, 0);
                         chords_n_lyrics2_3.addView(capo_chords_row2_3, 1);
                     }
-                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics3_3.addView(chords_row3_3, 0);
                         chords_n_lyrics3_3.addView(capo_chords_row3_3, 1);
                     }
@@ -8718,22 +8760,22 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     allchords = allchords + " " + allchordscapo;
 
                 } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("capoonly")) {
-                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                    if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                         chords_n_lyrics1_1.addView(capo_chords_row1_1, 0);
                     }
-                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
                         chords_n_lyrics1_2.addView(capo_chords_row1_2, 0);
                     }
-                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
                         chords_n_lyrics2_2.addView(capo_chords_row2_2, 0);
                     }
-                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics1_3.addView(capo_chords_row1_3, 0);
                     }
-                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics2_3.addView(capo_chords_row2_3, 0);
                     }
-                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics3_3.addView(capo_chords_row3_3, 0);
                     }
                     // Add this line of chords to the combined string
@@ -8747,17 +8789,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 TableRow lyrics_row2_3 = new TableRow(this);
                 TableRow lyrics_row3_3 = new TableRow(this);
 
-                String temp_lyricstext="";
+                String temp_lyricstext;
 
                 // Now we have the positions, split the words into substrings and write each
                 // substring as a textview within the row
                 // If this is a multiline verse, we need to sort the next verse lines as well
-                lyrics_row1_1 = new TableRow(this);
-                lyrics_row1_2 = new TableRow(this);
-                lyrics_row2_2 = new TableRow(this);
-                lyrics_row1_3 = new TableRow(this);
-                lyrics_row2_3 = new TableRow(this);
-                lyrics_row3_3 = new TableRow(this);
+
                 for (int i = 0; i < chordnum; i++) {
                     // create a new TextView
                     TextView t21_1 = new TextView(this);
@@ -8806,7 +8843,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     // Get the block colours
                     getBlock(whatisthisblock[x + 1]);
 
-                    if (whatisthisblock[x+1].equals("comment")) {
+                    if (whatisthisblock[x + 1].equals("comment")) {
                         if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                             t21_1.setTypeface(commentfont);
                             t21_1.setTextSize(tempsectionsize);
@@ -8879,54 +8916,87 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                             }
                         }
                     } else {
-                        temp_lyricstext = myParsedLyrics[x + 1].substring(chord_pos[i], chord_pos[i + 1]);
+                        try {
+                            temp_lyricstext = myParsedLyrics[x + 1].substring(chord_pos[i], chord_pos[i + 1]);
+                        } catch (Exception e) {
+                            temp_lyricstext = " ";
+                        }
+
                         // Multilines
                         if (myParsedLyrics[x + 1].indexOf("1") == 0) {
                             if ((x + 2) < numrowstowrite) {
                                 if (myParsedLyrics[x + 2].indexOf("2") == 0) {
-                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 2].substring(chord_pos[i], chord_pos[i + 1]);
+                                    try {
+                                        temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 2].substring(chord_pos[i], chord_pos[i + 1]);
+                                    } catch (Exception e) {
+                                        temp_lyricstext = temp_lyricstext + "\n" + " ";
+                                    }
                                 }
                             }
                             if ((x + 3) < numrowstowrite) {
                                 if (myParsedLyrics[x + 3].indexOf("3") == 0) {
-                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 3].substring(chord_pos[i], chord_pos[i + 1]);
+                                    try {
+                                        temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 3].substring(chord_pos[i], chord_pos[i + 1]);
+                                    } catch (Exception e) {
+                                        temp_lyricstext = temp_lyricstext + "\n" + " ";
+                                    }
                                 }
                             }
                             if ((x + 4) < numrowstowrite) {
                                 if (myParsedLyrics[x + 4].indexOf("4") == 0) {
-                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 4].substring(chord_pos[i], chord_pos[i + 1]);
+                                    try {
+                                        temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 4].substring(chord_pos[i], chord_pos[i + 1]);
+                                    } catch (Exception e) {
+                                        temp_lyricstext = temp_lyricstext + "\n" + " ";
+                                    }
                                 }
                             }
                             if ((x + 5) < numrowstowrite) {
                                 if (myParsedLyrics[x + 5].indexOf("5") == 0) {
-                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 5].substring(chord_pos[i], chord_pos[i + 1]);
+                                    try {
+                                        temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 5].substring(chord_pos[i], chord_pos[i + 1]);
+                                    } catch (Exception e) {
+                                        temp_lyricstext = temp_lyricstext + "\n" + " ";
+                                    }
                                 }
                             }
                             if ((x + 6) < numrowstowrite) {
                                 if (myParsedLyrics[x + 6].indexOf("6") == 0) {
-                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 6].substring(chord_pos[i], chord_pos[i + 1]);
+                                    try {
+                                        temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 6].substring(chord_pos[i], chord_pos[i + 1]);
+                                    } catch (Exception e) {
+                                        temp_lyricstext = temp_lyricstext + "\n" + " ";
+                                    }
                                 }
                             }
                             if ((x + 7) < numrowstowrite) {
                                 if (myParsedLyrics[x + 7].indexOf("7") == 0) {
-                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 7].substring(chord_pos[i], chord_pos[i + 1]);
+                                    try {
+                                        temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 7].substring(chord_pos[i], chord_pos[i + 1]);
+                                    } catch (Exception e) {
+                                        temp_lyricstext = temp_lyricstext + "\n" + " ";
+                                    }
                                 }
                             }
                             if ((x + 8) < numrowstowrite) {
                                 if (myParsedLyrics[x + 8].indexOf("8") == 0) {
-                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 8].substring(chord_pos[i], chord_pos[i + 1]);
+                                    try {
+                                        temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 8].substring(chord_pos[i], chord_pos[i + 1]);
+                                    } catch (Exception e) {
+                                        temp_lyricstext = temp_lyricstext + "\n" + " ";
+                                    }
                                 }
                             }
                             if ((x + 9) < numrowstowrite) {
                                 if (myParsedLyrics[x + 9].indexOf("9") == 0) {
-                                    temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 9].substring(chord_pos[i], chord_pos[i + 1]);
+                                    try {
+                                        temp_lyricstext = temp_lyricstext + "\n" + myParsedLyrics[x + 9].substring(chord_pos[i], chord_pos[i + 1]);
+                                    } catch (Exception e) {
+                                        temp_lyricstext = temp_lyricstext + "\n" + " ";
+                                    }
                                 }
                             }
                         }
-                    }
-
-                    if (i==chordnum) {
-                        temp_lyricstext = temp_lyricstext;
                     }
 
                     if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
@@ -8964,27 +9034,27 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 // Decide on the lyrics row background colour
                 getBlock(whatisthisblock[x + 1]);
 
-                if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                     lyrics_row1_1.setBackgroundColor(lyrics_useThisBGColor);
                     lyrics_row1_1.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                 }
-                if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
                     lyrics_row1_2.setBackgroundColor(lyrics_useThisBGColor);
                     lyrics_row1_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                 }
-                if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
                     lyrics_row2_2.setBackgroundColor(lyrics_useThisBGColor);
                     lyrics_row2_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                 }
-                if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
                     lyrics_row1_3.setBackgroundColor(lyrics_useThisBGColor);
                     lyrics_row1_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                 }
-                if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
                     lyrics_row2_3.setBackgroundColor(lyrics_useThisBGColor);
                     lyrics_row2_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                 }
-                if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
                     lyrics_row3_3.setBackgroundColor(lyrics_useThisBGColor);
                     lyrics_row3_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
                 }
@@ -8993,79 +9063,79 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 // First option is that there are no capo chords, but the user wants chords
                 // This displays the normal chords only
                 if (showChords.equals("Y") && !showCapo) {
-                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                    if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                         chords_n_lyrics1_1.addView(lyrics_row1_1, 1);
                     }
-                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
                         chords_n_lyrics1_2.addView(lyrics_row1_2, 1);
                     }
-                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
                         chords_n_lyrics2_2.addView(lyrics_row2_2, 1);
                     }
-                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics1_3.addView(lyrics_row1_3, 1);
                     }
-                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics2_3.addView(lyrics_row2_3, 1);
                     }
-                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics3_3.addView(lyrics_row3_3, 1);
                     }
                 } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("both")) {
-                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                    if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                         chords_n_lyrics1_1.addView(lyrics_row1_1, 2);
                     }
-                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
                         chords_n_lyrics1_2.addView(lyrics_row1_2, 2);
                     }
-                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
                         chords_n_lyrics2_2.addView(lyrics_row2_2, 2);
                     }
-                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics1_3.addView(lyrics_row1_3, 2);
                     }
-                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics2_3.addView(lyrics_row2_3, 2);
                     }
-                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics3_3.addView(lyrics_row3_3, 2);
                     }
                 } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("capoonly")) {
-                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                    if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                         chords_n_lyrics1_1.addView(lyrics_row1_1, 1);
                     }
-                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
                         chords_n_lyrics1_2.addView(lyrics_row1_2, 1);
                     }
-                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
                         chords_n_lyrics2_2.addView(lyrics_row2_2, 1);
                     }
-                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics1_3.addView(lyrics_row1_3, 1);
                     }
-                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics2_3.addView(lyrics_row2_3, 1);
                     }
-                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics3_3.addView(lyrics_row3_3, 1);
                     }
                 } else {
-                    if (writetocol1_1 && (columnTest==1 || columnTest==0)) {
+                    if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                         chords_n_lyrics1_1.addView(lyrics_row1_1, 0);
                     }
-                    if (writetocol1_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
                         chords_n_lyrics1_2.addView(lyrics_row1_2, 0);
                     }
-                    if (writetocol2_2 && (columnTest==2 || columnTest==0)) {
+                    if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
                         chords_n_lyrics2_2.addView(lyrics_row2_2, 0);
                     }
-                    if (writetocol1_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics1_3.addView(lyrics_row1_3, 0);
                     }
-                    if (writetocol2_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics2_3.addView(lyrics_row2_3, 0);
                     }
-                    if (writetocol3_3 && (columnTest==3 || columnTest==0)) {
+                    if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics3_3.addView(lyrics_row3_3, 0);
                     }
                 }
@@ -9116,21 +9186,21 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 TableRow caponormalrow1_3 = new TableRow(this);
                 TableRow caponormalrow2_3 = new TableRow(this);
                 TableRow caponormalrow3_3 = new TableRow(this);
-                TableRow.LayoutParams lp = new TableRow.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-                        android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+                TableRow.LayoutParams lp = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
                 lp.setMargins(0, 0, 0, 0);
                 normalrow1_1.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
-                normalrow1_2.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-                normalrow2_2.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-                normalrow1_3.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-                normalrow2_3.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-                normalrow3_3.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-                caponormalrow1_1.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-                caponormalrow1_2.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-                caponormalrow2_2.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-                caponormalrow1_3.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-                caponormalrow2_3.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
-                caponormalrow3_3.setPadding(0, -(int) ((float)linespacing/3.0f), 0, 0);
+                normalrow1_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                normalrow2_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                normalrow1_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                normalrow2_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                normalrow3_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                caponormalrow1_1.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                caponormalrow1_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                caponormalrow2_2.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                caponormalrow1_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                caponormalrow2_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
+                caponormalrow3_3.setPadding(0, -(int) ((float) linespacing / 3.0f), 0, 0);
 
                 // create a new TextView
                 TextView tbasic1_1 = new TextView(this);
@@ -9372,7 +9442,7 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 }
 
 
-            } else if (!whatisthisline[n].equals("chords")||whatisthisline[x].contains("title")) {
+            } else if (!whatisthisline[n].equals("chords") || whatisthisline[x].contains("title")) {
                 // No blocking is needed, just add the entire row as one bit
                 TableLayout basicline1_1 = new TableLayout(this);
                 TableLayout basicline1_2 = new TableLayout(this);
@@ -9395,8 +9465,8 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 TableRow normalrow2_3 = new TableRow(this);
                 TableRow normalrow3_3 = new TableRow(this);
                 TableRow.LayoutParams lp = new TableRow.LayoutParams(
-                        android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-                        android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
                 lp.setMargins(0, 0, 0, 0);
 
                 if (!whatisthisline[x].contains("title")) {
@@ -9480,20 +9550,20 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     tbasic3_3.setTextSize(tempfontsize * 0.6f);
                     tbasic3_3.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-                    if (myParsedLyrics[x].contains(image+"_")) {
+                    if (myParsedLyrics[x].contains(image + "_")) {
                         isImageSection = true;
-                        if (myParsedLyrics[x+1]!=null) {
-                            imagetext = myParsedLyrics[x+1];
+                        if (myParsedLyrics[x + 1] != null) {
+                            imagetext = myParsedLyrics[x + 1];
                         }
                     }
                 }
 
                 // add the TextView new TableRow
                 // As long as it isn't a multiline 2-9 beginning
-                if (myParsedLyrics[x].indexOf("1")!=0 && myParsedLyrics[x].indexOf("2")!=0 && myParsedLyrics[x].indexOf("3")!=0 &&
-                        myParsedLyrics[x].indexOf("4")!=0 && myParsedLyrics[x].indexOf("5")!=0 &&
-                        myParsedLyrics[x].indexOf("6")!=0 && myParsedLyrics[x].indexOf("7")!=0 &&
-                        myParsedLyrics[x].indexOf("8")!=0 && myParsedLyrics[x].indexOf("9")!=0) {
+                if (myParsedLyrics[x].indexOf("1") != 0 && myParsedLyrics[x].indexOf("2") != 0 && myParsedLyrics[x].indexOf("3") != 0 &&
+                        myParsedLyrics[x].indexOf("4") != 0 && myParsedLyrics[x].indexOf("5") != 0 &&
+                        myParsedLyrics[x].indexOf("6") != 0 && myParsedLyrics[x].indexOf("7") != 0 &&
+                        myParsedLyrics[x].indexOf("8") != 0 && myParsedLyrics[x].indexOf("9") != 0) {
                     normalrow1_1.addView(tbasic1_1);
                     normalrow1_2.addView(tbasic1_2);
                     normalrow2_2.addView(tbasic2_2);
@@ -9501,47 +9571,47 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                     normalrow2_3.addView(tbasic2_3);
                     normalrow3_3.addView(tbasic3_3);
 
-                } else if (myParsedLyrics[x].indexOf("1")==0) {
+                } else if (myParsedLyrics[x].indexOf("1") == 0) {
                     // Since we have a multiline section, add the remaining lines needed
                     String newtext = myParsedLyrics[x];
-                    if ((x+1)<numrowstowrite) {
-                        if (myParsedLyrics[x+1].indexOf("2")==0) {
-                            newtext = newtext + "\n"+ myParsedLyrics[x + 1];
+                    if ((x + 1) < numrowstowrite) {
+                        if (myParsedLyrics[x + 1].indexOf("2") == 0) {
+                            newtext = newtext + "\n" + myParsedLyrics[x + 1];
                         }
                     }
-                    if ((x+2)<numrowstowrite) {
-                        if (myParsedLyrics[x+2].indexOf("3")==0) {
-                            newtext = newtext + "\n"+ myParsedLyrics[x + 2];
+                    if ((x + 2) < numrowstowrite) {
+                        if (myParsedLyrics[x + 2].indexOf("3") == 0) {
+                            newtext = newtext + "\n" + myParsedLyrics[x + 2];
                         }
                     }
-                    if ((x+3)<numrowstowrite) {
-                        if (myParsedLyrics[x+3].indexOf("4")==0) {
-                            newtext = newtext + "\n"+ myParsedLyrics[x + 3];
+                    if ((x + 3) < numrowstowrite) {
+                        if (myParsedLyrics[x + 3].indexOf("4") == 0) {
+                            newtext = newtext + "\n" + myParsedLyrics[x + 3];
                         }
                     }
-                    if ((x+4)<numrowstowrite) {
-                        if (myParsedLyrics[x+4].indexOf("5")==0) {
-                            newtext = newtext + "\n"+ myParsedLyrics[x + 4];
+                    if ((x + 4) < numrowstowrite) {
+                        if (myParsedLyrics[x + 4].indexOf("5") == 0) {
+                            newtext = newtext + "\n" + myParsedLyrics[x + 4];
                         }
                     }
-                    if ((x+5)<numrowstowrite) {
-                        if (myParsedLyrics[x+5].indexOf("6")==0) {
-                            newtext = newtext + "\n"+ myParsedLyrics[x + 5];
+                    if ((x + 5) < numrowstowrite) {
+                        if (myParsedLyrics[x + 5].indexOf("6") == 0) {
+                            newtext = newtext + "\n" + myParsedLyrics[x + 5];
                         }
                     }
-                    if ((x+6)<numrowstowrite) {
-                        if (myParsedLyrics[x+6].indexOf("7")==0) {
-                            newtext = newtext + "\n"+ myParsedLyrics[x + 6];
+                    if ((x + 6) < numrowstowrite) {
+                        if (myParsedLyrics[x + 6].indexOf("7") == 0) {
+                            newtext = newtext + "\n" + myParsedLyrics[x + 6];
                         }
                     }
-                    if ((x+7)<numrowstowrite) {
-                        if (myParsedLyrics[x+7].indexOf("8")==0) {
-                            newtext = newtext + "\n"+ myParsedLyrics[x + 7];
+                    if ((x + 7) < numrowstowrite) {
+                        if (myParsedLyrics[x + 7].indexOf("8") == 0) {
+                            newtext = newtext + "\n" + myParsedLyrics[x + 7];
                         }
                     }
-                    if ((x+8)<numrowstowrite) {
-                        if (myParsedLyrics[x+8].indexOf("9")==0) {
-                            newtext = newtext + "\n"+ myParsedLyrics[x + 8];
+                    if ((x + 8) < numrowstowrite) {
+                        if (myParsedLyrics[x + 8].indexOf("9") == 0) {
+                            newtext = newtext + "\n" + myParsedLyrics[x + 8];
                         }
                     }
 
@@ -9663,11 +9733,11 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
 
         // If the user wants to show sticky notes at the bottom of the page
         if (toggleAutoSticky.equals("B") && !mNotes.isEmpty() && !mNotes.equals("")) {
-            String notetoadd = "\n\n"+getResources().getString(R.string.stickynotes)+":\n"+mNotes;
+            String notetoadd = "\n\n" + getResources().getString(R.string.stickynotes) + ":\n" + mNotes;
             RelativeLayout stickyNotes1_1 = new RelativeLayout(this);
             RelativeLayout stickyNotes2_2 = new RelativeLayout(this);
             RelativeLayout stickyNotes3_3 = new RelativeLayout(this);
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             stickyNotes1_1.setLayoutParams(lp);
             stickyNotes1_1.setHorizontalGravity(Gravity.LEFT);
             stickyNotes2_2.setLayoutParams(lp);
@@ -9717,12 +9787,12 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
                 // Get next title in set
                 next_title = getResources().getString(R.string.lastsong);
                 if (setSize >= 2 && indexSongInSet >= 0 && indexSongInSet < (setSize - 1)) {
-                    next_title = getResources().getString(R.string.next) + ": " + mSetList[indexSongInSet+1];
+                    next_title = getResources().getString(R.string.next) + ": " + mSetList[indexSongInSet + 1];
                 }
                 RelativeLayout nextInSetBox1_1 = new RelativeLayout(this);
                 RelativeLayout nextInSetBox2_2 = new RelativeLayout(this);
                 RelativeLayout nextInSetBox3_3 = new RelativeLayout(this);
-                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 nextInSetBox1_1.setLayoutParams(lp);
                 nextInSetBox1_1.setHorizontalGravity(Gravity.RIGHT);
                 nextInSetBox2_2.setLayoutParams(lp);
@@ -9965,4 +10035,30 @@ public class FullscreenActivity extends Activity implements PopUpListSetsFragmen
         }
     }
 
+    public void indexMySongs() {
+        MySQLiteHelper db = new MySQLiteHelper(this);
+
+        ArrayList<String> getvals = new ArrayList<>();
+        try {
+            getvals = IndexSongs.doIndex();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        /**
+         * CRUD Operations
+         * */
+        // add Books
+        db.addSong(new Songs(getvals.get(0), getvals.get(1), getvals.get(2), getvals.get(3)));
+
+        // get all books
+        List<Songs> list = db.getAllSongs();
+
+        // delete one book
+        db.deleteSong(list.get(0));
+
+        // get all books
+        db.getAllSongs();
+
+    }
 }

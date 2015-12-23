@@ -47,6 +47,7 @@ public class PopUpTransposeFragment extends DialogFragment {
     RadioButton chordFormat2Radio;
     RadioButton chordFormat3Radio;
     RadioButton chordFormat4Radio;
+    RadioButton chordFormat5Radio;
     Button transposeCancelButton;
     Button transposeOkButton;
 
@@ -67,6 +68,7 @@ public class PopUpTransposeFragment extends DialogFragment {
         chordFormat2Radio = (RadioButton) V.findViewById(R.id.chordFormat2Radio);
         chordFormat3Radio = (RadioButton) V.findViewById(R.id.chordFormat3Radio);
         chordFormat4Radio = (RadioButton) V.findViewById(R.id.chordFormat4Radio);
+        chordFormat5Radio = (RadioButton) V.findViewById(R.id.chordFormat5Radio);
 
         // If user has said to always used preferred chord format, hide the options
 
@@ -85,11 +87,13 @@ public class PopUpTransposeFragment extends DialogFragment {
                 if (val<0) {
                     FullscreenActivity.transposeDirection = "-1";
                     FullscreenActivity.transposeTimes = Math.abs(val);
-                    transposeValTextView.setText("-"+Math.abs(val));
+                    String text = "-"+Math.abs(val);
+                    transposeValTextView.setText(text);
                 } else if (val>0) {
                     FullscreenActivity.transposeDirection = "+1";
                     FullscreenActivity.transposeTimes = Math.abs(val);
-                    transposeValTextView.setText("+"+Math.abs(val));
+                    String text = "+"+Math.abs(val);
+                    transposeValTextView.setText(text);
                 } else {
                     FullscreenActivity.transposeDirection = "";
                     FullscreenActivity.transposeTimes = Math.abs(0);
@@ -118,6 +122,8 @@ public class PopUpTransposeFragment extends DialogFragment {
             case "4":
                 chordFormat4Radio.setChecked(true);
                 break;
+            case "5":
+                chordFormat5Radio.setChecked(true);
         }
 
         if (FullscreenActivity.alwaysPreferredChordFormat.equals("Y")) {
@@ -134,6 +140,9 @@ public class PopUpTransposeFragment extends DialogFragment {
                 case "4":
                     chordFormat4Radio.setChecked(true);
                     break;
+                case "5":
+                    chordFormat5Radio.setChecked(true);
+                    break;
             }
             V.findViewById(R.id.detectedChordFormatText).setVisibility(View.GONE);
             detectedChordFormat.setVisibility(View.GONE);
@@ -141,6 +150,7 @@ public class PopUpTransposeFragment extends DialogFragment {
             chordFormat2Radio.setVisibility(View.GONE);
             chordFormat3Radio.setVisibility(View.GONE);
             chordFormat4Radio.setVisibility(View.GONE);
+            chordFormat5Radio.setVisibility(View.GONE);
         }
 
         // Listen for Cancel and OK button
@@ -166,6 +176,9 @@ public class PopUpTransposeFragment extends DialogFragment {
                 }
                 if (chordFormat4Radio.isChecked()) {
                     FullscreenActivity.oldchordformat = "4";
+                }
+                if (chordFormat5Radio.isChecked()) {
+                    FullscreenActivity.oldchordformat = "5";
                 }
 
                 // Do the transpose

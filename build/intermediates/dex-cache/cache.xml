@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/home/gareth/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.1/support-annotations-22.2.1.jar"
+        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/8.1.0/jars/classes.jar"
         jumboMode="false"
         revision="23.0.2"
-        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
-        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/release/support-annotations-22.2.1-80e6b98c5c2ddc430337d6bd92f396744403d850.jar" />
+        sha1="4477ea44f5ec5ad064022a22691732d7638ff197">
+        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-2df055e93bf922d7f1d965827cc5924fd0044db8.jar" />
     </item>
     <item
         jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/jars/classes.jar"
@@ -14,6 +14,20 @@
         revision="23.0.2"
         sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
         <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/release/classes-7b49ea1c412ff5e0ef5b9c96f59fa7b68640ca26.jar" />
+    </item>
+    <item
+        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d0dda274b703dd9c5bb056867649d22b4171ae7d">
+        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-f7b8057905a7df8e02199df5c814df198cc9745a.jar" />
+    </item>
+    <item
+        jar="/home/gareth/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.1/support-annotations-22.2.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/release/support-annotations-22.2.1-80e6b98c5c2ddc430337d6bd92f396744403d850.jar" />
     </item>
     <item
         jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/classes.jar"

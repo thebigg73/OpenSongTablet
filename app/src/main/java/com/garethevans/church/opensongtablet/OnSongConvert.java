@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import android.app.Activity;
 import android.util.Log;
 
@@ -46,6 +45,27 @@ public class OnSongConvert extends Activity {
 
         //Go through the lines and get rid of rubbish
         for (int c=0;c<numlines;c++) {
+			line[c] = line[c].replace("&#39;","'");
+            line[c] = line[c].replace("&#145","'");
+            line[c] = line[c].replace("&#146;","'");
+            line[c] = line[c].replace("&#147;","'");
+            line[c] = line[c].replace("&#148;","'");
+            line[c] = line[c].replace("тАЩ","'");
+            line[c] = line[c].replace("\u0027","'");
+            line[c] = line[c].replace("\u0028","'");
+            line[c] = line[c].replace("\u0029","'");
+            line[c] = line[c].replace("\u0211", "'");
+            line[c] = line[c].replace("\u0212", "'");
+            line[c] = line[c].replace("\u0213", "'");
+            line[c] = line[c].replace("\u00D5", "'");
+            line[c] = line[c].replace("\u0442\u0410\u0429", "'");
+            line[c] = line[c].replace("\u0429", "");
+            line[c] = line[c].replace("\u0410", "");
+            line[c] = line[c].replace("\u0429", "'");
+            line[c] = line[c].replace("\u0060", "'");
+            line[c] = line[c].replace("\u00B4", "'");
+            line[c] = line[c].replace("\u2018", "'");
+            line[c] = line[c].replace("\u2019", "'");
             line[c] = line[c].replaceAll("[^\\x20-\\x7e]", "");
         }
 
@@ -55,7 +75,6 @@ public class OnSongConvert extends Activity {
 		int metadataend = 0;
 		
 		for (int z = metadatastart; z < numlines; z++) {
-			Log.d("OnSong","line["+z+"]="+line[z]);
 			if (line[z].isEmpty()) {
 				// This is the end of the metadata
 				metadataend = z;
@@ -210,12 +229,16 @@ public class OnSongConvert extends Activity {
 				// extract the key
 				line[x] = line[x].replace("{key:", "");
 				line[x] = line[x].replace("}", "");
+                line[x] = line[x].replace("[", "");
+                line[x] = line[x].replace("]", "");
 				line[x] = line[x].trim();
 				FullscreenActivity.mKey = line[x];
 				line[x] = "";
 			}
 			if (line[x].indexOf("Key:")==0) {
 				line[x] = line[x].replace("Key:", "");
+                line[x] = line[x].replace("[", "");
+                line[x] = line[x].replace("]", "");
 				line[x] = line[x].trim();
 				FullscreenActivity.mKey = line[x];
 				line[x] = "";
@@ -552,6 +575,49 @@ public class OnSongConvert extends Activity {
 		for (int x = 0; x < numlines; x++) {
 			// Try to guess tags used
 			if (line[x].indexOf(";")!=0) {
+				line[x] = line[x].replace(" Intro:", "[Intro]");
+				line[x] = line[x].replace(" Outro:", "[Outro]");
+				line[x] = line[x].replace(" V:", "[V]");
+				line[x] = line[x].replace(" V1:", "[V1]");
+				line[x] = line[x].replace(" V2:", "[V2]");
+				line[x] = line[x].replace(" V3:", "[V3]");
+				line[x] = line[x].replace(" V4:", "[V4]");
+				line[x] = line[x].replace(" V5:", "[V5]");
+				line[x] = line[x].replace(" V6:", "[V6]");
+				line[x] = line[x].replace(" V7:", "[V7]");
+				line[x] = line[x].replace(" V8:", "[V8]");
+				line[x] = line[x].replace(" V9:", "[V9]");
+				line[x] = line[x].replace(" Verse:", "[V]");
+				line[x] = line[x].replace(" Verse 1:", "[V1]");
+				line[x] = line[x].replace(" Verse 2:", "[V2]");
+				line[x] = line[x].replace(" Verse 3:", "[V3]");
+				line[x] = line[x].replace(" Verse 4:", "[V4]");
+				line[x] = line[x].replace(" (Verse)", "[V]");
+				line[x] = line[x].replace(" (Verse 1)", "[V1]");
+				line[x] = line[x].replace(" (Verse 2)", "[V2]");
+				line[x] = line[x].replace(" (Verse 3)", "[V3]");
+				line[x] = line[x].replace(" (Chorus)", "[C]");
+                line[x] = line[x].replace(" Chorus", "[C]");
+				line[x] = line[x].replace(" C:", "[C]");
+				line[x] = line[x].replace(" C1:", "[C1]");
+				line[x] = line[x].replace(" C2:", "[C2]");
+				line[x] = line[x].replace(" C3:", "[C3]");
+				line[x] = line[x].replace(" C4:", "[C4]");
+				line[x] = line[x].replace(" C5:", "[C5]");
+				line[x] = line[x].replace(" C6:", "[C6]");
+				line[x] = line[x].replace(" C7:", "[C7]");
+				line[x] = line[x].replace(" C8:", "[C8]");
+				line[x] = line[x].replace(" C9:", "[C9]");
+				line[x] = line[x].replace(" Chorus:", "[C]");
+				line[x] = line[x].replace(" Chorus 1:", "[C1]");
+				line[x] = line[x].replace(" Chorus 2:", "[C2]");
+				line[x] = line[x].replace(" Chorus 3:", "[C3]");
+				line[x] = line[x].replace(" Prechorus:", "[P]");
+				line[x] = line[x].replace(" Prechorus 1:", "[P1]");
+				line[x] = line[x].replace(" Prechorus 2:", "[P2]");
+				line[x] = line[x].replace(" Prechorus 3:", "[P3]");
+				line[x] = line[x].replace(" Bridge:", "[B]");
+				line[x] = line[x].replace(" Tag:", "[T]");
 				line[x] = line[x].replace("Intro:", "[Intro]");
 				line[x] = line[x].replace("Outro:", "[Outro]");
 				line[x] = line[x].replace("V:", "[V]");
@@ -594,48 +660,6 @@ public class OnSongConvert extends Activity {
 				line[x] = line[x].replace("Prechorus 3:", "[P3]");
 				line[x] = line[x].replace("Bridge:", "[B]");
 				line[x] = line[x].replace("Tag:", "[T]");
-				line[x] = line[x].replace(" Intro:", "[Intro]");
-				line[x] = line[x].replace(" Outro:", "[Outro]");
-				line[x] = line[x].replace(" V:", "[V]");
-				line[x] = line[x].replace(" V1:", "[V1]");
-				line[x] = line[x].replace(" V2:", "[V2]");
-				line[x] = line[x].replace(" V3:", "[V3]");
-				line[x] = line[x].replace(" V4:", "[V4]");
-				line[x] = line[x].replace(" V5:", "[V5]");
-				line[x] = line[x].replace(" V6:", "[V6]");
-				line[x] = line[x].replace(" V7:", "[V7]");
-				line[x] = line[x].replace(" V8:", "[V8]");
-				line[x] = line[x].replace(" V9:", "[V9]");
-				line[x] = line[x].replace(" Verse:", "[V]");
-				line[x] = line[x].replace(" Verse 1:", "[V1]");
-				line[x] = line[x].replace(" Verse 2:", "[V2]");
-				line[x] = line[x].replace(" Verse 3:", "[V3]");
-				line[x] = line[x].replace(" Verse 4:", "[V4]");
-				line[x] = line[x].replace(" (Verse)", "[V]");
-				line[x] = line[x].replace(" (Verse 1)", "[V1]");
-				line[x] = line[x].replace(" (Verse 2)", "[V2]");
-				line[x] = line[x].replace(" (Verse 3)", "[V3]");
-				line[x] = line[x].replace(" (Chorus)", "[C]");
-				line[x] = line[x].replace(" C:", "[C]");
-				line[x] = line[x].replace(" C1:", "[C1]");
-				line[x] = line[x].replace(" C2:", "[C2]");
-				line[x] = line[x].replace(" C3:", "[C3]");
-				line[x] = line[x].replace(" C4:", "[C4]");
-				line[x] = line[x].replace(" C5:", "[C5]");
-				line[x] = line[x].replace(" C6:", "[C6]");
-				line[x] = line[x].replace(" C7:", "[C7]");
-				line[x] = line[x].replace(" C8:", "[C8]");
-				line[x] = line[x].replace(" C9:", "[C9]");
-				line[x] = line[x].replace(" Chorus:", "[C]");
-				line[x] = line[x].replace(" Chorus 1:", "[C1]");
-				line[x] = line[x].replace(" Chorus 2:", "[C2]");
-				line[x] = line[x].replace(" Chorus 3:", "[C3]");
-				line[x] = line[x].replace(" Prechorus:", "[P]");
-				line[x] = line[x].replace(" Prechorus 1:", "[P1]");
-				line[x] = line[x].replace(" Prechorus 2:", "[P2]");
-				line[x] = line[x].replace(" Prechorus 3:", "[P3]");
-				line[x] = line[x].replace(" Bridge:", "[B]");
-				line[x] = line[x].replace(" Tag:", "[T]");
 
 				// Guess custom tags - will be a short line with :
 				if (line[x].length()<15 && line[x].contains(":") && line[x].indexOf("{")!=0) {
@@ -760,7 +784,7 @@ public class OnSongConvert extends Activity {
                 + "  <linked_songs>" + FullscreenActivity.mLinkedSongs + "</linked_songs>\n"
                 + "  <pad_file>" + FullscreenActivity.mPadFile + "</pad_file>\n"
                 + "  <custom_chords>" + FullscreenActivity.mCustomChords + "</custom_chords>\n"
-                + "  <link_youtube>" + FullscreenActivity.mLinkYouTube + "</custom_chords>\n"
+                + "  <link_youtube>" + FullscreenActivity.mLinkYouTube + "</link_youtube>\n"
                 + "  <link_web>" + FullscreenActivity.mLinkWeb + "</link_web>\n"
                 + "  <link_audio>" + FullscreenActivity.mLinkAudio + "</link_audio>\n"
                 + "  <link_other>" + FullscreenActivity.mLinkOther + "</link_other>\n"
@@ -796,8 +820,29 @@ public class OnSongConvert extends Activity {
 		// Change the name of the song to remove onsong file extension 
 		// (not needed)
 		String newSongTitle = FullscreenActivity.songfilename;
+        newSongTitle = newSongTitle.replace("&#39;", "'");
+        newSongTitle = newSongTitle.replace("&#145", "'");
+        newSongTitle = newSongTitle.replace("&#146;", "'");
+        newSongTitle = newSongTitle.replace("&#147;", "'");
+        newSongTitle = newSongTitle.replace("&#148;", "'");
+        newSongTitle = newSongTitle.replace("тАЩ","'");
+        newSongTitle = newSongTitle.replace("\u0027", "'");
+        newSongTitle = newSongTitle.replace("\u0028", "'");
+        newSongTitle = newSongTitle.replace("\u0029", "'");
+        newSongTitle = newSongTitle.replace("\u0060", "'");
+        newSongTitle = newSongTitle.replace("\u00B4", "'");
+        newSongTitle = newSongTitle.replace("\u2018", "'");
+        newSongTitle = newSongTitle.replace("\u2019", "'");
+        newSongTitle = newSongTitle.replace("\u0211","'");
+        newSongTitle = newSongTitle.replace("\u0212","'");
+        newSongTitle = newSongTitle.replace("\u0213","'");
+        newSongTitle = newSongTitle.replace("\u00D5","'");
+        newSongTitle = newSongTitle.replace("\u0442\u0410\u0429","'");
+        newSongTitle = newSongTitle.replace("\u0442","");
+        newSongTitle = newSongTitle.replace("\u0410","");
+        newSongTitle = newSongTitle.replace("\u0429","'");
 
-		// Decide if a better song title is in the file
+        // Decide if a better song title is in the file
 		if (FullscreenActivity.mTitle.length() > 0) {
 			newSongTitle = FullscreenActivity.mTitle.toString();
 		}
@@ -830,6 +875,9 @@ public class OnSongConvert extends Activity {
 		// Do the renaming
 		from.renameTo(to);
 		FullscreenActivity.songfilename = newSongTitle;
+
+        Log.d("onsong","from="+from);
+        Log.d("onsong","to="+to);
 
 		// Load the songs
 		ListSongFiles.listSongs();

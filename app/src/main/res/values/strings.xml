@@ -107,7 +107,7 @@
     <string name="scripture">Scripture</string>
     <string name="slide">Slide</string>
 
-        <array name="languagelist">
+	<array name="languagelist">
         <item>(af) Afrikaans</item>
         <item>(cz) český</item>
         <item>(de) Deutsch</item>
@@ -120,6 +120,7 @@
         <item>(pl) język polski</item>
         <item>(pt) português</item>
         <item>(ru) Русский</item>
+		<item>(sr) Srpski</item>
         <item>(zh) 中文</item>
     </array>
     
@@ -301,6 +302,7 @@
     <string name="chordFormat2" translatable="false">C   C#/Db   D   D#/Eb   E   F   F#/Gb   G   G#/Ab   A   B   H</string>
     <string name="chordFormat3" translatable="false">C   Cis/Des   D   Dis/Es   E   F   Fis/Ges   G   Gis/As   A   B   H</string>
     <string name="chordFormat4" translatable="false">Do   Do#/Reb   Re   Re#/Mib   Mi   Fa   Fa#/Solb   Sol   Sol#/Lab   La   La#/Sib  Si</string>
+	<string name="chordFormat5" translatable="false">1    2    3    4    5    6    7    8    9    10    11    12</string>
 
     <string name="switchtopresentmode">Switch to presentation mode</string>
     <string name="switchtoperformmode">Switch to performance mode</string>
@@ -329,14 +331,12 @@
 	<string name="folderexists">This folder already exists!</string>
 	<string name="createfoldererror">There was an error creating the new folder!</string>
 	<string name="createfoldersuccess">New folder created!</string>
-		
-	
 	
     <string name="welcome">OpenSong Music Viewer \n Written by Gareth Evans</string>
 		
 	<string name="intro">The OpenSong Music Viewer uses songs created in OpenSong and displays them on your tablet screen. It is aimed at worship musicians and is very much a work in progress. It works best in portrait mode, but I\'ve left landscape mode available (just in case).</string>
 		
-	<string name="intro_songsfolder">The application looks for a folder in your Documents called \'OpenSong/Songs\' and if it can\'t find it, it creates it for you. It then saves a single song called \'Love everlasting\', one of my own songs, to the folder (otherwise, you wouldn\'t be able to do anything with the app!). To use your own OpenSong songs, copy them into the Documents/OpenSong/Songs/ folder.  You can have one level of subfolders inside your Songs folder.\n\n The app also comes bundled with 700+ songs which you can use, but bear in mind you are responsible for adhering to any potential copyright issues and you use them at your own risk!</string>
+	<string name="intro_songsfolder">The application looks for a folder in your Documents called \'OpenSong/Songs\' and if it can\'t find it, it creates it for you. It then saves a single song called \'Love everlasting\', one of my own songs, to the folder (otherwise, you wouldn\'t be able to do anything with the app!). To use your own OpenSong songs, copy them into the Documents/OpenSong/Songs/ folder.  You can have one level of subfolders inside your Songs folder.\n\n The app also comes bundled with my interpretation of 700+ songs which you can use, but bear in mind you are responsible for adhering to any potential copyright issues and you use them at your own risk!</string>
 		
 	<string name="intro_dropbox">If you want to use Songs/Sets via a dropbox account
 	    (allows groups to access the same information), you will need to install

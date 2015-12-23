@@ -8,15 +8,22 @@
   <capo print="false">3</capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>F</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>;Cowbell/bell rattle as intro
  
 [Intro]
@@ -89,4 +96,7 @@
 [V4] 
 .F               Ab              Bb             B  Bb A  Ab
  Baggy trousers, baggy trousers, baggy trousers</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
 </song>

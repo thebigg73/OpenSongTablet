@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
   <title>Get it on</title>
+  <author>T-Rex</author>
+  <copyright></copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>E</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 ;Guitar riff
 
@@ -31,7 +54,7 @@
  Well, you're an untamed youth, that's the truth,
  With your cloak full of eagles
  You're dirty, sweet, and you're my girl
- 	
+     
 [V3]
  You're windy and wild, you've got the blues 
  In your shoes and your stockings
@@ -47,21 +70,8 @@
  Well, you dance when you walk, so lets dance, 
  Take a chance, understand me
  You're dirty, sweet, and you're my girl</lyrics>
-  <author>T-Rex</author>
-  <copyright></copyright>
-  <hymn_number></hymn_number>
-  <presentation></presentation>
-  <ccli></ccli>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <theme></theme>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

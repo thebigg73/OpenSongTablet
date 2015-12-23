@@ -323,7 +323,7 @@ public class ChordProConvert extends Activity {
                 + "  <linked_songs></linked_songs>\n"
                 + "  <pad_file></pad_file>\n"
                 + "  <custom_chords></custom_chords>\n"
-                + "  <link_youtube></custom_chords>\n"
+                + "  <link_youtube></link_youtube>\n"
                 + "  <link_web></link_web>\n"
                 + "  <link_audio></link_audio>\n"
                 + "  <link_other></link_other>\n"

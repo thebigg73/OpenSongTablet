@@ -3,21 +3,29 @@
   <title>Take it easy</title>
   <author>The Eagles</author>
   <copyright></copyright>
-  <hymn_number></hymn_number>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number></hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[INTRO]
-.G    C   D  x2	    
+.G    C   D  x2        
 
 [V1]
 .         G
@@ -26,7 +34,7 @@
  I got seven women on my mind
 .G                         D          
  Four that want to own me, two who want to stone me
-.C                          G	 
+.C                          G     
  One says she's a friend of mine
 .        Em (D)*       C  G          *Verse 2 and solo only
  Take it easy, take it easy
@@ -65,7 +73,11 @@
 [Outro]
 .C                 G           C           G
  Oooh, oooh, oooh, oooh, oooh, oooh, oooh, oooh
-.C                         G   F      C	  
+.C                         G   F      C      
  Oooh, oooh, gonna take it ea.........sy, 
 .              G   F   C   Em
- Gonna take it ea..…...sy  </lyrics></song>
+ Gonna take it ea..…...sy  </lyrics>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+</song>

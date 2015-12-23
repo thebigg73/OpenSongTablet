@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.annotation.SuppressLint;
 import android.os.Environment;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,8 +17,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -26,12 +25,13 @@ public class StorageChooser extends Activity {
 
 	// Try to determine internal or external storage
 	// If no preference has yet been set, prompt the user.
-	boolean intStorageExists = false;
+	//boolean intStorageExists = false;
 	boolean extStorageExists = false;
 	boolean defStorageExists = false;
-	boolean storageIsValid = true;
+	//boolean storageIsValid = true;
 	String secStorage = System.getenv("SECONDARY_STORAGE");
-	String[] secStorageOptions = {"/mnt/emmc/",
+	@SuppressLint("SdCardPath")
+    String[] secStorageOptions = {"/mnt/emmc/",
 			"/FAT",
 			"/Removable/MicroSD",
 			"/Removable/SD",
@@ -60,8 +60,8 @@ public class StorageChooser extends Activity {
 			"/mnt/external_sd",
 			"/mnt/external_sdcard",
 	"/mnt/extSdCard"};
-	String defStorage = Environment.getExternalStorageDirectory().getAbsolutePath().toString();
-	RadioGroup radioGroup;
+	String defStorage = Environment.getExternalStorageDirectory().getAbsolutePath();
+    RadioGroup radioGroup;
 	RadioButton intStorageButton;
 	RadioButton extStorageButton;
 	File intStorCheck;
@@ -95,7 +95,6 @@ public class StorageChooser extends Activity {
 
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				// TODO Auto-generated method stub
 				switch (checkedId) {
 				case R.id.intStorage:
 					numeral = "1";
@@ -112,18 +111,15 @@ public class StorageChooser extends Activity {
 			if (secStorage.contains(":")) {
 				secStorage = secStorage.substring(0,secStorage.indexOf(":"));
 			}
-			if (secStorage.contains("storage")) {
-				// Valid external SD card directory
-			}
 
 		} else {
 			// Lets look for alternative secondary storage positions
-			for (int z=0;z<secStorageOptions.length;z++) {
-				File testaltsecstorage = new File(secStorageOptions[z]);
-				if (testaltsecstorage.exists() && testaltsecstorage.canWrite()) {
-					secStorage = secStorageOptions[z];
-				}
-			}
+            for (String secStorageOption : secStorageOptions) {
+                File testaltsecstorage = new File(secStorageOption);
+                if (testaltsecstorage.exists() && testaltsecstorage.canWrite()) {
+                    secStorage = secStorageOption;
+                }
+            }
 		}
 
 		// If secondary and default storage are the same thing, hide secStorage
@@ -160,7 +156,8 @@ public class StorageChooser extends Activity {
 			intStorageButton.setChecked(false);
 			extStorageButton.setChecked(true);
 			intStorageButton.setAlpha(0.4f);
-			intStorageButton.setText(getResources().getString(R.string.storage_int) + " - " + getResources().getString(R.string.storage_notavailable));
+			String text = getResources().getString(R.string.storage_int) + " - " + getResources().getString(R.string.storage_notavailable);
+			intStorageButton.setText(text);
 		} else {
 			// Try to get free space
 			String freespace = "?";
@@ -171,14 +168,16 @@ public class StorageChooser extends Activity {
 					freespace = "" + num;
 				}
 			}
-			intStorageButton.setText(getResources().getString(R.string.storage_int) + "\n(" + defStorage + "/documents/OpenSong)\n" + getResources().getString(R.string.storage_space) + " - " + freespace + " MB");
+            String text = getResources().getString(R.string.storage_int) + "\n(" + defStorage + "/documents/OpenSong)\n" + getResources().getString(R.string.storage_space) + " - " + freespace + " MB";
+			intStorageButton.setText(text);
 		}
 		if (!extStorageExists || !extStorCheck.canWrite()) {
 			extStorageButton.setClickable(false);
 			extStorageButton.setAlpha(0.4f);
 			extStorageButton.setChecked(false);
 			intStorageButton.setChecked(true);
-			extStorageButton.setText(getResources().getString(R.string.storage_ext) + "\n" + getResources().getString(R.string.storage_notavailable));
+            String text = getResources().getString(R.string.storage_ext) + "\n" + getResources().getString(R.string.storage_notavailable);
+			extStorageButton.setText(text);
 		} else {
 			// Try to get free space
 			String freespace = "?";
@@ -189,7 +188,8 @@ public class StorageChooser extends Activity {
 					freespace = "" + num;
 				}
 			}
-			extStorageButton.setText(getResources().getString(R.string.storage_ext) + "\n(" + secStorage + "/documents/OpenSong)\n" + getResources().getString(R.string.storage_space) + " - " + freespace + " MB");
+            String text = getResources().getString(R.string.storage_ext) + "\n(" + secStorage + "/documents/OpenSong)\n" + getResources().getString(R.string.storage_space) + " - " + freespace + " MB";
+			extStorageButton.setText(text);
 		}
 	}	
 
@@ -225,13 +225,16 @@ public class StorageChooser extends Activity {
 			if (files == null) {
 				return true;
 			}
-			for(int i=0; i<files.length; i++) {
-				if(files[i].isDirectory()) {
-					deleteDirectory(files[i]);
-				} else {
-					files[i].delete();
-				}
-			}
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    deleteDirectory(file);
+                } else {
+                    boolean dodelete = file.delete();
+                    if (!dodelete) {
+                        Log.d("StorageChooser","Failed to delete file");
+                    }
+                }
+            }
 		}
 		return( path.delete() );
 	}
@@ -270,11 +273,15 @@ public class StorageChooser extends Activity {
 						// Create external directory
 						if (extStorageExists) {
 							File createPath = new File(secStorage + "/documents/OpenSong/Songs");
-							createPath.mkdirs();
-							// Copy Love Everlasting since folder is empty.
+							boolean domkdirs = createPath.mkdirs();
+                            if (!domkdirs) {
+                                Log.d("StorageChooser","Failed to create songs folder");
+                            }
+
+                            // Copy Love Everlasting since folder is empty.
 							AssetManager assetManager = getAssets();
-							InputStream in = null;
-							OutputStream out = null;
+							InputStream in;
+							OutputStream out;
 							try {
 								String filename = "Love everlasting";
 								in = assetManager.open("Songs"+File.separator+filename);
@@ -282,11 +289,9 @@ public class StorageChooser extends Activity {
 								out = new FileOutputStream(outFile);
 								copyFile(in, out);
 								in.close();
-								in = null;
-								out.flush();
+                                out.flush();
 								out.close();
-								out = null;
-							} catch (IOException e) {
+                            } catch (IOException e) {
 								Log.e("tag","Failed to copy asset file: " + "Love everlasting", e);
 							}
 						}
@@ -294,11 +299,14 @@ public class StorageChooser extends Activity {
 						// Create internal directory
 						if (defStorageExists) {
 							File createPath = new File(defStorage + "/documents/OpenSong/Songs");
-							createPath.mkdirs();
-							// Copy Love Everlasting since folder is empty.
+							boolean domkdirs = createPath.mkdirs();
+                            if (!domkdirs) {
+                                Log.d("StorageChooser","Failed to create songs folder");
+                            }
+                            // Copy Love Everlasting since folder is empty.
 							AssetManager assetManager = getAssets();
-							InputStream in = null;
-							OutputStream out = null;
+							InputStream in;
+							OutputStream out;
 							try {
 								String filename = "Love everlasting";
 								in = assetManager.open("Songs"+File.separator+filename);
@@ -306,11 +314,9 @@ public class StorageChooser extends Activity {
 								out = new FileOutputStream(outFile);
 								copyFile(in, out);
 								in.close();
-								in = null;
-								out.flush();
+                                out.flush();
 								out.close();
-								out = null;
-							} catch (IOException e) {
+                            } catch (IOException e) {
 								Log.e("tag","Failed to copy asset file: " + "Love everlasting", e);
 							}
 						}
@@ -325,10 +331,9 @@ public class StorageChooser extends Activity {
 					// No button clicked
 					break;
 				}
-
-
 			}
 		};
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(StorageChooser.this);
 		builder.setMessage(
 				getResources().getString(R.string.areyousure))
@@ -378,11 +383,17 @@ public class StorageChooser extends Activity {
 					band = new File(secStorage+"/documents/OpenSong/Songs/Band");
 					various = new File(secStorage+"/documents/OpenSong/Songs/Various");
 					if (!band.exists()) {
-						band.mkdirs();
-					}
+						boolean domkdirs = band.mkdirs();
+                        if (!domkdirs) {
+                            Log.d("StorageChooser","Failed to create Band folder");
+                        }
+                    }
 					if (!various.exists()) {
-						various.mkdirs();
-					}
+						boolean domkdirs = various.mkdirs();
+                        if (!domkdirs) {
+                            Log.d("StorageChooser","Failed to create Various folder");
+                        }
+                    }
 					dir = new File(secStorage+"/documents/OpenSong/Songs"); 
 				}
 			} else {
@@ -391,11 +402,17 @@ public class StorageChooser extends Activity {
 					band = new File(defStorage+"/documents/OpenSong/Songs/Band");
 					various = new File(defStorage+"/documents/OpenSong/Songs/Various");
 					if (!band.exists()) {
-						band.mkdirs();
-					}
+						boolean domkdirs = band.mkdirs();
+                        if (!domkdirs) {
+                            Log.d("StorageChooser","Failed to create Band folder");
+                        }
+                    }
 					if (!various.exists()) {
-						various.mkdirs();
-					}
+						boolean domkdirs = various.mkdirs();
+                        if (!domkdirs) {
+                            Log.d("StorageChooser","Failed to create Various folder");
+                        }
+                    }
 					dir = new File(defStorage+"/documents/OpenSong/Songs"); 
 				}
 			}
@@ -408,26 +425,26 @@ public class StorageChooser extends Activity {
 				Log.e("tag", "Failed to get asset file list.", e);
 			}
 
-			for (String filename : files) {
-				InputStream in = null;
-				OutputStream out = null;
-				try {
-                    File checkFile = new File(dir+"/"+filename);
-                    if (!checkFile.exists()) {
-                        in = assetManager.open("Songs" + File.separator + filename);
-                        File outFile = new File(dir, filename);
-                        out = new FileOutputStream(outFile);
-                        copyFile(in, out);
-                        in.close();
-                        in = null;
-                        out.flush();
-                        out.close();
-                        out = null;
+            if (files!=null) {
+                for (String filename : files) {
+                    InputStream in;
+                    OutputStream out;
+                    try {
+                        File checkFile = new File(dir + "/" + filename);
+                        if (!checkFile.exists()) {
+                            in = assetManager.open("Songs" + File.separator + filename);
+                            File outFile = new File(dir, filename);
+                            out = new FileOutputStream(outFile);
+                            copyFile(in, out);
+                            in.close();
+                            out.flush();
+                            out.close();
+                        }
+                    } catch (IOException e) {
+                        Log.e("tag", "Failed to copy asset file: " + filename, e);
                     }
-				} catch (IOException e) {
-					Log.e("tag", "Failed to copy asset file: " + filename, e);
-				}
-			}
+                }
+            }
 
 			String[] files_band = null;
 			try {
@@ -436,26 +453,26 @@ public class StorageChooser extends Activity {
 				Log.e("tag", "Failed to get asset file list.", e);
 			}
 
-			for (String filename : files_band) {
-				InputStream in = null;
-				OutputStream out = null;
-				try {
-                    File checkFile = new File(dir+"/Band/"+filename);
-                    if (!checkFile.exists()) {
-                        in = assetManager.open("Songs" + File.separator + "Band" + File.separator + filename);
-                        File outFile = new File(band, filename);
-                        out = new FileOutputStream(outFile);
-                        copyFile(in, out);
-                        in.close();
-                        in = null;
-                        out.flush();
-                        out.close();
-                        out = null;
+            if (files_band!=null) {
+                for (String filename : files_band) {
+                    InputStream in;
+                    OutputStream out;
+                    try {
+                        File checkFile = new File(dir + "/Band/" + filename);
+                        if (!checkFile.exists()) {
+                            in = assetManager.open("Songs" + File.separator + "Band" + File.separator + filename);
+                            File outFile = new File(band, filename);
+                            out = new FileOutputStream(outFile);
+                            copyFile(in, out);
+                            in.close();
+                            out.flush();
+                            out.close();
+                        }
+                    } catch (IOException e) {
+                        Log.e("tag", "Failed to copy asset file: " + filename, e);
                     }
-				} catch (IOException e) {
-					Log.e("tag", "Failed to copy asset file: " + filename, e);
-				}
-			}
+                }
+            }
 
 			String[] files_various = null;
 			try {
@@ -464,26 +481,26 @@ public class StorageChooser extends Activity {
 				Log.e("tag", "Failed to get asset file list.", e);
 			}
 
-			for (String filename : files_various) {
-				InputStream in = null;
-				OutputStream out = null;
-				try {
-                    File checkFile = new File(dir+"/Various/"+filename);
-                    if (!checkFile.exists()) {
-                        in = assetManager.open("Songs" + File.separator + "Various" + File.separator + filename);
-                        File outFile = new File(various, filename);
-                        out = new FileOutputStream(outFile);
-                        copyFile(in, out);
-                        in.close();
-                        in = null;
-                        out.flush();
-                        out.close();
-                        out = null;
+            if (files_various!=null) {
+                for (String filename : files_various) {
+                    InputStream in;
+                    OutputStream out;
+                    try {
+                        File checkFile = new File(dir + "/Various/" + filename);
+                        if (!checkFile.exists()) {
+                            in = assetManager.open("Songs" + File.separator + "Various" + File.separator + filename);
+                            File outFile = new File(various, filename);
+                            out = new FileOutputStream(outFile);
+                            copyFile(in, out);
+                            in.close();
+                            out.flush();
+                            out.close();
+                        }
+                    } catch (IOException e) {
+                        Log.e("tag", "Failed to copy asset file: " + filename, e);
                     }
-				} catch (IOException e) {
-					Log.e("tag", "Failed to copy asset file: " + filename, e);
-				}
-			}
+                }
+            }
 			return null;
 		}
 	}

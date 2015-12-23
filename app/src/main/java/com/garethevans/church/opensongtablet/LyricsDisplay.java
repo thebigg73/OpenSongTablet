@@ -32,7 +32,7 @@ public class LyricsDisplay extends Activity {
 		// Get the number of rows to write!
 		FullscreenActivity.numrowstowrite = FullscreenActivity.myParsedLyrics.length;
 
-		// Go through the lines and remove underscores if the line isn't and image location
+		// Go through the lines and remove underscores if the line isn't an image location
 		for (int l=0;l<FullscreenActivity.numrowstowrite;l++) {
 			if (FullscreenActivity.myParsedLyrics[l].contains("_")) {
 				if (l>0 && !FullscreenActivity.myParsedLyrics[l].contains("["+FullscreenActivity.image+"_") && !FullscreenActivity.myParsedLyrics[l-1].contains("["+FullscreenActivity.image+"_")) {
@@ -68,12 +68,6 @@ public class LyricsDisplay extends Activity {
 		String holder_whatisthisblock = "lyrics";
 		for (int x = 0; x < FullscreenActivity.numrowstowrite; x++) {
 
-            // Get the length of the line
-            int charsinthisline = FullscreenActivity.myParsedLyrics[x].length();
-            if (charsinthisline > FullscreenActivity.maxcharsinline) {
-                // Set the new biggest line size
-                FullscreenActivity.maxcharsinline = charsinthisline;
-            }
 
             // If this isn't a chord line, replace lyric codings.  This means chord lines can have bar lines in them
             if (FullscreenActivity.myParsedLyrics[x].indexOf(".")!=0) {
@@ -314,7 +308,15 @@ public class LyricsDisplay extends Activity {
 					}
 				}
 			}
-        }
+
+			// Get the length of the line
+			int charsinthisline = FullscreenActivity.myParsedLyrics[x].length();
+			if (charsinthisline > FullscreenActivity.maxcharsinline) {
+				// Set the new biggest line size
+				FullscreenActivity.maxcharsinline = charsinthisline;
+			}
+
+		}
 
 		// NOW WE HAVE THE LONGEST LINE, GO THROUGH EACH ONE AND MAKE IT THIS LONG
 		if (!FullscreenActivity.whichSongFolder.contains("../Images/")) {

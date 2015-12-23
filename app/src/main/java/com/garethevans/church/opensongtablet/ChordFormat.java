@@ -17,66 +17,70 @@ public class ChordFormat extends Activity {
 	static String numeral2;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		// Load the user preferences
-		Preferences.loadPreferences();
-		
-		numeral = FullscreenActivity.chordFormat;
-		numeral2 = FullscreenActivity.alwaysPreferredChordFormat;
-		
-		// Set the screen and title
-		setContentView(R.layout.choose_chordformat);
+        super.onCreate(savedInstanceState);
 
-		getActionBar().setTitle(getResources().getString(R.string.choosechordformat));
-		radioGroup = (RadioGroup) findViewById(R.id.chordFormat);
-		radioGroup2 = (RadioGroup) findViewById(R.id.chordFormat_decideaction);
-		
-		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			
-			@Override
-			public void onCheckedChanged(RadioGroup group, int checkedId) {
+        // Load the user preferences
+        Preferences.loadPreferences();
 
-				switch (checkedId) {
-	            case R.id.chordFormat1:
-	                    numeral = "1";
-	                    break;
-	            case R.id.chordFormat2:
-	                    numeral = "2";
-	                    break;
-	            case R.id.chordFormat3:
-	                    numeral = "3";
-	                    break;
-	            case R.id.chordFormat4:
-	                numeral = "4";
-	                break;
-	            }
-			}
-		});
+        numeral = FullscreenActivity.chordFormat;
+        numeral2 = FullscreenActivity.alwaysPreferredChordFormat;
 
-		radioGroup2.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			
-			@Override
-			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				switch (checkedId) {
-	            case R.id.chordformat_check:
-	                    numeral2 = "N";
-	                    break;
-	            case R.id.chordformat_default:
-	                    numeral2 = "Y";
-	                    break;
-	            }
-			}
-		});
+        // Set the screen and title
+        setContentView(R.layout.choose_chordformat);
 
-		RadioButton radioButton1 = (RadioButton) findViewById(R.id.chordFormat1);
-		RadioButton radioButton2 = (RadioButton) findViewById(R.id.chordFormat2);
-		RadioButton radioButton3 = (RadioButton) findViewById(R.id.chordFormat3);
-		RadioButton radioButton4 = (RadioButton) findViewById(R.id.chordFormat4);
-		RadioButton radioButton5 = (RadioButton) findViewById(R.id.chordformat_check);
-		RadioButton radioButton6 = (RadioButton) findViewById(R.id.chordformat_default);
-		
-		// Set the appropriate radiobutton
+        getActionBar().setTitle(getResources().getString(R.string.choosechordformat));
+        radioGroup = (RadioGroup) findViewById(R.id.chordFormat);
+        radioGroup2 = (RadioGroup) findViewById(R.id.chordFormat_decideaction);
+
+        radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                switch (checkedId) {
+                    case R.id.chordFormat1:
+                        numeral = "1";
+                        break;
+                    case R.id.chordFormat2:
+                        numeral = "2";
+                        break;
+                    case R.id.chordFormat3:
+                        numeral = "3";
+                        break;
+                    case R.id.chordFormat4:
+                        numeral = "4";
+                        break;
+                    case R.id.chordFormat5:
+                        numeral = "5";
+                        break;
+                }
+            }
+        });
+
+        radioGroup2.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.chordformat_check:
+                        numeral2 = "N";
+                        break;
+                    case R.id.chordformat_default:
+                        numeral2 = "Y";
+                        break;
+                }
+            }
+        });
+
+        RadioButton radioButton1 = (RadioButton) findViewById(R.id.chordFormat1);
+        RadioButton radioButton2 = (RadioButton) findViewById(R.id.chordFormat2);
+        RadioButton radioButton3 = (RadioButton) findViewById(R.id.chordFormat3);
+        RadioButton radioButton4 = (RadioButton) findViewById(R.id.chordFormat4);
+        RadioButton radioButton5 = (RadioButton) findViewById(R.id.chordFormat5);
+        RadioButton radioButton6 = (RadioButton) findViewById(R.id.chordformat_check);
+        RadioButton radioButton7 = (RadioButton) findViewById(R.id.chordformat_default);
+
+        // Set the appropriate radiobutton
         switch (FullscreenActivity.chordFormat) {
             case "1":
                 radioButton1.setChecked(true);
@@ -90,14 +94,17 @@ public class ChordFormat extends Activity {
             case "4":
                 radioButton4.setChecked(true);
                 break;
+            case "5":
+                radioButton5.setChecked(true);
+                break;
         }
-		
-		if (FullscreenActivity.alwaysPreferredChordFormat.equals("N")) {
-			radioButton5.setChecked(true);
-		} else {
-			radioButton6.setChecked(true);
-		}
-}
+
+        if (FullscreenActivity.alwaysPreferredChordFormat.equals("N")) {
+            radioButton6.setChecked(true);
+        } else {
+            radioButton7.setChecked(true);
+        }
+    }
 	
 	@Override
 	public void onBackPressed() {
@@ -114,7 +121,5 @@ public class ChordFormat extends Activity {
 		main.setClass(ChordFormat.this, FullscreenActivity.class);
 		startActivity(main);
 		finish();
-		
 	}
-
 }

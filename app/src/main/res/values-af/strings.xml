@@ -107,10 +107,7 @@
 	<string name="options_options_pedal">"Ken voet pedaal"</string>
 	<string name="options_options_help">"Help (Online)"</string>
 	<string name="options_options_start">"Gaan Terug na die begin skerm"</string>
-							
-			
-	
-    
+
     <string name="customgestures">"Ken persoonlike gebare"</string>    
     <string name="doubleTap">"Kies dubbel tap aksie"</string>
     <string name="longPress">"Kies 'n lang pers aksie"</string>
@@ -161,8 +158,7 @@
 	<string name="nodisplays">"Geen eksterne uitstallings verbind . Koppel aan 'n sekondêre vertoning met behulp van 'n HDMI-uitset of MiraCast versoenbaar draadloos vertoon ."</string>
     <string name="extradisplay">"Sekondêre vertoning bespeur . Liedjies sal op die sekondêre vertoning vertoon word."</string>
 	<string name="beta">"Beta funksie - nog foute en beeld / display opset is nog nie beskikbaar nie . Verwag crashes !"</string>
-    
-	
+
     <string name="songnamealreadytaken">"Ongelukkig is hierdie liedjie titel / lêernaam is reeds gebruik ( \'n voorstel kan \'n weergawe nommer toe te voeg tot die einde )."</string>
     <string name="chordiesearch">"Online soek by www.chordie.com"</string>
     <string name="ultimateguitarsearch">Online soek by Ultimate-Guitar.com</string>
@@ -187,32 +183,15 @@
 	<string name="intro_songsfolder">"Die aansoek lyk vir 'n gids in jou dokumente genoem 'OpenSong / Songs \"en as dit nie kan vind nie, dit skep dit vir jou. Dit spaar dan 'n enkele liedjie genaamd \"Love ewige\", een van my eie liedjies, na die gids (anders sou jy nie in staat wees om iets te doen met die jeug!). Jou eie OpenSong liedjies te gebruik, skryf hulle op die dokumente / OpenSong / Songs / gids. Jy kan een vlak van submappen in jou Songs gids. \ N \ n Die inligting kom ook saam met 700 + songs wat jy kan gebruik, maar hou in gedagte is jy verantwoordelik vir die voldoening aan enige potensiële probleme met kopiereg en jy gebruik dit op jou eie risiko!"</string>
 		
 	<string name="intro_dropbox">"As jy wil Songs / stelle te gebruik deur 'n Dropbox rekening (kan groepe dieselfde toegang tot inligting), sal jy 'n app wat toelaat dat die sinchroniseer van Dropbox lêers met jou tablet te installeer. Ongelukkig is die amptelike Dropbox inligting nie 'n plaaslike gids te gebruik in dieselfde manier as die lessenaar inligting nie \ n \ n A (gratis) artikels wat ek sou aanbeveel is DropSync wat doen dit vir jou.. As jy wil om dit te doen, sou ek aanbeveel die Herstel van die Songs gids op jou tablet (knoppie hierbo) eerste sodat jy nie met my weergawes oorskryf nie enige liedjies op jou Dropbox rekening! \ N \ n Wanneer die opstel DropSync, sinchroniseer jou Dropbox OpenSong gids met jou / dokumente / OpenSong / gids en laat 2 way sync (pluk die belangrikste OpenSong gids sal toelaat dat beide liedjies en stel om te gesinchroniseer word). \ N Dit sal neem om 'n n paar minute (afhangende van die aantal van die liedjies wat jy het) op die eerste termyn. Standard disclaimer - ek is nie verantwoordelik vir enige verlies van die liedjies op jou Dropbox gids! Jy doen dit op jou eie risiko. \ N \ n Ek het egter die opstel op my selfoon en dit alles lyk seemlessly werk (die verstek sync skedule is 1 uur) op die DropSync inligting, maar jy kan dit verander)."</string>
-	    
-	
-	
-	
+
 	<string name="intro_future">"Ongelukkig het ek self nog nie 'n iPad / Mac, so ek is nie in staat om te ontwikkel op die platform (donasies welkom .....), maar ek beoog om te hou die verbetering van hierdie inligting mettertyd. Ek het regtig wou net om te deel wat ek reeds gedoen het in die hoop dat iemand anders vind dit nuttig."</string>
 		
 	<string name="intro_help">"By die gebruik van die jeug, 'n slag 'die spyskaart aan die linkerkant 'n lied en 'n slag' die spyskaart van die reg is vir verskeie ander opsies om van te kies. \ N \ n lang druk op 'n lied in die linker menu sal die liedjie by jou stel. Lank op 'n liedjie te druk in jou stel sal dit verwyder. \ N \ n Sets kan vanaf gelaai word of gestoor word op 'OpenSong / Stelle 'n gids. Lank op 'n gered set druk sal dit uit jou toestel verwyder. \ N \ n Jy kan nou deel gered stelle en enige van jou liedjies via e-pos, Dropbox, ens
 	"</string>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	<string name="rename">"Voer 'n nuwe lêer naam vir hierdie liedjie (dit is hoe dit in jou liedjie spyskaart sal verskyn)"</string>
 	<string name="renametitle">"Hernoem"</string>
-			
-	
+
 	<string name="copyresources">"Klik hier verskeie liedjies te installeer / werk \n U is verantwoordelik vir die Copyright"</string>
 	<string name="gotosong">"KLIK HIER \ n OOP SONG kyker BEGIN"</string>
 	<string name="wipesongs">"Herstel my plaaslike liedjies gids"</string>
@@ -236,11 +215,7 @@
 	<string name="toggleScrollBeforeSwipe">"Toggle scroll voor die volgende/vorige lied"</string>
 	<string name="toggleScrollBeforeSwipeToggle">"Vorige/Volgende knoppies kan ook scroll eers is nou"</string>
     <string name="toggleLandscapeColumns">"Landscape kolom siening is nou"</string>
-			
-		
 
-	
-	
 	<string name="exportcurrentsong">"Deel die huidige liedjie"</string>
 	<string name="exportsavedset">"Deel die gered stel"</string>
 	<string name="importnewsong">"Voer 'n lied"</string>
@@ -251,7 +226,6 @@
 	<string name="hasnotbeenimported">"is nie ingevoer nie - daar was 'n probleem!"</string>			
 		
 	<string name="add_song_to_set">"Voeg huidige liedjie te stel"</string>
-	
 
 	<string name="edit_song_title">"Song title"</string>
 	<string name="edit_song_author">"Skrywer"</string>
@@ -278,9 +252,6 @@
     <string name="edit_song_restrictions">"Beperkings"</string>
     <string name="edit_song_books">"Boeke lied behoort aan"</string>
     <string name="edit_song_pitch">"Pitch pyp notas vir lied"</string>  
-	
-	
-	
 
 	<string name="show_general_advanced">"Toggle algemene / gevorderde velde"</string>
 	<string name="edit_song_capo_print">"Print Capo akkoorde"</string>

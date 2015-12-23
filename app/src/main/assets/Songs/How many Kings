@@ -15,7 +15,7 @@
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key>B</key>
+  <key>G</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -24,46 +24,47 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[V1]
-.B                                      
+.G                                      
  Follow the star to a place unexpected, 
-.G#m                                            E
+.Em                                            Am
  Would you believe after all we’ve projected, a child in a manger
-.B
+.G
  Lowly and small, the weakest of all
-.  G#m                                     E
+.  Em                                     Am
  Unlikeliness hero, wrapped in his mothers shawl, just a child
-.                         F# (ring out)
+.                         D (ring out)
  Is this who we’ve waited for?
 
 [C]
-.B
+.G
  How many kings, stepped down from their thrones?
-.G#m
+.Em
  How many lords have abandoned their homes?
-.E                                          F# (1/2 bar)
+.Am                                       D (1/2 bar)
  How many greats have become the least for me?
-.B
+.G
  How many Gods have poured out their hearts
-.G#m
+.   Em
  To romance a world that has torn all apart?
-.E                                       F#
+.Am                                     D
  How many fathers gave up their sons for me?
 
 [V2]
-.B
- Bringing our gifts for the newborn savior
-.G#m                                         E
+.G
+ Bringing our gifts for the newborn saviour
+.Em                                        Am
  All that we have whether costly or meek, because we believe
-.B 
- Gold for his honor and frankincense for his pleasure
-.G#m                                   E
+.G                                            (Em)
+ Gold for his honour and frankincense for his pleasure
+.Em                                   Am
  And myrrh for the cross he’ll suffer, do you believe, 
-.                         F#
+.                         D
  Is this who we’ve waited for?   (It's who we've waited for...)
 
-[C]</lyrics>
-  <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+[C]
+</lyrics>
 </song>

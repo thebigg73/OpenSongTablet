@@ -4,17 +4,26 @@
   <author>G. Bonner - A. Gordon</author>
   <copyright>Alley Music/Leiber-Stoller Songs</copyright>
   <presentation></presentation>
-  <ccli></ccli>
+  <hymn_number></hymn_number>
   <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <theme></theme>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <key>F#m</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[V1]
 .F#m                                         E
  Imagine me and you, I do, I think about you day and night, it's only right
@@ -58,7 +67,8 @@
  So happy together, So happy together
 .F#m       C# F#m      C#
  (ba-ba-ba-ba ba-ba-ba-ba)</lyrics>
-  <hymn_number></hymn_number>
-  <linked_songs/>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

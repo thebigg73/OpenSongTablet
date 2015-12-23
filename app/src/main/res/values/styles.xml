@@ -5,7 +5,7 @@
 
     <style name="AltAppBaseTheme" parent="android:Theme.Holo">
     </style>
-    
+
     <style name="AppTheme" parent="AppBaseTheme">
     </style>
 

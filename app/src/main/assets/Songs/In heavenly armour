@@ -5,7 +5,7 @@
   <copyright>1984 Fairhill / Word Music UK</copyright>
   <presentation></presentation>
   <hymn_number>51</hymn_number>
-  <capo print="false"></capo>
+  <capo print="true">3</capo>
   <tempo></tempo>
   <time_sig></time_sig>
   <duration></duration>
@@ -24,9 +24,6 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
-  <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  <custom_chords></custom_chords>
   <lyrics>[V1]
 .   Gm                    F         Gm
  In Heavenly armour we'll enter the land
@@ -55,4 +52,7 @@
  Take courage my friend your redemption is near
  The battle belongs to the Lord
 </lyrics>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
 </song>

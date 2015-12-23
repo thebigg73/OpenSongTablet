@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,8 +126,12 @@ public class PopUpImportExternalFile extends DialogFragment {
                 break;
             case "file":
                 try {
-                    inputStream = new FileInputStream(FullscreenActivity.file_location);
-                    FullscreenActivity.file_contents = LoadXML.readTextFile(inputStream);
+                    if (FullscreenActivity.file_name.endsWith(".ost") ||
+                            FullscreenActivity.file_name.endsWith(".osts")) {
+                        inputStream = new FileInputStream(FullscreenActivity.file_location);
+                        FullscreenActivity.file_contents = LoadXML.readTextFile(inputStream);
+                    }
+
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -135,8 +140,6 @@ public class PopUpImportExternalFile extends DialogFragment {
                 dismiss();
                 break;
         }
-
-
 
         if (FullscreenActivity.file_name.endsWith(".ost")) {
             // This is definitely a song
@@ -257,14 +260,28 @@ public class PopUpImportExternalFile extends DialogFragment {
                 } else {
                     FullscreenActivity.myToastMessage = getResources().getString(R.string.ok);
                     File from = new File(FullscreenActivity.file_location);
-                    if (from.renameTo(testfile)) {
+
+                    try {
+                        InputStream in = new FileInputStream(from);
+                        OutputStream out = new FileOutputStream(testfile);
+
+                        // Transfer bytes from in to out
+                        byte[] buf = new byte[1024];
+                        int len;
+                        while ((len = in.read(buf)) > 0) {
+                            out.write(buf, 0, len);
+                        }
+                        in.close();
+                        out.close();
                         FullscreenActivity.songfilename = FullscreenActivity.file_name;
                         FullscreenActivity.whichSongFolder = moveToFolder;
                         mListener.refreshAll();
                         dismiss();
-                    } else {
+
+                    } catch (Exception e) {
                         Toast.makeText(getActivity(), getResources().getString(R.string.no), Toast.LENGTH_LONG).show();
                     }
+
                 }
             }
         });

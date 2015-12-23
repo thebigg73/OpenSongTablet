@@ -11,7 +11,7 @@
   <duration></duration>
   <ccli>2728478</ccli>
   <theme>Church: Commitment/Obedience; </theme>
-  <alttheme></alttheme>
+  <alttheme>Church: Commitment/Obedience; </alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
@@ -31,7 +31,7 @@
  Naught be all else to me|Save that Thou art;||
 .A            E                    A
  Thou my best thought|by day or by night,
-.E                       A2          E
+.E                       D.          E
  Waking or sleeping,|Thy presence my light.
  
 [V2]
@@ -58,6 +58,6 @@
  Heart of my own heart,|whatever befall,
  Still be my Vision,|O Ruler of all.</lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
 </song>

@@ -64,6 +64,13 @@
                 android:id="@+id/chordFormat4Radio"
                 android:textSize="12sp" />
 
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/chordFormat5"
+                android:id="@+id/chordFormat5Radio"
+                android:textSize="12sp" />
+
         </RadioGroup>
 
         <RelativeLayout

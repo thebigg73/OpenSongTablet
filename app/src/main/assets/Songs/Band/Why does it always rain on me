@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
   <title>Why does it always rain on me</title>
+  <author>Travis</author>
+  <copyright></copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>E</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[INTRO]
-.E	Bm	A	A/G#    A/F#    A/E	x2	
+.E    Bm    A    A/G#    A/F#    A/E    x2    
 
 [V1]
 .E                      C#m
@@ -17,7 +40,7 @@
 [C]
 .E                  B
  Why does it always rain on me,
-.A	E/G#	 F#m             A/E
+.A    E/G#     F#m             A/E
  Is it because I lied when I was seventeen
 .E                  B
  Why does it always rain on me, 
@@ -30,11 +53,11 @@
  Sunny days, where have you gone
  I get the strangest feeling you belong
 
-[C]	
+[C]    
 ;Why does it always.......
 
-[B]	
-.C#m              E/B	        
+[B]    
+.C#m              E/B            
  Oh where did the blue skies go, 
 .C#m           E/B      D  A/C# Bm A  B
  And why is it raining so,   it's so cold
@@ -45,36 +68,23 @@
  Sunny days, where have you gone
  I get the strangest feeling you belong
 
-[C]	
+[C]    
 ;Why does it always.......
 
-[B]	
+[B]    
  Oh where did the blue skies go, 
  And why is it raining so,   it's so cold
 
-[C]	
+[C]    
 ;Why does it always.......
 
 [OUTRO]
-.E	            Bm          A A/G# A/F# A/E
- Why does it always rain on me, 		
-.E	            Bm      A A/G#   A/F#  A/E  E
+.E                Bm          A A/G# A/F# A/E
+ Why does it always rain on me,         
+.E                Bm      A A/G#   A/F#  A/E  E
  Why does it always rain on .......</lyrics>
-  <author>Travis</author>
-  <copyright></copyright>
-  <hymn_number></hymn_number>
-  <presentation></presentation>
-  <ccli></ccli>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <theme></theme>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

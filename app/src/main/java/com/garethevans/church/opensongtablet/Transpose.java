@@ -52,7 +52,8 @@ public class Transpose extends Activity {
 				// If chordFormat == 1 --> Standard chord notation
 				// If chordFormat == 2 --> Eastern European (B/H)
 				// If chordFormat == 3 --> Eastern European (B/H) and is/es/s
-				// If chordFormat == 4 --> Doh a deer
+				// If chordFormat == 4 --> Doh a deer *** NO TRANSPOSE NEEDED OTHER THAN KEY ***
+				// If chordFormat == 5 --> Nashville  *** NO TRANSPOSE NEEDED OTHER THAN KEY ***
 
 				// Do the sharps first
 				// A=0 A#/Bb=1 B=2 C=3 C#/Db=4 D=5
@@ -286,6 +287,7 @@ public class Transpose extends Activity {
 						//Doh a deer
 
 						break;
+/*
 					case "4":
 						//Do all sharps
 						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Do#", "$.4.$");
@@ -313,10 +315,8 @@ public class Transpose extends Activity {
 						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Si", "$.2.$");
 
 						break;
+*/
 				}
-				
-				
-				
 				
 				if (FullscreenActivity.transposeDirection.equals("+1")) {
 					// Put the numbers up by one.
@@ -382,7 +382,6 @@ public class Transpose extends Activity {
 					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.0.$", "$.1.$");
 					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.12.$", "$.0.$");
 
-
 					}
 				}
 
@@ -408,7 +407,6 @@ public class Transpose extends Activity {
 					FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.11.$", "$.10.$");
 					FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.-1.$", "$.11.$");
 
-				
 					FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.30.$", "$.29.$");
 					FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.31.$", "$.30.$");
 					FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.32.$", "$.31.$");
@@ -422,7 +420,6 @@ public class Transpose extends Activity {
 					FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.40.$", "$.39.$");
 					FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.41.$", "$.40.$");
 					FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.29.$", "$.41.$");
-
 					
 					FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.50.$", "$.49.$");
 					FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.51.$", "$.50.$");
@@ -464,17 +461,17 @@ public class Transpose extends Activity {
 				FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.10.$", "G");
 
 				if (FullscreenActivity.transposeStyle.equals("flats")) {
-					FullscreenActivity.mKey = FullscreenActivity.mKey	.replace("$.1.$", "Bb");
-					FullscreenActivity.mKey = FullscreenActivity.mKey	.replace("$.4.$", "Db");
-					FullscreenActivity.mKey = FullscreenActivity.mKey	.replace("$.6.$", "Eb");
-					FullscreenActivity.mKey = FullscreenActivity.mKey	.replace("$.9.$", "Gb");
-					FullscreenActivity.mKey = FullscreenActivity.mKey	.replace("$.11.$", "Ab");
+					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.1.$", "Bb");
+					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.4.$", "Db");
+					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.6.$", "Eb");
+					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.9.$", "Gb");
+					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.11.$", "Ab");
 				} else {
-					FullscreenActivity.mKey = FullscreenActivity.mKey	.replace("$.1.$", "A#");
-					FullscreenActivity.mKey = FullscreenActivity.mKey	.replace("$.4.$", "C#");
-					FullscreenActivity.mKey = FullscreenActivity.mKey	.replace("$.6.$", "D#");
-					FullscreenActivity.mKey = FullscreenActivity.mKey	.replace("$.9.$", "F#");
-					FullscreenActivity.mKey = FullscreenActivity.mKey	.replace("$.11.$", "G#");
+					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.1.$", "A#");
+					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.4.$", "C#");
+					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.6.$", "D#");
+					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.9.$", "F#");
+					FullscreenActivity.mKey = FullscreenActivity.mKey.replace("$.11.$", "G#");
 				}
 
 				// Normal chord format
@@ -659,6 +656,7 @@ public class Transpose extends Activity {
 							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.61.$", ".gis");
 						}
 
+/*
 
 						// Do a deer
 						break;
@@ -721,18 +719,13 @@ public class Transpose extends Activity {
 						}
 
 						break;
+*/
 				}
-
-
-				
-				
-				
 
 			}
 			// Add all the lines back up as a string
 			FullscreenActivity.transposedLyrics += FullscreenActivity.myTransposedLyrics[x]
 					+ "\n";
-
 		}
 
 
@@ -953,6 +946,7 @@ public class Transpose extends Activity {
 				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace(" g", "$.10.$");
 				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace(".g", "$.10.$");
 
+/*
 				// Do a deer
 				break;
 			case "4":
@@ -981,6 +975,7 @@ public class Transpose extends Activity {
 				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Sol", "$.10.$");
 
 				break;
+*/
 		}
 
 		
@@ -1033,12 +1028,7 @@ public class Transpose extends Activity {
 			FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.61.$", "$.60.$");
 			FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.49.$", "$.61.$");
 		}
-		
-		
-		
-		
-		
-		
+
 		// If normal chords
 		switch (FullscreenActivity.chordFormat) {
 			case "1":
@@ -1150,6 +1140,7 @@ public class Transpose extends Activity {
 					FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.41.$", " gis");
 					FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.61.$", ".gis");
 				}
+/*
 
 				// Do a deer
 				break;
@@ -1178,6 +1169,7 @@ public class Transpose extends Activity {
 				}
 
 				break;
+*/
 		}
 		
 
@@ -1195,6 +1187,7 @@ public class Transpose extends Activity {
 		boolean contains_es_is = false;
 		boolean contains_H = false;
 		boolean contains_do = false;
+        boolean contains_nash = false;
 
 		// Check if the user is using the same chord format as the song
 		// Go through the chord lines and look for clues
@@ -1218,26 +1211,35 @@ public class Transpose extends Activity {
 						FullscreenActivity.myTransposedLyrics[x].contains("Sol") || FullscreenActivity.myTransposedLyrics[x].contains("La") ||
 						FullscreenActivity.myTransposedLyrics[x].contains("Si")) {
 					contains_do = true;
-				}
+				} else if (FullscreenActivity.myTransposedLyrics[x].contains(".2") || FullscreenActivity.myTransposedLyrics[x].contains(" 2") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(".3") || FullscreenActivity.myTransposedLyrics[x].contains(" 3") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(".4") || FullscreenActivity.myTransposedLyrics[x].contains(" 4") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(".5") || FullscreenActivity.myTransposedLyrics[x].contains(" 5") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(".6") || FullscreenActivity.myTransposedLyrics[x].contains(" 6") ||
+                        FullscreenActivity.myTransposedLyrics[x].contains(".7") || FullscreenActivity.myTransposedLyrics[x].contains(" 7")) {
+                    contains_nash = true;
+                }
 			}
 		}
 
-		int detected = 0;
+		//int detected = 0;
 		// Set the chord style detected
 		if (contains_do && FullscreenActivity.alwaysPreferredChordFormat.equals("N")) {
 			FullscreenActivity.oldchordformat="4";
-			detected = 3;
+			//detected = 3;
 		} else if (contains_H && !contains_es_is && FullscreenActivity.alwaysPreferredChordFormat.equals("N")) {
 			FullscreenActivity.oldchordformat="2";
-			detected = 1;
+			//detected = 1;
 		} else if (contains_H || contains_es_is && FullscreenActivity.alwaysPreferredChordFormat.equals("N")) {
 			FullscreenActivity.oldchordformat="3";
-			detected = 2;
-		} else if (FullscreenActivity.alwaysPreferredChordFormat.equals("N")){
+			//detected = 2;
+		} else if (contains_nash && FullscreenActivity.alwaysPreferredChordFormat.equals("N")) {
+            FullscreenActivity.oldchordformat="5";
+            //detected = 4;
+        } else if (FullscreenActivity.alwaysPreferredChordFormat.equals("N")){
 			FullscreenActivity.oldchordformat="1";
-			detected = 0;
+			//detected = 0;
 		}
-
 		// Ok so the user chord format may not quite match the song - it might though!
 	}
 }

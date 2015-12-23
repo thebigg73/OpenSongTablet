@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.util.Log;
 
 public class UsrConvert extends Activity {
 
@@ -192,7 +193,7 @@ public class UsrConvert extends Activity {
                 + "  <linked_songs></linked_songs>\n"
                 + "  <pad_file></pad_file>\n"
                 + "  <custom_chords></custom_chords>\n"
-                + "  <link_youtube></custom_chords>\n"
+                + "  <link_youtube></link_youtube>\n"
                 + "  <link_web></link_web>\n"
                 + "  <link_audio></link_audio>\n"
                 + "  <link_other></link_other>\n"
@@ -200,10 +201,8 @@ public class UsrConvert extends Activity {
 
         // Save this song in the right format!
         // Makes sure all & are replaced with &amp;
-        FullscreenActivity.myXML = FullscreenActivity.myXML.replace("&amp;",
-                "&");
-        FullscreenActivity.myXML = FullscreenActivity.myXML.replace("&",
-                "&amp;");
+        FullscreenActivity.myXML = FullscreenActivity.myXML.replace("&amp;","&");
+        FullscreenActivity.myXML = FullscreenActivity.myXML.replace("&","&amp;");
 
         FullscreenActivity.myXML = FullscreenActivity.myXML.replace("\'","'");
         FullscreenActivity.myXML = FullscreenActivity.myXML.replace("Õ","'");
@@ -266,7 +265,10 @@ public class UsrConvert extends Activity {
         }
 
         // Do the renaming
-        from.renameTo(to);
+        boolean diditrename = from.renameTo(to);
+        if (!diditrename) {
+            Log.d ("UsrConvert","Error renaming");
+        }
         FullscreenActivity.songfilename = newSongTitle;
 
         // Load the songs

@@ -14,6 +14,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import android.app.Activity;
+import android.util.Log;
 
 public class ExportPreparer extends Activity {
 
@@ -80,9 +81,7 @@ public class ExportPreparer extends Activity {
 			inputStreamSet.close();
 			bufferedReaderSet.close();
 			inputStreamSet.close(); // close the file
-		} catch (java.io.FileNotFoundException e) {
-			// file doesn't exist
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
