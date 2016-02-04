@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-public class PopUpLinks extends DialogFragment {
+public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserFragment.MyInterface{
 
     ImageButton linkYouTube_ImageButton;
     ImageButton linkWeb_ImageButton;
@@ -33,6 +34,11 @@ public class PopUpLinks extends DialogFragment {
         PopUpLinks frag;
         frag = new PopUpLinks();
         return frag;
+    }
+
+    @Override
+    public void updateCustomStorage() {
+        Log.d("d","File chosen = "+ FullscreenActivity.filechosen);
     }
 
     public interface MyInterface {
@@ -133,6 +139,15 @@ public class PopUpLinks extends DialogFragment {
         linkOther_EditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+ /*               dismiss();
+                FullscreenActivity.myToastMessage = "link_other";
+                DialogFragment newFragment = PopUpDirectoryChooserFragment.newInstance();
+                Bundle args = new Bundle();
+                args.putString("type", "file");
+                newFragment.setArguments(args);
+                newFragment.show(getFragmentManager(), "dialog");*/
+
+
                 Intent i = new Intent(Intent.ACTION_GET_CONTENT);
                 i.setType("file/");
                 try {
@@ -168,9 +183,9 @@ public class PopUpLinks extends DialogFragment {
                 FullscreenActivity.mLinkOther = linkOther_EditText.getText().toString();
 
                 // Now resave the song with these new links
-                EditSong.prepareSongXML();
+                PopUpEditSongFragment.prepareSongXML();
                 try {
-                    EditSong.justSaveSongXML();
+                    PopUpEditSongFragment.justSaveSongXML();
                     dismiss();
                 } catch (Exception e) {
                     e.printStackTrace();

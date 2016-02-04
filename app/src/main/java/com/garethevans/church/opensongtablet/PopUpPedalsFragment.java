@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
 public class PopUpPedalsFragment extends DialogFragment {
 
@@ -28,10 +27,8 @@ public class PopUpPedalsFragment extends DialogFragment {
     Button pedalAutoScrollButton;
     Button pedalMetronomeButton;
     Button closePedalPopup;
-    RelativeLayout mainpopupPage;
 
     String assignWhich = "";
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,7 +36,6 @@ public class PopUpPedalsFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_pedals, container, false);
 
         // Initialise the views
-        mainpopupPage = (RelativeLayout) V.findViewById(R.id.mainpopupPage);
         pedalPreviousButton = (Button) V.findViewById(R.id.pedalPreviousButton);
         pedalNextButton = (Button) V.findViewById(R.id.pedalNextButton);
         pedalDownButton = (Button) V.findViewById(R.id.pedalDownButton);
@@ -138,13 +134,15 @@ public class PopUpPedalsFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
-                    pedalToggleScrollBeforeSwipeButton.setText(getResources().getString(R.string.toggleScrollBeforeSwipe) + "\n" + getResources().getString(R.string.currently) + "=" + getResources().getString(R.string.no));
+                    String text = getResources().getString(R.string.toggleScrollBeforeSwipe) + "\n" + getResources().getString(R.string.currently) + "=" + getResources().getString(R.string.no);
+                    pedalToggleScrollBeforeSwipeButton.setText(text);
                     FullscreenActivity.toggleScrollBeforeSwipe = "N";
                     FullscreenActivity.myToastMessage = getResources().getString(R.string.toggleScrollBeforeSwipeToggle) + " " + getResources().getString(R.string.off);
                     ShowToast.showToast(getActivity());
                 } else {
                     FullscreenActivity.toggleScrollBeforeSwipe = "Y";
-                    pedalToggleScrollBeforeSwipeButton.setText(getResources().getString(R.string.toggleScrollBeforeSwipe) + "\n" + getResources().getString(R.string.currently) + "=" + getResources().getString(R.string.yes));
+                    String text = getResources().getString(R.string.toggleScrollBeforeSwipe) + "\n" + getResources().getString(R.string.currently) + "=" + getResources().getString(R.string.yes);
+                    pedalToggleScrollBeforeSwipeButton.setText(text);
                     FullscreenActivity.myToastMessage = getResources().getString(R.string.toggleScrollBeforeSwipeToggle) + " " + getResources().getString(R.string.on);
                     ShowToast.showToast(getActivity());
                 }
@@ -167,53 +165,68 @@ public class PopUpPedalsFragment extends DialogFragment {
         pedalAutoScrollButton.setEnabled(true);
         pedalMetronomeButton.setEnabled(true);
         if (FullscreenActivity.pageturner_PREVIOUS==-1) {
-            pedalPreviousButton.setText(getResources().getString(R.string.pageturn_previous) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset));
+            String text = getResources().getString(R.string.pageturn_previous) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset);
+            pedalPreviousButton.setText(text);
         } else {
-            pedalPreviousButton.setText(getResources().getString(R.string.pageturn_previous) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + FullscreenActivity.pageturner_PREVIOUS);
+            String text = getResources().getString(R.string.pageturn_previous) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + FullscreenActivity.pageturner_PREVIOUS;
+            pedalPreviousButton.setText(text);
         }
 
         if (FullscreenActivity.pageturner_NEXT==-1) {
-            pedalNextButton.setText(getResources().getString(R.string.pageturn_next) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset));
+            String text = getResources().getString(R.string.pageturn_next) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset);
+            pedalNextButton.setText(text);
         } else {
-            pedalNextButton.setText(getResources().getString(R.string.pageturn_next) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + FullscreenActivity.pageturner_NEXT);
+            String text = getResources().getString(R.string.pageturn_next) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + FullscreenActivity.pageturner_NEXT;
+            pedalNextButton.setText(text);
         }
 
         if (FullscreenActivity.pageturner_UP==-1) {
-            pedalUpButton.setText(getResources().getString(R.string.pageturn_up) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset));
+            String text = getResources().getString(R.string.pageturn_up) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset);
+            pedalUpButton.setText(text);
         } else {
-            pedalUpButton.setText(getResources().getString(R.string.pageturn_up) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + FullscreenActivity.pageturner_UP);
+            String text = getResources().getString(R.string.pageturn_up) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + FullscreenActivity.pageturner_UP;
+            pedalUpButton.setText(text);
         }
 
         if (FullscreenActivity.pageturner_DOWN==-1) {
-            pedalDownButton.setText(getResources().getString(R.string.pageturn_down) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset));
+            String text = getResources().getString(R.string.pageturn_down) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset);
+            pedalDownButton.setText(text);
         } else {
-            pedalDownButton.setText(getResources().getString(R.string.pageturn_down) + "\n" + getResources().getString(R.string.currentkeycode) + "=" +  FullscreenActivity.pageturner_DOWN);
+            String text = getResources().getString(R.string.pageturn_down) + "\n" + getResources().getString(R.string.currentkeycode) + "=" +  FullscreenActivity.pageturner_DOWN;
+            pedalDownButton.setText(text);
         }
 
         if (FullscreenActivity.pageturner_PAD==-1) {
-            pedalPadButton.setText(getResources().getString(R.string.padPedalText) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset));
+            String text = getResources().getString(R.string.padPedalText) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset);
+            pedalPadButton.setText(text);
         } else {
-            pedalPadButton.setText(getResources().getString(R.string.padPedalText) + "\n" + getResources().getString(R.string.currentkeycode) + "=" +  FullscreenActivity.pageturner_PAD);
+            String text = getResources().getString(R.string.padPedalText) + "\n" + getResources().getString(R.string.currentkeycode) + "=" +  FullscreenActivity.pageturner_PAD;
+            pedalPadButton.setText(text);
         }
 
         if (FullscreenActivity.pageturner_AUTOSCROLL==-1) {
-            pedalAutoScrollButton.setText(getResources().getString(R.string.autoscrollPedalText) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset));
+            String text = getResources().getString(R.string.autoscrollPedalText) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset);
+            pedalAutoScrollButton.setText(text);
         } else {
-            pedalAutoScrollButton.setText(getResources().getString(R.string.autoscrollPedalText) + "\n" + getResources().getString(R.string.currentkeycode) + "=" +  FullscreenActivity.pageturner_AUTOSCROLL);
+            String text = getResources().getString(R.string.autoscrollPedalText) + "\n" + getResources().getString(R.string.currentkeycode) + "=" +  FullscreenActivity.pageturner_AUTOSCROLL;
+            pedalAutoScrollButton.setText(text);
         }
 
         if (FullscreenActivity.pageturner_METRONOME==-1) {
-            pedalMetronomeButton.setText(getResources().getString(R.string.metronomePedalText) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset));
+            String text = getResources().getString(R.string.metronomePedalText) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset);
+            pedalMetronomeButton.setText(text);
         } else {
-            pedalMetronomeButton.setText(getResources().getString(R.string.metronomePedalText) + "\n" + getResources().getString(R.string.currentkeycode) + "=" +  FullscreenActivity.pageturner_METRONOME);
+            String text = getResources().getString(R.string.metronomePedalText) + "\n" + getResources().getString(R.string.currentkeycode) + "=" +  FullscreenActivity.pageturner_METRONOME;
+            pedalMetronomeButton.setText(text);
         }
 
         if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
-            pedalToggleScrollBeforeSwipeButton.setText(getResources().getString(R.string.toggleScrollBeforeSwipe) + "\n" + getResources().getString(R.string.currently) + "=" + getResources().getString(R.string.yes));
+            String text = getResources().getString(R.string.toggleScrollBeforeSwipe) + "\n" + getResources().getString(R.string.currently) + "=" + getResources().getString(R.string.yes);
+            pedalToggleScrollBeforeSwipeButton.setText(text);
         } else {
-            pedalToggleScrollBeforeSwipeButton.setText(getResources().getString(R.string.toggleScrollBeforeSwipe) + "\n" + getResources().getString(R.string.currently) + "=" + getResources().getString(R.string.no));
+            String text = getResources().getString(R.string.toggleScrollBeforeSwipe) + "\n" + getResources().getString(R.string.currently) + "=" + getResources().getString(R.string.no);
+            pedalToggleScrollBeforeSwipeButton.setText(text);
         }
-
     }
 
     @Override
@@ -287,8 +300,6 @@ public class PopUpPedalsFragment extends DialogFragment {
         if (getDialog() == null) {
             return;
         }
-
         getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
     }
 }

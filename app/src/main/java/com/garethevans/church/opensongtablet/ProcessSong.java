@@ -141,6 +141,9 @@ public class ProcessSong extends Activity {
                 FullscreenActivity.pad_filename = "gsharpm";
                 FullscreenActivity.keyindex = 34;
                 break;
+            default:
+                FullscreenActivity.pad_filename = "";
+                FullscreenActivity.keyindex = 0;
         }
 
     }

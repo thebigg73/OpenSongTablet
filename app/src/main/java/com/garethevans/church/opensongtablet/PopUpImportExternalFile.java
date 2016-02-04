@@ -24,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 public class PopUpImportExternalFile extends DialogFragment {
@@ -126,8 +128,18 @@ public class PopUpImportExternalFile extends DialogFragment {
                 break;
             case "file":
                 try {
-                    if (FullscreenActivity.file_name.endsWith(".ost") ||
-                            FullscreenActivity.file_name.endsWith(".osts")) {
+                    //if (FullscreenActivity.file_name.endsWith(".ost") ||
+                    //        FullscreenActivity.file_name.endsWith(".osts"))
+                    if (!FullscreenActivity.file_name.endsWith(".backup") &&
+                            !FullscreenActivity.file_name.endsWith(".pdf") &&
+                            !FullscreenActivity.file_name.endsWith(".doc") &&
+                            !FullscreenActivity.file_name.endsWith(".docx") &&
+                            !FullscreenActivity.file_name.endsWith(".jpg") &&
+                            !FullscreenActivity.file_name.endsWith(".png") &&
+                            !FullscreenActivity.file_name.endsWith(".bmp") &&
+                            !FullscreenActivity.file_name.endsWith(".gif") &&
+                            !FullscreenActivity.file_name.endsWith(".zip") &&
+                            !FullscreenActivity.file_name.endsWith(".sqlite")) {
                         inputStream = new FileInputStream(FullscreenActivity.file_location);
                         FullscreenActivity.file_contents = LoadXML.readTextFile(inputStream);
                     }
@@ -140,6 +152,12 @@ public class PopUpImportExternalFile extends DialogFragment {
                 dismiss();
                 break;
         }
+
+        Log.d("d","file_name="+FullscreenActivity.file_name);
+        Log.d("d","file_location="+FullscreenActivity.file_location);
+        Log.d("d","file_contents="+FullscreenActivity.file_contents);
+        Log.d("d","file_type="+FullscreenActivity.file_type);
+        Log.d("d","scheme="+scheme);
 
         if (FullscreenActivity.file_name.endsWith(".ost")) {
             // This is definitely a song
@@ -168,19 +186,42 @@ public class PopUpImportExternalFile extends DialogFragment {
             // Move the file to the correct location
             moveToFolder = FullscreenActivity.homedir.toString();
             File importIt = new File (FullscreenActivity.file_location);
-            File newFile = new File (FullscreenActivity.homedir + "/" + FullscreenActivity.file_name);
+            File newFile = new File (moveToFolder + "/" + FullscreenActivity.file_name);
+            Log.d("d","importIt="+importIt);
+            Log.d("d","newFile="+newFile);
             if (importIt.renameTo(newFile)) {
+                Log.d("d","getting here");
                 // Now it is in the right location, open the onsong import popup;
                 dismiss();
                 mListener.onSongInstall();
             } else {
-                // Error, say no to the user
-                Toast.makeText(getActivity(), getResources().getString(R.string.no), Toast.LENGTH_LONG).show();
+                //have to copy instead
+                try {
+                    newFile.createNewFile();
+
+                    final RandomAccessFile file1 = new RandomAccessFile(importIt, "r");
+                    final RandomAccessFile file2 = new RandomAccessFile(newFile, "rw");
+
+                    file2.getChannel().write(file1.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, importIt.length()));
+
+                    file1.close();
+                    file2.close();
+                    dismiss();
+                    mListener.onSongInstall();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    dismiss();
+                }
             }
 
 
 
         } else {
+
+            if (FullscreenActivity.file_contents==null) {
+                FullscreenActivity.file_contents=getResources().getString(R.string.hasnotbeenimported);
+            }
+
             if (FullscreenActivity.file_contents.contains("<slide")) {
                 // Remove the 'choose folder' views as it will be saved to the sets folder
                 chooseFolder_Spinner.setVisibility(View.GONE);
@@ -192,6 +233,13 @@ public class PopUpImportExternalFile extends DialogFragment {
                 FullscreenActivity.file_type = getResources().getString(R.string.options_song);
             } else {
                 FullscreenActivity.file_type = getResources().getString(R.string.file_type_unknown);
+            }
+
+            if (FullscreenActivity.file_contents.equals(getResources().getString(R.string.hasnotbeenimported))) {
+                FullscreenActivity.myToastMessage = FullscreenActivity.file_contents;
+                FullscreenActivity.file_contents = FullscreenActivity.file_type + " " + FullscreenActivity.file_contents;
+                ShowToast.showToast(getActivity());
+                dismiss();
             }
         }
 

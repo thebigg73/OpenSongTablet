@@ -178,7 +178,7 @@
     
 	<string name="welcome">"OpenSong Musica Viewer \n Scritto da Gareth Evans"</string>
 		
-	<string name="intro">"Il OpenSong Musica Viewer utilizza brani creati in OpenSong e li visualizza sul vostro schermo del tablet. Si rivolge a musicisti di culto ed è molto un work in progress. Funziona meglio in modalità verticale, ma ho lasciato la modalità orizzontale disponibile (nel caso)."</string>
+	<string name="intro">"Il OpenSong Musica Viewer utilizza brani creati in OpenSong e li visualizza sul vostro schermo del tablet."</string>
 		
 	<string name="intro_songsfolder">"L'applicazione cerca una cartella nei documenti denominati «OpenSong / Songs 'e se non lo trova, lo crea per voi. Si salva una sola canzone che si chiama 'Amore eterno', una delle mie canzoni, la cartella (in caso contrario, non sarebbe in grado di fare qualsiasi cosa con l'app!). Per usare le proprie canzoni OpenSong, copiarli in Documenti / OpenSong / canzoni / cartelle. Si può avere un livello di sottocartelle all'interno della cartella Songs. \n \n L'app disponibile anche in bundle con 700 + canzoni che è possibile utilizzare, ma tenete a mente che è responsabile per avere aderito a eventuali problemi di copyright e li usa a vostra proprio rischio e pericolo!"</string>
 		
@@ -447,5 +447,20 @@
 	<string name="time_slide_pages">"Tempo per ogni diapositiva (s)"</string>
 	<string name="time_slide_pages_help">"Lascia in bianco per presentazione manuale"</string>
 	<string name="warning">"Questa opzione deve essere utilizzata solo per la modalità di presentazione. Essere consapevoli del fatto che questa funzione utilizza grandi quantità di memoria e può causare crash. Sei stato avvertito!"</string>
+	<string name="user_guide">"Guida utente"</string>
+	<string name="user_guide_text">"Si prega di prendere il tempo di leggere il manuale d\'uso prima di utilizzare l\'applicazione."</string>
+	<string name="average">"Media"</string>
+	<string name="maxvolrange">"Gamma indicatore del volume grafica"</string>
+	<string name="reset">"Reset"</string>
+	<string name="volval">"Valore di volume corrente"</string>
+	<string name="set_manage_swipe">"Swipe per rimuovere un elemento dall\'elenco set"</string>
+	<string name="set_manage_shuffle">"Shuffle"</string>
+	<string name="set_manage_click">"Clicca su una voce nel set per vederlo"</string>
+	<string name="storage_rationale">"L\'accesso allo storage è necessario per leggere e scrivere canzoni e set."</string>
+	<string name="microphone_rationale">"Registrazione con microfono / audio è necessario per accedere al fonometro."</string>
+	<string name="default_autoscroll">"Tempi Autoscroll Predefinito"</string>
+	<string name="autoscroll_default_or_prompt">"Se non è stata impostata una durata canzone dovrebbero essere utilizzati i valori predefiniti o vuoi essere chiesto ogni volta?"</string>
+	<string name="use_default">"Usa predefinito"</string>
+	<string name="ask">"Chiedi ogni volta"</string>
 
 </resources>

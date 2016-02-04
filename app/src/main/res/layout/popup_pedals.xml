@@ -60,6 +60,16 @@
                 android:padding="4dp"
                 android:text="@string/pageturn_next" />
 
+            <Button
+                android:id="@+id/pedalToggleScrollBeforeSwipeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="32dp"
+                android:background="@drawable/yellow_button"
+                android:padding="4dp"
+                android:text="@string/toggleScrollBeforeSwipe" />
+
             <TextView
                 android:id="@+id/textView17"
                 android:layout_width="match_parent"
@@ -94,16 +104,6 @@
                 android:background="@drawable/blue_button"
                 android:padding="4dp"
                 android:text="@string/pageturn_up" />
-
-            <Button
-                android:id="@+id/pedalToggleScrollBeforeSwipeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="32dp"
-                android:background="@drawable/yellow_button"
-                android:padding="4dp"
-                android:text="@string/toggleScrollBeforeSwipe" />
 
             <TextView
                 android:id="@+id/textView18"

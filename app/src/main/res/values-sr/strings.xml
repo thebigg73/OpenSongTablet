@@ -313,7 +313,7 @@
     
     <string name="welcome">"OpenSong Music Viewer \n Written by Gareth Evans"</string>
         
-    <string name="intro">"The OpenSong Music Viewer koristi pesme kreirane sa OpenSong i prikazuje ih na Vašem tablet ekranu. Namenjen je muzičarima i stalno je u razvoju. Najbolje radi u vertikalnoj orijentaciji, ali je dopuštena i horizontalna (ako baš mora)."</string>
+    <string name="intro">"The OpenSong Music Viewer koristi pesme kreirane sa OpenSong i prikazuje ih na Vašem tablet ekranu."</string>
         
     <string name="intro_songsfolder">"Aplikacija traži fasciklu unutar Documents fascikle koja se zove \'OpenSong/Songs\' i ako je ne može pronaći, pravi novu fasciklu sa ovim imenom. Zatim smešta jednu pesmu sa nazivom \'Love everlasting\', jednu od mojih autorskih pesama, u tu fasciklu (u suprotnom ne bi ništa mogli da radite sa aplikacijom). Da bi koristili Vaše OpenSong pesme, kopirajte ih u fasciklu Documents/OpenSong/Songs/ . Možete imati jedan nivo podfascikli unutar Vaše Songs fascikle.\n\n Aplikacija takođe dolazi sa mojom interpretacijom preko 700 pesama koje možete koristiti, ali imajte na umu da ste sami odgovorni za sve moguće copyright rizike koji mogu nastati!"</string>
         
@@ -497,6 +497,21 @@
     <string name="font_lyrics_line2">"love without measure"</string>
     <string name="font_chords_line1">"G"</string>
     <string name="font_chords_line2">"D/F#"</string>
-            
+    <string name="user_guide">"Uputstvo</string>
+    <string name="user_guide_text">"Molimo Vas da odvojite vreme da pročitate uputstvo pre korišćenja aplikacije.."</string>
+    <string name="average">"Prosečno"</string>
+    <string name="maxvolrange">"Grafički indikator nivoa zvuka"</string>
+    <string name="reset">"Reset"</string>
+    <string name="volval">"Trenutna jačina zvuka"</string>
+    <string name="set_manage_swipe">"Prevuci za uklanjanje stavke iz set liste"</string>
+    <string name="set_manage_shuffle">"Izmešati redosled"</string>
+    <string name="set_manage_click">"Kliknuti na stavku u set listi za pregled"</string>
+    <string name="storage_rationale">"Pristup Vašoj memoriji je neophodno za čitanje i zapisivanje pesmi i set listi."</string>
+    <string name="microphone_rationale">"Mikrofon / snimanje zvuka je neophodno za pristupanje merenju nivoa zvuka."</string>
+    <string name="default_autoscroll">"Unapred postavljena vremena za autoskrol"</string>
+    <string name="autoscroll_default_or_prompt">"Ako niste postavili dužinu pesme, da li da se koristi unapred postavljeno vreme ili da pitamo svaki put?"</string>
+    <string name="use_default">"Koristi unapred postavljeno vreme"</string>
+    <string name="ask">"Pitaj svaki put"</string>
+
 
 </resources>

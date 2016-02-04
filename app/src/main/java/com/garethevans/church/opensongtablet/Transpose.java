@@ -17,7 +17,7 @@ public class Transpose extends Activity {
 		FullscreenActivity.transposedLyrics = null;
 		FullscreenActivity.transposedLyrics = "";
 		FullscreenActivity.myTransposedLyrics = null;
-		FullscreenActivity.myTransposedLyrics = FullscreenActivity.myLyrics.split("\n");
+		FullscreenActivity.myTransposedLyrics = FullscreenActivity.mLyrics.split("\n");
 
 		oldchordformat = FullscreenActivity.oldchordformat;
 
@@ -45,8 +45,8 @@ public class Transpose extends Activity {
 		FullscreenActivity.mKey = FullscreenActivity.mKey.replace("E", "$.7.$");
 		FullscreenActivity.mKey = FullscreenActivity.mKey.replace("F", "$.8.$");
 		FullscreenActivity.mKey = FullscreenActivity.mKey.replace("G", "$.10.$");
-		
-		for (int x = 0; x < FullscreenActivity.numrowstowrite; x++) {
+
+		for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
 			if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
 				// Since this line has chords, do the changing!
 				// If chordFormat == 1 --> Standard chord notation
@@ -284,38 +284,7 @@ public class Transpose extends Activity {
 						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace(" g", "$.40.$");
 						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace(".g", "$.60.$");
 
-						//Doh a deer
-
 						break;
-/*
-					case "4":
-						//Do all sharps
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Do#", "$.4.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Re#", "$.6.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Mi#", "$.8.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Fa#", "$.9.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Sol#", "$.11.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("La#", "$.1.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Si#", "$.3.$");
-						// Do the flats next
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Dob", "$.2.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Reb", "$.4.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Mib", "$.6.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Fab", "$.7.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Solb", "$.9.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Lab", "$.11.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Sib", "$.1.$");
-						// Do the white notes next
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Do", "$.3.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Re", "$.5.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Mi", "$.7.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Fa", "$.8.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Sol", "$.10.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("La", "$.0.$");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("Si", "$.2.$");
-
-						break;
-*/
 				}
 				
 				if (FullscreenActivity.transposeDirection.equals("+1")) {
@@ -656,70 +625,7 @@ public class Transpose extends Activity {
 							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.61.$", ".gis");
 						}
 
-/*
 
-						// Do a deer
-						break;
-					case "4":
-						// Fix the naturals back to chords
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.0.$", "La");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.30.$", "La");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.50.$", "La");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.2.$", "Si");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.32.$", "Si");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.52.$", "Si");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.3.$", "Do");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.33.$", "Do");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.53.$", "Do");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.5.$", "Re");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.35.$", "Re");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.55.$", "Re");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.7.$", "Mi");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.37.$", "Mi");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.57.$", "Mi");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.8.$", "Fa");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.38.$", "Fa");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.58.$", "Fa");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.10.$", "Sol");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.40.$", "Sol");
-						FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.60.$", "Sol");
-
-						if (FullscreenActivity.transposeStyle.equals("flats")) {
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.1.$", "Sib");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.31.$", "Sib");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.51.$", "Sib");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.4.$", "Reb");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.34.$", "Reb");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.54.$", "Reb");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.6.$", "Mib");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.36.$", "Mib");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.56.$", "Mib");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.9.$", "Solb");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.39.$", "Solb");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.59.$", "Solb");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.11.$", "Lab");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.41.$", "Lab");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.61.$", "Lab");
-						} else {
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.1.$", "La#");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.31.$", "La#");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.51.$", "La#");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.4.$", "Do#");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.34.$", "Do#");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.54.$", "Do#");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.6.$", "Re#");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.36.$", "Re#");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.56.$", "Re#");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.9.$", "Fa#");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.39.$", "Fa#");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.59.$", "Fa#");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.11.$", "Sol#");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.41.$", "Sol#");
-							FullscreenActivity.myTransposedLyrics[x] = FullscreenActivity.myTransposedLyrics[x].replace("$.61.$", "Sol#");
-						}
-
-						break;
-*/
 				}
 
 			}
@@ -946,36 +852,7 @@ public class Transpose extends Activity {
 				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace(" g", "$.10.$");
 				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace(".g", "$.10.$");
 
-/*
-				// Do a deer
-				break;
-			case "4":
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("La#", "$.1.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Do#", "$.4.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Re#", "$.6.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Fa#", "$.9.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Sol#", "$.11.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Mi#", "$.8.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Si#", "$.3.$");
-				// Do the flats next
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Lab", "$.11.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Sib", "$.1.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Reb", "$.4.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Mib", "$.6.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Solb", "$.9.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Dob", "$.9.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Fab", "$.7.$");
-				// Do the white notes next
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("La", "$.0.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Si", "$.2.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Do", "$.3.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Re", "$.5.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Mi", "$.7.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Fa", "$.8.$");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("Sol", "$.10.$");
 
-				break;
-*/
 		}
 
 		
@@ -1140,36 +1017,6 @@ public class Transpose extends Activity {
 					FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.41.$", " gis");
 					FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.61.$", ".gis");
 				}
-/*
-
-				// Do a deer
-				break;
-			case "4":
-				// Fix the naturals back to chords
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.0.$", "La");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.2.$", "Si");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.3.$", "Do");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.5.$", "Re");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.7.$", "Mi");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.8.$", "Fa");
-				FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.10.$", "Sol");
-
-				if (FullscreenActivity.transposeStyle.equals("flats")) {
-					FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.1.$", "Sib");
-					FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.4.$", "Reb");
-					FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.6.$", "Mib");
-					FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.9.$", "Solb");
-					FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.11.$", "Lab");
-				} else {
-					FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.1.$", "La#");
-					FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.4.$", "Do#");
-					FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.6.$", "Re#");
-					FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.9.$", "Fa#");
-					FullscreenActivity.temptranspChords = FullscreenActivity.temptranspChords.replace("$.11.$", "Sol#");
-				}
-
-				break;
-*/
 		}
 		
 
@@ -1180,7 +1027,7 @@ public class Transpose extends Activity {
 		FullscreenActivity.transposedLyrics = null;
 		FullscreenActivity.transposedLyrics = "";
 		FullscreenActivity.myTransposedLyrics = null;
-		FullscreenActivity.myTransposedLyrics = FullscreenActivity.myLyrics.split("\n");
+		FullscreenActivity.myTransposedLyrics = FullscreenActivity.mLyrics.split("\n");
 
 		FullscreenActivity.oldchordformat = FullscreenActivity.chordFormat;
 
@@ -1191,7 +1038,7 @@ public class Transpose extends Activity {
 
 		// Check if the user is using the same chord format as the song
 		// Go through the chord lines and look for clues
-		for (int x = 0; x < FullscreenActivity.numrowstowrite; x++) {
+		for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
 			if (FullscreenActivity.myTransposedLyrics[x].indexOf(".")==0) {
 				// Chord line
 				if (FullscreenActivity.myTransposedLyrics[x].contains("es") || FullscreenActivity.myTransposedLyrics[x].contains("is") ||

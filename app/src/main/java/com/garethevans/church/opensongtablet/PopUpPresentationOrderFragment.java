@@ -84,9 +84,9 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
                 presorder.setText(m_mPresentation.getText().toString().trim());
                 presorder.setChecked(false);
                 presorder.setChecked(true);
-                EditSong.prepareSongXML();
+                PopUpEditSongFragment.prepareSongXML();
                 try {
-                    EditSong.justSaveSongXML();
+                    PopUpEditSongFragment.justSaveSongXML();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

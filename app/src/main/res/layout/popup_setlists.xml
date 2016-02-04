@@ -10,7 +10,9 @@
         android:choiceMode="singleChoice"
         android:layout_above="@+id/newSetPromptTitle"
         android:layout_alignLeft="@+id/newSetPromptTitle"
-        android:layout_alignStart="@+id/newSetPromptTitle" />
+        android:layout_alignStart="@+id/newSetPromptTitle"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:id="@+id/newSetPromptTitle"

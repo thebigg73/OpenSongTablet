@@ -12,7 +12,7 @@ public class ListSongFiles extends Activity {
 
     public static void listSongFolders() {
         FullscreenActivity.allfilesforsearch.clear();
-        File songfolder = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
+        File songfolder = new File(FullscreenActivity.dir.getAbsolutePath());
         File[] tempmyitems = null;
         if (songfolder.isDirectory()) {
             tempmyitems = songfolder.listFiles();
@@ -89,7 +89,7 @@ public class ListSongFiles extends Activity {
         FullscreenActivity.childSongs[0] = tempMainProperFiles.toArray(FullscreenActivity.childSongs[0]);
 
         for (int w=0;w<numactualdirs;w++) {
-            File currsongfolder = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/"+FullscreenActivity.mSongFolderNames[w]);
+            File currsongfolder = new File(FullscreenActivity.dir.getAbsolutePath() + "/"+FullscreenActivity.mSongFolderNames[w]);
             File[] tempmyfiles = currsongfolder.listFiles();
             // Go through this list and check if the item is a directory or a file.
             int tempnumfiles;

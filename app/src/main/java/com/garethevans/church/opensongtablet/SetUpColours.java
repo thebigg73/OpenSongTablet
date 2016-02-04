@@ -2,9 +2,9 @@
 
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 
-public class SetUpColours extends Activity {
+public class SetUpColours extends AppCompatActivity {
 
     public static void colours() {
         switch (FullscreenActivity.mDisplayTheme) {

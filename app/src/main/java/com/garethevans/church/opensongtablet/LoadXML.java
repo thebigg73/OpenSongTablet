@@ -12,7 +12,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import android.app.Activity;
 import android.os.Build;
-import android.util.Log;
 
 public class LoadXML extends Activity {
 
@@ -32,7 +31,6 @@ public class LoadXML extends Activity {
 	// This bit loads the lyrics from the required file
 	public static void loadXML() throws XmlPullParserException, IOException {
         System.gc();
-        Log.d("LoadXML", "LoadXML activity running");
         FullscreenActivity.myXML = null;
         FullscreenActivity.myXML = "";
 
@@ -255,11 +253,8 @@ public class LoadXML extends Activity {
                 //if (FullscreenActivity.myXML.contains("UTF-16")) {
                 if (utf.equals("UTF-16")) {
                     xpp.setInput(inputStream, "UTF-16");
-                    //FullscreenActivity.myXML = FullscreenActivity.myXML.replace("UTF-16","");
-                    Log.d("enc", "utf-16");
                 } else {
                     xpp.setInput(inputStream, "UTF-8");
-                    Log.d("enc", "utf-8");
                 }
 
                 int eventType;
@@ -307,6 +302,8 @@ public class LoadXML extends Activity {
                             FullscreenActivity.mTimeSig = xpp.nextText();
                         } else if (xpp.getName().equals("duration")) {
                             FullscreenActivity.mDuration = xpp.nextText();
+                        } else if (xpp.getName().equals("predelay")) {
+                            FullscreenActivity.mPreDelay = xpp.nextText();
                         } else if (xpp.getName().equals("books")) {
                             FullscreenActivity.mBooks = xpp.nextText();
                         } else if (xpp.getName().equals("midi")) {
@@ -346,6 +343,22 @@ public class LoadXML extends Activity {
             FullscreenActivity.mTempo = FullscreenActivity.mTempo.replace("Slow", "80");
             FullscreenActivity.mTempo = FullscreenActivity.mTempo.replace("Very Slow", "60");
             FullscreenActivity.mTempo = FullscreenActivity.mTempo.replaceAll("[\\D]", "");
+
+            if (!FullscreenActivity.mDuration.isEmpty()) {
+                try {
+                    FullscreenActivity.autoScrollDuration = Integer.parseInt(FullscreenActivity.mDuration.replaceAll("[\\D]",""));
+                } catch (Exception e) {
+                    FullscreenActivity.autoScrollDuration = -1;
+                }
+            }
+
+            if (!FullscreenActivity.mPreDelay.isEmpty()) {
+                try {
+                    FullscreenActivity.autoScrollDelay = Integer.parseInt(FullscreenActivity.mPreDelay.replaceAll("[\\D]",""));
+                } catch (Exception e) {
+                    FullscreenActivity.autoScrollDelay = -1;
+                }
+            }
 
         } else {
             if (filetype.equals("PDF")) {
@@ -409,10 +422,6 @@ public class LoadXML extends Activity {
             FullscreenActivity.whattodo = "customreusable_image";
         }
 
-        Log.d("loadXML","folder="+tempfile[0]);
-        Log.d("loadXML","songfilename="+tempfile[1]);
-        Log.d("loadXML","whichSongFolder="+FullscreenActivity.whichSongFolder);
-
         // Load up the XML
         try {
             loadXML();
@@ -441,15 +450,6 @@ public class LoadXML extends Activity {
         FullscreenActivity.mHymnNumber = temp_mHymnNumber;
         FullscreenActivity.mLyrics = temp_mLyrics;
         Preferences.savePreferences();
-
-        Log.d("load", "customreusable loaded");
-        Log.d("load","customslide_title="+FullscreenActivity.customslide_title);
-        Log.d("load","customslide_content="+FullscreenActivity.customslide_content);
-        Log.d("load","customimage_time="+FullscreenActivity.customimage_time);
-        Log.d("load","customimage_loop="+FullscreenActivity.customimage_loop);
-        Log.d("load","customimage_list="+FullscreenActivity.customimage_list);
-        Log.d("load","whattodo="+FullscreenActivity.whattodo);
-
     }
 
 	public static void initialiseSongTags() {
@@ -463,6 +463,7 @@ public class LoadXML extends Activity {
 		FullscreenActivity.mTempo = "";
 		FullscreenActivity.mTimeSig = "";
 		FullscreenActivity.mDuration = "";
+        FullscreenActivity.mPreDelay = "";
 		FullscreenActivity.mCCLI = "";
 		FullscreenActivity.mTheme = "";
 		FullscreenActivity.mAltTheme = "";

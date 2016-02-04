@@ -38,6 +38,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
     EditText edit_song_copyright;
     Spinner edit_song_key;
     EditText edit_song_duration;
+    SeekBar predelay_SeekBar;
+    TextView predelay_TextView;
     SeekBar edit_song_tempo;
     TextView tempo_text;
     Spinner edit_song_timesig;
@@ -153,6 +155,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         edit_song_copyright = (EditText) V.findViewById(R.id.edit_song_copyright);
         edit_song_key = (Spinner) V.findViewById(R.id.edit_song_key);
         edit_song_duration = (EditText) V.findViewById(R.id.edit_song_duration);
+        predelay_SeekBar = (SeekBar) V.findViewById(R.id.predelay_SeekBar);
+        predelay_TextView = (TextView) V.findViewById(R.id.predelay_TextView);
         edit_song_tempo = (SeekBar) V.findViewById(R.id.edit_song_tempo);
         tempo_text = (TextView) V.findViewById(R.id.tempo_text);
         edit_song_timesig = (Spinner) V.findViewById(R.id.edit_song_timesig);
@@ -320,6 +324,12 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
                 FullscreenActivity.mKeyLine = edit_song_key_line.getText().toString();
                 FullscreenActivity.mKey = edit_song_key.getItemAtPosition(edit_song_key.getSelectedItemPosition()).toString();
                 FullscreenActivity.mDuration = edit_song_duration.getText().toString();
+                int predelayval = predelay_SeekBar.getProgress();
+                if (predelayval==0) {
+                    FullscreenActivity.mPreDelay = "";
+                } else {
+                    FullscreenActivity.mPreDelay = ""+(predelayval-1);
+                }
                 FullscreenActivity.mBooks = edit_song_books.getText().toString();
                 FullscreenActivity.mMidi = edit_song_midi.getText().toString();
                 FullscreenActivity.mMidiIndex = edit_song_midi_index.getText().toString();
@@ -543,6 +553,18 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         edit_song_copyright.setText(FullscreenActivity.mCopyright);
         edit_song_presentation.setText(FullscreenActivity.mPresentation);
         edit_song_duration.setText(FullscreenActivity.mDuration);
+        if (FullscreenActivity.mPreDelay.isEmpty()) {
+            predelay_SeekBar.setProgress(0);
+            predelay_TextView.setText("");
+        } else {
+            int val=Integer.parseInt(FullscreenActivity.mPreDelay.replaceAll("[\\D]",""));
+            if (val<0) {
+                val=0;
+            }
+            String text = val + " s";
+            predelay_SeekBar.setProgress(val+1);
+            predelay_TextView.setText(text);
+        }
         edit_song_notes.setText(FullscreenActivity.mNotes);
         edit_song_duration.setText(FullscreenActivity.mDuration);
         edit_song_lyrics.setTypeface(Typeface.MONOSPACE);
@@ -813,7 +835,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         capo_print.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         edit_song_capo_print.setAdapter(capo_print);
         // Where is the key in the available array
-        List<String> capoprint_choice = Arrays.asList(getResources().getStringArray(R.array.capoprint));
+        // List<String> capoprint_choice = Arrays.asList(getResources().getStringArray(R.array.capoprint));
         switch (FullscreenActivity.mCapoPrint) {
             case "true":
                 edit_song_capo_print.setSelection(1);
@@ -866,6 +888,23 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         edit_song_tempo.setProgress(temposlider);
         edit_song_tempo.setOnSeekBarChangeListener(new seekBarListener());
 
+        predelay_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (progress==0) {
+                    predelay_TextView.setText("");
+                } else {
+                    String text = (progress-1)+"s";
+                    predelay_TextView.setText(text);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
         return V;
     }
 
@@ -885,6 +924,47 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         public void onStopTrackingTouch(SeekBar seekBar) {}
     }
 
+    public static void prepareBlankSongXML() {
+        // Prepare the new XML file
+        String myNEWXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        myNEWXML += "<song>\n";
+        myNEWXML += "  <title>" + FullscreenActivity.songfilename + "</title>\n";
+        myNEWXML += "  <author></author>\n";
+        myNEWXML += "  <copyright></copyright>\n";
+        myNEWXML += "  <presentation></presentation>\n";
+        myNEWXML += "  <hymn_number></hymn_number>\n";
+        myNEWXML += "  <capo print=\"\"></capo>\n";
+        myNEWXML += "  <tempo></tempo>\n";
+        myNEWXML += "  <time_sig></time_sig>\n";
+        myNEWXML += "  <duration></duration>\n";
+        myNEWXML += "  <predelay></predelay>\n";
+        myNEWXML += "  <ccli></ccli>\n";
+        myNEWXML += "  <theme></theme>\n";
+        myNEWXML += "  <alttheme></alttheme>\n";
+        myNEWXML += "  <user1></user1>\n";
+        myNEWXML += "  <user2></user2>\n";
+        myNEWXML += "  <user3></user3>\n";
+        myNEWXML += "  <key></key>\n";
+        myNEWXML += "  <aka></aka>\n";
+        myNEWXML += "  <key_line></key_line>\n";
+        myNEWXML += "  <books></books>\n";
+        myNEWXML += "  <midi></midi>\n";
+        myNEWXML += "  <midi_index></midi_index>\n";
+        myNEWXML += "  <pitch></pitch>\n";
+        myNEWXML += "  <restrictions></restrictions>\n";
+        myNEWXML += "  <notes></notes>\n";
+        myNEWXML += "  <lyrics></lyrics>\n";
+        myNEWXML += "  <linked_songs></linked_songs>\n";
+        myNEWXML += "  <pad_file></pad_file>\n";
+        myNEWXML += "  <custom_chords></custom_chords>\n";
+        myNEWXML += "  <link_youtube></link_youtube>\n";
+        myNEWXML += "  <link_web></link_web>\n";
+        myNEWXML += "  <link_audio></link_audio>\n";
+        myNEWXML += "  <link_other></link_other>\n";
+        myNEWXML += "</song>";
+        FullscreenActivity.mynewXML = myNEWXML;
+    }
+
     public static void prepareSongXML() {
         // Prepare the new XML file
         String myNEWXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
@@ -898,6 +978,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         myNEWXML += "  <tempo>" + FullscreenActivity.mTempo + "</tempo>\n";
         myNEWXML += "  <time_sig>" + FullscreenActivity.mTimeSig + "</time_sig>\n";
         myNEWXML += "  <duration>" + FullscreenActivity.mDuration + "</duration>\n";
+        myNEWXML += "  <predelay>" + FullscreenActivity.mPreDelay + "</predelay>\n";
         myNEWXML += "  <ccli>" + FullscreenActivity.mCCLI + "</ccli>\n";
         myNEWXML += "  <theme>" + FullscreenActivity.mTheme + "</theme>\n";
         myNEWXML += "  <alttheme>" + FullscreenActivity.mAltTheme + "</alttheme>\n";
@@ -917,6 +998,10 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         myNEWXML += "  <linked_songs>" + FullscreenActivity.mLinkedSongs + "</linked_songs>\n";
         myNEWXML += "  <pad_file>" + FullscreenActivity.mPadFile + "</pad_file>\n";
         myNEWXML += "  <custom_chords>" + FullscreenActivity.mCustomChords + "</custom_chords>\n";
+        myNEWXML += "  <link_youtube>" + FullscreenActivity.mLinkYouTube + "</link_youtube>\n";
+        myNEWXML += "  <link_web>" + FullscreenActivity.mLinkWeb + "</link_web>\n";
+        myNEWXML += "  <link_audio>" + FullscreenActivity.mLinkAudio + "</link_audio>\n";
+        myNEWXML += "  <link_other>" + FullscreenActivity.mLinkOther + "</link_other>\n";
 
         if (!FullscreenActivity.mExtraStuff1.isEmpty()) {
             myNEWXML += "  " + FullscreenActivity.mExtraStuff1 + "\n";
@@ -927,6 +1012,25 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         myNEWXML += "</song>";
 
         FullscreenActivity.mynewXML = myNEWXML;
+    }
+
+    public static void justSaveSongXML() throws IOException {
+        // Makes sure all & are replaced with &amp;
+        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&amp;","&");
+        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&","&amp;");
+
+        // Now write the modified song
+        String filename;
+        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) || FullscreenActivity.whichSongFolder.isEmpty()) {
+            filename = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
+        } else {
+            filename = FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename;
+        }
+
+        FileOutputStream overWrite = new FileOutputStream(filename,	false);
+        overWrite.write(FullscreenActivity.mynewXML.getBytes());
+        overWrite.flush();
+        overWrite.close();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.util.Log;
 
 import static com.garethevans.church.opensongtablet.FullscreenActivity.*;
@@ -40,6 +41,11 @@ public class Preferences extends Activity {
 		
 		Log.d("Preferences","Loading");
 
+		FullscreenActivity.autoscroll_default_or_prompt = myPreferences.getString("autoscroll_default_or_prompt","prompt");
+        FullscreenActivity.default_autoscroll_songlength = myPreferences.getInt("default_autoscroll_songlength", 180);
+        FullscreenActivity.default_autoscroll_predelay = myPreferences.getInt("default_autoscroll_predelay",10);
+
+        FullscreenActivity.maxvolrange = myPreferences.getInt("maxvolrange", 400);
 		FullscreenActivity.toggleAutoSticky = myPreferences.getString("toggleAutoSticky","N");
 		FullscreenActivity.toggleScrollArrows = myPreferences.getString("toggleScrollArrows","S");
 		FullscreenActivity.mediaStore = myPreferences.getString("mediaStore","int");
@@ -96,6 +102,7 @@ public class Preferences extends Activity {
 		FullscreenActivity.bibleFile = myPreferences.getString("bibleFile", "");
 
 		FullscreenActivity.prefStorage = myPreferences.getString("prefStorage", "");
+		FullscreenActivity.customStorage = myPreferences.getString("customStorage", Environment.getExternalStorageDirectory().getAbsolutePath());
 
 		FullscreenActivity.autoScrollDelay = myPreferences.getInt("autoScrollDelay", 10);
         FullscreenActivity.autostartautoscroll = myPreferences.getBoolean("autostartautoscroll", false);
@@ -233,6 +240,12 @@ public class Preferences extends Activity {
 
 		SharedPreferences.Editor editor = myPreferences.edit();
 
+        editor.putString("autoscroll_default_or_prompt", FullscreenActivity.autoscroll_default_or_prompt);
+        editor.putInt("default_autoscroll_songlength", FullscreenActivity.default_autoscroll_songlength);
+        editor.putInt("default_autoscroll_predelay", FullscreenActivity.default_autoscroll_predelay);
+
+        editor.putInt("maxvolrange", FullscreenActivity.maxvolrange);
+
         editor.putString("toggleAutoSticky",FullscreenActivity.toggleAutoSticky);
         editor.putString("toggleScrollArrows",FullscreenActivity.toggleScrollArrows);
 
@@ -281,6 +294,7 @@ public class Preferences extends Activity {
 
 		editor.putString("bibleFile", FullscreenActivity.bibleFile);
 		editor.putString("prefStorage", FullscreenActivity.prefStorage);
+        editor.putString("customStorage", FullscreenActivity.customStorage);
 
 		editor.putString("whichMode", FullscreenActivity.whichMode);
 

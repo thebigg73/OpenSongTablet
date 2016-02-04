@@ -1,11 +1,14 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
-public class ChangeDisplayPreferences extends Activity {
+public class ChangeDisplayPreferences extends AppCompatActivity {
 
 	View dark_font;
 	View dark_background;
@@ -67,7 +70,19 @@ public class ChangeDisplayPreferences extends Activity {
 		Preferences.loadPreferences();
 		// Set the screen and title
 		setContentView(R.layout.custom_display);
-		getActionBar().setTitle(getResources().getString(R.string.colorchooser));
+
+        // Set up the toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab = getSupportActionBar();
+
+        TextView title = (TextView) findViewById(R.id.songandauthor);
+        if (ab != null && title != null) {
+            ab.setTitle("");
+            ab.setDisplayHomeAsUpEnabled(false);
+            ab.setDisplayShowTitleEnabled(false);
+            title.setText(getResources().getString(R.string.colorchooser));
+        }
 
 		// Define the buttons
 		dark_background = findViewById(R.id.dark_background);

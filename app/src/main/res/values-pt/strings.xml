@@ -178,7 +178,7 @@
     
 	<string name="welcome">"OpenSong Música Visualizador \n Escrito por Gareth Evans"</string>
 		
-	<string name="intro">"O OpenSong Música Viewer utiliza músicas criadas em OpenSong e as exibe na tela tablet. Destina-se a músicos de adoração e é muito mais um trabalho em andamento. Ele funciona melhor no modo retrato, mas eu deixei o modo paisagem disponível (apenas no caso)."</string>
+	<string name="intro">"O OpenSong Música Viewer utiliza músicas criadas em OpenSong e as exibe na tela tablet."</string>
 		
 	<string name="intro_songsfolder">"O aplicativo procura uma pasta em seus documentos chamados \"OpenSong / Songs 'e se ele não pode encontrá-lo, ele cria-lo para você. Em seguida, ele salva uma única canção chamada \"Everlasting Love\", uma das minhas próprias músicas, para a pasta (caso contrário, você não seria capaz de fazer qualquer coisa com o app!). Para usar suas próprias canções OpenSong, copiá-los para os Documentos / OpenSong / Músicas / pasta. Você pode ter um nível de subpastas dentro de sua pasta de músicas. \n \n O aplicativo também vem com 700 músicas + que você pode usar, mas tenha em mente que você é responsável por aderir a possíveis problemas de direitos autorais e de usá-los em seu conta e risco!"</string>
 		
@@ -447,5 +447,20 @@
 	<string name="time_slide_pages">"Tempo para cada slide (s)"</string>
 	<string name="time_slide_pages_help">"Deixe em branco para slideshow Manual"</string>
 	<string name="warning">"Esta opção só deve ser usado para o modo de apresentação. Esteja ciente de que esse recurso usa muita memória e pode causar acidentes. Você foi avisado!"</string>
+	<string name="user_guide">"Guia do usuário"</string>
+	<string name="user_guide_text">"Por favor, tome o tempo para ler o guia de usuário antes de usar o app."</string>
+	<string name="average">"Média"</string>
+	<string name="maxvolrange">"Volume de gráfica gama indicador"</string>
+	<string name="reset">"repor"</string>
+	<string name="volval">"Valor corrente do volume"</string>
+	<string name="set_manage_swipe">"Passe para remover um item do seu set list"</string>
+	<string name="set_manage_shuffle">"embaralhar"</string>
+	<string name="set_manage_click">"Clique em um item no conjunto para vê-lo"</string>
+	<string name="storage_rationale">"Acesso para o seu armazenamento é necessário para ler e escrever músicas e sets."</string>
+	<string name="microphone_rationale">"Microfone / gravação de áudio é necessário para acessar o medidor de nível de som."</string>
+	<string name="default_autoscroll">"Vezes Autoscroll padrão"</string>
+	<string name="autoscroll_default_or_prompt">"Se você não tiver definido uma duração da música deve ser utilizado os valores padrão ou você quer ser solicitado a cada vez?"</string>
+	<string name="use_default">"Use o padrão"</string>
+	<string name="ask">"Peça a cada vez"</string>
 
 </resources>

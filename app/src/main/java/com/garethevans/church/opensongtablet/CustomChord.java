@@ -278,7 +278,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
             FullscreenActivity.mCustomChords = FullscreenActivity.mCustomChords.trim();
 
             // Prepare the song for saving
-            EditSong.prepareSongXML();
+            PopUpEditSongFragment.prepareSongXML();
 
             // Now write the modified song
             doSave();
@@ -1309,7 +1309,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         buttonText = buttonText.replace("\n","");
         FullscreenActivity.mCustomChords = FullscreenActivity.mCustomChords.replace(buttonText,"");
         // Save the song
-        EditSong.prepareSongXML();
+        PopUpEditSongFragment.prepareSongXML();
         // Makes sure all & are replaced with &amp;
         FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&amp;","&");
         FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&","&amp;");

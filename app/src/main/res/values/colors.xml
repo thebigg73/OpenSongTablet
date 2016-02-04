@@ -1,6 +1,11 @@
 <resources>
 
-    <color name="black_overlay">#66000000</color>
-    <color name="primary_material_dark">#000528</color>
+    <color name="toolbar">#232333</color>
+    <color name="accent">#AAAAFF</color>
+    <color name="text">#FFFFFF</color>
+    <color name="tint">#FFFFFF</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#B6B6B6</color>
+    <color name="black">#000000</color>
 
 </resources>

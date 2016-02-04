@@ -1,10 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
-    android:versionCode="78"
-    android:versionName="3.6.6"
-    android:installLocation="auto" >
+    android:versionCode="82"
+    android:versionName="3.7.0"
+    android:installLocation="auto">
 
-    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="22" />
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="23" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -12,12 +12,15 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/MyTheme">
+        //android:theme="@style/AppTheme"
+
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".SearchSongs" />
@@ -137,7 +140,6 @@
                 <data android:pathPattern="/.*\\..*\\..*\\..*\\.osts"/>
                 <data android:host="*" />
             </intent-filter>
-
             <intent-filter android:label="@string/app_name"
                 android:icon="@drawable/ic_launcher">
                 <action android:name="android.intent.action.VIEW" />
@@ -171,7 +173,6 @@
                 <data android:pathPattern="/.*\\..*\\..*\\..*\\.CHORDPRO"/>
                 <data android:host="*" />
             </intent-filter>
-
             <intent-filter android:label="@string/app_name"
                 android:icon="@drawable/ic_launcher">
                 <action android:name="android.intent.action.VIEW" />
@@ -192,28 +193,12 @@
 
         </activity>
         <activity
-            android:name="com.garethevans.church.opensongtablet.EditSong"
-            android:configChanges="orientation|screenLayout|screenSize"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize" >
-        </activity>
-        <activity
             android:name="com.garethevans.church.opensongtablet.ChangeDisplayPreferences"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.garethevans.church.opensongtablet.ChangeFonts"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
             android:name="com.garethevans.church.opensongtablet.CustomChord"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.garethevans.church.opensongtablet.setPageTurns"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:label="@string/app_name" >
         </activity>
@@ -248,10 +233,6 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="com.garethevans.church.opensongtablet.ListViewDraggingAnimation"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
             android:name="com.garethevans.church.opensongtablet.GestureOptions"
             android:label="@string/app_name" >
         </activity>
@@ -259,10 +240,7 @@
             android:name="com.garethevans.church.opensongtablet.StorageChooser"
             android:label="@string/app_name" >
         </activity>
-        <activity
-            android:name="com.garethevans.church.opensongtablet.MetronomePadSettings"
-            android:label="@string/app_name" >
-        </activity>
+
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data

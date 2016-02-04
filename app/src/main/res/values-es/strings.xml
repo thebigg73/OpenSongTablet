@@ -178,7 +178,7 @@
     
 	<string name="welcome">"OpenSong Música Visor \n Escrito por Gareth Evans"</string>
 		
-	<string name="intro">"The Music Visor OpenSong utiliza canciones creadas en OpenSong y los muestra en la pantalla del tablet. Está dirigido a los músicos de culto y es en gran medida un trabajo en progreso. Lo mejor en el modo vertical funciona, pero he dejado el modo horizontal disponible (por si acaso)."</string>
+	<string name="intro">"The Music Visor OpenSong utiliza canciones creadas en OpenSong y los muestra en la pantalla del tablet."</string>
 		
 	<string name="intro_songsfolder">"La aplicación busca una carpeta en sus documentos llamados \"OpenSong / Songs 'y si no lo encuentra, lo crea para usted. A continuación, guarda una sola canción llamada \"Everlasting Love\", una de mis propias canciones, a la carpeta (si no, no sería capaz de hacer cualquier cosa con la aplicación!). Para usar sus propias canciones OpenSong, copiarlos en los Documentos / OpenSong / Canciones / carpeta. Usted puede tener un nivel de subcarpetas dentro de la carpeta de canciones. \n\n La aplicación también viene con más de 700 canciones que se pueden utilizar, pero hay que tener en cuenta que usted es responsable por haber adherido a los posibles problemas de derechos de autor y los utilizan en su propio riesgo!"</string>
 		
@@ -447,5 +447,20 @@
 	<string name="time_slide_pages">"Tiempo para cada diapositiva (s)"</string>
 	<string name="time_slide_pages_help">"Dejar en blanco para el manual de diapositivas"</string>
 	<string name="warning">"Esta opción sólo se debe utilizar para el modo de presentación. Tenga en cuenta que esta función utiliza mucha memoria y puede causar accidentes. ¡Usted ha sido advertido!"</string>
+	<string name="user_guide">"Guía del usuario"</string>
+	<string name="user_guide_text">"Por favor, tómese el tiempo para leer las instrucciones antes de usar la aplicación."</string>
+	<string name="average">"Promedio"</string>
+	<string name="maxvolrange">"Rango indicador de volumen gráfica"</string>
+	<string name="reset">"Reiniciar"</string>
+	<string name="volval">"Valor del volumen actual"</string>
+	<string name="set_manage_swipe">"Pase al eliminar un elemento de la lista de temas"</string>
+	<string name="set_manage_shuffle">"Barajar"</string>
+	<string name="set_manage_click">"Haga clic en un elemento en el conjunto para visualizarla"</string>
+	<string name="storage_rationale">"Se requiere acceso a su almacenamiento a leer y escribir canciones y juegos."</string>
+	<string name="microphone_rationale">"Se requiere micrófono / grabación de audio para acceder al medidor de nivel de sonido."</string>
+	<string name="default_autoscroll">"Plazos de activación Autodesplazamiento"</string>
+	<string name="autoscroll_default_or_prompt">"Si no ha configurado una duración canción se deben utilizar los valores por defecto o quieres que se le pregunte cada vez?"</string>
+	<string name="use_default">"Uso por defecto"</string>
+	<string name="ask">"Pida a cada tiempo"</string>
 
 </resources>

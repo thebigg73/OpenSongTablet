@@ -178,7 +178,7 @@
     
 	<string name="welcome">"OpenSong Music Viewer\n Napsal Gareth Evans"</string>
 		
-	<string name="intro">"OpenSong Music Viewer používá skladby vytvořené v OpenSong a zobrazí je na obrazovce tabletu. Je zaměřena na uctívání hudebníků a je velmi work in progress. To funguje nejlépe v režimu na výšku, ale já jsem odešel do režimu na šířku k dispozici (jen pro případ)."</string>
+	<string name="intro">"OpenSong Music Viewer používá skladby vytvořené v OpenSong a zobrazí je na obrazovce tabletu."</string>
 		
 	<string name="intro_songsfolder">"Aplikace vyhledá složky v dokumentech s názvem \"OpenSong / Songs\" a pokud to nemůže najít, vytváří to pro vás. To pak uloží jednu skladbu s názvem \"Láska na věky\", jeden z mých vlastních písní, do složky (jinak byste nebyli schopni nic dělat s app!). Chcete-li použít vlastní OpenSong skladby, zkopírujte je do Dokumenty / OpenSong / Písně / složky. Můžete mít jednu úroveň podsložky uvnitř složky Songs.\n\n app také je dodáván s 700 a více písní, které můžete použít, ale mějte na paměti, jste odpovědni za dodržování případných otázkách autorských práv a můžete je použít na tvoje vlastní riziko!"</string>
 		
@@ -448,5 +448,20 @@
 	<string name="time_slide_pages">"Čas pro každý snímek (y)"</string>
 	<string name="time_slide_pages_help">"Nechte prázdné pro ruční prezentaci"</string>
 	<string name="warning">"Tato možnost by měla být použita pouze v režimu prezentace. Uvědomte si, že tato funkce používá velké množství paměti a může způsobit zhroucení. Byli jste varováni!"</string>
+	<string name="user_guide">"Uživatelská příručka"</string>
+	<string name="user_guide_text">"Věnujte prosím čas číst uživatelskou příručku před použitím aplikace."</string>
+	<string name="average">"Průměr"</string>
+	<string name="maxvolrange">"Rozsah Grafické objem indikátor"</string>
+	<string name="reset">"Obnovit"</string>
+	<string name="volval">"Aktuální hodnota objemu"</string>
+	<string name="set_manage_swipe">"Přejeďte odstranit položku ze seznamu set"</string>
+	<string name="set_manage_shuffle">"Shuffle"</string>
+	<string name="set_manage_click">"Klepněte na položku v sadě pro zobrazení"</string>
+	<string name="storage_rationale">"Přístup k vašim úložiště je nutné číst a psát písně a soubory."</string>
+	<string name="microphone_rationale">"Mikrofon / zvukový záznam je vyžadován pro přístup Zvukoměr."</string>
+	<string name="default_autoscroll">"Krát Výchozí AutoScroll"</string>
+	<string name="autoscroll_default_or_prompt">"Pokud jste nenastavili dobu trvání píseň by měla být použita výchozí hodnoty, nebo chcete být pokaždé zeptat?"</string>
+	<string name="use_default">"Použít výchozí"</string>
+	<string name="ask">"Zeptejte se pokaždé,"</string>
 
 </resources>

@@ -1,15 +1,17 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TextView;
 
-public class GestureOptions extends Activity {
+public class GestureOptions extends AppCompatActivity {
 
 	//Variables
 	static RadioGroup radioGroup;
@@ -29,11 +31,18 @@ public class GestureOptions extends Activity {
 		// Set the screen and title
 		setContentView(R.layout.choose_gestures);
 
-		try {
-            getActionBar().setTitle(getResources().getString(R.string.customgestures));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		// Set up the toolbar
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+		ActionBar ab = getSupportActionBar();
+
+		TextView title = (TextView) findViewById(R.id.songandauthor);
+		if (ab != null && title != null) {
+			ab.setTitle("");
+			ab.setDisplayHomeAsUpEnabled(false);
+			ab.setDisplayShowTitleEnabled(false);
+			title.setText(getResources().getString(R.string.customgestures));
+		}
 
 		radioGroup = (RadioGroup) findViewById(R.id.doubleTap);
 		radioGroup2 = (RadioGroup) findViewById(R.id.longPress);

@@ -1,1103 +1,305 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_page"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center_horizontal"
-    android:background="#000"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:gravity="center_horizontal">
+    android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/songLoadingProgressBar"
-        style="?android:progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:visibility="visible" />
+    <include layout="@layout/toolbar" />
 
-    <TextView
-        android:id="@+id/songTitleHolder"
+    <RelativeLayout
+        android:id="@+id/main_page"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/songLoadingProgressBar"
-        android:gravity="center_horizontal"
-        android:textSize="28sp"
-        android:visibility="visible" />
+        android:layout_gravity="center_horizontal"
+        android:background="#000"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_horizontal">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/myfivepanelpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <ProgressBar
+            android:id="@+id/songLoadingProgressBar"
+            style="?android:progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:visibility="visible" />
 
-    <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/scrollpage_pdf"
+        <TextView
+            android:id="@+id/songTitleHolder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_below="@id/songLoadingProgressBar"
+            android:gravity="center_horizontal"
+            android:textSize="28sp"
+            android:visibility="visible" />
 
-            <HorizontalScrollView
-                android:id="@+id/horizontalScrollView_pdf"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/myfivepanelpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/scrollpage_pdf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalScrollView_pdf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout_pdfview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/pdfView"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@android:color/white"
+                            android:contentDescription="@string/app_name"
+                            android:scaleType="fitCenter" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </ScrollView>
+
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/scrollpage_onecol"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:id="@+id/linearLayout_pdfview"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/linearLayout_onecolview"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/pdfView"
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView1_onecolview"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:background="@android:color/white"
-                        android:contentDescription="@string/app_name"
-                        android:scaleType="fitCenter" />
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout2_onecolview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:baselineAligned="false"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
+
+                            <!-- The main content view -->
+
+                            <TableLayout
+                                android:id="@+id/LyricDisplay_onecoldisplay"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="2dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/lyrics_box"
+                                android:padding="4dp"
+                                tools:context=".FullscreenActivity" />
+                        </LinearLayout>
+                    </HorizontalScrollView>
                 </LinearLayout>
-            </HorizontalScrollView>
-        </ScrollView>
+            </ScrollView>
 
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/scrollpage_onecol"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:id="@+id/linearLayout_onecolview"
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/scrollpage_twocol"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <HorizontalScrollView
-                    android:id="@+id/horizontalScrollView1_onecolview"
+                <LinearLayout
+                    android:id="@+id/linearLayout_twocolview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/linearLayout2_onecolview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:baselineAligned="false"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal">
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView1_twocolview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        <!-- The main content view -->
+                        <LinearLayout
+                            android:id="@+id/linearLayout2_twocolview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:baselineAligned="false"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
 
-                        <TableLayout
-                            android:id="@+id/LyricDisplay_onecoldisplay"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_margin="2dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/lyrics_box"
-                            android:padding="4dp"
-                            tools:context=".FullscreenActivity" />
-                    </LinearLayout>
-                </HorizontalScrollView>
-            </LinearLayout>
-        </ScrollView>
+                            <!-- The main content view -->
 
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/scrollpage_twocol"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                            <TableLayout
+                                android:id="@+id/LyricDisplay_twocoldisplay"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="2dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/lyrics_box"
+                                android:padding="4dp"
+                                tools:context=".FullscreenActivity" />
 
-            <LinearLayout
-                android:id="@+id/linearLayout_twocolview"
+                            <TableLayout
+                                android:id="@+id/LyricDisplayCol2_twocoldisplay"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="2dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/lyrics_box"
+                                android:padding="4dp"
+                                tools:context=".FullscreenActivity" />
+                        </LinearLayout>
+                    </HorizontalScrollView>
+                </LinearLayout>
+            </ScrollView>
+
+            <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/scrollpage_threecol"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <HorizontalScrollView
-                    android:id="@+id/horizontalScrollView1_twocolview"
+                <LinearLayout
+                    android:id="@+id/linearLayout_threecolview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/linearLayout2_twocolview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:baselineAligned="false"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal">
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView1_threecolview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        <!-- The main content view -->
+                        <LinearLayout
+                            android:id="@+id/linearLayout2_threecolview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:baselineAligned="false"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
 
-                        <TableLayout
-                            android:id="@+id/LyricDisplay_twocoldisplay"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_margin="2dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/lyrics_box"
-                            android:padding="4dp"
-                            tools:context=".FullscreenActivity" />
+                            <!-- The main content view -->
 
-                        <TableLayout
-                            android:id="@+id/LyricDisplayCol2_twocoldisplay"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_margin="2dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/lyrics_box"
-                            android:padding="4dp"
-                            tools:context=".FullscreenActivity" />
-                    </LinearLayout>
-                </HorizontalScrollView>
-            </LinearLayout>
-        </ScrollView>
+                            <TableLayout
+                                android:id="@+id/LyricDisplay_threecoldisplay"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="2dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/lyrics_box"
+                                android:padding="4dp"
+                                tools:context=".FullscreenActivity"/>
 
-        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/scrollpage_threecol"
+                            <TableLayout
+                                android:id="@+id/LyricDisplayCol2_threecoldisplay"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="2dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/lyrics_box"
+                                android:padding="4dp"
+                                tools:context=".FullscreenActivity"/>
+
+                            <TableLayout
+                                android:id="@+id/LyricDisplayCol3_threecoldisplay"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="2dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/lyrics_box"
+                                android:padding="4dp"
+                                tools:context=".FullscreenActivity"/>
+                        </LinearLayout>
+                    </HorizontalScrollView>
+                </LinearLayout>
+            </ScrollView>
+
+            <ExpandableListView
+                android:id="@+id/song_list_ex"
+                android:layout_width="220dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:background="@drawable/drawer_bg"
+                android:choiceMode="singleChoice"
+                android:divider="#aaa"
+                android:dividerHeight="1dp"
+                android:padding="4dp"
+                android:fastScrollEnabled="false"
+                android:fastScrollAlwaysVisible="false"
+                android:headerDividersEnabled="false" />
+
+            <ExpandableListView
+                android:id="@+id/option_list_ex"
+                android:layout_width="220dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:background="@drawable/drawer_bg"
+                android:choiceMode="singleChoice"
+                android:divider="#aaa"
+                android:dividerHeight="1dp"
+                android:padding="4dp"
+                android:fastScrollEnabled="false"
+                android:fastScrollAlwaysVisible="false"
+                android:transitionGroup="false" />
+
+        </android.support.v4.widget.DrawerLayout>
+
+        <include layout="@layout/pageicons_top"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_alignParentTop="true"
+            android:layout_height="wrap_content" />
 
-            <LinearLayout
-                android:id="@+id/linearLayout_threecolview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <HorizontalScrollView
-                    android:id="@+id/horizontalScrollView1_threecolview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout2_threecolview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:baselineAligned="false"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal">
-
-                        <!-- The main content view -->
-
-                        <TableLayout
-                            android:id="@+id/LyricDisplay_threecoldisplay"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_margin="2dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/lyrics_box"
-                            android:padding="4dp"
-                            tools:context=".FullscreenActivity"/>
-
-                        <TableLayout
-                            android:id="@+id/LyricDisplayCol2_threecoldisplay"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_margin="2dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/lyrics_box"
-                            android:padding="4dp"
-                            tools:context=".FullscreenActivity"/>
-
-                        <TableLayout
-                            android:id="@+id/LyricDisplayCol3_threecoldisplay"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_margin="2dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/lyrics_box"
-                            android:padding="4dp"
-                            tools:context=".FullscreenActivity"/>
-                    </LinearLayout>
-                </HorizontalScrollView>
-            </LinearLayout>
-        </ScrollView>
-
-        <ExpandableListView
-            android:id="@+id/song_list_ex"
-            android:layout_width="220dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:background="@drawable/drawer_bg"
-            android:choiceMode="singleChoice"
-            android:divider="#aaa"
-            android:dividerHeight="1dp"
-            android:fastScrollEnabled="false"
-            android:fastScrollAlwaysVisible="false"
-            android:headerDividersEnabled="false" />
-
-        <ExpandableListView
-            android:id="@+id/option_list_ex"
-            android:layout_width="220dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:background="@drawable/drawer_bg"
-            android:choiceMode="singleChoice"
-            android:divider="#aaa"
-            android:dividerHeight="1dp"
-            android:fastScrollEnabled="false"
-            android:fastScrollAlwaysVisible="false"
-            android:transitionGroup="false" />
-    </android.support.v4.widget.DrawerLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true">
-        <ImageView
-            android:id="@+id/uparrow_top"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:alpha="0.4"
-            android:contentDescription="@string/set_back"
-            android:onClick="doScrollUp"
-            android:src="@drawable/ambilwarna_arrow_up"
-            android:visibility="visible" />
+        <include layout="@layout/pageicons_bottom"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"/>
 
         <ImageView
-            android:id="@+id/downarrow_top"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_toRightOf="@id/uparrow_top"
+            android:id="@+id/setbutton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/options_set"
+            android:src="@drawable/setlist"
             android:alpha="0.4"
-            android:contentDescription="@string/set_forward"
-            android:onClick="doScrollDown"
-            android:src="@drawable/ambilwarna_arrow_down"
-            android:visibility="visible" />
+            android:onClick="popUpSetList"/>
+
+        <include layout="@layout/popup_stickynote" />
+
+        <include layout="@layout/popup_pad" />
+
+        <include layout="@layout/popup_autoscroll" />
+
+        <include layout="@layout/popup_metronome" />
+
+        <include layout="@layout/popup_chords" />
+
+        <ProgressBar
+            android:id="@+id/mainProgressBar"
+            style="?android:progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
 
     </RelativeLayout>
-
-    <HorizontalScrollView
-        android:id="@+id/bottombar"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_gravity="center_horizontal|bottom">
-
-            <ImageView
-                android:id="@+id/padbutton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:alpha="0.3"
-                android:contentDescription="@string/pad_onoroff"
-                android:onClick="popupPad_toggle"
-                android:src="@drawable/pad"
-                android:tag="togglePlayPads"
-                android:visibility="invisible" />
-
-            <ImageView
-                android:id="@+id/autoscroll"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_toRightOf="@id/padbutton"
-                android:alpha="0.3"
-                android:contentDescription="@string/stickynotes"
-                android:onClick="popupAutoscroll_toggle"
-                android:src="@drawable/autoscroll"
-                android:visibility="invisible" />
-
-            <ImageView
-                android:id="@+id/metronomebutton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_toRightOf="@id/autoscroll"
-                android:alpha="0.3"
-                android:contentDescription="@string/stickynotes"
-                android:onClick="popupMetronome_toggle"
-                android:src="@drawable/metronome"
-                android:visibility="invisible" />
-
-            <ImageView
-                android:id="@+id/uparrow_bottom"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@id/metronomebutton"
-                android:alpha="0.4"
-                android:contentDescription="@string/set_back"
-                android:onClick="doScrollUp"
-                android:src="@drawable/ambilwarna_arrow_up"
-                android:visibility="invisible" />
-
-            <ImageView
-                android:id="@+id/downarrow_bottom"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@id/uparrow_bottom"
-                android:alpha="0.4"
-                android:contentDescription="@string/set_forward"
-                android:onClick="doScrollDown"
-                android:src="@drawable/ambilwarna_arrow_down"
-                android:visibility="invisible" />
-
-            <ImageView
-                android:id="@+id/pageselect"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_toRightOf="@id/downarrow_bottom"
-                android:alpha="0.3"
-                android:contentDescription="@string/pdf_selectpage"
-                android:onClick="pdfSelectPage"
-                android:src="@drawable/pdf_page"
-                android:visibility="invisible" />
-
-            <ImageView
-                android:id="@+id/stickynotes"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_toRightOf="@id/downarrow_bottom"
-                android:alpha="0.3"
-                android:contentDescription="@string/stickynotes"
-                android:onClick="stickyNotes"
-                android:src="@drawable/note_bw"
-                android:visibility="invisible" />
-
-            <ImageView
-                android:id="@+id/chordbutton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_toRightOf="@id/stickynotes"
-                android:alpha="0.3"
-                android:contentDescription="@string/chords"
-                android:onClick="popupChords_toggle"
-                android:src="@drawable/chord"
-                android:visibility="invisible" />
-
-            <ImageView
-                android:id="@+id/linkbutton"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_toRightOf="@id/chordbutton"
-                android:alpha="0.3"
-                android:contentDescription="@string/link"
-                android:src="@drawable/link"
-                android:onClick="popupLink"
-                android:visibility="visible" />
-        </RelativeLayout>
-    </HorizontalScrollView>
-
-    <ImageView
-        android:id="@+id/setbutton"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="8dp"
-        android:contentDescription="@string/options_set"
-        android:src="@drawable/setlist"
-        android:alpha="0.3"
-        android:onClick="popUpSetList"/>
-
-    <ScrollView
-        android:id="@+id/scrollstickyholder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="80dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:layout_marginTop="20dp"
-        android:fadeScrollbars="false"
-        android:visibility="visible">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/popuppage"
-            android:minWidth="250dp"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="32sp"
-                    android:layout_height="32sp"
-                    android:layout_marginRight="16dp"
-                    android:contentDescription="@string/cancel"
-                    android:onClick="stickyNotes"
-                    android:src="@drawable/ic_action_cancel" />
-
-                <ImageView
-                    android:layout_width="32sp"
-                    android:layout_height="32sp"
-                    android:layout_marginRight="16dp"
-                    android:contentDescription="@string/edit_song_notes"
-                    android:onClick="editNotes"
-                    android:src="@drawable/ic_action_edit" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/stickynotes"
-                    android:text="@string/stickynotes"
-                    android:textColor="#0000AA"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:contentDescription="@string/edit_song_notes"
-                android:src="@drawable/blue_line" />
-
-            <TextView
-                android:id="@+id/mySticky"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/stickynotes"
-                android:text="@string/stickynotes"
-                android:textColor="#000000"
-                android:textSize="18sp" />
-        </LinearLayout>
-    </ScrollView>
-
-    <ScrollView
-        android:id="@+id/popuppad"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="80dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:layout_marginTop="20dp"
-        android:fadeScrollbars="false"
-        android:gravity="center_horizontal"
-        android:visibility="visible">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/popuppage"
-            android:minWidth="250dp"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="32sp"
-                    android:layout_height="32sp"
-                    android:layout_marginRight="16dp"
-                    android:contentDescription="@string/cancel"
-                    android:onClick="popupPad_toggle"
-                    android:src="@drawable/ic_action_cancel" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/pad"
-                    android:text="@string/pad"
-                    android:textColor="#0000AA"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:contentDescription="@string/pad"
-                android:src="@drawable/blue_line" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/edit_song_key"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <Spinner
-                android:id="@+id/popuppad_key"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#aaa"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/backing_track"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <Spinner
-                android:id="@+id/popuppad_file"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#aaa"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/volume"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/popuppad_volume"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:max="100" />
-
-                <TextView
-                    android:id="@+id/popuppad_volume_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/pan"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/popuppad_pan"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:max="2" />
-
-                <TextView
-                    android:id="@+id/popuppad_pan_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <Button
-                style="@style/ButtonBarButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/green_button"
-                android:gravity="center_horizontal"
-                android:onClick="saveSong"
-                android:text="@string/savesong" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="4dp"
-                android:contentDescription="@string/pad"
-                android:src="@drawable/blue_line" />
-
-            <Button
-                android:id="@+id/popuppad_startstopbutton"
-                style="@style/ButtonBarButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/blue_button"
-                android:onClick="popupPad_startstop"
-                android:text="@string/start" />
-        </LinearLayout>
-    </ScrollView>
-
-    <ScrollView
-        android:id="@+id/popupautoscroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="80dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:layout_marginTop="20dp"
-        android:fadeScrollbars="false"
-        android:gravity="center_horizontal"
-        android:visibility="visible">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/popuppage"
-            android:minWidth="250dp"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="32sp"
-                    android:layout_height="32sp"
-                    android:layout_marginRight="16dp"
-                    android:contentDescription="@string/cancel"
-                    android:onClick="popupAutoscroll_toggle"
-                    android:src="@drawable/ic_action_cancel" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/autoscroll"
-                    android:text="@string/autoscroll"
-                    android:textColor="#0000AA"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:contentDescription="@string/autoscroll"
-                android:src="@drawable/blue_line" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/autoscroll_time"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/popupautoscroll_delay"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:max="30" />
-
-                <TextView
-                    android:id="@+id/popupautoscroll_delay_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/edit_song_duration"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/popupautoscroll_duration"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#aaa"
-                android:hint="@string/edit_song_duration"
-                android:inputType="number"
-                android:singleLine="true"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <Button
-                style="@style/ButtonBarButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:background="@drawable/green_button"
-                android:gravity="center_horizontal"
-                android:onClick="saveSong"
-                android:text="@string/savesong" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="4dp"
-                android:contentDescription="@string/autoscroll"
-                android:src="@drawable/blue_line" />
-
-            <Button
-                android:id="@+id/popupautoscroll_startstopbutton"
-                style="@style/ButtonBarButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/blue_button"
-                android:onClick="popupAutoscroll_startstop"
-                android:text="@string/start" />
-        </LinearLayout>
-    </ScrollView>
-
-    <ScrollView
-        android:id="@+id/popupmetronome"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="80dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:layout_marginTop="20dp"
-        android:fadeScrollbars="false"
-        android:gravity="center_horizontal"
-        android:visibility="visible">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/popuppage"
-            android:minWidth="250dp"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="32sp"
-                    android:layout_height="32sp"
-                    android:layout_marginRight="16dp"
-                    android:contentDescription="@string/cancel"
-                    android:onClick="popupMetronome_toggle"
-                    android:src="@drawable/ic_action_cancel" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/metronome"
-                    android:text="@string/metronome"
-                    android:textColor="#0000AA"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:contentDescription="@string/metronome"
-                android:src="@drawable/blue_line" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/edit_song_timesig"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <Spinner
-                android:id="@+id/popupmetronome_timesig"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#aaa"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/edit_song_tempo"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/popupmetronome_tempo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:max="160" />
-
-                <TextView
-                    android:id="@+id/popupmetronome_tempo_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tap_tempo"
-                android:onClick="tapTempo"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/volume"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/popupmetronome_volume"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:max="100" />
-
-                <TextView
-                    android:id="@+id/popupmetronome_volume_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/pan"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/popupmetronome_pan"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:max="2" />
-
-                <TextView
-                    android:id="@+id/popupmetronome_pan_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/visualmetronome"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <ToggleButton
-                android:id="@+id/visualmetronome"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:onClick="visualMetronomeToggle"
-                android:textColor="#000"
-                android:textOff="@string/off"
-                android:textOn="@string/on" />
-
-            <Button
-                style="@style/ButtonBarButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/green_button"
-                android:gravity="center_horizontal"
-                android:onClick="saveSong"
-                android:text="@string/savesong" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="4dp"
-                android:contentDescription="@string/metronome"
-                android:src="@drawable/blue_line" />
-
-            <Button
-                android:id="@+id/popupmetronome_startstopbutton"
-                style="@style/ButtonBarButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/blue_button"
-                android:onClick="popupMetronome_startstop"
-                android:text="@string/start" />
-        </LinearLayout>
-    </ScrollView>
-
-    <ScrollView
-        android:id="@+id/popupchords"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="80dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:layout_marginTop="20dp"
-        android:fadeScrollbars="false"
-        android:gravity="center_horizontal"
-        android:visibility="visible">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/popuppage"
-            android:minWidth="250dp"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="32sp"
-                    android:layout_height="32sp"
-                    android:layout_marginRight="16dp"
-                    android:contentDescription="@string/cancel"
-                    android:onClick="popupChords_toggle"
-                    android:src="@drawable/ic_action_cancel" />
-
-                <ImageView
-                    android:layout_width="32sp"
-                    android:layout_height="32sp"
-                    android:layout_marginRight="16dp"
-                    android:contentDescription="@string/edit_song_notes"
-                    android:onClick="customChordEdit"
-                    android:src="@drawable/ic_action_edit" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/chords"
-                    android:text="@string/chords"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:contentDescription="@string/chords"
-                android:src="@drawable/blue_line" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/instrument"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <Spinner
-                android:id="@+id/popupchord_instrument"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="#aaa"
-                android:textColor="#000"
-                android:textSize="16sp" />
-
-            <TableLayout
-                android:id="@+id/chordimageshere"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp" />
-        </LinearLayout>
-    </ScrollView>
-
-    <ProgressBar
-        android:id="@+id/mainProgressBar"
-        style="?android:progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:visibility="invisible" />
-
-</RelativeLayout>
+</LinearLayout>

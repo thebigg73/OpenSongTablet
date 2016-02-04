@@ -6,9 +6,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import java.net.HttpURLConnection;
+import java.net.URL;
+//import org.apache.http.HttpResponse;
+//import org.apache.http.client.methods.HttpGet;
+//import org.apache.http.impl.client.DefaultHttpClient;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -110,16 +112,23 @@ public class Chordie extends Activity{
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
 
-        DownloadWebPageTask task = new DownloadWebPageTask();
+        DownloadWebTextTask task = new DownloadWebTextTask();
+        //DownloadWebPageTask task = new DownloadWebPageTask();
         //task.execute(new String[] { weblink });
         task.execute(weblink);
     }
 
+
+
+/*
     private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
             response = "";
-            for (@SuppressWarnings("unused") String url : urls) {
+            for (@SuppressWarnings("unused") URL url : urls) {
+
+*/
+/*
                 DefaultHttpClient client = new DefaultHttpClient();
                 HttpGet httpGet = new HttpGet(weblink);
                 try {
@@ -134,6 +143,41 @@ public class Chordie extends Activity{
 
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+*//*
+
+
+            }
+            return response;
+        }
+*/
+
+    private class DownloadWebTextTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... addresses) {
+            response = "";
+            for (String address:addresses) {
+                URL url;
+                HttpURLConnection urlConnection = null;
+                try {
+                    url = new URL(address);
+
+                    urlConnection = (HttpURLConnection) url.openConnection();
+
+                    InputStream in = urlConnection.getInputStream();
+                    //InputStreamReader isw = new InputStreamReader(in);
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
+                    String s;
+                    while ((s = buffer.readLine()) != null) {
+                        response += "\n" + s;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
                 }
             }
             return response;
@@ -361,7 +405,6 @@ public class Chordie extends Activity{
                     if (authstart>-1) {
                         authorname = filenametosave.substring(authstart+4);
                         filenametosave = filenametosave.substring(0,authstart);
-
                     }
                 }
 
@@ -424,7 +467,7 @@ public class Chordie extends Activity{
                     startpos=0;
                 }
                 // Remove everything before this position
-                resultposted = resultposted.substring(startpos+27);
+                resultposted = resultposted.substring(startpos + 27);
 
                 // Find the text start
                 startpos = resultposted.indexOf("<pre>");
@@ -432,7 +475,15 @@ public class Chordie extends Activity{
                     startpos=0;
                 }
                 // Remove everything before this position
-                resultposted = resultposted.substring(startpos+5);
+                resultposted = resultposted.substring(startpos + 5);
+
+                // Find the other possible intro bit added Jan 2016
+                startpos = resultposted.indexOf("<pre class=\"js-tab-content\">");
+                if (startpos<0) {
+                    startpos=0;
+                }
+                // Remove everything before this position
+                resultposted = resultposted.substring(startpos+28);
 
                 // Find the position of the end of the form
                 endpos = resultposted.indexOf("</pre>");

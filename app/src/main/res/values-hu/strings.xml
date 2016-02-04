@@ -178,7 +178,7 @@
     
 	<string name="welcome">"OpenSong Music Viewer \n Írta: Gareth Evans"</string>
 		
-	<string name="intro">"A OpenSong Music Viewer dal létrehozott OpenSong és megjeleníti őket a tablet képernyőjén. Célja, hogy istentisztelet zenészek, és nagyon sok a munka folyamatban van. Úgy működik a legjobban portré módban, de hagytam tájkép módban elérhető (csak abban az esetben)."</string>
+	<string name="intro">"A OpenSong Music Viewer dal létrehozott OpenSong és megjeleníti őket a tablet képernyőjén."</string>
 		
 	<string name="intro_songsfolder">"Az alkalmazás keres egy mappát a Documents úgynevezett \"OpenSong / Songs\", és ha nem talál ilyet, létrehoz neked. Ezután ment egy dal 'Love örök \", az egyik a saját dalok, a mappa (ellenkező esetben nem lenne képes bármit is tenni az app!). Ahhoz, hogy a saját OpenSong dalok, másolja be a Dokumentumok / OpenSong / Songs / mappába. Akkor egy szintet almappákat belül a Songs mappába. \n\n Az app is jön a csomagban 700 + dal, amely akkor használható, de tartsa szem előtt, akkor felelős azért, hogy az esetleges szerzői jogi kérdések, és használja őket a saját felelősségére!"</string>
 		
@@ -447,5 +447,20 @@
 	<string name="time_slide_pages">"Idő az egyes diák (ok)"</string>
 	<string name="time_slide_pages_help">"Hagyja üresen a kézi diavetítés"</string>
 	<string name="warning">"Ez a lehetőség csak akkor használható, prezentációs üzemmódban. Legyen tudatában annak, hogy ez a funkció sok memória és összeomlást okozhat. Ön már figyelmeztette!"</string>
+	<string name="user_guide">"Használati útmutató"</string>
+	<string name="user_guide_text">"Ne sajnálja az időt, hogy olvassa el a használati útmutatót, mielőtt használja az alkalmazást."</string>
+	<string name="average">"Átlagos"</string>
+	<string name="maxvolrange">"Grafikus mennyiségi mutató tartományban"</string>
+	<string name="reset">"visszaállítása"</string>
+	<string name="volval">"Aktuális hangerő értéke"</string>
+	<string name="set_manage_swipe">"Ellop eltávolítani egy elemet a beállítás listáról"</string>
+	<string name="set_manage_shuffle">"Keverés"</string>
+	<string name="set_manage_click">"Kattintson egy elemre, a készlet a megtekintéshez"</string>
+	<string name="storage_rationale">"Hozzáférés a tárolás szükséges írni és olvasni dalok és készletek."</string>
+	<string name="microphone_rationale">"Mikrofon / hangfelvétel eléréséhez szükséges a zajszintmérő."</string>
+	<string name="default_autoscroll">"Alapértelmezett Auto.görgetés alkalommal"</string>
+	<string name="autoscroll_default_or_prompt">"Ha még nem állította be a dalt időtartama legyen az alapértelmezett értékeket lehet használni, vagy szeretne kérni, minden egyes alkalommal?"</string>
+	<string name="use_default">"Az alapértelmezett"</string>
+	<string name="ask">"Kérdezze minden alkalommal"</string>
 
 </resources>

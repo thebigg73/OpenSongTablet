@@ -178,7 +178,7 @@
     
 	<string name="welcome">"OpenSong Musiek Viewer \ n Geskryf deur Gareth Evans"</string>
 		
-	<string name="intro">"Die OpenSong Musiek Viewer gebruik liedjies geskep in OpenSong en vertoon dit op jou tablet skerm. Dit is gemik op aanbidding musikante en is baie 'n work in progress. Dit werk die beste in portret af, maar ek het die landskap af links beskikbaar (net in geval)."</string>
+	<string name="intro">"Die OpenSong Musiek Viewer gebruik liedjies geskep in OpenSong en vertoon dit op jou tablet skerm."</string>
 		
 	<string name="intro_songsfolder">"Die aansoek lyk vir 'n gids in jou dokumente genoem 'OpenSong / Songs \"en as dit nie kan vind nie, dit skep dit vir jou. Dit spaar dan 'n enkele liedjie genaamd \"Love ewige\", een van my eie liedjies, na die gids (anders sou jy nie in staat wees om iets te doen met die jeug!). Jou eie OpenSong liedjies te gebruik, skryf hulle op die dokumente / OpenSong / Songs / gids. Jy kan een vlak van submappen in jou Songs gids. \ N \ n Die inligting kom ook saam met 700 + songs wat jy kan gebruik, maar hou in gedagte is jy verantwoordelik vir die voldoening aan enige potensiële probleme met kopiereg en jy gebruik dit op jou eie risiko!"</string>
 		
@@ -447,5 +447,20 @@
 	<string name="time_slide_pages">"Tyd vir elke skyfie (s)"</string>
 	<string name="time_slide_pages_help">"Laat leeg vir die handleiding skyfievertoning"</string>
 	<string name="warning">"Hierdie opsie moet slegs gebruik word vir die aanbieding af. Wees bewus daarvan dat hierdie funksie maak gebruik van baie van die geheue en kan ineenstort veroorsaak. Julle is gewaarsku!"</string>
+	<string name="user_guide">"Handleiding"</string>
+	<string name="user_guide_text">"Neem asseblief die tyd om die handleiding te lees voordat die gebruik van die jeug."</string>
+	<string name="average">"Gemiddeld"</string>
+	<string name="maxvolrange">"Grafiese volume aanwyser reeks"</string>
+	<string name="reset">"herstel"</string>
+	<string name="volval">"Huidige volume-waarde"</string>
+	<string name="set_manage_swipe">"Swipe om \'n item uit jou stel lys verwyder"</string>
+	<string name="set_manage_shuffle">"shuffle"</string>
+	<string name="set_manage_click">"Klik op \'n item in die stel om dit te kan sien"</string>
+	<string name="storage_rationale">"Toegang tot jou stoor is nodig om te lees en skryf liedjies en stelle."</string>
+	<string name="microphone_rationale">"Mikrofoon / audio opname is nodig om toegang tot die klank vlak meter."</string>
+	<string name="default_autoscroll">"Default autoscroll keer"</string>
+	<string name="autoscroll_default_or_prompt">"As jy \'n duur lied moet die standaard waardes gebruik word nie gestel het of wil jy elke keer gevra word?"</string>
+	<string name="use_default">"gebruik verstek"</string>
+	<string name="ask">"Vra elke keer"</string>
 
 </resources>

@@ -6,13 +6,14 @@
 
 package com.garethevans.church.opensongtablet;
 
+import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -29,7 +30,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -45,6 +51,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -52,8 +59,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
+
 import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -68,13 +76,20 @@ import java.util.Locale;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 
-public class PresenterMode extends Activity implements PopUpEditSongFragment.MyInterface,
+public class PresenterMode extends AppCompatActivity implements PopUpEditSongFragment.MyInterface,
         PopUpListSetsFragment.MyInterface, PopUpAreYouSureFragment.MyInterface,
         PopUpSongRenameFragment.MyInterface, PopUpSearchViewFragment.MyInterface,
-        PopUpEditSetFragment.MyInterface, PopUpSongCreateFragment.MyInterface,
+        PopUpSetViewNew.MyInterface, PopUpSongCreateFragment.MyInterface,
         PopUpSearchViewFragment.MyVibrator, PopUpSongDetailsFragment.MyInterface,
         PopUpFontsFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
         PopUpFileChooseFragment.MyInterface {
+
+    DialogFragment newFragment;
+
+    // The toolbar
+    public Toolbar toolbar;
+    public ActionBar ab;
+    public TextView songandauthor;
 
     // General variables
     public static MediaPlayer mp;
@@ -112,6 +127,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     //boolean slideButton_isSelected = false;
     boolean alertButton_isSelected = false;
     boolean audioButton_isSelected = false;
+    boolean dBButton_isSelected = false;
     boolean layoutButton_isSelected = false;
     boolean backgroundButton_isSelected = false;
 
@@ -194,6 +210,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     LinearLayout presenter_scripture_group;
     LinearLayout presenter_alert_group;
     LinearLayout presenter_audio_group;
+    LinearLayout presenter_dB_group;
     LinearLayout presenter_slide_group;
 
     // Auto slideshow
@@ -207,7 +224,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     static int autoslidetime = 0;
     static boolean autoslideloop = false;
     AsyncTask autoslideshowtask;
-    Handler mHandler;
+    //Handler mHandler;
 
     // Settings buttons
     ScrollView presenter_settings_buttons;
@@ -215,8 +232,16 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     LinearLayout presenter_layout_group;
     LinearLayout presenter_displays_group;
 
+    View mLayout;
+    private int requestMicrophone = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // Check storage is valid
+        if (ActivityCompat.checkSelfPermission(PresenterMode.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            finish();
+        }
 
         System.gc();
 
@@ -291,8 +316,22 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         }
 
         // Load the layout and set the title
-        getActionBar().setTitle(getResources().getString(R.string.presentermode));
         setContentView(R.layout.presentermode);
+
+        mLayout = findViewById(R.id.pagepresentermode);
+
+        // Set up the toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ab = getSupportActionBar();
+
+        TextView title = (TextView) findViewById(R.id.songandauthor);
+        if (ab != null && title != null) {
+            ab.setTitle("");
+            ab.setDisplayHomeAsUpEnabled(false);
+            ab.setDisplayShowTitleEnabled(false);
+            title.setText(getResources().getString(R.string.presentermode));
+        }
 
         // Initialise the popupAlert
         popupAlert = new AlertDialog.Builder(this);
@@ -353,6 +392,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         presenter_slide_group.setVisibility(View.GONE);
         presenter_alert_group = (LinearLayout) findViewById(R.id.presenter_alert_group);
         presenter_audio_group = (LinearLayout) findViewById(R.id.presenter_audio_group);
+        presenter_dB_group = (LinearLayout) findViewById(R.id.presenter_dB_group);
 
         // Settings buttons
         presenter_settings_buttons = (ScrollView) findViewById(R.id.preso_settings_scroll);
@@ -418,7 +458,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         }
         String message = getResources().getString(R.string.exit);
         FullscreenActivity.whattodo = "exit";
-        DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+        newFragment = PopUpAreYouSureFragment.newInstance(message);
         newFragment.show(getFragmentManager(), "dialog");
     }
 
@@ -471,11 +511,9 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                     FullscreenActivity.songfilename = listDataChildSong.get(listDataHeaderSong.get(groupPosition)).get(childPosition);
 
                     if (listDataHeaderSong.get(groupPosition).equals(FullscreenActivity.mainfoldername)) {
-                        //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
                         FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
                         FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.songfilename + "_**$";
                     } else {
-                        //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/" + listDataHeaderSong.get(groupPosition));
                         FullscreenActivity.whichSongFolder = listDataHeaderSong.get(groupPosition);
                         FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename + "_**$";
                     }
@@ -527,10 +565,8 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                     // Set the appropriate folder name
 
                     if (listDataHeaderSong.get(groupPosition).equals(FullscreenActivity.mainfoldername)) {
-                        //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
                         FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
                     } else {
-                        //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/" + listDataHeaderSong.get(groupPosition));
                         FullscreenActivity.whichSongFolder = listDataHeaderSong.get(groupPosition);
                     }
                     // Set the appropriate song filename
@@ -749,44 +785,43 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                         if (childPosition == 0) {
                             // Load a set
                             FullscreenActivity.whattodo = "loadset";
-                            DialogFragment newFragment = PopUpListSetsFragment.newInstance();
+                            newFragment = PopUpListSetsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
                         } else if (childPosition == 1) {
                             // Save current set
                             FullscreenActivity.whattodo = "saveset";
-                            DialogFragment newFragment = PopUpListSetsFragment.newInstance();
+                            newFragment = PopUpListSetsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
                         } else if (childPosition == 2) {
                             // Clear current set
                             FullscreenActivity.whattodo = "clearset";
                             String message = getResources().getString(R.string.options_clearthisset);
-                            DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+                            newFragment = PopUpAreYouSureFragment.newInstance(message);
                             newFragment.show(getFragmentManager(), "dialog");
 
                         } else if (childPosition == 3) {
                             // Delete saved set
                             FullscreenActivity.whattodo = "deleteset";
-                            DialogFragment newFragment = PopUpListSetsFragment.newInstance();
+                            newFragment = PopUpListSetsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
                         } else if (childPosition == 4) {
                             // Export current set
                             FullscreenActivity.whattodo = "exportset";
-                            DialogFragment newFragment = PopUpListSetsFragment.newInstance();
+                            newFragment = PopUpListSetsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
                         } else if (childPosition == 5) {
                             // Add a custom slide
-                            DialogFragment newFragment = PopUpCustomSlideFragment.newInstance();
+                            newFragment = PopUpCustomSlideFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
                         } else if (childPosition == 6) {
                             // Edit current set
-                            // Only works for ICS or above
                             FullscreenActivity.whattodo = "editset";
-                            DialogFragment newFragment = PopUpEditSetFragment.newInstance();
+                            newFragment = PopUpSetViewNew.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
                         } else if (childPosition == 7) {
@@ -842,7 +877,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                                 ShowToast.showToast(PresenterMode.this);
                             } else {
                                 FullscreenActivity.whattodo = "editsong";
-                                DialogFragment newFragment = PopUpEditSongFragment.newInstance();
+                                newFragment = PopUpEditSongFragment.newInstance();
                                 newFragment.show(getFragmentManager(), "dialog");
                             }
 
@@ -854,7 +889,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                                 ShowToast.showToast(PresenterMode.this);
                                 FullscreenActivity.whattodo = "renamesong";
                             } else {
-                                DialogFragment newFragment = PopUpSongRenameFragment.newInstance();
+                                newFragment = PopUpSongRenameFragment.newInstance();
                                 newFragment.show(getFragmentManager(), "dialog");
                             }
 
@@ -869,14 +904,14 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                             } else {
                                 String message = getResources().getString(R.string.options_song_delete) +
                                         " \"" + FullscreenActivity.songfilename + "\"?";
-                                DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+                                newFragment = PopUpAreYouSureFragment.newInstance(message);
                                 newFragment.show(getFragmentManager(), "dialog");
                             }
 
                         } else if (childPosition == 3) {
                             // New
                             FullscreenActivity.whattodo = "createsong";
-                            DialogFragment newFragment = PopUpSongCreateFragment.newInstance();
+                            newFragment = PopUpSongCreateFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
                         } else if (childPosition == 4) {
@@ -943,14 +978,14 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                         } else if (childPosition == 1) {
                             // Change fonts
                             FullscreenActivity.whattodo = "changefonts";
-                            DialogFragment newFragment = PopUpFontsFragment.newInstance();
+                            newFragment = PopUpFontsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
 
                         } else if (childPosition == 2) {
                             // Assign foot pedal
                             FullscreenActivity.whattodo = "footpedal";
-                            DialogFragment newFragment = PopUpPedalsFragment.newInstance();
+                            newFragment = PopUpPedalsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
 
@@ -1200,7 +1235,6 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         // Decide if it is a song, scripture, slide, image or note and get the actual file location
         if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
             FullscreenActivity.whichSongFolder = songpart[0];
-            //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/" + songpart[0]);
 
         } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
             FullscreenActivity.whichSongFolder = "../OpenSong Scripture/_cache";
@@ -1220,7 +1254,6 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
 
         } else {
             FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
-            //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
         }
     }
 
@@ -1287,7 +1320,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         redrawPresenterPage();
 
         FullscreenActivity.whattodo = "editsong";
-        DialogFragment newFragment = PopUpEditSongFragment.newInstance();
+        newFragment = PopUpEditSongFragment.newInstance();
         newFragment.show(getFragmentManager(), "dialog");
     }
 
@@ -1297,20 +1330,24 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         String reusablefilename;
         String templocator;
 
-        if (FullscreenActivity.noteorslide.equals("note")) {
-            filename = FullscreenActivity.dircustomnotes + "/" + FullscreenActivity.customslide_title;
-            reusablefilename = FullscreenActivity.homedir + "/Notes/" + FullscreenActivity.customslide_title;
-            templocator = FullscreenActivity.note;
-            FullscreenActivity.customimage_list = "";
-        } else if (FullscreenActivity.noteorslide.equals("slide")) {
-            filename = FullscreenActivity.dircustomslides + "/" + FullscreenActivity.customslide_title;
-            reusablefilename = FullscreenActivity.homedir + "/Slides/" + FullscreenActivity.customslide_title;
-            templocator = FullscreenActivity.slide;
-            FullscreenActivity.customimage_list = "";
-        } else {
-            filename = FullscreenActivity.dircustomimages + "/" + FullscreenActivity.customslide_title;
-            reusablefilename = FullscreenActivity.homedir + "/Images/" + FullscreenActivity.customslide_title;
-            templocator = FullscreenActivity.image;
+        switch (FullscreenActivity.noteorslide) {
+            case "note":
+                filename = FullscreenActivity.dircustomnotes + "/" + FullscreenActivity.customslide_title;
+                reusablefilename = FullscreenActivity.homedir + "/Notes/" + FullscreenActivity.customslide_title;
+                templocator = FullscreenActivity.note;
+                FullscreenActivity.customimage_list = "";
+                break;
+            case "slide":
+                filename = FullscreenActivity.dircustomslides + "/" + FullscreenActivity.customslide_title;
+                reusablefilename = FullscreenActivity.homedir + "/Slides/" + FullscreenActivity.customslide_title;
+                templocator = FullscreenActivity.slide;
+                FullscreenActivity.customimage_list = "";
+                break;
+            default:
+                filename = FullscreenActivity.dircustomimages + "/" + FullscreenActivity.customslide_title;
+                reusablefilename = FullscreenActivity.homedir + "/Images/" + FullscreenActivity.customslide_title;
+                templocator = FullscreenActivity.image;
+                break;
         }
 
         // If slide content is empty - put the title in
@@ -1403,7 +1440,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         // Put the old myXML and song fields into temporary memory while we load in the new ones
         LoadXML.prepareLoadCustomReusable(FullscreenActivity.customreusabletoload);
         // This reopens the choose backgrounds popupFragment
-        DialogFragment newFragment = PopUpCustomSlideFragment.newInstance();
+        newFragment = PopUpCustomSlideFragment.newInstance();
         newFragment.show(getFragmentManager(), "dialog");
     }
 
@@ -1568,7 +1605,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     public void songDetailsButtonClick(View view) {
             findViewById(R.id.pres_details).setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_blue_active));
 
-            DialogFragment newFragment = PopUpSongDetailsFragment.newInstance();
+            newFragment = PopUpSongDetailsFragment.newInstance();
             newFragment.show(getFragmentManager(), "dialog");
 
             // After a short time, turn off the button
@@ -1585,7 +1622,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     public void popupPresentationOrder(View view) {
         // This is called when a user clicks on the Edit presentation order button
         // It opens a simple alert that allows the user to edit the presentation order
-        DialogFragment newFragment = PopUpPresentationOrderFragment.newInstance();
+        newFragment = PopUpPresentationOrderFragment.newInstance();
         newFragment.show(getFragmentManager(), "dialog");
     }
 
@@ -1635,7 +1672,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             presenter_alert_group.setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_blue_active));
             presenter_actions_buttons.smoothScrollTo(0, presenter_alert_group.getTop());
 
-            DialogFragment newFragment = PopUpAlertFragment.newInstance();
+            newFragment = PopUpAlertFragment.newInstance();
             newFragment.show(getFragmentManager(), "dialog");
 
             // After a short time, turn off the button
@@ -1657,7 +1694,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             presenter_backgrounds_group.setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_red_active));
             presenter_settings_buttons.smoothScrollTo(0, presenter_backgrounds_group.getTop());
 
-            DialogFragment newFragment = PopUpBackgroundsFragment.newInstance();
+            newFragment = PopUpBackgroundsFragment.newInstance();
             newFragment.show(getFragmentManager(), "dialog");
 
             // After a short time, turn off the button
@@ -1679,7 +1716,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             presenter_layout_group.setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_red_active));
             presenter_settings_buttons.smoothScrollTo(0, presenter_layout_group.getTop());
 
-            DialogFragment newFragment = PopUpLayoutFragment.newInstance();
+            newFragment = PopUpLayoutFragment.newInstance();
             newFragment.show(getFragmentManager(), "dialog");
 
             // After a short time, turn off the button
@@ -1731,7 +1768,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         presenter_audio_group.setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_blue_active));
         presenter_actions_buttons.smoothScrollTo(0, presenter_audio_group.getTop());
 
-        DialogFragment newFragment = PopUpMediaStoreFragment.newInstance();
+        newFragment = PopUpMediaStoreFragment.newInstance();
         newFragment.show(getFragmentManager(), "dialog");
 
         // After a short time, turn off the button
@@ -1743,6 +1780,43 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
                 presenter_audio_group.setBackgroundDrawable(null);
             }
         }, 500);
+    }
+
+    public void dBButtonClick(View view) {
+        // Check audio record is allowed
+        if (ActivityCompat.checkSelfPermission(PresenterMode.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
+                Snackbar.make(mLayout, R.string.microphone_rationale, Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ActivityCompat.requestPermissions(PresenterMode.this, new String[]{Manifest.permission.RECORD_AUDIO}, requestMicrophone);
+                    }
+                }).show();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
+                        requestMicrophone);
+            }
+
+        } else {
+
+            dBButton_isSelected = true;
+
+            presenter_dB_group.setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_blue_active));
+            presenter_actions_buttons.smoothScrollTo(0, presenter_dB_group.getTop());
+
+            newFragment = PopUpSoundLevelMeterFragment.newInstance();
+            newFragment.show(getFragmentManager(), "dialog");
+
+            // After a short time, turn off the button
+            Handler delay = new Handler();
+            delay.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    alertButton_isSelected = false;
+                    presenter_dB_group.setBackgroundDrawable(null);
+                }
+            }, 500);
+        }
     }
 
     public void turnOffLogoButton() {
@@ -1919,7 +1993,6 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
 
         } else {
             FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
-            //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
         }
 
         FullscreenActivity.songfilename = songpart[1];
@@ -1957,6 +2030,15 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        menu = this.menu;
+
+        ab = getSupportActionBar();
+        if (Build.VERSION.SDK_INT >= 14 && ab != null) {
+            ab.setHomeButtonEnabled(false); // disable the button
+            ab.setDisplayHomeAsUpEnabled(false); // remove the left caret
+            ab.setDisplayShowHomeEnabled(false); // remove the icon
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -1982,7 +2064,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
         }
 
         // Force icons to show in overflow menu
-        if (getActionBar()!=null && menu != null){
+        if (ab != null && menu != null){
             if(menu.getClass().getSimpleName().equals("MenuBuilder")){
                 try{
                     Method m = menu.getClass().getDeclaredMethod(
@@ -2050,16 +2132,8 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
 
             case R.id.action_fullsearch:
                 FullscreenActivity.whattodo = "exit";
-                DialogFragment newFragment = PopUpSearchViewFragment.newInstance();
+                newFragment = PopUpSearchViewFragment.newInstance();
                 newFragment.show(getFragmentManager(), "dialog");
-
-/*
-            // Need to fix this as the SearchViewFilterMode returns to FullscreenActivity
-			Intent intent = new Intent();
-			intent.setClass(PresenterMode.this,SearchViewFilterMode.class);
-			startActivity(intent);
-			finish();
-*/
                 return true;
 
             case R.id.action_settings:
@@ -2246,7 +2320,7 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
     @Override
     public void doEdit() {
         FullscreenActivity.whattodo = "editsong";
-        DialogFragment newFragment = PopUpEditSongFragment.newInstance();
+        newFragment = PopUpEditSongFragment.newInstance();
         newFragment.show(getFragmentManager(), "dialog");
     }
 
@@ -2259,6 +2333,39 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             e.printStackTrace();
         }
         refreshAll();
+    }
+
+    @Override
+    public void loadSongFromSet() {
+        Preferences.savePreferences();
+        // Redraw the set buttons as the user may have changed the order
+        refreshAll();
+        // Get the song index
+        try {
+            SetActions.indexSongInSet();
+        } catch (Exception e) {
+            Log.d("d","Can't find current song index in the set");
+        }
+        try {
+            newFragment.dismiss();
+        } catch (Exception e) {
+            Log.d("d","Fragment already closed");
+        }
+
+        FullscreenActivity.setView = "Y";
+        // Specify which songinset button
+        whichsonginset = FullscreenActivity.indexSongInSet;
+        whichsongsection = 0;
+
+        // Select it
+        Button which_song_to_click = (Button) presenter_set_buttonsListView.findViewById(whichsonginset);
+        which_song_to_click.performClick();
+    }
+
+    @Override
+    public void shuffleSongsInSet() {
+        newFragment = PopUpSetViewNew.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
     }
 
     @Override
@@ -2467,5 +2574,4 @@ public class PresenterMode extends Activity implements PopUpEditSongFragment.MyI
             return null;
         }
     }
-
 }

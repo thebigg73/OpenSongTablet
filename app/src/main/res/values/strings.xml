@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="set_manage_swipe">Swipe to remove an item from your set list</string>
+    <string name="set_manage_shuffle">Shuffle</string>
+    <string name="set_manage_click">Click on an item in the set to view it</string>
+    <string name="storage_rationale">Access to your storage is required to read and write songs and sets.</string>
+    <string name="microphone_rationale">Microphone / audio recording is required to access the sound level meter.</string>
+    <string name="default_autoscroll">Default autoscroll times</string>
+    <string name="autoscroll_default_or_prompt">If you haven\'t set a song duration should the default values be used or do you want to be asked each time?</string>
+    <string name="use_default">Use default</string>
+    <string name="ask">Ask each time</string>
+
+    <string name="maxvolrange">Graphical volume indicator range</string>
+    <string name="volval">Current volume value</string>
+	<string name="average">Average</string>
+    <string name="reset">Reset</string>
+
 	<string name="warning">This option should only be used for presentation mode.  Be aware that this feature uses lots of memory and can cause crashes.  You have been warned!</string>
 	<string name="loop">Loop</string>
 	<string name="time">Time</string>
@@ -334,10 +349,13 @@
 	
     <string name="welcome">OpenSong Music Viewer \n Written by Gareth Evans</string>
 		
-	<string name="intro">The OpenSong Music Viewer uses songs created in OpenSong and displays them on your tablet screen. It is aimed at worship musicians and is very much a work in progress. It works best in portrait mode, but I\'ve left landscape mode available (just in case).</string>
-		
+	<string name="intro">The OpenSong Music Viewer uses songs created in OpenSong and displays them on your tablet screen.</string>
+
+    <string name="user_guide_text">Please take the time to read the user guide before using the app.</string>
+    <string name="user_guide">User guide</string>
+
 	<string name="intro_songsfolder">The application looks for a folder in your Documents called \'OpenSong/Songs\' and if it can\'t find it, it creates it for you. It then saves a single song called \'Love everlasting\', one of my own songs, to the folder (otherwise, you wouldn\'t be able to do anything with the app!). To use your own OpenSong songs, copy them into the Documents/OpenSong/Songs/ folder.  You can have one level of subfolders inside your Songs folder.\n\n The app also comes bundled with my interpretation of 700+ songs which you can use, but bear in mind you are responsible for adhering to any potential copyright issues and you use them at your own risk!</string>
-		
+
 	<string name="intro_dropbox">If you want to use Songs/Sets via a dropbox account
 	    (allows groups to access the same information), you will need to install
 	    an app that allows the syncing of Dropbox files with your tablet.  Unfortunately

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView12" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/default_autoscroll"
+                android:id="@+id/textView36"
+                android:textSize="24sp"
+                android:textColor="#ffff00"
+                android:layout_margin="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/autoscroll_time"
+                android:id="@+id/textView37"
+                android:layout_margin="8dp"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/default_delaytime_TextView"
+                android:layout_margin="8dp"
+                android:textSize="18sp"
+                android:gravity="center_horizontal" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/default_delaytime_SeekBar"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_song_duration"
+                android:id="@+id/textView38"
+                android:layout_margin="8dp"
+                android:textSize="18sp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/default_duration_EditText"
+                android:textSize="18sp"
+                android:textColor="#000"
+                android:background="#aaa"
+                android:textColorHint="#555"
+                android:hint="@string/edit_song_duration"
+                android:inputType="number"
+                android:singleLine="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/autoscroll_default_or_prompt"
+                android:id="@+id/textView39"
+                android:layout_margin="8dp"
+                android:textSize="18sp" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:id="@+id/autoscroll_defaults_RadioGroup">
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/use_default"
+                    android:id="@+id/autoscroll_default_RadioButton" />
+
+                <RadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ask"
+                    android:id="@+id/autoscroll_prompt_RadioButton" />
+
+            </RadioGroup>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/options_set_save"
+                android:id="@+id/save_autoscroll_Button"
+                android:layout_margin="8dp"
+                android:background="@drawable/blue_button"
+                android:layout_gravity="right" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -70,7 +70,6 @@ public class PopUpSongRenameFragment extends DialogFragment {
         // Set up the folderspinner
         // Populate the list view with the current song folders
         // Reset to the main songs folder, so we can list them
-        //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
         FullscreenActivity.currentFolder = FullscreenActivity.whichSongFolder;
         FullscreenActivity.newFolder = FullscreenActivity.whichSongFolder;
         //FullscreenActivity.whichSongFolder = "";
@@ -183,6 +182,11 @@ public class PopUpSongRenameFragment extends DialogFragment {
                     mListener.refreshAll();
 
                     dismiss();
+
+                } else if (to.exists()) {
+                    FullscreenActivity.myToastMessage = getResources().getString(R.string.file_exists);
+                    ShowToast.showToast(getActivity());
+
                 } else {
                     FullscreenActivity.myToastMessage = getResources().getString(R.string.no);
                     ShowToast.showToast(getActivity());

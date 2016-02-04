@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<ScrollView
     android:id="@+id/scrollviewforeditsong"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -109,6 +112,42 @@
                 android:background="#fff"
                 android:textColor="#000"
                 android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/myPreDelay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/autoscroll_time"
+                android:textColor="#ff0"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <SeekBar
+                    android:id="@+id/predelay_SeekBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:max="31" />
+
+                <TextView
+                    android:id="@+id/predelay_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:textColor="#fff"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/myDuration"
@@ -1330,3 +1369,4 @@
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>
+</RelativeLayout>

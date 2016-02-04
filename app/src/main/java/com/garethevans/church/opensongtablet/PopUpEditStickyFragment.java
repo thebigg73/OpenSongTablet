@@ -62,9 +62,9 @@ public class PopUpEditStickyFragment extends DialogFragment {
             public void onClick(View v) {
                 FullscreenActivity.mNotes = editStickyText.getText().toString();
                 // Save the file
-                EditSong.prepareSongXML();
+                PopUpEditSongFragment.prepareSongXML();
                 try {
-                    EditSong.justSaveSongXML();
+                    PopUpEditSongFragment.justSaveSongXML();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

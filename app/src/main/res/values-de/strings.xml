@@ -89,7 +89,7 @@
 	<string name="options_song_new">"Neu"</string>
 	<string name="options_song_export">"Exportieren"</string>
     <string name="options_song_stickynotes">"Song bearbeiten Haftnotiz"</string>
-    <string name="options_song_newfolder">"Erstelle eine neue Song-Ordner"</string>
+    <string name="options_song_newfolder">"Neuen Song-Ordner erstellen"</string>
     <string name="options_song_editfolder">"Bearbeiten von Titelordnernamen"</string>
 		
 	<string name="options_options">"OPTIONEN"</string>
@@ -177,7 +177,7 @@
     
 	<string name="welcome">"Opensong Musik-Viewer \n von Gareth Evans"</string>
 		
-	<string name="intro">"Der Opensong Musik Viewer verwendet Songs die in OpenSong erstellt wurden und zeigt diese auf dem Tablet-Bildschirm an. Der Viewer richtet sich an Lobpreis Musiker. Er ist noch in Entwicklung. Die App funktioniert am besten Hochformat, wobei auch eine Benutzung im Querformat möglich ist."</string>
+	<string name="intro">"Der Opensong Musik Viewer verwendet Songs die in OpenSong erstellt wurden und zeigt diese auf dem Tablet-Bildschirm an."</string>
 		
 	<string name="intro_songsfolder">"Die Anwendung sucht in Ihren Dokumenten nach einem Ordner namens \'Opensong/Songs\'. Kann Sie ihn nicht finden, wird er neu angelegt. Es speichert dann ein Lied namens \'Love everlasting\', einen meiner eigenen Songs, in den Ordner (andernfalls würden Sie nicht in der Lage sein, irgendetwas mit der App zu tun!). Um Ihre eigenen OpenSong Songs zu verwenden, kopieren Sie diese nach Dokumente/OpenSong/Songs. Sie können eine Ebene von Unterordnern in diesem Ordner vorhalten.\n\n Die App kommt auch mit mehr als 700 Songs klar, aber bedenken Sie, dass Sie für die Einhaltung möglicher Urheberrechte alleine verantwortlich sind!"</string>
 		
@@ -447,5 +447,20 @@
 	<string name="time_slide_pages">"Zeit für die Folie(n)"</string>
 	<string name="time_slide_pages_help">"Leer lassen bei manueller Präsentation"</string>
 	<string name="warning">"Diese Option sollte nur im Präsentationsmodus verwendet werden. Beachten Sie, dass diese Funktion viel Speicher benötigt und zu Abstürzen führen kann. Sie wurden gewarnt!"</string>
+	<string name="user_guide">"Bedienungsanleitung"</string>
+	<string name="user_guide_text">"Bitte nehmen Sie sich Zeit, um die Bedienungsanleitung zu lesen, bevor Sie die App benutzen."</string>
+	<string name="average">"Durchschnittlich"</string>
+	<string name="maxvolrange">"Bereich der Lautstärkeanzeige"</string>
+	<string name="reset">"Zurücksetzen"</string>
+	<string name="volval">"Aktuelle Lautstärke"</string>
+	<string name="set_manage_swipe">"Streichen, ein Element aus Ihrem Set-Liste zu entfernen"</string>
+	<string name="set_manage_shuffle">"Shuffle"</string>
+	<string name="set_manage_click">"Klicken Sie auf ein Element in der Menge, damit sie angezeigt"</string>
+	<string name="storage_rationale">"Zugriff auf Ihre Speicher ist erforderlich, um lesen und schreiben Lieder und Sätze."</string>
+	<string name="microphone_rationale">"Mikrofon / Audio-Aufzeichnung ist erforderlich, um den Schallpegelmesser zugreifen."</string>
+	<string name="default_autoscroll">"Standard Autoscroll Zeiten"</string>
+	<string name="autoscroll_default_or_prompt">"Wenn Sie einen Song Dauer sollten die Standardwerte verwendet werden, nicht festgelegt haben oder wollen Sie jedes Mal gefragt werden möchten?"</string>
+	<string name="use_default">"Verwende den Standard"</string>
+	<string name="ask">"Stellen Sie jedes Mal,"</string>
 
 </resources>

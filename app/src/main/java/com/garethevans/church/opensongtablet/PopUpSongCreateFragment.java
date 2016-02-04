@@ -61,7 +61,6 @@ public class PopUpSongCreateFragment extends DialogFragment {
         // Set up the folderspinner
         // Populate the list view with the current song folders
         // Reset to the main songs folder, so we can list them
-        //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
         FullscreenActivity.currentFolder = FullscreenActivity.whichSongFolder;
         FullscreenActivity.newFolder = FullscreenActivity.whichSongFolder;
         //FullscreenActivity.whichSongFolder = "";
@@ -144,11 +143,11 @@ public class PopUpSongCreateFragment extends DialogFragment {
                     FullscreenActivity.mTitle = tempNewSong;
                     Preferences.savePreferences();
 
-                    EditSong.prepareBlankSongXML();
+                    PopUpEditSongFragment.prepareBlankSongXML();
 
                     // Save the file
                     try {
-                        EditSong.justSaveSongXML();
+                        PopUpEditSongFragment.justSaveSongXML();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

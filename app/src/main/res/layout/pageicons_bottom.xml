@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView
+    android:id="@+id/bottombar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <ImageView
+            android:id="@+id/padbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:alpha="0.4"
+            android:contentDescription="@string/pad_onoroff"
+            android:onClick="popupPad_toggle"
+            android:src="@drawable/page_speaker_bw"
+            android:tag="togglePlayPads"
+            android:elevation="8dp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/autoscroll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/padbutton"
+            android:alpha="0.4"
+            android:contentDescription="@string/stickynotes"
+            android:onClick="popupAutoscroll_toggle"
+            android:src="@drawable/page_autoscroll_bw"
+            android:elevation="8dp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/metronomebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="14dp"
+            android:layout_toRightOf="@id/autoscroll"
+            android:alpha="0.4"
+            android:contentDescription="@string/stickynotes"
+            android:onClick="popupMetronome_toggle"
+            android:src="@drawable/page_metronome_bw"
+            android:elevation="8dp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/uparrow_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/metronomebutton"
+            android:alpha="0.6"
+            android:contentDescription="@string/set_back"
+            android:onClick="doScrollUp"
+            android:src="@drawable/page_up_bw"
+            android:elevation="8dp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/downarrow_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/uparrow_bottom"
+            android:alpha="0.6"
+            android:contentDescription="@string/set_forward"
+            android:onClick="doScrollDown"
+            android:src="@drawable/page_down_bw"
+            android:elevation="8dp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/pageselect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/downarrow_bottom"
+            android:alpha="0.4"
+            android:contentDescription="@string/pdf_selectpage"
+            android:onClick="pdfSelectPage"
+            android:src="@drawable/page_pdf_bw"
+            android:elevation="8dp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/stickynotes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/downarrow_bottom"
+            android:alpha="0.4"
+            android:contentDescription="@string/stickynotes"
+            android:onClick="stickyNotes"
+            android:src="@drawable/page_notes_bw"
+            android:elevation="8dp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/chordbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/stickynotes"
+            android:alpha="0.4"
+            android:contentDescription="@string/chords"
+            android:onClick="popupChords_toggle"
+            android:src="@drawable/page_guitar_bw"
+            android:elevation="8dp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/linkbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@id/chordbutton"
+            android:alpha="0.4"
+            android:contentDescription="@string/link"
+            android:src="@drawable/page_link_bw"
+            android:onClick="popupLink"
+            android:elevation="8dp"
+            android:visibility="visible" />
+    </RelativeLayout>
+</HorizontalScrollView>

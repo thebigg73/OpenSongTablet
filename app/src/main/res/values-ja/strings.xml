@@ -446,5 +446,20 @@
 	<string name="time_slide_pages">"各スライドの時間（s）"</string>
 	<string name="time_slide_pages_help">"手動スライドショーの空白のまま"</string>
 	<string name="warning">"このオプションは、プレゼンテーションモードを使用する必要があります。この機能は多くのメモリを使用するとクラッシュを引き起こす可能性があることに注意してください。あなたは警告されています！"</string>
+	<string name="user_guide">ユーザーガイド</string>
+	<string name="user_guide_text">"アプリを使用する前に、ユーザーガイドを読む時間がかかるしてください。"</string>
+	<string name="average">"平均"</string>
+	<string name="maxvolrange">"グラフィカル音量インジケータ範囲"</string>
+	<string name="reset">"リセット"</string>
+	<string name="volval">"現在のボリューム値"</string>
+	<string name="set_manage_swipe">"あなたのセットリストから項目を削除するには、スワイプ"</string>
+	<string name="set_manage_shuffle">"シャッフル"</string>
+	<string name="set_manage_click">"それを表示するには、セット内のアイテムをクリックしてください"</string>
+	<string name="storage_rationale">"ストレージへのアクセスは読み取りおよび曲やセットを書き込むために必要とされます。"</string>
+	<string name="microphone_rationale">"マイク/オーディオ録音はサウンドレベルメーターにアクセスする必要があります。"</string>
+	<string name="default_autoscroll">"デフォルトの自動スクロール時間"</string>
+	<string name="autoscroll_default_or_prompt">"あなたはデフォルト値が使用されるべき曲の時間を設定したり、それぞれの時間を求められることがしたいですしていない場合は？"</string>
+	<string name="use_default">"デフォルトを使用"</string>
+	<string name="ask">"毎回確認して下さい"</string>
 
 </resources>

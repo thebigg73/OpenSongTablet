@@ -178,7 +178,7 @@
     
 	<string name="welcome">"OpenSong Musique Viewer \n Écrit par Gareth Evans"</string>
 		
-	<string name="intro">"Le OpenSong Musique Viewer utilise des morceaux créés dans OpenSong et les affiche sur l'écran de votre tablette. Il est destiné aux musiciens de culte et est très bien un travail en cours. Il fonctionne mieux en mode portrait, mais j'ai laissé mode paysage disponible (au cas où)."</string>
+	<string name="intro">"Le OpenSong Musique Viewer utilise des morceaux créés dans OpenSong et les affiche sur l\'écran de votre tablette."</string>
 		
 	<string name="intro_songsfolder">"L'application recherche un dossier dans vos documents appelés «OpenSong / Songs» et si elle ne peut pas le trouver, il le crée pour vous. Il enregistre ensuite une chanson unique appelé «éternelle d'amour», l'un de mes propres chansons, dans le dossier (sinon, vous ne seriez pas en mesure de faire quoi que ce soit avec l'application!). Pour utiliser vos propres chansons OpenSong, copiez-les dans les Documents / OpenSong / Songs / dossier. Vous pouvez avoir un niveau de sous-dossiers dans votre dossier Songs. \n \n L'application est également livré avec 700 + chansons que vous pouvez utiliser, mais gardez à l'esprit que vous êtes responsable du respect des droits d'auteurs potentiels et vous les utiliser à votre risques et périls!"</string>
 		
@@ -447,5 +447,20 @@
 	<string name="time_slide_pages">"Durée de chaque diapositive (s)"</string>
 	<string name="time_slide_pages_help">"Laissez ce champ vide pour le diaporama manuel"</string>
 	<string name="warning">"Cette option ne doit être utilisé pour le mode de présentation. Soyez conscient que cette fonction utilise beaucoup de mémoire et peut causer des accidents. Tu as été prévenu!"</string>
+	<string name="user_guide">"Mode d\'emploi"</string>
+	<string name="user_guide_text">"S\'il vous plaît prendre le temps de lire le mode d\'emploi avant d\'utiliser l\'application."</string>
+	<string name="average">"Moyen"</string>
+	<string name="maxvolrange">"Le volume graphique éventail d\'indicateurs"</string>
+	<string name="reset">"Réinitialiser"</string>
+	<string name="volval">"Valeur du volume actuel"</string>
+	<string name="set_manage_swipe">"Glissez pour supprimer un élément de votre liste de jeu"</string>
+	<string name="set_manage_shuffle">"Mêler"</string>
+	<string name="set_manage_click">"Cliquez sur un élément dans le jeu pour le voir"</string>
+	<string name="storage_rationale">"Accès à votre espace de stockage est nécessaire pour lire et écrire des chansons et des jeux."</string>
+	<string name="microphone_rationale">"Microphone d\'enregistrement / audio est nécessaire pour accéder à l\'indicateur de niveau sonore."</string>
+	<string name="default_autoscroll">"Fois par défaut de AutoScroll"</string>
+	<string name="autoscroll_default_or_prompt">"Si vous ne l\'avez pas fixé la durée de la chanson devraient les valeurs par défaut être utilisés ou voulez-vous être demandé à chaque fois?"</string>
+	<string name="use_default">"L\'utilisation par défaut"</string>
+	<string name="ask">"Demandez à chaque fois"</string>
 
 </resources>

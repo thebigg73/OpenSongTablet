@@ -71,7 +71,6 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         // Set up the spinner
         // Populate the list view with the current song folders
         // Reset to the main songs folder, so we can list them
-        //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath()+"/documents/OpenSong/Songs");
         FullscreenActivity.currentFolder = FullscreenActivity.whichSongFolder;
         FullscreenActivity.newFolder = FullscreenActivity.whichSongFolder;
         //FullscreenActivity.whichSongFolder = "";

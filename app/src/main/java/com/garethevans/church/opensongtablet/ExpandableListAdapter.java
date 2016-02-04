@@ -29,7 +29,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter implements 
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         this.expandableListView = expandableListView;
-        //this.expandableListView.setOnScrollListener(this);
+        this.expandableListView.setOnScrollListener(this);
         this.expandableListView.setFastScrollEnabled(false);
     }
 
@@ -67,8 +67,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter implements 
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .size();
+        return this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
     }
 
     @Override
@@ -120,7 +119,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter implements 
     public void onScroll(AbsListView view,
                          int firstVisibleItem,
                          int visibleItemCount,
-                         int totalItemCount) {}
+                         int totalItemCount) {
+    }
 
     @Override
     public int getPositionForSection(int section) {

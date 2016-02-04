@@ -1,36 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppBaseTheme" parent="android:Theme.Holo">
-    </style>
 
-    <style name="AltAppBaseTheme" parent="android:Theme.Holo">
+    <style name="MyTheme" parent="MyTheme.Base">
     </style>
-
-    <style name="AppTheme" parent="AppBaseTheme">
+    <!-- Base theme applied no matter what API -->
+    <style name="MyTheme.Base" parent="Theme.AppCompat.NoActionBar">
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="colorPrimary">@color/toolbar</item>
+        <!-- colorPrimaryDark is used for the status bar -->
+        <item name="colorPrimaryDark">@color/toolbar</item>
+        <!-- colorAccent is used as the default value for colorControlActivated
+             which is used to tint widgets -->
+        <item name="colorAccent">@color/accent</item>
+        <!-- You can also set colorControlNormal, colorControlActivated
+            colorControlHighlight and colorSwitchThumbNormal. -->
     </style>
+    <!--    <style name="AppBaseTheme" parent="android:Theme.Holo">
+        </style>
 
-    <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@null</item>
-        <item name="buttonBarStyle">@style/ButtonBar</item>
-        <item name="buttonBarButtonStyle">@style/ButtonBarButton</item>
-    </style>
+        <style name="AltAppBaseTheme" parent="android:Theme.Holo">
+        </style>
 
-    <style name="ButtonBar">
-        <item name="android:paddingLeft">2dp</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingRight">2dp</item>
-        <item name="android:paddingBottom">0dp</item>
-        <item name="android:background">@android:drawable/bottom_bar</item>
-    </style>
+        <style name="AppTheme" parent="AppBaseTheme">
+        </style>
 
-    <style name="ButtonBarButton" />
+        <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
+            <item name="android:windowContentOverlay">@null</item>
+            <item name="android:windowBackground">@null</item>
+            <item name="buttonBarStyle">@style/ButtonBar</item>
+            <item name="buttonBarButtonStyle">@style/ButtonBarButton</item>
+        </style>
 
-    <style name="MyTheme" parent="@android:style/Theme.Holo">
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
-    </style>
+        <style name="ButtonBar">
+            <item name="android:paddingLeft">2dp</item>
+            <item name="android:paddingTop">5dp</item>
+            <item name="android:paddingRight">2dp</item>
+            <item name="android:paddingBottom">0dp</item>
+            <item name="android:background">@android:drawable/bottom_bar</item>
+        </style>
 
-    <style name="MyActionBar" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">#121222</item>
-    </style>
+        <style name="ButtonBarButton" />
+
+        <style name="MyTheme" parent="@android:style/Theme.Holo">
+            <item name="android:actionBarStyle">@style/MyActionBar</item>
+        </style>
+
+        <style name="MyActionBar" parent="@android:style/Widget.Holo.ActionBar">
+            <item name="android:background">#121222</item>
+        </style>-->
 </resources>

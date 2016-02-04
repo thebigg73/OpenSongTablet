@@ -178,7 +178,7 @@
     
 	<string name="welcome">"OpenSong Muzyka Viewer \n Wpisany przez Gareth Evans"</string>
 		
-	<string name="intro">"OpenSong Muzyka Viewer wykorzystuje utwory stworzone w OpenSong i wyświetla je na ekranie tabletu. Ma on na celu kultu muzyków i jest bardzo dużo w toku. To działa najlepiej w trybie portretowym, ale już opuścił tryb krajobrazu dostępne (na wszelki wypadek)."</string>
+	<string name="intro">"OpenSong Muzyka Viewer wykorzystuje utwory stworzone w OpenSong i wyświetla je na ekranie tabletu."</string>
 		
 	<string name="intro_songsfolder">"Aplikacja wyszukuje folderu w dokumentach zwanych \"OpenSong / Piosenki\", a jeśli nie możesz go znaleźć, to tworzy go dla Ciebie. Następnie zapisuje pojedynczy utwór o nazwie \"Miłość wieczna\", jedna z moich piosenek, do folderu (w przeciwnym razie nie będzie w stanie nic zrobić z aplikacji!). Aby korzystać z własnych piosenek OpenSong, skopiuj je do Dokumenty / OpenSong / Utwory / folderów. Możesz mieć jeden poziom podfolderów wewnątrz katalogu piosenek. \n\n aplikacja również w pakiecie z 700 + piosenek, które można wykorzystać, należy jednak pamiętać, jesteś odpowiedzialny za przestrzeganie ewentualnych praw autorskich i można ich używać na twoje własne ryzyko!"</string>
 		
@@ -447,5 +447,20 @@
 	<string name="time_slide_pages">"Czas dla każdego slajdu (s)"</string>
 	<string name="time_slide_pages_help">"Pozostaw puste do ręcznego pokazu slajdów"</string>
 	<string name="warning">"Ta opcja powinna być używana tylko w trybie prezentacji. Należy pamiętać, że funkcja ta używa dużo pamięci i mogą powodować awarie. Zostałeś ostrzeżony!"</string>
+	<string name="user_guide">"Podręcznik użytkownika"</string>
+	<string name="user_guide_text">"Prosimy o poświęcenie czasu na przeczytanie instrukcji obsługi przed rozpoczęciem korzystania z aplikacji."</string>
+	<string name="average">"Średni"</string>
+	<string name="maxvolrange">"Graficzny wskaźnik głośności Zakres"</string>
+	<string name="reset">"Nastawić"</string>
+	<string name="volval">"Wartość prądu objętość"</string>
+	<string name="set_manage_swipe">"Przesuń palec, aby usunąć element z listy ustalonej"</string>
+	<string name="set_manage_shuffle">"Człapać"</string>
+	<string name="set_manage_click">"Kliknij na element w zestawie, by go zobaczyć"</string>
+	<string name="storage_rationale">"Dostęp do pamięci jest wymagane, aby czytać i pisać piosenki i zestawy."</string>
+	<string name="microphone_rationale">"Mikrofon / nagrywanie dźwięku jest niezbędny do korzystania z miernika poziomu dźwięku."</string>
+	<string name="default_autoscroll">"Czasy domyślne AutoScroll"</string>
+	<string name="autoscroll_default_or_prompt">"Jeśli nie ustawić czas trwania utworu domyślne wartości powinny być używane lub chcesz się pytanie za każdym razem?"</string>
+	<string name="use_default">"Zastosowanie domyślne"</string>
+	<string name="ask">"Zapytaj każdym razem"</string>
 
 </resources>
