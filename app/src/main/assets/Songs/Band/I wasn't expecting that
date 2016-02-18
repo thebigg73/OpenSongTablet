@@ -5,7 +5,7 @@
   <copyright></copyright>
   <presentation></presentation>
   <hymn_number></hymn_number>
-  <capo print=""></capo>
+  <capo print="true"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
   <duration></duration>
@@ -15,7 +15,7 @@
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>G</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -25,16 +25,16 @@
   <restrictions></restrictions>
   <notes></notes>
   <lyrics>[Intro]
-.C / Em / Am / G / F / G / C / Am G / 
+.G     Bm     Em     D     C     D     G     Em D
 
 [V1]
-.C Em Am G 
+.G     Bm          Em    D 
  It was only a smile but my heart it went wild
-.F G C Am G 
+.C     D               G Em D 
  And I wasn't expecting that
-.C Em Am G 
+.G     Bm      Em      D 
  Just a delicate kiss, anyone could've missed 
-.F G C G 
+.C D               G    D 
  I wasn't expecting that 
 
 [V2]
@@ -44,15 +44,15 @@
  "Well, I wasn't expecting that"
 
 [C]
-.Dm Em E7 
+.Am                   Bm      B7 
  I thought love wasn't meant to last,
-.F G C 
+.C         D                    G 
  I thought you were just passing through 
-.Am Em 
+.Em               Bm 
  If I ever get the nerve to ask
-.F G G7 
+.C                       D                    D7 
  What did I get right to deserve somebody like you?
-.C 
+.                   G 
  I wasn't expecting that
 
 [V3]
@@ -64,18 +64,18 @@
 ;Chorus
 
 [Instrumental]
-.C / Em / Am / G / F / G / C / C / G (Ab)
+.G    Bm    Em    D    C    D    G    G
 
 [B]
-.Am 
+.D       D#dim          Em 
  Isn't it strange how a life can be changed
-.F G C 
+.C      D                      G 
  in the flicker of the sweetest smile 
-.G Ab 
+.D                 D#dim
  We were married in spring 
-.Am 
+.Em 
  You know I wouldn't change a thing 
-.F G G7 
+.C                                D            D7 
  Without an innocent kiss, what a life I'd have missed, 
 
 [V4]

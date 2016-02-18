@@ -9,6 +9,7 @@
   <tempo>72</tempo>
   <time_sig>4/4</time_sig>
   <duration></duration>
+  <predelay></predelay>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -33,7 +34,7 @@
  Cos I have been told that salvation lets their wings unfold
 .            D                         A/C#   
  So when I'm lying in my bed, thoughts running through my head
-.      E                       A/C#       E
+.      E                       D          A/C#      E
  And I feel that love is dead, I'm loving angels instead
 
 [C]
@@ -65,7 +66,7 @@
 
 ;Chorus</lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
+  <pad_file>Auto</pad_file>
   <custom_chords></custom_chords>
   <link_youtube></link_youtube>
   <link_web></link_web>

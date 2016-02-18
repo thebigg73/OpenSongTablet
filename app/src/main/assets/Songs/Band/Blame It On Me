@@ -5,7 +5,7 @@
   <copyright></copyright>
   <presentation></presentation>
   <hymn_number></hymn_number>
-  <capo print="true">3</capo>
+  <capo print="false">3</capo>
   <tempo>101</tempo>
   <time_sig>4/4</time_sig>
   <duration></duration>
@@ -15,7 +15,7 @@
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key>C</key>
+  <key>Eb</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -25,69 +25,69 @@
   <restrictions></restrictions>
   <notes></notes>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
+  <pad_file>Auto</pad_file>
   <custom_chords></custom_chords>
   <lyrics>[Intro]
-.C  C4
+.Eb  Eb4
  
 [V1]
-.C             C4            C             C4
+.Eb             Eb4            Eb             Eb4
  The garden was blessed by the gods of me and you
-.C       C4          C                  C4
+.Eb       Eb4          Eb                  Eb4
  We headed west for to find ourselves some truth
-.  Am                 F                        C  C4 C C4
+.  Cm                 Ab                        Eb  Eb4 Eb Eb4
  Oh, what you waiting for, now what you waiting for
 
 [V2]
-.   C              C4        C            C4
+.   Eb              Eb4        Eb            Eb4
  We counted all our reasons, excuses that we made
-.   C                   C4          C           C4
+.   Eb                   Eb4          Eb           Eb4
  We found ourselves some treasure and threw it all away
-.  Am                 F                        C  C4
+.  Cm                 Ab                        Eb  Eb4
  Oh, what you waiting for, now what you waiting for
-.  Am                 F                        G4
+.  Cm                 Ab                        Bb4
  Oh, what you waiting for, now what you waiting for
  
 [C]
-.G4             F                          C                G4
+.Bb4             Ab                          Eb                Bb4
    When I dance alone and the sun's bleeding down, blame it on me
-.G4              F                      C                G4
+.Bb4              Ab                      Eb                Bb4
    When I lose control and the veil's overused, blame it on me
-.Am               F                        C  C4 C C4    
+.Cm               Ab                        Eb  Eb4 Eb Eb4    
  What you waiting for, now what you waiting for
  
 [V3]
-.C                    C4             C          C4
+.Eb                    Eb4             Eb          Eb4
  Caught in the tide of blossom, caught in the carnival
-.C                 C4       C              C4
+.Eb                 Eb4       Eb              Eb4
  Your confidence forgotten, I see the gypsies run
-.  Am                 F                        C
+.  Cm                 Ab                        Eb
  Oh, what you waiting for, now what you waiting for
-.  Am                 F                        G4
+.  Cm                 Ab                        Bb4
  Oh, what you waiting for, now what you waiting for
 
 [C2]
-.G4             F                          C                G4
+.Bb4             Ab                          Eb                Bb4
    When I dance alone and the sun's bleeding down, blame it on me
-.G4              F                      C                G4
+.Bb4              Ab                      Eb                Bb4
    When I lose control and the veil's overused, blame it on me
-.Am                   F                        C 
+.Cm                   Ab                        Eb 
  Oh, what you waiting for, now what you waiting for
-.Am                   F                        G4
+.Cm                   Ab                        Bb4
  Oh, what you waiting for, now what you waiting for
  
 [C3]
-.G4             F                          C                G4
+.Bb4             Ab                          Eb                Bb4
    When I dance alone and the sun's bleeding down, blame it on me
-.G4              F                      C                G4
+.Bb4              Ab                      Eb                Bb4
    When I lose control and the veil's overused, blame it on me
-.G4             F                 C              G4
+.Bb4             Ab                 Eb              Bb4
    When I dance alone, I know, I'll go, blame it on me
-.G4              F                 C              G4
+.Bb4              Ab                 Eb              Bb4
    When I lose control, I know, I'll go, blame it on me
-.  Am                 F                        C
+.  Cm                 Ab                        Eb
  Oh, what you waiting for, now what you waiting for
-.  Am                 F                        G4
+.  Cm                 Ab                        Bb4
  Oh, what you waiting for, now what you waiting for
  
 </lyrics>

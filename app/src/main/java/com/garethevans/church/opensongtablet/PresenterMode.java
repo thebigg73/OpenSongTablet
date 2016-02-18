@@ -36,6 +36,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -446,6 +447,8 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         } else {
             logo_on = "N";
         }
+
+        resizeDrawers();
     }
 
     @Override
@@ -1019,6 +1022,18 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         findSongInFolder();
     }
 
+    public void resizeDrawers() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int width = metrics.widthPixels/2;
+        DrawerLayout.LayoutParams paramsSong = (android.support.v4.widget.DrawerLayout.LayoutParams) expListViewSong.getLayoutParams();
+        DrawerLayout.LayoutParams paramsOption = (android.support.v4.widget.DrawerLayout.LayoutParams) expListViewOption.getLayoutParams();
+        paramsSong.width = width;
+        paramsOption.width = width;
+        expListViewSong.setLayoutParams(paramsSong);
+        expListViewOption.setLayoutParams(paramsOption);
+    }
+
     public void updateDisplays() {
         // This is called when display devices are changed (connected, disconnected, etc.)
         displayManager = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
@@ -1311,6 +1326,12 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         PresentPrepareSong.splitSongIntoSections();
         setupSongButtons();
         findSongInFolder();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        resizeDrawers();
     }
 
     @Override
@@ -2131,9 +2152,25 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                 return true;
 
             case R.id.action_fullsearch:
-                FullscreenActivity.whattodo = "exit";
+                FullscreenActivity.whattodo = "presentermodesearchreturn";
+                if (FullscreenActivity.safetosearch) {
+                    Intent intent = new Intent();
+                    intent.setClass(PresenterMode.this, SearchViewFilterModeNew.class);
+                    startActivity(intent);
+                    finish();
+
+                } else {
+                    FullscreenActivity.myToastMessage = getString(R.string.wait);
+                    ShowToast.showToast(PresenterMode.this);
+                }
+
+/*
+
+
+
                 newFragment = PopUpSearchViewFragment.newInstance();
                 newFragment.show(getFragmentManager(), "dialog");
+*/
                 return true;
 
             case R.id.action_settings:
@@ -2340,12 +2377,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         Preferences.savePreferences();
         // Redraw the set buttons as the user may have changed the order
         refreshAll();
-        // Get the song index
-        try {
-            SetActions.indexSongInSet();
-        } catch (Exception e) {
-            Log.d("d","Can't find current song index in the set");
-        }
+
         try {
             newFragment.dismiss();
         } catch (Exception e) {

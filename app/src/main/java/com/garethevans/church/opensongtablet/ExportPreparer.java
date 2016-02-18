@@ -103,12 +103,14 @@ public class ExportPreparer extends Activity {
 						songfile = null;
                         String thisline;
 						songfile = new File(FullscreenActivity.homedir + "/Songs/" + xpp.getAttributeValue(null,"path") + xpp.getAttributeValue(null,"name"));
+						Log.d("d","songfile="+songfile);
 						// Ensure there is a folder '/'
                         if (xpp.getAttributeValue(null,"path").equals("")) {
                             thisline = "/" + xpp.getAttributeValue(null,"name");
                         } else {
                             thisline = xpp.getAttributeValue(null,"path") + xpp.getAttributeValue(null,"name");
                         }
+						Log.d("d","thisline="+thisline);
                         filesinset.add(thisline);
 						//filesinset_ost.add(xpp.getAttributeValue(0));
                         filesinset_ost.add(thisline);

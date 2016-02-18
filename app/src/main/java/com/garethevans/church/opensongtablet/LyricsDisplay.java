@@ -25,6 +25,8 @@ public class LyricsDisplay extends Activity {
 			FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
 		}
 
+		FullscreenActivity.myLyrics = FullscreenActivity.myLyrics.replace("\n \n","\n\n");
+
 		// Now create an array from the myLyrics variable, using the new line as
 		// a break point."
 		//This gets rid of the tabs and stuff to make the display look better

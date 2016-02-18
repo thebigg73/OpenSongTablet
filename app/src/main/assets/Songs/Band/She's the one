@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <song>
   <title>She's the one</title>
+  <author>Robbie Williams</author>
+  <copyright></copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <predelay></predelay>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>Bb</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[INTRO]
 .Bb    Ebmaj7/Bb    Bb    Ebmaj7/Bb
 
@@ -67,21 +91,12 @@
  If there's somebody calling me on, 
 .          Bb  Ebmaj7/Bb Bb Ebmaj7/Bb       Bb....
  She's the one 				She's the one</lyrics>
-  <author>Robbie Williams</author>
-  <copyright></copyright>
-  <hymn_number></hymn_number>
-  <presentation></presentation>
-  <ccli></ccli>
-  <capo print="false"></capo>
-  <key></key>
-  <aka></aka>
-  <key_line></key_line>
-  <user1></user1>
-  <user2></user2>
-  <user3></user3>
-  <theme></theme>
-  <linked_songs/>
-  <tempo></tempo>
-  <time_sig></time_sig>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

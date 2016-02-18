@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,8 @@ import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
 
-    private static List<SetItemInfo> setList;
+    //private static List<SetItemInfo> setList;
+    private List<SetItemInfo> setList;
 
     public MyAdapter(List<SetItemInfo> setList) {
         this.setList = setList;
@@ -59,12 +61,49 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
 
         final String songname = si.songtitle;
         final String songfolder = folderrelocate;
-
+        int getitemnum;
+        try {
+            getitemnum = Integer.parseInt(si.songitem.replace(".",""));
+        } catch (Exception e) {
+            getitemnum = 0;
+        }
+        getitemnum --;
+        final int item = getitemnum;
         setitemViewHolder.vCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FullscreenActivity.songfilename = songname;
+                if (songfolder.equals(FullscreenActivity.mainfoldername)) {
+                    FullscreenActivity.whatsongforsetwork = "$**_" + songname + "_**$";
+                } else {
+                    FullscreenActivity.whatsongforsetwork = "$**_" + songfolder + "/" + songname + "_**$";
+                }
+                FullscreenActivity.whatsongforsetwork = songname;
                 FullscreenActivity.whichSongFolder = songfolder;
+                FullscreenActivity.indexSongInSet = item;
+                FullscreenActivity.nextSongInSet = "";
+                FullscreenActivity.previousSongInSet = "";
+                // Get set position
+                boolean issue = false;
+                if (item>0 && FullscreenActivity.mSet.length>=item-1) {
+                    FullscreenActivity.previousSongInSet = FullscreenActivity.mSet[item - 1];
+                } else {
+                    issue = true;
+                }
+                if (item != FullscreenActivity.setSize - 1) {
+                    FullscreenActivity.nextSongInSet = FullscreenActivity.mSet[item + 1];
+                } else {
+                    issue = true;
+                }
+
+                Log.d("d","previousSongInSet="+FullscreenActivity.previousSongInSet);
+                Log.d("d","nextSongInSet="+FullscreenActivity.nextSongInSet);
+                Log.d("d","indexSongInSet="+FullscreenActivity.indexSongInSet);
+
+                if (issue) {
+                    SetActions.indexSongInSet();
+                }
+
                 PopUpSetViewNew.loadSong();
             }
         });

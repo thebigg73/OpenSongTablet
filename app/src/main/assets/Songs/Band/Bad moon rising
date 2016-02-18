@@ -9,6 +9,7 @@
   <tempo></tempo>
   <time_sig></time_sig>
   <duration></duration>
+  <predelay></predelay>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -44,6 +45,8 @@
 
 ;Chorus
 
+;Guitar solo as verse and chorus
+
 [V3]
 .D        A        G      D          D            A     G           D
  Hope you got your things together,  hope you are quite prepared to die
@@ -54,4 +57,8 @@
   <linked_songs></linked_songs>
   <pad_file>Auto</pad_file>
   <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

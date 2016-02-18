@@ -301,8 +301,11 @@ public class PopUpListSetsFragment extends DialogFragment {
         // Also try to attach a copy of the song ending in .ost, as long as they aren't images
         Log.d("Export set","exportsetfilenames="+FullscreenActivity.exportsetfilenames);
         for (int q=0; q<FullscreenActivity.exportsetfilenames.size(); q++) {
+            // Remove any subfolder from the exportsetfilenames_ost.get(q)
+            String tempsong_ost = FullscreenActivity.exportsetfilenames_ost.get(q);
+            tempsong_ost = tempsong_ost.substring(tempsong_ost.indexOf("/")+1);
             File songtoload  = new File(FullscreenActivity.dir + "/" + FullscreenActivity.exportsetfilenames.get(q));
-            File ostsongcopy = new File(FullscreenActivity.homedir + "/Notes/_cache/" + FullscreenActivity.exportsetfilenames_ost.get(q) + ".ost");
+            File ostsongcopy = new File(FullscreenActivity.homedir + "/Notes/_cache/" + tempsong_ost + ".ost");
             boolean isimage = false;
             if (songtoload.toString().endsWith(".jpg") || songtoload.toString().endsWith(".JPG") ||
                     songtoload.toString().endsWith(".jpeg") || songtoload.toString().endsWith(".JPEG") ||

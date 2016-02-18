@@ -2636,14 +2636,14 @@ containing a value of this type.
         public static final int action_bar_title=0x7f0e0042;
         public static final int action_context_bar=0x7f0e0063;
         public static final int action_divider=0x7f0e0167;
-        public static final int action_fullsearch=0x7f0e0369;
+        public static final int action_fullsearch=0x7f0e036f;
         public static final int action_menu_divider=0x7f0e0002;
         public static final int action_menu_presenter=0x7f0e0003;
         public static final int action_mode_bar=0x7f0e005f;
         public static final int action_mode_bar_stub=0x7f0e005e;
         public static final int action_mode_close_button=0x7f0e0044;
-        public static final int action_search=0x7f0e0367;
-        public static final int action_settings=0x7f0e0368;
+        public static final int action_search=0x7f0e036d;
+        public static final int action_settings=0x7f0e036e;
         public static final int activity_chooser_view_content=0x7f0e0045;
         public static final int addPageButton=0x7f0e01af;
         public static final int adjust_height=0x7f0e0032;
@@ -2673,7 +2673,7 @@ containing a value of this type.
         public static final int autoscroll=0x7f0e0179;
         public static final int autoscroll_default_RadioButton=0x7f0e0199;
         public static final int autoscroll_defaults_RadioGroup=0x7f0e0198;
-        public static final int autoscroll_menu_button=0x7f0e0371;
+        public static final int autoscroll_menu_button=0x7f0e0377;
         public static final int autoscroll_prompt_RadioButton=0x7f0e019a;
         public static final int availabletags=0x7f0e01d2;
         public static final int averagevol=0x7f0e02eb;
@@ -2693,11 +2693,16 @@ containing a value of this type.
         public static final int cancel_edit=0x7f0e021e;
         public static final int capo_font=0x7f0e0120;
         public static final int card_view=0x7f0e035a;
+        public static final int cardview_author=0x7f0e0361;
         public static final int cardview_folder=0x7f0e035f;
+        public static final int cardview_hymn=0x7f0e0364;
         public static final int cardview_icon=0x7f0e035c;
         public static final int cardview_item=0x7f0e035d;
+        public static final int cardview_key=0x7f0e0362;
         public static final int cardview_layout=0x7f0e035b;
+        public static final int cardview_lyrics=0x7f0e0365;
         public static final int cardview_songtitle=0x7f0e035e;
+        public static final int cardview_theme=0x7f0e0363;
         public static final int center=0x7f0e001d;
         public static final int center_horizontal=0x7f0e001e;
         public static final int center_vertical=0x7f0e001f;
@@ -2728,10 +2733,10 @@ containing a value of this type.
         public static final int chorddetails=0x7f0e0100;
         public static final int chordformat_check=0x7f0e00b0;
         public static final int chordformat_default=0x7f0e00b1;
-        public static final int chordie_websearch=0x7f0e036d;
+        public static final int chordie_websearch=0x7f0e0373;
         public static final int chordimageshere=0x7f0e019e;
         public static final int chordsFontSpinner=0x7f0e0230;
-        public static final int chords_menu_button=0x7f0e0376;
+        public static final int chords_menu_button=0x7f0e037c;
         public static final int chorus_background=0x7f0e012c;
         public static final int chronometer=0x7f0e016a;
         public static final int clip_horizontal=0x7f0e002b;
@@ -2814,7 +2819,7 @@ containing a value of this type.
         public static final int design_navigation_view=0x7f0e015a;
         public static final int detectedChordFormat=0x7f0e02f6;
         public static final int detectedChordFormatText=0x7f0e02f5;
-        public static final int digitalclock=0x7f0e0364;
+        public static final int digitalclock=0x7f0e036a;
         public static final int disableHome=0x7f0e000e;
         public static final int doubleTap=0x7f0e00b3;
         public static final int doubleTap1=0x7f0e00b4;
@@ -3025,13 +3030,13 @@ containing a value of this type.
         public static final int linkYouTube_EditText=0x7f0e025e;
         public static final int linkYouTube_ImageButton=0x7f0e025c;
         public static final int linkYouTube_Text=0x7f0e025d;
-        public static final int link_menu_button=0x7f0e0373;
+        public static final int link_menu_button=0x7f0e0379;
         public static final int linkbutton=0x7f0e0180;
         public static final int listMode=0x7f0e000b;
         public static final int listSetCancelButton=0x7f0e02b1;
         public static final int listSetOkButton=0x7f0e02b2;
         public static final int list_item=0x7f0e0049;
-        public static final int list_view=0x7f0e0361;
+        public static final int list_view=0x7f0e0367;
         public static final int loadReusableButton=0x7f0e01a8;
         public static final int longPress=0x7f0e00bc;
         public static final int longPress1=0x7f0e00bd;
@@ -3061,7 +3066,7 @@ containing a value of this type.
         public static final int menuBarHideSwitch=0x7f0e0172;
         public static final int menuSwipeSwitch=0x7f0e0173;
         public static final int metronome_background=0x7f0e0150;
-        public static final int metronome_menu_button=0x7f0e0372;
+        public static final int metronome_menu_button=0x7f0e0378;
         public static final int metronomebutton=0x7f0e017a;
         public static final int middle=0x7f0e0031;
         public static final int mini=0x7f0e002f;
@@ -3112,13 +3117,13 @@ containing a value of this type.
         public static final int option_list_ex=0x7f0e008d;
         public static final int otherStorage=0x7f0e00ca;
         public static final int overWrite_CheckBox=0x7f0e0241;
-        public static final int pad_menu_button=0x7f0e0370;
+        public static final int pad_menu_button=0x7f0e0376;
         public static final int padbutton=0x7f0e0178;
         public static final int page=0x7f0e0092;
         public static final int pageButtonsSwitch=0x7f0e0171;
         public static final int pagepresentermode=0x7f0e02fe;
         public static final int pageselect=0x7f0e017d;
-        public static final int pageselect_menu_button=0x7f0e0374;
+        public static final int pageselect_menu_button=0x7f0e037a;
         public static final int pagesplash=0x7f0e0090;
         public static final int parallax=0x7f0e001a;
         public static final int parentPanel=0x7f0e004e;
@@ -3131,7 +3136,7 @@ containing a value of this type.
         public static final int pedalPreviousButton=0x7f0e028a;
         public static final int pedalToggleScrollBeforeSwipeButton=0x7f0e028c;
         public static final int pedalUpButton=0x7f0e028f;
-        public static final int perform_mode=0x7f0e0377;
+        public static final int perform_mode=0x7f0e037d;
         public static final int pin=0x7f0e001b;
         public static final int playSlideShow=0x7f0e0315;
         public static final int popupautoscroll=0x7f0e018b;
@@ -3172,7 +3177,7 @@ containing a value of this type.
         public static final int pres_settings=0x7f0e0337;
         public static final int pres_settings_buttons=0x7f0e033a;
         public static final int pres_slide=0x7f0e030e;
-        public static final int present_mode=0x7f0e036f;
+        public static final int present_mode=0x7f0e0375;
         public static final int presenter_alert_group=0x7f0e0328;
         public static final int presenter_alert_image=0x7f0e0329;
         public static final int presenter_alert_text=0x7f0e032a;
@@ -3295,7 +3300,7 @@ containing a value of this type.
         public static final int search_mag_icon=0x7f0e0069;
         public static final int search_plate=0x7f0e006a;
         public static final int search_src_text=0x7f0e006b;
-        public static final int search_view=0x7f0e0360;
+        public static final int search_view=0x7f0e0366;
         public static final int search_voice_btn=0x7f0e006f;
         public static final int select_dialog_listview=0x7f0e0070;
         public static final int setFontSizeProgressBar=0x7f0e0251;
@@ -3303,9 +3308,9 @@ containing a value of this type.
         public static final int setListView=0x7f0e02ae;
         public static final int setXMarginProgressBar=0x7f0e0247;
         public static final int setYMarginProgressBar=0x7f0e0249;
-        public static final int set_add=0x7f0e036a;
-        public static final int set_back=0x7f0e0365;
-        public static final int set_forward=0x7f0e0366;
+        public static final int set_add=0x7f0e0370;
+        public static final int set_back=0x7f0e036b;
+        public static final int set_forward=0x7f0e036c;
         public static final int setbutton=0x7f0e008e;
         public static final int setlistpage=0x7f0e02b3;
         public static final int setview_cancel=0x7f0e02bb;
@@ -3332,8 +3337,8 @@ containing a value of this type.
         public static final int songSwipeSwitch=0x7f0e0174;
         public static final int songTitleHolder=0x7f0e0073;
         public static final int song_list_ex=0x7f0e008c;
-        public static final int song_share=0x7f0e036b;
-        public static final int songandauthor=0x7f0e0363;
+        public static final int song_share=0x7f0e0371;
+        public static final int songandauthor=0x7f0e0369;
         public static final int songsectionstoadd=0x7f0e029a;
         public static final int spacer=0x7f0e004d;
         public static final int spinnerText=0x7f0e0162;
@@ -3347,7 +3352,7 @@ containing a value of this type.
         public static final int startPlay=0x7f0e0271;
         public static final int status_bar_latest_event_content=0x7f0e0165;
         public static final int stickynotes=0x7f0e017e;
-        public static final int stickynotes_menu_button=0x7f0e0375;
+        public static final int stickynotes_menu_button=0x7f0e037b;
         public static final int stopSlideShow=0x7f0e0314;
         public static final int storageOptions=0x7f0e00c7;
         public static final int string1_f1=0x7f0e00e3;
@@ -3396,6 +3401,7 @@ containing a value of this type.
         public static final int t_mPresentation=0x7f0e02c6;
         public static final int t_mTitle=0x7f0e02be;
         public static final int tabMode=0x7f0e000d;
+        public static final int tableLayout=0x7f0e0360;
         public static final int tableRow1=0x7f0e0107;
         public static final int tableRow10=0x7f0e013d;
         public static final int tableRow11=0x7f0e0143;
@@ -3467,7 +3473,7 @@ containing a value of this type.
         public static final int title=0x7f0e004b;
         public static final int title_template=0x7f0e0050;
         public static final int toggleAutoScaleButton=0x7f0e024c;
-        public static final int toggleButton1=0x7f0e0362;
+        public static final int toggleButton1=0x7f0e0368;
         public static final int toolbar=0x7f0e0093;
         public static final int top=0x7f0e0025;
         public static final int topPanel=0x7f0e004f;
@@ -3475,7 +3481,7 @@ containing a value of this type.
         public static final int transposeOkButton=0x7f0e02fd;
         public static final int transposeSeekBar=0x7f0e02f3;
         public static final int transposeValTextView=0x7f0e02f4;
-        public static final int ultimateguitar_websearch=0x7f0e036e;
+        public static final int ultimateguitar_websearch=0x7f0e0374;
         public static final int up=0x7f0e0009;
         public static final int upFolderButton=0x7f0e0226;
         public static final int uparrow_bottom=0x7f0e017b;
@@ -3505,7 +3511,7 @@ containing a value of this type.
         public static final int wipeSongs=0x7f0e00cf;
         public static final int withText=0x7f0e0038;
         public static final int wrap_content=0x7f0e0041;
-        public static final int youtube_websearch=0x7f0e036c;
+        public static final int youtube_websearch=0x7f0e0372;
     }
     public static final class integer {
         public static final int abc_config_activityDefaultDur=0x7f0b0002;
@@ -3615,14 +3621,15 @@ containing a value of this type.
         public static final int presentermode=0x7f03005f;
         public static final int projector_screen=0x7f030060;
         public static final int recycler_row=0x7f030061;
-        public static final int searchview_filter=0x7f030062;
-        public static final int select_dialog_item_material=0x7f030063;
-        public static final int select_dialog_multichoice_material=0x7f030064;
-        public static final int select_dialog_singlechoice_material=0x7f030065;
-        public static final int support_simple_spinner_dropdown_item=0x7f030066;
-        public static final int test=0x7f030067;
-        public static final int text_view=0x7f030068;
-        public static final int toolbar=0x7f030069;
+        public static final int searchrow=0x7f030062;
+        public static final int searchview_filter=0x7f030063;
+        public static final int select_dialog_item_material=0x7f030064;
+        public static final int select_dialog_multichoice_material=0x7f030065;
+        public static final int select_dialog_singlechoice_material=0x7f030066;
+        public static final int support_simple_spinner_dropdown_item=0x7f030067;
+        public static final int test=0x7f030068;
+        public static final int text_view=0x7f030069;
+        public static final int toolbar=0x7f03006a;
     }
     public static final class menu {
         public static final int activity_main_actions=0x7f0f0000;

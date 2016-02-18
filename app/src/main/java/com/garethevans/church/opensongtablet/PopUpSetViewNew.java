@@ -183,8 +183,6 @@ public class PopUpSetViewNew extends DialogFragment {
     }
 
     private List<SetItemInfo> createList(int size) {
-        Log.d("d", "size=" + size);
-
         List<SetItemInfo> result = new ArrayList<>();
         for (int i=1; i <= size; i++) {
             if (!mSongName.get(i - 1).equals("!ERROR!")) {

@@ -5,7 +5,7 @@
   <copyright></copyright>
   <presentation></presentation>
   <hymn_number></hymn_number>
-  <capo print="false">3</capo>
+  <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
   <duration></duration>

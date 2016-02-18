@@ -109,7 +109,11 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
             storageGranted = true;
         }
 
-        Preferences.loadPreferences();
+        try {
+            Preferences.loadPreferences();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
