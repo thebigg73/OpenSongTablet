@@ -638,7 +638,8 @@
                 android:layout_margin="24dp"
                 android:background="@drawable/red_button"
                 android:onClick="resetColors"
-                android:text="@string/reset_colours" />
+                android:text="@string/reset_colours"
+                android:textColor="#fff" />
 
             <Button
                 android:id="@+id/goback"
@@ -647,7 +648,8 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/green_button"
                 android:onClick="gotosongs"
-                android:text="@string/drawer_close" />
+                android:text="@string/drawer_close"
+                android:textColor="#fff" />
         </LinearLayout>
     </HorizontalScrollView>
 

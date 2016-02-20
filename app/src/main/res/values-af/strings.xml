@@ -462,5 +462,10 @@
 	<string name="autoscroll_default_or_prompt">"As jy \'n duur lied moet die standaard waardes gebruik word nie gestel het of wil jy elke keer gevra word?"</string>
 	<string name="use_default">"gebruik verstek"</string>
 	<string name="ask">"Vra elke keer"</string>
+	<string name="search_index_end">"Alle liedjies is ten volle geïndekseer"</string>
+	<string name="search_index_error">"Daar was \'n fout bou jou soektog databasis"</string>
+	<string name="search_index_start">"Die bou van jou liedjie databasis"</string>
+	<string name="search_log">"Kyk op die search databasis fout log"</string>
+	<string name="search_rebuild">"Herbou lied databasis"</string>
 
 </resources>

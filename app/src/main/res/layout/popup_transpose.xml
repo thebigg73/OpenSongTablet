@@ -91,7 +91,8 @@
                     android:layout_alignParentBottom="false"
                     android:layout_toLeftOf="@+id/transposeOkButton"
                     android:layout_toStartOf="@+id/transposeOkButton"
-                    android:layout_margin="8dp" />
+                    android:layout_margin="8dp"
+                    android:textColor="#fff" />
 
                 <Button
                     android:id="@+id/transposeOkButton"
@@ -103,7 +104,8 @@
                     android:layout_alignParentBottom="false"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_margin="8dp" />
+                    android:layout_margin="8dp"
+                    android:textColor="#fff" />
             </RelativeLayout>
 
         </LinearLayout>

@@ -39,7 +39,8 @@
             android:text="@string/cancel"
             android:id="@+id/folderChooseCancel"
             android:layout_margin="8dp"
-            android:background="@drawable/blue_button" />
+            android:background="@drawable/blue_button"
+            android:textColor="#fff" />
 
         <Button
             android:layout_width="wrap_content"
@@ -47,7 +48,8 @@
             android:id="@+id/folderChooseOk"
             android:background="@drawable/green_button"
             android:layout_margin="8dp"
-            android:text="@string/ok" />
+            android:text="@string/ok"
+            android:textColor="#fff" />
     </LinearLayout>
 
     <ListView

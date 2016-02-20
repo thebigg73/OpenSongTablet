@@ -49,7 +49,8 @@
         android:layout_toLeftOf="@+id/newFolderOkButton"
         android:layout_toStartOf="@+id/newFolderOkButton"
         android:background="@drawable/blue_button"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"
+        android:textColor="#fff" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -61,5 +62,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:background="@drawable/green_button"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"
+        android:textColor="#fff" />
 </RelativeLayout>

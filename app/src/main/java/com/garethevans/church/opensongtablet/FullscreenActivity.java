@@ -997,7 +997,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 newFragment.show(getFragmentManager(), "dialog");
             }
         } catch (Exception e) {
-            Log.d("d","No incoming file - continue normally");
+            Log.d("d", "No incoming file - continue normally");
         }
 
         // Set up the toolbar
@@ -1371,23 +1371,64 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         Runtime.getRuntime().gc();
 
         resizeDrawers();
+        SharedPreferences indexSongPreferences = getSharedPreferences("indexsongs",MODE_PRIVATE);
+        boolean buildSearchIndex = indexSongPreferences.getBoolean("buildSearchIndex",true);
+        Log.d("d","buildSearchIndex="+buildSearchIndex);
+        // Start to index all the songs
+        if (buildSearchIndex) {
+            try {
+                IndexSongs.ListAllSongs();
+                Log.d("d","number of songs found="+allfilesforsearch.size());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
-        // Start to index all the songs as an asynctask
         AsyncTask indexmysongs;
-        indexmysongs = new AsyncTask() {
+        indexmysongs = new AsyncTask<Object,Void,String>() {
             @Override
-            protected Object doInBackground(Object[] params) {
+            protected String doInBackground(Object[] params) {
+                String val;
                 try {
-                    Log.d("indexmysong", "AsyncTask running");
                     indexMySongs();
-                    Log.d("indexmysong", "AsyncTask done");
+                    val = "ok";
+
                 } catch (Exception e) {
                     e.printStackTrace();
+                    val = "error";
                 }
-                return null;
+                return val;
+            }
+
+            @Override
+            public void onPreExecute() {
+                myToastMessage = getString(R.string.search_index_start);
+                ShowToast.showToast(FullscreenActivity.this);
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+                if (result.equals("error")) {
+                    myToastMessage = getString(R.string.search_index_error)+"\n"+getString(R.string.search_log);
+                    ShowToast.showToast(getApplicationContext());
+                    FullscreenActivity.safetosearch = true;
+                    SharedPreferences indexSongPreferences = getSharedPreferences("indexsongs",MODE_PRIVATE);
+                    SharedPreferences.Editor editor_index = indexSongPreferences.edit();
+                    editor_index.putBoolean("buildSearchIndex", true);
+                    editor_index.apply();
+                } else {
+                    myToastMessage = getString(R.string.search_index_end);
+                    ShowToast.showToast(FullscreenActivity.this);
+                }
             }
         };
-        indexmysongs.execute();
+
+        if (buildSearchIndex) {
+            SharedPreferences.Editor editor_index = indexSongPreferences.edit();
+            editor_index.putBoolean("buildSearchIndex", false);
+            editor_index.apply();
+            indexmysongs.execute();
+        }
 
         // WiFi Direct / P2P
 
@@ -3871,6 +3912,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         options_storage.add(getResources().getString(R.string.storage_choose));
         options_storage.add(getResources().getString(R.string.import_onsong_choose));
         options_storage.add(getResources().getString(R.string.refreshsongs));
+        options_storage.add(getResources().getString(R.string.search_rebuild));
+        options_storage.add(getResources().getString(R.string.search_log));
 
         List<String> options_pad = new ArrayList<>();
         options_pad.add(getResources().getString(R.string.crossfade_time));
@@ -4779,6 +4822,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         // 2 = Manage storage
                         // 3 = Import OnSong
                         // 4 = Refresh songs menu
+                        // 5 = Rebuild search index
+                        // 6 = View search error log
 
                         if (childPosition == 0) {// Create new song folder
                             promptNewFolder();
@@ -4805,6 +4850,23 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                             prepareSongMenu();
                             mDrawerLayout.closeDrawer(expListViewOption);
                             mDrawerLayout.openDrawer(expListViewSong);
+
+
+                        } else if (childPosition == 5) {// Rebuild song index
+                            safetosearch = false;
+                            SharedPreferences indexSongPreferences = getSharedPreferences("indexsongs",MODE_PRIVATE);
+                            SharedPreferences.Editor editor_index = indexSongPreferences.edit();
+                            editor_index.putBoolean("buildSearchIndex", true);
+                            editor_index.apply();
+                            Intent intentmain = new Intent();
+                            intentmain.setClass(FullscreenActivity.this, FullscreenActivity.class);
+                            startActivity(intentmain);
+                            finish();
+
+                        } else if (childPosition == 6) {// View search error log
+                            whattodo = "errorlog";
+                            newFragment = PopUpWebViewFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
 
 
                         }
@@ -7862,19 +7924,16 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     return true;
 
                 case R.id.action_fullsearch:
-                    if (safetosearch) {
-                        Intent intent = new Intent();
-                        intent.setClass(FullscreenActivity.this, SearchViewFilterModeNew.class);
-                        tryKillPads();
-                        tryKillMetronome();
-                        startActivity(intent);
-                        finish();
-
-                    } else {
-                        myToastMessage = getString(R.string.wait);
+                    if (!safetosearch) {
+                        myToastMessage = getResources().getString(R.string.search_index_start)+"\n\n"+getResources().getString(R.string.wait);
                         ShowToast.showToast(FullscreenActivity.this);
                     }
-
+                    Intent intent = new Intent();
+                    intent.setClass(FullscreenActivity.this, SearchViewFilterModeNew.class);
+                    tryKillPads();
+                    tryKillMetronome();
+                    startActivity(intent);
+                    finish();
                     return true;
 
                 case R.id.youtube_websearch:
@@ -10369,9 +10428,16 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         // search_database has 8 columns for each song
         // Columns are folder, filename, title, author, lyrics, theme, key, hymn number
         try {
-            IndexSongs.doIndex();
+            IndexSongs.doIndex(this);
         } catch (Exception e) {
             e.printStackTrace();
+            myToastMessage = getString(R.string.search_index_error)+"\n"+getString(R.string.search_log);
+            ShowToast.showToast(FullscreenActivity.this);
+            safetosearch = true;
+            SharedPreferences indexSongPreferences = getSharedPreferences("indexsongs",MODE_PRIVATE);
+            SharedPreferences.Editor editor_index = indexSongPreferences.edit();
+            editor_index.putBoolean("buildSearchIndex", true);
+            editor_index.apply();
         }
     }
 

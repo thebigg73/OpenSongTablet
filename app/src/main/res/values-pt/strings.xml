@@ -462,5 +462,10 @@
 	<string name="autoscroll_default_or_prompt">"Se você não tiver definido uma duração da música deve ser utilizado os valores padrão ou você quer ser solicitado a cada vez?"</string>
 	<string name="use_default">"Use o padrão"</string>
 	<string name="ask">"Peça a cada vez"</string>
+	<string name="search_index_end">"Todas as canções foram totalmente indexados"</string>
+	<string name="search_index_error">"Houve um erro ao construir seu banco de dados de pesquisa"</string>
+	<string name="search_index_start">"Construção de seu banco de dados de música"</string>
+	<string name="search_log">"Verifique o log de erro do banco de dados de pesquisa"</string>
+	<string name="search_rebuild">"Reconstruir banco de dados de música"</string>
 
 </resources>

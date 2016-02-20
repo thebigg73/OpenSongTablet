@@ -106,7 +106,8 @@
                 android:id="@+id/save_autoscroll_Button"
                 android:layout_margin="8dp"
                 android:background="@drawable/blue_button"
-                android:layout_gravity="right" />
+                android:layout_gravity="right"
+                android:textColor="#fff" />
 
         </LinearLayout>
     </ScrollView>

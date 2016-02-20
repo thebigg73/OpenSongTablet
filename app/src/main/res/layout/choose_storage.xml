@@ -92,7 +92,8 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="8dp"
+                android:textColor="#fff" />
 
             <ProgressBar
                 android:id="@+id/copyProgressBar"
@@ -110,7 +111,8 @@
                 android:onClick="copymyassets"
                 android:layout_margin="20dp"
                 android:text="@string/copyresources"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:textColor="#fff" />
 
             <Button
                 android:id="@+id/exitStorage"
@@ -120,7 +122,8 @@
                 android:layout_margin="20dp"
                 android:background="@drawable/blue_button"
                 android:onClick="saveStorageLocation"
-                android:text="@string/edit_save" />
+                android:text="@string/edit_save"
+                android:textColor="#fff" />
 
             <Button
                 android:id="@+id/wipeSongs"
@@ -130,7 +133,8 @@
                 android:layout_gravity="center_horizontal"
                 android:onClick="wipeSongs"
                 android:layout_margin="20dp"
-                android:text="@string/wipesongs"/>
+                android:text="@string/wipesongs"
+                android:textColor="#fff" />
 
         </LinearLayout>
 

@@ -264,7 +264,8 @@
                     android:text="@string/drawer_close"
                     android:id="@+id/linkClose"
                     android:background="@drawable/blue_button"
-                    android:layout_margin="8dp" />
+                    android:layout_margin="8dp"
+                    android:textColor="#fff" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -272,7 +273,8 @@
                     android:id="@+id/linkSave"
                     android:background="@drawable/red_button"
                     android:layout_margin="8dp"
-                    android:text="@string/savesong" />
+                    android:text="@string/savesong"
+                    android:textColor="#fff" />
             </LinearLayout>
 
         </LinearLayout>

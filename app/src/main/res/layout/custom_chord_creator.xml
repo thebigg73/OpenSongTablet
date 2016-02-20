@@ -427,7 +427,8 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/customchords_save"
                 android:background="@drawable/green_button"
-                android:onClick="customChordSave"/>
+                android:onClick="customChordSave"
+                android:textColor="#fff" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -465,7 +466,8 @@
             android:padding="8dp"
             android:layout_marginTop="50dp"
             android:layout_marginBottom="200dp"
-            android:text="@string/drawer_close" />
+            android:text="@string/drawer_close"
+            android:textColor="#fff" />
 
 
     </RelativeLayout>

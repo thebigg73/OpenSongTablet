@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -17,7 +16,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -32,6 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     static int version;
     static SharedPreferences myPreferences;
+    static SharedPreferences indexSongPreferences;
     static int test;
     static int want;
 
@@ -54,25 +53,21 @@ public class SettingsActivity extends AppCompatActivity {
         } catch (NameNotFoundException e1) {
             e1.printStackTrace();
         }
-        myPreferences = getSharedPreferences("mysettings",MODE_PRIVATE);
+        myPreferences = getSharedPreferences("mysettings", MODE_PRIVATE);
         showSplashVersion = myPreferences.getInt("showSplashVersion", version);
-        Log.d("d", "showSplashVersion=" + showSplashVersion);
-        Log.d("d", "version=" + version);
+
+        indexSongPreferences = getSharedPreferences("indexsongs",MODE_PRIVATE);
+        Editor editor_index = indexSongPreferences.edit();
+        editor_index.putBoolean("buildSearchIndex", true);
+        editor_index.apply();
 
         setContentView(R.layout.activity_logosplash);
 
         mLayout = findViewById(R.id.pagesplash);
         test = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         want = PackageManager.PERMISSION_GRANTED;
-        Log.d("d","test="+test);
-        Log.d("d","want="+want);
-        if (test!=want) {
-            Log.d("d", "requestStoragePermission() line 70");
-            //requestStoragePermission();
-            storageGranted=false;
-        } else {
-            storageGranted=true;
-        }
+        storageGranted = test == want;
+
         // Wait 1000ms before either showing the introduction page or the main app
         delayfadeinredraw = new Handler();
         delayfadeinredraw.postDelayed(new Runnable() {
@@ -97,6 +92,7 @@ public class SettingsActivity extends AppCompatActivity {
                     editor.putInt("showSplashVersion", showSplashVersion);
                     editor.apply();
                 }
+
                 setContentView(R.layout.activity_splashscreen);
 
                 setupToolbar();
@@ -119,14 +115,12 @@ public class SettingsActivity extends AppCompatActivity {
                 mLayout = findViewById(R.id.page);
 
                 if (test!=want) {
-                    Log.d("d","requestStoragePermission() line 84");
                     requestStoragePermission();
                     storageGranted=false;
                 } else {
                     storageGranted=true;
                 }
 
-                //docheckselfPermission(SettingsActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
         }, 1000); // 1000ms delay
     }
@@ -185,8 +179,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d("d","requestCode (line 192) = "+requestCode);
-        Log.d("d","requestStorage (line 193) = "+requestStorage);
 
         if (requestCode == requestStorage) {
             storageGranted = grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED;

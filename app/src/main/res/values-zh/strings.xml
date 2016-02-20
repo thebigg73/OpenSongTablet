@@ -466,5 +466,10 @@
 	<string name="autoscroll_default_or_prompt">"如果你还没有设置一首歌的持续时间应使用默认值，或者你想每次都问？"</string>
 	<string name="use_default">"默认情况下使用"</string>
 	<string name="ask">"要求每个时间"</string>
+	<string name="search_index_end">"所有的歌曲被完全索引"</string>
+	<string name="search_index_error">"有一个错误构建搜索数据库"</string>
+	<string name="search_index_start">"建立你的歌数据库"</string>
+	<string name="search_log">"检查搜索数据库错误日志"</string>
+	<string name="search_rebuild">"重建歌数据库"</string>
 
 </resources>

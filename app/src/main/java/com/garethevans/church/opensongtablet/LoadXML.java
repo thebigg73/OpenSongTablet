@@ -226,18 +226,6 @@ public class LoadXML extends Activity {
                 utf = "UTF-16";
             }
 
-            /*FullscreenActivity.myXML = FullscreenActivity.myXML.replace("\ufeff", "UTF-16");
-            FullscreenActivity.myXML = FullscreenActivity.myXML.replace("\uFEFF", "UTF-16");
-            FullscreenActivity.myXML = FullscreenActivity.myXML.replaceAll("[&#x27;]", "");
-            FullscreenActivity.myXML = FullscreenActivity.myXML.replaceAll("&#x27;", "");
-            FullscreenActivity.myXML = FullscreenActivity.myXML.replaceAll("[\\xEF]", "UTF-16");
-            FullscreenActivity.myXML = FullscreenActivity.myXML.replaceAll("\\xEF", "UTF-16");
-            FullscreenActivity.myXML = FullscreenActivity.myXML.replaceAll("[\\xBB]", "UTF-16");
-            FullscreenActivity.myXML = FullscreenActivity.myXML.replaceAll("\\xBB", "UTF-16");
-            FullscreenActivity.myXML = FullscreenActivity.myXML.replaceAll("[\\xFF]","UTF-16");
-            FullscreenActivity.myXML = FullscreenActivity.myXML.replaceAll("\\xFF","UTF-16");
-            FullscreenActivity.myXML = FullscreenActivity.myXML.replaceAll("[\uFEFF-\uFFFF]", "UTF-16");*/
-
             if (isxml) {
                 // Extract all of the key bits of the song
                 XmlPullParserFactory factory;

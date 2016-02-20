@@ -462,5 +462,10 @@
 	<string name="autoscroll_default_or_prompt">"Jeśli nie ustawić czas trwania utworu domyślne wartości powinny być używane lub chcesz się pytanie za każdym razem?"</string>
 	<string name="use_default">"Zastosowanie domyślne"</string>
 	<string name="ask">"Zapytaj każdym razem"</string>
+	<string name="search_index_end">"Wszystkie utwory zostały w pełni indeksowane"</string>
+	<string name="search_index_error">"Wystąpił błąd podczas budowania swojej bazy danych wyszukiwarki"</string>
+	<string name="search_index_start">"Budowanie bazy danych piosenkę"</string>
+	<string name="search_log">"Sprawdź dziennik błędów bazy danych wyszukiwania"</string>
+	<string name="search_rebuild">"Odbuduj bazę piosenkę"</string>
 
 </resources>

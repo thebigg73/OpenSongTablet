@@ -512,6 +512,11 @@
     <string name="autoscroll_default_or_prompt">"Ako niste postavili dužinu pesme, da li da se koristi unapred postavljeno vreme ili da pitamo svaki put?"</string>
     <string name="use_default">"Koristi unapred postavljeno vreme"</string>
     <string name="ask">"Pitaj svaki put"</string>
+    <string name="search_index_end">"Sve pesme su indeksirane"</string>
+    <string name="search_index_error">"Desio se problem tokom indeksiranja baze pesama"</string>
+    <string name="search_index_start">"Formira se baza pesama"</string>
+    <string name="search_log">"Proverite log datoteku grešaka tokom pretrage"</string>
+    <string name="search_rebuild">"Osvežavanje biblioteke pesama"</string>
 
 
 </resources>

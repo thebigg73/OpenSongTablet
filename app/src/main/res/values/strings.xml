@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="search_index_end">All songs have been fully indexed</string>
+    <string name="search_index_error">There was an error building your search database</string>
+    <string name="search_index_start">Building your song database</string>
+    <string name="search_log">Check the search database error log</string>
+    <string name="search_rebuild">Rebuild song database</string>
+
     <string name="set_manage_swipe">Swipe to remove an item from your set list</string>
     <string name="set_manage_shuffle">Shuffle</string>
     <string name="set_manage_click">Click on an item in the set to view it</string>

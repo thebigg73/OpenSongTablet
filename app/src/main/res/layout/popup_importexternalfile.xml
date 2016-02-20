@@ -80,7 +80,8 @@
             android:layout_toLeftOf="@+id/importFile_Save"
             android:layout_toStartOf="@+id/importFile_Save"
             android:background="@drawable/blue_button"
-            android:layout_margin="8dp" />
+            android:layout_margin="8dp"
+            android:textColor="#fff" />
 
         <Button
             android:layout_width="wrap_content"
@@ -90,7 +91,8 @@
             android:background="@drawable/red_button"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_margin="8dp" />
+            android:layout_margin="8dp"
+            android:textColor="#fff" />
     </RelativeLayout>
 </LinearLayout>
     </ScrollView>

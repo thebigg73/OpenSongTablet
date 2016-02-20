@@ -79,7 +79,8 @@
             android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:background="@drawable/blue_button"
-            android:text="@string/cancel" />
+            android:text="@string/cancel"
+            android:textColor="#fff" />
 
         <Button
             android:id="@+id/setview_save"
@@ -87,7 +88,8 @@
             android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:background="@drawable/green_button"
-            android:text="@string/set_save" />
+            android:text="@string/set_save"
+            android:textColor="#fff" />
     </LinearLayout>
     </HorizontalScrollView>
 

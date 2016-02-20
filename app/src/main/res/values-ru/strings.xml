@@ -462,5 +462,10 @@
 	<string name="autoscroll_default_or_prompt">"Если вы не установили продолжительность песни должна быть использованы значения по умолчанию, или вы хотите, чтобы попросить каждый раз?"</string>
 	<string name="use_default">"Использовать по умолчанию"</string>
 	<string name="ask">"Спросите каждый раз"</string>
+	<string name="search_index_end">"Все песни были полностью проиндексированы"</string>
+	<string name="search_index_error">"Был ошибка построения поиска базы данных"</string>
+	<string name="search_index_start">"Построение базы данных песни"</string>
+	<string name="search_log">"Проверьте журнал ошибок поиск по базе"</string>
+	<string name="search_rebuild">"Перестроить базу данных песни"</string>
 
 </resources>

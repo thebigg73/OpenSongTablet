@@ -41,5 +41,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="false"
         android:background="@drawable/red_button"
-        android:layout_margin="12dp" />
+        android:layout_margin="12dp"
+        android:textColor="#fff" />
 </RelativeLayout>

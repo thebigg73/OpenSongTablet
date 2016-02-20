@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -64,6 +65,98 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
         mSearchView = (SearchView) findViewById(R.id.search_view);
         mListView = (ListView) findViewById(R.id.list_view);
 
+        // Decide if we are using full blown search or a simplified one
+        if (FullscreenActivity.safetosearch) {
+            Fullsearch();
+        } else {
+            Simplesearch();
+        }
+    }
+
+    public void Simplesearch() {
+        // This gets called if the database wasn't built properly
+        // Tell the user there was a problem
+        FullscreenActivity.myToastMessage = getResources().getString(R.string.search_index_error);
+        ShowToast.showToast(SearchViewFilterModeNew.this);
+
+        // Convert the list of folder/files into a database sorted by filenames
+        ArrayList<String> filesnfolders = new ArrayList<>();
+        for (String foldernfile:FullscreenActivity.allfilesforsearch) {
+            String[] file_split = foldernfile.split("/");
+            String filename;
+            String foldername;
+
+            try {
+                filename = file_split[1];
+            } catch (Exception e) {
+                filename = "";
+            }
+
+            try {
+                foldername = file_split[0];
+            } catch (Exception e) {
+                foldername = "";
+            }
+
+            if (foldername.equals("")) {
+                foldername = FullscreenActivity.mainfoldername;
+            }
+
+            filesnfolders.add(filename + " _%%%_ " + foldername);
+        }
+
+        Collator coll = Collator.getInstance(FullscreenActivity.locale);
+        coll.setStrength(Collator.SECONDARY);
+        Collections.sort(filesnfolders,coll);
+
+        // Copy the full search string, now it is sorted, into a song and folder array
+        mFileName.clear();
+        mFolder.clear();
+        mTitle.clear();
+        mAuthor.clear();
+        mShortLyrics.clear();
+        mTheme.clear();
+        mKey.clear();
+        mHymnNumber.clear();
+
+        for (int d=0;d<filesnfolders.size();d++) {
+            String[] songbits = filesnfolders.get(d).split("_%%%_");
+            String filename = songbits[0].trim();
+            String foldername = songbits[1].trim();
+            String lyricstoadd = filename + " " + foldername;
+
+            // Replace unwanted symbols
+            lyricstoadd = ProcessSong.removeUnwantedSymbolsAndSpaces(lyricstoadd);
+
+            mFileName.add(d, filename);
+            mFolder.add(d, foldername);
+            mTitle.add(d, filename);
+            mAuthor.add(d, "");
+            mShortLyrics.add(d, lyricstoadd);
+            mTheme.add(d, "");
+            mKey.add(d, "");
+            mHymnNumber.add(d, "");
+        }
+
+        mListView.setTextFilterEnabled(true);
+        mListView.setFastScrollEnabled(true);
+        setupSearchView();
+
+        for (int i = 0; i < filesnfolders.size(); i++) {
+            SearchViewItems song = new SearchViewItems(mFileName.get(i), mTitle.get(i) , mFolder.get(i), mAuthor.get(i), mKey.get(i), mTheme.get(i), mShortLyrics.get(i), mHymnNumber.get(i));
+            searchlist.add(song);
+        }
+
+        adapter = new SearchViewAdapter(getApplicationContext(), searchlist );
+        mListView.setAdapter(adapter);
+        mListView.setTextFilterEnabled(true);
+        mListView.setFastScrollEnabled(true);
+        setupSearchView();
+
+        mSearchView.setOnQueryTextListener(this);
+    }
+
+    public void Fullsearch() {
         // Add locale sort
         Collator coll = Collator.getInstance(FullscreenActivity.locale);
         coll.setStrength(Collator.SECONDARY);
@@ -98,7 +191,7 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
 
 
         for (int i = 0; i < FullscreenActivity.search_database.size(); i++) {
-            SearchViewItems song = new SearchViewItems(mTitle.get(i) , mFolder.get(i), mAuthor.get(i), mKey.get(i), mTheme.get(i), mShortLyrics.get(i), mHymnNumber.get(i));
+            SearchViewItems song = new SearchViewItems(mFileName.get(i), mTitle.get(i) , mFolder.get(i), mAuthor.get(i), mKey.get(i), mTheme.get(i), mShortLyrics.get(i), mHymnNumber.get(i));
             searchlist.add(song);
         }
 
@@ -135,8 +228,8 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
                 intent.setClass(SearchViewFilterModeNew.this, Chordie.class);
                 intent.putExtra("thissearch", thissearch);
                 intent.putExtra("engine", "chordie");
-                startActivity(intent);
                 finish();
+                startActivity(intent);
                 return true;
 
             case R.id.ultimateguitar_websearch:
@@ -145,8 +238,20 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
                 intent2.setClass(SearchViewFilterModeNew.this, Chordie.class);
                 intent2.putExtra("thissearch", thissearch2);
                 intent2.putExtra("engine", "ultimate-guitar");
-                startActivity(intent2);
                 finish();
+                startActivity(intent2);
+                return true;
+
+            case R.id.rebuild_search_index:
+                FullscreenActivity.safetosearch = false;
+                SharedPreferences indexSongPreferences = getSharedPreferences("indexsongs",MODE_PRIVATE);
+                SharedPreferences.Editor editor_index = indexSongPreferences.edit();
+                editor_index.putBoolean("buildSearchIndex", true);
+                editor_index.apply();
+                Intent intentmain = new Intent();
+                intentmain.setClass(SearchViewFilterModeNew.this, FullscreenActivity.class);
+                finish();
+                startActivity(intentmain);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -154,7 +259,13 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
 
     @Override
     public void onBackPressed() {
-        Intent viewsong = new Intent(this, FullscreenActivity.class);
+        Intent viewsong;
+        if (FullscreenActivity.whattodo.equals("presentermodesearchreturn")) {
+            FullscreenActivity.whattodo = "";
+            viewsong = new Intent(SearchViewFilterModeNew.this, PresenterMode.class);
+        } else {
+            viewsong = new Intent(SearchViewFilterModeNew.this, FullscreenActivity.class);
+        }
         startActivity(viewsong);
         finish();
     }
@@ -170,6 +281,8 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        // Replace unwanted symbols
+        newText = ProcessSong.removeUnwantedSymbolsAndSpaces(newText);
         adapter.getFilter().filter(newText);
         return false;
     }
@@ -189,7 +302,7 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
             // Vibrate to indicate that something has happened.
             vb.vibrate(25);
 
-            TextView mFilename = (TextView) view.findViewById(R.id.cardview_songtitle);
+            TextView mFilename = (TextView) view.findViewById(R.id.cardview_filename);
             TextView mFoldername = (TextView) view.findViewById(R.id.cardview_folder);
             String tsong = mFilename.getText().toString();
             String tfolder = mFoldername.getText().toString();
@@ -208,7 +321,6 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
             startActivity(viewsong2);
             FullscreenActivity.setView = "N";
             finish();
-
         }
     }
 
@@ -221,7 +333,7 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
             // Vibrate to indicate that something has happened.
             vb.vibrate(50);
 
-            TextView mFilename = (TextView) view.findViewById(R.id.cardview_songtitle);
+            TextView mFilename = (TextView) view.findViewById(R.id.cardview_filename);
             TextView mFoldername = (TextView) view.findViewById(R.id.cardview_folder);
             String tsong = mFilename.getText().toString();
             String tfolder = mFoldername.getText().toString();

@@ -80,7 +80,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/toggleAutoScaleButton"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp"
+                android:textColor="#fff" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -211,6 +212,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/scrollView4"
         android:layout_alignEnd="@+id/scrollView4"
-        android:layout_margin="12dp" />
+        android:layout_margin="12dp"
+        android:textColor="#fff" />
 
 </RelativeLayout>

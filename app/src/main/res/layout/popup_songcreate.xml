@@ -61,7 +61,8 @@
         android:background="@drawable/blue_button"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/createSongOkButton"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"
+        android:textColor="#fff" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -73,6 +74,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"
+        android:textColor="#fff" />
 
 </RelativeLayout>

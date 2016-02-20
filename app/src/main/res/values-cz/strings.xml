@@ -463,5 +463,10 @@
 	<string name="autoscroll_default_or_prompt">"Pokud jste nenastavili dobu trvání píseň by měla být použita výchozí hodnoty, nebo chcete být pokaždé zeptat?"</string>
 	<string name="use_default">"Použít výchozí"</string>
 	<string name="ask">"Zeptejte se pokaždé,"</string>
+	<string name="search_index_end">"Všechny skladby byly plně indexovány"</string>
+	<string name="search_index_error">"Došlo k chybě při budování své vyhledávací databáze"</string>
+	<string name="search_index_start">"Budování databáze skladeb"</string>
+	<string name="search_log">"Zkontrolujte protokol chyb vyhledávací databáze"</string>
+	<string name="search_rebuild">"Znovu sestavit databázi skladeb"</string>
 
 </resources>

@@ -462,5 +462,10 @@
 	<string name="autoscroll_default_or_prompt">"Si no ha configurado una duración canción se deben utilizar los valores por defecto o quieres que se le pregunte cada vez?"</string>
 	<string name="use_default">"Uso por defecto"</string>
 	<string name="ask">"Pida a cada tiempo"</string>
+	<string name="search_index_end">"Todas las canciones han sido totalmente indexada"</string>
+	<string name="search_index_error">"Hubo un error al construir su base de datos de búsqueda"</string>
+	<string name="search_index_start">"La construcción de su base de datos de canción"</string>
+	<string name="search_log">"Compruebe el registro de errores de la base de datos de búsqueda"</string>
+	<string name="search_rebuild">"Reconstruir base de datos de canción"</string>
 
 </resources>

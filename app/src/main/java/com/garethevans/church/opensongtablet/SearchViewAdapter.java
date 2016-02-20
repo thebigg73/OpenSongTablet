@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class SearchViewAdapter extends BaseAdapter implements Filterable {
@@ -48,17 +49,19 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable {
         convertView = null;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.searchrow, null);
-
+            TextView file_tv = (TextView) convertView.findViewById(R.id.cardview_filename);
             TextView name_tv = (TextView) convertView.findViewById(R.id.cardview_songtitle);
             TextView folder_tv = (TextView) convertView.findViewById(R.id.cardview_folder);
+            TextView text_key = (TextView) convertView.findViewById(R.id.text_key);
             TextView author_tv = (TextView) convertView.findViewById(R.id.cardview_author);
             TextView key_tv = (TextView) convertView.findViewById(R.id.cardview_key);
+            TextView text_author = (TextView) convertView.findViewById(R.id.text_author);
             TextView theme_tv = (TextView) convertView.findViewById(R.id.cardview_theme);
             TextView lyrics_tv = (TextView) convertView.findViewById(R.id.cardview_lyrics);
             TextView hymnnum_tv = (TextView) convertView.findViewById(R.id.cardview_hymn);
 
             SearchViewItems song = searchlist.get(position);
-
+            file_tv.setText(song.getFilename());
             name_tv.setText(song.getTitle());
             folder_tv.setText(song.getFolder());
             author_tv.setText(song.getAuthor());
@@ -66,6 +69,23 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable {
             theme_tv.setText(song.getTheme());
             lyrics_tv.setText(song.getLyrics());
             hymnnum_tv.setText(song.getHymnnum());
+
+            // Hide the empty stuff
+            if (song.getAuthor().equals("")) {
+                text_author.setVisibility(View.GONE);
+                author_tv.setVisibility(View.GONE);
+            } else {
+                text_author.setVisibility(View.VISIBLE);
+                author_tv.setVisibility(View.VISIBLE);
+            }
+            if (song.getKey().equals("")) {
+                text_key.setVisibility(View.GONE);
+                key_tv.setVisibility(View.GONE);
+            } else {
+                text_key.setVisibility(View.VISIBLE);
+                key_tv.setVisibility(View.VISIBLE);
+            }
+
         }
         return convertView;
     }
@@ -89,14 +109,15 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable {
                     if ( (mStringFilterList.get(i).getLyrics().toUpperCase(FullscreenActivity.locale) )
                             .contains(constraint.toString().toUpperCase(FullscreenActivity.locale))) {
 
-                        SearchViewItems song = new SearchViewItems(mStringFilterList.get(i)
-                                .getTitle() ,  mStringFilterList.get(i)
-                                .getFolder() ,  mStringFilterList.get(i)
-                                .getAuthor() ,  mStringFilterList.get(i)
-                                .getKey() ,  mStringFilterList.get(i)
-                                .getTheme() ,  mStringFilterList.get(i)
-                                .getLyrics() ,  mStringFilterList.get(i)
-                                .getHymnnum());
+                        SearchViewItems song = new SearchViewItems(
+                                mStringFilterList.get(i).getFilename(),
+                                mStringFilterList.get(i).getTitle(),
+                                mStringFilterList.get(i).getFolder(),
+                                mStringFilterList.get(i).getAuthor(),
+                                mStringFilterList.get(i).getKey(),
+                                mStringFilterList.get(i).getTheme(),
+                                mStringFilterList.get(i).getLyrics(),
+                                mStringFilterList.get(i).getHymnnum());
 
                         filterList.add(song);
                     }

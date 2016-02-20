@@ -38,7 +38,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/alertToggleButton"
         android:layout_above="@+id/alertClose"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textColor="#fff" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -48,6 +49,7 @@
         android:id="@+id/alertClose"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/blue_button" />
+        android:background="@drawable/blue_button"
+        android:textColor="#fff" />
 
 </RelativeLayout>

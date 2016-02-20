@@ -150,5 +150,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="8dp"
-        android:background="@drawable/green_button" />
+        android:background="@drawable/green_button"
+        android:textColor="#fff" />
 </RelativeLayout>

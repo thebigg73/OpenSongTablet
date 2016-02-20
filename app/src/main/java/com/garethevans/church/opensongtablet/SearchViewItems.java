@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 public class SearchViewItems {
 
+    String filename;
     String title;
     String folder;
     String author;
@@ -10,7 +11,8 @@ public class SearchViewItems {
     String lyrics;
     String hymnnum;
 
-    SearchViewItems(String title, String folder, String author, String key, String theme, String lyrics, String hymnnum) {
+    SearchViewItems(String filename, String title, String folder, String author, String key, String theme, String lyrics, String hymnnum) {
+        this.filename = filename;
         this.title = title;
         this.folder = folder;
         this.author = author;
@@ -18,6 +20,14 @@ public class SearchViewItems {
         this.theme = theme;
         this.lyrics = lyrics;
         this.hymnnum = hymnnum;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public String getTitle() {

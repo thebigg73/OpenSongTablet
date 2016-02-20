@@ -149,7 +149,8 @@
             android:background="@drawable/green_button"
             android:gravity="center_horizontal"
             android:onClick="saveSong"
-            android:text="@string/savesong" />
+            android:text="@string/savesong"
+            android:textColor="#fff" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -165,6 +166,7 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/blue_button"
             android:onClick="popupPad_startstop"
-            android:text="@string/start" />
+            android:text="@string/start"
+            android:textColor="#fff" />
     </LinearLayout>
 </ScrollView>

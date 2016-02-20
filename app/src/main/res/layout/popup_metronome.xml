@@ -102,7 +102,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/tap_tempo"
-            android:onClick="tapTempo"/>
+            android:onClick="tapTempo"
+            android:textColor="#fff" />
 
         <TextView
             android:layout_width="match_parent"
@@ -173,7 +174,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:onClick="visualMetronomeToggle"
-            android:textColor="#000"
+            android:textColor="#fff"
             android:textOff="@string/off"
             android:textOn="@string/on" />
 
@@ -184,7 +185,8 @@
             android:background="@drawable/green_button"
             android:gravity="center_horizontal"
             android:onClick="saveSong"
-            android:text="@string/savesong" />
+            android:text="@string/savesong"
+            android:textColor="#fff" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -200,6 +202,7 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/blue_button"
             android:onClick="popupMetronome_startstop"
-            android:text="@string/start" />
+            android:text="@string/start"
+            android:textColor="#fff" />
     </LinearLayout>
 </ScrollView>

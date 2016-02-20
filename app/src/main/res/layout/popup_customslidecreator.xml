@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:orientation="vertical"
@@ -66,7 +71,8 @@
                 android:layout_gravity="center"
                 android:background="@drawable/grey_button"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="8dp"
+                android:textColor="#fff" />
 
         </LinearLayout>
 
@@ -175,7 +181,8 @@
                 android:layout_marginBottom="8dp"
                 android:layout_alignParentEnd="false"
                 android:layout_alignParentRight="false"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:textColor="#fff" />
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -223,7 +230,8 @@
                 android:text="@string/cancel"
                 android:id="@+id/customSlideCancel"
                 android:background="@drawable/blue_button"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:textColor="#fff" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -231,8 +239,10 @@
                 android:text="@string/add_custom_slide"
                 android:id="@+id/customSlideAdd"
                 android:background="@drawable/green_button"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:textColor="#fff" />
         </LinearLayout>
 
     </LinearLayout>
 </ScrollView>
+    </RelativeLayout>

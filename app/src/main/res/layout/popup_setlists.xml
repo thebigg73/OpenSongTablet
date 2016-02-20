@@ -54,7 +54,8 @@
         android:layout_toLeftOf="@+id/listSetOkButton"
         android:layout_toStartOf="@+id/listSetOkButton"
         android:background="@drawable/blue_button"
-        android:text="@string/cancel" />
+        android:text="@string/cancel"
+        android:textColor="#fff" />
 
     <Button
         android:id="@+id/listSetOkButton"
@@ -66,7 +67,8 @@
         android:layout_alignParentRight="true"
         android:layout_margin="12dp"
         android:background="@drawable/green_button"
-        android:text="@string/ok" />
+        android:text="@string/ok"
+        android:textColor="#fff" />
 
 
 </RelativeLayout>

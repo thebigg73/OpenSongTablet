@@ -24,6 +24,7 @@
         android:id="@+id/crossFadeClose"
         android:layout_margin="8dp"
         android:layout_gravity="right"
-        android:background="@drawable/blue_button" />
+        android:background="@drawable/blue_button"
+        android:textColor="#fff" />
 
 </LinearLayout>

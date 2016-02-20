@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
-    android:versionCode="82"
-    android:versionName="3.7.0"
+    android:versionCode="85"
+    android:versionName="3.7.3"
     android:installLocation="auto">
 
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="23" />
@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
         android:allowBackup="true"

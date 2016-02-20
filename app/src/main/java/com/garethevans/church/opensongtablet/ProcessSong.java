@@ -235,4 +235,25 @@ public class ProcessSong extends Activity {
         }
         FullscreenActivity.temposlider = FullscreenActivity.temposlider - 39;
     }
+
+    public static String removeUnwantedSymbolsAndSpaces(String string) {
+        // Replace unwanted symbols
+        string = string.replace("_", "");
+        string = string.replace("|", " ");
+        string = string.replace(",", " ");
+        string = string.replace(".", " ");
+        string = string.replace(":", " ");
+        string = string.replace(";", " ");
+        string = string.replace("'", "");
+        string = string.replace("(", " ");
+        string = string.replace(")", " ");
+        string = string.replace("-", " ");
+
+        // Now remove any double spaces
+        while (string.contains("  ")) {
+            string = string.replace("  ", " ");
+        }
+
+        return string;
+    }
 }

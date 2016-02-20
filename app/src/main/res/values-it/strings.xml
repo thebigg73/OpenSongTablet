@@ -462,5 +462,10 @@
 	<string name="autoscroll_default_or_prompt">"Se non è stata impostata una durata canzone dovrebbero essere utilizzati i valori predefiniti o vuoi essere chiesto ogni volta?"</string>
 	<string name="use_default">"Usa predefinito"</string>
 	<string name="ask">"Chiedi ogni volta"</string>
+	<string name="search_index_end">"Tutte le canzoni sono state completamente indicizzati"</string>
+	<string name="search_index_error">"C\'è stato un errore costruire il database di ricerca"</string>
+	<string name="search_index_start">"Costruire il database canzone"</string>
+	<string name="search_log">"Controllare il log degli errori database di ricerca"</string>
+	<string name="search_rebuild">"Ricostruire database di canzone"</string>
 
 </resources>

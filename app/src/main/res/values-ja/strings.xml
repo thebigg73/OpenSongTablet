@@ -461,5 +461,10 @@
 	<string name="autoscroll_default_or_prompt">"あなたはデフォルト値が使用されるべき曲の時間を設定したり、それぞれの時間を求められることがしたいですしていない場合は？"</string>
 	<string name="use_default">"デフォルトを使用"</string>
 	<string name="ask">"毎回確認して下さい"</string>
+	<string name="search_index_end">"すべての曲が完全にインデックスが作成されました"</string>
+	<string name="search_index_error">"検索データベースを構築中にエラーが発生しました"</string>
+	<string name="search_index_start">"あなたの楽曲データベースの構築"</string>
+	<string name="search_log">"検索データベース・エラー・ログをチェックしてください"</string>
+	<string name="search_rebuild">"楽曲データベースを再構築"</string>
 
 </resources>

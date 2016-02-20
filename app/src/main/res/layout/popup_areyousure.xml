@@ -26,7 +26,8 @@
         android:layout_toLeftOf="@+id/renameSongOkButton"
         android:layout_toStartOf="@+id/renameSongOkButton"
         android:layout_margin="12dp"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:textColor="#fff" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -38,5 +39,6 @@
         android:layout_alignParentEnd="true"
         android:background="@drawable/red_button"
         android:layout_margin="12dp"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:textColor="#fff" />
 </RelativeLayout>

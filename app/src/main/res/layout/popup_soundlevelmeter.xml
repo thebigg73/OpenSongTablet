@@ -151,7 +151,8 @@
                     android:gravity="center_horizontal"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/green_button"
-                    android:layout_margin="8dp" />
+                    android:layout_margin="8dp"
+                    android:textColor="#fff" />
             </LinearLayout>
 
             <LinearLayout
@@ -198,7 +199,8 @@
                 android:id="@+id/dBClose"
                 android:layout_gravity="right"
                 android:background="@drawable/blue_button"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:textColor="#fff" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

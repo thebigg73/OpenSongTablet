@@ -48,7 +48,8 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/green_button"
                 android:padding="4dp"
-                android:text="@string/pageturn_previous" />
+                android:text="@string/pageturn_previous"
+                android:textColor="#fff" />
 
             <Button
                 android:id="@+id/pedalNextButton"
@@ -58,7 +59,8 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/green_button"
                 android:padding="4dp"
-                android:text="@string/pageturn_next" />
+                android:text="@string/pageturn_next"
+                android:textColor="#fff" />
 
             <Button
                 android:id="@+id/pedalToggleScrollBeforeSwipeButton"
@@ -68,7 +70,8 @@
                 android:layout_margin="32dp"
                 android:background="@drawable/yellow_button"
                 android:padding="4dp"
-                android:text="@string/toggleScrollBeforeSwipe" />
+                android:text="@string/toggleScrollBeforeSwipe"
+                android:textColor="#fff" />
 
             <TextView
                 android:id="@+id/textView17"
@@ -93,7 +96,8 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/blue_button"
                 android:padding="4dp"
-                android:text="@string/pageturn_down" />
+                android:text="@string/pageturn_down"
+                android:textColor="#fff" />
 
             <Button
                 android:id="@+id/pedalUpButton"
@@ -103,7 +107,8 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/blue_button"
                 android:padding="4dp"
-                android:text="@string/pageturn_up" />
+                android:text="@string/pageturn_up"
+                android:textColor="#fff" />
 
             <TextView
                 android:id="@+id/textView18"
@@ -128,7 +133,8 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/green_button"
                 android:padding="4dp"
-                android:text="@string/padPedalText" />
+                android:text="@string/padPedalText"
+                android:textColor="#fff" />
 
             <Button
                 android:id="@+id/pedalAutoScrollButton"
@@ -138,7 +144,8 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/green_button"
                 android:padding="4dp"
-                android:text="@string/autoscrollPedalText" />
+                android:text="@string/autoscrollPedalText"
+                android:textColor="#fff" />
 
             <Button
                 android:id="@+id/pedalMetronomeButton"
@@ -148,7 +155,8 @@
                 android:layout_margin="8dp"
                 android:background="@drawable/green_button"
                 android:padding="4dp"
-                android:text="@string/metronomePedalText" />
+                android:text="@string/metronomePedalText"
+                android:textColor="#fff" />
 
         </LinearLayout>
     </ScrollView>
@@ -163,5 +171,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:background="@drawable/blue_button"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"
+        android:textColor="#fff" />
 </RelativeLayout>
