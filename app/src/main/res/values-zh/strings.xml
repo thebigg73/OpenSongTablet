@@ -471,5 +471,9 @@
 	<string name="search_index_start">"建立你的歌数据库"</string>
 	<string name="search_log">"检查搜索数据库错误日志"</string>
 	<string name="search_rebuild">"重建歌数据库"</string>
+	<string name="pref_key_flatsorsharps">"使用锐器或单位？"</string>
+	<string name="pref_key_text">"选择您喜欢的键设置"</string>
+	<string name="rate">"为这个应用软件评分"</string>
+	<string name="right">"在右边"</string>
 
 </resources>

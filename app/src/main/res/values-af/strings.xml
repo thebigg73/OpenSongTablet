@@ -467,5 +467,9 @@
 	<string name="search_index_start">"Die bou van jou liedjie databasis"</string>
 	<string name="search_log">"Kyk op die search databasis fout log"</string>
 	<string name="search_rebuild">"Herbou lied databasis"</string>
+	<string name="pref_key_flatsorsharps">"Gebruik woonstelle of skerp voorwerpe?"</string>
+	<string name="pref_key_text">"Kies jou voorkeur sleutel instellings"</string>
+	<string name="rate">"Gradeer hierdie inligting"</string>
+	<string name="right">"Aan die regterkant"</string>
 
 </resources>

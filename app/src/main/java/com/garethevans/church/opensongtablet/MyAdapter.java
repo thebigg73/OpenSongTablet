@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,10 +95,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
                     issue = true;
                 }
 
-                Log.d("d","previousSongInSet="+FullscreenActivity.previousSongInSet);
-                Log.d("d","nextSongInSet="+FullscreenActivity.nextSongInSet);
-                Log.d("d","indexSongInSet="+FullscreenActivity.indexSongInSet);
-
                 if (issue) {
                     SetActions.indexSongInSet();
                 }
@@ -107,7 +102,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
                 PopUpSetViewNew.loadSong();
             }
         });
-
     }
 
     @Override

@@ -517,6 +517,9 @@
     <string name="search_index_start">"Formira se baza pesama"</string>
     <string name="search_log">"Proverite log datoteku grešaka tokom pretrage"</string>
     <string name="search_rebuild">"Osvežavanje biblioteke pesama"</string>
-
+    <string name="pref_key_flatsorsharps">"Koristiti snizilice ili povisilice?"</string>
+    <string name="pref_key_text">"Odaberite prioritetne postavke tonaliteta"</string>
+    <string name="rate">"Ocenite ovu aplikaciju"</string>
+    <string name="right">"Desno"</string>
 
 </resources>

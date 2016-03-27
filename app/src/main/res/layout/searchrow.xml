@@ -77,7 +77,8 @@
             android:layout_height="wrap_content"
             android:text="@string/edit_song_author"
             android:textColor="#000"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:layout_marginRight="40dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -88,8 +89,7 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="0dp"
                     android:textStyle="bold"
-                    android:id="@+id/text_key"
-                    android:layout_marginLeft="20dp" />
+                    android:id="@+id/text_key" />
 
                 <TextView
                     android:id="@+id/cardview_key"

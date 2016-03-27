@@ -467,5 +467,9 @@
 	<string name="search_index_start">"Costruire il database canzone"</string>
 	<string name="search_log">"Controllare il log degli errori database di ricerca"</string>
 	<string name="search_rebuild">"Ricostruire database di canzone"</string>
+	<string name="pref_key_flatsorsharps">"Utilizzare diesis o appartamenti?"</string>
+	<string name="pref_key_text">"Scegliere le impostazioni chiave preferite"</string>
+	<string name="rate">"Valuta questa applicazione"</string>
+	<string name="right">"Sulla destra"</string>
 
 </resources>

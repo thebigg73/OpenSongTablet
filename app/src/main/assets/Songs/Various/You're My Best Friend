@@ -1,12 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <song>
-<title>You're My Best Friend</title>
-<author>Queen</author>
-<copyright>Queen</copyright>
-<lyrics>[]
-; From: etlnbb@etlxd20.ericsson.se ( neil bergin xd/gk)
-
-;Queen
-
+  <title>You're My Best Friend</title>
+  <author>Queen</author>
+  <copyright>Queen</copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration></duration>
+  <predelay></predelay>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>C</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
+  <lyrics>[V1]
 .F/C              C          F/C                 C
  Ooo, you make me live.  Whatever this world can give to me
 .     F/C               C     F/C              C
@@ -14,6 +33,7 @@
 .F/C              C   G/B Am
  Ooo, you make me live
 
+[C]
 .           D                F      G
  You're the best friend that I ever had
 .     C         G/B        Am
@@ -25,6 +45,7 @@
 .          C
  You're my best friend
 
+[V2]
 .F/C              C   G/B
  Ooo, you make me live
 .          Am        C/G         F                  Fm7
@@ -34,20 +55,18 @@
 .    C/G             G                C
  I'm happy, happy at home.  You're my best friend
 
- Ooo, you make me live
- Whenever this world is cruel to me
- I got you to help me forgive
- Ooo, you make me live now honey
+[V3]
+ Ooo, you make me live, whenever this world is cruel to me
+ I got you to help me forgive,  Ooo, you make me live now honey
  Ooo, you make me live
 
- You're the first one
- When things turn out bad
- You know I'll never be lonely
- You're my only one
- And I love
- The things that you do
+[C2]
+ You're the first one, when things turn out bad
+ You know I'll never be lonely, you're my only one
+ And I love the things that you do
  You're my best friend
 
+[Outro]
  Ooo, you make me live
 
  I'm happy, happy at home
@@ -55,4 +74,11 @@
  You're my best friend
  Ooo, you make me live
  You, you're my best friend</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

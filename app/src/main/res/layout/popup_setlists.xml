@@ -3,8 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listSort_imageButton"
+        android:src="@drawable/ic_action_sort_by_size"
+        android:layout_margin="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:contentDescription="@string/options_set" />
+
     <ListView
-        android:id="@+id/setListView"
+        android:id="@+id/setListView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:choiceMode="singleChoice"
@@ -12,7 +22,8 @@
         android:layout_alignLeft="@+id/newSetPromptTitle"
         android:layout_alignStart="@+id/newSetPromptTitle"
         android:layout_alignParentStart="false"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="false"
+        android:layout_below="@+id/listSort_imageButton" />
 
     <TextView
         android:id="@+id/newSetPromptTitle"

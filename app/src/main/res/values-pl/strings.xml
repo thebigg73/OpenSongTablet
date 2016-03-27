@@ -467,5 +467,9 @@
 	<string name="search_index_start">"Budowanie bazy danych piosenkę"</string>
 	<string name="search_log">"Sprawdź dziennik błędów bazy danych wyszukiwania"</string>
 	<string name="search_rebuild">"Odbuduj bazę piosenkę"</string>
+	<string name="pref_key_flatsorsharps">"Użyj śrutę lub mieszkania?"</string>
+	<string name="pref_key_text">"Wybierz kluczowe preferowane ustawienia"</string>
+	<string name="rate">"Oceń tę aplikację"</string>
+	<string name="right">"Po prawej"</string>
 
 </resources>

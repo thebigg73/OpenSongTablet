@@ -1,51 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <song>
-<title>Imagine</title>
-<author>John Lennon</author>
-<copyright>John Lennon</copyright>
-<lyrics>[]
-; Morten Kringelbach
-
-;John Lennon
-
-.Gmaj7                 Cmaj7
+  <title>Imagine</title>
+  <author>John Lennon</author>
+  <copyright>John Lennon</copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration>10</duration>
+  <predelay></predelay>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key></key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
+  <lyrics>[V1]
+.Gmaj7              Cmaj7
  Imagine there's no heaven,
 .Gmaj7            Cmaj7
- it's easy if you try
-.Gmaj7         Cmaj7 Gmaj7       Cmaj
+ It's easy if you try
+.Gmaj7   Cmaj7      Gmaj7        Cmaj7
  No hell below us, above us only sky.
-.C       Em         Am   D
+.C       Em      Am      D
  Imagine all the people, living for today  (ah-ha)
 
-.Gmaj7                  Cmaj7
+[V2]
+.Gmaj7              Cmaj7
  Imagine there's no countries,
-.Gmaj7           Cmaj7
- it isn't hardto do
+.Gmaj7            Cmaj7
+ It isn't hard to do
 .Gmaj7                  Cmaj7
  Nothing to kill or die for,
 .Gmaj7           Cmaj7
- and no religion too
-
-;Chorus
+ And no religion too
 
 [C]
-.C           Em     Am   D
+.C       Em      Am      D
  Imagine all the people, living life in peace
 .            C
- yoh-hu-ah-a-ha
-.        D         G      B7C         D               G
- You may say I'm a dreamer  , but I'm not the only one
-.B7
-
-.C            D          G      B7C
-  I hope some day you'll join us  , and the
+ Yoh-hu-ah-a-ha
+.C       D         G      B7 C       D            G   B7
+ You may say I'm a dreamer,  but I'm not the only one
+.C           D          G      B7 C
+ I hope some day you'll join us,  and the
 .D          G
- world will be as one.
-[]
+ World will be as one.
 
+[V3]
  Imagine all possessions,
  I wonder if you can.
  No need for greed or hunger,
- a brotherhood of man.
+ A brotherhood of man.
 
 ;Chorus</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

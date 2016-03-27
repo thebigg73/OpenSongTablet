@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/playbackProgress"
+    android:background="#888888"
+    android:alpha="0.4"
+    android:padding="10dp"
+    android:gravity="center_vertical|center_horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView5"
+        android:src="@drawable/page_autoscroll_bw"
+        android:contentDescription="@string/autoscroll"
+        android:layout_marginRight="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/currentTime_TextView"
+        android:textStyle="bold|italic"
+        android:textSize="24sp"
+        android:textColor="#fff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" / "
+        android:id="@+id/textView46"
+        android:textStyle="bold|italic"
+        android:textSize="24sp"
+        android:textColor="#fff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/totalTime_TextView"
+        android:textStyle="bold|italic"
+        android:textSize="24sp"
+        android:textColor="#fff" />
+</LinearLayout>

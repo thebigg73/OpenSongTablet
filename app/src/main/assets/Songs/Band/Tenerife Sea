@@ -8,7 +8,7 @@
   <capo print="false">3</capo>
   <tempo></tempo>
   <time_sig></time_sig>
-  <duration></duration>
+  <duration>10</duration>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -24,6 +24,9 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[V1]
 .G          G/A     C             G          G/A     C
  You look so wonderful in your dress, I love your hair like that
@@ -73,7 +76,4 @@
 .G         G/A    C*
  And in the moment I knew you back
 </lyrics>
-  <linked_songs></linked_songs>
-  <pad_file>Auto</pad_file>
-  <custom_chords></custom_chords>
 </song>

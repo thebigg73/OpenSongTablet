@@ -77,25 +77,69 @@
             android:textColor="#000"
             android:textAppearance="@android:style/TextAppearance.Medium" />
 
+        <SeekBar
+            android:id="@+id/popupmetronome_tempo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="160" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/popupmetronome_tempo_text"
+                android:layout_marginLeft="8dp"
+                android:textColor="#000"
+                android:textSize="16sp"
+                android:textIsSelectable="false"
+                android:singleLine="true"
+                android:focusable="false"
+                android:editable="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bpm"
+                android:id="@+id/textView44"
+                android:textColor="#000"
+                android:layout_marginLeft="4dp"
+                android:textSize="16sp" />
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
 
-            <SeekBar
-                android:id="@+id/popupmetronome_tempo"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:max="160" />
-
-            <TextView
-                android:id="@+id/popupmetronome_tempo_text"
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:textColor="#000"
-                android:textSize="16sp" />
+                android:text="-"
+                android:id="@+id/decreaseTempo_Button"
+                android:background="@drawable/grey_button"
+                android:textSize="24sp"
+                android:layout_marginRight="4dp"
+                android:padding="10dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:id="@+id/increaseTempo_Button"
+                android:background="@drawable/grey_button"
+                android:textSize="24sp"
+                android:layout_marginLeft="4dp"
+                android:padding="10dp" />
+
         </LinearLayout>
 
         <Button
@@ -103,7 +147,9 @@
             android:layout_height="wrap_content"
             android:text="@string/tap_tempo"
             android:onClick="tapTempo"
-            android:textColor="#fff" />
+            android:textColor="#fff"
+            android:background="@drawable/yellow_button"
+            android:layout_margin="8dp" />
 
         <TextView
             android:layout_width="match_parent"

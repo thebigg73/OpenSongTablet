@@ -8,15 +8,23 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
+  <duration></duration>
+  <predelay></predelay>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key></key>
+  <key>G</key>
   <aka></aka>
   <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
   <lyrics>[Intro]
 .G       D        Em        C              G       D          C           G
 .G       D        Em        C              G       D          C           Gm
@@ -58,5 +66,13 @@
 .        G       G/F#   Em   D      C       C/B       Am
  All the letters in the sand cannot heal me like your hand
 .       Em          D         G
- For my life still ahead pity Me</lyrics>
+ For my life still ahead pity Me
+</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

@@ -9,6 +9,7 @@
   <tempo></tempo>
   <time_sig></time_sig>
   <duration></duration>
+  <predelay></predelay>
   <ccli>1038939</ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -26,7 +27,7 @@
   <notes></notes>
   <lyrics>[Intro]
 .C     F  G     C     F     E     Am
-.Dm    G        C     F     G     G7    C
+.Dm    G        C     F     C         G7         C
 .F     G        C  G# F  G
 
 [V1]
@@ -63,6 +64,10 @@
  For all wreaths of empire meet upon His brow
  And our hearts confess Him King of glory now</lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

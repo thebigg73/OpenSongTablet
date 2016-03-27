@@ -2,46 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
-        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-a6a2b67628a8af4a409ec7ad8c5601f5162e3a55.jar" />
-    </item>
-    <item
-        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/design/23.1.1/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="379471b2bd17d9737c050345c08e8c7d16589784">
-        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-5d7d4fd13c844aa8bbe0014d3b3f3dfb08a41a87.jar" />
-    </item>
-    <item
-        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.4.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="8e673cdfadd8f2d98fdb2fda2285c30f6e449782">
-        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-bd7f15ac8d9a0201cd29c63835fb690fffcd017d.jar" />
-    </item>
-    <item
         jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-appindexing/8.4.0/jars/classes.jar"
         jumboMode="false"
         revision="23.0.2"
         sha1="65d086ee9daaf87b5af62ad24471edafa433354c">
         <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-ab79c2e4f8797183928bf06707f131c23478ea78.jar" />
-    </item>
-    <item
-        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/libs/internal_impl-23.1.1.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
-        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/internal_impl-23.1.1-f2b5bd70874fd7abe635304d25924aff972d5652.jar" />
-    </item>
-    <item
-        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.1.1/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="5e412e954a24c5310a459c09870e4e2081aceb03">
-        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-68ae574f29b1165732aa36362854efaabaabad29.jar" />
     </item>
     <item
         jar="/home/gareth/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/23.1.1/support-annotations-23.1.1.jar"
@@ -51,13 +16,6 @@
         <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/support-annotations-23.1.1-4cf5e879f96035b66e3b13b39f761d267139baeb.jar" />
     </item>
     <item
-        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.1.1/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.2"
-        sha1="09c5e804bc67fc0580360043dff067df574a60d4">
-        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-49bd294d10f6dcff188c559870d0cac2160527b1.jar" />
-    </item>
-    <item
         jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/classes.jar"
         jumboMode="false"
         revision="23.0.2"
@@ -65,11 +23,53 @@
         <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-55ccbf83f7d12ca882e396de2f92d6f601aa1eb2.jar" />
     </item>
     <item
+        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="09c5e804bc67fc0580360043dff067df574a60d4">
+        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-49bd294d10f6dcff188c559870d0cac2160527b1.jar" />
+    </item>
+    <item
+        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
+        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-a6a2b67628a8af4a409ec7ad8c5601f5162e3a55.jar" />
+    </item>
+    <item
         jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/8.4.0/jars/classes.jar"
         jumboMode="false"
         revision="23.0.2"
         sha1="fef2b3e4b6b1b0e5fe7b69fa137a5fa55a3182ab">
         <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-04725a150ddb422e74844bc45b5e836305d16d7f.jar" />
+    </item>
+    <item
+        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.1/jars/libs/internal_impl-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/internal_impl-23.1.1-f2b5bd70874fd7abe635304d25924aff972d5652.jar" />
+    </item>
+    <item
+        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/design/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="379471b2bd17d9737c050345c08e8c7d16589784">
+        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-5d7d4fd13c844aa8bbe0014d3b3f3dfb08a41a87.jar" />
+    </item>
+    <item
+        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5e412e954a24c5310a459c09870e4e2081aceb03">
+        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-68ae574f29b1165732aa36362854efaabaabad29.jar" />
+    </item>
+    <item
+        jar="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8e673cdfadd8f2d98fdb2fda2285c30f6e449782">
+        <dex dex="/home/gareth/AndroidstudioProjects/OpenSongTablet/app/build/intermediates/pre-dexed/debug/classes-bd7f15ac8d9a0201cd29c63835fb690fffcd017d.jar" />
     </item>
 
 </items>

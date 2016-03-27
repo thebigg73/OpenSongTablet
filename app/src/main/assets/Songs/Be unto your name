@@ -8,7 +8,8 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
-  <duration></duration>
+  <duration>10</duration>
+  <predelay></predelay>
   <ccli>2177476</ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -25,24 +26,39 @@
   <restrictions></restrictions>
   <notes></notes>
   <lyrics>[V1]
-.C          G     Dm         Am    F           C     Bb         Gsus  G
- We are a moment, You are forever,|Lord of the ages, God before time
-.C          G     Dm       Am      F        C/E      Bb          Gsus G 
- We are a vapour, you are eternal,|Love everlasting, reigning on high.
+.C          G     Dm         Am    
+ We are a moment, You are forever,
+.F           C     Bb         Gsus  G
+ Lord of the ages, God before time
+.C          G     Dm       Am       
+ We are a vapour, you are eternal,
+.F        C/E      Bb          Gsus G
+ Love everlasting, reigning on high.
  
 [C]
-.Am    F     C/E             G  Am     F      C            Gsus  G
- Holy, holy, Lord God Almighty,|Worthy is the Lamb who was slain;
-.Am      F       C/E        G     Dm    Am      Gsus G   Dm   Am       Gsus  G
- Highest praises honour and glory, be unto Your name,     be unto Your name.
+.Am    F     C/E             G  
+ Holy, holy, Lord God Almighty,
+.Am     F      C            Gsus  G
+ Worthy is the Lamb who was slain;
+.Am      F       C/E        G     
+ Highest praises honour and glory,
+.Dm   Am      Gsus G   Dm   Am      Gsus  G
+ Be unto Your name,    be unto Your name.
  
 [V2]
-.C             G    Dm             Am   F        C       Bb        Gsus  G
- We are the broken, You are the healer,|Jesus, Redeemer, mighty to save
-.C                G    Dm             Am   F        C/E       Bb            Gsus G 
- You are the love song we'll sing forever,|Bowing before You, blessing Your name
- </lyrics>
+.C             G    Dm             Am  
+ We are the broken, You are the healer,
+.F        C       Bb        Gsus  G
+ Jesus, Redeemer, mighty to save
+.C                G    Dm             Am
+ You are the love song we'll sing forever,
+.F        C/E       Bb            Gsus G 
+ Bowing before You, blessing Your name</lyrics>
   <linked_songs></linked_songs>
-  <pad_file>OFF</pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

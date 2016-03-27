@@ -42,6 +42,7 @@ public class PopUpTransposeFragment extends DialogFragment {
 
     SeekBar transposeSeekBar;
     TextView transposeValTextView;
+    TextView keyChange_TextView;
     RadioGroup detectedChordFormat;
     RadioButton chordFormat1Radio;
     RadioButton chordFormat2Radio;
@@ -50,6 +51,7 @@ public class PopUpTransposeFragment extends DialogFragment {
     RadioButton chordFormat5Radio;
     Button transposeCancelButton;
     Button transposeOkButton;
+    boolean updatekey = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,6 +63,7 @@ public class PopUpTransposeFragment extends DialogFragment {
         // Initialise views
         transposeSeekBar = (SeekBar) V.findViewById(R.id.transposeSeekBar);
         transposeValTextView = (TextView) V.findViewById(R.id.transposeValTextView);
+        keyChange_TextView = (TextView) V.findViewById(R.id.keyChange_TextView);
         detectedChordFormat = (RadioGroup) V.findViewById(R.id.detectedChordFormat);
         transposeCancelButton = (Button) V.findViewById(R.id.transposeCancelButton);
         transposeOkButton = (Button) V.findViewById(R.id.transposeOkButton);
@@ -71,6 +74,17 @@ public class PopUpTransposeFragment extends DialogFragment {
         chordFormat5Radio = (RadioButton) V.findViewById(R.id.chordFormat5Radio);
 
         // If user has said to always used preferred chord format, hide the options
+
+        // If the song has a key specified, we will add in the text for current and new key
+        if (FullscreenActivity.mKey!=null & !FullscreenActivity.mKey.equals("")) {
+            updatekey=true;
+            String keychange = getString(R.string.edit_song_key) + ": " + FullscreenActivity.mKey + "\n" +
+                    getString(R.string.transpose) + ": " + FullscreenActivity.mKey;
+            keyChange_TextView.setText(keychange);
+        } else {
+            keyChange_TextView.setText("");
+            keyChange_TextView.setVisibility(View.GONE);
+        }
 
         // Initialise the transpose values
         transposeSeekBar.setMax(12);
@@ -89,6 +103,7 @@ public class PopUpTransposeFragment extends DialogFragment {
                     FullscreenActivity.transposeTimes = Math.abs(val);
                     String text = "-"+Math.abs(val);
                     transposeValTextView.setText(text);
+
                 } else if (val>0) {
                     FullscreenActivity.transposeDirection = "+1";
                     FullscreenActivity.transposeTimes = Math.abs(val);
@@ -99,6 +114,23 @@ public class PopUpTransposeFragment extends DialogFragment {
                     FullscreenActivity.transposeTimes = Math.abs(0);
                     transposeValTextView.setText("0");
                 }
+
+                // If the song has a key specified, we will add in the text for current and new key
+                if (FullscreenActivity.mKey!=null & !FullscreenActivity.mKey.equals("")) {
+                    updatekey=true;
+                    // Get the new key value
+                    String keynum = Transpose.keyToNumber(FullscreenActivity.mKey);
+                    String transpkeynum = Transpose.transposeKey(keynum,FullscreenActivity.transposeDirection,FullscreenActivity.transposeTimes);
+                    String newkey = Transpose.numberToKey(transpkeynum);
+
+                    String keychange = getString(R.string.edit_song_key) + ": " + FullscreenActivity.mKey + "\n" +
+                            getString(R.string.transpose) + ": " + newkey;
+                    keyChange_TextView.setText(keychange);
+                } else {
+                    keyChange_TextView.setText("");
+                    keyChange_TextView.setVisibility(View.GONE);
+                }
+
             }
 
             @Override

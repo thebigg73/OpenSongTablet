@@ -9,9 +9,10 @@
   <tempo>72</tempo>
   <time_sig>4/4</time_sig>
   <duration>200</duration>
+  <predelay></predelay>
   <ccli>12345</ccli>
-  <theme>Christ: Attributes; Christ: Love/Mercy; Church: Evangelism; Church: Fruit: God: Attributes; God: Father; God: Love/Mercy; Worship: Intimacy; </theme>
-  <alttheme>Christ: Attributes; Christ: Love/Mercy; Church: Evangelism; Church: Fruit: God: Attributes; God: Father; God: Love/Mercy; Worship: Intimacy; </alttheme>
+  <theme>Christ: Attributes; Christ: Love/Mercy; Church: Evangelism; God: Attributes; God: Father; God: Love/Mercy; Worship: Intimacy; </theme>
+  <alttheme>Christ: Attributes; Christ: Love/Mercy; Church: Evangelism; God: Attributes; God: Father; God: Love/Mercy; Worship: Intimacy; </alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
@@ -23,7 +24,9 @@
   <midi_index></midi_index>
   <pitch></pitch>
   <restrictions></restrictions>
-  <notes></notes>
+  <notes>This is where you can add song notes.
+
+They can be reminders, or extra information about the song.  Whatever you want!</notes>
   <lyrics>[V1]
 .G2                D/F#
  Love everlasting, love without measure,

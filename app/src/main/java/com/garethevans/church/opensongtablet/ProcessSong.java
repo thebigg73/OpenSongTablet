@@ -244,6 +244,7 @@ public class ProcessSong extends Activity {
         string = string.replace(".", " ");
         string = string.replace(":", " ");
         string = string.replace(";", " ");
+        string = string.replace("!", " ");
         string = string.replace("'", "");
         string = string.replace("(", " ");
         string = string.replace(")", " ");

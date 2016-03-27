@@ -1,31 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <song>
-<title>Woman</title>
-<author>John Lennon</author>
-<copyright>John Lennon</copyright>
-<lyrics>[]
-; Morten Kringelbach
+  <title>Woman</title>
+  <author>John Lennon</author>
+  <copyright>John Lennon</copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print="false"></capo>
+  <tempo></tempo>
+  <time_sig></time_sig>
+  <duration>10</duration>
+  <predelay></predelay>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key></key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes></notes>
+  <lyrics>[V1]
+.C    Dm7       C        Dm7
+ Woman,   I can hardly express
+.C        Am             Dm         G
+ My mixed emotions at my thoughtlessness.
+.F        Dm7     Em           Gsus4
+ After all I'm forever in your debt.
+.    C    Dm7        C        Dm7
+ And woman,   I will try to express
+.C        Am           Dm        G
+ My inner feelings and thankfulness
+.F           Dm7    Em           Gsus4
+ For showing me the meaning of success.
+.Cmaj7   Am7     Dm7               G6
+       Oooh well-well, Doo doo doo doo doo.
+.Cmaj7   Am7     Dm7               G6
+       Oooh well-well, Doo doo doo doo doo
 
-;John Lennon
-
-.C     Dm7       C             Dm7
- Woman,    I can hardly express
-.          Am            Dm             G
- my mixed emotions at my thoughtlessness.
-.F         Dm7     Em           Gsus4
-  After all I'm forever in your debt.
-.    C      Dm7    C
- And woman, I will try to express
-.Dm C      Am           Dm        G
-  my inner feelings and thankfulness
-.F           Dm7    Em             Gsus4
- for showing me the meaning of success.
-.Cmaj7    Am7     Dm7               G6
-        Oooh well-well, Doo doo doo doo doo.
-.Cmaj7    Am      Dm7               G6
-        Oooh well-well, Doo doo doo doo doo
-
+[V2]
  Woman, I know you understand
- the little child inside the man.
+ The little child inside the man.
  Please remember, my life is in your hands.
  And woman, hold me close to your heart.
  However distant, don't keep us apart.
@@ -33,10 +53,18 @@
  Ooh well-well, Doo doo doo doo doo.
  Ooh well-well, Doo doo doo doo doo.
 
+[B]
 .C    Dm7        C           Dm7
  Woman  , please let me explain.
 .C       Am                 Dm          G
  I never meant to cause you sorrow or pain.
 .F         Dm7       Em                   Gsus4  G
  So let me tell you again and again and agaaaahiaaiin.</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

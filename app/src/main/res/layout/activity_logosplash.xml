@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
-    android:id="@+id/pagesplash">
+    android:id="@+id/pagesplash"
+    android:padding="12dp">
     
     <ImageView 
         android:id="@+id/splashlogo"
@@ -11,5 +12,5 @@
         android:layout_height="250dp"
         android:layout_centerInParent="true"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/promo_graphic"/>
+        android:src="@drawable/ost_logo"/>
     </RelativeLayout>

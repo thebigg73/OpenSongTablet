@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.Switch;
 import android.widget.TextView;
 
 public class ChordFormat extends AppCompatActivity {
@@ -18,6 +19,18 @@ public class ChordFormat extends AppCompatActivity {
 	static RadioGroup radioGroup2;
 	static String numeral;
 	static String numeral2;
+
+    Switch switchAb;
+    Switch switchBb;
+    Switch switchDb;
+    Switch switchEb;
+    Switch switchGb;
+    Switch switchAbm;
+    Switch switchBbm;
+    Switch switchDbm;
+    Switch switchEbm;
+    Switch switchGbm;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +56,29 @@ public class ChordFormat extends AppCompatActivity {
             ab.setDisplayShowTitleEnabled(false);
             title.setText(getResources().getString(R.string.choosechordformat));
         }
+
+        // Set up the preferred chord buttons
+        switchAb = (Switch) findViewById(R.id.switchAb);
+        switchBb = (Switch) findViewById(R.id.switchBb);
+        switchDb = (Switch) findViewById(R.id.switchDb);
+        switchEb = (Switch) findViewById(R.id.switchEb);
+        switchGb = (Switch) findViewById(R.id.switchGb);
+        switchAbm = (Switch) findViewById(R.id.switchAbm);
+        switchBbm = (Switch) findViewById(R.id.switchBbm);
+        switchDbm = (Switch) findViewById(R.id.switchDbm);
+        switchEbm = (Switch) findViewById(R.id.switchEbm);
+        switchGbm = (Switch) findViewById(R.id.switchGbm);
+
+        setSwitches(FullscreenActivity.prefChord_Aflat_Gsharp, switchAb);
+        setSwitches(FullscreenActivity.prefChord_Bflat_Asharp, switchBb);
+        setSwitches(FullscreenActivity.prefChord_Dflat_Csharp, switchDb);
+        setSwitches(FullscreenActivity.prefChord_Eflat_Dsharp, switchEb);
+        setSwitches(FullscreenActivity.prefChord_Gflat_Fsharp, switchGb);
+        setSwitches(FullscreenActivity.prefChord_Aflatm_Gsharpm, switchAbm);
+        setSwitches(FullscreenActivity.prefChord_Bflatm_Asharpm, switchBbm);
+        setSwitches(FullscreenActivity.prefChord_Dflatm_Csharpm, switchDbm);
+        setSwitches(FullscreenActivity.prefChord_Eflatm_Dsharpm, switchEbm);
+        setSwitches(FullscreenActivity.prefChord_Gflatm_Fsharpm, switchGbm);
 
         radioGroup = (RadioGroup) findViewById(R.id.chordFormat);
         radioGroup2 = (RadioGroup) findViewById(R.id.chordFormat_decideaction);
@@ -120,8 +156,8 @@ public class ChordFormat extends AppCompatActivity {
             radioButton7.setChecked(true);
         }
     }
-	
-	@Override
+
+    @Override
 	public void onBackPressed() {
 		Intent viewsong = new Intent(ChordFormat.this, FullscreenActivity.class);
 		startActivity(viewsong);
@@ -129,6 +165,57 @@ public class ChordFormat extends AppCompatActivity {
     }
 
 	public void exitChordFormat(View view) {
+        if (switchAb.isChecked()) {
+            FullscreenActivity.prefChord_Aflat_Gsharp = "#";
+        } else {
+            FullscreenActivity.prefChord_Aflat_Gsharp = "b";
+        }
+        if (switchBb.isChecked()) {
+            FullscreenActivity.prefChord_Bflat_Asharp = "#";
+        } else {
+            FullscreenActivity.prefChord_Bflat_Asharp = "b";
+        }
+        if (switchDb.isChecked()) {
+            FullscreenActivity.prefChord_Dflat_Csharp = "#";
+        } else {
+            FullscreenActivity.prefChord_Dflat_Csharp = "b";
+        }
+        if (switchEb.isChecked()) {
+            FullscreenActivity.prefChord_Eflat_Dsharp = "#";
+        } else {
+            FullscreenActivity.prefChord_Eflat_Dsharp = "b";
+        }
+        if (switchGb.isChecked()) {
+            FullscreenActivity.prefChord_Gflat_Fsharp = "#";
+        } else {
+            FullscreenActivity.prefChord_Gflat_Fsharp = "b";
+        }
+        if (switchAbm.isChecked()) {
+            FullscreenActivity.prefChord_Aflatm_Gsharpm = "#";
+        } else {
+            FullscreenActivity.prefChord_Aflatm_Gsharpm = "b";
+        }
+        if (switchBbm.isChecked()) {
+            FullscreenActivity.prefChord_Bflatm_Asharpm = "#";
+        } else {
+            FullscreenActivity.prefChord_Bflatm_Asharpm = "b";
+        }
+        if (switchDbm.isChecked()) {
+            FullscreenActivity.prefChord_Dflatm_Csharpm = "#";
+        } else {
+            FullscreenActivity.prefChord_Dflatm_Csharpm = "b";
+        }
+        if (switchEbm.isChecked()) {
+            FullscreenActivity.prefChord_Eflatm_Dsharpm = "#";
+        } else {
+            FullscreenActivity.prefChord_Eflatm_Dsharpm = "b";
+        }
+        if (switchGbm.isChecked()) {
+            FullscreenActivity.prefChord_Gflatm_Fsharpm = "#";
+        } else {
+            FullscreenActivity.prefChord_Gflatm_Fsharpm = "b";
+        }
+
         FullscreenActivity.chordFormat = numeral;
         FullscreenActivity.alwaysPreferredChordFormat = numeral2;
 		Preferences.savePreferences();
@@ -137,4 +224,12 @@ public class ChordFormat extends AppCompatActivity {
 		startActivity(main);
 		finish();
 	}
+
+    public void setSwitches(String what, Switch myswitch) {
+        if (what.equals("b")) {
+            myswitch.setChecked(false);
+        } else {
+            myswitch.setChecked(true);
+        }
+    }
 }

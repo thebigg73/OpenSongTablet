@@ -19,11 +19,178 @@
         android:orientation="vertical" >
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_key_text"
+            android:id="@+id/textView43"
+            android:textColor="#ff0"
+            android:textSize="18sp"
+            android:layout_margin="8dp" />
+
+        <Switch
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:text="Ab / G#"
+            android:textAllCaps="false"
+            android:id="@+id/switchAb"
+            android:textOff="Ab"
+            android:textOn="G#"
+            android:showText="true"
+            android:splitTrack="false"
+            android:thumb="@drawable/switch_button"
+            android:singleLine="false"
+            android:switchTextAppearance="@android:style/TextAppearance.Holo"
+            android:thumbTextPadding="4dp"
+            android:thumbTint="#444488"
+            android:padding="12dp" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bb / A#"
+            android:id="@+id/switchBb"
+            android:textOff="Bb"
+            android:textOn="A#"
+            android:showText="true"
+            android:splitTrack="false"
+            android:thumb="@drawable/switch_button"
+            android:switchTextAppearance="@android:style/TextAppearance.Holo"
+            android:thumbTextPadding="4dp"
+            android:thumbTint="#444488"
+            android:padding="12dp" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Db / C#"
+            android:id="@+id/switchDb"
+            android:textOff="Db"
+            android:textOn="C#"
+            android:showText="true"
+            android:splitTrack="false"
+            android:thumb="@drawable/switch_button"
+            android:switchTextAppearance="@android:style/TextAppearance.Holo"
+            android:thumbTextPadding="4dp"
+            android:thumbTint="#444488"
+            android:padding="12dp" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Eb / D#"
+            android:id="@+id/switchEb"
+            android:textOff="Eb"
+            android:textOn="D#"
+            android:showText="true"
+            android:splitTrack="false"
+            android:thumb="@drawable/switch_button"
+            android:switchTextAppearance="@android:style/TextAppearance.Holo"
+            android:thumbTextPadding="4dp"
+            android:thumbTint="#444488"
+            android:padding="12dp" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gb / F#"
+            android:id="@+id/switchGb"
+            android:textOff="Gb"
+            android:textOn="F#"
+            android:showText="true"
+            android:splitTrack="false"
+            android:thumb="@drawable/switch_button"
+            android:switchTextAppearance="@android:style/TextAppearance.Holo"
+            android:thumbTextPadding="4dp"
+            android:thumbTint="#444488"
+            android:padding="12dp" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Abm / G#m"
+            android:id="@+id/switchAbm"
+            android:textOff="Abm"
+            android:textOn="G#m"
+            android:showText="true"
+            android:splitTrack="false"
+            android:thumb="@drawable/switch_button"
+            android:switchTextAppearance="@android:style/TextAppearance.Holo"
+            android:switchPadding="12dp"
+            android:thumbTextPadding="4dp"
+            android:thumbTint="#444488"
+            android:padding="12dp"
+            android:checked="true" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bbm / A#m"
+            android:id="@+id/switchBbm"
+            android:textOff="Bbm"
+            android:textOn="A#m"
+            android:showText="true"
+            android:splitTrack="false"
+            android:thumb="@drawable/switch_button"
+            android:switchTextAppearance="@android:style/TextAppearance.Holo"
+            android:thumbTextPadding="4dp"
+            android:thumbTint="#444488"
+            android:padding="12dp" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dbm / C#m"
+            android:id="@+id/switchDbm"
+            android:textOff="Dbm"
+            android:textOn="C#m"
+            android:showText="true"
+            android:splitTrack="false"
+            android:thumb="@drawable/switch_button"
+            android:switchTextAppearance="@android:style/TextAppearance.Holo"
+            android:thumbTextPadding="4dp"
+            android:thumbTint="#444488"
+            android:padding="12dp"
+            android:checked="true" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ebm / D#m"
+            android:id="@+id/switchEbm"
+            android:textOff="Ebm"
+            android:textOn="D#m"
+            android:showText="true"
+            android:splitTrack="false"
+            android:thumb="@drawable/switch_button"
+            android:switchTextAppearance="@android:style/TextAppearance.Holo"
+            android:thumbTextPadding="4dp"
+            android:thumbTint="#444488"
+            android:padding="12dp" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gbm / F#m"
+            android:id="@+id/switchGbm"
+            android:textOff="Gbm"
+            android:textOn="F#m"
+            android:showText="true"
+            android:splitTrack="false"
+            android:textColor="#fff"
+            android:thumb="@drawable/switch_button"
+            android:switchTextAppearance="@android:style/TextAppearance.Holo"
+            android:checked="true"
+            android:thumbTextPadding="4dp"
+            android:thumbTint="#444488"
+            android:padding="12dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:text="@string/choosechordformat"
-            android:textSize="22sp" />
+            android:textSize="18sp"
+            android:textColor="#ff0" />
 
         <RadioGroup
             android:id="@+id/chordFormat"
@@ -65,9 +232,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="8dp"
             android:text="@string/chordformat_help"
-            android:textSize="22sp" />
+            android:textSize="18sp"
+            android:textColor="#ff0" />
 
         <RadioGroup
             android:id="@+id/chordFormat_decideaction"

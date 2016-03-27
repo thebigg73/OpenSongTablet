@@ -467,5 +467,9 @@
 	<string name="search_index_start">"Construção de seu banco de dados de música"</string>
 	<string name="search_log">"Verifique o log de erro do banco de dados de pesquisa"</string>
 	<string name="search_rebuild">"Reconstruir banco de dados de música"</string>
+	<string name="pref_key_flatsorsharps">"Use sustenidos e bemóis?"</string>
+	<string name="pref_key_text">"Escolha as configurações de chave preferidos"</string>
+	<string name="rate">"Avalie este aplicativo"</string>
+	<string name="right">"A direita"</string>
 
 </resources>

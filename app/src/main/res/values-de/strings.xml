@@ -453,19 +453,25 @@
 	<string name="maxvolrange">"Bereich der Lautstärkeanzeige"</string>
 	<string name="reset">"Zurücksetzen"</string>
 	<string name="volval">"Aktuelle Lautstärke"</string>
-	<string name="set_manage_swipe">"Streichen, ein Element aus Ihrem Set-Liste zu entfernen"</string>
-	<string name="set_manage_shuffle">"Shuffle"</string>
-	<string name="set_manage_click">"Klicken Sie auf ein Element in der Menge, damit sie angezeigt"</string>
-	<string name="storage_rationale">"Zugriff auf Ihre Speicher ist erforderlich, um lesen und schreiben Lieder und Sätze."</string>
-	<string name="microphone_rationale">"Mikrofon / Audio-Aufzeichnung ist erforderlich, um den Schallpegelmesser zugreifen."</string>
-	<string name="default_autoscroll">"Standard Autoscroll Zeiten"</string>
-	<string name="autoscroll_default_or_prompt">"Wenn Sie einen Song Dauer sollten die Standardwerte verwendet werden, nicht festgelegt haben oder wollen Sie jedes Mal gefragt werden möchten?"</string>
-	<string name="use_default">"Verwende den Standard"</string>
-	<string name="ask">"Stellen Sie jedes Mal,"</string>
+
+	<string name="set_manage_swipe">"Wischen, um ein Element aus der Setlist zu entfernen."</string>
+	<string name="set_manage_shuffle">"Zufallsmodus"</string>
+	<string name="set_manage_click">"Auf ein Element aus dem Set klicken, um es anzuzeigen."</string>
+	<string name="storage_rationale">"Um Songs und Sets zu lesen und zu schreiben ist der Zugriff auf den Speicher erforderlich."</string>
+	<string name="microphone_rationale">"Um den Schallpegelmesser benutzen zu können ist der Zugriff auf Mikrofon bzw. Audioaufnahme erforderlich."</string>
+	<string name="default_autoscroll">"Standard Autoscroll-Zeiten"</string>
+	<string name="autoscroll_default_or_prompt">"Wenn Sie keine Song Dauer eingestellt haben, die Standardwerte verwenden oder jedes Mal nachfragen?"</string>
+	<string name="use_default">"Standardwerte verwenden"</string>
+	<string name="ask">"Jedes Mal nachfragen"</string>
+
 	<string name="search_index_end">"Alle Songs wurden komplett indiziert"</string>
 	<string name="search_index_error">"Es gab einen Fehler Aufbau Ihrer Suchdatenbank"</string>
 	<string name="search_index_start">"Bauen Sie Ihre Song-Datenbank"</string>
 	<string name="search_log">"Schauen Sie sich die Suchdatenbank Fehlerprotokoll"</string>
 	<string name="search_rebuild">"Rebuild Lieddatenbank"</string>
+	<string name="pref_key_flatsorsharps">"Verwenden Sie für spitze Gegenstände oder Wohnungen?"</string>
+	<string name="pref_key_text">"Wählen Sie Ihre Schlüsseleinstellungen"</string>
+	<string name="rate">"Bewerte diese App"</string>
+	<string name="right">"Auf der rechten Seite"</string>
 
 </resources>

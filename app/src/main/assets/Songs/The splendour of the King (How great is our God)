@@ -8,7 +8,8 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
-  <duration></duration>
+  <duration>10</duration>
+  <predelay></predelay>
   <ccli>4348399</ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -60,8 +61,14 @@
 .   Dmaj7
  My heart will sing
 .    E            A  Asus A
- How great is our God</lyrics>
+ How great is our God
+
+;Can sing Chorus of how great Thou art - Then sings my soul....</lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

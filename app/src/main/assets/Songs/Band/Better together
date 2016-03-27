@@ -9,6 +9,7 @@
   <tempo></tempo>
   <time_sig></time_sig>
   <duration></duration>
+  <predelay></predelay>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -25,41 +26,41 @@
   <restrictions></restrictions>
   <notes></notes>
   <lyrics>[V1]
-.F               Am                      Dm                   C
+.F               C/E                     Dm                   C
  There's no combination of words I could put on the back of a postcard
-.   A#/Bb            Am          Gm                     C
+.Bb           F/A              Gm7           C
  No song that I could sing but I can try for your heart,
-.          F        Am             Dm           C
- our dreams, and they are made out of real things
-.            A#/Bb             Am          Gm            C
- like a shoe box of photographs with sepia-toned loving
-.   F             Am                Dm                        C
+.F   C/E                  Dm          C
+ Our dreams, and they are made out of real things
+.       Bb          F/A              Gm7         C
+ Like a shoe box of photographs with sepia-toned loving
+.F             C/E                Dm                        C
  Love is the answer at least for most of the questions in my heart, like
-.           A#/Bb                  Am           Gm              C
+.Bb         F/A                   Gm7                    C
  Why are we here? And where do we go?  And how come it's so hard?
-.      F               Am         Dm              C
+.F               C/E                Dm            C
  It's not always easy and sometimes life can be deceiving
-. A#/Bb               Am                 Gm                C
+.Bb            F/A                    Gm7                 C
  I'll tell you one thing, it's always better when we're together
 
 [C]
-.A#/Bm                                  C
- Mmmm, It's always better when we're together
-.A#/Bm                                     C
+.Bb                C
+ Mmmm, it's always better when we're together
+.Bb                      C
  Yeah we'll look at them stars and we're together
-.A#/Bm                                  C
+.Bb                C
  Well, it's always better when we're together
-.A#/Bm                               C
+.Bb               C
  Yeah it's always better when we're together
 
 [Break]
-.F   Am   Dm   C    A#/Bb    Am    Gm   C    x2
+.F   C/E   Dm   C    Bb    F/A    Gm7   C    x2
 
 [V2]
  And all of these moments just might find their way into my dreams tonight,
  But I know that they'll be gone when the morning light sings
  And brings new things for tomorrow night you see
- That theyï¿½ll be gone too, too many things I have to do
+ That they'll be gone too, too many things I have to do
  But if all of these dreams might find their way into my day to day scene
  I'd be under the impression I was somewhere in between
  With only two, just me and you, not so many things we got to do
@@ -83,7 +84,11 @@
 
 ;BREAK</lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

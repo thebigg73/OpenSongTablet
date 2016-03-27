@@ -7,11 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import android.app.Activity;
-import android.os.Handler;
 import android.util.Base64;
 import android.util.Log;
 
@@ -135,8 +135,6 @@ public class SetActions extends Activity {
     }
 
     public static void loadASet() throws XmlPullParserException, IOException {
-        // Check the directories
-        checkDirectories();
 
         FullscreenActivity.mySetXML = null;
         FullscreenActivity.mySetXML = "";

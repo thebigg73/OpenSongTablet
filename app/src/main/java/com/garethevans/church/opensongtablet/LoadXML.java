@@ -28,8 +28,8 @@ public class LoadXML extends Activity {
     static String temp_mHymnNumber;
     static String temp_mLyrics;
 
-	// This bit loads the lyrics from the required file
-	public static void loadXML() throws XmlPullParserException, IOException {
+    // This bit loads the lyrics from the required file
+    public static void loadXML() throws XmlPullParserException, IOException {
         System.gc();
         FullscreenActivity.myXML = null;
         FullscreenActivity.myXML = "";
@@ -77,6 +77,7 @@ public class LoadXML extends Activity {
                     FullscreenActivity.mExtraStuff1 += FullscreenActivity.myXML.substring(start_extrastuff, end_extrastuff);
                     FullscreenActivity.myXML = FullscreenActivity.myXML.substring(0, start_extrastuff) + FullscreenActivity.myXML.substring(end_extrastuff);
                 }
+
                 // Remove the extra stuff not needed (between the <backgrounds> and </song> tags
                 start_extrastuff = FullscreenActivity.myXML.indexOf("<backgrounds");
                 end_extrastuff = FullscreenActivity.myXML.indexOf(">", start_extrastuff) + 1;
@@ -254,7 +255,10 @@ public class LoadXML extends Activity {
                         } else if (xpp.getName().equals("copyright")) {
                             FullscreenActivity.mCopyright = xpp.nextText();
                         } else if (xpp.getName().equals("title")) {
-                            FullscreenActivity.mTitle = xpp.nextText();
+                            String testthetitle = xpp.nextText();
+                            if (testthetitle!=null && !testthetitle.equals("") && !testthetitle.isEmpty()) {
+                                FullscreenActivity.mTitle = testthetitle;
+                            }
                         } else if (xpp.getName().equals("lyrics")) {
                             FullscreenActivity.mLyrics = xpp.nextText();
                         } else if (xpp.getName().equals("ccli")) {
@@ -321,7 +325,6 @@ public class LoadXML extends Activity {
                         }
                     }
                     eventType = xpp.next();
-
                 }
             }
 
@@ -358,26 +361,26 @@ public class LoadXML extends Activity {
         }
 
     }
-	// NEW
-	public static String readTextFile(InputStream inputStream) {
+    // NEW
+    public static String readTextFile(InputStream inputStream) {
 
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte buf[] = new byte[1024];
-		int len;
-		try {
-			while ((len = inputStream.read(buf)) != -1) {
-				outputStream.write(buf, 0, len);
-			}
-			outputStream.close();
-			inputStream.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        int len;
+        try {
+            while ((len = inputStream.read(buf)) != -1) {
+                outputStream.write(buf, 0, len);
+            }
+            outputStream.close();
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		return outputStream.toString();
+        return outputStream.toString();
 
-	}
-	// END NEW
+    }
+    // END NEW
 
     public static void prepareLoadCustomReusable(String what) {
 
@@ -440,41 +443,41 @@ public class LoadXML extends Activity {
         Preferences.savePreferences();
     }
 
-	public static void initialiseSongTags() {
-		FullscreenActivity.mTitle = FullscreenActivity.songfilename;
-		FullscreenActivity.mAuthor = "";
-		FullscreenActivity.mCopyright = "";
-		FullscreenActivity.mPresentation = "";
-		FullscreenActivity.mHymnNumber = "";
-		FullscreenActivity.mCapo = "";
-		FullscreenActivity.mCapoPrint = "false";
-		FullscreenActivity.mTempo = "";
-		FullscreenActivity.mTimeSig = "";
-		FullscreenActivity.mDuration = "";
+    public static void initialiseSongTags() {
+        FullscreenActivity.mTitle = FullscreenActivity.songfilename;
+        FullscreenActivity.mAuthor = "";
+        FullscreenActivity.mCopyright = "";
+        FullscreenActivity.mPresentation = "";
+        FullscreenActivity.mHymnNumber = "";
+        FullscreenActivity.mCapo = "";
+        FullscreenActivity.mCapoPrint = "false";
+        FullscreenActivity.mTempo = "";
+        FullscreenActivity.mTimeSig = "";
+        FullscreenActivity.mDuration = "";
         FullscreenActivity.mPreDelay = "";
-		FullscreenActivity.mCCLI = "";
-		FullscreenActivity.mTheme = "";
-		FullscreenActivity.mAltTheme = "";
-		FullscreenActivity.mUser1 = "";
-		FullscreenActivity.mUser2 = "";
-		FullscreenActivity.mUser3 = "";
-		FullscreenActivity.mKey = "";
-		FullscreenActivity.mAka = "";
-		FullscreenActivity.mKeyLine = "";
-		FullscreenActivity.mBooks = "";
-		FullscreenActivity.mMidi = "";
-		FullscreenActivity.mMidiIndex = "";
-		FullscreenActivity.mPitch = "";
-		FullscreenActivity.mRestrictions = "";
-		FullscreenActivity.mLyrics = "";
-		FullscreenActivity.mNotes = "";
-		FullscreenActivity.mStyle = "";
-		FullscreenActivity.mLinkedSongs = "";
-		FullscreenActivity.mPadFile = "";
-		FullscreenActivity.mCustomChords = "";
+        FullscreenActivity.mCCLI = "";
+        FullscreenActivity.mTheme = "";
+        FullscreenActivity.mAltTheme = "";
+        FullscreenActivity.mUser1 = "";
+        FullscreenActivity.mUser2 = "";
+        FullscreenActivity.mUser3 = "";
+        FullscreenActivity.mKey = "";
+        FullscreenActivity.mAka = "";
+        FullscreenActivity.mKeyLine = "";
+        FullscreenActivity.mBooks = "";
+        FullscreenActivity.mMidi = "";
+        FullscreenActivity.mMidiIndex = "";
+        FullscreenActivity.mPitch = "";
+        FullscreenActivity.mRestrictions = "";
+        FullscreenActivity.mLyrics = "";
+        FullscreenActivity.mNotes = "";
+        FullscreenActivity.mStyle = "";
+        FullscreenActivity.mLinkedSongs = "";
+        FullscreenActivity.mPadFile = "";
+        FullscreenActivity.mCustomChords = "";
         FullscreenActivity.mLinkYouTube = "";
         FullscreenActivity.mLinkWeb = "";
         FullscreenActivity.mLinkAudio = "";
         FullscreenActivity.mLinkOther = "";
-	}
+    }
 }

@@ -468,5 +468,9 @@
 	<string name="search_index_start">"Budování databáze skladeb"</string>
 	<string name="search_log">"Zkontrolujte protokol chyb vyhledávací databáze"</string>
 	<string name="search_rebuild">"Znovu sestavit databázi skladeb"</string>
+	<string name="pref_key_flatsorsharps">"Použijte byty nebo ostré předměty?"</string>
+	<string name="pref_key_text">"Vyberte si své preferované nastavení klíčů"</string>
+	<string name="rate">"Ohodnoťte tuto aplikaci"</string>
+	<string name="right">"Napravo"</string>
 
 </resources>
