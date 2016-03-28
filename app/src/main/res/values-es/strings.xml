@@ -471,5 +471,8 @@
 	<string name="pref_key_text">"Elija la configuración de claves preferidas"</string>
 	<string name="rate">"Califica esta aplicación"</string>
 	<string name="right">"A la derecha"</string>
+	<string name="cavaquinho">"Cavaquinho"</string>
+	<string name="banjo4">"Banjo (4)"</string>
+	<string name="banjo5">"Banjo (5)"</string>
 
 </resources>

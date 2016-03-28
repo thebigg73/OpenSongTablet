@@ -1170,10 +1170,13 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         chordimageshere = (TableLayout) findViewById(R.id.chordimageshere);
         popupChord = (ScrollView) findViewById(R.id.popupchords);
         Spinner popupChord_Instrument = (Spinner) findViewById(R.id.popupchord_instrument);
-        String[] instrument_choice = new String[3];
+        String[] instrument_choice = new String[6];
         instrument_choice[0] = getResources().getString(R.string.guitar);
         instrument_choice[1] = getResources().getString(R.string.ukulele);
         instrument_choice[2] = getResources().getString(R.string.mandolin);
+        instrument_choice[3] = getResources().getString(R.string.cavaquinho);
+        instrument_choice[4] = getResources().getString(R.string.banjo4);
+        instrument_choice[5] = getResources().getString(R.string.banjo5);
         ArrayAdapter<String> adapter_instrument = new ArrayAdapter<>(this, R.layout.my_spinner, instrument_choice);
         adapter_instrument.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         popupChord_Instrument.setAdapter(adapter_instrument);
@@ -2134,6 +2137,15 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     break;
                 case 2:
                     chordInstrument = "m";
+                    break;
+                case 3:
+                    chordInstrument = "c";
+                    break;
+                case 4:
+                    chordInstrument = "b";
+                    break;
+                case 5:
+                    chordInstrument = "B";
                     break;
             }
             //Save preferences and redraw the chords
@@ -7141,6 +7153,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             for (int q = 0; q < numcustomchords; q++) {
                 if ((chordInstrument.equals("u") && tempCustomChordsArray[q] != null && tempCustomChordsArray[q].contains("_u_")) ||
                         (chordInstrument.equals("m") && tempCustomChordsArray[q] != null && tempCustomChordsArray[q].contains("_m_")) ||
+                        (chordInstrument.equals("c") && tempCustomChordsArray[q] != null && tempCustomChordsArray[q].contains("_c_")) ||
+                        (chordInstrument.equals("b") && tempCustomChordsArray[q] != null && tempCustomChordsArray[q].contains("_b_")) ||
+                        (chordInstrument.equals("B") && tempCustomChordsArray[q] != null && tempCustomChordsArray[q].contains("_B_")) ||
                         (chordInstrument.equals("g") && tempCustomChordsArray[q] != null && tempCustomChordsArray[q].contains("_g_"))) {
                     tempCustomChordsToAdd = tempCustomChordsToAdd + " $$$" + tempCustomChordsArray[q];
                 }
@@ -7189,6 +7204,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 ChordDirectory.mandolinChords(unique_chords.get(l));
             } else if (chordInstrument.equals("g") && unique_chords != null && !unique_chords.get(l).contains("$$$")) {
                 ChordDirectory.guitarChords(unique_chords.get(l));
+            } else if (chordInstrument.equals("c") && unique_chords != null && !unique_chords.get(l).contains("$$$")) {
+                ChordDirectory.cavaquinhoChords(unique_chords.get(l));
+            } else if (chordInstrument.equals("b") && unique_chords != null && !unique_chords.get(l).contains("$$$")) {
+                ChordDirectory.banjo4stringChords(unique_chords.get(l));
+            } else if (chordInstrument.equals("B") && unique_chords != null && !unique_chords.get(l).contains("$$$")) {
+                ChordDirectory.banjo5stringChords(unique_chords.get(l));
             }
 
             // If chord is custom, prepare this prefix to the name
@@ -7455,7 +7476,197 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 chordview.addView(image2);
                 chordview.addView(image1);
 
-            } else if (chordInstrument.equals("u") || chordInstrument.equals("m")) {
+            } else if (chordInstrument.equals("B")) {
+
+                if (chordnotes.length() > 0) {
+                    string_5 = chordnotes.substring(0, 1);
+                }
+                if (chordnotes.length() > 1) {
+                    string_4 = chordnotes.substring(1, 2);
+                }
+                if (chordnotes.length() > 2) {
+                    string_3 = chordnotes.substring(2, 3);
+                }
+                if (chordnotes.length() > 3) {
+                    string_2 = chordnotes.substring(3, 4);
+                }
+                if (chordnotes.length() > 4) {
+                    string_1 = chordnotes.substring(4, 5);
+                }
+                if (chordnotes.length() > 6) {
+                    fret = chordnotes.substring(6, 7);
+                }
+
+                // Prepare string_5
+                switch (string_5) {
+                    case "0":
+                        image5.setImageDrawable(l0);
+                        break;
+                    case "1":
+                        image5.setImageDrawable(l1);
+                        break;
+                    case "2":
+                        image5.setImageDrawable(l2);
+                        break;
+                    case "3":
+                        image5.setImageDrawable(l3);
+                        break;
+                    case "4":
+                        image5.setImageDrawable(l4);
+                        break;
+                    case "5":
+                        image5.setImageDrawable(l5);
+                        break;
+                    default:
+                        image5.setImageDrawable(lx);
+                        break;
+                }
+
+                // Prepare string_4
+                switch (string_4) {
+                    case "0":
+                        image4.setImageDrawable(m0);
+                        break;
+                    case "1":
+                        image4.setImageDrawable(m1);
+                        break;
+                    case "2":
+                        image4.setImageDrawable(m2);
+                        break;
+                    case "3":
+                        image4.setImageDrawable(m3);
+                        break;
+                    case "4":
+                        image4.setImageDrawable(m4);
+                        break;
+                    case "5":
+                        image4.setImageDrawable(m5);
+                        break;
+                    default:
+                        image4.setImageDrawable(mx);
+                        break;
+                }
+
+                // Prepare string_3
+                switch (string_3) {
+                    case "0":
+                        image3.setImageDrawable(m0);
+                        break;
+                    case "1":
+                        image3.setImageDrawable(m1);
+                        break;
+                    case "2":
+                        image3.setImageDrawable(m2);
+                        break;
+                    case "3":
+                        image3.setImageDrawable(m3);
+                        break;
+                    case "4":
+                        image3.setImageDrawable(m4);
+                        break;
+                    case "5":
+                        image3.setImageDrawable(m5);
+                        break;
+                    default:
+                        image3.setImageDrawable(mx);
+                        break;
+                }
+
+                // Prepare string_2
+                switch (string_2) {
+                    case "0":
+                        image2.setImageDrawable(m0);
+                        break;
+                    case "1":
+                        image2.setImageDrawable(m1);
+                        break;
+                    case "2":
+                        image2.setImageDrawable(m2);
+                        break;
+                    case "3":
+                        image2.setImageDrawable(m3);
+                        break;
+                    case "4":
+                        image2.setImageDrawable(m4);
+                        break;
+                    case "5":
+                        image2.setImageDrawable(m5);
+                        break;
+                    default:
+                        image2.setImageDrawable(mx);
+                        break;
+                }
+
+                // Prepare string_1
+                switch (string_1) {
+                    case "0":
+                        image1.setImageDrawable(r0);
+                        break;
+                    case "1":
+                        image1.setImageDrawable(r1);
+                        break;
+                    case "2":
+                        image1.setImageDrawable(r2);
+                        break;
+                    case "3":
+                        image1.setImageDrawable(r3);
+                        break;
+                    case "4":
+                        image1.setImageDrawable(r4);
+                        break;
+                    case "5":
+                        image1.setImageDrawable(r5);
+                        break;
+                    default:
+                        image1.setImageDrawable(rx);
+                        break;
+                }
+
+                // Prepare fret
+                switch (fret) {
+                    case "1":
+                        image0.setImageDrawable(f1);
+                        break;
+                    case "2":
+                        image0.setImageDrawable(f2);
+                        break;
+                    case "3":
+                        image0.setImageDrawable(f3);
+                        break;
+                    case "4":
+                        image0.setImageDrawable(f4);
+                        break;
+                    case "5":
+                        image0.setImageDrawable(f5);
+                        break;
+                    case "6":
+                        image0.setImageDrawable(f6);
+                        break;
+                    case "7":
+                        image0.setImageDrawable(f7);
+                        break;
+                    case "8":
+                        image0.setImageDrawable(f8);
+                        break;
+                    case "9":
+                        image0.setImageDrawable(f9);
+                        break;
+                    default:
+                        image0 = null;
+                        break;
+                }
+
+                chordview.addView(chordname);
+                if (image0 != null) {
+                    chordview.addView(image0);
+                }
+                chordview.addView(image5);
+                chordview.addView(image4);
+                chordview.addView(image3);
+                chordview.addView(image2);
+                chordview.addView(image1);
+
+            } else if (chordInstrument.equals("u") || chordInstrument.equals("m") || chordInstrument.equals("c") || chordInstrument.equals("b")) {
                 if (chordnotes.length() > 0) {
                     string_4 = chordnotes.substring(0, 1);
                 }

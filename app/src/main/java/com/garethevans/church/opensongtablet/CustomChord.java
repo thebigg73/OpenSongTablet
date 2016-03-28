@@ -200,10 +200,13 @@ public class CustomChord extends Activity implements View.OnClickListener {
         customchord_name = (EditText) findViewById(R.id.customchord_name);
         customchord_code = (TextView) findViewById(R.id.customchord_code);
         CustomChord_Instrument = (Spinner) findViewById(R.id.customchords_instrument);
-        String[] instrument_choice = new String[3];
+        String[] instrument_choice = new String[6];
         instrument_choice[0] = getResources().getString(R.string.guitar);
         instrument_choice[1] = getResources().getString(R.string.ukulele);
         instrument_choice[2] = getResources().getString(R.string.mandolin);
+        instrument_choice[3] = getResources().getString(R.string.cavaquinho);
+        instrument_choice[4] = getResources().getString(R.string.banjo4);
+        instrument_choice[5] = getResources().getString(R.string.banjo5);
         ArrayAdapter<String> adapter_instrument = new ArrayAdapter<>(this, R.layout.my_spinner, instrument_choice);
         adapter_instrument.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         CustomChord_Instrument.setAdapter(adapter_instrument);
@@ -238,12 +241,22 @@ public class CustomChord extends Activity implements View.OnClickListener {
     public void customChordSave(View view) {
         // The user is trying to save a custom chord
         // Find out what instrument we are using and get the appropriate string data
-        if (instrument_text.equals("g")) {
-            // Guitar, so need all 6 strings
-            chord_text = string6_text + string5_text + string4_text + string3_text + string2_text + string1_text;
-        } else if (instrument_text.equals("u") || instrument_text.equals("m")) {
-            // Ukulele or mandolin, so strings 1-4
-            chord_text = string4_text + string3_text + string2_text + string1_text;
+        switch (instrument_text) {
+            case "g":
+                // Guitar, so need all 6 strings
+                chord_text = string6_text + string5_text + string4_text + string3_text + string2_text + string1_text;
+                break;
+            case "B":
+                // 5 String banjo, so strings 1-5
+                chord_text = string5_text + string4_text + string3_text + string2_text + string1_text;
+                break;
+            case "u":
+            case "m":
+            case "c":
+            case "b":
+                // Ukulele, mandolin, cavaquinho or 4 string banjo, so strings 1-4
+                chord_text = string4_text + string3_text + string2_text + string1_text;
+                break;
         }
 
         // Get the fret text
@@ -263,12 +276,17 @@ public class CustomChord extends Activity implements View.OnClickListener {
         customchord_code.setText(customChordToSave);
 
         // Check for instrument
-        if (!customChordToSave.contains("_g") && !customChordToSave.contains("_u") && !customChordToSave.contains("_m")) {
+        if (!customChordToSave.contains("_g") &&
+                !customChordToSave.contains("_u") &&
+                !customChordToSave.contains("_m") &&
+                !customChordToSave.contains("_b") &&
+                !customChordToSave.contains("_B") &&
+                !customChordToSave.contains("_c")) {
             //No instrument set
             FullscreenActivity.myToastMessage = getResources().getString(R.string.customchords_noinstrument);
             ShowToast.showToast(CustomChord.this);
         } else if (customNameToSave==null || customNameToSave.equals("") || customNameToSave.isEmpty()) {
-            //No instrument set
+            //No chordname set
             FullscreenActivity.myToastMessage = getResources().getString(R.string.customchords_nochordname);
             ShowToast.showToast(CustomChord.this);
         } else {
@@ -304,6 +322,15 @@ public class CustomChord extends Activity implements View.OnClickListener {
             } else if (position==2) {
                 instrument_text = "m";
                 set4String();
+            } else if (position==3) {
+                instrument_text = "c";
+                set4String();
+            } else if (position==4) {
+                instrument_text = "b";
+                set4String();
+            } else if (position==5) {
+                instrument_text = "B";
+                set5String();
             }
 
             resetStringNotes();
@@ -363,6 +390,15 @@ public class CustomChord extends Activity implements View.OnClickListener {
                 } else if (tempCustomChords[q].contains("_m")) {
                     chorddetails = getResources().getString(R.string.mandolin) + "\n";
                     workingChord = workingChord.replace("_m", "");
+                } else if (tempCustomChords[q].contains("_c")) {
+                    chorddetails = getResources().getString(R.string.cavaquinho) + "\n";
+                    workingChord = workingChord.replace("_c", "");
+                } else if (tempCustomChords[q].contains("_b")) {
+                    chorddetails = getResources().getString(R.string.banjo4) + "\n";
+                    workingChord = workingChord.replace("_b", "");
+                } else if (tempCustomChords[q].contains("_B")) {
+                    chorddetails = getResources().getString(R.string.banjo5) + "\n";
+                    workingChord = workingChord.replace("_B", "");
                 } else {
                     chorddetails = getResources().getString(R.string.guitar) + "\n";
                     workingChord = workingChord.replace("_g", "");
@@ -1060,6 +1096,15 @@ public class CustomChord extends Activity implements View.OnClickListener {
         string6_f5_on = false;
     }
 
+    public void resetString5HDrawables() {
+        string5_top.setImageDrawable(stringtop);
+        string5_f1.setImageDrawable(string1);
+        string5_f2.setImageDrawable(string1);
+        string5_f3.setImageDrawable(string1);
+        string5_f4.setImageDrawable(string1);
+        string5_f5.setImageDrawable(string1);
+    }
+
     public void resetString5Drawables() {
         string5_top.setImageDrawable(stringtop);
         string5_f1.setImageDrawable(string5);
@@ -1150,7 +1195,12 @@ public class CustomChord extends Activity implements View.OnClickListener {
         switch (instrument_text) {
             case "u":
             case "m":
+            case "c":
+            case "b":
                 chord_text = string4_text + string3_text + string2_text + string1_text;
+                break;
+            case "B":
+                chord_text = string5_text + string4_text + string3_text + string2_text + string1_text;
                 break;
             case "g":
                 chord_text = string6_text + string5_text + string4_text + string3_text + string2_text + string1_text;
@@ -1159,7 +1209,8 @@ public class CustomChord extends Activity implements View.OnClickListener {
                 chord_text = "xxxxxx";
                 break;
         }
-        customchord_code.setText(chord_text + "_" + fret_text + "_" + instrument_text + "_" + chord_name);
+        String texttowrite = chord_text + "_" + fret_text + "_" + instrument_text + "_" + chord_name;
+        customchord_code.setText(texttowrite);
     }
 
     public void set6String() {
@@ -1202,6 +1253,60 @@ public class CustomChord extends Activity implements View.OnClickListener {
         resetString6Drawables();
         resetString6Values();
         resetString5Drawables();
+        resetString5Values();
+        resetString4Drawables();
+        resetString4Values();
+        resetString3Drawables();
+        resetString3Values();
+        resetString2Drawables();
+        resetString2Values();
+        resetString1Drawables();
+        resetString1Values();
+        resetStringTops();
+        resetStringNotes();
+        updateChordText();
+    }
+
+    public void set5String() {
+        string6_top.setVisibility(View.GONE);
+        string6_f1.setVisibility(View.GONE);
+        string6_f2.setVisibility(View.GONE);
+        string6_f3.setVisibility(View.GONE);
+        string6_f4.setVisibility(View.GONE);
+        string6_f5.setVisibility(View.GONE);
+        string5_top.setVisibility(View.VISIBLE);
+        string5_f1.setVisibility(View.VISIBLE);
+        string5_f2.setVisibility(View.VISIBLE);
+        string5_f3.setVisibility(View.VISIBLE);
+        string5_f4.setVisibility(View.VISIBLE);
+        string5_f5.setVisibility(View.VISIBLE);
+        string4_top.setVisibility(View.VISIBLE);
+        string4_f1.setVisibility(View.VISIBLE);
+        string4_f2.setVisibility(View.VISIBLE);
+        string4_f3.setVisibility(View.VISIBLE);
+        string4_f4.setVisibility(View.VISIBLE);
+        string4_f5.setVisibility(View.VISIBLE);
+        string3_top.setVisibility(View.VISIBLE);
+        string3_f1.setVisibility(View.VISIBLE);
+        string3_f2.setVisibility(View.VISIBLE);
+        string3_f3.setVisibility(View.VISIBLE);
+        string3_f4.setVisibility(View.VISIBLE);
+        string3_f5.setVisibility(View.VISIBLE);
+        string2_top.setVisibility(View.VISIBLE);
+        string2_f1.setVisibility(View.VISIBLE);
+        string2_f2.setVisibility(View.VISIBLE);
+        string2_f3.setVisibility(View.VISIBLE);
+        string2_f4.setVisibility(View.VISIBLE);
+        string2_f5.setVisibility(View.VISIBLE);
+        string2_top.setVisibility(View.VISIBLE);
+        string1_f1.setVisibility(View.VISIBLE);
+        string1_f2.setVisibility(View.VISIBLE);
+        string1_f3.setVisibility(View.VISIBLE);
+        string1_f4.setVisibility(View.VISIBLE);
+        string1_f5.setVisibility(View.VISIBLE);
+        resetString6Drawables();
+        resetString6Values();
+        resetString5HDrawables();
         resetString5Values();
         resetString4Drawables();
         resetString4Values();

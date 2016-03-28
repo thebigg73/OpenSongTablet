@@ -475,5 +475,8 @@
 	<string name="pref_key_text">"选择您喜欢的键设置"</string>
 	<string name="rate">"为这个应用软件评分"</string>
 	<string name="right">"在右边"</string>
+	<string name="cavaquinho">"Cavaquinho"</string>
+	<string name="banjo4">"班卓琴 (4)"</string>
+	<string name="banjo5">"班卓琴 (5)"</string>
 
 </resources>

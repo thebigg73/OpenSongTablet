@@ -467,9 +467,12 @@
 	<string name="search_index_start">"Construction de votre base de données de chansons"</string>
 	<string name="search_log">"Vérifiez le journal d\'erreurs de votre base de données de recherche"</string>
 	<string name="search_rebuild">"Reconstruire la base de données de chansons"</string>
-	<string name="pref_key_flatsorsharps">"Utilisez dièses ou bémols?"</string>
-	<string name="pref_key_text">"Choisissez vos paramètres clés préférés"</string>
-	<string name="rate">"Évaluer l\'application"</string>
-	<string name="right">"Sur la droite"</string>
+	<string name="pref_key_flatsorsharps">"Utilisez dièses ou bémols ?"</string>
+	<string name="pref_key_text">"Choisissez vos paramètres de tonalité préférés"</string>
+	<string name="rate">"Notez cette application"</string>
+	<string name="right">"A droite"</string>
+	<string name="cavaquinho">"Cavaquinho"</string>
+	<string name="banjo4">"Banjo (4)"</string>
+	<string name="banjo5">"Banjo (5)"</string>
 
 </resources>

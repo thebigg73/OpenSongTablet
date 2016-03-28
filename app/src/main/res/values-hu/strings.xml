@@ -471,5 +471,8 @@
 	<string name="pref_key_text">"Válassza ki a kívánt kulcs beállításai"</string>
 	<string name="rate">"Értékeld ezt az alkalmazást"</string>
 	<string name="right">"Jobbra"</string>
+	<string name="cavaquinho">"Cavaquinho"</string>
+	<string name="banjo4">"Bendzsó (4)"</string>
+	<string name="banjo5">"Bendzsó (5)"</string>
 
 </resources>

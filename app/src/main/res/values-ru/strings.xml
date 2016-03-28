@@ -471,5 +471,8 @@
 	<string name="pref_key_text">"Выберите нужные ключевые параметры"</string>
 	<string name="rate">"Оцени это приложение"</string>
 	<string name="right">"Справа"</string>
+	<string name="cavaquinho">"Cavaquinho"</string>
+	<string name="banjo4">"Банджо (4)"</string>
+	<string name="banjo5">"Банджо (5)"</string>
 
 </resources>

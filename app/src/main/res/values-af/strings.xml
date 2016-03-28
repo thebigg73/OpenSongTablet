@@ -471,5 +471,8 @@
 	<string name="pref_key_text">"Kies jou voorkeur sleutel instellings"</string>
 	<string name="rate">"Gradeer hierdie inligting"</string>
 	<string name="right">"Aan die regterkant"</string>
+	<string name="cavaquinho">"Cavaquinho"</string>
+	<string name="banjo4">"Banjo (4)"</string>
+	<string name="banjo5">"Banjo (5)"</string>
 
 </resources>

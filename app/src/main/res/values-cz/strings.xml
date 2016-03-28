@@ -472,5 +472,8 @@
 	<string name="pref_key_text">"Vyberte si své preferované nastavení klíčů"</string>
 	<string name="rate">"Ohodnoťte tuto aplikaci"</string>
 	<string name="right">"Napravo"</string>
+	<string name="cavaquinho">"Cavaquinho"</string>
+	<string name="banjo4">"Bendžo (4)"</string>
+	<string name="banjo5">"Bendžo (5)"</string>
 
 </resources>

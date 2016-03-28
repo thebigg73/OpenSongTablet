@@ -470,5 +470,8 @@
 	<string name="pref_key_text">"お好みのキー設定を選択してください"</string>
 	<string name="rate">"このアプリを評価"</string>
 	<string name="right">"右側に"</string>
+	<string name="cavaquinho">"カバキーニョ"</string>
+	<string name="banjo4">"バンジョー (4)"</string>
+	<string name="banjo5">"バンジョー (5)"</string>
 
 </resources>

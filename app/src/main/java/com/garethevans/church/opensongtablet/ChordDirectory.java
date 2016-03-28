@@ -82,7 +82,10 @@ public class ChordDirectory {
         // Replace min chords with m
         chordtoworkon = chordtoworkon.replace("min", "m");
 
-		// Replace all flat chords with sharp chords
+        // Replace 7M chords with maj7
+        chordtoworkon = chordtoworkon.replace("7M", "maj7");
+
+        // Replace all flat chords with sharp chords
 		chordtoworkon = chordtoworkon.replace("Ab", "G#");
 		chordtoworkon = chordtoworkon.replace("Bb", "A#");
 		chordtoworkon = chordtoworkon.replace("Db", "C#");
@@ -100,7 +103,8 @@ public class ChordDirectory {
         chordtoworkon = chordtoworkon.replace("sus9", "9");
 
 		// Replace all dim7 with dim
-		chordtoworkon = chordtoworkon.replace("dim7", "dim");
+        chordtoworkon = chordtoworkon.replace("o7", "dim");
+        chordtoworkon = chordtoworkon.replace("dim7", "dim");
 
         // Replace all m7/b5 with m7b5
         chordtoworkon = chordtoworkon.replace("m7/b5", "m7b5");
@@ -117,7 +121,7 @@ public class ChordDirectory {
 		chordtoworkon = chordtoworkon.replace("/G#", "");
 		chordtoworkon = chordtoworkon.replace("/A", "");
 		chordtoworkon = chordtoworkon.replace("/B", "");
-		chordtoworkon = chordtoworkon.replace("/C", "");
+        chordtoworkon = chordtoworkon.replace("/C", "");
 		chordtoworkon = chordtoworkon.replace("/D", "");
 		chordtoworkon = chordtoworkon.replace("/E", "");
 		chordtoworkon = chordtoworkon.replace("/F", "");
@@ -1771,6 +1775,1656 @@ public class ChordDirectory {
         // Standard mandolin chords all start with m_ (mandolin) and end with _0 (fret to start with)
         if (!chordnotes.contains("_")) {
             chordnotes = chordnotes + "_0_m_"+chordtoworkon;
+        }
+
+        FullscreenActivity.chordnotes = chordnotes;
+    }
+
+	public static void cavaquinhoChords(String chord) {
+
+		String chordnotes;
+		simplifyChords(chord);
+
+		// MAJOR CHORDS
+		switch (chordtoworkon) {
+			case "A":
+				chordnotes = "2222";
+				break;
+			case "A#":
+				chordnotes = "3333";
+				break;
+			case "B":
+				chordnotes = "4444";
+				break;
+			case "C":
+				chordnotes = "2012";
+				break;
+			case "C#":
+				chordnotes = "3123";
+				break;
+			case "D":
+				chordnotes = "0234";
+				break;
+			case "D#":
+				chordnotes = "5345";
+				break;
+			case "E":
+				chordnotes = "2102";
+				break;
+			case "F":
+				chordnotes = "3213";
+				break;
+			case "F#":
+				chordnotes = "4324";
+				break;
+			case "G":
+				chordnotes = "0000";
+				break;
+			case "G#":
+				chordnotes = "1111";
+				break;
+
+			// MAJOR 7 CHORDS
+            case "Amaj7":
+                chordnotes = "2122";
+                break;
+            case "A#maj7":
+                chordnotes = "3233";
+                break;
+            case "Bmaj7":
+                chordnotes = "4344";
+                break;
+            case "Cmaj7":
+                chordnotes = "2002";
+                break;
+            case "C#maj7":
+                chordnotes = "3113";
+                break;
+            case "Dmaj7":
+                chordnotes = "0224";
+                break;
+            case "D#maj7":
+                chordnotes = "5335";
+                break;
+            case "Emaj7":
+                chordnotes = "2101";
+                break;
+            case "Fmaj7":
+                chordnotes = "3212";
+                break;
+            case "F#maj7":
+                chordnotes = "4323";
+                break;
+            case "Gmaj7":
+                chordnotes = "0004";
+                break;
+            case "G#maj7":
+                chordnotes = "1011";
+                break;
+
+			// DOMINANT 7 CHORDS
+			case "A7":
+				chordnotes = "2022";
+				break;
+			case "A#7":
+				chordnotes = "3133";
+				break;
+			case "B7":
+				chordnotes = "4244";
+				break;
+			case "C7":
+				chordnotes = "2312";
+				break;
+			case "C#7":
+				chordnotes = "3423";
+				break;
+			case "D7":
+				chordnotes = "0534";
+				break;
+			case "D#7":
+				chordnotes = "1021";
+				break;
+			case "E7":
+				chordnotes = "0102";
+				break;
+			case "F7":
+				chordnotes = "1213";
+				break;
+			case "F#7":
+				chordnotes = "2324";
+				break;
+			case "G7":
+				chordnotes = "3003";
+				break;
+			case "G#7":
+				chordnotes = "4114";
+				break;
+
+			// MAJOR 6 CHORDS
+			case "A6":
+				chordnotes = "2224";
+				break;
+			case "A#6":
+				chordnotes = "1113_3_c_A#6";
+				break;
+			case "B6":
+				chordnotes = "1113_4_c_B6";
+				break;
+			case "C6":
+				chordnotes = "1113_5_c_C6";
+				break;
+			case "C#6":
+				chordnotes = "1113_6_c_C#6";
+				break;
+			case "D6":
+				chordnotes = "4200";
+				break;
+			case "D#6":
+				chordnotes = "5311";
+				break;
+			case "E6":
+				chordnotes = "5311_2_c_E6";
+				break;
+			case "F6":
+				chordnotes = "3210";
+				break;
+			case "F#6":
+				chordnotes = "4321";
+				break;
+			case "G6":
+				chordnotes = "0002";
+				break;
+			case "G#6":
+				chordnotes = "1113";
+				break;
+
+			// MINOR CHORDS
+			case "Am":
+				chordnotes = "2212";
+				break;
+			case "A#m":
+				chordnotes = "3323";
+				break;
+			case "Bm":
+				chordnotes = "4434";
+				break;
+			case "Cm":
+				chordnotes = "1011";
+				break;
+			case "C#m":
+				chordnotes = "2122";
+				break;
+			case "Dm":
+				chordnotes = "0233";
+				break;
+			case "D#m":
+				chordnotes = "4344";
+				break;
+			case "Em":
+				chordnotes = "2002";
+				break;
+			case "Fm":
+				chordnotes = "3113";
+				break;
+			case "F#m":
+				chordnotes = "4224";
+				break;
+			case "Gm":
+				chordnotes = "5335";
+				break;
+			case "G#m":
+				chordnotes = "1101";
+				break;
+
+			// MINOR 7 CHORDS
+			case "Am7":
+				chordnotes = "2012";
+				break;
+			case "A#m7":
+				chordnotes = "3123";
+				break;
+			case "Bm7":
+				chordnotes = "4234";
+				break;
+			case "Cm7":
+				chordnotes = "1011";
+				break;
+			case "C#m7":
+				chordnotes = "2122";
+				break;
+			case "Dm7":
+				chordnotes = "0213";
+				break;
+			case "D#m7":
+				chordnotes = "1324";
+				break;
+			case "Em7":
+				chordnotes = "2000";
+				break;
+			case "Fm7":
+				chordnotes = "3111";
+				break;
+			case "F#m7":
+				chordnotes = "4222";
+				break;
+			case "Gm7":
+				chordnotes = "5333";
+				break;
+			case "G#m7":
+				chordnotes = "3111_4_c_G#m7";
+				break;
+
+			// MINOR 6 CHORDS
+			case "Am6":
+				chordnotes = "2214";
+				break;
+			case "A#m6":
+				chordnotes = "3325";
+				break;
+			case "Bm6":
+				chordnotes = "2214_3_c_Bm6";
+				break;
+			case "Cm6":
+				chordnotes = "2214_4_c_Cm6";
+				break;
+			case "C#m6":
+				chordnotes = "2214_5_c_C#m6";
+				break;
+			case "Dm6":
+				chordnotes = "0203";
+				break;
+			case "D#m6":
+				chordnotes = "1314";
+				break;
+			case "Em6":
+				chordnotes = "2425";
+				break;
+			case "Fm6":
+				chordnotes = "0113";
+				break;
+			case "F#m6":
+				chordnotes = "1224";
+				break;
+			case "Gm6":
+				chordnotes = "2335";
+				break;
+			case "G#m6":
+				chordnotes = "1224_3_c_G#m6";
+				break;
+
+			// SUS (SUS4) CHORDS
+			case "Asus":
+				chordnotes = "2232";
+				break;
+			case "A#sus":
+				chordnotes = "3343";
+				break;
+			case "Bsus":
+				chordnotes = "1121_4_c_Bsus";
+				break;
+			case "Csus":
+				chordnotes = "1121_5_c_Csus";
+				break;
+			case "C#sus":
+				chordnotes = "1121_6_c_C#sus";
+				break;
+			case "Dsus":
+				chordnotes = "1121_7_c_Dsus";
+				break;
+			case "D#sus":
+				chordnotes = "1121_8_c_D#sus";
+				break;
+			case "Esus":
+				chordnotes = "0202";
+				break;
+			case "Fsus":
+				chordnotes = "1313";
+				break;
+			case "F#sus":
+				chordnotes = "2424";
+				break;
+			case "Gsus":
+				chordnotes = "0010";
+				break;
+			case "G#sus":
+				chordnotes = "1121";
+				break;
+
+			// SUS2 / 2 CHORDS
+			case "A2":
+				chordnotes = "2202";
+				break;
+			case "A#2":
+				chordnotes = "3313";
+				break;
+			case "B2":
+				chordnotes = "4424";
+				break;
+			case "C2":
+				chordnotes = "2010";
+				break;
+			case "C#2":
+				chordnotes = "3121";
+				break;
+			case "D2":
+				chordnotes = "4232";
+				break;
+			case "D#2":
+				chordnotes = "3121_3_c_D#2";
+				break;
+			case "E2":
+				chordnotes = "3121_4_c_E2";
+				break;
+			case "F2":
+				chordnotes = "3121_5_c_F2";
+				break;
+			case "F#2":
+				chordnotes = "3121_6_c_F#2";
+				break;
+			case "G2":
+				chordnotes = "3121_7_c_G2";
+				break;
+			case "G#2":
+				chordnotes = "3121_8_c_G#2";
+				break;
+
+			// 9 CHORDS
+			case "A9":
+				chordnotes = "2134_6_c_A9";
+				break;
+			case "A#9":
+				chordnotes = "2134_7_c_A#9";
+				break;
+			case "B9":
+				chordnotes = "2134_8_c_B9";
+				break;
+			case "C9":
+				chordnotes = "2335";
+				break;
+			case "C#9":
+				chordnotes = "1224_3_c_C#9";
+				break;
+			case "D9":
+				chordnotes = "1224_4_c_D9";
+				break;
+			case "D#9":
+				chordnotes = "1023";
+				break;
+			case "E9":
+				chordnotes = "2134";
+				break;
+			case "F9":
+				chordnotes = "3245";
+				break;
+			case "F#9":
+				chordnotes = "2134_3_c_F#9";
+				break;
+			case "G9":
+				chordnotes = "2134_4_c_G9";
+				break;
+			case "G#9":
+				chordnotes = "2134_5_c_G#9";
+				break;
+
+			// add9 CHORDS
+			case "Aadd9":
+				chordnotes = "2134_6_c_Aadd9";
+				break;
+			case "A#add9":
+				chordnotes = "2134_7_c_A#add9";
+				break;
+			case "Badd9":
+				chordnotes = "2134_8_c_Badd9";
+				break;
+			case "Cadd9":
+				chordnotes = "2335";
+				break;
+			case "C#add9":
+				chordnotes = "1224_3_c_C#add9";
+				break;
+			case "Dadd9":
+				chordnotes = "1224_4_c_Dadd9";
+				break;
+			case "D#add9":
+				chordnotes = "1023";
+				break;
+			case "Eadd9":
+				chordnotes = "2134";
+				break;
+			case "Fadd9":
+				chordnotes = "3245";
+				break;
+			case "F#add9":
+				chordnotes = "2134_3_c_F#add9";
+				break;
+			case "Gadd9":
+				chordnotes = "2134_4_c_Gadd9";
+				break;
+			case "G#add9":
+				chordnotes = "2134_5_c_G#add9";
+				break;
+
+			// DIMINISHED 7 CHORDS
+			case "Adim":
+				chordnotes = "1214";
+				break;
+			case "A#dim":
+				chordnotes = "2325";
+				break;
+			case "Bdim":
+				chordnotes = "1214_3_c_Bdim";
+				break;
+			case "Cdim":
+				chordnotes = "1214";
+				break;
+			case "C#dim":
+                chordnotes = "2325";
+				break;
+			case "Ddim":
+				chordnotes = "1214_3_c_Ddim";
+				break;
+			case "D#dim":
+				chordnotes = "1214";
+				break;
+			case "Edim":
+				chordnotes = "2325";
+				break;
+			case "Fdim":
+				chordnotes = "1214_3_c_Fdim";
+				break;
+			case "F#dim":
+				chordnotes = "1214";
+				break;
+			case "Gdim":
+				chordnotes = "2325";
+				break;
+			case "G#dim":
+				chordnotes = "1214_3_c_G#dim";
+				break;
+
+			// MINOR 7 FLAT 5 (HALF DIMINISHED)
+			case "Am7b5":
+				chordnotes = "1215";
+				break;
+			case "A#m7b5":
+				chordnotes = "1215_2_c_A#m7b5";
+				break;
+			case "Bm7b5":
+				chordnotes = "1215_3_c_Bm7b5";
+				break;
+			case "Cm7b5":
+				chordnotes = "1314";
+				break;
+			case "C#m7b5":
+				chordnotes = "1314_2_c_C#m7b5";
+				break;
+			case "Dm7b5":
+				chordnotes = "0113";
+				break;
+			case "D#m7b5":
+				chordnotes = "1224";
+				break;
+			case "Em7b5":
+				chordnotes = "1224_2_c_Em7b5";
+				break;
+			case "Fm7b5":
+				chordnotes = "3101";
+				break;
+			case "F#m7b5":
+				chordnotes = "1224_4_c_F#m7b5";
+				break;
+			case "Gm7b5":
+				chordnotes = "1224_5_c_Gm7b5";
+				break;
+			case "G#m7b5":
+				chordnotes = "0104";
+				break;
+
+			// AUGMENTED (#5)
+			case "Aaug":
+				chordnotes = "3223";
+				break;
+			case "A#aug":
+				chordnotes = "4334";
+				break;
+			case "Baug":
+				chordnotes = "1001";
+				break;
+			case "Caug":
+				chordnotes = "2112";
+				break;
+			case "C#aug":
+				chordnotes = "3223";
+				break;
+			case "Daug":
+				chordnotes = "4334";
+				break;
+			case "D#aug":
+				chordnotes = "1001";
+				break;
+			case "Eaug":
+				chordnotes = "2112";
+				break;
+			case "Faug":
+				chordnotes = "3223";
+				break;
+			case "F#aug":
+				chordnotes = "4334";
+				break;
+			case "Gaug":
+				chordnotes = "1001";
+				break;
+			case "G#aug":
+				chordnotes = "2112";
+				break;
+			default:
+				chordnotes = "xxxx";
+				break;
+		}
+
+		// Standard cavaquinho chords all start with c_ (cavaquinho) and end with _0 (fret to start with)
+		if (!chordnotes.contains("_")) {
+			chordnotes = chordnotes + "_0_c_"+chordtoworkon;
+		}
+
+		FullscreenActivity.chordnotes = chordnotes;
+	}
+
+    public static void banjo4stringChords(String chord) {
+
+        String chordnotes;
+        simplifyChords(chord);
+
+        // MAJOR CHORDS
+        switch (chordtoworkon) {
+            case "A":
+                chordnotes = "2222";
+                break;
+            case "A#":
+                chordnotes = "3333";
+                break;
+            case "B":
+                chordnotes = "4444";
+                break;
+            case "C":
+                chordnotes = "2012";
+                break;
+            case "C#":
+                chordnotes = "3123";
+                break;
+            case "D":
+                chordnotes = "0234";
+                break;
+            case "D#":
+                chordnotes = "5345";
+                break;
+            case "E":
+                chordnotes = "2102";
+                break;
+            case "F":
+                chordnotes = "3213";
+                break;
+            case "F#":
+                chordnotes = "4324";
+                break;
+            case "G":
+                chordnotes = "0000";
+                break;
+            case "G#":
+                chordnotes = "1111";
+                break;
+
+            // MAJOR 7 CHORDS
+            case "Amaj7":
+                chordnotes = "2122";
+                break;
+            case "A#maj7":
+                chordnotes = "3233";
+                break;
+            case "Bmaj7":
+                chordnotes = "4344";
+                break;
+            case "Cmaj7":
+                chordnotes = "2002";
+                break;
+            case "C#maj7":
+                chordnotes = "3113";
+                break;
+            case "Dmaj7":
+                chordnotes = "0224";
+                break;
+            case "D#maj7":
+                chordnotes = "5335";
+                break;
+            case "Emaj7":
+                chordnotes = "2101";
+                break;
+            case "Fmaj7":
+                chordnotes = "3212";
+                break;
+            case "F#maj7":
+                chordnotes = "4323";
+                break;
+            case "Gmaj7":
+                chordnotes = "0004";
+                break;
+            case "G#maj7":
+                chordnotes = "1011";
+                break;
+
+            // DOMINANT 7 CHORDS
+            case "A7":
+                chordnotes = "2022";
+                break;
+            case "A#7":
+                chordnotes = "3133";
+                break;
+            case "B7":
+                chordnotes = "4244";
+                break;
+            case "C7":
+                chordnotes = "2312";
+                break;
+            case "C#7":
+                chordnotes = "3423";
+                break;
+            case "D7":
+                chordnotes = "0534";
+                break;
+            case "D#7":
+                chordnotes = "1021";
+                break;
+            case "E7":
+                chordnotes = "0102";
+                break;
+            case "F7":
+                chordnotes = "1213";
+                break;
+            case "F#7":
+                chordnotes = "2324";
+                break;
+            case "G7":
+                chordnotes = "3003";
+                break;
+            case "G#7":
+                chordnotes = "4114";
+                break;
+
+            // MAJOR 6 CHORDS
+            case "A6":
+                chordnotes = "2224";
+                break;
+            case "A#6":
+                chordnotes = "1113_3_b_A#6";
+                break;
+            case "B6":
+                chordnotes = "1113_4_b_B6";
+                break;
+            case "C6":
+                chordnotes = "1113_5_b_C6";
+                break;
+            case "C#6":
+                chordnotes = "1113_6_b_C#6";
+                break;
+            case "D6":
+                chordnotes = "4200";
+                break;
+            case "D#6":
+                chordnotes = "5311";
+                break;
+            case "E6":
+                chordnotes = "5311_2_b_E6";
+                break;
+            case "F6":
+                chordnotes = "3210";
+                break;
+            case "F#6":
+                chordnotes = "4321";
+                break;
+            case "G6":
+                chordnotes = "0002";
+                break;
+            case "G#6":
+                chordnotes = "1113";
+                break;
+
+            // MINOR CHORDS
+            case "Am":
+                chordnotes = "2212";
+                break;
+            case "A#m":
+                chordnotes = "3323";
+                break;
+            case "Bm":
+                chordnotes = "4434";
+                break;
+            case "Cm":
+                chordnotes = "1011";
+                break;
+            case "C#m":
+                chordnotes = "2122";
+                break;
+            case "Dm":
+                chordnotes = "0233";
+                break;
+            case "D#m":
+                chordnotes = "4344";
+                break;
+            case "Em":
+                chordnotes = "2002";
+                break;
+            case "Fm":
+                chordnotes = "3113";
+                break;
+            case "F#m":
+                chordnotes = "4224";
+                break;
+            case "Gm":
+                chordnotes = "5335";
+                break;
+            case "G#m":
+                chordnotes = "1101";
+                break;
+
+            // MINOR 7 CHORDS
+            case "Am7":
+                chordnotes = "2012";
+                break;
+            case "A#m7":
+                chordnotes = "3123";
+                break;
+            case "Bm7":
+                chordnotes = "4234";
+                break;
+            case "Cm7":
+                chordnotes = "1011";
+                break;
+            case "C#m7":
+                chordnotes = "2122";
+                break;
+            case "Dm7":
+                chordnotes = "0213";
+                break;
+            case "D#m7":
+                chordnotes = "1324";
+                break;
+            case "Em7":
+                chordnotes = "2000";
+                break;
+            case "Fm7":
+                chordnotes = "3111";
+                break;
+            case "F#m7":
+                chordnotes = "4222";
+                break;
+            case "Gm7":
+                chordnotes = "5333";
+                break;
+            case "G#m7":
+                chordnotes = "3111_4_b_G#m7";
+                break;
+
+            // MINOR 6 CHORDS
+            case "Am6":
+                chordnotes = "2214";
+                break;
+            case "A#m6":
+                chordnotes = "3325";
+                break;
+            case "Bm6":
+                chordnotes = "2214_3_b_Bm6";
+                break;
+            case "Cm6":
+                chordnotes = "2214_4_b_Cm6";
+                break;
+            case "C#m6":
+                chordnotes = "2214_5_b_C#m6";
+                break;
+            case "Dm6":
+                chordnotes = "0203";
+                break;
+            case "D#m6":
+                chordnotes = "1314";
+                break;
+            case "Em6":
+                chordnotes = "2425";
+                break;
+            case "Fm6":
+                chordnotes = "0113";
+                break;
+            case "F#m6":
+                chordnotes = "1224";
+                break;
+            case "Gm6":
+                chordnotes = "2335";
+                break;
+            case "G#m6":
+                chordnotes = "1224_3_b_G#m6";
+                break;
+
+            // SUS (SUS4) CHORDS
+            case "Asus":
+                chordnotes = "2232";
+                break;
+            case "A#sus":
+                chordnotes = "3343";
+                break;
+            case "Bsus":
+                chordnotes = "1121_4_b_Bsus";
+                break;
+            case "Csus":
+                chordnotes = "1121_5_b_Csus";
+                break;
+            case "C#sus":
+                chordnotes = "1121_6_b_C#sus";
+                break;
+            case "Dsus":
+                chordnotes = "1121_7_b_Dsus";
+                break;
+            case "D#sus":
+                chordnotes = "1121_8_b_D#sus";
+                break;
+            case "Esus":
+                chordnotes = "0202";
+                break;
+            case "Fsus":
+                chordnotes = "1313";
+                break;
+            case "F#sus":
+                chordnotes = "2424";
+                break;
+            case "Gsus":
+                chordnotes = "0010";
+                break;
+            case "G#sus":
+                chordnotes = "1121";
+                break;
+
+            // SUS2 / 2 CHORDS
+            case "A2":
+                chordnotes = "2202";
+                break;
+            case "A#2":
+                chordnotes = "3313";
+                break;
+            case "B2":
+                chordnotes = "4424";
+                break;
+            case "C2":
+                chordnotes = "2010";
+                break;
+            case "C#2":
+                chordnotes = "3121";
+                break;
+            case "D2":
+                chordnotes = "4232";
+                break;
+            case "D#2":
+                chordnotes = "3121_3_b_D#2";
+                break;
+            case "E2":
+                chordnotes = "3121_4_b_E2";
+                break;
+            case "F2":
+                chordnotes = "3121_5_b_F2";
+                break;
+            case "F#2":
+                chordnotes = "3121_6_b_F#2";
+                break;
+            case "G2":
+                chordnotes = "3121_7_b_G2";
+                break;
+            case "G#2":
+                chordnotes = "3121_8_b_G#2";
+                break;
+
+            // 9 CHORDS
+            case "A9":
+                chordnotes = "2134_6_b_A9";
+                break;
+            case "A#9":
+                chordnotes = "2134_7_b_A#9";
+                break;
+            case "B9":
+                chordnotes = "2134_8_b_B9";
+                break;
+            case "C9":
+                chordnotes = "2335";
+                break;
+            case "C#9":
+                chordnotes = "1224_3_b_C#9";
+                break;
+            case "D9":
+                chordnotes = "1224_4_b_D9";
+                break;
+            case "D#9":
+                chordnotes = "1023";
+                break;
+            case "E9":
+                chordnotes = "2134";
+                break;
+            case "F9":
+                chordnotes = "3245";
+                break;
+            case "F#9":
+                chordnotes = "2134_3_b_F#9";
+                break;
+            case "G9":
+                chordnotes = "2134_4_b_G9";
+                break;
+            case "G#9":
+                chordnotes = "2134_5_b_G#9";
+                break;
+
+            // add9 CHORDS
+            case "Aadd9":
+                chordnotes = "2134_6_b_Aadd9";
+                break;
+            case "A#add9":
+                chordnotes = "2134_7_b_A#add9";
+                break;
+            case "Badd9":
+                chordnotes = "2134_8_b_Badd9";
+                break;
+            case "Cadd9":
+                chordnotes = "2335";
+                break;
+            case "C#add9":
+                chordnotes = "1224_3_b_C#add9";
+                break;
+            case "Dadd9":
+                chordnotes = "1224_4_b_Dadd9";
+                break;
+            case "D#add9":
+                chordnotes = "1023";
+                break;
+            case "Eadd9":
+                chordnotes = "2134";
+                break;
+            case "Fadd9":
+                chordnotes = "3245";
+                break;
+            case "F#add9":
+                chordnotes = "2134_3_b_F#add9";
+                break;
+            case "Gadd9":
+                chordnotes = "2134_4_b_Gadd9";
+                break;
+            case "G#add9":
+                chordnotes = "2134_5_b_G#add9";
+                break;
+
+            // DIMINISHED 7 CHORDS
+            case "Adim":
+                chordnotes = "1214";
+                break;
+            case "A#dim":
+                chordnotes = "2325";
+                break;
+            case "Bdim":
+                chordnotes = "1214_3_b_Bdim";
+                break;
+            case "Cdim":
+                chordnotes = "1214";
+                break;
+            case "C#dim":
+                chordnotes = "2325";
+                break;
+            case "Ddim":
+                chordnotes = "1214_3_b_Ddim";
+                break;
+            case "D#dim":
+                chordnotes = "1214";
+                break;
+            case "Edim":
+                chordnotes = "2325";
+                break;
+            case "Fdim":
+                chordnotes = "1214_3_b_Fdim";
+                break;
+            case "F#dim":
+                chordnotes = "1214";
+                break;
+            case "Gdim":
+                chordnotes = "2325";
+                break;
+            case "G#dim":
+                chordnotes = "1214_3_b_G#dim";
+                break;
+
+            // MINOR 7 FLAT 5 (HALF DIMINISHED)
+            case "Am7b5":
+                chordnotes = "1215";
+                break;
+            case "A#m7b5":
+                chordnotes = "1215_2_b_A#m7b5";
+                break;
+            case "Bm7b5":
+                chordnotes = "1215_3_b_Bm7b5";
+                break;
+            case "Cm7b5":
+                chordnotes = "1314";
+                break;
+            case "C#m7b5":
+                chordnotes = "1314_2_b_C#m7b5";
+                break;
+            case "Dm7b5":
+                chordnotes = "0113";
+                break;
+            case "D#m7b5":
+                chordnotes = "1224";
+                break;
+            case "Em7b5":
+                chordnotes = "1224_2_b_Em7b5";
+                break;
+            case "Fm7b5":
+                chordnotes = "3101";
+                break;
+            case "F#m7b5":
+                chordnotes = "1224_4_b_F#m7b5";
+                break;
+            case "Gm7b5":
+                chordnotes = "1224_5_b_Gm7b5";
+                break;
+            case "G#m7b5":
+                chordnotes = "0104";
+                break;
+
+            // AUGMENTED (#5)
+            case "Aaug":
+                chordnotes = "3223";
+                break;
+            case "A#aug":
+                chordnotes = "4334";
+                break;
+            case "Baug":
+                chordnotes = "1001";
+                break;
+            case "Caug":
+                chordnotes = "2112";
+                break;
+            case "C#aug":
+                chordnotes = "3223";
+                break;
+            case "Daug":
+                chordnotes = "4334";
+                break;
+            case "D#aug":
+                chordnotes = "1001";
+                break;
+            case "Eaug":
+                chordnotes = "2112";
+                break;
+            case "Faug":
+                chordnotes = "3223";
+                break;
+            case "F#aug":
+                chordnotes = "4334";
+                break;
+            case "Gaug":
+                chordnotes = "1001";
+                break;
+            case "G#aug":
+                chordnotes = "2112";
+                break;
+            default:
+                chordnotes = "xxxx";
+                break;
+        }
+
+        // Standard banjo 4 string chords all start with b_ (banjo 4 string) and end with _0 (fret to start with)
+        if (!chordnotes.contains("_")) {
+            chordnotes = chordnotes + "_0_b_"+chordtoworkon;
+        }
+
+        FullscreenActivity.chordnotes = chordnotes;
+    }
+
+    public static void banjo5stringChords(String chord) {
+
+        String chordnotes;
+        simplifyChords(chord);
+
+        // MAJOR CHORDS
+        switch (chordtoworkon) {
+            case "A":
+                chordnotes = "x2222";
+                break;
+            case "A#":
+                chordnotes = "x3333";
+                break;
+            case "B":
+                chordnotes = "x4444";
+                break;
+            case "C":
+                chordnotes = "02012";
+                break;
+            case "C#":
+                chordnotes = "x3123";
+                break;
+            case "D":
+                chordnotes = "x0234";
+                break;
+            case "D#":
+                chordnotes = "05345";
+                break;
+            case "E":
+                chordnotes = "x2102";
+                break;
+            case "F":
+                chordnotes = "x3213";
+                break;
+            case "F#":
+                chordnotes = "x4324";
+                break;
+            case "G":
+                chordnotes = "00000";
+                break;
+            case "G#":
+                chordnotes = "x1111";
+                break;
+
+            // MAJOR 7 CHORDS
+            case "Amaj7":
+                chordnotes = "x2122";
+                break;
+            case "A#maj7":
+                chordnotes = "x3233";
+                break;
+            case "Bmaj7":
+                chordnotes = "x4344";
+                break;
+            case "Cmaj7":
+                chordnotes = "02002";
+                break;
+            case "C#maj7":
+                chordnotes = "x3113";
+                break;
+            case "Dmaj7":
+                chordnotes = "x0224";
+                break;
+            case "D#maj7":
+                chordnotes = "05335";
+                break;
+            case "Emaj7":
+                chordnotes = "x2101";
+                break;
+            case "Fmaj7":
+                chordnotes = "x3212";
+                break;
+            case "F#maj7":
+                chordnotes = "04323";
+                break;
+            case "Gmaj7":
+                chordnotes = "00004";
+                break;
+            case "G#maj7":
+                chordnotes = "01011";
+                break;
+
+            // DOMINANT 7 CHORDS
+            case "A7":
+                chordnotes = "02022";
+                break;
+            case "A#7":
+                chordnotes = "x3133";
+                break;
+            case "B7":
+                chordnotes = "x4244";
+                break;
+            case "C7":
+                chordnotes = "02312";
+                break;
+            case "C#7":
+                chordnotes = "x3423";
+                break;
+            case "D7":
+                chordnotes = "x0534";
+                break;
+            case "D#7":
+                chordnotes = "01021";
+                break;
+            case "E7":
+                chordnotes = "x0102";
+                break;
+            case "F7":
+                chordnotes = "x1213";
+                break;
+            case "F#7":
+                chordnotes = "x2324";
+                break;
+            case "G7":
+                chordnotes = "03003";
+                break;
+            case "G#7":
+                chordnotes = "x4114";
+                break;
+
+            // MAJOR 6 CHORDS
+            case "A6":
+                chordnotes = "x2224";
+                break;
+            case "A#6":
+                chordnotes = "01113_3_B_A#6";
+                break;
+            case "B6":
+                chordnotes = "x1113_4_B_B6";
+                break;
+            case "C6":
+                chordnotes = "01113_5_B_C6";
+                break;
+            case "C#6":
+                chordnotes = "x1113_6_B_C#6";
+                break;
+            case "D6":
+                chordnotes = "x4200";
+                break;
+            case "D#6":
+                chordnotes = "05311";
+                break;
+            case "E6":
+                chordnotes = "x5311_2_B_E6";
+                break;
+            case "F6":
+                chordnotes = "x3210";
+                break;
+            case "F#6":
+                chordnotes = "x4321";
+                break;
+            case "G6":
+                chordnotes = "00002";
+                break;
+            case "G#6":
+                chordnotes = "x1113";
+                break;
+
+            // MINOR CHORDS
+            case "Am":
+                chordnotes = "x2212";
+                break;
+            case "A#m":
+                chordnotes = "x3323";
+                break;
+            case "Bm":
+                chordnotes = "x4434";
+                break;
+            case "Cm":
+                chordnotes = "01011";
+                break;
+            case "C#m":
+                chordnotes = "x2122";
+                break;
+            case "Dm":
+                chordnotes = "x0233";
+                break;
+            case "D#m":
+                chordnotes = "x4344";
+                break;
+            case "Em":
+                chordnotes = "02002";
+                break;
+            case "Fm":
+                chordnotes = "x3113";
+                break;
+            case "F#m":
+                chordnotes = "x4224";
+                break;
+            case "Gm":
+                chordnotes = "05335";
+                break;
+            case "G#m":
+                chordnotes = "x1101";
+                break;
+
+            // MINOR 7 CHORDS
+            case "Am7":
+                chordnotes = "02012";
+                break;
+            case "A#m7":
+                chordnotes = "x3123";
+                break;
+            case "Bm7":
+                chordnotes = "x4234";
+                break;
+            case "Cm7":
+                chordnotes = "01011";
+                break;
+            case "C#m7":
+                chordnotes = "x2122";
+                break;
+            case "Dm7":
+                chordnotes = "x0213";
+                break;
+            case "D#m7":
+                chordnotes = "x1324";
+                break;
+            case "Em7":
+                chordnotes = "02000";
+                break;
+            case "Fm7":
+                chordnotes = "x3111";
+                break;
+            case "F#m7":
+                chordnotes = "x4222";
+                break;
+            case "Gm7":
+                chordnotes = "05333";
+                break;
+            case "G#m7":
+                chordnotes = "x3111_4_B_G#m7";
+                break;
+
+            // MINOR 6 CHORDS
+            case "Am6":
+                chordnotes = "x2214";
+                break;
+            case "A#m6":
+                chordnotes = "03325";
+                break;
+            case "Bm6":
+                chordnotes = "x2214_3_B_Bm6";
+                break;
+            case "Cm6":
+                chordnotes = "02214_4_B_Cm6";
+                break;
+            case "C#m6":
+                chordnotes = "x2214_5_B_C#m6";
+                break;
+            case "Dm6":
+                chordnotes = "x0203";
+                break;
+            case "D#m6":
+                chordnotes = "x1314";
+                break;
+            case "Em6":
+                chordnotes = "02425";
+                break;
+            case "Fm6":
+                chordnotes = "x0113";
+                break;
+            case "F#m6":
+                chordnotes = "x1224";
+                break;
+            case "Gm6":
+                chordnotes = "02335";
+                break;
+            case "G#m6":
+                chordnotes = "x1224_3_B_G#m6";
+                break;
+
+            // SUS (SUS4) CHORDS
+            case "Asus":
+                chordnotes = "x2232";
+                break;
+            case "A#sus":
+                chordnotes = "x3343";
+                break;
+            case "Bsus":
+                chordnotes = "x1121_4_B_Bsus";
+                break;
+            case "Csus":
+                chordnotes = "01121_5_B_Csus";
+                break;
+            case "C#sus":
+                chordnotes = "x1121_6_B_C#sus";
+                break;
+            case "Dsus":
+                chordnotes = "01121_7_B_Dsus";
+                break;
+            case "D#sus":
+                chordnotes = "x1121_8_B_D#sus";
+                break;
+            case "Esus":
+                chordnotes = "x0202";
+                break;
+            case "Fsus":
+                chordnotes = "x1313";
+                break;
+            case "F#sus":
+                chordnotes = "x2424";
+                break;
+            case "Gsus":
+                chordnotes = "00010";
+                break;
+            case "G#sus":
+                chordnotes = "x1121";
+                break;
+
+            // SUS2 / 2 CHORDS
+            case "A2":
+                chordnotes = "x2202";
+                break;
+            case "A#2":
+                chordnotes = "x3313";
+                break;
+            case "B2":
+                chordnotes = "x4424";
+                break;
+            case "C2":
+                chordnotes = "02010";
+                break;
+            case "C#2":
+                chordnotes = "x3121";
+                break;
+            case "D2":
+                chordnotes = "x4232";
+                break;
+            case "D#2":
+                chordnotes = "03121_3_B_D#2";
+                break;
+            case "E2":
+                chordnotes = "x3121_4_B_E2";
+                break;
+            case "F2":
+                chordnotes = "03121_5_B_F2";
+                break;
+            case "F#2":
+                chordnotes = "x3121_6_B_F#2";
+                break;
+            case "G2":
+                chordnotes = "03121_7_B_G2";
+                break;
+            case "G#2":
+                chordnotes = "x3121_8_B_G#2";
+                break;
+
+            // 9 CHORDS
+            case "A9":
+                chordnotes = "x2134_6_B_A9";
+                break;
+            case "A#9":
+                chordnotes = "x2134_7_B_A#9";
+                break;
+            case "B9":
+                chordnotes = "x2134_8_B_B9";
+                break;
+            case "C9":
+                chordnotes = "02335";
+                break;
+            case "C#9":
+                chordnotes = "x1224_3_B_C#9";
+                break;
+            case "D9":
+                chordnotes = "x1224_4_B_D9";
+                break;
+            case "D#9":
+                chordnotes = "01023";
+                break;
+            case "E9":
+                chordnotes = "x2134";
+                break;
+            case "F9":
+                chordnotes = "03245";
+                break;
+            case "F#9":
+                chordnotes = "x2134_3_B_F#9";
+                break;
+            case "G9":
+                chordnotes = "02134_4_B_G9";
+                break;
+            case "G#9":
+                chordnotes = "x2134_5_B_G#9";
+                break;
+
+            // add9 CHORDS
+            case "Aadd9":
+                chordnotes = "x2134_6_B_Aadd9";
+                break;
+            case "A#add9":
+                chordnotes = "x2134_7_B_A#add9";
+                break;
+            case "Badd9":
+                chordnotes = "x2134_8_B_Badd9";
+                break;
+            case "Cadd9":
+                chordnotes = "02335";
+                break;
+            case "C#add9":
+                chordnotes = "x1224_3_B_C#add9";
+                break;
+            case "Dadd9":
+                chordnotes = "x1224_4_B_Dadd9";
+                break;
+            case "D#add9":
+                chordnotes = "01023";
+                break;
+            case "Eadd9":
+                chordnotes = "x2134";
+                break;
+            case "Fadd9":
+                chordnotes = "03245";
+                break;
+            case "F#add9":
+                chordnotes = "x2134_3_B_F#add9";
+                break;
+            case "Gadd9":
+                chordnotes = "02134_4_B_Gadd9";
+                break;
+            case "G#add9":
+                chordnotes = "x2134_5_B_G#add9";
+                break;
+
+            // DIMINISHED 7 CHORDS
+            case "Adim":
+                chordnotes = "x1214";
+                break;
+            case "A#dim":
+                chordnotes = "02325";
+                break;
+            case "Bdim":
+                chordnotes = "x1214_3_B_Bdim";
+                break;
+            case "Cdim":
+                chordnotes = "x1214";
+                break;
+            case "C#dim":
+                chordnotes = "02325";
+                break;
+            case "Ddim":
+                chordnotes = "x1214_3_B_Ddim";
+                break;
+            case "D#dim":
+                chordnotes = "x1214";
+                break;
+            case "Edim":
+                chordnotes = "02325";
+                break;
+            case "Fdim":
+                chordnotes = "x1214_3_B_Fdim";
+                break;
+            case "F#dim":
+                chordnotes = "x1214";
+                break;
+            case "Gdim":
+                chordnotes = "02325";
+                break;
+            case "G#dim":
+                chordnotes = "x1214_3_B_G#dim";
+                break;
+
+            // MINOR 7 FLAT 5 (HALF DIMINISHED)
+            case "Am7b5":
+                chordnotes = "01215";
+                break;
+            case "A#m7b5":
+                chordnotes = "x1215_2_B_A#m7b5";
+                break;
+            case "Bm7b5":
+                chordnotes = "x1215_3_B_Bm7b5";
+                break;
+            case "Cm7b5":
+                chordnotes = "x1314";
+                break;
+            case "C#m7b5":
+                chordnotes = "01314_2_B_C#m7b5";
+                break;
+            case "Dm7b5":
+                chordnotes = "x0113";
+                break;
+            case "D#m7b5":
+                chordnotes = "x1224";
+                break;
+            case "Em7b5":
+                chordnotes = "01224_2_B_Em7b5";
+                break;
+            case "Fm7b5":
+                chordnotes = "x3101";
+                break;
+            case "F#m7b5":
+                chordnotes = "x1224_4_B_F#m7b5";
+                break;
+            case "Gm7b5":
+                chordnotes = "01224_5_B_Gm7b5";
+                break;
+            case "G#m7b5":
+                chordnotes = "x0104";
+                break;
+
+            // AUGMENTED (#5)
+            case "Aaug":
+                chordnotes = "x3223";
+                break;
+            case "A#aug":
+                chordnotes = "x4334";
+                break;
+            case "Baug":
+                chordnotes = "01001";
+                break;
+            case "Caug":
+                chordnotes = "x2112";
+                break;
+            case "C#aug":
+                chordnotes = "x3223";
+                break;
+            case "Daug":
+                chordnotes = "x4334";
+                break;
+            case "D#aug":
+                chordnotes = "01001";
+                break;
+            case "Eaug":
+                chordnotes = "x2112";
+                break;
+            case "Faug":
+                chordnotes = "x3223";
+                break;
+            case "F#aug":
+                chordnotes = "x4334";
+                break;
+            case "Gaug":
+                chordnotes = "01001";
+                break;
+            case "G#aug":
+                chordnotes = "x2112";
+                break;
+            default:
+                chordnotes = "xxxxx";
+                break;
+        }
+
+        // Standard banjo 5 string chords all start with B_ (banjo 5 string) and end with _0 (fret to start with)
+        if (!chordnotes.contains("_")) {
+            chordnotes = chordnotes + "_0_B_"+chordtoworkon;
         }
 
         FullscreenActivity.chordnotes = chordnotes;

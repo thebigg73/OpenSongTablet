@@ -521,5 +521,8 @@
     <string name="pref_key_text">"Odaberite prioritetne postavke tonaliteta"</string>
     <string name="rate">"Ocenite ovu aplikaciju"</string>
     <string name="right">"Desno"</string>
+    <string name="cavaquinho">"Cavakuinho"</string>
+    <string name="banjo4">"Bendžo (4)"</string>
+    <string name="banjo5">"Bendžo (5)"</string>
 
 </resources>
