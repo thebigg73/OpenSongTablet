@@ -402,12 +402,15 @@ public class LoadXML extends Activity {
             FullscreenActivity.songfilename = tempfile[tempfile.length - 1];
         }
         // Get the new whichSongFolder
-        if (what.contains("Notes/")) {
+        if (what.contains(FullscreenActivity.text_note+"/")) {
             FullscreenActivity.whichSongFolder = "../Notes";
             FullscreenActivity.whattodo = "customreusable_note";
-        } else if (what.contains("Slides/")) {
+        } else if (what.contains(FullscreenActivity.text_slide+"/")) {
             FullscreenActivity.whichSongFolder = "../Slides";
             FullscreenActivity.whattodo = "customreusable_slide";
+        } else if (what.contains(FullscreenActivity.text_scripture+"/")) {
+            FullscreenActivity.whichSongFolder = "../Scripture";
+            FullscreenActivity.whattodo = "customreusable_scripture";
         } else if (what.contains("Images/")) {
             FullscreenActivity.whichSongFolder = "../Images";
             FullscreenActivity.whattodo = "customreusable_image";

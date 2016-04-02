@@ -460,7 +460,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     // Font sizes (relative)
     private boolean alreadyloaded = false;
     private final float mainfontsize = 16;
-    private final float sectionfontsize = 10;
+    private static float sectionfontsize = 10;
+    private static float commentfontsize = 10;
     public static int linespacing;
     private float tempfontsize;
     private float tempsectionsize;
@@ -544,6 +545,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static float lyrics_useThisTextSize;
     public static float chords_useThisTextSize;
     public static int temp_useThisBGColor;
+    public static float commentfontscalesize;
+    public static float headingfontscalesize;
 
     // Page turner
     public static int pageturner_NEXT;
@@ -737,7 +740,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     // The following get in translation texts
     private static String edit_song_presentation = "";
     private static String error_notset = "";
-    private static String error_missingsection = "";
+    public static String error_missingsection = "";
     public static String set_loading = "";
     public static String set_processing = "";
 
@@ -751,6 +754,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String slide = "";
     public static String note = "";
     public static String scripture = "";
+    public static String incoming_text = "";
+    public static String scripture_title = "";
+    public static String scripture_verse = "";
     public static String image = "";
     private static String toastmessage_maxfont = "";
     private static String toastmessage_minfont = "";
@@ -861,6 +867,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static File dirbackgrounds = new File(root.getAbsolutePath() + "/documents/OpenSong/Backgrounds");
     public static File dirbibles = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture");
     public static File dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
+    public static File dirscripture = new File(root.getAbsolutePath() + "/documents/OpenSong/Scripture/");
+    public static File dirscriptureverses = new File(root.getAbsolutePath() + "/documents/OpenSong/Scripture/_cache");
     public static File dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
     public static File dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
     public static File dircustomimages = new File(root.getAbsolutePath() + "/documents/OpenSong/Images/_cache");
@@ -953,14 +961,19 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         // If we have opened the app by an intent (clicking on an ost or osts file)
         // Get the popup
         boolean needtoimport = false;
+
         try {
             incomingfile = getIntent();
             if (incomingfile != null) {
+                file_location = incomingfile.getData().getPath();
+                file_name = incomingfile.getData().getLastPathSegment();
+                file_uri = incomingfile.getData();
                 needtoimport = true;
             }
         } catch (Exception e) {
             // No file
             e.printStackTrace();
+            needtoimport = false;
         }
 
         // Initialise api
@@ -1014,18 +1027,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         // Load the page
         setContentView(R.layout.activity_fullscreen_table);
 
-        // If we have opened the app by an intent (clicking on an ost or osts file)
-        // Get the popup
-        try {
-            incomingfile = getIntent();
-            if (incomingfile != null) {
-                file_location = incomingfile.getData().getPath();
-                file_name = incomingfile.getData().getLastPathSegment();
-                file_uri = incomingfile.getData();
-                newFragment = PopUpImportExternalFile.newInstance();
-                newFragment.show(getFragmentManager(), "dialog");
-            }
-        } catch (Exception e) {
+        if (needtoimport) {
+            newFragment = PopUpImportExternalFile.newInstance();
+            newFragment.show(getFragmentManager(), "dialog");
+        } else {
             Log.d("d", "No incoming file - continue normally");
         }
 
@@ -1077,10 +1082,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 String text = timeFormatFixer(currtimesecs);
                 if (currtimesecs<autoScrollDelay) {
                     currentTime_TextView.setTextColor(0xffff0000);
+                    currentTime_TextView.setText(text);
                 } else {
                     currentTime_TextView.setTextColor(0xffffffff);
-                }
-                if (!text.equals(currentTime_TextView.getText().toString())) {
                     currentTime_TextView.setText(text);
                 }
             }
@@ -1974,9 +1978,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
     @Override
     public void addSlideToSet() {
-        String filename = "";
-        String reusablefilename = "";
-        String templocator = "";
+        String filename;
+        String reusablefilename;
+        String templocator;
 
         switch (noteorslide) {
             case "note":
@@ -1989,6 +1993,13 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 filename = dircustomslides + "/" + customslide_title;
                 reusablefilename = homedir + "/Slides/" + customslide_title;
                 templocator = slide;
+                customimage_list = "";
+                break;
+            case "scripture":
+                filename = dirscriptureverses + "/" + customslide_title;
+                reusablefilename = dirscripture + "/" + customslide_title;
+                templocator = text_scripture;
+                customreusable = false;
                 customimage_list = "";
                 break;
             default:
@@ -2480,6 +2491,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         dirbackgrounds = new File(root.getAbsolutePath() + "/documents/OpenSong/Backgrounds");
         dirbibles = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture");
         dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
+        dirscripture = new File(root.getAbsolutePath() + "/documents/OpenSong/Scripture");
+        dirscriptureverses = new File(root.getAbsolutePath() + "/documents/OpenSong/Scripture/_cache");
         dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
         dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
 
@@ -2497,6 +2510,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     dirbackgrounds = new File(root.getAbsolutePath() + "/documents/OpenSong/Backgrounds");
                     dirbibles = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture");
                     dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
+                    dirscripture = new File(root.getAbsolutePath() + "/documents/OpenSong/Scripture");
+                    dirscriptureverses = new File(root.getAbsolutePath() + "/documents/OpenSong/Scripture/_cache");
                     dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
                     dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
                 }
@@ -2519,6 +2534,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     dirbackgrounds = new File(root.getAbsolutePath() + "/OpenSong/Backgrounds");
                     dirbibles = new File(root.getAbsolutePath() + "/OpenSong/OpenSong Scripture");
                     dirbibleverses = new File(root.getAbsolutePath() + "/OpenSong/OpenSong Scripture/_cache");
+                    dirscripture = new File(root.getAbsolutePath() + "/OpenSong/Scripture");
+                    dirscriptureverses = new File(root.getAbsolutePath() + "/OpenSong/Scripture/_cache");
                     dircustomslides = new File(root.getAbsolutePath() + "/OpenSong/Slides/_cache");
                     dircustomnotes = new File(root.getAbsolutePath() + "/OpenSong/Notes/_cache");
                 }
@@ -2555,6 +2572,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             StorageChooser.createDirectory(dirbackgrounds);
             StorageChooser.createDirectory(dirbibles);
             StorageChooser.createDirectory(dirbibleverses);
+            StorageChooser.createDirectory(dirscripture);
+            StorageChooser.createDirectory(dirscriptureverses);
             StorageChooser.createDirectory(dircustomimages);
             StorageChooser.createDirectory(dircustomnotes);
             StorageChooser.createDirectory(dircustomslides);
@@ -2902,24 +2921,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     isautoscrolling = true;
 
                     // After the autoScrollDelay, postexecute the task
+                    time_start = System.currentTimeMillis();
                     delayautoscroll = new Handler();
-                    delayautoscroll.postDelayed(new Runnable() {
+                    delayautoscroll.post(new Runnable() {
                         @Override
                         public void run() {
                             mtask_autoscroll_music = (AutoScrollMusic) new AutoScrollMusic().execute();
                         }
-                    }, autoScrollDelay * 1000); // AutoScrollDelay ms delay
-
-                    // Update the progress while the delay is in progress
-                    Handler delayUpdateProgress = new Handler();
-                    delayUpdateProgress.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mtask_updatetimeprogress = (ProgressTime) new ProgressTime().execute();
-                        }
                     });
-
-
                 }
             }
         }
@@ -3083,9 +3092,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
         @Override
         protected String doInBackground(String... args) {
+            time_start = System.currentTimeMillis();
             time_passed = System.currentTimeMillis();
             while ((time_passed - time_start)/1000 < autoScrollDelay) {
-                if ((time_passed-time_start)>500) {
+                if ((time_passed-time_start)>1000) {
                     doProgressTime.post(progressTimeRunnable);
                 }
                 time_passed = System.currentTimeMillis();
@@ -3098,30 +3108,40 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         @Override
         protected void onPreExecute() {
             scrollpageHeight = scrollpage.getChildAt(0).getMeasuredHeight() - scrollpage.getHeight();
+            time_start = System.currentTimeMillis();
         }
 
         @Override
         protected String doInBackground(String... args) {
             while (isautoscrolling) {
                 long starttime = System.currentTimeMillis();
-                publishProgress(1);
+                time_passed = System.currentTimeMillis();
+                boolean doscroll = ((time_passed - time_start) / 1000) >= autoScrollDelay;
+                if (doscroll) {
+                    publishProgress(1);
+                }
                 // don't scroll first time
                 if (!pauseautoscroll) {
                     doProgressTime.post(progressTimeRunnable);
-                    doautoScroll.post(autoScrollRunnable);
+                    if (doscroll) {
+                        doautoScroll.post(autoScrollRunnable);
+                    }
                 } else {
                     pauseautoscroll = false;
                 }
-                if (newPosFloat >= scrollpageHeight) {
-                //if (newPos >= scrollpageHeight) {
-                    autoscrollispaused = false;
-                    isautoscrolling = false;
+                if (doscroll) {
+                    if (newPosFloat >= scrollpageHeight) {
+                        //if (newPos >= scrollpageHeight) {
+                        autoscrollispaused = false;
+                        isautoscrolling = false;
+                    }
                 }
-                long currtime = System.currentTimeMillis();
 
+                long currtime = System.currentTimeMillis();
                 while ((currtime - starttime) < autoscroll_pause_time) {
                     currtime = System.currentTimeMillis();
                 }
+
             }
             return "dummy";
         }
@@ -4461,8 +4481,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                                 whichSongFolder = songpart[0];
 
                             } else if (songpart[0].length() > 0 && songpart[0].contains(text_scripture)) {
-                                whichSongFolder = "../OpenSong Scripture/_cache";
-                                songpart[0] = "../OpenSong Scripture/_cache";
+                                whichSongFolder = "../Scripture/_cache";
+                                songpart[0] = "../Scripture/_cache";
 
                             } else if (songpart[0].length() > 0 && songpart[0].contains(text_slide)) {
                                 whichSongFolder = "../Slides/_cache";
@@ -8016,7 +8036,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             // File is pdf
             isPDF = true;
             isSong = false;
-        } else if (whichSongFolder.equals("../OpenSong Scripture/_cache") || whichSongFolder.equals("../Images/_cache") || whichSongFolder.equals("../Slides/_cache") || whichSongFolder.equals("../Notes/_cache")) {
+        } else if (whichSongFolder.equals("../Scripture/_cache") || whichSongFolder.equals("../Images/_cache") || whichSongFolder.equals("../Slides/_cache") || whichSongFolder.equals("../Notes/_cache")) {
             // File is slide, note, image or scripture
             isPDF = false;
             isSong = false;
@@ -8180,8 +8200,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             whichSongFolder = songpart[0];
 
         } else if (songpart[0].length() > 0 && songpart[0].contains(text_scripture) && !songpart[0].contains(image) && !songpart[0].contains(text_slide) && !songpart[0].contains(text_note)) {
-            whichSongFolder = "../OpenSong Scripture/_cache";
-            songpart[0] = "../OpenSong Scripture/_cache";
+            whichSongFolder = "../Scripture/_cache";
+            songpart[0] = "../Scripture/_cache";
 
         } else if (songpart[0].length() > 0 && songpart[0].contains(text_slide) && !songpart[0].contains(image) && !songpart[0].contains(text_note) && !songpart[0].contains(text_scripture)) {
             whichSongFolder = "../Slides/_cache";
@@ -8928,7 +8948,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
                 // If not in a set, see if we can move to the next song in the list
                 // Only if swipeSet is Y (not S)
-                if (setView.equals("N") && swipeSet.equals("Y") && !whichSongFolder.equals("../OpenSong Scripture/_cache") && !whichSongFolder.equals("../Images/_cache") && !whichSongFolder.equals("../Slides/_cache") && !whichSongFolder.equals("../Notes/_cache")) {
+                if (setView.equals("N") && swipeSet.equals("Y") && !whichSongFolder.equals("../Scripture/_cache") && !whichSongFolder.equals("../Images/_cache") && !whichSongFolder.equals("../Slides/_cache") && !whichSongFolder.equals("../Notes/_cache")) {
                     if (nextSongIndex < mSongFileNames.length && nextSongIndex != -1 && !songfilename.equals(mSongFileNames[nextSongIndex])) {
                         // Move to the next song
                         // temporarily disable swipe
@@ -8986,7 +9006,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
                 // If not in a set, see if we can move to the previous song in the list
                 // Only if swipeSet is Y (not S)
-                if (setView.equals("N") && swipeSet.equals("Y") && !whichSongFolder.equals("../OpenSong Scripture/_cache") && !whichSongFolder.equals("../Images/_cache") && !whichSongFolder.equals("../Slides/_cache") && !whichSongFolder.equals("../Notes/_cache")) {
+                if (setView.equals("N") && swipeSet.equals("Y") && !whichSongFolder.equals("../Scripture/_cache") && !whichSongFolder.equals("../Images/_cache") && !whichSongFolder.equals("../Slides/_cache") && !whichSongFolder.equals("../Notes/_cache")) {
 
                     if (previousSongIndex < mSongFileNames.length && previousSongIndex != -1 && !songfilename.equals(mSongFileNames[previousSongIndex])) {
                         // temporarily disable swipe
@@ -9157,7 +9177,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         nextSongText1_1.setBackgroundColor(lyricsCommentColor);
                         nextInSetBox1_1.setBackgroundColor(lyricsCommentColor);
                         nextSongText1_1.setTextColor(lyricsTextColor);
-                        nextSongText1_1.setTextSize(tempfontsize * 0.7f);
+                        nextSongText1_1.setTextSize(tempfontsize * commentfontscalesize);
                         nextInSetBox1_1.addView(nextSongText1_1);
                         lyricstable_onecolview.addView(nextInSetBox1_1);
                     }
@@ -9174,7 +9194,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         nextSongText1_2.setBackgroundColor(lyricsCommentColor);
                         nextInSetBox1_2.setBackgroundColor(lyricsCommentColor);
                         nextSongText1_2.setTextColor(lyricsTextColor);
-                        nextSongText1_2.setTextSize(tempfontsize * 0.7f);
+                        nextSongText1_2.setTextSize(tempfontsize * commentfontscalesize);
                         nextInSetBox1_2.addView(nextSongText1_2);
                         lyricstable_twocolview.addView(nextInSetBox1_2);
                     }
@@ -9191,7 +9211,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         nextSongText1_3.setBackgroundColor(lyricsCommentColor);
                         nextInSetBox1_3.setBackgroundColor(lyricsCommentColor);
                         nextSongText1_3.setTextColor(lyricsTextColor);
-                        nextSongText1_3.setTextSize(tempfontsize * 0.7f);
+                        nextSongText1_3.setTextSize(tempfontsize *commentfontscalesize);
                         nextInSetBox1_3.addView(nextSongText1_3);
                         lyricstable_threecolview.addView(nextInSetBox1_3);
                     }
@@ -9269,7 +9289,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         tCapoBox1_1.setTypeface(lyrics_useThisFont);
                         tCapoBox1_1.setBackgroundColor(lyricsBackgroundColor);
                         tCapoBox1_1.setTextColor(lyricsCapoColor);
-                        tCapoBox1_1.setTextSize(tempfontsize * 0.7f);
+                        tCapoBox1_1.setTextSize(tempfontsize * commentfontscalesize);
                         myCapoBox1_1.addView(tCapoBox1_1);
                         lyricstable_onecolview.addView(myCapoBox1_1);
                     }
@@ -9285,7 +9305,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         tCapoBox1_2.setTypeface(lyrics_useThisFont);
                         tCapoBox1_2.setBackgroundColor(lyricsBackgroundColor);
                         tCapoBox1_2.setTextColor(lyricsCapoColor);
-                        tCapoBox1_2.setTextSize(tempfontsize * 0.7f);
+                        tCapoBox1_2.setTextSize(tempfontsize * commentfontscalesize);
                         myCapoBox1_2.addView(tCapoBox1_2);
                         lyricstable_twocolview.addView(myCapoBox1_2);
                     }
@@ -9301,7 +9321,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         tCapoBox1_3.setTypeface(lyrics_useThisFont);
                         tCapoBox1_3.setBackgroundColor(lyricsBackgroundColor);
                         tCapoBox1_3.setTextColor(lyricsCapoColor);
-                        tCapoBox1_3.setTextSize(tempfontsize * 0.7f);
+                        tCapoBox1_3.setTextSize(tempfontsize * commentfontscalesize);
                         myCapoBox1_3.addView(tCapoBox1_3);
                         lyricstable_threecolview.addView(myCapoBox1_3);
                     }
@@ -9749,27 +9769,34 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     if (whatisthisblock[x + 1].equals("comment")) {
                         if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                             t21_1.setTypeface(commentfont);
-                            t21_1.setTextSize(tempsectionsize);
+                            //t21_1.setTextSize(tempsectionsize);
+                            t21_1.setTextSize(tempfontsize * commentfontscalesize);
                         }
                         if (writetocol1_2 && (columnTest == 2 || columnTest == 0)) {
                             t21_2.setTypeface(commentfont);
-                            t21_2.setTextSize(tempsectionsize);
+                            //t21_2.setTextSize(tempsectionsize);
+                            t21_2.setTextSize(tempfontsize * commentfontscalesize);
                         }
                         if (writetocol2_2 && (columnTest == 2 || columnTest == 0)) {
                             t22_2.setTypeface(commentfont);
-                            t22_2.setTextSize(tempsectionsize);
+                            //t22_2.setTextSize(tempsectionsize);
+                            t22_2.setTextSize(tempfontsize * commentfontscalesize);
+
                         }
                         if (writetocol1_3 && (columnTest == 3 || columnTest == 0)) {
                             t21_3.setTypeface(commentfont);
-                            t21_3.setTextSize(tempsectionsize);
+                            //t21_3.setTextSize(tempsectionsize);
+                            t21_3.setTextSize(tempfontsize * commentfontscalesize);
                         }
                         if (writetocol2_3 && (columnTest == 3 || columnTest == 0)) {
                             t22_3.setTypeface(commentfont);
-                            t22_3.setTextSize(tempsectionsize);
+                            //t22_3.setTextSize(tempsectionsize);
+                            t22_3.setTextSize(tempfontsize * commentfontscalesize);
                         }
                         if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
                             t23_3.setTypeface(commentfont);
-                            t23_3.setTextSize(tempsectionsize);
+                            //t23_3.setTextSize(tempsectionsize);
+                            t23_3.setTextSize(tempfontsize * commentfontscalesize);
                         }
                     }
 
@@ -10207,22 +10234,28 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         || whatisthisline[x].equals("customtitle")) {
                     tbasic1_1.setTextColor(lyricsTextColor);
                     tbasic1_1.setAlpha(0.8f);
-                    tbasic1_1.setTextSize(tempsectionsize);
+                    //tbasic1_1.setTextSize(tempsectionsize);
+                    tbasic1_1.setTextSize(tempfontsize * headingfontscalesize);
                     tbasic1_2.setTextColor(lyricsTextColor);
                     tbasic1_2.setAlpha(0.8f);
-                    tbasic1_2.setTextSize(tempsectionsize);
+                    //tbasic1_2.setTextSize(tempsectionsize);
+                    tbasic1_2.setTextSize(tempfontsize * headingfontscalesize);
                     tbasic2_2.setTextColor(lyricsTextColor);
                     tbasic2_2.setAlpha(0.8f);
-                    tbasic2_2.setTextSize(tempsectionsize);
+                    //tbasic2_2.setTextSize(tempsectionsize);
+                    tbasic2_2.setTextSize(tempfontsize * headingfontscalesize);
                     tbasic1_3.setTextColor(lyricsTextColor);
                     tbasic1_3.setAlpha(0.8f);
-                    tbasic1_3.setTextSize(tempsectionsize);
+                    //tbasic1_3.setTextSize(tempsectionsize);
+                    tbasic1_3.setTextSize(tempfontsize * headingfontscalesize);
                     tbasic2_3.setTextColor(lyricsTextColor);
                     tbasic2_3.setAlpha(0.8f);
-                    tbasic2_3.setTextSize(tempsectionsize);
+                    //tbasic2_3.setTextSize(tempsectionsize);
+                    tbasic2_3.setTextSize(tempfontsize * headingfontscalesize);
                     tbasic3_3.setTextColor(lyricsTextColor);
                     tbasic3_3.setAlpha(0.8f);
-                    tbasic3_3.setTextSize(tempsectionsize);
+                    //tbasic3_3.setTextSize(tempsectionsize);
+                    tbasic3_3.setTextSize(tempfontsize * headingfontscalesize);
                 }
                 // add the TextView new TableRow
                 normalrow1_1.addView(tbasic1_1);
@@ -10430,27 +10463,33 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         || whatisthisline[x].equals("customtitle")) {
                     tbasic1_1.setTextColor(lyricsTextColor);
                     tbasic1_1.setAlpha(0.8f);
-                    tbasic1_1.setTextSize(tempfontsize * 0.6f);
+                    tbasic1_1.setTextSize(tempfontsize * headingfontscalesize);
+                   // tbasic1_1.setTextSize(tempfontsize * 0.6f);
                     tbasic1_1.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                     tbasic1_2.setTextColor(lyricsTextColor);
                     tbasic1_2.setAlpha(0.8f);
-                    tbasic1_2.setTextSize(tempfontsize * 0.6f);
+                    tbasic1_2.setTextSize(tempfontsize * headingfontscalesize);
+                    //tbasic1_2.setTextSize(tempfontsize * 0.6f);
                     tbasic1_2.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                     tbasic2_2.setTextColor(lyricsTextColor);
                     tbasic2_2.setAlpha(0.8f);
-                    tbasic2_2.setTextSize(tempfontsize * 0.6f);
+                    tbasic2_2.setTextSize(tempfontsize * headingfontscalesize);
+                    //tbasic2_2.setTextSize(tempfontsize * 0.6f);
                     tbasic2_2.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                     tbasic1_3.setTextColor(lyricsTextColor);
                     tbasic1_3.setAlpha(0.8f);
-                    tbasic1_3.setTextSize(tempfontsize * 0.6f);
+                    tbasic1_3.setTextSize(tempfontsize * headingfontscalesize);
+                    //tbasic1_3.setTextSize(tempfontsize * 0.6f);
                     tbasic1_3.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                     tbasic2_3.setTextColor(lyricsTextColor);
                     tbasic2_3.setAlpha(0.8f);
-                    tbasic2_3.setTextSize(tempfontsize * 0.6f);
+                    tbasic2_3.setTextSize(tempfontsize * headingfontscalesize);
+                    //tbasic2_3.setTextSize(tempfontsize * 0.6f);
                     tbasic2_3.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                     tbasic3_3.setTextColor(lyricsTextColor);
                     tbasic3_3.setAlpha(0.8f);
-                    tbasic3_3.setTextSize(tempfontsize * 0.6f);
+                    tbasic3_3.setTextSize(tempfontsize * headingfontscalesize);
+                    //tbasic3_3.setTextSize(tempfontsize * 0.6f);
                     tbasic3_3.setPaintFlags(tbasic1_1.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
                     if (myParsedLyrics[x] != null && myParsedLyrics[x].contains(image + "_")) {
@@ -10547,12 +10586,18 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 tbasic3_3.setBackgroundColor(lyrics_useThisBGColor);
 
                 if (whatisthisline[x].equals("comment")) {
-                    tbasic1_1.setTextSize(tempsectionsize);
-                    tbasic1_2.setTextSize(tempsectionsize);
-                    tbasic2_2.setTextSize(tempsectionsize);
-                    tbasic1_3.setTextSize(tempsectionsize);
-                    tbasic2_3.setTextSize(tempsectionsize);
-                    tbasic3_3.setTextSize(tempsectionsize);
+                    //tbasic1_1.setTextSize(tempsectionsize);
+                    //tbasic1_2.setTextSize(tempsectionsize);
+                    //tbasic2_2.setTextSize(tempsectionsize);
+                    //tbasic1_3.setTextSize(tempsectionsize);
+                    //tbasic2_3.setTextSize(tempsectionsize);
+                    //tbasic3_3.setTextSize(tempsectionsize);
+                    tbasic1_1.setTextSize(tempfontsize * commentfontscalesize);
+                    tbasic1_2.setTextSize(tempfontsize * headingfontscalesize);
+                    tbasic2_2.setTextSize(tempfontsize * headingfontscalesize);
+                    tbasic1_3.setTextSize(tempfontsize * headingfontscalesize);
+                    tbasic2_3.setTextSize(tempfontsize * headingfontscalesize);
+                    tbasic3_3.setTextSize(tempfontsize * headingfontscalesize);
                 }
                 normalrow1_1.setBackgroundColor(lyrics_useThisBGColor);
                 normalrow1_2.setBackgroundColor(lyrics_useThisBGColor);
@@ -10711,7 +10756,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 nextSongText1_1.setTypeface(lyrics_useThisFont);
                 nextSongText1_1.setBackgroundColor(lyricsCommentColor);
                 nextSongText1_1.setTextColor(lyricsTextColor);
-                nextSongText1_1.setTextSize(tempfontsize * 0.7f);
+                nextSongText1_1.setTextSize(tempfontsize * commentfontscalesize);
+                //nextSongText1_1.setTextSize(tempfontsize * 0.7f);
                 nextInSetBox1_1.addView(nextSongText1_1);
                 TextView nextSongText2_2 = new TextView(this);
                 nextSongText2_2.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
@@ -10720,7 +10766,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 nextSongText2_2.setTypeface(lyrics_useThisFont);
                 nextSongText2_2.setBackgroundColor(lyricsCommentColor);
                 nextSongText2_2.setTextColor(lyricsTextColor);
-                nextSongText2_2.setTextSize(tempfontsize * 0.7f);
+                nextSongText2_2.setTextSize(tempfontsize * commentfontscalesize);
+                //nextSongText2_2.setTextSize(tempfontsize * 0.7f);
                 nextInSetBox2_2.addView(nextSongText2_2);
                 TextView nextSongText3_3 = new TextView(this);
                 nextSongText3_3.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
@@ -10729,7 +10776,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 nextSongText3_3.setTypeface(lyrics_useThisFont);
                 nextSongText3_3.setBackgroundColor(lyricsCommentColor);
                 nextSongText3_3.setTextColor(lyricsTextColor);
-                nextSongText3_3.setTextSize(tempfontsize * 0.7f);
+                nextSongText3_3.setTextSize(tempfontsize * commentfontscalesize);
+                //nextSongText3_3.setTextSize(tempfontsize * 0.7f);
                 nextInSetBox3_3.addView(nextSongText3_3);
 
                 // Prepare this view
@@ -10935,10 +10983,20 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
             case "deleteset":
                 // Load the set up
-                File settodelete = new File(dirsets + "/" + settoload);
-                if (settodelete.delete()) {
-                    myToastMessage = settoload + " " + getResources().getString(R.string.sethasbeendeleted);
+                // Sets can be multiple sets
+                String[] tempsets = FullscreenActivity.setnamechosen.split("%_%");
+                myToastMessage = "";
+                for (String tempfile:tempsets) {
+                    if (tempfile!=null && !tempfile.equals("") && !tempfile.isEmpty()) {
+                        File settodelete = new File(dirsets + "/" + tempfile);
+                        if (settodelete.delete()) {
+                            myToastMessage = myToastMessage + tempfile + ", ";
+
+                        }
+                    }
                 }
+                myToastMessage = myToastMessage.substring(0,myToastMessage.length()-2);
+                myToastMessage = myToastMessage + " " + getResources().getString(R.string.sethasbeendeleted);
 
                 // Refresh all stuff needed
                 refreshAll();

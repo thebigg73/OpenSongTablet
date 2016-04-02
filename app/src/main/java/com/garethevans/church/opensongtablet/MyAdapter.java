@@ -51,7 +51,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
         } else if (si.songicon.equals(FullscreenActivity.text_note)) {
             folderrelocate = "../Notes/_cache";
         } else if (si.songicon.equals(FullscreenActivity.text_scripture)) {
-            folderrelocate = "../OpenSong Scripture/_cache";
+            folderrelocate = "../Scripture/_cache";
         } else if (si.songicon.equals(FullscreenActivity.text_slide)) {
             folderrelocate = "../Slides/_cache";
         } else {

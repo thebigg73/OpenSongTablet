@@ -223,7 +223,7 @@ public class SetActions extends Activity {
     public static void getSongForSetWork() {
         if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
             FullscreenActivity.whatsongforsetwork = FullscreenActivity.songfilename;
-        } else if (FullscreenActivity.whichSongFolder.equals("../OpenSong Scripture/_cache")) {
+        } else if (FullscreenActivity.whichSongFolder.equals("../Scripture/_cache")) {
             FullscreenActivity.whatsongforsetwork = FullscreenActivity.scripture + "/" + FullscreenActivity.songfilename;
         } else if (FullscreenActivity.whichSongFolder.equals("../Slides/_cache")) {
             FullscreenActivity.whatsongforsetwork = FullscreenActivity.slide + "/" + FullscreenActivity.songfilename;
@@ -268,15 +268,15 @@ public class SetActions extends Activity {
     }
 
     public static void checkDirectories() {
-        // Check the OpenSong Scripture _cache Directory exists
-        if (FullscreenActivity.dirbibleverses.exists()) {
+        // Check the Scripture _cache Directory exists
+        if (FullscreenActivity.dirscriptureverses.exists()) {
             // Scripture folder exists, do nothing other than clear it!
-            for (File scripfile : FullscreenActivity.dirbibleverses.listFiles()) {
+            for (File scripfile : FullscreenActivity.dirscriptureverses.listFiles()) {
                 check_action = scripfile.delete();
             }
         } else {
-            // Tell the user we're creating the OpenSong Scripture _cache directory
-            check_action = FullscreenActivity.dirbibleverses.mkdirs();
+            // Tell the user we're creating the Scripture _cache directory
+            check_action = FullscreenActivity.dirscriptureverses.mkdirs();
         }
 
         // Check the Slides _cache Directory exists
@@ -357,7 +357,7 @@ public class SetActions extends Activity {
         Log.d("write","what="+what);
 
         if (where.equals(FullscreenActivity.text_scripture)) {
-            temp = new File(FullscreenActivity.dirbibleverses + "/" + what);
+            temp = new File(FullscreenActivity.dirscriptureverses + "/" + what);
             set_item = "$**_" + FullscreenActivity.scripture + "/" + scripture_title + "_**$";
         } else if (where.equals(FullscreenActivity.text_slide)) {
             set_item = "$**_" + FullscreenActivity.slide + "/" + custom_name + "_**$";
@@ -704,8 +704,8 @@ public class SetActions extends Activity {
                 FullscreenActivity.whichSongFolder = songpart[0];
 
             } else if (songpart[0].length() > 0 && songpart[0].contains(FullscreenActivity.text_scripture) && !songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.text_slide) && !songpart[0].contains(FullscreenActivity.text_note)) {
-                FullscreenActivity.whichSongFolder = "../OpenSong Scripture/_cache";
-                songpart[0] = "../OpenSong Scripture/_cache";
+                FullscreenActivity.whichSongFolder = "../Scripture/_cache";
+                songpart[0] = "../Scripture/_cache";
 
             } else if (songpart[0].length() > 0 && songpart[0].contains(FullscreenActivity.text_slide) && !songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.text_note) && !songpart[0].contains(FullscreenActivity.text_scripture)) {
                 FullscreenActivity.whichSongFolder = "../Slides/_cache";

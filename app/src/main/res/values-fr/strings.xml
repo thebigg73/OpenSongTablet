@@ -474,5 +474,11 @@
 	<string name="cavaquinho">"Cavaquinho"</string>
 	<string name="banjo4">"Banjo (4)"</string>
 	<string name="banjo5">"Banjo (5)"</string>
+	<string name="commentline_scale">"Taille du texte de commentaire"</string>
+	<string name="headingline_scale">"Taille du texte de titre"</string>
+	<string name="bible_search">"Phrase ou verset à rechercher"</string>
+	<string name="bible_translation">"Code de la version de la bible\n(exemple:NIV,MSG,...)"</string>
+	<string name="extract">"Extraire le texte"</string>
+	<string name="search_biblegateway">"Rechercher sur BibleGateway.com"</string>
 
 </resources>

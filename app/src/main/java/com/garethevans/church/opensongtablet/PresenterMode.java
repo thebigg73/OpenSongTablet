@@ -124,8 +124,8 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
     boolean logoButton_isSelected = false;
     boolean blankButton_isSelected = false;
     boolean displayButton_isSelected = false;
-    //boolean scriptureButton_isSelected = false;
-    //boolean slideButton_isSelected = false;
+    boolean scriptureButton_isSelected = false;
+    boolean slideButton_isSelected = false;
     boolean alertButton_isSelected = false;
     boolean audioButton_isSelected = false;
     boolean dBButton_isSelected = false;
@@ -287,7 +287,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             isSong = false;
         }
 
-        if (FullscreenActivity.whichSongFolder.contains("../OpenSong Scripture") || FullscreenActivity.whichSongFolder.contains("../Images") || FullscreenActivity.whichSongFolder.contains("../Slides") || FullscreenActivity.whichSongFolder.contains("../Notes")) {
+        if (FullscreenActivity.whichSongFolder.contains("../Scripture") || FullscreenActivity.whichSongFolder.contains("../Images") || FullscreenActivity.whichSongFolder.contains("../Slides") || FullscreenActivity.whichSongFolder.contains("../Notes")) {
             isSong = false;
         }
 
@@ -386,11 +386,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         presenter_logo_group = (LinearLayout) findViewById(R.id.presenter_logo_group);
         presenter_blank_group = (LinearLayout) findViewById(R.id.presenter_blank_group);
         presenter_scripture_group = (LinearLayout) findViewById(R.id.presenter_scripture_group);
-        // Hide scripture for now until I get it working
-        presenter_scripture_group.setVisibility(View.GONE);
         presenter_slide_group = (LinearLayout) findViewById(R.id.presenter_slide_group);
-        // Hide slide for now until I get it working
-        presenter_slide_group.setVisibility(View.GONE);
         presenter_alert_group = (LinearLayout) findViewById(R.id.presenter_alert_group);
         presenter_audio_group = (LinearLayout) findViewById(R.id.presenter_audio_group);
         presenter_dB_group = (LinearLayout) findViewById(R.id.presenter_dB_group);
@@ -1252,8 +1248,8 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             FullscreenActivity.whichSongFolder = songpart[0];
 
         } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
-            FullscreenActivity.whichSongFolder = "../OpenSong Scripture/_cache";
-            songpart[0] = "../OpenSong Scripture/_cache";
+            FullscreenActivity.whichSongFolder = "../Scripture/_cache";
+            songpart[0] = "../Scripture/_cache";
 
         } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.scripture) && songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
             FullscreenActivity.whichSongFolder = "../Slides/_cache";
@@ -1362,6 +1358,13 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                 filename = FullscreenActivity.dircustomslides + "/" + FullscreenActivity.customslide_title;
                 reusablefilename = FullscreenActivity.homedir + "/Slides/" + FullscreenActivity.customslide_title;
                 templocator = FullscreenActivity.slide;
+                FullscreenActivity.customimage_list = "";
+                break;
+            case "scripture":
+                filename = FullscreenActivity.dirscriptureverses + "/" + FullscreenActivity.customslide_title;
+                reusablefilename = FullscreenActivity.homedir + "/Scripture/" + FullscreenActivity.customslide_title;
+                FullscreenActivity.customreusable = false;
+                templocator = FullscreenActivity.text_scripture;
                 FullscreenActivity.customimage_list = "";
                 break;
             default:
@@ -1708,6 +1711,47 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         }
     }
 
+    public void slideButtonClick(View view) {
+        slideButton_isSelected = true;
+        presenter_slide_group.setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_blue_active));
+        presenter_actions_buttons.smoothScrollTo(0, presenter_slide_group.getTop());
+
+        FullscreenActivity.whattodo = "customreusable_slide";
+        newFragment = PopUpCustomSlideFragment.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
+
+        // After a short time, turn off the button
+        Handler delay = new Handler();
+        delay.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                slideButton_isSelected = false;
+                presenter_slide_group.setBackgroundDrawable(null);
+            }
+        }, 500);
+    }
+
+    public void scriptureButtonClick(View view) {
+        scriptureButton_isSelected = true;
+        presenter_scripture_group.setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_blue_active));
+        presenter_actions_buttons.smoothScrollTo(0, presenter_scripture_group.getTop());
+
+        FullscreenActivity.whattodo = "customreusable_scripture";
+        newFragment = PopUpCustomSlideFragment.newInstance();
+        newFragment.show(getFragmentManager(), "dialog");
+
+        // After a short time, turn off the button
+        Handler delay = new Handler();
+        delay.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scriptureButton_isSelected = false;
+                presenter_scripture_group.setBackgroundDrawable(null);
+            }
+        }, 500);
+    }
+
+
     public void backgroundButtonClick(View view) {
         if (numdisplays > 0 && !blankButton_isSelected) {
             backgroundButton_isSelected = true;
@@ -1906,8 +1950,8 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             tempfiletosearch = FullscreenActivity.songfilename;
         }
 
-        if (tempfiletosearch.contains("../OpenSong Scripture/_cache/")) {
-            tempfiletosearch = tempfiletosearch.replace("../OpenSong Scripture/_cache/",FullscreenActivity.scripture+"/");
+        if (tempfiletosearch.contains("../Scripture/_cache/")) {
+            tempfiletosearch = tempfiletosearch.replace("../Scripture/_cache/",FullscreenActivity.scripture+"/");
         } else if (tempfiletosearch.contains("../Slides/_cache/")) {
             tempfiletosearch = tempfiletosearch.replace("../Slides/_cache/",FullscreenActivity.slide+"/");
         } else if (tempfiletosearch.contains("../Notes/_cache/")) {
@@ -1997,8 +2041,8 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             FullscreenActivity.whichSongFolder = songpart[0];
 
         } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
-            FullscreenActivity.whichSongFolder = "../OpenSong Scripture/_cache";
-            songpart[0] = "../OpenSong Scripture/_cache";
+            FullscreenActivity.whichSongFolder = "../Scripture/_cache";
+            songpart[0] = "../Scripture/_cache";
 
         } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note) && !songpart[0].contains(FullscreenActivity.scripture)) {
             FullscreenActivity.whichSongFolder = "../Slides/_cache";

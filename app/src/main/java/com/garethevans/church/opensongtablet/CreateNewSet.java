@@ -58,7 +58,7 @@ public class CreateNewSet extends Activity {
                 } else if (songparts[0].contains(FullscreenActivity.text_scripture) && !songparts[0].contains(FullscreenActivity.image) && !songparts[0].contains(FullscreenActivity.text_slide) && !songparts[0].contains(FullscreenActivity.text_note)) {
                     // Adding a scripture
                     // Load the scripture file up
-                    FullscreenActivity.whichSongFolder = "../OpenSong Scripture/_cache";
+                    FullscreenActivity.whichSongFolder = "../Scripture/_cache";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
                         LoadXML.loadXML();

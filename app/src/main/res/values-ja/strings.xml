@@ -473,5 +473,11 @@
 	<string name="cavaquinho">"カバキーニョ"</string>
 	<string name="banjo4">"バンジョー (4)"</string>
 	<string name="banjo5">"バンジョー (5)"</string>
+	<string name="commentline_scale">"コメントテキストを拡大縮小"</string>
+	<string name="headingline_scale">"見出しのテキストを拡大縮小"</string>
+	<string name="bible_search">"フレーズや詩を検索します"</string>
+	<string name="bible_translation">"聖書のバージョンコード\n（例えばNIV、MSG）"</string>
+	<string name="extract">"抽出テキスト"</string>
+	<string name="search_biblegateway">"BibleGateway.comを検索"</string>
 
 </resources>

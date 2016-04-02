@@ -8,20 +8,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-//import org.apache.http.HttpResponse;
-//import org.apache.http.client.methods.HttpGet;
-//import org.apache.http.impl.client.DefaultHttpClient;
+import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -34,31 +31,25 @@ import android.widget.Toast;
 
 public class Chordie extends Activity{
 
-    @SuppressWarnings("unused")
+/*
     private Menu menu;
-    @SuppressWarnings("unused")
     static String foldername;
-    @SuppressWarnings("unused")
     static String result;
-    static String response;
-    @SuppressWarnings("unused")
-    static String weblink;
-    @SuppressWarnings("unused")
-    static String webSource;
-    @SuppressWarnings("unused")
-    static WebView chordieWeb;
-    @SuppressWarnings("unused")
     static String resultposted;
-    @SuppressWarnings("unused")
+    static String webSource;
+    String resultfinal;
+*/
+    static String response;
+    static String weblink;
+    static WebView chordieWeb;
     static String whatfolderselected=FullscreenActivity.mainfoldername;
     ProgressBar progressbar;
     static String[] availableFolders;
     AlertDialog.Builder dialogBuilder;
     String filenametosave;
     String authorname = "";
-    @SuppressWarnings("unused")
-    String resultfinal;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +59,7 @@ public class Chordie extends Activity{
 
         if (engine != null) {
             if (engine.equals("chordie")) {
-                weblink = "http://www.chordie.com/?np=0&ps=100&wf=531&ul=.pro&ul=.cho&ul=.crd&ul=.tab&chordie=ref&q="+thissearch;
+                weblink = "http://www.chordie.com/results.php?q="+thissearch+"&np=0&ps=10&wf=2221&s=RPD&wf=2221&wm=wrd&type=&sp=1&sy=1&cat=&ul=&np=0";
             } else if (engine.equals("ultimate-guitar")) {
                 weblink = "http://www.ultimate-guitar.com/search.php?page=1&tab_type_group=text&app_name=ugt&order=myweight&type=300&title="+thissearch;
             }
@@ -77,7 +68,6 @@ public class Chordie extends Activity{
         setContentView(R.layout.chordie_preview);
 
         chordieWeb = (WebView) findViewById(R.id.webView1);
-
         chordieWeb.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -85,6 +75,8 @@ public class Chordie extends Activity{
             }
         });
         chordieWeb.getSettings().getJavaScriptEnabled();
+        chordieWeb.getSettings().setJavaScriptEnabled(true);
+        chordieWeb.getSettings().setDomStorageEnabled(true);
         chordieWeb.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         chordieWeb.loadUrl(weblink);
     }
@@ -113,44 +105,8 @@ public class Chordie extends Activity{
         toast.show();
 
         DownloadWebTextTask task = new DownloadWebTextTask();
-        //DownloadWebPageTask task = new DownloadWebPageTask();
-        //task.execute(new String[] { weblink });
         task.execute(weblink);
     }
-
-
-
-/*
-    private class DownloadWebPageTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            response = "";
-            for (@SuppressWarnings("unused") URL url : urls) {
-
-*/
-/*
-                DefaultHttpClient client = new DefaultHttpClient();
-                HttpGet httpGet = new HttpGet(weblink);
-                try {
-                    HttpResponse execute = client.execute(httpGet);
-                    InputStream content = execute.getEntity().getContent();
-
-                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                    String s;
-                    while ((s = buffer.readLine()) != null) {
-                        response += "\n" + s;
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-*//*
-
-
-            }
-            return response;
-        }
-*/
 
     private class DownloadWebTextTask extends AsyncTask<String, Void, String> {
 
@@ -166,11 +122,14 @@ public class Chordie extends Activity{
                     urlConnection = (HttpURLConnection) url.openConnection();
 
                     InputStream in = urlConnection.getInputStream();
-                    //InputStreamReader isw = new InputStreamReader(in);
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
                     String s;
                     while ((s = buffer.readLine()) != null) {
                         response += "\n" + s;
+                        if (s.contains("<div class=\"fb-meta\">") || s.contains("<div class=\"plus-minus\">")) {
+                            // Force s to be null as we've got all we need!
+                            break;
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -232,17 +191,14 @@ public class Chordie extends Activity{
                             onPostExecute(response);
                         }
                     }
-
                 }
             });
-
             alert.setNegativeButton(getResources().getText(R.string.cancel).toString(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int whichButton) {
                     // Cancelled.
                 }
             });
-
             alert.show();
         }
 
@@ -252,26 +208,20 @@ public class Chordie extends Activity{
             final String resultfinal;
             //Now look to see if the webcontent has the ChordPro text in it
             Toast toast;
-            if (result.contains("<form id=\"chopro\"")) {
+            if (result.contains("<textarea id=\"chordproContent\"")) {
 
                 progressbar.setVisibility(View.INVISIBLE);
                 // Find the position of the start of this section
-                int startpos = resultposted.indexOf("<form id=\"chopro\"");
-                if (startpos<0) {
+                int getstart = resultposted.indexOf("<textarea id=\"chordproContent\"");
+                int startpos = resultposted.indexOf("\">",getstart)+2;
+                if (startpos<1) {
                     startpos=0;
                 }
                 // Remove everything before this position
                 resultposted = resultposted.substring(startpos);
-                // Find where the actual ChordPro bit begins
-                startpos = resultposted.indexOf("value=\"");
-                if (startpos<0) {
-                    startpos=0;
-                }
-                // Remove everything before this position
-                resultposted = resultposted.substring(startpos+7);
 
                 // Find the position of the end of the form
-                int endpos = resultposted.indexOf("\">");
+                int endpos = resultposted.indexOf("</textarea>");
                 if (endpos<0) {
                     endpos = resultposted.length();
                 }
@@ -280,12 +230,12 @@ public class Chordie extends Activity{
                 //Replace all \r with \n
                 resultposted = resultposted.replace("\r","\n");
                 resultposted = resultposted.replace("\'","'");
+                resultposted = resultposted.trim();
 
                 resultfinal = resultposted;
                 // Ask the user to specify the folder to save the file into
                 // Get a list of folders available
                 // First set the browsing directory back to the main one
-                // FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath()+"/documents/OpenSong/Songs");
                 String currentFolder = FullscreenActivity.whichSongFolder;
                 FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
                 ListSongFiles.listSongs();
@@ -492,8 +442,6 @@ public class Chordie extends Activity{
                 }
                 resultposted = resultposted.substring(0,endpos);
 
-                Log.d("crd", "resultposted=" + resultposted);
-
                 //Replace all \r with \n
                 resultposted = resultposted.replace("\r", "\n");
                 resultposted = resultposted.replace("\'","'");
@@ -515,8 +463,6 @@ public class Chordie extends Activity{
                     }
                     newtext = newtext + templines[q] + "\n";
                 }
-                Log.d("chorded","newtext="+newtext);
-
                 // Ok remove all html tags
                 newtext = newtext.replace("<span>","");
                 newtext = newtext.replace("</span>","");
@@ -531,15 +477,11 @@ public class Chordie extends Activity{
                 newtext = newtext.replace("&","&amp;");
                 newtext = TextUtils.htmlEncode(newtext);
 
-                Log.d("parsed","newtext="+newtext);
-
                 resultfinal = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<song>\n<title>" + filenametosave
                         + "</title>\n<author>"
                         + authorname + "</author>\n<copyright></copyright>\n<lyrics>[]\n"
                         + newtext
                         + "</lyrics>\n</song>";
-
-                Log.d("xml","resultfinal="+resultfinal);
 
                 // Success if this far - prompt for save
                 // Ask the user to specify the folder to save the file into
@@ -557,7 +499,11 @@ public class Chordie extends Activity{
                 titleLayout.setOrientation(LinearLayout.VERTICAL);
                 TextView m_titleView = new TextView(Chordie.this);
                 m_titleView.setLayoutParams(new LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
-                m_titleView.setTextAppearance(Chordie.this, android.R.style.TextAppearance_Large);
+                if (Build.VERSION.SDK_INT < 23) {
+                    m_titleView.setTextAppearance(Chordie.this, android.R.style.TextAppearance_Large);
+                } else {
+                    m_titleView.setTextAppearance(android.R.style.TextAppearance_Large);
+                }
                 m_titleView.setTextColor( Chordie.this.getResources().getColor(android.R.color.white) );
                 m_titleView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
                 m_titleView.setText(getResources().getString(R.string.choosefolder));
@@ -666,7 +612,6 @@ public class Chordie extends Activity{
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
                 progressbar.setVisibility(View.INVISIBLE);
-
             }
         }
     }

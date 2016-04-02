@@ -4,7 +4,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import android.app.Activity;
-import android.util.Log;
 
 public class Transpose extends Activity {
 	
@@ -23,6 +22,7 @@ public class Transpose extends Activity {
     public static String[] sharpchords3a      = {"Ais",     "His",     "Cis",     "Dis",     "Eis",     "Fis",     "Gis"};
     public static String[] sharpchords3b      = {" ais",    " his",    " cis",    " dis",    " eis",    " fis",    " gis"};
     public static String[] sharpchords3c      = {".ais",    ".his",    ".cis",    ".dis",    ".eis",    ".fis",    ".gis"};
+    public static String[] sharpchords4       = {"La#",     "Si#",     "Do#",     "Ré#",     "Mi#",     "Fa#",     "Sol#"};
 
     public static String[] properchordsharpsnumsa   = {"$.2.$",   "$.5.$",   "$.7.$",   "$.10.$",  "$.12.$"};  // For number to chord
     public static String[] properchordsharpsnumsb   = {"$.32.$",  "$.35.$",  "$.37.$",  "$.40.$",  "$.42.$"};  // For number to chord
@@ -33,6 +33,7 @@ public class Transpose extends Activity {
     public static String[] propersharpchords3a      = {"Ais",     "Cis",     "Dis",     "Fis",     "Gis"};     // For number to chord
     public static String[] propersharpchords3b      = {" ais",    " cis",    " dis",    " fis",    " gis"};    // For number to chord
     public static String[] propersharpchords3c      = {".ais",    ".cis",    ".dis",    ".fis",    ".gis"};    // For number to chord
+    public static String[] propersharpchords4       = {"La#",     "Do#",     "Ré#",     "Fa#",     "Sol#"};    // For number to chord
 
     // Flat chords next
     public static String[] chordflatsnumsa    = {"$.12.$",  "$.2.$",   "$.3.$",   "$.5.$",   "$.7.$",   "$.8.$",   "$.10.$"};
@@ -44,6 +45,7 @@ public class Transpose extends Activity {
     public static String[] flatchords3a       = {"As",      "B",       "Ces",     "Des",     "Es",      "Fes",     "Ges"};
     public static String[] flatchords3b       = {" as",     " b",      " ces",    " des",    " es",     " fes",    " ges"};
     public static String[] flatchords3c       = {".as",     ".b",      ".ces",    ".des",    ".es",     ".fes",    ".ges"};
+    public static String[] flatchords4        = {"Lab",     "Sib",     "Dob",     "Réb",     "Mib",     "Fab",     "Solb"};
 
     public static String[] properchordflatsnumsa    = {"$.12.$",  "$.2.$",   "$.5.$",   "$.7.$",   "$.10.$"};// For number to chord
     public static String[] properchordflatsnumsb    = {"$.42.$",  "$.32.$",  "$.35.$",  "$.37.$",  "$.40.$"};// For number to chord
@@ -53,6 +55,7 @@ public class Transpose extends Activity {
     public static String[] properflatchords3a       = {"As",      "B",       "Des",     "Es",      "Ges"};   // For number to chord
     public static String[] properflatchords3b       = {" as",     " b",      " des",    " es",     " ges"};  // For number to chord
     public static String[] properflatchords3c       = {".as",     ".b",      ".des",    ".es",     ".ges"};  // For number to chord
+    public static String[] properflatchords4        = {"Lab",     "Sib",     "Réb",     "Mib",     "Solb"};  // For number to chord
 
     // Finally the natural chords
     public static String[] chordnaturalnumsa  = {"$.1.$",   "$.3.$",   "$.4.$",   "$.6.$",   "$.8.$",   "$.9.$",   "$.11.$"};
@@ -64,6 +67,7 @@ public class Transpose extends Activity {
     public static String[] naturalchords3a    = {"A",       "H",       "C",       "D",       "E",       "F",       "G"};
     public static String[] naturalchords3b    = {" a",      " h",      " c",      " d",      " e",      " f",      " g"};
     public static String[] naturalchords3c    = {".a",      ".h",      ".c",      ".d",      ".e",      ".f",      ".g"};
+    public static String[] naturalchords4     = {"La",      "Si",      "Do",      "Ré",      "Mi",      "Fa",      "Sol"};
 
     public static String originalkey = FullscreenActivity.mKey;
     public static String newkey = FullscreenActivity.mKey;
@@ -95,7 +99,7 @@ public class Transpose extends Activity {
         // Decide if flats should be used
         usesflats = keyUsesFlats(newkey);
 
-        if (FullscreenActivity.mKey!="") {
+        if (!FullscreenActivity.mKey.equals("")) {
             FullscreenActivity.mKey = newkey;
         }
 
@@ -116,6 +120,11 @@ public class Transpose extends Activity {
                     case "3":
                         FullscreenActivity.myTransposedLyrics[x] = chordToNumber3(FullscreenActivity.myTransposedLyrics[x]);
                         break;
+
+                    case "4":
+                        FullscreenActivity.myTransposedLyrics[x] = chordToNumber4(FullscreenActivity.myTransposedLyrics[x]);
+                        break;
+
                 }
             }
         }
@@ -141,14 +150,15 @@ public class Transpose extends Activity {
                     case "3":
                         FullscreenActivity.myTransposedLyrics[x] = numberToChord3(FullscreenActivity.myTransposedLyrics[x]);
                         break;
+
+                    case "4":
+                        FullscreenActivity.myTransposedLyrics[x] = numberToChord4(FullscreenActivity.myTransposedLyrics[x]);
+                        break;
                 }
             }
 
-
         // Add all the lines back up as a string
-        FullscreenActivity.transposedLyrics += FullscreenActivity.myTransposedLyrics[x]
-                + "\n";
-
+        FullscreenActivity.transposedLyrics += FullscreenActivity.myTransposedLyrics[x] + "\n";
         }
 
 
@@ -329,6 +339,39 @@ public class Transpose extends Activity {
         }
         for (int z=0;z<naturalchords3a.length;z++) {
             line = line.replace(naturalchords3a[z],chordnaturalnumsa[z]);
+        }
+        return line;
+    }
+
+    public static String chordToNumber4(String line) {
+
+        // Change any Re into Ré and Ti into Si
+        line = line.replace("Re","Ré");
+        line = line.replace("Ti","Si");
+
+        // Change lowercase into correct case
+        line = line.replace("do","Do");
+        line = line.replace("re","ré");
+        line = line.replace("ré","Ré");
+        line = line.replace("mi","Mi");
+        line = line.replace("fa","Fa");
+        line = line.replace("sol","Sol");
+        line = line.replace("la","La");
+        line = line.replace("si","Si");
+
+        // Look for sharps first
+        for (int z=0;z<sharpchords4.length;z++) {
+            line = line.replace(sharpchords4[z],chordsharpsnumsa[z]);
+        }
+
+        // Now flats
+        for (int z=0;z<flatchords4.length;z++) {
+            line = line.replace(flatchords4[z],chordflatsnumsa[z]);
+        }
+
+        // Finally naturals
+        for (int z=0;z<naturalchords4.length;z++) {
+            line = line.replace(naturalchords4[z],chordnaturalnumsa[z]);
         }
         return line;
     }
@@ -698,9 +741,44 @@ public class Transpose extends Activity {
         return line;
     }
 
+    public static String numberToChord4(String line) {
+        // If we are forcing sharps or flats do that, otherwise use our key preferences
+        if (FullscreenActivity.switchsharpsflats) {
+            if (FullscreenActivity.transposeStyle.equals("flats")) {
+                line = useFlats4(line);
+            } else {
+                line = useSharps4(line);
+            }
+
+        } else {
+            if (usesflats) {
+                line = useFlats4(line);
+            } else {
+                line = useSharps4(line);
+            }
+        }
+
+        // Replace the naturals
+        line = useNaturals4(line);
+
+        return line;
+    }
+
+    public static String capoNumberToChord4(String line) {
+        if (capousesflats) {
+            line = useFlats4(line);
+        } else {
+            line = useSharps4(line);
+        }
+
+        // Replace the naturals
+        line = useNaturals4(line);
+
+        return line;
+    }
+
     public static boolean keyUsesFlats(String testkey) {
 
-        Log.d("d","testkey="+testkey);
         boolean result;
         result = (testkey.equals("Ab") && FullscreenActivity.prefChord_Aflat_Gsharp.equals("b")) ||
                 (testkey.equals("Bb") && FullscreenActivity.prefChord_Bflat_Asharp.equals("b")) ||
@@ -716,7 +794,6 @@ public class Transpose extends Activity {
                 testkey.equals("Dm") ||
                 testkey.equals("Gm") ||
                 testkey.equals("Cm");
-        Log.d("d","result="+result);
         return result;
     }
 
@@ -743,6 +820,13 @@ public class Transpose extends Activity {
         }
         for (int z=0; z<properchordflatsnumsa.length; z++) {
             line = line.replace(properchordflatsnumsa[z],properflatchords3a[z]);
+        }
+        return line;
+    }
+
+    public static String useFlats4(String line) {
+        for (int z=0; z<properchordflatsnumsa.length; z++) {
+            line = line.replace(properchordflatsnumsa[z],properflatchords4[z]);
         }
         return line;
     }
@@ -774,6 +858,13 @@ public class Transpose extends Activity {
         return line;
     }
 
+    public static String useSharps4(String line) {
+        for (int z=0; z<properchordsharpsnumsa.length; z++) {
+            line = line.replace(properchordsharpsnumsa[z],propersharpchords4[z]);
+        }
+        return line;
+    }
+
     public static String useNaturals1(String line) {
         for (int z=0; z<chordnaturalnumsa.length; z++) {
             line = line.replace(chordnaturalnumsa[z],naturalchords1a[z]);
@@ -797,6 +888,13 @@ public class Transpose extends Activity {
         }
         for (int z=0; z<chordnaturalnumsa.length; z++) {
             line = line.replace(chordnaturalnumsa[z],naturalchords3a[z]);
+        }
+        return line;
+    }
+
+    public static String useNaturals4(String line) {
+        for (int z=0; z<chordnaturalnumsa.length; z++) {
+            line = line.replace(chordnaturalnumsa[z],naturalchords4[z]);
         }
         return line;
     }
@@ -826,6 +924,10 @@ public class Transpose extends Activity {
 
             case "3":
                 FullscreenActivity.temptranspChords = chordToNumber3(FullscreenActivity.temptranspChords);
+                break;
+
+            case "4":
+                FullscreenActivity.temptranspChords = chordToNumber4(FullscreenActivity.temptranspChords);
                 break;
         }
 
@@ -888,6 +990,10 @@ public class Transpose extends Activity {
             case "3":
                 FullscreenActivity.temptranspChords = capoNumberToChord3(FullscreenActivity.temptranspChords);
                 break;
+
+            case "4":
+                FullscreenActivity.temptranspChords = capoNumberToChord4(FullscreenActivity.temptranspChords);
+                break;
         }
 
         return FullscreenActivity.temptranspChords;
@@ -923,7 +1029,7 @@ public class Transpose extends Activity {
 					contains_es_is = true;
 				} else if (FullscreenActivity.myTransposedLyrics[x].contains("H")) {
 					contains_H = true;
-				} else if (FullscreenActivity.myTransposedLyrics[x].contains("Do") || FullscreenActivity.myTransposedLyrics[x].contains("Re") ||
+				} else if (FullscreenActivity.myTransposedLyrics[x].contains("Do") || FullscreenActivity.myTransposedLyrics[x].contains("Re") || FullscreenActivity.myTransposedLyrics[x].contains("Ré") ||
 						FullscreenActivity.myTransposedLyrics[x].contains("Me") || FullscreenActivity.myTransposedLyrics[x].contains("Fa") ||
 						FullscreenActivity.myTransposedLyrics[x].contains("Sol") || FullscreenActivity.myTransposedLyrics[x].contains("La") ||
 						FullscreenActivity.myTransposedLyrics[x].contains("Si")) {

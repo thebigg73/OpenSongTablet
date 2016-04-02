@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView8"
         android:layout_above="@+id/savePopupFont">
@@ -19,7 +19,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/chooselyricfont"
                 android:id="@+id/textView19"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:textColor="#ff0" />
 
             <Spinner
                 android:layout_width="match_parent"
@@ -33,7 +34,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/choosechordfont"
                 android:id="@+id/textView20"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:textColor="#ff0" />
 
             <Spinner
                 android:layout_width="match_parent"
@@ -45,9 +47,71 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/textView47"
+                android:layout_margin="8dp"
+                android:textColor="#ff0"
+                android:text="@string/headingline_scale" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <SeekBar
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/scaleHeading_SeekBar"
+                    android:layout_weight="0.7"
+                    android:layout_margin="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/scaleHeading_TextView"
+                    android:layout_weight="0.3"
+                    android:layout_margin="8dp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/textView45"
+                android:layout_margin="8dp"
+                android:textColor="#ff0"
+                android:text="@string/commentline_scale" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <SeekBar
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/scaleComment_SeekBar"
+                    android:layout_weight="0.7"
+                    android:layout_margin="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/scaleComment_TextView"
+                    android:layout_weight="0.3"
+                    android:layout_margin="8dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/textView21"
                 android:text="@string/linespacing"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:textColor="#ff0" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -73,7 +137,20 @@
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                android:layout_margin="8dp"
+                android:id="@+id/songPreview">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tag_verse"
+                        android:id="@+id/headingPreview"
+                        android:textColor="#000" />
+                </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -85,7 +162,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/font_chords_line1"
                         android:id="@+id/chordPreview1"
-                        android:textColor="#ff0" />
+                        android:textColor="#00f" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -93,7 +170,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/font_chords_line2"
                         android:id="@+id/chordPreview2"
-                        android:textColor="#ff0" />
+                        android:textColor="#00f" />
                 </TableRow>
 
                 <TableRow
@@ -105,15 +182,30 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/font_lyrics_line1"
-                        android:id="@+id/lyricsPreview1" />
+                        android:id="@+id/lyricsPreview1"
+                        android:textColor="#000" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/font_lyrics_line2"
-                        android:id="@+id/lyricsPreview2" />
+                        android:id="@+id/lyricsPreview2"
+                        android:textColor="#000" />
                 </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Repeat x2"
+                        android:id="@+id/commentPreview"
+                        android:textColor="#000" />
+                </TableRow>
+
             </TableLayout>
 
             <TextView

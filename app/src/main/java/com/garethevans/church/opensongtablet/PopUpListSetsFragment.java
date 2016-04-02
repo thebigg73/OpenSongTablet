@@ -286,7 +286,12 @@ public class PopUpListSetsFragment extends DialogFragment {
         FullscreenActivity.settoload = FullscreenActivity.setnamechosen;
 
         // Popup the are you sure alert into another dialog fragment
-        String message = getResources().getString(R.string.options_set_delete) + " \'" + setListName.getText().toString().trim() + "\"?";
+        // Get the list of set lists to be deleted
+        String setstodelete = FullscreenActivity.setnamechosen.replace("%_%",", ");
+        setstodelete = setstodelete.substring(0,setstodelete.length()-2);
+
+        //String message = getResources().getString(R.string.options_set_delete) + " \"" + setListName.getText().toString().trim() + "\"?";
+        String message = getResources().getString(R.string.options_set_delete) + " \"" + setstodelete + "\"?";
         FullscreenActivity.myToastMessage = message;
         DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
         newFragment.show(getFragmentManager(), "dialog");

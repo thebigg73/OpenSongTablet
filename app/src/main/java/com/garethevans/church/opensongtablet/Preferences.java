@@ -53,11 +53,11 @@ public class Preferences extends Activity {
 		FullscreenActivity.prefChord_Gflatm_Fsharpm = myPreferences.getString("prefChord_Gflatm_Fsharpm","#");
 
 		FullscreenActivity.pagebutton_position = myPreferences.getString("pagebutton_position","right");
-		FullscreenActivity.autoscroll_default_or_prompt = myPreferences.getString("autoscroll_default_or_prompt","prompt");
+		FullscreenActivity.autoscroll_default_or_prompt = myPreferences.getString("autoscroll_default_or_prompt", "prompt");
         FullscreenActivity.default_autoscroll_songlength = myPreferences.getInt("default_autoscroll_songlength", 180);
         FullscreenActivity.default_autoscroll_predelay = myPreferences.getInt("default_autoscroll_predelay",10);
         FullscreenActivity.maxvolrange = myPreferences.getInt("maxvolrange", 400);
-		FullscreenActivity.toggleAutoSticky = myPreferences.getString("toggleAutoSticky","N");
+		FullscreenActivity.toggleAutoSticky = myPreferences.getString("toggleAutoSticky", "N");
 		FullscreenActivity.toggleScrollArrows = myPreferences.getString("toggleScrollArrows","S");
 		FullscreenActivity.mediaStore = myPreferences.getString("mediaStore","int");
 		FullscreenActivity.lastSetName = myPreferences.getString("lastSetName", "");
@@ -162,6 +162,8 @@ public class Preferences extends Activity {
 		FullscreenActivity.custom1_metronome = myPreferences.getInt("custom1_metronome", default_metronomeColor);
 		FullscreenActivity.custom2_metronome = myPreferences.getInt("custom2_metronome", default_metronomeColor);
 		FullscreenActivity.mFontSize = myPreferences.getFloat("mFontSize", 42.0f);
+		FullscreenActivity.commentfontscalesize = myPreferences.getFloat("commentfontscalesize",0.8f);
+		FullscreenActivity.headingfontscalesize = myPreferences.getFloat("headingfontscalesize",0.6f);
 		FullscreenActivity.mMaxFontSize = myPreferences.getInt("mMaxFontSize", 50);
 		FullscreenActivity.usePresentationOrder = myPreferences.getBoolean("usePresentationOrder",false);
 
@@ -249,8 +251,8 @@ public class Preferences extends Activity {
         editor.putInt("default_autoscroll_songlength", FullscreenActivity.default_autoscroll_songlength);
         editor.putInt("default_autoscroll_predelay", FullscreenActivity.default_autoscroll_predelay);
         editor.putInt("maxvolrange", FullscreenActivity.maxvolrange);
-        editor.putString("toggleAutoSticky",FullscreenActivity.toggleAutoSticky);
-        editor.putString("toggleScrollArrows",FullscreenActivity.toggleScrollArrows);
+        editor.putString("toggleAutoSticky", FullscreenActivity.toggleAutoSticky);
+        editor.putString("toggleScrollArrows", FullscreenActivity.toggleScrollArrows);
         editor.putString("mediaStore", FullscreenActivity.mediaStore);
 		editor.putString("lastSetName", FullscreenActivity.lastSetName);
 		editor.putFloat("presoAlpha", FullscreenActivity.presoAlpha);
@@ -353,6 +355,8 @@ public class Preferences extends Activity {
 		editor.putString("hideactionbaronoff", FullscreenActivity.hideactionbaronoff);
 		editor.putString("mStorage", FullscreenActivity.mStorage);
 		editor.putFloat("mFontSize", FullscreenActivity.mFontSize);
+        editor.putFloat("commentfontscalesize", FullscreenActivity.commentfontscalesize);
+        editor.putFloat("headingfontscalesize", FullscreenActivity.headingfontscalesize);
         editor.putInt("mMaxFontSize", FullscreenActivity.mMaxFontSize);
 		editor.putString("toggleYScale", FullscreenActivity.toggleYScale);
 		editor.putString("swipeSet", FullscreenActivity.swipeSet);

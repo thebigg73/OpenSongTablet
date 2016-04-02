@@ -532,7 +532,8 @@
                                     android:layout_marginRight="0dp"
                                     android:layout_marginTop="4dp"
                                     android:gravity="center_vertical"
-                                    android:orientation="horizontal" >
+                                    android:orientation="horizontal"
+                                    android:onClick="slideButtonClick">
 
                                     <ImageView
                                         android:id="@+id/presenter_slide_image"
@@ -560,7 +561,8 @@
                                     android:layout_marginRight="0dp"
                                     android:layout_marginTop="4dp"
                                     android:gravity="center_vertical"
-                                    android:orientation="horizontal">
+                                    android:orientation="horizontal"
+                                    android:onClick="scriptureButtonClick">
 
                                     <ImageView
                                         android:id="@+id/presenter_scripture_image"

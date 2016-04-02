@@ -18,18 +18,25 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.io.File;
+import java.net.URL;
+import java.net.URLEncoder;
 
 public class PopUpCustomSlideFragment extends DialogFragment {
 
@@ -63,6 +70,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     static RadioButton noteRadioButton;
     static RadioButton slideRadioButton;
     static RadioButton imageRadioButton;
+    static RadioButton scriptureRadioButton;
     static TextView slideTitleTextView;
     static TextView slideContentTextView;
     static EditText slideTitleEditText;
@@ -77,13 +85,22 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     static TextView timeTextView;
     static EditText timeEditText;
     static TextView warningTextView;
+    static LinearLayout reusable_LinearLayout;
+    static LinearLayout searchBible_LinearLayout;
+    static RelativeLayout slideDetails_RelativeLayout;
+    static EditText bibleSearch;
+    static EditText bibleVersion;
+    static Button searchBibleGateway_Button;
+    static WebView bibleGateway_WebView;
+    static Button grabVerse_Button;
+    static ProgressBar searchBible_progressBar;
 
     // Declare variables used
     static String whattype = "note";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.options_song_edit));
+        getDialog().setTitle(getActivity().getResources().getString(R.string.add_custom_slide));
         V = inflater.inflate(R.layout.popup_customslidecreator, container, false);
 
         // Initialise the basic views
@@ -91,6 +108,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         noteRadioButton = (RadioButton) V.findViewById(R.id.noteRadioButton);
         slideRadioButton = (RadioButton) V.findViewById(R.id.slideRadioButton);
         imageRadioButton = (RadioButton) V.findViewById(R.id.imageRadioButton);
+        scriptureRadioButton = (RadioButton) V.findViewById(R.id.scriptureRadioButton);
         slideTitleTextView = (TextView) V.findViewById(R.id.slideTitleTextView);
         slideContentTextView = (TextView) V.findViewById(R.id.slideContentTextView);
         slideTitleEditText = (EditText) V.findViewById(R.id.slideTitleEditText);
@@ -105,6 +123,45 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         timeTextView = (TextView) V.findViewById(R.id.timeTextView);
         timeEditText = (EditText) V.findViewById(R.id.timeEditText);
         warningTextView = (TextView) V.findViewById(R.id.warningTextView);
+        reusable_LinearLayout = (LinearLayout) V.findViewById(R.id.reusable_LinearLayout);
+        searchBible_LinearLayout = (LinearLayout) V.findViewById(R.id.searchBible_LinearLayout);
+        slideDetails_RelativeLayout = (RelativeLayout) V.findViewById(R.id.slideDetails_RelativeLayout);
+        bibleSearch = (EditText) V.findViewById(R.id.bibleSearch);
+        bibleVersion = (EditText) V.findViewById(R.id.bibleVersion);
+        searchBibleGateway_Button = (Button) V.findViewById(R.id.searchBibleGateway_Button);
+        bibleGateway_WebView = (WebView) V.findViewById(R.id.bibleGateway_WebView);
+        grabVerse_Button = (Button) V.findViewById(R.id.grabVerse_Button);
+        grabVerse_Button.setVisibility(View.GONE);
+        searchBible_progressBar = (ProgressBar) V.findViewById(R.id.searchBible_progressBar);
+        searchBible_progressBar.setVisibility(View.GONE);
+        bibleGateway_WebView.setVisibility(View.GONE);
+        bibleGateway_WebView.getSettings().getJavaScriptEnabled();
+        bibleGateway_WebView.getSettings().setJavaScriptEnabled(true);
+        bibleGateway_WebView.getSettings().setDomStorageEnabled(true);
+        bibleGateway_WebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        bibleGateway_WebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+        });
+
+        grabVerse_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchBible_progressBar.setVisibility(View.VISIBLE);
+                bibleGateway_WebView.setVisibility(View.GONE);
+                grabVerse_Button.setVisibility(View.GONE);
+                BibleGateway.grabBibleText(getActivity().getApplicationContext(), bibleGateway_WebView.getUrl().toString());
+            }
+        });
+
+        searchBibleGateway_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchBible();
+            }
+        });
 
         if (FullscreenActivity.whattodo.contains("customreusable_")) {
             updateFields();
@@ -114,6 +171,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             FullscreenActivity.whattodo = "customnote";
             slideRadioButton.setChecked(false);
             imageRadioButton.setChecked(false);
+            scriptureRadioButton.setChecked(false);
             saveReusableCheckBox.setChecked(false);
             switchViewToNote();
         }
@@ -217,6 +275,8 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                     switchViewToNote();
                 } else if (slideRadioButton.isChecked()) {
                     switchViewToSlide();
+                } else if (scriptureRadioButton.isChecked()) {
+                    switchViewToScripture();
                 } else {
                     switchViewToImage();
                 }
@@ -233,7 +293,18 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 noteRadioButton.setChecked(true);
                 slideRadioButton.setChecked(false);
                 imageRadioButton.setChecked(false);
+                scriptureRadioButton.setChecked(false);
                 switchViewToNote();
+                slideTitleEditText.setText(FullscreenActivity.customslide_title);
+                slideContentEditText.setText(FullscreenActivity.customslide_content);
+                break;
+            case "customreusable_scripture":
+                // Fill in the details
+                noteRadioButton.setChecked(false);
+                slideRadioButton.setChecked(false);
+                imageRadioButton.setChecked(false);
+                scriptureRadioButton.setChecked(true);
+                switchViewToScripture();
                 slideTitleEditText.setText(FullscreenActivity.customslide_title);
                 slideContentEditText.setText(FullscreenActivity.customslide_content);
                 break;
@@ -242,6 +313,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 noteRadioButton.setChecked(false);
                 slideRadioButton.setChecked(true);
                 imageRadioButton.setChecked(false);
+                scriptureRadioButton.setChecked(false);
                 switchViewToSlide();
                 slideTitleEditText.setText(FullscreenActivity.customslide_title);
                 slideContentEditText.setText(FullscreenActivity.customslide_content);
@@ -257,6 +329,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 noteRadioButton.setChecked(false);
                 slideRadioButton.setChecked(false);
                 imageRadioButton.setChecked(true);
+                scriptureRadioButton.setChecked(false);
                 switchViewToImage();
                 slideTitleEditText.setText(FullscreenActivity.customslide_title);
                 slideContentEditText.setText("");
@@ -279,6 +352,10 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     public static void switchViewToNote() {
         whattype = "note";
         FullscreenActivity.whattodo ="customnote";
+        grabVerse_Button.setVisibility(View.GONE);
+        reusable_LinearLayout.setVisibility(View.VISIBLE);
+        searchBible_LinearLayout.setVisibility(View.GONE);
+        slideDetails_RelativeLayout.setVisibility(View.VISIBLE);
         addPageButton.setVisibility(View.GONE);
         slideContentEditText.setVisibility(View.VISIBLE);
         slideImageTable.setVisibility(View.GONE);
@@ -288,9 +365,32 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         warningTextView.setVisibility(View.GONE);
     }
 
+    public static void switchViewToScripture() {
+        whattype = "scripture";
+        grabVerse_Button.setVisibility(View.GONE);
+        searchBible_progressBar.setVisibility(View.GONE);
+        FullscreenActivity.whattodo ="customscripture";
+        reusable_LinearLayout.setVisibility(View.GONE);
+        searchBible_LinearLayout.setVisibility(View.VISIBLE);
+        slideDetails_RelativeLayout.setVisibility(View.GONE);
+        addPageButton.setVisibility(View.GONE);
+        slideContentEditText.setVisibility(View.VISIBLE);
+        slideImageTable.setVisibility(View.GONE);
+        loopCheckBox.setVisibility(View.GONE);
+        timeTextView.setVisibility(View.GONE);
+        timeEditText.setVisibility(View.GONE);
+        warningTextView.setVisibility(View.GONE);
+        bibleSearch.setVisibility(View.VISIBLE);
+        bibleVersion.setVisibility(View.VISIBLE);
+    }
+
     public static void switchViewToSlide() {
         whattype = "slide";
         FullscreenActivity.whattodo ="customslide";
+        grabVerse_Button.setVisibility(View.GONE);
+        reusable_LinearLayout.setVisibility(View.VISIBLE);
+        searchBible_LinearLayout.setVisibility(View.GONE);
+        slideDetails_RelativeLayout.setVisibility(View.VISIBLE);
         addPageButton.setVisibility(View.VISIBLE);
         slideContentEditText.setVisibility(View.VISIBLE);
         slideImageTable.setVisibility(View.GONE);
@@ -303,6 +403,10 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     public static void switchViewToImage() {
         whattype = "image";
         FullscreenActivity.whattodo ="customimage";
+        grabVerse_Button.setVisibility(View.GONE);
+        reusable_LinearLayout.setVisibility(View.VISIBLE);
+        searchBible_LinearLayout.setVisibility(View.GONE);
+        slideDetails_RelativeLayout.setVisibility(View.VISIBLE);
         addPageButton.setVisibility(View.VISIBLE);
         slideContentEditText.setVisibility(View.GONE);
         slideImageTable.setVisibility(View.VISIBLE);
@@ -332,14 +436,16 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             try {
                 String[] proj = { MediaStore.Images.Media.DATA };
                 cursor = getActivity().getContentResolver().query(uri,  proj, null, null, null);
-                int column_index = 0;
+                int column_index;
                 if (cursor != null) {
                     column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    try {
+                        cursor.moveToFirst();
+                        fullpath = cursor.getString(column_index);
+                    } catch (Exception e) {
+                    e.printStackTrace();
+                    }
                 }
-                try {
-                    cursor.moveToFirst();
-                    fullpath = cursor.getString(column_index);
-                } catch (Exception e) { }
 
             } finally {
                 if (cursor != null) {
@@ -355,6 +461,24 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 }
             }
         }
+    }
+
+    public void searchBible() {
+        // Prepare the search strings
+        grabVerse_Button.setVisibility(View.VISIBLE);
+        String whattosearch = bibleSearch.getText().toString();
+        String whatversion = bibleVersion.getText().toString();
+        try {
+            whattosearch = URLEncoder.encode(bibleSearch.getText().toString(), "UTF-8");
+            whatversion = URLEncoder.encode(bibleVersion.getText().toString(), "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //BibleGateway.grabBibleText(whattosearch, whatversion);
+        bibleGateway_WebView.getSettings().setJavaScriptEnabled(true);
+        String webaddress = "https://www.biblegateway.com/quicksearch/?quicksearch="+whattosearch+"&qs_version="+whatversion;
+        bibleGateway_WebView.loadUrl(webaddress);
+        bibleGateway_WebView.setVisibility(View.VISIBLE);
     }
 
     public void addRow(String fullpath) {
@@ -408,5 +532,17 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         row.addView(thumbnail);
         row.addView(delete);
         slideImageTable.addView(row);
+    }
+
+    public static void addScripture() {
+        if (!FullscreenActivity.scripture_title.equals("") && !FullscreenActivity.scripture_verse.equals("")) {
+            searchBible_progressBar.setVisibility(View.GONE);
+            grabVerse_Button.setVisibility(View.GONE);
+            slideTitleEditText.setText(FullscreenActivity.scripture_title);
+            slideContentEditText.setText(FullscreenActivity.scripture_verse);
+            reusable_LinearLayout.setVisibility(View.GONE);
+            searchBible_LinearLayout.setVisibility(View.GONE);
+            slideDetails_RelativeLayout.setVisibility(View.VISIBLE);
+        }
     }
 }

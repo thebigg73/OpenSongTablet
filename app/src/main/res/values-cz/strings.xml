@@ -475,5 +475,11 @@
 	<string name="cavaquinho">"Cavaquinho"</string>
 	<string name="banjo4">"Bendžo (4)"</string>
 	<string name="banjo5">"Bendžo (5)"</string>
+	<string name="commentline_scale">"Měřítko text komentáře"</string>
+	<string name="headingline_scale">"Měřítko textu záhlaví"</string>
+	<string name="bible_search">"Fráze nebo poezie vyhledávat"</string>
+	<string name="bible_translation">"Bible verze kód \n(např. NIV, MSG)"</string>
+	<string name="extract">"extrakt Text"</string>
+	<string name="search_biblegateway">"Vyhledávání BibleGateway.com"</string>
 
 </resources>

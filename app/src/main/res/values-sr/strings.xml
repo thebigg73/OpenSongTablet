@@ -524,5 +524,11 @@
     <string name="cavaquinho">"Cavakuinho"</string>
     <string name="banjo4">"Bendžo (4)"</string>
     <string name="banjo5">"Bendžo (5)"</string>
+    <string name="commentline_scale">"Veličinu komentar tekst"</string>
+    <string name="headingline_scale">"Scale tekst tarifni"</string>
+    <string name="bible_search">"Fraza ili stih za pretragu"</string>
+    <string name="bible_translation">"Biblija verzija kod \n(npr VBSR , MSG)"</string>
+    <string name="extract">"ekstrakt tekst"</string>
+    <string name="search_biblegateway">"Traži BibleGateway.com"</string>
 
 </resources>

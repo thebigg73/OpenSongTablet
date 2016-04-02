@@ -112,6 +112,12 @@ public class PopUpFileChooseFragment extends DialogFragment {
                 filechecks = null;
                 listimageslides();
                 break;
+
+            case "customscripture":
+                myTitle = getResources().getString(R.string.options_set_load) + " - " + getResources().getString(R.string.scripture);
+                filechecks = null;
+                listscriptures();
+                break;
         }
 
         TextView mTitle = (TextView) V.findViewById(R.id.fileChooserTitle);
@@ -169,6 +175,10 @@ public class PopUpFileChooseFragment extends DialogFragment {
                         mListener.loadCustomReusable();
                         break;
 
+                    case "customscripture":
+                        FullscreenActivity.customreusabletoload = "Scriptures/" + foundFiles[position];
+                        mListener.loadCustomReusable();
+                        break;
 
                 }
                 Preferences.savePreferences();
@@ -193,6 +203,12 @@ public class PopUpFileChooseFragment extends DialogFragment {
 
     public void listslides() {
         File location = new File(FullscreenActivity.homedir + "/Slides");
+        tempmyFiles = location.listFiles();
+        processfilelist();
+    }
+
+    public void listscriptures() {
+        File location = new File(FullscreenActivity.homedir + "/Scripture");
         tempmyFiles = location.listFiles();
         processfilelist();
     }

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<ScrollView
+    <ScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -40,6 +40,13 @@
                 android:id="@+id/imageRadioButton"
                 android:textSize="18sp" />
 
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scripture"
+                android:id="@+id/scriptureRadioButton"
+                android:textSize="18sp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,7 +60,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/presenter_box_blue"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:id="@+id/reusable_LinearLayout">
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -76,11 +84,101 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/presenter_box_blue"
+            android:layout_margin="8dp"
+            android:id="@+id/searchBible_LinearLayout">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bible_search"
+                        android:id="@+id/textView48"
+                        android:layout_margin="8dp" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/bibleSearch"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:inputType="text"
+                        android:textColorHint="#555"
+                        android:textColor="#000"
+                        android:hint="@string/bible_search" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bible_translation"
+                        android:id="@+id/textView49"
+                        android:layout_margin="8dp" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/bibleVersion"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:inputType="text"
+                        android:textColorHint="#555"
+                        android:textColor="#000"
+                        android:hint="@string/bible_translation" />
+                </TableRow>
+            </TableLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search_biblegateway"
+                android:id="@+id/searchBibleGateway_Button"
+                android:layout_gravity="center"
+                android:background="@drawable/grey_button"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="#fff" />
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/searchBible_progressBar"
+                android:layout_gravity="center_horizontal"
+                android:indeterminate="true" />
+
+            <WebView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/bibleGateway_WebView"
+                android:layout_margin="8dp"
+                android:minHeight="100dp" />
+
+        </LinearLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/presenter_box_black"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:id="@+id/slideDetails_RelativeLayout">
 
             <TextView
                 android:layout_width="match_parent"
@@ -245,4 +343,21 @@
 
     </LinearLayout>
 </ScrollView>
-    </RelativeLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/extract"
+        android:id="@+id/grabVerse_Button"
+        android:background="@drawable/red_button"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="false"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="32dp"
+        android:layout_centerVertical="true"
+        android:textColor="#fff" />
+
+</RelativeLayout>

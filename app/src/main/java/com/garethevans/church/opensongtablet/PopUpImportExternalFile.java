@@ -86,7 +86,12 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         FileInputStream inputStream;
 
-        String scheme = FullscreenActivity.file_uri.getScheme();
+        String scheme = "";
+        try {
+            scheme = FullscreenActivity.file_uri.getScheme();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         switch (scheme) {
             case "content":
@@ -157,7 +162,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         Log.d("d","file_location="+FullscreenActivity.file_location);
         Log.d("d","file_contents="+FullscreenActivity.file_contents);
         Log.d("d","file_type="+FullscreenActivity.file_type);
-        Log.d("d","scheme="+scheme);
+        Log.d("d", "scheme=" + scheme);
 
         if (FullscreenActivity.file_name.endsWith(".ost")) {
             // This is definitely a song
@@ -197,7 +202,9 @@ public class PopUpImportExternalFile extends DialogFragment {
             } else {
                 //have to copy instead
                 try {
-                    newFile.createNewFile();
+                    if (!newFile.createNewFile()) {
+                        Log.d("d","Error creating file");
+                    }
 
                     final RandomAccessFile file1 = new RandomAccessFile(importIt, "r");
                     final RandomAccessFile file2 = new RandomAccessFile(newFile, "rw");
@@ -214,7 +221,65 @@ public class PopUpImportExternalFile extends DialogFragment {
                 }
             }
 
+        } else if (Bible.isYouVersionScripture(FullscreenActivity.incoming_text)) {
+            // It is a scripture, so create the Scripture file
+            // Get the bible translation
+            Log.d("d","Bible true");
+            String translation = FullscreenActivity.scripture_title.substring(FullscreenActivity.scripture_title.lastIndexOf(" "));
+            String verses = FullscreenActivity.scripture_title.replace(translation, "");
+            // Since the scripture is one big line, split it up a little (50 chars max)
+            String[] scripture = FullscreenActivity.scripture.split(" ");
+            String scriptureline = "";
+            ArrayList<String> scripturearray = new ArrayList<>();
 
+            for (String aScripture : scripture) {
+                scriptureline = scriptureline + aScripture;
+                if (scriptureline.length() > 50) {
+                    scripturearray.add(scriptureline);
+                    scriptureline = "";
+                }
+            }
+            scripturearray.add(scriptureline);
+
+            // Convert the array back into one string separated by new lines
+            FullscreenActivity.scripture = "";
+            for (int x=0;x<scripturearray.size();x++) {
+                FullscreenActivity.scripture = FullscreenActivity.scripture + scripturearray.get(x) + "\n";
+            }
+
+            FullscreenActivity.scripture = FullscreenActivity.scripture.trim();
+
+            String text = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                    "<song>" +
+                    "  <title>"+verses+"</title>\n" +
+                    "  <author>"+translation+"</author>\n" +
+                    "  <user1></user1>\n" +
+                    "  <user2>false</user2>\n" +
+                    "  <user3></user3>\n" +
+                    "  <aka></aka>\n" +
+                    "  <key_line></key_line>\n" +
+                    "  <hymn_number></hymn_number>\n" +
+                    "  <lyrics>"+FullscreenActivity.scripture+"</lyrics>\n" +
+                    "</song>";
+
+            // Write the file
+            String filename = FullscreenActivity.homedir + "/" + "Scriptures/YouVerion";
+            File newfile = new File(filename);
+            newfile.mkdirs();
+
+            try {
+                FileOutputStream overWrite = new FileOutputStream(filename, false);
+                overWrite.write(text.getBytes());
+                overWrite.flush();
+                overWrite.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Alert the user that the Scripture has been written
+            FullscreenActivity.myToastMessage = getString(R.string.scripture) + " - " + getString(R.string.ok);
+            ShowToast.showToast(getActivity());
+            dismiss();
 
         } else {
 

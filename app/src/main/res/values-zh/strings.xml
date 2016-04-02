@@ -478,5 +478,11 @@
 	<string name="cavaquinho">"Cavaquinho"</string>
 	<string name="banjo4">"班卓琴 (4)"</string>
 	<string name="banjo5">"班卓琴 (5)"</string>
+	<string name="commentline_scale">"缩放注释文本"</string>
+	<string name="headingline_scale">"缩放标题文本"</string>
+	<string name="bible_search">"短语或诗句来搜索"</string>
+	<string name="bible_translation">"圣经版本代码\n（例如NIV，MSG）</string>
+	<string name="extract">"提取文本"</string>
+	<string name="search_biblegateway">"搜索BibleGateway.com"</string>
 
 </resources>
