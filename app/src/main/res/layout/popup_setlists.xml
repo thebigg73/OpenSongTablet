@@ -64,7 +64,7 @@
         android:layout_margin="12dp"
         android:layout_toLeftOf="@+id/listSetOkButton"
         android:layout_toStartOf="@+id/listSetOkButton"
-        android:background="@drawable/blue_button"
+        android:background="@drawable/red_button"
         android:text="@string/cancel"
         android:textColor="#fff" />
 

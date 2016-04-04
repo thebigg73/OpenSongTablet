@@ -477,7 +477,7 @@
 	<string name="commentline_scale">"Шкала текст комментария"</string>
 	<string name="headingline_scale">"Шкала текст заголовка"</string>
 	<string name="bible_search">"Фраза или стих для поиска"</string>
-	<string name="bible_translation">"Библия код версии \n(например, NIV, MSG)"</string>
+	<string name="bible_translation">"Библия код версии \n(например, NRT, ERV-RU)"</string>
 	<string name="extract">"Извлечь текст"</string>
 	<string name="search_biblegateway">"Поиск BibleGateway.com"</string>
 

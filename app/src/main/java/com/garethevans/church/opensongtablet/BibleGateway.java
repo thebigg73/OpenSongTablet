@@ -82,7 +82,6 @@ public class BibleGateway extends Activity{
                     ShowToast.showToast(context);
                 }
 
-                Log.d("d","result="+result);
                 // Get the title
                 int title_startpos = result.indexOf("<meta name=\"twitter:title\" content=\"")+36;
 

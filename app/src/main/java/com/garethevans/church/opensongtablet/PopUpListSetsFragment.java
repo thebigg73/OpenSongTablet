@@ -154,15 +154,14 @@ public class PopUpListSetsFragment extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the name of the set to do stuff with
                 // Since we can select multiple sets, check it isn't already in the setnamechosen field
-                Log.d("d","setnames[position] = "+setnames[position]);
                 if (!FullscreenActivity.setnamechosen.contains(setnames[position])) {
                     // Add it to the setnamechosen
                     FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen + setnames[position] + "%_%";
                 } else {
                     // Remove it from the setnamechosen
-                    FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen.replace(setnames[position]+"%_%", "");
+                    FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen.replace(setnames[position] + "%_%", "");
                 }
-                Log.d("d","setnamechosen = "+FullscreenActivity.setnamechosen);
+                Log.d("d", "setnamechosen = " + FullscreenActivity.setnamechosen);
 
                 setListName.setText(setnames[position]);
             }
@@ -181,6 +180,10 @@ public class PopUpListSetsFragment extends DialogFragment {
         listSetOkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (FullscreenActivity.setnamechosen.endsWith("%_%")) {
+                    FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen.substring(0,FullscreenActivity.setnamechosen.length()-3);
+                }
+
                 if (FullscreenActivity.whattodo.equals("loadset") && !FullscreenActivity.setnamechosen.isEmpty() && !FullscreenActivity.setnamechosen.equals("")) {
                     doLoadSet();
                 } else if (FullscreenActivity.whattodo.equals("saveset") && !setListName.getText().toString().trim().isEmpty() && !setListName.getText().toString().trim().equals("")) {
@@ -211,7 +214,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 break;
 
             case "deleteset":
-                adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_checked, setnames);
+                adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, setnames);
                 setListView1.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
                 break;
 
@@ -242,7 +245,9 @@ public class PopUpListSetsFragment extends DialogFragment {
                 Log.d("doLoadSet", "onDismissListener");
                 FullscreenActivity.abort = true;
                 try {
-                    dataTask.cancel(true);
+                    if (dataTask!=null) {
+                        dataTask.cancel(true);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -288,7 +293,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         // Popup the are you sure alert into another dialog fragment
         // Get the list of set lists to be deleted
         String setstodelete = FullscreenActivity.setnamechosen.replace("%_%",", ");
-        setstodelete = setstodelete.substring(0,setstodelete.length()-2);
+        setstodelete = setstodelete.substring(0, setstodelete.length() - 2);
 
         //String message = getResources().getString(R.string.options_set_delete) + " \"" + setListName.getText().toString().trim() + "\"?";
         String message = getResources().getString(R.string.options_set_delete) + " \"" + setstodelete + "\"?";

@@ -19,7 +19,6 @@ public class CreateNewSet extends Activity {
         tempdir = FullscreenActivity.whichSongFolder;
 
         // Only do this is the mSetList isn't empty
-        Log.d("d", "FullscreenActivity.mSetList=" + FullscreenActivity.mSetList);
         if (FullscreenActivity.mSetList!=null && FullscreenActivity.mSetList.length>0) {
             FullscreenActivity.newSetContents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                     + "<set name=\""
@@ -75,18 +74,22 @@ public class CreateNewSet extends Activity {
 
                     String[] mySlides = scripture_lyrics.split("_SPLITHERE_");
 
+                    String newname = songparts[1];
+                    if (FullscreenActivity.mAuthor!="") {
+                        newname = newname+"|"+FullscreenActivity.mAuthor;
+                    }
                     FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
                             + "  <slide_group type=\"scripture\" name=\""
-                            + songparts[1] + "|" + FullscreenActivity.mAuthor
+                            + newname
                             + "\" print=\"true\">\n"
                             + "    <title>" + songparts[1] + "</title>\n"
                             + "    <slides>\n";
 
-                    for (int w = 1; w < mySlides.length; w++) {
-                        if (mySlides[w] != null && mySlides[w].length() > 0) {
+                    for (String mySlide : mySlides) {
+                        if (mySlide != null && mySlide.length() > 0) {
                             FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
                                     + "      <slide>\n"
-                                    + "      <body>" + mySlides[w].trim() + "</body>\n"
+                                    + "      <body>" + mySlide.trim() + "</body>\n"
                                     + "      </slide>\n";
                         }
                     }

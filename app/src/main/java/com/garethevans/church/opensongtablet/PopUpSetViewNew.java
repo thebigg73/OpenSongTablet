@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -83,6 +86,15 @@ public class PopUpSetViewNew extends DialogFragment {
         helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(mRecyclerView);
 
+        ImageButton listSetTweetButton = (ImageButton) V.findViewById(R.id.listSetTweetButton);
+        // Set up the Tweet button
+        listSetTweetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doExportSetTweet();
+            }
+        });
+
         Button cancel = (Button) V.findViewById(R.id.setview_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +144,6 @@ public class PopUpSetViewNew extends DialogFragment {
         if (dialog != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
-
         return V;
     }
 
@@ -214,4 +225,27 @@ public class PopUpSetViewNew extends DialogFragment {
         mListener.loadSongFromSet();
     }
 
+    public void doExportSetTweet() {
+        // Add the set items
+        String setcontents = "";
+
+        for (String getItem:FullscreenActivity.mSetList) {
+            int songtitlepos = getItem.indexOf("/")+1;
+            getItem = getItem.substring(songtitlepos);
+            setcontents = setcontents + getItem +", ";
+        }
+
+        setcontents = setcontents.substring(0,setcontents.length()-2);
+
+        String tweet = setcontents;
+        try {
+            tweet = URLEncoder.encode("#OpenSongApp\n" + setcontents,"UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String tweetUrl = "https://twitter.com/intent/tweet?text=" + tweet;
+        Uri uri = Uri.parse(tweetUrl);
+        startActivity(new Intent(Intent.ACTION_VIEW, uri));
+    }
 }

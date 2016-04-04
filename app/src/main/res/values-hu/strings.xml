@@ -477,7 +477,7 @@
 	<string name="commentline_scale">"Scale a megjegyzés szövegét"</string>
 	<string name="headingline_scale">"Scale a fejlécszöveget"</string>
 	<string name="bible_search">"Kifejezést vagy verset keresni"</string>
-	<string name="bible_translation">"Biblia változat kód \n(pl NIV, MSG)"</string>
+	<string name="bible_translation">"Biblia változat kód \n(pl KAR, ERV-HU)"</string>
 	<string name="extract">"kivonat szöveget"</string>
 	<string name="search_biblegateway">"Keresés BibleGateway.com"</string>
 

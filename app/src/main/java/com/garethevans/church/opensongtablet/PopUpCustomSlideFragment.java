@@ -159,6 +159,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         searchBibleGateway_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                searchBible_progressBar.setVisibility(View.VISIBLE);
                 searchBible();
             }
         });
@@ -465,7 +466,6 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
     public void searchBible() {
         // Prepare the search strings
-        grabVerse_Button.setVisibility(View.VISIBLE);
         String whattosearch = bibleSearch.getText().toString();
         String whatversion = bibleVersion.getText().toString();
         try {
@@ -474,11 +474,19 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //BibleGateway.grabBibleText(whattosearch, whatversion);
         bibleGateway_WebView.getSettings().setJavaScriptEnabled(true);
         String webaddress = "https://www.biblegateway.com/quicksearch/?quicksearch="+whattosearch+"&qs_version="+whatversion;
         bibleGateway_WebView.loadUrl(webaddress);
         bibleGateway_WebView.setVisibility(View.VISIBLE);
+        bibleGateway_WebView.setWebViewClient(new WebViewClient() {
+
+            public void onPageFinished(WebView view, String url) {
+                searchBible_progressBar.setVisibility(View.GONE);
+                if (url.toString().contains("passage")) {
+                    grabVerse_Button.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 
     public void addRow(String fullpath) {

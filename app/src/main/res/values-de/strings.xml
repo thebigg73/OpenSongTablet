@@ -479,7 +479,7 @@
 	<string name="commentline_scale">"Skalieren Sie den Kommentartext"</string>
 	<string name="headingline_scale">"Skalieren Sie die Überschrift Text"</string>
 	<string name="bible_search">"Phrase oder Vers zu suchen"</string>
-	<string name="bible_translation">"Bibel Versionscode \n(zum Beispiel NIV, MSG)"</string>
+	<string name="bible_translation">"Bibel Versionscode \n(zum Beispiel HOF, NGU-DE)"</string>
 	<string name="extract">"Extrahieren von Text"</string>
 	<string name="search_biblegateway">"suchen BibleGateway.com"</string>
 

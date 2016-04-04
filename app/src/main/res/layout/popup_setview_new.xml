@@ -65,6 +65,16 @@
 
 
         <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/listSetTweetButton"
+            android:layout_margin="4dp"
+            android:src="@drawable/tweet"
+            android:background="@drawable/blue_button"
+            android:cropToPadding="false"
+            android:contentDescription="@string/exportsavedset" />
+
+        <ImageButton
             android:id="@+id/shuffle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -78,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
-            android:background="@drawable/blue_button"
+            android:background="@drawable/yellow_button"
             android:text="@string/cancel"
             android:textColor="#fff" />
 

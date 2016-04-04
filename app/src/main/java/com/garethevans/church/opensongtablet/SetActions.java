@@ -351,23 +351,25 @@ public class SetActions extends Activity {
     }
 
     public static void writeTempSlide(String where, String what) throws IOException {
-        File temp = new File(FullscreenActivity.dircustomnotes + "/" + custom_name);
+        // Fix the custom name so there are no illegal characters
+        what = what.replaceAll("[|?*<\":>+\\[\\]']", " ");
+        File temp = new File(FullscreenActivity.dircustomnotes + "/" + what);
         String set_item = "";
         Log.d("write","where="+where);
         Log.d("write","what="+what);
 
         if (where.equals(FullscreenActivity.text_scripture)) {
             temp = new File(FullscreenActivity.dirscriptureverses + "/" + what);
-            set_item = "$**_" + FullscreenActivity.scripture + "/" + scripture_title + "_**$";
+            set_item = "$**_" + FullscreenActivity.scripture + "/" + what + "_**$";
         } else if (where.equals(FullscreenActivity.text_slide)) {
-            set_item = "$**_" + FullscreenActivity.slide + "/" + custom_name + "_**$";
-            temp = new File(FullscreenActivity.dircustomslides + "/" + custom_name);
+            set_item = "$**_" + FullscreenActivity.slide + "/" + what + "_**$";
+            temp = new File(FullscreenActivity.dircustomslides + "/" + what);
         } else if (where.equals(FullscreenActivity.text_note)) {
-            set_item = "$**_" + FullscreenActivity.note + "/" + custom_name + "_**$";
-            temp = new File(FullscreenActivity.dircustomnotes + "/" + custom_name);
+            set_item = "$**_" + FullscreenActivity.note + "/" + what + "_**$";
+            temp = new File(FullscreenActivity.dircustomnotes + "/" + what);
         } else if (where.equals(FullscreenActivity.image)) {
-            set_item = "$**_" + FullscreenActivity.image + "/" + image_name + "_**$";
-            temp = new File(FullscreenActivity.dircustomimages + "/" + image_name);
+            set_item = "$**_" + FullscreenActivity.image + "/" + what + "_**$";
+            temp = new File(FullscreenActivity.dircustomimages + "/" + what);
         }
 
         FileOutputStream overWrite = new FileOutputStream(temp, false);
@@ -611,6 +613,9 @@ public class SetActions extends Activity {
                         image_type = ".jpg";
                     }
 
+                    Log.d("d","encodedimage="+encodedimage);
+                    Log.d("d","image_title="+image_title);
+                    Log.d("d","image_content="+image_content);
                     if (encodedimage) {
                         // Save this image content
                         File imgfile = new File(FullscreenActivity.dircustomimages + "/" + image_title + imagenums + image_type);

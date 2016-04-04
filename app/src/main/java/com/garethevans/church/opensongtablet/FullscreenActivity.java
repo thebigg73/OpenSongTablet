@@ -872,6 +872,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static File dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
     public static File dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
     public static File dircustomimages = new File(root.getAbsolutePath() + "/documents/OpenSong/Images/_cache");
+    public static File dirvariations = new File(root.getAbsolutePath() + "/documents/OpenSong/Variations");
 
     public static Locale locale;
 
@@ -1982,35 +1983,38 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         String reusablefilename;
         String templocator;
 
+        // Get rid of illegal characters
+        String filetitle = customslide_title.replaceAll("[|?*<\":>+\\[\\]']", " ");
+
         switch (noteorslide) {
             case "note":
-                filename = dircustomnotes + "/" + customslide_title;
-                reusablefilename = homedir + "/Notes/" + customslide_title;
+                filename = dircustomnotes + "/" + filetitle;
+                reusablefilename = homedir + "/Notes/" + filetitle;
                 templocator = note;
                 customimage_list = "";
                 break;
             case "slide":
-                filename = dircustomslides + "/" + customslide_title;
-                reusablefilename = homedir + "/Slides/" + customslide_title;
+                filename = dircustomslides + "/" + filetitle;
+                reusablefilename = homedir + "/Slides/" + filetitle;
                 templocator = slide;
                 customimage_list = "";
                 break;
             case "scripture":
-                filename = dirscriptureverses + "/" + customslide_title;
-                reusablefilename = dirscripture + "/" + customslide_title;
+                filename = dirscriptureverses + "/" + filetitle;
+                reusablefilename = dirscripture + "/" + filetitle;
                 templocator = text_scripture;
                 customreusable = false;
                 customimage_list = "";
                 break;
             default:
-                filename = dircustomimages + "/" + customslide_title;
-                reusablefilename = homedir + "/Images/" + customslide_title;
+                filename = dircustomimages + "/" + filetitle;
+                reusablefilename = homedir + "/Images/" + filetitle;
                 templocator = image;
                 break;
         }
 
         // If slide content is empty - put the title in
-        if (customslide_content.isEmpty() && !noteorslide.equals("image")) {
+        if ((customslide_content.isEmpty() || customslide_content.equals("")) && !noteorslide.equals("image")) {
             customslide_content = customslide_title;
         }
 
@@ -2059,7 +2063,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         }
 
         // Add to set
-        whatsongforsetwork = "$**_" + templocator + "/" + customslide_title + "_**$";
+        whatsongforsetwork = "$**_" + templocator + "/" + filetitle + "_**$";
 
         // Allow the song to be added, even if it is already there
         mySet = mySet + whatsongforsetwork;
@@ -2495,6 +2499,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         dirscriptureverses = new File(root.getAbsolutePath() + "/documents/OpenSong/Scripture/_cache");
         dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
         dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
+        dircustomimages = new File(root.getAbsolutePath() + "/documents/OpenSong/Images/_cache");
+        dirvariations = new File(root.getAbsolutePath() + "/documents/OpenSong/Variations");
 
         if (secStorage != null) {
             extStorCheck = new File(secStorage);
@@ -2514,6 +2520,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     dirscriptureverses = new File(root.getAbsolutePath() + "/documents/OpenSong/Scripture/_cache");
                     dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
                     dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
+                    dircustomimages = new File(root.getAbsolutePath() + "/documents/OpenSong/Images/_cache");
+                    dirvariations = new File(root.getAbsolutePath() + "/documents/OpenSong/Variations");
                 }
             }
         }
@@ -2538,6 +2546,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     dirscriptureverses = new File(root.getAbsolutePath() + "/OpenSong/Scripture/_cache");
                     dircustomslides = new File(root.getAbsolutePath() + "/OpenSong/Slides/_cache");
                     dircustomnotes = new File(root.getAbsolutePath() + "/OpenSong/Notes/_cache");
+                    dircustomimages = new File(root.getAbsolutePath() + "/OpenSong/Images/_cache");
+                    dirvariations = new File(root.getAbsolutePath() + "/OpenSong/Variations");
                 }
             }
         }
@@ -2577,6 +2587,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             StorageChooser.createDirectory(dircustomimages);
             StorageChooser.createDirectory(dircustomnotes);
             StorageChooser.createDirectory(dircustomslides);
+            StorageChooser.createDirectory(dirvariations);
 
             // Make sure the default files are there
             copyDefaultFiles();
@@ -5309,38 +5320,41 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                                     case "de":
                                         positionselected = 2;
                                         break;
-                                    case "en":
+                                    case "el":
                                         positionselected = 3;
                                         break;
-                                    case "es":
+                                    case "en":
                                         positionselected = 4;
                                         break;
-                                    case "fr":
+                                    case "es":
                                         positionselected = 5;
                                         break;
-                                    case "hu":
+                                    case "fr":
                                         positionselected = 6;
                                         break;
-                                    case "it":
+                                    case "hu":
                                         positionselected = 7;
                                         break;
-                                    case "ja":
+                                    case "it":
                                         positionselected = 8;
                                         break;
-                                    case "pl":
+                                    case "ja":
                                         positionselected = 9;
                                         break;
-                                    case "pt":
+                                    case "pl":
                                         positionselected = 10;
                                         break;
-                                    case "ru":
+                                    case "pt":
                                         positionselected = 11;
                                         break;
-                                    case "sr":
+                                    case "ru":
                                         positionselected = 12;
                                         break;
-                                    case "zh":
+                                    case "sr":
                                         positionselected = 13;
+                                        break;
+                                    case "zh":
+                                        positionselected = 14;
                                         break;
                                 }
                             }
@@ -5355,27 +5369,29 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                                                 tempLanguage = "cz";
                                             } else if (arg1 == 2) { //de
                                                 tempLanguage = "de";
-                                            } else if (arg1 == 3) { //en
+                                            } else if (arg1 == 3) { //el
+                                                tempLanguage = "el";
+                                            } else if (arg1 == 4) { //en
                                                 tempLanguage = "en";
-                                            } else if (arg1 == 4) { //es
+                                            } else if (arg1 == 5) { //es
                                                 tempLanguage = "es";
-                                            } else if (arg1 == 5) { //fr
+                                            } else if (arg1 == 6) { //fr
                                                 tempLanguage = "fr";
-                                            } else if (arg1 == 6) { //hu
+                                            } else if (arg1 == 7) { //hu
                                                 tempLanguage = "hu";
-                                            } else if (arg1 == 7) { //it
+                                            } else if (arg1 == 8) { //it
                                                 tempLanguage = "it";
-                                            } else if (arg1 == 8) { //ja
+                                            } else if (arg1 == 9) { //ja
                                                 tempLanguage = "ja";
-                                            } else if (arg1 == 9) { //pl
+                                            } else if (arg1 == 10) { //pl
                                                 tempLanguage = "pl";
-                                            } else if (arg1 == 10) { //pt
+                                            } else if (arg1 == 11) { //pt
                                                 tempLanguage = "pt";
-                                            } else if (arg1 == 11) { //ru
+                                            } else if (arg1 == 12) { //ru
                                                 tempLanguage = "ru";
-                                            } else if (arg1 == 12) { //sr
+                                            } else if (arg1 == 13) { //sr
                                                 tempLanguage = "sr";
-                                            } else if (arg1 == 13) { //zh
+                                            } else if (arg1 == 14) { //zh
                                                 tempLanguage = "zh";
                                             }
                                         }
@@ -5669,7 +5685,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     // Need to scroll down first
                     DisplayMetrics metrics = new DisplayMetrics();
                     getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                    scrollpage.smoothScrollBy(0, (int) (0.9 * metrics.heightPixels));
+                    scrollpage.smoothScrollBy(0, (int) (0.75 * metrics.heightPixels));
 
                     // Set a runnable to check the scroll position after 1 second
                     delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
@@ -5749,7 +5765,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     // Need to scroll up first
                     DisplayMetrics metrics = new DisplayMetrics();
                     getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                    scrollpage.smoothScrollBy(0, (int) (-0.9 * metrics.heightPixels));
+                    scrollpage.smoothScrollBy(0, (int) (-0.75 * metrics.heightPixels));
 
                     // Set a runnable to check the scroll position after 1 second
                     delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
@@ -5813,7 +5829,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             // Scroll the screen up
             DisplayMetrics metrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            scrollpage.smoothScrollBy(0, (int) (-0.9 * metrics.heightPixels));
+            scrollpage.smoothScrollBy(0, (int) (-0.75 * metrics.heightPixels));
             // Set a runnable to check the scroll position after 1 second
             delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
 
@@ -5834,7 +5850,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             // Scroll the screen up
             DisplayMetrics metrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            scrollpage.smoothScrollBy(0, (int) (0.9 * metrics.heightPixels));
+            scrollpage.smoothScrollBy(0, (int) (0.75 * metrics.heightPixels));
             // Set a runnable to check the scroll position after 1 second
             delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
 
@@ -5969,7 +5985,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        scrollpage.smoothScrollBy(0, (int) (-0.9 * metrics.heightPixels));
+        scrollpage.smoothScrollBy(0, (int) (-0.75 * metrics.heightPixels));
         // Set a runnable to check the scroll position after 1 second
         delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
         toggleActionBar();
@@ -5982,7 +5998,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        scrollpage.smoothScrollBy(0, (int) (+0.9 * metrics.heightPixels));
+        scrollpage.smoothScrollBy(0, (int) (+0.75 * metrics.heightPixels));
         // Set a runnable to check the scroll position after 1 second
         delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
         toggleActionBar();

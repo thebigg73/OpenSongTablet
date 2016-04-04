@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="customise_set_item">Customise a set item</string>
+    <string name="variation">Variation</string>
+    <string name="variation_edit">This item can be edited.  The original will be unaffected.</string>
+
     <string name="bible_search">Phrase or verse to search</string>
     <string name="bible_translation">Bible version code (e.g. NIV, MSG)</string>
     <string name="commentline_scale">Scale comment text</string>
@@ -146,6 +150,7 @@
         <item>(af) Afrikaans</item>
         <item>(cz) český</item>
         <item>(de) Deutsch</item>
+        <item>(el) ελληνικά</item>
         <item>(en) English</item>
         <item>(es) español</item>
         <item>(fr) français</item>
