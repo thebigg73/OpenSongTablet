@@ -6886,6 +6886,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 e.printStackTrace();
             }
 
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 // Capable of pdf rendering
                 // PdfRenderer enables rendering a PDF document

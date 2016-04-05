@@ -37,7 +37,6 @@ public class AudioGenerator {
 
 	@SuppressWarnings("deprecation")
 	public void createPlayer(){
-		//FIXME sometimes audioTrack isn't initialized
 		boolean isready = false;
 
         try {
