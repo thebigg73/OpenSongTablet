@@ -481,7 +481,6 @@
 	<string name="extract">"kivonat szöveget"</string>
 	<string name="search_biblegateway">"Keresés BibleGateway.com"</string>
 	<string name="customise_set_item">"Készíts egy sor tételváltozat"</string>
-	<string name="customise_set_item">"Készíts egy sor tételváltozat"</string>
 	<string name="select_item_variation">"Válassza ki a dalt, hogy hozzon létre egy sor variáció"</string>
 	<string name="variation_edit">"Ez az elem lehet szerkeszteni. Az eredeti nem lesz hatással."</string>
 	<string name="variation">"Variáció"</string>

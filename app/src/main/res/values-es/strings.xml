@@ -481,7 +481,6 @@
 	<string name="extract">"Extrae el texto"</string>
 	<string name="search_biblegateway">"Buscar BibleGateway.com"</string>
 	<string name="customise_set_item">"Hacer una variación elemento de conjunto"</string>
-	<string name="customise_set_item">"Hacer una variación elemento de conjunto"</string>
 	<string name="select_item_variation">"Seleccione la canción para crear una variación conjunto"</string>
 	<string name="variation_edit">"Este elemento puede ser editado. El original no se verá afectado."</string>
 	<string name="variation">"Variación"</string>

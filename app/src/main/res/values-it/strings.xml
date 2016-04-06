@@ -481,7 +481,6 @@
 	<string name="extract">"il testo estratto"</string>
 	<string name="search_biblegateway">"Ricerca BibleGateway.com"</string>
 	<string name="customise_set_item">"Fare una variazione voce insieme"</string>
-	<string name="customise_set_item">"Fare una variazione voce insieme"</string>
 	<string name="select_item_variation">"Selezionare il brano per creare una variazione set"</string>
 	<string name="variation_edit">"Questo elemento può essere modificato. L\'originale sarà inalterato."</string>
 	<string name="variation">"Variazione"</string>
