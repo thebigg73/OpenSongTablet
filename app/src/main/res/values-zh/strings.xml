@@ -484,5 +484,6 @@
 	<string name="bible_translation">"圣经版本代码\n（例如CCB，CNVS）"</string>
 	<string name="extract">"提取文本"</string>
 	<string name="search_biblegateway">"搜索BibleGateway.com"</string>
+	<string name="customise_set_item">"制定一套项变化"</string>
 
 </resources>

@@ -480,5 +480,6 @@
 	<string name="bible_translation">"Bybel weergawe-kode \n(bv NIV, MSG)"</string>
 	<string name="extract">"uittreksel teks"</string>
 	<string name="search_biblegateway">"Soek BibleGateway.com"</string>
+	<string name="customise_set_item">"Maak \'n stel item variasie"</string>
 
 </resources>

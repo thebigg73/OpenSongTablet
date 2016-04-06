@@ -480,5 +480,6 @@
 	<string name="bible_translation">"Библия код версии \n(например, NRT, ERV-RU)"</string>
 	<string name="extract">"Извлечь текст"</string>
 	<string name="search_biblegateway">"Поиск BibleGateway.com"</string>
+	<string name="customise_set_item">"Сделать изменение набора элемента"</string>
 
 </resources>

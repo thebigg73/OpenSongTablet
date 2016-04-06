@@ -481,5 +481,6 @@
 	<string name="bible_translation">"Bible verze kód \n(např. NIV, MSG)"</string>
 	<string name="extract">"extrakt Text"</string>
 	<string name="search_biblegateway">"Vyhledávání BibleGateway.com"</string>
+	<string name="customise_set_item">"Udělejte variaci set položek"</string>
 
 </resources>

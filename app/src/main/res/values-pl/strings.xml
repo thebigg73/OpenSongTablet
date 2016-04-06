@@ -480,5 +480,6 @@
 	<string name="bible_translation">"Kod wersji Biblii\n(np NP, UBG)"</string>
 	<string name="extract">"tekst Extract"</string>
 	<string name="search_biblegateway">"Szukaj BibleGateway.com"</string>
+	<string name="customise_set_item">"Bądź odmianę zestaw artykuł"</string>
 
 </resources>

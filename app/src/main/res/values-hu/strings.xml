@@ -480,5 +480,6 @@
 	<string name="bible_translation">"Biblia változat kód \n(pl KAR, ERV-HU)"</string>
 	<string name="extract">"kivonat szöveget"</string>
 	<string name="search_biblegateway">"Keresés BibleGateway.com"</string>
+	<string name="customise_set_item">"Készíts egy sor tételváltozat"</string>
 
 </resources>

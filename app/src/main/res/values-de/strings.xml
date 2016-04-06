@@ -482,5 +482,6 @@
 	<string name="bible_translation">"Bibel Übersetzungscode \n(zum Beispiel HOF, NGU-DE)"</string>
 	<string name="extract">"Text extrahieren"</string>
 	<string name="search_biblegateway">"Auf BibleGateway.com suchen"</string>
+	<string name="customise_set_item">"Machen Sie eine Reihe Artikel Variation"</string>
 
 </resources>

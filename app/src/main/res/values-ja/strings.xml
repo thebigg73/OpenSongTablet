@@ -479,5 +479,6 @@
 	<string name="bible_translation">"聖書のバージョンコード\n（例えばNIV、MSG）"</string>
 	<string name="extract">"抽出テキスト"</string>
 	<string name="search_biblegateway">"BibleGateway.comを検索"</string>
+	<string name="customise_set_item">"設定項目の変動を作ります"</string>
 
 </resources>

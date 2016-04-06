@@ -530,5 +530,6 @@
     <string name="bible_translation">"Verzija biblijskog koda\n(npr. ERV-SR)"</string>
     <string name="extract">"Izvući tekst"</string>
     <string name="search_biblegateway">"Pretraga BibleGateway.com (Engleski)"</string>
+    <string name="customise_set_item">"Napravite varijaciju set stavke"</string>
 
 </resources>

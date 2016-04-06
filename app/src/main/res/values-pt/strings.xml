@@ -480,5 +480,6 @@
 	<string name="bible_translation">"Bíblia código de versão\n(por exemplo, ARC, OL)"</string>
 	<string name="extract">"Extrair texto"</string>
 	<string name="search_biblegateway">"Pesquisar BibleGateway.com"</string>
+	<string name="customise_set_item">"Faça uma variação item de conjunto"</string>
 
 </resources>
