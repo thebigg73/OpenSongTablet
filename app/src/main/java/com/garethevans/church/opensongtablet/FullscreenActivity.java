@@ -746,6 +746,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String error_missingsection = "";
     public static String set_loading = "";
     public static String set_processing = "";
+    public static String variation_edit = "";
 
     public static String tag_verse = "";
     public static String tag_chorus = "";
@@ -917,6 +918,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         // Load up the translations
+        variation_edit = getResources().getString(R.string.variation_edit);
         set_loading = getResources().getString(R.string.set_loading);
         set_processing = getResources().getString(R.string.set_processing);
         set = getResources().getString(R.string.options_set);
@@ -2028,7 +2030,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         mynewXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         mynewXML += "<song>\n";
         mynewXML += "  <title>" + customslide_title + "</title>\n";
-        mynewXML += "  <author> </author>\n";
+        mynewXML += "  <author></author>\n";
         mynewXML += "  <user1>" + customimage_time + "</user1>\n";  // This is used for auto advance time
         mynewXML += "  <user2>" + customimage_loop + "</user2>\n";  // This is used for loop on or off
         mynewXML += "  <user3>" + customimage_list + "</user3>\n";  // This is used as links to a background images
@@ -2088,7 +2090,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         mDrawerLayout.closeDrawer(expListViewOption);
         mDrawerLayout.closeDrawer(expListViewSong);
 
-
         // Hide the menus - 1 second after opening the Option menu,
         // close it (1000ms total)
         Handler optionMenuFlickClosed = new Handler();
@@ -2099,7 +2100,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 setlisticon.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pulse));
             }
         }, 1000);
-
     }
 
     @Override
@@ -2123,6 +2123,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
     @Override
     public void shuffleSongsInSet() {
+        SetActions.indexSongInSet();
         newFragment = PopUpSetViewNew.newInstance();
         newFragment.show(getFragmentManager(), "dialog");
     }

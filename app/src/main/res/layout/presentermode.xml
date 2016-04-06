@@ -124,13 +124,28 @@
                         android:background="@drawable/presenter_box_red"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/presenter_set"
+                        <LinearLayout
+                            android:orientation="horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/currentset"
-                            android:textColor="#ff0"
-                            android:textSize="14sp" />
+                            android:id="@+id/presenter_set_title">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/setlisticon_ImageView"
+                                android:src="@drawable/setlist"
+                                android:contentDescription="@string/currentset" />
+
+                            <TextView
+                                android:id="@+id/presenter_set"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/currentset"
+                                android:textColor="#ff0"
+                                android:textSize="14sp"
+                                android:layout_gravity="center_vertical" />
+                        </LinearLayout>
 
                         <ScrollView
                             android:id="@+id/presenter_setbuttons"

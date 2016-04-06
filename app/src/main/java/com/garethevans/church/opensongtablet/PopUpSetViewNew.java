@@ -301,10 +301,10 @@ public class PopUpSetViewNew extends DialogFragment {
         // Fix the song name and folder for loading
         FullscreenActivity.songfilename = newsongname;
         FullscreenActivity.whichSongFolder = "../Variations";
-        FullscreenActivity.whatsongforsetwork = "\"$**_"+FullscreenActivity.text_variation+"/"+newsongname+"_**$";
+        FullscreenActivity.whatsongforsetwork = "\"$**_**"+FullscreenActivity.text_variation+"/"+newsongname+"_**$";
 
         // Replace the set item with the variation item
-        FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet] = FullscreenActivity.text_variation+"/"+newsongname;
+        FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet] = "**"+FullscreenActivity.text_variation+"/"+newsongname;
         // Rebuild the mySet variable
         String new_mySet = "";
         for (String thisitem:FullscreenActivity.mSetList) {
@@ -312,6 +312,7 @@ public class PopUpSetViewNew extends DialogFragment {
         }
         FullscreenActivity.mySet = new_mySet;
 
+        FullscreenActivity.myToastMessage = FullscreenActivity.variation_edit;
         // Now load the new variation item up
         loadSong();
     }

@@ -48,6 +48,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -178,6 +179,8 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
     CheckBox presenter_order_view;
 
     // Set buttons
+    LinearLayout presenter_set_title;
+    ImageView setlisticon_ImageView;
     ScrollView presenter_set_buttons;
     LinearLayout presenter_set_buttonsListView;
     static Button newSetButton;
@@ -359,6 +362,18 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         });
 
         // Set buttons
+        presenter_set_title = (LinearLayout) findViewById(R.id.presenter_set_title);
+        presenter_set_title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Edit current set
+                mDrawerLayout.closeDrawer(expListViewOption);
+                FullscreenActivity.whattodo = "editset";
+                newFragment = PopUpSetViewNew.newInstance();
+                newFragment.show(getFragmentManager(), "dialog");
+            }
+        });
+        setlisticon_ImageView = (ImageView) findViewById(R.id.setlisticon_ImageView);
         presenter_set_buttons = (ScrollView) findViewById(R.id.presenter_setbuttons);
         presenter_set_buttonsListView = (LinearLayout) findViewById(R.id.presenter_set_buttonsListView);
         presenter_set_buttons.setScrollbarFadingEnabled(false);
@@ -534,7 +549,8 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                     SetActions.prepareSetList();
                     setupSetButtons();
                     prepareOptionMenu();
-                    mDrawerLayout.openDrawer(expListViewOption);
+                    //mDrawerLayout.openDrawer(expListViewOption);
+                    setlisticon_ImageView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pulse));
                     mDrawerLayout.closeDrawer(expListViewSong);
                     expListViewOption.expandGroup(0);
 
@@ -647,9 +663,9 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         options_set.add(getResources().getString(R.string.options_set_clear));
         options_set.add(getResources().getString(R.string.options_set_delete));
         options_set.add(getResources().getString(R.string.options_set_export));
-        options_set.add(getResources().getString(R.string.add_custom_slide).toUpperCase(FullscreenActivity.locale));
+        options_set.add(getResources().getString(R.string.add_custom_slide));
         options_set.add(getResources().getString(R.string.options_set_edit));
-        options_set.add("");
+        options_set.add(getResources().getString(R.string.customise_set_item));
 
         // Parse the saved set
         FullscreenActivity.mySet = FullscreenActivity.mySet.replace("_**$$**_", "_**$%%%$**_");
@@ -663,9 +679,12 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         for (int r = 0; r < FullscreenActivity.mSetList.length; r++) {
             FullscreenActivity.mSetList[r] = FullscreenActivity.mSetList[r].replace("$**_", "");
             FullscreenActivity.mSetList[r] = FullscreenActivity.mSetList[r].replace("_**$", "");
+/*
             if (!FullscreenActivity.mSetList[r].isEmpty()) {
+
                 options_set.add(FullscreenActivity.mSetList[r]);
             }
+*/
         }
 
         List<String> options_song = new ArrayList<>();
@@ -703,6 +722,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             }
         });
 
+/*
         // Listen for long clicks on songs in current set to remove them
         expListViewOption.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -756,6 +776,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                 return false;
             }
         });
+*/
 
         // Listview on child click listener
         expListViewOption.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -824,9 +845,14 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                             newFragment.show(getFragmentManager(), "dialog");
 
                         } else if (childPosition == 7) {
-                            // Blank entry
-                            Log.d("set","blank line");
+                            // Create a set item variation
+                            mDrawerLayout.closeDrawer(expListViewOption);
+                            FullscreenActivity.whattodo = "setitemvariation";
+                            newFragment = PopUpSetViewNew.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
 
+                        }
+/*
                         } else {
                             // Load song in set
                             FullscreenActivity.setView = "Y";
@@ -855,6 +881,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                             which_song_to_click.performClick();
 
                         }
+*/
 
                     } else if (chosenMenu.equals(getResources().getString(R.string.options_song))) {
                         linkclicked = listDataChildOption.get(listDataHeaderOption.get(groupPosition)).get(childPosition);
@@ -1244,24 +1271,58 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
 
         // If the folder length isn't 0, it is a folder
         // Decide if it is a song, scripture, slide, image or note and get the actual file location
-        if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
+        if (songpart[0].length() > 0 &&
+                !songpart[0].contains("**"+FullscreenActivity.image) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_scripture) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_note)) {
             FullscreenActivity.whichSongFolder = songpart[0];
 
-        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
+        } else if (songpart[0].length() > 0 &&
+                !songpart[0].contains("**"+FullscreenActivity.image) &&
+                songpart[0].contains("**"+FullscreenActivity.text_scripture) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_note)) {
             FullscreenActivity.whichSongFolder = "../Scripture/_cache";
             songpart[0] = "../Scripture/_cache";
 
-        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.scripture) && songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
+        } else if (songpart[0].length() > 0 &&
+                !songpart[0].contains("**"+FullscreenActivity.image) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_scripture) &&
+                songpart[0].contains("**"+FullscreenActivity.text_slide) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_note)) {
             FullscreenActivity.whichSongFolder = "../Slides/_cache";
             songpart[0] = "../Slides/_cache";
 
-        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && songpart[0].contains(FullscreenActivity.note)) {
+        } else if (songpart[0].length() > 0 &&
+                !songpart[0].contains("**"+FullscreenActivity.image) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_scripture) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
+                songpart[0].contains("**"+FullscreenActivity.text_note)) {
             FullscreenActivity.whichSongFolder = "../Notes/_cache";
             songpart[0] = "../Notes/_cache";
 
-        } else if (songpart[0].length() > 0 && songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
+        } else if (songpart[0].length() > 0 &&
+                songpart[0].contains("**"+FullscreenActivity.image) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_scripture) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_note)) {
             FullscreenActivity.whichSongFolder = "../Images/_cache";
             songpart[0] = "../Images/_cache";
+
+        } else if (songpart[0].length() > 0 &&
+                !songpart[0].contains("**"+FullscreenActivity.image) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_scripture) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
+                songpart[0].contains("**"+FullscreenActivity.text_variation) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_note)) {
+            FullscreenActivity.whichSongFolder = "../Variations";
+            songpart[0] = "../Variations";
 
         } else {
             FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
@@ -1347,29 +1408,32 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         String reusablefilename;
         String templocator;
 
+        // Get rid of illegal characters
+        String filetitle = FullscreenActivity.customslide_title.replaceAll("[|?*<\":>+\\[\\]']", " ");
+
         switch (FullscreenActivity.noteorslide) {
             case "note":
-                filename = FullscreenActivity.dircustomnotes + "/" + FullscreenActivity.customslide_title;
-                reusablefilename = FullscreenActivity.homedir + "/Notes/" + FullscreenActivity.customslide_title;
-                templocator = FullscreenActivity.note;
+                filename = FullscreenActivity.dircustomnotes + "/" + filetitle;
+                reusablefilename = FullscreenActivity.homedir + "/Notes/" + filetitle;
+                templocator = FullscreenActivity.text_note;
                 FullscreenActivity.customimage_list = "";
                 break;
             case "slide":
-                filename = FullscreenActivity.dircustomslides + "/" + FullscreenActivity.customslide_title;
-                reusablefilename = FullscreenActivity.homedir + "/Slides/" + FullscreenActivity.customslide_title;
-                templocator = FullscreenActivity.slide;
+                filename = FullscreenActivity.dircustomslides + "/" + filetitle;
+                reusablefilename = FullscreenActivity.homedir + "/Slides/" + filetitle;
+                templocator = FullscreenActivity.text_slide;
                 FullscreenActivity.customimage_list = "";
                 break;
             case "scripture":
-                filename = FullscreenActivity.dirscriptureverses + "/" + FullscreenActivity.customslide_title;
-                reusablefilename = FullscreenActivity.homedir + "/Scripture/" + FullscreenActivity.customslide_title;
-                FullscreenActivity.customreusable = false;
+                filename = FullscreenActivity.dirscriptureverses + "/" + filetitle;
+                reusablefilename = FullscreenActivity.dirscripture + "/" + filetitle;
                 templocator = FullscreenActivity.text_scripture;
+                FullscreenActivity.customreusable = false;
                 FullscreenActivity.customimage_list = "";
                 break;
             default:
-                filename = FullscreenActivity.dircustomimages + "/" + FullscreenActivity.customslide_title;
-                reusablefilename = FullscreenActivity.homedir + "/Images/" + FullscreenActivity.customslide_title;
+                filename = FullscreenActivity.dircustomimages + "/" + filetitle;
+                reusablefilename = FullscreenActivity.homedir + "/Images/" + filetitle;
                 templocator = FullscreenActivity.image;
                 break;
         }
@@ -1424,7 +1488,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         }
 
         // Add to set
-        FullscreenActivity.whatsongforsetwork = "$**_" + templocator + "/" + FullscreenActivity.customslide_title + "_**$";
+        FullscreenActivity.whatsongforsetwork = "$**_**" + templocator + "/" + FullscreenActivity.customslide_title + "_**$";
 
         // Allow the song to be added, even if it is already there
         FullscreenActivity.mySet = FullscreenActivity.mySet + FullscreenActivity.whatsongforsetwork;
@@ -1440,8 +1504,10 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         SetActions.prepareSetList();
         invalidateOptionsMenu();
         prepareOptionMenu();
-        mDrawerLayout.openDrawer(expListViewOption);
-        expListViewOption.expandGroup(0);
+        //mDrawerLayout.openDrawer(expListViewOption);
+        setlisticon_ImageView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pulse));
+
+        //expListViewOption.expandGroup(0);
 
         // Hide the menus - 1 second after opening the Option menu,
         // close it (1000ms total)
@@ -1587,6 +1653,10 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             FullscreenActivity.whatsongforsetwork = FullscreenActivity.mSetList[whichsonginset];
 
             tempSongLocation = FullscreenActivity.mSetList[whichviewSetSection];
+            Log.d("d","tempSongLocation="+tempSongLocation);
+            Log.d("d","indexSongInSet="+FullscreenActivity.indexSongInSet);
+            Log.d("d","whatsongforsetwork="+FullscreenActivity.whatsongforsetwork);
+
             FullscreenActivity.setView = "Y";
             FullscreenActivity.indexSongInSet = whichviewSetSection;
             if (whichviewSetSection < 1) {
@@ -1950,14 +2020,18 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             tempfiletosearch = FullscreenActivity.songfilename;
         }
 
+        Log.d("d", "tempfiletosearch=" + tempfiletosearch);
+
         if (tempfiletosearch.contains("../Scripture/_cache/")) {
-            tempfiletosearch = tempfiletosearch.replace("../Scripture/_cache/",FullscreenActivity.scripture+"/");
+            tempfiletosearch = tempfiletosearch.replace("../Scripture/_cache/","**"+FullscreenActivity.text_scripture+"/");
         } else if (tempfiletosearch.contains("../Slides/_cache/")) {
-            tempfiletosearch = tempfiletosearch.replace("../Slides/_cache/",FullscreenActivity.slide+"/");
+            tempfiletosearch = tempfiletosearch.replace("../Slides/_cache/","**"+FullscreenActivity.text_slide+"/");
         } else if (tempfiletosearch.contains("../Notes/_cache/")) {
-            tempfiletosearch = tempfiletosearch.replace("../Notes/_cache/",FullscreenActivity.note+"/");
+            tempfiletosearch = tempfiletosearch.replace("../Notes/_cache/","**"+FullscreenActivity.text_note+"/");
+        } else if (tempfiletosearch.contains("../Variations/")) {
+            tempfiletosearch = tempfiletosearch.replace("../Variations/","**"+FullscreenActivity.text_variation+"/");
         } else if (tempfiletosearch.contains("../Images/_cache/")) {
-            tempfiletosearch = tempfiletosearch.replace("../Images/_cache/",FullscreenActivity.image+"/");
+            tempfiletosearch = tempfiletosearch.replace("../Images/_cache/","**"+FullscreenActivity.image+"/");
         }
         whichsonginset = -1;
 
@@ -2037,24 +2111,58 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         String[] songpart = FullscreenActivity.linkclicked.split("/");
 
         // If the folder length isn't 0, it is a folder
-        if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
+        if (songpart[0].length() > 0 &&
+                !songpart[0].contains("**"+FullscreenActivity.image) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_scripture) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_note)) {
             FullscreenActivity.whichSongFolder = songpart[0];
 
-        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && songpart[0].contains(FullscreenActivity.scripture) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note)) {
+        } else if (songpart[0].length() > 0 &&
+                !songpart[0].contains("**"+FullscreenActivity.image) &&
+                songpart[0].contains("**"+FullscreenActivity.text_scripture) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_note)) {
             FullscreenActivity.whichSongFolder = "../Scripture/_cache";
             songpart[0] = "../Scripture/_cache";
 
-        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.note) && !songpart[0].contains(FullscreenActivity.scripture)) {
+        } else if (songpart[0].length() > 0 &&
+                !songpart[0].contains("**"+FullscreenActivity.image) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_scripture) &&
+                songpart[0].contains("**"+FullscreenActivity.text_slide) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_note)) {
             FullscreenActivity.whichSongFolder = "../Slides/_cache";
             songpart[0] = "../Slides/_cache";
 
-        } else if (songpart[0].length() > 0 && !songpart[0].contains(FullscreenActivity.image) && songpart[0].contains(FullscreenActivity.note) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.scripture)) {
+        } else if (songpart[0].length() > 0 &&
+                !songpart[0].contains("**"+FullscreenActivity.image) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_scripture) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
+                songpart[0].contains("**"+FullscreenActivity.text_note)) {
             FullscreenActivity.whichSongFolder = "../Notes/_cache";
             songpart[0] = "../Notes/_cache";
 
-        } else if (songpart[0].length() > 0 && songpart[0].contains(FullscreenActivity.image) && !songpart[0].contains(FullscreenActivity.note) && !songpart[0].contains(FullscreenActivity.slide) && !songpart[0].contains(FullscreenActivity.scripture)) {
+        } else if (songpart[0].length() > 0 &&
+                songpart[0].contains("**"+FullscreenActivity.image) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_scripture) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_note)) {
             FullscreenActivity.whichSongFolder = "../Images/_cache";
             songpart[0] = "../Images/_cache";
+
+        } else if (songpart[0].length() > 0 &&
+                !songpart[0].contains("**"+FullscreenActivity.image) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_scripture) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
+                songpart[0].contains("**"+FullscreenActivity.text_variation) &&
+                !songpart[0].contains("**"+FullscreenActivity.text_note)) {
+            FullscreenActivity.whichSongFolder = "../Variations";
+            songpart[0] = "../Variations";
 
         } else {
             FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
@@ -2226,7 +2334,9 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                 return true;
 
             case R.id.set_add:
-                mDrawerLayout.openDrawer(expListViewOption);
+                //mDrawerLayout.openDrawer(expListViewOption);
+                setlisticon_ImageView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pulse));
+
                 if (FullscreenActivity.whichSongFolder
                         .equals(FullscreenActivity.mainfoldername)) {
                     FullscreenActivity.whatsongforsetwork = "$**_"
@@ -2440,14 +2550,17 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
 
     @Override
     public void shuffleSongsInSet() {
+        SetActions.indexSongInSet();
         newFragment = PopUpSetViewNew.newInstance();
         newFragment.show(getFragmentManager(), "dialog");
     }
 
     @Override
     public void refreshAll() {
-        // Show the toast
-        ShowToast.showToast(PresenterMode.this);
+        // Show the toast if the message isn't blank
+        if (!FullscreenActivity.myToastMessage.equals("")) {
+            ShowToast.showToast(PresenterMode.this);
+        }
         whichsonginset = 0;
         whichsongsection = 0;
         SetActions.prepareSetList();
@@ -2463,8 +2576,9 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
 
         // Reopen the set or song menu if something has changed here
         if (FullscreenActivity.whattodo.equals("loadset") || FullscreenActivity.whattodo.equals("clearset")) {
-            expListViewOption.expandGroup(0);
-            mDrawerLayout.openDrawer(expListViewOption);
+            //expListViewOption.expandGroup(0);
+            //mDrawerLayout.openDrawer(expListViewOption);
+            setlisticon_ImageView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.pulse));
         }
         if (FullscreenActivity.whattodo.equals("renamesong") || FullscreenActivity.whattodo.equals("createsong")) {
             findSongInFolder();
