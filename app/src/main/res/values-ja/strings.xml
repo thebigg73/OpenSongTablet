@@ -480,5 +480,9 @@
 	<string name="extract">"抽出テキスト"</string>
 	<string name="search_biblegateway">"BibleGateway.comを検索"</string>
 	<string name="customise_set_item">"設定項目の変動を作ります"</string>
+	<string name="customise_set_item">"設定項目の変動を作ります"</string>
+	<string name="select_item_variation">"セットのバリエーションを作成する曲を選択"</string>
+	<string name="variation_edit">"この項目は編集することができます。オリジナルは影響を受けません。"</string>
+	<string name="variation">"変化"</string>
 
 </resources>

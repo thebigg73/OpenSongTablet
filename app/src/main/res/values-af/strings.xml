@@ -481,5 +481,9 @@
 	<string name="extract">"uittreksel teks"</string>
 	<string name="search_biblegateway">"Soek BibleGateway.com"</string>
 	<string name="customise_set_item">"Maak \'n stel item variasie"</string>
+	<string name="customise_set_item">"Maak \'n stel item variasie"</string>
+	<string name="select_item_variation">"Kies die liedjie om \'n stel variasies te skep"</string>
+	<string name="variation_edit">"Hierdie item kan verander. Die oorspronklike sal nie geraak word nie."</string>
+	<string name="variation">"variasie"</string>
 
 </resources>

@@ -481,5 +481,9 @@
 	<string name="extract">"Извлечь текст"</string>
 	<string name="search_biblegateway">"Поиск BibleGateway.com"</string>
 	<string name="customise_set_item">"Сделать изменение набора элемента"</string>
+	<string name="customise_set_item">"Сделать изменение набора элемента"</string>
+	<string name="select_item_variation">"Выберите песню для создания набора вариации"</string>
+	<string name="variation_edit">"Этот предмет может быть отредактирован. Оригинальный не будут затронуты."</string>
+	<string name="variation">"варьирование"</string>
 
 </resources>

@@ -482,5 +482,9 @@
 	<string name="extract">"extrakt Text"</string>
 	<string name="search_biblegateway">"Vyhledávání BibleGateway.com"</string>
 	<string name="customise_set_item">"Udělejte variaci set položek"</string>
+	<string name="customise_set_item">"Udělejte variaci set položek"</string>
+	<string name="select_item_variation">"Vyberte skladbu k vytvoření sady variaci"</string>
+	<string name="variation_edit">"Tuto položku lze upravovat. Původní bude nedotčena."</string>
+	<string name="variation">"změna"</string>
 
 </resources>

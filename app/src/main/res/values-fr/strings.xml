@@ -481,5 +481,9 @@
 	<string name="extract">"Extraire le texte"</string>
 	<string name="search_biblegateway">"Rechercher sur BibleGateway.com"</string>
 	<string name="customise_set_item">"Faire une variation ensemble d\'objet"</string>
+	<string name="customise_set_item">"Faire une variation ensemble d\'objet"</string>
+	<string name="select_item_variation">"Sélectionnez la chanson pour créer une variation de jeu"</string>
+	<string name="variation_edit">"Cet article peut être modifié. L\'original ne sera pas affecté."</string>
+	<string name="variation">"Variation"</string>
 
 </resources>

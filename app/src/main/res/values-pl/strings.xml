@@ -481,5 +481,9 @@
 	<string name="extract">"tekst Extract"</string>
 	<string name="search_biblegateway">"Szukaj BibleGateway.com"</string>
 	<string name="customise_set_item">"Bądź odmianę zestaw artykuł"</string>
+	<string name="customise_set_item">"Bądź odmianę zestaw artykuł"</string>
+	<string name="select_item_variation">"Wybierz utwór do stworzenia zestawu zmienności"</string>
+	<string name="variation_edit">"Ten element może być edytowany. Oryginalny zostanie nienaruszona."</string>
+	<string name="variation">"Zmiana"</string>
 
 </resources>

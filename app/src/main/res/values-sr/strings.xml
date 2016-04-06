@@ -531,5 +531,9 @@
     <string name="extract">"Izvući tekst"</string>
     <string name="search_biblegateway">"Pretraga BibleGateway.com (Engleski)"</string>
     <string name="customise_set_item">"Napravite varijaciju set stavke"</string>
+    <string name="customise_set_item">"Napravite varijaciju set stavke"</string>
+    <string name="select_item_variation">"Odaberite pjesmu stvoriti skup varijacija"</string>
+    <string name="variation_edit">"Ovaj predmet može uređivati. Izvorna će biti nepromijenjen."</string>
+    <string name="variation">"Varijacija"</string>
 
 </resources>
