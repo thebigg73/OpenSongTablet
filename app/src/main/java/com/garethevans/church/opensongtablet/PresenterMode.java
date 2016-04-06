@@ -1488,7 +1488,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         }
 
         // Add to set
-        FullscreenActivity.whatsongforsetwork = "$**_**" + templocator + "/" + FullscreenActivity.customslide_title + "_**$";
+        FullscreenActivity.whatsongforsetwork = "$**_**" + templocator + "/" + filetitle + "_**$";
 
         // Allow the song to be added, even if it is already there
         FullscreenActivity.mySet = FullscreenActivity.mySet + FullscreenActivity.whatsongforsetwork;
