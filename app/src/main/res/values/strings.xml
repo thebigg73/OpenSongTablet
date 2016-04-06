@@ -264,7 +264,7 @@
    	<string name="options_set_load">Load</string>
    	<string name="options_set_save">Save</string>
    	<string name="options_set_nameofset">New set name</string>
-   	<string name="options_set_clear">Clear</string>
+   	<string name="options_set_clear">Create a new set</string>
    	<string name="options_set_delete">Delete</string>
    	<string name="options_set_export">Export</string>
    	<string name="options_set_edit">Edit</string>
@@ -540,12 +540,11 @@
 	
 	<string name="options_backtooptions">BACK TO OPTIONS</string>
 	<string name="options_savethisset">SAVE THIS SET</string>
-	<string name="options_clearthisset">CLEAR THIS SET</string>
-	
-	
+	<string name="options_clearthisset">CLEAR THE CURRENT SET AND CREATE A NEW ONE</string>
+
 	<string name="mainfoldername">MAIN</string>
 	
-		
+
 	<string name="colorchooser">Colour Chooser</string>
 	<string name="dark_theme">Dark theme</string>
 	<string name="light_theme">Light theme</string>
