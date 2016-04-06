@@ -63,8 +63,8 @@
     <string name="overwrite">"Overwrite existing item"</string>
     <string name="storage_issues">"If you experience any problems running the app, please switch to internal storage"</string>
     <string name="toggle_autoshow_stickynotes">"Toggle autoshow sticky notes"</string>
-    <string name="file_type">"File type"</string>
-    <string name="file_type_unknown">"Unknown"</string>
+    <string name="file_type">"Τύπος αρχείου"</string>
+    <string name="file_type_unknown">"Άγνωστο"</string>
     <string name="file_exists">"File already exists.  Please rename it."</string>
 
     <string name="options_display">"Εμφάνιση"</string>
