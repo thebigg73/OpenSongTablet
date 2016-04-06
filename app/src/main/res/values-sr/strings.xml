@@ -202,13 +202,13 @@
     <string name="pdf_selectpage">"Odabrati stranu"</string>
     
     <string name="options_set">"SET LISTA"</string>
-    <string name="options_set_load">"UČITATI"</string>
-    <string name="options_set_save">"SAČUVATI"</string>
+    <string name="options_set_load">"Učitati"</string>
+    <string name="options_set_save">"Sačuvati"</string>
     <string name="options_set_nameofset">"Novo ime set liste"</string>
-    <string name="options_set_clear">"OČISTITI"</string>
-    <string name="options_set_delete">"OBRISATI"</string>
-    <string name="options_set_export">"IZVOZ"</string>
-    <string name="options_set_edit">"IZMENITI"</string>
+    <string name="options_set_clear">"Očistiti"</string>
+    <string name="options_set_delete">"Obrisati"</string>
+    <string name="options_set_export">"Izvoz"</string>
+    <string name="options_set_edit">"Izmeniti"</string>
        
     <string name="options_song">"Pesma"</string>
     <string name="options_song_transpose">"Transponovati"</string>
@@ -446,7 +446,7 @@
     <string name="toastmessage_minfont">"Minimalna veličina fonta"</string>
     
     <string name="options_backtooptions">"NATRAG NA OPCIJE"</string>
-    <string name="options_savethisset">"SAČUVATI OVU SET LISTU"</string>
+    <string name="options_savethisset">"Sauvati ovu set listu"</string>
     <string name="options_clearthisset">"OBRISATI OVU SET LISTU"</string>
     
     

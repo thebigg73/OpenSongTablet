@@ -70,13 +70,13 @@
     <string name="pdf_selectpage">"Выберите страницу"</string>
     
    	<string name="options_set">"НАБOP"</string>
-   	<string name="options_set_load">"ГРУЗИТЬСЯ"</string>
-   	<string name="options_set_save">"СОХРАНЯТЬ"</string>
+   	<string name="options_set_load">"нагружать"</string>
+   	<string name="options_set_save">"Cохранять"</string>
 	<string name="options_set_nameofset">"Новый набор имя"</string>
-   	<string name="options_set_clear">"ОЧИЩАТЬ"</string>
-   	<string name="options_set_delete">"УДАЛЯТЬ"</string>
-   	<string name="options_set_export">"ЗКСПОРТИРОВАТЬ"</string>
-   	<string name="options_set_edit">"ОТРЕДАКТИРОВАТЬ"</string>
+   	<string name="options_set_clear">"Oчищать"</string>
+   	<string name="options_set_delete">"Удалять"</string>
+   	<string name="options_set_export">"Зкспортировать"</string>
+   	<string name="options_set_edit">"Отредактировать"</string>
    	
 	<string name="options_song">"ПЕСНЯ"</string>
 	<string name="options_song_transpose">"Транспонирование"</string>

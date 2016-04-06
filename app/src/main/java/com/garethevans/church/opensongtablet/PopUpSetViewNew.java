@@ -15,7 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,6 +67,11 @@ public class PopUpSetViewNew extends DialogFragment {
         getDialog().setTitle(getActivity().getResources().getString(R.string.options_set));
         final View V = inflater.inflate(R.layout.popup_setview_new, container, false);
 
+        TextView helpClickItem_TextView = (TextView) V.findViewById(R.id.helpClickItem_TextView);
+        TextView helpDragItem_TextView = (TextView) V.findViewById(R.id.helpDragItem_TextView);
+        TextView helpSwipeItem_TextView = (TextView) V.findViewById(R.id.helpSwipeItem_TextView);
+        TextView helpVariationItem_TextView = (TextView) V.findViewById(R.id.helpVariationItem_TextView);
+        helpVariationItem_TextView.setVisibility(View.GONE);
         mRecyclerView = (RecyclerView) V.findViewById(R.id.my_recycler_view);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -140,10 +151,32 @@ public class PopUpSetViewNew extends DialogFragment {
             }
         });
 
+        if (FullscreenActivity.whattodo.equals("setitemvariation")) {
+            helpClickItem_TextView.setVisibility(View.GONE);
+            helpDragItem_TextView.setVisibility(View.GONE);
+            helpSwipeItem_TextView.setVisibility(View.GONE);
+            listSetTweetButton.setVisibility(View.GONE);
+            save.setVisibility(View.GONE);
+            set_shuffle.setVisibility(View.GONE);
+            helpVariationItem_TextView.setVisibility(View.VISIBLE);
+        }
+
         Dialog dialog = getDialog();
         if (dialog != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
+
+
+        // Try to move to the corresponding item in the set that we are viewing.
+        SetActions.indexSongInSet();
+
+        // If the song is found (indexSongInSet>-1 and lower than the number of items shown), smooth scroll to it
+        if (FullscreenActivity.indexSongInSet>-1 && FullscreenActivity.indexSongInSet<FullscreenActivity.mTempSetList.size()) {
+            Log.d("d","position="+FullscreenActivity.indexSongInSet);
+            mRecyclerView.smoothScrollToPosition(FullscreenActivity.indexSongInSet);
+        }
+
+
         return V;
     }
 
@@ -201,15 +234,17 @@ public class PopUpSetViewNew extends DialogFragment {
                 si.songitem = i+".";
                 si.songtitle = mSongName.get(i - 1);
                 si.songfolder = mFolderName.get(i - 1);
-                // Decide what image we'll need - song, image, note, slide, scripture
-                if (mFolderName.get(i - 1).equals(FullscreenActivity.text_slide)) {
+                // Decide what image we'll need - song, image, note, slide, scripture, variation
+                if (mFolderName.get(i - 1).equals("**"+FullscreenActivity.text_slide)) {
                     si.songicon = FullscreenActivity.text_slide;
-                } else if (mFolderName.get(i - 1).equals(FullscreenActivity.text_note)) {
+                } else if (mFolderName.get(i - 1).equals("**"+FullscreenActivity.text_note)) {
                     si.songicon = FullscreenActivity.text_note;
-                } else if (mFolderName.get(i - 1).equals(FullscreenActivity.text_scripture)) {
+                } else if (mFolderName.get(i - 1).equals("**"+FullscreenActivity.text_scripture)) {
                     si.songicon = FullscreenActivity.text_scripture;
-                } else if (mFolderName.get(i - 1).equals(FullscreenActivity.image)) {
+                } else if (mFolderName.get(i - 1).equals("**"+FullscreenActivity.image)) {
                     si.songicon = FullscreenActivity.image;
+                } else if (mFolderName.get(i - 1).equals("**"+FullscreenActivity.text_variation)) {
+                    si.songicon = FullscreenActivity.text_variation;
                 } else if (mSongName.get(i - 1).contains(".pdf") || mSongName.get(i - 1).contains(".PDF")) {
                     si.songicon = ".pdf";
                 } else {
@@ -223,6 +258,62 @@ public class PopUpSetViewNew extends DialogFragment {
 
     public static void loadSong() {
         mListener.loadSongFromSet();
+    }
+
+    public static void makeVariation() {
+        // Prepare the name of the new variation slide
+        // If the file already exists, add _ to the filename
+        String newfilename = FullscreenActivity.dirvariations + "/" + FullscreenActivity.songfilename;
+        String newsongname = FullscreenActivity.songfilename;
+        File newfile = new File(newfilename);
+        while (newfile.exists()) {
+            newfilename = newfilename + "_";
+            newsongname = newsongname + "_";
+            newfile = new File(newfilename);
+        }
+
+        // Original file
+        File src;
+        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            src = new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename);
+        } else {
+            src = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename);
+        }
+
+        // Copy the file into the variations folder
+        try {
+            InputStream in = new FileInputStream(src);
+            OutputStream out = new FileOutputStream(newfile);
+
+            // Transfer bytes from in to out
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Fix the song name and folder for loading
+        FullscreenActivity.songfilename = newsongname;
+        FullscreenActivity.whichSongFolder = "../Variations";
+        FullscreenActivity.whatsongforsetwork = "\"$**_"+FullscreenActivity.text_variation+"/"+newsongname+"_**$";
+
+        // Replace the set item with the variation item
+        FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet] = FullscreenActivity.text_variation+"/"+newsongname;
+        // Rebuild the mySet variable
+        String new_mySet = "";
+        for (String thisitem:FullscreenActivity.mSetList) {
+            new_mySet = new_mySet + "$**_" + thisitem + "_**$";
+        }
+        FullscreenActivity.mySet = new_mySet;
+
+        // Now load the new variation item up
+        loadSong();
     }
 
     public void doExportSetTweet() {

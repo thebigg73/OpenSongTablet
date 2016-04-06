@@ -236,10 +236,7 @@ public class LoadXML extends Activity {
                 XmlPullParser xpp;
                 xpp = factory.newPullParser();
 
-                //xpp.setInput(new StringReader(FullscreenActivity.myXML));
-
                 inputStream = new FileInputStream(FullscreenActivity.file);
-                //if (FullscreenActivity.myXML.contains("UTF-16")) {
                 if (utf.equals("UTF-16")) {
                     xpp.setInput(inputStream, "UTF-16");
                 } else {
@@ -357,10 +354,9 @@ public class LoadXML extends Activity {
             }
             // Initialise the variables
             initialiseSongTags();
-
         }
-
     }
+
     // NEW
     public static String readTextFile(InputStream inputStream) {
 
@@ -411,9 +407,12 @@ public class LoadXML extends Activity {
         } else if (what.contains(FullscreenActivity.text_scripture+"/")) {
             FullscreenActivity.whichSongFolder = "../Scripture";
             FullscreenActivity.whattodo = "customreusable_scripture";
-        } else if (what.contains("Images/")) {
+        } else if (what.contains(FullscreenActivity.image+"/")) {
             FullscreenActivity.whichSongFolder = "../Images";
             FullscreenActivity.whattodo = "customreusable_image";
+        } else if (what.contains(FullscreenActivity.text_variation+"/")) {
+            FullscreenActivity.whichSongFolder = "../Variations";
+            FullscreenActivity.whattodo = "customreusable_variation";
         }
 
         // Load up the XML

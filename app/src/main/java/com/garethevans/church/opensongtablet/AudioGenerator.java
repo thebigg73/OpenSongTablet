@@ -49,22 +49,6 @@ public class AudioGenerator {
             Log.d("audiotrack","Can't initialise");
         }
 
-
-
-		/*while (!isready) {
-			audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
-					sampleRate, AudioFormat.CHANNEL_OUT_MONO,
-					AudioFormat.ENCODING_PCM_16BIT, sampleRate,
-					AudioTrack.MODE_STREAM);
-			if (audioTrack.getState()==AudioTrack.STATE_INITIALIZED) {
-				isready = true;
-			} else {
-				audioTrack = null;
-				Log.d("test","issue is here");
-				Log.i("audioTrack","unable to initialise - trying again...");
-			}
-		}*/
-		
 		float leftVolume = FullscreenActivity.metronomevol;
 		float rightVolume = FullscreenActivity.metronomevol;
 		

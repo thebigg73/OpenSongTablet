@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="customise_set_item">Customise a set item</string>
+    <string name="customise_set_item">Make a set item variation</string>
+    <string name="select_item_variation">Select the song to create a set variation</string>
     <string name="variation">Variation</string>
     <string name="variation_edit">This item can be edited.  The original will be unaffected.</string>
 
@@ -146,7 +147,7 @@
     <string name="scripture">Scripture</string>
     <string name="slide">Slide</string>
 
-	<array name="languagelist">
+	<array name="languagelist" translatable="false">
         <item>(af) Afrikaans</item>
         <item>(cz) český</item>
         <item>(de) Deutsch</item>
@@ -260,13 +261,13 @@
     <string name="pdf_selectpage">Select page</string>
     
    	<string name="options_set">SET</string>
-   	<string name="options_set_load">LOAD</string>
-   	<string name="options_set_save">SAVE</string>
+   	<string name="options_set_load">Load</string>
+   	<string name="options_set_save">Save</string>
    	<string name="options_set_nameofset">New set name</string>
-   	<string name="options_set_clear">CLEAR</string>
-   	<string name="options_set_delete">DELETE</string>
-   	<string name="options_set_export">EXPORT</string>
-   	<string name="options_set_edit">EDIT</string>
+   	<string name="options_set_clear">Clear</string>
+   	<string name="options_set_delete">Delete</string>
+   	<string name="options_set_export">Export</string>
+   	<string name="options_set_edit">Edit</string>
    	
 	<string name="options_song">SONG</string>
 	<string name="options_song_transpose">Transpose</string>

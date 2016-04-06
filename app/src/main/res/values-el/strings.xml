@@ -162,7 +162,7 @@
         <item>(sr) Srpski"</item>
         <item>(zh) 中文"</item>
     </array>
-    
+
     <string name="visualmetronome">"Visual"</string>
     <string name="onsonglocation">"You need to place your OnSong backup file into the /documents/OpenSong/ folder for it to be available to import"</string>
     <string name="savesong">"Save"</string>

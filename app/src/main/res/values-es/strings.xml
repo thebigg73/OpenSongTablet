@@ -70,13 +70,13 @@
     <string name="pdf_selectpage">"Seleccione la página"</string>
     
    	<string name="options_set">"CONJUNTO"</string>
-   	<string name="options_set_load">"CARGA"</string>
-   	<string name="options_set_save">"GUARDAR"</string>
+   	<string name="options_set_load">"Carga"</string>
+   	<string name="options_set_save">"Guardar"</string>
    	<string name="options_set_nameofset">"Nuevo nombre de conjunto"</string>
-   	<string name="options_set_clear">"DESPEJAR"</string>
-  	<string name="options_set_delete">"BORRAR"</string>
-   	<string name="options_set_export">"EXPORTAR"</string>
-   	<string name="options_set_edit">"EDITAR"</string>
+   	<string name="options_set_clear">"Despejar"</string>
+  	<string name="options_set_delete">"Borrar"</string>
+   	<string name="options_set_export">"Exportar"</string>
+   	<string name="options_set_edit">"Editar"</string>
    	
 	<string name="options_song">"CANCIÓN"</string>
 	<string name="options_song_transpose">"Transposición"</string>
@@ -307,7 +307,7 @@
 	<string name="toastmessage_minfont">"El tamaño mínimo de fuente alcanzado"</string>
 	
 	<string name="options_backtooptions">"VOLVER A LAS OPCIONES"</string>
-	<string name="options_savethisset">"GUARDE ESTE SET"</string>
+	<string name="options_savethisset">"Guarde este set"</string>
 	<string name="options_clearthisset">"BORRAR ESTE SISTEMA"</string>
 	
 	<string name="mainfoldername">"PRINCIPAL"</string>

@@ -70,13 +70,13 @@
     <string name="pdf_selectpage">"Wybierz stronę"</string>
     
    	<string name="options_set">"ZESTAW"</string>
-   	<string name="options_set_load">"OPAKOWAĆ"</string>
-   	<string name="options_set_save">"ZAOSZCZĘDZIĆ"</string>
+   	<string name="options_set_load">"Załadować"</string>
+   	<string name="options_set_save">"Zaoszczędzić"</string>
    	<string name="options_set_nameofset">"Nowy zestaw Nazwa"</string>
-   	<string name="options_set_clear">"OPRÓŻNIAĆ"</string>
-   	<string name="options_set_delete">"USUNĄĆ"</string>
-   	<string name="options_set_export">"EKSPORTOWAĆ"</string>
-   	<string name="options_set_edit">"EDYTUJ"</string>
+   	<string name="options_set_clear">"Oczyścić"</string>
+   	<string name="options_set_delete">"Usunąć"</string>
+   	<string name="options_set_export">"Eksportować"</string>
+   	<string name="options_set_edit">"Edytuj"</string>
    	
 	<string name="options_song">"PIOSENKA"</string>
 	<string name="options_song_transpose">"Transpozycji"</string>

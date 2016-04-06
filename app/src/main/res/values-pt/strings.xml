@@ -70,13 +70,13 @@
     <string name="pdf_selectpage">"Selecione a página"</string>
     
    	<string name="options_set">"CONJUNTO"</string>
-   	<string name="options_set_load">"CARREGAR"</string>
-   	<string name="options_set_save">"PRESERVAR"</string>
+   	<string name="options_set_load">"Carregar"</string>
+   	<string name="options_set_save">"Preservar"</string>
    	<string name="options_set_nameofset">"Novo nome do conjunto"</string>
-   	<string name="options_set_clear">"ESVAZIAR"</string>
-   	<string name="options_set_delete">"DELETAR"</string>
-   	<string name="options_set_export">"EXPORTAR"</string>
-   	<string name="options_set_edit">"EDITAR"</string>
+   	<string name="options_set_clear">"Esvaziar"</string>
+   	<string name="options_set_delete">"Deletar"</string>
+   	<string name="options_set_export">"Exportar"</string>
+   	<string name="options_set_edit">"Editar"</string>
    	
 	<string name="options_song">"CANÇÃO"</string>
 	<string name="options_song_transpose">"Transpor"</string>

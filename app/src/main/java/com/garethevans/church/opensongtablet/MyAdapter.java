@@ -29,8 +29,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
     public void onBindViewHolder(SetItemViewHolder setitemViewHolder, int i) {
         SetItemInfo si = setList.get(i);
         setitemViewHolder.vItem.setText(si.songitem);
+        String newfoldername = si.songfolder;
+        if (newfoldername.startsWith("**")) {
+            newfoldername = newfoldername.replace("**","");
+        }
         setitemViewHolder.vSongTitle.setText(si.songtitle);
-        setitemViewHolder.vSongFolder.setText(si.songfolder);
+        setitemViewHolder.vSongFolder.setText(newfoldername);
+        boolean issong = false;
         if (si.songicon.equals(FullscreenActivity.text_slide)) {
             setitemViewHolder.vIcon.setImageResource(R.drawable.blackout_project_dark);
         } else if (si.songicon.equals(FullscreenActivity.text_note)) {
@@ -39,10 +44,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
             setitemViewHolder.vIcon.setImageResource(R.drawable.action_scripture_dark);
         } else if (si.songicon.equals(FullscreenActivity.image)) {
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_action_picture_dark);
+        } else if (si.songicon.equals(FullscreenActivity.text_variation)) {
+            setitemViewHolder.vIcon.setImageResource(R.drawable.action_variation_dark);
         } else if (si.songicon.equals(".pdf")) {
             setitemViewHolder.vIcon.setImageResource(R.drawable.action_pdf_dark);
         } else {
             setitemViewHolder.vIcon.setImageResource(R.drawable.action_song_dark);
+            issong = true;
         }
 
         String folderrelocate;
@@ -54,6 +62,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
             folderrelocate = "../Scripture/_cache";
         } else if (si.songicon.equals(FullscreenActivity.text_slide)) {
             folderrelocate = "../Slides/_cache";
+        } else if (si.songicon.equals(FullscreenActivity.variation)) {
+            folderrelocate = "../Variations";
         } else {
             folderrelocate = si.songfolder;
         }
@@ -62,11 +72,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
         final String songfolder = folderrelocate;
         int getitemnum;
         try {
-            getitemnum = Integer.parseInt(si.songitem.replace(".",""));
+            getitemnum = Integer.parseInt(si.songitem.replace(".", ""));
         } catch (Exception e) {
             getitemnum = 0;
         }
-        getitemnum --;
+        getitemnum--;
         final int item = getitemnum;
         setitemViewHolder.vCard.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,14 +87,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
                 } else {
                     FullscreenActivity.whatsongforsetwork = "$**_" + songfolder + "/" + songname + "_**$";
                 }
-                FullscreenActivity.whatsongforsetwork = songname;
+                //FullscreenActivity.whatsongforsetwork = songname;
                 FullscreenActivity.whichSongFolder = songfolder;
                 FullscreenActivity.indexSongInSet = item;
                 FullscreenActivity.nextSongInSet = "";
                 FullscreenActivity.previousSongInSet = "";
                 // Get set position
                 boolean issue = false;
-                if (item>0 && FullscreenActivity.mSet.length>=item-1) {
+                if (item > 0 && FullscreenActivity.mSet.length >= item - 1) {
                     FullscreenActivity.previousSongInSet = FullscreenActivity.mSet[item - 1];
                 } else {
                     issue = true;
@@ -99,9 +109,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
                     SetActions.indexSongInSet();
                 }
 
-                PopUpSetViewNew.loadSong();
+                if (FullscreenActivity.whattodo.equals("setitemvariation")) {
+                    PopUpSetViewNew.makeVariation();
+
+                } else {
+                    PopUpSetViewNew.loadSong();
+                }
             }
         });
+
+        if (FullscreenActivity.whattodo.equals("setitemvariation") && !issong) {
+            // Only songs should be able to have variations
+            setitemViewHolder.vCard.setOnClickListener(null);
+        }
     }
 
     @Override

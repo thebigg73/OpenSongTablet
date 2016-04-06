@@ -70,7 +70,6 @@ public class PopUpListSetsFragment extends DialogFragment {
     @Override
     public void onDismiss(final DialogInterface dialog) {
         super.onDismiss(dialog);
-        Log.d("PuSl", "main dismiss");
         try {
             dataTask.cancel(true);
         } catch (Exception e) {
@@ -116,7 +115,6 @@ public class PopUpListSetsFragment extends DialogFragment {
         // Customise the view depending on what we are doing
         adapter = null;
 
-        Log.d("d", "whattodo=" + FullscreenActivity.whattodo);
         switch (FullscreenActivity.whattodo) {
             default:
                 myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_load);
@@ -161,7 +159,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                     // Remove it from the setnamechosen
                     FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen.replace(setnames[position] + "%_%", "");
                 }
-                Log.d("d", "setnamechosen = " + FullscreenActivity.setnamechosen);
 
                 setListName.setText(setnames[position]);
             }
@@ -242,7 +239,6 @@ public class PopUpListSetsFragment extends DialogFragment {
 
             @Override
             public void onDismiss(DialogInterface dialog) {
-                Log.d("doLoadSet", "onDismissListener");
                 FullscreenActivity.abort = true;
                 try {
                     if (dataTask!=null) {
@@ -359,7 +355,6 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         // Go through each song in the set and attach them
         // Also try to attach a copy of the song ending in .ost, as long as they aren't images
-        Log.d("Export set","exportsetfilenames="+FullscreenActivity.exportsetfilenames);
         for (int q=0; q<FullscreenActivity.exportsetfilenames.size(); q++) {
             // Remove any subfolder from the exportsetfilenames_ost.get(q)
             String tempsong_ost = FullscreenActivity.exportsetfilenames_ost.get(q);
@@ -424,8 +419,6 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         @Override
         protected String doInBackground(String... args) {
-            Log.d("dataTask", "doInBackground");
-
             // Now users can load multiple sets and merge them, we need to load each one it turn
             // We then add the items to a temp string 'allsongsinset'
             // Once we have loaded them all, we replace the mySet field.
@@ -464,7 +457,6 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         @Override
         protected void onPostExecute(String result) {
-            Log.d("dataTask", "onPostExecute");
             FullscreenActivity.setView = "Y";
 
             if (result.equals("LOADED") && !dataTask.isCancelled()) {
@@ -491,27 +483,15 @@ public class PopUpListSetsFragment extends DialogFragment {
         if (!FullscreenActivity.sortAlphabetically) {
             Collections.sort(setnames_ar);
             Collections.reverse(setnames_ar);
-            Log.d("d", "setnames_ar=" + setnames_ar);
-            Log.d("d","Reverse order");
         } else {
             Collections.sort(setnames_ar);
-            Log.d("d", "Normal order");
-            Log.d("d", "setnames_ar=" + setnames_ar);
-
         }
 
         setnames = new String[setnames_ar.size()];
         setnames = setnames_ar.toArray(setnames);
 
-        Log.d("d", "setnames=" + Arrays.toString(setnames));
-
         if (adapter!=null) {
-            Log.d("d", "Update list");
             setCorrectAdapter();
-            //setListView1.setAdapter(adapter);
-            //((BaseAdapter) setListView1.getAdapter()).notifyDataSetChanged();
-            //setCorrectAdapter();
         }
-
     }
 }

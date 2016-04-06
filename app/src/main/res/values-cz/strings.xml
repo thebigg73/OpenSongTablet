@@ -70,13 +70,13 @@
     <string name="pdf_selectpage">"Zvolte stránku"</string>
     
    	<string name="options_set">"SBÍRKA"</string>
-   	<string name="options_set_load">"NABÍT"</string>
-   	<string name="options_set_save">"ULOŽIT"</string>
+   	<string name="options_set_load">"Naložit"</string>
+   	<string name="options_set_save">"Uložit"</string>
    	<string name="options_set_nameofset">"Nový set jméno"</string>
-   	<string name="options_set_clear">"VYMAZAT"</string>
-   	<string name="options_set_delete">"ODSTRANIT"</string>
-   	<string name="options_set_export">"EXPORTOVAT"</string>
-   	<string name="options_set_edit">"EDITOVAT"</string>
+   	<string name="options_set_clear">"Vymazat"</string>
+   	<string name="options_set_delete">"Odstranit"</string>
+   	<string name="options_set_export">"Exportovat"</string>
+   	<string name="options_set_edit">"Editovat"</string>
    	
 	<string name="options_song">"PÍSEŇ"</string>
 	<string name="options_song_transpose">"Transpozice"</string>

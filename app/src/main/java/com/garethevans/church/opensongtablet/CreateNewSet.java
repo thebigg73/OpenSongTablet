@@ -1,11 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.util.Log;
-
+import android.util.Base64;
 import org.xmlpull.v1.XmlPullParserException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class CreateNewSet extends Activity {
 
@@ -35,8 +35,6 @@ public class CreateNewSet extends Activity {
                 String[] songparts;
                 songparts = FullscreenActivity.mSetList[x].split("/");
 
-                Log.d("d","songparts.length="+songparts.length);
-
                 if (songparts.length<1) {
                     return false;
                 }
@@ -45,7 +43,11 @@ public class CreateNewSet extends Activity {
                 if (songparts[0].length() > 0) {
                     songparts[0] = songparts[0] + "/";
                 }
-                if (!songparts[0].contains(FullscreenActivity.image) && !songparts[0].contains(FullscreenActivity.text_scripture) && !songparts[0].contains(FullscreenActivity.text_slide) && !songparts[0].contains(FullscreenActivity.text_note)) {
+                if (!songparts[0].contains("**"+FullscreenActivity.image) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_variation) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_scripture) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_slide) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_note)) {
                     // Adding a song
                     FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
                             + "  <slide_group name=\""
@@ -54,7 +56,11 @@ public class CreateNewSet extends Activity {
                             + songparts[0] + "\"/>\n";
 
 
-                } else if (songparts[0].contains(FullscreenActivity.text_scripture) && !songparts[0].contains(FullscreenActivity.image) && !songparts[0].contains(FullscreenActivity.text_slide) && !songparts[0].contains(FullscreenActivity.text_note)) {
+                } else if (songparts[0].contains("**"+FullscreenActivity.text_scripture) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_variation) &&
+                        !songparts[0].contains("**"+FullscreenActivity.image) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_slide) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_note)) {
                     // Adding a scripture
                     // Load the scripture file up
                     FullscreenActivity.whichSongFolder = "../Scripture/_cache";
@@ -98,7 +104,11 @@ public class CreateNewSet extends Activity {
                             + "    <notes />\n"
                             + "  </slide_group>\n";
 
-                } else if (songparts[0].contains(FullscreenActivity.text_slide) && !songparts[0].contains(FullscreenActivity.image) && !songparts[0].contains(FullscreenActivity.text_note) && !songparts[0].contains(FullscreenActivity.text_scripture)) {
+                } else if (songparts[0].contains("**"+FullscreenActivity.text_slide) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_variation) &&
+                        !songparts[0].contains("**"+FullscreenActivity.image) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_note) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_scripture)) {
                     // Adding a custom slide
                     // Load the slide file up
                     // Keep the songfile as a temp
@@ -146,7 +156,11 @@ public class CreateNewSet extends Activity {
                             + "  </slide_group>\n";
 
 
-                } else if (songparts[0].contains(FullscreenActivity.text_note) && !songparts[0].contains(FullscreenActivity.image) && !songparts[0].contains(FullscreenActivity.text_slide) && !songparts[0].contains(FullscreenActivity.text_scripture)) {
+                } else if (songparts[0].contains("**"+FullscreenActivity.text_note) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_variation) &&
+                        !songparts[0].contains("**"+FullscreenActivity.image) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_slide) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_scripture)) {
                     // Adding a custom note
 
                     // Load the note up to grab the contents
@@ -172,7 +186,83 @@ public class CreateNewSet extends Activity {
                             + "  </slide_group>\n";
 
 
-                } else if (songparts[0].contains(FullscreenActivity.image) && !songparts[0].contains(FullscreenActivity.text_note) && !songparts[0].contains(FullscreenActivity.text_slide) && !songparts[0].contains(FullscreenActivity.text_scripture)) {
+
+                } else if (songparts[0].contains("**"+FullscreenActivity.text_variation) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_note) &&
+                        !songparts[0].contains("**"+FullscreenActivity.image) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_slide) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_scripture)) {
+                    // Adding a variation
+                    // The entire song is copied to the notes, and a simplified version is copied to the text
+
+                    // Load the variation song up to grab the contents
+                    FullscreenActivity.whichSongFolder = "../Variations";
+                    FullscreenActivity.songfilename = songparts[1];
+                    try {
+                        LoadXML.loadXML();
+                    } catch (XmlPullParserException | IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+                    String slide_lyrics = FullscreenActivity.mLyrics;
+                    try {
+                        byte[] data = FullscreenActivity.myXML.getBytes("UTF-8");
+                        slide_lyrics = Base64.encodeToString(data, Base64.DEFAULT);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    // Prepare the slide contents so it remains compatible with the desktop app
+                    // Split the lyrics into individual lines
+                    String[] lyrics_lines = FullscreenActivity.myLyrics.split("\n");
+                    String currentslide = "";
+                    ArrayList<String> newslides = new ArrayList<>();
+
+                    for (String thisline:lyrics_lines) {
+                        if (!thisline.equals("") && !thisline.startsWith(".") && !thisline.startsWith("[") && !thisline.startsWith(";")) {
+                            // Add the current line into the new slide
+                            // Replace any new line codes | with \n
+                            thisline = thisline.replace("||","\n");
+                            thisline = thisline.replace("---","\n");
+                            thisline = thisline.replace("|","\n");
+                            currentslide = currentslide + thisline.trim()  + "\n";
+                        } else if (thisline.startsWith("[")) {
+                            // Save the current slide and create a new one
+                            currentslide = currentslide.trim();
+                            newslides.add(currentslide);
+                            currentslide = "";
+                        }
+                    }
+                    newslides.add(currentslide);
+                    // Now go back through the currentslides and write the slide text
+                    String slidetexttowrite = "";
+                    for (int z=0; z<newslides.size();z++) {
+                        if (!newslides.get(z).equals("")) {
+                            slidetexttowrite = slidetexttowrite
+                                    + "      <slide>\n"
+                                    + "        <body>" + newslides.get(z).trim() +"\n"
+                                    + "        </body>\n"
+                                    + "      </slide>\n";
+                        }
+                    }
+
+                    FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
+                            + "  <slide_group name=\"# " + FullscreenActivity.text_variation + " # - " + songparts[1] + "\""
+                            + " type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n"
+                            + "    <title>"+songparts[1]+"</title>\n"
+                            + "    <subtitle>"+FullscreenActivity.mAuthor+"</subtitle>\n"
+                            + "    <notes>" + slide_lyrics + "</notes>\n"
+                            + "    <slides>\n" + slidetexttowrite
+                            + "    </slides>\n"
+                            + "  </slide_group>\n";
+
+
+                } else if (songparts[0].contains("**"+FullscreenActivity.image) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_variation) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_note) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_slide) &&
+                        !songparts[0].contains("**"+FullscreenActivity.text_scripture)) {
                     // Adding a custom image slide
 
                     // Load the image slide up to grab the contents

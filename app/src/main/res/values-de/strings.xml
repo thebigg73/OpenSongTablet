@@ -70,13 +70,13 @@
     <string name="pdf_selectpage">"Seite auswählen"</string>
     
    	<string name="options_set">SET</string>
-   	<string name="options_set_load">"LADEN"</string>
-   	<string name="options_set_save">"SPEICHERN"</string>
+   	<string name="options_set_load">"Laden"</string>
+   	<string name="options_set_save">"Speichern"</string>
     <string name="options_set_nameofset">"Neue Set-Namen"</string>
-   	<string name="options_set_clear">"ZURÜCKSETZEN"</string>
-   	<string name="options_set_delete">"LÖSCHEN"</string>
-   	<string name="options_set_export">"EXPORT"</string>
-   	<string name="options_set_edit">"BEARBEITEN"</string>
+   	<string name="options_set_clear">"Zurücksetzen"</string>
+   	<string name="options_set_delete">"Löschen"</string>
+   	<string name="options_set_export">"Export"</string>
+   	<string name="options_set_edit">"Bearbeiten"</string>
    	
 	<string name="options_song">SONG</string>
 	<string name="options_song_transpose">"Transponieren"</string>
@@ -306,7 +306,7 @@
 	<string name="toastmessage_minfont">"Minimale Schriftgröße erreicht"</string>
 	
 	<string name="options_backtooptions">"ZURÜCK ZU OPTIONEN"</string>
-	<string name="options_savethisset">"SET SPEICHERN"</string>
+	<string name="options_savethisset">"Set speichern"</string>
 	<string name="options_clearthisset">"SET ZURÜCKSETZEN"</string>
 	
 	<string name="mainfoldername">"MAIN"</string>
@@ -464,23 +464,23 @@
 	<string name="use_default">"Standardwerte verwenden"</string>
 	<string name="ask">"Jedes Mal nachfragen"</string>
 
-	<string name="search_index_end">"Alle Songs wurden komplett indiziert"</string>
-	<string name="search_index_error">"Es gab einen Fehler Aufbau Ihrer Suchdatenbank"</string>
-	<string name="search_index_start">"Bauen Sie Ihre Song-Datenbank"</string>
-	<string name="search_log">"Schauen Sie sich die Suchdatenbank Fehlerprotokoll"</string>
-	<string name="search_rebuild">"Rebuild Lieddatenbank"</string>
-	<string name="pref_key_flatsorsharps">"Verwenden Sie für spitze Gegenstände oder Wohnungen?"</string>
-	<string name="pref_key_text">"Wählen Sie Ihre Schlüsseleinstellungen"</string>
-	<string name="rate">"Bewerte diese App"</string>
-	<string name="right">"Auf der rechten Seite"</string>
+	<string name="search_index_end">"Alle Songs wurden erfolgreich indiziert"</string>
+	<string name="search_index_error">"Es gab einen Fehler beim Aufbau Ihrer Suchdatenbank"</string>
+	<string name="search_index_start">"Song-Datenbank aufbauen"</string>
+	<string name="search_log">"Bitte überprüfen Sie das Fehlerprotokoll der Suchdatenbank"</string>
+	<string name="search_rebuild">"Song-Datenbank neu aufbauen"</string>
+	<string name="pref_key_flatsorsharps">"#- oder b-Vorzeichen benutzen?"</string>
+	<string name="pref_key_text">"Wählen Sie die Tonarteinstellungen"</string>
+	<string name="rate">"Diese App bewerten"</string>
+	<string name="right">"rechts"</string>
 	<string name="cavaquinho">"Cavaquinho"</string>
 	<string name="banjo4">"Banjo (4)"</string>
 	<string name="banjo5">"Banjo (5)"</string>
-	<string name="commentline_scale">"Skalieren Sie den Kommentartext"</string>
-	<string name="headingline_scale">"Skalieren Sie die Überschrift Text"</string>
-	<string name="bible_search">"Phrase oder Vers zu suchen"</string>
-	<string name="bible_translation">"Bibel Versionscode \n(zum Beispiel HOF, NGU-DE)"</string>
-	<string name="extract">"Extrahieren von Text"</string>
-	<string name="search_biblegateway">"suchen BibleGateway.com"</string>
+	<string name="commentline_scale">"Kommentartext skalieren"</string>
+	<string name="headingline_scale">"Überschrift skalieren"</string>
+	<string name="bible_search">Satz oder Vers suchen"</string>
+	<string name="bible_translation">"Bibel Übersetzungscode \n(zum Beispiel HOF, NGU-DE)"</string>
+	<string name="extract">"Text extrahieren"</string>
+	<string name="search_biblegateway">"Auf BibleGateway.com suchen"</string>
 
 </resources>

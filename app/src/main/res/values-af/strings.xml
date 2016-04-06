@@ -70,13 +70,13 @@
     <string name="pdf_selectpage">"Kies bladsy"</string>
     
    	<string name="options_set">"STEL"</string>
-   	<string name="options_set_load">"LAAI"</string>
-   	<string name="options_set_save">""RED"</string>
+   	<string name="options_set_load">"Laai"</string>
+   	<string name="options_set_save">"Red"</string>
    	<string name="options_set_nameofset">"Nuwe stel naam"</string>
-   	<string name="options_set_clear">"OPRUIM"</string>
-   	<string name="options_set_delete">"VERWYDER"</string>
-   	<string name="options_set_export">"UITVOER"</string>
-   	<string name="options_set_edit">"WYSIG"</string>
+   	<string name="options_set_clear">"Opruim"</string>
+   	<string name="options_set_delete">"Verwyder"</string>
+   	<string name="options_set_export">"Uitvoer"</string>
+   	<string name="options_set_edit">"Wysig"</string>
    	
 	<string name="options_song">"LIED"</string>
 	<string name="options_song_transpose">"Transponeer"</string>

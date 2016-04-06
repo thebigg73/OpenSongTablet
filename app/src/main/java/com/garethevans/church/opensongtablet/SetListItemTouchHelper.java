@@ -7,8 +7,8 @@ public class SetListItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     private MyAdapter mAdapter;
 
     public SetListItemTouchHelper(MyAdapter mAdapter){
-        super(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
-        this.mAdapter = mAdapter;
+            super(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+            this.mAdapter = mAdapter;
     }
 
     @Override

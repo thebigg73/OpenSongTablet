@@ -70,13 +70,13 @@
     <string name="pdf_selectpage">"Seleziona pagina"</string>
     
    	<string name="options_set">"INSERIRE"</string>
-   	<string name="options_set_load">"CARICO"</string>
-   	<string name="options_set_save">"SALVA"</string>
+   	<string name="options_set_load">"Carico"</string>
+   	<string name="options_set_save">"Salva"</string>
    	<string name="options_set_nameofset">"Nuovo nome set"</string>
-   	<string name="options_set_clear">"PULISCI"</string>
-   	<string name="options_set_delete">"CANCELLARE"</string>
-   	<string name="options_set_export">"ESPORTARE"</string>
-   	<string name="options_set_edit">"MODIFICA"</string>
+   	<string name="options_set_clear">"Pulisci"</string>
+   	<string name="options_set_delete">"Cancellare"</string>
+   	<string name="options_set_export">"Esportare"</string>
+   	<string name="options_set_edit">"Modifica"</string>
    	
 	<string name="options_song">"CANZONE"</string>
 	<string name="options_song_transpose">"Trasposizione"</string>

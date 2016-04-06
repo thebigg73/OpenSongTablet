@@ -70,13 +70,13 @@
     <string name="pdf_selectpage">"Válassza ki az oldal"</string>
     
    	<string name="options_set">"KÉSZLET"</string>
-   	<string name="options_set_load">"RAK"</string>
-   	<string name="options_set_save">"MEGTAKARIT"</string>
+   	<string name="options_set_load">"Rak"</string>
+   	<string name="options_set_save">"Megtakarit"</string>
    	<string name="options_set_nameofset">"Új nevet"</string>
-   	<string name="options_set_clear">"VÁMKEZELTET"</string>
-   	<string name="options_set_delete">"TÖRÖL"</string>
-   	<string name="options_set_export">"EXPORTÁL"</string>
-   	<string name="options_set_edit">"SZERKESZTÉS"</string>
+   	<string name="options_set_clear">"Vámkezeltet"</string>
+   	<string name="options_set_delete">"Töröl"</string>
+   	<string name="options_set_export">"Exportál"</string>
+   	<string name="options_set_edit">"Szerkesztés"</string>
    	
 	<string name="options_song">"DAL"</string>
 	<string name="options_song_transpose">"Át kell ültetni"</string>
