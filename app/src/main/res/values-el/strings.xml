@@ -49,7 +49,7 @@
 
     <string name="set_loading">"Loading set"</string>
     <string name="set_processing">"Processing"</string>
-    <string name="image">"Image"</string>
+    <string name="image">"Εικόνα"</string>
     <string name="slide_add_page">"Insert new page to custom slide"</string>
     <string name="loop_slide_pages">"Loop pages in custom slide"</string>
     <string name="tap_tempo">"Tap to set tempo"</string>
