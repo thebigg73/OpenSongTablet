@@ -56,7 +56,7 @@
     <string name="convert_song">"Please convert this song into OpenSong format (by viewing it) before adding it to a set"</string>
     <string name="no_filemanager">"No file manager installed"</string>
     <string name="no_audioplayer">"No audio player installed"</string>
-    <string name="link_youtube">"YouTube link"</string>
+    <string name="link_youtube">"Σύνδεσμος YouTube"</string>
     <string name="link_web">"Online link"</string>
     <string name="link_audio">"Audio file link"</string>
     <string name="link_file">"Other file"</string>
