@@ -265,7 +265,8 @@
                 android:layout_marginRight="8dp"
                 android:text="@string/edit_song_capo_print"
                 android:textColor="#ff0"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone"/>
 
             <Spinner
                 android:id="@+id/edit_song_capo_print"
@@ -277,7 +278,8 @@
                 android:background="#fff"
                 android:entries="@array/capoprint"
                 android:textColor="#000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/myPresentation"
