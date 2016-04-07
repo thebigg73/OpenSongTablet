@@ -49,22 +49,22 @@
 
     <string name="set_loading">"Loading set"</string>
     <string name="set_processing">"Processing"</string>
-    <string name="image">"Image"</string>
+    <string name="image">"Εικόνα"</string>
     <string name="slide_add_page">"Insert new page to custom slide"</string>
     <string name="loop_slide_pages">"Loop pages in custom slide"</string>
     <string name="tap_tempo">"Tap to set tempo"</string>
     <string name="convert_song">"Please convert this song into OpenSong format (by viewing it) before adding it to a set"</string>
     <string name="no_filemanager">"No file manager installed"</string>
     <string name="no_audioplayer">"No audio player installed"</string>
-    <string name="link_youtube">"YouTube link"</string>
+    <string name="link_youtube">"Σύνδεσμος YouTube"</string>
     <string name="link_web">"Online link"</string>
     <string name="link_audio">"Audio file link"</string>
     <string name="link_file">"Other file"</string>
     <string name="overwrite">"Overwrite existing item"</string>
     <string name="storage_issues">"If you experience any problems running the app, please switch to internal storage"</string>
     <string name="toggle_autoshow_stickynotes">"Toggle autoshow sticky notes"</string>
-    <string name="file_type">"File type"</string>
-    <string name="file_type_unknown">"Unknown"</string>
+    <string name="file_type">"Τύπος αρχείου"</string>
+    <string name="file_type_unknown">"Άγνωστο"</string>
     <string name="file_exists">"File already exists.  Please rename it."</string>
 
     <string name="options_display">"Εμφάνιση"</string>
