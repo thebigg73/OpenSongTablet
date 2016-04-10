@@ -311,9 +311,9 @@
         
     
     
-    <string name="welcome">"OpenSong Music Viewer \n Written by Gareth Evans"</string>
+    <string name="welcome">"OpenSongApp\nWritten by Gareth Evans"</string>
         
-    <string name="intro">"The OpenSong Music Viewer koristi pesme kreirane sa OpenSong i prikazuje ih na Vašem tablet ekranu."</string>
+    <string name="intro">"OpenSongApp koristi pesme kreirane sa OpenSong i prikazuje ih na Vašem tablet ekranu."</string>
         
     <string name="intro_songsfolder">"Aplikacija traži fasciklu unutar Documents fascikle koja se zove \'OpenSong/Songs\' i ako je ne može pronaći, pravi novu fasciklu sa ovim imenom. Zatim smešta jednu pesmu sa nazivom \'Love everlasting\', jednu od mojih autorskih pesama, u tu fasciklu (u suprotnom ne bi ništa mogli da radite sa aplikacijom). Da bi koristili Vaše OpenSong pesme, kopirajte ih u fasciklu Documents/OpenSong/Songs/ . Možete imati jedan nivo podfascikli unutar Vaše Songs fascikle.\n\n Aplikacija takođe dolazi sa mojom interpretacijom preko 700 pesama koje možete koristiti, ali imajte na umu da ste sami odgovorni za sve moguće copyright rizike koji mogu nastati!"</string>
         
@@ -334,7 +334,7 @@
     <string name="gotosong">"KLIKNUTI OVDE DA POKRENETE \n OPEN SONG VIEWER"</string>
     <string name="wipesongs">"Brisanje moje lokalne fascikle sa pesmama"</string>
     <string name="dropsync">"Preuzimanje DropSync aplikacije (besplatno)"</string>
-    <string name="app_name">"OpenSong Tablet"</string>
+    <string name="app_name">"OpenSongApp"</string>
     <string name="drawer_open">"Otvoriti"</string>
     <string name="drawer_close">"Zatvoriti"</string>
     <string name="set_back">"Nazad"</string>

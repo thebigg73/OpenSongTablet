@@ -176,9 +176,9 @@
 	<string name="createfoldererror">"Wystąpił błąd podczas tworzenia nowego folderu !"</string>
 	<string name="createfoldersuccess">"Nowy folder utworzony !"</string>
     
-	<string name="welcome">"OpenSong Muzyka Viewer \n Wpisany przez Gareth Evans"</string>
+	<string name="welcome">"OpenSongApp\nWpisany przez Gareth Evans"</string>
 		
-	<string name="intro">"OpenSong Muzyka Viewer wykorzystuje utwory stworzone w OpenSong i wyświetla je na ekranie tabletu."</string>
+	<string name="intro">"OpenSongApp wykorzystuje utwory stworzone w OpenSong i wyświetla je na ekranie tabletu."</string>
 		
 	<string name="intro_songsfolder">"Aplikacja wyszukuje folderu w dokumentach zwanych \"OpenSong / Piosenki\", a jeśli nie możesz go znaleźć, to tworzy go dla Ciebie. Następnie zapisuje pojedynczy utwór o nazwie \"Miłość wieczna\", jedna z moich piosenek, do folderu (w przeciwnym razie nie będzie w stanie nic zrobić z aplikacji!). Aby korzystać z własnych piosenek OpenSong, skopiuj je do Dokumenty / OpenSong / Utwory / folderów. Możesz mieć jeden poziom podfolderów wewnątrz katalogu piosenek. \n\n aplikacja również w pakiecie z 700 + piosenek, które można wykorzystać, należy jednak pamiętać, jesteś odpowiedzialny za przestrzeganie ewentualnych praw autorskich i można ich używać na twoje własne ryzyko!"</string>
 		
@@ -196,7 +196,7 @@
 	<string name="gotosong">"Kliknij tutaj aby \n OPEN SONG VIEWER"</string>
 	<string name="wipesongs">"Zresetować lokalny folder piosenki"</string>
 	<string name="dropsync">"Pobierz DropSync aplikacji (za darmo)"</string>
-	<string name="app_name">"OpenSong Tablet"</string>
+	<string name="app_name">"OpenSongApp"</string>
 	<string name="drawer_open">"Otwórz"</string>
 	<string name="drawer_close">"Zamknij"</string>
 	<string name="set_back">"Wstecz"</string>

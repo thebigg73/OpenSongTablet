@@ -176,9 +176,9 @@
 	<string name="createfoldererror">"Došlo k chybě při vytváření nové složky !"</string>
 	<string name="createfoldersuccess">"Nová složka vytvořena!"</string>
     
-	<string name="welcome">"OpenSong Music Viewer\n Napsal Gareth Evans"</string>
+	<string name="welcome">"OpenSongApp\nNapsal Gareth Evans"</string>
 		
-	<string name="intro">"OpenSong Music Viewer používá skladby vytvořené v OpenSong a zobrazí je na obrazovce tabletu."</string>
+	<string name="intro">"OpenSongApp používá skladby vytvořené v OpenSong a zobrazí je na obrazovce tabletu."</string>
 		
 	<string name="intro_songsfolder">"Aplikace vyhledá složky v dokumentech s názvem \"OpenSong / Songs\" a pokud to nemůže najít, vytváří to pro vás. To pak uloží jednu skladbu s názvem \"Láska na věky\", jeden z mých vlastních písní, do složky (jinak byste nebyli schopni nic dělat s app!). Chcete-li použít vlastní OpenSong skladby, zkopírujte je do Dokumenty / OpenSong / Písně / složky. Můžete mít jednu úroveň podsložky uvnitř složky Songs.\n\n app také je dodáván s 700 a více písní, které můžete použít, ale mějte na paměti, jste odpovědni za dodržování případných otázkách autorských práv a můžete je použít na tvoje vlastní riziko!"</string>
 		
@@ -197,7 +197,7 @@
 	<string name="gotosong">"Klikněte zde a budete\n OPEN SONG PROHLÍŽEČE"</string>
 	<string name="wipesongs">"Obnovit svou místní složku písně"</string>
 	<string name="dropsync">"Stáhněte si DropSync App (zdarma)"</string>
-	<string name="app_name">"OpenSong Tablet"</string>
+	<string name="app_name">"OpenSongApp"</string>
 	<string name="drawer_open">"Otevřít"</string>
 	<string name="drawer_close">"Zavřít"</string>
 	<string name="set_back">"Zpět"</string>

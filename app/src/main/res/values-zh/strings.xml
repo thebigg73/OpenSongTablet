@@ -177,9 +177,9 @@
 	<string name="createfoldererror">"在建立新的文件夹的错误！"</string>
 	<string name="createfoldersuccess">"新的文件夹中创建！"</string>
     
-	<string name="welcome">"OpenSong音乐查看器\ñ作者加雷思·埃文斯"</string>
+	<string name="welcome">"OpenSongApp\n作者加雷思·埃文斯"</string>
 		
-	<string name="intro">"该OpenSong音乐Viewer使用在OpenSong创建歌曲和平板电脑屏幕上显示出来。其目的是崇拜的音乐家和正在进行中相当多的工作。它的工作原理最好在肖像模式下，但我已经离开了风景模式（以防万一）。"</string>
+	<string name="intro">"OpenSongApp 创建歌曲和平板电脑屏幕上显示出来。其目的是崇拜的音乐家和正在进行中相当多的工作。它的工作原理最好在肖像模式下，但我已经离开了风景模式（以防万一）。"</string>
 		
 	<string name="intro_songsfolder">"该应用程序查找一个文件夹中的文件称为“OpenSong /歌曲'，如果它不能找到它，它会创建它。然后，它可以节省一首歌曲叫做“永远的爱”，我自己的歌曲之一，该文件夹（否则，你就无法与应用程序做任何事情！）。要使用自己的OpenSong歌曲，将它们复制到文件/ OpenSong /歌曲/文件夹。你可以在你的歌曲文件夹中的子文件夹中的一个级别。\n \n已该应用程序还附带了700 +的歌，你可以使用，但请记住您有责任遵守任何潜在的版权问题，你使用它们的风险自担！"</string>
 		
@@ -196,7 +196,7 @@
 	<string name="gotosong">"点击这里开始\n打开歌阅读器"</string>
 	<string name="wipesongs">"重设我的本地文件夹的歌曲"</string>
 	<string name="dropsync">"下载DropSync应用程序（免费）"</string>
-	<string name="app_name">"OpenSong平板"</string>
+	<string name="app_name">"OpenSongApp"</string>
 	<string name="drawer_open">"打开"</string>
 	<string name="drawer_close">"关闭"</string>
 	<string name="set_back">"后面返回"</string>

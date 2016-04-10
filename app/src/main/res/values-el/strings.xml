@@ -350,9 +350,9 @@
     <string name="createfoldererror">"Υπήρξε πρόβλημα στην δημιουργία νέου φακέλου!"</string>
     <string name="createfoldersuccess">"Δημιουργήθηκε νέος φάκελος!"</string>
     
-    <string name="welcome">"OpenSong Music Viewer \n γραμμένο από τον Gareth Evans"</string>
+    <string name="welcome">"OpenSongApp\nγραμμένο από τον Gareth Evans"</string>
         
-    <string name="intro">"Το OpenSong Music Viewer χρησιμοποιεί τραγούδια δημιουργημένα στο OpenSong και τα εμφανίζει στην οθόνη της Android συσκευής σας."</string>
+    <string name="intro">"OpenSongApp χρησιμοποιεί τραγούδια δημιουργημένα στο OpenSong και τα εμφανίζει στην οθόνη της Android συσκευής σας."</string>
 
     <string name="user_guide_text">"Παρακαλώ διαβάστε τις οδηγίες χρήσης πριν χρησιμοποιήσετε την εφαρμογή."</string>
     <string name="user_guide">"Οδηγίες χρήσης"</string>
@@ -395,7 +395,7 @@
     <string name="gotosong">"CLICK HERE TO START \n OPEN SONG VIEWER"</string>
     <string name="wipesongs">"Reset my local songs folder"</string>
     <string name="dropsync">"Download DropSync App (free)"</string>
-    <string name="app_name">"OpenSong Tablet"</string>
+    <string name="app_name">"OpenSongApp"</string>
     <string name="drawer_open">"Open"</string>
     <string name="drawer_close">"Close"</string>
     <string name="set_back">"Back"</string>

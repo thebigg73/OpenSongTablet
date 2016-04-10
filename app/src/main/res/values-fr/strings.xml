@@ -176,9 +176,9 @@
 	<string name="createfoldererror">"Erreur lors de la création du nouveau dossier !"</string>
 	<string name="createfoldersuccess">"Nouveau dossier créé !"</string>
     
-	<string name="welcome">"OpenSong Musique Viewer \n Écrit par Gareth Evans"</string>
+	<string name="welcome">"OpenSongApp\nÉcrit par Gareth Evans"</string>
 		
-	<string name="intro">"OpenSong Musique Viewer utilise des morceaux créés dans OpenSong et les affiche sur l\'écran de votre tablette."</string>
+	<string name="intro">"OpenSongApp utilise des morceaux créés dans OpenSong et les affiche sur l\'écran de votre tablette."</string>
 		
 	<string name="intro_songsfolder">"L\'application recherche un dossier dans vos documents appelés «OpenSong/Songs» et si elle ne peut pas le trouver, il le crée pour vous. Il enregistre ensuite une chanson appelé «Love everlasting», l\'une de mes propres chansons, dans ce dossier (sinon, vous ne seriez pas en mesure de faire quoi que ce soit avec l\'application!). Pour utiliser vos propres chansons OpenSong, copiez-les dans le dossier Documents/OpenSong/Songs/. Vous pouvez avoir un niveau de sous-dossiers dans votre dossier Songs. \n \n L\'application est également livré avec 700 + chansons que vous pouvez utiliser, mais gardez à l\'esprit que vous êtes responsable du respect des droits d\'auteurs potentiels et vous les utiliser à votre risques et périls!"</string>
 		
@@ -196,7 +196,7 @@
 	<string name="gotosong">"Cliquez ici pour demarrer \n Open Song VIEWER"</string>
 	<string name="wipesongs">"Réinitialiser mon dossier de chansons locale"</string>
 	<string name="dropsync">"Télécharger l\'application Dropsync (gratuit)"</string>
-	<string name="app_name">"OpenSong Tablet"</string>
+	<string name="app_name">"OpenSongApp"</string>
 	<string name="drawer_open">"Ouvrir"</string>
 	<string name="drawer_close">"Fermer"</string>
 	<string name="set_back">"Precedent"</string>

@@ -175,9 +175,9 @@
 	<string name="createfoldererror">"Es gab einen Fehler beim Erstellen des neuen Ordners!"</string>
 	<string name="createfoldersuccess">"Neuer Ordner erstellt!"</string>
     
-	<string name="welcome">"Opensong Musik-Viewer \n von Gareth Evans"</string>
+	<string name="welcome">"OpenSongApp\nvon Gareth Evans"</string>
 		
-	<string name="intro">"Der Opensong Musik Viewer verwendet Songs die in OpenSong erstellt wurden und zeigt diese auf dem Tablet-Bildschirm an."</string>
+	<string name="intro">"OpenSongApp verwendet Songs die in OpenSong erstellt wurden und zeigt diese auf dem Tablet-Bildschirm an."</string>
 		
 	<string name="intro_songsfolder">"Die Anwendung sucht in Ihren Dokumenten nach einem Ordner namens \'Opensong/Songs\'. Kann Sie ihn nicht finden, wird er neu angelegt. Es speichert dann ein Lied namens \'Love everlasting\', einen meiner eigenen Songs, in den Ordner (andernfalls würden Sie nicht in der Lage sein, irgendetwas mit der App zu tun!). Um Ihre eigenen OpenSong Songs zu verwenden, kopieren Sie diese nach Dokumente/OpenSong/Songs. Sie können eine Ebene von Unterordnern in diesem Ordner vorhalten.\n\n Die App kommt auch mit mehr als 700 Songs klar, aber bedenken Sie, dass Sie für die Einhaltung möglicher Urheberrechte alleine verantwortlich sind!"</string>
 		
@@ -195,7 +195,7 @@
 	<string name="gotosong">"HIER ZUM STARTEN KLICKEN \n OPENSONG&#8230;STARTEN"</string>
 	<string name="wipesongs">"Zurücksetzen des lokalen Songs-Ordners"</string>
 	<string name="dropsync">"Laden Sie DropSync App herunter (kostenlos)"</string>
-	<string name="app_name">"OpenSong Tablet"</string>
+	<string name="app_name">"OpenSongApp"</string>
 	<string name="drawer_open">"Öffnen"</string>
 	<string name="drawer_close">"Schließen"</string>
 	<string name="set_back">"Zurück"</string>

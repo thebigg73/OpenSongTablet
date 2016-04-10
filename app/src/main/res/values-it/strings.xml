@@ -176,9 +176,9 @@
 	<string name="createfoldererror">"Si è verificato un errore durante la creazione della nuova cartella !"</string>
 	<string name="createfoldersuccess">"Nuova cartella creata !"</string>
     
-	<string name="welcome">"OpenSong Musica Viewer \n Scritto da Gareth Evans"</string>
+	<string name="welcome">"OpenSongApp\nScritto da Gareth Evans"</string>
 		
-	<string name="intro">"Il OpenSong Musica Viewer utilizza brani creati in OpenSong e li visualizza sul vostro schermo del tablet."</string>
+	<string name="intro">"OpenSongApp utilizza brani creati in OpenSong e li visualizza sul vostro schermo del tablet."</string>
 		
 	<string name="intro_songsfolder">"L'applicazione cerca una cartella nei documenti denominati «OpenSong / Songs 'e se non lo trova, lo crea per voi. Si salva una sola canzone che si chiama 'Amore eterno', una delle mie canzoni, la cartella (in caso contrario, non sarebbe in grado di fare qualsiasi cosa con l'app!). Per usare le proprie canzoni OpenSong, copiarli in Documenti / OpenSong / canzoni / cartelle. Si può avere un livello di sottocartelle all'interno della cartella Songs. \n \n L'app disponibile anche in bundle con 700 + canzoni che è possibile utilizzare, ma tenete a mente che è responsabile per avere aderito a eventuali problemi di copyright e li usa a vostra proprio rischio e pericolo!"</string>
 		
@@ -196,7 +196,7 @@
 	<string name="gotosong">"Clicca qui per iniziare \n APERTO SONG VIEWER"</string>
 	<string name="wipesongs">"Aggiorna la mia cartella canzoni locale"</string>
 	<string name="dropsync">"Scarica DropSync App (gratuito)"</string>
-	<string name="app_name">"OpenSong Tablet"</string>
+	<string name="app_name">"OpenSongApp"</string>
 	<string name="drawer_open">"Aperto"</string>
 	<string name="drawer_close">"Chiudi"</string>
 	<string name="set_back">"Indietro"</string>

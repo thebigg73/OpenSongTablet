@@ -176,9 +176,9 @@
 	<string name="createfoldererror">"Houve um erro ao criar a nova pasta !"</string>
 	<string name="createfoldersuccess">"Nova pasta criada !"</string>
     
-	<string name="welcome">"OpenSong Música Visualizador \n Escrito por Gareth Evans"</string>
+	<string name="welcome">"OpenSongApp\nEscrito por Gareth Evans"</string>
 		
-	<string name="intro">"O OpenSong Música Viewer utiliza músicas criadas em OpenSong e as exibe na tela tablet."</string>
+	<string name="intro">"OpenSongApp utiliza músicas criadas em OpenSong e as exibe na tela tablet."</string>
 		
 	<string name="intro_songsfolder">"O aplicativo procura uma pasta em seus documentos chamados \"OpenSong / Songs 'e se ele não pode encontrá-lo, ele cria-lo para você. Em seguida, ele salva uma única canção chamada \"Everlasting Love\", uma das minhas próprias músicas, para a pasta (caso contrário, você não seria capaz de fazer qualquer coisa com o app!). Para usar suas próprias canções OpenSong, copiá-los para os Documentos / OpenSong / Músicas / pasta. Você pode ter um nível de subpastas dentro de sua pasta de músicas. \n \n O aplicativo também vem com 700 músicas + que você pode usar, mas tenha em mente que você é responsável por aderir a possíveis problemas de direitos autorais e de usá-los em seu conta e risco!"</string>
 		
@@ -196,7 +196,7 @@
 	<string name="gotosong">"Clique aqui para começar \n ABERTA CANÇÃO VIEWER"</string>
 	<string name="wipesongs">"Redefinição de minha pasta músicas locais"</string>
 	<string name="dropsync">"Baixe Dropsync App (grátis)"</string>
-	<string name="app_name">"OpenSong Tablet"</string>
+	<string name="app_name">"OpenSongApp"</string>
 	<string name="drawer_open">"Abrir"</string>
 	<string name="drawer_close">"Fechar"</string>
 	<string name="set_back">"Voltar"</string>

@@ -373,9 +373,9 @@
 	<string name="createfoldererror">There was an error creating the new folder!</string>
 	<string name="createfoldersuccess">New folder created!</string>
 	
-    <string name="welcome">OpenSong Music Viewer \n Written by Gareth Evans</string>
+    <string name="welcome">OpenSongApp\n Written by Gareth Evans</string>
 		
-	<string name="intro">The OpenSong Music Viewer uses songs created in OpenSong and displays them on your tablet screen.</string>
+	<string name="intro">OpenSongApp uses songs created in OpenSong and displays them on your tablet screen.</string>
 
     <string name="user_guide_text">Please take the time to read the user guide before using the app.</string>
     <string name="user_guide">User guide</string>
@@ -395,7 +395,7 @@
 	    synchronised).\n This will take a few minutes (depending on the number of songs 
 	    you have) on the first run.  Standard disclaimer - I am not responsible for any 
 	    loss of songs on your DropBox folder!  You do this at your own risk. \n\n However, 
-	    I have set this up on my device and it all seems to work seemlessly (the default 
+	    I have set this up on my device and it all seems to work seamlessly (the default
 	    sync schedule is 1 hour) on the DropSync app, but you can change this).</string>
 	    
 	<string name="intro_future">Unfortunately I don\'t own an iPad/Mac, so I am unable to 
@@ -419,7 +419,7 @@
 	<string name="gotosong">CLICK HERE TO START \n OPEN SONG VIEWER</string>
 	<string name="wipesongs">Reset my local songs folder</string>
 	<string name="dropsync">Download DropSync App (free)</string>
-	<string name="app_name">OpenSong Tablet</string>
+	<string name="app_name">OpenSongApp</string>
 	<string name="drawer_open">Open</string>
 	<string name="drawer_close">Close</string>
 	<string name="set_back">Back</string>

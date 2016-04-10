@@ -178,7 +178,7 @@
     
 	<string name="welcome">"Nギャレス·エヴァンスによって書かれたOpenSongミュージックビューア\"</string>
 		
-	<string name="intro">"OpenSong音楽ViewerはOpenSongで作成した曲を使用しており、タブレット画面上に表示します。それは礼拝のミュージシャンを目指した、とても進行中の作業です。これは、ポートレートモードで最適に動作しますが、私は（念のため）利用可能なランドスケープモードを残してきた。"</string>
+	<string name="intro">"OpenSongApp で作成した曲を使用しており、タブレット画面上に表示します。それは礼拝のミュージシャンを目指した、とても進行中の作業です。これは、ポートレートモードで最適に動作しますが、私は（念のため）利用可能なランドスケープモードを残してきた。"</string>
 		
 	<string name="intro_songsfolder">"アプリケーションは、「OpenSong /歌 'というドキュメント内のフォルダを探し、それを見つけることができない場合、それはあなたのためにそれを作成します。その後、（そうでなければ、あなたはアプリで何かをすることはできないだろう！）フォルダに、「永遠の​​愛」という単一の歌、私自身の歌の1を保存します。自分OpenSongの曲を使用するには、ドキュメント/ OpenSong /歌/フォルダにコピーします。あなたは、このアプリはまた、あなたが使用できる700 +歌がバンドルされていますが、クマを念頭にあなたが潜在的な著作権の問題を遵守する責任を負いますN \n \。あなたの歌フォルダ内のサブフォルダの1つのレベルを持つことができますし、あなたにそれらを使用する自己責任！"</string>
 		
@@ -195,7 +195,7 @@
 	<string name="gotosong">"\nは、OPEN SONGビューアを起動するには、ここをクリックしてください"</string>
 	<string name="wipesongs">"私の地元の歌フォルダをリセット"</string>
 	<string name="dropsync">"DropSyncアプリをダウンロード（無料）"</string>
-	<string name="app_name">"OpenSongタブレット"</string>
+	<string name="app_name">"OpenSongApp"</string>
 	<string name="drawer_open">"位置打开"</string>
 	<string name="drawer_close">"閉じる"</string>
 	<string name="set_back">"戻る"</string>

@@ -176,9 +176,9 @@
 	<string name="createfoldererror">"Daar was 'n fout met die skep van die nuwe gids !"</string>
 	<string name="createfoldersuccess">"Nuwe gids geskep !"</string>
     
-	<string name="welcome">"OpenSong Musiek Viewer \ n Geskryf deur Gareth Evans"</string>
+	<string name="welcome">"OpenSongApp\n Geskryf deur Gareth Evans"</string>
 		
-	<string name="intro">"Die OpenSong Musiek Viewer gebruik liedjies geskep in OpenSong en vertoon dit op jou tablet skerm."</string>
+	<string name="intro">"Die OpenSongApp gebruik liedjies geskep in OpenSong en vertoon dit op jou tablet skerm."</string>
 		
 	<string name="intro_songsfolder">"Die aansoek lyk vir 'n gids in jou dokumente genoem 'OpenSong / Songs \"en as dit nie kan vind nie, dit skep dit vir jou. Dit spaar dan 'n enkele liedjie genaamd \"Love ewige\", een van my eie liedjies, na die gids (anders sou jy nie in staat wees om iets te doen met die jeug!). Jou eie OpenSong liedjies te gebruik, skryf hulle op die dokumente / OpenSong / Songs / gids. Jy kan een vlak van submappen in jou Songs gids. \ N \ n Die inligting kom ook saam met 700 + songs wat jy kan gebruik, maar hou in gedagte is jy verantwoordelik vir die voldoening aan enige potensiële probleme met kopiereg en jy gebruik dit op jou eie risiko!"</string>
 		
@@ -196,7 +196,7 @@
 	<string name="gotosong">"KLIK HIER \ n OOP SONG kyker BEGIN"</string>
 	<string name="wipesongs">"Herstel my plaaslike liedjies gids"</string>
 	<string name="dropsync">"Aflaai DropSync App (gratis)"</string>
-	<string name="app_name">"OpenSong Tablet"</string>
+	<string name="app_name">"OpenSongApp"</string>
 	<string name="drawer_open">"Oop"</string>
 	<string name="drawer_close">"Sluit"</string>
 	<string name="set_back">"Terug"</string>

@@ -176,9 +176,9 @@
 	<string name="createfoldererror">"Hiba történt létrehozása az új mappa !"</string>
 	<string name="createfoldersuccess">"Létrehozott új mappa !"</string>
     
-	<string name="welcome">"OpenSong Music Viewer \n Írta: Gareth Evans"</string>
+	<string name="welcome">"OpenSongApp\nÍrta: Gareth Evans"</string>
 		
-	<string name="intro">"A OpenSong Music Viewer dal létrehozott OpenSong és megjeleníti őket a tablet képernyőjén."</string>
+	<string name="intro">"OpenSongApp dal létrehozott OpenSong és megjeleníti őket a tablet képernyőjén."</string>
 		
 	<string name="intro_songsfolder">"Az alkalmazás keres egy mappát a Documents úgynevezett \"OpenSong / Songs\", és ha nem talál ilyet, létrehoz neked. Ezután ment egy dal 'Love örök \", az egyik a saját dalok, a mappa (ellenkező esetben nem lenne képes bármit is tenni az app!). Ahhoz, hogy a saját OpenSong dalok, másolja be a Dokumentumok / OpenSong / Songs / mappába. Akkor egy szintet almappákat belül a Songs mappába. \n\n Az app is jön a csomagban 700 + dal, amely akkor használható, de tartsa szem előtt, akkor felelős azért, hogy az esetleges szerzői jogi kérdések, és használja őket a saját felelősségére!"</string>
 		
@@ -196,7 +196,7 @@
 	<string name="gotosong">"Kattintson ide, hogy \n OPEN SONG VIEWER"</string>
 	<string name="wipesongs">"Állítsa vissza a helyi dalokat mappába"</string>
 	<string name="dropsync">"Töltsd le DropSync App (ingyenes)"</string>
-	<string name="app_name">"OpenSong Tablet"</string>
+	<string name="app_name">"OpenSongApp"</string>
 	<string name="drawer_open">"Megnyitás"</string>
 	<string name="drawer_close">"Bezár"</string>
 	<string name="set_back">"Vissza"</string>

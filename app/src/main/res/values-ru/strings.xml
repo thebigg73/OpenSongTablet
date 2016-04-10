@@ -176,9 +176,9 @@
 	<string name="createfoldererror">"Былошибка при создании новой папки !"</string>
 	<string name="createfoldersuccess">"Новая папка создается !"</string>
     
-	<string name="welcome">"OpenSong Музыка просмотра \п Автор Гарет Эванс"</string>
+	<string name="welcome">"OpenSongApp\nАвтор Гарет Эванс"</string>
 		
-	<string name="intro">"OpenSong Музыка просмотра использует песни, созданные в OpenSong и отображает их на экране планшета."</string>
+	<string name="intro">"OpenSongApp использует песни, созданные в OpenSong и отображает их на экране планшета."</string>
 		
 	<string name="intro_songsfolder">"Приложение выглядит для папки в ваших документах под названием \"OpenSong / Songs\" и если он не может найти его, он создает ее для вас. Затем он сохраняет одну песню под названием \"Любовь вечна\", один из моих собственных песен, в папку (в противном случае вы не были бы в состоянии сделать что-либо с приложением!). Чтобы использовать свои собственные песни OpenSong, скопируйте их в Документы / OpenSong / Песни / папок. Вы можете иметь один уровень вложенных папок внутри папки Песни. \n\n Приложение также поставляется в комплекте с 700 + песен, которые можно использовать, но имейте в виду, вы несете ответственность за соблюдение любых потенциальных проблем с авторским правом, и вы используете их на свой страх и риск!"</string>
 		
@@ -196,7 +196,7 @@
 	<string name="gotosong">"НАЖМИТЕ ЗДЕСЬ, ЧТОБЫ НАЧАТЬ \n\n Открыть SONG ПРОСМОТРА"</string>
 	<string name="wipesongs">"Сброс мою папку местные песни"</string>
 	<string name="dropsync">"Скачать DropSync App (бесплатно)"</string>
-	<string name="app_name">"OpenSong Tablet"</string>
+	<string name="app_name">"OpenSongApp"</string>
 	<string name="drawer_open">"Открыть"</string>
 	<string name="drawer_close">"Закрыть"</string>
 	<string name="set_back">"Назад"</string>
