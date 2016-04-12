@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="customise_set_item">"Customise a set item"</string>
-    <string name="variation">"Variation"</string>
-    <string name="variation_edit">"This item can be edited.  The original will be unaffected."</string>
+    <string name="customise_set_item">"Τροποποίηση ενός στοιχείου της σειράς"</string>
+    <string name="variation">"Παραλαγή"</string>
+    <string name="variation_edit">"Αυτό το αντικείμενο μπορεί να τροποποιηθεί. Το αυθεντικό δεν θα επηρεαστεί."</string>
 
-    <string name="bible_search">"Phrase or verse to search"</string>
-    <string name="bible_translation">"Bible version code\n(e.g. NIV, MSG)"</string>
-    <string name="commentline_scale">"Scale comment text"</string>
-    <string name="extract">"Extract text"</string>
-    <string name="headingline_scale">"Scale heading text"</string>
-    <string name="search_biblegateway">"Search BibleGateway.com"</string>
+    <string name="bible_search">"Φράση ή κουπλέ για αναζήτηση"</string>
+    <string name="bible_translation">"Κωδικός έκδοσης Βίβλου\n(π.χ. NIV, MSG)"</string>
+    <string name="commentline_scale">"Κείμενο σχολίου κλίμακας"</string>
+    <string name="extract">"Εξαγωγή κειμένου"</string>
+    <string name="headingline_scale">"Κείμενο τίτλου κλίμακας"</string>
+    <string name="search_biblegateway">"Αναζήτηση στο BibleGateway.com"</string>
 
     <string name="search_index_end">"Όλα τα τραγούδια έχουν καταχωρηθεί"</string>
     <string name="search_index_error">"There was an error building your search database"</string>
@@ -170,21 +170,21 @@
     <string name="autoscroll_time">"Autoscroll delay time"</string>
     
     <string name="songbuttons_toggle">"Toggle page buttons shortcuts"</string>
-    <string name="song_functionnotavailable">"This function is not available for songs"</string>
+    <string name="song_functionnotavailable">"Αυτή η λειτουργία δεν είναι διαθέσιμη στα τραγούδια"</string>
     
-    <string name="latest_updates">"Latest updates"</string>
+    <string name="latest_updates">"Τελευταίες ενημερώσεις"</string>
     
-    <string name="storage_choose">"Manage storage"</string>
+    <string name="storage_choose">"Διαχείρηση αποθήκευσης"</string>
     <string name="storage_help">"Please choose the default storage location for your OpenSong files.  You can change this at any time from the Options menu."</string>
     <string name="storage_space">"Available space"</string>
-    <string name="storage_notavailable">"Not available"</string>
+    <string name="storage_notavailable">"Δεν είναι διαθέσιμο"</string>
     <string name="storage_int">"Emulated external/Internal storage"</string>
-    <string name="storage_ext">"External storage"</string>
+    <string name="storage_ext">"Εξωτερική αποθήκευση"</string>
     
     <string name="link">"Link"</string>
     <string name="link_choose">"Choose a file to link with this song"</string>
     
-    <string name="autoscroll">"Autoscroll"</string>
+    <string name="autoscroll">"Αυτόματη κύλιση"</string>
     
     <string name="import_onsong_done">"Success -OnSong songs have been added to /documents/OpenSong/Songs/OnSong"</string>
     <string name="import_onsong_error">"No OnSong backup file found in /documents/OpenSong/"</string>
@@ -235,12 +235,12 @@
         <item>Abm"</item>
     </array>
     
-    <string name="stickynotes">"Song notes"</string>
+    <string name="stickynotes">"Σημειώσεις τραγουδιού"</string>
     
-    <string name="youtube">"Search YouTube for current song"</string>
+    <string name="youtube">"Αναζήτηση στο YouTube για το τραγούδι"</string>
     
-    <string name="pdf_functionnotavailable">"This function is not available for PDF documents"</string>
-    <string name="pdf_selectpage">"Select page"</string>
+    <string name="pdf_functionnotavailable">"Αυτή η επιλογή δεν είναι διαθέσιμη στα αρχεία PDF"</string>
+    <string name="pdf_selectpage">"Επιλογή σελίφας"</string>
     
     <string name="options_set">"ΣΕΙΡΑ"</string>
     <string name="options_set_load">"Άνοιγμα"</string>
@@ -510,7 +510,7 @@
     
     <string name="options_backtooptions">"ΠΙΣΩ ΣΤΙΣ ΕΠΙΛΟΓΕΣ"</string>
     <string name="options_savethisset">"ΑΠΟΘΗΚΕΥΣΗ ΣΕΙΡΑΣ"</string>
-    <string name="options_clearthisset">"ΔΗΜΙΟΥΡΓΙΑ ΣΕΙΡΑΣ"</string>
+    <string name="options_clearthisset">"Διαγραφή της σειράς και δημιουργία νέας"</string>
     
     <string name="mainfoldername">"ΚΕΝΤΡΙΚΟ"</string>
     <string name="colorchooser">"Επιλογέας χρώματος"</string>
