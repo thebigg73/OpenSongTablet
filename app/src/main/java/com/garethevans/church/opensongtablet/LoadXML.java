@@ -12,6 +12,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import android.app.Activity;
 import android.os.Build;
+import android.util.Log;
 
 public class LoadXML extends Activity {
 

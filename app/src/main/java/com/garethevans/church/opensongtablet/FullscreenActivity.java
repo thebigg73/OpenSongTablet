@@ -1356,15 +1356,15 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 super.onDrawerOpened(drawerView);
                 wasscrolling = false;
                 scrollbutton = false;
-                setupPageButtons();
-                setlisticon.setVisibility(View.GONE);
+                //setupPageButtons();
+                //setlisticon.setVisibility(View.GONE);
                 toggleActionBar();
-                hidepagebuttons();
-                hidepopupPad();
-                hidepopupChord();
-                hidepopupAutoscroll();
-                hidepopupMetronome();
-                hidepopupSticky();
+                //hidepagebuttons();
+                //hidepopupPad();
+                //hidepopupChord();
+                //hidepopupAutoscroll();
+                //hidepopupMetronome();
+                //hidepopupSticky();
 
                 if (!ab.isShowing()) {
                     ab.show();

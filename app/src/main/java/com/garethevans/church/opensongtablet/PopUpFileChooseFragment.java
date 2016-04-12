@@ -127,7 +127,16 @@ public class PopUpFileChooseFragment extends DialogFragment {
         cancelFileChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+                if (FullscreenActivity.whattodo.equals("customnote") ||
+                        FullscreenActivity.whattodo.equals("customslide") ||
+                        FullscreenActivity.whattodo.equals("customimage") ||
+                        FullscreenActivity.whattodo.equals("customscripture")) {
+                    dismiss();
+                    DialogFragment newFragment = PopUpCustomSlideFragment.newInstance();
+                    newFragment.show(getFragmentManager(), "dialog");
+                } else {
+                    dismiss();
+                }
             }
         });
 
@@ -161,22 +170,22 @@ public class PopUpFileChooseFragment extends DialogFragment {
                         break;
 
                     case "customnote":
-                        FullscreenActivity.customreusabletoload = "Notes/" + foundFiles[position];
+                        FullscreenActivity.customreusabletoload = FullscreenActivity.text_note  + "/" + foundFiles[position];
                         mListener.loadCustomReusable();
                         break;
 
                     case "customslide":
-                        FullscreenActivity.customreusabletoload = "Slides/" + foundFiles[position];
+                        FullscreenActivity.customreusabletoload = FullscreenActivity.text_slide  + "/" + foundFiles[position];
                         mListener.loadCustomReusable();
                         break;
 
                     case "customimage":
-                        FullscreenActivity.customreusabletoload = "Images/" + foundFiles[position];
+                        FullscreenActivity.customreusabletoload = FullscreenActivity.image  + "/" + foundFiles[position];
                         mListener.loadCustomReusable();
                         break;
 
                     case "customscripture":
-                        FullscreenActivity.customreusabletoload = "Scriptures/" + foundFiles[position];
+                        FullscreenActivity.customreusabletoload = FullscreenActivity.text_scripture  + "/" + foundFiles[position];
                         mListener.loadCustomReusable();
                         break;
 

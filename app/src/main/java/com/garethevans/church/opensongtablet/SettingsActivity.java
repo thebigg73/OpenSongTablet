@@ -110,7 +110,9 @@ public class SettingsActivity extends AppCompatActivity {
 
                 TextView showVersion = (TextView) findViewById(R.id.version);
                 String temptext = "V"+versionName+" ("+versionNumber+")";
-                showVersion.setText(temptext);
+                if (showVersion!=null) {
+                    showVersion.setText(temptext);
+                }
 
                 mLayout = findViewById(R.id.page);
 
@@ -122,7 +124,7 @@ public class SettingsActivity extends AppCompatActivity {
                 }
 
             }
-        }, 1000); // 1000ms delay
+        }, 1500); // 1500ms delay
     }
 
     private void setupToolbar(){

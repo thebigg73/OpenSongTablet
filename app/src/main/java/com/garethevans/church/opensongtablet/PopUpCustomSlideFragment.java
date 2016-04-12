@@ -288,6 +288,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     }
 
     public void updateFields() {
+        Log.d("d","FullscreenActivity.whattodo="+FullscreenActivity.whattodo);
         switch (FullscreenActivity.whattodo) {
             case "customreusable_note":
                 // Fill in the details
