@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="customise_set_item">"Customise a set item"</string>
-    <string name="variation">"Variation"</string>
-    <string name="variation_edit">"This item can be edited.  The original will be unaffected."</string>
+    <string name="customise_set_item">"Τροποποίηση ενός στοιχείου της σειράς"</string>
+    <string name="variation">"Παραλαγή"</string>
+    <string name="variation_edit">"Αυτό το αντικείμενο μπορεί να τροποποιηθεί. Το αυθεντικό δεν θα επηρεαστεί."</string>
 
-    <string name="bible_search">"Phrase or verse to search"</string>
-    <string name="bible_translation">"Bible version code\n(e.g. NIV, MSG)"</string>
-    <string name="commentline_scale">"Scale comment text"</string>
-    <string name="extract">"Extract text"</string>
-    <string name="headingline_scale">"Scale heading text"</string>
-    <string name="search_biblegateway">"Search BibleGateway.com"</string>
+    <string name="bible_search">"Φράση ή κουπλέ για αναζήτηση"</string>
+    <string name="bible_translation">"Κωδικός έκδοσης Βίβλου\n(π.χ. NIV, MSG)"</string>
+    <string name="commentline_scale">"Κείμενο σχολίου κλίμακας"</string>
+    <string name="extract">"Εξαγωγή κειμένου"</string>
+    <string name="headingline_scale">"Κείμενο τίτλου κλίμακας"</string>
+    <string name="search_biblegateway">"Αναζήτηση στο BibleGateway.com"</string>
 
     <string name="search_index_end">"Όλα τα τραγούδια έχουν καταχωρηθεί"</string>
-    <string name="search_index_error">"There was an error building your search database"</string>
-    <string name="search_index_start">"Building your song database"</string>
-    <string name="search_log">"Check the search database error log"</string>
-    <string name="search_rebuild">"Rebuild song database"</string>
+    <string name="search_index_error">"Υπήρξε ένα πρόβλημα με την δημιουργία της βάσης αναζήτησης"</string>
+    <string name="search_index_start">"Δημιουργία της βάσης αναζήτησης"</string>
+    <string name="search_log">"Έλεγχος αρχείου σφαλμάτων της βάσης αναζήτησης"</string>
+    <string name="search_rebuild">"Επαναδημιουργία της βάσης αναζήτησης"</string>
     <string name="pref_key_text">"Choose your preferred key settings"</string>
     <string name="pref_key_flatsorsharps">"Χρήση διέσεων/υφέσεων"</string>
-    <string name="rate">"Rate this app"</string>
+    <string name="rate">"Αξιολόγησε την εφαρμογή"</string>
     <string name="right">"Right"</string>
 
-    <string name="set_manage_swipe">"Swipe to remove an item from your set list"</string>
-    <string name="set_manage_shuffle">"Shuffle"</string>
-    <string name="set_manage_click">"Click on an item in the set to view it"</string>
-    <string name="storage_rationale">"Access to your storage is required to read and write songs and sets."</string>
-    <string name="microphone_rationale">"Microphone / audio recording is required to access the sound level meter."</string>
-    <string name="default_autoscroll">"Default autoscroll times"</string>
-    <string name="autoscroll_default_or_prompt">"If you haven\'t set a song duration should the default values be used or do you want to be asked each time?"</string>
-    <string name="use_default">"Use default"</string>
-    <string name="ask">"Ask each time"</string>
+    <string name="set_manage_swipe">"Σύρε για την διαγραφή αντικειμένου από την λίστα"</string>
+    <string name="set_manage_shuffle">"Τυχαία"</string>
+    <string name="set_manage_click">"Πάτα σε ένα αντικείμενο της σειράς για προβολή"</string>
+    <string name="storage_rationale">"Απαιτείται πρόσβαση στον χώρο αποθήκευσης για εγγραφή και ανάγνωση τραγουδιών και σειρών."</string>
+    <string name="microphone_rationale">"Για πρόσβαση στον έλεγχο έντασης ήχου απαιτείται Μικρόφωνο / εγγραφή ήχου."</string>
+    <string name="default_autoscroll">"Προεπιλεγμένοι χρόνοι αυτοματης κύλισης"</string>
+    <string name="autoscroll_default_or_prompt">"Εάν δεν έχει οριστεί διάρκεια τραγουδιού να χρησιμοποιηθούν οι προεπιλεγμένες τιμές ή να γίνεται ερώτηση κάθε φορά;"</string>
+    <string name="use_default">"Χρήση προεπιλογών"</string>
+    <string name="ask">"Ερώτηση κάθε φορά"</string>
 
     <string name="maxvolrange">"Graphical volume indicator range"</string>
     <string name="volval">"Current volume value"</string>
-    <string name="average">"Average"</string>
-    <string name="reset">"Reset"</string>
+    <string name="average">"Μέσος όρος"</string>
+    <string name="reset">"Επανακαθορισμός"</string>
 
-    <string name="warning">"This option should only be used for presentation mode.  Be aware that this feature uses lots of memory and can cause crashes.  You have been warned!"</string>
-    <string name="loop">"Loop"</string>
-    <string name="time">"Time"</string>
+    <string name="warning">"Αυτή η επιλογή πρέπει να χρησιμοποιηθεί μόνο στην λειτουργία παρουσίασης. Αυτή το χαρακτηριστικό χρησιμοποιεί πολύ μνήμη και μπορεί να προκαλέσει επιπλοκές. Έχεται προειδοποιηθει!"</string>
+    <string name="loop">"Επανάληψη"</string>
+    <string name="time">"Χρόνος"</string>
     <string name="bad_time">"Slide time has not been set correctly"</string>
     <string name="add_reusable">"Save as a reusable slide"</string>
     <string name="load_reusable">"Load a reusable slide"</string>
@@ -47,63 +47,63 @@
     <string name="time_slide_pages">"Time for each slide (s)"</string>
     <string name="time_slide_pages_help">"Leave blank for manual slideshow"</string>
 
-    <string name="set_loading">"Loading set"</string>
-    <string name="set_processing">"Processing"</string>
+    <string name="set_loading">"Φόρτωση σειράς"</string>
+    <string name="set_processing">"Επεργασία"</string>
     <string name="image">"Εικόνα"</string>
     <string name="slide_add_page">"Insert new page to custom slide"</string>
     <string name="loop_slide_pages">"Loop pages in custom slide"</string>
-    <string name="tap_tempo">"Tap to set tempo"</string>
+    <string name="tap_tempo">"Ακούμπα (Tap) για να εισαχθεί ο ρυθμός"</string>
     <string name="convert_song">"Please convert this song into OpenSong format (by viewing it) before adding it to a set"</string>
-    <string name="no_filemanager">"No file manager installed"</string>
-    <string name="no_audioplayer">"No audio player installed"</string>
+    <string name="no_filemanager">"Δεν έχει εγκατασταθεί διαχειριστής φακέλων"</string>
+    <string name="no_audioplayer">"Δεν έχει εγκατασταθεί audio player"</string>
     <string name="link_youtube">"Σύνδεσμος YouTube"</string>
     <string name="link_web">"Online link"</string>
-    <string name="link_audio">"Audio file link"</string>
-    <string name="link_file">"Other file"</string>
-    <string name="overwrite">"Overwrite existing item"</string>
-    <string name="storage_issues">"If you experience any problems running the app, please switch to internal storage"</string>
+    <string name="link_audio">"Σύνδεσμος αρχείου ήχου"</string>
+    <string name="link_file">"Άλλο αρχείο"</string>
+    <string name="overwrite">"Αντικατάσταση του υπάρχοντος αντικειμένου"</string>
+    <string name="storage_issues">"Εάν υπάρχει πρόβλημα λειτουργίας της εφαρμογής, παρακαλώ αλλάξτε σε εσωτερική αποθήκευση"</string>
     <string name="toggle_autoshow_stickynotes">"Toggle autoshow sticky notes"</string>
     <string name="file_type">"Τύπος αρχείου"</string>
     <string name="file_type_unknown">"Άγνωστο"</string>
-    <string name="file_exists">"File already exists.  Please rename it."</string>
+    <string name="file_exists">"Το αρχείο υπάρχει ήδη. Παρακαλώ μετονομάστε το."</string>
 
     <string name="options_display">"Εμφάνιση"</string>
     <string name="options_gesturesandmenus">"Gestures and menus"</string>
-    <string name="options_storage">"Storage"</string>
-    <string name="options_other">"Other"</string>
-    <string name="not_allowed">"This function is not allowed for this item"</string>
+    <string name="options_storage">"Αποθηκευτικός χώρος"</string>
+    <string name="options_other">"Άλλα"</string>
+    <string name="not_allowed">"Αυτή η λειτουργία δεν επιτρέπεται για αυτό το αντικείμενο"</string>
     <string name="add_custom_slide">"Add custom slide to set"</string>
     <string name="simple_note">"Simple note / placeholder"</string>
     <string name="custom_slide">"Custom slide (with content)"</string>
-    <string name="title">"Title"</string>
-    <string name="content">"Content"</string>
+    <string name="title">"Τίτλος"</string>
+    <string name="content">"Περιεχόμενο"</string>
     <string name="slide_separator">"Add slide separator (for projection)"</string>
-    <string name="note">"Note"</string>
+    <string name="note">"Σημείωση"</string>
 
     <string name="crossfade_time">"Cross-fade time"</string>
     <string name="scrollbuttons_toggle">"Toggle scroll buttons"</string>
-    <string name="scrollbuttons_single">"Single arrows"</string>
-    <string name="scrollbuttons_double">"Double arrows"</string>
+    <string name="scrollbuttons_single">"Μονά βέλη"</string>
+    <string name="scrollbuttons_double">"Διπλά βέλη"</string>
     <string name="page_toggles">"Page toggles"</string>
-    <string name="options_options_autostartscroll">"Autostart autoscroll"</string>
+    <string name="options_options_autostartscroll">"Αύτοματη έναρξη αυτόματης κύλισης"</string>
     <string name="media_chooser">"Media chooser"</string>
     <string name="media_selected">"Media loaded"</string>
-    <string name="media_play">"Play"</string>
-    <string name="media_pause">"Pause"</string>
-    <string name="media_stop">"Stop"</string>
-    <string name="media">"Audio"</string>
+    <string name="media_play">"Παίξε"</string>
+    <string name="media_pause">"Παύση"</string>
+    <string name="media_stop">"Σταμάτα"</string>
+    <string name="media">"Ήχος"</string>
 
     <string name="preso_alpha">"Background opacity"</string>
-    <string name="file_chooser">"File chooser"</string>
-    <string name="display_manager">"Reconnect display"</string>
+    <string name="file_chooser">"Επιλογέας αρχείου"</string>
+    <string name="display_manager">"Επανασύνδεσε την οθόνη"</string>
     <string name="song_sections">"Song sections"</string>
     <string name="actions">"Ενέργειες"</string>
-    <string name="settings">"Settings"</string>
-    <string name="alert">"Alert"</string>
-    <string name="alert_text">"Enter message text"</string>
-    <string name="layout">"Layout"</string>
+    <string name="settings">"Ρυθμίσεις"</string>
+    <string name="alert">"Προειδοποίηση"</string>
+    <string name="alert_text">"Εισαγωγή κείμενο μηνύματος"</string>
+    <string name="layout">"Διάταξη"</string>
 
-    <string name="error_notset">"Δεν ορίστικε"</string>
+    <string name="error_notset">"Δεν ορίστηκε"</string>
     <string name="error_missingsection">"Missing sections"</string>
     <string name="tag_verse">"Κουπλέ"</string>
     <string name="tag_chorus">"Ρεφρέν"</string>
@@ -115,15 +115,15 @@
     <string name="custom">"Custom"</string>
     <string name="customchords">"Custom chords"</string>
     <string name="customchords_saved">"Currently saved custom chords"</string>
-    <string name="customchords_name">"Chord name"</string>
+    <string name="customchords_name">"Όνομα συγχορδίας"</string>
     <string name="customchords_save">"Save new custom chord to song"</string>
     <string name="customchords_code">"Custom code"</string>
     <string name="customchords_fret">"Label for first fret"</string>
-    <string name="customchords_noinstrument">"Instrument has not been selected"</string>
-    <string name="customchords_nochordname">"Chord name has not been set"</string>
-    <string name="shownextinset">"Show next song in set"</string>
-    <string name="top">"Top"</string>
-    <string name="bottom">"Bottom"</string>
+    <string name="customchords_noinstrument">"Δεν επιλέχθηκε όργανο"</string>
+    <string name="customchords_nochordname">"Δεν ορίστηκε όνομα συγχορδίας"</string>
+    <string name="shownextinset">"Εμφάνιση επόμενου τραγουδιού στην σειρά"</string>
+    <string name="top">"Κορυφή"</string>
+    <string name="bottom">"Τέλος"</string>
     <string name="next">"Επόμενο"</string>
     <string name="instrument">"Όργανο"</string>
     <string name="chords">"Συγχορδίες"</string>
@@ -170,21 +170,21 @@
     <string name="autoscroll_time">"Autoscroll delay time"</string>
     
     <string name="songbuttons_toggle">"Toggle page buttons shortcuts"</string>
-    <string name="song_functionnotavailable">"This function is not available for songs"</string>
+    <string name="song_functionnotavailable">"Αυτή η λειτουργία δεν είναι διαθέσιμη στα τραγούδια"</string>
     
-    <string name="latest_updates">"Latest updates"</string>
+    <string name="latest_updates">"Τελευταίες ενημερώσεις"</string>
     
-    <string name="storage_choose">"Manage storage"</string>
+    <string name="storage_choose">"Διαχείρηση αποθήκευσης"</string>
     <string name="storage_help">"Please choose the default storage location for your OpenSong files.  You can change this at any time from the Options menu."</string>
     <string name="storage_space">"Available space"</string>
-    <string name="storage_notavailable">"Not available"</string>
+    <string name="storage_notavailable">"Δεν είναι διαθέσιμο"</string>
     <string name="storage_int">"Emulated external/Internal storage"</string>
-    <string name="storage_ext">"External storage"</string>
+    <string name="storage_ext">"Εξωτερική αποθήκευση"</string>
     
     <string name="link">"Link"</string>
     <string name="link_choose">"Choose a file to link with this song"</string>
     
-    <string name="autoscroll">"Autoscroll"</string>
+    <string name="autoscroll">"Αυτόματη κύλιση"</string>
     
     <string name="import_onsong_done">"Success -OnSong songs have been added to /documents/OpenSong/Songs/OnSong"</string>
     <string name="import_onsong_error">"No OnSong backup file found in /documents/OpenSong/"</string>
@@ -235,12 +235,12 @@
         <item>Abm"</item>
     </array>
     
-    <string name="stickynotes">"Song notes"</string>
+    <string name="stickynotes">"Σημειώσεις τραγουδιού"</string>
     
-    <string name="youtube">"Search YouTube for current song"</string>
+    <string name="youtube">"Αναζήτηση στο YouTube για το τραγούδι"</string>
     
-    <string name="pdf_functionnotavailable">"This function is not available for PDF documents"</string>
-    <string name="pdf_selectpage">"Select page"</string>
+    <string name="pdf_functionnotavailable">"Αυτή η επιλογή δεν είναι διαθέσιμη στα αρχεία PDF"</string>
+    <string name="pdf_selectpage">"Επιλογή σελίφας"</string>
     
     <string name="options_set">"ΣΕΙΡΑ"</string>
     <string name="options_set_load">"Άνοιγμα"</string>
@@ -510,7 +510,7 @@
     
     <string name="options_backtooptions">"ΠΙΣΩ ΣΤΙΣ ΕΠΙΛΟΓΕΣ"</string>
     <string name="options_savethisset">"ΑΠΟΘΗΚΕΥΣΗ ΣΕΙΡΑΣ"</string>
-    <string name="options_clearthisset">"ΔΗΜΙΟΥΡΓΙΑ ΣΕΙΡΑΣ"</string>
+    <string name="options_clearthisset">"Διαγραφή της σειράς και δημιουργία νέας"</string>
     
     <string name="mainfoldername">"ΚΕΝΤΡΙΚΟ"</string>
     <string name="colorchooser">"Επιλογέας χρώματος"</string>
