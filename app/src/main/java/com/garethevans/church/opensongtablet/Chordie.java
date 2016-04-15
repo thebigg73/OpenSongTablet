@@ -126,7 +126,9 @@ public class Chordie extends Activity{
                     String s;
                     while ((s = buffer.readLine()) != null) {
                         response += "\n" + s;
-                        if (s.contains("<div class=\"fb-meta\">") || s.contains("<div class=\"plus-minus\">")) {
+                        if (s.contains("<div class=\"fb-meta\">") ||
+                                s.contains("<div class=\"plus-minus\">") ||
+                                s.contains("<section class=\"ugm-ad ugm-ad__bottom\">")) {
                             // Force s to be null as we've got all we need!
                             break;
                         }
@@ -334,7 +336,7 @@ public class Chordie extends Activity{
                         });
                 dialogBuilder.show();
 
-            } else if (result.contains("<div class=\"tb_ct\">")) {
+            } else if (result.contains("<div class=\"tb_ct\">") || result.contains("ultimate-guitar")) {
                 // From ultimate guitar
 
                 progressbar.setVisibility(View.INVISIBLE);
@@ -359,6 +361,7 @@ public class Chordie extends Activity{
                 }
 
                 // Look for a better title
+                // Normal site
                 startpos = resultposted.indexOf("song:");
                 if (startpos>-1) {
                     // Remove everything before this position
@@ -379,8 +382,16 @@ public class Chordie extends Activity{
                     }
                 }
 
+                // Mobile site
+                startpos = resultposted.indexOf("song_name:") + 12;
+                endpos = resultposted.indexOf("',",startpos);
+                if (startpos !=0 && endpos<(startpos+80)) {
+                    title_resultposted = resultposted.substring(startpos, endpos);
+                    filenametosave = title_resultposted;
+                }
 
                 // Look for a better author
+                // Desktop site
                 startpos = resultposted.indexOf("artist:");
                 if (startpos>-1) {
 
@@ -402,6 +413,13 @@ public class Chordie extends Activity{
                     }
                 }
 
+                // Mobile site
+                startpos = resultposted.indexOf("artist_name:") + 14;
+                endpos = resultposted.indexOf("',",startpos);
+                if (startpos !=0 && endpos<(startpos+80)) {
+                    author_resultposted = resultposted.substring(startpos, endpos);
+                    authorname = author_resultposted;
+                }
 
                 // Find the position of the start of this section
                 startpos = resultposted.indexOf("<div class=\"tb_ct\">");
@@ -435,6 +453,12 @@ public class Chordie extends Activity{
                 // Remove everything before this position
                 resultposted = resultposted.substring(startpos+28);
 
+                // For the mobile version
+                startpos = resultposted.indexOf("<pre class=\"js-tab-content\">");
+                if (startpos>=0) {
+                    resultposted = resultposted.substring(startpos+28);
+                }
+
                 // Find the position of the end of the form
                 endpos = resultposted.indexOf("</pre>");
                 if (endpos<0) {
@@ -453,9 +477,16 @@ public class Chordie extends Activity{
                 int numlines = templines.length;
                 String newtext = "";
                 for (int q=0;q<numlines;q++) {
-                    if (templines[q].contains("<span>")) {
+                    if (templines[q].contains("<span>") || templines[q].contains("<span class=\"text-chord js-tab-ch\">")) {
                         // Identify chord lines
                         templines[q] = "."+templines[q];
+                    }
+                    if (!templines[q].startsWith(".") &&
+                            ((templines[q].toLowerCase(FullscreenActivity.locale).contains(FullscreenActivity.tag_verse.toLowerCase(FullscreenActivity.locale)) && templines[q].length()<12) ||
+                            (templines[q].toLowerCase(FullscreenActivity.locale).contains(FullscreenActivity.tag_chorus.toLowerCase(FullscreenActivity.locale)) && templines[q].length()<12) ||
+                            (templines[q].toLowerCase(FullscreenActivity.locale).contains(FullscreenActivity.tag_bridge.toLowerCase(FullscreenActivity.locale)) && templines[q].length()<12))) {
+                        // Looks like a tag
+                        templines[q] = "[" + templines[q].trim() + "]";
                     }
                     if (templines[q].indexOf("[")!=0 && templines[q].indexOf(".")!=0) {
                         // Identify lyrics lines
@@ -465,6 +496,7 @@ public class Chordie extends Activity{
                 }
                 // Ok remove all html tags
                 newtext = newtext.replace("<span>","");
+                newtext = newtext.replace("<span class=\"text-chord js-tab-ch\">","");
                 newtext = newtext.replace("</span>","");
                 newtext = newtext.replace("<i>","");
                 newtext = newtext.replace("</i>","");
