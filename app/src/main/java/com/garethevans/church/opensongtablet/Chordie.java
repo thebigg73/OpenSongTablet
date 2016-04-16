@@ -31,14 +31,6 @@ import android.widget.Toast;
 
 public class Chordie extends Activity{
 
-/*
-    private Menu menu;
-    static String foldername;
-    static String result;
-    static String resultposted;
-    static String webSource;
-    String resultfinal;
-*/
     static String response;
     static String weblink;
     static WebView chordieWeb;
@@ -519,7 +511,6 @@ public class Chordie extends Activity{
                 // Ask the user to specify the folder to save the file into
                 // Get a list of folders available
                 // First set the browsing directory back to the main one
-                //FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath()+"/documents/OpenSong/Songs");
                 String currentFolder = FullscreenActivity.whichSongFolder;
                 FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
                 ListSongFiles.listSongs();
@@ -634,8 +625,6 @@ public class Chordie extends Activity{
                             }
                         });
                 dialogBuilder.show();
-
-
 
             } else {
                 String message;
