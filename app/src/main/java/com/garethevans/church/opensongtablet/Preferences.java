@@ -41,6 +41,11 @@ public class Preferences extends Activity {
 		
 		Log.d("Preferences","Loading");
 
+		FullscreenActivity.override_fullscale = myPreferences.getBoolean("override_fullscale",true);
+		FullscreenActivity.override_widthscale = myPreferences.getBoolean("override_widthscale",false);
+		FullscreenActivity.profile = myPreferences.getString("profile","");
+        FullscreenActivity.pagebutton_scale = myPreferences.getString("pagebutton_scale","M");
+
         FullscreenActivity.prefChord_Aflat_Gsharp = myPreferences.getString("prefChord_Aflat_Gsharp","b");
         FullscreenActivity.prefChord_Bflat_Asharp = myPreferences.getString("prefChord_Bflat_Asharp","b");
         FullscreenActivity.prefChord_Dflat_Csharp = myPreferences.getString("prefChord_Dflat_Csharp","b");
@@ -165,6 +170,7 @@ public class Preferences extends Activity {
 		FullscreenActivity.commentfontscalesize = myPreferences.getFloat("commentfontscalesize",0.8f);
 		FullscreenActivity.headingfontscalesize = myPreferences.getFloat("headingfontscalesize",0.6f);
 		FullscreenActivity.mMaxFontSize = myPreferences.getInt("mMaxFontSize", 50);
+		FullscreenActivity.mMinFontSize = myPreferences.getInt("mMinFontSize",8);
 		FullscreenActivity.usePresentationOrder = myPreferences.getBoolean("usePresentationOrder",false);
 
 		//Now activity resizes to fit the x scale - option to also fit to the Y scale
@@ -235,6 +241,10 @@ public class Preferences extends Activity {
 
 		SharedPreferences.Editor editor = myPreferences.edit();
 
+		editor.putBoolean("override_fullscale", FullscreenActivity.override_fullscale);
+		editor.putBoolean("override_widthscale", FullscreenActivity.override_widthscale);
+        editor.putString("pagebutton_scale", FullscreenActivity.pagebutton_scale);
+        editor.putString("profile",FullscreenActivity.profile);
         editor.putString("prefChord_Aflat_Gsharp", FullscreenActivity.prefChord_Aflat_Gsharp);
         editor.putString("prefChord_Bflat_Asharp", FullscreenActivity.prefChord_Bflat_Asharp);
         editor.putString("prefChord_Dflat_Csharp", FullscreenActivity.prefChord_Dflat_Csharp);
@@ -358,6 +368,7 @@ public class Preferences extends Activity {
         editor.putFloat("commentfontscalesize", FullscreenActivity.commentfontscalesize);
         editor.putFloat("headingfontscalesize", FullscreenActivity.headingfontscalesize);
         editor.putInt("mMaxFontSize", FullscreenActivity.mMaxFontSize);
+		editor.putInt("mMinFontSize", FullscreenActivity.mMinFontSize);
 		editor.putString("toggleYScale", FullscreenActivity.toggleYScale);
 		editor.putString("swipeSet", FullscreenActivity.swipeSet);
 		editor.putString("swipeDrawer", FullscreenActivity.swipeDrawer);

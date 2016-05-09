@@ -484,5 +484,17 @@
 	<string name="select_item_variation">"Kies die liedjie om \'n stel variasies te skep"</string>
 	<string name="variation_edit">"Hierdie item kan verander. Die oorspronklike sal nie geraak word nie."</string>
 	<string name="variation">"variasie"</string>
+	<string name="extra">"Ekstra inligting"</string>
+	<string name="minfontsize">"Verkies minimum autoscale lettergrootte"</string>
+	<string name="override_fullautoscale">"Ignoreer volle autoscale slegs breedte"</string>
+	<string name="override_scale_explanation">"As die autoscale lettergrootte is minder as die verlangde minimum lettergrootte, wil jy die jeug om te ignoreer om \'n ander skaal metode? Die gebruik van hierdie opsies kan jou dwing om horisontaal en vertikaal blaai in \'n lied."</string>
+	<string name="override_widthautoscale">"Ignoreer breedte net skalering geen autoscale"</string>
+	<string name="position">"Posisie"</string>
+	<string name="pagebuttons">"Page knoppies"</string>
+	<string name="profile">"Profiel"</string>
+	<string name="profile_choose">"Kies \'n profiel te laai"</string>
+	<string name="profile_description">"Profiele word gebruik om jou vertoning voorkeure te stoor."</string>
+	<string name="profile_name">"Kies \'n profiel naam"</string>
+	<string name="size">"Grootte"</string>
 
 </resources>

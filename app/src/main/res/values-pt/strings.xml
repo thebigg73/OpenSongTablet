@@ -484,5 +484,17 @@
 	<string name="select_item_variation">"Selecione a música para criar uma variação set"</string>
 	<string name="variation_edit">"Este item pode ser editado. O original não será afetada."</string>
 	<string name="variation">"Variação"</string>
+	<string name="extra">"Informação extra"</string>
+	<string name="minfontsize">"Tamanho preferido fonte autoscale mínimo"</string>
+	<string name="override_fullautoscale">"Substituir escala plena auto apenas à largura"</string>
+	<string name="override_scale_explanation">"Se o tamanho da fonte autoscale é menor do que o tamanho da fonte mínimo desejado, você quer o aplicativo para substituir a um método de escalonamento diferente? Utilizando estas opções pode forçá-lo a rolar horizontalmente e verticalmente em uma canção."</string>
+	<string name="override_widthautoscale">"Width override única escala para não autoscale"</string>
+	<string name="pagebuttons">"Botões de página"</string>
+	<string name="position">"Posição"</string>
+	<string name="profile">"Perfil"</string>
+	<string name="profile_choose">"Escolha um perfil para carregar"</string>
+	<string name="profile_description">"Os perfis são usados para armazenar suas preferências de visualização."</string>
+	<string name="profile_name">"Escolha um nome de perfil"</string>
+	<string name="size">"Tamanho"</string>
 
 </resources>

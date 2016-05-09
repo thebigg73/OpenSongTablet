@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/presenter_box_black"
+    android:padding="8dp">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -207,27 +210,6 @@
                 </TableRow>
 
             </TableLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/maxfontsize"
-                android:id="@+id/textView22"
-                android:layout_margin="8dp" />
-
-            <SeekBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/maxAutoScaleSeekBar"
-                android:layout_margin="8dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/maxAutoScaleText"
-                android:layout_margin="8dp" />
 
         </LinearLayout>
     </ScrollView>

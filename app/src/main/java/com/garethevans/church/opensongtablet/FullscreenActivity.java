@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -27,8 +26,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.net.nsd.NsdManager;
-import android.net.nsd.NsdServiceInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -90,7 +87,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
 import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -120,7 +119,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         PopUpSongCreateFragment.MyInterface, PopUpFontsFragment.MyInterface,
         PopUpEditStickyFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
         PopUpSetViewNew.MyInterface, PopUpImportExternalFile.MyInterface,
-        PopUpFileChooseFragment.MyInterface, PopUpDirectoryChooserFragment.MyInterface {
+        PopUpFileChooseFragment.MyInterface, PopUpDirectoryChooserFragment.MyInterface,
+        PopUpScalingFragment.MyInterface, PopUpProfileFragment.MyInterface,
+        PopUpPageButtonsFragment.MyInterface, PopUpExtraInfoFragment.MyInterface {
 
     //First up, declare all of the variables needed by this application
 
@@ -131,7 +132,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     TextView currentTime_TextView;
     TextView totalTime_TextView;
     long time_start;
-    long end_time;
+
+    public static String pagebutton_scale;
+    public static String profile;
 
     // Transpose preferences
     public static String prefChord_Aflat_Gsharp = "";
@@ -285,13 +288,15 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private TextView popupPad_pan_text;
     private Button popupPad_startstopbutton;
 
+    public boolean pressing_button = false;
+
     private ScrollView popupAutoscroll;
     private static String popupAutoscroll_stoporstart = "stop";
     private SeekBar popupAutoscroll_delay;
     private TextView popupAutoscroll_delay_text;
     private TextView popupAutoscroll_duration;
     private Button popupAutoscroll_startstopbutton;
-    private static int newPos;
+    //private static int newPos;
     private static int scrollpageHeight;
     public static boolean autostartautoscroll;
     public boolean autoscrollactivated = false;
@@ -404,8 +409,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private static ImageView autoscrollButton;
     private static ImageView metronomeButton;
     private static boolean orientationchanged = false;
+/*
     private static int wasshowing_pdfselectpage;
     private static int wasshowing_stickynotes;
+*/
     private static int alreadyshowingpage;
     public static int keyindex;
 
@@ -449,7 +456,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private ScrollView scrollpage_onecol;
     private ScrollView scrollpage_twocol;
     private ScrollView scrollpage_threecol;
+    private HorizontalScrollView horizontalScrollView1_onecolview;
+    private LinearLayout linearLayout2_onecolview;
     private static View view;
+    private static View focusview;
     public static int maxcharsinline;
     private static ActionBarDrawerToggle actionBarDrawerToggle;
     private static Handler delayactionBarHide;
@@ -468,13 +478,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static int linespacing;
     private float tempfontsize;
     private float tempsectionsize;
-    private boolean doScaling = false;
     private float scaleX;
     private float scaleY;
     private float pageWidth;
     private float pageHeight;
     private boolean needtoredraw = true;
-    private boolean doanimate = false;
 
     // Colours
     public static int dark_lyricsTextColor;
@@ -575,7 +583,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static boolean bibleLoaded = false;
     public static String bibleFileContents = "";
     public static String chordFormat = "";
-    private static String chord_converting = "N";
+    //private static String chord_converting = "N";
     public static String oldchordformat = "";
     public static String presenterChords = "";
     public static String swipeDrawer = "";
@@ -708,6 +716,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String myLyrics = "";
     public static float mFontSize;
     public static int mMaxFontSize;
+    public static int mMinFontSize;
+    public static boolean override_fullscale;
+    public static boolean override_widthscale;
     public static String toggleYScale = "";
     public static String mySetXML = "";
     public static String[] myParsedSet;
@@ -878,6 +889,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static File dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
     public static File dircustomimages = new File(root.getAbsolutePath() + "/documents/OpenSong/Images/_cache");
     public static File dirvariations = new File(root.getAbsolutePath() + "/documents/OpenSong/Variations");
+    public static File dirprofiles = new File(root.getAbsolutePath() + "/documents/OpenSong/Profiles");
 
     public static Locale locale;
 
@@ -910,7 +922,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             getBaseContext().getResources().updateConfiguration(config,
                     getBaseContext().getResources().getDisplayMetrics());
         }
-
 
         gestureDetector = new GestureDetector(new SwipeDetector());
 
@@ -1047,11 +1058,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         setSupportActionBar(toolbar);
         songandauthor = (TextView) findViewById(R.id.songandauthor);
         ab = getSupportActionBar();
-        beatoffcolour = (int) getResources().getColor(R.color.toolbar);
+        beatoffcolour = getResources().getColor(R.color.toolbar);
 
         ab.setDisplayHomeAsUpEnabled(false);
         ab.setDisplayShowTitleEnabled(false);
-        songandauthor.setText("OpenSong\\nGareth Evans");
+        String text = "OpenSong" + "\n" + "Gareth Evans";
+        songandauthor.setText(text);
 
         // Set up runnable used to hide the actionbar
         delayactionBarHide = new Handler();
@@ -1111,7 +1123,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 newFragment.show(getFragmentManager(), "dialog");
             }
         });
-        String text = songfilename + keytext + "\n" + mAuthor;
+        text = songfilename + keytext + "\n" + mAuthor;
         songandauthor.setText(text);
         main_page = findViewById(R.id.main_page);
         // Set a listener for the main_page.
@@ -1149,6 +1161,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         lyricstable_threecolview = (TableLayout) findViewById(R.id.LyricDisplay_threecoldisplay);
         lyricstable2_threecolview = (TableLayout) findViewById(R.id.LyricDisplayCol2_threecoldisplay);
         lyricstable3_threecolview = (TableLayout) findViewById(R.id.LyricDisplayCol3_threecoldisplay);
+        horizontalScrollView1_onecolview = (HorizontalScrollView) findViewById(R.id.horizontalScrollView1_onecolview);
+        linearLayout2_onecolview = (LinearLayout) findViewById(R.id.linearLayout2_onecolview);
 
         // Identify the chord images
         f1 = getResources().getDrawable(R.drawable.chord_f1);
@@ -1268,17 +1282,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         //Set default view as 1 col
         scrollpage = scrollpage_onecol;
 
-
         //Get the available screen height and width
         scrollpage_pdf.setVisibility(View.INVISIBLE);
         pdf_selectpage.setVisibility(View.INVISIBLE);
-        //stickynotes.setVisibility(View.INVISIBLE);
         mySticky.setVisibility(View.INVISIBLE);
-        //padButton.setVisibility(View.INVISIBLE);
-        //linkButton.setVisibility(View.INVISIBLE);
-        //chordButton.setVisibility(View.INVISIBLE);
-        //metronomeButton.setVisibility(View.INVISIBLE);
-        //autoscrollButton.setVisibility(View.INVISIBLE);
         scrollstickyholder.setVisibility(View.GONE);
         scrollpage_onecol.setVisibility(View.INVISIBLE);
         scrollpage_twocol.setVisibility(View.INVISIBLE);
@@ -1356,15 +1363,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 super.onDrawerOpened(drawerView);
                 wasscrolling = false;
                 scrollbutton = false;
-                //setupPageButtons();
-                //setlisticon.setVisibility(View.GONE);
                 toggleActionBar();
-                //hidepagebuttons();
-                //hidepopupPad();
-                //hidepopupChord();
-                //hidepopupAutoscroll();
-                //hidepopupMetronome();
-                //hidepopupSticky();
 
                 if (!ab.isShowing()) {
                     ab.show();
@@ -1397,7 +1396,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         Handler delayopenoptiondrawer = new Handler();
         Handler delayclosesongdrawer = new Handler();
         Handler delaycloseoptiondrawer = new Handler();
-        Handler delaypageicons = new Handler();
+        //Handler delaypageicons = new Handler();
         delayopensongdrawer.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -1512,9 +1511,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             editor_index.apply();
             indexmysongs.execute();
         }
-
-        // WiFi Direct / P2P
-
     }
 
     public String timeFormatFixer(int secstime) {
@@ -1529,6 +1525,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         }
         return time;
     }
+
+    // WiFi Direct / P2P
+
 /*
     public void initializeServerSocket() {
         mServerSocket = new ServerSocket(0);
@@ -1546,94 +1545,253 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     }
 */
 
-    public void fixActionButtons() {
+    @Override
+    public void setupPageButtons() {
+
+        uparrow_top = (ImageView) findViewById(R.id.uparrow_top);
+        uparrow_bottom = (ImageView) findViewById(R.id.uparrow_bottom);
+        downarrow_top = (ImageView) findViewById(R.id.downarrow_top);
+        downarrow_bottom = (ImageView) findViewById(R.id.downarrow_bottom);
+
+        // If the buttons have already been assigned, hide them
+        // Hide the bottom buttons
+        if (padButton!=null) {
+            padButton.setVisibility(View.GONE);
+        }
+        if (autoscrollButton!=null) {
+            autoscrollButton.setVisibility(View.GONE);
+        }
+        if (metronomeButton!=null) {
+            metronomeButton.setVisibility(View.GONE);
+        }
+        if (stickynotes!=null) {
+            stickynotes.setVisibility(View.GONE);
+        }
+        if (chordButton!=null) {
+            chordButton.setVisibility(View.GONE);
+        }
+        if (pdf_selectpage!=null) {
+            pdf_selectpage.setVisibility(View.GONE);
+        }
+        if (linkButton!=null) {
+            linkButton.setVisibility(View.GONE);
+        }
+        if (pagebuttons!=null) {
+            pagebuttons.setVisibility(View.GONE);
+        }
+        setButton_normal.setVisibility(View.GONE);
+        setButton_right.setVisibility(View.GONE);
+
+        //Show the bottombar for scroll down
+        HorizontalScrollView bottombar = (HorizontalScrollView) findViewById(R.id.bottombar);
+        bottombar.setVisibility(View.VISIBLE);
+
+        // Decide if we are using buttons at the bottom of the page or the right
+        pagebuttons = (ScrollView) findViewById(R.id.rightbar);
+        switch (pagebutton_position) {
+            case "right":
+                // Make the right bar visible
+                pagebuttons.setVisibility(View.VISIBLE);
+                setButton_right.setVisibility(View.VISIBLE);
+                setlisticon = setButton_right;
+
+                // Assign the new buttons to the view names
+                padButton = (ImageView) findViewById(R.id.padbutton_right);
+                autoscrollButton = (ImageView) findViewById(R.id.autoscroll_right);
+                metronomeButton = (ImageView) findViewById(R.id.metronomebutton_right);
+                stickynotes = (ImageView) findViewById(R.id.stickynotes_right);
+                pdf_selectpage = (ImageView) findViewById(R.id.pageselect_right);
+                chordButton = (ImageView) findViewById(R.id.chordbutton_right);
+                linkButton = (ImageView) findViewById(R.id.linkbutton_right);
+
+                // Decide if the icons should be shown (pdf or song)
+                showpagebuttons();
+                break;
+
+            case "bottom":
+                setButton_normal.setVisibility(View.VISIBLE);
+                setlisticon = setButton_normal;
+
+                // Assign the buttons
+                padButton = (ImageView) findViewById(R.id.padbutton);
+                autoscrollButton = (ImageView) findViewById(R.id.autoscroll);
+                metronomeButton = (ImageView) findViewById(R.id.metronomebutton);
+                pdf_selectpage = (ImageView) findViewById(R.id.pageselect);
+                stickynotes = (ImageView) findViewById(R.id.stickynotes);
+                chordButton = (ImageView) findViewById(R.id.chordbutton);
+                linkButton = (ImageView) findViewById(R.id.linkbutton);
+
+                // Make the buttons visible
+                padButton.setVisibility(View.VISIBLE);
+                autoscrollButton.setVisibility(View.VISIBLE);
+                metronomeButton.setVisibility(View.VISIBLE);
+                pdf_selectpage.setVisibility(View.VISIBLE);
+                stickynotes.setVisibility(View.VISIBLE);
+                chordButton.setVisibility(View.VISIBLE);
+                linkButton.setVisibility(View.VISIBLE);
+
+                // Decide if the icons should be shown (pdf or song)
+                showpagebuttons();
+
+                break;
+
+            default:
+                // All page buttons (except the normal set list button) should be hidden
+                setButton_normal.setVisibility(View.VISIBLE);
+                setlisticon = setButton_normal;
+
+                padButton = (ImageView) findViewById(R.id.padbutton);
+                autoscrollButton = (ImageView) findViewById(R.id.autoscroll);
+                metronomeButton = (ImageView) findViewById(R.id.metronomebutton);
+                pdf_selectpage = (ImageView) findViewById(R.id.pageselect);
+                stickynotes = (ImageView) findViewById(R.id.stickynotes);
+                chordButton = (ImageView) findViewById(R.id.chordbutton);
+                linkButton = (ImageView) findViewById(R.id.linkbutton);
+
+                break;
+        }
+
+        // Set the page button sizes
+        float scalesize = 1.00f;
+        switch (pagebutton_scale) {
+            case "XS":
+                scalesize = 0.50f;
+                break;
+            case "S":
+                scalesize = 0.75f;
+                break;
+            case "M":
+                scalesize = 1.00f;
+                break;
+            case "L":
+                scalesize = 1.25f;
+                break;
+            case "XL":
+                scalesize = 1.50f;
+                break;
+            case "XXL":
+                scalesize = 1.75f;
+                break;
+        }
+
+        // Get original sizes
+        BitmapDrawable bd=(BitmapDrawable) getResources().getDrawable(R.drawable.page_speaker_bw);
+        int width=bd.getBitmap().getWidth();
+
+        // Resize the images
+        resizeImage(padButton, width, scalesize);
+        resizeImage(autoscrollButton, width, scalesize);
+        resizeImage(metronomeButton, width, scalesize);
+        resizeImage(pdf_selectpage, width, scalesize);
+        resizeImage(stickynotes, width, scalesize);
+        resizeImage(chordButton, width, scalesize);
+        resizeImage(linkButton, width, scalesize);
+        resizeImage(downarrow_top, width, scalesize);
+        resizeImage(downarrow_bottom, width, scalesize);
+        resizeImage(uparrow_top, width, scalesize);
+        resizeImage(uparrow_bottom, width, scalesize);
+        resizeImage(setlisticon, width, scalesize);
+
+        // Create the long click listeners for the buttons (just do the action)
+        padButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // This tries to start/stop the pad
+                pressing_button = true;
+                popupPad_startstop(v);
+                Handler delay = new Handler();
+                delay.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pressing_button = false;
+                    }
+                },800);
+                return true;
+            }
+        });
+        autoscrollButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // This tries to start or stop the autoscroll
+                pressing_button = true;
+                popupAutoscroll_startstop(v);
+                Handler delay = new Handler();
+                delay.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pressing_button = false;
+                    }
+                },800);
+                return true;
+            }
+        });
+        metronomeButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // This tries to start or stop the metronome
+                pressing_button = true;
+                popupMetronome_startstop(v);
+                Handler delay = new Handler();
+                delay.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pressing_button = false;
+                    }
+                },800);
+                return true;
+            }
+        });
+
+        autoscrollButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pressing_button = true;
+                popupAutoscroll_toggle(v);
+                Handler delay = new Handler();
+                delay.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pressing_button = false;
+                    }
+                },800);
+            }
+        });
+        padButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pressing_button = true;
+                popupPad_toggle(v);
+                Handler delay = new Handler();
+                delay.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pressing_button = false;
+                    }
+                },800);
+            }
+        });
+        metronomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pressing_button = true;
+                popupMetronome_toggle(v);
+                Handler delay = new Handler();
+                delay.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pressing_button = false;
+                    }
+                },800);
+            }
+        });
 
     }
 
-    public void setupPageButtons() {
-        // Decide if we are using buttons at the bottom of the page or the right
-        if (pagebutton_position.equals("right")) {
-            // Make the right bar visible
-            pagebuttons = (ScrollView) findViewById(R.id.rightbar);
-            pagebuttons.setVisibility(View.VISIBLE);
-
-            // Hide the default setlist button
-            setButton_normal.setVisibility(View.GONE);
-            setButton_right.setVisibility(View.VISIBLE);
-            setlisticon = setButton_right;
-
-            // Assign the buttons
-            padButton = (ImageView) findViewById(R.id.padbutton_right);
-            autoscrollButton = (ImageView) findViewById(R.id.autoscroll_right);
-            metronomeButton = (ImageView) findViewById(R.id.metronomebutton_right);
-            stickynotes = (ImageView) findViewById(R.id.stickynotes_right);
-            pdf_selectpage = (ImageView) findViewById(R.id.pageselect_right);
-            chordButton = (ImageView) findViewById(R.id.chordbutton_right);
-            linkButton = (ImageView) findViewById(R.id.linkbutton_right);
-
-            //Show the bottombar for scroll down
-            findViewById(R.id.bottombar).setVisibility(View.VISIBLE);
-
-            // Hide the bottom icons
-            findViewById(R.id.padbutton).setVisibility(View.INVISIBLE);
-            findViewById(R.id.autoscroll).setVisibility(View.INVISIBLE);
-            findViewById(R.id.metronomebutton).setVisibility(View.INVISIBLE);
-            findViewById(R.id.stickynotes).setVisibility(View.INVISIBLE);
-            findViewById(R.id.pageselect).setVisibility(View.INVISIBLE);
-            findViewById(R.id.chordbutton).setVisibility(View.INVISIBLE);
-            findViewById(R.id.linkbutton).setVisibility(View.INVISIBLE);
-
-            // Decide if the icons should be shown (pdf or song)
-            showpagebuttons();
-
-        } else if (pagebutton_position.equals("bottom")){
-            // Make the right bar invisible
-            pagebuttons = (ScrollView) findViewById(R.id.rightbar);
-            pagebuttons.setVisibility(View.GONE);
-
-            // Make sure the bottom bar is visible
-            findViewById(R.id.bottombar).setVisibility(View.VISIBLE);
-
-            setButton_normal.setVisibility(View.VISIBLE);
-            setButton_right.setVisibility(View.GONE);
-            setlisticon = setButton_normal;
-
-            // Assign the buttons
-            padButton = (ImageView) findViewById(R.id.padbutton);
-            autoscrollButton = (ImageView) findViewById(R.id.autoscroll);
-            metronomeButton = (ImageView) findViewById(R.id.metronomebutton);
-            pdf_selectpage = (ImageView) findViewById(R.id.pageselect);
-            stickynotes = (ImageView) findViewById(R.id.stickynotes);
-            chordButton = (ImageView) findViewById(R.id.chordbutton);
-            linkButton = (ImageView) findViewById(R.id.linkbutton);
-
-            // Make the buttons visible
-            padButton.setVisibility(View.VISIBLE);
-            autoscrollButton.setVisibility(View.VISIBLE);
-            metronomeButton.setVisibility(View.VISIBLE);
-            pdf_selectpage.setVisibility(View.VISIBLE);
-            stickynotes.setVisibility(View.VISIBLE);
-            chordButton.setVisibility(View.VISIBLE);
-            linkButton.setVisibility(View.VISIBLE);
-
-            // Decide if the icons should be shown (pdf or song)
-            showpagebuttons();
-
-        } else {
-            // All page buttons (except the normal set list button) should be hidden
-            pagebuttons = (ScrollView) findViewById(R.id.rightbar);
-            pagebuttons.setVisibility(View.GONE);
-            setButton_normal.setVisibility(View.VISIBLE);
-            setButton_right.setVisibility(View.GONE);
-            setlisticon = setButton_normal;
-            findViewById(R.id.padbutton).setVisibility(View.GONE);
-            findViewById(R.id.autoscroll).setVisibility(View.GONE);
-            findViewById(R.id.metronomebutton).setVisibility(View.GONE);
-            findViewById(R.id.stickynotes).setVisibility(View.GONE);
-            findViewById(R.id.pageselect).setVisibility(View.GONE);
-            findViewById(R.id.chordbutton).setVisibility(View.GONE);
-            findViewById(R.id.linkbutton).setVisibility(View.GONE);
-        }
+    public void resizeImage(ImageView image, int original, float scale) {
+        android.view.ViewGroup.LayoutParams layoutParams = image.getLayoutParams();
+        layoutParams.width = (int) ((float)original * scale);
+        layoutParams.height = (int) ((float)original * scale);
+        image.setLayoutParams(layoutParams);
     }
 
     public void increaseTempo() {
@@ -1689,8 +1847,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         v.setOnSystemUiVisibilityChangeListener(null);
         v.setOnFocusChangeListener(null);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
     }
 
     public void setWindowFlagsAdvanced() {
@@ -1698,14 +1858,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         v.setOnSystemUiVisibilityChangeListener(null);
         v.setOnFocusChangeListener(null);
 
-        if (currentapiVersion >= 16) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LOW_PROFILE);
         }
 
-        if (currentapiVersion >= 19) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
                     View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
@@ -1738,12 +1898,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         Runnable delhide = new Runnable() {
             @Override
             public void run() {
-                if (View.SYSTEM_UI_FLAG_FULLSCREEN!=0) {
-                    // Hide them
-                    main_page.requestFocus();
-                    setWindowFlags();
-                    setWindowFlagsAdvanced();
-                }
+                // Hide them
+                main_page.requestFocus();
+                setWindowFlags();
+                setWindowFlagsAdvanced();
             }
         };
 
@@ -1751,7 +1909,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         // If it is there, hide it
         Handler delayhidehandler = new Handler();
         delayhidehandler.postDelayed(delhide, 1000);
-
     }
 
     private void hideKeyboard() {
@@ -1938,6 +2095,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
     public void popupPad_startstop(View view) {
         // This is called when the start/stop button has been pressed
+        // Or if the pad button has been long pressed
         if (popupPad_stoporstart.equals("start")) {
             // user now wants to stop
             // Turn off the button for now.  This will be reset after fadeout or 10secs
@@ -1961,6 +2119,15 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
             }
 
+            Handler reset = new Handler();
+            reset.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    popupPad_startstopbutton.setText(getResources().getString(R.string.start));
+                    popupPad_startstopbutton.setEnabled(true);
+                }
+            },10000);
+
         } else {
             // user now wants to start
             popupPad_stoporstart = "start";
@@ -1970,13 +2137,16 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             hidepopupPad();
         }
         mKey = popupPad_key.getItemAtPosition(popupPad_key.getSelectedItemPosition()).toString();
-        if (popupPad.getVisibility() == View.VISIBLE) {
-            try {
-                togglePlayPads(view);
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            }
+
+        try {
+            togglePlayPads(view);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
         }
+
+/*        if (popupPad.getVisibility() == View.VISIBLE) {
+
+        }*/
     }
 
     @Override
@@ -2224,13 +2394,13 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         public void onNothingSelected(AdapterView<?> parent) {
             Log.e("popupFile", "Nothing selected");
         }
-
     }
 
     private class popupPad_volumeListener implements OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            popupPad_volume_text.setText(popupPad_volume.getProgress() + " %");
+            String text = popupPad_volume.getProgress() + " %";
+            popupPad_volume_text.setText(text);
             float temp_padvol = (float) popupPad_volume.getProgress() / 100.0f;
             String temp_padpan = "both";
             if (popupPad_pan.getProgress() == 0) {
@@ -2357,7 +2527,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         } else {
             mTempo = "";
         }
-        if (!isPDF && popupMetronome.getVisibility() == View.VISIBLE) {
+        if (!isPDF) {
             metronomeToggle(view);
         }
     }
@@ -2365,7 +2535,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private class popupMetronome_volumeListener implements OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            popupMetronome_volume_text.setText(popupMetronome_volume.getProgress() + " %");
+            String text = popupMetronome_volume.getProgress() + " %";
+            popupMetronome_volume_text.setText(text);
             metronomevol = (float) popupMetronome_volume.getProgress() / 100.0f;
             if (fromUser) {
                 if (popupMetronome_pan.getProgress() == 0) {
@@ -2396,7 +2567,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             temposlider = popupMetronome_tempo.getProgress() + 39;
             short newbpm = (short) temposlider;
             if (temposlider > 39) {
-                popupMetronome_tempo_text.setText(""+temposlider);
+                String text = "" + temposlider;
+                popupMetronome_tempo_text.setText(text);
             } else {
                 popupMetronome_tempo_text.setText(getResources().getString(R.string.notset));
             }
@@ -2436,8 +2608,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         @Override
         public void onItemSelected(AdapterView<?> parent, View view,
                                    int position, long id) {
-            // Hold mTimeSig as a temp value
-            String temp_sig = mTimeSig;
             mTimeSig = popupMetronome_timesig.getItemAtPosition(popupMetronome_timesig.getSelectedItemPosition()).toString();
             ProcessSong.processTimeSig();
 
@@ -2516,6 +2686,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
         dircustomimages = new File(root.getAbsolutePath() + "/documents/OpenSong/Images/_cache");
         dirvariations = new File(root.getAbsolutePath() + "/documents/OpenSong/Variations");
+        dirprofiles = new File(root.getAbsolutePath() + "/documents/OpenSong/Profiles");
 
         if (secStorage != null) {
             extStorCheck = new File(secStorage);
@@ -2537,6 +2708,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
                     dircustomimages = new File(root.getAbsolutePath() + "/documents/OpenSong/Images/_cache");
                     dirvariations = new File(root.getAbsolutePath() + "/documents/OpenSong/Variations");
+                    dirprofiles = new File(root.getAbsolutePath() + "/documents/OpenSong/Profiles");
                 }
             }
         }
@@ -2563,6 +2735,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     dircustomnotes = new File(root.getAbsolutePath() + "/OpenSong/Notes/_cache");
                     dircustomimages = new File(root.getAbsolutePath() + "/OpenSong/Images/_cache");
                     dirvariations = new File(root.getAbsolutePath() + "/OpenSong/Variations");
+                    dirprofiles = new File(root.getAbsolutePath() + "/OpenSong/Profiles");
                 }
             }
         }
@@ -2582,7 +2755,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         if (prefStorage.isEmpty() || !storageIsValid) {
             intStorCheck = null;
             extStorCheck = null;
-            customStorCheck = null;
+
             // Not set, or not valid - open the storage activity.
             Intent intent_stop = new Intent();
             intent_stop.setClass(this, StorageChooser.class);
@@ -2603,6 +2776,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             StorageChooser.createDirectory(dircustomnotes);
             StorageChooser.createDirectory(dircustomslides);
             StorageChooser.createDirectory(dirvariations);
+            StorageChooser.createDirectory(dirprofiles);
 
             // Make sure the default files are there
             copyDefaultFiles();
@@ -2639,6 +2813,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     }
 
     private void metronomeToggle(View view) {
+        focusview = view;
         if (metronomeonoff.equals("on")) {
             metronomeonoff = "off";
             if (metroTask != null) {
@@ -2750,13 +2925,15 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             }
         }
 
+        @SuppressWarnings("unused")
         public void setCurrentBeat(int currentBeat) {
-            if (metronome != null)
+            if (metronome != null) {
                 metronome.setCurrentBeat(currentBeat);
-            try {
-                metronome.calcSilence();
-            } catch (Exception e) {
-                e.printStackTrace();
+                try {
+                    metronome.calcSilence();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -2810,7 +2987,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         }
     }
 
-    public void popupAutoscroll_toggle(View view) {
+    public void popupAutoscroll_toggle(View v) {
         // Hide other popup windows
         hidepopupPad();
         hidepopupSticky();
@@ -2854,10 +3031,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             autoscrollactivated = true;
             // Show the autoscroll playback progress
             String text = timeFormatFixer((autoScrollDuration));
-            currentTime_TextView.setText("0:00");
+            String start = "0:00";
+            currentTime_TextView.setText(start);
             totalTime_TextView.setText(text);
             playbackProgress.setVisibility(View.VISIBLE);
-
         }
 
         autoScrollDelay = popupAutoscroll_delay.getProgress() - 1;
@@ -2870,6 +3047,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     }
 
     private void autoScroll(View view) {
+        focusview = view;
         if (!autoscrollispaused) {
             // If we haven't paused the autoscroll part way down a page, reset to the top
             // This is important if we have autoscrolled to the end and want to repeat.
@@ -2920,7 +3098,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 // Show the prompt
                 playbackProgress.setVisibility(View.INVISIBLE);
                 promptSongDuration();
-            } else if (showtheprompt && !isSong) {
+            } else if (showtheprompt) {
                 // Do nothing as it isn't a song!
                 playbackProgress.setVisibility(View.INVISIBLE);
             } else {
@@ -2933,7 +3111,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     }
                     getAutoScrollValues();
                     if (dontdelay) {
-                        autoScrollDelay = 0;
+                        //autoScrollDelay = 0;
                     }
 
                     // Show the autoscroll progress
@@ -3176,7 +3354,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         @Override
         protected void onProgressUpdate(Integer... intg) {
             newPosFloat = newPosFloat + autoscroll_pixels;
-            newPos = (int) (scrollpage.getScrollY() + autoscroll_pixels);
+            //newPos = (int) (scrollpage.getScrollY() + autoscroll_pixels);
         }
 
         @Override
@@ -3266,6 +3444,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     }
 
     private void killPad1(View view) {
+        focusview = view;
         // This releases mPlayer1 if it has finished fading out only
         if (mPlayer1 != null) {
             if (mPlayer1.isPlaying()) {
@@ -3292,6 +3471,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     }
 
     private void killPad2(View view) {
+        focusview = view;
         // This releases mPlayer2 if it has finished fading out only
         if (mPlayer2 != null) {
             if (mPlayer2.isPlaying()) {
@@ -3481,6 +3661,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     }
 
     private void playPads(View view) throws IllegalStateException {
+        focusview = view;
         pad_filename = "null";
 
         // Determine the key of the song and therefore which auto pad track to use
@@ -3576,6 +3757,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     mPlayer1.setDataSource(this, Uri.parse(mLinkAudio));
                     mPlayer1.prepareAsync();
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             } else {
                 try {
@@ -3681,6 +3863,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     mPlayer1.prepareAsync();
 
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             } else {
                 try {
@@ -3793,6 +3976,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 long thentime = nowtime + crossFadeTime / 50;
                 while (System.currentTimeMillis() < thentime) {
                     // Do nothing......
+                    System.currentTimeMillis();
                 }
             }
             return "dummy";
@@ -3876,6 +4060,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 long thentime = nowtime + crossFadeTime / 50;
                 while (System.currentTimeMillis() < thentime) {
                     // Do nothing......
+                    System.currentTimeMillis();
                 }
             }
             return "dummy";
@@ -3962,22 +4147,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         old_time = new_time;
     }
 
-    private void hidepagebuttons() {
-        delaycheckscroll.removeCallbacks(checkScrollPosition);
-        wasshowing_pdfselectpage = pdf_selectpage.getVisibility();
-        wasshowing_stickynotes = stickynotes.getVisibility();
-        scrollstickyholder.setVisibility(View.GONE);
-
-        findViewById(R.id.bottombar).setVisibility(View.GONE);
-        findViewById(R.id.rightbar).setVisibility(View.GONE);
-        uparrow_top.setVisibility(View.GONE);
-        uparrow_bottom.setVisibility(View.GONE);
-        downarrow_bottom.setVisibility(View.GONE);
-        downarrow_top.setVisibility(View.GONE);
-        playbackProgress.setVisibility(View.GONE);
-    }
-
-    private void showpagebuttons() {
+    @Override
+    public void showpagebuttons() {
         // if PDF and page count is bigger than 1, show pdf button
         if (isPDF && pdfPageCount > 1 && togglePageButtons.equals("Y")) {
             pdf_selectpage.setVisibility(View.VISIBLE);
@@ -4223,8 +4394,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         options_set.add(getResources().getString(R.string.options_set_edit));
         options_set.add(getResources().getString(R.string.customise_set_item));
 
-        // Not going to show the set in the right hand menu anymore
-/*
         options_set.add("");
 
         // Parse the saved set
@@ -4243,7 +4412,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 options_set.add(mSetList[r]);
             }
         }
-*/
 
         List<String> options_song = new ArrayList<>();
         options_song.add(getResources().getString(R.string.options_song_edit));
@@ -4252,6 +4420,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         options_song.add(getResources().getString(R.string.options_song_delete));
         options_song.add(getResources().getString(R.string.options_song_new));
         options_song.add(getResources().getString(R.string.options_song_export));
+        options_song.add(getResources().getString(R.string.edit_song_presentation));
 
         List<String> options_chords = new ArrayList<>();
         options_chords.add(getResources().getString(R.string.options_song_transpose));
@@ -4265,15 +4434,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         List<String> options_display = new ArrayList<>();
         options_display.add(getResources().getString(R.string.options_options_theme));
         options_display.add(getResources().getString(R.string.options_options_scale));
-        options_display.add(getResources().getString(R.string.options_options_fontsize));
-        options_display.add(getResources().getString(R.string.options_options_colors));
         options_display.add(getResources().getString(R.string.options_options_fonts));
-        options_display.add(getResources().getString(R.string.shownextinset));
-        options_song.add(getResources().getString(R.string.edit_song_presentation));
-        options_display.add(getResources().getString(R.string.scrollbuttons_toggle));
-        options_display.add(getResources().getString(R.string.songbuttons_toggle));
-        options_display.add(getResources().getString(R.string.toggle_autoshow_stickynotes));
+        options_display.add(getResources().getString(R.string.pagebuttons));
+        options_display.add(getResources().getString(R.string.extra));
         options_display.add(getResources().getString(R.string.options_options_hidebar));
+        options_display.add(getResources().getString(R.string.profile));
 
         List<String> options_gesturesandmenus = new ArrayList<>();
         options_gesturesandmenus.add(getResources().getString(R.string.options_options_pedal));
@@ -4335,8 +4500,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         });
 
         // Listen for long clicks on songs in current set to remove them
-        // Not going to have set list in the menu anymore - gets messy
-/*
+
         expListViewOption.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -4346,18 +4510,18 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     int childPosition = ExpandableListView.getPackedPositionChild(id);
                     myOptionListClickedItem = position;
 
-                    if (myOptionListClickedItem > 7 && groupPosition == 0) {
-                        // Long clicking on the 8th or later options will remove the
+                    if (myOptionListClickedItem >8 && groupPosition == 0) {
+                        // Long clicking on the 9th or later options will remove the
                         // song from the set (all occurrences)
                         // Remove this song from the set. Remember it has tags at the start and end
                         Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                         vb.vibrate(25);
 
-                        // Take away the menu items (8)
-                        String tempSong = mSetList[childPosition - 8];
-                        mSetList[childPosition - 8] = "";
+                        // Take away the menu items (9)
+                        String tempSong = mSetList[childPosition - 9];
+                        mSetList[childPosition - 9] = "";
 
-                        if (indexSongInSet == (childPosition - 8)) {
+                        if (indexSongInSet == (childPosition - 9)) {
                             setView = "N";
                         }
 
@@ -4393,7 +4557,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 return false;
             }
         });
-*/
 
         // Listview on child click listener
         expListViewOption.setOnChildClickListener(new OnChildClickListener() {
@@ -4479,16 +4642,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                             FullscreenActivity.whattodo = "setitemvariation";
                             newFragment = PopUpSetViewNew.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
-                        }
 
-                        // Not going to show the set list in the menu anymore - messy
-/*
-                        } else if (childPosition > 7) {
+
+                        } else if (childPosition > 8) {
                             // Load song in set
                             setView = "Y";
                             pdfPageCurrent = 0;
-                            // Set item is 8 less than childPosition
-                            indexSongInSet = childPosition - 8;
+                            // Set item is 9 less than childPosition
+                            indexSongInSet = childPosition - 9;
                             String linkclicked = mSetList[indexSongInSet];
                             if (linkclicked == null) {
                                 linkclicked = "";
@@ -4561,7 +4722,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                             mDrawerLayout.closeDrawer(expListViewOption);
 
                         }
-*/
+
 
                     } else if (chosenMenu.equals(getResources().getString(R.string.options_song).toUpperCase(locale))) {
                         linkclicked = listDataChildOption.get(listDataHeaderOption.get(groupPosition)).get(childPosition);
@@ -4776,7 +4937,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
                                 transposeDirection = "0";
-                                chord_converting = "Y";
+                                //chord_converting = "Y";
                                 Transpose.checkChordFormat();
                                 try {
                                     Transpose.doTranspose();
@@ -4811,14 +4972,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
                         // 0 = Change theme
                         // 1 = Toggle autoscale
-                        // 2 = Change font size
-                        // 3 = Colour
-                        // 4 = Fonts
-                        // 5 = Show next
-                        // 6 = Toggle scroll buttons
-                        // 7 = Toggle song buttons
-                        // 8 = Toggle autosticky
-                        // 9 = Show/hide menu bar
+                        // 2 = Fonts
+                        // 3 = Page buttons
+                        // 4 = Extra information
+                        // 5 = Show/hide menu bar
+                        // 6 = Profiles
 
                         if (childPosition == 0) {// Change theme
                             if (isPDF) {
@@ -4826,275 +4984,39 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
-
-                                myToastMessage = "";
-                                switch (mDisplayTheme) {
-                                    case "Theme_Holo_Light":
-                                    case "Theme.Holo.Light":
-                                        mDisplayTheme = "Theme_Holo";
-                                        myToastMessage = getResources().getString(R.string.dark_theme);
-                                        Preferences.savePreferences();
-                                        break;
-                                    case "Theme_Holo":
-                                    case "Theme.Holo":
-                                        mDisplayTheme = "custom1";
-                                         myToastMessage = getResources().getString(R.string.custom1_theme);
-                                        Preferences.savePreferences();
-                                        break;
-                                    case "custom1":
-                                        mDisplayTheme = "custom2";
-                                        myToastMessage = getResources().getString(R.string.custom2_theme);
-                                        Preferences.savePreferences();
-                                        break;
-                                    case "custom2":
-                                        mDisplayTheme = "Theme_Holo_Light";
-                                        myToastMessage = getResources().getString(R.string.light_theme);
-                                        Preferences.savePreferences();
-                                        break;
-                                }
-                                SetUpColours.colours();
-                                ShowToast.showToast(FullscreenActivity.this);
-                                main_page = findViewById(R.id.main_page);
-                                mDrawerLayout.openDrawer(expListViewOption);
-                                redrawTheLyricsTable(view);
+                                Intent intent = new Intent();
+                                intent.setClass(FullscreenActivity.this,
+                                        ChangeDisplayPreferences.class);
+                                tryKillPads();
+                                tryKillMetronome();
+                                startActivity(intent);
+                                finish();
                             }
 
 
                         } else if (childPosition == 1) {// Toggle autoscale
-                            switch (toggleYScale) {
-                                case "Y":
-                                    toggleYScale = "W";
-                                    myToastMessage = getResources().getString(R.string.scaleY)
-                                            + " " + getResources().getString(R.string.on_width);
-                                    ShowToast.showToast(FullscreenActivity.this);
-                                    break;
-                                case "W":
-                                    toggleYScale = "N";
-                                    myToastMessage = getResources().getString(R.string.scaleY)
-                                            + " " + getResources().getString(R.string.off);
-                                    ShowToast.showToast(FullscreenActivity.this);
-                                    break;
-                                default:
-                                    toggleYScale = "Y";
-                                    myToastMessage = getResources().getString(R.string.scaleY)
-                                            + " " + getResources().getString(R.string.on);
-                                    ShowToast.showToast(FullscreenActivity.this);
-                                    break;
-                            }
-                            Preferences.savePreferences();
-                            redrawTheLyricsTable(view);
+                            whattodo = "autoscale";
+                            newFragment = PopUpScalingFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
 
 
-                        } else if (childPosition == 2) {// Change font size
-                            if (isPDF) {
-                                // Can't do this action on a pdf!
-                                myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
-                                ShowToast.showToast(FullscreenActivity.this);
-                            } else {
-                                final float storefontsize = mFontSize;
-                                // Decide where the font size progress bar should be
-                                if (mFontSize > 80) {
-                                    mFontSize = 42;
-                                }
-                                fontsizeseekar = Math.round((((mFontSize) / 80) * 100));
-
-                                dialogBuilder.setTitle(getResources().getText(R.string.options_options_fontsize).toString());
-
-                                LinearLayout scalefont = new LinearLayout(FullscreenActivity.this);
-                                scalefont.setOrientation(LinearLayout.VERTICAL);
-                                final TextView text_size = new TextView(FullscreenActivity.this);
-                                String text = "" + mFontSize;
-                                text_size.setText(text);
-                                text_size.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Medium);
-                                text_size.setGravity(1);
-                                final SeekBar fontseekbar = new SeekBar(FullscreenActivity.this);
-                                scalefont.addView(text_size);
-                                scalefont.addView(fontseekbar);
-                                dialogBuilder.setView(scalefont);
-                                fontseekbar.setProgress(fontsizeseekar);
-
-                                fontseekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-                                    public void onStopTrackingTouch(SeekBar seekBar) {
-                                        // Basic font size is 42sp - this is to be 50%
-                                        // Min is 4sp
-
-                                        fontsizeseekar = seekBar.getProgress();
-                                        float val = fontsizeseekar;
-                                        val = val / 100;
-                                        val = val * 76;
-                                        val = val * 10;
-                                        val = Math.round(val);
-                                        val = val / 10;
-                                        mFontSize = 4 + val;
-                                        String text = "" + mFontSize;
-                                        text_size.setText(text);
-                                        redrawTheLyricsTable(view);
-
-                                    }
-
-                                    public void onStartTrackingTouch(SeekBar seekBar) {
-                                        // Do nothing
-                                    }
-
-                                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                        // Basic font size is 42sp - this is to be 50%
-                                        // Min is 4sp
-
-                                        fontsizeseekar = seekBar.getProgress();
-                                        float val = fontsizeseekar;
-                                        val = val / 100;
-                                        val = val * 76;
-                                        val = val * 10;
-                                        val = Math.round(val);
-                                        val = val / 10;
-                                        mFontSize = 4 + val;
-                                        String text = "" + mFontSize;
-                                        text_size.setText(text);
-                                    }
-                                });
-                                dialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        mFontSize = storefontsize;
-                                        redrawTheLyricsTable(view);
-                                    }
-                                });
-                                dialogBuilder.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog,
-                                                        int which) {
-                                        // Save the preferences
-                                        Preferences.savePreferences();
-                                        redrawTheLyricsTable(null);
-                                        mDrawerLayout.closeDrawer(expListViewOption);
-                                    }
-                                });
-                                dialogBuilder.show();
-                            }
-
-
-                        } else if (childPosition == 3) {// Colour
-                            Intent intent = new Intent();
-                            intent.setClass(FullscreenActivity.this,
-                                    ChangeDisplayPreferences.class);
-                            tryKillPads();
-                            tryKillMetronome();
-                            startActivity(intent);
-                            finish();
-
-
-                        } else if (childPosition == 4) {// Fonts
+                        } else if (childPosition == 2) {// Fonts
                             whattodo = "changefonts";
                             newFragment = PopUpFontsFragment.newInstance();
                             newFragment.show(getFragmentManager(), "dialog");
 
+                        } else if (childPosition == 3) {// Page buttons
+                            whattodo = "pagebuttons";
+                            newFragment = PopUpPageButtonsFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
 
-                        } else if (childPosition == 5) {// Show next
-                            // Options are top, bottom, off
-
-                            switch (showNextInSet) {
-                                case "top":
-                                    showNextInSet = "bottom";
-                                    myToastMessage = getResources().getString(R.string.shownextinset)
-                                            + " - " + getResources().getString(R.string.on)
-                                            + " (" + getResources().getString(R.string.bottom).toUpperCase(locale) + ")";
-                                    ShowToast.showToast(FullscreenActivity.this);
-                                    break;
-                                case "bottom":
-                                    showNextInSet = "off";
-                                    myToastMessage = getResources().getString(R.string.shownextinset)
-                                            + " - " + getResources().getString(R.string.off);
-                                    ShowToast.showToast(FullscreenActivity.this);
-                                    break;
-                                default:
-                                    showNextInSet = "top";
-                                    myToastMessage = getResources().getString(R.string.shownextinset)
-                                            + " - " + getResources().getString(R.string.on)
-                                            + " (" + getResources().getString(R.string.top).toUpperCase(locale) + ")";
-                                    ShowToast.showToast(FullscreenActivity.this);
-                                    break;
-                            }
-                            Preferences.savePreferences();
-                            redrawTheLyricsTable(main_page);
+                        } else if (childPosition == 4) {// Extra information
+                            whattodo = "extra";
+                            newFragment = PopUpExtraInfoFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
 
 
-                        } else if (childPosition == 6) {// Toggle scroll buttons
-                            if (toggleScrollArrows.equals("S")) {
-                                toggleScrollArrows = "D";
-                                Preferences.savePreferences();
-                                myToastMessage = getResources().getString(R.string.scrollbuttons_toggle) + " - " + getResources().getString(R.string.scrollbuttons_double);
-                                ShowToast.showToast(FullscreenActivity.this);
-                                redrawTheLyricsTable(view);
-                            } else {
-                                toggleScrollArrows = "S";
-                                Preferences.savePreferences();
-                                myToastMessage = getResources().getString(R.string.scrollbuttons_toggle) + " - " + getResources().getString(R.string.scrollbuttons_single);
-                                ShowToast.showToast(FullscreenActivity.this);
-                                redrawTheLyricsTable(view);
-                            }
-
-
-                        } else if (childPosition == 7) {// Toggle song buttons
-
-                            if (pagebutton_position.equals("off")) {
-                                // Turn them on and put them on the right
-                                togglePageButtons = "Y";
-                                pagebutton_position = "right";
-                                Preferences.savePreferences();
-                                String message = getResources().getString(R.string.songbuttons_toggle) +
-                                        " - " + getResources().getString(R.string.right);
-                                myToastMessage = message;
-
-                            } else if (pagebutton_position.equals("right")) {
-                                // Turn them on and put them on the bottom
-                                togglePageButtons = "Y";
-                                pagebutton_position = "bottom";
-                                Preferences.savePreferences();
-                                String message = getResources().getString(R.string.songbuttons_toggle) +
-                                        " - " + getResources().getString(R.string.bottom);
-                                myToastMessage = message;
-
-                            } else {
-                                // Turn them off
-                                togglePageButtons = "N";
-                                pagebutton_position = "off";
-                                Preferences.savePreferences();
-                                String message = getResources().getString(R.string.songbuttons_toggle) +
-                                        " - " + getResources().getString(R.string.off);
-                                myToastMessage = message;
-
-                            }
-                            ShowToast.showToast(FullscreenActivity.this);
-                            setupPageButtons();
-
-                        } else if (childPosition == 8) {// Toggle autosticky
-                            switch (toggleAutoSticky) {
-                                case "N":
-                                    toggleAutoSticky = "Y";
-                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.on);
-                                    break;
-                                case "Y":
-                                    toggleAutoSticky = "T";
-                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.top);
-                                    break;
-                                case "T":
-                                    toggleAutoSticky = "B";
-                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.bottom);
-                                    break;
-                                default:
-                                    // Keep sticky notes hidden in normal sticky note view
-                                    toggleAutoSticky = "N";
-                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.off);
-                                    break;
-                            }
-                            // Save preferences
-                            Preferences.savePreferences();
-                            ShowToast.showToast(FullscreenActivity.this);
-                            redrawTheLyricsTable(view);
-
-
-                        } else if (childPosition == 9) {// Show/hide menu bar
+                        } else if (childPosition == 5) {// Show/hide menu bar
                             if (hideactionbaronoff.equals("Y")) {
                                 hideactionbaronoff = "N";
                                 myToastMessage = getResources()
@@ -5127,8 +5049,72 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                             tryKillMetronome();
                             startActivity(intent);
                             finish();
+
+                        } else if (childPosition == 6) {// Profiles
+                            whattodo = "profiles";
+                            newFragment = PopUpProfileFragment.newInstance();
+                            newFragment.show(getFragmentManager(), "dialog");
+
                         }
 
+/*
+                    } else if (childPosition == 3) {// Show next
+                            // Options are top, bottom, off
+
+                            switch (showNextInSet) {
+                                case "top":
+                                    showNextInSet = "bottom";
+                                    myToastMessage = getResources().getString(R.string.shownextinset)
+                                            + " - " + getResources().getString(R.string.on)
+                                            + " (" + getResources().getString(R.string.bottom).toUpperCase(locale) + ")";
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
+                                case "bottom":
+                                    showNextInSet = "off";
+                                    myToastMessage = getResources().getString(R.string.shownextinset)
+                                            + " - " + getResources().getString(R.string.off);
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
+                                default:
+                                    showNextInSet = "top";
+                                    myToastMessage = getResources().getString(R.string.shownextinset)
+                                            + " - " + getResources().getString(R.string.on)
+                                            + " (" + getResources().getString(R.string.top).toUpperCase(locale) + ")";
+                                    ShowToast.showToast(FullscreenActivity.this);
+                                    break;
+                            }
+                            Preferences.savePreferences();
+                            redrawTheLyricsTable(main_page);
+
+
+                        } else if (childPosition == 6) {// Toggle autosticky
+                            switch (toggleAutoSticky) {
+                                case "N":
+                                    toggleAutoSticky = "Y";
+                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.on);
+                                    break;
+                                case "Y":
+                                    toggleAutoSticky = "T";
+                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.top);
+                                    break;
+                                case "T":
+                                    toggleAutoSticky = "B";
+                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.bottom);
+                                    break;
+                                default:
+                                    // Keep sticky notes hidden in normal sticky note view
+                                    toggleAutoSticky = "N";
+                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.off);
+                                    break;
+                            }
+                            // Save preferences
+                            Preferences.savePreferences();
+                            ShowToast.showToast(FullscreenActivity.this);
+                            redrawTheLyricsTable(view);
+
+
+                        }
+*/
 
                     } else if (chosenMenu.equals(getResources().getString(R.string.options_gesturesandmenus).toUpperCase(locale))) {
                         linkclicked = listDataChildOption.get(listDataHeaderOption.get(groupPosition)).get(childPosition);
@@ -5624,6 +5610,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     // This bit listens for key presses (for page turn and scroll)
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+
+        pressing_button = false;
 
         // Reset immersive mode
         if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
@@ -6147,6 +6135,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             set_forward = menu.findItem(R.id.set_forward);
         }
 
+        // Decide if song is in the set
+        SetActions.isSongInSet();
+
         if (setSize > 0 && setView.equals("Y")) {
             if (set_back != null) {
                 set_back.setVisible(true);
@@ -6182,12 +6173,13 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         }
 
         // Decide if presenter button is greyed out or not
-        presentationMode = menu.findItem(R.id.present_mode);
-        if (dualDisplayCapable.equals("N")) {
-            presentationMode.setEnabled(true);
-            presentationMode.getIcon().setAlpha(30);
+        if (menu!=null) {
+            presentationMode = menu.findItem(R.id.present_mode);
+            if (dualDisplayCapable.equals("N")) {
+                presentationMode.setEnabled(true);
+                presentationMode.getIcon().setAlpha(30);
+            }
         }
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -6220,8 +6212,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         allchordscapo = "";
 
         mScaleFactor = 1.0f;
+/*
         findViewById(R.id.LyricDisplay_onecoldisplay).setScaleX(1.0f);
         findViewById(R.id.LyricDisplay_onecoldisplay).setScaleY(1.0f);
+*/
 
         if (toggleYScale.equals("N")) {
             needtoredraw = false;
@@ -6374,7 +6368,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             // Set the pad volume and pan
             int temp_padvol = (int) (100 * padvol);
             popupPad_volume.setProgress(temp_padvol);
-            popupPad_volume_text.setText(temp_padvol + " %");
+            String text = temp_padvol + " %";
+            popupPad_volume_text.setText(text);
             switch (padpan) {
                 case "left":
                     popupPad_pan_text.setText("L");
@@ -6413,7 +6408,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 usingdefaults = true;
             }
 
-            String text;
             if (autoScrollDelay < 0) {
                 popupAutoscroll_delay.setProgress(0);
                 text = "";
@@ -6423,7 +6417,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             }
             popupAutoscroll_delay_text.setText(text);
             String timetext = timeFormatFixer((autoScrollDuration));
-            currentTime_TextView.setText("0:00");
+            String start = "0:00";
+            currentTime_TextView.setText(start);
             totalTime_TextView.setText(timetext);
             playbackProgress.setVisibility(View.INVISIBLE);
 
@@ -6453,7 +6448,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             // Set the metronome volume and pan
             int temp_metronomevol = (int) (100 * metronomevol);
             popupMetronome_volume.setProgress(temp_metronomevol);
-            popupMetronome_volume_text.setText(temp_metronomevol + " %");
+            text = temp_metronomevol + " %";
+            popupMetronome_volume_text.setText(text);
             switch (metronomepan) {
                 case "left":
                     popupMetronome_pan_text.setText("L");
@@ -6682,6 +6678,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 height = lyricstable_onecolview.getMeasuredHeight() + 8;
                 scaleX = pageWidth / width;
                 scaleY = pageHeight / height;
+                float override_onecolfontsize = scaleX;
                 if (toggleYScale.equals("Y")) {
                     if (scaleX > scaleY) {
                         //noinspection SuspiciousNameCombination
@@ -6751,6 +6748,35 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     columnTest = 1;
                 }
 
+                myToastMessage = "";
+
+                // If the font size is below the minimum font size, and the user has decided to override full scale
+                if (tempfontsize < mMinFontSize && toggleYScale.equals("Y") && override_fullscale) {
+                    myToastMessage = getString(R.string.toastmessage_minfont);
+                    myToastMessage += "\n"+getString(R.string.override_fullautoscale);
+                    myToastMessage += "\n"+getString(R.string.minfontsize)+": "+mMinFontSize+" sp";
+                    myToastMessage += "\n"+getString(R.string.size)+": "+(float)((int)(tempfontsize*10))/10.0f+" sp";
+                    tempfontsize = mainfontsize * override_onecolfontsize - 0.6f;
+                    tempsectionsize = sectionfontsize * override_onecolfontsize - 0.6f;
+                    scrollpage = scrollpage_onecol;
+                    columnTest = 1;
+                }
+
+                // If the font size is still below the minimum font size, and the user has decided to override full scale
+                if (tempfontsize < mMinFontSize && (toggleYScale.equals("Y") || toggleYScale.equals("W")) && override_widthscale) {
+                    myToastMessage = getString(R.string.toastmessage_minfont);
+                    myToastMessage += "\n"+getString(R.string.override_widthautoscale);
+                    myToastMessage += "\n"+getString(R.string.minfontsize)+": "+mMinFontSize+" sp";
+                    myToastMessage += "\n"+getString(R.string.size)+": "+(float)((int)(tempfontsize*10))/10.0f+" sp";
+                    tempfontsize = mFontSize;
+                    tempsectionsize = mFontSize * 0.7f;
+                    columnTest = 1;
+                    scrollpage = scrollpage_onecol;
+                    columnTest = 1;
+                }
+
+                ShowToast.showToast(FullscreenActivity.this);
+
                 // Make sure font sizes don't exceed the max specified by the user
                 if (mMaxFontSize < 20) {
                     mMaxFontSize = 20;
@@ -6765,6 +6791,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 if (toggleYScale.equals("N")) {
                     tempfontsize = mFontSize;
                     tempsectionsize = mFontSize * 0.7f;
+                    scrollpage = scrollpage_onecol;
                     columnTest = 1;
                 }
 
@@ -6938,14 +6965,16 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
                 PdfRenderer mPdfRenderer = null;
                 try {
-                    mPdfRenderer = new PdfRenderer(mFileDescriptor);
-                    pdfPageCount = mPdfRenderer.getPageCount();
+                    if (mFileDescriptor!=null) {
+                        mPdfRenderer = new PdfRenderer(mFileDescriptor);
+                        pdfPageCount = mPdfRenderer.getPageCount();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                     pdfPageCount = 0;
                 }
 
-                if (pdfPageCurrent > pdfPageCount) {
+                if (pdfPageCurrent >= pdfPageCount) {
                     pdfPageCurrent = 0;
                 }
 
@@ -6970,10 +6999,15 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
 
                 // Get pdf size from page
-                int pdfwidth = 1;
-                int pdfheight = 1;
-                pdfwidth = mCurrentPage.getWidth();
-                pdfheight = mCurrentPage.getHeight();
+                int pdfwidth;
+                int pdfheight;
+                if (mCurrentPage!=null) {
+                    pdfwidth = mCurrentPage.getWidth();
+                    pdfheight = mCurrentPage.getHeight();
+                } else {
+                    pdfwidth=1;
+                    pdfheight=1;
+                }
 
                 int holderwidth = pdfwidth;
                 int holderheight = pdfheight;
@@ -7022,23 +7056,31 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 Bitmap bitmap = Bitmap.createBitmap(pdfwidth, pdfheight, Bitmap.Config.ARGB_8888);
 
                 // Pdf page is rendered on Bitmap
-                mCurrentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+                if (mCurrentPage!=null) {
+                    mCurrentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+                }
 
                 // Set rendered bitmap to ImageView (pdfView in my case)
                 ImageView pdfView = (ImageView) findViewById(R.id.pdfView);
 
-                pdfView.setImageBitmap(bitmap);
-                pdfView.getLayoutParams().height = holderheight;
-                pdfView.getLayoutParams().width = holderwidth;
-
-                mCurrentPage.close();
-                mPdfRenderer.close();
-
-                try {
-                    mFileDescriptor.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (pdfView!=null) {
+                    pdfView.setImageBitmap(bitmap);
+                    pdfView.getLayoutParams().height = holderheight;
+                    pdfView.getLayoutParams().width = holderwidth;
                 }
+
+                if (mCurrentPage!=null) {
+                    mCurrentPage.close();
+                }
+
+                if (mPdfRenderer!=null) {
+                    mPdfRenderer.close();
+                }
+
+                if (mFileDescriptor!=null) {
+                    mFileDescriptor.close();
+                }
+
                 scrollpage_pdf.scrollTo(0, 0);
                 invalidateOptionsMenu();
             } else {
@@ -7055,9 +7097,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 scrollstickyholder.setVisibility(View.GONE);
                 ImageView pdfView = (ImageView) findViewById(R.id.pdfView);
                 Drawable myDrawable = getResources().getDrawable(R.drawable.unhappy_android);
-                pdfView.setImageDrawable(myDrawable);
-                pdfView.getLayoutParams().height = main_page.getHeight();
-                pdfView.getLayoutParams().width = main_page.getWidth();
+                if (pdfView!=null) {
+                    pdfView.setImageDrawable(myDrawable);
+                    pdfView.getLayoutParams().height = main_page.getHeight();
+                    pdfView.getLayoutParams().width = main_page.getWidth();
+                }
                 String text = tempsongtitle + "\n" + getResources().getString(R.string.nothighenoughapi);
                 songandauthor.setText(text);
                 Preferences.savePreferences();
@@ -7090,14 +7134,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         FrameLayout.LayoutParams params_fix = new FrameLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
-        if (toggleYScale.equals("N")) {
+        if (toggleYScale.equals("N") || (toggleYScale.equals("Y") && override_widthscale) || (toggleYScale.equals("W") && override_widthscale)) {
             params_fix.gravity = Gravity.LEFT;
-            findViewById(R.id.scrollpage_onecol).scrollTo(0, 0);
-            findViewById(R.id.horizontalScrollView1_onecolview).scrollTo(0, 0);
+            scrollpage_onecol.scrollTo(0, 0);
+            horizontalScrollView1_onecolview.scrollTo(0, 0);
         } else {
             params_fix.gravity = Gravity.CENTER_HORIZONTAL;
         }
-        findViewById(R.id.linearLayout2_onecolview).setLayoutParams(params_fix);
+        linearLayout2_onecolview.setLayoutParams(params_fix);
 
         // Organise the chords.
         // Only do this if needtoredraw = false;
@@ -7129,7 +7173,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             File saved_image_file = new File(
                     homedir + "/Images/_cache/" + songfilename + ".png");
             if (saved_image_file.exists())
-                saved_image_file.delete();
+                if (!saved_image_file.delete()) {
+                    Log.d("d","error removing temp image file");
+                }
             try {
                 FileOutputStream out = new FileOutputStream(saved_image_file);
                 bmScreen.compress(Bitmap.CompressFormat.PNG, 100, out);
@@ -7180,12 +7226,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     out.write(buffer, 0, read);
                 }
                 in.close();
-                in = null;
 
                 // write the output file (You have now copied the file)
                 out.flush();
                 out.close();
-                out = null;
 
                 uri3 = Uri.fromFile(new File(tolocation));
 
@@ -7274,23 +7318,23 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         // This will eventually be if guitar/ukulele/mandolin/piano/other
         // Custom chords don't get sent for retrieval as they are already defined
         for (int l = 0; l < unique_chords.size(); l++) {
-            if (chordInstrument.equals("u") && unique_chords != null && !unique_chords.get(l).contains("$$$")) {
+            if (chordInstrument.equals("u") && !unique_chords.get(l).contains("$$$")) {
                 ChordDirectory.ukuleleChords(unique_chords.get(l));
-            } else if (chordInstrument.equals("m") && unique_chords != null && !unique_chords.get(l).contains("$$$")) {
+            } else if (chordInstrument.equals("m") && !unique_chords.get(l).contains("$$$")) {
                 ChordDirectory.mandolinChords(unique_chords.get(l));
-            } else if (chordInstrument.equals("g") && unique_chords != null && !unique_chords.get(l).contains("$$$")) {
+            } else if (chordInstrument.equals("g") && !unique_chords.get(l).contains("$$$")) {
                 ChordDirectory.guitarChords(unique_chords.get(l));
-            } else if (chordInstrument.equals("c") && unique_chords != null && !unique_chords.get(l).contains("$$$")) {
+            } else if (chordInstrument.equals("c") && !unique_chords.get(l).contains("$$$")) {
                 ChordDirectory.cavaquinhoChords(unique_chords.get(l));
-            } else if (chordInstrument.equals("b") && unique_chords != null && !unique_chords.get(l).contains("$$$")) {
+            } else if (chordInstrument.equals("b") && !unique_chords.get(l).contains("$$$")) {
                 ChordDirectory.banjo4stringChords(unique_chords.get(l));
-            } else if (chordInstrument.equals("B") && unique_chords != null && !unique_chords.get(l).contains("$$$")) {
+            } else if (chordInstrument.equals("B") && !unique_chords.get(l).contains("$$$")) {
                 ChordDirectory.banjo5stringChords(unique_chords.get(l));
             }
 
             // If chord is custom, prepare this prefix to the name
             String iscustom = "";
-            if (unique_chords != null && unique_chords.get(l).contains("$$$")) {
+            if (unique_chords.get(l).contains("$$$")) {
                 iscustom = "\n" + getResources().getString(R.string.custom) + "";
                 chordnotes = unique_chords.get(l);
                 chordnotes = chordnotes.replace("$$$", "");
@@ -7333,571 +7377,578 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             String string_1 = "";
             String fret = "";
 
-            if (chordInstrument.equals("g")) {
+            switch (chordInstrument) {
+                case "g":
 
-                if (chordnotes.length() > 0) {
-                    string_6 = chordnotes.substring(0, 1);
-                }
-                if (chordnotes.length() > 1) {
-                    string_5 = chordnotes.substring(1, 2);
-                }
-                if (chordnotes.length() > 2) {
-                    string_4 = chordnotes.substring(2, 3);
-                }
-                if (chordnotes.length() > 3) {
-                    string_3 = chordnotes.substring(3, 4);
-                }
-                if (chordnotes.length() > 4) {
-                    string_2 = chordnotes.substring(4, 5);
-                }
-                if (chordnotes.length() > 5) {
-                    string_1 = chordnotes.substring(5, 6);
-                }
-                if (chordnotes.length() > 7) {
-                    fret = chordnotes.substring(7, 8);
-                }
+                    if (chordnotes.length() > 0) {
+                        string_6 = chordnotes.substring(0, 1);
+                    }
+                    if (chordnotes.length() > 1) {
+                        string_5 = chordnotes.substring(1, 2);
+                    }
+                    if (chordnotes.length() > 2) {
+                        string_4 = chordnotes.substring(2, 3);
+                    }
+                    if (chordnotes.length() > 3) {
+                        string_3 = chordnotes.substring(3, 4);
+                    }
+                    if (chordnotes.length() > 4) {
+                        string_2 = chordnotes.substring(4, 5);
+                    }
+                    if (chordnotes.length() > 5) {
+                        string_1 = chordnotes.substring(5, 6);
+                    }
+                    if (chordnotes.length() > 7) {
+                        fret = chordnotes.substring(7, 8);
+                    }
 
-                // Prepare string_6
-                switch (string_6) {
-                    case "0":
-                        image6.setImageDrawable(l0);
-                        break;
-                    case "1":
-                        image6.setImageDrawable(l1);
-                        break;
-                    case "2":
-                        image6.setImageDrawable(l2);
-                        break;
-                    case "3":
-                        image6.setImageDrawable(l3);
-                        break;
-                    case "4":
-                        image6.setImageDrawable(l4);
-                        break;
-                    case "5":
-                        image6.setImageDrawable(l5);
-                        break;
-                    default:
-                        image6.setImageDrawable(lx);
-                        break;
-                }
+                    // Prepare string_6
+                    switch (string_6) {
+                        case "0":
+                            image6.setImageDrawable(l0);
+                            break;
+                        case "1":
+                            image6.setImageDrawable(l1);
+                            break;
+                        case "2":
+                            image6.setImageDrawable(l2);
+                            break;
+                        case "3":
+                            image6.setImageDrawable(l3);
+                            break;
+                        case "4":
+                            image6.setImageDrawable(l4);
+                            break;
+                        case "5":
+                            image6.setImageDrawable(l5);
+                            break;
+                        default:
+                            image6.setImageDrawable(lx);
+                            break;
+                    }
 
-                // Prepare string_5
-                switch (string_5) {
-                    case "0":
-                        image5.setImageDrawable(m0);
-                        break;
-                    case "1":
-                        image5.setImageDrawable(m1);
-                        break;
-                    case "2":
-                        image5.setImageDrawable(m2);
-                        break;
-                    case "3":
-                        image5.setImageDrawable(m3);
-                        break;
-                    case "4":
-                        image5.setImageDrawable(m4);
-                        break;
-                    case "5":
-                        image5.setImageDrawable(m5);
-                        break;
-                    default:
-                        image5.setImageDrawable(mx);
-                        break;
-                }
+                    // Prepare string_5
+                    switch (string_5) {
+                        case "0":
+                            image5.setImageDrawable(m0);
+                            break;
+                        case "1":
+                            image5.setImageDrawable(m1);
+                            break;
+                        case "2":
+                            image5.setImageDrawable(m2);
+                            break;
+                        case "3":
+                            image5.setImageDrawable(m3);
+                            break;
+                        case "4":
+                            image5.setImageDrawable(m4);
+                            break;
+                        case "5":
+                            image5.setImageDrawable(m5);
+                            break;
+                        default:
+                            image5.setImageDrawable(mx);
+                            break;
+                    }
 
-                // Prepare string_4
-                switch (string_4) {
-                    case "0":
-                        image4.setImageDrawable(m0);
-                        break;
-                    case "1":
-                        image4.setImageDrawable(m1);
-                        break;
-                    case "2":
-                        image4.setImageDrawable(m2);
-                        break;
-                    case "3":
-                        image4.setImageDrawable(m3);
-                        break;
-                    case "4":
-                        image4.setImageDrawable(m4);
-                        break;
-                    case "5":
-                        image4.setImageDrawable(m5);
-                        break;
-                    default:
-                        image4.setImageDrawable(mx);
-                        break;
-                }
+                    // Prepare string_4
+                    switch (string_4) {
+                        case "0":
+                            image4.setImageDrawable(m0);
+                            break;
+                        case "1":
+                            image4.setImageDrawable(m1);
+                            break;
+                        case "2":
+                            image4.setImageDrawable(m2);
+                            break;
+                        case "3":
+                            image4.setImageDrawable(m3);
+                            break;
+                        case "4":
+                            image4.setImageDrawable(m4);
+                            break;
+                        case "5":
+                            image4.setImageDrawable(m5);
+                            break;
+                        default:
+                            image4.setImageDrawable(mx);
+                            break;
+                    }
 
-                // Prepare string_3
-                switch (string_3) {
-                    case "0":
-                        image3.setImageDrawable(m0);
-                        break;
-                    case "1":
-                        image3.setImageDrawable(m1);
-                        break;
-                    case "2":
-                        image3.setImageDrawable(m2);
-                        break;
-                    case "3":
-                        image3.setImageDrawable(m3);
-                        break;
-                    case "4":
-                        image3.setImageDrawable(m4);
-                        break;
-                    case "5":
-                        image3.setImageDrawable(m5);
-                        break;
-                    default:
-                        image3.setImageDrawable(mx);
-                        break;
-                }
+                    // Prepare string_3
+                    switch (string_3) {
+                        case "0":
+                            image3.setImageDrawable(m0);
+                            break;
+                        case "1":
+                            image3.setImageDrawable(m1);
+                            break;
+                        case "2":
+                            image3.setImageDrawable(m2);
+                            break;
+                        case "3":
+                            image3.setImageDrawable(m3);
+                            break;
+                        case "4":
+                            image3.setImageDrawable(m4);
+                            break;
+                        case "5":
+                            image3.setImageDrawable(m5);
+                            break;
+                        default:
+                            image3.setImageDrawable(mx);
+                            break;
+                    }
 
-                // Prepare string_2
-                switch (string_2) {
-                    case "0":
-                        image2.setImageDrawable(m0);
-                        break;
-                    case "1":
-                        image2.setImageDrawable(m1);
-                        break;
-                    case "2":
-                        image2.setImageDrawable(m2);
-                        break;
-                    case "3":
-                        image2.setImageDrawable(m3);
-                        break;
-                    case "4":
-                        image2.setImageDrawable(m4);
-                        break;
-                    case "5":
-                        image2.setImageDrawable(m5);
-                        break;
-                    default:
-                        image2.setImageDrawable(mx);
-                        break;
-                }
+                    // Prepare string_2
+                    switch (string_2) {
+                        case "0":
+                            image2.setImageDrawable(m0);
+                            break;
+                        case "1":
+                            image2.setImageDrawable(m1);
+                            break;
+                        case "2":
+                            image2.setImageDrawable(m2);
+                            break;
+                        case "3":
+                            image2.setImageDrawable(m3);
+                            break;
+                        case "4":
+                            image2.setImageDrawable(m4);
+                            break;
+                        case "5":
+                            image2.setImageDrawable(m5);
+                            break;
+                        default:
+                            image2.setImageDrawable(mx);
+                            break;
+                    }
 
-                // Prepare string_1
-                switch (string_1) {
-                    case "0":
-                        image1.setImageDrawable(r0);
-                        break;
-                    case "1":
-                        image1.setImageDrawable(r1);
-                        break;
-                    case "2":
-                        image1.setImageDrawable(r2);
-                        break;
-                    case "3":
-                        image1.setImageDrawable(r3);
-                        break;
-                    case "4":
-                        image1.setImageDrawable(r4);
-                        break;
-                    case "5":
-                        image1.setImageDrawable(r5);
-                        break;
-                    default:
-                        image1.setImageDrawable(rx);
-                        break;
-                }
+                    // Prepare string_1
+                    switch (string_1) {
+                        case "0":
+                            image1.setImageDrawable(r0);
+                            break;
+                        case "1":
+                            image1.setImageDrawable(r1);
+                            break;
+                        case "2":
+                            image1.setImageDrawable(r2);
+                            break;
+                        case "3":
+                            image1.setImageDrawable(r3);
+                            break;
+                        case "4":
+                            image1.setImageDrawable(r4);
+                            break;
+                        case "5":
+                            image1.setImageDrawable(r5);
+                            break;
+                        default:
+                            image1.setImageDrawable(rx);
+                            break;
+                    }
 
-                // Prepare fret
-                switch (fret) {
-                    case "1":
-                        image0.setImageDrawable(f1);
-                        break;
-                    case "2":
-                        image0.setImageDrawable(f2);
-                        break;
-                    case "3":
-                        image0.setImageDrawable(f3);
-                        break;
-                    case "4":
-                        image0.setImageDrawable(f4);
-                        break;
-                    case "5":
-                        image0.setImageDrawable(f5);
-                        break;
-                    case "6":
-                        image0.setImageDrawable(f6);
-                        break;
-                    case "7":
-                        image0.setImageDrawable(f7);
-                        break;
-                    case "8":
-                        image0.setImageDrawable(f8);
-                        break;
-                    case "9":
-                        image0.setImageDrawable(f9);
-                        break;
-                    default:
-                        image0 = null;
-                        break;
-                }
+                    // Prepare fret
+                    switch (fret) {
+                        case "1":
+                            image0.setImageDrawable(f1);
+                            break;
+                        case "2":
+                            image0.setImageDrawable(f2);
+                            break;
+                        case "3":
+                            image0.setImageDrawable(f3);
+                            break;
+                        case "4":
+                            image0.setImageDrawable(f4);
+                            break;
+                        case "5":
+                            image0.setImageDrawable(f5);
+                            break;
+                        case "6":
+                            image0.setImageDrawable(f6);
+                            break;
+                        case "7":
+                            image0.setImageDrawable(f7);
+                            break;
+                        case "8":
+                            image0.setImageDrawable(f8);
+                            break;
+                        case "9":
+                            image0.setImageDrawable(f9);
+                            break;
+                        default:
+                            image0 = null;
+                            break;
+                    }
 
-                chordview.addView(chordname);
-                if (image0 != null) {
-                    chordview.addView(image0);
-                }
-                chordview.addView(image6);
-                chordview.addView(image5);
-                chordview.addView(image4);
-                chordview.addView(image3);
-                chordview.addView(image2);
-                chordview.addView(image1);
+                    chordview.addView(chordname);
+                    if (image0 != null) {
+                        chordview.addView(image0);
+                    }
+                    chordview.addView(image6);
+                    chordview.addView(image5);
+                    chordview.addView(image4);
+                    chordview.addView(image3);
+                    chordview.addView(image2);
+                    chordview.addView(image1);
 
-            } else if (chordInstrument.equals("B")) {
+                    break;
+                case "B":
 
-                if (chordnotes.length() > 0) {
-                    string_5 = chordnotes.substring(0, 1);
-                }
-                if (chordnotes.length() > 1) {
-                    string_4 = chordnotes.substring(1, 2);
-                }
-                if (chordnotes.length() > 2) {
-                    string_3 = chordnotes.substring(2, 3);
-                }
-                if (chordnotes.length() > 3) {
-                    string_2 = chordnotes.substring(3, 4);
-                }
-                if (chordnotes.length() > 4) {
-                    string_1 = chordnotes.substring(4, 5);
-                }
-                if (chordnotes.length() > 6) {
-                    fret = chordnotes.substring(6, 7);
-                }
+                    if (chordnotes.length() > 0) {
+                        string_5 = chordnotes.substring(0, 1);
+                    }
+                    if (chordnotes.length() > 1) {
+                        string_4 = chordnotes.substring(1, 2);
+                    }
+                    if (chordnotes.length() > 2) {
+                        string_3 = chordnotes.substring(2, 3);
+                    }
+                    if (chordnotes.length() > 3) {
+                        string_2 = chordnotes.substring(3, 4);
+                    }
+                    if (chordnotes.length() > 4) {
+                        string_1 = chordnotes.substring(4, 5);
+                    }
+                    if (chordnotes.length() > 6) {
+                        fret = chordnotes.substring(6, 7);
+                    }
 
-                // Prepare string_5
-                switch (string_5) {
-                    case "0":
-                        image5.setImageDrawable(l0);
-                        break;
-                    case "1":
-                        image5.setImageDrawable(l1);
-                        break;
-                    case "2":
-                        image5.setImageDrawable(l2);
-                        break;
-                    case "3":
-                        image5.setImageDrawable(l3);
-                        break;
-                    case "4":
-                        image5.setImageDrawable(l4);
-                        break;
-                    case "5":
-                        image5.setImageDrawable(l5);
-                        break;
-                    default:
-                        image5.setImageDrawable(lx);
-                        break;
-                }
+                    // Prepare string_5
+                    switch (string_5) {
+                        case "0":
+                            image5.setImageDrawable(l0);
+                            break;
+                        case "1":
+                            image5.setImageDrawable(l1);
+                            break;
+                        case "2":
+                            image5.setImageDrawable(l2);
+                            break;
+                        case "3":
+                            image5.setImageDrawable(l3);
+                            break;
+                        case "4":
+                            image5.setImageDrawable(l4);
+                            break;
+                        case "5":
+                            image5.setImageDrawable(l5);
+                            break;
+                        default:
+                            image5.setImageDrawable(lx);
+                            break;
+                    }
 
-                // Prepare string_4
-                switch (string_4) {
-                    case "0":
-                        image4.setImageDrawable(m0);
-                        break;
-                    case "1":
-                        image4.setImageDrawable(m1);
-                        break;
-                    case "2":
-                        image4.setImageDrawable(m2);
-                        break;
-                    case "3":
-                        image4.setImageDrawable(m3);
-                        break;
-                    case "4":
-                        image4.setImageDrawable(m4);
-                        break;
-                    case "5":
-                        image4.setImageDrawable(m5);
-                        break;
-                    default:
-                        image4.setImageDrawable(mx);
-                        break;
-                }
+                    // Prepare string_4
+                    switch (string_4) {
+                        case "0":
+                            image4.setImageDrawable(m0);
+                            break;
+                        case "1":
+                            image4.setImageDrawable(m1);
+                            break;
+                        case "2":
+                            image4.setImageDrawable(m2);
+                            break;
+                        case "3":
+                            image4.setImageDrawable(m3);
+                            break;
+                        case "4":
+                            image4.setImageDrawable(m4);
+                            break;
+                        case "5":
+                            image4.setImageDrawable(m5);
+                            break;
+                        default:
+                            image4.setImageDrawable(mx);
+                            break;
+                    }
 
-                // Prepare string_3
-                switch (string_3) {
-                    case "0":
-                        image3.setImageDrawable(m0);
-                        break;
-                    case "1":
-                        image3.setImageDrawable(m1);
-                        break;
-                    case "2":
-                        image3.setImageDrawable(m2);
-                        break;
-                    case "3":
-                        image3.setImageDrawable(m3);
-                        break;
-                    case "4":
-                        image3.setImageDrawable(m4);
-                        break;
-                    case "5":
-                        image3.setImageDrawable(m5);
-                        break;
-                    default:
-                        image3.setImageDrawable(mx);
-                        break;
-                }
+                    // Prepare string_3
+                    switch (string_3) {
+                        case "0":
+                            image3.setImageDrawable(m0);
+                            break;
+                        case "1":
+                            image3.setImageDrawable(m1);
+                            break;
+                        case "2":
+                            image3.setImageDrawable(m2);
+                            break;
+                        case "3":
+                            image3.setImageDrawable(m3);
+                            break;
+                        case "4":
+                            image3.setImageDrawable(m4);
+                            break;
+                        case "5":
+                            image3.setImageDrawable(m5);
+                            break;
+                        default:
+                            image3.setImageDrawable(mx);
+                            break;
+                    }
 
-                // Prepare string_2
-                switch (string_2) {
-                    case "0":
-                        image2.setImageDrawable(m0);
-                        break;
-                    case "1":
-                        image2.setImageDrawable(m1);
-                        break;
-                    case "2":
-                        image2.setImageDrawable(m2);
-                        break;
-                    case "3":
-                        image2.setImageDrawable(m3);
-                        break;
-                    case "4":
-                        image2.setImageDrawable(m4);
-                        break;
-                    case "5":
-                        image2.setImageDrawable(m5);
-                        break;
-                    default:
-                        image2.setImageDrawable(mx);
-                        break;
-                }
+                    // Prepare string_2
+                    switch (string_2) {
+                        case "0":
+                            image2.setImageDrawable(m0);
+                            break;
+                        case "1":
+                            image2.setImageDrawable(m1);
+                            break;
+                        case "2":
+                            image2.setImageDrawable(m2);
+                            break;
+                        case "3":
+                            image2.setImageDrawable(m3);
+                            break;
+                        case "4":
+                            image2.setImageDrawable(m4);
+                            break;
+                        case "5":
+                            image2.setImageDrawable(m5);
+                            break;
+                        default:
+                            image2.setImageDrawable(mx);
+                            break;
+                    }
 
-                // Prepare string_1
-                switch (string_1) {
-                    case "0":
-                        image1.setImageDrawable(r0);
-                        break;
-                    case "1":
-                        image1.setImageDrawable(r1);
-                        break;
-                    case "2":
-                        image1.setImageDrawable(r2);
-                        break;
-                    case "3":
-                        image1.setImageDrawable(r3);
-                        break;
-                    case "4":
-                        image1.setImageDrawable(r4);
-                        break;
-                    case "5":
-                        image1.setImageDrawable(r5);
-                        break;
-                    default:
-                        image1.setImageDrawable(rx);
-                        break;
-                }
+                    // Prepare string_1
+                    switch (string_1) {
+                        case "0":
+                            image1.setImageDrawable(r0);
+                            break;
+                        case "1":
+                            image1.setImageDrawable(r1);
+                            break;
+                        case "2":
+                            image1.setImageDrawable(r2);
+                            break;
+                        case "3":
+                            image1.setImageDrawable(r3);
+                            break;
+                        case "4":
+                            image1.setImageDrawable(r4);
+                            break;
+                        case "5":
+                            image1.setImageDrawable(r5);
+                            break;
+                        default:
+                            image1.setImageDrawable(rx);
+                            break;
+                    }
 
-                // Prepare fret
-                switch (fret) {
-                    case "1":
-                        image0.setImageDrawable(f1);
-                        break;
-                    case "2":
-                        image0.setImageDrawable(f2);
-                        break;
-                    case "3":
-                        image0.setImageDrawable(f3);
-                        break;
-                    case "4":
-                        image0.setImageDrawable(f4);
-                        break;
-                    case "5":
-                        image0.setImageDrawable(f5);
-                        break;
-                    case "6":
-                        image0.setImageDrawable(f6);
-                        break;
-                    case "7":
-                        image0.setImageDrawable(f7);
-                        break;
-                    case "8":
-                        image0.setImageDrawable(f8);
-                        break;
-                    case "9":
-                        image0.setImageDrawable(f9);
-                        break;
-                    default:
-                        image0 = null;
-                        break;
-                }
+                    // Prepare fret
+                    switch (fret) {
+                        case "1":
+                            image0.setImageDrawable(f1);
+                            break;
+                        case "2":
+                            image0.setImageDrawable(f2);
+                            break;
+                        case "3":
+                            image0.setImageDrawable(f3);
+                            break;
+                        case "4":
+                            image0.setImageDrawable(f4);
+                            break;
+                        case "5":
+                            image0.setImageDrawable(f5);
+                            break;
+                        case "6":
+                            image0.setImageDrawable(f6);
+                            break;
+                        case "7":
+                            image0.setImageDrawable(f7);
+                            break;
+                        case "8":
+                            image0.setImageDrawable(f8);
+                            break;
+                        case "9":
+                            image0.setImageDrawable(f9);
+                            break;
+                        default:
+                            image0 = null;
+                            break;
+                    }
 
-                chordview.addView(chordname);
-                if (image0 != null) {
-                    chordview.addView(image0);
-                }
-                chordview.addView(image5);
-                chordview.addView(image4);
-                chordview.addView(image3);
-                chordview.addView(image2);
-                chordview.addView(image1);
+                    chordview.addView(chordname);
+                    if (image0 != null) {
+                        chordview.addView(image0);
+                    }
+                    chordview.addView(image5);
+                    chordview.addView(image4);
+                    chordview.addView(image3);
+                    chordview.addView(image2);
+                    chordview.addView(image1);
 
-            } else if (chordInstrument.equals("u") || chordInstrument.equals("m") || chordInstrument.equals("c") || chordInstrument.equals("b")) {
-                if (chordnotes.length() > 0) {
-                    string_4 = chordnotes.substring(0, 1);
-                }
-                if (chordnotes.length() > 1) {
-                    string_3 = chordnotes.substring(1, 2);
-                }
-                if (chordnotes.length() > 2) {
-                    string_2 = chordnotes.substring(2, 3);
-                }
-                if (chordnotes.length() > 3) {
-                    string_1 = chordnotes.substring(3, 4);
-                }
-                if (chordnotes.length() > 5) {
-                    fret = chordnotes.substring(5, 6);
-                }
+                    break;
+                case "u":
+                case "m":
+                case "c":
+                case "b":
+                    if (chordnotes.length() > 0) {
+                        string_4 = chordnotes.substring(0, 1);
+                    }
+                    if (chordnotes.length() > 1) {
+                        string_3 = chordnotes.substring(1, 2);
+                    }
+                    if (chordnotes.length() > 2) {
+                        string_2 = chordnotes.substring(2, 3);
+                    }
+                    if (chordnotes.length() > 3) {
+                        string_1 = chordnotes.substring(3, 4);
+                    }
+                    if (chordnotes.length() > 5) {
+                        fret = chordnotes.substring(5, 6);
+                    }
 
-                // Prepare string_4
-                switch (string_4) {
-                    case "0":
-                        image4.setImageDrawable(l0);
-                        break;
-                    case "1":
-                        image4.setImageDrawable(l1);
-                        break;
-                    case "2":
-                        image4.setImageDrawable(l2);
-                        break;
-                    case "3":
-                        image4.setImageDrawable(l3);
-                        break;
-                    case "4":
-                        image4.setImageDrawable(l4);
-                        break;
-                    default:
-                        image4.setImageDrawable(lx);
-                        break;
-                }
+                    // Prepare string_4
+                    switch (string_4) {
+                        case "0":
+                            image4.setImageDrawable(l0);
+                            break;
+                        case "1":
+                            image4.setImageDrawable(l1);
+                            break;
+                        case "2":
+                            image4.setImageDrawable(l2);
+                            break;
+                        case "3":
+                            image4.setImageDrawable(l3);
+                            break;
+                        case "4":
+                            image4.setImageDrawable(l4);
+                            break;
+                        default:
+                            image4.setImageDrawable(lx);
+                            break;
+                    }
 
-                // Prepare string_3
-                switch (string_3) {
-                    case "0":
-                        image3.setImageDrawable(m0);
-                        break;
-                    case "1":
-                        image3.setImageDrawable(m1);
-                        break;
-                    case "2":
-                        image3.setImageDrawable(m2);
-                        break;
-                    case "3":
-                        image3.setImageDrawable(m3);
-                        break;
-                    case "4":
-                        image3.setImageDrawable(m4);
-                        break;
-                    case "5":
-                        image3.setImageDrawable(m5);
-                        break;
-                    default:
-                        image3.setImageDrawable(mx);
-                        break;
-                }
+                    // Prepare string_3
+                    switch (string_3) {
+                        case "0":
+                            image3.setImageDrawable(m0);
+                            break;
+                        case "1":
+                            image3.setImageDrawable(m1);
+                            break;
+                        case "2":
+                            image3.setImageDrawable(m2);
+                            break;
+                        case "3":
+                            image3.setImageDrawable(m3);
+                            break;
+                        case "4":
+                            image3.setImageDrawable(m4);
+                            break;
+                        case "5":
+                            image3.setImageDrawable(m5);
+                            break;
+                        default:
+                            image3.setImageDrawable(mx);
+                            break;
+                    }
 
-                // Prepare string_2
-                switch (string_2) {
-                    case "0":
-                        image2.setImageDrawable(m0);
-                        break;
-                    case "1":
-                        image2.setImageDrawable(m1);
-                        break;
-                    case "2":
-                        image2.setImageDrawable(m2);
-                        break;
-                    case "3":
-                        image2.setImageDrawable(m3);
-                        break;
-                    case "4":
-                        image2.setImageDrawable(m4);
-                        break;
-                    case "5":
-                        image2.setImageDrawable(m5);
-                        break;
-                    default:
-                        image2.setImageDrawable(mx);
-                        break;
-                }
+                    // Prepare string_2
+                    switch (string_2) {
+                        case "0":
+                            image2.setImageDrawable(m0);
+                            break;
+                        case "1":
+                            image2.setImageDrawable(m1);
+                            break;
+                        case "2":
+                            image2.setImageDrawable(m2);
+                            break;
+                        case "3":
+                            image2.setImageDrawable(m3);
+                            break;
+                        case "4":
+                            image2.setImageDrawable(m4);
+                            break;
+                        case "5":
+                            image2.setImageDrawable(m5);
+                            break;
+                        default:
+                            image2.setImageDrawable(mx);
+                            break;
+                    }
 
-                // Prepare string_1
-                switch (string_1) {
-                    case "0":
-                        image1.setImageDrawable(r0);
-                        break;
-                    case "1":
-                        image1.setImageDrawable(r1);
-                        break;
-                    case "2":
-                        image1.setImageDrawable(r2);
-                        break;
-                    case "3":
-                        image1.setImageDrawable(r3);
-                        break;
-                    case "4":
-                        image1.setImageDrawable(r4);
-                        break;
-                    case "5":
-                        image1.setImageDrawable(r5);
-                        break;
-                    default:
-                        image1.setImageDrawable(rx);
-                        break;
-                }
+                    // Prepare string_1
+                    switch (string_1) {
+                        case "0":
+                            image1.setImageDrawable(r0);
+                            break;
+                        case "1":
+                            image1.setImageDrawable(r1);
+                            break;
+                        case "2":
+                            image1.setImageDrawable(r2);
+                            break;
+                        case "3":
+                            image1.setImageDrawable(r3);
+                            break;
+                        case "4":
+                            image1.setImageDrawable(r4);
+                            break;
+                        case "5":
+                            image1.setImageDrawable(r5);
+                            break;
+                        default:
+                            image1.setImageDrawable(rx);
+                            break;
+                    }
 
-                // Prepare fret
-                switch (fret) {
-                    case "1":
-                        image0.setImageDrawable(f1);
-                        break;
-                    case "2":
-                        image0.setImageDrawable(f2);
-                        break;
-                    case "3":
-                        image0.setImageDrawable(f3);
-                        break;
-                    case "4":
-                        image0.setImageDrawable(f4);
-                        break;
-                    case "5":
-                        image0.setImageDrawable(f5);
-                        break;
-                    case "6":
-                        image0.setImageDrawable(f6);
-                        break;
-                    case "7":
-                        image0.setImageDrawable(f7);
-                        break;
-                    case "8":
-                        image0.setImageDrawable(f8);
-                        break;
-                    case "9":
-                        image0.setImageDrawable(f9);
-                        break;
-                    default:
-                        image0 = null;
-                        break;
-                }
+                    // Prepare fret
+                    switch (fret) {
+                        case "1":
+                            image0.setImageDrawable(f1);
+                            break;
+                        case "2":
+                            image0.setImageDrawable(f2);
+                            break;
+                        case "3":
+                            image0.setImageDrawable(f3);
+                            break;
+                        case "4":
+                            image0.setImageDrawable(f4);
+                            break;
+                        case "5":
+                            image0.setImageDrawable(f5);
+                            break;
+                        case "6":
+                            image0.setImageDrawable(f6);
+                            break;
+                        case "7":
+                            image0.setImageDrawable(f7);
+                            break;
+                        case "8":
+                            image0.setImageDrawable(f8);
+                            break;
+                        case "9":
+                            image0.setImageDrawable(f9);
+                            break;
+                        default:
+                            image0 = null;
+                            break;
+                    }
 
-                chordview.addView(chordname);
-                if (image0 != null) {
-                    chordview.addView(image0);
-                }
-                chordview.addView(image4);
-                chordview.addView(image3);
-                chordview.addView(image2);
-                chordview.addView(image1);
+                    chordview.addView(chordname);
+                    if (image0 != null) {
+                        chordview.addView(image0);
+                    }
+                    chordview.addView(image4);
+                    chordview.addView(image3);
+                    chordview.addView(image2);
+                    chordview.addView(image1);
+                    break;
             }
 
             if (chordnotes != null && !chordnotes.contains("xxxx_") && !chordnotes.contains("xxxxxx_")) {
@@ -7935,11 +7986,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Get the text for the new sticky note
                         final String tempnewfoldername;
-                        if (newfoldername.getText().toString() == null) {
-                            tempnewfoldername = "";
-                        } else {
-                            tempnewfoldername = newfoldername.getText().toString();
-                        }
+                        tempnewfoldername = newfoldername.getText().toString();
                         if (tempnewfoldername.length() > 0 && !tempnewfoldername.contains("/") && !tempnewfoldername.contains(".")) {
 
                             // Make the folder
@@ -8025,8 +8072,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                             // Isn't main folder, so allow rename
                             File from = new File(dir + "/" + currentFolder);
                             File to = new File(dir + "/" + newFolderTitle);
-                            from.renameTo(to);
-
+                            boolean diditwork = from.renameTo(to);
+                            if (!diditwork) {
+                                Log.d("d","Couldn't rename");
+                            }
                             // Load the songs
                             ListSongFiles.listSongs();
                             prepareSongMenu();
@@ -8079,7 +8128,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     }
 
     private void redrawTheLyricsTable(View view) {
-
+        focusview = view;
         isPDF = false;
         File checkfile;
         if (whichSongFolder.equals(mainfoldername)) {
@@ -8100,8 +8149,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             isPDF = false;
             isSong = true;
         }
+/*
         wasshowing_pdfselectpage = View.GONE;
         wasshowing_stickynotes = View.INVISIBLE;
+*/
 
         // Show the ActionBar
         delayactionBarHide.removeCallbacks(hideActionBarRunnable);
@@ -8204,8 +8255,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
             }
         }, slideout_time);
-
-        doScaling = false;
 
         // Set a runnable to check the scroll position after 1 second
         delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
@@ -8867,7 +8916,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
 
             // First test conditions
-            if (!padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
+            if (!pressing_button
+                    && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
                     && !chordButton.isFocused() && !downarrow_top.isFocused() && !downarrow_bottom.isFocused() && !uparrow_bottom.isFocused() && !uparrow_top.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
@@ -8877,36 +8927,44 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     && popupChord.getVisibility() != View.VISIBLE) {
 
                 // Now find out which gesture we've gone for
-                if (gesture_doubletap.equals("1")) {
-                    gesture1();
+                switch (gesture_doubletap) {
+                    case "1":
+                        gesture1();
 
-                } else if (gesture_doubletap.equals("2")) {
-                    if (isPDF) {
-                        // Can't do this action on a pdf!
-                        myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
-                        ShowToast.showToast(FullscreenActivity.this);
-                    } else if (!isSong) {
-                        // Editing a slide / note / scripture / image
-                        myToastMessage = getResources().getString(R.string.not_allowed);
-                        ShowToast.showToast(FullscreenActivity.this);
-                    } else {
-                        gesture2();
-                    }
+                        break;
+                    case "2":
+                        if (isPDF) {
+                            // Can't do this action on a pdf!
+                            myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+                            ShowToast.showToast(FullscreenActivity.this);
+                        } else if (!isSong) {
+                            // Editing a slide / note / scripture / image
+                            myToastMessage = getResources().getString(R.string.not_allowed);
+                            ShowToast.showToast(FullscreenActivity.this);
+                        } else {
+                            gesture2();
+                        }
 
-                } else if (gesture_doubletap.equals("3")) {
-                    gesture3();
+                        break;
+                    case "3":
+                        gesture3();
 
-                } else if (gesture_doubletap.equals("4")) {
-                    gesture4();
+                        break;
+                    case "4":
+                        gesture4();
 
-                } else if (gesture_doubletap.equals("5")) {
-                    gesture5();
+                        break;
+                    case "5":
+                        gesture5();
 
-                } else if (gesture_doubletap.equals("6")) {
-                    gesture6();
+                        break;
+                    case "6":
+                        gesture6();
 
-                } else if (gesture_doubletap.equals("7")) {
-                    gesture7();
+                        break;
+                    case "7":
+                        gesture7();
+                        break;
                 }
 
             }
@@ -8925,9 +8983,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             // 7 = start/stop metronome
             // 0/else = off (highest menu item)
 
-
             // First test conditions
-            if (!padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
+            if (!pressing_button
+                    && !padButton.isFocused() && !linkButton.isFocused() && !autoscrollButton.isFocused()
                     && !pdf_selectpage.isFocused() && !metronomeButton.isFocused() && !stickynotes.isFocused()
                     && !chordButton.isFocused() && !downarrow_top.isFocused() && !downarrow_bottom.isFocused() && !uparrow_bottom.isFocused() && !uparrow_top.isFocused()
                     && !mDrawerLayout.isDrawerOpen(expListViewSong) && !mDrawerLayout.isDrawerVisible(expListViewSong)
@@ -8994,7 +9052,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
             // Check movement along the Y-axis. If it exceeds
             // SWIPE_MAX_OFF_PATH, then dismiss the swipe.
-            int screenwidth = findViewById(R.id.main_page).getWidth();
+            int screenwidth = main_page.getWidth();
             int leftmargin = 40;
             int rightmargin = screenwidth - 40;
             if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) {
@@ -9021,6 +9079,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     pdfPageCurrent = pdfPageCurrent + 1;
                     redrawTheLyricsTable(main_page);
                     return false;
+                }  else {
+                    pdfPageCurrent = 0;
                 }
 
                 if (setSize > 1 && setView.equals("Y") && indexSongInSet >= 0
@@ -9135,7 +9195,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
     private class simpleOnScaleGestureListener extends
             SimpleOnScaleGestureListener {
-
     }
 
     @Override
@@ -10830,7 +10889,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         // If we are showing the last song already, say this instead
         if (setView.equals("Y") && showNextInSet.equals("bottom")) {
             // Get next title in set
-            String next_title = getResources().getString(R.string.next) + ": " + getResources().getString(R.string.lastsong);
+            String next_title;
             if (setView.equals("Y") && showNextInSet.equals("bottom")) {
                 // Get next title in set
                 next_title = getResources().getString(R.string.lastsong);
@@ -11180,7 +11239,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             Log.e("tag", "Failed to copy asset file: " + "Love Everlasting", e);
         }
     }
-
 
     private void copyFile(InputStream in, OutputStream out) throws IOException {
         byte[] buffer = new byte[1024];

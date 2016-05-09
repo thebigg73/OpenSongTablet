@@ -1,5 +1,12 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
+import android.util.Base64;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,13 +14,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.net.URLDecoder;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-import android.app.Activity;
-import android.util.Base64;
 
 public class SetActions extends Activity {
 
@@ -245,9 +245,18 @@ public class SetActions extends Activity {
             // Get the name of the song to look for (including folders if need be)
             getSongForSetWork();
 
-            if (FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
-                // Song is in current set.  Find the song position in the current set and load it (and next/prev)
-                // The first song has an index of 6 (the 7th item as the rest are menu items)
+            if (FullscreenActivity.setView.equals("Y") && FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
+                // If we are currently in set mode, check if the new song is there, in which case do nothing else
+                FullscreenActivity.setView = "Y";
+
+            } else if (FullscreenActivity.setView.equals("Y") && !FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
+                // If we are currently in set mode, but the new song isn't there, leave set mode
+                FullscreenActivity.setView = "N";
+                FullscreenActivity.previousSongInSet = "";
+                FullscreenActivity.nextSongInSet = "";
+                FullscreenActivity.indexSongInSet = 0;
+            } else if (FullscreenActivity.setView.equals("N") && FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
+                // If we aren't currently in set mode and the new song is there, enter set mode and get the index
                 FullscreenActivity.setView = "Y";
                 FullscreenActivity.previousSongInSet = "";
                 FullscreenActivity.nextSongInSet = "";
@@ -256,18 +265,26 @@ public class SetActions extends Activity {
                 indexSongInSet();
                 return true;
 
-            } else {
-                // Song isn't in the set, so just show the song
-                // Switch off the set view (buttons in action bar)
+            } else if (!FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
+                // The new song isn't in the set, so leave set mode and reset index
                 FullscreenActivity.setView = "N";
+                FullscreenActivity.previousSongInSet = "";
+                FullscreenActivity.nextSongInSet = "";
+                FullscreenActivity.indexSongInSet = 0;
                 return false;
             }
+
+
         } else {
             // User wasn't in set view, or the set was empty
             // Switch off the set view (buttons in action bar)
             FullscreenActivity.setView = "N";
+            FullscreenActivity.previousSongInSet = "";
+            FullscreenActivity.nextSongInSet = "";
+            FullscreenActivity.indexSongInSet = 0;
             return false;
         }
+        return false;
     }
 
     public static void checkDirectories() {

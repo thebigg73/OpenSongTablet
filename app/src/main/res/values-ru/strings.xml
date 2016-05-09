@@ -484,5 +484,17 @@
 	<string name="select_item_variation">"Выберите песню для создания набора вариации"</string>
 	<string name="variation_edit">"Этот предмет может быть отредактирован. Оригинальный не будут затронуты."</string>
 	<string name="variation">"варьирование"</string>
+	<string name="extra">"Дополнительная информация"</string>
+	<string name="minfontsize">"Предпочтительный размер шрифта минимальный автомасштаба"</string>
+	<string name="override_fullautoscale">"Override полный автоматический масштаб к ширине только"</string>
+	<string name="override_scale_explanation">"Если размер шрифта автомасштаба меньше требуемого минимального размера шрифта, вы хотите, чтобы приложение, чтобы переопределить на другой метод масштабирования? При использовании этих параметров может заставить вас для прокрутки по горизонтали и по вертикали в песне."</string>
+	<string name="override_widthautoscale">"ширина Override только масштабирование, чтобы не AutoScale"</string>
+	<string name="pagebuttons">"кнопки Page"</string>
+	<string name="position">"Должность"</string>
+	<string name="profile">"Профиль"</string>
+	<string name="profile_choose">"Выберите профиль для загрузки"</string>
+	<string name="profile_description">"Профили используются для хранения медийных предпочтений."</string>
+	<string name="profile_name">"Выберите имя профиля"</string>
+	<string name="size">"Размер"</string>
 
 </resources>

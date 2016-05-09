@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class ChangeDisplayPreferences extends AppCompatActivity {
@@ -58,6 +59,12 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 	View custom2_custom;
 	View custom2_capo;
 	View custom2_metronome;
+    Button goback;
+
+    public static TextView dark_theme_heading;
+    public static TextView light_theme_heading;
+    public static TextView custom1_theme_heading;
+    public static TextView custom2_theme_heading;
 
 	int initialcolor;
 	int newcolor;
@@ -69,7 +76,8 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 		// Load the user preferences
 		Preferences.loadPreferences();
 		// Set the screen and title
-		setContentView(R.layout.custom_display);
+		//setContentView(R.layout.custom_display);
+		setContentView(R.layout.popup_switchtheme);
 
         // Set up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -81,63 +89,145 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
             ab.setTitle("");
             ab.setDisplayHomeAsUpEnabled(false);
             ab.setDisplayShowTitleEnabled(false);
-            title.setText(getResources().getString(R.string.colorchooser));
+            //title.setText(getResources().getString(R.string.colorchooser));
+			title.setText(getString(R.string.options_options_theme));
         }
 
 		// Define the buttons
-		dark_background = findViewById(R.id.dark_background);
-		dark_font = findViewById(R.id.dark_lyrics_font);
-		dark_verse = findViewById(R.id.dark_verse_background);
-		dark_chorus = findViewById(R.id.dark_chorus_background);
-		dark_prechorus = findViewById(R.id.dark_prechorus_background);
-		dark_bridge = findViewById(R.id.dark_bridge_background);
-		dark_comment = findViewById(R.id.dark_comment_background);
-		dark_tag = findViewById(R.id.dark_tag_background);
-		dark_chord = findViewById(R.id.dark_chord_font);
-		dark_custom = findViewById(R.id.dark_custom_background);
-		dark_capo = findViewById(R.id.dark_capo_font);
-		dark_metronome = findViewById(R.id.dark_metronome_background);
-		light_background = findViewById(R.id.light_background);
-		light_font = findViewById(R.id.light_lyrics_font);
-		light_verse = findViewById(R.id.light_verse_background);
-		light_chorus = findViewById(R.id.light_chorus_background);
-		light_prechorus = findViewById(R.id.light_prechorus_background);
-		light_bridge = findViewById(R.id.light_bridge_background);
-		light_comment = findViewById(R.id.light_comment_background);
-		light_tag = findViewById(R.id.light_tag_background);
-		light_chord = findViewById(R.id.light_chord_font);
-		light_custom = findViewById(R.id.light_custom_background);
-		light_capo = findViewById(R.id.light_capo_font);
-		light_metronome = findViewById(R.id.light_metronome_background);
-		custom1_background = findViewById(R.id.custom1_background);
-		custom1_font = findViewById(R.id.custom1_lyrics_font);
-		custom1_verse = findViewById(R.id.custom1_verse_background);
-		custom1_chorus = findViewById(R.id.custom1_chorus_background);
-		custom1_prechorus = findViewById(R.id.custom1_prechorus_background);
-		custom1_bridge = findViewById(R.id.custom1_bridge_background);
-		custom1_comment = findViewById(R.id.custom1_comment_background);
-		custom1_tag = findViewById(R.id.custom1_tag_background);
-		custom1_chord = findViewById(R.id.custom1_chord_font);
-		custom1_custom = findViewById(R.id.custom1_custom_background);
-		custom1_capo = findViewById(R.id.custom1_capo_font);
-		custom1_metronome = findViewById(R.id.custom1_metronome_background);
-		custom2_background = findViewById(R.id.custom2_background);
-		custom2_font = findViewById(R.id.custom2_lyrics_font);
-		custom2_verse = findViewById(R.id.custom2_verse_background);
-		custom2_chorus = findViewById(R.id.custom2_chorus_background);
-		custom2_prechorus = findViewById(R.id.custom2_prechorus_background);
-		custom2_bridge = findViewById(R.id.custom2_bridge_background);
-		custom2_comment = findViewById(R.id.custom2_comment_background);
-		custom2_tag = findViewById(R.id.custom2_tag_background);
-		custom2_chord = findViewById(R.id.custom2_chord_font);
-		custom2_custom = findViewById(R.id.custom2_custom_background);
-		custom2_capo = findViewById(R.id.custom2_capo_font);
-		custom2_metronome = findViewById(R.id.custom2_metronome_background);
+		dark_background = findViewById(R.id.page_dark);
+		dark_font = findViewById(R.id.lyrics_dark);
+		dark_verse = findViewById(R.id.verse_dark);
+		dark_chorus = findViewById(R.id.chorus_dark);
+		dark_prechorus = findViewById(R.id.prechorus_dark);
+		dark_bridge = findViewById(R.id.bridge_dark);
+		dark_comment = findViewById(R.id.comment_dark);
+		dark_tag = findViewById(R.id.tag_dark);
+		dark_chord = findViewById(R.id.chords_dark);
+		dark_custom = findViewById(R.id.custom_dark);
+		dark_capo = findViewById(R.id.capo_dark);
+		dark_metronome = findViewById(R.id.metronome_dark);
 
-		// Run the script to set the button colours
+		light_background = findViewById(R.id.page_light);
+		light_font = findViewById(R.id.lyrics_light);
+		light_verse = findViewById(R.id.verse_light);
+		light_chorus = findViewById(R.id.chorus_light);
+		light_prechorus = findViewById(R.id.prechorus_light);
+		light_bridge = findViewById(R.id.bridge_light);
+		light_comment = findViewById(R.id.comment_light);
+		light_tag = findViewById(R.id.tag_light);
+		light_chord = findViewById(R.id.chords_light);
+		light_custom = findViewById(R.id.custom_light);
+		light_capo = findViewById(R.id.capo_light);
+		light_metronome = findViewById(R.id.metronome_light);
+		custom1_background = findViewById(R.id.page_custom1);
+		custom1_font = findViewById(R.id.lyrics_custom1);
+		custom1_verse = findViewById(R.id.verse_custom1);
+		custom1_chorus = findViewById(R.id.chorus_custom1);
+		custom1_prechorus = findViewById(R.id.prechorus_custom1);
+		custom1_bridge = findViewById(R.id.bridge_custom1);
+		custom1_comment = findViewById(R.id.comment_custom1);
+		custom1_tag = findViewById(R.id.tag_custom1);
+		custom1_chord = findViewById(R.id.chords_custom1);
+		custom1_custom = findViewById(R.id.custom_custom1);
+		custom1_capo = findViewById(R.id.capo_custom1);
+		custom1_metronome = findViewById(R.id.metronome_custom1);
+		custom2_background = findViewById(R.id.page_custom2);
+		custom2_font = findViewById(R.id.lyrics_custom2);
+		custom2_verse = findViewById(R.id.verse_custom2);
+		custom2_chorus = findViewById(R.id.chorus_custom2);
+		custom2_prechorus = findViewById(R.id.prechorus_custom2);
+		custom2_bridge = findViewById(R.id.bridge_custom2);
+		custom2_comment = findViewById(R.id.comment_custom2);
+		custom2_tag = findViewById(R.id.tag_custom2);
+		custom2_chord = findViewById(R.id.chords_custom2);
+		custom2_custom = findViewById(R.id.custom_custom2);
+		custom2_capo = findViewById(R.id.capo_custom2);
+		custom2_metronome = findViewById(R.id.metronome_custom2);
+
+        dark_theme_heading = (TextView) findViewById(R.id.dark_theme_heading);
+        light_theme_heading = (TextView) findViewById(R.id.light_theme_heading);
+        custom1_theme_heading = (TextView) findViewById(R.id.custom1_theme_heading);
+        custom2_theme_heading = (TextView) findViewById(R.id.custom2_theme_heading);
+
+        // Set the appropriate theme button based on what is already set
+        setUpButtons();
+
+        goback = (Button) findViewById(R.id.closebutton);
+
+        // Listen for the theme changing
+        dark_theme_heading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FullscreenActivity.mDisplayTheme = "Theme_Holo";
+                doThemeSwitch();
+            }
+        });
+        light_theme_heading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FullscreenActivity.mDisplayTheme = "Theme_Holo_Light";
+                doThemeSwitch();
+            }
+        });
+        custom1_theme_heading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FullscreenActivity.mDisplayTheme = "custom1";
+                doThemeSwitch();
+            }
+        });
+        custom2_theme_heading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FullscreenActivity.mDisplayTheme = "custom2";
+                doThemeSwitch();
+            }
+        });
+
+        // Run the script to set the button colours
 		setButtonColors();
 	}
 
+    public void setUpButtons() {
+        dark_theme_heading.setBackgroundColor(0xff222222);
+        dark_theme_heading.setTextColor(0xffffff00);
+        light_theme_heading.setBackgroundColor(0xff222222);
+        light_theme_heading.setTextColor(0xffffff00);
+        custom1_theme_heading.setBackgroundColor(0xff222222);
+        custom1_theme_heading.setTextColor(0xffffff00);
+        custom2_theme_heading.setBackgroundColor(0xff222222);
+        custom2_theme_heading.setTextColor(0xffffff00);
+
+        switch (FullscreenActivity.mDisplayTheme) {
+            case "Theme_Holo":
+                dark_theme_heading.setBackgroundColor(0xffffff00);
+                dark_theme_heading.setTextColor(0xff000000);
+                break;
+
+            case "Theme_Holo_Light":
+                light_theme_heading.setBackgroundColor(0xffffff00);
+                light_theme_heading.setTextColor(0xff000000);
+                break;
+
+            case "custom1":
+                custom1_theme_heading.setBackgroundColor(0xffffff00);
+                custom1_theme_heading.setTextColor(0xff000000);
+                break;
+
+            case "custom2":
+                if (custom2_theme_heading != null) {
+                    custom2_theme_heading.setBackgroundColor(0xffffff00);
+                    custom2_theme_heading.setTextColor(0xff000000);
+                }
+                break;
+        }
+    }
+
+    public void doThemeSwitch() {
+        setUpButtons();
+        Preferences.savePreferences();
+        SetUpColours.colours();
+    }
 
 	@Override
 	public void onBackPressed() {
@@ -314,17 +404,17 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 		dialog.show();
 	}
 
-	public void dark_metronome_background(View view) {
+    public void light_metronome_background(View view) {
+        // Set global initialcolor
+        initialcolor = FullscreenActivity.light_metronome;
+        whichone = "light_metronome";
+        doDisplay(view);
+    }
+
+    public void dark_metronome_background(View view) {
 		// Set global initialcolor
 		initialcolor = FullscreenActivity.dark_metronome;
 		whichone = "dark_metronome";
-		doDisplay(view);
-	}
-
-	public void light_metronome_background(View view) {
-		// Set global initialcolor
-		initialcolor = FullscreenActivity.light_metronome;
-		whichone = "light_metronome";
 		doDisplay(view);
 	}
 
@@ -342,8 +432,14 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 		doDisplay(view);
 	}
 
+    public void light_background(View view) {
+        // Set global initialcolor
+        initialcolor = FullscreenActivity.light_lyricsBackgroundColor;
+        whichone = "light_lyricsBackgroundColor";
+        doDisplay(view);
+    }
 
-	public void dark_background(View view) {
+    public void dark_background(View view) {
 		// Set global initialcolor
 		initialcolor = FullscreenActivity.dark_lyricsBackgroundColor;
 		whichone = "dark_lyricsBackgroundColor";
@@ -364,7 +460,14 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 		doDisplay(view);
 	}
 
-	public void dark_lyrics_font(View view) {
+    public void light_lyrics_font(View view) {
+        // Set global initialcolor
+        initialcolor = FullscreenActivity.light_lyricsTextColor;
+        whichone = "light_lyricsTextColor";
+        doDisplay(view);
+    }
+
+    public void dark_lyrics_font(View view) {
 		// Set global initialcolor
 		initialcolor = FullscreenActivity.dark_lyricsTextColor;
 		whichone = "dark_lyricsTextColor";
@@ -385,7 +488,14 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 		doDisplay(view);
 	}
 
-	public void dark_chord_font(View view) {
+    public void light_chord_font(View view) {
+        // Set global initialcolor
+        initialcolor = FullscreenActivity.light_lyricsChordsColor;
+        whichone = "light_lyricsChordsColor";
+        doDisplay(view);
+    }
+
+    public void dark_chord_font(View view) {
 		// Set global initialcolor
 		initialcolor = FullscreenActivity.dark_lyricsChordsColor;
 		whichone = "dark_lyricsChordsColor";
@@ -434,7 +544,14 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 		doDisplay(view);
 	}
 
-	public void dark_verse_background(View view) {
+    public void light_verse_background(View view) {
+        // Set global initialcolor
+        initialcolor = FullscreenActivity.light_lyricsVerseColor;
+        whichone = "light_lyricsVerseColor";
+        doDisplay(view);
+    }
+
+    public void dark_verse_background(View view) {
 		// Set global initialcolor
 		initialcolor = FullscreenActivity.dark_lyricsVerseColor;
 		whichone = "dark_lyricsVerseColor";
@@ -455,7 +572,14 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 		doDisplay(view);
 	}
 
-	public void dark_chorus_background(View view) {
+    public void light_chorus_background(View view) {
+        // Set global initialcolor
+        initialcolor = FullscreenActivity.light_lyricsChorusColor;
+        whichone = "light_lyricsChorusColor";
+        doDisplay(view);
+    }
+
+    public void dark_chorus_background(View view) {
 		// Set global initialcolor
 		initialcolor = FullscreenActivity.dark_lyricsChorusColor;
 		whichone = "dark_lyricsChorusColor";
@@ -476,7 +600,14 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 		doDisplay(view);
 	}
 
-	public void dark_prechorus_background(View view) {
+    public void light_prechorus_background(View view) {
+        // Set global initialcolor
+        initialcolor = FullscreenActivity.light_lyricsPreChorusColor;
+        whichone = "light_lyricsPreChorusColor";
+        doDisplay(view);
+    }
+
+    public void dark_prechorus_background(View view) {
 		// Set global initialcolor
 		initialcolor = FullscreenActivity.dark_lyricsPreChorusColor;
 		whichone = "dark_lyricsPreChorusColor";
@@ -497,7 +628,14 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 		doDisplay(view);
 	}
 
-	public void dark_bridge_background(View view) {
+    public void light_bridge_background(View view) {
+        // Set global initialcolor
+        initialcolor = FullscreenActivity.light_lyricsBridgeColor;
+        whichone = "light_lyricsBridgeColor";
+        doDisplay(view);
+    }
+
+    public void dark_bridge_background(View view) {
 		// Set global initialcolor
 		initialcolor = FullscreenActivity.dark_lyricsBridgeColor;
 		whichone = "dark_lyricsBridgeColor";
@@ -518,7 +656,14 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 		doDisplay(view);
 	}
 
-	public void dark_tag_background(View view) {
+    public void light_tag_background(View view) {
+        // Set global initialcolor
+        initialcolor = FullscreenActivity.light_lyricsTagColor;
+        whichone = "light_lyricsTagColor";
+        doDisplay(view);
+    }
+
+    public void dark_tag_background(View view) {
 		// Set global initialcolor
 		initialcolor = FullscreenActivity.dark_lyricsTagColor;
 		whichone = "dark_lyricsTagColor";
@@ -539,7 +684,14 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 		doDisplay(view);
 	}
 
-	public void dark_comment_background(View view) {
+    public void light_comment_background(View view) {
+        // Set global initialcolor
+        initialcolor = FullscreenActivity.light_lyricsCommentColor;
+        whichone = "light_lyricsCommentColor";
+        doDisplay(view);
+    }
+
+    public void dark_comment_background(View view) {
 		// Set global initialcolor
 		initialcolor = FullscreenActivity.dark_lyricsCommentColor;
 		whichone = "dark_lyricsCommentColor";
@@ -560,7 +712,14 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 		doDisplay(view);
 	}
 
-	public void dark_custom_background(View view) {
+    public void light_custom_background(View view) {
+        // Set global initialcolor
+        initialcolor = FullscreenActivity.light_lyricsCustomColor;
+        whichone = "light_lyricsCustomColor";
+        doDisplay(view);
+    }
+
+    public void dark_custom_background(View view) {
 		// Set global initialcolor
 		initialcolor = FullscreenActivity.dark_lyricsCustomColor;
 		whichone = "dark_lyricsCustomColor";
@@ -580,89 +739,6 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 		whichone = "custom2_lyricsCustomColor";
 		doDisplay(view);
 	}
-
-
-
-
-
-
-
-
-	public void light_background(View view) {
-		// Set global initialcolor
-		initialcolor = FullscreenActivity.light_lyricsBackgroundColor;
-		whichone = "light_lyricsBackgroundColor";
-		doDisplay(view);
-	}
-
-	public void light_lyrics_font(View view) {
-		// Set global initialcolor
-		initialcolor = FullscreenActivity.light_lyricsTextColor;
-		whichone = "light_lyricsTextColor";
-		doDisplay(view);
-	}
-
-	public void light_chord_font(View view) {
-		// Set global initialcolor
-		initialcolor = FullscreenActivity.light_lyricsChordsColor;
-		whichone = "light_lyricsChordsColor";
-		doDisplay(view);
-	}
-
-	public void light_verse_background(View view) {
-		// Set global initialcolor
-		initialcolor = FullscreenActivity.light_lyricsVerseColor;
-		whichone = "light_lyricsVerseColor";
-		doDisplay(view);
-	}
-
-	public void light_chorus_background(View view) {
-		// Set global initialcolor
-		initialcolor = FullscreenActivity.light_lyricsChorusColor;
-		whichone = "light_lyricsChorusColor";
-		doDisplay(view);
-	}
-
-	public void light_prechorus_background(View view) {
-		// Set global initialcolor
-		initialcolor = FullscreenActivity.light_lyricsPreChorusColor;
-		whichone = "light_lyricsPreChorusColor";
-		doDisplay(view);
-	}
-
-	public void light_bridge_background(View view) {
-		// Set global initialcolor
-		initialcolor = FullscreenActivity.light_lyricsBridgeColor;
-		whichone = "light_lyricsBridgeColor";
-		doDisplay(view);
-	}
-
-	public void light_tag_background(View view) {
-		// Set global initialcolor
-		initialcolor = FullscreenActivity.light_lyricsTagColor;
-		whichone = "light_lyricsTagColor";
-		doDisplay(view);
-	}
-
-	public void light_comment_background(View view) {
-		// Set global initialcolor
-		initialcolor = FullscreenActivity.light_lyricsCommentColor;
-		whichone = "light_lyricsCommentColor";
-		doDisplay(view);
-	}
-
-	public void light_custom_background(View view) {
-		// Set global initialcolor
-		initialcolor = FullscreenActivity.light_lyricsCustomColor;
-		whichone = "light_lyricsCustomColor";
-		doDisplay(view);
-	}
-
-
-
-
-
-
 
 	public void setButtonColors() {
 		// Set the buttons to the right colours
@@ -775,9 +851,9 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 	}
 
 	public void gotosongs(View view) {
+        finish();
 		Intent intent = new Intent();
 		intent.setClass(ChangeDisplayPreferences.this, FullscreenActivity.class);
 		startActivity(intent);
-		finish();
 	}
 }

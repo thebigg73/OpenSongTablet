@@ -484,5 +484,17 @@
 	<string name="select_item_variation">"Wybierz utwór do stworzenia zestawu zmienności"</string>
 	<string name="variation_edit">"Ten element może być edytowany. Oryginalny zostanie nienaruszona."</string>
 	<string name="variation">"Zmiana"</string>
+	<string name="extra">"Dodatkowe informacje"</string>
+	<string name="minfontsize">"Preferowane minimalna autoscale rozmiar czcionki"</string>
+	<string name="override_fullautoscale">"Przestawianie Full Auto skalę tylko do szerokości"</string>
+	<string name="override_scale_explanation">"Jeśli rozmiar czcionki autoscale jest mniejsza niż pożądanego rozmiaru czcionki minimum, chcesz aplikacja przesłonić do innej metody skalowania? Korzystając z tych opcji może zmusić cię do przewijania w pionie i poziomie w piosence."</string>
+	<string name="override_widthautoscale">"Szerokość Zastąp skalowania tylko bez automatycznego skalowania"</string>
+	<string name="pagebuttons">"Przyciski page"</string>
+	<string name="position">"Pozycja"</string>
+	<string name="profile">"Profil"</string>
+	<string name="profile_choose">"Wybierz profil, aby załadować"</string>
+	<string name="profile_description">"Profile służą do przechowywania preferencji wyświetlania."</string>
+	<string name="profile_name">"Wybierz nazwę profilu"</string>
+	<string name="size">"Rozmiar"</string>
 
 </resources>

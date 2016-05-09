@@ -43,9 +43,12 @@ public class IndexSongs extends Activity {
         // Need to add MAIN folder still......
         ArrayList<File> fixedfolders = new ArrayList<>();
         fixedfolders.add(FullscreenActivity.dir);
-        for (File temp:tempmyitems) {
-            if (temp.isDirectory()) {
-                fixedfolders.add(temp);
+
+        if (tempmyitems!=null) {
+            for (File temp : tempmyitems) {
+                if (temp.isDirectory()) {
+                    fixedfolders.add(temp);
+                }
             }
         }
 

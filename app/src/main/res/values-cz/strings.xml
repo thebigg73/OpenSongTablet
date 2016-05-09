@@ -485,5 +485,17 @@
 	<string name="select_item_variation">"Vyberte skladbu k vytvoření sady variaci"</string>
 	<string name="variation_edit">"Tuto položku lze upravovat. Původní bude nedotčena."</string>
 	<string name="variation">"změna"</string>
+	<string name="extra">"Informace navíc"</string>
+	<string name="minfontsize">"Preferovaný minimální velikost písma Autoscale"</string>
+	<string name="override_fullautoscale">"Přepsat plně automatické měřítko na šířce pouze"</string>
+	<string name="override_scale_explanation">"Je-li velikost písma Autoscale je nižší než požadovaná minimální velikosti písma, chcete aplikaci přepsat na jinou metodu škálování? Pomocí těchto voleb vás může nutit posouvat horizontálně i vertikálně v písni."</string>
+	<string name="override_widthautoscale">"Šířka Přepis pouze škálování žádné škálování"</string>
+	<string name="pagebuttons">"Tlačítka strana"</string>
+	<string name="position">"Pozice"</string>
+	<string name="profile">"Profil"</string>
+	<string name="profile_choose">"Vyberte profil načíst"</string>
+	<string name="profile_description">"Profily se používají k ukládání vašich preferencí zobrazení."</string>
+	<string name="profile_name">"Vyberte název profilu"</string>
+	<string name="size">"Velikost"</string>
 
 </resources>

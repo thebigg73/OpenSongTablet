@@ -483,5 +483,17 @@
 	<string name="select_item_variation">"セットのバリエーションを作成する曲を選択"</string>
 	<string name="variation_edit">"この項目は編集することができます。オリジナルは影響を受けません。"</string>
 	<string name="variation">"変化"</string>
+	<string name="extra">"追加情報"</string>
+	<string name="minfontsize">"好ましい最小オートスケールのフォントサイズ"</string>
+	<string name="override_fullautoscale">"唯一の幅に対するフルオートスケールをオーバーライドします"</string>
+	<string name="override_widthautoscale">"オートスケールのフォントサイズが希望最小フォントサイズより小さい場合は、アプリが異なるスケーリング方法に上書きしたいですか？これらのオプションを使用すると、曲に水平方向と垂直方向にスクロールすることを強制することができます。""オーバーライド幅のみなしオートスケールへのスケーリング"</string>
+	<string name="override_scale_explanation">"オートスケールのフォントサイズが希望最小フォントサイズより小さい場合は、アプリが異なるスケーリング方法に上書きしたいですか？これらのオプションを使用すると、曲に水平方向と垂直方向にスクロールすることを強制することができます。"</string>
+	<string name="pagebuttons">"ページボタン"</string>
+	<string name="position">"ポジション"</string>
+	<string name="profile">"プロフィール"</string>
+	<string name="profile_choose">"ロードするプロファイルを選択します"</string>
+	<string name="profile_description">"プロファイルは、あなたの表示設定を保存するために使用されます。"</string>
+	<string name="profile_name">"プロファイル名を選択してください"</string>
+	<string name="size">"サイズ"</string>
 
 </resources>

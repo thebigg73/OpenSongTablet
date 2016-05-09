@@ -265,7 +265,9 @@ public class PopUpImportExternalFile extends DialogFragment {
             // Write the file
             String filename = FullscreenActivity.homedir + "/" + "Scriptures/YouVerion";
             File newfile = new File(filename);
-            newfile.mkdirs();
+            if (!newfile.mkdirs()) {
+                Log.d("d","Couldn't make scriptue folder");
+            }
 
             try {
                 FileOutputStream overWrite = new FileOutputStream(filename, false);

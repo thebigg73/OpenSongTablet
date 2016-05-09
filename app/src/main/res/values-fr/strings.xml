@@ -484,5 +484,17 @@
 	<string name="select_item_variation">"Sélectionnez la chanson pour créer une variation de jeu"</string>
 	<string name="variation_edit">"Cet article peut être modifié. L\'original ne sera pas affecté."</string>
 	<string name="variation">"Variation"</string>
+	<string name="extra">"Informations suppléme</string>
+	<string name="minfontsize">"La taille minimum préférée pour autoscale"</string>
+	<string name="override_fullautoscale">"Remplacer l\'échelle automatique complet largeur seulement"</string>
+	<string name="override_scale_explanation">"Si la taille de la police de autoscale est inférieure à la taille minimale souhaitée, voulez-vous l\'application pour passer outre à une méthode de mise à l\'échelle différente? L\'utilisation de ces options peuvent vous forcer à faire défiler horizontalement et verticalement dans une chanson."</string>
+	<string name="override_widthautoscale">"Largeur remplacer seulement mise à l\'échelle ne autoscale"</string>
+	<string name="pagebuttons">"Boutons sur la page"</string>
+	<string name="position">"Position"</string>
+	<string name="profile">"Profil"</string>
+	<string name="profile_choose">"Choisissez un profil pour charger"</string>
+	<string name="profile_description">"Les profils sont utilisés pour stocker vos préférences d\'affichage."</string>
+	<string name="profile_name">"Choisissez un nom de profil"</string>
+	<string name="size">"Taille"</string>
 
 </resources>

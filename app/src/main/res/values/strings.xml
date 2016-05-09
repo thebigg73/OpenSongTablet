@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="extra">Extra information</string>
+    <string name="minfontsize">Preferred minimum autoscale font size</string>
+    <string name="override_scale_explanation">If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song</string>
+    <string name="override_fullautoscale">Override full autoscale to width only</string>
+    <string name="override_widthautoscale">Override width only scaling to no autoscale</string>
+    <string name="pagebuttons">Page buttons</string>
+    <string name="position">Position</string>
+    <string name="profile">Profile</string>
+    <string name="profile_choose">Choose a profile to load</string>
+    <string name="profile_description">Profiles are used to store your display preferences.</string>
+    <string name="profile_name">Choose a profile name</string>
+    <string name="size">Size</string>
+
+    <string name="xsmall" translatable="false">XS</string>
+    <string name="small" translatable="false">S</string>
+    <string name="medium" translatable="false">M</string>
+    <string name="large" translatable="false">L</string>
+    <string name="xlarge" translatable="false">XL</string>
+    <string name="xxlarge" translatable="false">XXL</string>
+
     <string name="customise_set_item">Make a set item variation</string>
     <string name="select_item_variation">Select the song to create a set variation</string>
     <string name="variation">Variation</string>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="0dp"
+    android:orientation="vertical"
+    android:background="@drawable/presenter_box_black"
+    android:padding="8dp"
+    android:visibility="visible">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/closebutton"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pagebuttons"
+                android:id="@+id/textView41"
+                android:textColor="#ff0"
+                android:textSize="28sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pagebuttons"
+                android:textColor="#ff0"
+                android:textSize="18sp"
+                android:layout_marginTop="32dp" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pageButtons_seekBar"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:max="2"
+                android:progress="1"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/off"
+                        android:layout_weight="0.333"
+                        android:gravity="left"
+                        android:textColor="#fff" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bottom"
+                        android:layout_weight="0.333"
+                        android:gravity="center"
+                        android:textColor="#fff" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/right"
+                        android:layout_weight="0.333"
+                        android:gravity="right"
+                        android:textColor="#fff" />
+
+                </TableRow>
+            </TableLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/size"
+                android:id="@+id/textView40"
+                android:textColor="#ff0"
+                android:textSize="18sp"
+                android:layout_marginTop="32dp" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pageButtonScale_seekBar"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo"
+                android:progress="0"
+                android:max="5"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="12dp" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/xsmall"
+                        android:layout_weight="0.5"
+                        android:gravity="left"
+                        android:textColor="#fff" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/xxlarge"
+                        android:layout_weight="0.5"
+                        android:gravity="right"
+                        android:textColor="#fff" />
+
+                </TableRow>
+            </TableLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scrollbuttons_toggle"
+                android:id="@+id/textView52"
+                android:textColor="#ff0"
+                android:textSize="18sp"
+                android:layout_marginTop="32dp" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scrollArrows_seekbar"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:max="1"
+                android:progress="1"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/scrollbuttons_single"
+                        android:layout_weight="0.5"
+                        android:gravity="left"
+                        android:textColor="#fff" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/scrollbuttons_double"
+                        android:layout_weight="0.5"
+                        android:gravity="right"
+                        android:textColor="#fff" />
+                </TableRow>
+            </TableLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="@drawable/blue_button"
+        android:text="@string/drawer_close"
+        android:textColor="#fff"
+        android:id="@+id/closebutton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="8dp" />
+
+</RelativeLayout>

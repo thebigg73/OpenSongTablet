@@ -534,5 +534,17 @@
     <string name="select_item_variation">"Odaberite pjesmu stvoriti skup varijacija"</string>
     <string name="variation_edit">"Ovaj predmet može uređivati. Izvorna će biti nepromijenjen."</string>
     <string name="variation">"Varijacija"</string>
+    <string name="extra">"Dodatne informacije"</string>
+    <string name="minfontsize">"Željena minimalna veličina fonta kod autozumiranja"</string>
+    <string name="override_fullautoscale">"Prebacivanje punog autozumiranja na samo širinu"</string>
+    <string name="override_scale_explanation">"Ako je veličina fonta manja od minimalne željene veličine, da li želite da aplikacij koristi drugu metodu skaliranja? Korišćenje ove opcije Vas može primorati na skrolovanje pesme horizontalno i vertikalno"</string>
+    <string name="override_widthautoscale">"Prebacivanje autozumiranja sa širine na mod bez autozumiranja"</string>
+    <string name="pagebuttons">"Tasteri na stranici"</string>
+    <string name="position">"Pozicija"</string>
+    <string name="profile">"Profil"</string>
+    <string name="profile_choose">"Odabrati profil za učitavanje"</string>
+    <string name="profile_description">"Profili se koriste da sačuvate postavke prikaza"</string>
+    <string name="profile_name">"Unesite ime profila"</string>
+    <string name="size">"Veličina"</string>
 
 </resources>

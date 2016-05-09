@@ -487,6 +487,18 @@
 	<string name="customise_set_item">"制定一套项变化"</string>
 	<string name="select_item_variation">"选择歌曲来创建一组变化"</string>
 	<string name="variation_edit">"该项目可编辑。原来不会受到影响。"</string>
-	<string name="variation">"变异"</string>
+	<string name="variation">"变异变异变异变异变异变异"变异</string>
+	<string name="extra">"额外的信息"额外的信息"</string>
+	<string name="minfontsize">"首选最小自动缩放字体大小"</string>
+	<string name="override_fullautoscale">"覆盖全自动规模只有宽度"</string>
+	<string name="override_scale_explanation">"如果自动缩放字体大小小于所需的最小字体大小，你想该应用覆盖到不同的缩放方法？使用这些选项可能会迫使你在一首歌水平和垂直滚动。"</string>
+	<string name="override_widthautoscale">"覆盖宽度仅扩展到不自动缩放"</string>
+	<string name="pagebuttons">"页按钮"</string>
+	<string name="position">"位置"</string>
+	<string name="profile">"轮廓"</string>
+	<string name="profile_choose">"选择一个配置文件加载"</string>
+	<string name="profile_description">"配置文件用于存储您的显示首选项。"</string>
+	<string name="profile_name">"选择一个配置文件名称"</string>
+	<string name="size">"尺寸"</string>
 
 </resources>

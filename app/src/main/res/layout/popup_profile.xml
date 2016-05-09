@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp"
+    android:orientation="vertical"
+    android:background="@drawable/presenter_box_black"
+    android:padding="8dp"
+    android:visibility="visible">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/profile_overview"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile"
+                android:id="@+id/textView22"
+                android:textSize="18sp"
+                android:textColor="#ff0" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/options_song_new"
+                android:id="@+id/profileName_TextView"
+                android:textSize="18sp"
+                android:layout_marginLeft="24dp"
+                android:textColor="#fff" />
+        </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile_description"
+                android:id="@+id/textView50"
+                android:layout_margin="8dp" />
+
+            <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_margin="8dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/options_set_load"
+                android:id="@+id/loadProfile_Button"
+                android:background="@drawable/green_button"
+                android:textColor="#fff"
+                android:layout_margin="8dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/savesong"
+                android:id="@+id/saveProfile_Button"
+                android:background="@drawable/red_button"
+                android:textColor="#fff"
+                android:layout_margin="8dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/drawer_close"
+                android:id="@+id/closeProfile_Button"
+                android:layout_margin="8dp"
+                android:background="@drawable/blue_button"
+                android:textColor="#fff" />
+
+        </LinearLayout>
+
+            </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/profile_save"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/profileName_EditText"
+            android:layout_alignParentTop="true">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/profile_name"
+                android:id="@+id/textView51"
+                android:textColor="#ff0"
+                android:textSize="18sp"
+                android:layout_margin="8dp" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/profileFilesSave_ListView" />
+
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileName_EditText"
+            android:textColor="#fff"
+            android:textColorHint="#aaa"
+            android:hint="@string/profile_name"
+            android:text="@string/options_song_new"
+            android:layout_margin="8dp"
+            android:layout_above="@+id/saveButtons" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_margin="8dp"
+            android:id="@+id/saveButtons"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                android:id="@+id/cancelSave_Button"
+                android:layout_margin="8dp"
+                android:background="@drawable/blue_button"
+                android:textColor="#fff" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ok"
+                android:id="@+id/okSave_Button"
+                android:background="@drawable/green_button"
+                android:textColor="#fff"
+                android:layout_margin="8dp" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/profile_load"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/cancelLoad_Button"
+            android:layout_alignParentTop="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/profile_choose"
+                android:id="@+id/textView66"
+                android:layout_margin="8dp"
+                android:textColor="#ff0"
+                android:textSize="18sp" />
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/profileFilesLoad_ListView" />
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:id="@+id/cancelLoad_Button"
+            android:layout_margin="8dp"
+            android:background="@drawable/blue_button"
+            android:textColor="#fff"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="right"
+            android:layout_alignParentRight="true" />
+
+    </RelativeLayout>
+
+</LinearLayout>

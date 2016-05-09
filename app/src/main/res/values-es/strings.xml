@@ -484,5 +484,17 @@
 	<string name="select_item_variation">"Seleccione la canción para crear una variación conjunto"</string>
 	<string name="variation_edit">"Este elemento puede ser editado. El original no se verá afectado."</string>
 	<string name="variation">"Variación"</string>
+	<string name="extra">"Información extra"</string>
+	<string name="minfontsize">"El tamaño mínimo de letra preferido autoescala"</string>
+	<string name="override_fullautoscale">"Invalidar la escala de auto completo a su anchura, sólo"</string>
+	<string name="override_scale_explanation">"Si el tamaño de la fuente autoescala es menor que el tamaño mínimo de la letra deseada, ¿desea la aplicación para anular a un método de escala diferente? El uso de estas opciones le puede obligar a desplazarse horizontal y verticalmente en una canción."</string>
+	<string name="override_widthautoscale">"Ancho de anulación únicamente el escalado a ninguna autoescala"</string>
+	<string name="pagebuttons">"Botones de la página"</string>
+	<string name="position">"Posición"</string>
+	<string name="profile">"Perfil"</string>
+	<string name="profile_choose">"Elija un perfil para cargar"</string>
+	<string name="profile_description">"Los perfiles se utilizan para almacenar sus preferencias de visualización."</string>
+	<string name="profile_name">"Elija un nombre de perfil"</string>
+	<string name="size">"Tamaño"</string>
 
 </resources>

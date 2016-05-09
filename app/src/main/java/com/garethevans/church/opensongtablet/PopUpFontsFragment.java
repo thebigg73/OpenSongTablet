@@ -44,7 +44,6 @@ public class PopUpFontsFragment extends DialogFragment {
 
     int temp_mylyricsfontnum = FullscreenActivity.mylyricsfontnum;
     int temp_mychordsfontnum = FullscreenActivity.mychordsfontnum;
-    int temp_mMaxFontSize = FullscreenActivity.mMaxFontSize;
     int temp_linespacing = FullscreenActivity.linespacing;
     Spinner lyricsFontSpinner;
     Spinner chordsFontSpinner;
@@ -60,8 +59,6 @@ public class PopUpFontsFragment extends DialogFragment {
     SeekBar scaleComment_SeekBar;
     SeekBar lineSpacingSeekBar;
     TextView lineSpacingText;
-    SeekBar maxAutoScaleSeekBar;
-    TextView maxAutoScaleText;
     Button savePopupFont;
     TableLayout songPreview;
 
@@ -85,8 +82,6 @@ public class PopUpFontsFragment extends DialogFragment {
         scaleHeading_SeekBar = (SeekBar) V.findViewById(R.id.scaleHeading_SeekBar);
         lineSpacingSeekBar = (SeekBar) V.findViewById(R.id.lineSpacingSeekBar);
         lineSpacingText = (TextView) V.findViewById(R.id.lineSpacingText);
-        maxAutoScaleSeekBar = (SeekBar) V.findViewById(R.id.maxAutoScaleSeekBar);
-        maxAutoScaleText = (TextView) V.findViewById(R.id.maxAutoScaleText);
         savePopupFont = (Button) V.findViewById(R.id.savePopupFont);
         songPreview = (TableLayout) V.findViewById(R.id.songPreview);
 
@@ -100,7 +95,6 @@ public class PopUpFontsFragment extends DialogFragment {
                 FullscreenActivity.mylyricsfontnum = lyricsFontSpinner.getSelectedItemPosition();
                 FullscreenActivity.mychordsfontnum = chordsFontSpinner.getSelectedItemPosition();
                 FullscreenActivity.linespacing = lineSpacingSeekBar.getProgress();
-                FullscreenActivity.mMaxFontSize = maxAutoScaleSeekBar.getProgress()+20;
                 float num = (float) scaleHeading_SeekBar.getProgress()/100.0f;
                 FullscreenActivity.headingfontscalesize = num;
                 num = (float) scaleComment_SeekBar.getProgress()/100.0f;
@@ -213,32 +207,11 @@ public class PopUpFontsFragment extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-        maxAutoScaleSeekBar.setMax(80);
-        maxAutoScaleSeekBar.setProgress(temp_mMaxFontSize - 20);
-        String newtext = (temp_mMaxFontSize) + " sp";
-        maxAutoScaleText.setText(newtext);
-        maxAutoScaleText.setTextSize((temp_mMaxFontSize));
-        maxAutoScaleSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String newtext = (progress + 20) + " sp";
-                maxAutoScaleText.setText(newtext);
-                maxAutoScaleText.setTextSize(progress + 20.0f);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                temp_mMaxFontSize = (maxAutoScaleSeekBar.getProgress() + 20);
-            }
-        });
 
         lineSpacingSeekBar.setMax(30);
         lineSpacingSeekBar.setProgress(temp_linespacing);
-        lineSpacingText.setText(temp_linespacing + " %");
+        String spacing_text = temp_linespacing + " %";
+        lineSpacingText.setText(spacing_text);
         lineSpacingSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -376,5 +349,4 @@ public class PopUpFontsFragment extends DialogFragment {
                 break;
         }
     }
-
 }

@@ -486,5 +486,17 @@
 	<string name="select_item_variation">"Lied auswählen um eine Variation zu erstellen"</string>
 	<string name="variation_edit">"Dieses Element kann bearbeitet werden. Das Original wird dabei nicht verändert."</string>
 	<string name="variation">"Variation"</string>
+	<string name="extra">"Zusatzinformation"</string>
+	<string name="minfontsize">"Bevorzugte Mindest automatische Skalierung Schriftgröße"</string>
+	<string name="override_fullautoscale">"Außer Kraft setzen voll automatischer Skalierung nur auf Breite"</string>
+	<string name="override_scale_explanation">"Wenn die automatische Skalierung Schriftgröße kleiner ist als die gewünschte Mindestschriftgröße , möchten Sie die App auf eine andere Skalierungsmethode außer Kraft zu setzen? Mit diesen Optionen können Sie zwingen, horizontal und vertikal in einem Song zu blättern."</string>
+	<string name="override_widthautoscale">"Aufschalten Breite Skalierung nur ohne automatische Skalierung"</string>
+	<string name="pagebuttons">"Seite Tasten"</string>
+	<string name="position">"Position"</string>
+	<string name="profile">"Profil"</string>
+	<string name="profile_choose">"Wählen Sie ein Profil zu laden"</string>
+	<string name="profile_description">"Die Profile werden verwendet, um Ihre Anzeigeeinstellungen zu speichern."</string>
+	<string name="profile_name">"Wählen Sie einen Profilnamen"</string>
+	<string name="size">"Größe"</string>
 
 </resources>

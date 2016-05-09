@@ -484,5 +484,17 @@
 	<string name="select_item_variation">"Válassza ki a dalt, hogy hozzon létre egy sor variáció"</string>
 	<string name="variation_edit">"Ez az elem lehet szerkeszteni. Az eredeti nem lesz hatással."</string>
 	<string name="variation">"Variáció"</string>
+	<string name="extra">"Extra információ"</string>
+	<string name="minfontsize">"Előnyös minimális autoscale betűméret"</string>
+	<string name="override_fullautoscale">"Felülbírálása teljesen automatikus skála szélesség csak"</string>
+	<string name="override_scale_explanation">"Ha az automatikus átméretezés betűméret kisebb, mint a kívánt minimális betűméret, akarsz az alkalmazást, hogy felülbírálja a különböző méretezési módszer? Ezen opciók lehet kényszeríteni, hogy görgetni függőlegesen és vízszintesen egy dalt."</string>
+	<string name="override_widthautoscale">"Felülírása szélessége csak skálázott nem autoscale"</string>
+	<string name="pagebuttons">"Oldal gombok"</string>
+	<string name="position">"Pozíció"</string>
+	<string name="profile">"Profil"</string>
+	<string name="profile_choose">"Válasszon profilt betölteni"</string>
+	<string name="profile_description">"A profilok tárolására használt megjelenítési beállításait."</string>
+	<string name="profile_name">"Válasszon egy profil nevét"</string>
+	<string name="size">"Méret"</string>
 
 </resources>

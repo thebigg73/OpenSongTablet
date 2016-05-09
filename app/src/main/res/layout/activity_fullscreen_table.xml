@@ -45,7 +45,8 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/scrollpage_pdf"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView_pdf"
@@ -74,7 +75,8 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/scrollpage_onecol"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
 
             <LinearLayout
                 android:id="@+id/linearLayout_onecolview"
@@ -93,8 +95,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:baselineAligned="false"
-                        android:gravity="center_horizontal"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:gravity="left|center_horizontal">
 
                         <!-- The main content view -->
 
@@ -116,7 +118,8 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/scrollpage_twocol"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
 
             <LinearLayout
                 android:id="@+id/linearLayout_twocolview"
@@ -168,7 +171,8 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/scrollpage_threecol"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
 
             <LinearLayout
                 android:id="@+id/linearLayout_threecolview"
@@ -229,7 +233,8 @@
         <include layout="@layout/pageicons_bottom"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"/>
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true" />
 
         <include layout="@layout/pageicons_top"
             android:layout_width="match_parent"

@@ -1,10 +1,10 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
+import android.util.Log;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import android.app.Activity;
 
 public class ChordProConvert extends Activity {
 
@@ -111,6 +111,7 @@ public class ChordProConvert extends Activity {
 				line[x] = line[x].replace("}", "");
 				line[x] = line[x].trim();
 				temptitle = line[x];
+				Log.d("d","temptitle="+temptitle);
 				line[x] = "";
 			}
 
@@ -120,6 +121,7 @@ public class ChordProConvert extends Activity {
 				line[x] = line[x].replace("}", "");
 				line[x] = line[x].trim();
 				tempsubtitle = line[x];
+                Log.d("d","tempsubtitle="+tempsubtitle);
 				line[x] = ";" + line[x];
 			}
 
@@ -133,7 +135,8 @@ public class ChordProConvert extends Activity {
 				line[x] = line[x].replace("{comments:","");
 				line[x] = line[x].replace("}", "");
 				line[x] = line[x].trim();
-				line[x] = ";" + line[x];			
+				line[x] = ";" + line[x];
+                Log.d("d","comments="+line[x]);
 			}
 
 			// Change comment lines
@@ -141,7 +144,8 @@ public class ChordProConvert extends Activity {
 				line[x] = line[x].replace("{comment:","");
 				line[x] = line[x].replace("}", "");
 				line[x] = line[x].trim();
-				line[x] = ";" + line[x];			
+				line[x] = ";" + line[x];
+                Log.d("d","comments="+line[x]);
 			}
 
 			// Remove < > tags
@@ -150,7 +154,7 @@ public class ChordProConvert extends Activity {
 
 		}	
 		
-		
+		Log.d("d","FullscreenActivity.myXML="+FullscreenActivity.myXML);
 		// Go through each line and try to fix chord lines
 		for (int x = 0; x < numlines; x++) {
 			line[x] = line[x].trim();
@@ -290,36 +294,36 @@ public class ChordProConvert extends Activity {
 					line2[x] = " " + line2[x];
 				}
 			}
-
 			parsedlines = parsedlines + line2[x] + "\n";
 		}
 
-		FullscreenActivity.myXML = "<song>\r\n"
-				+ "<title>" + temptitle.trim() + "</title>\r\n"
-				+ "<author>" + tempsubtitle.trim() + "</author>\r\n" 
-				+ "<copyright>" + tempsubtitle.trim() + "</copyright>\r\n"
-				+ "  <presentation></presentation>\r\n"
-				+ "  <hymn_number></hymn_number>\r\n"
-				+ "  <capo print=\"false\"></capo>\r\n"
-				+ "  <tempo></tempo>\r\n"
-				+ "  <time_sig></time_sig>\r\n"
-				+ "  <duration></duration>\r\n"
-				+ "  <ccli></ccli>\r\n"
-				+ "  <theme></theme>\r\n"
-				+ "  <alttheme></alttheme>\r\n"
-				+ "  <user1></user1>\r\n"
-				+ "  <user2></user2>\r\n"
-				+ "  <user3></user3>\r\n"
-				+ "  <key></key>\r\n"
-				+ "  <aka></aka>\r\n"
-				+ "  <key_line></key_line>\r\n"
-				+ "  <books></books>\r\n"
-				+ "  <midi></midi>\r\n"
-				+ "  <midi_index></midi_index>\r\n"
-				+ "  <pitch></pitch>\r\n"
-				+ "  <restrictions></restrictions>\r\n"
-				+ "  <notes></notes>\r\n"
-				+ "  <lyrics>" + parsedlines.trim() + "</lyrics>\r\n"
+		FullscreenActivity.myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<song>\n"
+				+ "<title>" + temptitle.trim() + "</title>\n"
+				+ "<author>" + tempsubtitle.trim() + "</author>\n"
+				+ "<copyright>" + tempsubtitle.trim() + "</copyright>\n"
+				+ "  <presentation></presentation>\n"
+				+ "  <hymn_number></hymn_number>\n"
+				+ "  <capo print=\"false\"></capo>\n"
+				+ "  <tempo></tempo>\n"
+				+ "  <time_sig></time_sig>\n"
+				+ "  <duration></duration>\n"
+				+ "  <ccli></ccli>\n"
+				+ "  <theme></theme>\n"
+				+ "  <alttheme></alttheme>\n"
+				+ "  <user1></user1>\n"
+				+ "  <user2></user2>\n"
+				+ "  <user3></user3>\n"
+				+ "  <key></key>\n"
+				+ "  <aka></aka>\n"
+				+ "  <key_line></key_line>\n"
+				+ "  <books></books>\n"
+				+ "  <midi></midi>\n"
+				+ "  <midi_index></midi_index>\n"
+				+ "  <pitch></pitch>\n"
+				+ "  <restrictions></restrictions>\n"
+				+ "  <notes></notes>\n"
+				+ "  <lyrics>" + parsedlines.trim() + "</lyrics>\n"
                 + "  <linked_songs></linked_songs>\n"
                 + "  <pad_file></pad_file>\n"
                 + "  <custom_chords></custom_chords>\n"
@@ -404,7 +408,9 @@ public class ChordProConvert extends Activity {
 		}
 		
 		// Do the renaming
-		from.renameTo(to);
+		if(!from.renameTo(to)) {
+            Log.d("d","Couldn't rename");
+        }
 		FullscreenActivity.songfilename = newSongTitle;
 
 		// Load the songs
