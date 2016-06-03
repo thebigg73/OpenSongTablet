@@ -264,7 +264,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         FullscreenActivity.lastSetName = FullscreenActivity.setnamechosen;
         dataTask = null;
         dataTask = new FetchDataTask();
-        dataTask.execute();
+        dataTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     public void doSaveSet() {

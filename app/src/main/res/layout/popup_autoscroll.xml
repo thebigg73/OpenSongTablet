@@ -89,18 +89,28 @@
             android:textColor="#000"
             android:textAppearance="@android:style/TextAppearance.Medium" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
         <EditText
             android:id="@+id/popupautoscroll_duration"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#aaa"
             android:hint="@string/edit_song_duration"
             android:inputType="number"
             android:singleLine="true"
             android:textColor="#000"
-            android:textSize="16sp" />
-
+            android:textSize="18sp" />
+            <ImageButton
+                android:id="@+id/uselinkaudiolength_ImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/page_link_bw"
+                android:contentDescription="@string/link_audio"/>
+        </LinearLayout>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

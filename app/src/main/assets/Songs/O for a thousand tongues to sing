@@ -24,6 +24,9 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[V1]
 .D                G       A  D
  O for a thousand tongues to sing
@@ -69,8 +72,6 @@
  Assist me to proclaim, assist me to proclaim
  To spread through all the earth abroad
  The honours of Thy name, the honours of Thy name
- The honours of Thy name, the honours of Thy name</lyrics>
-  <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+ The honours of Thy name, the honours of Thy name
+</lyrics>
 </song>

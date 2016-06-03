@@ -8,7 +8,8 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
-  <duration></duration>
+  <duration>10</duration>
+  <predelay></predelay>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -65,24 +66,20 @@
 ;Chorus x2
 
 [B]   
-.G   
- Worthy is the Lamb who was slain   
-.C   
- Worthy is the King who conquered the grave   
-.G  
- Worthy is the Lamb who was slain   
-.C   
- Worthy is the King who conquered the grave
-.G   
- Worthy is the Lamb who was slain   
-.C   
- Worthy is the King who conquered the grave   
-.G  
- Worthy is the Lamb who was slain   
-.C   
- Worthy, worthy, worthy
+.G                                 C
+ Worthy is the Lamb who was slain, worthy is the King who conquered the grave
+.G                                 C
+ Worthy is the Lamb who was slain, worthy is the King who conquered the grave
+.G                                 C
+ Worthy is the Lamb who was slain, worthy is the King who conquered the grave
+.G                                 C
+ Worthy is the Lamb who was slain, worthy, worthy, worthy
 </lyrics>
   <linked_songs></linked_songs>
   <pad_file>Auto</pad_file>
   <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

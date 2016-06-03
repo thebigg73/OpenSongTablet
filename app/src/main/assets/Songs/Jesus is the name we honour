@@ -15,7 +15,7 @@
   <user1>239</user1>
   <user2></user2>
   <user3></user3>
-  <key>F</key>
+  <key>G</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -24,26 +24,29 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[V1]
-.F     C              F     Bb/F
+.G     D              G     C/G
  Jesus is the name we honour
-.F     Bb             C    Bb/C  
+.G     C             D    C/D  
  Jesus is the name we praise
-.  C      Bb             C
+.  D      C             D
  Majestic name above all other names
-.    F       C/E        Dm       Dm/C
+.    G       D/F#        Em       Em/D
  The highest heaven and earth proclaim
-.     Bb F/A Gm C   F   Bb/F   F
+.     C G/B Am D   G   C/G   G
  That Jesus  is our God
 
 [C]
-.        C    F           C        F
+.        D    G           D        G
  We will glorify,|We will lift Him high
-.        Bb   F   C  Bb/C    F
+.        C   G   D  C/D    G
  We will give Him|Honour and praise
-.        C    F           C        F
+.        D    G           D        G
  We will glorify,|We will lift Him high
-.        Bb   F   C  Bb/C    F
+.        C   G   D  C/D    G
  We will give Him|Honour and praise
 
 [V2]
@@ -58,8 +61,6 @@
  Jesus is the Father's joy
  He will return to reign in majesty
  And every eye at last shall see
- That Jesus is our God</lyrics>
-  <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+ That Jesus is our God
+</lyrics>
 </song>

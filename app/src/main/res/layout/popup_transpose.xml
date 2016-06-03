@@ -18,7 +18,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/transposeSeekBar"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
                 android:layout_width="match_parent"

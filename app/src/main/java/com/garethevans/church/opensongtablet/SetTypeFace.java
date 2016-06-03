@@ -113,7 +113,5 @@ public class SetTypeFace extends Activity {
                 FullscreenActivity.presofont = FullscreenActivity.typeface0;
                 break;
         }
-
-
     }
 }

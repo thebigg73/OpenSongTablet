@@ -15,7 +15,7 @@
   <user1>77</user1>
   <user2></user2>
   <user3></user3>
-  <key>G</key>
+  <key>A</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -24,14 +24,17 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[V1]
-.G                Am
+.A                Bm
  Focus my eyes on You O Lord
-.C        D       G  D
+.D        E       A  E
  Focus my eyes on You     
-.   G                 Am  
+.   A                 Bm  
  To worship in Spirit and in truth
-.C        D       G   D
+.D        E       A   E
  Focus my eyes on You
 
 [V2]
@@ -44,8 +47,6 @@
  Fill up my heart with praise O Lord
  Fill up my heart with praise
  To speak of your love in every place
- Fill up my heart with praise</lyrics>
-  <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+ Fill up my heart with praise
+</lyrics>
 </song>

@@ -102,13 +102,13 @@ public class ExportPreparer extends Activity {
 					if (xpp.getAttributeValue(null,"type").equals("song")) {
 						songfile = null;
                         String thisline;
-						songfile = new File(FullscreenActivity.homedir + "/Songs/" + xpp.getAttributeValue(null,"path") + xpp.getAttributeValue(null,"name"));
+						songfile = new File(FullscreenActivity.homedir + "/Songs/" + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"path")) + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name")));
 						Log.d("d","songfile="+songfile);
 						// Ensure there is a folder '/'
                         if (xpp.getAttributeValue(null,"path").equals("")) {
-                            thisline = "/" + xpp.getAttributeValue(null,"name");
+                            thisline = "/" + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
                         } else {
-                            thisline = xpp.getAttributeValue(null,"path") + xpp.getAttributeValue(null,"name");
+                            thisline = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"path")) + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
                         }
 						Log.d("d","thisline="+thisline);
                         filesinset.add(thisline);
@@ -116,7 +116,7 @@ public class ExportPreparer extends Activity {
                         filesinset_ost.add(thisline);
 
                         // Set the default values exported with the text for the set
-                        song_title = xpp.getAttributeValue(null,"name");
+                        song_title = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
 						song_author = "";
 						song_hymnnumber = "";
 						song_key = "";
@@ -137,30 +137,30 @@ public class ExportPreparer extends Activity {
 						}
 						settext = settext + "\n";
 					} else if (xpp.getAttributeValue(null,"type").equals("scripture")) {
-						settext = settext + FullscreenActivity.scripture.toUpperCase(Locale.getDefault()) + " : " + xpp.getAttributeValue(null,"name") + "\n";
+						settext = settext + FullscreenActivity.scripture.toUpperCase(Locale.getDefault()) + " : " + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name")) + "\n";
 
 					} else if (xpp.getAttributeValue(null,"type").equals("custom")) {
                         // Decide if this is a note or a slide
                         if (xpp.getAttributeValue(null,"name").contains("# " + FullscreenActivity.text_note + " # - ")) {
-                            String nametemp = xpp.getAttributeValue(null,"name");
+                            String nametemp = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
                             nametemp = nametemp.replace("# " + FullscreenActivity.note + " # - ","");
                             settext = settext + FullscreenActivity.note.toUpperCase(Locale.getDefault()) + " : " + nametemp + "\n";
                         } else {
-                            settext = settext + FullscreenActivity.slide.toUpperCase(Locale.getDefault()) + " : " + xpp.getAttributeValue(null, "name") + "\n";
+                            settext = settext + FullscreenActivity.slide.toUpperCase(Locale.getDefault()) + " : " + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name")) + "\n";
                         }
 					} else if (xpp.getAttributeValue(null,"type").equals("image")) {
                         // Go through the descriptions of each image and extract the absolute file locations
                         boolean allimagesdone = false;
                         ArrayList<String> theseimages = new ArrayList<>();
 						String imgname;
-						imgname = xpp.getAttributeValue(null,"name");
+						imgname = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
                         while (!allimagesdone) { // Keep iterating unless the current eventType is the end of the document
                             if (eventType == XmlPullParser.START_TAG) {
                                 if (xpp.getName().equals("description")) {
                                     eventType = xpp.next();
-                                    theseimages.add(xpp.getText());
-                                    filesinset.add(xpp.getText());
-                                    filesinset_ost.add(xpp.getText());
+                                    theseimages.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
+                                    filesinset.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
+                                    filesinset_ost.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
                                 }
 
                             } else if (eventType == XmlPullParser.END_TAG) {
@@ -247,17 +247,17 @@ public class ExportPreparer extends Activity {
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 			if (eventType == XmlPullParser.START_TAG) {
 				if (xppSong.getName().equals("author")) {
-					song_author = xppSong.nextText();
+					song_author = LoadXML.parseFromHTMLEntities(xppSong.nextText());
 				} else if (xppSong.getName().equals("copyright")) {
-					song_copyright = xppSong.nextText();
+					song_copyright = LoadXML.parseFromHTMLEntities(xppSong.nextText());
 				} else if (xppSong.getName().equals("title")) {
-					song_title = xppSong.nextText();
+					song_title = LoadXML.parseFromHTMLEntities(xppSong.nextText());
 				} else if (xppSong.getName().equals("lyrics")) {
-					song_lyrics_withchords = xppSong.nextText();
+					song_lyrics_withchords = LoadXML.parseFromHTMLEntities(xppSong.nextText());
 				} else if (xppSong.getName().equals("hymn_number")) {
-					song_hymnnumber = xppSong.nextText();
+					song_hymnnumber = LoadXML.parseFromHTMLEntities(xppSong.nextText());
 				} else if (xppSong.getName().equals("key")) {
-					song_key = xppSong.nextText();
+					song_key = LoadXML.parseFromHTMLEntities(xppSong.nextText());
 				}
 			}
 			eventType = xppSong.next();

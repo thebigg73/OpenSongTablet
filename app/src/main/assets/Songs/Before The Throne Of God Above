@@ -3,12 +3,13 @@
   <title>Before The Throne Of God Above</title>
   <author>Charitie Lees Bancroft, Vikki Cook</author>
   <copyright>Hillsong</copyright>
-  <presentation>C1 V1 C1 V2 C2 V3 C3</presentation>
+  <presentation>V1 C1 V2 C2 V3 C3</presentation>
   <hymn_number></hymn_number>
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
-  <duration></duration>
+  <duration>10</duration>
+  <predelay></predelay>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -73,4 +74,8 @@
   <linked_songs></linked_songs>
   <pad_file>Auto</pad_file>
   <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

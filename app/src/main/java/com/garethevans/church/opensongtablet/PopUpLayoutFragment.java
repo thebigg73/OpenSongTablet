@@ -32,8 +32,10 @@ public class PopUpLayoutFragment extends DialogFragment {
     SeekBar setXMarginProgressBar;
     SeekBar setYMarginProgressBar;
     ToggleButton toggleAutoScaleButton;
+    SeekBar setMaxFontSizeProgressBar;
     SeekBar setFontSizeProgressBar;
     TextView fontSizePreview;
+    TextView maxfontSizePreview;
     Spinner presoFontSpinner;
     SeekBar presoTitleSizeSeekBar;
     SeekBar presoAuthorSizeSeekBar;
@@ -49,8 +51,10 @@ public class PopUpLayoutFragment extends DialogFragment {
         setXMarginProgressBar = (SeekBar) V.findViewById(R.id.setXMarginProgressBar);
         setYMarginProgressBar = (SeekBar) V.findViewById(R.id.setYMarginProgressBar);
         toggleAutoScaleButton = (ToggleButton) V.findViewById(R.id.toggleAutoScaleButton);
+        setMaxFontSizeProgressBar = (SeekBar) V.findViewById(R.id.setMaxFontSizeProgressBar);
         setFontSizeProgressBar = (SeekBar) V.findViewById(R.id.setFontSizeProgressBar);
         fontSizePreview = (TextView) V.findViewById(R.id.fontSizePreview);
+        maxfontSizePreview = (TextView) V.findViewById(R.id.maxfontSizePreview);
         closeLayout = (Button) V.findViewById(R.id.closeLayout);
         presoFontSpinner = (Spinner) V.findViewById(R.id.presoFontSpinner);
         presoTitleSizeSeekBar = (SeekBar) V.findViewById(R.id.presoTitleSizeSeekBar);
@@ -62,12 +66,17 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         // Set the stuff up to what it should be from preferences
         fontSizePreview.setTypeface(FullscreenActivity.presofont);
-        String newtext = (FullscreenActivity.presoFontSize - 4) + " sp";
+        String newtext = (FullscreenActivity.presoFontSize) + " sp";
         fontSizePreview.setText(newtext);
         fontSizePreview.setTextSize(FullscreenActivity.presoFontSize);
+        maxfontSizePreview.setTypeface(FullscreenActivity.presofont);
+        newtext = (FullscreenActivity.presoMaxFontSize) + " sp";
+        maxfontSizePreview.setText(newtext);
+        maxfontSizePreview.setTextSize(FullscreenActivity.presoMaxFontSize);
         setXMarginProgressBar.setMax(200);
         setYMarginProgressBar.setMax(200);
-        setFontSizeProgressBar.setMax(50);
+        setMaxFontSizeProgressBar.setMax(70);
+        setFontSizeProgressBar.setMax(70);
         presoTitleSizeSeekBar.setMax(32);
         presoAuthorSizeSeekBar.setMax(32);
         presoCopyrightSizeSeekBar.setMax(32);
@@ -80,15 +89,22 @@ public class PopUpLayoutFragment extends DialogFragment {
         setXMarginProgressBar.setProgress(FullscreenActivity.xmargin_presentation);
         setYMarginProgressBar.setProgress(FullscreenActivity.ymargin_presentation);
         setFontSizeProgressBar.setProgress(FullscreenActivity.presoFontSize - 4);
+        setMaxFontSizeProgressBar.setProgress(FullscreenActivity.presoMaxFontSize - 4);
 
         if (FullscreenActivity.presoAutoScale) {
             setFontSizeProgressBar.setEnabled(false);
             setFontSizeProgressBar.setAlpha(0.5f);
+            setMaxFontSizeProgressBar.setEnabled(true);
+            setMaxFontSizeProgressBar.setAlpha(1.0f);
+            maxfontSizePreview.setAlpha(1.0f);
             toggleAutoScaleButton.setChecked(true);
             fontSizePreview.setAlpha(0.5f);
         } else {
             setFontSizeProgressBar.setEnabled(true);
             setFontSizeProgressBar.setAlpha(1.0f);
+            setMaxFontSizeProgressBar.setEnabled(false);
+            setMaxFontSizeProgressBar.setAlpha(0.5f);
+            maxfontSizePreview.setAlpha(0.5f);
             toggleAutoScaleButton.setChecked(false);
             fontSizePreview.setAlpha(1.0f);
         }
@@ -124,6 +140,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         });
         setXMarginProgressBar.setOnSeekBarChangeListener(new setMargin_Listener());
         setYMarginProgressBar.setOnSeekBarChangeListener(new setMargin_Listener());
+        setMaxFontSizeProgressBar.setOnSeekBarChangeListener(new setMaxFontSizeListener());
         setFontSizeProgressBar.setOnSeekBarChangeListener(new setFontSizeListener());
         presoTitleSizeSeekBar.setOnSeekBarChangeListener(new presoSectionSizeListener());
         presoAuthorSizeSeekBar.setOnSeekBarChangeListener(new presoSectionSizeListener());
@@ -138,7 +155,7 @@ public class PopUpLayoutFragment extends DialogFragment {
                 FullscreenActivity.ymargin_presentation = setYMarginProgressBar.getProgress();
                 FullscreenActivity.presoAutoScale = toggleAutoScaleButton.isChecked();
                 FullscreenActivity.presoFontSize = setFontSizeProgressBar.getProgress() + 4;
-
+                FullscreenActivity.presoMaxFontSize = setMaxFontSizeProgressBar.getProgress() + 4;
                 Preferences.savePreferences();
                 dismiss();
             }
@@ -149,6 +166,12 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     setFontSizeProgressBar.setEnabled(false);
+                    setFontSizeProgressBar.setAlpha(0.5f);
+                    fontSizePreview.setAlpha(0.5f);
+                    setMaxFontSizeProgressBar.setEnabled(true);
+                    setMaxFontSizeProgressBar.setAlpha(1.0f);
+                    maxfontSizePreview.setAlpha(1.0f);
+
                     PresenterMode.autoscale = true;
                     FullscreenActivity.presoAutoScale = true;
                     Preferences.savePreferences();
@@ -156,6 +179,11 @@ public class PopUpLayoutFragment extends DialogFragment {
                     MyPresentation.resetFontSize();
                 } else {
                     setFontSizeProgressBar.setEnabled(true);
+                    setFontSizeProgressBar.setAlpha(1.0f);
+                    fontSizePreview.setAlpha(1.0f);
+                    setMaxFontSizeProgressBar.setEnabled(false);
+                    setMaxFontSizeProgressBar.setAlpha(0.5f);
+                    maxfontSizePreview.setAlpha(0.5f);
                     PresenterMode.autoscale = false;
                     FullscreenActivity.presoAutoScale = false;
                     Preferences.savePreferences();
@@ -198,7 +226,25 @@ public class PopUpLayoutFragment extends DialogFragment {
         public void onStartTrackingTouch(SeekBar seekBar) {}
 
         public void onStopTrackingTouch(SeekBar seekBar) {
-            FullscreenActivity.presoFontSize = seekBar.getProgress();
+            FullscreenActivity.presoFontSize = seekBar.getProgress() + 4;
+            // Save preferences
+            Preferences.savePreferences();
+        }
+    }
+
+    private class setMaxFontSizeListener implements SeekBar.OnSeekBarChangeListener {
+
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            FullscreenActivity.presoMaxFontSize = progress + 4;
+            String newtext = (progress + 4) + " sp";
+            maxfontSizePreview.setText(newtext);
+            maxfontSizePreview.setTextSize(progress + 4);
+        }
+
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            FullscreenActivity.presoMaxFontSize = seekBar.getProgress() + 4;
             // Save preferences
             Preferences.savePreferences();
         }

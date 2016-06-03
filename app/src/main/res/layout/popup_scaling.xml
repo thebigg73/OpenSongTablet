@@ -35,11 +35,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/autoscale_seekBar"
-                    android:background="@drawable/apptheme_scrubber_primary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo"
+                    android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
                     android:progress="1"
                     android:max="2"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
                     android:layout_marginLeft="0dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginRight="0dp"
@@ -106,10 +106,10 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginRight="0dp"
                         android:layout_marginBottom="12dp"
-                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:background="@drawable/apptheme_scrubber_primary_holo_bright"
                         android:max="60"
-                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo" />
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -135,10 +135,10 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginRight="0dp"
                         android:layout_marginBottom="12dp"
-                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:background="@drawable/apptheme_scrubber_primary_holo_bright"
                         android:max="28"
-                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo" />
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -208,10 +208,10 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginRight="0dp"
                         android:layout_marginBottom="12dp"
-                        android:background="@drawable/apptheme_scrubber_primary_holo"
+                        android:background="@drawable/apptheme_scrubber_primary_holo_bright"
                         android:max="79"
-                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo" />
+                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                     <TextView
                         android:layout_width="match_parent"

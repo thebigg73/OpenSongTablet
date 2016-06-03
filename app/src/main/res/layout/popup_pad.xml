@@ -2,7 +2,7 @@
 <ScrollView
     android:id="@+id/popuppad"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
     android:layout_centerHorizontal="true"
     android:layout_centerInParent="true"
@@ -59,7 +59,8 @@
             android:layout_height="wrap_content"
             android:text="@string/edit_song_key"
             android:textColor="#000"
-            android:textAppearance="@android:style/TextAppearance.Medium" />
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:layout_marginTop="12dp" />
 
         <Spinner
             android:id="@+id/popuppad_key"
@@ -75,23 +76,34 @@
             android:layout_height="wrap_content"
             android:text="@string/backing_track"
             android:textColor="#000"
-            android:textAppearance="@android:style/TextAppearance.Medium" />
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:layout_marginTop="12dp" />
 
         <Spinner
             android:id="@+id/popuppad_file"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:background="#aaa"
             android:textColor="#000"
             android:textSize="16sp" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/loop"
+            android:id="@+id/popupPad_loopaudio"
+            android:textColor="#000"
+            android:switchPadding="24dp"
+            android:layout_marginTop="12dp"
+            android:textAppearance="@android:style/TextAppearance.Medium" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/volume"
             android:textColor="#000"
-            android:textAppearance="@android:style/TextAppearance.Medium" />
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:layout_marginTop="12dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -119,7 +131,8 @@
             android:layout_height="wrap_content"
             android:text="@string/pan"
             android:textColor="#000"
-            android:textAppearance="@android:style/TextAppearance.Medium" />
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:layout_marginTop="12dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -150,14 +163,8 @@
             android:gravity="center_horizontal"
             android:onClick="saveSong"
             android:text="@string/savesong"
-            android:textColor="#fff" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="4dp"
-            android:contentDescription="@string/pad"
-            android:src="@drawable/blue_line" />
+            android:textColor="#fff"
+            android:layout_marginTop="12dp" />
 
         <Button
             android:id="@+id/popuppad_startstopbutton"

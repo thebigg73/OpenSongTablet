@@ -3,17 +3,21 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserFragment.MyInterface{
+import java.io.File;
+
+public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserFragment.MyInterface {
 
     ImageButton linkYouTube_ImageButton;
     ImageButton linkWeb_ImageButton;
@@ -41,12 +45,21 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
         Log.d("d","File chosen = "+ FullscreenActivity.filechosen);
     }
 
+    @Override
+    public void updateLinksPopUp() {
+        // Nothing here
+        Log.d("d","Nothing here");
+    }
+
     public interface MyInterface {
         void refreshAll();
     }
 
+    private MyInterface mListener;
+
     @Override
     public void onAttach(Activity activity) {
+        mListener = (MyInterface) activity;
         super.onAttach(activity);
     }
 
@@ -116,53 +129,62 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
         linkOther_EditText.setFocusable(false);
         linkOther_EditText.setFocusableInTouchMode(false);
 
+        Log.d("d","filetoselect="+FullscreenActivity.filetoselect);
+        if (FullscreenActivity.filechosen!=null) {
+            Log.d("d", "filechosen=" + FullscreenActivity.filechosen);
+        }
+        // If a filetoselect has been set, add this to the view
+        if (FullscreenActivity.filetoselect.equals("audiolink") && FullscreenActivity.filechosen!=null) {
+            linkAudio_EditText.setText(Uri.fromFile(FullscreenActivity.filechosen).toString());
+            // If this is a genuine audio file, give the user the option of setting the song duration to match this file
+            MediaPlayer mediafile = new MediaPlayer();
+            try {
+                mediafile.setDataSource(getActivity(),Uri.parse(FullscreenActivity.filechosen.toString()));
+                mediafile.prepareAsync();
+                mediafile.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        FullscreenActivity.audiolength = (int) (mp.getDuration() / 1000.0f);
+                        mp.release();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                linkAudio_EditText.setText("");
+                FullscreenActivity.myToastMessage = getString(R.string.not_allowed);
+                ShowToast.showToast(getActivity());
+                mediafile.release();
+            }
+
+        } else if (FullscreenActivity.filetoselect.equals("otherlink") && FullscreenActivity.filechosen!=null) {
+            linkOther_EditText.setText(FullscreenActivity.filechosen.toString());
+        }
+        FullscreenActivity.filechosen = null;
+        FullscreenActivity.filetoselect = "";
+
+
         linkAudio_EditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                i.setType("file/");
-                try {
-                    startActivityForResult(i, 0);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.no_filemanager);
-                    ShowToast.showToast(getActivity());
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.estrongs.android.pop")));
-                    }
-                    catch (Exception anfe) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.estrongs.android.pop")));
-                    }
-                }
+                FullscreenActivity.filetoselect = "audiolink";
+                DialogFragment newFragment = PopUpDirectoryChooserFragment.newInstance();
+                Bundle args = new Bundle();
+                args.putString("type", "file");
+                newFragment.setArguments(args);
+                newFragment.show(getFragmentManager(), "dialog");
+                dismiss();
             }
         });
         linkOther_EditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
- /*               dismiss();
-                FullscreenActivity.myToastMessage = "link_other";
+                FullscreenActivity.filetoselect = "otherlink";
                 DialogFragment newFragment = PopUpDirectoryChooserFragment.newInstance();
                 Bundle args = new Bundle();
                 args.putString("type", "file");
                 newFragment.setArguments(args);
-                newFragment.show(getFragmentManager(), "dialog");*/
-
-
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                i.setType("file/");
-                try {
-                    startActivityForResult(i, 1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.no_filemanager);
-                    ShowToast.showToast(getActivity());
-                    try {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.estrongs.android.pop")));
-                    }
-                    catch (Exception anfe) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.estrongs.android.pop")));
-                    }
-                }
+                newFragment.show(getFragmentManager(), "dialog");
+                dismiss();
             }
         });
 
@@ -186,6 +208,7 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
                 PopUpEditSongFragment.prepareSongXML();
                 try {
                     PopUpEditSongFragment.justSaveSongXML();
+                    mListener.refreshAll();
                     dismiss();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -221,26 +244,49 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
         linkAudio_ImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(linkAudio_EditText.getText().toString()));
+                MimeTypeMap myMime = MimeTypeMap.getSingleton();
+                Intent newIntent = new Intent(Intent.ACTION_VIEW);
+                Uri uri2 = Uri.parse(linkAudio_EditText.getText().toString());
+                File getfile = new File(linkAudio_EditText.getText().toString());
+
+                String ext = MimeTypeMap.getFileExtensionFromUrl(getfile.getName()).toLowerCase();
+                String mimeType = myMime.getMimeTypeFromExtension(ext);
+
+                if (mimeType == null) {
+                    mimeType = "*/*";
+                }
+
+                Log.d("d","mimeType="+mimeType);
+                newIntent.setDataAndType(uri2,mimeType);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
-                    startActivity(i);
+                    startActivity(newIntent);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.no_audioplayer);
-                    ShowToast.showToast(getActivity());
                 }
             }
         });
         linkOther_ImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(linkOther_EditText.getText().toString()));
+                MimeTypeMap myMime = MimeTypeMap.getSingleton();
+                Intent newIntent = new Intent(Intent.ACTION_VIEW);
+                Uri uri2 = Uri.parse(linkOther_EditText.getText().toString());
+                File getfile = new File(linkOther_EditText.getText().toString());
+                String ext = MimeTypeMap.getFileExtensionFromUrl(getfile.getName()).toLowerCase();
+                String mimeType = myMime.getMimeTypeFromExtension(ext);
+
+                if (mimeType == null) {
+                    mimeType = "*/*";
+                }
+
+                Log.d("d","mimeType="+mimeType);
+                newIntent.setDataAndType(uri2,mimeType);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
-                    startActivity(i);
+                    startActivity(newIntent);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.file_type_unknown);
-                    ShowToast.showToast(getActivity());
                 }
             }
         });
@@ -254,11 +300,34 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
             Uri uri = intent.getData();
             if (requestCode==0) {
                 // Audio
-                linkAudio_EditText.setText(uri.toString());
+                if (uri!=null) {
+                    linkAudio_EditText.setText(uri.toString());
+                }
             } else if (requestCode==1) {
                 // Document
-                linkOther_EditText.setText(uri.toString());
+                if (uri!=null) {
+                    linkOther_EditText.setText(uri.toString());
+                }
             }
         }
     }
+
+ /*   private String fileExt(String url) {
+        if (url.contains("?")) {
+            url = url.substring(0, url.indexOf("?"));
+        }
+        if (url.lastIndexOf(".") == -1) {
+            return null;
+        } else {
+            String ext = url.substring(url.lastIndexOf(".") + 1);
+            if (ext.contains("%")) {
+                ext = ext.substring(0, ext.indexOf("%"));
+            }
+            if (ext.contains("/")) {
+                ext = ext.substring(0, ext.indexOf("/"));
+            }
+            return ext.toLowerCase();
+
+        }
+    }*/
 }

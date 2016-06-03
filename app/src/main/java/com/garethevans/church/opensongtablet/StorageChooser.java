@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -509,7 +508,7 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
 
             // Do the stuff async to stop the app slowing down
             CopyAssetsTask task = new CopyAssetsTask();
-            task.execute();
+            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else {
             requestStoragePermission();
         }
@@ -524,6 +523,12 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
             otherStorageButton.setText(textother);
             otherStorageExists = true;
         }
+    }
+
+    @Override
+    public void updateLinksPopUp() {
+        // Nothing needed here
+        Log.d("d","Not required");
     }
 
     private class CopyAssetsTask extends AsyncTask<String, Void, String> {

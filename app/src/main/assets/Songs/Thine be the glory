@@ -8,7 +8,8 @@
   <capo print="false"></capo>
   <tempo>105</tempo>
   <time_sig>4/4</time_sig>
-  <duration></duration>
+  <duration>10</duration>
+  <predelay></predelay>
   <ccli>2647298</ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -44,17 +45,29 @@
  Endless is the victory Thou o'er death hast won
 
 [V2]
+.D         D/F#      A          D   A
  Lo, Jesus meets us, risen from the tomb
+.D           D/F#       G/B      A        D
  Lovingly He greets us, scatters fear and gloom
+.D                   A7  Bm    Em7              F#
  Let the church with gladness, hymns of triumph sing
+.Bm      Bm/A     E/G# E7 F#m       E        A (A/G A/F# A/E)
  For her Lord now liveth, death has lost its sting
 
 [V3]
+.D          D/F#       A               D  A
  No more we doubt Thee glorious Prince of life
+.D              D/F#          G/B    A      D
  Life is nought without Thee, aid us in our strife
+.D                 A7    Bm    Em7                   F#
  Make us more than conquerors, through Thy deathless love
- Bring us safe through Jordan to Thy home above</lyrics>
+.Bm       Bm/A         E/G# E7 F#m    E     A (A/G A/F# A/E)
+ Bring us safe through Jordan  to Thy home above</lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

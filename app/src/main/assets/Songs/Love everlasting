@@ -9,7 +9,7 @@
   <tempo>72</tempo>
   <time_sig>4/4</time_sig>
   <duration>200</duration>
-  <predelay></predelay>
+  <predelay>10</predelay>
   <ccli>12345</ccli>
   <theme>Christ: Attributes; Christ: Love/Mercy; Church: Evangelism; God: Attributes; God: Father; God: Love/Mercy; Worship: Intimacy; </theme>
   <alttheme>Christ: Attributes; Christ: Love/Mercy; Church: Evangelism; God: Attributes; God: Father; God: Love/Mercy; Worship: Intimacy; </alttheme>
@@ -67,5 +67,6 @@ They can be reminders, or extra information about the song.  Whatever you want!<
   <link_youtube></link_youtube>
   <link_web></link_web>
   <link_audio></link_audio>
+  <loop_audio>false</loop_audio>
   <link_other></link_other>
 </song>

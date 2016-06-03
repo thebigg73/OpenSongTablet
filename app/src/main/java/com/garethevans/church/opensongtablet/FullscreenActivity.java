@@ -70,12 +70,14 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -83,6 +85,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -121,18 +124,27 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         PopUpSetViewNew.MyInterface, PopUpImportExternalFile.MyInterface,
         PopUpFileChooseFragment.MyInterface, PopUpDirectoryChooserFragment.MyInterface,
         PopUpScalingFragment.MyInterface, PopUpProfileFragment.MyInterface,
-        PopUpPageButtonsFragment.MyInterface, PopUpExtraInfoFragment.MyInterface {
+        PopUpPageButtonsFragment.MyInterface, PopUpExtraInfoFragment.MyInterface,
+        PopUpLinks.MyInterface {
 
     //First up, declare all of the variables needed by this application
 
     public static boolean sortAlphabetically = true;
 
     // Playback progress
-    LinearLayout playbackProgress;
+    LinearLayout backingtrackProgress;
     TextView currentTime_TextView;
     TextView totalTime_TextView;
     long time_start;
+    public static int audiolength = -1;
 
+    LinearLayout playbackProgress;
+    TextView padcurrentTime_TextView;
+    TextView padtotalTime_TextView;
+    long padtime_start;
+    public static int padaudiolength = -1;
+
+    public static String filetoselect = "";
     public static String pagebutton_scale;
     public static String profile;
 
@@ -190,7 +202,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String text_note = "";
     public static String text_variation = "";
     public int slideout_time = 500;
-    public int checkscroll_time = 1000;
+    public int checkscroll_time = 800;
     public int delayswipe_time = 1800;
     public static int crossFadeTime = 8000;
     public static String toggleScrollArrows = "";
@@ -284,6 +296,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private Spinner popupPad_file;
     private SeekBar popupPad_volume;
     private TextView popupPad_volume_text;
+    private Switch popupPad_loopaudio;
     private SeekBar popupPad_pan;
     private TextView popupPad_pan_text;
     private Button popupPad_startstopbutton;
@@ -309,6 +322,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static int av_bpm;
     public static long new_time = 0;
     public static long time_passed = 0;
+    //public static long padtime_passed = 0;
+    public static int padtime_length = 0;
     public static long old_time = 0;
     public static int calc_bpm;
     public static String popupMetronome_stoporstart = "stop";
@@ -346,11 +361,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private AudioManager audio;
     private MetronomeAsyncTask metroTask;
     private Handler mHandler;
-
-    // P2P/WiFi
-    private ServerSocket mServerSocket;
-    private int mLocalPort;
-    private Object mNsdManager;
 
     @SuppressLint("HandlerLeak")
     private Handler getHandler() {
@@ -409,10 +419,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private static ImageView autoscrollButton;
     private static ImageView metronomeButton;
     private static boolean orientationchanged = false;
-/*
-    private static int wasshowing_pdfselectpage;
-    private static int wasshowing_stickynotes;
-*/
+    private static ImageButton uselinkaudiolength_ImageButton;
     private static int alreadyshowingpage;
     public static int keyindex;
 
@@ -466,6 +473,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private static Handler delaycheckscroll;
     private static Handler doautoScroll;
     private static Handler doProgressTime;
+    private static Handler dopadProgressTime;
 
     private static boolean scrollbutton = false;
     private static boolean actionbarbutton = false;
@@ -583,7 +591,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static boolean bibleLoaded = false;
     public static String bibleFileContents = "";
     public static String chordFormat = "";
-    //private static String chord_converting = "N";
     public static String oldchordformat = "";
     public static String presenterChords = "";
     public static String swipeDrawer = "";
@@ -596,7 +603,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String mTheme = "";
     public static String mDisplayTheme = "Theme.Holo";
     public static String setView = "N";
-    private MenuItem presentationMode;
     public static int setSize;
     public static boolean showingSetsToLoad = false;
     public static String whatsongforsetwork = "";
@@ -621,7 +627,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static File file;
     public static File setfile;
     public static String settoload = "";
-    public static String settodelete = "";
+    //public static String settodelete = "";
     public static String[] mSongFileNames;
     public static String[] mSongFolderNames;
 
@@ -639,6 +645,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static boolean presoAutoScale;
     public static boolean presoShowChords;
     public static int presoFontSize;
+    public static int presoMaxFontSize;
     public static int presoTitleSize;
     public static int presoAuthorSize;
     public static int presoCopyrightSize;
@@ -699,6 +706,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String mLinkYouTube = "";
     public static String mLinkWeb = "";
     public static String mLinkAudio = "";
+    public static String mLoopAudio = "false";
     public static String mLinkOther = "";
 
     public static String capokey = null;
@@ -774,8 +782,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String scripture_title = "";
     public static String scripture_verse = "";
     public static String image = "";
-    private static String toastmessage_maxfont = "";
-    private static String toastmessage_minfont = "";
     public static String set_menutitle = "";
     public static String backtooptions = "";
     public static String savethisset = "";
@@ -813,7 +819,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private static Runnable checkScrollPosition;
     private static Runnable autoScrollRunnable;
     private static Runnable progressTimeRunnable;
-    public static boolean keepgoing = false;
+    private static Runnable padprogressTimeRunnable;
 
     private List<String> listDataHeaderOption;
     private HashMap<String, List<String>> listDataChildOption;
@@ -826,8 +832,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private FadeOutMusic1 mtask_fadeout_music1;
     private FadeOutMusic2 mtask_fadeout_music2;
     private AutoScrollMusic mtask_autoscroll_music;
-    private ProgressTime mtask_updatetimeprogress;
-    private static int whichtofadeout;
+
+    public static int mLocalPort;
+    public static String mServiceName;
+    public static String mServiceType = "_OpenSongApp.tcp.";
+
 
     // Try to determine internal or external storage
     private String secStorage = System.getenv("SECONDARY_STORAGE");
@@ -865,14 +874,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private boolean extStorageExists = false;
     private boolean defStorageExists = false;
 
-    private static File extStorCheck;
-    private static File intStorCheck;
-
     private boolean storageIsValid = true;
 
     public static String pagebutton_position = "right";
-
-    // P2P Wifi
 
     public static File root = Environment.getExternalStorageDirectory();
     public static File homedir = new File(root.getAbsolutePath() + "/documents/OpenSong");
@@ -894,6 +898,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static Locale locale;
 
     public static String[][][] bibleVerse; // bibleVerse[book][chapter#][verse#]
+
+    private Runnable onEverySecond;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -950,8 +956,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         error_notset = getResources().getString(R.string.error_notset);
         error_missingsection = getResources().getString(R.string.error_missingsection);
 
-        toastmessage_maxfont = getResources().getString(R.string.toastmessage_maxfont);
-        toastmessage_minfont = getResources().getString(R.string.toastmessage_minfont);
+        //toastmessage_maxfont = getResources().getString(R.string.toastmessage_maxfont);
+        //toastmessage_minfont = getResources().getString(R.string.toastmessage_minfont);
         backtooptions = getResources().getString(R.string.options_backtooptions);
         savethisset = getResources().getString(R.string.options_savethisset);
         clearthisset = getResources().getString(R.string.options_clearthisset);
@@ -1110,6 +1116,27 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             }
         };
 
+        // The task to update the backing track progress time
+        // Identify the backing track progress view and hide it for now
+        backingtrackProgress = (LinearLayout) findViewById(R.id.backingtrackProgress);
+        padcurrentTime_TextView = (TextView) findViewById(R.id.padcurrentTime_TextView);
+        padtotalTime_TextView = (TextView) findViewById(R.id.padtotalTime_TextView);
+        backingtrackProgress.setVisibility(View.GONE);
+        dopadProgressTime = new Handler();
+        padprogressTimeRunnable = new Runnable() {
+            @Override
+            public void run() {
+                int pos = 0;
+                if (mPlayer1!=null && mPlayer1.isPlaying()) {
+                    pos = (int) (mPlayer1.getCurrentPosition()/1000.0f);
+                } else if (mPlayer2!=null && mPlayer2.isPlaying()) {
+                    pos = (int) (mPlayer2.getCurrentPosition()/1000.0f);
+                }
+                String text = timeFormatFixer(pos);
+                padcurrentTime_TextView.setText(text);
+            }
+        };
+
         // If key is set
         String keytext = "";
         if (!mKey.isEmpty() && !mKey.equals("")) {
@@ -1208,8 +1235,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         instrument_choice[5] = getResources().getString(R.string.banjo5);
         ArrayAdapter<String> adapter_instrument = new ArrayAdapter<>(this, R.layout.my_spinner, instrument_choice);
         adapter_instrument.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        popupChord_Instrument.setAdapter(adapter_instrument);
-        popupChord_Instrument.setOnItemSelectedListener(new popupChord_InstrumentListener());
+        if (popupChord_Instrument != null) {
+            popupChord_Instrument.setAdapter(adapter_instrument);
+            popupChord_Instrument.setOnItemSelectedListener(new popupChord_InstrumentListener());
+        }
 
         popupPad = (ScrollView) findViewById(R.id.popuppad);
         popupPad_key = (Spinner) findViewById(R.id.popuppad_key);
@@ -1231,6 +1260,13 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         popupPad_volume = (SeekBar) findViewById(R.id.popuppad_volume);
         popupPad_volume.setOnSeekBarChangeListener(new popupPad_volumeListener());
         popupPad_volume_text = (TextView) findViewById(R.id.popuppad_volume_text);
+        popupPad_loopaudio = (Switch) findViewById(R.id.popupPad_loopaudio);
+        popupPad_loopaudio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mLoopAudio = isChecked + "";
+            }
+        });
         popupPad_pan = (SeekBar) findViewById(R.id.popuppad_pan);
         popupPad_pan.setOnSeekBarChangeListener(new popupPad_volumeListener());
         popupPad_pan_text = (TextView) findViewById(R.id.popuppad_pan_text);
@@ -1243,6 +1279,23 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         popupAutoscroll_duration = (TextView) findViewById(R.id.popupautoscroll_duration);
         popupAutoscroll_duration.addTextChangedListener(new textWatcher());
         popupAutoscroll_startstopbutton = (Button) findViewById(R.id.popupautoscroll_startstopbutton);
+
+        uselinkaudiolength_ImageButton = (ImageButton) findViewById(R.id.uselinkaudiolength_ImageButton);
+        uselinkaudiolength_ImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (audiolength>-1) {
+                    // If this is a valid audio length, set the mDuration value
+                    mDuration = "" + audiolength;
+                    popupAutoscroll_duration.setText(mDuration);
+                    try {
+                        PopUpEditSongFragment.justSaveSongXML();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
         popupMetronome = (ScrollView) findViewById(R.id.popupmetronome);
         popupMetronome_tempo = (SeekBar) findViewById(R.id.popupmetronome_tempo);
@@ -1277,7 +1330,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         popupMetronome_pan_text = (TextView) findViewById(R.id.popupmetronome_pan_text);
         popupMetronome_startstopbutton = (Button) findViewById(R.id.popupmetronome_startstopbutton);
         popupMetronome_visualmetronometoggle = (ToggleButton) findViewById(R.id.visualmetronome);
-        popupMetronome_visualmetronometoggle.setChecked(visualmetronome);
+        if (popupMetronome_visualmetronometoggle!=null) {
+            popupMetronome_visualmetronometoggle.setChecked(visualmetronome);
+        }
 
         //Set default view as 1 col
         scrollpage = scrollpage_onecol;
@@ -1343,6 +1398,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         uparrow_bottom.setVisibility(View.GONE);
                     }
                 }
+                newPosFloat = (float) scrollpage.getScrollY();
             }
         };
 
@@ -1450,7 +1506,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
         audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
-        short volume = (short) metronomevol;
+        //short volume = (short) metronomevol;
         metroTask = new MetronomeAsyncTask();
         Runtime.getRuntime().gc();
 
@@ -1469,7 +1525,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         AsyncTask indexmysongs;
         indexmysongs = new AsyncTask<Object,Void,String>() {
             @Override
-            protected String doInBackground(Object[] params) {
+            protected String doInBackground(Object... params) {
                 String val;
                 try {
                     indexMySongs();
@@ -1509,8 +1565,37 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             SharedPreferences.Editor editor_index = indexSongPreferences.edit();
             editor_index.putBoolean("buildSearchIndex", false);
             editor_index.apply();
-            indexmysongs.execute();
+            indexmysongs.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
+
+        onEverySecond = new Runnable() {
+            @Override
+            public void run() {
+                if (padson) {
+                    dopadProgressTime.post(padprogressTimeRunnable);
+                    dopadProgressTime.postDelayed(onEverySecond, 1000);
+                }
+            }
+        };
+
+        // Setup WiFiP2P
+        ServerSocket mServerSocket;
+        mLocalPort = 0;
+        try {
+            mServerSocket = new ServerSocket(0);
+            mLocalPort = mServerSocket.getLocalPort();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        //mServiceName = mBluetoothAdapter.getName();
+        //if (mServiceName==null) {
+        //    mServiceName = "Device";
+        //}
+        //Log.d("d","mServiceName="+mServiceName);
+        Log.d("d","mServiceType="+mServiceType);
+        Log.d("d","mLocalPort="+mLocalPort);
+
     }
 
     public String timeFormatFixer(int secstime) {
@@ -1526,24 +1611,26 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         return time;
     }
 
-    // WiFi Direct / P2P
-
-/*
-    public void initializeServerSocket() {
-        mServerSocket = new ServerSocket(0);
-        mLocalPort = mServerSocket.getLocalPort();
+    public void getAudioLength() {
+        MediaPlayer mediafile = new MediaPlayer();
+        if (mLinkAudio!=null && !mLinkAudio.equals("")) {
+            try {
+                mediafile.setDataSource(FullscreenActivity.this, Uri.parse(mLinkAudio));
+                mediafile.prepare();
+                audiolength = (int) (mediafile.getDuration() / 1000.0f);
+                mediafile.reset();
+                mediafile.release();
+            } catch (Exception e) {
+                audiolength = -1;
+                mediafile.reset();
+                mediafile.release();
+            }
+        } else {
+            audiolength=-1;
+            mediafile.reset();
+            mediafile.release();
+        }
     }
-
-    public void registerService() {
-        NsdServiceInfo serviceInfo = new NsdServiceInfo();
-        serviceInfo.setServiceName("OpenSongApp");
-        serviceInfo.setServiceType("_ost.tcp.");
-        serviceInfo.setPort(port);
-
-        mNsdManager = Context.getSystemService(Context.NSD_SERVICE);
-        mNsdManager.registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD,mRegistrationListener);
-    }
-*/
 
     @Override
     public void setupPageButtons() {
@@ -1584,14 +1671,19 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
         //Show the bottombar for scroll down
         HorizontalScrollView bottombar = (HorizontalScrollView) findViewById(R.id.bottombar);
-        bottombar.setVisibility(View.VISIBLE);
+        if (bottombar != null) {
+            bottombar.setVisibility(View.VISIBLE);
+        }
+
 
         // Decide if we are using buttons at the bottom of the page or the right
         pagebuttons = (ScrollView) findViewById(R.id.rightbar);
         switch (pagebutton_position) {
             case "right":
                 // Make the right bar visible
-                pagebuttons.setVisibility(View.VISIBLE);
+                if (pagebuttons != null) {
+                    pagebuttons.setVisibility(View.VISIBLE);
+                }
                 setButton_right.setVisibility(View.VISIBLE);
                 setlisticon = setButton_right;
 
@@ -1676,7 +1768,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
         // Get original sizes
         BitmapDrawable bd=(BitmapDrawable) getResources().getDrawable(R.drawable.page_speaker_bw);
-        int width=bd.getBitmap().getWidth();
+        int width = 0;
+        Bitmap mybmp = null;
+        if (bd != null) {
+            mybmp = bd.getBitmap();
+            width = mybmp.getWidth();
+        }
 
         // Resize the images
         resizeImage(padButton, width, scalesize);
@@ -2098,7 +2195,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         // Or if the pad button has been long pressed
         if (popupPad_stoporstart.equals("start")) {
             // user now wants to stop
-            // Turn off the button for now.  This will be reset after fadeout or 10secs
+            // Hide the pad playback progress
+            backingtrackProgress.setVisibility(View.GONE);
+
+            // Turn off the button for now.  This will be reset after fadeout or 12secs
             popupPad_stoporstart = "stop";
             popupPad_startstopbutton.setText(getResources().getString(R.string.wait));
             popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.grey_button));
@@ -2108,13 +2208,13 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             fadeout2 = false;
             if (mPlayer1 != null) {
                 if (mPlayer1.isPlaying()) {
-                    whichtofadeout = 1;
+                    //whichtofadeout = 1;
                     fadeout1 = true;
                 }
             }
             if (mPlayer2 != null) {
                 if (mPlayer2.isPlaying()) {
-                    whichtofadeout = 2;
+                    //whichtofadeout = 2;
                     fadeout2 = true;
                 }
             }
@@ -2124,12 +2224,20 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 @Override
                 public void run() {
                     popupPad_startstopbutton.setText(getResources().getString(R.string.start));
+                    popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
                     popupPad_startstopbutton.setEnabled(true);
                 }
-            },10000);
+            },(crossFadeTime + 2000));
 
-        } else {
+        } else if (popupPad_stoporstart.equals("stop")) {
             // user now wants to start
+            // Show the pad playback progress
+            String text = "";
+            String start = "0:00";
+            padcurrentTime_TextView.setText(start);
+            padtotalTime_TextView.setText(text);
+            backingtrackProgress.setVisibility(View.VISIBLE);
+
             popupPad_stoporstart = "start";
             popupPad_startstopbutton.setText(getResources().getString(R.string.stop));
             popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
@@ -2144,9 +2252,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             e.printStackTrace();
         }
 
-/*        if (popupPad.getVisibility() == View.VISIBLE) {
-
-        }*/
     }
 
     @Override
@@ -2666,7 +2771,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         }
 
         // I want folders to be ready on internal and external storage (if available)
-        intStorCheck = new File(defStorage);
+        File intStorCheck = new File(defStorage);
         if (intStorCheck.exists() && intStorCheck.canWrite()) {
             defStorageExists = true;
         }
@@ -2688,6 +2793,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         dirvariations = new File(root.getAbsolutePath() + "/documents/OpenSong/Variations");
         dirprofiles = new File(root.getAbsolutePath() + "/documents/OpenSong/Profiles");
 
+        File extStorCheck;
         if (secStorage != null) {
             extStorCheck = new File(secStorage);
             if (extStorCheck.exists() && extStorCheck.canWrite()) {
@@ -2753,8 +2859,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         }
 
         if (prefStorage.isEmpty() || !storageIsValid) {
-            intStorCheck = null;
-            extStorCheck = null;
 
             // Not set, or not valid - open the storage activity.
             Intent intent_stop = new Intent();
@@ -2858,7 +2962,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 metroTask = new MetronomeAsyncTask();
                 Runtime.getRuntime().gc();
                 metronomeonoff = "on";
-                metroTask.execute();
+                metroTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         }
     }
@@ -3105,14 +3209,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 if (autoScrollDuration > 0 && autoScrollDelay > -1) {
                     autoscrollonoff = "on";
                     pauseautoscroll = true;
-                    boolean dontdelay = false;
-                    if (autoscrollispaused) {
-                        dontdelay = true;
-                    }
+
                     getAutoScrollValues();
-                    if (dontdelay) {
-                        //autoScrollDelay = 0;
-                    }
 
                     // Show the autoscroll progress
                     //String text = timeFormatFixer(autoScrollDelay);
@@ -3131,7 +3229,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     delayautoscroll.post(new Runnable() {
                         @Override
                         public void run() {
-                            mtask_autoscroll_music = (AutoScrollMusic) new AutoScrollMusic().execute();
+                            mtask_autoscroll_music = (AutoScrollMusic) new AutoScrollMusic().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                         }
                     });
                 }
@@ -3289,26 +3387,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         }
     }
 
-    private class ProgressTime extends AsyncTask<String, Integer, String> {
-        @Override
-        protected void onPreExecute() {
-            time_start = System.currentTimeMillis();
-        }
-
-        @Override
-        protected String doInBackground(String... args) {
-            time_start = System.currentTimeMillis();
-            time_passed = System.currentTimeMillis();
-            while ((time_passed - time_start)/1000 < autoScrollDelay) {
-                if ((time_passed-time_start)>1000) {
-                    doProgressTime.post(progressTimeRunnable);
-                }
-                time_passed = System.currentTimeMillis();
-            }
-            return null;
-        }
-    }
-
     private class AutoScrollMusic extends AsyncTask<String, Integer, String> {
         @Override
         protected void onPreExecute() {
@@ -3346,7 +3424,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 while ((currtime - starttime) < autoscroll_pause_time) {
                     currtime = System.currentTimeMillis();
                 }
-
             }
             return "dummy";
         }
@@ -3441,6 +3518,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         if (popupPad.getVisibility() != View.VISIBLE) {
             padButton.setAlpha(0.4f);
         }
+        backingtrackProgress.setVisibility(View.GONE);
     }
 
     private void killPad1(View view) {
@@ -3514,7 +3592,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 killfadeout1 = false;
                 // Do a fadeout
                 if (mPlayer1 != null) {
-                    whichtofadeout = 1;
+                    //whichtofadeout = 1;
                     fadeout1 = true;
                     fadeOutBackgroundMusic1();
                 }
@@ -3525,7 +3603,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 killfadeout2 = false;
                 // Do a fadeout
                 if (mPlayer2 != null) {
-                    whichtofadeout = 2;
+                    //whichtofadeout = 2;
                     fadeout2 = true;
                     fadeOutBackgroundMusic2();
                 }
@@ -3543,7 +3621,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             checkmPlayerStates.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if ((mPlayer1 == null && mPlayer2 == null) || ((mPlayer1 != null && !mPlayer1.isPlaying()) && (mPlayer2 != null && !mPlayer2.isPlaying()))) {
+                    if (fadeout1 || fadeout2 || (mPlayer1 == null && mPlayer2 == null) || ((mPlayer1 != null && !mPlayer1.isPlaying()) && (mPlayer2 != null && !mPlayer2.isPlaying()))) {
+                        tryKillPads();
                         popupPad_stoporstart = "stop";
                         padson = false;
                         popupPad_startstopbutton.setEnabled(true);
@@ -3564,6 +3643,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         }
                         mPlayer1 = null;
                         mPlayer2 = null;
+
                     }
                 }
             }, (crossFadeTime + 2000));
@@ -3767,25 +3847,53 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
             }
 
-            mPlayer1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mPlayer1.setLooping(true);
-                    switch (padpan) {
-                        case "left":
-                            mPlayer1.setVolume(padvol, 0.0f);
-                            break;
-                        case "right":
-                            mPlayer1.setVolume(0.0f, padvol);
-                            break;
-                        default:
-                            mPlayer1.setVolume(padvol, padvol);
-                            break;
+            if (mPlayer1 != null) {
+                mPlayer1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        if (mPadFile.equals(getResources().getString(R.string.pad_auto)) || mLoopAudio.equals("true")) {
+                            mPlayer1.setLooping(true);
+                        } else {
+                            mPlayer1.setLooping(false);
+                        }
+                        switch (padpan) {
+                            case "left":
+                                mPlayer1.setVolume(padvol, 0.0f);
+                                break;
+                            case "right":
+                                mPlayer1.setVolume(0.0f, padvol);
+                                break;
+                            default:
+                                mPlayer1.setVolume(padvol, padvol);
+                                break;
+                        }
+                        // Set a listener for when the player gets to the end
+                        // If we are looping, then do nothing, but if not toggle the button
+                        mPlayer1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                if (!mLoopAudio.equals("true")) {
+                                    Log.d("d","Reached end and not looping");
+                                    String val = "0:00";
+                                    padcurrentTime_TextView.setText(val);
+                                    backingtrackProgress.setVisibility(View.GONE);
+                                    togglePlayPads(padButton);
+                                } else {
+                                    Log.d("d","Reached end but looping");
+                                    String val = "0:00";
+                                    padcurrentTime_TextView.setText(val);
+                                }
+                            }
+                        });
+                        padtime_length = (int) (mPlayer1.getDuration()/1000.0f);
+                        String text = timeFormatFixer(padtime_length);
+                        padtotalTime_TextView.setText(text);
+                        mPlayer1.start();
+                        padson = true;
+                        dopadProgressTime.post(onEverySecond);
                     }
-                    mPlayer1.start();
-                    padson = true;
-                }
-            });
+                });
+            }
 
             // Now kill the 2nd player if still needed
             if (mPlayer2 != null && mPlayer2.isPlaying()) {
@@ -3806,7 +3914,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             if (mPlayer1.isPlaying()) {
                 // We need to fade this out over the next 8 seconds, then load and start mPlayer2
                 // After 10seconds, release mPlayer1
-                whichtofadeout = 1;
+                //whichtofadeout = 1;
                 fadeout1 = true;
                 fadeOutBackgroundMusic1();
             }
@@ -3826,32 +3934,59 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
             }
 
-            mPlayer2.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mPlayer2.setLooping(true);
-                    switch (padpan) {
-                        case "left":
-                            mPlayer2.setVolume(padvol, 0.0f);
-                            break;
-                        case "right":
-                            mPlayer2.setVolume(0.0f, padvol);
-                            break;
-                        default:
-                            mPlayer2.setVolume(padvol, padvol);
-                            break;
+            if (mPlayer2 != null) {
+                mPlayer2.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        if (mPadFile.equals(getResources().getString(R.string.pad_auto)) || mLoopAudio.equals("true")) {
+                            mPlayer2.setLooping(true);
+                        } else {
+                            mPlayer2.setLooping(false);
+                        }
+                        switch (padpan) {
+                            case "left":
+                                mPlayer2.setVolume(padvol, 0.0f);
+                                break;
+                            case "right":
+                                mPlayer2.setVolume(0.0f, padvol);
+                                break;
+                            default:
+                                mPlayer2.setVolume(padvol, padvol);
+                                break;
+                        }
+                        // Set a listener for when the player gets to the end
+                        // If we are looping, then do nothing, but if not toggle the button
+                        mPlayer2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                if (!mLoopAudio.equals("true")) {
+                                    Log.d("d","Reached end and not looping");
+                                    String val = "0:00";
+                                    padcurrentTime_TextView.setText(val);
+                                    backingtrackProgress.setVisibility(View.GONE);
+                                    togglePlayPads(padButton);
+                                } else {
+                                    Log.d("d","Reached end but looping");
+                                    String val = "0:00";
+                                    padcurrentTime_TextView.setText(val);
+                                }
+                            }
+                        });
+                        padtime_length = (int) (mPlayer2.getDuration()/1000.0f);
+                        String text = timeFormatFixer(padtime_length);
+                        padtotalTime_TextView.setText(text);
+                        mPlayer2.start();
+                        padson = true;
+                        dopadProgressTime.post(onEverySecond);
                     }
-                    mPlayer2.start();
-                    padson = true;
-                }
-            });
-
+                });
+            }
 
         } else if (mPlayer2 != null && padson) {
             if (mPlayer2.isPlaying()) {
                 // We need to fade this out over the next 8 seconds, then load and start mPlayer1
                 // After 10seconds, release mPlayer1
-                whichtofadeout = 2;
+                //whichtofadeout = 2;
                 fadeout2 = true;
                 fadeOutBackgroundMusic2();
             }
@@ -3873,25 +4008,53 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
             }
 
-            mPlayer1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mPlayer1.setLooping(true);
-                    switch (padpan) {
-                        case "left":
-                            mPlayer1.setVolume(padvol, 0.0f);
-                            break;
-                        case "right":
-                            mPlayer1.setVolume(0.0f, padvol);
-                            break;
-                        default:
-                            mPlayer1.setVolume(padvol, padvol);
-                            break;
+            if (mPlayer1 != null) {
+                mPlayer1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        if (mPadFile.equals(getResources().getString(R.string.pad_auto)) || mLoopAudio.equals("true")) {
+                            mPlayer1.setLooping(true);
+                        } else {
+                            mPlayer1.setLooping(false);
+                        }
+                        switch (padpan) {
+                            case "left":
+                                mPlayer1.setVolume(padvol, 0.0f);
+                                break;
+                            case "right":
+                                mPlayer1.setVolume(0.0f, padvol);
+                                break;
+                            default:
+                                mPlayer1.setVolume(padvol, padvol);
+                                break;
+                        }
+                        // Set a listener for when the player gets to the end
+                        // If we are looping, then do nothing, but if not toggle the button
+                        mPlayer1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                if (!mLoopAudio.equals("true")) {
+                                    Log.d("d","Reached end and not looping");
+                                    String val = "0:00";
+                                    padcurrentTime_TextView.setText(val);
+                                    backingtrackProgress.setVisibility(View.GONE);
+                                    togglePlayPads(padButton);
+                                } else {
+                                    Log.d("d","Reached end but looping");
+                                    String val = "0:00";
+                                    padcurrentTime_TextView.setText(val);
+                                }
+                            }
+                        });
+                        padtime_length = (int) (mPlayer1.getDuration()/1000.0f);
+                        String text = timeFormatFixer(padtime_length);
+                        padtotalTime_TextView.setText(text);
+                        mPlayer1.start();
+                        padson = true;
+                        dopadProgressTime.post(onEverySecond);
                     }
-                    mPlayer1.start();
-                    padson = true;
-                }
-            });
+                });
+            }
 
         } else {
             // Nothing was playing already, so start mPlayer 1
@@ -3912,38 +4075,66 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
             }
 
-            mPlayer1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mPlayer1.setLooping(true);
-                    switch (padpan) {
-                        case "left":
-                            mPlayer1.setVolume(padvol, 0.0f);
-                            break;
-                        case "right":
-                            mPlayer1.setVolume(0.0f, padvol);
-                            break;
-                        default:
-                            mPlayer1.setVolume(padvol, padvol);
-                            break;
+            if (mPlayer1 != null) {
+                mPlayer1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        if (mPadFile.equals(getResources().getString(R.string.pad_auto)) || mLoopAudio.equals("true")) {
+                            mPlayer1.setLooping(true);
+                        } else {
+                            mPlayer1.setLooping(false);
+                        }
+                        switch (padpan) {
+                            case "left":
+                                mPlayer1.setVolume(padvol, 0.0f);
+                                break;
+                            case "right":
+                                mPlayer1.setVolume(0.0f, padvol);
+                                break;
+                            default:
+                                mPlayer1.setVolume(padvol, padvol);
+                                break;
+                        }
+                        // Set a listener for when the player gets to the end
+                        // If we are looping, then do nothing, but if not toggle the button
+                        mPlayer1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                if (!mLoopAudio.equals("true")) {
+                                    Log.d("d","Reached end and not looping");
+                                    String val = "0:00";
+                                    padcurrentTime_TextView.setText(val);
+                                    backingtrackProgress.setVisibility(View.GONE);
+                                    togglePlayPads(padButton);
+                                } else {
+                                    Log.d("d","Reached end but looping");
+                                    String val = "0:00";
+                                    padcurrentTime_TextView.setText(val);
+                                }
+                            }
+                        });
+                        padtime_length = (int) (mPlayer1.getDuration()/1000.0f);
+                        String text = timeFormatFixer(padtime_length);
+                        padtotalTime_TextView.setText(text);
+                        mPlayer1.start();
+                        padson = true;
+                        dopadProgressTime.post(onEverySecond);
                     }
-                    mPlayer1.start();
-                    padson = true;
-                }
-            });
+                });
+            }
         }
     }
 
     private void fadeOutBackgroundMusic1() {
         killfadeout1 = false;
         isfading1 = true;
-        mtask_fadeout_music1 = (FadeOutMusic1) new FadeOutMusic1().execute();
+        mtask_fadeout_music1 = (FadeOutMusic1) new FadeOutMusic1().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void fadeOutBackgroundMusic2() {
         killfadeout2 = false;
         isfading2 = true;
-        mtask_fadeout_music2 = (FadeOutMusic2) new FadeOutMusic2().execute();
+        mtask_fadeout_music2 = (FadeOutMusic2) new FadeOutMusic2().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private class FadeOutMusic1 extends AsyncTask<String, Integer, String> {
@@ -4571,16 +4762,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 if (!removingfromset) {
                     String chosenMenu = listDataHeaderOption.get(groupPosition);
 
-                    // Build a dialogue window and related bits that get modified/shown if needed
-                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(FullscreenActivity.this);
-                    LinearLayout titleLayout = new LinearLayout(FullscreenActivity.this);
-                    titleLayout.setOrientation(LinearLayout.VERTICAL);
-                    TextView m_titleView = new TextView(FullscreenActivity.this);
-                    m_titleView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    m_titleView.setTextAppearance(FullscreenActivity.this, android.R.style.TextAppearance_Large);
-                    m_titleView.setTextColor(FullscreenActivity.this.getResources().getColor(android.R.color.white));
-                    m_titleView.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-
                     if (chosenMenu.equals(getResources().getString(R.string.options_set).toUpperCase(locale))) {
 
                         // Load up a list of saved sets as it will likely be needed
@@ -5057,64 +5238,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
                         }
 
-/*
-                    } else if (childPosition == 3) {// Show next
-                            // Options are top, bottom, off
-
-                            switch (showNextInSet) {
-                                case "top":
-                                    showNextInSet = "bottom";
-                                    myToastMessage = getResources().getString(R.string.shownextinset)
-                                            + " - " + getResources().getString(R.string.on)
-                                            + " (" + getResources().getString(R.string.bottom).toUpperCase(locale) + ")";
-                                    ShowToast.showToast(FullscreenActivity.this);
-                                    break;
-                                case "bottom":
-                                    showNextInSet = "off";
-                                    myToastMessage = getResources().getString(R.string.shownextinset)
-                                            + " - " + getResources().getString(R.string.off);
-                                    ShowToast.showToast(FullscreenActivity.this);
-                                    break;
-                                default:
-                                    showNextInSet = "top";
-                                    myToastMessage = getResources().getString(R.string.shownextinset)
-                                            + " - " + getResources().getString(R.string.on)
-                                            + " (" + getResources().getString(R.string.top).toUpperCase(locale) + ")";
-                                    ShowToast.showToast(FullscreenActivity.this);
-                                    break;
-                            }
-                            Preferences.savePreferences();
-                            redrawTheLyricsTable(main_page);
-
-
-                        } else if (childPosition == 6) {// Toggle autosticky
-                            switch (toggleAutoSticky) {
-                                case "N":
-                                    toggleAutoSticky = "Y";
-                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.on);
-                                    break;
-                                case "Y":
-                                    toggleAutoSticky = "T";
-                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.top);
-                                    break;
-                                case "T":
-                                    toggleAutoSticky = "B";
-                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.bottom);
-                                    break;
-                                default:
-                                    // Keep sticky notes hidden in normal sticky note view
-                                    toggleAutoSticky = "N";
-                                    myToastMessage = getResources().getString(R.string.toggle_autoshow_stickynotes) + " - " + getResources().getString(R.string.off);
-                                    break;
-                            }
-                            // Save preferences
-                            Preferences.savePreferences();
-                            ShowToast.showToast(FullscreenActivity.this);
-                            redrawTheLyricsTable(view);
-
-
-                        }
-*/
 
                     } else if (chosenMenu.equals(getResources().getString(R.string.options_gesturesandmenus).toUpperCase(locale))) {
                         linkclicked = listDataChildOption.get(listDataHeaderOption.get(groupPosition)).get(childPosition);
@@ -5191,8 +5314,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                                     ShowToast.showToast(FullscreenActivity.this);
                                     break;
                             }
-
-
                         }
 
 
@@ -5487,7 +5608,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         mDrawerLayout.openDrawer(expListViewSong);
         mDrawerLayout.openDrawer(expListViewOption);
         wasscrolling = false;
-        delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+        if (delayactionBarHide!=null && hideActionBarRunnable!=null) {
+            delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+        }
     }
 
     private void gesture2() {
@@ -5559,8 +5682,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     }
 
     private void toggleActionBar() {
-
-        delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+        if (delayactionBarHide!=null && hideActionBarRunnable!=null) {
+            delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+        }
         if (ab != null) {
             if (wasscrolling || scrollbutton) {
                 if (hideactionbaronoff.equals("Y") && !expListViewSong.isFocused() && !expListViewSong.isShown() && !expListViewOption.isFocused() && !expListViewOption.isShown()) {
@@ -5712,7 +5836,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     // Need to scroll down first
                     DisplayMetrics metrics = new DisplayMetrics();
                     getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                    scrollpage.smoothScrollBy(0, (int) (0.75 * metrics.heightPixels));
+                    newPosFloat = scrollpage.getScrollY() + (float) (0.65 * metrics.heightPixels);
+                    scrollpage.smoothScrollBy(0, (int) (0.65 * metrics.heightPixels));
 
                     // Set a runnable to check the scroll position after 1 second
                     delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
@@ -5792,7 +5917,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     // Need to scroll up first
                     DisplayMetrics metrics = new DisplayMetrics();
                     getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                    scrollpage.smoothScrollBy(0, (int) (-0.75 * metrics.heightPixels));
+                    newPosFloat = scrollpage.getScrollY() - (float) (0.65 * metrics.heightPixels);
+                    scrollpage.smoothScrollBy(0, (int) (-0.65 * metrics.heightPixels));
 
                     // Set a runnable to check the scroll position after 1 second
                     delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
@@ -5856,7 +5982,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             // Scroll the screen up
             DisplayMetrics metrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            scrollpage.smoothScrollBy(0, (int) (-0.75 * metrics.heightPixels));
+            newPosFloat = scrollpage.getScrollY() - (float) (0.65 * metrics.heightPixels);
+            scrollpage.smoothScrollBy(0, (int) (-0.65 * metrics.heightPixels));
             // Set a runnable to check the scroll position after 1 second
             delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
 
@@ -5874,10 +6001,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
             }, delayswipe_time);
 
-            // Scroll the screen up
+            // Scroll the screen down
             DisplayMetrics metrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            scrollpage.smoothScrollBy(0, (int) (0.75 * metrics.heightPixels));
+            newPosFloat = scrollpage.getScrollY() + (float) (0.65 * metrics.heightPixels);
+            scrollpage.smoothScrollBy(0, (int) (0.65 * metrics.heightPixels));
+
             // Set a runnable to check the scroll position after 1 second
             delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
 
@@ -6012,7 +6141,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        scrollpage.smoothScrollBy(0, (int) (-0.75 * metrics.heightPixels));
+        newPosFloat = (float) scrollpage.getScrollY() - (int) (0.65 * metrics.heightPixels);
+        scrollpage.smoothScrollBy(0, (int) (-0.65 * metrics.heightPixels));
         // Set a runnable to check the scroll position after 1 second
         delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
         toggleActionBar();
@@ -6025,7 +6155,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        scrollpage.smoothScrollBy(0, (int) (+0.75 * metrics.heightPixels));
+        newPosFloat = (float) scrollpage.getScrollY() + (int) (0.65 * metrics.heightPixels);
+        scrollpage.smoothScrollBy(0, (int) (+0.65 * metrics.heightPixels));
         // Set a runnable to check the scroll position after 1 second
         delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
         toggleActionBar();
@@ -6174,7 +6305,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
         // Decide if presenter button is greyed out or not
         if (menu!=null) {
-            presentationMode = menu.findItem(R.id.present_mode);
+            MenuItem presentationMode = menu.findItem(R.id.present_mode);
             if (dualDisplayCapable.equals("N")) {
                 presentationMode.setEnabled(true);
                 presentationMode.getIcon().setAlpha(30);
@@ -6212,10 +6343,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         allchordscapo = "";
 
         mScaleFactor = 1.0f;
-/*
-        findViewById(R.id.LyricDisplay_onecoldisplay).setScaleX(1.0f);
-        findViewById(R.id.LyricDisplay_onecoldisplay).setScaleY(1.0f);
-*/
 
         if (toggleYScale.equals("N")) {
             needtoredraw = false;
@@ -6256,6 +6383,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 needtorefreshsongmenu = false;
             }
 
+            // Decide if there is a valid link audio file and if so, show the link icon to get the duration from it
+            getAudioLength();
+            if (audiolength>-1) {
+                uselinkaudiolength_ImageButton.setVisibility(View.VISIBLE);
+            } else {
+                uselinkaudiolength_ImageButton.setVisibility(View.GONE);
+            }
+
             // Find out if the song is in the current set
             // Only if there is only one occurence of the song in the set
             int count = 0;
@@ -6284,6 +6419,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 testMPlayer.reset();
             } catch (Exception e) {
                 // Problem with link audio so don't use it
+                testMPlayer.reset();
                 badlinkaudio = true;
             }
             testMPlayer.release();
@@ -6314,7 +6450,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 padson = false;
                 if (mPlayer1 != null) {
                     if (mPlayer1.isPlaying()) {
-                        whichtofadeout = 1;
+                        //whichtofadeout = 1;
                         fadeout1 = true;
                         popupPad_startstopbutton.setText(getResources().getString(R.string.wait));
                         popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.grey_button));
@@ -6325,7 +6461,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
                 if (mPlayer2 != null) {
                     if (mPlayer2.isPlaying()) {
-                        whichtofadeout = 2;
+                        //whichtofadeout = 2;
                         fadeout2 = true;
                         popupPad_startstopbutton.setText(getResources().getString(R.string.wait));
                         popupPad_startstopbutton.setBackgroundDrawable(getResources().getDrawable(R.drawable.grey_button));
@@ -6363,6 +6499,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 popupPad_file.setSelection(1);
             } else {
                 popupPad_file.setSelection(0);
+            }
+
+            // Set the loop on or off
+            if (mLoopAudio.equals("true")) {
+                popupPad_loopaudio.setChecked(true);
+            } else {
+                mLoopAudio = "false";
+                popupPad_loopaudio.setChecked(false);
             }
 
             // Set the pad volume and pan
@@ -6497,7 +6641,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 metronomeonoff = "on";
                 popupMetronome_stoporstart = "start";
                 popupMetronome_startstopbutton.setText(getResources().getString(R.string.stop));
-                metroTask.execute();
+                metroTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
 
             // Stop restarting the pads if changing portrait/landscape
@@ -6619,7 +6763,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 // We need to fade out mPlayer1
                 if (mPlayer1.isPlaying()) {
                     // We need to fade this out over the next 8 seconds
-                    whichtofadeout = 1;
+                    //whichtofadeout = 1;
                     fadeout1 = true;
                     fadeOutBackgroundMusic1();
                 }
@@ -6628,7 +6772,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 // We need to fade out mPlayer2
                 if (mPlayer2.isPlaying()) {
                     // We need to fade this out over the next 8 seconds
-                    whichtofadeout = 2;
+                    //whichtofadeout = 2;
                     fadeout2 = true;
                     fadeOutBackgroundMusic2();
                 }
@@ -6754,8 +6898,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 if (tempfontsize < mMinFontSize && toggleYScale.equals("Y") && override_fullscale) {
                     myToastMessage = getString(R.string.toastmessage_minfont);
                     myToastMessage += "\n"+getString(R.string.override_fullautoscale);
-                    myToastMessage += "\n"+getString(R.string.minfontsize)+": "+mMinFontSize+" sp";
-                    myToastMessage += "\n"+getString(R.string.size)+": "+(float)((int)(tempfontsize*10))/10.0f+" sp";
+                    //myToastMessage += "\n"+getString(R.string.minfontsize)+": "+mMinFontSize+" sp";
+                    //myToastMessage += "\n"+getString(R.string.size)+": "+(float)((int)(tempfontsize*10))/10.0f+" sp";
                     tempfontsize = mainfontsize * override_onecolfontsize - 0.6f;
                     tempsectionsize = sectionfontsize * override_onecolfontsize - 0.6f;
                     scrollpage = scrollpage_onecol;
@@ -6766,8 +6910,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 if (tempfontsize < mMinFontSize && (toggleYScale.equals("Y") || toggleYScale.equals("W")) && override_widthscale) {
                     myToastMessage = getString(R.string.toastmessage_minfont);
                     myToastMessage += "\n"+getString(R.string.override_widthautoscale);
-                    myToastMessage += "\n"+getString(R.string.minfontsize)+": "+mMinFontSize+" sp";
-                    myToastMessage += "\n"+getString(R.string.size)+": "+(float)((int)(tempfontsize*10))/10.0f+" sp";
+                    //myToastMessage += "\n"+getString(R.string.minfontsize)+": "+mMinFontSize+" sp";
+                    //myToastMessage += "\n"+getString(R.string.size)+": "+(float)((int)(tempfontsize*10))/10.0f+" sp";
                     tempfontsize = mFontSize;
                     tempsectionsize = mFontSize * 0.7f;
                     columnTest = 1;
@@ -6865,7 +7009,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     if (mtask_autoscroll_music != null) {
                         mtask_autoscroll_music.cancel(true);
                     }
-                    delayautoscroll.removeCallbacks(autoScrollRunnable);
+                    if (delayautoscroll!=null && autoScrollRunnable!=null) {
+                        delayautoscroll.removeCallbacks(autoScrollRunnable);
+                    }
                     autoScrollDelay = popupAutoscroll_delay.getProgress() - 1;
                     mDuration = popupAutoscroll_duration.getText().toString();
                     getAutoScrollValues();
@@ -8120,11 +8266,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             mSetList[x] = mSetList[x].replace("$**_", "");
             mSetList[x] = mSetList[x].replace("_**$", "");
         }
-
- /*       // Open the Optionlist drawer up again so we can see the set
-        mDrawerLayout.openDrawer(expListViewOption);
-        expListViewOption.expandGroup(0);
-*/
     }
 
     private void redrawTheLyricsTable(View view) {
@@ -8149,13 +8290,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             isPDF = false;
             isSong = true;
         }
-/*
-        wasshowing_pdfselectpage = View.GONE;
-        wasshowing_stickynotes = View.INVISIBLE;
-*/
 
         // Show the ActionBar
-        delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+        if (delayactionBarHide!=null && hideActionBarRunnable!=null) {
+            delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+        }
 
         if (ab != null) {
             ab.show();
@@ -8430,7 +8569,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
                     // Do the stuff async to stop the app slowing down
                     ImportOnSongBackup task2 = new ImportOnSongBackup();
-                    task2.execute();
+                    task2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 } else {
                     myToastMessage = getResources().getString(R.string.import_onsong_error);
                     ShowToast.showToast(FullscreenActivity.this);
@@ -8554,13 +8693,17 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
     @Override
     public boolean onMenuOpened(int featureId, Menu menu) {
-        delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+        if (delayactionBarHide!=null && hideActionBarRunnable!=null) {
+            delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+        }
         return super.onMenuOpened(featureId, menu);
     }
 
     @Override
     public void onPanelClosed(int featureId, Menu menu) {
-        delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+        if (delayactionBarHide!=null && hideActionBarRunnable!=null) {
+            delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+        }
     }
 
     @Override
@@ -8570,11 +8713,15 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         // then it has handled the app icon touch event
 
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+            if (delayactionBarHide!=null && hideActionBarRunnable!=null) {
+                delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+            }
             return true;
 
         } else {
-            delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+            if (delayactionBarHide!=null && hideActionBarRunnable!=null) {
+                delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+            }
             switch (item.getItemId()) {
 
                 case R.id.present_mode:
@@ -8754,19 +8901,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         showCurrentSet(view);
 
                         fixSetActionButtons();
-
-/*
-                        // Hide the menus - 1 second after opening the Option menu,
-                        // close it (1000ms total)
-                        Handler optionMenuFlickClosed = new Handler();
-                        optionMenuFlickClosed.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                mDrawerLayout.closeDrawer(expListViewOption);
-                            }
-                        }, 1000);
-*/
-
                     }
                     return true;
 
@@ -9220,7 +9354,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     toggleActionBar();
 
                 } else {
-                    delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+                    if (delayactionBarHide!=null && hideActionBarRunnable!=null) {
+                        delayactionBarHide.removeCallbacks(hideActionBarRunnable);
+                    }
                 }
                 wasscrolling = false;
                 scrollbutton = false;
@@ -10743,18 +10879,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 tbasic3_3.setBackgroundColor(lyrics_useThisBGColor);
 
                 if (whatisthisline[x].equals("comment")) {
-                    //tbasic1_1.setTextSize(tempsectionsize);
-                    //tbasic1_2.setTextSize(tempsectionsize);
-                    //tbasic2_2.setTextSize(tempsectionsize);
-                    //tbasic1_3.setTextSize(tempsectionsize);
-                    //tbasic2_3.setTextSize(tempsectionsize);
-                    //tbasic3_3.setTextSize(tempsectionsize);
                     tbasic1_1.setTextSize(tempfontsize * commentfontscalesize);
-                    tbasic1_2.setTextSize(tempfontsize * headingfontscalesize);
-                    tbasic2_2.setTextSize(tempfontsize * headingfontscalesize);
-                    tbasic1_3.setTextSize(tempfontsize * headingfontscalesize);
-                    tbasic2_3.setTextSize(tempfontsize * headingfontscalesize);
-                    tbasic3_3.setTextSize(tempfontsize * headingfontscalesize);
+                    tbasic1_2.setTextSize(tempfontsize * commentfontscalesize);
+                    tbasic2_2.setTextSize(tempfontsize * commentfontscalesize);
+                    tbasic1_3.setTextSize(tempfontsize * commentfontscalesize);
+                    tbasic2_3.setTextSize(tempfontsize * commentfontscalesize);
+                    tbasic3_3.setTextSize(tempfontsize * commentfontscalesize);
                 }
                 normalrow1_1.setBackgroundColor(lyrics_useThisBGColor);
                 normalrow1_2.setBackgroundColor(lyrics_useThisBGColor);
@@ -11156,7 +11286,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         }
                     }
                 }
-                myToastMessage = myToastMessage.substring(0,myToastMessage.length()-2);
+                if (myToastMessage.length()>2) {
+                    myToastMessage = myToastMessage.substring(0, myToastMessage.length() - 2);
+                }
                 myToastMessage = myToastMessage + " " + getResources().getString(R.string.sethasbeendeleted);
 
                 // Refresh all stuff needed
@@ -11247,4 +11379,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             out.write(buffer, 0, read);
         }
     }
+
+    @Override
+    public void updateLinksPopUp() {
+        // This is called when a file is chosen from the PopUpDirectoryChooserFragment
+        // We need to decide if it is an audiofile or otherfile
+        popupLink(linkButton);
+    }
+
 }

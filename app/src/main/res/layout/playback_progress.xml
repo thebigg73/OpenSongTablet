@@ -1,4 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/backingtrackProgress"
+        android:background="#888888"
+        android:alpha="0.4"
+        android:padding="10dp"
+        android:gravity="center_vertical|center_horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView6"
+            android:src="@drawable/page_speaker_bw"
+            android:contentDescription="@string/pad"
+            android:layout_marginRight="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/padcurrentTime_TextView"
+            android:textStyle="bold|italic"
+            android:textSize="24sp"
+            android:textColor="#fff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" / "
+            android:id="@+id/textView47"
+            android:textStyle="bold|italic"
+            android:textSize="24sp"
+            android:textColor="#fff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/padtotalTime_TextView"
+            android:textStyle="bold|italic"
+            android:textSize="24sp"
+            android:textColor="#fff" />
+    </LinearLayout>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -40,4 +89,5 @@
         android:textStyle="bold|italic"
         android:textSize="24sp"
         android:textColor="#fff" />
+</LinearLayout>
 </LinearLayout>

@@ -8,10 +8,11 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
-  <duration></duration>
+  <duration>10</duration>
+  <predelay></predelay>
   <ccli>61282</ccli>
   <theme>Christ: Attributes; Worship: Declaration; </theme>
-  <alttheme></alttheme>
+  <alttheme>Christ: Attributes; Worship: Declaration; </alttheme>
   <user1>117</user1>
   <user2></user2>
   <user3></user3>
@@ -44,13 +45,11 @@
 .        B7            E    A  B7  E
  And the grace to forgive
 
-
 [V2]
  I  believe in You, Lord |(I believe in You) 
  I  believe You are the Son of God |(You are the Son of God)
  I  believe You died and rose again |(Died and rose again) 
  I  believe You paid for us all |(You paid for us all)
-
 
 [C2]
  And I believe You are here now |(I believe You are here) 
@@ -58,6 +57,10 @@
  Here with the power to heal now |(With the power to heal) 
  And the grace to forgive</lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

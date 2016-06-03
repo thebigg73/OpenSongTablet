@@ -68,7 +68,8 @@ public class Preferences extends Activity {
 		FullscreenActivity.lastSetName = myPreferences.getString("lastSetName", "");
 		FullscreenActivity.presoAlpha = myPreferences.getFloat("presoAlpha", 1.0f);
 		FullscreenActivity.presoAutoScale = myPreferences.getBoolean("presoAutoScale", true);
-		FullscreenActivity.presoFontSize = myPreferences.getInt("presoFontSize", 4);
+		FullscreenActivity.presoFontSize = myPreferences.getInt("presoFontSize", 12);
+		FullscreenActivity.presoMaxFontSize = myPreferences.getInt("presoMaxFontSize", 40);
 		FullscreenActivity.presoShowChords = myPreferences.getBoolean("presoShowChords", false);
 		FullscreenActivity.xmargin_presentation = myPreferences.getInt("xmargin_presentation", 50);
 		FullscreenActivity.ymargin_presentation = myPreferences.getInt("ymargin_presentation", 25);
@@ -268,6 +269,7 @@ public class Preferences extends Activity {
 		editor.putFloat("presoAlpha", FullscreenActivity.presoAlpha);
 		editor.putBoolean("presoAutoScale", FullscreenActivity.presoAutoScale);
 		editor.putInt("presoFontSize", FullscreenActivity.presoFontSize);
+		editor.putInt("presoMaxFontSize", FullscreenActivity.presoMaxFontSize);
 		editor.putBoolean("presoShowChords", FullscreenActivity.presoShowChords);
         editor.putInt("presoTitleSize", FullscreenActivity.presoTitleSize);
         editor.putInt("presoAuthorSize", FullscreenActivity.presoAuthorSize);

@@ -8,7 +8,8 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
-  <duration></duration>
+  <duration>246</duration>
+  <predelay>10</predelay>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -57,5 +58,9 @@
   <linked_songs></linked_songs>
   <pad_file>Auto</pad_file>
   <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio>file:///storage/9016-4EF8/Download/superstition-stevie-wonder.mid</link_audio>
+  <link_other></link_other>
   <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
 </song>

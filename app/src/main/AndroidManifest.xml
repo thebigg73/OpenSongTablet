@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
-    android:versionCode="92"
-    android:versionName="3.8.0"
+    android:versionCode="97"
+    android:versionName="3.8.5"
     android:installLocation="auto">
 
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="23" />

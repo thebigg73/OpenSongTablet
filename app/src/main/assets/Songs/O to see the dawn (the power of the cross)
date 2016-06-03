@@ -8,7 +8,8 @@
   <capo print="false"></capo>
   <tempo>62</tempo>
   <time_sig>4/4</time_sig>
-  <duration></duration>
+  <duration>10</duration>
+  <predelay></predelay>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -62,12 +63,18 @@
  Won through Your selfless love.
  
 [C2]
+.A/C#      D     E      A      A/C#   D    E         A
  This, the power of the cross, Son of God, slain for us.
+.A/C#   D     B/D#   E     E7/D A/C#   D     Esus   A (D Bm7 E)
  What a love! What a cost! We stand forgiven at the cross. 
 
 ;Repeat chorus
 ;Outro - melody played 'we stand forgiven' as echo</lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

@@ -8,7 +8,8 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
-  <duration></duration>
+  <duration>180</duration>
+  <predelay>10</predelay>
   <ccli>2035862</ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -54,6 +55,11 @@
 .C2                       D2
  And set my heart on what lies ahead.</lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <loop_audio>false</loop_audio>
+  <link_other></link_other>
 </song>

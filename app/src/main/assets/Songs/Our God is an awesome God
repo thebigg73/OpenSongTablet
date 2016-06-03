@@ -15,7 +15,7 @@
   <user1></user1>
   <user2></user2>
   <user3></user3>
-  <key>Cm</key>
+  <key>Gm</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -24,32 +24,35 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[V1]
-.        Cm
+.        Gm
  When He rolls up His sleeves He ain't puttin' on the ritz
-.    Fm7       Gm7     Cm
+.    Cm7       Dm7     Gm
  Our God is an awesome God
-.Gm7      Cm
+.Dm7      Gm
  There is thunder in His footsteps and lightning in His fists
-.    Fm7       Gm7     Cm 
+.    Cm7       Dm7     Gm 
  Our God is an awesome God 
-.    Fm7
+.    Cm7
  The Lord wasn't joking when He kicked 'em out of Eden
-.   Gm7
+.   Dm7
  It wasn't for no reason that He shed His blood 
-.    Ab                         Fm7
+.    Eb                         Cm7
  His return is very soon so you better be believin'
-.         Fm7       Gm7     Cm 
+.         Cm7       Dm7     Gm 
  That our God is an awesome God 
 
 [C]
-.    Ab        Eb 
+.    Eb        Bb 
  Our God is an awesome God
-.   Bb          Cm 
+.   F          Gm 
  He reigns from heaven above 
-.     Ab      Eb 
+.     Eb      Bb 
  With wisdom, power and love
-.    Fm7       Gm7     Cm
+.    Cm7       Dm7     Gm
  Our God is an awesome God!
 
 [V2]
@@ -62,8 +65,5 @@
  I hope that we have not too quickly forgotten
  That our God is an awesome God!
 </lyrics>
-  <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  <style index="default_style"></style>
   <style index="default_style"></style>
 </song>

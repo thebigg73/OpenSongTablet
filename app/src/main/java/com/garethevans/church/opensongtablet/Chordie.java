@@ -97,7 +97,7 @@ public class Chordie extends Activity{
         toast.show();
 
         DownloadWebTextTask task = new DownloadWebTextTask();
-        task.execute(weblink);
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,weblink);
     }
 
     private class DownloadWebTextTask extends AsyncTask<String, Void, String> {

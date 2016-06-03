@@ -5,10 +5,11 @@
   <copyright>1998 Thankyou Music</copyright>
   <presentation></presentation>
   <hymn_number>513</hymn_number>
-  <capo print="true">3</capo>
+  <capo print="true"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
-  <duration></duration>
+  <duration>10</duration>
+  <predelay></predelay>
   <ccli></ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -28,43 +29,54 @@
 .Dm7  Eb  F
 
 [V1]
-.Dm7   Eb           F         Bb       Eb   Bb
+.Dm7    Eb2  Eb     F         Bb/D    Eb   Bb
  All my days I will sing this song of gladness
-.Dm7    Eb             F        Bb    Eb 
- Give my praise to the Fountain of delights
-.    Cm Eb  F                Cm    Eb  F
- For in my helplessness You heard my cry
-.    Cm    Eb  F                       G C
- And waves of mercy poured down on my life
+.Dm7     Eb2    Eb     F        Bb/D  Eb 
+ Give my praise to the Fountain of  delights
+.    Cm7 Ebmaj7  F                Eb    Bb/D F
+ For in  my      helplessness You heard my   cry
+.    Cm7   Ebmaj7 Dm7                     G/B C
+ And waves of     mercy poured down on my life
 
 [V2]
+.Dm7    Eb2  Eb     F         Bb/D    Eb   Bb
  I will trust in the cross of my Redeemer
+.Dm7    Eb2  Eb     F          Bb/D  Eb 
  I will sing of the blood that never fails
+.   Cm7  Ebmaj7 F     Eb Bb/D    F
  Of sins forgiven, of conscience cleansed
+.   Cm7   Ebmaj7 Dm7                G/B C
  Of death defeated and life without end
 
 [C]
-.          F      Bb           C      F
+.C/Bb      F/A    Bb          C C/E  F
  Beautiful Saviour, Wonderful Counsellor
 .           Gm              Gm/F
  Clothed in majesty, Lord of history
-.           C/E     Dm7       C/Gb
+.           C/E     Dm7       C
  You're the Way, the Truth, the Life
-.            F      Bb             C/E F
+.C/Bb        F/A    Bb            C C/E F
  Star of the Morning, glorious in holiness
-.           Gm                 Gm/F
+.           Gm                  Gm/F
  You're the Risen One, heaven's Champion
-.        C/E   Dm7 C         Dm7  Eb  F
+.        C/E    Dm7 C          Dm7  Eb  F
  And You reign, You reign over all
 
 [V3]
+.Dm7    Eb2 Eb          F         Bb/D  Eb  Bb
  I long to be where the praise is never-ending
+.Dm7      Eb2  Eb         F     Bb/D  Eb 
  Yearn to dwell where the glory never fades
+.      Cm7 Ebmaj7 F               Eb    Bb/D F
  Where countless worshippers will share one song
+.    Cm7   Ebmaj7 Dm7                  G/B C
  And cries of 'worthy' will honour the Lamb
 </lyrics>
   <linked_songs></linked_songs>
   <pad_file>Auto</pad_file>
   <custom_chords></custom_chords>
-  <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

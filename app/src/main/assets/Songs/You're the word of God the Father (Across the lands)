@@ -8,7 +8,8 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
-  <duration></duration>
+  <duration>10</duration>
+  <predelay></predelay>
   <ccli>3709898</ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -41,20 +42,32 @@
  And Your cry of love rings out across the lands
  
 [V2]
+.        D                G               D                 A
  Yet You left the gaze of angels, came to seek and save the lost
+.      G           G6     D/F#            Em           G
  And exchanged the joy of heaven, for the anguish of a cross
+.       D                  G              D                    A
  With a prayer You fed the hungry, with a word You stilled the sea
+.        G     G6     D/F#               Em     G      Asus
  Yet how silently You suffered, that the guilty may go free
  
 [V3]
+.       D                 G                  D                A
  With a shout You rose victorious, wrestling victory from the grave
+.     G       G6   D/F#            Em               G
  And ascended into heaven, leading captives in Your wake
+.        D                G            D               A
  Now You stand before the Father, interceding for Your own
+.          G         G6         D/F#            Em      G       Asus
  From each tribe and tongue and nation, You are leading sinners home
 
 ;Chorus 3x at end, acapella last time.
 </lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

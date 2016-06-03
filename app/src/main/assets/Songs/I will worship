@@ -15,7 +15,7 @@
   <user1>238</user1>
   <user2></user2>
   <user3></user3>
-  <key>E</key>
+  <key>F</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -24,32 +24,35 @@
   <pitch></pitch>
   <restrictions></restrictions>
   <notes></notes>
+  <linked_songs></linked_songs>
+  <pad_file></pad_file>
+  <custom_chords></custom_chords>
   <lyrics>[V1]
-.E
+.F
  I will worship|(I will worship)
-.     D
+.     Eb
  With all of my heart|(With all of my heart)
-.A
+.Bb
  I will praise You|(I will praise You)
-.     E                   F#m7   B
+.     F                   Gm7   C
  With all of my strength|(All my strength)||
-.E
+.F
  I will seek You|(I will seek You)
-.D
+.Eb
  All of my days|(All of my days)
-.A
+.Bb
  I will follow|(I will follow)
-.E                 F#m7     B
+.F                 Gm7     C
  All of Your ways|(All Your ways)
  
 [C]
-.E               B/D#
+.F               C/E
  I will give You all my worship
-.A/C#            F#m7   B
+.Bb/D            Gm7   C
  I will give You all my praise
-.E           B/D#
+.F           C/E
  You alone I long to worship
-.A/C#          F#m7   B     E
+.Bb/D          Gm7   C     F
  You alone are worthy of my praise
  
 [V2]
@@ -60,8 +63,6 @@
  I will lift up|(I will lift up)
  My eyes to Your throne|(My eyes to Your throne)
  I will trust You|(I will trust You)
- I will trust You alone|(Trust You alone)</lyrics>
-  <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+ I will trust You alone|(Trust You alone)
+</lyrics>
 </song>

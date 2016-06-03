@@ -8,7 +8,8 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
-  <duration></duration>
+  <duration>180</duration>
+  <predelay></predelay>
   <ccli>12949</ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -25,16 +26,20 @@
   <restrictions></restrictions>
   <notes></notes>
   <lyrics>[V]
-.C     F G       C   Am7
+.C     F G       C   A7
  Emmanuel, Emmanuel,
-.             Dm7 G       C   C7
- We call Your name, Emmanuel;
-.         F  G            C  Am7
+.            Dm7 G        C   C7
+ His name is called Emmanuel;
+.         F  G            C  A7
  God with us, revealed in us;
-.             Dm7 G7      F   C
- We call Your name, Emmanuel.
+.            Dm7 G7       F   C
+ His name is called Emmanuel.
 </lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

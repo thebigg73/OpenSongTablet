@@ -3,15 +3,16 @@
   <title>As we lift up our hands (It is You)</title>
   <author>Newsboys</author>
   <copyright></copyright>
-  <presentation>V P C V P C B P C</presentation>
+  <presentation></presentation>
   <hymn_number></hymn_number>
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
   <duration></duration>
+  <predelay></predelay>
   <ccli></ccli>
   <theme>Worship: Call/Opening; Worship: Praise/Adoration; </theme>
-  <alttheme></alttheme>
+  <alttheme>Worship: Call/Opening; Worship: Praise/Adoration; </alttheme>
   <user1></user1>
   <user2></user2>
   <user3></user3>
@@ -68,7 +69,10 @@
 .         A                        G         D
  Will You visit this place by Your mercy and grace?</lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
-  <backgrounds resize="screen" keep_aspect="false" link="false" background_as_text="false"/>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

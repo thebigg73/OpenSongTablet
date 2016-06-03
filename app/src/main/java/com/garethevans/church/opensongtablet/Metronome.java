@@ -43,6 +43,9 @@ public class Metronome {
 		silence = (int) (((60/bpm)*(8000/resolutionmeter)-tick));
 		soundTickArray = new double[this.tick];	
 		soundTockArray = new double[this.tick];
+		if (silence>10000) {
+            silence = 10000;
+        }
 		silenceSoundArray = new double[this.silence];
 		msg = new Message();
 		msg.obj = ""+currentBeat;

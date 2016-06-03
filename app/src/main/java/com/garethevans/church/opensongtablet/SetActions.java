@@ -2,25 +2,18 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.util.Base64;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
-
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
+import java.io.InputStream;
 
 public class SetActions extends Activity {
 
     static boolean check_action;
-    static FileInputStream inputStream;
-    static InputStreamReader streamReader;
-    static BufferedReader bufferedReader;
     static String scripture_title;
     static String scripture_translation;
     static String scripture_text;
@@ -52,6 +45,7 @@ public class SetActions extends Activity {
     static String aka = "";
     static String key_line = "";
     static String hymn_number = "";
+    static String hymn_number_imagecode;
     static XmlPullParserFactory factory;
     static XmlPullParser xpp;
 
@@ -140,41 +134,31 @@ public class SetActions extends Activity {
         FullscreenActivity.mySetXML = "";
         FullscreenActivity.myParsedSet = null;
 
+        // Reset any current set
+        FullscreenActivity.mySet = null;
+        FullscreenActivity.mySet = "";
+
         // Test if file exists - the settoload is the link clicked so is still the set name
         FullscreenActivity.setfile = new File(FullscreenActivity.dirsets + "/" + FullscreenActivity.settoload);
         if (!FullscreenActivity.setfile.exists()) {
             return;
         }
 
-        try {
-            loadSetIn();
-        } catch (Exception e) {
-            // file doesn't exist
-        }
+        // Try the new, improved method of loading in a set
+        // First up, try to get the encoding of the set file
+        String utf = LoadXML.getUTFEncoding(FullscreenActivity.setfile);
 
-        PopUpListSetsFragment.val = FullscreenActivity.set_processing + "...";
-        PopUpListSetsFragment.mHandler.post(PopUpListSetsFragment.runnable);
-
-        // Ok parse the set XML file and extract the stuff needed (slides and bible verses to be kept)
-        // Stuff will be saved in mySet string.
-        // Songs identified by $**_XXXX_**$
-        // Slide contents identified by $**_Slide/XXXX_**$
-        // Note contents identified by $**_Note/XXXX_**$
-        // Scripture contents identified by $**_Scripture/XXXX_**$
-        // Image contents identified by $**_Image/XXXX_**$
-        // Variation contents identified by $**_Variation/XXXX_**$
-
-        // Reset any current set
-        FullscreenActivity.mySet = null;
-        FullscreenActivity.mySet = "";
-
+        // Now we know the encoding, iterate through the file extracting the items as we go
         factory = XmlPullParserFactory.newInstance();
         factory.setNamespaceAware(true);
         xpp = factory.newPullParser();
+        InputStream inputStream = new FileInputStream(FullscreenActivity.setfile);
+        xpp.setInput(inputStream, utf);
 
+        int eventType;
         if (PopUpListSetsFragment.dataTask!=null && !PopUpListSetsFragment.dataTask.isCancelled()) {
-            xpp.setInput(new StringReader(FullscreenActivity.mySetXML));
-            int eventType = xpp.getEventType();
+
+            eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_TAG) {
                     if (xpp.getName().equals("slide_group")) {
@@ -345,79 +329,53 @@ public class SetActions extends Activity {
 
     }
 
-    public static void loadSetIn() throws IOException {
-        inputStream = new FileInputStream(new File(FullscreenActivity.dirsets + "/" + FullscreenActivity.settoload));
-
-        int size = (int) FullscreenActivity.setfile.length();
-        int bytesdone = 0;
-
-        streamReader = new InputStreamReader(inputStream);
-        bufferedReader = new BufferedReader(streamReader);
-
-        String l;
-
-        int count = 0;
-        while ((l = bufferedReader.readLine()) != null  && !PopUpListSetsFragment.dataTask.isCancelled()) {
-            // do what you want with the line
-            if (!PopUpListSetsFragment.dataTask.isCancelled()) {
-                FullscreenActivity.mySetXML = FullscreenActivity.mySetXML
-                        + l + "\n";
-                count = count + 1;
-                bytesdone = bytesdone + l.length() + 1;
-                int percentage_done;
-                try {
-                    percentage_done = Math.round(((float) bytesdone / (float) size) * 100);
-                } catch (Exception e) {
-                    percentage_done = 0;
-                }
-                if (percentage_done > 100) {
-                    percentage_done = 100;
-                }
-                PopUpListSetsFragment.val = FullscreenActivity.set_loading + ": " + percentage_done + "%";
-                PopUpListSetsFragment.mHandler.post(PopUpListSetsFragment.runnable);
-            }
-        }
-
-        inputStream.close();
-        bufferedReader.close();
-    }
-
     public static void writeTempSlide(String where, String what) throws IOException {
         // Fix the custom name so there are no illegal characters
         what = what.replaceAll("[|?*<\":>+\\[\\]']", " ");
-        File temp = new File(FullscreenActivity.dircustomnotes + "/" + what);
-        String set_item = "";
+        File temp;
+        String set_item;
+        String foldername;
+        String setprefix;
 
         if (where.equals(FullscreenActivity.text_scripture)) {
-            temp = new File(FullscreenActivity.dirscriptureverses + "/" + what);
-            set_item = "$**_**" + FullscreenActivity.scripture + "/" + what + "_**$";
+            foldername = FullscreenActivity.dirscriptureverses.toString();
+            setprefix  = "$**_**" + FullscreenActivity.scripture + "/";
         } else if (where.equals(FullscreenActivity.text_slide)) {
-            set_item = "$**_**" + FullscreenActivity.slide + "/" + what + "_**$";
-            temp = new File(FullscreenActivity.dircustomslides + "/" + what);
-        } else if (where.equals(FullscreenActivity.text_note)) {
-            set_item = "$**_**" + FullscreenActivity.note + "/" + what + "_**$";
-            temp = new File(FullscreenActivity.dircustomnotes + "/" + what);
+            foldername = FullscreenActivity.dircustomslides.toString();
+            setprefix  = "$**_**" + FullscreenActivity.slide + "/";
         } else if (where.equals(FullscreenActivity.image)) {
-            set_item = "$**_**" + FullscreenActivity.image + "/" + what + "_**$";
-            temp = new File(FullscreenActivity.dircustomimages + "/" + what);
+            foldername = FullscreenActivity.dircustomimages.toString();
+            setprefix  = "$**_**" + FullscreenActivity.image + "/";
         } else if (where.equals(FullscreenActivity.text_variation)) {
-            set_item = "$**_**" + FullscreenActivity.text_variation + "/" + what + "_**$";
-            temp = new File(FullscreenActivity.dirvariations + "/" + what);
+            foldername = FullscreenActivity.dirvariations.toString();
+            setprefix  = "$**_**" + FullscreenActivity.text_variation + "/";
+        } else {
+            foldername = FullscreenActivity.dircustomnotes.toString();
+            setprefix  = "$**_**" + FullscreenActivity.note + "/";
         }
+
+        // Check to see if that file already exists (same name).  If so, add _ to the end
+        temp = new File(foldername + "/" + what);
+        while (temp.exists()) {
+            what += "_";
+            temp = new File(foldername + "/" + what);
+        }
+
+        set_item = setprefix + what + "_**$";
 
         FileOutputStream overWrite = new FileOutputStream(temp, false);
         // Prepare the new XML file
         String my_NEW_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         my_NEW_XML += "<song>\n";
-        my_NEW_XML += "  <title>" + title + "</title>\n";
-        my_NEW_XML += "  <author>" + author + "</author>\n";
-        my_NEW_XML += "  <user1>" + user1 + "</user1>\n";
-        my_NEW_XML += "  <user2>" + user2 + "</user2>\n";
-        my_NEW_XML += "  <user3>" + user3 + "</user3>\n";
-        my_NEW_XML += "  <aka>" + aka + "</aka>\n";
-        my_NEW_XML += "  <key_line>" + key_line + "</key_line>\n";
-        my_NEW_XML += "  <hymn_number>" + hymn_number + "</hymn_number>\n";
-        my_NEW_XML += "  <lyrics>" + lyrics + "</lyrics>\n";
+        my_NEW_XML += "  <title>" + PopUpEditSongFragment.parseToHTMLEntities(title) + "</title>\n";
+        my_NEW_XML += "  <author>" + PopUpEditSongFragment.parseToHTMLEntities(author) + "</author>\n";
+        my_NEW_XML += "  <user1>" + PopUpEditSongFragment.parseToHTMLEntities(user1) + "</user1>\n";
+        my_NEW_XML += "  <user2>" + PopUpEditSongFragment.parseToHTMLEntities(user2) + "</user2>\n";
+        my_NEW_XML += "  <user3>" + PopUpEditSongFragment.parseToHTMLEntities(user3) + "</user3>\n";
+        my_NEW_XML += "  <aka>" + PopUpEditSongFragment.parseToHTMLEntities(aka) + "</aka>\n";
+        my_NEW_XML += "  <key_line>" + PopUpEditSongFragment.parseToHTMLEntities(key_line) + "</key_line>\n";
+        my_NEW_XML += "  <hymn_number>" + PopUpEditSongFragment.parseToHTMLEntities(hymn_number) + "</hymn_number>\n";
+        my_NEW_XML += "  <lyrics>" + PopUpEditSongFragment.parseToHTMLEntities(lyrics) + "</lyrics>\n";
         my_NEW_XML += "</song>";
 
         if (where.equals(FullscreenActivity.text_variation)) {
@@ -432,10 +390,20 @@ public class SetActions extends Activity {
         FullscreenActivity.mySet = FullscreenActivity.mySet + set_item;
     }
 
-    public static void getSong() throws IOException, XmlPullParserException {
-        FullscreenActivity.mySet = FullscreenActivity.mySet
-                + "$**_" + xpp.getAttributeValue(null,"path") + xpp.getAttributeValue(null,"name") + "_**$";
-        xpp.nextTag();
+    public static void getSong() {
+        try {
+            FullscreenActivity.mySet = FullscreenActivity.mySet
+                    + "$**_" + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"path")) + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name")) + "_**$";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            xpp.nextTag();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public static void getScripture() throws IOException, XmlPullParserException {
@@ -451,9 +419,9 @@ public class SetActions extends Activity {
             if (xpp.getName().equals("title")) {
                 scripture_title = xpp.nextText();
             } else if (xpp.getName().equals("body")) {
-                scripture_text = scripture_text + "\n[]\n" + xpp.nextText();
+                scripture_text = scripture_text + "\n[]\n" + LoadXML.parseFromHTMLEntities(xpp.nextText());
             } else if (xpp.getName().equals("subtitle")) {
-                scripture_translation = xpp.nextText();
+                scripture_translation = LoadXML.parseFromHTMLEntities(xpp.nextText());
             }
 
             xpp.nextTag();
@@ -533,9 +501,9 @@ public class SetActions extends Activity {
         // Ok parse this bit seperately.  Could be a note or a slide or a variation
         // Notes have # Note # - in the name
         // Variations have # Variation # - in the name
-        custom_name = xpp.getAttributeValue(null,"name");
-        custom_seconds = xpp.getAttributeValue(null, "seconds");
-        custom_loop = xpp.getAttributeValue(null,"loop");
+        custom_name = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
+        custom_seconds = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "seconds"));
+        custom_loop = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"loop"));
         custom_title = "";
         custom_subtitle = "";
         custom_notes = "";
@@ -544,15 +512,15 @@ public class SetActions extends Activity {
         boolean custom_finished = false;
         while (!custom_finished) {
             if (xpp.getName().equals("title")) {
-                custom_title = xpp.nextText();
+                custom_title = LoadXML.parseFromHTMLEntities(xpp.nextText());
             } else if (xpp.getName().equals("subtitle")) {
-                custom_subtitle = xpp.nextText();
+                custom_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
             } else if (xpp.getName().equals("notes")) {
-                custom_notes = xpp.nextText();
+                custom_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
             } else if (xpp.getName().equals("body")) {
-                custom_text = custom_text + "\n---\n" + xpp.nextText();
+                custom_text = custom_text + "\n---\n" + LoadXML.parseFromHTMLEntities(xpp.nextText());
             } else if (xpp.getName().equals("subtitle")) {
-                custom_subtitle = xpp.nextText();
+                custom_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
             }
 
             xpp.nextTag();
@@ -575,6 +543,9 @@ public class SetActions extends Activity {
             // Prepare for a note
             custom_name = custom_name.replace("# " + FullscreenActivity.text_note + " # - ", "");
             custom_text = custom_notes;
+            if (custom_notes.equals("")) {
+                custom_text = custom_name;
+            }
             custom_notes = "";
             custom_title = "";
             custom_subtitle = "";
@@ -609,15 +580,17 @@ public class SetActions extends Activity {
 
     public static void getImage() throws IOException, XmlPullParserException {
         // Ok parse this bit separately.  This could have multiple images
-        image_name = xpp.getAttributeValue(null,"name");
-        image_seconds = xpp.getAttributeValue(null,"seconds");
-        image_loop = xpp.getAttributeValue(null,"loop");
+        image_name = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
+        image_seconds = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"seconds"));
+        image_loop = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"loop"));
         image_title = "";
         image_subtitle = "";
         slide_images = "";
         slide_image_titles="";
         image_notes = "";
         image_filename = "";
+        hymn_number_imagecode = "";
+        key_line = "";
         int imagenums = 0;
 
         // Work through the xml tags until we reach the end of the image slide
@@ -633,20 +606,16 @@ public class SetActions extends Activity {
         while (!allimagesdone) { // Keep iterating unless the current eventType is the end of the document
             if(eventType == XmlPullParser.START_TAG) {
                 if (xpp.getName().equals("title")) {
-                    eventType = xpp.next();
-                    image_title = xpp.getText();
+                     image_title = LoadXML.parseFromHTMLEntities(xpp.nextText());
 
                 } else if (xpp.getName().equals("subtitle")) {
-                    eventType = xpp.next();
-                    image_subtitle = xpp.getText();
+                    image_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
 
                 } else if (xpp.getName().equals("notes")) {
-                    eventType = xpp.next();
-                    image_notes = xpp.getText();
+                    image_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
 
                 } else if (xpp.getName().equals("filename")) {
-                    eventType = xpp.next();
-                    image_filename = xpp.getText();
+                    image_filename = LoadXML.parseFromHTMLEntities(xpp.nextText());
                     if (image_filename!=null && !image_filename.equals("") && !image_filename.isEmpty()) {
                         slide_images = slide_images + image_filename + "\n";
                         slide_image_titles = slide_image_titles + "[" + FullscreenActivity.image + "_" + (imagenums + 1) + "]\n" + image_filename + "\n\n";
@@ -655,10 +624,10 @@ public class SetActions extends Activity {
                     }
 
                 } else if (xpp.getName().equals("description")) {
-                    eventType = xpp.next();
-                    if (xpp.getText().contains(".png") || xpp.getText().contains(".PNG")) {
+                    String file_name = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    if (file_name.contains(".png") || file_name.contains(".PNG")) {
                         image_type = ".png";
-                    } else if (xpp.getText().contains(".gif") || xpp.getText().contains(".GIF")) {
+                    } else if (file_name.contains(".gif") || file_name.contains(".GIF")) {
                         image_type = ".gif";
                     } else {
                         image_type = ".jpg";
@@ -666,7 +635,17 @@ public class SetActions extends Activity {
 
                     if (encodedimage) {
                         // Save this image content
+                        // Need to see if the image already exists
+                        if (image_title==null || image_title.equals("")) {
+                            image_title = FullscreenActivity.image;
+                        }
+
                         File imgfile = new File(FullscreenActivity.dircustomimages + "/" + image_title + imagenums + image_type);
+                        while(imgfile.exists()) {
+
+                            image_title += "_";
+                            imgfile = new File(FullscreenActivity.dircustomimages + "/" + image_title + imagenums + image_type);
+                        }
                         FileOutputStream overWrite = new FileOutputStream(imgfile, false);
                         byte[] decodedString = Base64.decode(image_content, Base64.DEFAULT);
                         overWrite.write(decodedString);
@@ -680,8 +659,8 @@ public class SetActions extends Activity {
                     }
 
                 } else if (xpp.getName().equals("image")) {
-                    eventType = xpp.next();
-                    image_content = xpp.getText();
+                    image_content = xpp.nextText();
+                    hymn_number_imagecode = hymn_number_imagecode + image_content.trim() + "XX_IMAGE_XX";
                     encodedimage = true;
                 }
 
@@ -694,6 +673,9 @@ public class SetActions extends Activity {
             eventType = xpp.next(); // Set the current event type from the return value of next()
         }
 
+        if (image_title==null || image_title.equals("")) {
+            image_title = FullscreenActivity.image;
+        }
 
         if (image_subtitle==null) {
             image_subtitle = "";
@@ -729,10 +711,9 @@ public class SetActions extends Activity {
         user2 = image_loop;
         user3 = slide_images.trim();
         aka = image_name;
-        hymn_number = "";
+        hymn_number = hymn_number_imagecode;
         key_line = image_notes;
         lyrics = slide_image_titles.trim();
-
         writeTempSlide(FullscreenActivity.image,title);
     }
 

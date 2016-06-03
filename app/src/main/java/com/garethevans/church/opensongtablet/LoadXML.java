@@ -11,6 +11,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 
@@ -30,9 +31,16 @@ public class LoadXML extends Activity {
     static String temp_mHymnNumber;
     static String temp_mLyrics;
     static String utf = "UTF-8";
+    static boolean needtoloadextra = false;
 
     // This bit loads the lyrics from the required file
     public static void loadXML() throws XmlPullParserException, IOException {
+
+        // Just in case
+        FullscreenActivity.myLyrics = FullscreenActivity.songdoesntexist + "\n\n";
+        FullscreenActivity.mLyrics = FullscreenActivity.songdoesntexist + "\n\n";
+
+        needtoloadextra = false;
         System.gc();
         FullscreenActivity.myXML = null;
         FullscreenActivity.myXML = "";
@@ -76,7 +84,7 @@ public class LoadXML extends Activity {
             try {
                 grabOpenSongXML();
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d("d","Error performing grabOpenSongXML()");
             }
 
             PopUpEditSongFragment.prepareSongXML();
@@ -90,9 +98,10 @@ public class LoadXML extends Activity {
 
             // If the file hasn't been read properly, or mLyrics is empty, read it in as a text file
             if (!isxml) {
-                InputStream inputStream = new FileInputStream(FullscreenActivity.file);
+
                 try {
                     //NEW
+                    InputStream inputStream = new FileInputStream(FullscreenActivity.file);
                     InputStreamReader streamReader = new InputStreamReader(inputStream);
                     BufferedReader bufferedReader = new BufferedReader(streamReader);
                     FullscreenActivity.myXML = readTextFile(inputStream);
@@ -103,7 +112,7 @@ public class LoadXML extends Activity {
                 } catch (java.io.FileNotFoundException e) {
                     // file doesn't exist
                     FullscreenActivity.myXML = "<title>Love everlasting</title>\n<author></author>\n<lyrics>"
-                            + FullscreenActivity.songdoesntexist + "</lyrics>";
+                            + FullscreenActivity.songdoesntexist + "\n\n" + "</lyrics>";
                     FullscreenActivity.myLyrics = "ERROR!";
                 }
 
@@ -123,7 +132,7 @@ public class LoadXML extends Activity {
                     try {
                         grabOpenSongXML();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.d("d","Error performing grabOpenSongXML()");
                     }
                 }
 
@@ -146,7 +155,7 @@ public class LoadXML extends Activity {
                     try {
                         grabOpenSongXML();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.d("d","Error performing grabOpenSongXML()");
                     }
                 }
 
@@ -178,7 +187,7 @@ public class LoadXML extends Activity {
                     try {
                         grabOpenSongXML();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.d("d","Error performing grabOpenSongXML()");
                     }
                 }
             }
@@ -284,11 +293,12 @@ public class LoadXML extends Activity {
         try {
             FileInputStream fis = new FileInputStream(filetoload);
             UnicodeBOMInputStream ubis = new UnicodeBOMInputStream(fis);
-            System.out.println("detected BOM: " + ubis.getBOM());
             utf = ubis.getBOM().toString();
         } catch (Exception e) {
-            Log.d("d", "Error getting BOM");
-            e.printStackTrace();
+            Log.d("d","Error getting BOM");
+            FullscreenActivity.myXML = "<title>Love everlasting</title>\n<author></author>\n<lyrics>"
+                    + FullscreenActivity.songdoesntexist + "\n\n" + "</lyrics>";
+            FullscreenActivity.myLyrics = "ERROR!";
         }
 
         return utf;
@@ -306,7 +316,7 @@ public class LoadXML extends Activity {
             outputStream.close();
             inputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d("d","Error reading text file");
         }
 
         return outputStream.toString();
@@ -354,7 +364,7 @@ public class LoadXML extends Activity {
         try {
             loadXML();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d("d","Error performing loadXML()");
         }
 
         // Put the values in
@@ -415,11 +425,15 @@ public class LoadXML extends Activity {
         FullscreenActivity.mLinkYouTube = "";
         FullscreenActivity.mLinkWeb = "";
         FullscreenActivity.mLinkAudio = "";
+        FullscreenActivity.mLoopAudio = "false";
         FullscreenActivity.mLinkOther = "";
+        FullscreenActivity.mExtraStuff1 = "";
+        FullscreenActivity.mExtraStuff2 = "";
     }
 
     public static void grabOpenSongXML() throws Exception {
         // Extract all of the key bits of the song
+
         utf = getUTFEncoding(FullscreenActivity.file);
 
         XmlPullParserFactory factory;
@@ -429,6 +443,10 @@ public class LoadXML extends Activity {
         XmlPullParser xpp;
         xpp = factory.newPullParser();
 
+        // Just in case
+        FullscreenActivity.myLyrics = FullscreenActivity.songdoesntexist + "\n\n";
+        FullscreenActivity.mLyrics = FullscreenActivity.songdoesntexist + "\n\n";
+
         InputStream inputStream = new FileInputStream(FullscreenActivity.file);
         xpp.setInput(inputStream, utf);
 
@@ -437,81 +455,86 @@ public class LoadXML extends Activity {
         while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG) {
                 if (xpp.getName().equals("author")) {
-                    FullscreenActivity.mAuthor = xpp.nextText();
+                    FullscreenActivity.mAuthor = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("copyright")) {
-                    FullscreenActivity.mCopyright = xpp.nextText();
+                    FullscreenActivity.mCopyright = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("title")) {
-                    String testthetitle = xpp.nextText();
+                    String testthetitle = parseFromHTMLEntities(xpp.nextText());
                     if (testthetitle!=null && !testthetitle.equals("") && !testthetitle.isEmpty()) {
-                        FullscreenActivity.mTitle = testthetitle;
+                        FullscreenActivity.mTitle = parseFromHTMLEntities(testthetitle);
                     }
                 } else if (xpp.getName().equals("lyrics")) {
-                    FullscreenActivity.mLyrics = xpp.nextText();
+                    FullscreenActivity.mLyrics = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("ccli")) {
-                    FullscreenActivity.mCCLI = xpp.nextText();
+                    FullscreenActivity.mCCLI = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("theme")) {
-                    FullscreenActivity.mTheme = xpp.nextText();
+                    FullscreenActivity.mTheme = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("alttheme")) {
-                    FullscreenActivity.mAltTheme = xpp.nextText();
+                    FullscreenActivity.mAltTheme = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("presentation")) {
-                    FullscreenActivity.mPresentation = xpp.nextText();
+                    FullscreenActivity.mPresentation = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("hymn_number")) {
-                    FullscreenActivity.mHymnNumber = xpp.nextText();
+                    FullscreenActivity.mHymnNumber = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("user1")) {
-                    FullscreenActivity.mUser1 = xpp.nextText();
+                    FullscreenActivity.mUser1 = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("user2")) {
-                    FullscreenActivity.mUser2 = xpp.nextText();
+                    FullscreenActivity.mUser2 = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("user3")) {
-                    FullscreenActivity.mUser3 = xpp.nextText();
+                    FullscreenActivity.mUser3 = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("key")) {
-                    FullscreenActivity.mKey = xpp.nextText();
+                    FullscreenActivity.mKey = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("aka")) {
-                    FullscreenActivity.mAka = xpp.nextText();
+                    FullscreenActivity.mAka = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("key_line")) {
-                    FullscreenActivity.mKeyLine = xpp.nextText();
+                    FullscreenActivity.mKeyLine = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("capo")) {
                     if (xpp.getAttributeCount() > 0) {
                         FullscreenActivity.mCapoPrint = xpp.getAttributeValue(0);
                     }
-                    FullscreenActivity.mCapo = xpp.nextText();
+                    FullscreenActivity.mCapo = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("tempo")) {
-                    FullscreenActivity.mTempo = xpp.nextText();
+                    FullscreenActivity.mTempo = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("time_sig")) {
-                    FullscreenActivity.mTimeSig = xpp.nextText();
+                    FullscreenActivity.mTimeSig = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("duration")) {
-                    FullscreenActivity.mDuration = xpp.nextText();
+                    FullscreenActivity.mDuration = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("predelay")) {
-                    FullscreenActivity.mPreDelay = xpp.nextText();
+                    FullscreenActivity.mPreDelay = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("books")) {
-                    FullscreenActivity.mBooks = xpp.nextText();
+                    FullscreenActivity.mBooks = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("midi")) {
-                    FullscreenActivity.mMidi = xpp.nextText();
+                    FullscreenActivity.mMidi = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("midi_index")) {
-                    FullscreenActivity.mMidiIndex = xpp.nextText();
+                    FullscreenActivity.mMidiIndex = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("pitch")) {
-                    FullscreenActivity.mPitch = xpp.nextText();
+                    FullscreenActivity.mPitch = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("restrictions")) {
-                    FullscreenActivity.mRestrictions = xpp.nextText();
+                    FullscreenActivity.mRestrictions = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("notes")) {
-                    FullscreenActivity.mNotes = xpp.nextText();
+                    FullscreenActivity.mNotes = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("linked_songs")) {
-                    FullscreenActivity.mLinkedSongs = xpp.nextText();
+                    FullscreenActivity.mLinkedSongs = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("pad_file")) {
-                    FullscreenActivity.mPadFile = xpp.nextText();
+                    FullscreenActivity.mPadFile = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("custom_chords")) {
-                    FullscreenActivity.mCustomChords = xpp.nextText();
+                    FullscreenActivity.mCustomChords = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("link_youtube")) {
-                    FullscreenActivity.mLinkYouTube = xpp.nextText();
+                    FullscreenActivity.mLinkYouTube = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("link_web")) {
-                    FullscreenActivity.mLinkWeb = xpp.nextText();
+                    FullscreenActivity.mLinkWeb = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("link_audio")) {
-                    FullscreenActivity.mLinkAudio = xpp.nextText();
+                    FullscreenActivity.mLinkAudio = parseFromHTMLEntities(xpp.nextText());
+                } else if (xpp.getName().equals("loop_audio")) {
+                    FullscreenActivity.mLoopAudio = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("link_other")) {
-                    FullscreenActivity.mLinkOther = xpp.nextText();
+                    FullscreenActivity.mLinkOther = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("style")) {
-                    FullscreenActivity.mExtraStuff1 = xpp.nextText();
+                    // Simplest way to get this is to load the file in line by line as asynctask
+                    needtoloadextra = true;
                 } else if (xpp.getName().equals("backgrounds")) {
-                    FullscreenActivity.mExtraStuff2 = xpp.nextText();
+                    //FullscreenActivity.mExtraStuff2 = xpp.nextText();
+                    // Simplest way to get this is to load the file in line by line as asynctask
+                    needtoloadextra = true;
                 }
             }
             try {
@@ -522,6 +545,57 @@ public class LoadXML extends Activity {
                 isxml = false;
             }
         }
+
+        // If we really have to load extra stuff, lets do it as an asynctask
+        if (needtoloadextra) {
+            SideTask loadextra = new SideTask();
+            loadextra.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
         FullscreenActivity.myXML = FullscreenActivity.mLyrics;
+    }
+
+    public static String parseFromHTMLEntities(String val) {
+        val = val.replace("&amp;","&");
+        val = val.replace("&lt;","<");
+        val = val.replace("&gt;",">");
+        val = val.replace("&apos;","'");
+        val = val.replace("&quote;","\"");
+        return val;
+    }
+
+    private static class SideTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String full_text;
+            try {
+                InputStream inputStream = new FileInputStream(FullscreenActivity.file);
+                full_text = readTextFile(inputStream);
+            } catch (Exception e) {
+                Log.d("d","Error reading text file");
+                full_text = "";
+            }
+
+            return full_text;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            int style_start = result.indexOf("<style");
+            int style_end   = result.indexOf("</style>");
+            if (style_end>style_start && style_start>-1 && style_end>-1) {
+                FullscreenActivity.mExtraStuff1 = result.substring(style_start,style_end+8);
+            }
+            int backgrounds_start = result.indexOf("<backgrounds");
+            int backgrounds_end   = result.indexOf("</backgrounds>");
+            if (backgrounds_end<0) {
+                backgrounds_end = result.indexOf("/>",backgrounds_start)+2;
+            } else {
+                backgrounds_end += 14;
+            }
+            if (backgrounds_end>backgrounds_start && backgrounds_start>-1 && backgrounds_end>-1) {
+                FullscreenActivity.mExtraStuff2 = result.substring(backgrounds_start,backgrounds_end);
+            }
+        }
     }
 }

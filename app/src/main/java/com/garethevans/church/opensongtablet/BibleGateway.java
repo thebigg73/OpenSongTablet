@@ -19,7 +19,7 @@ public class BibleGateway extends Activity{
     public static void grabBibleText(Context c, String weblink) {
         context = c;
         DownloadWebTextTask task = new DownloadWebTextTask();
-        task.execute(weblink);
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,weblink);
     }
 
     private static class DownloadWebTextTask extends AsyncTask<String, Void, String> {

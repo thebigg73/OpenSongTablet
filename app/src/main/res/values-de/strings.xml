@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="capo_toggle">"Capo-Akkorde umschalten"</string>
+    <string name="capo_toggle">"Kapo-Akkorde anzeigen ein/aus"</string>
     <string name="capo_toggle_onlycapo">Nur Capo-Akkorde zeigen (wenn verfügbar)"</string>
     <string name="capo_toggle_bothcapo">"Zeige sowohl Capo- als auch ursprüngliche Akkorde (wenn verfügbar)"</string>
     <string name="language">"Sprache"</string>
-    <string name="refreshsongs">"Aktualisieren Song-Menü"</string>
+    <string name="refreshsongs">"Song Menü aktualisieren"</string>
     <string name="custom1_theme">"Benutzerdefiniert 1"</string>
     <string name="custom2_theme">"Benutzerdefiniert 2"</string>
     <string name="scripture">"Bibeltext"</string>
@@ -64,7 +64,7 @@
     
     <string name="stickynotes">"Song Notizen"</string>
     
-    <string name="youtube">"Search YouTube für aktuellen Song"</string>
+    <string name="youtube">"Aktuellen Song auf YouTube suchen"</string>
     
     <string name="pdf_functionnotavailable">"Diese Funktion ist für PDF-Dokumente nicht verfügbar"</string>
     <string name="pdf_selectpage">"Seite auswählen"</string>
@@ -88,20 +88,20 @@
 	<string name="options_song_delete">"Löschen"</string>
 	<string name="options_song_new">"Neu"</string>
 	<string name="options_song_export">"Exportieren"</string>
-    <string name="options_song_stickynotes">"Song bearbeiten Haftnotiz"</string>
+    <string name="options_song_stickynotes">"Notizen bearbeiten"</string>
     <string name="options_song_newfolder">"Neuen Song-Ordner erstellen"</string>
-    <string name="options_song_editfolder">"Bearbeiten von Titelordnernamen"</string>
+    <string name="options_song_editfolder">"Ordner umbenennen"</string>
 		
 	<string name="options_options">"OPTIONEN"</string>
-	<string name="options_options_theme">"Theme wechseln"</string>
+	<string name="options_options_theme">"Design umschalten"</string>
 	<string name="options_options_scale">"Autoskalierung für Songs ein / aus"</string>
 	<string name="options_options_fontsize">"Wählen sie schriftgröße"</string>
 	<string name="options_options_showchords">"Akkorde anzeigen / ausblenden"</string>
 	<string name="options_options_chordformat">"Akkord-Format wählen"</string>
-	<string name="options_options_gestures">"Weisen sie benutzerdefinierte gesten"</string>
+	<string name="options_options_gestures">"Benutzerdefinierte Gesten zuweisen"</string>
 	<string name="options_options_songswipe">"Wischen zwischen Songs ein / aus"</string>
-	<string name="options_options_menuswipe">"Für Song-Liste und Optionsmenüs wischen ein / aus"</string>
-	<string name="options_options_hidebar">"Ausblenden oberen Menüleiste ein / aus"</string>
+	<string name="options_options_menuswipe">"Wischen um seitliche Menüs anzuzeigen ein / aus"</string>
+	<string name="options_options_hidebar">"Menüleiste anzeigen/ausblenden"</string>
 	<string name="options_options_colors">"Farben ändern"</string>
 	<string name="options_options_fonts">"Schriftarten ändern"</string>
 	<string name="options_options_pedal">"Fußpedal zuweisen"</string>
@@ -148,11 +148,11 @@
     
     <string name="choosechordformat">"Wählen Sie ein Akkordformat (wichtig für Transponieren)"</string>
     
-    <string name="switchtopresentmode">"Wechseln Sie in den Präsentationsmodus"</string>
-    <string name="switchtoperformmode">"Wechseln Sie in den Liedblattmodus"</string>
+    <string name="switchtopresentmode">"Zum Präsentationsmodus wechseln"</string>
+    <string name="switchtoperformmode">"Zum Liedblattmodus wechseln"</string>
     <string name="presentermode">"Präsentationsmodus"</string>
     <string name="sendtoprojector">"Projizieren"</string>
-    <string name="presoBackground">"Präsentationshintergrund"</string>
+    <string name="presoBackground">"Hintergrundbild"</string>
     <string name="presoShowLogo">"Logo anzeigen"</string>
     <string name="notcompatible">"Leider benötigen Sie Android 4.2 oder höher, um die Dual-Screen Präsentationsfunktion nutzen zu können!"</string>
 	<string name="nodisplays">"Kein externer Bildschirm angeschlossen. Bitte stellen Sie eine Verbindung zu einer sekundären Anzeige über HDMI oder die drahtlose MiraCast-Schnittstelle her."</string>
@@ -203,9 +203,9 @@
 	<string name="backtohome">"Zurück zur Startseite"</string>
 	<string name="exit">"Sind Sie sicher, dass Sie das Programm beenden möchten?"</string>
 	
-	<string name="on_width">"AN - nur Breite"</string>
-	<string name="on_set">"AN - nur Sets"</string>
-	<string name="on">"AN"</string>
+	<string name="on_width">"EIN - nur Breite"</string>
+	<string name="on_set">"EIN - nur Sets"</string>
+	<string name="on">"EIN"</string>
 	<string name="off">"AUS"</string>
 	<string name="scaleY">"Seitengröße an Lied anpassen ist jetzt"</string>
 	<string name="swipeSet">"Wischen zwischen den Songs ist jetzt"</string>
@@ -230,7 +230,7 @@
 	<string name="edit_song_author">"Autor"</string>
 	<string name="edit_song_lyrics">"Lyrics"</string>
 	<string name="edit_song_copyright">"Copyright-Informationen"</string>
-	<string name="edit_song_presentation">"Reihenfolge"</string>
+	<string name="edit_song_presentation">"Reihenfolge ändern"</string>
 	<string name="edit_song_ccli">"CCLI"</string>
 	<string name="edit_song_capo">"Capo Bund"</string>
 	<string name="edit_song_key">"Tonart"</string>
@@ -387,7 +387,7 @@
 	<string name="alert">Meldung</string>
 	<string name="alert_text">Text eingeben</string>
 	<string name="capo_toggle_native">Nur native Akkorde anzeigen</string>
-	<string name="display_manager">Schließen Sie Anzeige</string>
+	<string name="display_manager">Anzeige schließen</string>
 	<string name="error_missingsection">fehlende Teile</string>
 	<string name="error_notset">Nich gesetzt</string>
 	<string name="file_chooser">Dateiauswahl</string>
@@ -395,13 +395,13 @@
 	<string name="preso_alpha">Hintergrund Deckkraft</string>
 	<string name="settings">Einstellungen</string>
 	<string name="song_sections">Song Abschnitte</string>
-	<string name="media">Audio-</string>
+	<string name="media">Audio</string>
 	<string name="media_chooser">Medienauswahl</string>
 	<string name="media_pause">Pause</string>
 	<string name="media_play">Spielen</string>
 	<string name="media_selected">Medien geladen</string>
 	<string name="media_stop">Stopp</string>
-	<string name="options_options_autostartscroll">Autostart autoscroll</string>
+	<string name="options_options_autostartscroll">Automatisch starten ein / aus</string>
 	<string name="page_toggles">Seite wechselt</string>
 	<string name="scrollbuttons_double">Doppelpfeile</string>
 	<string name="scrollbuttons_single">Einzelpfeile</string>
@@ -413,7 +413,7 @@
 	<string name="note">"Notiz"</string>
 	<string name="options_display">"Anzeige"</string>
 	<string name="options_gesturesandmenus">"Gesten und Menüs"</string>
-	<string name="options_other">"Sonstige"</string>
+	<string name="options_other">"Sonstiges"</string>
 	<string name="options_storage">"Speicher"</string>
 	<string name="simple_note">"Einfache Notiz / Platzhalter"</string>
 	<string name="slide_separator">"Folien-Trenner zufügen (für die Projektion)"</string>
@@ -467,7 +467,7 @@
 	<string name="search_index_end">"Alle Songs wurden erfolgreich indiziert"</string>
 	<string name="search_index_error">"Es gab einen Fehler beim Aufbau Ihrer Suchdatenbank"</string>
 	<string name="search_index_start">"Song-Datenbank aufbauen"</string>
-	<string name="search_log">"Bitte überprüfen Sie das Fehlerprotokoll der Suchdatenbank"</string>
+	<string name="search_log">"Fehlerprotokoll anzeigen"</string>
 	<string name="search_rebuild">"Song-Datenbank neu aufbauen"</string>
 	<string name="pref_key_flatsorsharps">"#- oder b-Vorzeichen benutzen?"</string>
 	<string name="pref_key_text">"Wählen Sie die Tonarteinstellungen"</string>
@@ -487,14 +487,14 @@
 	<string name="variation_edit">"Dieses Element kann bearbeitet werden. Das Original wird dabei nicht verändert."</string>
 	<string name="variation">"Variation"</string>
 	<string name="extra">"Zusatzinformation"</string>
-	<string name="minfontsize">"Bevorzugte Mindest automatische Skalierung Schriftgröße"</string>
-	<string name="override_fullautoscale">"Außer Kraft setzen voll automatischer Skalierung nur auf Breite"</string>
-	<string name="override_scale_explanation">"Wenn die automatische Skalierung Schriftgröße kleiner ist als die gewünschte Mindestschriftgröße , möchten Sie die App auf eine andere Skalierungsmethode außer Kraft zu setzen? Mit diesen Optionen können Sie zwingen, horizontal und vertikal in einem Song zu blättern."</string>
-	<string name="override_widthautoscale">"Aufschalten Breite Skalierung nur ohne automatische Skalierung"</string>
-	<string name="pagebuttons">"Seite Tasten"</string>
+	<string name="minfontsize">"Minimale Schriftgröße für automatische Skalierung"</string>
+	<string name="override_fullautoscale">"Automatische Skalierung ignorieren und nur auf Breite anwenden"</string>
+	<string name="override_scale_explanation">Wenn die Schriftgröße bei automatischer Skalierung kleiner ist als die gewünschte Mindestschriftgröße, möchten Sie, dass die App dann auf eine andere Skalierungsmethode umschaltet? Diese Option kann dazu führen, dass Sie horizontal und vertikal in einem Song scrollen müssen."</string>
+	<string name="override_widthautoscale">"Automatische skalierung auf Breite ignorieren und nicht automatisch skalieren"</string>
+	<string name="pagebuttons">"Schaltflächen konfigurieren"</string>
 	<string name="position">"Position"</string>
 	<string name="profile">"Profil"</string>
-	<string name="profile_choose">"Wählen Sie ein Profil zu laden"</string>
+	<string name="profile_choose">"Wählen Sie ein Profil"</string>
 	<string name="profile_description">"Die Profile werden verwendet, um Ihre Anzeigeeinstellungen zu speichern."</string>
 	<string name="profile_name">"Wählen Sie einen Profilnamen"</string>
 	<string name="size">"Größe"</string>

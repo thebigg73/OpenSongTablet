@@ -8,7 +8,8 @@
   <capo print="true">3</capo>
   <tempo></tempo>
   <time_sig></time_sig>
-  <duration></duration>
+  <duration>10</duration>
+  <predelay></predelay>
   <ccli>21583</ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -27,7 +28,7 @@
   <lyrics>[V1]
 .   Gm                    F         Gm
  In Heavenly armour we'll enter the land
-.    Eb        F            Gm
+.    Eb       F            Gm
  The battle belongs to the Lord
 .   Gm                       F              Gm
  No weapon that's fashioned against us will stand
@@ -41,18 +42,30 @@
  Power and strength to the Lord      x2
 
 [V2]
+.         Gm                      F         Gm
  When the powers of darkness come in like a flood
+.    Eb       F            Gm
  The battle belongs to the Lord
+.     Gm                       F            Gm
  He's raised up a standard the power of His blood
+.    Eb       F            Gm
  The battle belongs to the Lord
 
 [V3]
+.         Gm               F           Gm
  When the enemy presses in hard do not fear
+.    Eb       F            Gm
  The battle belongs to the Lord
+.     Gm                       F           Gm
  Take courage my friend your redemption is near
+.    Eb       F            Gm
  The battle belongs to the Lord
 </lyrics>
   <linked_songs></linked_songs>
   <pad_file>Auto</pad_file>
   <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

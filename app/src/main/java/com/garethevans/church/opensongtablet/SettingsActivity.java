@@ -151,14 +151,14 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void latestUpdates(View view) {
-        String url = "https://sites.google.com/site/opensongtabletmusicviewer/latest-updates";
+        String url = "http://www.opensongapp.com/latest-updates";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
     }
 
     public void userGuide(View view) {
-        String url = "https://sites.google.com/site/opensongtabletmusicviewer";
+        String url = "http://www.opensongapp.com/";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);

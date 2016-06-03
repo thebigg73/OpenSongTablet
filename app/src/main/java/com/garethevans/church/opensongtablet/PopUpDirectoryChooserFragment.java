@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
 
     public interface MyInterface {
         void updateCustomStorage();
+        void updateLinksPopUp();
     }
 
     private MyInterface mListener;
@@ -69,9 +71,12 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_folderexplorer, container, false);
         context = getActivity().getBaseContext();
 
+        FullscreenActivity.filechosen = null;
+
         // Set the emulated storage as the default location if it is empty or not valid
         if (!location.isDirectory() || !location.canWrite()) {
-            location = Environment.getExternalStorageDirectory();
+            //location = Environment.getExternalStorageDirectory();
+            location = FullscreenActivity.homedir;
         }
         currentFolder = (TextView) V.findViewById(R.id.currentFolderText);
         currentFolder.setText(location.toString());
@@ -134,10 +139,21 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the item clicked
                 String itemclicked;
+
                 if (chooserAction.equals("file")) {
-                    itemclicked = tempProperDirectoriesAndFiles.get(position);
+                    if (tempProperDirectoriesAndFiles.size()>position) {
+                        itemclicked = tempProperDirectoriesAndFiles.get(position);
+                    } else {
+                        listFoldersAndFiles();
+                        itemclicked="";
+                    }
                 } else {
-                    itemclicked = tempProperDirectories.get(position);
+                    if (tempProperDirectories.size()>position) {
+                        itemclicked = tempProperDirectories.get(position);
+                    } else {
+                        listFolders();
+                        itemclicked="";
+                    }
                 }
                 itemclicked = itemclicked.replace("/","");
                 // Check if link clicked is a folder or a file.
@@ -152,7 +168,11 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
                 } else {
                     // This is the file we want (folder chooser won't list files!)
                     FullscreenActivity.filechosen = location;
+                    Log.d("d",""+location.toString());
                     mListener.updateCustomStorage();
+                    if (FullscreenActivity.filetoselect.equals("audiolink") || FullscreenActivity.filetoselect.equals("otherlink")) {
+                        mListener.updateLinksPopUp();
+                    }
                     dismiss();
                 }
             }
@@ -258,4 +278,16 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
 
         currentFolder.setText(location.toString());
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // safety check
+        if (getDialog() == null) {
+            return;
+        }
+        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import android.app.Activity;
@@ -170,9 +169,12 @@ public class Transpose extends Activity {
         // Write the new improved XML file
         FullscreenActivity.mLyrics = FullscreenActivity.transposedLyrics;
 
-        String myNEWXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        PopUpEditSongFragment.prepareSongXML();
+        PopUpEditSongFragment.justSaveSongXML();
+
+ /*       String myNEWXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         myNEWXML += "<song>\n";
-        myNEWXML += "  <title>" + FullscreenActivity.mTitle.toString() + "</title>\n";
+        myNEWXML += "  <title>" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mTitle.toString() + "</title>\n";
         myNEWXML += "  <author>" + FullscreenActivity.mAuthor + "</author>\n";
         myNEWXML += "  <copyright>" + FullscreenActivity.mCopyright + "</copyright>\n";
         myNEWXML += "  <presentation>" + FullscreenActivity.mPresentation + "</presentation>\n";
@@ -229,6 +231,7 @@ public class Transpose extends Activity {
         overWrite.write(FullscreenActivity.mynewXML.getBytes());
         overWrite.flush();
         overWrite.close();
+*/
         FullscreenActivity.transposedLyrics = null;
         FullscreenActivity.transposedLyrics = "";
         Arrays.fill(FullscreenActivity.myTransposedLyrics, null);

@@ -310,8 +310,11 @@ public final class MyPresentation extends Presentation
         presoLyrics1.setY(0);
         presoLyrics2.setY(0);
         presoLyricsIN.setPivotX(textwidth / 2);
-        presoLyricsIN.setTextSize(72*xscale);
-
+        if ((72*xscale)>FullscreenActivity.presoMaxFontSize) {
+            presoLyricsIN.setTextSize(FullscreenActivity.presoMaxFontSize);
+        } else {
+            presoLyricsIN.setTextSize(72 * xscale);
+        }
 
     }
 

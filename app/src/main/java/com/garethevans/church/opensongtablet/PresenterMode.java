@@ -228,6 +228,8 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
     static int autoslidetime = 0;
     static boolean autoslideloop = false;
     AsyncTask autoslideshowtask;
+    AsyncTask doredraw;
+    AsyncTask loadsong_async;
     //Handler mHandler;
 
     // Settings buttons
@@ -271,7 +273,8 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         }
 
         // Load the songs
-        ListSongFiles.listSongs();
+
+/*        ListSongFiles.listSongs();
         // Get the song indexes
         ListSongFiles.getCurrentSongIndex();
 
@@ -317,7 +320,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
 
         if (!isPDF) {
             PresentPrepareSong.splitSongIntoSections();
-        }
+        }*/
 
         // Load the layout and set the title
         setContentView(R.layout.presentermode);
@@ -441,10 +444,12 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         prepareSongMenu();
         prepareOptionMenu();
 
+/*
         if (!isPDF) {
             PresentPrepareSong.splitSongIntoSections();
         }
-        setupSongButtons();
+*/
+        //setupSongButtons();
         setupSetButtons();
 
         invalidateOptionsMenu();
@@ -460,6 +465,9 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         }
 
         resizeDrawers();
+
+        doredraw = new DoRedraw();
+        doredraw.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     @Override
@@ -1340,9 +1348,20 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
     }
 
     public void redrawPresenterPage() {
-        // Now load the appropriate song folder
-        ListSongFiles.listSongs();
+        // Now load the appropriate song folder as an asynctask
+        // Once this is done (onpostexecute) it loads the song asynchronously
+        // Then it parses them
+        // Then it splits into sections
+        // Then sets up the song buttons
+        // Then find the song in the folder
+        doredraw = new DoRedraw();
+        doredraw.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
+
+
+
+/*
+        ListSongFiles.listSongs();
         invalidateOptionsMenu();
         // Redraw the Lyrics View
         isPDF = false;
@@ -1360,6 +1379,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             presenter_slide_image.setBackground(getResources().getDrawable(R.drawable.unhappy_android));
 
         }
+
 
         if (!isPDF) {
             try {
@@ -1383,6 +1403,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         PresentPrepareSong.splitSongIntoSections();
         setupSongButtons();
         findSongInFolder();
+        */
     }
 
     @Override
@@ -1653,9 +1674,6 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             FullscreenActivity.whatsongforsetwork = FullscreenActivity.mSetList[whichsonginset];
 
             tempSongLocation = FullscreenActivity.mSetList[whichviewSetSection];
-            Log.d("d","tempSongLocation="+tempSongLocation);
-            Log.d("d","indexSongInSet="+FullscreenActivity.indexSongInSet);
-            Log.d("d","whatsongforsetwork="+FullscreenActivity.whatsongforsetwork);
 
             FullscreenActivity.setView = "Y";
             FullscreenActivity.indexSongInSet = whichviewSetSection;
@@ -2019,8 +2037,6 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         } else {
             tempfiletosearch = FullscreenActivity.songfilename;
         }
-
-        Log.d("d", "tempfiletosearch=" + tempfiletosearch);
 
         if (tempfiletosearch.contains("../Scripture/_cache/")) {
             tempfiletosearch = tempfiletosearch.replace("../Scripture/_cache/","**"+FullscreenActivity.text_scripture+"/");
@@ -2716,7 +2732,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             projectButtonClick(presenter_project_group);
             isplayingautoslideshow = true;
             autoslideshowtask = new AutoSlideShow();
-            autoslideshowtask.execute();
+            autoslideshowtask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         } else {
             FullscreenActivity.myToastMessage = getResources().getString(R.string.bad_time);
@@ -2764,4 +2780,77 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             return null;
         }
     }
+
+    private class DoRedraw extends AsyncTask <Object,Void,String> {
+
+        @Override
+        protected String doInBackground(Object... params) {
+            ListSongFiles.listSongs();
+            return "done";
+        }
+
+
+        @Override
+        protected void onPostExecute(String s) {
+            invalidateOptionsMenu();
+            // Redraw the Lyrics View
+            isPDF = false;
+            File checkfile;
+            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+                checkfile = new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename);
+            } else {
+                checkfile = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename);
+            }
+            if ((FullscreenActivity.songfilename.contains(".pdf") || FullscreenActivity.songfilename.contains(".PDF")) && checkfile.exists()) {
+                // File is pdf
+                isPDF = true;
+                presenter_slide_text.setVisibility(View.GONE);
+                presenter_slide_image.setVisibility(View.VISIBLE);
+                presenter_slide_image.setBackground(getResources().getDrawable(R.drawable.unhappy_android));
+
+            }
+
+            loadsong_async = new LoadSongAsync();
+            loadsong_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    private class LoadSongAsync extends AsyncTask <Object,Void,String> {
+
+        @Override
+        protected void onPreExecute() {
+            if (!isPDF) {
+                try {
+                    LoadXML.loadXML();
+                } catch (XmlPullParserException | IOException e) {
+                    e.printStackTrace();
+                }
+                presenter_slide_text.setVisibility(View.VISIBLE);
+                presenter_slide_image.setVisibility(View.GONE);
+
+            } else {
+                FullscreenActivity.mLyrics = getResources().getString(R.string.pdf_functionnotavailable);
+                // Re-initialise all song tags
+                LoadXML.initialiseSongTags();
+
+                Preferences.savePreferences();
+            }
+            currentsectionbutton = null;
+            FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+        }
+
+
+        @Override
+        protected String doInBackground(Object... params) {
+            LyricsDisplay.parseLyrics();
+            PresentPrepareSong.splitSongIntoSections();
+            return "done";
+        }
+
+        protected void onPostExecute(String s) {
+            findSongInFolder();
+            setupSongButtons();
+        }
+    }
+
 }

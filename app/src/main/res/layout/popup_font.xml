@@ -65,7 +65,10 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/scaleHeading_SeekBar"
                     android:layout_weight="0.7"
-                    android:layout_margin="8dp" />
+                    android:layout_margin="8dp"
+                    android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -95,7 +98,10 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/scaleComment_SeekBar"
                     android:layout_weight="0.7"
-                    android:layout_margin="8dp" />
+                    android:layout_margin="8dp"
+                    android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -126,7 +132,10 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/lineSpacingSeekBar"
                     android:layout_weight="0.7"
-                    android:layout_margin="8dp" />
+                    android:layout_margin="8dp"
+                    android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                 <TextView
                     android:layout_width="wrap_content"

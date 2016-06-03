@@ -9,6 +9,7 @@
   <tempo></tempo>
   <time_sig></time_sig>
   <duration></duration>
+  <predelay></predelay>
   <ccli>59177</ccli>
   <theme></theme>
   <alttheme></alttheme>
@@ -54,6 +55,10 @@
  Fill my thoughts, my words, my deeds,
  May all I give in adoration</lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>

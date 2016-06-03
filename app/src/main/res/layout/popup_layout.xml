@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (c) 2015.
-  ~ The code is provided free of charge.  You can use, modify, contribute and improve it as long as this source is referenced.
-  ~ Commercial use should seek permission.
-  -->
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
@@ -41,7 +35,10 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -60,7 +57,10 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -84,6 +84,36 @@
                 android:id="@+id/toggleAutoScaleButton"
                 android:layout_marginBottom="12dp"
                 android:textColor="#fff" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/maxfontsize"
+                android:id="@+id/textView151"
+                android:textColor="#ff0" />
+
+            <SeekBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/setMaxFontSizeProgressBar"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/maxfontSizePreview"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="36dp" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -124,7 +154,10 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -156,7 +189,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/presoTitleSizeSeekBar"
                 android:focusableInTouchMode="false"
-                android:layout_margin="12dp" />
+                android:layout_margin="12dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -170,7 +206,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/presoAuthorSizeSeekBar"
-                android:layout_margin="12dp" />
+                android:layout_margin="12dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -185,7 +224,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/presoCopyrightSizeSeekBar"
-                android:layout_margin="12dp" />
+                android:layout_margin="12dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -200,7 +242,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/presoAlertSizeSeekBar"
-                android:layout_margin="12dp" />
+                android:layout_margin="12dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
         </LinearLayout>
     </ScrollView>
 

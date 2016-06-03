@@ -8,14 +8,15 @@
   <capo print="false"></capo>
   <tempo></tempo>
   <time_sig></time_sig>
-  <duration></duration>
+  <duration>10</duration>
+  <predelay></predelay>
   <ccli>1079280</ccli>
   <theme></theme>
   <alttheme></alttheme>
   <user1>368</user1>
   <user2></user2>
   <user3></user3>
-  <key>Bb</key>
+  <key>A</key>
   <aka></aka>
   <key_line></key_line>
   <books></books>
@@ -25,30 +26,30 @@
   <restrictions></restrictions>
   <notes></notes>
   <lyrics>[INTRO]
-.Bb           Eb Bb          Eb (Bb)            x2
+.A           D A          D (A)            x2
 
 [V1]
-.           Bb                 Eb        Cm  Bb
+.           A                  D         Bm  A
  You're the Lion of Judah, the Lamb that was slain,
-.                           Eb             F
+.                           D              E
  You ascended to heaven and ever more will reign;
-.       Bb                      Eb          Bb
+.       A                       D           A
  At the end of the age when the earth You reclaim,
-.                              F
+.                              E
  You will gather the nations before You.||
-.                                                           Eb   F
+.                                                           D    E
  And the eyes of all men|will be fixed on the Lamb,|who was crucified
-.                                                           Eb       F
- For with wisdom and mercy|and justice You'll reign|at Your Father’s side
+.                                                           D        E
+ For with wisdom and mercy|and justice You'll reign|at Your Father's side
 
 [C]
-.        Bb                Eb   Bb  F    (F/Eb   F/D  F/C  F  F/Eb  F/D  F/C)
+.        A                 D    A   E    (E/D   E/C#  E/B  E  E/D  E/C#  E/B)
  And the angels will cry: 'Hail the Lamb
-.        Bb                   Eb   Bb F  (F/Eb   F/D  F/C  F  F/Eb  F/D  F/C)
+.        A                    D    A  E  (E/D   E/C#  E/B  E  E/D  E/C#  E/B)
  Who was slain for the world, Rule in power.'
-.        Bb                 Eb  Bb    F  (F/Eb   F/D  F/C  F  F/Eb  F/D  F/C)
+.        A                  D   A     E  (E/D   E/C#  E/B  E  E/D  E/C#  E/B)
  And the earth will reply: 'You shall reign
-.       Bb                        Eb   Dm Dm/C Bb     (Bb     Eb Bb        Eb  Bb)
+.       A                         D   C#m C#m/B A     (A     D A        D  A)
  As the King of all kings and the Lord of all  lords.' 
 
 [V2]
@@ -57,8 +58,13 @@
  As the Father has told us for these You have died,
  For the nations that gather before You.||
  And the ears of all men|need to hear of the Lamb|who was crucified,
- Who descended to hell|yet was raised up to reign|at the Father's side.</lyrics>
+ Who descended to hell|yet was raised up to reign|at the Father's side.
+</lyrics>
   <linked_songs></linked_songs>
-  <pad_file></pad_file>
-  
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web></link_web>
+  <link_audio></link_audio>
+  <link_other></link_other>
 </song>
