@@ -22,7 +22,8 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
-    compile "com.android.support:recyclerview-v7:23.3.0"
-    compile "com.android.support:cardview-v7:23.3.0"
-    compile "com.android.support:design:23.3.0"
+    compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'com.android.support:cardview-v7:23.3.0'
+    compile 'com.android.support:design:23.3.0'
+    compile 'org.apache.commons:commons-compress:1.11'
 }

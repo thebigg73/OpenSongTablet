@@ -8628,35 +8628,42 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             String query = "SELECT * FROM Song";
 
             //Cursor points to a location in your results
-            Cursor cursor = db.rawQuery(query, null);
-
-            // Move to first row
-            cursor.moveToFirst();
+            Cursor cursor;
 
             String str_title;
             String str_content;
 
-            while (cursor.moveToNext()) {
-                // Extract data.
-                str_title = cursor.getString(cursor.getColumnIndex("title"));
-                // Make sure title doesn't have /
-                str_title = str_title.replace("/", "_");
-                str_title = TextUtils.htmlEncode(str_title);
-                str_content = cursor.getString(cursor.getColumnIndex("content"));
+            try {
+                cursor = db.rawQuery(query, null);
 
-                try {
-                    // Now write the modified song
-                    FileOutputStream overWrite = new FileOutputStream(dironsong + "/" + str_title + ".onsong", false);
-                    overWrite.write(str_content.getBytes());
-                    overWrite.flush();
-                    overWrite.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                // Move to first row
+                cursor.moveToFirst();
+
+                while (cursor.moveToNext()) {
+                    // Extract data.
+                    str_title = cursor.getString(cursor.getColumnIndex("title"));
+                    // Make sure title doesn't have /
+                    str_title = str_title.replace("/", "_");
+                    str_title = TextUtils.htmlEncode(str_title);
+                    str_content = cursor.getString(cursor.getColumnIndex("content"));
+
+                    try {
+                        // Now write the modified song
+                        FileOutputStream overWrite = new FileOutputStream(dironsong + "/" + str_title + ".onsong", false);
+                        overWrite.write(str_content.getBytes());
+                        overWrite.flush();
+                        overWrite.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-            cursor.close();
-            return "doneit";
+                cursor.close();
 
+            } catch (Exception e) {
+                // Error with sql database
+                e.printStackTrace();
+            }
+            return "doneit";
         }
 
         @Override
