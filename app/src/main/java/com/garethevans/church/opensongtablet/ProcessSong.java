@@ -1,6 +1,9 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
+import android.util.Log;
+
+import java.util.ArrayList;
 
 public class ProcessSong extends Activity {
 
@@ -221,9 +224,9 @@ public class ProcessSong extends Activity {
 
     public static void processTempo() {
         FullscreenActivity.temposlider = 39;
-        if (FullscreenActivity.mTempo==null || FullscreenActivity.mTempo.equals("")
+        if (FullscreenActivity.mTempo == null || FullscreenActivity.mTempo.equals("")
                 || FullscreenActivity.mTempo.isEmpty()) {
-            FullscreenActivity.temposlider =39;
+            FullscreenActivity.temposlider = 39;
         } else {
             try {
                 FullscreenActivity.temposlider = Integer
@@ -256,5 +259,144 @@ public class ProcessSong extends Activity {
         }
 
         return string;
+    }
+
+    public static String determineLineTypes(String string) {
+        String type;
+        if (string.indexOf(".")==0) {
+            type = "chord";
+        } else if (string.indexOf(";")==0) {
+            type = "comment";
+        } else if (string.indexOf("[")==0) {
+            type = "heading";
+        } else {
+            type = "lyric";
+        }
+        return type;
+    }
+
+    public static String[] getChordPositions(String string) {
+        // Given a chord line, get the character positions that each chord starts at
+        // Go through the line character by character
+        // If the character isn't a " " and the character before is " ", "." or "|" it's a new chord
+        // Add the positions to an array
+        ArrayList<String> chordpositions = new ArrayList<>();
+
+        boolean lookingforstartpos = false;
+
+        int startpos = 0;
+
+        for (int x = 1; x < string.length(); x++) {
+
+            if (lookingforstartpos) {
+                if (!string.substring(x, x + 1).equals(" ") &&
+                        (string.substring(x - 1, x).equals(" ") || string.substring(x - 1, x).equals("."))) {
+                    // Get the starting position of this chord
+                    startpos = x;
+                    lookingforstartpos = false;
+                }
+            } else if (string.substring(x, x + 1).equals(" ") && !string.substring(x - 1, x).equals(" ")) {
+                lookingforstartpos = true;
+
+                // Add the position to the array
+                chordpositions.add(startpos + "");
+            }
+        }
+
+        String[] chordpos = new String[chordpositions.size()];
+        chordpos = chordpositions.toArray(chordpos);
+
+        return chordpos;
+    }
+
+    public static String[] getChordSections(String string, String[] pos_string) {
+        // Go through the chord positions and extract the substrings
+        ArrayList<String> chordsections = new ArrayList<>();
+        int startpos = 0;
+        int endpos;
+
+        for (int x=0;x<pos_string.length;x++) {
+            if (pos_string[x].equals("0")) {
+                // First chord is at the start of the line
+                startpos = 0;
+            } else if (x == pos_string.length - 1) {
+                // Last chord, so end position is end of the line
+                // First get the second last section
+                endpos = Integer.parseInt(pos_string[x]);
+                chordsections.add(string.substring(startpos, endpos));
+
+                // Now get the last one
+                startpos = Integer.parseInt(pos_string[x]);
+                endpos = string.length();
+                chordsections.add(string.substring(startpos, endpos));
+
+            } else {
+                // We are at the start of a chord somewhere other than the start or end
+                // Get the bit of text in the previous section;
+                endpos = Integer.parseInt(pos_string[x]);
+                chordsections.add(string.substring(startpos, endpos));
+                startpos = endpos;
+            }
+        }
+        String[] sections = new String[chordsections.size()];
+        sections = chordsections.toArray(sections);
+
+        return sections;
+    }
+
+    public static String[] getLyricSections(String string, String[] pos_string) {
+        // Go through the chord positions and extract the substrings
+        ArrayList<String> lyricsections = new ArrayList<>();
+        int startpos = 0;
+        int endpos;
+
+        for (int x=0;x<pos_string.length;x++) {
+            if (pos_string[x].equals("0")) {
+                // First chord is at the start of the line
+                startpos = 0;
+            } else if (x == pos_string.length - 1) {
+                // Last chord, so end position is end of the line
+                // First get the second last section
+                endpos = Integer.parseInt(pos_string[x]);
+                lyricsections.add(string.substring(startpos, endpos));
+
+                // Now get the last one
+                startpos = Integer.parseInt(pos_string[x]);
+                endpos = string.length();
+                lyricsections.add(string.substring(startpos, endpos));
+
+            } else {
+                // We are at the start of a chord somewhere other than the start or end
+                // Get the bit of text in the previous section;
+                endpos = Integer.parseInt(pos_string[x]);
+                lyricsections.add(string.substring(startpos, endpos));
+                startpos = endpos;
+            }
+        }
+        String[] sections = new String[lyricsections.size()];
+        sections = lyricsections.toArray(sections);
+
+        return sections;
+    }
+
+    public static String chordlinetoHTML(String[] chords) {
+        String chordhtml = "";
+        for (String bit:chords) {
+            if (bit.indexOf(".")==0 && bit.length()>1) {
+                bit = bit.substring(1);
+            }
+            chordhtml += "<td class=\"chord\" name=\""+bit.trim()+"\">"+bit.trim()+"</td>";
+        }
+        Log.d("d","chordHTML="+chordhtml);
+        return chordhtml;
+    }
+
+    public static String lyriclinetoHTML(String[] lyrics) {
+        String lyrichtml = "";
+        for (String bit:lyrics) {
+            lyrichtml += "<td class=\"lyric\">"+bit.replace(" ","&nbsp;")+"</td>";
+        }
+        Log.d("d","lyricHTML="+lyrichtml);
+        return lyrichtml;
     }
 }

@@ -359,7 +359,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                 FullscreenActivity.usePresentationOrder = presenter_order_view.isChecked();
                 Preferences.savePreferences();
                 LyricsDisplay.parseLyrics();
-                PresentPrepareSong.splitSongIntoSections();
+                PresentPrepareSong.splitSongIntoSections("presenter");
                 setupSongButtons();
             }
         });
@@ -2843,7 +2843,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         @Override
         protected String doInBackground(Object... params) {
             LyricsDisplay.parseLyrics();
-            PresentPrepareSong.splitSongIntoSections();
+            PresentPrepareSong.splitSongIntoSections("presenter");
             return "done";
         }
 

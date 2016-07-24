@@ -108,7 +108,7 @@
             android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:background="@drawable/green_button"
-            android:text="@string/set_save"
+            android:text="@string/ok"
             android:textColor="#fff" />
     </LinearLayout>
     </HorizontalScrollView>

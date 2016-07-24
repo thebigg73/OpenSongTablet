@@ -607,6 +607,9 @@
 	<string name="font_latolight">Lato Light</string>
 	<string name="font_latoregular">Lato Regular</string>
 	<string name="font_leaguegothic" translatable="false">League Gothic</string>
+    <string name="font_roboto_light" translatable="false">Roboto Light</string>
+    <string name="font_roboto_thin" translatable="false">Roboto Thin</string>
+    <string name="font_roboto_medium" translatable="false">Roboto Medium</string>
 	<string name="font_lyrics_line1">Love everlasting, </string>
 	<string name="font_lyrics_line2">love without measure</string>
 	<string name="font_chords_line1">G</string>

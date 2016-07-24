@@ -42,6 +42,18 @@ public class SetTypeFace extends Activity {
                 FullscreenActivity.lyricsfont = FullscreenActivity.typeface9;
                 FullscreenActivity.commentfont = FullscreenActivity.typeface9i;
                 break;
+            case 10:
+                FullscreenActivity.lyricsfont = FullscreenActivity.typeface10;
+                FullscreenActivity.commentfont = FullscreenActivity.typeface10i;
+                break;
+            case 11:
+                FullscreenActivity.lyricsfont = FullscreenActivity.typeface11;
+                FullscreenActivity.commentfont = FullscreenActivity.typeface11i;
+                break;
+            case 12:
+                FullscreenActivity.lyricsfont = FullscreenActivity.typeface12;
+                FullscreenActivity.commentfont = FullscreenActivity.typeface12i;
+                break;
             default:
                 FullscreenActivity.lyricsfont = FullscreenActivity.typeface0;
                 FullscreenActivity.commentfont = FullscreenActivity.typeface0;
@@ -76,6 +88,15 @@ public class SetTypeFace extends Activity {
             case 9:
                 FullscreenActivity.chordsfont = FullscreenActivity.typeface9;
                 break;
+            case 10:
+                FullscreenActivity.chordsfont = FullscreenActivity.typeface10;
+                break;
+            case 11:
+                FullscreenActivity.chordsfont = FullscreenActivity.typeface11;
+                break;
+            case 12:
+                FullscreenActivity.chordsfont = FullscreenActivity.typeface12;
+                break;
             default:
                 FullscreenActivity.chordsfont = FullscreenActivity.typeface0;
                 break;
@@ -108,6 +129,15 @@ public class SetTypeFace extends Activity {
                 break;
             case 9:
                 FullscreenActivity.presofont = FullscreenActivity.typeface9;
+                break;
+            case 10:
+                FullscreenActivity.presofont = FullscreenActivity.typeface10;
+                break;
+            case 11:
+                FullscreenActivity.presofont = FullscreenActivity.typeface11;
+                break;
+            case 12:
+                FullscreenActivity.presofont = FullscreenActivity.typeface12;
                 break;
             default:
                 FullscreenActivity.presofont = FullscreenActivity.typeface0;

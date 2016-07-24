@@ -247,16 +247,22 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static Typeface typeface2;
     public static Typeface typeface3;
     public static Typeface typeface4;
-    public static Typeface typeface5;
     public static Typeface typeface4i;
+    public static Typeface typeface5;
     public static Typeface typeface5i;
     public static Typeface typeface6;
     public static Typeface typeface7;
-    public static Typeface typeface8;
-    public static Typeface typeface9;
     public static Typeface typeface7i;
+    public static Typeface typeface8;
     public static Typeface typeface8i;
+    public static Typeface typeface9;
     public static Typeface typeface9i;
+    public static Typeface typeface10;
+    public static Typeface typeface10i;
+    public static Typeface typeface11;
+    public static Typeface typeface11i;
+    public static Typeface typeface12;
+    public static Typeface typeface12i;
 
     public static ArrayList<String> exportsetfilenames = new ArrayList<>();
     public static ArrayList<String> exportsetfilenames_ost = new ArrayList<>();
@@ -1026,6 +1032,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         typeface8i = Typeface.createFromAsset(getAssets(), "fonts/Lato-RegIta.ttf");
         typeface9 = Typeface.createFromAsset(getAssets(), "fonts/LeagueGothic-Regular.otf");
         typeface9i = Typeface.createFromAsset(getAssets(), "fonts/LeagueGothic-Italic.otf");
+        typeface10 = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+        typeface10i = Typeface.createFromAsset(getAssets(), "fonts/Roboto-LightItalic.ttf");
+        typeface11 = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf");
+        typeface11i = Typeface.createFromAsset(getAssets(), "fonts/Roboto-ThinItalic.ttf");
+        typeface12 = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Medium.ttf");
+        typeface12i = Typeface.createFromAsset(getAssets(), "fonts/Roboto-MediumItalic.ttf");
 
         // Set up the user preferences for page colours and fonts
         SetUpColours.colours();
@@ -1040,6 +1052,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             Intent performmode = new Intent();
             performmode.setClass(FullscreenActivity.this, PresenterMode.class);
             startActivity(performmode);
+            finish();
+        } else if (whichMode.equals("Stage") && !needtoimport) {
+            Intent stagemode = new Intent();
+            stagemode.setClass(FullscreenActivity.this, StageMode.class);
+            startActivity(stagemode);
             finish();
         }
 
@@ -8750,6 +8767,19 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     }
                     return true;
 
+                case R.id.stage_mode:
+                    // Switch to stage mode
+                    whichMode = "Stage";
+                    Preferences.savePreferences();
+                    Intent stagemode = new Intent();
+                    stagemode.setClass(FullscreenActivity.this,
+                            StageMode.class);
+                    tryKillPads();
+                    tryKillMetronome();
+                    startActivity(stagemode);
+                    finish();
+                    return true;
+
                 case R.id.action_search:
                     if (mDrawerLayout.isDrawerOpen(expListViewSong)) {
                         mDrawerLayout.closeDrawer(expListViewSong);
@@ -9631,6 +9661,18 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             // Decide if this line is a chord line followed by a lyric line.
             // If so, we need to split it up so the spacing is right.
             if (whatisthisline[x].equals("chords") && (whatisthisline[m].equals("lyrics") || whatisthisline[m].equals("comment"))) {
+
+/*
+                // TEST OUT NEW CHORD LINE POSITION CHECKER
+                String[] positions_returned = ProcessSong.getChordPositions(myParsedLyrics[x]);
+                // TEST OUT NEW LYRIC SPLITTER
+                String[] chords_returned = ProcessSong.getChordSections(myParsedLyrics[x],positions_returned);
+                String[] lyrics_returned = ProcessSong.getLyricSections(myParsedLyrics[m],positions_returned);
+                // TEST OUT NEW HTML
+                String chordHMTML = ProcessSong.chordlinetoHTML(chords_returned);
+                String lyricHMTML = ProcessSong.lyriclinetoHTML(lyrics_returned);
+*/
+
 
                 // Ok, so we have a chord line first. Let's break it into an array each 1 character big
                 char[] chars = (myParsedLyrics[x]).toCharArray();

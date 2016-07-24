@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.webkit.WebView;
@@ -66,10 +67,19 @@ public class Chordie extends Activity{
                 return false;
             }
         });
+
+        String newUA= "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0";
+        chordieWeb.getSettings().setUserAgentString(newUA);
         chordieWeb.getSettings().getJavaScriptEnabled();
         chordieWeb.getSettings().setJavaScriptEnabled(true);
         chordieWeb.getSettings().setDomStorageEnabled(true);
-        chordieWeb.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        chordieWeb.getSettings().setLoadWithOverviewMode(true);
+        chordieWeb.getSettings().setUseWideViewPort(true);
+        chordieWeb.getSettings().setSupportZoom(true);
+        chordieWeb.getSettings().setBuiltInZoomControls(true);
+        chordieWeb.getSettings().setDisplayZoomControls(false);
+        chordieWeb.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+        chordieWeb.setScrollbarFadingEnabled(false);
         chordieWeb.loadUrl(weblink);
     }
 
@@ -382,6 +392,14 @@ public class Chordie extends Activity{
                     filenametosave = title_resultposted;
                 }
 
+                // Other alternative
+                endpos = resultposted.indexOf("property=\"og:title\"")-2;
+                startpos = resultposted.indexOf("meta content=",endpos-40)+14;
+                if (startpos >0 && endpos>startpos) {
+                    title_resultposted = resultposted.substring(startpos, endpos);
+                    filenametosave = title_resultposted;
+                }
+
                 // Look for a better author
                 // Desktop site
                 startpos = resultposted.indexOf("artist:");
@@ -431,19 +449,10 @@ public class Chordie extends Activity{
 
                 // Find the text start
                 startpos = resultposted.indexOf("<pre>");
-                if (startpos<0) {
-                    startpos=0;
+                if (startpos >-1 || startpos<500) {
+                    // Remove everything before this position
+                    resultposted = resultposted.substring(startpos + 5);
                 }
-                // Remove everything before this position
-                resultposted = resultposted.substring(startpos + 5);
-
-                // Find the other possible intro bit added Jan 2016
-                startpos = resultposted.indexOf("<pre class=\"js-tab-content\">");
-                if (startpos<0) {
-                    startpos=0;
-                }
-                // Remove everything before this position
-                resultposted = resultposted.substring(startpos+28);
 
                 // For the mobile version
                 startpos = resultposted.indexOf("<pre class=\"js-tab-content\">");

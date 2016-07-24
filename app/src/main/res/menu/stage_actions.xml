@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Show Songs -->
+
+    <item android:id="@+id/set_back"
+        android:icon="@drawable/ic_action_previous_item"
+        android:title="@string/set_back"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/set_forward"
+        android:icon="@drawable/ic_action_next_item"
+        android:title="@string/set_forward"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/action_fullsearch"
+        android:title="@string/action_search"
+        android:icon="@drawable/ic_action_search"
+        android:label="@string/action_search"
+        android:hint="@string/action_search"
+        app:showAsAction="ifRoom|collapseActionView"/>
+
+    <item android:id="@+id/set_add"
+        android:icon="@drawable/ic_action_new"
+        android:title="@string/add_song_to_set"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/perform_mode"
+        android:icon="@drawable/action_perform"
+        android:title="@string/switchtoperformmode"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/present_mode"
+        android:icon="@drawable/action_present"
+        android:title="@string/switchtopresentmode"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/action_search"
+        android:icon="@drawable/action_song"
+        android:title="@string/action_search"
+        app:showAsAction="always"/>
+
+    <!-- Show Options -->
+    <item android:id="@+id/action_settings"
+        android:icon="@drawable/ic_action_settings"
+        android:title="@string/action_settings"
+        app:showAsAction="always" />
+
+</menu>

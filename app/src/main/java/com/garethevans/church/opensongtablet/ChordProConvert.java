@@ -229,6 +229,9 @@ public class ChordProConvert extends Activity {
 				line[x] = line[x].replace("Prechorus 3:", "[P3]");
 				line[x] = line[x].replace("Bridge:", "[B]");
 				line[x] = line[x].replace("Tag:", "[T]");
+				line[x] = line[x].replace("[[", "[");
+                line[x] = line[x].replace("]]", "]");
+
 			}
 			parsedlines = parsedlines + line[x] + "\n";
 		}

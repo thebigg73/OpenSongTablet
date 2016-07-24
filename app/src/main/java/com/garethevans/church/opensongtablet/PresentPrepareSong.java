@@ -9,7 +9,7 @@ public class PresentPrepareSong {
 	static String[] songSectionsLabels;
 
 
-	public static void splitSongIntoSections () {
+	public static void splitSongIntoSections (String mode) {
 		// Go through the song XML and add %%__SPLITHERE__%%
 		// NEED TO FIX SONGS WITH MULTIPLE LINES TOGETHER STARTING WITH NUMBERS
 		// NEED TO FIX EMPTY SECTIONS
@@ -187,9 +187,14 @@ public class PresentPrepareSong {
 				songSectionsLabels[x] = "";
 			}
 		}
-		// Put the sections back into the Present Activity
-		PresenterMode.songSections = songSections;
-		PresenterMode.songSectionsLabels = songSectionsLabels;
+		// Put the sections back into the Present Activity or the StageMode Activity
+		if (mode.equals("stage")) {
+			StageMode.songSections       = songSections;
+			StageMode.songSectionsLabels = songSectionsLabels;
+		} else {
+			PresenterMode.songSections = songSections;
+			PresenterMode.songSectionsLabels = songSectionsLabels;
+		}
 	}
 
 }

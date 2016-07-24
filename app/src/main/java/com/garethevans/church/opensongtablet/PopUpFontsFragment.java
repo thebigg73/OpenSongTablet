@@ -128,6 +128,9 @@ public class PopUpFontsFragment extends DialogFragment {
         font_choices.add(getResources().getString(R.string.font_latolight));
         font_choices.add(getResources().getString(R.string.font_latoregular));
         font_choices.add(getResources().getString(R.string.font_leaguegothic));
+        font_choices.add(getResources().getString(R.string.font_roboto_light));
+        font_choices.add(getResources().getString(R.string.font_roboto_thin));
+        font_choices.add(getResources().getString(R.string.font_roboto_medium));
 
         ArrayAdapter<String> choose_fonts = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, font_choices);
         choose_fonts.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -297,6 +300,24 @@ public class PopUpFontsFragment extends DialogFragment {
                 headingPreview.setTypeface(FullscreenActivity.typeface9);
                 commentPreview.setTypeface(FullscreenActivity.typeface9);
                 break;
+            case 10:
+                lyricsPreview1.setTypeface(FullscreenActivity.typeface10);
+                lyricsPreview2.setTypeface(FullscreenActivity.typeface10);
+                headingPreview.setTypeface(FullscreenActivity.typeface10);
+                commentPreview.setTypeface(FullscreenActivity.typeface10);
+                break;
+            case 11:
+                lyricsPreview1.setTypeface(FullscreenActivity.typeface11);
+                lyricsPreview2.setTypeface(FullscreenActivity.typeface11);
+                headingPreview.setTypeface(FullscreenActivity.typeface11);
+                commentPreview.setTypeface(FullscreenActivity.typeface11);
+                break;
+            case 12:
+                lyricsPreview1.setTypeface(FullscreenActivity.typeface12);
+                lyricsPreview2.setTypeface(FullscreenActivity.typeface12);
+                headingPreview.setTypeface(FullscreenActivity.typeface12);
+                commentPreview.setTypeface(FullscreenActivity.typeface12);
+                break;
             default:
                 lyricsPreview1.setTypeface(FullscreenActivity.typeface0);
                 lyricsPreview2.setTypeface(FullscreenActivity.typeface0);
@@ -342,6 +363,18 @@ public class PopUpFontsFragment extends DialogFragment {
             case 9:
                 chordPreview1.setTypeface(FullscreenActivity.typeface9);
                 chordPreview2.setTypeface(FullscreenActivity.typeface9);
+                break;
+            case 10:
+                chordPreview1.setTypeface(FullscreenActivity.typeface10);
+                chordPreview2.setTypeface(FullscreenActivity.typeface10);
+                break;
+            case 11:
+                chordPreview1.setTypeface(FullscreenActivity.typeface11);
+                chordPreview2.setTypeface(FullscreenActivity.typeface11);
+                break;
+            case 12:
+                chordPreview1.setTypeface(FullscreenActivity.typeface12);
+                chordPreview2.setTypeface(FullscreenActivity.typeface12);
                 break;
             default:
                 chordPreview1.setTypeface(FullscreenActivity.typeface0);

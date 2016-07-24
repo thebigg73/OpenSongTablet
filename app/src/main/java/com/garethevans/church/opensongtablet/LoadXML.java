@@ -217,6 +217,10 @@ public class LoadXML extends Activity {
                 FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("Slide 5", "[V5]");
             }
 
+            // Make double tags into single ones
+            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("[[", "[");
+            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("]]", "]");
+
             // Make lowercase start tags into caps
             FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("[v", "[V");
             FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("[b", "[B");

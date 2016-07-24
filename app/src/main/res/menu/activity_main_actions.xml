@@ -62,6 +62,13 @@
         android:hint="@string/ultimateguitarsearch"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/stage_mode"
+        android:icon="@drawable/action_present"
+        android:title="Stage Mode"
+        android:label="Stage Mode"
+        android:hint="Stage Mode"
+        app:showAsAction="never"/>
+
     <item android:id="@+id/present_mode"
         android:icon="@drawable/action_present"
         android:title="@string/switchtopresentmode"
