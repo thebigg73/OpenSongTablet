@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/toolbar"
     android:layout_alignParentTop="true"
-    android:elevation="8dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:background="@color/toolbar"
+    android:elevation="8dp">
 
     <TextView
         android:id="@+id/songandauthor"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textSize="12sp"
-        android:textColor="#ffffff"
-        android:gravity="center_vertical"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="top|left|start"
+        android:layout_margin="0dp"
+        android:gravity="center_vertical"
         android:lines="2"
-        android:layout_gravity="top|left"
-        android:layout_margin="0dp" />
+        android:textColor="#ffffff"
+        android:textSize="12sp" />
 
     <DigitalClock
         android:id="@+id/digitalclock"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="top|right|end"
         android:layout_margin="0dp"
+        android:gravity="center_vertical"
         android:textColor="#ffff00"
-        android:textSize="12sp"
-        android:layout_gravity="top|right"
-        android:gravity="center_vertical" />
+        android:textSize="12sp" />
 
 </android.support.v7.widget.Toolbar>

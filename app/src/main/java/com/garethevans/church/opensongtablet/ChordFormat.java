@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RadioButton;
@@ -20,6 +21,7 @@ public class ChordFormat extends AppCompatActivity {
 	static String numeral;
 	static String numeral2;
 
+/*
     Switch switchAb;
     Switch switchBb;
     Switch switchDb;
@@ -30,8 +32,20 @@ public class ChordFormat extends AppCompatActivity {
     Switch switchDbm;
     Switch switchEbm;
     Switch switchGbm;
+*/
 
-	@Override
+    SwitchCompat switchAb;
+    SwitchCompat switchBb;
+    SwitchCompat switchDb;
+    SwitchCompat switchEb;
+    SwitchCompat switchGb;
+    SwitchCompat switchAbm;
+    SwitchCompat switchBbm;
+    SwitchCompat switchDbm;
+    SwitchCompat switchEbm;
+    SwitchCompat switchGbm;
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -58,6 +72,7 @@ public class ChordFormat extends AppCompatActivity {
         }
 
         // Set up the preferred chord buttons
+/*
         switchAb = (Switch) findViewById(R.id.switchAb);
         switchBb = (Switch) findViewById(R.id.switchBb);
         switchDb = (Switch) findViewById(R.id.switchDb);
@@ -68,6 +83,18 @@ public class ChordFormat extends AppCompatActivity {
         switchDbm = (Switch) findViewById(R.id.switchDbm);
         switchEbm = (Switch) findViewById(R.id.switchEbm);
         switchGbm = (Switch) findViewById(R.id.switchGbm);
+*/
+
+        switchAb = (SwitchCompat) findViewById(R.id.switchAb);
+        switchBb = (SwitchCompat) findViewById(R.id.switchBb);
+        switchDb = (SwitchCompat) findViewById(R.id.switchDb);
+        switchEb = (SwitchCompat) findViewById(R.id.switchEb);
+        switchGb = (SwitchCompat) findViewById(R.id.switchGb);
+        switchAbm = (SwitchCompat) findViewById(R.id.switchAbm);
+        switchBbm = (SwitchCompat) findViewById(R.id.switchBbm);
+        switchDbm = (SwitchCompat) findViewById(R.id.switchDbm);
+        switchEbm = (SwitchCompat) findViewById(R.id.switchEbm);
+        switchGbm = (SwitchCompat) findViewById(R.id.switchGbm);
 
         setSwitches(FullscreenActivity.prefChord_Aflat_Gsharp, switchAb);
         setSwitches(FullscreenActivity.prefChord_Bflat_Asharp, switchBb);
@@ -225,7 +252,15 @@ public class ChordFormat extends AppCompatActivity {
 		finish();
 	}
 
-    public void setSwitches(String what, Switch myswitch) {
+/*    public void setSwitches(String what, Switch myswitch) {
+        if (what.equals("b")) {
+            myswitch.setChecked(false);
+        } else {
+            myswitch.setChecked(true);
+        }
+    }*/
+
+    public void setSwitches(String what, SwitchCompat myswitch) {
         if (what.equals("b")) {
             myswitch.setChecked(false);
         } else {

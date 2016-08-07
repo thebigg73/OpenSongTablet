@@ -156,7 +156,7 @@
                         android:textSize="16sp"
                         android:layout_marginTop="32dp" />
 
-                    <Switch
+                    <android.support.v7.widget.SwitchCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/override_fullautoscale"
@@ -165,7 +165,7 @@
                         android:textSize="18sp"
                         android:layout_marginTop="32dp" />
 
-                    <Switch
+                    <android.support.v7.widget.SwitchCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/override_widthautoscale"

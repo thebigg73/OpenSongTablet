@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.Html;
 import android.util.Log;
 
 public class BibleGateway extends Activity{
@@ -30,8 +31,8 @@ public class BibleGateway extends Activity{
             for (String address:addresses) {
                 URL url;
                 HttpURLConnection urlConnection = null;
-                boolean gottitle = false;
-                boolean gotscripture = false;
+                //boolean gottitle = false;
+                //boolean gotscripture = false;
                 try {
                     url = new URL(address);
                     urlConnection = (HttpURLConnection) url.openConnection();
@@ -40,16 +41,22 @@ public class BibleGateway extends Activity{
                     String s;
                     while ((s = buffer.readLine()) != null) {
                         response += "\n" + s;
+/*
                         if (s.contains("<meta name=\"twitter:title\" content=\"")) {
                             gottitle=true;
                         }
                         if (s.contains("<meta property=\"og:description\" content=\"")) {
                             gotscripture=true;
                         }
+*/
+
+                        // OVERRIDE THIS BIT FOR NOW WHILE I TEST FULL SCRIPTURE EXTRACT
+/*
                         if (s.contains("<meta property=\"al:ios:url\"") || (gottitle && gotscripture)) {
                             // Force s to be null as we've got all we need!
                             break;
                         }
+*/
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -64,13 +71,34 @@ public class BibleGateway extends Activity{
 
         @Override
         protected void onPostExecute(String result)  {
-            String scripture = "";
+            String scripture;
             String scripture_title = "";
+
+            // TEST THE FULLY EXTRACTED SCRIPTURE (FULLER THAN HEADER)
+            String newbit = result;
+
+            // Find the start and end of the scripture bit
+            int startoffull = newbit.indexOf("<sup class=\"versenum\">");
+            int endoffull   = newbit.indexOf("<div class=\"crossrefs hidden\">");
+
+            if (endoffull>startoffull && startoffull>0 && endoffull>0) {
+                newbit = newbit.substring(startoffull,endoffull);
+            } else {
+                Log.d("d","Error getting scripture");
+                FullscreenActivity.myToastMessage = FullscreenActivity.error_missingsection;
+                ShowToast.showToast(context);
+            }
+
+            newbit = Html.fromHtml(newbit).toString();
+            newbit = newbit.replace("<p>","");
+            newbit = newbit.replace("</p>","");
+            //newbit = newbit.replace("\n","");
 
             //Now look to see if the webcontent has the desired text in it
             if (result.contains("og:description")) {
                 // Find the position of the start of this section
                 // Get the scripture
+/*
                 int script_startpos = result.indexOf("og:description\" content=\"")+25;
                 int script_endpos = result.indexOf("\"/>",script_startpos);
                 try {
@@ -81,10 +109,10 @@ public class BibleGateway extends Activity{
                     FullscreenActivity.myToastMessage = FullscreenActivity.error_missingsection;
                     ShowToast.showToast(context);
                 }
+*/
 
                 // Get the title
                 int title_startpos = result.indexOf("<meta name=\"twitter:title\" content=\"")+36;
-
                 int title_endpos   = result.indexOf("\" />",title_startpos);
 
                 try {
@@ -98,7 +126,8 @@ public class BibleGateway extends Activity{
 
                 // Make the scripture more readable by making a line break at the start of the word after 40 chars
                 // First split the scripture into an array of words
-                String[] scripturewords = scripture.split(" ");
+                //String[] scripturewords = scripture.split(" ");
+                String[] scripturewords = newbit.split(" ");
 
                 String currentline="";
                 ArrayList<String> newimprovedscripture = new ArrayList<>();
@@ -114,8 +143,15 @@ public class BibleGateway extends Activity{
                 newimprovedscripture.add(currentline);
 
                 scripture = "";
+                int newslideneeded = 0;
                 for (int z=0;z<newimprovedscripture.size();z++) {
                     scripture = scripture + "\n" + newimprovedscripture.get(z);
+                    newslideneeded ++;
+                    // Every 6 lines, start a new slide
+                    if (newslideneeded > 5) {
+                        scripture = scripture + "\n---";
+                        newslideneeded = 0;
+                    }
                 }
 
                 scripture = scripture.trim();

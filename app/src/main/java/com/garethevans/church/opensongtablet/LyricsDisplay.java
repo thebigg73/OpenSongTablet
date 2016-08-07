@@ -17,7 +17,10 @@ public class LyricsDisplay extends Activity {
 
 		// Does the user want to use the custom presentation order?
 		// If so, parse the song into an appropriate format first
-		parseToPresentationOrder();
+		// Only do this if this isn't a scripture - as it starts with numbers!
+		if (!FullscreenActivity.whichSongFolder.contains(FullscreenActivity.scripture)) {
+			parseToPresentationOrder();
+		}
 
 		// If the user doesn't want to use a custom presentation order, or it is blank,
 		// replace it back with the original
@@ -479,6 +482,8 @@ public class LyricsDisplay extends Activity {
 	}
 
 	public static void parseToPresentationOrder() {
+        Log.d("d","parseToPresentationOrder() is called");
+        Log.d("d","FullscreenActivity.whichSongFolder="+FullscreenActivity.whichSongFolder);
 		// The presentation order is separated by spaces.  One issue is that custom tags might have spaces in them
 		// Go through the song and look for all tag.  Make a temp lyrics string
 		FullscreenActivity.mLyrics = FullscreenActivity.myLyrics;
@@ -727,6 +732,9 @@ public class LyricsDisplay extends Activity {
 			improvedText = improvedText + lookfortagslyrics[s] + "\n";
 			}
 		}
+
+		//Log.d("d","newText="+newText);
+		//Log.d("d","improvedText="+improvedText);
 
 
 		// Ok, now reprocess the improved version with multiple verse lines sorted

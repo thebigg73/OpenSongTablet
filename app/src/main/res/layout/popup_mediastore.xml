@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Switch
+    <android.support.v7.widget.SwitchCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/storage_ext"
@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/mediaStore_ListView"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_above="@+id/linearLayout"
         android:layout_below="@+id/externalSwitch" />
 
@@ -45,9 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/mediaSelected"
-            android:layout_below="@+id/textView28"
-            android:layout_above="@+id/startPlay"/>
+            android:id="@+id/mediaSelected" />
     </LinearLayout>
 
     <ImageButton

@@ -13,6 +13,7 @@
         android:layout_margin="8dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:contentDescription="@string/options_set" />
 
     <ListView
@@ -23,6 +24,7 @@
         android:layout_above="@+id/newSetPromptTitle"
         android:layout_alignLeft="@+id/newSetPromptTitle"
         android:layout_alignStart="@+id/newSetPromptTitle"
+        android:layout_alignParentLeft="false"
         android:layout_alignParentStart="false"
         android:layout_alignParentTop="false"
         android:layout_below="@+id/listSort_imageButton" />

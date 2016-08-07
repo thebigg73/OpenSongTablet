@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2015.
- * The code is provided free of charge.  You can use, modify, contribute and improve it as long as this source is referenced.
- * Commercial use should seek permission.
- */
-
 package com.garethevans.church.opensongtablet;
 
 import android.app.DialogFragment;

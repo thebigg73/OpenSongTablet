@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/cardview_item"
-            android:gravity="center_vertical"
+        android:layout_toEndOf="@id/cardview_item"
+        android:gravity="center_vertical"
             android:text="@string/title"
             android:textColor="#000"
             android:textSize="18sp"
@@ -37,6 +38,7 @@
             android:layout_alignParentTop="false"
             android:layout_below="@+id/cardview_songtitle"
             android:layout_toRightOf="@id/cardview_item"
+            android:layout_toEndOf="@id/cardview_item"
             android:gravity="center_vertical"
             android:text="@string/mainfoldername"
             android:textColor="#006"
@@ -52,6 +54,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/cardview_folder"
             android:id="@+id/tableLayout"
             android:layout_marginLeft="8dp"
@@ -67,6 +70,7 @@
             android:textColor="#006"
             android:textSize="16sp"
             android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="0dp"
             android:textStyle="bold"
             android:id="@+id/text_author" />
@@ -78,7 +82,8 @@
             android:text="@string/edit_song_author"
             android:textColor="#000"
             android:textSize="16sp"
-            android:layout_marginRight="40dp" />
+            android:layout_marginRight="40dp"
+            android:layout_marginEnd="40dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -87,6 +92,7 @@
                     android:textColor="#006"
                     android:textSize="16sp"
                     android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="0dp"
                     android:textStyle="bold"
                     android:id="@+id/text_key" />
@@ -112,6 +118,7 @@
                     android:textColor="#006"
                     android:textSize="16sp"
                     android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="0dp" />
 
                 <TextView
@@ -135,6 +142,7 @@
                     android:textColor="#006"
                     android:textSize="16sp"
                     android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="0dp" />
 
                 <TextView
@@ -158,6 +166,7 @@
                     android:textColor="#006"
                     android:textSize="16sp"
                     android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="0dp" />
 
                 <TextView
@@ -181,6 +190,7 @@
                     android:textColor="#006"
                     android:textSize="16sp"
                     android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="0dp" />
 
                 <TextView

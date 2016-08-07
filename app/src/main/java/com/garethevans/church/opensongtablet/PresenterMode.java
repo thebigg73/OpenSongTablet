@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2015.
- * The code is provided free of charge.  You can use, modify, contribute and improve it as long as this source is referenced.
- * Commercial use should seek permission.
- */
-
 package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
@@ -84,7 +78,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         PopUpSetViewNew.MyInterface, PopUpSongCreateFragment.MyInterface,
         PopUpSearchViewFragment.MyVibrator, PopUpSongDetailsFragment.MyInterface,
         PopUpFontsFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
-        PopUpFileChooseFragment.MyInterface {
+        PopUpFileChooseFragment.MyInterface, PopUpPresentationOrderFragment.MyInterface {
 
     DialogFragment newFragment;
 
@@ -261,6 +255,8 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         //myPreferences = getPreferences(MODE_PRIVATE);
         Preferences.loadPreferences();
 
+        // For now, turn off presenterchords
+        FullscreenActivity.presenterChords = "N";
         // Try language locale change
         if (!FullscreenActivity.languageToLoad.isEmpty()) {
             Locale locale;
@@ -359,6 +355,9 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                 FullscreenActivity.usePresentationOrder = presenter_order_view.isChecked();
                 Preferences.savePreferences();
                 LyricsDisplay.parseLyrics();
+                // Only do this if this isn't a scripture - as it starts with numbers!
+                Log.d("d","PresenterMode 357");
+                Log.d("d","FullscreenActivity.whichSongFolder="+FullscreenActivity.whichSongFolder);
                 PresentPrepareSong.splitSongIntoSections("presenter");
                 setupSongButtons();
             }
@@ -1137,6 +1136,8 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
 
         numsectionbuttons = songSections.length;
 
+        Log.d("d","numsectionbuttons="+numsectionbuttons);
+
         for (int x = 0; x < songSections.length; x++) {
             String buttonText = songSections[x];
             String sectionText = songSectionsLabels[x];
@@ -1553,6 +1554,12 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         // This reopens the choose backgrounds popupFragment
         newFragment = PopUpCustomSlideFragment.newInstance();
         newFragment.show(getFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void updatePresentationOrder() {
+        presenter_order_view.setText(FullscreenActivity.mPresentation);
+        redrawPresenterPage();
     }
 
     public class sectionButtonClick implements View.OnClickListener {
@@ -2819,31 +2826,90 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
 
         @Override
         protected void onPreExecute() {
+            isPDF = false;
+            isSong = true;
+            if ((FullscreenActivity.songfilename.contains(".pdf") || FullscreenActivity.songfilename.contains(".PDF"))) {
+                // File is pdf
+                isPDF = true;
+                isSong = false;
+            }
+
+            if (FullscreenActivity.whichSongFolder.contains("../Scripture") || FullscreenActivity.whichSongFolder.contains("../Images") || FullscreenActivity.whichSongFolder.contains("../Slides") || FullscreenActivity.whichSongFolder.contains("../Notes")) {
+                isSong = false;
+            }
+
             if (!isPDF) {
+/*
                 try {
                     LoadXML.loadXML();
                 } catch (XmlPullParserException | IOException e) {
                     e.printStackTrace();
                 }
+*/
                 presenter_slide_text.setVisibility(View.VISIBLE);
                 presenter_slide_image.setVisibility(View.GONE);
 
+/*
             } else {
                 FullscreenActivity.mLyrics = getResources().getString(R.string.pdf_functionnotavailable);
                 // Re-initialise all song tags
                 LoadXML.initialiseSongTags();
 
                 Preferences.savePreferences();
+ */
             }
+
             currentsectionbutton = null;
-            FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+            //FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
         }
 
 
         @Override
         protected String doInBackground(Object... params) {
-            LyricsDisplay.parseLyrics();
+            if (!isPDF) {
+                try {
+                    LoadXML.loadXML();
+                } catch (XmlPullParserException | IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                FullscreenActivity.mLyrics = getResources().getString(R.string.pdf_functionnotavailable);
+                // Re-initialise all song tags
+                LoadXML.initialiseSongTags();
+                Preferences.savePreferences();
+            }
+
+            // FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+            // LyricsDisplay.parseLyrics();
+            // Sort song formatting
+            // First remove chord lines
+            FullscreenActivity.presenterChords.equals("N");
+            FullscreenActivity.myLyrics = ProcessSong.removeChordLines(FullscreenActivity.mLyrics);
+
+            // 1. Sort multiline verse/chord formats
+            FullscreenActivity.myLyrics = ProcessSong.fixMultiLineFormat(FullscreenActivity.myLyrics);
+
+            // 2. Split the song into sections
+            songSections = ProcessSong.splitSongIntoSections(FullscreenActivity.myLyrics);
+
+            // 3. Put the song into presentation order if required
+            if (FullscreenActivity.usePresentationOrder && !FullscreenActivity.mPresentation.equals("")) {
+                songSections = ProcessSong.matchPresentationOrder(songSections);
+            }
+
+            // 4. Get the section headings/types (may have changed after presentationorder
+            songSectionsLabels = new String[songSections.length];
+            for (int sl=0; sl < songSections.length; sl++) {
+                songSectionsLabels[sl] = ProcessSong.getSectionHeadings(songSections[sl]);
+            }
+
+            // 5. Get rid of the tag/heading lines
+            songSections =  ProcessSong.removeTagLines(songSections);
+
+/*
+            // Only do this if this isn't a scripture - as it starts with numbers!
             PresentPrepareSong.splitSongIntoSections("presenter");
+*/
             return "done";
         }
 

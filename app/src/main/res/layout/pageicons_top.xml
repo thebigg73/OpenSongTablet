@@ -18,7 +18,6 @@
         android:contentDescription="@string/set_back"
         android:onClick="doScrollUp"
         android:src="@drawable/page_up_bw"
-        android:elevation="8dp"
         android:visibility="visible" />
 
     <ImageView
@@ -26,13 +25,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/uparrow_top"
+        android:layout_toEndOf="@id/uparrow_top"
         android:alpha="0.6"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:contentDescription="@string/set_forward"
         android:onClick="doScrollDown"
         android:src="@drawable/page_down_bw"
-        android:elevation="8dp"
         android:visibility="visible" />
 
 </RelativeLayout>

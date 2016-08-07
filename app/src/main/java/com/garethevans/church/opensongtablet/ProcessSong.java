@@ -1,11 +1,94 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Paint;
 import android.util.Log;
-
+import android.widget.TableRow;
+import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ProcessSong extends Activity {
+
+    public static String parseLyrics(String myLyrics) {
+
+        myLyrics = myLyrics.replace("\n \n","\n\n");
+        myLyrics = myLyrics.replaceAll("\r\n", "\n");
+        myLyrics = myLyrics.replaceAll("\r", "\n");
+        myLyrics = myLyrics.replaceAll("\t", "    ");
+        myLyrics = myLyrics.replaceAll("\\t", "    ");
+        myLyrics = myLyrics.replaceAll("\b", "    ");
+        myLyrics = myLyrics.replaceAll("\f", "    ");
+        myLyrics = myLyrics.replace("\r", "");
+        myLyrics = myLyrics.replace("\t", "    ");
+        myLyrics = myLyrics.replace("\b", "    ");
+        myLyrics = myLyrics.replace("\f", "    ");
+        myLyrics = myLyrics.replace("&#x27;", "'");
+        myLyrics = myLyrics.replaceAll("\u0092", "'");
+        myLyrics = myLyrics.replaceAll("\u0093", "'");
+        myLyrics = myLyrics.replaceAll("\u2018", "'");
+        myLyrics = myLyrics.replaceAll("\u2019", "'");
+
+        if (!FullscreenActivity.whichSongFolder.contains(FullscreenActivity.slide) && !FullscreenActivity.whichSongFolder.contains(FullscreenActivity.image) && !FullscreenActivity.whichSongFolder.contains(FullscreenActivity.note) && !FullscreenActivity.whichSongFolder.contains(FullscreenActivity.scripture)) {
+            myLyrics = myLyrics.replace("Slide 1", "[V1]");
+            myLyrics = myLyrics.replace("Slide 2", "[V2]");
+            myLyrics = myLyrics.replace("Slide 3", "[V3]");
+            myLyrics = myLyrics.replace("Slide 4", "[V4]");
+            myLyrics = myLyrics.replace("Slide 5", "[V5]");
+        }
+
+        // Make double tags into single ones
+        myLyrics = myLyrics.replace("[[", "[");
+        myLyrics = myLyrics.replace("]]", "]");
+
+        // Make lowercase start tags into caps
+        myLyrics = myLyrics.replace("[v", "[V");
+        myLyrics = myLyrics.replace("[b", "[B");
+        myLyrics = myLyrics.replace("[c", "[C");
+        myLyrics = myLyrics.replace("[t", "[T");
+        myLyrics = myLyrics.replace("[p", "[P");
+
+        // Try to convert ISO / Windows
+        myLyrics = myLyrics.replace("\0x91", "'");
+
+        // Get rid of BOMs and stuff
+        myLyrics = myLyrics.replace("\uFEFF","");
+        myLyrics = myLyrics.replace("\uFEFF","");
+        myLyrics = myLyrics.replace("[&#x27;]","");
+        myLyrics = myLyrics.replace("[\\xEF]","");
+        myLyrics = myLyrics.replace("[\\xBB]","");
+        myLyrics = myLyrics.replace("[\\xFF]","");
+        myLyrics = myLyrics.replace("\\xEF","");
+        myLyrics = myLyrics.replace("\\xBB","");
+        myLyrics = myLyrics.replace("\\xFF","");
+
+        // Split the lyrics into a line by line array so we can fix individual lines
+        String[] lineLyrics = myLyrics.split("\n");
+        myLyrics = "";
+        // Go through the lines and remove underscores if the line isn't an image location
+        for (int l=0;l<lineLyrics.length;l++) {
+/*
+            if (lineLyrics[l].contains("_")) {
+                if (l>0 && !lineLyrics[l].contains("["+FullscreenActivity.image+"_") && !lineLyrics[l-1].contains("["+FullscreenActivity.image+"_")) {
+                    if (FullscreenActivity.showChords.equals("N")) {
+                        lineLyrics[l] = lineLyrics[l].replace("_","");
+                    } else {
+                        lineLyrics[l] = lineLyrics[l].replace("_"," ");
+                    }
+                } else if (l==0 && !lineLyrics[l].contains("["+FullscreenActivity.image+"_")) {
+                    if (FullscreenActivity.showChords.equals("N")) {
+                        lineLyrics[l] = lineLyrics[l].replace("_","");
+                    } else {
+                        lineLyrics[l] = lineLyrics[l].replace("_"," ");
+                    }
+                }
+            }
+*/
+            myLyrics += lineLyrics[l] + "\n";
+        }
+        return myLyrics;
+    }
 
     public static void processKey() {
         switch (FullscreenActivity.mKey) {
@@ -278,34 +361,46 @@ public class ProcessSong extends Activity {
     public static String[] getChordPositions(String string) {
         // Given a chord line, get the character positions that each chord starts at
         // Go through the line character by character
-        // If the character isn't a " " and the character before is " ", "." or "|" it's a new chord
+        // If the character isn't a " " and the character before is " " or "|" it's a new chord
         // Add the positions to an array
         ArrayList<String> chordpositions = new ArrayList<>();
 
-        boolean lookingforstartpos = false;
+        // Set the start of the line as the first bit
+        chordpositions.add("0");
 
-        int startpos = 0;
+        // In order to identify chords at the end of the line
+        // (My method looks for a following space)
+        // Add a space to the search string.
+        string += " ";
 
         for (int x = 1; x < string.length(); x++) {
 
-            if (lookingforstartpos) {
-                if (!string.substring(x, x + 1).equals(" ") &&
-                        (string.substring(x - 1, x).equals(" ") || string.substring(x - 1, x).equals("."))) {
-                    // Get the starting position of this chord
-                    startpos = x;
-                    lookingforstartpos = false;
-                }
-            } else if (string.substring(x, x + 1).equals(" ") && !string.substring(x - 1, x).equals(" ")) {
-                lookingforstartpos = true;
+            String thischar = "";
+            boolean thischarempty = false;
+            if (x<string.length()-1) {
+                thischar = string.substring(x,x+1);
+            }
+            if (thischar.equals(" ") || thischar.equals("|")) {
+                thischarempty = true;
+            }
 
-                // Add the position to the array
-                chordpositions.add(startpos + "");
+            String prevchar = "";
+            boolean prevcharempty = false;
+            if (x>0) {
+                prevchar = string.substring(x-1,x);
+            }
+            if (prevchar.equals(" ") || prevchar.equals("|") || x==0) {
+                prevcharempty = true;
+            }
+
+            if ((!thischarempty && prevcharempty) || (thischarempty && x==0)) {
+                // This is a chord position
+                chordpositions.add(x + "");
             }
         }
 
         String[] chordpos = new String[chordpositions.size()];
         chordpos = chordpositions.toArray(chordpos);
-
         return chordpos;
     }
 
@@ -313,7 +408,7 @@ public class ProcessSong extends Activity {
         // Go through the chord positions and extract the substrings
         ArrayList<String> chordsections = new ArrayList<>();
         int startpos = 0;
-        int endpos;
+        int endpos = -1;
 
         for (int x=0;x<pos_string.length;x++) {
             if (pos_string[x].equals("0")) {
@@ -337,6 +432,10 @@ public class ProcessSong extends Activity {
                 chordsections.add(string.substring(startpos, endpos));
                 startpos = endpos;
             }
+        }
+        if (startpos==0 && endpos==-1) {
+            // This is just a chord line, so add the whole line
+            chordsections.add(string);
         }
         String[] sections = new String[chordsections.size()];
         sections = chordsections.toArray(sections);
@@ -348,7 +447,7 @@ public class ProcessSong extends Activity {
         // Go through the chord positions and extract the substrings
         ArrayList<String> lyricsections = new ArrayList<>();
         int startpos = 0;
-        int endpos;
+        int endpos = -1;
 
         for (int x=0;x<pos_string.length;x++) {
             if (pos_string[x].equals("0")) {
@@ -372,6 +471,11 @@ public class ProcessSong extends Activity {
                 lyricsections.add(string.substring(startpos, endpos));
                 startpos = endpos;
             }
+        }
+
+        if (startpos==0 && endpos<0) {
+            // Just add the line
+            lyricsections.add(string);
         }
         String[] sections = new String[lyricsections.size()];
         sections = lyricsections.toArray(sections);
@@ -385,10 +489,95 @@ public class ProcessSong extends Activity {
             if (bit.indexOf(".")==0 && bit.length()>1) {
                 bit = bit.substring(1);
             }
-            chordhtml += "<td class=\"chord\" name=\""+bit.trim()+"\">"+bit.trim()+"</td>";
+            chordhtml += "<td class=\"chord\" name=\""+bit.trim()+"\">"+bit+"</td>";
         }
-        Log.d("d","chordHTML="+chordhtml);
         return chordhtml;
+    }
+
+    public static TableRow chordlinetoTableRow(Context c, String[] chords) {
+        TableRow chordrow = new TableRow(c);
+
+        for (String bit:chords) {
+            if (bit.indexOf(".")==0 && bit.length()>1) {
+                bit = bit.substring(1);
+            }
+            TextView chordbit = new TextView(c);
+            chordbit.setText(bit);
+            chordbit.setTextSize(16.0f * FullscreenActivity.chordfontscalesize);
+            chordbit.setTextColor(FullscreenActivity.lyricsChordsColor);
+            chordbit.setTypeface(FullscreenActivity.chordsfont);
+            chordrow.addView(chordbit);
+        }
+        return chordrow;
+    }
+
+    public static TableRow lyriclinetoTableRow(Context c, String[] lyrics) {
+        TableRow lyricrow = new TableRow(c);
+
+        for (String bit:lyrics) {
+            if (bit.indexOf(" ")==0 && bit.length()>1) {
+                bit = bit.substring(1);
+            }
+            if (!FullscreenActivity.whichSongFolder.contains(FullscreenActivity.image)) {
+                bit = bit.replace("_","");
+            }
+            TextView lyricbit = new TextView(c);
+            lyricbit.setText(bit);
+            lyricbit.setTextSize(16.0f);
+            lyricbit.setTextColor(FullscreenActivity.lyricsTextColor);
+            lyricbit.setTypeface(FullscreenActivity.lyricsfont);
+            lyricrow.addView(lyricbit);
+        }
+        return lyricrow;
+    }
+
+    public static TableRow commentlinetoTableRow(Context c, String[] comment) {
+        TableRow commentrow = new TableRow(c);
+
+        for (String bit:comment) {
+            if (bit.indexOf(" ")==0 && bit.length()>1) {
+                bit = bit.substring(1);
+            }
+            if (!FullscreenActivity.whichSongFolder.contains(FullscreenActivity.image)) {
+                bit = bit.replace("_","");
+            }
+            TextView lyricbit = new TextView(c);
+            lyricbit.setText(bit);
+            lyricbit.setTextSize(16.0f*FullscreenActivity.commentfontscalesize);
+            lyricbit.setTextColor(FullscreenActivity.lyricsTextColor);
+            lyricbit.setTypeface(FullscreenActivity.lyricsfont);
+            commentrow.addView(lyricbit);
+        }
+        return commentrow;
+    }
+
+    public static TextView titletoTextView (Context c, String title) {
+        TextView titleview = new TextView(c);
+        titleview.setText(title);
+        titleview.setTextColor(FullscreenActivity.lyricsTextColor);
+        titleview.setTypeface(FullscreenActivity.lyricsfont);
+        titleview.setTextSize(16.0f * FullscreenActivity.headingfontscalesize);
+        titleview.setPaintFlags(titleview.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+
+        return titleview;
+    }
+
+    public static String howToProcessLines(int linenum, int totallines, String thislinetype, String nextlinetype, String previouslinetype) {
+        String what;
+        // If this is a chord line followed by a lyric line.
+        if (linenum < totallines - 1 && thislinetype.equals("chord") &&
+                (nextlinetype.equals("lyric") || nextlinetype.equals("comment"))) {
+            what = "chord_then_lyric";
+        } else if (thislinetype.equals("chord") && (nextlinetype.equals("") || nextlinetype.equals("chord"))) {
+            what = "chord_only";
+        } else if (thislinetype.equals("lyric") && !previouslinetype.equals("chord")) {
+            what = "lyric_no_chord";
+        } else if (thislinetype.equals("comment") && !previouslinetype.equals("chord")) {
+            what = "comment_no_chord";
+        } else {
+            what = "null"; // Probably a lyric line with a chord above it - already dealt with
+        }
+        return what;
     }
 
     public static String lyriclinetoHTML(String[] lyrics) {
@@ -396,7 +585,417 @@ public class ProcessSong extends Activity {
         for (String bit:lyrics) {
             lyrichtml += "<td class=\"lyric\">"+bit.replace(" ","&nbsp;")+"</td>";
         }
-        Log.d("d","lyricHTML="+lyrichtml);
         return lyrichtml;
+    }
+
+    public static String[] beautifyHeadings(String string) {
+
+        string = string.replace("[","");
+        string = string.replace("]","");
+        String section;
+
+        switch (string) {
+            case "V":
+            case "V1":
+            case "V2":
+            case "V3":
+            case "V4":
+            case "V5":
+            case "V6":
+            case "V7":
+            case "V8":
+            case "V9":
+            case "V10":
+                string = string.replace("V", FullscreenActivity.tag_verse + " ");
+                section = "verse";
+                break;
+            case "T":
+            case "T1":
+            case "T2":
+            case "T3":
+            case "T4":
+            case "T5":
+            case "T6":
+            case "T7":
+            case "T8":
+            case "T9":
+            case "T10":
+                string = string.replace("T", FullscreenActivity.tag_tag + " ");
+                section = "tag";
+                break;
+            case "C":
+            case "C1":
+            case "C2":
+            case "C3":
+            case "C4":
+            case "C5":
+            case "C6":
+            case "C7":
+            case "C8":
+            case "C9":
+            case "C10":
+                string = string.replace("C", FullscreenActivity.tag_chorus + " ");
+                section = "chorus";
+                break;
+            case "B":
+            case "B1":
+            case "B2":
+            case "B3":
+            case "B4":
+            case "B5":
+            case "B6":
+            case "B7":
+            case "B8":
+            case "B9":
+            case "B10":
+                string = string.replace("B", FullscreenActivity.tag_bridge + " ");
+                section = "bridge";
+                break;
+            case "P":
+            case "P1":
+            case "P2":
+            case "P3":
+            case "P4":
+            case "P5":
+            case "P6":
+            case "P7":
+            case "P8":
+            case "P9":
+            case "P10":
+                string = string.replace("P", FullscreenActivity.tag_prechorus + " ");
+                section = "prechorus";
+                break;
+            default:
+                section = "custom";
+        }
+        String[] vals = new String[2];
+        vals[0] = string;
+        vals[1] = section;
+        return vals;
+    }
+
+    public static String fixLineLength(String string,int newlength) {
+        int extraspacesrequired = newlength - string.length();
+        for (int x=0; x<extraspacesrequired; x++) {
+            string += " ";
+        }
+        return string;
+    }
+
+    public static String songHTML (String string) {
+        return  "" +
+                "<html>\n" +
+                "<head>\n" +
+                "<style>\n" +
+                ".page       {background-color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsBackgroundColor)) + ";}\n" +
+                ".heading    {color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; text-decoration:underline}\n" +
+                ".lyrictable {border-spacing:0; border-collapse: collapse; border:0px;}\n" +
+                SetTypeFace.setupWebViewLyricFont(FullscreenActivity.mylyricsfontnum) +
+                SetTypeFace.setupWebViewChordFont(FullscreenActivity.mychordsfontnum) +
+                "</style>\n" +
+                "</head>\n" +
+                "<body class=\"page\"\">\n" +
+                "<table id=\"mysection\">\n" +
+                "<tr>\n" +
+                "<td>\n" +
+
+                string +
+
+                "</td>\n" +
+                "</tr>\n" +
+                "</table>\n" +
+                "</body>\n" +
+                "</html>";
+    }
+
+    public static int getSectionColors(String type) {
+        int colortouse;
+        switch (type) {
+            case "verse":
+                colortouse = FullscreenActivity.lyricsVerseColor;
+                break;
+            case "chorus":
+                colortouse = FullscreenActivity.lyricsChorusColor;
+                break;
+            case "prechorus":
+                colortouse = FullscreenActivity.lyricsPreChorusColor;
+                break;
+            case "bridge":
+                colortouse = FullscreenActivity.lyricsBridgeColor;
+                break;
+            case "tag":
+                colortouse = FullscreenActivity.lyricsTagColor;
+                break;
+            case "comment":
+                colortouse = FullscreenActivity.lyricsCommentColor;
+                break;
+            default:
+                colortouse = FullscreenActivity.lyricsCustomColor;
+                break;
+        }
+        return colortouse;
+    }
+
+    public static String fixMultiLineFormat(String string) {
+        // Best way to determine if the song is in multiline format is
+        // Look for [v] or [c] case insensitive
+        // And it needs to be followed by a line starting with 1 and 2
+        boolean has_multiline_vtag = string.toLowerCase(FullscreenActivity.locale).contains("[v]");
+        boolean has_multiline_ctag = string.toLowerCase(FullscreenActivity.locale).contains("[c]");
+        boolean has_multiline_1tag = string.toLowerCase(FullscreenActivity.locale).contains("\n1");
+        boolean has_multiline_2tag = string.toLowerCase(FullscreenActivity.locale).contains("\n2");
+
+        if ((has_multiline_vtag || has_multiline_ctag) && has_multiline_1tag && has_multiline_2tag) {
+
+            // Ok the song is in the multiline format
+            // [V]
+            // .G     C
+            // 1Verse 1
+            // 2Verse 2
+
+            // Create empty verse and chorus strings up to 9 verses/choruses
+            String[] verse = {"", "", "", "", "", "", "", "", ""};
+            String[] chorus = {"", "", "", "", "", "", "", "", ""};
+
+            String versechords = "";
+            String choruschords = "";
+
+            // Split the string into separate lines
+            String[] lines = string.split("\n");
+
+            // Go through the lines and look for tags and line numbers
+            boolean gettingverse = false;
+            boolean gettingchorus = false;
+            for (int z = 0; z < lines.length; z++) {
+                if (lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[v]") == 0 ||
+                        lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[" + FullscreenActivity.tag_verse.toLowerCase(FullscreenActivity.locale) + "]") == 0) {
+                    lines[z] = "__VERSEMULTILINE__";
+                    gettingverse = true;
+                    gettingchorus = false;
+                } else if (lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[c]") == 0 ||
+                        lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[" + FullscreenActivity.tag_chorus.toLowerCase(FullscreenActivity.locale) + "]") == 0) {
+                    lines[z] = "__CHORUSMULTILINE__";
+                    gettingchorus = true;
+                    gettingverse = false;
+                } else if (lines[z].indexOf("[") == 0) {
+                    gettingchorus = false;
+                    gettingverse = false;
+                }
+
+                if (gettingverse) {
+                    if (lines[z].startsWith(".")) {
+                        versechords += lines[z] + "\n";
+                        lines[z] = "__REMOVED__";
+                    } else if (Character.isDigit((lines[z] + " ").charAt(0))) {
+                        int vnum = Integer.parseInt((lines[z] + " ").substring(0, 1));
+                        if (verse[vnum].equals("")) {
+                            verse[vnum] = "[V" + vnum + "]\n";
+                        }
+                        verse[vnum] += lines[z].substring(1) + "\n";
+                        lines[z] = "__REMOVED__";
+                    }
+                } else if (gettingchorus) {
+                    if (lines[z].startsWith(".")) {
+                        choruschords += lines[z] + "\n";
+                        lines[z] = "__REMOVED__";
+                    } else if (Character.isDigit((lines[z] + " ").charAt(0))) {
+                        int cnum = Integer.parseInt((lines[z] + " ").substring(0, 1));
+                        if (chorus[cnum].equals("")) {
+                            chorus[cnum] = "[C" + cnum + "]\n";
+                        }
+                        chorus[cnum] += lines[z].substring(1) + "\n";
+                        lines[z] = "__REMOVED__";
+                    }
+                }
+
+
+            }
+
+            // Get the replacement text
+            String versereplacement = addchordstomultiline(verse, versechords);
+            String chorusreplacement = addchordstomultiline(chorus, choruschords);
+
+            // Now go back through the lines and extract the new improved version
+            String improvedlyrics = "";
+            for (String thisline : lines) {
+                if (thisline.equals("__VERSEMULTILINE__")) {
+                    thisline = versereplacement;
+                } else if (thisline.equals("__CHORUSMULTILINE__")) {
+                    thisline = chorusreplacement;
+                }
+                if (!thisline.equals("__REMOVED__")) {
+                    improvedlyrics += thisline + "\n";
+                }
+            }
+
+            return improvedlyrics;
+        } else {
+            // Not multiline format
+            return string;
+        }
+    }
+
+    public static String[] removeTagLines(String[] sections) {
+        for (int x=0; x<sections.length; x++) {
+            int start = sections[x].indexOf("[");
+            int end = sections[x].indexOf("]");
+            if (end>start && start>-1) {
+                String remove1 = sections[x].substring(start,end+1) + "\n";
+                String remove2 = sections[x].substring(start,end+1);
+                sections[x] = sections[x].replace(remove1,"");
+                sections[x] = sections[x].replace(remove2,"");
+            }
+        }
+        return sections;
+    }
+
+    public static String removeChordLines(String song) {
+        // Split the song into separate lines
+        String[] lines = song.split("\n");
+        String newsong = "";
+
+        for (String thisline:lines) {
+            if (!thisline.startsWith(".")) {
+                newsong += thisline + "\n";
+            }
+        }
+        return newsong;
+    }
+
+    public static String addchordstomultiline(String[] multiline, String chords) {
+        String[] chordlines = chords.split("\n");
+        String replacementtext = "";
+
+        // Go through each verse/chorus in turn
+        for (String sections:multiline) {
+            String[] section = sections.split("\n");
+
+            if (section.length == chordlines.length+1) {
+                replacementtext += section[0] + "\n";
+                // Only works if there are the same number of lyric lines as chords!
+                for (int x=0; x<chordlines.length; x++) {
+                    replacementtext += chordlines[x]+"\n"+section[x+1]+"\n";
+                }
+                replacementtext += "\n";
+            } else {
+                replacementtext += sections+"\n";
+            }
+        }
+        return replacementtext;
+    }
+
+    public static String[] splitSongIntoSections(String song) {
+
+        song = song.replace("-!!", "");
+        song = song.replace("||", "%%__SPLITHERE__%%");
+        if (!FullscreenActivity.whichSongFolder.contains(FullscreenActivity.scripture)) {
+            song = song.replace("\n\n", "%%__SPLITHERE__%%");
+            song = song.replace("---", "");
+        } else {
+            song = song.replace("---", "[]");
+        }
+        if (FullscreenActivity.presenterChords.equals("N")) {
+            song = song.replace("|", "\n");
+        } else {
+            song = song.replace("|", " ");
+        }
+        song = song.replace("\n[","\n%%__SPLITHERE__%%\n[");
+
+        // Get rid of double splits
+        song = song.replace("%%__SPLITHERE__%%%%__SPLITHERE__%%","%%__SPLITHERE__%%");
+        song = song.replace("%%__SPLITHERE__%%\n%%__SPLITHERE__%%","%%__SPLITHERE__%%");
+        song = song.replace("%%__SPLITHERE__%%\n\n%%__SPLITHERE__%%","%%__SPLITHERE__%%");
+        song = song.replace("%%__SPLITHERE__%%\n \n%%__SPLITHERE__%%","%%__SPLITHERE__%%");
+        song = song.replace("\n%%__SPLITHERE__%%","%%__SPLITHERE__%%");
+        song = song.replace("%%__SPLITHERE__%%\n","%%__SPLITHERE__%%");
+
+        return song.split("%%__SPLITHERE__%%");
+    }
+
+    public static String getSectionHeadings(String songsection) {
+        String label = "";
+        songsection = songsection.trim();
+        if (songsection.indexOf("[")==0) {
+            int startoftag = songsection.indexOf("[");
+            int endoftag = songsection.indexOf("]");
+            if (endoftag < startoftag) {
+                endoftag = songsection.length() - 1;
+            }
+            label = songsection.substring(startoftag + 1, endoftag);
+        }
+        return label;
+    }
+
+    public static String[] matchPresentationOrder(String[] currentSections) {
+
+        // Get the currentSectionLabels - these will change after we reorder the song
+        String[] currentSectionLabels = new String[currentSections.length];
+        for (int sl=0; sl < currentSections.length; sl++) {
+            currentSectionLabels[sl] = ProcessSong.getSectionHeadings(currentSections[sl]);
+        }
+
+        // mPresentation probably looks like "Intro V1 V2 C V3 C C Guitar Solo C Outro"
+        // We need to identify the sections in the song that are in here
+        // What if sections aren't in the song (e.g. Intro V2 and Outro)
+        // The other issue is that custom tags (e.g. Guitar Solo) can have spaces in them
+
+        String tempPresentationOrder = FullscreenActivity.mPresentation + " ";
+        String errors = "";
+
+        // Go through each tag in the song
+        for (String tag:currentSectionLabels) {
+            if (tag.equals("") || tag.equals(" ")) {
+                Log.d("d","Empty search");
+            } else if (tempPresentationOrder.contains(tag)) {
+                tempPresentationOrder = tempPresentationOrder.replace(tag + " ", "<__" + tag + "__>");
+            } else {
+                errors += tag + " - not found in presentation order\n";
+            }
+        }
+
+
+        // tempPresentationOrder now looks like "Intro <__V1__>V2 <__C__><__V3__><__C__><__C__><__Guitar Solo__><__C__>Outro "
+        // Assuming V2 and Outro aren't in the song anymore
+        // Split the string by <__
+        String[] tempPresOrderArray = tempPresentationOrder.split("<__");
+        // tempPresOrderArray now looks like "Intro ", "V1__>V2 ", "C__>", "V3__>", "C__>", "C__>", "Guitar Solo__>", "C__>Outro "
+        // So, if entry doesn't contain __> it isn't in the song
+        // Also, anything after __> isn't in the song
+        for (int d=0; d<tempPresOrderArray.length; d++) {
+            if (!tempPresOrderArray[d].contains("__>")) {
+                if (!tempPresOrderArray[d].equals("") && !tempPresOrderArray[d].equals(" ")) {
+                    errors += tempPresOrderArray[d] + " - not found in song\n";
+                }
+                tempPresOrderArray[d] = "";
+                // tempPresOrderArray now looks like "", "V1__>V2 ", "C__>", "V3__>", "C__>", "C__>", "Guitar Solo__>", "C__>Outro "
+            } else {
+                String goodbit = tempPresOrderArray[d].substring(0,tempPresOrderArray[d].indexOf("__>"));
+                String badbit = tempPresOrderArray[d].replace(goodbit+"__>","");
+                tempPresOrderArray[d] = goodbit;
+                if (!badbit.equals("") && !badbit.equals(" ")) {
+                    errors += badbit + " - not found in song\n";
+                }
+                // tempPresOrderArray now looks like "", "V1", "C", "V3", "C", "C", "Guitar Solo", "C"
+            }
+        }
+
+        // Go through the tempPresOrderArray and add the sections back together as a string
+        String newSongText = "";
+
+        for (String aTempPresOrderArray : tempPresOrderArray) {
+            if (!aTempPresOrderArray.equals("")) {
+                for (int a = 0; a < currentSectionLabels.length; a++) {
+                    if (currentSectionLabels[a].trim().equals(aTempPresOrderArray.trim())) {
+                        newSongText += currentSections[a] + "\n";
+                    }
+                }
+            }
+        }
+
+        // Display any errors
+        FullscreenActivity.myToastMessage = errors;
+
+        return splitSongIntoSections(newSongText);
+
     }
 }

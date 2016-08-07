@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,8 @@ public class PopUpMediaStoreFragment extends DialogFragment {
 
     ListView mediaStore_ListView;
     static ImageButton startPlay;
-    Switch externalSwitch;
+    //Switch externalSwitch;
+    SwitchCompat externalSwitch;
     TextView mediaSelected;
     MediaPlayer mp;
 
@@ -54,7 +56,8 @@ public class PopUpMediaStoreFragment extends DialogFragment {
         mediaStore_ListView = (ListView) V.findViewById(R.id.mediaStore_ListView);
         mediaSelected = (TextView) V.findViewById(R.id.mediaSelected);
         mediaSelected.setText(PresenterMode.mpTitle);
-        externalSwitch = (Switch) V.findViewById(R.id.externalSwitch);
+        //externalSwitch = (Switch) V.findViewById(R.id.externalSwitch);
+        externalSwitch = (SwitchCompat) V.findViewById(R.id.externalSwitch);
         if (FullscreenActivity.mediaStore.equals("ext")) {
             externalSwitch.setChecked(true);
         } else {

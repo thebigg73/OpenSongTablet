@@ -144,4 +144,195 @@ public class SetTypeFace extends Activity {
                 break;
         }
     }
+
+    public static String setupWebViewLyricFont(int fontnum) {
+
+        String fontcode = "";
+
+        switch (fontnum) {
+            case 1:
+                // Monospace
+                fontcode += ".lyric      {font-family: Monospace; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                fontcode += ".comment    {font-family: Monospace; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                break;
+            case 2:
+                // sans-serif
+                fontcode += ".lyric      {font-family: Sans-serif; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                fontcode += ".comment    {font-family: Sans-serif; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                break;
+            case 3:
+                // serif
+                fontcode += ".lyric      {font-family: Serif; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                fontcode += ".comment    {font-family: Serif; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                break;
+            case 4:
+                // firasans light
+                fontcode += "@font-face  {font-family: 'firasanslight'; src: url('fonts/FiraSansOT-Light.otf');}\n";
+                fontcode += "@font-face  {font-family: 'firasanslightitalic'; src: url('fonts/FiraSans-Italic.otf');}\n";
+                fontcode += ".lyric      {font-family: 'firasanslight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                fontcode += ".comment    {font-family: 'firasanslightitalic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                break;
+            case 5:
+                // firasans regular
+                fontcode += "@font-face  {font-family: 'firasans'; src: url('fonts/FiraSansOT-Regular.otf');}\n";
+                fontcode += "@font-face  {font-family: 'firasansitalic'; src: url('fonts/FiraSans-LightItalic.otf');}\n";
+                fontcode += ".lyric      {font-family: 'firasans'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                fontcode += ".comment    {font-family: 'firasansitalic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                break;
+            case 6:
+                // kaushan
+                fontcode += "@font-face  {font-family: 'kaushan'; src: url('fonts/KaushanScript-Regular.otf');}\n";
+                fontcode += ".lyric      {font-family: 'kaushan'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                fontcode += ".comment    {font-family: 'kaushan'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                break;
+            case 7:
+                // lato light
+                fontcode += "@font-face  {font-family: 'latolight'; src: url('fonts/Lato-Lig.ttf');}\n";
+                fontcode += "@font-face  {font-family: 'latolightitalic'; src: url('fonts/Lato-LigIta.ttf');}\n";
+                fontcode += ".lyric      {font-family: 'latolight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                fontcode += ".comment    {font-family: 'latolightitalic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                break;
+            case 8:
+                // lato regular
+                fontcode += "@font-face  {font-family: 'latoreg'; src: url('fonts/Lato-Reg.ttf');}\n";
+                fontcode += "@font-face  {font-family: 'latoregitalic'; src: url('fonts/Lato-RegIta.ttf');}\n";
+                fontcode += ".lyric      {font-family: 'latoreg'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                fontcode += ".comment    {font-family: 'latoregitalic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                break;
+            case 9:
+                // league gothic
+                fontcode += "@font-face  {font-family: 'leaguegothic'; src: url('fonts/LeagueGothic-Regular.otf');}\n";
+                fontcode += "@font-face  {font-family: 'leaguegothicitalic'; src: url('fonts/LeagueGothic-Italic.otf');}\n";
+                fontcode += ".lyric      {font-family: 'leaguegothic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                fontcode += ".comment    {font-family: 'leaguegothicitalic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                break;
+            case 10:
+                // roboto light
+                fontcode += "@font-face  {font-family: 'robotolight'; src: url('fonts/Roboto-Light.ttf');}\n";
+                fontcode += "@font-face  {font-family: 'robotolightitalic'; src: url('fonts/Roboto-LightItalic.ttf');}\n";
+                fontcode += ".lyric      {font-family: 'robotolight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                fontcode += ".comment    {font-family: 'robotolightitalic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                break;
+            case 11:
+                // roboto thin
+                fontcode += "@font-face  {font-family: 'robotothin'; src: url('fonts/Roboto-Thin.ttf');}\n";
+                fontcode += "@font-face  {font-family: 'robotothinitalic'; src: url('fonts/Roboto-ThinItalic.ttf');}\n";
+                fontcode += ".lyric      {font-family: 'robotothin'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                fontcode += ".comment    {font-family: 'robotothinitalic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                break;
+            case 12:
+                // roboto medium
+                fontcode += "@font-face  {font-family: 'robotomedium'; src: url('fonts/Roboto-Medium.ttf');}\n";
+                fontcode += "@font-face  {font-family: 'robotomediumitalic'; src: url('fonts/Roboto-MediumItalic.ttf');}\n";
+                fontcode += ".lyric      {font-family: 'robotomedium'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                fontcode += ".comment    {font-family: 'robotomediumitalic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                break;
+            default:
+                // lato light
+                fontcode += "@font-face  {font-family: 'latolight'; src: url('fonts/Lato-Lig.ttf');}\n";
+                fontcode += "@font-face  {font-family: 'latolightitalic'; src: url('fonts/Lato-LigIta.ttf');}\n";
+                fontcode += ".lyric      {font-family: 'latolight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                fontcode += ".comment    {font-family: 'latolightitalic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                break;
+        }
+
+        return fontcode;
+    }
+
+    public static String setupWebViewChordFont(int fontnum) {
+
+        String fontcode = "";
+        boolean already = false;
+        if (FullscreenActivity.mylyricsfontnum==FullscreenActivity.mychordsfontnum) {
+            already = true;
+        }
+
+        switch (fontnum) {
+            case 1:
+                // Monospace
+                fontcode += ".chord      {font-family: Monospace; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsChordsColor)) + "; padding: 0px;}\n";
+                break;
+            case 2:
+                // sans-serif
+                fontcode += ".chord      {font-family: Sans-serif; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsChordsColor)) + "; padding: 0px;}\n";
+                break;
+            case 3:
+                // serif
+                fontcode += ".chord      {font-family: Serif; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsChordsColor)) + "; padding: 0px;}\n";
+                break;
+            case 4:
+                // firasans light
+                if (!already) {
+                    fontcode += "@font-face  {font-family: 'firasanslight'; src: url('fonts/FiraSansOT-Light.otf');}\n";
+                }
+                fontcode += ".chord      {font-family: 'firasanslight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsChordsColor)) + "; padding: 0px;}\n";
+                break;
+            case 5:
+                // firasans regular
+                if (!already) {
+                    fontcode += "@font-face  {font-family: 'firasans'; src: url('fonts/FiraSansOT-Regular.otf');}\n";
+                }
+                fontcode += ".chord      {font-family: 'firasans'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsChordsColor)) + "; padding: 0px;}\n";
+                break;
+            case 6:
+                // kaushan
+                if (!already) {
+                    fontcode += "@font-face  {font-family: 'kaushan'; src: url('fonts/KaushanScript-Regular.otf');}\n";
+                }
+                fontcode += ".chord      {font-family: 'kaushan'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsChordsColor)) + "; padding: 0px;}\n";
+                break;
+            case 7:
+                // lato light
+                if (!already) {
+                    fontcode += "@font-face  {font-family: 'latolight'; src: url('fonts/Lato-Lig.ttf');}\n";
+                }
+                fontcode += ".chord      {font-family: 'latolight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsChordsColor)) + "; padding: 0px;}\n";
+                break;
+            case 8:
+                // lato regular
+                if (!already) {
+                    fontcode += "@font-face  {font-family: 'latoreg'; src: url('fonts/Lato-Reg.ttf');}\n";
+                }
+                fontcode += ".chord      {font-family: 'latoreg'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsChordsColor)) + "; padding: 0px;}\n";
+                break;
+            case 9:
+                // league gothic
+                if (!already) {
+                    fontcode += "@font-face  {font-family: 'leaguegothic'; src: url('fonts/LeagueGothic-Regular.otf');}\n";
+                }
+                fontcode += ".chord      {font-family: 'leaguegothic'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsChordsColor)) + "; padding: 0px;}\n";
+                break;
+            case 10:
+                // roboto light
+                if (!already) {
+                    fontcode += "@font-face  {font-family: 'robotolight'; src: url('fonts/Roboto-Light.ttf');}\n";
+                }
+                fontcode += ".chord      {font-family: 'robotolight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsChordsColor)) + "; padding: 0px;}\n";
+                break;
+            case 11:
+                // roboto thin
+                if (!already) {
+                    fontcode += "@font-face  {font-family: 'robotothin'; src: url('fonts/Roboto-Thin.ttf');}\n";
+                }
+                fontcode += ".chord      {font-family: 'robotothin'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsChordsColor)) + "; padding: 0px;}\n";
+                break;
+            case 12:
+                // roboto medium
+                if (!already) {
+                    fontcode += "@font-face  {font-family: 'robotomedium'; src: url('fonts/Roboto-Medium.ttf');}\n";
+                }
+                fontcode += ".chord      {font-family: 'robotomedium'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsChordsColor)) + "; padding: 0px;}\n";
+                break;
+            default:
+                // lato light
+                if (!already) {
+                    fontcode += "@font-face  {font-family: 'latolight'; src: url('fonts/Lato-Lig.ttf');}\n";
+                }
+                fontcode += ".chord      {font-family: 'latolight'; color:" + String.format("#%06X", (0xFFFFFF & FullscreenActivity.lyricsTextColor)) + "; padding: 0px;}\n";
+                break;
+        }
+
+        return fontcode;
+    }
+
 }

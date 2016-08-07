@@ -170,6 +170,7 @@ public class Preferences extends Activity {
 		FullscreenActivity.mFontSize = myPreferences.getFloat("mFontSize", 42.0f);
 		FullscreenActivity.commentfontscalesize = myPreferences.getFloat("commentfontscalesize",0.8f);
 		FullscreenActivity.headingfontscalesize = myPreferences.getFloat("headingfontscalesize",0.6f);
+		FullscreenActivity.chordfontscalesize = myPreferences.getFloat("chordfontscalesize",0.8f);
 		FullscreenActivity.mMaxFontSize = myPreferences.getInt("mMaxFontSize", 50);
 		FullscreenActivity.mMinFontSize = myPreferences.getInt("mMinFontSize",8);
 		FullscreenActivity.usePresentationOrder = myPreferences.getBoolean("usePresentationOrder",false);
@@ -369,7 +370,8 @@ public class Preferences extends Activity {
 		editor.putFloat("mFontSize", FullscreenActivity.mFontSize);
         editor.putFloat("commentfontscalesize", FullscreenActivity.commentfontscalesize);
         editor.putFloat("headingfontscalesize", FullscreenActivity.headingfontscalesize);
-        editor.putInt("mMaxFontSize", FullscreenActivity.mMaxFontSize);
+		editor.putFloat("chordfontscalesize", FullscreenActivity.chordfontscalesize);
+		editor.putInt("mMaxFontSize", FullscreenActivity.mMaxFontSize);
 		editor.putInt("mMinFontSize", FullscreenActivity.mMinFontSize);
 		editor.putString("toggleYScale", FullscreenActivity.toggleYScale);
 		editor.putString("swipeSet", FullscreenActivity.swipeSet);

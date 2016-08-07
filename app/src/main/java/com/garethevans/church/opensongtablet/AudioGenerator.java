@@ -37,7 +37,7 @@ public class AudioGenerator {
 
 	@SuppressWarnings("deprecation")
 	public void createPlayer(){
-		boolean isready = false;
+		//boolean isready = false;
 
         try {
             audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,

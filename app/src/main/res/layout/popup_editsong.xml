@@ -113,7 +113,8 @@
                 android:layout_marginRight="8dp"
                 android:background="#fff"
                 android:textColor="#000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/myPreDelay"
@@ -123,7 +124,8 @@
                 android:layout_marginRight="8dp"
                 android:text="@string/autoscroll_time"
                 android:textColor="#ff0"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -159,7 +161,8 @@
                 android:layout_marginRight="8dp"
                 android:text="@string/edit_song_duration"
                 android:textColor="#ff0"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone" />
 
             <EditText
                 android:id="@+id/edit_song_duration"
@@ -267,8 +270,7 @@
                 android:layout_marginRight="8dp"
                 android:text="@string/edit_song_capo_print"
                 android:textColor="#ff0"
-                android:textSize="16sp"
-                android:visibility="gone"/>
+                android:textSize="16sp" />
 
             <Spinner
                 android:id="@+id/edit_song_capo_print"
@@ -280,8 +282,7 @@
                 android:background="#fff"
                 android:entries="@array/capoprint"
                 android:textColor="#000"
-                android:textSize="16sp"
-                android:visibility="gone"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/myPresentation"
@@ -294,17 +295,23 @@
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/edit_song_presentation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:id="@+id/edit_song_presentation"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
                 android:background="#fff"
+                android:gravity="start|top|left"
                 android:hint="@string/edit_song_presentation"
+                android:inputType="textMultiLine"
+                android:scrollbarStyle="insideOverlay"
+                android:scrollbars="vertical"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:minLines="2" />
+
 
             <TextView
                 android:id="@+id/myNotes"
@@ -324,7 +331,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:background="#fff"
-                android:gravity="left|top"
+                android:gravity="start|top|left"
                 android:hint="@string/edit_song_notes"
                 android:inputType="textMultiLine"
                 android:isScrollContainer="true"
@@ -1356,6 +1363,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="8dp"
                 android:layout_toLeftOf="@+id/save_edit"
+                android:layout_toStartOf="@+id/save_edit"
                 android:background="@drawable/blue_button"
                 android:padding="5dp"
                 android:text="@string/cancel"
@@ -1367,6 +1375,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="8dp"
                 android:background="@drawable/red_button"

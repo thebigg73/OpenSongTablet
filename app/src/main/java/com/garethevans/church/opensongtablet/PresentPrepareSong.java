@@ -1,5 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
+import android.util.Log;
+
 public class PresentPrepareSong {
 
 	// Song
@@ -28,84 +30,93 @@ public class PresentPrepareSong {
 		String v9 = "";
 		String v10 = "";
 
-		//Go through lyrics line by line and extract data into verses if lines begin with number
-		String[] checkForVerseLines = tempLyrics.split("\n");
-		tempLyrics = "";
-		for (int i=0;i<checkForVerseLines.length;i++) {
-			if (checkForVerseLines[i].indexOf("1")==0) {
-				v1= v1+checkForVerseLines[i].substring(1)+"\n";
-				checkForVerseLines[i] = "";
-			} else if (checkForVerseLines[i].indexOf("2")==0) {
-				v2= v2+checkForVerseLines[i].substring(1)+"\n";
-				checkForVerseLines[i] = "";
-			} else if (checkForVerseLines[i].indexOf("3")==0) {
-				v3= v3+checkForVerseLines[i].substring(1)+"\n";
-				checkForVerseLines[i] = "";
-			} else if (checkForVerseLines[i].indexOf("4")==0) {
-				v4= v4+checkForVerseLines[i].substring(1)+"\n";
-				checkForVerseLines[i] = "";
-			} else if (checkForVerseLines[i].indexOf("5")==0) {
-				v5= v5+checkForVerseLines[i].substring(1)+"\n";
-				checkForVerseLines[i] = "";
-			} else if (checkForVerseLines[i].indexOf("6")==0) {
-				v6= v6+checkForVerseLines[i].substring(1)+"\n";
-				checkForVerseLines[i] = "";
-			} else if (checkForVerseLines[i].indexOf("7")==0) {
-				v7= v7+checkForVerseLines[i].substring(1)+"\n";
-				checkForVerseLines[i] = "";
-			} else if (checkForVerseLines[i].indexOf("8")==0) {
-				v8= v8+checkForVerseLines[i].substring(1)+"\n";
-				checkForVerseLines[i] = "";
-			} else if (checkForVerseLines[i].indexOf("9")==0) {
-				v9= v9+checkForVerseLines[i].substring(1)+"\n";
-				checkForVerseLines[i] = "";
-			} else if (checkForVerseLines[i].indexOf("10")==0) {
-				v10= v10+checkForVerseLines[i].substring(1)+"\n";
-				checkForVerseLines[i] = "";
-			}
-			if (checkForVerseLines[i].length()>0) {
-				tempLyrics = tempLyrics + checkForVerseLines[i] + "\n";
-			}
-		}
-		//Add back any verses in reverse as they're going to the start
-		if (v10.length()>0) {
-			tempLyrics = "[V10]\n"+v10+tempLyrics;
-		}
-		if (v9.length()>0) {
-			tempLyrics = "[V9]\n"+v9+tempLyrics;
-		}
-		if (v8.length()>0) {
-			tempLyrics = "[V8]\n"+v8+tempLyrics;
-		}
-		if (v7.length()>0) {
-			tempLyrics = "[V7]\n"+v7+tempLyrics;
-		}
-		if (v6.length()>0) {
-			tempLyrics = "[V6]\n"+v6+tempLyrics;
-		}
-		if (v5.length()>0) {
-			tempLyrics = "[V5]\n"+v5+tempLyrics;
-		}
-		if (v4.length()>0) {
-			tempLyrics = "[V4]\n"+v4+tempLyrics;
-		}
-		if (v3.length()>0) {
-			tempLyrics = "[V3]\n"+v3+tempLyrics;
-		}
-		if (v2.length()>0) {
-			tempLyrics = "[V2]\n"+v2+tempLyrics;
-		}
-		if (v1.length()>0) {
-			tempLyrics = "[V1]\n"+v1+tempLyrics;
-		}
+        if (!FullscreenActivity.whichSongFolder.contains(FullscreenActivity.scripture)) {
 
+            //Go through lyrics line by line and extract data into verses if lines begin with number
+            String[] checkForVerseLines = tempLyrics.split("\n");
+            tempLyrics = "";
+            for (int i = 0; i < checkForVerseLines.length; i++) {
+                if (checkForVerseLines[i].indexOf("1") == 0) {
+                    v1 = v1 + checkForVerseLines[i].substring(1) + "\n";
+                    checkForVerseLines[i] = "";
+                } else if (checkForVerseLines[i].indexOf("2") == 0) {
+                    v2 = v2 + checkForVerseLines[i].substring(1) + "\n";
+                    checkForVerseLines[i] = "";
+                } else if (checkForVerseLines[i].indexOf("3") == 0) {
+                    v3 = v3 + checkForVerseLines[i].substring(1) + "\n";
+                    checkForVerseLines[i] = "";
+                } else if (checkForVerseLines[i].indexOf("4") == 0) {
+                    v4 = v4 + checkForVerseLines[i].substring(1) + "\n";
+                    checkForVerseLines[i] = "";
+                } else if (checkForVerseLines[i].indexOf("5") == 0) {
+                    v5 = v5 + checkForVerseLines[i].substring(1) + "\n";
+                    checkForVerseLines[i] = "";
+                } else if (checkForVerseLines[i].indexOf("6") == 0) {
+                    v6 = v6 + checkForVerseLines[i].substring(1) + "\n";
+                    checkForVerseLines[i] = "";
+                } else if (checkForVerseLines[i].indexOf("7") == 0) {
+                    v7 = v7 + checkForVerseLines[i].substring(1) + "\n";
+                    checkForVerseLines[i] = "";
+                } else if (checkForVerseLines[i].indexOf("8") == 0) {
+                    v8 = v8 + checkForVerseLines[i].substring(1) + "\n";
+                    checkForVerseLines[i] = "";
+                } else if (checkForVerseLines[i].indexOf("9") == 0) {
+                    v9 = v9 + checkForVerseLines[i].substring(1) + "\n";
+                    checkForVerseLines[i] = "";
+                } else if (checkForVerseLines[i].indexOf("10") == 0) {
+                    v10 = v10 + checkForVerseLines[i].substring(1) + "\n";
+                    checkForVerseLines[i] = "";
+                }
+                if (checkForVerseLines[i].length() > 0) {
+                    tempLyrics = tempLyrics + checkForVerseLines[i] + "\n";
+                }
+            }
+            //Add back any verses in reverse as they're going to the start
+            if (v10.length() > 0) {
+                tempLyrics = "[V10]\n" + v10 + tempLyrics;
+            }
+            if (v9.length() > 0) {
+                tempLyrics = "[V9]\n" + v9 + tempLyrics;
+            }
+            if (v8.length() > 0) {
+                tempLyrics = "[V8]\n" + v8 + tempLyrics;
+            }
+            if (v7.length() > 0) {
+                tempLyrics = "[V7]\n" + v7 + tempLyrics;
+            }
+            if (v6.length() > 0) {
+                tempLyrics = "[V6]\n" + v6 + tempLyrics;
+            }
+            if (v5.length() > 0) {
+                tempLyrics = "[V5]\n" + v5 + tempLyrics;
+            }
+            if (v4.length() > 0) {
+                tempLyrics = "[V4]\n" + v4 + tempLyrics;
+            }
+            if (v3.length() > 0) {
+                tempLyrics = "[V3]\n" + v3 + tempLyrics;
+            }
+            if (v2.length() > 0) {
+                tempLyrics = "[V2]\n" + v2 + tempLyrics;
+            }
+            if (v1.length() > 0) {
+                tempLyrics = "[V1]\n" + v1 + tempLyrics;
+            }
+        }
 
-
-		tempLyrics = tempLyrics.replace("---", "");
 		tempLyrics = tempLyrics.replace("-!!", "");
-		tempLyrics = tempLyrics.replace("\n\n", "%%__SPLITHERE__%%");
+        if (!FullscreenActivity.whichSongFolder.contains(FullscreenActivity.scripture)) {
+            tempLyrics = tempLyrics.replace("\n\n", "%%__SPLITHERE__%%");
+            tempLyrics = tempLyrics.replace("---", "");
+        } else {
+            tempLyrics = tempLyrics.replace("---", "[]");
+        }
 		tempLyrics = tempLyrics.replace("||", "%%__SPLITHERE__%%");
-		tempLyrics = tempLyrics.replace("|", "\n");
+		if (FullscreenActivity.presenterChords.equals("N")) {
+			tempLyrics = tempLyrics.replace("|", "\n");
+		} else {
+            tempLyrics = tempLyrics.replace("|", " ");
+        }
 		// Now split the tempLyrics up into a line by line array
 		tempLyricsLineByLine = tempLyrics.split("\n");
 		// Go through the lines and the ones starting with tags [
@@ -130,13 +141,15 @@ public class PresentPrepareSong {
 		tempLyrics = "";
 		for (String aTempLyricsLineByLine : tempLyricsLineByLine) {
 			//Only add it if the line isn't empty
-			if (aTempLyricsLineByLine.length() != 0 && !aTempLyricsLineByLine.equals("\n")) {
+			if ((aTempLyricsLineByLine.length() != 0 && !aTempLyricsLineByLine.equals("\n")) || FullscreenActivity.whichSongFolder.contains(FullscreenActivity.scripture)) {
 				tempLyrics = tempLyrics + aTempLyricsLineByLine + "\n";
 			}
 
 		}
 		// Again, get rid of double line breaks and now double split points
-		tempLyrics = tempLyrics.replace("\n\n", "%%__SPLITHERE__%%");
+		if (!FullscreenActivity.whichSongFolder.contains(FullscreenActivity.scripture)) {
+            tempLyrics = tempLyrics.replace("\n\n", "%%__SPLITHERE__%%");
+        }
 		tempLyrics = tempLyrics.replace("%%__SPLITHERE__%%\n", "%%__SPLITHERE__%%");
 		tempLyrics = tempLyrics.replace("\n%%__SPLITHERE__%%", "%%__SPLITHERE__%%");
 		while (tempLyrics.contains("%%__SPLITHERE__%%%%__SPLITHERE__%%")) {
@@ -150,6 +163,7 @@ public class PresentPrepareSong {
 		songSections = tempLyrics.split("%%__SPLITHERE__%%");
 		songSectionsLabels = tempLyrics.split("%%__SPLITHERE__%%");
 		// Go through the songSectionsLabels and extract any labels for the section
+		Log.d("d","FullscreenActivity.presenterChords="+FullscreenActivity.presenterChords);
 		for (int x=0;x<songSections.length;x++) {
 			// If not showing chords, removing the whitespace at the start of the line
 			// Also get rid of _

@@ -193,54 +193,7 @@ public class LoadXML extends Activity {
             }
 
             // Fix all the rogue code
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replaceAll("\r\n", "\n");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replaceAll("\r", "\n");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replaceAll("\t", "    ");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replaceAll("\\t", "    ");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replaceAll("\b", "    ");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replaceAll("\f", "    ");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("\r", "");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("\t", "    ");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("\b", "    ");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("\f", "    ");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("&#x27;", "'");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replaceAll("\u0092", "'");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replaceAll("\u0093", "'");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replaceAll("\u2018", "'");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replaceAll("\u2019", "'");
-
-            if (!FullscreenActivity.whichSongFolder.contains(FullscreenActivity.slide) && !FullscreenActivity.whichSongFolder.contains(FullscreenActivity.image) && !FullscreenActivity.whichSongFolder.contains(FullscreenActivity.note) && !FullscreenActivity.whichSongFolder.contains(FullscreenActivity.scripture)) {
-                FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("Slide 1", "[V1]");
-                FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("Slide 2", "[V2]");
-                FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("Slide 3", "[V3]");
-                FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("Slide 4", "[V4]");
-                FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("Slide 5", "[V5]");
-            }
-
-            // Make double tags into single ones
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("[[", "[");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("]]", "]");
-
-            // Make lowercase start tags into caps
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("[v", "[V");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("[b", "[B");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("[c", "[C");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("[t", "[T");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("[p", "[P");
-
-            // Try to convert ISO / Windows
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("\0x91", "'");
-
-            // Get rid of BOMs and stuff
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("\uFEFF","");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("\uFEFF","");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("[&#x27;]","");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("[\\xEF]","");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("[\\xBB]","");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("[\\xFF]","");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("\\xEF","");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("\\xBB","");
-            FullscreenActivity.mLyrics = FullscreenActivity.mLyrics.replace("\\xFF","");
+            FullscreenActivity.mLyrics = ProcessSong.parseLyrics(FullscreenActivity.mLyrics);
 
             // Just in case we have improved the song, prepare the improved xml
             PopUpEditSongFragment.prepareSongXML();
@@ -559,6 +512,11 @@ public class LoadXML extends Activity {
     }
 
     public static String parseFromHTMLEntities(String val) {
+        //Fix broken stuff
+        val = val.replace("&amp;apos;","'");
+        val = val.replace("&amp;quote;","\"");
+        val = val.replace("&amp;lt;","<");
+        val = val.replace("&amp;gt;",">");
         val = val.replace("&amp;","&");
         val = val.replace("&lt;","<");
         val = val.replace("&gt;",">");

@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -35,7 +36,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.io.File;
-import java.net.URL;
 import java.net.URLEncoder;
 
 public class PopUpCustomSlideFragment extends DialogFragment {
@@ -98,6 +98,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     // Declare variables used
     static String whattype = "note";
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.add_custom_slide));
@@ -152,7 +153,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 searchBible_progressBar.setVisibility(View.VISIBLE);
                 bibleGateway_WebView.setVisibility(View.GONE);
                 grabVerse_Button.setVisibility(View.GONE);
-                BibleGateway.grabBibleText(getActivity().getApplicationContext(), bibleGateway_WebView.getUrl().toString());
+                BibleGateway.grabBibleText(getActivity().getApplicationContext(), bibleGateway_WebView.getUrl());
             }
         });
 
@@ -465,6 +466,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     public void searchBible() {
         // Prepare the search strings
         String whattosearch = bibleSearch.getText().toString();
@@ -483,7 +485,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
             public void onPageFinished(WebView view, String url) {
                 searchBible_progressBar.setVisibility(View.GONE);
-                if (url.toString().contains("passage")) {
+                if (url.contains("passage")) {
                     grabVerse_Button.setVisibility(View.VISIBLE);
                 }
             }

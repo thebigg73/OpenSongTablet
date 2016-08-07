@@ -1,12 +1,8 @@
-/*
- * Copyright (c) 2015.
- * The code is provided free of charge.  You can use, modify, contribute and improve it as long as this source is referenced.
- * Commercial use should seek permission.
- */
-
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
 import android.app.DialogFragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +24,25 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         return frag;
     }
 
+    public interface MyInterface {
+        void updatePresentationOrder();
+    }
+
+    private MyInterface mListener;
+
+    @Override
+    public void onAttach(Activity activity) {
+        mListener = (MyInterface) activity;
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onDetach() {
+        mListener = null;
+        super.onDetach();
+    }
+
+    @SuppressWarnings("deprecation")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(FullscreenActivity.songfilename);
@@ -41,8 +56,16 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
             Button but = new Button(getActivity());
             but.setId(r);
             but.setText(FullscreenActivity.foundSongSections_heading.get(r));
-            but.setTextAppearance(getActivity(), android.R.style.TextAppearance_Small);
-            but.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.green_button));
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                but.setTextAppearance(getActivity(), android.R.style.TextAppearance_Small);
+            } else {
+                but.setTextAppearance(android.R.style.TextAppearance_Small);
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                but.setBackground(getActivity().getDrawable(R.drawable.green_button));
+            } else {
+                but.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.green_button));
+            }
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -56,17 +79,14 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
                 public void onClick(View v) {
                     int whichview = v.getId();
                     String currpres = m_mPresentation.getText().toString();
-                    String addthis = " " + FullscreenActivity.foundSongSections_heading.get(whichview);
-                    m_mPresentation.setText(currpres.trim() + addthis);
+                    String addthis = currpres.trim() + " " + FullscreenActivity.foundSongSections_heading.get(whichview);
+                    m_mPresentation.setText(addthis);
                 }
             });
-
             root_buttonshere.addView(but);
-
         }
 
         m_mPresentation.setText(FullscreenActivity.mPresentation);
-
         Button cancelPresentationOrder = (Button) V.findViewById(R.id.cancelPresentationOrder);
         cancelPresentationOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,16 +94,18 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
                 dismiss();
             }
         });
-
         Button savePresentationOrder = (Button) V.findViewById(R.id.savePresentationOrder);
         savePresentationOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FullscreenActivity.mPresentation = m_mPresentation.getText().toString().trim();
-                CheckBox presorder = (CheckBox) getActivity().findViewById(R.id.presenter_order_text);
-                presorder.setText(m_mPresentation.getText().toString().trim());
-                presorder.setChecked(false);
-                presorder.setChecked(true);
+                // If we are in presentation mode, update the page directly
+                if (FullscreenActivity.whichMode.equals("Presentation")) {
+                    CheckBox presorder = (CheckBox) getActivity().findViewById(R.id.presenter_order_text);
+                    presorder.setText(m_mPresentation.getText().toString().trim());
+                    presorder.setChecked(false);
+                    presorder.setChecked(true);
+                }
                 PopUpEditSongFragment.prepareSongXML();
                 try {
                     PopUpEditSongFragment.justSaveSongXML();
@@ -95,6 +117,7 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
                 } catch (XmlPullParserException | IOException e) {
                     e.printStackTrace();
                 }
+                mListener.updatePresentationOrder();
                 dismiss();
             }
         });
@@ -105,7 +128,6 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
                 m_mPresentation.setText("");
             }
         });
-
         return V;
     }
 }

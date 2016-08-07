@@ -250,13 +250,20 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
                 File getfile = new File(linkAudio_EditText.getText().toString());
 
                 String ext = MimeTypeMap.getFileExtensionFromUrl(getfile.getName()).toLowerCase();
-                String mimeType = myMime.getMimeTypeFromExtension(ext);
+                if (ext.isEmpty()) {
+                    ext = "";
+                }
+                String mimeType;
+                 try {
+                     mimeType = myMime.getMimeTypeFromExtension(ext);
+                 } catch (Exception e ) {
+                     mimeType = "*/*";
+                 }
 
                 if (mimeType == null) {
                     mimeType = "*/*";
                 }
 
-                Log.d("d","mimeType="+mimeType);
                 newIntent.setDataAndType(uri2,mimeType);
                 newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {

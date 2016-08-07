@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/presenter_box_black"
@@ -193,6 +194,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="4dp"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
             <EditText
@@ -278,6 +280,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_below="@+id/slideContentTextView"
                 android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_alignParentEnd="false"
                 android:layout_alignParentRight="false"
@@ -295,7 +298,8 @@
                 android:layout_marginBottom="16sp"
                 android:layout_below="@+id/addPageButton"
                 android:layout_alignParentEnd="false"
-                android:layout_centerHorizontal="true"></TableLayout>
+                android:layout_alignParentRight="false"
+                android:layout_centerHorizontal="true" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -307,7 +311,7 @@
                 android:textCursorDrawable="@null"
                 android:minLines="8"
                 android:inputType="textMultiLine"
-                android:gravity="top|left"
+                android:gravity="top|start"
                 android:background="#fff"
                 android:textColorHint="#888"
                 android:textSize="14sp"
@@ -319,12 +323,14 @@
         </RelativeLayout>
 
         <LinearLayout
+            style="?android:attr/buttonBarButtonStyle"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right">
+            android:gravity="end">
 
             <Button
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel"
@@ -334,6 +340,7 @@
                 android:textColor="#fff" />
 
             <Button
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/add_custom_slide"
@@ -353,13 +360,16 @@
         android:id="@+id/grabVerse_Button"
         android:background="@drawable/red_button"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="false"
         android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="24dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
-        android:elevation="32dp"
         android:layout_centerVertical="true"
-        android:textColor="#fff" />
+        android:textColor="#fff"
+        tools:ignore="RelativeOverlap" />
 
 </RelativeLayout>

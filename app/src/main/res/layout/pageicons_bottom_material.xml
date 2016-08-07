@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:visibility="visible"
+    android:visibility="gone"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
@@ -19,7 +19,7 @@
             android:layout_margin="4dp"
             app:fabSize="mini"
             android:src="@drawable/ic_amplifier_white_48dp"
-            android:alpha="0.6"/>
+            android:alpha="0.4"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/autoscroll"
@@ -31,7 +31,7 @@
             android:layout_margin="4dp"
             app:fabSize="mini"
             android:src="@drawable/ic_rotate_right_white_48dp"
-            android:alpha="0.6"/>
+            android:alpha="0.4"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/metronomebutton"
@@ -43,10 +43,10 @@
             android:layout_margin="4dp"
             app:fabSize="mini"
             android:src="@drawable/ic_pulse_white_48dp"
-            android:alpha="0.6"/>
+            android:alpha="0.4"/>
 
 
-
+<!--
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/uparrow_bottom"
             android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
             app:fabSize="mini"
             android:src="@drawable/ic_arrow_up_white_48dp"
             android:onClick="doScrollUp"
-            android:alpha="0.6"/>
+            android:alpha="0.4"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/downarrow_bottom"
@@ -71,33 +71,34 @@
             app:fabSize="mini"
             android:src="@drawable/ic_arrow_down_white_48dp"
             android:onClick="doScrollDown"
-            android:alpha="0.6"/>
+            android:alpha="0.4"/>
 
+-->
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/pageselect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_toRightOf="@id/downarrow_bottom"
-            android:layout_toEndOf="@id/downarrow_bottom"
+            android:layout_toRightOf="@id/metronomebutton"
+            android:layout_toEndOf="@id/metronomebutton"
             android:layout_margin="4dp"
             app:fabSize="mini"
             android:src="@drawable/ic_book_white_48dp"
             android:onClick="pdfSelectPage"
-            android:alpha="0.6"/>
+            android:alpha="0.4"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/stickynotes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_toRightOf="@id/downarrow_bottom"
-            android:layout_toEndOf="@id/downarrow_bottom"
+            android:layout_toRightOf="@id/metronomebutton"
+            android:layout_toEndOf="@id/metronomebutton"
             android:layout_margin="4dp"
             app:fabSize="mini"
             android:src="@drawable/ic_comment_text_white_48dp"
             android:onClick="stickyNotes"
-            android:alpha="0.6"/>
+            android:alpha="0.4"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/chordbutton"
@@ -110,7 +111,7 @@
             app:fabSize="mini"
             android:src="@drawable/ic_guitar_electric_white_48dp"
             android:onClick="popupChords_toggle"
-            android:alpha="0.6"/>
+            android:alpha="0.4"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/linkbutton"
@@ -123,7 +124,7 @@
             app:fabSize="mini"
             android:src="@drawable/ic_link_white_48dp"
             android:onClick="popupLink"
-            android:alpha="0.6"/>
+            android:alpha="0.4"/>
 
     </RelativeLayout>
 </HorizontalScrollView>

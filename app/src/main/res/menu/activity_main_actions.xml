@@ -63,7 +63,7 @@
         app:showAsAction="never"/>
 
     <item android:id="@+id/stage_mode"
-        android:icon="@drawable/action_present"
+        android:icon="@drawable/ic_monitor_multiple_white_36dp"
         android:title="Stage Mode"
         android:label="Stage Mode"
         android:hint="Stage Mode"

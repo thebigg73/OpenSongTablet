@@ -5,7 +5,6 @@ import android.app.DialogFragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +17,17 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFolderCreateFragment.MyInterface {
+public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFolderCreateFragment.MyInterface,
+    PopUpPresentationOrderFragment.MyInterface {
 
     static PopUpEditSongFragment newInstance() {
         PopUpEditSongFragment frag;
@@ -46,7 +48,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
     Spinner edit_song_timesig;
     Spinner edit_song_capo;
     Spinner edit_song_capo_print;
-    TextView edit_song_presentation;
+    EditText edit_song_presentation;
     EditText edit_song_notes;
     EditText edit_song_lyrics;
 
@@ -127,6 +129,11 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         // Refresh the folder spinner and select the new one by default
     }
 
+    @Override
+    public void updatePresentationOrder() {
+        edit_song_presentation.setText(FullscreenActivity.mPresentation);
+    }
+
     public interface MyInterface {
         void refreshAll();
     }
@@ -163,7 +170,16 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         edit_song_timesig = (Spinner) V.findViewById(R.id.edit_song_timesig);
         edit_song_capo = (Spinner) V.findViewById(R.id.edit_song_capo);
         edit_song_capo_print = (Spinner) V.findViewById(R.id.edit_song_capo_print);
-        edit_song_presentation = (TextView) V.findViewById(R.id.edit_song_presentation);
+        edit_song_presentation = (EditText) V.findViewById(R.id.edit_song_presentation);
+        edit_song_presentation.setFocusable(false);
+        edit_song_presentation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment newFragment = PopUpPresentationOrderFragment.newInstance();
+                newFragment.show(getFragmentManager(), "dialog");
+                dismiss();
+            }
+        });
         edit_song_notes = (EditText) V.findViewById(R.id.edit_song_notes);
         edit_song_lyrics = (EditText) V.findViewById(R.id.edit_song_lyrics);
         cancelEdit = (Button) V.findViewById(R.id.cancel_edit);
@@ -1041,18 +1057,17 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
 
     public static String parseToHTMLEntities(String val) {
         // Make sure all vals are unencoded to start with
-        val = val.replace("&amp;","&");
+        //val = val.replace("&amp;","&");
         // Now HTML encode everything
         val = val.replace("<","&lt;");
         val = val.replace(">","&gt;");
-        val = val.replace("'","&apos;");
-        val = val.replace("\"","&quote;");
+        //val = val.replace("'","&apos;");
+        //val = val.replace("\"","&quote;");
         val = val.replace("&","&amp;");
 
 
         return val;
     }
-
 
     @Override
     public void onStart() {

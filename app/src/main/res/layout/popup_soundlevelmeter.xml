@@ -199,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/drawer_close"
                 android:id="@+id/dBClose"
-                android:layout_gravity="right"
+                android:layout_gravity="right|end"
                 android:background="@drawable/blue_button"
                 android:layout_margin="8dp"
                 android:textColor="#fff" />

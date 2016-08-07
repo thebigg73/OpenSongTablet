@@ -40,6 +40,7 @@ import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
@@ -116,7 +117,7 @@ import java.util.zip.ZipInputStream;
 @SuppressWarnings("deprecation")
 @SuppressLint({"DefaultLocale", "RtlHardcoded", "InflateParams", "SdCardPath"})
 public class FullscreenActivity extends AppCompatActivity implements PopUpListSetsFragment.MyInterface,
-        PopUpAreYouSureFragment.MyInterface,
+        PopUpAreYouSureFragment.MyInterface, PopUpPresentationOrderFragment.MyInterface,
         PopUpTransposeFragment.MyInterface, PopUpEditSongFragment.MyInterface,
         PopUpSongDetailsFragment.MyInterface, PopUpSongRenameFragment.MyInterface,
         PopUpSongCreateFragment.MyInterface, PopUpFontsFragment.MyInterface,
@@ -302,7 +303,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private Spinner popupPad_file;
     private SeekBar popupPad_volume;
     private TextView popupPad_volume_text;
-    private Switch popupPad_loopaudio;
+    //private Switch popupPad_loopaudio;
+    private SwitchCompat popupPad_loopaudio;
     private SeekBar popupPad_pan;
     private TextView popupPad_pan_text;
     private Button popupPad_startstopbutton;
@@ -572,6 +574,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static int temp_useThisBGColor;
     public static float commentfontscalesize;
     public static float headingfontscalesize;
+    public static float chordfontscalesize;
 
     // Page turner
     public static int pageturner_NEXT;
@@ -602,7 +605,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String swipeDrawer = "";
     public static String swipeSet = "";
     private static String tempswipeSet = "enable";
-    private static String whichDirection = "R2L";
+    public static String whichDirection = "R2L";
     public static int indexSongInSet;
     public static String previousSongInSet = "";
     public static String nextSongInSet = "";
@@ -1277,7 +1280,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         popupPad_volume = (SeekBar) findViewById(R.id.popuppad_volume);
         popupPad_volume.setOnSeekBarChangeListener(new popupPad_volumeListener());
         popupPad_volume_text = (TextView) findViewById(R.id.popuppad_volume_text);
-        popupPad_loopaudio = (Switch) findViewById(R.id.popupPad_loopaudio);
+        //popupPad_loopaudio = (Switch) findViewById(R.id.popupPad_loopaudio);
+        popupPad_loopaudio = (SwitchCompat) findViewById(R.id.popupPad_loopaudio);
         popupPad_loopaudio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -2443,6 +2447,13 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             newFragment = PopUpLinks.newInstance();
             newFragment.show(getFragmentManager(), "dialog");
         }
+    }
+
+    @Override
+    public void updatePresentationOrder() {
+        // User has changed the presentation order
+        Preferences.savePreferences();
+        doEdit();
     }
 
     private class popupChord_InstrumentListener implements OnItemSelectedListener {
@@ -6520,10 +6531,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
             // Set the loop on or off
             if (mLoopAudio.equals("true")) {
-                popupPad_loopaudio.setChecked(true);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    popupPad_loopaudio.setChecked(true);
+                }
             } else {
                 mLoopAudio = "false";
-                popupPad_loopaudio.setChecked(false);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    popupPad_loopaudio.setChecked(false);
+                }
             }
 
             // Set the pad volume and pan
@@ -6844,7 +6859,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     if (scaleX > scaleY) {
                         //noinspection SuspiciousNameCombination
                         scaleX = scaleY;
-                    } else if (toggleYScale.equals("W")) {
+                    } else if (toggleYScale.equals("W") || songfilename.equals("Welcome to OpenSongApp")) {
                         scaleY = scaleX;
                     }
                 }
@@ -6862,7 +6877,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 if (toggleYScale.equals("Y")) {
                     if (scaleX > scaleY) {
                         scaleX = pageHeight / height;
-                    } else if (toggleYScale.equals("W")) {
+                    } else if (toggleYScale.equals("W") || songfilename.equals("Welcome to OpenSongApp")) {
                         scaleY = pageWidth / width;
                     }
                 }
@@ -6884,7 +6899,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 if (toggleYScale.equals("Y")) {
                     if (scaleX > scaleY) {
                         scaleX = pageHeight / height;
-                    } else if (toggleYScale.equals("W")) {
+                    } else if (toggleYScale.equals("W") || songfilename.equals("Welcome to OpenSongApp")) {
                         scaleY = pageWidth / width;
                     }
                 }
@@ -7210,6 +7225,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         }
                         break;
                 }
+
                 if (pdfwidth == 0) {
                     pdfwidth = 1;
                 }
@@ -9662,18 +9678,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             // If so, we need to split it up so the spacing is right.
             if (whatisthisline[x].equals("chords") && (whatisthisline[m].equals("lyrics") || whatisthisline[m].equals("comment"))) {
 
-/*
-                // TEST OUT NEW CHORD LINE POSITION CHECKER
-                String[] positions_returned = ProcessSong.getChordPositions(myParsedLyrics[x]);
-                // TEST OUT NEW LYRIC SPLITTER
-                String[] chords_returned = ProcessSong.getChordSections(myParsedLyrics[x],positions_returned);
-                String[] lyrics_returned = ProcessSong.getLyricSections(myParsedLyrics[m],positions_returned);
-                // TEST OUT NEW HTML
-                String chordHMTML = ProcessSong.chordlinetoHTML(chords_returned);
-                String lyricHMTML = ProcessSong.lyriclinetoHTML(lyrics_returned);
-*/
-
-
                 // Ok, so we have a chord line first. Let's break it into an array each 1 character big
                 char[] chars = (myParsedLyrics[x]).toCharArray();
                 // Make it into an array
@@ -11405,19 +11409,20 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         }
 
         try {
-            // Default song Love Everlasting
-            filename = "Love everlasting";
+            // Default song Welcome to OpenSongApp
+            filename = "Welcome to OpenSongApp";
             in = assetManager_bg.open("Songs" + File.separator + filename);
             File outFile = new File(FullscreenActivity.dir, filename);
-            if (!outFile.exists()) {
+
                 out = new FileOutputStream(outFile);
                 copyFile(in, out);
                 out.flush();
                 out.close();
-            }
+
             in.close();
+            Log.d("d", "Copied asset file: " + "Welcome to OpenSongApp");
         } catch (IOException e) {
-            Log.e("tag", "Failed to copy asset file: " + "Love Everlasting", e);
+            Log.e("tag", "Failed to copy asset file: " + "Welcome to OpenSongApp", e);
         }
     }
 
