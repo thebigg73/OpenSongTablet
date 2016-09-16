@@ -13,7 +13,8 @@
 
     <string name="visualmetronome">"视觉"</string>
     <string name="onsonglocation">"您需要将您的备份稳城文件到 /documents/OpenSong/ 文件夹，它可用来导入"</string>
-    <string name="savesong">"为了节省"</string>
+	<string name="opensonglocation">"您需要将您的备份稳城文件到 /documents/OpenSong/ 文件夹，它可用来导入"</string>
+	<string name="savesong">"为了节省"</string>
     <string name="metronomepadsettings">"节拍器和键盘设置"</string>
     <string name="metronome">"节拍器"</string>
     <string name="temponotset">"天宝还没有被定为这首歌曲"</string>
@@ -500,5 +501,22 @@
 	<string name="profile_description">"配置文件用于存储您的显示首选项。"</string>
 	<string name="profile_name">"选择一个配置文件名称"</string>
 	<string name="size">"尺寸"</string>
+	<string name="websearch">"搜索互联网当前歌曲"</string>
+	<string name="songfolder">"选择歌曲文件夹"</string>
+	<string name="stagemode">"舞台模式"</string>
+	<string name="switchtostagemode">"切换到舞台模式"</string>
+	<string name="toobig">"请切换自动缩放对PDF导出"</string>
+	<string name="showcapo">"投诉警察课显示和弦"</string>
+	<string name="showchords">"显示和弦"</string>
+	<string name="showlyrics">"显示歌词"</string>
+	<string name="backup_export">"出口OpenSongApp备份"</string>
+	<string name="backup_info">"OpenSongApp备份文件"</string>
+	<string name="backup_success">"OpenSongApp创建备份"</string>
+	<string name="backup_import">"进口OpenSongApp备份备份"</string>
+	<string name="backup_error">"在OpenSong文件夹中找到没有OpenSongApp备份文件"</string>
+	<string name="processing">"文件正在处理中"</string>
+	<string name="success">"成功"</string>
+	<string name="error">"错误"</string>
+	<string name="takeawhile">"这可能需要一些时间！"</string>
 
 </resources>

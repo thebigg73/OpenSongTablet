@@ -1,13 +1,30 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import android.app.Activity;
-import android.util.Log;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 
 public class OnSongConvert extends Activity {
 
+    public interface MyInterface {
+        void prepareSongMenu();
+        void showToastMessage(String message);
+    }
+
+    private static MyInterface mListener;
+
+    static String message = "";
+    public static boolean isbatch = false;
 	public static boolean doExtract() throws IOException {
 
 		// This is called when a OnSong format song has been loaded.
@@ -17,13 +34,14 @@ public class OnSongConvert extends Activity {
 		String parsedlines;
 		// Initialise all the xml tags a song should have
         Log.d("d","temp="+temp);
-        FullscreenActivity.mTitle = FullscreenActivity.songfilename.replaceAll("[\\x0-\\x9]", "");
-        // Initialise all the other tags
+        //FullscreenActivity.mTitle = FullscreenActivity.songfilename.replaceAll("[\\x0-\\x9]", "");
+		FullscreenActivity.mTitle = FullscreenActivity.songfilename;
+		// Initialise all the other tags
         LoadXML.initialiseSongTags();
 
         // Break the temp variable into an array split by line
 		// Check line endings are \n
-        temp = temp.replaceAll("[\\x0-\\x9]", "");
+        //temp = temp.replaceAll("[\\x0-\\x9]", "");
         //temp = temp.replace("\\x0","");
         temp = temp.replace("\0", "");
         while (temp.contains("\r\n") || temp.contains("\r") || temp.contains("\n\n\n")) {
@@ -66,7 +84,7 @@ public class OnSongConvert extends Activity {
             line[c] = line[c].replace("\u00B4", "'");
             line[c] = line[c].replace("\u2018", "'");
             line[c] = line[c].replace("\u2019", "'");
-            line[c] = line[c].replaceAll("[^\\x20-\\x7e]", "");
+            //line[c] = line[c].replaceAll("[^\\x20-\\x7e]", "");
         }
 
 		// Extract the metadata
@@ -733,6 +751,10 @@ public class OnSongConvert extends Activity {
 
 		// Ok, go back through the parsed lines and add spaces to the beginning
 		// of lines that aren't comments, chords or tags
+        if (!parsedlines.contains("\n")) {
+            parsedlines += "\n";
+        }
+
 		String[] line2 = parsedlines.split("\n");
 		int numlines2 = line2.length;
 		if (numlines2 < 0) {
@@ -753,6 +775,14 @@ public class OnSongConvert extends Activity {
 
 			parsedlines = parsedlines + line2[x] + "\n";
 		}
+
+		Log.d("d","parsedlines="+parsedlines);
+
+        boolean isempty = false;
+        if (parsedlines.equals("")) {
+            parsedlines = FullscreenActivity.songfilename;
+            isempty = true;
+        }
 
 		FullscreenActivity.myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 				+ "<song>\n"
@@ -871,26 +901,104 @@ public class OnSongConvert extends Activity {
                 to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + newSongTitle);
             }
         }
-		
-		// Do the renaming
-		from.renameTo(to);
-		FullscreenActivity.songfilename = newSongTitle;
 
-        Log.d("onsong","from="+from);
-        Log.d("onsong","to="+to);
-
-		// Load the songs
-		ListSongFiles.listSongs();
-
-		// Get the song indexes
-		ListSongFiles.getCurrentSongIndex();
 
 		FullscreenActivity.needtorefreshsongmenu = true;
-		Preferences.savePreferences();
+        if (!isempty) {
+            from.renameTo(to);
+            FullscreenActivity.songfilename = newSongTitle;
 
-        // Prepare the app to fix the song menu with the new file
-        FullscreenActivity.converting = true;
+            if (!isbatch) {
+                // Load the songs
+                //ListSongFiles.listSongs();
+                ListSongFiles.getAllSongFiles();
+                // Get the song indexes
+                ListSongFiles.getCurrentSongIndex();
+                Preferences.savePreferences();
+                // Prepare the app to fix the song menu with the new file
+                FullscreenActivity.converting = true;
+            }
+
+        } else {
+            from.delete();
+        }
+
 
 		return true;
+	}
+
+	public static void doBatchConvert(Context contxt) {
+		DoBatchConvert dobatch = new DoBatchConvert(contxt);
+		dobatch.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+	}
+	public static class DoBatchConvert extends AsyncTask<String, Void, String> {
+
+        Context context;
+
+        public DoBatchConvert(Context c) {
+            context = c;
+            mListener = (MyInterface) c;
+        }
+
+        @Override
+        public void onPreExecute() {
+            if (mListener!=null) {
+               String mText = context.getResources().getString(R.string.processing) + " - " + context.getResources().getString(R.string.takeawhile);
+                       mListener.showToastMessage(mText);
+            }
+            isbatch = true;
+        }
+
+		@Override
+		protected String doInBackground(String... strings) {
+			// Go through each file in the OnSong folder that ends with .onsong and convert it
+			FullscreenActivity.whichSongFolder = "OnSong";
+			if (FullscreenActivity.dironsong.exists()) {
+				File[] allfiles = FullscreenActivity.dironsong.listFiles();
+				for (File thisfile:allfiles) {
+					if (thisfile.getName().endsWith(".onsong")) {
+						FullscreenActivity.songfilename = thisfile.getName();
+						try {
+                            InputStream inputStream = new FileInputStream(FullscreenActivity.dironsong+"/"+thisfile.getName());
+                            InputStreamReader streamReader = new InputStreamReader(inputStream);
+                            BufferedReader bufferedReader = new BufferedReader(streamReader);
+                            FullscreenActivity.myXML = LoadXML.readTextFile(inputStream);
+                            FullscreenActivity.mLyrics = FullscreenActivity.myXML;
+                            inputStream.close();
+                            bufferedReader.close();
+
+                            doExtract();
+                        } catch (Exception e) {
+                            // file doesn't exist
+                            FullscreenActivity.myXML = "<title>ERROR</title>\n<author></author>\n<lyrics>"
+                                    + FullscreenActivity.songdoesntexist + "\n\n" + "</lyrics>";
+                            FullscreenActivity.myLyrics = "ERROR!";
+							e.printStackTrace();
+							message += thisfile.getName() + " - " + context.getResources().getString(R.string.error);
+						}
+					} else if (thisfile.getName().endsWith(".sqlite3")||thisfile.getName().endsWith(".preferences")||
+                            thisfile.getName().endsWith(".doc")||thisfile.getName().endsWith(".docx")) {
+                        if (!thisfile.delete()) {
+                            message += thisfile.getName() + " - " +context.getResources().getString(R.string.deleteerror_start);
+                        }
+                    }
+				}
+				if (message.equals("")) {
+					message = "OK";
+				}
+			}
+			return message;
+		}
+
+		@Override
+		public void onPostExecute(String s) {
+			Log.d("d",s);
+            if (mListener!=null) {
+                String mText = context.getResources().getString(R.string.processing) + " - " + context.getResources().getString(R.string.success);
+                mListener.showToastMessage(mText);
+                mListener.prepareSongMenu();
+            }
+            Preferences.savePreferences();
+		}
 	}
 }

@@ -13,7 +13,8 @@
 
     <string name="visualmetronome">"Visual"</string>
     <string name="onsonglocation">"Você precisa colocar seu arquivo de backup para o OnSong /documents/OpenSong/ pasta para que ele esteja disponível para importar"</string>
-    <string name="savesong">"Salvar"</string>
+	<string name="opensonglocation">"Você precisa colocar seu arquivo de backup para o OpenSongApp /documents/OpenSong/ pasta para que ele esteja disponível para importar"</string>
+	<string name="savesong">"Salvar"</string>
     <string name="metronomepadsettings">"Definições de música metrónomo e fundo"</string>
     <string name="metronome">"Metrónomo"</string>
     <string name="temponotset">"Tempo não foi definido para esta música"</string>
@@ -496,5 +497,22 @@
 	<string name="profile_description">"Os perfis são usados para armazenar suas preferências de visualização."</string>
 	<string name="profile_name">"Escolha um nome de perfil"</string>
 	<string name="size">"Tamanho"</string>
+	<string name="websearch">"Pesquisar Internet para música atual"</string>
+	<string name="songfolder">"Selecione a pasta de música"</string>
+	<string name="stagemode">"Modo de estágio"</string>
+	<string name="switchtostagemode">"Alternar para o modo Stage"</string>
+	<string name="toobig">"Por favor mudar autoscale por pdf exportação"</string>
+	<string name="showcapo">"acordes Mostrar capo"</string>
+	<string name="showchords">"Mostrar acordes"</string>
+	<string name="showlyrics">"Mostrar letras"</string>
+	<string name="backup_export">"Exportar backup OpenSongApp"</string>
+	<string name="backup_info">"O arquivo de backup OpenSongApp"</string>
+	<string name="backup_success">"OpenSongApp backup criado"</string>
+	<string name="backup_import">"backup de importação OpenSongApp"</string>
+	<string name="backup_error">"No arquivo de backup OpenSongApp encontrado na pasta OpenSong"</string>
+	<string name="processing">"Arquivos estão sendo processados"</string>
+	<string name="success">"Sucesso"</string>
+	<string name="error">"Erro"</string>
+	<string name="takeawhile">"Isso pode levar algum tempo!"</string>
 
 </resources>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/drawer_bg"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/textView61"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="4dp"
+        android:gravity="center_horizontal"
+        android:text="@string/options_display"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#ff0" />
+
+    <ScrollView
+        android:id="@+id/optionsdisplayscrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/drawer_bg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/displayThemeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_theme_light_dark_white_48dp"
+                android:drawableStart="@drawable/ic_theme_light_dark_white_48dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_options_theme" />
+
+            <Button
+                android:id="@+id/displayAutoScaleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_arrow_expand_white_48dp"
+                android:drawableStart="@drawable/ic_arrow_expand_white_48dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_options_scale" />
+
+            <Button
+                android:id="@+id/displayFontButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_format_text_white_48dp"
+                android:drawableStart="@drawable/ic_format_text_white_48dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_options_fonts" />
+
+            <Button
+                android:id="@+id/displayButtonsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_bullseye_white_48dp"
+                android:drawableStart="@drawable/ic_bullseye_white_48dp"
+                android:gravity="center_vertical"
+                android:text="@string/pagebuttons" />
+
+            <Button
+                android:id="@+id/displayInfoButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_information_white_48dp"
+                android:drawableStart="@drawable/ic_information_white_48dp"
+                android:gravity="center_vertical"
+                android:text="@string/extra" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/displayMenuToggleSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_menu_white_48dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_menu_white_48dp"
+                android:singleLine="false"
+                android:text="@string/options_options_hidebar"
+                android:thumb="@drawable/switch_button"
+                app:showText="true"/>
+
+            <Button
+                android:id="@+id/displayProfileButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_account_white_48dp"
+                android:drawableStart="@drawable/ic_account_white_48dp"
+                android:gravity="center_vertical"
+                android:text="@string/profile" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

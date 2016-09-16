@@ -108,6 +108,7 @@
     
     <string name="visualmetronome">"Vidljiv"</string>
     <string name="onsonglocation">"Treba da smestite Vašu rezervnu datoteku OnSong u /documents/OpenSong/ fasciklu da bi bila dostupna za uvoz"</string>
+    <string name="opensonglocation">"Treba da smestite Vašu rezervnu datoteku OpenSongApp u /documents/OpenSong/ fasciklu da bi bila dostupna za uvoz"</string>
     <string name="savesong">"Sačuvaj"</string>
     <string name="metronomepadsettings">"Podešavanja metronoma i pad-a"</string>
     <string name="metronome">"Metronom"</string>
@@ -546,5 +547,22 @@
     <string name="profile_description">"Profili se koriste da sačuvate postavke prikaza"</string>
     <string name="profile_name">"Unesite ime profila"</string>
     <string name="size">"Veličina"</string>
+    <string name="websearch">"Pretražiti Internet za trenutnu pesmu"</string>
+    <string name="songfolder">"Izaberite pesmu direktorijum"</string>
+    <string name="stagemode">"faza režim"</string>
+    <string name="switchtostagemode">"Svitch to Stage Mode"</string>
+    <string name="toobig">"Prebacite autoscale na za PDF Ekport"</string>
+    <string name="showcapo">"Shov Capo Chords"</string>
+    <string name="showchords">"Shov Chords"</string>
+    <string name="showlyrics">"Shov tekst"</string>
+    <string name="backup_export">"Izvoz OpenSongApp rezerva"</string>
+    <string name="backup_info">"OpenSongApp rezervne kopije datoteka"</string>
+    <string name="backup_success">"OpenSongApp rezerva napravljena"</string>
+    <string name="backup_import">"Import OpenSongApp rezerva"</string>
+    <string name="backup_error">"Ne OpenSongApp rezervna kopija naći u OpenSong folder"</string>
+    <string name="processing">"Fajlovi se obrađuje"</string>
+    <string name="success">"uspeh"</string>
+    <string name="error">"greška"</string>
+    <string name="takeawhile">"To može da potraje !"</string>
 
 </resources>

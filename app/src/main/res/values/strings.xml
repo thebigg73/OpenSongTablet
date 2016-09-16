@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="stagemode">Stage Mode</string>
+    <string name="switchtostagemode">Switch to Stage Mode</string>
+    <string name="songfolder">Select song folder</string>
+    <string name="toobig">Please switch autoscale on for pdf export</string>
+    <string name="showchords">Show chords</string>
+    <string name="showlyrics">Show lyrics</string>
+    <string name="showcapo">Show capo chords</string>
+    <string name="backup_import">Import OpenSongApp backup</string>
+    <string name="backup_export">Export OpenSongApp backup</string>
+    <string name="backup_success">OpenSongApp backup created</string>
+    <string name="backup_info">OpenSongApp Backup file</string>
+    <string name="backup_error">"No OpenSongApp backup file found in OpenSong folder"</string>
+    <string name="processing">Files are being processed</string>
+    <string name="takeawhile">This may take some time!</string>
+    <string name="success">Success</string>
+    <string name="error">Error</string>
+
+    <string name="websearch">Search internet for this song</string>
     <string name="extra">Extra information</string>
     <string name="minfontsize">Preferred minimum autoscale font size</string>
     <string name="override_scale_explanation">If the autoscale font size is less than the desired minimum font size, do you want the app to override to a different scaling method?  Using these options may force you to scroll horizontally and vertically in a song</string>
@@ -187,6 +205,7 @@
     
     <string name="visualmetronome">Visual</string>
     <string name="onsonglocation">You need to place your OnSong backup file into the /documents/OpenSong/ folder for it to be available to import</string>
+    <string name="opensonglocation">You need to place your OpenSongApp backup file into the /documents/OpenSong/ folder for it to be available to import</string>
     <string name="savesong">Save</string>
     <string name="metronomepadsettings">Metronome and pad settings</string>
     <string name="metronome">Metronome</string>
@@ -636,7 +655,9 @@
 	</string-array>
 	<string-array name="timesig" translatable="false">
 	    <item />
+        <item>2/2</item>
 	    <item>2/4</item>
+        <item>3/2</item>
 	    <item>3/4</item>
 	    <item>3/8</item>
 	    <item>4/4</item>

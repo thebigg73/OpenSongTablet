@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<song>
+  <title>Welcome to OpenSongApp</title>
+  <author>Gareth Evans</author>
+  <copyright></copyright>
+  <presentation></presentation>
+  <hymn_number></hymn_number>
+  <capo print=""></capo>
+  <tempo>90</tempo>
+  <time_sig>4/4</time_sig>
+  <duration>100</duration>
+  <predelay></predelay>
+  <ccli></ccli>
+  <theme></theme>
+  <alttheme></alttheme>
+  <user1></user1>
+  <user2></user2>
+  <user3></user3>
+  <key>G</key>
+  <aka></aka>
+  <key_line></key_line>
+  <books></books>
+  <midi></midi>
+  <midi_index></midi_index>
+  <pitch></pitch>
+  <restrictions></restrictions>
+  <notes>A quick guide.....</notes>
+  <lyrics>[Intro]
+ Welcome to OpenSongApp!
+ This is a test page to show you some of the features of the app.
+ The app contains 2 modes -
+;• Performance Mode - use your Android device as a song book on stage
+;• Presentation Mode - hook up to a projector and displaying lyrics
+
+[Menus]
+ The left hand slide out menu - lists all folders and songs.
+ The right hand slide out menu - all options/settings.
+ The taskbar menu - access different modes, menus or features.
+ The page icons let you access special song features:
+;Backing track, auto scroll, metronome, chords, notes, links, etc.
+
+[Get help with all of the cool features...]
+ To find out all of the app features and how to use them,
+ please check out the online help pages.
+ Use the link in the options menu under the &amp;apos;Other&amp;apos; category -
+ http://www.opensongapp.com
+ You can also click on the link icon page button.
+
+[Adding songs]
+ You can manually enter/create any song you like
+ The app only comes with this &amp;apos;song&amp;apos; by default due to copyright.
+ You can also import songs from other services:
+;• Desktop OpenSong - I highly recommend syncing using Dropbox
+;• OnSong files
+;• ChordPro files
+;• Ultimate Guitar website (using the import feature)
+;• Chordie website (using the import feature)
+;• SongSelect .usr files
+ Songs are stored in OpenSong format (XML files without the .xml)
+
+ Songs are stored on your device in the /OpenSong/Songs folder.
+ This location is found at the storage location you chose
+ when you first ran the app.  Check out the &amp;apos;Storage&amp;apos; category
+ of the options menu to see where this is.
+
+[Edit the song]
+ Click on the song title in the menu bar to see a song preview.
+ This also allows you to quickly edit the song
+
+[Chords at work]
+ This song has been set as having a key of G.
+ You can also set capo display options easily
+.G     D      Em           C      G         G7
+ Chord lines (above) start with a full stop/period (.)
+.C       Em            D      G
+ You can transpose the chords easily.
+ This is done from the chords category in the options menu
+ Nashville, European and Do Ré Mi chords are understood
+
+[Scaling]
+ By default OpenSongApp scales a song to fit the page.
+ You can change the auto scale options in the right hand menu
+
+[Sets]
+ Add songs to sets by long pressing on them in the song menu
+ The set icon will pulse to let you know of any changes.
+
+[Customising]
+ You can customise colours, themes,fonts, gestures, pedals, etc.
+ These customisations can be saved as user profiles.
+ Check out the categories in the right hand options menu.
+
+
+
+HERE IS AN EXAMPLE OF HOW A SONG WOULD LOOK
+
+
+
+[V1]
+.G2                D/F#
+ Love everlasting, love without measure,
+.Em7                 D       
+ Full of compassion, righteous and pure;
+.C     G/B             Am7   C/D      D
+ Is my Saviour&amp;apos;s love, is my Father&amp;apos;s heart.
+
+[V2]
+.G2                   D/F#
+ Loved by the Father, saved by the Son,
+.Em7                 D           
+ Born of His Spirit, washed in the blood;
+.C          G/B             Am7        C/D      D
+ This is my Saviour's love, this is my Father's heart.
+
+[B]
+.Em            Cmaj7 Em                Cmaj7
+ Your love for me,   it reaches to the heavens,
+.Em              Cmaj7             Bm7
+ Let my love for You just grow and grow !    
+.Em            Cmaj7 Em                Cmaj7
+ Your love for me,   it reaches to the heavens,
+.Em              Cmaj7             D  D/F#
+ Let my love for You just grow and grow !    
+
+[V3]
+.G2                       D/F#
+ Love sent from heaven, received in our hearts,
+.Em7                      D               
+ Loving each other, since Christ first loved us;
+.C          G/B             Am7        C/D      D  
+ Sharing my Saviour's love, showing my Father's heart.
+ 
+</lyrics>
+  <linked_songs></linked_songs>
+  <pad_file>Auto</pad_file>
+  <custom_chords></custom_chords>
+  <link_youtube></link_youtube>
+  <link_web>http://www.opensongapp.com</link_web>
+  <link_audio></link_audio>
+  <loop_audio>false</loop_audio>
+  <link_other></link_other>
+</song>

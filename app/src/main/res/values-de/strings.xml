@@ -13,7 +13,8 @@
 
     <string name="visualmetronome">"Visuell"</string>
     <string name="onsonglocation">"Die OnSong Backup-Datei muss sich im Verzeichnis /documents/OpenSong/ befinden, um sie importieren zu können"</string>
-    <string name="savesong">"Speichern"</string>
+	<string name="opensonglocation">"Die OpenSongApp Backup-Datei muss sich im Verzeichnis /documents/OpenSong/ befinden, um sie importieren zu können"</string>
+	<string name="savesong">"Speichern"</string>
     <string name="metronomepadsettings">"Metronom und Hintergrundmusik-Einstellungen"</string>
     <string name="metronome">"Metronom"</string>
     <string name="temponotset">"Tempo für diesen noch nicht Song eingestellt"</string>
@@ -498,5 +499,22 @@
 	<string name="profile_description">"Die Profile werden verwendet, um Ihre Anzeigeeinstellungen zu speichern."</string>
 	<string name="profile_name">"Wählen Sie einen Profilnamen"</string>
 	<string name="size">"Größe"</string>
+	<string name="websearch">"Aktuellen Song auf Internet suchen"</string>
+	<string name="songfolder">"Wählen Sie Song-Ordner"</string>
+	<string name="stagemode">"Bühnenmodus"</string>
+	<string name="switchtostagemode">"Wechseln Sie in den Bühnenmodus"</string>
+	<string name="toobig">"Bitte schalten automatische Skalierung auf für PDF-Export"</string>
+	<string name="showcapo">"Anzeigen capo Akkorde"</string>
+	<string name="showchords">"anzeigen Akkorde"</string>
+	<string name="showlyrics">"Zeige Texte"</string>
+	<string name="backup_export">"Export OpenSongApp Backup"</string>
+	<string name="backup_info">"OpenSongApp Backup-Datei"</string>
+	<string name="backup_success">"OpenSongApp Backup erstellt"</string>
+	<string name="backup_import">"Import OpenSongApp Backup"</string>
+	<string name="backup_error">"Keine OpenSongApp Sicherungsdatei in Opensong -Ordner gefunden"</string>
+	<string name="processing">"Dateien werden verarbeitet"</string>
+	<string name="success">"Erfolg"</string>
+	<string name="error">"Fehler"</string>
+	<string name="takeawhile">"Dies kann einige Zeit in Anspruch nehmen!"</string>
 
 </resources>

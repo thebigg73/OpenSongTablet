@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
 import java.io.IOException;
 
 public class PopUpEditStickyFragment extends DialogFragment {
@@ -25,6 +26,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         mListener = (MyInterface) activity;
         super.onAttach(activity);

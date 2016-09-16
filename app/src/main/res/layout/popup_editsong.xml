@@ -114,7 +114,7 @@
                 android:background="#fff"
                 android:textColor="#000"
                 android:textSize="16sp"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <TextView
                 android:id="@+id/myPreDelay"
@@ -125,7 +125,7 @@
                 android:text="@string/autoscroll_time"
                 android:textColor="#ff0"
                 android:textSize="16sp"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -370,7 +370,7 @@
                 android:scrollbars="vertical"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:typeface="monospace" />
 
             <TextView

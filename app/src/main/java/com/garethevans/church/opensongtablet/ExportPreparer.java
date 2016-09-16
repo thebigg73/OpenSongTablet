@@ -1,20 +1,40 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Locale;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-import android.app.Activity;
-import android.util.Log;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class ExportPreparer extends Activity {
 
@@ -29,8 +49,15 @@ public class ExportPreparer extends Activity {
 	static String song_lyrics_withchords = "";
 	static String song_lyrics_withoutchords = "";
 	static File songfile = null;
-	static ArrayList<String> filesinset = new ArrayList<>();
+    static ArrayList<String> filesinset = new ArrayList<>();
 	static ArrayList<String> filesinset_ost = new ArrayList<>();
+    static String FILE = FullscreenActivity.homedir + "/Images/_cache/" + FullscreenActivity.songfilename +".pdf";
+    static Image image;
+    static byte[] bArray;
+    static Backup_Create backup_create;
+    static Context context;
+    static Activity activity;
+    static Intent emailIntent;
 
 	public static void songParser() throws XmlPullParserException, IOException {
 
@@ -157,7 +184,7 @@ public class ExportPreparer extends Activity {
                         while (!allimagesdone) { // Keep iterating unless the current eventType is the end of the document
                             if (eventType == XmlPullParser.START_TAG) {
                                 if (xpp.getName().equals("description")) {
-                                    eventType = xpp.next();
+                                    xpp.next();
                                     theseimages.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
                                     filesinset.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
                                     filesinset_ost.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
@@ -292,4 +319,261 @@ public class ExportPreparer extends Activity {
 		return outputStream.toString();
 	}
 
+	public static Intent exportSong(Context c, Bitmap bmp) {
+        File saved_image_file = new File(
+                FullscreenActivity.homedir + "/Images/_cache/" + FullscreenActivity.songfilename + ".png");
+        if (saved_image_file.exists())
+            if (!saved_image_file.delete()) {
+                Log.d("d","error removing temp image file");
+            }
+        try {
+            FileOutputStream out = new FileOutputStream(saved_image_file);
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Run the script that generates the email text which has the set details in it.
+        try {
+            songParser();
+        } catch (IOException | XmlPullParserException e) {
+            e.printStackTrace();
+        }
+
+        Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_TITLE, FullscreenActivity.songfilename);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, FullscreenActivity.songfilename);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, FullscreenActivity.emailtext);
+        FullscreenActivity.emailtext = "";
+        String songlocation = FullscreenActivity.dir + "/";
+        String tolocation = FullscreenActivity.homedir + "/Notes/_cache/";
+        Uri uri;
+        if (!FullscreenActivity.dir.toString().contains("/" + FullscreenActivity.whichSongFolder + "/")
+                && !FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            uri = Uri.fromFile(new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename));
+            songlocation = songlocation + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename;
+            tolocation = tolocation + "/" + FullscreenActivity.songfilename + ".ost";
+        } else {
+            uri = Uri.fromFile(new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename));
+            songlocation = songlocation + FullscreenActivity.songfilename;
+            tolocation = tolocation + "/" + FullscreenActivity.songfilename + ".ost";
+        }
+
+        Uri uri2 = Uri.fromFile(saved_image_file);
+        Uri uri3 = null;
+        // Also add an .ost version of the file
+        try {
+            FileInputStream in = new FileInputStream(new File(songlocation));
+            FileOutputStream out = new FileOutputStream(new File(tolocation));
+
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            in.close();
+
+            // write the output file (You have now copied the file)
+            out.flush();
+            out.close();
+
+            uri3 = Uri.fromFile(new File(tolocation));
+
+        } catch (Exception e) {
+            // Error
+            e.printStackTrace();
+        }
+
+        Uri uri4 = null;
+        if (bmp==null) {
+            FullscreenActivity.myToastMessage = c.getString (R.string.toobig);
+            ShowToast.showToast(c);
+        } else {
+            makePDF(bmp);
+        }
+        Log.d("d",FILE);
+        try {
+            uri4 = Uri.fromFile(new File(FILE));
+        } catch (Exception e) {
+            // Error
+            e.printStackTrace();
+        }
+
+
+        ArrayList<Uri> uris = new ArrayList<>();
+        if (uri != null) {
+            uris.add(uri);
+        }
+        if (uri2 != null) {
+            uris.add(uri2);
+        }
+        if (uri3 != null) {
+            uris.add(uri3);
+        }
+        if (uri4 != null) {
+            uris.add(uri4);
+        }
+        emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        return emailIntent;
+        // These .ost and .png files will be removed when a user loads a new set
+    }
+
+    public static Intent exportBackup(Context c, File f) {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_TITLE, c.getString(R.string.backup_info));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT,  c.getString(R.string.backup_info));
+        emailIntent.putExtra(Intent.EXTRA_TEXT,  c.getString(R.string.backup_info));
+        FullscreenActivity.emailtext = "";
+
+        Uri uri = Uri.fromFile(f);
+        ArrayList<Uri> uris = new ArrayList<>();
+        uris.add(uri);
+
+        emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        return emailIntent;
+    }
+
+    public static void makePDF (Bitmap bmp) {
+        Document document = new Document();
+        try {
+            FILE = FullscreenActivity.homedir + "/Images/_cache/" + FullscreenActivity.songfilename +".pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(FILE));
+            document.addAuthor(FullscreenActivity.mAuthor.toString());
+            document.addTitle(FullscreenActivity.mTitle.toString());
+            document.addCreator("OpenSongApp");
+            if (bmp!=null && bmp.getWidth()>bmp.getHeight()) {
+                document.setPageSize(PageSize.A4.rotate());
+            } else {
+                document.setPageSize(PageSize.A4);
+            }
+            document.addTitle(FullscreenActivity.mTitle.toString());
+            document.open();//document.add(new Header("Song title",FullscreenActivity.mTitle.toString()));
+            BaseFont urName = BaseFont.createFont("assets/fonts/Lato-Reg.ttf", "UTF-8",BaseFont.EMBEDDED);
+            Font TitleFontName  = new Font(urName, 14);
+            Font AuthorFontName = new Font(urName, 10);
+            document.add(new Paragraph(FullscreenActivity.mTitle.toString(),TitleFontName));
+            document.add(new Paragraph(FullscreenActivity.mAuthor.toString(),AuthorFontName));
+            addImage(document,bmp);
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void addImage(Document document, Bitmap bmp) {
+        try {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            bArray = stream.toByteArray();
+            image = Image.getInstance(bArray);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        float A4_width  = document.getPageSize().getWidth() - document.leftMargin() - document.rightMargin() - 80;
+        float A4_height = document.getPageSize().getHeight() - document.topMargin() - document.bottomMargin();
+        int bmp_width   = bmp.getWidth();
+        int bmp_height  = bmp.getHeight();
+        // If width is bigger than height, then landscape it!
+
+        float x_scale = A4_width/(float)bmp_width;
+        float y_scale = A4_height/(float)bmp_height;
+        float new_width;
+        float new_height;
+
+        if (x_scale>y_scale) {
+            new_width  = bmp_width  * y_scale;
+            new_height = bmp_height * y_scale;
+        } else {
+            new_width  = bmp_width  * x_scale;
+            new_height = bmp_height * x_scale;
+        }
+        image.scaleAbsolute(new_width,new_height);
+        image.scaleToFit(A4_width,A4_height);
+        image.setAlignment(Image.ALIGN_CENTER | Image.ALIGN_BOTTOM);
+        //image.scaleToFit(PageSize.A4.getWidth(), PageSize.A4.getHeight());
+        // image.scaleAbsolute(150f, 150f);
+        try {
+            document.add(image);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void createOpenSongBackup(Context c) {
+        context = c;
+        activity = (Activity) context;
+        if (backup_create!=null) {
+            backup_create.cancel(true);
+        }
+        backup_create = new Backup_Create();
+        backup_create.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    public static class Backup_Create extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... strings) {
+            return makeBackupZip();
+        }
+
+        @Override
+        public void onPostExecute(String s) {
+            File f = new File(s);
+            FullscreenActivity.myToastMessage = context.getString(R.string.backup_success);
+            ShowToast.showToast(context);
+            emailIntent = exportBackup(context, f);
+            activity.startActivityForResult(Intent.createChooser(emailIntent, context.getString(R.string.backup_info)), 12345);
+        }
+    }
+
+    public static String makeBackupZip() {
+        // Get the date for the file
+        Calendar c = Calendar.getInstance();
+        System.out.println("Current time => " + c.getTime());
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd", FullscreenActivity.locale);
+        String formattedDate = df.format(c.getTime());
+        String backup = FullscreenActivity.homedir + "/OpenSongBackup_" + formattedDate + ".osb";
+        String songfolder = FullscreenActivity.dir.toString();
+        try {
+            zipDir(backup, songfolder);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return backup;
+    }
+
+    private static void zipDir(String zipFileName, String dir) throws Exception {
+        File dirObj = new File(dir);
+        ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName));
+        System.out.println("Creating : " + zipFileName);
+        addDir(dirObj, out);
+        out.close();
+    }
+
+    static void addDir(File dirObj, ZipOutputStream out) throws IOException {
+        File[] files = dirObj.listFiles();
+        byte[] tmpBuf = new byte[1024];
+
+        for (int i = 0; i < files.length; i++) {
+            if (files[i].isDirectory()) {
+                addDir(files[i], out);
+                continue;
+            }
+            FileInputStream in = new FileInputStream(files[i].getAbsolutePath());
+            System.out.println(" Adding: " + files[i].getAbsolutePath().replace(FullscreenActivity.dir.toString()+"/",""));
+            out.putNextEntry(new ZipEntry((files[i].getAbsolutePath()).replace(FullscreenActivity.dir.toString()+"/","")));
+            int len;
+            while ((len = in.read(tmpBuf)) > 0) {
+                out.write(tmpBuf, 0, len);
+            }
+            out.closeEntry();
+            in.close();
+        }
+    }
 }

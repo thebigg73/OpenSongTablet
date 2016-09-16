@@ -273,7 +273,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="20dp"
             android:background="@drawable/red_button"
-            android:onClick="exitChordFormat"
             android:text="@string/edit_save"
             android:textColor="#fff" />
     </LinearLayout>

@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import java.io.File;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         mListener = (MyInterface) activity;
         super.onAttach(activity);

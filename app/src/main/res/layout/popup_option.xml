@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView67"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="4dp"
+        android:gravity="center_horizontal"
+        android:text="@string/options_options"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#ff0" />
+
+    <ScrollView
+        android:id="@+id/optionsdisplayscrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/menuSetButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_format_list_bulleted_white_36dp"
+                android:drawableStart="@drawable/ic_format_list_bulleted_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_set" />
+
+            <Button
+                android:id="@+id/menuSongButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_music_note_white_36dp"
+                android:drawableStart="@drawable/ic_music_note_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_song" />
+
+            <Button
+                android:id="@+id/menuChordsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_guitar_electric_white_36dp"
+                android:drawableStart="@drawable/ic_guitar_electric_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/chords" />
+
+            <Button
+                android:id="@+id/menuDisplayButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_monitor_white_36dp"
+                android:drawableStart="@drawable/ic_monitor_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_display" />
+
+            <Button
+                android:id="@+id/menuGesturesButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_fingerprint_white_36dp"
+                android:drawableStart="@drawable/ic_fingerprint_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_gesturesandmenus" />
+
+            <Button
+                android:id="@+id/menuStorageButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_sd_white_36dp"
+                android:drawableStart="@drawable/ic_sd_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_storage" />
+
+            <Button
+                android:id="@+id/menuPadButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_volume_high_white_36dp"
+                android:drawableStart="@drawable/ic_volume_high_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/pad" />
+
+            <Button
+                android:id="@+id/menuAutoScrollButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_rotate_right_white_36dp"
+                android:drawableStart="@drawable/ic_rotate_right_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/autoscroll" />
+
+            <Button
+                android:id="@+id/menuOtherButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_information_white_36dp"
+                android:drawableStart="@drawable/ic_information_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_other" />
+
+
+        </LinearLayout>
+        </ScrollView>
+    </LinearLayout>

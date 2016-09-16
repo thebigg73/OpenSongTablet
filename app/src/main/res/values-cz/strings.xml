@@ -13,7 +13,8 @@
 
     <string name="visualmetronome">"Vizuální"</string>
     <string name="onsonglocation">"Je třeba umístit OnSong záložní soubor do /documents/OpenSong/ složky, aby bylo k dispozici pro import"</string>
-    <string name="savesong">"Zachránit"</string>
+	<string name="opensonglocation">"Je třeba umístit OpenSong záložní soubor do /documents/OpenSong/ složky, aby bylo k dispozici pro import"</string>
+	<string name="savesong">"Zachránit"</string>
     <string name="metronomepadsettings">"Metronom a pozadí nastavení hudby"</string>
     <string name="metronome">"Metronom"</string>
     <string name="temponotset">"Tempo nebyl nastaven pro tuto píseň"</string>
@@ -497,5 +498,22 @@
 	<string name="profile_description">"Profily se používají k ukládání vašich preferencí zobrazení."</string>
 	<string name="profile_name">"Vyberte název profilu"</string>
 	<string name="size">"Velikost"</string>
+	<string name="websearch">"Hledat Internet pro aktuální skladby"</string>
+	<string name="songfolder">"Vybrat složku píseň"</string>
+	<string name="stagemode">"Režim Stage"</string>
+	<string name="switchtostagemode">"Přepnout do režimu Stage"</string>
+	<string name="toobig">"Přepněte prosím Autoscale na pro export do PDF"</string>
+	<string name="showcapo">"Show Capo akordy"</string>
+	<string name="showchords">"Zobrazit akordy"</string>
+	<string name="showlyrics">"zobrazit texty"</string>
+	<string name="backup_export">"zálohování Export OpenSongApp"</string>
+	<string name="backup_info">"Soubor OpenSongApp Backup"</string>
+	<string name="backup_success">"zálohování OpenSongApp vytvořil"</string>
+	<string name="backup_import">"zálohování import OpenSongApp"</string>
+	<string name="backup_error">"Nebyl nalezen ve složce OpenSong OpenSongApp záložní soubor"</string>
+	<string name="processing">"Soubory jsou zpracovávány"</string>
+	<string name="success">"Úspěch"</string>
+	<string name="error">"Chyba"</string>
+	<string name="takeawhile">"To může trvat nějaký čas!"</string>
 
 </resources>

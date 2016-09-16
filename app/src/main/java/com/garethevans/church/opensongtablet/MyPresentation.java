@@ -1,7 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import java.io.File;
-import java.io.IOException;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -29,6 +27,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.IOException;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 public final class MyPresentation extends Presentation
@@ -102,6 +103,7 @@ public final class MyPresentation extends Presentation
         super(outerContext, display);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedinstancestate) {
         // Notice that we get resources from the context of the Presentation
@@ -224,7 +226,11 @@ public final class MyPresentation extends Presentation
 
         presoBGVideo.setSurfaceTextureListener(this);
 
-        defimage = getResources().getDrawable(R.drawable.preso_default_bg);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            defimage = getResources().getDrawable(R.drawable.preso_default_bg,null);
+        } else {
+            defimage = getResources().getDrawable(R.drawable.preso_default_bg);
+        }
 
         // Set a listener for the presoLyrics to listen for size changes
         // This is used for the scale
@@ -642,7 +648,8 @@ public final class MyPresentation extends Presentation
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                presoLyricsIN.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                presoLyricsIN.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                //presoLyricsIN.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 // Get the width and height of this text
                 screenwidth = lyricsHolder.getWidth();
                 textwidth = presoLyricsIN.getWidth();
@@ -862,7 +869,8 @@ public final class MyPresentation extends Presentation
                         presoBGImage.setImageDrawable(defimage);
                     } else {
                         myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                        dr = new BitmapDrawable(myBitmap);
+                        dr = new BitmapDrawable(null,myBitmap);
+                        //dr = new BitmapDrawable(myBitmap);
                         presoBGImage.setImageDrawable(dr);
                     }
                     presoBGImage.setVisibility(View.VISIBLE);
@@ -949,7 +957,8 @@ public final class MyPresentation extends Presentation
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                presoLyricsIN.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                presoLyricsIN.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                //presoLyricsIN.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 // Get the width and height of this text
                 screenwidth = lyricsHolder.getWidth();
                 textwidth = presoLyricsIN.getWidth();

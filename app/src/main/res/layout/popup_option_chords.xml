@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/drawer_bg"
+    android:padding="12dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView68"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="4dp"
+        android:gravity="center_horizontal"
+        android:text="@string/chords"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#ff0" />
+
+    <ScrollView
+        android:id="@+id/optionschordsscrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/drawer_bg">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/chordsTransposeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_transpose_white_48dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_transpose_white_48dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_song_transpose" />
+
+            <Button
+                android:id="@+id/chordsSharpButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_sharp_white_48dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_sharp_white_48dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_song_sharp" />
+
+            <Button
+                android:id="@+id/chordsFlatButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_flat_white_48dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_flat_white_48dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_song_flat" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/chordsToggleSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:checked="true"
+                android:drawableLeft="@drawable/ic_guitar_electric_white_48dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_guitar_electric_white_48dp"
+                android:singleLine="false"
+                android:text="@string/showchords"
+                android:thumb="@drawable/switch_button"
+                app:showText="true" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/chordsLyricsToggleSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:checked="true"
+                android:drawableLeft="@drawable/ic_comment_text_white_48dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_comment_text_white_48dp"
+                android:singleLine="false"
+                android:text="@string/showlyrics"
+                android:thumb="@drawable/switch_button"
+                app:showText="true" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/chordsCapoToggleSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:checked="true"
+                android:drawableLeft="@drawable/ic_capo_white_48dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_capo_white_48dp"
+                android:singleLine="false"
+                android:text="@string/showcapo"
+                android:thumb="@drawable/switch_button"
+                app:showText="true" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/chordsNativeAndCapoToggleSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_capo_white_48dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_capo_white_48dp"
+                android:singleLine="false"
+                android:text="@string/capo_toggle_bothcapo"
+                android:thumb="@drawable/switch_button"
+                app:showText="true" />
+
+            <Button
+                android:id="@+id/chordsFormatButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_chordformat_white_48dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_chordformat_white_48dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_options_chordformat" />
+
+            <Button
+                android:id="@+id/chordsConvertButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_chordconvert_white_48dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_chordconvert_white_48dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_song_convert" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

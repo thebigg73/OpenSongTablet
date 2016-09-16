@@ -1,22 +1,16 @@
 package com.garethevans.church.opensongtablet;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.DialogFragment;
-import android.content.pm.PackageManager;
-import android.os.Environment;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -28,6 +22,12 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class StorageChooser extends AppCompatActivity implements PopUpDirectoryChooserFragment.MyInterface {
 
@@ -268,7 +268,9 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
 			}
             String exttext2 = getResources().getString(R.string.storage_ext) + "\n(" + secStorage + "/documents)\n" + getResources().getString(R.string.storage_space) + " - " + freespace + " MB";
 			extStorageButton.setText(exttext2);
-		}
+
+
+        }
 	}
 
     public void onBackPressed() {
@@ -393,7 +395,7 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
                                             Log.d("StorageChooser", "Failed to create songs folder");
                                         }
 
-                                        // Copy Love Everlasting since folder is empty.
+                                        /*// Copy Love Everlasting since folder is empty.
                                         AssetManager assetManager = getAssets();
                                         InputStream in;
                                         OutputStream out;
@@ -408,7 +410,7 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
                                             out.close();
                                         } catch (IOException e) {
                                             Log.e("tag", "Failed to copy asset file: " + "Love everlasting", e);
-                                        }
+                                        }*/
                                     }
                                     break;
                                 case "3":
@@ -420,7 +422,7 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
                                             Log.d("StorageChooser", "Failed to create songs folder");
                                         }
 
-                                        // Copy Love Everlasting since folder is empty.
+                                        /*// Copy Love Everlasting since folder is empty.
                                         AssetManager assetManager = getAssets();
                                         InputStream in;
                                         OutputStream out;
@@ -435,7 +437,7 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
                                             out.close();
                                         } catch (IOException e) {
                                             Log.e("tag", "Failed to copy asset file: " + "Love everlasting", e);
-                                        }
+                                        }*/
                                     }
                                     break;
                                 default:
@@ -446,7 +448,7 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
                                         if (!domkdirs) {
                                             Log.d("StorageChooser", "Failed to create songs folder");
                                         }
-                                        // Copy Love Everlasting since folder is empty.
+                                        /*// Copy Love Everlasting since folder is empty.
                                         AssetManager assetManager = getAssets();
                                         InputStream in;
                                         OutputStream out;
@@ -461,7 +463,7 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
                                             out.close();
                                         } catch (IOException e) {
                                             Log.e("tag", "Failed to copy asset file: " + "Love everlasting", e);
-                                        }
+                                        }*/
                                     }
                                     break;
                             }

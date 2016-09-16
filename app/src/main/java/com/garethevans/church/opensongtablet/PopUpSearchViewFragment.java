@@ -35,6 +35,7 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
     private MyVibrator mVibrator;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         mListener = (MyInterface) activity;
         mVibrator = (MyVibrator) activity;

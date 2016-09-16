@@ -13,7 +13,8 @@
 
     <string name="visualmetronome">"ビジュアル"</string>
     <string name="onsonglocation">"あなたはそれをインポートするために利用可能であるためには /documents/OpenSong/フォルダにあなたのOnSongバックアップファイルを配置する必要があります"</string>
-    <string name="savesong">"保存するには"</string>
+	<string name="opensonglocation">"あなたはそれをインポートするために利用可能であるためには /documents/OpenSong/フォルダにあなたのOpenSongAppバックアップファイルを配置する必要があります"</string>
+	<string name="savesong">"保存するには"</string>
     <string name="metronomepadsettings">"メトロノームと背景音楽の設定"</string>
     <string name="metronome">"メトロノーム"</string>
     <string name="temponotset">"テンポはこの曲のために設定されていない"</string>
@@ -64,7 +65,7 @@
     
     <string name="stickynotes">"ソングノート"</string>
     
-    <string name="youtube">"現在の曲のためにYouTubeでの検索"</string>
+    <string name="youtube">"現在の曲のためのYouTubeを検索"</string>
     
     <string name="pdf_functionnotavailable">"この関数は、PDF文書には使用できません"</string>
     <string name="pdf_selectpage">"選択ページ"</string>
@@ -495,5 +496,22 @@
 	<string name="profile_description">"プロファイルは、あなたの表示設定を保存するために使用されます。"</string>
 	<string name="profile_name">"プロファイル名を選択してください"</string>
 	<string name="size">"サイズ"</string>
+	<string name="websearch">"現在の曲の検索インターネット"</string>
+	<string name="songfolder">"選択曲フォルダ"</string>
+	<string name="stagemode">"ステージモード"</string>
+	<string name="switchtostagemode">"ステージモードに切り替え"</string>
+	<string name="toobig">"PDFエクスポート用に自動縮尺切り替えてください"</string>
+	<string name="showcapo">"表示カポ和音"</string>
+	<string name="showchords">"ショー和音"</string>
+	<string name="showlyrics">"表示する歌詞"</string>
+	<string name="backup_export">"エクスポートOpenSongAppバックアップ"</string>
+	<string name="backup_info">"OpenSongAppバックアップファイル"</string>
+	<string name="backup_success">"OpenSongAppのバックアップが作成さ"</string>
+	<string name="backup_import">"インポートOpenSongAppバックアップ"</string>
+	<string name="backup_error">"OpenSongフォルダが見つかりませOpenSongAppバックアップファイルはありません"</string>
+	<string name="processing">"ファイルが処理されています"</string>
+	<string name="success">"成功"</string>
+	<string name="error">"エラー"</string>
+	<string name="takeawhile">"これにはしばらく時間がかかることがあります！"</string>
 
 </resources>

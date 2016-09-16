@@ -20,7 +20,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -51,11 +53,13 @@ public class PopUpListSetsFragment extends DialogFragment {
 
     public interface MyInterface {
         void refreshAll();
+        void openFragment();
     }
 
     private MyInterface mListener;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         mListener = (MyInterface) activity;
         super.onAttach(activity);
@@ -91,6 +95,9 @@ public class PopUpListSetsFragment extends DialogFragment {
         // Reset the setname chosen
         FullscreenActivity.setnamechosen = "";
         FullscreenActivity.abort = false;
+
+        // Get a note of the available sets
+        SetActions.updateOptionListSets();
 
         ImageButton listSort_imageButton = (ImageButton) V.findViewById(R.id.listSort_imageButton);
         listSort_imageButton.setOnClickListener(new View.OnClickListener() {
@@ -468,6 +475,8 @@ public class PopUpListSetsFragment extends DialogFragment {
 
                 // Tell the listener to do something
                 mListener.refreshAll();
+                FullscreenActivity.whattodo = "editset";
+                mListener.openFragment();
                 FullscreenActivity.abort = false;
                 //Close this dialog
                 dismiss();

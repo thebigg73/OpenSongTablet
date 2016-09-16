@@ -13,7 +13,8 @@
 
     <string name="visualmetronome">"Визуальный"</string>
     <string name="onsonglocation">"Вы должны разместить Онсона файл резервной копии в /documents/OpenSong/ папки для того, чтобы быть доступными для импорта"</string>
-    <string name="savesong">"Cохранить"</string>
+	<string name="opensonglocation">"Вы должны разместить Онсона файл резервной копии в /documents/OpenSong/ папки для того, чтобы быть доступными для импорта"</string>
+	<string name="savesong">"Cохранить"</string>
     <string name="metronomepadsettings">"Метроном и фоновые параметры музыка"</string>
     <string name="metronome">"Метроном"</string>
     <string name="temponotset">"Темп не был установлен для этой песни"</string>
@@ -496,5 +497,22 @@
 	<string name="profile_description">"Профили используются для хранения медийных предпочтений."</string>
 	<string name="profile_name">"Выберите имя профиля"</string>
 	<string name="size">"Размер"</string>
+	<string name="websearch">"Поиск интернет для текущей песни"</string>
+	<string name="songfolder">"Выберите папку песню"</string>
+	<string name="stagemode">"Режим Стадия"</string>
+	<string name="switchtostagemode">"Переключение в режим Stage"</string>
+	<string name="toobig">"Пожалуйста, включите автомасштаба на экспорт в формате PDF"</string>
+	<string name="showcapo">"Показать капо аккорды"</string>
+	<string name="showchords">"Показать аккорды"</string>
+	<string name="showlyrics">"Показать текст"</string>
+	<string name="backup_export">"Экспорт резервного копирования OpenSongApp"</string>
+	<string name="backup_info">"Файл резервного копирования OpenSongApp"</string>
+	<string name="backup_success">"резервное копирование OpenSongApp создано"</string>
+	<string name="backup_import">"Импорт резервного копирования OpenSongApp"</string>
+	<string name="backup_error">"Нет файла резервной копии OpenSongApp находится в папке OpenSong"</string>
+	<string name="processing">"Файлы обрабатываются"</string>
+	<string name="success">"успех"</string>
+	<string name="error">"ошибка"</string>
+	<string name="takeawhile">"Это может занять некоторое время!"</string>
 
 </resources>

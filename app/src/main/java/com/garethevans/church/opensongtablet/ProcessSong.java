@@ -3,11 +3,14 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.Log;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ProcessSong extends Activity {
 
@@ -63,12 +66,16 @@ public class ProcessSong extends Activity {
         myLyrics = myLyrics.replace("\\xBB","");
         myLyrics = myLyrics.replace("\\xFF","");
 
+        return myLyrics;
+    }
+
+    public static String removeUnderScores(String myLyrics) {
+        // Go through the lines and remove underscores if the line isn't an image location
         // Split the lyrics into a line by line array so we can fix individual lines
         String[] lineLyrics = myLyrics.split("\n");
         myLyrics = "";
-        // Go through the lines and remove underscores if the line isn't an image location
         for (int l=0;l<lineLyrics.length;l++) {
-/*
+
             if (lineLyrics[l].contains("_")) {
                 if (l>0 && !lineLyrics[l].contains("["+FullscreenActivity.image+"_") && !lineLyrics[l-1].contains("["+FullscreenActivity.image+"_")) {
                     if (FullscreenActivity.showChords.equals("N")) {
@@ -77,17 +84,158 @@ public class ProcessSong extends Activity {
                         lineLyrics[l] = lineLyrics[l].replace("_"," ");
                     }
                 } else if (l==0 && !lineLyrics[l].contains("["+FullscreenActivity.image+"_")) {
-                    if (FullscreenActivity.showChords.equals("N")) {
+                    if (FullscreenActivity.showChords.equals("N") || FullscreenActivity.whichMode.equals("Presenter")) {
                         lineLyrics[l] = lineLyrics[l].replace("_","");
                     } else {
                         lineLyrics[l] = lineLyrics[l].replace("_"," ");
                     }
                 }
             }
-*/
             myLyrics += lineLyrics[l] + "\n";
         }
         return myLyrics;
+    }
+
+    public static void lookForSplitPoints() {
+        // Script to determine 2 column split details
+        int halfwaypoint = Math.round(FullscreenActivity.numrowstowrite / 2);
+        // Look for nearest split point before halfway
+        int splitpoint_1sthalf = 0;
+        boolean gotityet = false;
+        for (int scan = halfwaypoint; scan > 0; scan--) {
+            if (!gotityet) {
+                if (FullscreenActivity.myParsedLyrics[scan].indexOf("[") == 0) {
+                    gotityet = true;
+                    splitpoint_1sthalf = scan;
+                } else if (FullscreenActivity.myParsedLyrics[scan].length() == 0) {
+                    gotityet = true;
+                    splitpoint_1sthalf = scan + 1;
+                }
+            }
+        }
+
+        // Look for nearest split point past halfway
+        int splitpoint_2ndhalf = FullscreenActivity.numrowstowrite;
+        boolean gotityet2 = false;
+        for (int scan = halfwaypoint; scan < FullscreenActivity.numrowstowrite; scan++) {
+            if (!gotityet2) {
+                if (FullscreenActivity.myParsedLyrics[scan].indexOf("[") == 0) {
+                    gotityet2 = true;
+                    splitpoint_2ndhalf = scan;
+                } else if (FullscreenActivity.myParsedLyrics[scan].length() == 0) {
+                    gotityet2 = true;
+                    splitpoint_2ndhalf = scan + 1;
+                }
+            }
+        }
+
+        // Script to determine 3 columns split details
+        int thirdwaypoint = Math.round(FullscreenActivity.numrowstowrite / 3);
+        int twothirdwaypoint = thirdwaypoint * 2;
+
+        // Look for nearest split point before thirdway
+        int splitpoint_beforethirdway = 0;
+        boolean gotityet_beforethirdway = false;
+        for (int scan = thirdwaypoint; scan > 0; scan--) {
+            if (!gotityet_beforethirdway) {
+                if (FullscreenActivity.myParsedLyrics[scan].indexOf("[") == 0) {
+                    gotityet_beforethirdway = true;
+                    splitpoint_beforethirdway = scan;
+                } else if (FullscreenActivity.myParsedLyrics[scan].length() == 0) {
+                    gotityet_beforethirdway = true;
+                    splitpoint_beforethirdway = scan + 1;
+                }
+            }
+        }
+
+        // Look for nearest split point past thirdway
+        int splitpoint_pastthirdway = thirdwaypoint;
+        boolean gotityet_pastthirdway = false;
+        for (int scan = thirdwaypoint; scan < FullscreenActivity.numrowstowrite; scan++) {
+            if (!gotityet_pastthirdway) {
+                if (FullscreenActivity.myParsedLyrics[scan].indexOf("[") == 0) {
+                    gotityet_pastthirdway = true;
+                    splitpoint_pastthirdway = scan;
+                } else if (FullscreenActivity.myParsedLyrics[scan].length() == 0) {
+                    gotityet_pastthirdway = true;
+                    splitpoint_pastthirdway = scan + 1;
+                }
+            }
+        }
+
+        // Look for nearest split point before twothirdway
+        int splitpoint_beforetwothirdway = thirdwaypoint;
+        boolean gotityet_beforetwothirdway = false;
+        for (int scan = twothirdwaypoint; scan > 0; scan--) {
+            if (!gotityet_beforetwothirdway) {
+                if (FullscreenActivity.myParsedLyrics[scan].indexOf("[") == 0) {
+                    gotityet_beforetwothirdway = true;
+                    splitpoint_beforetwothirdway = scan;
+                } else if (FullscreenActivity.myParsedLyrics[scan].length() == 0) {
+                    gotityet_beforetwothirdway = true;
+                    splitpoint_beforetwothirdway = scan + 1;
+                }
+            }
+        }
+
+        // Look for nearest split point past twothirdway
+        int splitpoint_pasttwothirdway = twothirdwaypoint;
+        boolean gotityet_pasttwothirdway = false;
+        for (int scan = twothirdwaypoint; scan < FullscreenActivity.numrowstowrite; scan++) {
+            if (!gotityet_pasttwothirdway) {
+                if (FullscreenActivity.myParsedLyrics[scan].indexOf("[") == 0) {
+                    gotityet_pasttwothirdway = true;
+                    splitpoint_pasttwothirdway = scan;
+                } else if (FullscreenActivity.myParsedLyrics[scan].length() == 0) {
+                    gotityet_pasttwothirdway = true;
+                    splitpoint_pasttwothirdway = scan + 1;
+                }
+            }
+        }
+
+        if (!gotityet_beforethirdway) {
+            splitpoint_beforethirdway = 0;
+        }
+        if (!gotityet_pastthirdway) {
+            splitpoint_pastthirdway = 0;
+        }
+        if (!gotityet_beforetwothirdway) {
+            splitpoint_beforetwothirdway = splitpoint_beforethirdway;
+        }
+        if (!gotityet_pasttwothirdway) {
+            splitpoint_pasttwothirdway = FullscreenActivity.numrowstowrite;
+        }
+
+        // Which is the best split point to use (closest to halfway) for 2
+        // columns
+        int split1stdiff = Math.abs(halfwaypoint - splitpoint_1sthalf);
+        int split2nddiff = Math.abs(halfwaypoint - splitpoint_2ndhalf);
+
+        if (split1stdiff <= split2nddiff) {
+            FullscreenActivity.splitpoint = splitpoint_1sthalf;
+        } else {
+            FullscreenActivity.splitpoint = splitpoint_2ndhalf;
+        }
+
+        FullscreenActivity.botherwithcolumns = true;
+
+        // Which is the best split point to use (closest to thirdway) for 3 columns
+        int splitprethirddiff = Math.abs(thirdwaypoint - splitpoint_beforethirdway);
+        int splitpastthirddiff = Math.abs(thirdwaypoint - splitpoint_pastthirdway);
+        int splitpretwothirddiff = Math.abs(twothirdwaypoint - splitpoint_beforetwothirdway);
+        int splitpasttwothirddiff = Math.abs(twothirdwaypoint - splitpoint_pasttwothirdway);
+
+        if (splitprethirddiff <= splitpastthirddiff) {
+            FullscreenActivity.thirdsplitpoint = splitpoint_beforethirdway;
+        } else {
+            FullscreenActivity.thirdsplitpoint = splitpoint_pastthirdway;
+        }
+
+        if (splitpretwothirddiff <= splitpasttwothirddiff) {
+            FullscreenActivity.twothirdsplitpoint = splitpoint_beforetwothirdway;
+        } else {
+            FullscreenActivity.twothirdsplitpoint = splitpoint_pasttwothirdway;
+        }
     }
 
     public static void processKey() {
@@ -236,62 +384,74 @@ public class ProcessSong extends Activity {
 
     public static void processTimeSig() {
         switch (FullscreenActivity.mTimeSig) {
-            case "2/4":
+            case "2/2":
                 FullscreenActivity.timesigindex = 1;
+                FullscreenActivity.beats = 2;
+                FullscreenActivity.noteValue = 2;
+                FullscreenActivity.mTimeSigValid = true;
+                break;
+            case "2/4":
+                FullscreenActivity.timesigindex = 2;
                 FullscreenActivity.beats = 2;
                 FullscreenActivity.noteValue = 4;
                 FullscreenActivity.mTimeSigValid = true;
                 break;
+            case "3/2":
+                FullscreenActivity.timesigindex = 3;
+                FullscreenActivity.beats = 3;
+                FullscreenActivity.noteValue = 2;
+                FullscreenActivity.mTimeSigValid = true;
+                break;
             case "3/4":
-                FullscreenActivity.timesigindex = 2;
+                FullscreenActivity.timesigindex = 4;
                 FullscreenActivity.beats = 3;
                 FullscreenActivity.noteValue = 4;
                 FullscreenActivity.mTimeSigValid = true;
                 break;
             case "3/8":
-                FullscreenActivity.timesigindex = 3;
+                FullscreenActivity.timesigindex = 5;
                 FullscreenActivity.beats = 3;
                 FullscreenActivity.noteValue = 8;
                 FullscreenActivity.mTimeSigValid = true;
                 break;
             case "4/4":
-                FullscreenActivity.timesigindex = 4;
+                FullscreenActivity.timesigindex = 6;
                 FullscreenActivity.beats = 4;
                 FullscreenActivity.noteValue = 4;
                 FullscreenActivity.mTimeSigValid = true;
                 break;
             case "5/4":
-                FullscreenActivity.timesigindex = 5;
+                FullscreenActivity.timesigindex = 7;
                 FullscreenActivity.beats = 5;
                 FullscreenActivity.noteValue = 4;
                 FullscreenActivity.mTimeSigValid = true;
                 break;
             case "5/8":
-                FullscreenActivity.timesigindex = 6;
+                FullscreenActivity.timesigindex = 8;
                 FullscreenActivity.beats = 5;
                 FullscreenActivity.noteValue = 8;
                 FullscreenActivity.mTimeSigValid = true;
                 break;
             case "6/4":
-                FullscreenActivity.timesigindex = 7;
+                FullscreenActivity.timesigindex = 9;
                 FullscreenActivity.beats = 6;
                 FullscreenActivity.noteValue = 4;
                 FullscreenActivity.mTimeSigValid = true;
                 break;
             case "6/8":
-                FullscreenActivity.timesigindex = 8;
+                FullscreenActivity.timesigindex = 10;
                 FullscreenActivity.beats = 6;
                 FullscreenActivity.noteValue = 8;
                 FullscreenActivity.mTimeSigValid = true;
                 break;
             case "7/4":
-                FullscreenActivity.timesigindex = 9;
+                FullscreenActivity.timesigindex = 11;
                 FullscreenActivity.beats = 7;
                 FullscreenActivity.noteValue = 4;
                 FullscreenActivity.mTimeSigValid = true;
                 break;
             case "7/8":
-                FullscreenActivity.timesigindex = 10;
+                FullscreenActivity.timesigindex = 12;
                 FullscreenActivity.beats = 7;
                 FullscreenActivity.noteValue = 8;
                 FullscreenActivity.mTimeSigValid = true;
@@ -503,7 +663,7 @@ public class ProcessSong extends Activity {
             }
             TextView chordbit = new TextView(c);
             chordbit.setText(bit);
-            chordbit.setTextSize(16.0f * FullscreenActivity.chordfontscalesize);
+            chordbit.setTextSize(6.0f * FullscreenActivity.chordfontscalesize);
             chordbit.setTextColor(FullscreenActivity.lyricsChordsColor);
             chordbit.setTypeface(FullscreenActivity.chordsfont);
             chordrow.addView(chordbit);
@@ -523,7 +683,7 @@ public class ProcessSong extends Activity {
             }
             TextView lyricbit = new TextView(c);
             lyricbit.setText(bit);
-            lyricbit.setTextSize(16.0f);
+            lyricbit.setTextSize(6.0f);
             lyricbit.setTextColor(FullscreenActivity.lyricsTextColor);
             lyricbit.setTypeface(FullscreenActivity.lyricsfont);
             lyricrow.addView(lyricbit);
@@ -543,7 +703,7 @@ public class ProcessSong extends Activity {
             }
             TextView lyricbit = new TextView(c);
             lyricbit.setText(bit);
-            lyricbit.setTextSize(16.0f*FullscreenActivity.commentfontscalesize);
+            lyricbit.setTextSize(6.0f*FullscreenActivity.commentfontscalesize);
             lyricbit.setTextColor(FullscreenActivity.lyricsTextColor);
             lyricbit.setTypeface(FullscreenActivity.lyricsfont);
             commentrow.addView(lyricbit);
@@ -556,7 +716,7 @@ public class ProcessSong extends Activity {
         titleview.setText(title);
         titleview.setTextColor(FullscreenActivity.lyricsTextColor);
         titleview.setTypeface(FullscreenActivity.lyricsfont);
-        titleview.setTextSize(16.0f * FullscreenActivity.headingfontscalesize);
+        titleview.setTextSize(6.0f * FullscreenActivity.headingfontscalesize);
         titleview.setPaintFlags(titleview.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
 
         return titleview;
@@ -862,6 +1022,20 @@ public class ProcessSong extends Activity {
         return newsong;
     }
 
+    public static String removeCommentLines (String song) {
+        // Split the song into separate lines
+        String[] lines = song.split("\n");
+        String newsong = "";
+
+        for (String thisline:lines) {
+            if (!thisline.startsWith(";")) {
+                newsong += thisline + "\n";
+            }
+        }
+        return newsong;
+
+    }
+
     public static String addchordstomultiline(String[] multiline, String chords) {
         String[] chordlines = chords.split("\n");
         String replacementtext = "";
@@ -887,7 +1061,7 @@ public class ProcessSong extends Activity {
     public static String[] splitSongIntoSections(String song) {
 
         song = song.replace("-!!", "");
-        song = song.replace("||", "%%__SPLITHERE__%%");
+        song = song.replace("||", "%%__LATERSPLITHERE__%%");
         if (!FullscreenActivity.whichSongFolder.contains(FullscreenActivity.scripture)) {
             song = song.replace("\n\n", "%%__SPLITHERE__%%");
             song = song.replace("---", "");
@@ -910,6 +1084,43 @@ public class ProcessSong extends Activity {
         song = song.replace("%%__SPLITHERE__%%\n","%%__SPLITHERE__%%");
 
         return song.split("%%__SPLITHERE__%%");
+    }
+
+    public static String[] splitLaterSplits(String[] currsections) {
+        ArrayList<String> newbits = new ArrayList<>();
+        for (int x=0; x<currsections.length; x++) {
+            // If currsection doesn't have extra split points, add this section to the array
+            if (!currsections[x].contains("%%__LATERSPLITHERE__%%")) {
+                newbits.add(currsections[x]);
+            } else {
+                String[] splitcurr = currsections[x].split("%%__LATERSPLITHERE__%%");
+                for (int z=0; z<splitcurr.length; z++) {
+                    newbits.add(splitcurr[z]);
+                }
+            }
+        }
+        if (newbits==null || newbits.size()<1) {
+            newbits.add("");
+        }
+        // Now make a new String array
+        String[] updatedSections = new String[newbits.size()];
+        for (int y=0;y<newbits.size();y++) {
+            updatedSections[y] = newbits.get(y);
+        }
+        return updatedSections;
+    }
+
+    public static void collapseSections() {
+        //FullscreenActivity.songSections = new String[1];
+        //FullscreenActivity.songSections[0] = FullscreenActivity.myLyrics;
+        //FullscreenActivity.songSectionsTypes = new String[1];
+        //FullscreenActivity.sectionContents = new String[1][1];
+        //FullscreenActivity.sectionContents[0][0] = FullscreenActivity.myLyrics;
+        //FullscreenActivity.sectionviews = new View[1];
+        //FullscreenActivity.sectionScaleValue = new float[1];
+        //FullscreenActivity.sectionrendered = new boolean[1];
+        //FullscreenActivity.viewwidth = new int[1];
+        //FullscreenActivity.viewheight = new int[1];
     }
 
     public static String getSectionHeadings(String songsection) {
@@ -998,4 +1209,106 @@ public class ProcessSong extends Activity {
         return splitSongIntoSections(newSongText);
 
     }
+
+    public static String getSongAndAuthor() {
+        // If key is set
+        String keytext = "";
+        if (!FullscreenActivity.mKey.isEmpty() && !FullscreenActivity.mKey.equals("")) {
+            keytext = " (" + FullscreenActivity.mKey + ")";
+        }
+        return FullscreenActivity.songfilename + keytext + "\n" + FullscreenActivity.mAuthor;
+    }
+
+    public static LinearLayout songSectionView(Context c, int x) {
+
+            LinearLayout.LayoutParams llparams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            final LinearLayout ll = new LinearLayout(c);
+            ll.setLayoutParams(llparams);
+            ll.setOrientation(LinearLayout.VERTICAL);
+
+            // Add section title
+            String[] returnvals = beautifyHeadings(FullscreenActivity.songSectionsLabels[x]);
+            ll.addView(ProcessSong.titletoTextView(c, returnvals[0]));
+
+            // Identify the section type
+            FullscreenActivity.songSectionsTypes[x] = returnvals[1];
+            int linenums = FullscreenActivity.sectionContents[x].length;
+
+            for (int y = 0; y < linenums; y++) {
+                // Go through the section a line at a time
+                String nextlinetype = "";
+                String previouslinetype = "";
+                if (y < linenums - 1) {
+                    nextlinetype = FullscreenActivity.sectionLineTypes[x][y + 1];
+                }
+                if (y > 0) {
+                    previouslinetype = FullscreenActivity.sectionLineTypes[x][y - 1];
+                }
+
+                String[] positions_returned;
+                String[] chords_returned;
+                String[] lyrics_returned;
+                TableLayout tl = new TableLayout(c);
+
+                switch (ProcessSong.howToProcessLines(y, linenums, FullscreenActivity.sectionLineTypes[x][y], nextlinetype, previouslinetype)) {
+                    // If this is a chord line followed by a lyric line.
+                    case "chord_then_lyric":
+                        if (FullscreenActivity.sectionContents[x][y].length() > FullscreenActivity.sectionContents[x][y + 1].length()) {
+                            FullscreenActivity.sectionContents[x][y + 1] = ProcessSong.fixLineLength(FullscreenActivity.sectionContents[x][y + 1], FullscreenActivity.sectionContents[x][y].length());
+                        }
+                        positions_returned = ProcessSong.getChordPositions(FullscreenActivity.sectionContents[x][y]);
+                        chords_returned = ProcessSong.getChordSections(FullscreenActivity.sectionContents[x][y], positions_returned);
+                        lyrics_returned = ProcessSong.getLyricSections(FullscreenActivity.sectionContents[x][y + 1], positions_returned);
+                        tl.addView(ProcessSong.chordlinetoTableRow(c, chords_returned));
+                        tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned));
+                        break;
+
+                    case "chord_only":
+                        chords_returned = new String[1];
+                        chords_returned[0] = FullscreenActivity.sectionContents[x][y];
+                        tl.addView(ProcessSong.chordlinetoTableRow(c, chords_returned));
+                        break;
+
+                    case "lyric_no_chord":
+                        lyrics_returned = new String[1];
+                        lyrics_returned[0] = FullscreenActivity.sectionContents[x][y];
+                        tl.addView(ProcessSong.lyriclinetoTableRow(c, lyrics_returned));
+                        break;
+
+                    case "comment_no_chord":
+                        lyrics_returned = new String[1];
+                        lyrics_returned[0] = FullscreenActivity.sectionContents[x][y];
+                        tl.addView(ProcessSong.commentlinetoTableRow(c, lyrics_returned));
+                        tl.setBackgroundColor(FullscreenActivity.lyricsCommentColor);
+                        break;
+
+                }
+                ll.addView(tl);
+            }
+        return ll;
+    }
+
+    public static TextView createTextView(Context c, String text, float size, int textcolor, Typeface typeface) {
+        TextView newtextbox = new TextView(c);
+        newtextbox.setText(text);
+        newtextbox.setTextSize(size);
+        newtextbox.setTextColor(textcolor);
+        newtextbox.setTypeface(typeface);
+
+        return newtextbox;
+    }
+
+    public static LinearLayout createLinearLayout(Context c) {
+        LinearLayout.LayoutParams llparams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        final LinearLayout ll = new LinearLayout(c);
+        ll.setLayoutParams(llparams);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        return ll;
+    }
+
+
 }

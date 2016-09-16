@@ -1,7 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import android.util.Log;
-
 public class PresentPrepareSong {
 
 	// Song
@@ -163,7 +161,6 @@ public class PresentPrepareSong {
 		songSections = tempLyrics.split("%%__SPLITHERE__%%");
 		songSectionsLabels = tempLyrics.split("%%__SPLITHERE__%%");
 		// Go through the songSectionsLabels and extract any labels for the section
-		Log.d("d","FullscreenActivity.presenterChords="+FullscreenActivity.presenterChords);
 		for (int x=0;x<songSections.length;x++) {
 			// If not showing chords, removing the whitespace at the start of the line
 			// Also get rid of _
@@ -203,8 +200,8 @@ public class PresentPrepareSong {
 		}
 		// Put the sections back into the Present Activity or the StageMode Activity
 		if (mode.equals("stage")) {
-			StageMode.songSections       = songSections;
-			StageMode.songSectionsLabels = songSectionsLabels;
+			FullscreenActivity.songSections       = songSections;
+			FullscreenActivity.songSectionsLabels = songSectionsLabels;
 		} else {
 			PresenterMode.songSections = songSections;
 			PresenterMode.songSectionsLabels = songSectionsLabels;

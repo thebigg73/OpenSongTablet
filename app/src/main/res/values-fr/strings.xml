@@ -13,7 +13,8 @@
 
     <string name="visualmetronome">"Métronome visuel"</string>
     <string name="onsonglocation">"Vous devez placer votre fichier de sauvegarde Onsong dans le dossier /documents/OpenSong/ pour qu\'il soit disponible à l\'import"</string>
-    <string name="savesong">"Enregistrer"</string>
+	<string name="opensonglocation">"Vous devez placer votre fichier de sauvegarde OpenSongApp dans le dossier /documents/OpenSong/ pour qu\'il soit disponible à l\'import"</string>
+	<string name="savesong">"Enregistrer"</string>
     <string name="metronomepadsettings">"Paramètres du métronome et musique de fond"</string>
     <string name="metronome">"Métronome"</string>
     <string name="temponotset">"Le tempo n\'a pas été défini pour cette chanson"</string>
@@ -496,5 +497,22 @@
 	<string name="profile_description">"Les profils sont utilisés pour stocker vos préférences d\'affichage."</string>
 	<string name="profile_name">"Choisissez un nom de profil"</string>
 	<string name="size">"Taille"</string>
+	<string name="websearch">"Rechercher la chanson actuelle sur YouTube"</string>
+	<string name="songfolder">"Sélectionnez le dossier de la chanson"</string>
+	<string name="stagemode">"Mode scène"</string>
+	<string name="switchtostagemode">"Passer en mode Scène"</string>
+	<string name="toobig">"S\'il vous plaît passer autoscale sur pour export pdf"</string>
+	<string name="showcapo">"accords Afficher capo"</string>
+	<string name="showchords">"Afficher les accords"</string>
+	<string name="showlyrics">"Voir les paroles"</string>
+	<string name="backup_export">"sauvegarde Export OpenSongApp"</string>
+	<string name="backup_info">"fichier OpenSongApp de sauvegarde"</string>
+	<string name="backup_success">"sauvegarde OpenSongApp créé"</string>
+	<string name="backup_import">"sauvegarde Importation OpenSongApp"</string>
+	<string name="backup_error">"Aucun fichier de sauvegarde OpenSongApp trouvé dans le dossier OpenSong"</string>
+	<string name="processing">"Les fichiers sont en cours de traitement"</string>
+	<string name="success">"le succès"</string>
+	<string name="error">"Erreur"</string>
+	<string name="takeawhile">"Cela peut prendre un certain temps!"</string>
 
 </resources>

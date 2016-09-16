@@ -1,5 +1,14 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.util.Log;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -7,13 +16,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-import android.app.Activity;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.util.Log;
 
 public class LoadXML extends Activity {
 
@@ -81,10 +83,16 @@ public class LoadXML extends Activity {
 
             // Try to read the file as an xml file, if it isn't, then read it in as text
             isxml = true;
-            try {
-                grabOpenSongXML();
-            } catch (Exception e) {
-                Log.d("d","Error performing grabOpenSongXML()");
+            if (!FullscreenActivity.songfilename.endsWith(".sqlite3") && !FullscreenActivity.songfilename.endsWith(".preferences")) {
+                try {
+                    grabOpenSongXML();
+                } catch (Exception e) {
+                    Log.d("d", "Error performing grabOpenSongXML()");
+                }
+            } else {
+                FullscreenActivity.myXML = "<title>Love everlasting</title>\n<author></author>\n<lyrics>"
+                        + FullscreenActivity.songdoesntexist + "\n\n" + "</lyrics>";
+                FullscreenActivity.myLyrics = "ERROR!";
             }
 
             PopUpEditSongFragment.prepareSongXML();
@@ -213,6 +221,7 @@ public class LoadXML extends Activity {
                 FullscreenActivity.mLyrics = text;
             }
 
+            FullscreenActivity.myLyrics = ProcessSong.removeUnderScores(FullscreenActivity.mLyrics);
             FullscreenActivity.mTempo = FullscreenActivity.mTempo.replace("Very Fast", "140");
             FullscreenActivity.mTempo = FullscreenActivity.mTempo.replace("Fast", "120");
             FullscreenActivity.mTempo = FullscreenActivity.mTempo.replace("Moderate", "100");
@@ -275,9 +284,7 @@ public class LoadXML extends Activity {
         } catch (IOException e) {
             Log.d("d","Error reading text file");
         }
-
         return outputStream.toString();
-
     }
 
     public static void prepareLoadCustomReusable(String what) {

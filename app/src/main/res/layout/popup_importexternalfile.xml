@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/drawer_bg"
     android:padding="8dp">
 <ScrollView
     android:layout_width="match_parent"
@@ -17,9 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/title"
-        android:id="@+id/textView29"
+        android:id="@+id/itemTitle_TextView"
         android:textSize="18sp"
-        android:textColor="#ff0" />
+        android:textColor="#ff0"
+        android:layout_margin="8dp" />
 
     <EditText
         android:layout_width="match_parent"
@@ -29,7 +30,8 @@
         android:singleLine="true"
         android:textSize="20sp"
         android:textColor="#fff"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="12dp"
+        android:layout_margin="8dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,7 +39,8 @@
         android:text="@string/file_type"
         android:id="@+id/fileType_heading"
         android:textColor="#ff0"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_margin="8dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -46,17 +49,37 @@
         android:id="@+id/fileType_TextView"
         android:textSize="20sp"
         android:textColor="#fff"
-        android:layout_marginBottom="12sp" />
+        android:layout_marginBottom="12sp"
+        android:layout_margin="8dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/choosefolder"
-        android:id="@+id/chooseFolder_TextView"
-        android:textColor="#ff0"
-        android:textSize="18sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/onsonglocation"
+            android:id="@+id/messageOnSong_TextView"
+            android:textColor="#ff0"
+            android:textSize="18sp"
+            android:layout_margin="8dp" />
 
-    <Spinner
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/onsonglocation"
+            android:id="@+id/messageOpenSong_TextView"
+            android:textColor="#ff0"
+            android:textSize="18sp"
+            android:layout_margin="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choosefolder"
+            android:id="@+id/chooseFolder_TextView"
+            android:textColor="#ff0"
+            android:textSize="18sp"
+            android:layout_margin="8dp" />
+
+        <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/chooseFolder_Spinner"
@@ -69,21 +92,15 @@
             android:id="@+id/overWrite_CheckBox"
             android:layout_margin="8dp" />
 
-        <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel"
             android:id="@+id/importFile_Cancel"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/importFile_Save"
-            android:layout_toStartOf="@+id/importFile_Save"
             android:background="@drawable/blue_button"
             android:layout_margin="8dp"
-            android:textColor="#fff" />
+            android:textColor="#fff"
+            android:layout_gravity="right" />
 
         <Button
             android:layout_width="wrap_content"
@@ -91,11 +108,9 @@
             android:text="@string/options_set_save"
             android:id="@+id/importFile_Save"
             android:background="@drawable/red_button"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
             android:layout_margin="8dp"
-            android:textColor="#fff" />
-    </RelativeLayout>
-</LinearLayout>
+            android:textColor="#fff"
+            android:layout_gravity="right" />
+    </LinearLayout>
     </ScrollView>
 </RelativeLayout>

@@ -3,46 +3,80 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/set_back"
-        android:icon="@drawable/ic_action_previous_item"
+        android:icon="@drawable/ic_chevron_left_white_36dp"
         android:title="@string/set_back"
         app:showAsAction="always"/>
 
     <item android:id="@+id/set_forward"
-        android:icon="@drawable/ic_action_next_item"
+        android:icon="@drawable/ic_chevron_right_white_36dp"
         android:title="@string/set_forward"
         app:showAsAction="always"/>
 
-    <item android:id="@+id/action_fullsearch"
-        android:title="@string/action_search"
-        android:icon="@drawable/ic_action_search"
-        android:label="@string/action_search"
-        android:hint="@string/action_search"
-        app:showAsAction="ifRoom|collapseActionView"/>
-
-    <item android:id="@+id/set_add"
-        android:icon="@drawable/ic_action_new"
-        android:title="@string/add_song_to_set"
-        app:showAsAction="ifRoom"/>
-
-    <item android:id="@+id/perform_mode"
-        android:icon="@drawable/action_perform"
-        android:title="@string/switchtoperformmode"
-        app:showAsAction="ifRoom"/>
-
-    <item android:id="@+id/present_mode"
-        android:icon="@drawable/action_present"
-        android:title="@string/switchtopresentmode"
-        app:showAsAction="ifRoom"/>
-
     <item android:id="@+id/action_search"
-        android:icon="@drawable/action_song"
+        android:icon="@drawable/ic_music_note_white_36dp"
         android:title="@string/action_search"
         app:showAsAction="always"/>
 
     <!-- Show Options -->
     <item android:id="@+id/action_settings"
-        android:icon="@drawable/ic_action_settings"
+        android:icon="@drawable/ic_settings_white_36dp"
         android:title="@string/action_settings"
         app:showAsAction="always" />
+
+    <item android:id="@+id/action_fullsearch"
+        android:title="@string/action_search"
+        android:icon="@drawable/ic_magnify_white_36dp"
+        android:label="@string/action_search"
+        android:hint="@string/action_search"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/set_add"
+        android:icon="@drawable/ic_plus_white_36dp"
+        android:title="@string/add_song_to_set"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/song_share"
+        android:icon="@drawable/ic_share_variant_white_36dp"
+        android:title="@string/options_song_export"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/youtube_websearch"
+        android:title="@string/youtube"
+        android:icon="@drawable/ic_youtube_play_white_36dp"
+        android:label="@string/youtube"
+        android:hint="@string/youtube"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/web_search"
+        android:title="@string/websearch"
+        android:icon="@drawable/ic_cloud_white_36dp"
+        android:label="@string/websearch"
+        android:hint="@string/websearch"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/chordie_websearch"
+        android:title="@string/chordiesearch"
+        android:icon="@drawable/ic_cloud_white_36dp"
+        android:label="@string/chordiesearch"
+        android:hint="@string/chordiesearch"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/ultimateguitar_websearch"
+        android:title="@string/ultimateguitarsearch"
+        android:icon="@drawable/ic_cloud_white_36dp"
+        android:label="@string/ultimateguitarsearch"
+        android:hint="@string/ultimateguitarsearch"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/perform_mode"
+        android:icon="@drawable/ic_microphone_variant_white_36dp"
+        android:title="@string/switchtoperformmode"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/present_mode"
+        android:icon="@drawable/ic_projector_white_36dp"
+        android:title="@string/switchtopresentmode"
+        app:showAsAction="ifRoom"/>
+
 
 </menu>

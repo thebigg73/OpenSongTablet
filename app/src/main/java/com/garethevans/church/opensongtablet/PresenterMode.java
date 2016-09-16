@@ -354,12 +354,13 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 FullscreenActivity.usePresentationOrder = presenter_order_view.isChecked();
                 Preferences.savePreferences();
-                LyricsDisplay.parseLyrics();
+                /*LyricsDisplay.parseLyrics();
                 // Only do this if this isn't a scripture - as it starts with numbers!
                 Log.d("d","PresenterMode 357");
                 Log.d("d","FullscreenActivity.whichSongFolder="+FullscreenActivity.whichSongFolder);
                 PresentPrepareSong.splitSongIntoSections("presenter");
-                setupSongButtons();
+                setupSongButtons();*/
+                refreshAll();
             }
         });
 
@@ -1135,8 +1136,6 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         }
 
         numsectionbuttons = songSections.length;
-
-        Log.d("d","numsectionbuttons="+numsectionbuttons);
 
         for (int x = 0; x < songSections.length; x++) {
             String buttonText = songSections[x];
@@ -2620,6 +2619,11 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
     }
 
     @Override
+    public void openFragment() {
+
+    }
+
+    @Override
     public void confirmedAction() {
         switch (FullscreenActivity.whattodo) {
             case "saveset":
@@ -2885,6 +2889,9 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             // First remove chord lines
             FullscreenActivity.presenterChords.equals("N");
             FullscreenActivity.myLyrics = ProcessSong.removeChordLines(FullscreenActivity.mLyrics);
+            FullscreenActivity.myLyrics = ProcessSong.removeCommentLines(FullscreenActivity.myLyrics);
+            FullscreenActivity.showChords = "N";
+            FullscreenActivity.myLyrics = ProcessSong.removeUnderScores(FullscreenActivity.myLyrics);
 
             // 1. Sort multiline verse/chord formats
             FullscreenActivity.myLyrics = ProcessSong.fixMultiLineFormat(FullscreenActivity.myLyrics);
@@ -2893,9 +2900,12 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             songSections = ProcessSong.splitSongIntoSections(FullscreenActivity.myLyrics);
 
             // 3. Put the song into presentation order if required
-            if (FullscreenActivity.usePresentationOrder && !FullscreenActivity.mPresentation.equals("")) {
+            if (FullscreenActivity.usePresentationOrder && !FullscreenActivity.mPresentation.isEmpty() && !FullscreenActivity.mPresentation.equals("")) {
                 songSections = ProcessSong.matchPresentationOrder(songSections);
             }
+
+            // 3b Add extra sections for double linebreaks and || code
+            songSections = ProcessSong.splitLaterSplits(songSections);
 
             // 4. Get the section headings/types (may have changed after presentationorder
             songSectionsLabels = new String[songSections.length];

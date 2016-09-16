@@ -11,7 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
 import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         mListener = (MyInterface) activity;
         super.onAttach(activity);

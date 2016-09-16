@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -141,9 +142,10 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
     private MyInterface mListener;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
         super.onAttach(activity);
+        mListener = (MyInterface) activity;
     }
 
     @Override
@@ -182,6 +184,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         });
         edit_song_notes = (EditText) V.findViewById(R.id.edit_song_notes);
         edit_song_lyrics = (EditText) V.findViewById(R.id.edit_song_lyrics);
+        edit_song_lyrics.setHorizontallyScrolling(true);
         cancelEdit = (Button) V.findViewById(R.id.cancel_edit);
         saveEdit = (Button) V.findViewById(R.id.save_edit);
         toggleGeneralAdvanced = (Button) V.findViewById(R.id.show_general_advanced);
@@ -248,6 +251,9 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         edit_song_theme_worship_provision_deliverance = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_provision_deliverance);
         edit_song_theme_worship_thankfulness = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_thankfulness);
         advancedSettings = (LinearLayout) V.findViewById(R.id.advanced_settings);
+
+        edit_song_title.requestFocus();
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
         // Listeners for the buttons
         cancelEdit.setOnClickListener(new View.OnClickListener() {

@@ -1,27 +1,62 @@
 package com.garethevans.church.opensongtablet;
 
-import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.RelativeLayout;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 
-public class SearchViewAdapter extends BaseAdapter implements Filterable {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Set;
+
+public class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexer {
 
     Context context;
     ArrayList<SearchViewItems> searchlist;
     ArrayList<SearchViewItems> mStringFilterList;
     ValueFilter valueFilter;
+    String what;
+    HashMap<String, Integer> mapIndex;
+    String[] sections;
 
-    SearchViewAdapter(Context context , ArrayList<SearchViewItems> searchlist) {
+
+    SearchViewAdapter(Context context , ArrayList<SearchViewItems> searchlist, String what) {
         this.context = context;
         this.searchlist = searchlist;
         mStringFilterList = searchlist;
+        this.what = what;
+
+        mapIndex = new LinkedHashMap<>();
+
+        for (int x = 0; x < FullscreenActivity.searchTitle.size(); x++) {
+            String title = FullscreenActivity.searchTitle.get(x);
+            String ch = title.substring(0, 1);
+            ch = ch.toUpperCase(FullscreenActivity.locale);
+
+            // HashMap will prevent duplicates
+            mapIndex.put(ch, x);
+        }
+
+        Set<String> sectionLetters = mapIndex.keySet();
+
+        // create a list from the set to sort
+        ArrayList<String> sectionList = new ArrayList<>(sectionLetters);
+
+        Collections.sort(sectionList);
+
+        sections = new String[sectionList.size()];
+
+        sectionList.toArray(sections);
     }
 
     @Override
@@ -48,6 +83,7 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable {
         convertView = null;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.searchrow, null);
+            RelativeLayout card_view = (RelativeLayout) convertView.findViewById(R.id.card_view);
             TextView file_tv = (TextView) convertView.findViewById(R.id.cardview_filename);
             TextView name_tv = (TextView) convertView.findViewById(R.id.cardview_songtitle);
             TextView folder_tv = (TextView) convertView.findViewById(R.id.cardview_folder);
@@ -60,31 +96,64 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable {
             TextView hymnnum_tv = (TextView) convertView.findViewById(R.id.cardview_hymn);
 
             SearchViewItems song = searchlist.get(position);
-            file_tv.setText(song.getFilename());
-            name_tv.setText(song.getTitle());
-            folder_tv.setText(song.getFolder());
-            author_tv.setText(song.getAuthor());
-            key_tv.setText(song.getKey());
-            theme_tv.setText(song.getTheme());
-            lyrics_tv.setText(song.getLyrics());
-            hymnnum_tv.setText(song.getHymnnum());
 
-            // Hide the empty stuff
-            if (song.getAuthor().equals("")) {
+            if (what.equals("songmenu")) {
+                card_view.setBackgroundColor(0x00000000);
+                name_tv.setTextSize(16.0f);
+                name_tv.setTextColor(0xffffffff);
+                name_tv.setText(song.getTitle());
+
+                author_tv.setText(song.getAuthor());
+                author_tv.setTextSize(10.0f);
+                author_tv.setTextColor(0xffaaaaaa);
+
+                folder_tv.setVisibility(View.GONE);
                 text_author.setVisibility(View.GONE);
-                author_tv.setVisibility(View.GONE);
-            } else {
-                text_author.setVisibility(View.VISIBLE);
-                author_tv.setVisibility(View.VISIBLE);
-            }
-            if (song.getKey().equals("")) {
-                text_key.setVisibility(View.GONE);
                 key_tv.setVisibility(View.GONE);
-            } else {
-                text_key.setVisibility(View.VISIBLE);
-                key_tv.setVisibility(View.VISIBLE);
-            }
+                text_key.setVisibility(View.GONE);
 
+            } else {
+
+                // Set the text colours
+                name_tv.setTextColor(FullscreenActivity.lyricsTextColor);
+                folder_tv.setTextColor(FullscreenActivity.lyricsChordsColor);
+                author_tv.setTextColor(FullscreenActivity.lyricsTextColor);
+                text_author.setTextColor(FullscreenActivity.lyricsTextColor);
+                key_tv.setTextColor(FullscreenActivity.lyricsTextColor);
+                text_key.setTextColor(FullscreenActivity.lyricsTextColor);
+
+                // Set the background colour
+                card_view.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
+                card_view.setBackgroundResource(R.drawable.section_box);
+                GradientDrawable drawable = (GradientDrawable) card_view.getBackground();
+                drawable.setColor(FullscreenActivity.lyricsBackgroundColor);
+
+                file_tv.setText(song.getFilename());
+                name_tv.setText(song.getTitle());
+                folder_tv.setText(song.getFolder());
+                author_tv.setText(song.getAuthor());
+                key_tv.setText(song.getKey());
+                theme_tv.setText(song.getTheme());
+                lyrics_tv.setText(song.getLyrics());
+                hymnnum_tv.setText(song.getHymnnum());
+
+                // Hide the empty stuff
+                if (song.getAuthor().equals("")) {
+                    text_author.setVisibility(View.GONE);
+                    author_tv.setVisibility(View.GONE);
+                } else {
+                    text_author.setVisibility(View.VISIBLE);
+                    author_tv.setVisibility(View.VISIBLE);
+                }
+                if (song.getKey().equals("")) {
+                    text_key.setVisibility(View.GONE);
+                    key_tv.setVisibility(View.GONE);
+                } else {
+                    text_key.setVisibility(View.VISIBLE);
+                    key_tv.setVisibility(View.VISIBLE);
+                }
+
+            }
         }
         return convertView;
     }
@@ -95,6 +164,25 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable {
             valueFilter = new ValueFilter();
         }
         return valueFilter;
+    }
+
+    @Override
+    public Object[] getSections() {
+        return sections;
+    }
+
+    @Override
+    public int getPositionForSection(int i) {
+        if (mapIndex!=null && sections!=null && sections.length>0) {
+            return mapIndex.get(sections[i]);
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int getSectionForPosition(int i) {
+        return 0;
     }
 
     private class ValueFilter extends Filter {

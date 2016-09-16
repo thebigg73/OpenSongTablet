@@ -4,122 +4,130 @@
     <!-- Show Songs -->
 
     <item android:id="@+id/set_back"
-        android:icon="@drawable/ic_action_previous_item"
+        android:icon="@drawable/ic_chevron_left_white_36dp"
         android:title="@string/set_back"
         app:showAsAction="always"/>
 
     <item android:id="@+id/set_forward"
-        android:icon="@drawable/ic_action_next_item"
+        android:icon="@drawable/ic_chevron_right_white_36dp"
         android:title="@string/set_forward"
         app:showAsAction="always"/>
 
     <item android:id="@+id/action_search"
-        android:icon="@drawable/action_song"
+        android:icon="@drawable/ic_music_note_white_36dp"
         android:title="@string/action_search"
         app:showAsAction="always"/>
 
     <!-- Show Options -->
     <item android:id="@+id/action_settings"
-        android:icon="@drawable/ic_action_settings"
+        android:icon="@drawable/ic_settings_white_36dp"
         android:title="@string/action_settings"
         app:showAsAction="always" />
 
     <item android:id="@+id/action_fullsearch"
         android:title="@string/action_search"
-        android:icon="@drawable/ic_action_search"
+        android:icon="@drawable/ic_magnify_white_36dp"
         android:label="@string/action_search"
         android:hint="@string/action_search"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/set_add"
-        android:icon="@drawable/ic_action_new"
+        android:icon="@drawable/ic_plus_white_36dp"
         android:title="@string/add_song_to_set"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/song_share"
-        android:icon="@drawable/ic_action_share"
+        android:icon="@drawable/ic_share_variant_white_36dp"
         android:title="@string/options_song_export"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/youtube_websearch"
         android:title="@string/youtube"
-        android:icon="@drawable/action_youtube"
+        android:icon="@drawable/ic_youtube_play_white_36dp"
         android:label="@string/youtube"
         android:hint="@string/youtube"
         app:showAsAction="never"/>
 
     <item android:id="@+id/chordie_websearch"
         android:title="@string/chordiesearch"
-        android:icon="@drawable/ic_action_cloud"
+        android:icon="@drawable/ic_cloud_white_36dp"
         android:label="@string/chordiesearch"
         android:hint="@string/chordiesearch"
         app:showAsAction="never"/>
 
     <item android:id="@+id/ultimateguitar_websearch"
         android:title="@string/ultimateguitarsearch"
-        android:icon="@drawable/ic_action_cloud"
+        android:icon="@drawable/ic_cloud_white_36dp"
         android:label="@string/ultimateguitarsearch"
         android:hint="@string/ultimateguitarsearch"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/web_search"
+        android:title="@string/websearch"
+        android:icon="@drawable/ic_cloud_white_36dp"
+        android:label="@string/websearch"
+        android:hint="@string/websearch"
+        app:showAsAction="never"/>
+
     <item android:id="@+id/stage_mode"
         android:icon="@drawable/ic_monitor_multiple_white_36dp"
-        android:title="Stage Mode"
-        android:label="Stage Mode"
-        android:hint="Stage Mode"
+        android:title="@string/switchtostagemode"
+        android:label="@string/switchtostagemode"
+        android:hint="@string/switchtostagemode"
+        android:visible="false"
         app:showAsAction="never"/>
 
     <item android:id="@+id/present_mode"
-        android:icon="@drawable/action_present"
+        android:icon="@drawable/ic_projector_white_36dp"
         android:title="@string/switchtopresentmode"
         android:label="@string/switchtopresentmode"
         android:hint="@string/switchtopresentmode"
         app:showAsAction="never"/>
 
     <item android:id="@+id/pad_menu_button"
-        android:icon="@drawable/page_speaker_bw"
+        android:icon="@drawable/ic_volume_high_white_36dp"
         android:title="@string/pad_onoroff"
         android:label="@string/pad_onoroff"
         android:hint="@string/pad_onoroff"
         app:showAsAction="never"/>
 
     <item android:id="@+id/autoscroll_menu_button"
-        android:icon="@drawable/page_autoscroll_bw"
+        android:icon="@drawable/ic_rotate_right_white_36dp"
         android:title="@string/autoscroll"
         android:label="@string/autoscroll"
         android:hint="@string/autoscroll"
         app:showAsAction="never"/>
 
     <item android:id="@+id/metronome_menu_button"
-        android:icon="@drawable/page_metronome_bw"
+        android:icon="@drawable/ic_pulse_white_36dp"
         android:title="@string/metronome"
         android:label="@string/metronome"
         android:hint="@string/metronome"
         app:showAsAction="never"/>
 
     <item android:id="@+id/link_menu_button"
-        android:icon="@drawable/page_link_bw"
+        android:icon="@drawable/ic_link_white_36dp"
         android:title="@string/link"
         android:label="@string/link"
         android:hint="@string/link"
         app:showAsAction="never"/>
 
     <item android:id="@+id/pageselect_menu_button"
-        android:icon="@drawable/page_pdf_bw"
+        android:icon="@drawable/ic_file_pdf_white_36dp"
         android:title="@string/pdf_selectpage"
         android:label="@string/pdf_selectpage"
         android:hint="@string/pdf_selectpage"
         app:showAsAction="never"/>
 
     <item android:id="@+id/stickynotes_menu_button"
-        android:icon="@drawable/page_notes_bw"
+        android:icon="@drawable/ic_comment_text_white_36dp"
         android:title="@string/stickynotes"
         android:label="@string/stickynotes"
         android:hint="@string/stickynotes"
         app:showAsAction="never"/>
 
     <item android:id="@+id/chords_menu_button"
-        android:icon="@drawable/page_guitar_bw"
+        android:icon="@drawable/ic_guitar_electric_white_36dp"
         android:title="@string/chords"
         android:label="@string/chords"
         android:hint="@string/chords"

@@ -287,7 +287,53 @@
     </RelativeLayout>
 </LinearLayout>
 
-    <ExpandableListView
+    <LinearLayout
+        android:id="@+id/songmenu"
+        android:orientation="vertical"
+        android:layout_width="220dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start|left"
+        android:background="@drawable/drawer_bg"
+        android:padding="4dp">
+        <LinearLayout
+            android:id="@+id/changefolder_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_gravity="center_vertical"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_folder_upload_white_48dp"
+                android:contentDescription="@string/choosefolder">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/menuFolder_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textColor="#ffff00"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical">
+            </TextView>
+        </LinearLayout>
+        <ListView
+            android:id="@+id/song_list_view"
+            android:layout_width="match_parent"
+            android:choiceMode="singleChoice"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:divider="#aaa"
+            android:dividerHeight="1dp"
+            android:fastScrollEnabled="true"/>
+
+    </LinearLayout>
+
+ <!--   <ExpandableListView
         android:id="@+id/song_list_ex"
         android:layout_width="220dp"
         android:layout_height="match_parent"
@@ -299,7 +345,7 @@
         android:padding="4dp"
         android:fastScrollEnabled="false"
         android:fastScrollAlwaysVisible="false"
-        android:headerDividersEnabled="false" />
+        android:headerDividersEnabled="false" />-->
 
     <ExpandableListView
         android:id="@+id/option_list_ex"

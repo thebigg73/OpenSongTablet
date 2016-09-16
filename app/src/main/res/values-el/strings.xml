@@ -149,6 +149,7 @@
 
     <string name="visualmetronome">"Visual"</string>
     <string name="onsonglocation">"You need to place your OnSong backup file into the /documents/OpenSong/ folder for it to be available to import"</string>
+    <string name="opensonglocation">"You need to place your OpenSongApp backup file into the /documents/OpenSong/ folder for it to be available to import"</string>
     <string name="savesong">"Αποθήκευση"</string>
     <string name="metronomepadsettings">"Metronome and pad settings"</string>
     <string name="metronome">"Metronome"</string>
@@ -571,5 +572,22 @@
     <string name="profile_description">"Profiles are used to store your display preferences."</string>
     <string name="profile_name">"Choose a profile name"</string>
     <string name="size">"Size"</string>
+    <string name="websearch">"Αναζήτηση στο Internet για το τραγούδι"</string>
+    <string name="songfolder">"Επιλέξτε το φάκελο τραγούδι"</string>
+    <string name="stagemode">"Λειτουργία στάδιο"</string>
+    <string name="switchtostagemode">"Εναλλαγή σε στάδιο λειτουργίας"</string>
+    <string name="toobig">"Παρακαλώ ενεργοποιήσετε autoscale επάνω για pdf εξαγωγή"</string>
+    <string name="showcapo">"συγχορδίες Εμφάνιση capo"</string>
+    <string name="showchords">"Εμφάνιση χορδές"</string>
+    <string name="showlyrics">"Εμφάνιση στίχων"</string>
+    <string name="backup_export">"Εξαγωγή OpenSongApp αντιγράφων ασφαλείας"</string>
+    <string name="backup_info">"αρχείο αντιγράφων ασφαλείας OpenSongApp"</string>
+    <string name="backup_success">"OpenSongApp αντίγραφο ασφαλείας που δημιουργήθηκε"</string>
+    <string name="backup_import">"Εισαγωγής OpenSongApp αντιγράφων ασφαλείας"</string>
+    <string name="backup_error">"Δεν υπάρχει αρχείο αντιγράφου ασφαλείας OpenSongApp βρίσκονται στο φάκελο OpenSong"</string>
+    <string name="processing">"Τα αρχεία που υποβάλλονται σε επεξεργασία"</string>
+    <string name="success">"Επιτυχία"</string>
+    <string name="error">"Λάθος"</string>
+    <string name="takeawhile">"Αυτό μπορεί να πάρει κάποιο χρόνο!"</string>
 
 </resources>

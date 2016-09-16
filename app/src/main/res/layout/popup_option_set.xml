@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#232333"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView68"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="4dp"
+        android:gravity="center_horizontal"
+        android:text="@string/options_set"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#ff0" />
+
+
+    <ScrollView
+        android:id="@+id/optionschordsscrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/setLoadButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_upload_white_36dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_upload_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_set_load" />
+
+            <Button
+                android:id="@+id/setSaveButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_download_white_36dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_download_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_set_save" />
+
+            <Button
+                android:id="@+id/setNewButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_plus_white_36dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_plus_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_set_clear" />
+
+            <Button
+                android:id="@+id/setDeleteButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_delete_white_36dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_delete_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_set_delete" />
+
+            <Button
+                android:id="@+id/setExportButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_share_variant_white_36dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_share_variant_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_set_export" />
+
+            <Button
+                android:id="@+id/setCustomButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_code_braces_white_36dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_code_braces_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/add_custom_slide" />
+
+            <Button
+                android:id="@+id/setVariationButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_code_brackets_white_36dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_code_brackets_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/customise_set_item" />
+
+            <Button
+                android:id="@+id/setEditButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_table_edit_white_36dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_table_edit_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_set_edit" />
+
+            <LinearLayout
+                android:id="@+id/setLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/menu_button"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

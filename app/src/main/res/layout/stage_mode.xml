@@ -5,13 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/mypage">
 
     <include layout="@layout/toolbar"
         android:id="@+id/mytoolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mytoolbar"
+        android:id="@+id/songscrollview"/>
 
     <RelativeLayout
         android:id="@+id/testpane"
@@ -20,13 +26,40 @@
         android:layout_below="@id/mytoolbar"
         android:visibility="invisible"/>
 
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/testpane2_2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/mytoolbar"
-        android:id="@+id/songscrollview">
+        android:layout_below="@id/mytoolbar"
+        android:visibility="invisible"/>
 
-     </ScrollView>
+    <RelativeLayout
+        android:id="@+id/testpane1_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mytoolbar"
+        android:visibility="invisible"/>
+
+    <RelativeLayout
+        android:id="@+id/testpane1_3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mytoolbar"
+        android:visibility="invisible"/>
+
+    <RelativeLayout
+        android:id="@+id/testpane2_3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mytoolbar"
+        android:visibility="invisible"/>
+
+    <RelativeLayout
+        android:id="@+id/testpane3_3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mytoolbar"
+        android:visibility="invisible"/>
 
     <include layout="@layout/pageicons_bottom_material"
         android:id="@+id/pagebuttonsbottom"
@@ -36,31 +69,65 @@
 
 </RelativeLayout>
 
-    <ExpandableListView
-        android:id="@+id/song_list_ex"
+    <LinearLayout
+        android:id="@+id/songmenu"
+        android:orientation="vertical"
         android:layout_width="220dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start|left"
         android:background="@drawable/drawer_bg"
-        android:choiceMode="singleChoice"
-        android:divider="#aaa"
-        android:dividerHeight="1dp"
-        android:padding="4dp"
-        android:fastScrollEnabled="false"
-        android:fastScrollAlwaysVisible="false"
-        android:headerDividersEnabled="false" />
+        android:layout_gravity="start|left"
+        android:padding="4dp">
+        <LinearLayout
+            android:id="@+id/changefolder_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <ExpandableListView
-        android:id="@+id/option_list_ex"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_gravity="center_vertical"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_folder_upload_white_48dp"
+                android:contentDescription="@string/choosefolder">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/menuFolder_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textColor="#ffff00"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical">
+            </TextView>
+        </LinearLayout>
+        <ListView
+            android:id="@+id/song_list_view"
+            android:layout_width="match_parent"
+            android:choiceMode="singleChoice"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:divider="#aaa"
+            android:dividerHeight="1dp"
+            android:fastScrollEnabled="true"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/optionmenu"
         android:layout_width="220dp"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_gravity="end|right"
         android:background="@drawable/drawer_bg"
-        android:choiceMode="singleChoice"
-        android:divider="#aaa"
-        android:dividerHeight="1dp"
-        android:padding="4dp"
-        android:fastScrollEnabled="false"
-        android:fastScrollAlwaysVisible="false" />
+        android:padding="4dp">
+
+        <include layout="@layout/popup_option"
+        android:id="@+id/mytoolbar"/>
+
+    </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

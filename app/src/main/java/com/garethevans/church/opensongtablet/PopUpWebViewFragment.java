@@ -10,10 +10,6 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
 public class PopUpWebViewFragment extends DialogFragment {
 
     static PopUpWebViewFragment newInstance() {
@@ -44,6 +40,8 @@ public class PopUpWebViewFragment extends DialogFragment {
             getDialog().setTitle(getActivity().getResources().getString(R.string.search_log));
             webview.setVisibility(View.GONE);
             textview.setVisibility(View.VISIBLE);
+            textview.setText(FullscreenActivity.indexlog);
+/*
             File file = new File(FullscreenActivity.homedir+"/searchindexlog.txt");
             String texttoshow;
             try {
@@ -54,6 +52,7 @@ public class PopUpWebViewFragment extends DialogFragment {
                 texttoshow = "";
             }
             textview.setText(texttoshow);
+*/
         }
 
         return V;

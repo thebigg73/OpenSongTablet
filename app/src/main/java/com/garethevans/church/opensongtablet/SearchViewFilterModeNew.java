@@ -147,7 +147,7 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
             searchlist.add(song);
         }
 
-        adapter = new SearchViewAdapter(getApplicationContext(), searchlist );
+        adapter = new SearchViewAdapter(getApplicationContext(), searchlist ,"search");
         mListView.setAdapter(adapter);
         mListView.setTextFilterEnabled(true);
         mListView.setFastScrollEnabled(true);
@@ -195,7 +195,7 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
             searchlist.add(song);
         }
 
-        adapter = new SearchViewAdapter(getApplicationContext(), searchlist );
+        adapter = new SearchViewAdapter(getApplicationContext(), searchlist , "search");
         mListView.setAdapter(adapter);
         mListView.setTextFilterEnabled(true);
         mListView.setFastScrollEnabled(true);

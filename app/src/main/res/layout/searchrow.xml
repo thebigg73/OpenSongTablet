@@ -12,7 +12,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    android:id="@+id/card_view">
+    android:id="@+id/card_view"
+    android:layout_margin="8dp">
 
     <TextView
             android:id="@+id/cardview_songtitle"

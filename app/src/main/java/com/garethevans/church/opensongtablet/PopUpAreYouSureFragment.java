@@ -27,6 +27,7 @@ public class PopUpAreYouSureFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         mListener = (MyInterface) activity;
         super.onAttach(activity);

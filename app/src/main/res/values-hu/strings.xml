@@ -13,7 +13,8 @@
 
     <string name="visualmetronome">"Vizuális"</string>
     <string name="onsonglocation">"Be kell, hogy tegye a OnSong mentés fájlt az /documents/OpenSong/ mappát, hogy legyen elérhető az import"</string>
-    <string name="savesong">"Megtakarit"</string>
+	<string name="opensonglocation">"Be kell, hogy tegye a OpenSongApp mentés fájlt az /documents/OpenSong/ mappát, hogy legyen elérhető az import"</string>
+	<string name="savesong">"Megtakarit"</string>
     <string name="metronomepadsettings">"Metronóm és háttérzene beállítások"</string>
     <string name="metronome">"Metronóm"</string>
     <string name="temponotset">"Tempo nincs beállítva ezt a dalt"</string>
@@ -64,7 +65,7 @@
     
     <string name="stickynotes">"Dal jegyzetek"</string>
     
-    <string name="youtube">"Keresés a YouTube aktuális dal"</string>
+    <string name="youtube">"Keresés YouTube aktuális dal"</string>
     
     <string name="pdf_functionnotavailable">"Ez a funkció nem elérhető a PDF dokumentumok"</string>
     <string name="pdf_selectpage">"Válassza ki az oldal"</string>
@@ -496,5 +497,22 @@
 	<string name="profile_description">"A profilok tárolására használt megjelenítési beállításait."</string>
 	<string name="profile_name">"Válasszon egy profil nevét"</string>
 	<string name="size">"Méret"</string>
+	<string name="websearch">"Keresés Internet aktuális dal"</string>
+	<string name="songfolder">"Select dal mappa"</string>
+	<string name="stagemode">"Stage Mode"</string>
+	<string name="switchtostagemode">"Váltás Stage Mode"</string>
+	<string name="toobig">"Kérjük kapcsolja be autoscale pdf export"</string>
+	<string name="showcapo">"Mutatása capo akkordok"</string>
+	<string name="showchords">"mutatása akkordok"</string>
+	<string name="showlyrics">"mutatása dalszöveg"</string>
+	<string name="backup_export">"Export OpenSongApp mentés"</string>
+	<string name="backup_info">"OpenSongApp biztonsági másolata"</string>
+	<string name="backup_success">"OpenSongApp létrehozott biztonsági másolat"</string>
+	<string name="backup_import">"Import OpenSongApp mentés"</string>
+	<string name="backup_error">"Nem OpenSongApp backup fájlt talált OpenSong mappában"</string>
+	<string name="processing">"Fájlok feldolgozása"</string>
+	<string name="success">"Siker"</string>
+	<string name="error">"Hiba"</string>
+	<string name="takeawhile">"Ez eltarthat egy ideig!"</string>
 
 </resources>

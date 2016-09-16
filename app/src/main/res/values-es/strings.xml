@@ -13,7 +13,8 @@
 
     <string name="visualmetronome">"Visual"</string>
     <string name="onsonglocation">"Es necesario colocar el archivo de copia de seguridad en el Onsong /documents/OpenSong/ carpeta para que esté disponible para importar"</string>
-    <string name="savesong">"Guardar"</string>
+	<string name="opensonglocation">"Es necesario colocar el archivo de copia de seguridad en el OpenSongApp /documents/OpenSong/ carpeta para que esté disponible para importar"</string>
+	<string name="savesong">"Guardar"</string>
     <string name="metronomepadsettings">"Configuración de la música metrónomo y de fondo"</string>
     <string name="metronome">"Metrónomo"</string>
     <string name="temponotset">"Tempo no se ha establecido para esta canción"</string>
@@ -496,5 +497,22 @@
 	<string name="profile_description">"Los perfiles se utilizan para almacenar sus preferencias de visualización."</string>
 	<string name="profile_name">"Elija un nombre de perfil"</string>
 	<string name="size">"Tamaño"</string>
+	<string name="websearch">"Buscar en Internet para la canción actual"</string>
+	<string name="songfolder">"Seleccione la carpeta de la canción"</string>
+	<string name="stagemode">"Modo etapa"</string>
+	<string name="switchtostagemode">"Cambiar a modo de escenario"</string>
+	<string name="toobig">"Por favor, cambia autoescala para la exportación en pdf"</string>
+	<string name="showcapo">"Mostrar acordes capo"</string>
+	<string name="showchords">"Mostrar acordes"</string>
+	<string name="showlyrics">"Mostrar letras"</string>
+	<string name="backup_export">"Exportar copia de seguridad OpenSongApp"</string>
+	<string name="backup_info">"El archivo de copia OpenSongApp"</string>
+	<string name="backup_success">"de copia de seguridad creado OpenSongApp"</string>
+	<string name="backup_import">"Importación de copia de seguridad OpenSongApp"</string>
+	<string name="backup_error">"Ningún archivo de copia de seguridad que se encuentra en la carpeta OpenSongApp OpenSong"</string>
+	<string name="processing">"Los archivos están siendo procesados"</string>
+	<string name="success">"Éxito"</string>
+	<string name="error">"Error"</string>
+	<string name="takeawhile">"¡Esto puede tomar algo de tiempo!"</string>
 
 </resources>

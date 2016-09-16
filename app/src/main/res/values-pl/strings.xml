@@ -13,7 +13,8 @@
 
     <string name="visualmetronome">"Wizualny"</string>
     <string name="onsonglocation">"Musisz umieścić OnSong plik kopii zapasowej w /documents/OpenSong/ folderu, aby była ona dostępna do importu"</string>
-    <string name="savesong">"Zachować"</string>
+	<string name="opensonglocation">"Musisz umieścić OpenSongApp plik kopii zapasowej w /documents/OpenSong/ folderu, aby była ona dostępna do importu"</string>
+	<string name="savesong">"Zachować"</string>
     <string name="metronomepadsettings">"Metronom Ustawienia muzyczne i tła"</string>
     <string name="metronome">"Metronom"</string>
     <string name="temponotset">"Tempo nie został ustawiony dla tej piosenki"</string>
@@ -496,5 +497,22 @@
 	<string name="profile_description">"Profile służą do przechowywania preferencji wyświetlania."</string>
 	<string name="profile_name">"Wybierz nazwę profilu"</string>
 	<string name="size">"Rozmiar"</string>
+	<string name="websearch">"Szukaj Internet dla bieżącego utworu"</string>
+	<string name="songfolder">"Wybierz folder piosenki"</string>
+	<string name="stagemode">"Tryb Stage"</string>
+	<string name="switchtostagemode">"Przełącz na tryb Stage"</string>
+	<string name="toobig">"Proszę włączyć autoscale on na eksport pdf"</string>
+	<string name="showcapo">"akordy Pokaż capo"</string>
+	<string name="showchords">"Pokaż akordy"</string>
+	<string name="showlyrics">"Pokaż teksty"</string>
+	<string name="backup_export">"backup Export OpenSongApp"</string>
+	<string name="backup_info">"OpenSongApp pliku kopii zapasowej"</string>
+	<string name="backup_success">"backup OpenSongApp utworzona"</string>
+	<string name="backup_import">"backup import OpenSongApp"</string>
+	<string name="backup_error">"Nie OpenSongApp plik kopii zapasowej znajduje się w folderze OpenSong"</string>
+	<string name="processing">"Pliki są przetwarzane"</string>
+	<string name="success">"Powodzenie"</string>
+	<string name="error">"Błąd"</string>
+	<string name="takeawhile">"To może zająć trochę czasu!"</string>
 
 </resources>

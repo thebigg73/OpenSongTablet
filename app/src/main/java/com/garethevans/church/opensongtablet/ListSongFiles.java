@@ -1,6 +1,8 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
+import android.content.Context;
+
 import java.io.File;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ public class ListSongFiles extends Activity {
 
     static Collator coll;
 
+    // OLD ONE
     public static void listSongFolders() {
         FullscreenActivity.allfilesforsearch.clear();
         File songfolder = new File(FullscreenActivity.dir.getAbsolutePath());
@@ -136,6 +139,85 @@ public class ListSongFiles extends Activity {
         }
     }
 
+    public static void getAllSongFolders() {
+        FullscreenActivity.allfilesforsearch.clear();
+
+        File songfolder = new File(FullscreenActivity.dir.getAbsolutePath());
+        File[] tempmyitems = null;
+        if (songfolder.isDirectory()) {
+            tempmyitems = songfolder.listFiles();
+        }
+        //Now set the size of the temp arrays
+        ArrayList<String> firstleveldirectories = new ArrayList<>();
+        ArrayList<String> secondleveldirectories = new ArrayList<>();
+        ArrayList<String> tempProperDirectories = new ArrayList<>();
+
+        //Now read the folder names for the first level directories
+        if (tempmyitems!=null) {
+            for (File tempmyitem : tempmyitems) {
+                if (tempmyitem != null && tempmyitem.isDirectory()) {
+                    firstleveldirectories.add(tempmyitem.getName());
+                }
+            }
+        }
+
+        //Now go through the firstlevedirectories and look for subfolders
+        for (int x = 0; x < firstleveldirectories.size(); x++) {
+            File folder = new File(FullscreenActivity.dir.getAbsolutePath() + "/" + firstleveldirectories.get(x));
+            File[] subfoldersearch = folder.listFiles();
+            if (subfoldersearch!=null) {
+                for (File aSubfoldersearch : subfoldersearch) {
+                    if (aSubfoldersearch != null && aSubfoldersearch.isDirectory()) {
+                        secondleveldirectories.add(firstleveldirectories.get(x) + "/" + aSubfoldersearch.getName());
+                    }
+                }
+            }
+        }
+
+        // Now combine the two arrays and save them as a string array
+        tempProperDirectories.addAll(firstleveldirectories);
+        tempProperDirectories.addAll(secondleveldirectories);
+        coll = Collator.getInstance(FullscreenActivity.locale);
+        coll.setStrength(Collator.SECONDARY);
+        Collections.sort(tempProperDirectories,coll);
+
+        // Add the main directory - +1 to add the MAIN folder as position 0
+        FullscreenActivity.mSongFolderNames = new String[tempProperDirectories.size()+1];
+        FullscreenActivity.mSongFolderNames[0] = FullscreenActivity.mainfoldername;
+        for (int z=0; z<tempProperDirectories.size(); z++) {
+            FullscreenActivity.mSongFolderNames[z+1] = tempProperDirectories.get(z);
+        }
+    }
+
+    public static void getAllSongFiles() {
+        File foldertoindex;
+        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            foldertoindex = FullscreenActivity.dir;
+        } else {
+            foldertoindex = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder);
+        }
+        File[] tempmyFiles = foldertoindex.listFiles();
+
+        ArrayList<String> tempProperSongFiles = new ArrayList<>();
+        if (tempmyFiles!=null) {
+            for (File tempmyFile : tempmyFiles) {
+                if (tempmyFile != null && tempmyFile.isFile()) {
+                    tempProperSongFiles.add(tempmyFile.getName());
+                }
+            }
+        }
+
+        // Sort the files alphabetically using locale
+        coll = Collator.getInstance(FullscreenActivity.locale);
+        coll.setStrength(Collator.SECONDARY);
+        Collections.sort(tempProperSongFiles, coll);
+
+        FullscreenActivity.mSongFileNames = new String[tempProperSongFiles.size()];
+
+        FullscreenActivity.mSongFileNames = tempProperSongFiles.toArray(FullscreenActivity.mSongFileNames);
+    }
+
+    // OLD ONE
     public static void listSongs() {
         // A temporary array to put the file names into.  Do this, sort the array
         // List the items in the main storage location into a temporary array.
@@ -202,26 +284,52 @@ public class ListSongFiles extends Activity {
 
     public static void getCurrentSongIndex() {
         // Find the current song index from the song filename
-        // Set them all to 1
-        FullscreenActivity.currentSongIndex = 1;
-        FullscreenActivity.nextSongIndex = 1;
-        FullscreenActivity.previousSongIndex = 1;
+        // Set them all to 0
+        FullscreenActivity.currentSongIndex = 0;
+        FullscreenActivity.nextSongIndex = 0;
+        FullscreenActivity.previousSongIndex = 0;
+
 
         // Go through the array
-        for (int s = 1; s < FullscreenActivity.mSongFileNames.length; s++) {
-            if (FullscreenActivity.mSongFileNames[s].equals(FullscreenActivity.songfilename)) {
-                FullscreenActivity.currentSongIndex = s;
-                if (s > 1) {
-                    FullscreenActivity.previousSongIndex = s-1;
-                } else {
-                    FullscreenActivity.previousSongIndex = s;
-                }
-                if (s < FullscreenActivity.mSongFileNames.length -1) {
-                    FullscreenActivity.nextSongIndex = s+1;
-                } else {
-                    FullscreenActivity.nextSongIndex = s;
+        if (FullscreenActivity.mSongFileNames!=null && FullscreenActivity.songfilename!=null) {
+            for (int s = 0; s < FullscreenActivity.mSongFileNames.length; s++) {
+                if (FullscreenActivity.mSongFileNames != null &&
+                        FullscreenActivity.songfilename != null &&
+                        FullscreenActivity.mSongFileNames[s] != null &&
+                        FullscreenActivity.mSongFileNames[s].equals(FullscreenActivity.songfilename)) {
+                    FullscreenActivity.currentSongIndex = s;
+                    if (s > 1) {
+                        FullscreenActivity.previousSongIndex = s - 1;
+                    } else {
+                        FullscreenActivity.previousSongIndex = s;
+                    }
+                    if (s < FullscreenActivity.mSongFileNames.length - 1) {
+                        FullscreenActivity.nextSongIndex = s + 1;
+                    } else {
+                        FullscreenActivity.nextSongIndex = s;
+                    }
                 }
             }
+        }
+    }
+
+    public static void deleteSong(Context c) {
+        FullscreenActivity.setView = "N";
+        String setFileLocation;
+        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            setFileLocation = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
+        } else {
+            setFileLocation = FullscreenActivity.dir + "/" +
+                    FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename;
+        }
+        File filetoremove = new File(setFileLocation);
+        if (filetoremove.delete()) {
+            FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.songfilename + "\" "
+                    + c.getString(R.string.songhasbeendeleted);
+        } else {
+            FullscreenActivity.myToastMessage = c.getString(R.string.deleteerror_start)
+                    + " \"" + FullscreenActivity.songfilename + "\" "
+                    + c.getString(R.string.deleteerror_end_song);
         }
     }
 }

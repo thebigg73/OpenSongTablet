@@ -44,6 +44,7 @@ public class PopUpSetViewNew extends DialogFragment {
     private static MyInterface mListener;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         mListener = (MyInterface) activity;
         super.onAttach(activity);
@@ -173,7 +174,9 @@ public class PopUpSetViewNew extends DialogFragment {
         // If the song is found (indexSongInSet>-1 and lower than the number of items shown), smooth scroll to it
         if (FullscreenActivity.indexSongInSet>-1 && FullscreenActivity.indexSongInSet<FullscreenActivity.mTempSetList.size()) {
             Log.d("d","position="+FullscreenActivity.indexSongInSet);
-            mRecyclerView.smoothScrollToPosition(FullscreenActivity.indexSongInSet);
+            //mRecyclerView.scrollToPosition(FullscreenActivity.indexSongInSet);
+            //LinearLayoutManager llm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+            llm.scrollToPositionWithOffset(FullscreenActivity.indexSongInSet , 0);
         }
 
 

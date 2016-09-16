@@ -5,7 +5,18 @@ import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
 
-import static com.garethevans.church.opensongtablet.FullscreenActivity.*;
+import static com.garethevans.church.opensongtablet.FullscreenActivity.backtooptions;
+import static com.garethevans.church.opensongtablet.FullscreenActivity.clearthisset;
+import static com.garethevans.church.opensongtablet.FullscreenActivity.mainfoldername;
+import static com.garethevans.church.opensongtablet.FullscreenActivity.menu_menutitle;
+import static com.garethevans.church.opensongtablet.FullscreenActivity.myPreferences;
+import static com.garethevans.church.opensongtablet.FullscreenActivity.savethisset;
+import static com.garethevans.church.opensongtablet.FullscreenActivity.set_clear;
+import static com.garethevans.church.opensongtablet.FullscreenActivity.set_edit;
+import static com.garethevans.church.opensongtablet.FullscreenActivity.set_export;
+import static com.garethevans.church.opensongtablet.FullscreenActivity.set_load;
+import static com.garethevans.church.opensongtablet.FullscreenActivity.set_menutitle;
+import static com.garethevans.church.opensongtablet.FullscreenActivity.set_save;
 
 public class Preferences extends Activity {
 
@@ -179,10 +190,10 @@ public class Preferences extends Activity {
 		FullscreenActivity.toggleYScale = myPreferences.getString("toggleYScale", "Y");
 		FullscreenActivity.swipeSet = myPreferences.getString("swipeSet", "Y");
 		FullscreenActivity.hideactionbaronoff = myPreferences.getString("hideactionbaronoff", "N");
-		FullscreenActivity.songfilename = myPreferences.getString("songfilename", "Love everlasting");
+		FullscreenActivity.songfilename = myPreferences.getString("songfilename", "Welcome to OpenSongApp");
 		FullscreenActivity.mAuthor = myPreferences.getString("mAuthor", "Gareth Evans");
-		FullscreenActivity.mTitle = myPreferences.getString("mTitle", "Love everlasting");
-		FullscreenActivity.mCopyright = myPreferences.getString("mCopyright","Copyright 1996 New Life Music Ministries");
+		FullscreenActivity.mTitle = myPreferences.getString("mTitle", "Welcome to OpenSongApp");
+		FullscreenActivity.mCopyright = myPreferences.getString("mCopyright","");
 		FullscreenActivity.transposeStyle = myPreferences.getString("transposeStyle", "sharps");
 		FullscreenActivity.mySet = myPreferences.getString("mySet", "");
 		FullscreenActivity.showChords = myPreferences.getString("showChords", "Y");

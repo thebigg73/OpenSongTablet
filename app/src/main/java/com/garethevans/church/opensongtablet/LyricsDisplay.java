@@ -14,6 +14,7 @@ public class LyricsDisplay extends Activity {
 		Log.d("LyricsDisplay","LyricsDisplay activity running");
 		// Keep myLyrics and mLyrics variables the same
 		FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+		FullscreenActivity.myLyrics = ProcessSong.removeUnderScores(FullscreenActivity.mLyrics);
 
 		// Does the user want to use the custom presentation order?
 		// If so, parse the song into an appropriate format first
@@ -25,7 +26,7 @@ public class LyricsDisplay extends Activity {
 		// If the user doesn't want to use a custom presentation order, or it is blank,
 		// replace it back with the original
 		if (!FullscreenActivity.usePresentationOrder || FullscreenActivity.mPresentation.isEmpty() || FullscreenActivity.mPresentation.equals("")) {
-			FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+			FullscreenActivity.myLyrics = ProcessSong.removeUnderScores(FullscreenActivity.mLyrics);
 		}
 
 		FullscreenActivity.myLyrics = FullscreenActivity.myLyrics.replace("\n \n","\n\n");
@@ -483,10 +484,9 @@ public class LyricsDisplay extends Activity {
 
 	public static void parseToPresentationOrder() {
         Log.d("d","parseToPresentationOrder() is called");
-        Log.d("d","FullscreenActivity.whichSongFolder="+FullscreenActivity.whichSongFolder);
 		// The presentation order is separated by spaces.  One issue is that custom tags might have spaces in them
 		// Go through the song and look for all tag.  Make a temp lyrics string
-		FullscreenActivity.mLyrics = FullscreenActivity.myLyrics;
+		//FullscreenActivity.mLyrics = FullscreenActivity.myLyrics;
 		String[] lookfortagslyrics = FullscreenActivity.myLyrics.split("\n");
 		ArrayList<String> temp_title = new ArrayList<> ();
 		ArrayList<String> temp_content = new ArrayList<> ();
@@ -732,10 +732,6 @@ public class LyricsDisplay extends Activity {
 			improvedText = improvedText + lookfortagslyrics[s] + "\n";
 			}
 		}
-
-		//Log.d("d","newText="+newText);
-		//Log.d("d","improvedText="+improvedText);
-
 
 		// Ok, now reprocess the improved version with multiple verse lines sorted
 		lookfortagslyrics = improvedText.split("\n");

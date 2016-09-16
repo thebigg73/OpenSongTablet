@@ -1,10 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
+import android.graphics.drawable.GradientDrawable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,19 +38,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
         setitemViewHolder.vSongFolder.setText(newfoldername);
         boolean issong = false;
         if (si.songicon.equals(FullscreenActivity.text_slide)) {
-            setitemViewHolder.vIcon.setImageResource(R.drawable.blackout_project_dark);
+            //setitemViewHolder.vIcon.setImageResource(R.drawable.blackout_project_dark);
+            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_projector_screen_white_18dp);
         } else if (si.songicon.equals(FullscreenActivity.text_note)) {
-            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_action_view_as_list_dark);
+            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_note_text_white_18dp);
         } else if (si.songicon.equals(FullscreenActivity.text_scripture)) {
-            setitemViewHolder.vIcon.setImageResource(R.drawable.action_scripture_dark);
+            //setitemViewHolder.vIcon.setImageResource(R.drawable.action_scripture_dark);
+            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_book_white_18dp);
         } else if (si.songicon.equals(FullscreenActivity.image)) {
-            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_action_picture_dark);
+            //setitemViewHolder.vIcon.setImageResource(R.drawable.ic_action_picture_dark);
+            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_image_white_18dp);
         } else if (si.songicon.equals(FullscreenActivity.text_variation)) {
-            setitemViewHolder.vIcon.setImageResource(R.drawable.action_variation_dark);
+            //setitemViewHolder.vIcon.setImageResource(R.drawable.action_variation_dark);
+            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_file_xml_white_18dp);
         } else if (si.songicon.equals(".pdf")) {
-            setitemViewHolder.vIcon.setImageResource(R.drawable.action_pdf_dark);
+            //setitemViewHolder.vIcon.setImageResource(R.drawable.action_pdf_dark);
+            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_file_pdf_white_18dp);
         } else {
-            setitemViewHolder.vIcon.setImageResource(R.drawable.action_song_dark);
+            //setitemViewHolder.vIcon.setImageResource(R.drawable.action_song_dark);
+            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_music_note_white_18dp);
             issong = true;
         }
 
@@ -130,6 +137,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
                 from(viewGroup.getContext()).
                 inflate(R.layout.recycler_row, viewGroup, false);
 
+        RelativeLayout card = (RelativeLayout) itemView.findViewById(R.id.cardview_layout);
+        card.setBackgroundResource(R.drawable.section_box);
+        GradientDrawable drawable = (GradientDrawable) card.getBackground();
+        drawable.setColor(FullscreenActivity.lyricsBackgroundColor);
+
+        TextView title = (TextView) itemView.findViewById(R.id.cardview_songtitle);
+        title.setTextColor(FullscreenActivity.lyricsTextColor);
+
+        TextView item = (TextView) itemView.findViewById(R.id.cardview_item);
+        item.setTextColor(FullscreenActivity.lyricsTextColor);
+
+        TextView folder = (TextView) itemView.findViewById(R.id.cardview_folder);
+        folder.setTextColor(FullscreenActivity.lyricsTextColor);
+
         return new SetItemViewHolder(itemView);
     }
 
@@ -138,7 +159,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
         protected TextView vItem;
         protected TextView vSongTitle;
         protected TextView vSongFolder;
-        protected ImageView vIcon;
+        //protected ImageView vIcon;
+        protected FloatingActionButton vIcon;
         protected RelativeLayout vCard;
 
         public SetItemViewHolder(View v) {
@@ -147,7 +169,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
             vItem = (TextView) v.findViewById(R.id.cardview_item);
             vSongTitle =  (TextView) v.findViewById(R.id.cardview_songtitle);
             vSongFolder = (TextView)  v.findViewById(R.id.cardview_folder);
-            vIcon = (ImageView)  v.findViewById(R.id.cardview_icon);
+            vIcon = (FloatingActionButton)  v.findViewById(R.id.cardview_icon);
+            //vIcon = (ImageView)  v.findViewById(R.id.cardview_icon);
         }
     }
 

@@ -13,7 +13,8 @@
 
     <string name="visualmetronome">"Visueel"</string>
     <string name="onsonglocation">"Jy moet jou OnSong rugsteunlêer te plaas in die /documents/OpenSong/ gids voor dit beskikbaar te invoer wees"</string>
-    <string name="savesong">"Red"</string>
+	<string name="opensonglocation">"Jy moet jou OpenSong rugsteunlêer te plaas in die /documents/OpenSong/ gids voor dit beskikbaar te invoer wees"</string>
+	<string name="savesong">"Red"</string>
     <string name="metronomepadsettings">"Metronoom en agtergrond musiek instellings"</string>
     <string name="metronome">"Metronoom"</string>
     <string name="temponotset">"Tempo is nog nie vasgestel vir hierdie lied"</string>
@@ -496,5 +497,22 @@
 	<string name="profile_description">"Profiele word gebruik om jou vertoning voorkeure te stoor."</string>
 	<string name="profile_name">"Kies \'n profiel naam"</string>
 	<string name="size">"Grootte"</string>
+	<string name="websearch">"Soek Internet vir die huidige liedjie"</string>
+	<string name="songfolder">"Kies gids lied"</string>
+	<string name="stagemode">"stadium af"</string>
+	<string name="switchtostagemode">"Skakel oor na Stage af"</string>
+	<string name="toobig">"Skakel asseblief autoscale vir pdf uitvoer"</string>
+	<string name="showcapo">"Wys Capo akkoorde"</string>
+	<string name="showchords">"Wys akkoorde"</string>
+	<string name="showlyrics">"Wys lyrics"</string>
+	<string name="backup_export">"Uitvoer OpenSongApp Friends"</string>
+	<string name="backup_info">"OpenSongApp rugsteunlêer"</string>
+	<string name="backup_success">"OpenSongApp Friends geskep"</string>
+	<string name="backup_import">"Invoer OpenSongApp Friends"</string>
+	<string name="backup_error">"Geen OpenSongApp rugsteunlêer gevind in OpenSong gids"</string>
+	<string name="processing">"Lêers word verwerk"</string>
+	<string name="success">"sukses"</string>
+	<string name="error">"fout"</string>
+	<string name="takeawhile">"Dit kan enige tyd neem!"</string>
 
 </resources>

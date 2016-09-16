@@ -101,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility="invisible" />
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/copySongs"
@@ -112,7 +112,8 @@
                 android:layout_margin="20dp"
                 android:text="@string/copyresources"
                 android:layout_gravity="center_horizontal"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/exitStorage"

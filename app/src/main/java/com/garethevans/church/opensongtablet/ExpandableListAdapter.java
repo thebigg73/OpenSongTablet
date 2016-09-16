@@ -1,7 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import java.util.HashMap;
-import java.util.List;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -12,6 +10,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter implements SectionIndexer,
         AbsListView.OnScrollListener {
@@ -35,7 +36,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter implements 
 
     @Override
     public Object[] getSections() {
-        return "*1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        return "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
     }
 
     @Override

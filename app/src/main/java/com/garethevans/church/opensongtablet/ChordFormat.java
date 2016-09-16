@@ -7,10 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.Switch;
 import android.widget.TextView;
 
 public class ChordFormat extends AppCompatActivity {
@@ -20,6 +20,7 @@ public class ChordFormat extends AppCompatActivity {
 	static RadioGroup radioGroup2;
 	static String numeral;
 	static String numeral2;
+    static Button exitChordFormat;
 
 /*
     Switch switchAb;
@@ -182,6 +183,14 @@ public class ChordFormat extends AppCompatActivity {
         } else {
             radioButton7.setChecked(true);
         }
+
+        exitChordFormat = (Button) findViewById(R.id.exitChordFormat);
+        exitChordFormat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exitChordFormat();
+            }
+        });
     }
 
     @Override
@@ -191,7 +200,7 @@ public class ChordFormat extends AppCompatActivity {
 		finish();
     }
 
-	public void exitChordFormat(View view) {
+	public void exitChordFormat() {
         if (switchAb.isChecked()) {
             FullscreenActivity.prefChord_Aflat_Gsharp = "#";
         } else {

@@ -8,7 +8,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,7 @@ public class ExpandableListAdapterOptions extends BaseExpandableListAdapter impl
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
-    private String[] groups;
+    //private String[] groups;
 
     public ExpandableListAdapterOptions(ExpandableListView expandableListView, Context context, List<String> listDataHeader,
                                         HashMap<String, List<String>> listChildData) {
@@ -39,12 +38,10 @@ public class ExpandableListAdapterOptions extends BaseExpandableListAdapter impl
         this.expandableListView = expandableListView;
         this.expandableListView.setOnScrollListener(this);
         this.expandableListView.setFastScrollEnabled(false);
-        this.expandableListView.setFastScrollEnabled(true);
     }
 
     @Override
     public Object[] getSections() {
-        Log.d("getSections_options", "groups = " + _listDataHeader);
         return new String[0];
     }
 
@@ -140,14 +137,11 @@ public class ExpandableListAdapterOptions extends BaseExpandableListAdapter impl
 
     @Override
     public int getPositionForSection(int section) {
-        Log.d("getPositionForSection","manualScroll="+manualScroll);
         if (manualScroll) {
             return section;
         } else {
-            Log.d("getPositionForSection", "trying..."+ expandableListView.getFlatListPosition(
-                    ExpandableListView.getPackedPositionForGroup(section)));
-            return expandableListView.getFlatListPosition(
-                    ExpandableListView.getPackedPositionForGroup(section));
+               return expandableListView.getFlatListPosition(
+                       ExpandableListView.getPackedPositionForGroup(section));
         }
     }
 

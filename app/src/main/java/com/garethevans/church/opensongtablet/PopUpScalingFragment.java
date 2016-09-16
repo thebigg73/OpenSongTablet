@@ -12,8 +12,9 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-//import android.widget.Switch;
 import android.widget.TextView;
+
+//import android.widget.Switch;
 
 public class PopUpScalingFragment extends DialogFragment {
 
@@ -30,6 +31,7 @@ public class PopUpScalingFragment extends DialogFragment {
     private MyInterface mListener;
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         mListener = (MyInterface) activity;
         super.onAttach(activity);

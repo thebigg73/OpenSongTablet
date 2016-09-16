@@ -5,12 +5,14 @@
     android:layout_height="match_parent"
     android:layout_alignParentRight="true"
     android:layout_alignParentEnd="true"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp">
+
+
 
         <ImageView
             android:id="@+id/setButton_right"
@@ -27,6 +29,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="24dp" />
 
+
         <ImageView
             android:id="@+id/padbutton_right"
             android:layout_below="@id/setButton_right"
@@ -38,6 +41,20 @@
             android:src="@drawable/page_speaker_bw"
             android:tag="togglePlayPads"
             android:visibility="visible" />
+
+
+<!--        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/padbutton_right"
+            android:layout_below="@id/setButton_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="8dp"
+            app:fabSize="mini"
+            android:contentDescription="@string/pad_onoroff"
+            android:tag="togglePlayPads"
+            android:src="@drawable/ic_amplifier_white_48dp"
+            android:alpha="0.4"/>-->
 
         <ImageView
             android:id="@+id/autoscroll_right"

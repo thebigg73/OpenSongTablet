@@ -13,7 +13,8 @@
 
     <string name="visualmetronome">"Visivo"</string>
     <string name="onsonglocation">"È necessario inserire il vostro file di backup OnSong nel /documents/OpenSong/ cartella per essere a disposizione di importazione"</string>
-    <string name="savesong">"Salvare"</string>
+	<string name="opensonglocation">"È necessario inserire il vostro file di backup OpenSongApp nel /documents/OpenSong/ cartella per essere a disposizione di importazione"</string>
+	<string name="savesong">"Salvare"</string>
     <string name="metronomepadsettings">"Impostazioni musica metronomo e di sfondo"</string>
     <string name="metronome">"Metronomo"</string>
     <string name="temponotset">"Tempo non è stato impostato per questa canzone"</string>
@@ -496,5 +497,22 @@
 	<string name="profile_description">"I profili vengono utilizzati per memorizzare le preferenze di visualizzazione."</string>
 	<string name="profile_name">"Scegliere un nome profilo"</string>
 	<string name="size">"Dimensione"</string>
+	<string name="websearch">"Cerca Internet per la canzone corrente"</string>
+	<string name="songfolder">"Selezionare la cartella canzone"</string>
+	<string name="stagemode">"Modalità fase"</string>
+	<string name="switchtostagemode">"Passa alla modalità di scena"</string>
+	<string name="toobig">"Si prega di passare autoscale avanti per l\'esportazione in formato PDF"</string>
+	<string name="showcapo">"accordi Visualizza Capo"</string>
+	<string name="showchords">"Mostra corde"</string>
+	<string name="showlyrics">"Mostra Lyrics"</string>
+	<string name="backup_export">"Esporta backup OpenSongApp"</string>
+	<string name="backup_info">"file di backup OpenSongApp"</string>
+	<string name="backup_success">"di backup OpenSongApp creato"</string>
+	<string name="backup_import">"di backup Importa OpenSongApp"</string>
+	<string name="backup_error">"Nessun file di backup OpenSongApp trovato nella cartella OpenSong"</string>
+	<string name="processing">"I file sono in fase di elaborazione"</string>
+	<string name="success">"Successo"</string>
+	<string name="error">"Errore"</string>
+	<string name="takeawhile">"Questo potrebbe richiedere del tempo!"</string>
 
 </resources>

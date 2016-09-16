@@ -10,6 +10,7 @@
     <TextView
         android:id="@+id/songandauthor"
         android:layout_width="wrap_content"
+        android:maxWidth="150dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -24,6 +25,7 @@
         android:id="@+id/digitalclock"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:lines="1"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
