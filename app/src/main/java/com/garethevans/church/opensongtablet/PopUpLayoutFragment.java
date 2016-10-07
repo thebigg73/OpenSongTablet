@@ -13,6 +13,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
 import java.util.ArrayList;
 
 public class PopUpLayoutFragment extends DialogFragment {
@@ -39,7 +40,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.alert));
+        getDialog().setTitle(getActivity().getResources().getString(R.string.settings));
         final View V = inflater.inflate(R.layout.popup_layout, container, false);
 
         setXMarginProgressBar = (SeekBar) V.findViewById(R.id.setXMarginProgressBar);

@@ -3,8 +3,12 @@ package com.garethevans.church.opensongtablet;
 import android.app.DialogFragment;
 import android.database.Cursor;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.widget.CursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +16,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ListView;
-import android.net.Uri;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.widget.ListAdapter;
-import android.widget.Switch;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -87,7 +86,6 @@ public class PopUpMediaStoreFragment extends DialogFragment {
 
         return V;
     }
-
 
     public void updateMedia() {
 

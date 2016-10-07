@@ -66,6 +66,7 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
     public static TextView custom1_theme_heading;
     public static TextView custom2_theme_heading;
 
+
 	int initialcolor;
 	int newcolor;
 	String whichone;

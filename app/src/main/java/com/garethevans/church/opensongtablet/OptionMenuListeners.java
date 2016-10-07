@@ -7,10 +7,16 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Vibrator;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,7 +49,167 @@ public class OptionMenuListeners extends Activity {
     static DialogFragment newFragment;
     public static MyInterface mListener;
 
+    public static LinearLayout prepareOptionMenu(Context c) {
+        mListener = (MyInterface) c;
+        LinearLayout menu = null;
+        Log.d ("d","whichOptionMenu="+FullscreenActivity.whichOptionMenu);
+        switch (FullscreenActivity.whichOptionMenu) {
+            case "MAIN":
+            default:
+                menu = createMainMenu(c);
+                break;
+
+            case "SET":
+                menu = createSetMenu(c);
+                break;
+
+            case "SONG":
+                menu = createSongMenu(c);
+                break;
+
+            case "CHORDS":
+                menu = createChordsMenu(c);
+                break;
+
+            case "DISPLAY":
+                menu = createDisplayMenu(c);
+                break;
+
+            case "STORAGE":
+                menu = createStorageMenu(c);
+                break;
+
+            case "GESTURES":
+                menu = createGesturesMenu(c);
+                break;
+
+            case "AUTOSCROLL":
+                menu = createAutoscrollMenu(c);
+                break;
+
+            case "PAD":
+                menu = createPadMenu(c);
+                break;
+
+            case "OTHER":
+                menu = createOtherMenu(c);
+                break;
+
+        }
+        if (mListener!=null) {
+            mListener.refreshActionBar();
+        }
+        return menu;
+    }
+
+    public static LinearLayout createMainMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option,null);
+    }
+
+    public static LinearLayout createSetMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option_set,null);
+    }
+
+    public static LinearLayout createSongMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option_song,null);
+    }
+
+    public static LinearLayout createChordsMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option_chords,null);
+    }
+
+    public static LinearLayout createDisplayMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option_display,null);
+    }
+
+    public static LinearLayout createStorageMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option_storage,null);
+    }
+
+    public static LinearLayout createGesturesMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option_gestures,null);
+    }
+
+    public static LinearLayout createAutoscrollMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option_autoscroll,null);
+    }
+
+    public static LinearLayout createPadMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option_pad,null);
+    }
+
+    public static LinearLayout createOtherMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option_other,null);
+    }
+
     public static void optionListeners(View v, Context c) {
+
+        // Decide which listeners we need based on the menu
+        switch (FullscreenActivity.whichOptionMenu) {
+            case "MAIN":
+            default:
+                mainOptionListener(v,c);
+                break;
+
+            case "SET":
+                setOptionListener(v,c);
+                break;
+
+            case "SONG":
+                songOptionListener(v,c);
+                break;
+
+            case "CHORDS":
+                chordOptionListener(v,c);
+                break;
+
+            case "DISPLAY":
+                displayOptionListener(v,c);
+                break;
+
+            case "STORAGE":
+                storageOptionListener(v,c);
+                break;
+
+            case "GESTURES":
+                gestureOptionListener(v,c);
+                break;
+
+            case "AUTOSCROLL":
+                autoscrollOptionListener(v,c);
+                break;
+
+            case "PAD":
+                padOptionListener(v,c);
+                break;
+
+            case "OTHER":
+                otherOptionListener(v,c);
+                break;
+        }
+    }
+
+    public static void mainOptionListener(View v, Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -68,25 +234,544 @@ public class OptionMenuListeners extends Activity {
         menuAutoScrollButton.setText(c.getString(R.string.autoscroll).toUpperCase(FullscreenActivity.locale));
         menuOtherButton.setText(c.getString(R.string.options_other).toUpperCase(FullscreenActivity.locale));
 
+
         // Set the listeners
         menuSetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "setmenu";
-                mListener.openFragment();
-                mListener.closeMyDrawers("option");
+                FullscreenActivity.whichOptionMenu = "SET";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
             }
         });
         menuSongButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "songmenu";
-                mListener.openFragment();
-                mListener.closeMyDrawers("option");
+                FullscreenActivity.whichOptionMenu = "SONG";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        menuChordsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "CHORDS";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        menuDisplayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "DISPLAY";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        menuGesturesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "GESTURES";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        menuStorageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "STORAGE";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        menuAutoScrollButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "AUTOSCROLL";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        menuPadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "PAD";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        menuOtherButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "OTHER";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
             }
         });
 
     }
+
+    public static void setOptionListener(View v, Context c) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuup = (TextView) v.findViewById(R.id.setMenuTitle);
+        Button setLoadButton = (Button) v.findViewById(R.id.setLoadButton);
+        Button setSaveButton = (Button) v.findViewById(R.id.setSaveButton);
+        Button setNewButton = (Button) v.findViewById(R.id.setNewButton);
+        Button setDeleteButton = (Button) v.findViewById(R.id.setDeleteButton);
+        Button setExportButton = (Button) v.findViewById(R.id.setExportButton);
+        Button setCustomButton = (Button) v.findViewById(R.id.setCustomButton);
+        Button setVariationButton = (Button) v.findViewById(R.id.setVariationButton);
+        Button setEditButton = (Button) v.findViewById(R.id.setEditButton);
+        LinearLayout setLinearLayout = (LinearLayout) v.findViewById(R.id.setLinearLayout);
+
+        // Capitalise all the text by locale
+        menuup.setText(c.getString(R.string.options_set).toUpperCase(FullscreenActivity.locale));
+        setLoadButton.setText(c.getString(R.string.options_set_load).toUpperCase(FullscreenActivity.locale));
+        setSaveButton.setText(c.getString(R.string.options_set_save).toUpperCase(FullscreenActivity.locale));
+        setNewButton.setText(c.getString(R.string.options_set_clear).toUpperCase(FullscreenActivity.locale));
+        setDeleteButton.setText(c.getString(R.string.options_set_delete).toUpperCase(FullscreenActivity.locale));
+        setExportButton.setText(c.getString(R.string.options_set_export).toUpperCase(FullscreenActivity.locale));
+        setCustomButton.setText(c.getString(R.string.add_custom_slide).toUpperCase(FullscreenActivity.locale));
+        setVariationButton.setText(c.getString(R.string.customise_set_item).toUpperCase(FullscreenActivity.locale));
+        setEditButton.setText(c.getString(R.string.options_set_edit).toUpperCase(FullscreenActivity.locale));
+
+        // Set the button listeners
+        menuup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+        setLoadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "loadset";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        setSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "saveset";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        setNewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "clearset";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        setDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "deleteset";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        setExportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "exportset";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        setCustomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "customcreate";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        setVariationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "setitemvariation";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        setEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "editset";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        // Add the set list to the menu
+        if (FullscreenActivity.mSetList!=null) {
+            for (int x = 0; x<FullscreenActivity.mSetList.length; x++) {
+                TextView tv = new TextView(c);
+                tv.setText(FullscreenActivity.mSetList[x]);
+                tv.setTextColor(0xffffffff);
+                tv.setTextSize(16.0f);
+                tv.setPadding(16,16,16,16);
+                LinearLayout.LayoutParams tvp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                tvp.setMargins(40,40,40,40);
+                tv.setLayoutParams(tvp);
+                final int val = x;
+                tv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        FullscreenActivity.setView = "Y";
+                        FullscreenActivity.pdfPageCurrent = 0;
+                        FullscreenActivity.linkclicked = FullscreenActivity.mSetList[val];
+                        FullscreenActivity.indexSongInSet = val;
+                        SetActions.songIndexClickInSet();
+                        SetActions.getSongFileAndFolder();
+                        if (mListener!=null) {
+                            mListener.closeMyDrawers("option");
+                            mListener.loadSong();
+                        }
+                    }
+                });
+                setLinearLayout.addView(tv);
+            }
+        }
+
+    }
+
+    public static void songOptionListener(View v, Context c) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuup = (TextView) v.findViewById(R.id.songMenuTitle);
+        Button songEditButton = (Button) v.findViewById(R.id.songEditButton);
+        Button songStickyButton = (Button) v.findViewById(R.id.songStickyButton);
+        Button songRenameButton = (Button) v.findViewById(R.id.songRenameButton);
+        Button songNewButton = (Button) v.findViewById(R.id.songNewButton);
+        Button songDeleteButton = (Button) v.findViewById(R.id.songDeleteButton);
+        Button songExportButton = (Button) v.findViewById(R.id.songExportButton);
+        final SwitchCompat songPresentationOrderButton = (SwitchCompat) v.findViewById(R.id.songPresentationOrderButton);
+
+        // Capitalise all the text by locale
+        menuup.setText(c.getString(R.string.options_song).toUpperCase(FullscreenActivity.locale));
+        songEditButton.setText(c.getString(R.string.options_song_edit).toUpperCase(FullscreenActivity.locale));
+        songStickyButton.setText(c.getString(R.string.options_song_stickynotes).toUpperCase(FullscreenActivity.locale));
+        songRenameButton.setText(c.getString(R.string.options_song_rename).toUpperCase(FullscreenActivity.locale));
+        songNewButton.setText(c.getString(R.string.options_song_new).toUpperCase(FullscreenActivity.locale));
+        songDeleteButton.setText(c.getString(R.string.options_song_delete).toUpperCase(FullscreenActivity.locale));
+        songExportButton.setText(c.getString(R.string.options_song_export).toUpperCase(FullscreenActivity.locale));
+        songPresentationOrderButton.setText(c.getString(R.string.edit_song_presentation).toUpperCase(FullscreenActivity.locale));
+
+        // Set the button listeners
+        menuup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+        songEditButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "editsong";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        songStickyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "editnotes";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        songRenameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "renamesong";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        songNewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "createsong";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        songDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "deletesong";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        songExportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "exportsong";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.shareSong();
+                }
+            }
+        });
+
+        songPresentationOrderButton.setChecked(FullscreenActivity.usePresentationOrder);
+        songPresentationOrderButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.usePresentationOrder = b;
+                Preferences.savePreferences();
+                if (mListener!=null) {
+                    Preferences.savePreferences();
+                    mListener.loadSong();
+                }
+            }
+        });
+    }
+
+    public static void chordOptionListener(View v, Context c) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuup = (TextView) v.findViewById(R.id.chordsMenuTitle);
+        Button chordsTransposeButton = (Button) v.findViewById(R.id.chordsTransposeButton);
+        Button chordsSharpButton = (Button) v.findViewById(R.id.chordsSharpButton);
+        Button chordsFlatButton = (Button) v.findViewById(R.id.chordsFlatButton);
+        SwitchCompat chordsToggleSwitch = (SwitchCompat) v.findViewById(R.id.chordsToggleSwitch);
+        SwitchCompat chordsLyricsToggleSwitch = (SwitchCompat) v.findViewById(R.id.chordsLyricsToggleSwitch);
+        SwitchCompat chordsCapoToggleSwitch = (SwitchCompat) v.findViewById(R.id.chordsCapoToggleSwitch);
+        SwitchCompat chordsNativeAndCapoToggleSwitch = (SwitchCompat) v.findViewById(R.id.chordsNativeAndCapoToggleSwitch);
+        Button chordsFormatButton = (Button) v.findViewById(R.id.chordsFormatButton);
+        Button chordsConvertButton = (Button) v.findViewById(R.id.chordsConvertButton);
+
+        // Capitalise all the text by locale
+        menuup.setText(c.getString(R.string.chords).toUpperCase(FullscreenActivity.locale));
+        chordsTransposeButton.setText(c.getString(R.string.options_song_transpose).toUpperCase(FullscreenActivity.locale));
+        chordsSharpButton.setText(c.getString(R.string.options_song_sharp).toUpperCase(FullscreenActivity.locale));
+        chordsFlatButton.setText(c.getString(R.string.options_song_flat).toUpperCase(FullscreenActivity.locale));
+        chordsToggleSwitch.setText(c.getString(R.string.showchords).toUpperCase(FullscreenActivity.locale));
+        chordsLyricsToggleSwitch.setText(c.getString(R.string.showlyrics).toUpperCase(FullscreenActivity.locale));
+        chordsCapoToggleSwitch.setText(c.getString(R.string.showcapo).toUpperCase(FullscreenActivity.locale));
+        chordsNativeAndCapoToggleSwitch.setText(c.getString(R.string.capo_toggle_bothcapo).toUpperCase(FullscreenActivity.locale));
+        chordsFormatButton.setText(c.getString(R.string.options_options_chordformat).toUpperCase(FullscreenActivity.locale));
+        chordsConvertButton.setText(c.getString(R.string.options_song_convert).toUpperCase(FullscreenActivity.locale));
+
+        // Set the button listeners
+        menuup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+    }
+
+    public static void displayOptionListener(View v, Context c) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuup = (TextView) v.findViewById(R.id.optionDisplayTitle);
+        //Button setLoadButton = (Button) v.findViewById(R.id.setLoadButton);
+
+        // Capitalise all the text by locale
+        menuup.setText(c.getString(R.string.options_display).toUpperCase(FullscreenActivity.locale));
+
+        // Set the button listeners
+        menuup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+    }
+
+    public static void storageOptionListener(View v, Context c) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuup = (TextView) v.findViewById(R.id.optionStorageTitle);
+        //Button setLoadButton = (Button) v.findViewById(R.id.setLoadButton);
+
+        // Capitalise all the text by locale
+        menuup.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
+
+        // Set the button listeners
+        menuup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+    }
+
+    public static void gestureOptionListener(View v, Context c) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuup = (TextView) v.findViewById(R.id.optionGestureTitle);
+        //Button setLoadButton = (Button) v.findViewById(R.id.setLoadButton);
+
+        // Capitalise all the text by locale
+        menuup.setText(c.getString(R.string.options_gesturesandmenus).toUpperCase(FullscreenActivity.locale));
+
+        // Set the button listeners
+        menuup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+    }
+
+    public static void autoscrollOptionListener(View v, Context c) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuup = (TextView) v.findViewById(R.id.optionAutoScrollTitle);
+        //Button setLoadButton = (Button) v.findViewById(R.id.setLoadButton);
+
+        // Capitalise all the text by locale
+        menuup.setText(c.getString(R.string.autoscroll).toUpperCase(FullscreenActivity.locale));
+
+        // Set the button listeners
+        menuup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+    }
+
+    public static void padOptionListener(View v, Context c) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuup = (TextView) v.findViewById(R.id.optionPadTitle);
+        //Button setLoadButton = (Button) v.findViewById(R.id.setLoadButton);
+
+        // Capitalise all the text by locale
+        menuup.setText(c.getString(R.string.pad).toUpperCase(FullscreenActivity.locale));
+
+        // Set the button listeners
+        menuup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+    }
+
+    public static void otherOptionListener(View v, Context c) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuup = (TextView) v.findViewById(R.id.optionOtherTitle);
+        //Button setLoadButton = (Button) v.findViewById(R.id.setLoadButton);
+
+        // Capitalise all the text by locale
+        menuup.setText(c.getString(R.string.options_other).toUpperCase(FullscreenActivity.locale));
+
+        // Set the button listeners
+        menuup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+    }
+
+
 
     public static void createFullMenu(Context c) {
         mListener = (MyInterface) c;

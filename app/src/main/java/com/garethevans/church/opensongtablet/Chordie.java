@@ -352,6 +352,9 @@ public class Chordie extends Activity{
                 int endpos = resultposted.indexOf("</title>");
                 if (startpos>-1 && endpos>-1 && startpos<endpos) {
                     title_resultposted = resultposted.substring(startpos+7,endpos);
+                    title_resultposted = title_resultposted.replace("\r","");
+                    title_resultposted = title_resultposted.replace("\n","");
+                    title_resultposted = title_resultposted.trim();
                     filenametosave = title_resultposted;
                     filenametosave = filenametosave.replace(" @ Ultimate-Guitar.Com","");
                     filenametosave = filenametosave.replace(" Chords","");
@@ -387,18 +390,18 @@ public class Chordie extends Activity{
                 // Mobile site
                 startpos = resultposted.indexOf("song_name:") + 12;
                 endpos = resultposted.indexOf("',",startpos);
-                if (startpos !=0 && endpos<(startpos+80)) {
+                if (startpos !=0 && endpos<(startpos+40)) {
                     title_resultposted = resultposted.substring(startpos, endpos);
                     filenametosave = title_resultposted;
                 }
 
-                // Other alternative
+                /*// Other alternative
                 endpos = resultposted.indexOf("property=\"og:title\"")-2;
                 startpos = resultposted.indexOf("meta content=",endpos-40)+14;
                 if (startpos >0 && endpos>startpos) {
                     title_resultposted = resultposted.substring(startpos, endpos);
                     filenametosave = title_resultposted;
-                }
+                }*/
 
                 // Look for a better author
                 // Desktop site
@@ -446,6 +449,14 @@ public class Chordie extends Activity{
                 }
                 // Remove everything before this position
                 resultposted = resultposted.substring(startpos + 27);
+
+                // Mobile version
+                startpos = resultposted.indexOf("<div class=\"ugm-b-tab--content js-tab-content\">");
+                if (startpos<0) {
+                    startpos = 0;
+                }
+                // Remove everything before this position
+                resultposted = resultposted.substring(startpos + 47);
 
                 // Find the text start
                 startpos = resultposted.indexOf("<pre>");

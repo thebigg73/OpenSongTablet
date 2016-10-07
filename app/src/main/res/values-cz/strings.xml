@@ -112,7 +112,7 @@
     <string name="customgestures">"Přiřadit vlastní gesta"</string> 
     <string name="doubleTap">"Vyberte dvojí akci klepněte na položku"</string>
     <string name="longPress">"Vyberte dlouhé stiskněte tlačítko Akce"</string>
-    <string name="gesture1">"Otevřete oba nabídky"</string>
+    <string name="gesture1">\"Otevřete menu píseň\"</string>
     <string name="gesture2">"Edit song"</string>
     <string name="gesture3">"Přidat skladbu do nastavení"</string>
 
@@ -515,5 +515,9 @@
 	<string name="success">"Úspěch"</string>
 	<string name="error">"Chyba"</string>
 	<string name="takeawhile">"To může trvat nějaký čas!"</string>
+	<string name="longPressDown">\"Dlouhý stisk dolů pedálem\"</string>
+	<string name="longPressUp">\"Dlouhým stiskem nahoru pedál\"</string>
+	<string name="longPressPrevious">\"Dlouhé stisknutí předchozí pedál\"</string>
+	<string name="longPressNext">\"Dlouhé stisknutí další pedál\"</string>
 
 </resources>

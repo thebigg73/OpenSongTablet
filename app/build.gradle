@@ -1,10 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    //compileSdkVersion 23
     compileSdkVersion 24
-    //buildToolsVersion '23.0.3'
-    buildToolsVersion '24.0.1'
+    buildToolsVersion '24.0.2'
     buildTypes {
         release {
             minifyEnabled false
@@ -28,7 +26,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.google.android.gms:play-services-appindexing:9.4.0'
+    compile 'com.google.android.gms:play-services-appindexing:9.6.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'

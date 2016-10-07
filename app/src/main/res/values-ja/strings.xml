@@ -112,7 +112,7 @@
     <string name="customgestures">"カスタムジェスチャを割り当て"</string>
     <string name="doubleTap">"ダブルタップアクションを選択します"</string>
     <string name="longPress">"長押しアクションを選択"</string>
-    <string name="gesture1">"両方のメニューを開きます"</string>
+    <string name="gesture1">\"オープンソングメニュー\"</string>
     <string name="gesture2">"編集歌"</string>
     <string name="gesture3">"設定するために曲を追加"</string>
 
@@ -513,5 +513,9 @@
 	<string name="success">"成功"</string>
 	<string name="error">"エラー"</string>
 	<string name="takeawhile">"これにはしばらく時間がかかることがあります！"</string>
+	<string name="longPressDown">\"ペダルダウンロングプレス\"</string>
+	<string name="longPressNext">\"長押し、次のペダル\"</string>
+	<string name="longPressPrevious">\"長押し前のペダル\"</string>
+	<string name="longPressUp">\"ペダルアップを長押し\"</string>
 
 </resources>

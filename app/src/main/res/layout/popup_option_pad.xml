@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/optionPadTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="4dp"
+        android:gravity="center"
+        android:text="@string/pad"
+        android:textSize="14sp"
+        android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+        android:drawablePadding="4dp"
+        android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+        android:textColor="#ff0" />
+
+    <ScrollView
+        android:id="@+id/optionspadscrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/PadCrossFadeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="4dp"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:drawableLeft="@drawable/ic_shuffle_white_36dp"
+                android:drawableStart="@drawable/ic_shuffle_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/crossfade_time" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>

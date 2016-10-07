@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/optionGestureTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="4dp"
+        android:gravity="center"
+        android:text="@string/options_options_gestures"
+        android:textSize="14sp"
+        android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+        android:drawablePadding="4dp"
+        android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+        android:textColor="#ff0" />
+
+    <ScrollView
+        android:id="@+id/optionsgesturesscrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/gesturesPedalButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="4dp"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:drawableLeft="@drawable/ic_pedal_white_36dp"
+                android:drawableStart="@drawable/ic_pedal_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_options_pedal" />
+
+            <Button
+                android:id="@+id/gesturesCustomButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="4dp"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:drawableLeft="@drawable/ic_fingerprint_white_36dp"
+                android:drawableStart="@drawable/ic_fingerprint_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_options_gestures" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/gesturesMenuSwipeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:drawableLeft="@drawable/ic_menuswipe_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_menuswipe_white_36dp"
+                android:text="@string/options_options_menuswipe"
+                app:showText="false"/>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/gesturesSongSwipeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:drawableLeft="@drawable/ic_swipe_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_swipe_white_36dp"
+                android:text="@string/options_options_songswipe"
+                app:showText="false"/>
+
+        </LinearLayout>
+        </ScrollView>
+    </LinearLayout>

@@ -112,7 +112,7 @@
     <string name="customgestures">"指定自定义手势"</string>
     <string name="doubleTap">"选择双击动作"</string>
     <string name="longPress">"选择长按行动"</string>
-    <string name="gesture1">"打开这两个菜单"</string>
+    <string name="gesture1">\"打开菜单歌\"</string>
     <string name="gesture2">"编辑歌曲"</string>
     <string name="gesture3">"添加歌曲设置"</string>
 
@@ -518,5 +518,9 @@
 	<string name="success">"成功"</string>
 	<string name="error">"错误"</string>
 	<string name="takeawhile">"这可能需要一些时间！"</string>
+	<string name="longPressDown">\"长按向下踏板\"</string>
+	<string name="longPressUp">\"长按了踏板\"</string>
+	<string name="longPressPrevious">\"长按以前的踏板\"</string>
+	<string name="longPressNext">\"长按踏板旁边\"</string>
 
 </resources>

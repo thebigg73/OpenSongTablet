@@ -112,7 +112,7 @@
     <string name="customgestures">"Assegnare gesti personalizzati"</string>
     <string name="doubleTap">"Selezionare l'azione doppio tap"</string>
     <string name="longPress">"Selezionare l'azione premere a lungo"</string>
-    <string name="gesture1">"Aprire entrambi i menu"</string>
+    <string name="gesture1">\"Aprire il menu canzone\"</string>
     <string name="gesture2">"Modifica canzone"</string>
     <string name="gesture3">"Aggiungi canzone per impostare"</string>
 
@@ -514,5 +514,9 @@
 	<string name="success">"Successo"</string>
 	<string name="error">"Errore"</string>
 	<string name="takeawhile">"Questo potrebbe richiedere del tempo!"</string>
+	<string name="longPressDown">\"Premere a lungo il pedale\"</string>
+	<string name="longPressUp">\"Premere a lungo fino a pedale\"</string>
+	<string name="longPressPrevious">\"Premere a lungo il pedale precedente\"</string>
+	<string name="longPressNext">\"Premere a lungo il pedale prossimo\"</string>
 
 </resources>

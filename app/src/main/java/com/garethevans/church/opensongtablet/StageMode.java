@@ -1343,7 +1343,12 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
 
     @Override
     public void prepareOptionMenu() {
-        OptionMenuListeners.optionListeners(optionmenu,StageMode.this);
+        optionmenu = (LinearLayout) findViewById(R.id.optionmenu);
+        optionmenu.removeAllViews();
+        if (optionmenu!=null) {
+            optionmenu.addView(OptionMenuListeners.prepareOptionMenu(StageMode.this));
+            OptionMenuListeners.optionListeners(optionmenu, StageMode.this);
+        }
         if (firstrun_option) {
             openMyDrawers("option");
             closeMyDrawers("option_delayed");
@@ -1407,42 +1412,6 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
         newFragment = null;
         String message = "dialog";
         switch (FullscreenActivity.whattodo) {
-            case "setmenu":
-                newFragment = PopUpOptionMenuSet.newInstance();
-                break;
-
-            case "songmenu":
-                newFragment = PopUpOptionMenuSong.newInstance();
-                break;
-
-            case "chordsmenu":
-                newFragment = PopUpOptionMenuSet.newInstance();
-                break;
-
-            case "displaymenu":
-                newFragment = PopUpOptionMenuSet.newInstance();
-                break;
-
-            case "gesturesmenu":
-                newFragment = PopUpOptionMenuSet.newInstance();
-                break;
-
-            case "storagemenu":
-                newFragment = PopUpOptionMenuSet.newInstance();
-                break;
-
-            case "padmenu":
-                newFragment = PopUpOptionMenuSet.newInstance();
-                break;
-
-            case "autoscrollmenu":
-                newFragment = PopUpOptionMenuSet.newInstance();
-                break;
-
-            case "othermenu":
-                newFragment = PopUpOptionMenuSet.newInstance();
-                break;
-
             case "loadset":
             case "saveset":
             case "deleteset":

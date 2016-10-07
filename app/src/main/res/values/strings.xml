@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="longPressUp">Long press up pedal</string>
+    <string name="longPressDown">Long press down pedal</string>
+    <string name="longPressNext">Long press next pedal</string>
+    <string name="longPressPrevious">Long press previous pedal</string>
+
+    <string name="songfolder">Select song folder</string>
     <string name="stagemode">Stage Mode</string>
     <string name="switchtostagemode">Switch to Stage Mode</string>
-    <string name="songfolder">Select song folder</string>
     <string name="toobig">Please switch autoscale on for pdf export</string>
+    <string name="showcapo">Show capo chords</string>
     <string name="showchords">Show chords</string>
     <string name="showlyrics">Show lyrics</string>
-    <string name="showcapo">Show capo chords</string>
-    <string name="backup_import">Import OpenSongApp backup</string>
     <string name="backup_export">Export OpenSongApp backup</string>
-    <string name="backup_success">OpenSongApp backup created</string>
     <string name="backup_info">OpenSongApp Backup file</string>
+    <string name="backup_success">OpenSongApp backup created</string>
+    <string name="backup_import">Import OpenSongApp backup</string>
     <string name="backup_error">"No OpenSongApp backup file found in OpenSong folder"</string>
     <string name="processing">Files are being processed</string>
-    <string name="takeawhile">This may take some time!</string>
     <string name="success">Success</string>
     <string name="error">Error</string>
+    <string name="takeawhile">This may take some time!</string>
 
     <string name="websearch">Search internet for this song</string>
     <string name="extra">Extra information</string>
@@ -341,7 +346,7 @@
     <string name="customgestures">Assign custom gestures</string>   
     <string name="doubleTap">Select double tap action</string>
     <string name="longPress">Select long press action</string>
-    <string name="gesture1">Open both menus</string>
+    <string name="gesture1">Open song menu</string>
     <string name="gesture2">Edit song</string>
     <string name="gesture3">Add song to set</string>
     <string name="gesture4">Refresh current song</string>

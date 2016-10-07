@@ -3,17 +3,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/optionDisplayTitle"
+        android:id="@+id/optionOtherTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="4dp"
         android:gravity="center"
-        android:text="@string/options_display"
+        android:text="@string/options_other"
         android:textSize="14sp"
         android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
         android:drawablePadding="4dp"
@@ -21,7 +20,7 @@
         android:textColor="#ff0" />
 
     <ScrollView
-        android:id="@+id/optionsdisplayscrollview"
+        android:id="@+id/optionsotherscrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -31,7 +30,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/displayThemeButton"
+                android:id="@+id/otherHelpButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -39,13 +38,13 @@
                 android:drawablePadding="4dp"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_theme_light_dark_white_36dp"
-                android:drawableStart="@drawable/ic_theme_light_dark_white_36dp"
+                android:drawableLeft="@drawable/ic_help_outline_white_36dp"
+                android:drawableStart="@drawable/ic_help_outline_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_options_theme" />
+                android:text="@string/options_options_help" />
 
             <Button
-                android:id="@+id/displayAutoScaleButton"
+                android:id="@+id/otherTweetButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -53,13 +52,13 @@
                 android:drawablePadding="4dp"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_arrow_expand_white_36dp"
-                android:drawableStart="@drawable/ic_arrow_expand_white_36dp"
+                android:drawableLeft="@drawable/ic_twitter_white_36dp"
+                android:drawableStart="@drawable/ic_twitter_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_options_scale" />
+                android:text="\@OpenSongApp" />
 
             <Button
-                android:id="@+id/displayFontButton"
+                android:id="@+id/otherLanguageButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -67,13 +66,13 @@
                 android:drawablePadding="4dp"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_format_text_white_36dp"
-                android:drawableStart="@drawable/ic_format_text_white_36dp"
+                android:drawableLeft="@drawable/ic_g_translate_white_36dp"
+                android:drawableStart="@drawable/ic_g_translate_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_options_fonts" />
+                android:text="@string/language" />
 
             <Button
-                android:id="@+id/displayButtonsButton"
+                android:id="@+id/otheStartButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -81,13 +80,13 @@
                 android:drawablePadding="4dp"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_bullseye_white_36dp"
-                android:drawableStart="@drawable/ic_bullseye_white_36dp"
+                android:drawableLeft="@drawable/ic_exit_to_app_white_36dp"
+                android:drawableStart="@drawable/ic_exit_to_app_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/pagebuttons" />
+                android:text="@string/options_options_start" />
 
             <Button
-                android:id="@+id/displayInfoButton"
+                android:id="@+id/otheRateButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -95,38 +94,10 @@
                 android:drawablePadding="4dp"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_information_white_36dp"
-                android:drawableStart="@drawable/ic_information_white_36dp"
+                android:drawableLeft="@drawable/ic_thumbs_up_down_white_36dp"
+                android:drawableStart="@drawable/ic_thumbs_up_down_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/extra" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/displayMenuToggleSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_menu_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_menu_white_36dp"
-                android:text="@string/options_options_hidebar"
-                app:showText="false"/>
-
-            <Button
-                android:id="@+id/displayProfileButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_account_white_36dp"
-                android:drawableStart="@drawable/ic_account_white_36dp"
-                android:gravity="center_vertical"
-                android:text="@string/profile" />
+                android:text="@string/rate" />
 
         </LinearLayout>
     </ScrollView>

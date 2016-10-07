@@ -58,7 +58,6 @@ public class PopUpTransposeFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View V = inflater.inflate(R.layout.popup_transpose, container, false);
-
         getDialog().setTitle(getActivity().getResources().getString(R.string.transpose));
 
         // Initialise views

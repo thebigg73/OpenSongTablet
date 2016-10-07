@@ -41,20 +41,7 @@ public class PopUpWebViewFragment extends DialogFragment {
             webview.setVisibility(View.GONE);
             textview.setVisibility(View.VISIBLE);
             textview.setText(FullscreenActivity.indexlog);
-/*
-            File file = new File(FullscreenActivity.homedir+"/searchindexlog.txt");
-            String texttoshow;
-            try {
-                FileInputStream fis = new FileInputStream(file);
-                texttoshow = LoadXML.readTextFile(fis);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                texttoshow = "";
-            }
-            textview.setText(texttoshow);
-*/
         }
-
         return V;
     }
 

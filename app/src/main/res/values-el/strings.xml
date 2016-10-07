@@ -285,7 +285,7 @@
     <string name="customgestures">"Assign custom gestures"</string>   
     <string name="doubleTap">"Select double tap action"</string>
     <string name="longPress">"Select long press action"</string>
-    <string name="gesture1">"Open both menus"</string>
+    <string name="gesture1">\"Ανοίξτε το μενού του τραγουδιού\"</string>
     <string name="gesture2">"Edit song"</string>
     <string name="gesture3">"Add song to set"</string>
     <string name="gesture4">"Refresh current song"</string>
@@ -589,5 +589,9 @@
     <string name="success">"Επιτυχία"</string>
     <string name="error">"Λάθος"</string>
     <string name="takeawhile">"Αυτό μπορεί να πάρει κάποιο χρόνο!"</string>
+    <string name="longPressDown">\"Παρατεταμένο πάτημα πεντάλ\"</string>
+    <string name="longPressUp">\"Παρατεταμένο πάτημα μέχρι πεντάλ\"</string>
+    <string name="longPressPrevious">\"Παρατεταμένο πάτημα του πεντάλ προηγούμενο\"</string>
+    <string name="longPressNext">\"Παρατεταμένο πάτημα επόμενη πεντάλ\"</string>
 
 </resources>

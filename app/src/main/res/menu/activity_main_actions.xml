@@ -74,7 +74,7 @@
         android:title="@string/switchtostagemode"
         android:label="@string/switchtostagemode"
         android:hint="@string/switchtostagemode"
-        android:visible="false"
+        android:visible="true"
         app:showAsAction="never"/>
 
     <item android:id="@+id/present_mode"

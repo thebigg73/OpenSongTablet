@@ -3,20 +3,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#232333"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView68"
-        android:layout_width="match_parent"
+        android:id="@+id/setMenuTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="4dp"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:text="@string/options_set"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="14sp"
+        android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+        android:drawablePadding="4dp"
+        android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
         android:textColor="#ff0" />
-
 
     <ScrollView
         android:id="@+id/optionschordsscrollview"
@@ -35,8 +36,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:textColor="#fff"
+                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_upload_white_36dp"
-                android:drawablePadding="8dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_upload_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/options_set_load" />
@@ -47,8 +50,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:textColor="#fff"
+                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_download_white_36dp"
-                android:drawablePadding="8dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_download_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/options_set_save" />
@@ -59,8 +64,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:textColor="#fff"
+                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_plus_white_36dp"
-                android:drawablePadding="8dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_plus_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/options_set_clear" />
@@ -71,8 +78,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:textColor="#fff"
+                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_delete_white_36dp"
-                android:drawablePadding="8dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_delete_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/options_set_delete" />
@@ -83,8 +92,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:textColor="#fff"
+                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_share_variant_white_36dp"
-                android:drawablePadding="8dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_share_variant_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/options_set_export" />
@@ -95,8 +106,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:textColor="#fff"
+                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_code_braces_white_36dp"
-                android:drawablePadding="8dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_code_braces_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/add_custom_slide" />
@@ -107,8 +120,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:textColor="#fff"
+                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_code_brackets_white_36dp"
-                android:drawablePadding="8dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_code_brackets_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/customise_set_item" />
@@ -119,8 +134,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:textColor="#fff"
+                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_table_edit_white_36dp"
-                android:drawablePadding="8dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_table_edit_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/options_set_edit" />

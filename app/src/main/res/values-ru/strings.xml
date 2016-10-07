@@ -112,7 +112,7 @@
     <string name="customgestures">"Присвоение специальных жестов"</string>
     <string name="doubleTap">"Выберите двойного действия крана"</string>
     <string name="longPress">"Выберите Длительное нажатие действия"</string>
-    <string name="gesture1">"Откройте оба меню"</string>
+    <string name="gesture1">\"Открыть меню песню\"</string>
     <string name="gesture2">"Редактировать песня"</string>
     <string name="gesture3">"Добавить песню для установки"</string>
 
@@ -514,5 +514,9 @@
 	<string name="success">"успех"</string>
 	<string name="error">"ошибка"</string>
 	<string name="takeawhile">"Это может занять некоторое время!"</string>
+	<string name="longPressDown">\"Длительное нажатие на педаль\"</string>
+	<string name="longPressUp">\"Длительное нажатие на педаль\"</string>
+	<string name="longPressPrevious">\"Длительное нажатие педали предыдущая\"</string>
+	<string name="longPressNext">\"Длительное нажатие педали следующая\"</string>
 
 </resources>

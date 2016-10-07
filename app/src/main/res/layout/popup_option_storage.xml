@@ -1,30 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/chordsMenuTitle"
+        android:id="@+id/optionStorageTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="4dp"
         android:gravity="center"
-        android:text="@string/chords"
+        android:text="@string/options_storage"
         android:textSize="14sp"
         android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
         android:drawablePadding="4dp"
         android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
-        android:textColor="#ff0"
-
-
-        />
+        android:textColor="#ff0" />
 
     <ScrollView
-        android:id="@+id/optionschordsscrollview"
+        android:id="@+id/optionsstoragescrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -34,133 +30,131 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/chordsTransposeButton"
+                android:id="@+id/storageNewFolderButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:drawablePadding="4dp"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_transpose_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_transpose_white_36dp"
+                android:drawableLeft="@drawable/ic_folder_new_white_36dp"
+                android:drawableStart="@drawable/ic_folder_new_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_transpose" />
+                android:text="@string/options_song_newfolder" />
 
             <Button
-                android:id="@+id/chordsSharpButton"
+                android:id="@+id/storageEditButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:drawablePadding="4dp"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_sharp_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_sharp_white_36dp"
+                android:drawableLeft="@drawable/ic_folder_edit_white_36dp"
+                android:drawableStart="@drawable/ic_folder_edit_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_sharp" />
+                android:text="@string/options_song_editfolder" />
 
             <Button
-                android:id="@+id/chordsFlatButton"
+                android:id="@+id/storageManageButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:drawablePadding="4dp"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_flat_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_flat_white_36dp"
+                android:drawableLeft="@drawable/ic_sd_white_36dp"
+                android:drawableStart="@drawable/ic_sd_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_flat" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/chordsToggleSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:checked="true"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_guitar_electric_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_guitar_electric_white_36dp"
-                android:text="@string/showchords"
-                app:showText="false" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/chordsLyricsToggleSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:checked="true"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_comment_text_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_comment_text_white_36dp"
-                android:text="@string/showlyrics"
-                app:showText="false" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/chordsCapoToggleSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:checked="true"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_capo_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_capo_white_36dp"
-                android:text="@string/showcapo"
-                app:showText="false" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/chordsNativeAndCapoToggleSwitch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_capo_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_capo_white_36dp"
-                android:text="@string/capo_toggle_bothcapo"
-                app:showText="false" />
+                android:text="@string/storage_choose" />
 
             <Button
-                android:id="@+id/chordsFormatButton"
+                android:id="@+id/storageImportOSBButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:drawablePadding="4dp"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_chordformat_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_chordformat_white_36dp"
+                android:drawableLeft="@drawable/ic_unarchive_white_36dp"
+                android:drawableStart="@drawable/ic_unarchive_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_options_chordformat" />
+                android:text="@string/backup_import" />
 
             <Button
-                android:id="@+id/chordsConvertButton"
+                android:id="@+id/storageExportOSBButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:drawablePadding="4dp"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_chordconvert_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_chordconvert_white_36dp"
+                android:drawableLeft="@drawable/ic_archive_white_36dp"
+                android:drawableStart="@drawable/ic_archive_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_convert" />
+                android:text="@string/backup_export" />
+
+            <Button
+                android:id="@+id/storageImportOnSongButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="4dp"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:drawableLeft="@drawable/ic_unarchive_white_36dp"
+                android:drawableStart="@drawable/ic_unarchive_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/import_onsong_choose" />
+
+            <Button
+                android:id="@+id/storageSongMenuButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="4dp"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:drawableLeft="@drawable/ic_sync_white_36dp"
+                android:drawableStart="@drawable/ic_sync_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/refreshsongs" />
+
+            <Button
+                android:id="@+id/storageDatabaseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="4dp"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:drawableLeft="@drawable/ic_update_white_36dp"
+                android:drawableStart="@drawable/ic_update_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/search_rebuild" />
+
+            <Button
+                android:id="@+id/storageLogButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawablePadding="4dp"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:drawableLeft="@drawable/presenter_alert"
+                android:drawableStart="@drawable/presenter_alert"
+                android:gravity="center_vertical"
+                android:text="@string/search_log" />
+
 
         </LinearLayout>
     </ScrollView>

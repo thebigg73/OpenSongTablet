@@ -58,7 +58,7 @@ public class PopUpSetViewNew extends DialogFragment {
 
     public static ArrayList<String> mSongName = new ArrayList<>();
     public static ArrayList<String> mFolderName = new ArrayList<>();
-    static RecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;
 
     static ItemTouchHelper.Callback callback;
     static ItemTouchHelper helper;
@@ -164,9 +164,8 @@ public class PopUpSetViewNew extends DialogFragment {
 
         Dialog dialog = getDialog();
         if (dialog != null) {
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog);
         }
-
 
         // Try to move to the corresponding item in the set that we are viewing.
         SetActions.indexSongInSet();
@@ -187,7 +186,7 @@ public class PopUpSetViewNew extends DialogFragment {
     public void onResume() {
         Dialog dialog = getDialog();
         if (dialog != null) {
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog);
         }
         super.onResume();
     }

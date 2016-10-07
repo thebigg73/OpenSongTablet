@@ -45,12 +45,17 @@ public class Preferences extends Activity {
 	static int default_light_lyricsTagColor = 0xffddffdd;
 	static int default_light_lyricsChordsColor = 0xff0000dd;
 	static int default_light_lyricsCustomColor = 0xffccddff;
-		
+
 	public static void loadPreferences() {
 		// Load up the user preferences
 		// Set to blank if not used before
 		
 		Log.d("Preferences","Loading");
+
+		FullscreenActivity.longpresspreviouspedalgesture = myPreferences.getString("longpresspreviouspedalgesture","1");
+        FullscreenActivity.longpressnextpedalgesture = myPreferences.getString("longpressnextpedalgesture","4");
+        FullscreenActivity.longpressuppedalgesture = myPreferences.getString("longpressuppedalgesture","");
+        FullscreenActivity.longpressdownpedalgesture = myPreferences.getString("longpressdownpedalgesture","");
 
 		FullscreenActivity.override_fullscale = myPreferences.getBoolean("override_fullscale",true);
 		FullscreenActivity.override_widthscale = myPreferences.getBoolean("override_widthscale",false);
@@ -254,6 +259,11 @@ public class Preferences extends Activity {
 
 		SharedPreferences.Editor editor = myPreferences.edit();
 
+        editor.putString("longpresspreviouspedalgesture", FullscreenActivity.longpresspreviouspedalgesture);
+        editor.putString("longpressnextpedalgesture", FullscreenActivity.longpressnextpedalgesture);
+        editor.putString("longpressuppedalgesture", FullscreenActivity.longpressuppedalgesture);
+        editor.putString("longpressdownpedalgesture", FullscreenActivity.longpressdownpedalgesture);
+
 		editor.putBoolean("override_fullscale", FullscreenActivity.override_fullscale);
 		editor.putBoolean("override_widthscale", FullscreenActivity.override_widthscale);
         editor.putString("pagebutton_scale", FullscreenActivity.pagebutton_scale);
@@ -444,4 +454,21 @@ public class Preferences extends Activity {
 		editor.putString("mySet", FullscreenActivity.mySet);
 		editor.apply();
 	}
+
+	public static void loadSongPrep() {
+		SharedPreferences.Editor editor = myPreferences.edit();
+		editor.putBoolean("songloadsuccess", false);
+		editor.apply();
+	}
+
+	public static void loadSongSuccess() {
+		SharedPreferences.Editor editor = myPreferences.edit();
+		editor.putBoolean("songloadsuccess", true);
+		editor.apply();
+	}
+
+	public static boolean wasSongLoaded() {
+		return myPreferences.getBoolean("songloadsuccess",false);
+	}
+
 }

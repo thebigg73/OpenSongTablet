@@ -112,7 +112,7 @@
     <string name="customgestures">"Przypisywanie własnych gestów"</string>
     <string name="doubleTap">"Wybierz podwójne działanie kranu"</string>
     <string name="longPress">"Wybierz długie naciśnij działania"</string>
-    <string name="gesture1">"Otwórz oba menu"</string>
+    <string name="gesture1">\"Otwórz menu piosenka\"</string>
     <string name="gesture2">"Edycja piosenki"</string>
     <string name="gesture3">"Dodaj piosenkę ustawić"</string>
 
@@ -514,5 +514,9 @@
 	<string name="success">"Powodzenie"</string>
 	<string name="error">"Błąd"</string>
 	<string name="takeawhile">"To może zająć trochę czasu!"</string>
+	<string name="longPressDown">\"Długie naciśnięcie pedału dół\"</string>
+	<string name="longPressUp">\"Długie naciśnięcie pedału górę\"</string>
+	<string name="longPressPrevious">\"Długie naciśnięcie pedału poprzednia\"</string>
+	<string name="longPressNext">\"Długie naciśnięcie pedału następna\"</string>
 
 </resources>

@@ -38,7 +38,13 @@ public class LoadXML extends Activity {
     // This bit loads the lyrics from the required file
     public static void loadXML() throws XmlPullParserException, IOException {
 
+        // Set the song load status to false (helps check if it didn't load
+        Preferences.loadSongPrep();
+
         // Just in case
+        Log.d("d","songfilename="+FullscreenActivity.songfilename);
+        Log.d("d","whichSongFolder="+FullscreenActivity.whichSongFolder);
+
         FullscreenActivity.myLyrics = FullscreenActivity.songdoesntexist + "\n\n";
         FullscreenActivity.mLyrics = FullscreenActivity.songdoesntexist + "\n\n";
 
@@ -50,20 +56,24 @@ public class LoadXML extends Activity {
         // Get the android version
         int androidapi = Build.VERSION.SDK_INT;
         String filetype = "SONG";
-        if (FullscreenActivity.songfilename.contains(".pdf") || FullscreenActivity.songfilename.contains(".PDF")) {
+        if (FullscreenActivity.songfilename.endsWith(".pdf") || FullscreenActivity.songfilename.endsWith(".PDF")) {
             filetype = "PDF";
             isxml = false;
         }
-        if (FullscreenActivity.songfilename.contains(".doc") || FullscreenActivity.songfilename.contains(".DOC")) {
+        if (FullscreenActivity.songfilename.endsWith(".doc") || FullscreenActivity.songfilename.endsWith(".DOC") ||
+                FullscreenActivity.songfilename.endsWith(".docx") || FullscreenActivity.songfilename.endsWith(".docx")) {
             filetype = "DOC";
             isxml = false;
         }
-        if (FullscreenActivity.songfilename.contains(".jpg") || FullscreenActivity.songfilename.contains(".JPG") ||
-                FullscreenActivity.songfilename.contains(".png") || FullscreenActivity.songfilename.contains(".PNG") ||
-                FullscreenActivity.songfilename.contains(".gif") || FullscreenActivity.songfilename.contains(".GIF")) {
+        if (FullscreenActivity.songfilename.endsWith(".jpg") || FullscreenActivity.songfilename.endsWith(".JPG") ||
+                FullscreenActivity.songfilename.endsWith(".png") || FullscreenActivity.songfilename.endsWith(".PNG") ||
+                FullscreenActivity.songfilename.endsWith(".gif") || FullscreenActivity.songfilename.endsWith(".GIF")) {
             filetype = "IMG";
             isxml = false;
         }
+
+        // Determine the file encoding
+        utf = getUTFEncoding(FullscreenActivity.file);
 
         if (androidapi > 20 || !filetype.equals("PDF") && (!filetype.equals("DOC") && (!filetype.equals("IMG")))) {
             // Identify the file location
@@ -75,8 +85,7 @@ public class LoadXML extends Activity {
                         + FullscreenActivity.songfilename);
             }
 
-            // Determine the file encoding
-            utf = getUTFEncoding(FullscreenActivity.file);
+
 
             // Initialise all the xml tags a song should have
             initialiseSongTags();
@@ -93,6 +102,11 @@ public class LoadXML extends Activity {
                 FullscreenActivity.myXML = "<title>Love everlasting</title>\n<author></author>\n<lyrics>"
                         + FullscreenActivity.songdoesntexist + "\n\n" + "</lyrics>";
                 FullscreenActivity.myLyrics = "ERROR!";
+            }
+
+            if (isxml && !FullscreenActivity.myLyrics.equals("ERROR!")) {
+                // Song was loaded correctly and was xml format
+                Preferences.loadSongSuccess();
             }
 
             PopUpEditSongFragment.prepareSongXML();
@@ -112,10 +126,16 @@ public class LoadXML extends Activity {
                     InputStream inputStream = new FileInputStream(FullscreenActivity.file);
                     InputStreamReader streamReader = new InputStreamReader(inputStream);
                     BufferedReader bufferedReader = new BufferedReader(streamReader);
-                    FullscreenActivity.myXML = readTextFile(inputStream);
+                    if (validReadableFile()) {
+                        FullscreenActivity.myXML = readTextFile(inputStream);
+                    } else {
+                        FullscreenActivity.myXML = "";
+                    }
                     FullscreenActivity.mLyrics = FullscreenActivity.myXML;
                     inputStream.close();
                     bufferedReader.close();
+                    // Set the song load status to true:
+                    Preferences.loadSongSuccess();
 
                 } catch (java.io.FileNotFoundException e) {
                     // file doesn't exist
@@ -398,8 +418,6 @@ public class LoadXML extends Activity {
     public static void grabOpenSongXML() throws Exception {
         // Extract all of the key bits of the song
 
-        utf = getUTFEncoding(FullscreenActivity.file);
-
         XmlPullParserFactory factory;
         factory = XmlPullParserFactory.newInstance();
 
@@ -539,7 +557,11 @@ public class LoadXML extends Activity {
             String full_text;
             try {
                 InputStream inputStream = new FileInputStream(FullscreenActivity.file);
-                full_text = readTextFile(inputStream);
+                if (validReadableFile()) {
+                    full_text = readTextFile(inputStream);
+                } else {
+                    full_text = "";
+                }
             } catch (Exception e) {
                 Log.d("d","Error reading text file");
                 full_text = "";
@@ -567,4 +589,29 @@ public class LoadXML extends Activity {
             }
         }
     }
+
+    public static boolean validReadableFile() {
+        boolean isvalid = false;
+        // Get length of file in bytes
+        long filesize = FullscreenActivity.file.length();
+        // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
+        filesize = filesize / 1024;
+        // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
+        filesize = filesize / 1024;
+        String filename = FullscreenActivity.file.toString();
+        if (filename.endsWith(".txt") || filename.endsWith(".TXT") ||
+                filename.endsWith(".onsong") || filename.endsWith(".ONSONG") ||
+                filename.endsWith(".crd") || filename.endsWith(".CRD") ||
+                filename.endsWith(".chopro") || filename.endsWith(".CHOPRO") ||
+                filename.endsWith(".chordpro") || filename.endsWith(".CHORDPRO") ||
+                filename.endsWith(".usr") || filename.endsWith(".USR") ||
+                filename.endsWith(".pro") || filename.endsWith(".pro")) {
+            isvalid = true;
+        } else if (filesize<2) {
+            // Less than 2Mb
+            isvalid = true;
+        }
+        return isvalid;
+    }
+
 }

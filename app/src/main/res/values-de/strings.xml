@@ -112,7 +112,7 @@
     <string name="customgestures">"Benutzerdefinierte Gesten zuweisen"</string>
     <string name="doubleTap">"Doppeltipp-Aktion wählen"</string>
     <string name="longPress">"Aktion bei langem Drücken wählen"</string>
-    <string name="gesture1">"Beide Menüs öffnen"</string>
+    <string name="gesture1">\"Song-Menü öffnen\"</string>
     <string name="gesture2">"Song bearbeiten"</string>
     <string name="gesture3">"Song zum Set hinzufügen"</string>
     
@@ -500,21 +500,26 @@
 	<string name="profile_name">"Wählen Sie einen Profilnamen"</string>
 	<string name="size">"Größe"</string>
 	<string name="websearch">"Aktuellen Song auf Internet suchen"</string>
-	<string name="songfolder">"Wählen Sie Song-Ordner"</string>
+
+	<string name="songfolder">"Wählen Sie einen Song-Ordner"</string>
 	<string name="stagemode">"Bühnenmodus"</string>
 	<string name="switchtostagemode">"Wechseln Sie in den Bühnenmodus"</string>
-	<string name="toobig">"Bitte schalten automatische Skalierung auf für PDF-Export"</string>
-	<string name="showcapo">"Anzeigen capo Akkorde"</string>
-	<string name="showchords">"anzeigen Akkorde"</string>
-	<string name="showlyrics">"Zeige Texte"</string>
-	<string name="backup_export">"Export OpenSongApp Backup"</string>
-	<string name="backup_info">"OpenSongApp Backup-Datei"</string>
-	<string name="backup_success">"OpenSongApp Backup erstellt"</string>
-	<string name="backup_import">"Import OpenSongApp Backup"</string>
-	<string name="backup_error">"Keine OpenSongApp Sicherungsdatei in Opensong -Ordner gefunden"</string>
+	<string name="toobig">"Bitte schalten Sie die automatische Skalierung für PDF-Export ein"</string>
+	<string name="showcapo">"Capo-Akkorde anzeigen"</string>
+	<string name="showchords">"Akkorde anzeigen"</string>
+	<string name="showlyrics">"Texte anzeigen"</string>
+	<string name="backup_export">"OpenSongApp Sicherung exportieren"</string>
+	<string name="backup_info">"OpenSongApp Sicherungsdatei"</string>
+	<string name="backup_success">"OpenSongApp Sicherung erstellt"</string>
+	<string name="backup_import">"OpenSongApp Sicherung importieren"</string>
+	<string name="backup_error">"Keine OpenSongApp Sicherungsdatei in Opensong Ordner gefunden"</string>
 	<string name="processing">"Dateien werden verarbeitet"</string>
-	<string name="success">"Erfolg"</string>
+	<string name="success">"Aktion erfolgreich abgeschlossen"</string>
 	<string name="error">"Fehler"</string>
 	<string name="takeawhile">"Dies kann einige Zeit in Anspruch nehmen!"</string>
+	<string name="longPressDown">\"Lange nach unten drücken Pedal\"</string>
+	<string name="longPressNext">\"Langes Drücken nächste Pedal\"</string>
+	<string name="longPressPrevious">\"Langes Drücken vorherigen Pedal\"</string>
+	<string name="longPressUp">\"Langes Drücken auf Pedal\"</string>
 
 </resources>

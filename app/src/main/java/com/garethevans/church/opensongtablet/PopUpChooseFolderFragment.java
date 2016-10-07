@@ -44,7 +44,7 @@ public class PopUpChooseFolderFragment extends DialogFragment {
 
         final View V = inflater.inflate(R.layout.popup_choosefolder, container, false);
 
-        getDialog().setTitle(getActivity().getResources().getString(R.string.choosefolder));
+        getDialog().setTitle(getActivity().getResources().getString(R.string.songfolder));
         lv = (ListView) V.findViewById(R.id.songfolders_ListView);
 
         if (FullscreenActivity.mSongFolderNames!=null) {

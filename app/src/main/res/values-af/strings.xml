@@ -112,7 +112,7 @@
     <string name="customgestures">"Ken persoonlike gebare"</string>    
     <string name="doubleTap">"Kies dubbel tap aksie"</string>
     <string name="longPress">"Kies 'n lang pers aksie"</string>
-    <string name="gesture1">"Maak beide spyskaarte"</string>
+    <string name="gesture1">\"Oop lied spyskaart\"</string>
     <string name="gesture2">"Wysig lied"</string>
     <string name="gesture3">"Voeg liedjie te stel"</string>
 
@@ -514,5 +514,9 @@
 	<string name="success">"sukses"</string>
 	<string name="error">"fout"</string>
 	<string name="takeawhile">"Dit kan enige tyd neem!"</string>
+	<string name="longPressDown">\"Lang pers af pedaal\"</string>
+	<string name="longPressNext">\"Lang pers volgende pedaal\"</string>
+	<string name="longPressPrevious">\"Lang pers vorige pedaal\"</string>
+	<string name="longPressUp">\"Lang druk op die pedaal\"</string>
 
 </resources>

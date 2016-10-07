@@ -83,7 +83,7 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        getDialog().setTitle(getActivity().getResources().getString(R.string.options_song_edit));
+        getDialog().setTitle(getActivity().getResources().getString(R.string.action_search));
         View V = inflater.inflate(R.layout.searchview_filter, container, false);
 
         super.onCreate(savedInstanceState);

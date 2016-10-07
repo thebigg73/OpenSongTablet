@@ -83,7 +83,6 @@ public class PopUpImportExternalFile extends DialogFragment {
     String moveToFolder;
     String backupchosen;
     //Backup_Install backup_install;
-    String zipFile;
     FileInputStream inputStream;
     String scheme = "";
     ArrayList<String> backups = new ArrayList<>();
@@ -662,7 +661,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
             InputStream is;
             ZipArchiveInputStream zis;
-            String filename = null;
+            String filename;
             try {
                 is = new FileInputStream(FullscreenActivity.homedir + "/" + backupchosen);
                 Log.d("backup", "is=" + is);
@@ -695,8 +694,12 @@ public class PopUpImportExternalFile extends DialogFragment {
                         message = getActivity().getResources().getString(R.string.import_onsong_error);
                         e.printStackTrace();
                     } finally {
-                        fout.getFD().sync();
-                        out.close();
+                        try {
+                            fout.getFD().sync();
+                            out.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                 }
@@ -791,6 +794,7 @@ public class PopUpImportExternalFile extends DialogFragment {
             message = getActivity().getResources().getString(R.string.assetcopydone);
         }
 
+        @SuppressWarnings("TryFinallyCanBeTryWithResources")
         @Override
         protected String doInBackground(String... strings) {
             ZipInputStream zis = null;
@@ -812,7 +816,11 @@ public class PopUpImportExternalFile extends DialogFragment {
                         while ((count = zis.read(buffer)) != -1)
                             fout.write(buffer, 0, count);
                     } finally {
-                        fout.close();
+                        try {
+                            fout.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
             long time = ze.getTime();
             if (time > 0)

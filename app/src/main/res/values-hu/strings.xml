@@ -112,7 +112,7 @@
     <string name="customgestures">"Rendeljen egyedi gesztusok"</string>
     <string name="doubleTap">"Válassza ki dupla csap akció"</string>
     <string name="longPress">"Válassza ki a hosszú nyomja akció"</string>
-    <string name="gesture1">"Nyissuk menük"</string>
+    <string name="gesture1">\"Nyílt dal menü\"</string>
     <string name="gesture2">"Szerkesztés song"</string>
     <string name="gesture3">"Add dal beállítani"</string>
 
@@ -514,5 +514,9 @@
 	<string name="success">"Siker"</string>
 	<string name="error">"Hiba"</string>
 	<string name="takeawhile">"Ez eltarthat egy ideig!"</string>
+	<string name="longPressDown">\"Hosszan nyomja meg a pedál\"</string>
+	<string name="longPressNext">\"Hosszan nyomja meg a következő pedál\"</string>
+	<string name="longPressPrevious">\"Hosszan nyomja meg a korábbi pedál\"</string>
+	<string name="longPressUp">\"Hosszan nyomja fel pedál\"</string>
 
 </resources>

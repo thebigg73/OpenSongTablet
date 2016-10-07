@@ -98,7 +98,6 @@ public class DrawerTweaks {
                                       final LinearLayout song,
                                       final LinearLayout option,
                                       String which) {
-
         switch (which) {
             case "both":
                 drawer.closeDrawer(song);

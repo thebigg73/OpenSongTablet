@@ -59,7 +59,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.options_song_edit));
+        getDialog().setTitle(getActivity().getResources().getString(R.string.options_song_rename));
         View V = inflater.inflate(R.layout.popup_songfoldercreate, container, false);
 
         // Initialise the views

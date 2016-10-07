@@ -126,6 +126,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
     public static boolean sortAlphabetically = true;
 
+    // PopUp window size and alpha
+    public static float popupAlpha_Set = 0.6f;
+    public static float popupDim_Set = 0.7f;
+    public static float popupScale_Set = 8.0f;
+
     // Song menu
     public static String indexlog = "";
     public static ArrayList<String> searchFileName = new ArrayList<>();
@@ -138,6 +143,15 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static ArrayList<String> searchHymnNumber = new ArrayList<>();
     public static ArrayList<SearchViewItems> searchlist = new ArrayList<>();
     public static SearchViewAdapter sva;
+    ArrayAdapter<String> lva;
+    public static boolean menuscroll = true;
+
+    // Long and short key presses
+    public static boolean longKeyPress = false;
+    public static boolean shortKeyPress = false;
+
+    // Option menu
+    public static String whichOptionMenu = "MAIN";
 
     // Updated scaled view stuff
     public static int[] viewwidth;
@@ -611,6 +625,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String alwaysPreferredChordFormat = "";
     public static String gesture_doubletap = "";
     public static String gesture_longpress = "";
+    public static String longpressdownpedalgesture = "";
+    public static String longpressuppedalgesture = "";
+    public static String longpresspreviouspedalgesture = "";
+    public static String longpressnextpedalgesture = "";
     public static String bibleFile = "";
     public static boolean bibleLoaded = false;
     public static String bibleFileContents = "";
@@ -955,12 +973,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         myPreferences = getPreferences(MODE_PRIVATE);
         Preferences.loadPreferences();
 
-
         mainfoldername = getResources().getString(R.string.mainfoldername);
 
-        // To avoid permanent failures
-        whichSongFolder = "";
-        songfilename = "Welcome to OpenSongApp";
+        // If the song was loaded last time correctly, then we are good to continue
+        // If it didn't load, then reset the starting song and folder
+        if (!Preferences.wasSongLoaded()) {
+            whichSongFolder = "";
+            songfilename = "Welcome to OpenSongApp";
+        }
 
         // If whichSongFolder is empty, reset to main
         if (whichSongFolder == null || whichSongFolder.isEmpty() || whichSongFolder.equals("")) {
@@ -1038,7 +1058,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         text_note = note;
         text_variation = variation;
 
-        // If we have opened the app by an intent (clicking on an ost or osts file)
+        // If we have opened the app by an intent (clicking on an ost, osts or osb file)
         // Get the popup
         boolean needtoimport = false;
 
@@ -1095,7 +1115,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         // Or the default storage location isn't available, ask them!
         checkDirectories();
 
-        whichMode = "Performance";
+        //whichMode = "Performance";
 
         // If whichMode is Presentation, open that app instead
         if (whichMode.equals("Presentation") && dualDisplayCapable.equals("Y") && !needtoimport) {
@@ -1492,6 +1512,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             @Override
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
+                // Set a runnable to re-enable swipe
+                Handler allowswipe = new Handler();
+                allowswipe.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        tempswipeSet = "enable"; // enable swipe after short delay
+                    }
+                }, delayswipe_time); // 1800ms delay
                 toggleActionBar();
                 setupPageButtons();
                 showpagebuttons();
@@ -1501,6 +1529,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                tempswipeSet.equals("disable");
                 wasscrolling = false;
                 scrollbutton = false;
                 toggleActionBar();
@@ -2400,6 +2429,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         myToastMessage = "\"" + customslide_title + "\" " + getResources().getString(R.string.addedtoset);
         ShowToast.showToast(FullscreenActivity.this);
 
+        // Vibrate to let the user know something happened
+        Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vb.vibrate(200);
+
         // Save the set and other preferences
         Preferences.savePreferences();
 
@@ -2464,11 +2497,19 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public void updateCustomStorage() {
         // Reopen the appropriate dialog fragment
         if (myToastMessage.equals("link_other")) {
-            mLinkOther = filechosen.toString();
+            if (filechosen!=null) {
+                mLinkOther = filechosen.toString();
+            } else {
+                mLinkOther = "";
+            }
             newFragment = PopUpLinks.newInstance();
             newFragment.show(getFragmentManager(), "dialog");
         } else if (myToastMessage.equals("link_audio")) {
-            mLinkAudio = filechosen.toString();
+            if (filechosen!=null) {
+                mLinkAudio = filechosen.toString();
+            } else {
+                mLinkAudio = "";
+            }
             newFragment = PopUpLinks.newInstance();
             newFragment.show(getFragmentManager(), "dialog");
         }
@@ -3134,7 +3175,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
         @Override
         public void afterTextChanged(Editable s) {
-            mDuration = popupAutoscroll_duration.getText().toString();
+            if (popupAutoscroll_duration.getText()!=null) {
+                mDuration = popupAutoscroll_duration.getText().toString();
+            } else {
+                mDuration = "";
+            }
             try {
                 autoScrollDuration = Integer.parseInt(mDuration.replaceAll("[\\D]", ""));
             } catch (Exception e) {
@@ -3216,7 +3261,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         }
 
         autoScrollDelay = popupAutoscroll_delay.getProgress() - 1;
-        mDuration = popupAutoscroll_duration.getText().toString();
+        if (popupAutoscroll_duration.getText()!=null) {
+            mDuration = popupAutoscroll_duration.getText().toString();
+        } else {
+            mDuration = "";
+        }
 
         if (popupAutoscroll.getVisibility() == View.VISIBLE) {
             popupAutoscroll_toggle(view);
@@ -3367,7 +3416,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        mDuration = newduration.getText().toString();
+                        if (newduration.getText()!=null) {
+                            mDuration = newduration.getText().toString();
+                        } else {
+                            mDuration = "";
+                        }
                         mPreDelay = "" + newpredelay.getProgress();
                         PopUpEditSongFragment.prepareSongXML();
                         try {
@@ -4444,6 +4497,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
     @Override
     public void prepareSongMenu() {
+        menuFolder_TextView.setText(getResources().getString(R.string.wait));
+        mSongFileNames = new String[1];
+        mSongFileNames[0] = "";
+        lva = new ArrayAdapter<>(FullscreenActivity.this,R.layout.songlistitem,mSongFileNames);
+        song_list_view.setAdapter(lva);
+        lva.notifyDataSetChanged();
         if (preparesongmenu_async!=null) {
             preparesongmenu_async.cancel(true);
         }
@@ -4472,7 +4531,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             menuFolder_TextView.setText(FullscreenActivity.whichSongFolder);
 
             // Set the ListView to show the songs
-            ArrayAdapter<String> lva = new SongMenuAdapter(FullscreenActivity.this, FullscreenActivity.mSongFileNames);
+            lva = new SongMenuAdapter(FullscreenActivity.this, FullscreenActivity.mSongFileNames);
             song_list_view.setAdapter(lva);
             lva.notifyDataSetChanged();
 
@@ -4671,8 +4730,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         // Long clicking on the 9th or later options will remove the
                         // song from the set (all occurrences)
                         // Remove this song from the set. Remember it has tags at the start and end
+                        // Vibrate to let the user know something happened
                         Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                        vb.vibrate(25);
+                        vb.vibrate(200);
 
                         // Take away the menu items (9)
                         String tempSong = mSetList[childPosition - 9];
@@ -5550,21 +5610,17 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     }
 
     private void gesture1() {
-        // Collapse both menus
-/*
-        int count = listAdapterSong.getGroupCount();
-        for (int i = 0; i < count; i++) {
-            expListViewSong.collapseGroup(i);
-        }
-*/
         int count2 = listAdapterOption.getGroupCount();
         for (int i = 0; i < count2; i++) {
             expListViewOption.collapseGroup(i);
         }
-        // Open both drawers
-        //mDrawerLayout.openDrawer(expListViewSong);
-        mDrawerLayout.openDrawer(songmenu);
-        mDrawerLayout.openDrawer(expListViewOption);
+        // Open both drawers if they are closed
+        if (mDrawerLayout.isDrawerOpen(songmenu)) {
+            mDrawerLayout.closeDrawer(songmenu);
+        } else {
+            mDrawerLayout.openDrawer(songmenu);
+        }
+        //mDrawerLayout.openDrawer(expListViewOption);
         wasscrolling = false;
         if (delayactionBarHide!=null && hideActionBarRunnable!=null) {
             delayactionBarHide.removeCallbacks(hideActionBarRunnable);
@@ -5593,8 +5649,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             // Tell the user that the song has been added.
             myToastMessage = "\"" + songfilename + "\" "
                     + getResources().getString(R.string.addedtoset);
+            // Vibrate to let the user know something happened
             Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            vb.vibrate(25);
+            vb.vibrate(200);
             ShowToast.showToast(FullscreenActivity.this);
 
             // Save the set and other preferences
@@ -5684,114 +5741,325 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         if (keyCode == KeyEvent.KEYCODE_MENU && event.isLongPress()) {
             // Open up the song search intent instead of bringing up the keyboard
             Log.d("d", "menu long presses");
+            if (longKeyPress == true) {
+                shortKeyPress = false;
+            } else {
+                shortKeyPress = true;
+                longKeyPress = false;
+            }
             return true;
         }
-        return false;
+
+        if (keyCode == pageturner_DOWN || keyCode == pageturner_UP ||
+                keyCode == pageturner_PREVIOUS || keyCode == pageturner_NEXT) {
+            event.startTracking();
+            if (longKeyPress == true) {
+                shortKeyPress = false;
+            } else {
+                shortKeyPress = true;
+                longKeyPress = false;
+            }
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+        //return false;
     }
 
     // This bit listens for key presses (for page turn and scroll)
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
 
-        pressing_button = false;
+        event.startTracking();
+        if (shortKeyPress) {
+            pressing_button = false;
 
-        // Reset immersive mode
-        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-            restoreTranslucentBarsDelayed();
-        }
+            // Reset immersive mode
+            if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+                restoreTranslucentBarsDelayed();
+            }
 
-        // Set a runnable to reset swipe back to original value after 1 second
+            // Set a runnable to reset swipe back to original value after 1 second
 
-        // Eat the long press event so the keyboard doesn't come up.
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            if (event.isLongPress()) {
-                // Open up the song search intent instead of bringing up the keyboard
-                return true;
-            } else {
-                // User wants the menu opened/closed
-                if (mDrawerLayout.isDrawerOpen(expListViewOption)) {
-                    mDrawerLayout.closeDrawer(expListViewOption);
-                }
-                if (mDrawerLayout.isDrawerOpen(songmenu)) {
-                    mDrawerLayout.closeDrawer(songmenu);
+            // Eat the long press event so the keyboard doesn't come up.
+            if (keyCode == KeyEvent.KEYCODE_MENU) {
+                if (event.isLongPress()) {
+                    // Open up the song search intent instead of bringing up the keyboard
+                    return true;
+                } else {
+                    // User wants the menu opened/closed
+                    if (mDrawerLayout.isDrawerOpen(expListViewOption)) {
+                        mDrawerLayout.closeDrawer(expListViewOption);
+                    }
+                    if (mDrawerLayout.isDrawerOpen(songmenu)) {
+                        mDrawerLayout.closeDrawer(songmenu);
+                    }
                 }
             }
-        }
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (scrollstickyholder.getVisibility() == View.VISIBLE) {
-                // Hide the sticky
-                scrollstickyholder.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_top));
-                // After 500ms, make them invisible
-                Handler delayhidenote = new Handler();
-                delayhidenote.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mySticky.setVisibility(View.INVISIBLE);
-                        scrollstickyholder.setVisibility(View.GONE);
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                if (scrollstickyholder.getVisibility() == View.VISIBLE) {
+                    // Hide the sticky
+                    scrollstickyholder.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_top));
+                    // After 500ms, make them invisible
+                    Handler delayhidenote = new Handler();
+                    delayhidenote.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mySticky.setVisibility(View.INVISIBLE);
+                            scrollstickyholder.setVisibility(View.GONE);
+                        }
+                    }, 500);
+                    stickynotes.setAlpha(0.4f);
+
+                } else {
+                    // Ask the user if they want to exit.  Give them an are you sure prompt
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    // Yes button clicked
+                                    killPad1(padButton);
+                                    killPad2(padButton);
+                                    finish();
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    // No button clickedvisibility
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(FullscreenActivity.this);
+                    builder.setMessage(getResources().getString(R.string.exit))
+                            .setPositiveButton(getResources().getString(R.string.yes),
+                                    dialogClickListener)
+                            .setNegativeButton(getResources().getString(R.string.no),
+                                    dialogClickListener).show();
+                    return false;
+                }
+            } else if (keyCode == pageturner_NEXT) {
+                if (menuscroll && mDrawerLayout.isDrawerOpen(songmenu)) {
+                    // Song menu is open and user has enabled song menu scrolling using the footpedal
+                    song_list_view.smoothScrollBy((int) (0.9f * songmenu.getHeight()), 200);
+
+                } else {
+                    if (tempswipeSet.equals("disable")) {
+                        return false; // Currently disabled swiping to let screen finish drawing.
                     }
-                }, 500);
-                stickynotes.setAlpha(0.4f);
+                    tempswipeSet = "disable"; // Temporarily suspend swiping or next song
+                    // Set a runnable to re-enable swipe
+                    Handler allowswipe = new Handler();
+                    allowswipe.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            tempswipeSet = "enable"; // enable swipe after short delay
+                        }
+                    }, delayswipe_time); // 1800ms delay
 
-            } else {
-                // Ask the user if they want to exit.  Give them an are you sure prompt
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                // Yes button clicked
-                                killPad1(padButton);
-                                killPad2(padButton);
-                                finish();
-                                break;
-
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                // No button clickedvisibility
-                                break;
+                    // If we are viewing a set, move to the next song.
+                    // If we are not in a set, check for the next song. If it doesn't exist, do nothing
+                    if (setView.equals("N")) {
+                        // Currently not in set mode.  Get song position in list
+                        next_song = currentSongIndex + 1;
+                        if (next_song > mSongFileNames.length - 1) {
+                            // No next song!
+                            next_song = currentSongIndex;
                         }
                     }
-                };
+                    // Check if we can scroll first
+                    if (toggleScrollBeforeSwipe.equals("Y")) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(FullscreenActivity.this);
-                builder.setMessage(getResources().getString(R.string.exit))
-                        .setPositiveButton(getResources().getString(R.string.yes),
-                                dialogClickListener)
-                        .setNegativeButton(getResources().getString(R.string.no),
-                                dialogClickListener).show();
-                return false;
-            }
-        } else if (keyCode == pageturner_NEXT) {
+                        int height = scrollpage.getChildAt(0).getMeasuredHeight() - scrollpage.getHeight();
 
-            if (tempswipeSet.equals("disable")) {
-                return false; // Currently disabled swiping to let screen finish drawing.
-            }
-            tempswipeSet = "disable"; // Temporarily suspend swiping or next song
-            // Set a runnable to re-enable swipe
-            Handler allowswipe = new Handler();
-            allowswipe.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    tempswipeSet = "enable"; // enable swipe after short delay
+                        if (height > scrollpage.getScrollY()) {
+                            // Need to scroll down first
+                            DisplayMetrics metrics = new DisplayMetrics();
+                            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                            newPosFloat = scrollpage.getScrollY() + (float) (0.65 * metrics.heightPixels);
+                            scrollpage.smoothScrollBy(0, (int) (0.65 * metrics.heightPixels));
+
+                            // Set a runnable to check the scroll position after 1 second
+                            delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
+                            return false;
+                        }
+                    }
+
+                    // OK can't scroll, so move to the next song if we can
+
+                    if (isPDF && pdfPageCurrent < (pdfPageCount - 1)) {
+                        pdfPageCurrent = pdfPageCurrent + 1;
+                        redrawTheLyricsTable(main_page);
+                        return false;
+                    } else {
+                        pdfPageCurrent = 0;
+                    }
+
+                    whichDirection = "R2L";
+                    if (setSize >= 2 && setView.equals("Y") && indexSongInSet >= 0 && indexSongInSet < (setSize - 1)) {
+                        indexSongInSet += 1;
+                        doMoveInSet();
+                        expListViewOption.expandGroup(0);
+                        expListViewOption.setSelection(indexSongInSet);
+                        return true;
+                    } else {
+                        if (setView.equals("Y") || currentSongIndex == next_song) {
+                            // Already at the end!
+                            myToastMessage = getResources().getText(R.string.lastsong).toString();
+                            ShowToast.showToast(FullscreenActivity.this);
+                            return false;
+                        }
+                        // Not in set mode, so go to the next song
+                        songfilename = mSongFileNames[next_song];
+                        invalidateOptionsMenu();
+                        try {
+                            LoadXML.loadXML();
+                        } catch (XmlPullParserException | IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (needtorefreshsongmenu) {
+                            prepareSongMenu();
+                            needtorefreshsongmenu = false;
+                        }
+                        redrawTheLyricsTable(main_page);
+                    }
                 }
-            }, delayswipe_time); // 1800ms delay
 
-            // If we are viewing a set, move to the next song.
-            // If we are not in a set, check for the next song. If it doesn't exist, do nothing
-            if (setView.equals("N")) {
-                // Currently not in set mode.  Get song position in list
-                next_song = currentSongIndex + 1;
-                if (next_song > mSongFileNames.length - 1) {
-                    // No next song!
-                    next_song = currentSongIndex;
+            } else if (keyCode == pageturner_PREVIOUS) {
+                if (menuscroll && mDrawerLayout.isDrawerOpen(songmenu)) {
+                    // Song menu is open and user has enabled song menu scrolling using the footpedal
+                    song_list_view.smoothScrollBy((int) (-0.9f * songmenu.getHeight()), 200);
+
+                } else {
+                    if (tempswipeSet.equals("disable")) {
+                        return false; // Currently disabled swiping to let screen finish drawing.
+                    }
+                    tempswipeSet = "disable"; // Temporarily suspend swiping or next song
+                    // Set a runnable to re-enable swipe
+                    Handler allowswipe = new Handler();
+                    allowswipe.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            tempswipeSet = "enable"; // enable swipe after short delay
+                        }
+                    }, delayswipe_time);
+
+                    // If we are viewing a set, move to the next song.
+                    // If we are not in a set, check for the next song. If it doesn't exist, do nothing
+                    if (setView.equals("N")) {
+                        // Currently not in set mode.  Get song position in list
+                        expListViewOption.expandGroup(1);
+                        prev_song = currentSongIndex - 1;
+                        if (prev_song < 1) {
+                            // No next song!
+                            prev_song = currentSongIndex;
+                        }
+                    }
+                    // Check if we can scroll first
+                    if (toggleScrollBeforeSwipe.equals("Y")) {
+
+                        if (scrollpage.getScrollY() > 0) {
+                            // Need to scroll up first
+                            DisplayMetrics metrics = new DisplayMetrics();
+                            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                            newPosFloat = scrollpage.getScrollY() - (float) (0.65 * metrics.heightPixels);
+                            scrollpage.smoothScrollBy(0, (int) (-0.65 * metrics.heightPixels));
+
+                            // Set a runnable to check the scroll position after 1 second
+                            delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
+                            return false;
+                        }
+                    }
+
+                    // OK can't scroll, so move to the previous song if we can
+                    if (isPDF && pdfPageCurrent > 0) {
+                        pdfPageCurrent = pdfPageCurrent - 1;
+                        redrawTheLyricsTable(main_page);
+                        return false;
+                    } else {
+                        pdfPageCurrent = 0;
+                    }
+
+                    whichDirection = "L2R";
+                    if (setSize >= 2 && setView.equals("Y") && indexSongInSet >= 1) {
+                        indexSongInSet -= 1;
+                        doMoveInSet();
+                        expListViewOption.expandGroup(0);
+                        expListViewOption.setSelection(indexSongInSet);
+                        return true;
+                    } else {
+                        if (setView.equals("Y") || currentSongIndex == prev_song) {
+                            // Already at the start!
+                            myToastMessage = getResources().getText(R.string.firstsong).toString();
+                            ShowToast.showToast(FullscreenActivity.this);
+                            return false;
+                        }
+                        // Not in set mode, so go to the next song
+                        songfilename = mSongFileNames[prev_song];
+                        invalidateOptionsMenu();
+                        expListViewOption.expandGroup(1);
+                        try {
+                            LoadXML.loadXML();
+                        } catch (XmlPullParserException | IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (needtorefreshsongmenu) {
+                            prepareSongMenu();
+                            needtorefreshsongmenu = false;
+                        }
+                        redrawTheLyricsTable(main_page);
+                    }
                 }
-            }
-            // Check if we can scroll first
-            if (toggleScrollBeforeSwipe.equals("Y")) {
+            } else if (keyCode == pageturner_UP) {
+                if (menuscroll && mDrawerLayout.isDrawerOpen(songmenu)) {
+                    // Song menu is open and user has enabled song menu scrolling using the footpedal
+                    song_list_view.smoothScrollBy((int) (-0.9f * songmenu.getHeight()), 200);
 
-                int height = scrollpage.getChildAt(0).getMeasuredHeight() - scrollpage.getHeight();
+                } else {
+                    if (tempswipeSet.equals("disable")) {
+                        return false; // Currently disabled swiping to let screen finish drawing.
+                    }
+                    tempswipeSet = "disable"; // Temporarily suspend swiping or next song
+                    // Set a runnable to re-enable swipe
+                    Handler allowswipe = new Handler();
+                    allowswipe.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            tempswipeSet = "enable"; // enable swipe after short delay
+                        }
+                    }, delayswipe_time);
 
-                if (height > scrollpage.getScrollY()) {
-                    // Need to scroll down first
+                    // Scroll the screen up
+                    DisplayMetrics metrics = new DisplayMetrics();
+                    getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                    newPosFloat = scrollpage.getScrollY() - (float) (0.65 * metrics.heightPixels);
+                    scrollpage.smoothScrollBy(0, (int) (-0.65 * metrics.heightPixels));
+                    // Set a runnable to check the scroll position after 1 second
+                    delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
+                }
+
+            } else if (keyCode == pageturner_DOWN) {
+                if (menuscroll && mDrawerLayout.isDrawerOpen(songmenu)) {
+                    // Song menu is open and user has enabled song menu scrolling using the footpedal
+                    song_list_view.smoothScrollBy((int) (0.9f * songmenu.getHeight()), 200);
+
+                } else {
+
+                    if (tempswipeSet.equals("disable")) {
+                        return false; // Currently disabled swiping to let screen finish drawing.
+                    }
+                    tempswipeSet = "disable"; // Temporarily suspend swiping or next song
+                    // Set a runnable to re-enable swipe
+                    Handler allowswipe = new Handler();
+                    allowswipe.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            tempswipeSet = "enable"; // enable swipe after short delay
+                        }
+                    }, delayswipe_time);
+
+                    // Scroll the screen down
                     DisplayMetrics metrics = new DisplayMetrics();
                     getWindowManager().getDefaultDisplay().getMetrics(metrics);
                     newPosFloat = scrollpage.getScrollY() + (float) (0.65 * metrics.heightPixels);
@@ -5799,198 +6067,98 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
                     // Set a runnable to check the scroll position after 1 second
                     delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
-                    return false;
                 }
+            } else if (keyCode == pageturner_PAD) {
+                popupPad_startstop(padButton);
+
+            } else if (keyCode == pageturner_AUTOSCROLL) {
+                if (popupAutoscroll_stoporstart.equals("start")) {
+                    // user now wants to stop
+                    popupAutoscroll_stoporstart = "stop";
+                    popupAutoscroll_startstopbutton.setText(getResources().getString(R.string.start));
+                    autoscrollactivated = false;
+                } else {
+                    // user now wants to start
+                    popupAutoscroll_stoporstart = "start";
+                    popupAutoscroll_startstopbutton.setText(getResources().getString(R.string.stop));
+                    autoscrollactivated = true;
+                }
+                autoScroll(autoscrollButton);
+
+            } else if (keyCode == pageturner_METRONOME) {
+                popupMetronome_startstop(metronomeButton);
+
             }
-
-            // OK can't scroll, so move to the next song if we can
-
-            if (isPDF && pdfPageCurrent < (pdfPageCount - 1)) {
-                pdfPageCurrent = pdfPageCurrent + 1;
-                redrawTheLyricsTable(main_page);
-                return false;
-            } else {
-                pdfPageCurrent = 0;
-            }
-
-            whichDirection = "R2L";
-            if (setSize >= 2 && setView.equals("Y") && indexSongInSet >= 0 && indexSongInSet < (setSize - 1)) {
-                indexSongInSet += 1;
-                doMoveInSet();
-                expListViewOption.expandGroup(0);
-                expListViewOption.setSelection(indexSongInSet);
-                return true;
-            } else {
-                if (setView.equals("Y") || currentSongIndex == next_song) {
-                    // Already at the end!
-                    myToastMessage = getResources().getText(R.string.lastsong).toString();
-                    ShowToast.showToast(FullscreenActivity.this);
-                    return false;
-                }
-                // Not in set mode, so go to the next song
-                songfilename = mSongFileNames[next_song];
-                invalidateOptionsMenu();
-                try {
-                    LoadXML.loadXML();
-                } catch (XmlPullParserException | IOException e) {
-                    e.printStackTrace();
-                }
-                if (needtorefreshsongmenu) {
-                    prepareSongMenu();
-                    needtorefreshsongmenu = false;
-                }
-                redrawTheLyricsTable(main_page);
-            }
-
-        } else if (keyCode == pageturner_PREVIOUS) {
-
-            if (tempswipeSet.equals("disable")) {
-                return false; // Currently disabled swiping to let screen finish drawing.
-            }
-            tempswipeSet = "disable"; // Temporarily suspend swiping or next song
-            // Set a runnable to re-enable swipe
-            Handler allowswipe = new Handler();
-            allowswipe.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    tempswipeSet = "enable"; // enable swipe after short delay
-                }
-            }, delayswipe_time);
-
-            // If we are viewing a set, move to the next song.
-            // If we are not in a set, check for the next song. If it doesn't exist, do nothing
-            if (setView.equals("N")) {
-                // Currently not in set mode.  Get song position in list
-                expListViewOption.expandGroup(1);
-                prev_song = currentSongIndex - 1;
-                if (prev_song < 1) {
-                    // No next song!
-                    prev_song = currentSongIndex;
-                }
-            }
-            // Check if we can scroll first
-            if (toggleScrollBeforeSwipe.equals("Y")) {
-
-                if (scrollpage.getScrollY() > 0) {
-                    // Need to scroll up first
-                    DisplayMetrics metrics = new DisplayMetrics();
-                    getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                    newPosFloat = scrollpage.getScrollY() - (float) (0.65 * metrics.heightPixels);
-                    scrollpage.smoothScrollBy(0, (int) (-0.65 * metrics.heightPixels));
-
-                    // Set a runnable to check the scroll position after 1 second
-                    delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
-                    return false;
-                }
-            }
-
-            // OK can't scroll, so move to the previous song if we can
-            if (isPDF && pdfPageCurrent > 0) {
-                pdfPageCurrent = pdfPageCurrent - 1;
-                redrawTheLyricsTable(main_page);
-                return false;
-            } else {
-                pdfPageCurrent = 0;
-            }
-
-            whichDirection = "L2R";
-            if (setSize >= 2 && setView.equals("Y") && indexSongInSet >= 1) {
-                indexSongInSet -= 1;
-                doMoveInSet();
-                expListViewOption.expandGroup(0);
-                expListViewOption.setSelection(indexSongInSet);
-                return true;
-            } else {
-                if (setView.equals("Y") || currentSongIndex == prev_song) {
-                    // Already at the start!
-                    myToastMessage = getResources().getText(R.string.firstsong).toString();
-                    ShowToast.showToast(FullscreenActivity.this);
-                    return false;
-                }
-                // Not in set mode, so go to the next song
-                songfilename = mSongFileNames[prev_song];
-                invalidateOptionsMenu();
-                expListViewOption.expandGroup(1);
-                try {
-                    LoadXML.loadXML();
-                } catch (XmlPullParserException | IOException e) {
-                    e.printStackTrace();
-                }
-                if (needtorefreshsongmenu) {
-                    prepareSongMenu();
-                    needtorefreshsongmenu = false;
-                }
-                redrawTheLyricsTable(main_page);
-            }
-
-        } else if (keyCode == pageturner_UP) {
-            if (tempswipeSet.equals("disable")) {
-                return false; // Currently disabled swiping to let screen finish drawing.
-            }
-            tempswipeSet = "disable"; // Temporarily suspend swiping or next song
-            // Set a runnable to re-enable swipe
-            Handler allowswipe = new Handler();
-            allowswipe.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    tempswipeSet = "enable"; // enable swipe after short delay
-                }
-            }, delayswipe_time);
-
-            // Scroll the screen up
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            newPosFloat = scrollpage.getScrollY() - (float) (0.65 * metrics.heightPixels);
-            scrollpage.smoothScrollBy(0, (int) (-0.65 * metrics.heightPixels));
-            // Set a runnable to check the scroll position after 1 second
-            delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
-
-        } else if (keyCode == pageturner_DOWN) {
-            if (tempswipeSet.equals("disable")) {
-                return false; // Currently disabled swiping to let screen finish drawing.
-            }
-            tempswipeSet = "disable"; // Temporarily suspend swiping or next song
-            // Set a runnable to re-enable swipe
-            Handler allowswipe = new Handler();
-            allowswipe.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    tempswipeSet = "enable"; // enable swipe after short delay
-                }
-            }, delayswipe_time);
-
-            // Scroll the screen down
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            newPosFloat = scrollpage.getScrollY() + (float) (0.65 * metrics.heightPixels);
-            scrollpage.smoothScrollBy(0, (int) (0.65 * metrics.heightPixels));
-
-            // Set a runnable to check the scroll position after 1 second
-            delaycheckscroll.postDelayed(checkScrollPosition, checkscroll_time);
-
-        } else if (keyCode == pageturner_PAD) {
-            popupPad_startstop(padButton);
-
-        } else if (keyCode == pageturner_AUTOSCROLL) {
-            if (popupAutoscroll_stoporstart.equals("start")) {
-                // user now wants to stop
-                popupAutoscroll_stoporstart = "stop";
-                popupAutoscroll_startstopbutton.setText(getResources().getString(R.string.start));
-                autoscrollactivated = false;
-            } else {
-                // user now wants to start
-                popupAutoscroll_stoporstart = "start";
-                popupAutoscroll_startstopbutton.setText(getResources().getString(R.string.stop));
-                autoscrollactivated = true;
-            }
-            autoScroll(autoscrollButton);
-
-        } else if (keyCode == pageturner_METRONOME) {
-            popupMetronome_startstop(metronomeButton);
-
         }
-        return false;
+        shortKeyPress = true;
+        longKeyPress = false;
+        return true;
+        //return false;
     }
+
+
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        String action = "";
+        if (keyCode == pageturner_DOWN) {
+            action = longpressdownpedalgesture;
+        } else if (keyCode == pageturner_UP) {
+            action = longpressuppedalgesture;
+        } else if (keyCode == pageturner_PREVIOUS) {
+            action = longpresspreviouspedalgesture;
+        } else if (keyCode == pageturner_NEXT) {
+            action = longpressnextpedalgesture;
+        }
+
+        switch (action) {
+            case "1":
+                gesture1();
+
+                break;
+            case "2":
+                if (isPDF) {
+                    // Can't do this action on a pdf!
+                    myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+                    ShowToast.showToast(FullscreenActivity.this);
+                } else if (!isSong) {
+                    // Editing a slide / note / scripture / image
+                    myToastMessage = getResources().getString(R.string.not_allowed);
+                    ShowToast.showToast(FullscreenActivity.this);
+                } else {
+                    gesture2();
+                }
+
+                break;
+            case "3":
+                gesture3();
+
+                break;
+            case "4":
+                gesture4();
+
+                break;
+            case "5":
+                gesture5();
+
+                break;
+            case "6":
+                gesture6();
+
+                break;
+            case "7":
+                gesture7();
+                break;
+            default:
+                break;
+        }
+
+        if (action.length()>0) {
+            shortKeyPress = false;
+            longKeyPress = true;
+            return true;
+        }
+        return super.onKeyLongPress( keyCode, event );
+    };
 
     public void stickyNotes(View view) {
         if (mySticky.getVisibility() == View.VISIBLE) {
@@ -6998,7 +7166,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         delayautoscroll.removeCallbacks(autoScrollRunnable);
                     }
                     autoScrollDelay = popupAutoscroll_delay.getProgress() - 1;
-                    mDuration = popupAutoscroll_duration.getText().toString();
+                    if (popupAutoscroll_duration.getText()!=null) {
+                        mDuration = popupAutoscroll_duration.getText().toString();
+                    } else {
+                        mDuration = "";
+                    }
                     getAutoScrollValues();
 
                     // Wait 2 seconds before starting autoscroll (time for page to draw)
@@ -7033,7 +7205,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
             // Decide on best title
             String songtitleorfilename;
-            if (!mTitle.equals("")) {
+            if (mTitle!=null && !mTitle.equals("")) {
                 songtitleorfilename = mTitle.toString();
             } else {
                 songtitleorfilename = songfilename;
@@ -7045,10 +7217,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 keytext = " (" + mKey + ")";
             }
             // Get best author
-            if (mAuthor.equals("")) {
-                mTempAuthor = "";
-            } else {
+            if (mAuthor!=null && !mAuthor.equals("")) {
                 mTempAuthor = mAuthor.toString();
+            } else {
+                mTempAuthor = "";
             }
 
             // Put the title together
@@ -8057,7 +8229,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Get the text for the new sticky note
                         final String tempnewfoldername;
-                        tempnewfoldername = newfoldername.getText().toString();
+                        if (newfoldername.getText()!=null) {
+                            tempnewfoldername = newfoldername.getText().toString();
+                        } else {
+                            tempnewfoldername = "";
+                        }
                         if (tempnewfoldername.length() > 0 && !tempnewfoldername.contains("/") && !tempnewfoldername.contains(".")) {
 
                             // Make the folder
@@ -8143,7 +8319,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     @Override
                     public void onClick(DialogInterface dialog,
                                         int whichButton) {
-                        String newFolderTitle = f_editbox.getText().toString();
+                        String newFolderTitle;
+                        if (f_editbox.getText()!=null) {
+                            newFolderTitle = f_editbox.getText().toString();
+                        } else {
+                            newFolderTitle = "";
+                        }
                         if (currentFolder.length() > 0) {
                             // Isn't main folder, so allow rename
                             File from = new File(dir + "/" + currentFolder);
@@ -8354,7 +8535,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
     public void doMoveInSet() {
         invalidateOptionsMenu();
-        linkclicked = mSetList[indexSongInSet];
+        if (mSetList!=null && indexSongInSet>=mSetList.length) {
+            indexSongInSet = mSetList.length-1;
+            linkclicked = mSetList[indexSongInSet];
+        } else if (mSetList!=null) {
+            linkclicked = mSetList[indexSongInSet];
+        } else {
+            linkclicked = "Welcome to OpenSongApp";
+        }
         if (linkclicked == null) {
             linkclicked = "";
         }
@@ -8607,8 +8795,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                                     Intent chordiesearch = new Intent();
                                     chordiesearch.setClass(FullscreenActivity.this,
                                             Chordie.class);
-                                    chordiesearch.putExtra("thissearch",
-                                            inputsearch.getText().toString());
+                                    if (inputsearch.getText()!=null) {
+                                        chordiesearch.putExtra("thissearch",
+                                                inputsearch.getText().toString());
+                                    } else {
+                                        chordiesearch.putExtra("thissearch","");
+                                    }
                                     chordiesearch.putExtra("engine", "chordie");
                                     tryKillPads();
                                     tryKillMetronome();
@@ -8652,8 +8844,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                                     Intent ultimateguitarsearch = new Intent();
                                     ultimateguitarsearch.setClass(
                                             FullscreenActivity.this, Chordie.class);
-                                    ultimateguitarsearch.putExtra("thissearch",
-                                            inputsearch2.getText().toString());
+                                    if (inputsearch2.getText()!=null) {
+                                        ultimateguitarsearch.putExtra("thissearch",
+                                                inputsearch2.getText().toString());
+                                    } else {
+                                        ultimateguitarsearch.putExtra("thissearch","");
+                                    }
                                     ultimateguitarsearch.putExtra("engine",
                                             "ultimate-guitar");
                                     tryKillPads();
@@ -8699,9 +8895,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         myToastMessage = "\"" + songfilename + "\" "
                                 + getResources().getString(R.string.addedtoset);
                         ShowToast.showToast(FullscreenActivity.this);
-                        // Vibrate to indicate something has happened
+                        // Vibrate to let the user know something happened
                         Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                        vb.vibrate(25);
+                        vb.vibrate(200);
 
                         SetActions.prepareSetList();
                         invalidateOptionsMenu();
@@ -11085,6 +11281,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 if (filetoremove.delete()) {
                     myToastMessage = "\"" + songfilename + "\" "
                             + getResources().getString(R.string.songhasbeendeleted);
+                    songfilename = "Welcome to OpenSongApp";
+                    whichSongFolder = mainfoldername;
                 } else {
                     myToastMessage = getResources().getString(R.string.deleteerror_start)
                             + " \"" + songfilename + "\" "

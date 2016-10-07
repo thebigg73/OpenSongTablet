@@ -35,9 +35,19 @@ public class MenuHandlers extends Activity {
 
     public static int setBackAlpha() {
         // Three options here.  Depends on sections and song in set
-        boolean anothersection = FullscreenActivity.currentSection>0;
-        boolean anothersong    = FullscreenActivity.indexSongInSet>0;
-        boolean anotherpdfpage = FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent>0;
+        boolean anothersection = false;
+        boolean anothersong    = false;
+        boolean anotherpdfpage = false;
+
+        if (FullscreenActivity.currentSection>-1) {
+            anothersection = FullscreenActivity.currentSection > 0;
+        }
+        if (FullscreenActivity.indexSongInSet>-1) {
+            anothersong = FullscreenActivity.indexSongInSet > 0;
+        }
+        if (FullscreenActivity.pdfPageCurrent>-1) {
+            anotherpdfpage = FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0;
+        }
 
         if (anothersection || anothersong || anotherpdfpage) {
             return 255;
@@ -48,9 +58,19 @@ public class MenuHandlers extends Activity {
 
     public static int setForwardAlpha() {
         // Three options here.  Depends on sections and song in set
-        boolean anothersection = FullscreenActivity.currentSection<FullscreenActivity.songSections.length-1;
-        boolean anothersong    = FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length-1;
-        boolean anotherpdfpage = FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < FullscreenActivity.pdfPageCount -1;
+        boolean anothersection = false;
+        boolean anothersong    = false;
+        boolean anotherpdfpage = false;
+
+        if (FullscreenActivity.currentSection>-1 && FullscreenActivity.songSections!=null) {
+            anothersection = FullscreenActivity.currentSection < FullscreenActivity.songSections.length - 1;
+        }
+        if (FullscreenActivity.indexSongInSet>-1 && FullscreenActivity.mSetList!=null) {
+            anothersong = FullscreenActivity.indexSongInSet < FullscreenActivity.mSetList.length - 1;
+        }
+        if (FullscreenActivity.pdfPageCurrent>-1 && FullscreenActivity.pdfPageCount>-1) {
+            anotherpdfpage = FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < FullscreenActivity.pdfPageCount - 1;
+        }
 
         if (anothersection || anothersong || anotherpdfpage) {
             return 255;
@@ -61,9 +81,19 @@ public class MenuHandlers extends Activity {
 
     public static boolean setBackEnabled() {
         // Three options here.  Depends on sections and song in set
-        boolean anothersection = FullscreenActivity.currentSection>0;
-        boolean anothersong    = FullscreenActivity.indexSongInSet>0;
-        boolean anotherpdfpage = FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent>0;
+        boolean anothersection = false;
+        boolean anothersong = false;
+        boolean anotherpdfpage = false;
+
+        if (FullscreenActivity.currentSection>-1) {
+            anothersection = FullscreenActivity.currentSection > 0;
+        }
+        if (FullscreenActivity.indexSongInSet>-1) {
+            anothersong = FullscreenActivity.indexSongInSet > 0;
+        }
+        if (FullscreenActivity.pdfPageCurrent>-1) {
+            anotherpdfpage = FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0;
+        }
 
         return (anothersection || anothersong || anotherpdfpage);
     }
