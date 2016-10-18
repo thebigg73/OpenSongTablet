@@ -30,7 +30,7 @@ public class SongMenuListeners extends Activity {
                     // Set the appropriate song filename
                     FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[i];
 
-                    if (FullscreenActivity.setView.equals("Y") && FullscreenActivity.setSize > 0) {
+                    if (FullscreenActivity.setView && FullscreenActivity.setSize > 0) {
                         // Get the name of the song to look for (including folders if need be)
                         SetActions.getSongForSetWork();
 
@@ -46,14 +46,14 @@ public class SongMenuListeners extends Activity {
                         } else {
                             // Song isn't in the set, so just show the song
                             // Switch off the set view (buttons in action bar)
-                            FullscreenActivity.setView = "N";
+                            FullscreenActivity.setView = false;
                             // Re-enable the disabled button
 
                         }
                     } else {
                         // User wasn't in set view, or the set was empty
                         // Switch off the set view (buttons in action bar)
-                        FullscreenActivity.setView = "N";
+                        FullscreenActivity.setView = false;
                     }
 
                     // Now save the preferences
@@ -78,7 +78,7 @@ public class SongMenuListeners extends Activity {
                 FullscreenActivity.addingtoset = true;
                 // Vibrate to indicate something has happened
                 Vibrator vb = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-                vb.vibrate(50);
+                vb.vibrate(200);
 
                 // If the song is in .pro, .onsong, .txt format, tell the user to convert it first
                 // This is done by viewing it (avoids issues with file extension renames)

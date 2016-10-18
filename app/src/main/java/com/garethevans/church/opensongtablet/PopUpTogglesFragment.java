@@ -78,9 +78,9 @@ public class PopUpTogglesFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (buttonView.isChecked()) {
-                    FullscreenActivity.hideactionbaronoff = "Y";
+                    FullscreenActivity.hideActionBar = true;
                 } else {
-                    FullscreenActivity.hideactionbaronoff = "N";
+                    FullscreenActivity.hideActionBar = false;
                 }
                 doSave();
             }
@@ -90,9 +90,9 @@ public class PopUpTogglesFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (buttonView.isChecked()) {
-                    FullscreenActivity.hideactionbaronoff = "Y";
+                    FullscreenActivity.hideActionBar = true;
                 } else {
-                    FullscreenActivity.hideactionbaronoff = "N";
+                    FullscreenActivity.hideActionBar = false;
                 }
                 doSave();
 

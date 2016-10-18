@@ -78,13 +78,13 @@ public class ProcessSong extends Activity {
 
             if (lineLyrics[l].contains("_")) {
                 if (l>0 && !lineLyrics[l].contains("["+FullscreenActivity.image+"_") && !lineLyrics[l-1].contains("["+FullscreenActivity.image+"_")) {
-                    if (FullscreenActivity.showChords.equals("N")) {
+                    if (!FullscreenActivity.showChords) {
                         lineLyrics[l] = lineLyrics[l].replace("_","");
                     } else {
                         lineLyrics[l] = lineLyrics[l].replace("_"," ");
                     }
                 } else if (l==0 && !lineLyrics[l].contains("["+FullscreenActivity.image+"_")) {
-                    if (FullscreenActivity.showChords.equals("N") || FullscreenActivity.whichMode.equals("Presenter")) {
+                    if (!FullscreenActivity.showChords || FullscreenActivity.whichMode.equals("Presenter")) {
                         lineLyrics[l] = lineLyrics[l].replace("_","");
                     } else {
                         lineLyrics[l] = lineLyrics[l].replace("_"," ");

@@ -194,7 +194,11 @@ public class SetActions extends Activity {
     }
 
     public static void indexSongInSet() {
-        FullscreenActivity.setSize = FullscreenActivity.mSetList.length;
+        if (FullscreenActivity.mSetList!=null) {
+            FullscreenActivity.setSize = FullscreenActivity.mSetList.length;
+        } else {
+            FullscreenActivity.setSize = 0;
+        }
         FullscreenActivity.previousSongInSet = "";
         FullscreenActivity.nextSongInSet = "";
 
@@ -252,7 +256,7 @@ public class SetActions extends Activity {
     public static void clearSet(Context c) {
         FullscreenActivity.mySet = "";
         FullscreenActivity.mSetList = null;
-        FullscreenActivity.setView = "N";
+        FullscreenActivity.setView = false;
 
         // Save the new, empty, set
         Preferences.savePreferences();
@@ -302,23 +306,23 @@ public class SetActions extends Activity {
             // Get the name of the song to look for (including folders if need be)
             getSongForSetWork();
 
-            if (FullscreenActivity.setView.equals("Y") && FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
+            if (FullscreenActivity.setView && FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
                 // If we are currently in set mode, check if the new song is there, in which case do nothing else
-                FullscreenActivity.setView = "Y";
+                FullscreenActivity.setView = true;
                 indexSongInSet();
                 return true;
 
-            } else if (FullscreenActivity.setView.equals("Y") && !FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
+            } else if (FullscreenActivity.setView && !FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
                 // If we are currently in set mode, but the new song isn't there, leave set mode
-                FullscreenActivity.setView = "N";
+                FullscreenActivity.setView = false;
                 FullscreenActivity.previousSongInSet = "";
                 FullscreenActivity.nextSongInSet = "";
                 FullscreenActivity.indexSongInSet = 0;
                 return false;
 
-            } else if (FullscreenActivity.setView.equals("N") && FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
+            } else if (!FullscreenActivity.setView && FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
                 // If we aren't currently in set mode and the new song is there, enter set mode and get the index
-                FullscreenActivity.setView = "Y";
+                FullscreenActivity.setView = true;
                 FullscreenActivity.previousSongInSet = "";
                 FullscreenActivity.nextSongInSet = "";
 
@@ -328,7 +332,7 @@ public class SetActions extends Activity {
 
             } else if (!FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
                 // The new song isn't in the set, so leave set mode and reset index
-                FullscreenActivity.setView = "N";
+                FullscreenActivity.setView = false;
                 FullscreenActivity.previousSongInSet = "";
                 FullscreenActivity.nextSongInSet = "";
                 FullscreenActivity.indexSongInSet = 0;
@@ -339,7 +343,7 @@ public class SetActions extends Activity {
         } else {
             // User wasn't in set view, or the set was empty
             // Switch off the set view (buttons in action bar)
-            FullscreenActivity.setView = "N";
+            FullscreenActivity.setView = false;
             FullscreenActivity.previousSongInSet = "";
             FullscreenActivity.nextSongInSet = "";
             FullscreenActivity.indexSongInSet = 0;
@@ -798,7 +802,7 @@ public class SetActions extends Activity {
         // If we have just loaded a set, and it isn't empty,  load the first item
         if (FullscreenActivity.mSetList.length>0) {
             FullscreenActivity.whatsongforsetwork = FullscreenActivity.mSetList[0];
-            FullscreenActivity.setView = "Y";
+            FullscreenActivity.setView = true;
 
             FullscreenActivity.linkclicked = FullscreenActivity.mSetList[0];
             FullscreenActivity.pdfPageCurrent = 0;

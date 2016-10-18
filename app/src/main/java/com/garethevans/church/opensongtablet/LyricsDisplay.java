@@ -42,13 +42,13 @@ public class LyricsDisplay extends Activity {
 		for (int l=0;l<FullscreenActivity.numrowstowrite;l++) {
 			if (FullscreenActivity.myParsedLyrics[l].contains("_")) {
 				if (l>0 && !FullscreenActivity.myParsedLyrics[l].contains("["+FullscreenActivity.image+"_") && !FullscreenActivity.myParsedLyrics[l-1].contains("["+FullscreenActivity.image+"_")) {
-					if (FullscreenActivity.showChords.equals("N")) {
+					if (!FullscreenActivity.showChords) {
 						FullscreenActivity.myParsedLyrics[l] = FullscreenActivity.myParsedLyrics[l].replace("_","");
 					} else {
 						FullscreenActivity.myParsedLyrics[l] = FullscreenActivity.myParsedLyrics[l].replace("_"," ");
 					}
 				} else if (l==0 && !FullscreenActivity.myParsedLyrics[l].contains("["+FullscreenActivity.image+"_")) {
-					if (FullscreenActivity.showChords.equals("N")) {
+					if (!FullscreenActivity.showChords) {
 						FullscreenActivity.myParsedLyrics[l] = FullscreenActivity.myParsedLyrics[l].replace("_","");
 					} else {
 						FullscreenActivity.myParsedLyrics[l] = FullscreenActivity.myParsedLyrics[l].replace("_"," ");

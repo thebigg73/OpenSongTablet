@@ -314,7 +314,7 @@ public class ListSongFiles extends Activity {
     }
 
     public static void deleteSong(Context c) {
-        FullscreenActivity.setView = "N";
+        FullscreenActivity.setView = false;
         String setFileLocation;
         if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
             setFileLocation = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;

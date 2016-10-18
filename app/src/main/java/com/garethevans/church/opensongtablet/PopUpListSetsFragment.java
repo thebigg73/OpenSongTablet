@@ -39,8 +39,8 @@ public class PopUpListSetsFragment extends DialogFragment {
         return frag;
     }
 
-    static EditText setListName;
-    static TextView newSetPromptTitle;
+    EditText setListName;
+    TextView newSetPromptTitle;
     static String myTitle;
     static FetchDataTask dataTask;
     static ProgressDialog prog;
@@ -49,7 +49,7 @@ public class PopUpListSetsFragment extends DialogFragment {
     public static Runnable runnable;
     public static String[] setnames;
     public static ArrayAdapter<String> adapter;
-    public static ListView setListView1;
+    public ListView setListView1;
 
     public interface MyInterface {
         void refreshAll();
@@ -159,12 +159,16 @@ public class PopUpListSetsFragment extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the name of the set to do stuff with
                 // Since we can select multiple sets, check it isn't already in the setnamechosen field
-                if (!FullscreenActivity.setnamechosen.contains(setnames[position])) {
-                    // Add it to the setnamechosen
-                    FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen + setnames[position] + "%_%";
+                if (FullscreenActivity.whattodo.equals("exportset")) {
+                    FullscreenActivity.setnamechosen = setnames[position] + "%_%";
                 } else {
-                    // Remove it from the setnamechosen
-                    FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen.replace(setnames[position] + "%_%", "");
+                    if (!FullscreenActivity.setnamechosen.contains(setnames[position])) {
+                        // Add it to the setnamechosen
+                        FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen + setnames[position] + "%_%";
+                    } else {
+                        // Remove it from the setnamechosen
+                        FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen.replace(setnames[position] + "%_%", "");
+                    }
                 }
 
                 setListName.setText(setnames[position]);
@@ -296,9 +300,10 @@ public class PopUpListSetsFragment extends DialogFragment {
         // Popup the are you sure alert into another dialog fragment
         // Get the list of set lists to be deleted
         String setstodelete = FullscreenActivity.setnamechosen.replace("%_%",", ");
-        setstodelete = setstodelete.substring(0, setstodelete.length() - 2);
+        if (setstodelete.endsWith(", ")) {
+            setstodelete = setstodelete.substring(0, setstodelete.length() - 2);
+        }
 
-        //String message = getResources().getString(R.string.options_set_delete) + " \"" + setListName.getText().toString().trim() + "\"?";
         String message = getResources().getString(R.string.options_set_delete) + " \"" + setstodelete + "\"?";
         FullscreenActivity.myToastMessage = message;
         DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
@@ -464,7 +469,7 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         @Override
         protected void onPostExecute(String result) {
-            FullscreenActivity.setView = "Y";
+            FullscreenActivity.setView = true;
 
             if (result.equals("LOADED") && !dataTask.isCancelled()) {
                 // Get the set first item

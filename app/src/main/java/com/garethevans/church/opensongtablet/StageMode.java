@@ -3,13 +3,16 @@ package com.garethevans.church.opensongtablet;
 import android.Manifest;
 import android.app.DialogFragment;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -43,8 +46,9 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
         SongMenuListeners.MyInterface, OptionMenuListeners.MyInterface, MenuHandlers.MyInterface,
         SetActions.MyInterface, PopUpFullSearchFragment.MyInterface, IndexSongs.MyInterface,
         SearchView.OnQueryTextListener, PopUpSetViewNew.MyInterface,
-        PopUpChooseFolderFragment.MyInterface,
-        PopUpOptionMenuSet.MyInterface, PopUpOptionMenuSong.MyInterface {
+        PopUpChooseFolderFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
+        PopUpOptionMenuSet.MyInterface, PopUpOptionMenuSong.MyInterface,
+        PopUpLanguageFragment.MyInterface {
 
     // The toolbar and menu
     public Toolbar ab_toolbar;
@@ -237,12 +241,12 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
         }
 
         if (presentationMode!=null) {
-            presentationMode.setVisible(FullscreenActivity.dualDisplayCapable.equals("Y"));
+            presentationMode.setVisible(FullscreenActivity.dualDisplayCapable);
             presentationMode.getIcon().setAlpha(MenuHandlers.dualScreenAlpha());
         }
 
         if (stageMode!=null) {
-            stageMode.setVisible(FullscreenActivity.dualDisplayCapable.equals("Y"));
+            stageMode.setVisible(FullscreenActivity.dualDisplayCapable);
             stageMode.getIcon().setAlpha(MenuHandlers.dualScreenAlpha());
         }
         return true;
@@ -469,7 +473,7 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
         SearchViewItems item = (SearchViewItems) FullscreenActivity.sva.getItem(0);
         FullscreenActivity.songfilename = item.getFilename();
         FullscreenActivity.whichSongFolder = item.getFolder();
-        FullscreenActivity.setView = "N";
+        FullscreenActivity.setView = false;
         FullscreenActivity.myToastMessage = FullscreenActivity.songfilename;
         //Save preferences
         Preferences.savePreferences();
@@ -485,6 +489,24 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
             FullscreenActivity.sva.getFilter().filter(newText);
         }
         return false;
+    }
+
+    @Override
+    public void addSlideToSet() {
+        // Add the slide
+        CustomSlide.addCustomSlide();
+
+        // Tell the user that the song has been added.
+        FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.customslide_title + "\" " + getResources().getString(R.string.addedtoset);
+        ShowToast.showToast(StageMode.this);
+
+        // Vibrate to let the user know something happened
+        Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vb.vibrate(200);
+
+        invalidateOptionsMenu();
+        prepareOptionMenu();
+        closeMyDrawers("option_delayed");
     }
 
     private class LoadSongAsync extends AsyncTask<Object, Void, String> {
@@ -1322,11 +1344,20 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
 
     @Override
     public void songLongClick(int mychild) {
-        // Close both drawers
-        closeMyDrawers("both");
-        // Rebuild the options and menu to update the set items
+        /*// Rebuild the options and menu to update the set items
+        SetActions.prepareSetList();
+        FullscreenActivity.whichOptionMenu = "SET";
+        optionmenu.invalidate();
         prepareOptionMenu();
         invalidateOptionsMenu();
+        openMyDrawers("option");
+        closeMyDrawers("option_delayed");*/
+
+        // Rebuild the set list as we've just added a song
+        SetActions.prepareSetList();
+        closeMyDrawers("song");
+        openMyDrawers("option");
+        closeMyDrawers("option_delayed");
     }
 
     @Override
@@ -1342,9 +1373,43 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
     }
 
     @Override
+    public void removeSongFromSet(int val) {
+        // Let the user know something is happening
+        Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vb.vibrate(200);
+
+        // Take away the menu item
+        String tempSong = FullscreenActivity.mSetList[val];
+        FullscreenActivity.mSetList[val] = "";
+
+        FullscreenActivity.mySet = "";
+        for (String aMSetList : FullscreenActivity.mSetList) {
+            if (!aMSetList.isEmpty()) {
+                FullscreenActivity.mySet = FullscreenActivity.mySet + "$**_" + aMSetList + "_**$";
+            }
+        }
+
+        // Tell the user that the song has been removed.
+        FullscreenActivity.myToastMessage = "\"" + tempSong + "\" "
+                + getResources().getString(R.string.removedfromset);
+        ShowToast.showToast(StageMode.this);
+
+        //Check to see if our set list is still valid
+        SetActions.prepareSetList();
+        prepareOptionMenu();
+        invalidateOptionsMenu();
+
+        // Save set
+        Preferences.savePreferences();
+
+        closeMyDrawers("option");
+    }
+
+    @Override
     public void prepareOptionMenu() {
         optionmenu = (LinearLayout) findViewById(R.id.optionmenu);
         optionmenu.removeAllViews();
+        Log.d("d","optionmenu="+optionmenu);
         if (optionmenu!=null) {
             optionmenu.addView(OptionMenuListeners.prepareOptionMenu(StageMode.this));
             OptionMenuListeners.optionListeners(optionmenu, StageMode.this);
@@ -1354,11 +1419,6 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
             closeMyDrawers("option_delayed");
             firstrun_option = false;
         }
-    }
-
-    @Override
-    public void optionLongClick(int myparent, int mychild) {
-
     }
 
     @Override
@@ -1373,11 +1433,6 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
         if (ab != null) {
             ab.hide();
         }
-    }
-
-    @Override
-    public void onSongImport() {
-
     }
 
     @Override
@@ -1533,7 +1588,21 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
                 newFragment = PopUpChooseFolderFragment.newInstance();
                 break;
 
+            case "choosechordformat":
+                newFragment = PopUpChordFormatFragment.newInstance();
+                break;
+
+            case "importosb":
+                newFragment = PopUpImportExternalFile.newInstance();
+                break;
+
+            case "importos":
+                newFragment = PopUpImportExternalFile.newInstance();
+                break;
+
         }
+
+        FullscreenActivity.whattodo = "";
 
         if (newFragment!=null) {
             newFragment.show(getFragmentManager(), message);
@@ -1571,6 +1640,18 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
             FullscreenActivity.whichMode = "Stage";
             loadSong();
         }
+    }
+
+    @Override
+    public void splashScreen() {
+        SharedPreferences settings = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("showSplashVersion", 0);
+        editor.apply();
+        Intent intent = new Intent();
+        intent.setClass(StageMode.this, SettingsActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override

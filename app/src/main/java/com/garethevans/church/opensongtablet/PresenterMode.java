@@ -595,7 +595,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                     // Set the appropriate song filename
                     FullscreenActivity.songfilename = listDataChildSong.get(listDataHeaderSong.get(groupPosition)).get(childPosition);
 
-                    if (FullscreenActivity.setView.equals("Y") && FullscreenActivity.setSize > 0) {
+                    if (FullscreenActivity.setView && FullscreenActivity.setSize > 0) {
                         // Get the name of the song to look for (including folders if need be)
                         SetActions.getSongForSetWork();
 
@@ -611,7 +611,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                         } else {
                             // Song isn't in the set, so just show the song
                             // Switch off the set view (buttons in action bar)
-                            FullscreenActivity.setView = "N";
+                            FullscreenActivity.setView = false;
                             // Re-enable the disabled button
                             if (currentsetbutton != null) {
                                 Button oldbutton = (Button) currentsetbutton;
@@ -627,7 +627,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                     } else {
                         // User wasn't in set view, or the set was empty
                         // Switch off the set view (buttons in action bar)
-                        FullscreenActivity.setView = "N";
+                        FullscreenActivity.setView = false;
                     }
 
                     // Now save the preferences
@@ -1681,7 +1681,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
 
             tempSongLocation = FullscreenActivity.mSetList[whichviewSetSection];
 
-            FullscreenActivity.setView = "Y";
+            FullscreenActivity.setView = true;
             FullscreenActivity.indexSongInSet = whichviewSetSection;
             if (whichviewSetSection < 1) {
                 FullscreenActivity.previousSongInSet = "";
@@ -2278,7 +2278,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
 
         MenuItem set_back = menu.findItem(R.id.set_back);
         MenuItem set_forward = menu.findItem(R.id.set_forward);
-        if (FullscreenActivity.setSize > 0 && FullscreenActivity.setView.equals("Y")) {
+        if (FullscreenActivity.setSize > 0 && FullscreenActivity.setView) {
             set_back.setVisible(true);
             set_forward.setVisible(true);
             set_back.getIcon().setAlpha(255);
@@ -2377,7 +2377,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                 ShowToast.showToast(PresenterMode.this);
 
                 // Switch set view on
-                FullscreenActivity.setView = "Y";
+                FullscreenActivity.setView = true;
                 //SetActions.prepareSetList();
                 SetActions.indexSongInSet();
 
@@ -2560,7 +2560,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             Log.d("d","Fragment already closed");
         }
 
-        FullscreenActivity.setView = "Y";
+        FullscreenActivity.setView = true;
         // Specify which songinset button
         whichsonginset = FullscreenActivity.indexSongInSet;
         whichsongsection = 0;
@@ -2642,7 +2642,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                 // Clear the set
                 FullscreenActivity.mySet = "";
                 FullscreenActivity.mSetList = null;
-                FullscreenActivity.setView = "N";
+                FullscreenActivity.setView = false;
                 invalidateOptionsMenu();
 
                 // Save the new, empty, set
@@ -2669,7 +2669,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
 
             case "deletesong":
                 // Delete current song
-                FullscreenActivity.setView = "N";
+                FullscreenActivity.setView = false;
                 String setFileLocation;
                 if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
                     setFileLocation = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
@@ -2890,7 +2890,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             FullscreenActivity.presenterChords.equals("N");
             FullscreenActivity.myLyrics = ProcessSong.removeChordLines(FullscreenActivity.mLyrics);
             FullscreenActivity.myLyrics = ProcessSong.removeCommentLines(FullscreenActivity.myLyrics);
-            FullscreenActivity.showChords = "N";
+            FullscreenActivity.showChords = false;
             FullscreenActivity.myLyrics = ProcessSong.removeUnderScores(FullscreenActivity.myLyrics);
 
             // 1. Sort multiline verse/chord formats

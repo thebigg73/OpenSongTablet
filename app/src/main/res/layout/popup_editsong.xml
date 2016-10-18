@@ -162,7 +162,7 @@
                 android:text="@string/edit_song_duration"
                 android:textColor="#ff0"
                 android:textSize="16sp"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <EditText
                 android:id="@+id/edit_song_duration"

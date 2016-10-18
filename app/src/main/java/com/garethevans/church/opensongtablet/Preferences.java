@@ -92,6 +92,8 @@ public class Preferences extends Activity {
 		FullscreenActivity.myAlert = myPreferences.getString("myAlert", "");
 		FullscreenActivity.showNextInSet = myPreferences.getString("showNextInSet", "bottom");
 		FullscreenActivity.capoDisplay = myPreferences.getString("capoDisplay", "both");
+		FullscreenActivity.showCapoChords = myPreferences.getBoolean("showCapoChords", true);
+		FullscreenActivity.showNativeAndCapoChords = myPreferences.getBoolean("showNativeAndCapoChords", true);
 		FullscreenActivity.languageToLoad = myPreferences.getString("languageToLoad", "");
 		FullscreenActivity.mylyricsfontnum = myPreferences.getInt("mylyricsfontnum", 8);
 		FullscreenActivity.mychordsfontnum = myPreferences.getInt("mychordsfontnum", 8);
@@ -115,6 +117,8 @@ public class Preferences extends Activity {
 		FullscreenActivity.alwaysPreferredChordFormat = myPreferences.getString("alwaysPreferredChordFormat", "N");
 		FullscreenActivity.gesture_doubletap = myPreferences.getString("gesture_doubletap", "2");
 		FullscreenActivity.gesture_longpress = myPreferences.getString("gesture_longpress", "1");
+		FullscreenActivity.swipeForMenus = myPreferences.getBoolean("swipeForMenus",true);
+		FullscreenActivity.swipeForSongs = myPreferences.getBoolean("swipeForSongs",true);
 		FullscreenActivity.swipeDrawer = myPreferences.getString("swipeDrawer", "Y");
 		FullscreenActivity.presenterChords = myPreferences.getString("presenterChords", "N");
 		FullscreenActivity.whichMode = myPreferences.getString("whichMode", "Performance");
@@ -194,14 +198,15 @@ public class Preferences extends Activity {
 		//Now activity resizes to fit the x scale - option to also fit to the Y scale
 		FullscreenActivity.toggleYScale = myPreferences.getString("toggleYScale", "Y");
 		FullscreenActivity.swipeSet = myPreferences.getString("swipeSet", "Y");
-		FullscreenActivity.hideactionbaronoff = myPreferences.getString("hideactionbaronoff", "N");
+		FullscreenActivity.hideActionBar = myPreferences.getBoolean("hideActionBar", false);
 		FullscreenActivity.songfilename = myPreferences.getString("songfilename", "Welcome to OpenSongApp");
 		FullscreenActivity.mAuthor = myPreferences.getString("mAuthor", "Gareth Evans");
 		FullscreenActivity.mTitle = myPreferences.getString("mTitle", "Welcome to OpenSongApp");
 		FullscreenActivity.mCopyright = myPreferences.getString("mCopyright","");
 		FullscreenActivity.transposeStyle = myPreferences.getString("transposeStyle", "sharps");
 		FullscreenActivity.mySet = myPreferences.getString("mySet", "");
-		FullscreenActivity.showChords = myPreferences.getString("showChords", "Y");
+		FullscreenActivity.showChords = myPreferences.getBoolean("showChords", true);
+		FullscreenActivity.showLyrics = myPreferences.getBoolean("showLyrics", true);
 		FullscreenActivity.mDisplayTheme = myPreferences.getString("mDisplayTheme", "Theme.Holo");
 		FullscreenActivity.whichSongFolder = myPreferences.getString("whichSongFolder", mainfoldername);
 
@@ -299,6 +304,8 @@ public class Preferences extends Activity {
         editor.putInt("presoAlertSize", FullscreenActivity.presoAlertSize);
 		editor.putString("myAlert", FullscreenActivity.myAlert);
 		editor.putString("capoDisplay", FullscreenActivity.capoDisplay);
+		editor.putBoolean("showCapoChords", FullscreenActivity.showCapoChords);
+		editor.putBoolean("showNativeAndCapoChords", FullscreenActivity.showNativeAndCapoChords);
 		editor.putString("languageToLoad", FullscreenActivity.languageToLoad);
 		editor.putInt("mylyricsfontnum", FullscreenActivity.mylyricsfontnum);
 		editor.putInt("mychordsfontnum", FullscreenActivity.mychordsfontnum);
@@ -386,7 +393,7 @@ public class Preferences extends Activity {
 		editor.putInt("custom2_metronome", FullscreenActivity.custom2_metronome);
         editor.putString("chordInstrument", FullscreenActivity.chordInstrument);
         editor.putString("showNextInSet", FullscreenActivity.showNextInSet);
-		editor.putString("hideactionbaronoff", FullscreenActivity.hideactionbaronoff);
+		editor.putBoolean("hideActionBar", FullscreenActivity.hideActionBar);
 		editor.putString("mStorage", FullscreenActivity.mStorage);
 		editor.putFloat("mFontSize", FullscreenActivity.mFontSize);
         editor.putFloat("commentfontscalesize", FullscreenActivity.commentfontscalesize);
@@ -396,13 +403,16 @@ public class Preferences extends Activity {
 		editor.putInt("mMinFontSize", FullscreenActivity.mMinFontSize);
 		editor.putString("toggleYScale", FullscreenActivity.toggleYScale);
 		editor.putString("swipeSet", FullscreenActivity.swipeSet);
+		editor.putBoolean("swipeForMenus", FullscreenActivity.swipeForMenus);
+		editor.putBoolean("swipeForSongs", FullscreenActivity.swipeForSongs);
 		editor.putString("swipeDrawer", FullscreenActivity.swipeDrawer);
 		editor.putString("songfilename", FullscreenActivity.songfilename);
 		editor.putString("mAuthor", FullscreenActivity.mAuthor.toString());
 		editor.putString("mCopyright", FullscreenActivity.mCopyright.toString());
 		editor.putString("mTitle", FullscreenActivity.mTitle.toString());
 		editor.putString("transposeStyle", FullscreenActivity.transposeStyle);
-		editor.putString("showChords", FullscreenActivity.showChords);
+		editor.putBoolean("showChords", FullscreenActivity.showChords);
+		editor.putBoolean("showLyrics", FullscreenActivity.showLyrics);
 		editor.putString("mDisplayTheme", FullscreenActivity.mDisplayTheme);
 		editor.putString("whichSongFolder", FullscreenActivity.whichSongFolder);
 		editor.putString("gesture_doubletap", FullscreenActivity.gesture_doubletap);

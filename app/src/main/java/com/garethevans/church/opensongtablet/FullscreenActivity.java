@@ -469,7 +469,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private static TextView mySticky;
     public static String toggleAutoSticky = "";
     private static ScrollView scrollstickyholder;
-    public static String hideactionbaronoff = "";
+    //public static String hideactionbaronoff = "";
+    public static boolean hideActionBar;
     private int lastExpandedGroupPositionOption;
     private int lastExpandedGroupPositionSong;
     public static String[][] childSongs;
@@ -486,6 +487,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private static final int SWIPE_MAX_OFF_PATH = 250;
     private static final int SWIPE_THRESHOLD_VELOCITY = 800;
     private GestureDetector gestureDetector;
+    public static boolean swipeForMenus;
+    public static boolean swipeForSongs;
 
     public static String whichMode = "";
 
@@ -644,7 +647,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String nextSongInSet = "";
     public static String mTheme = "";
     public static String mDisplayTheme = "Theme.Holo";
-    public static String setView = "N";
+    public static boolean setView;
     public static int setSize;
     public static boolean showingSetsToLoad = false;
     public static String whatsongforsetwork = "";
@@ -697,7 +700,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
     public static float presoAlpha;
     public static String myAlert = "";
-    public static String dualDisplayCapable = "N";
+    public static boolean dualDisplayCapable;
     public static String backgroundImage1 = "";
     public static String backgroundImage2 = "";
     public static String backgroundVideo1 = "";
@@ -789,7 +792,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static int transposeTimes = 1;
     public static String transposeStyle = "sharps";
     public static String transposedLyrics = "";
-    public static String showChords = "";
+    public static boolean showChords;
+    public static boolean showLyrics;
     private TableLayout lyricstable_onecolview;
     private TableLayout lyricstable_twocolview;
     private TableLayout lyricstable2_twocolview;
@@ -808,7 +812,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private static ImageView uparrow_bottom;
     private static ImageView downarrow_bottom;
     public static String myToastMessage = "";
-    private static boolean showCapo;
+    public static boolean showCapo;
+    public static boolean showCapoChords;
+    public static boolean showNativeAndCapoChords;
+
 
     // The following get in translation texts
     private static String edit_song_presentation = "";
@@ -1080,7 +1087,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
         if (currentapiVersion >= 17) {
             // Capable of dual head presentations
-            dualDisplayCapable = "Y";
+            dualDisplayCapable = true;
+        } else {
+            dualDisplayCapable = false;
         }
 
         // Set up the available typefaces
@@ -1118,7 +1127,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         //whichMode = "Performance";
 
         // If whichMode is Presentation, open that app instead
-        if (whichMode.equals("Presentation") && dualDisplayCapable.equals("Y") && !needtoimport) {
+        if (whichMode.equals("Presentation") && dualDisplayCapable && !needtoimport) {
             Intent performmode = new Intent();
             performmode.setClass(FullscreenActivity.this, PresenterMode.class);
             startActivity(performmode);
@@ -4739,7 +4748,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         mSetList[childPosition - 9] = "";
 
                         if (indexSongInSet == (childPosition - 9)) {
-                            setView = "N";
+                            setView = false;
                         }
 
                         mySet = "";
@@ -4858,7 +4867,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
                         } else if (childPosition > 8) {
                             // Load song in set
-                            setView = "Y";
+                            setView = true;
                             pdfPageCurrent = 0;
                             // Set item is 9 less than childPosition
                             indexSongInSet = childPosition - 9;
@@ -5158,10 +5167,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                                 myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
                                 ShowToast.showToast(FullscreenActivity.this);
                             } else {
-                                if (showChords.equals("Y")) {
-                                    showChords = "N";
+                                if (showChords) {
+                                    showChords = false;
                                 } else {
-                                    showChords = "Y";
+                                    showChords = true;
                                 }
                                 // Save the preferences
                                 Preferences.savePreferences();
@@ -5218,8 +5227,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                             newFragment.show(getFragmentManager(), "dialog");
 
                         } else if (childPosition == 5) {// Show/hide menu bar
-                            if (hideactionbaronoff.equals("Y")) {
-                                hideactionbaronoff = "N";
+                            if (hideActionBar) {
+                                hideActionBar = false;
                                 myToastMessage = getResources()
                                         .getString(R.string.options_options_hidebar)
                                         + " - "
@@ -5231,7 +5240,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                                 }
 
                             } else {
-                                hideactionbaronoff = "Y";
+                                hideActionBar = true;
                                 myToastMessage = getResources()
                                         .getString(R.string.options_options_hidebar)
                                         + " - "
@@ -5702,17 +5711,17 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         }
         if (ab != null) {
             if (wasscrolling || scrollbutton) {
-                if (hideactionbaronoff.equals("Y") && !songmenu.isFocused() && !songmenu.isShown() && !expListViewOption.isFocused() && !expListViewOption.isShown()) {
+                if (hideActionBar && !songmenu.isFocused() && !songmenu.isShown() && !expListViewOption.isFocused() && !expListViewOption.isShown()) {
                     ab.hide();
                 }
             } else if (!songmenu.isFocused() && !songmenu.isShown() && !expListViewOption.isFocused() && !expListViewOption.isShown()) {
-                if (ab.isShowing() && hideactionbaronoff.equals("Y")) {
+                if (ab.isShowing() && hideActionBar) {
                     delayactionBarHide.postDelayed(hideActionBarRunnable, 500);
                     actionbarbutton = false;
                 } else {
                     ab.show();
                     // Set a runnable to hide it after 3 seconds
-                    if (hideactionbaronoff.equals("Y")) {
+                    if (hideActionBar) {
                         delayactionBarHide.postDelayed(hideActionBarRunnable, 3000);
                     }
                 }
@@ -5727,7 +5736,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         if (hasFocus) {
             if (currentapiVersion >= 17) {
                 // Capable of dual head presentations
-                dualDisplayCapable = "Y";
+                dualDisplayCapable = true;
+            } else {
+                dualDisplayCapable = false;
             }
             setWindowFlags();
             setWindowFlagsAdvanced();
@@ -5860,7 +5871,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
                     // If we are viewing a set, move to the next song.
                     // If we are not in a set, check for the next song. If it doesn't exist, do nothing
-                    if (setView.equals("N")) {
+                    if (!setView) {
                         // Currently not in set mode.  Get song position in list
                         next_song = currentSongIndex + 1;
                         if (next_song > mSongFileNames.length - 1) {
@@ -5897,14 +5908,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     }
 
                     whichDirection = "R2L";
-                    if (setSize >= 2 && setView.equals("Y") && indexSongInSet >= 0 && indexSongInSet < (setSize - 1)) {
+                    if (setSize >= 2 && setView && indexSongInSet >= 0 && indexSongInSet < (setSize - 1)) {
                         indexSongInSet += 1;
                         doMoveInSet();
                         expListViewOption.expandGroup(0);
                         expListViewOption.setSelection(indexSongInSet);
                         return true;
                     } else {
-                        if (setView.equals("Y") || currentSongIndex == next_song) {
+                        if (setView || currentSongIndex == next_song) {
                             // Already at the end!
                             myToastMessage = getResources().getText(R.string.lastsong).toString();
                             ShowToast.showToast(FullscreenActivity.this);
@@ -5947,7 +5958,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
                     // If we are viewing a set, move to the next song.
                     // If we are not in a set, check for the next song. If it doesn't exist, do nothing
-                    if (setView.equals("N")) {
+                    if (!setView) {
                         // Currently not in set mode.  Get song position in list
                         expListViewOption.expandGroup(1);
                         prev_song = currentSongIndex - 1;
@@ -5982,14 +5993,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     }
 
                     whichDirection = "L2R";
-                    if (setSize >= 2 && setView.equals("Y") && indexSongInSet >= 1) {
+                    if (setSize >= 2 && setView && indexSongInSet >= 1) {
                         indexSongInSet -= 1;
                         doMoveInSet();
                         expListViewOption.expandGroup(0);
                         expListViewOption.setSelection(indexSongInSet);
                         return true;
                     } else {
-                        if (setView.equals("Y") || currentSongIndex == prev_song) {
+                        if (setView || currentSongIndex == prev_song) {
                             // Already at the start!
                             myToastMessage = getResources().getText(R.string.firstsong).toString();
                             ShowToast.showToast(FullscreenActivity.this);
@@ -6318,7 +6329,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         }
 
         if (indexSongInSet < 0) {
-            setView = "N";
+            setView = false;
         }
         if (setSize >= 1) {
             showCurrentSet(view);
@@ -6393,7 +6404,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         }
 
         // Decide if song is in the set
-        if (setSize > 0 && setView.equals("Y")) {
+        if (setSize > 0 && setView) {
             if (set_back != null) {
                 set_back.setVisible(true);
                 set_back.getIcon().setAlpha(255);
@@ -6430,7 +6441,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         // Decide if presenter button is greyed out or not
         if (menu!=null) {
             MenuItem presentationMode = menu.findItem(R.id.present_mode);
-            if (dualDisplayCapable.equals("N")) {
+            if (!dualDisplayCapable) {
                 presentationMode.setEnabled(true);
                 presentationMode.getIcon().setAlpha(30);
             }
@@ -8412,7 +8423,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             ab.show();
         }
 
-        if (hideactionbaronoff.equals("Y")) {
+        if (hideActionBar) {
             delayactionBarHide.postDelayed(hideActionBarRunnable, 1000);
         }
         needtoredraw = true;
@@ -8700,7 +8711,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
                 case R.id.present_mode:
                     // Switch to presentation mode
-                    if (dualDisplayCapable.equals("Y")) {
+                    if (dualDisplayCapable) {
                         whichMode = "Presentation";
                         Preferences.savePreferences();
                         Intent presentmode = new Intent();
@@ -9220,7 +9231,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     pdfPageCurrent = 0;
                 }
 
-                if (setSize > 1 && setView.equals("Y") && indexSongInSet >= 0
+                if (setSize > 1 && setView && indexSongInSet >= 0
                         && indexSongInSet < (setSize - 1)) {
                     // temporarily disable swipe
                     tempswipeSet = "disable";
@@ -9239,7 +9250,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
                 // If not in a set, see if we can move to the next song in the list
                 // Only if swipeSet is Y (not S)
-                if (setView.equals("N") && swipeSet.equals("Y") && !whichSongFolder.equals("../Variations") && !whichSongFolder.equals("../Scripture/_cache") && !whichSongFolder.equals("../Images/_cache") && !whichSongFolder.equals("../Slides/_cache") && !whichSongFolder.equals("../Notes/_cache")) {
+                if (!setView && swipeSet.equals("Y") && !whichSongFolder.equals("../Variations") && !whichSongFolder.equals("../Scripture/_cache") && !whichSongFolder.equals("../Images/_cache") && !whichSongFolder.equals("../Slides/_cache") && !whichSongFolder.equals("../Notes/_cache")) {
                     if (nextSongIndex < mSongFileNames.length && nextSongIndex != -1 && !songfilename.equals(mSongFileNames[nextSongIndex])) {
                         // Move to the next song
                         // temporarily disable swipe
@@ -9280,7 +9291,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
 
                 // If we are viewing a set, move to the previous song.
-                if (setSize > 2 && setView.equals("Y") && indexSongInSet >= 1) {
+                if (setSize > 2 && setView && indexSongInSet >= 1) {
                     // temporarily disable swipe
                     tempswipeSet = "disable";
 
@@ -9297,7 +9308,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
                 // If not in a set, see if we can move to the previous song in the list
                 // Only if swipeSet is Y (not S)
-                if (setView.equals("N") && swipeSet.equals("Y") && !whichSongFolder.equals("../Variations") && !whichSongFolder.equals("../Scripture/_cache") && !whichSongFolder.equals("../Images/_cache") && !whichSongFolder.equals("../Slides/_cache") && !whichSongFolder.equals("../Notes/_cache")) {
+                if (!setView && swipeSet.equals("Y") && !whichSongFolder.equals("../Variations") && !whichSongFolder.equals("../Scripture/_cache") && !whichSongFolder.equals("../Images/_cache") && !whichSongFolder.equals("../Slides/_cache") && !whichSongFolder.equals("../Notes/_cache")) {
 
                     if (previousSongIndex < mSongFileNames.length && previousSongIndex != -1 && !songfilename.equals(mSongFileNames[previousSongIndex])) {
                         // temporarily disable swipe
@@ -9447,7 +9458,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 // This is the first line.
                 // If in a set view and option is on to show at top, show the title of the next song
                 // If we are showing the last song already, say this instead
-                if (setView.equals("Y") && showNextInSet.equals("top")) {
+                if (setView && showNextInSet.equals("top")) {
                     // Get next title in set
                     String next_title = getResources().getString(R.string.lastsong);
                     if (setSize >= 2 && indexSongInSet >= 0 && indexSongInSet < (setSize - 1)) {
@@ -9558,7 +9569,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 }
 
                 // If showCapo is true, add a comment line with the capo information
-                if (showCapo && showChords.equals("Y")) {
+                if (showCapo && showChords) {
 
                     RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -9782,7 +9793,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         tcapo1_1.setTextSize(chords_useThisTextSize);
                         tcapo1_1.setBackgroundColor(capo_useThisBGColor);
                         tcapo1_1.setTextColor(lyricsCapoColor);
-                        if (showCapo && showChords.equals("Y")) {
+                        if (showCapo && showChords) {
                             capo_chords_row1_1.addView(tcapo1_1);
                         }
                         chords_row1_1.addView(t1_1);
@@ -9801,7 +9812,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         tcapo1_2.setTextSize(chords_useThisTextSize);
                         tcapo1_2.setBackgroundColor(capo_useThisBGColor);
                         tcapo1_2.setTextColor(lyricsCapoColor);
-                        if (showCapo && showChords.equals("Y")) {
+                        if (showCapo && showChords) {
                             capo_chords_row1_2.addView(tcapo1_2);
                         }
                         chords_row1_2.addView(t1_2);
@@ -9820,7 +9831,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         tcapo2_2.setTextSize(chords_useThisTextSize);
                         tcapo2_2.setBackgroundColor(capo_useThisBGColor);
                         tcapo2_2.setTextColor(lyricsCapoColor);
-                        if (showCapo && showChords.equals("Y")) {
+                        if (showCapo && showChords) {
                             capo_chords_row2_2.addView(tcapo2_2);
                         }
                         chords_row2_2.addView(t2_2);
@@ -9839,7 +9850,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         tcapo1_3.setTextSize(chords_useThisTextSize);
                         tcapo1_3.setBackgroundColor(capo_useThisBGColor);
                         tcapo1_3.setTextColor(lyricsCapoColor);
-                        if (showCapo && showChords.equals("Y")) {
+                        if (showCapo && showChords) {
                             capo_chords_row1_3.addView(tcapo1_3);
                         }
                         chords_row1_3.addView(t1_3);
@@ -9858,7 +9869,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         tcapo2_3.setTextSize(chords_useThisTextSize);
                         tcapo2_3.setBackgroundColor(capo_useThisBGColor);
                         tcapo2_3.setTextColor(lyricsCapoColor);
-                        if (showCapo && showChords.equals("Y")) {
+                        if (showCapo && showChords) {
                             capo_chords_row2_3.addView(tcapo2_3);
                         }
                         chords_row2_3.addView(t2_3);
@@ -9877,7 +9888,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                         tcapo3_3.setTextSize(chords_useThisTextSize);
                         tcapo3_3.setBackgroundColor(capo_useThisBGColor);
                         tcapo3_3.setTextColor(lyricsCapoColor);
-                        if (showCapo && showChords.equals("Y")) {
+                        if (showCapo && showChords) {
                             capo_chords_row3_3.addView(tcapo3_3);
                         }
                         chords_row3_3.addView(t3_3);
@@ -9917,7 +9928,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 // What should we be showing?
                 // First option is that there are no capo chords, but the user wants chords
                 // This displays the normal chords only
-                if (showChords.equals("Y") && !showCapo) {
+                if (showChords && !showCapo) {
                     if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                         chords_n_lyrics1_1.addView(chords_row1_1, 0);
                     }
@@ -9945,7 +9956,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     // Add this line of chords to the combined string
                     allchords = allchords + " " + myParsedLyrics[x];
 
-                } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("both")) {
+                } else if (showChords && showCapo && capoDisplay.equals("both")) {
                     if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                         chords_n_lyrics1_1.addView(chords_row1_1, 0);
                         chords_n_lyrics1_1.addView(capo_chords_row1_1, 1);
@@ -9975,7 +9986,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     allchords = allchords + " " + myParsedLyrics[x];
                     allchords = allchords + " " + allchordscapo;
 
-                } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("capoonly")) {
+                } else if (showChords && showCapo && capoDisplay.equals("capoonly")) {
                     if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                         chords_n_lyrics1_1.addView(capo_chords_row1_1, 0);
                     }
@@ -10285,7 +10296,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 // What should we be showing?
                 // First option is that there are no capo chords, but the user wants chords
                 // This displays the normal chords only
-                if (showChords.equals("Y") && !showCapo) {
+                if (showChords && !showCapo) {
                     if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                         chords_n_lyrics1_1.addView(lyrics_row1_1, 1);
                     }
@@ -10304,7 +10315,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics3_3.addView(lyrics_row3_3, 1);
                     }
-                } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("both")) {
+                } else if (showChords && showCapo && capoDisplay.equals("both")) {
                     if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                         chords_n_lyrics1_1.addView(lyrics_row1_1, 2);
                     }
@@ -10323,7 +10334,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     if (writetocol3_3 && (columnTest == 3 || columnTest == 0)) {
                         chords_n_lyrics3_3.addView(lyrics_row3_3, 2);
                     }
-                } else if (showChords.equals("Y") && showCapo && capoDisplay.equals("capoonly")) {
+                } else if (showChords && showCapo && capoDisplay.equals("capoonly")) {
                     if (writetocol1_1 && (columnTest == 1 || columnTest == 0)) {
                         chords_n_lyrics1_1.addView(lyrics_row1_1, 1);
                     }
@@ -10557,7 +10568,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 normalrow1_3.addView(tbasic1_3);
                 normalrow2_3.addView(tbasic2_3);
                 normalrow3_3.addView(tbasic3_3);
-                if (showCapo && showChords.equals("Y")) {
+                if (showCapo && showChords) {
                     caponormalrow1_1.addView(capotbasic1_1);
                     caponormalrow1_2.addView(capotbasic1_2);
                     caponormalrow2_2.addView(capotbasic2_2);
@@ -10616,7 +10627,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     basicline1_3.addView(normalrow1_3);
                     basicline2_3.addView(normalrow2_3);
                     basicline3_3.addView(normalrow3_3);
-                } else if (whatisthisline[x].equals("chords") && showChords.equals("Y")) {
+                } else if (whatisthisline[x].equals("chords") && showChords) {
                     if (!showCapo) {
                         // Add this line of chords to the combined string
                         allchords = allchords + " " + myParsedLyrics[x];
@@ -10899,7 +10910,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     basicline1_3.addView(normalrow1_3);
                     basicline2_3.addView(normalrow2_3);
                     basicline3_3.addView(normalrow3_3);
-                } else if (whatisthisline[x].equals("chords") && showChords.equals("Y")) {
+                } else if (whatisthisline[x].equals("chords") && showChords) {
                     basicline1_1.addView(normalrow1_1);
                     basicline1_2.addView(normalrow1_2);
                     basicline2_2.addView(normalrow2_2);
@@ -11016,10 +11027,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
         // If in a set view and option is on to show at bottom, show the title of the next song
         // If we are showing the last song already, say this instead
-        if (setView.equals("Y") && showNextInSet.equals("bottom")) {
+        if (setView && showNextInSet.equals("bottom")) {
             // Get next title in set
             String next_title;
-            if (setView.equals("Y") && showNextInSet.equals("bottom")) {
+            if (setView && showNextInSet.equals("bottom")) {
                 // Get next title in set
                 next_title = getResources().getString(R.string.lastsong);
                 if (setSize >= 2 && indexSongInSet >= 0 && indexSongInSet < (setSize - 1)) {
@@ -11257,7 +11268,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 // Clear the set
                 mySet = "";
                 mSetList = null;
-                setView = "N";
+                setView = false;
 
                 // Save the new, empty, set
                 Preferences.savePreferences();
@@ -11270,7 +11281,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
             case "deletesong":
                 // Delete current song
-                setView = "N";
+                setView = false;
                 String setFileLocation;
                 if (whichSongFolder.equals(mainfoldername)) {
                     setFileLocation = dir + "/" + songfilename;

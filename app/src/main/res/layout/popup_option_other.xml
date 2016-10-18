@@ -72,7 +72,7 @@
                 android:text="@string/language" />
 
             <Button
-                android:id="@+id/otheStartButton"
+                android:id="@+id/otherStartButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -86,7 +86,7 @@
                 android:text="@string/options_options_start" />
 
             <Button
-                android:id="@+id/otheRateButton"
+                android:id="@+id/otherRateButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"

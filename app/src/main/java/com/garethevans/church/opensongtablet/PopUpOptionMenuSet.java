@@ -156,7 +156,7 @@ public class PopUpOptionMenuSet extends DialogFragment {
                 tv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        FullscreenActivity.setView = "Y";
+                        FullscreenActivity.setView = true;
                         FullscreenActivity.pdfPageCurrent = 0;
                         FullscreenActivity.linkclicked = FullscreenActivity.mSetList[val];
                         FullscreenActivity.indexSongInSet = val;

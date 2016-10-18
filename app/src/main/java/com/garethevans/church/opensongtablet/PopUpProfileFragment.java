@@ -410,7 +410,32 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("hideactionbaronoff")) {
                     text = xpp.nextText();
                     if (text!=null && !text.equals("")) {
-                        FullscreenActivity.hideactionbaronoff = text;
+                        if (text.equals("true")) {
+                            FullscreenActivity.hideActionBar = true;
+                        } else {
+                            FullscreenActivity.hideActionBar = false;
+                        }
+                    }
+                } else if (xpp.getName().equals("hideActionBar")) {
+                    text = xpp.nextText();
+                    if (text!=null && !text.equals("") && text.equals("true")) {
+                        FullscreenActivity.hideActionBar = true;
+                    } else {
+                        FullscreenActivity.hideActionBar = false;
+                    }
+                } else if (xpp.getName().equals("swipeForMenus")) {
+                    text = xpp.nextText();
+                    if (text!=null && !text.equals("") && text.equals("true")) {
+                        FullscreenActivity.swipeForMenus = true;
+                    } else {
+                        FullscreenActivity.swipeForMenus = false;
+                    }
+                } else if (xpp.getName().equals("swipeForSongs")) {
+                    text = xpp.nextText();
+                    if (text!=null && !text.equals("") && text.equals("true")) {
+                        FullscreenActivity.swipeForSongs = true;
+                    } else {
+                        FullscreenActivity.swipeForSongs = false;
                     }
                 } else if (xpp.getName().equals("transposeStyle")) {
                     text = xpp.nextText();
@@ -419,8 +444,10 @@ public class PopUpProfileFragment extends DialogFragment {
                     }
                 } else if (xpp.getName().equals("showChords")) {
                     text = xpp.nextText();
-                    if (text!=null && !text.equals("")) {
-                        FullscreenActivity.showChords = text;
+                    if (text!=null && !text.equals("") && text.equals("true")) {
+                        FullscreenActivity.showChords = true;
+                    } else {
+                        FullscreenActivity.showChords = false;
                     }
                 } else if (xpp.getName().equals("mDisplayTheme")) {
                     text = xpp.nextText();
@@ -479,7 +506,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <usePresentationOrder>" + FullscreenActivity.usePresentationOrder + "</usePresentationOrder>\n";
         text += "  <toggleYScale>" + FullscreenActivity.toggleYScale + "</toggleYScale>\n";
         text += "  <swipeSet>" + FullscreenActivity.swipeSet + "</swipeSet>\n";
-        text += "  <hideactionbaronoff>" + FullscreenActivity.hideactionbaronoff + "</hideactionbaronoff>\n";
+        text += "  <hideActionBar>" + FullscreenActivity.hideActionBar + "</hideActionBar>\n";
         text += "  <transposeStyle>" + FullscreenActivity.transposeStyle + "</transposeStyle>\n";
         text += "  <showChords>" + FullscreenActivity.showChords + "</showChords>\n";
         text += "  <mDisplayTheme>" + FullscreenActivity.mDisplayTheme + "</mDisplayTheme>\n";

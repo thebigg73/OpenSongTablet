@@ -319,7 +319,7 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
                 viewsong2 = new Intent(SearchViewFilterModeNew.this, FullscreenActivity.class);
             }
             startActivity(viewsong2);
-            FullscreenActivity.setView = "N";
+            FullscreenActivity.setView = false;
             finish();
         }
     }
@@ -368,7 +368,7 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
                 viewsong2 = new Intent(SearchViewFilterModeNew.this, FullscreenActivity.class);
             }
             startActivity(viewsong2);
-            FullscreenActivity.setView = "N";
+            FullscreenActivity.setView = false;
             finish();
             return true;
         }

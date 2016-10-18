@@ -249,7 +249,7 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
             SearchViewItems item = (SearchViewItems) adapter.getItem(0);
             FullscreenActivity.songfilename = item.getFilename();
             FullscreenActivity.whichSongFolder = item.getFolder();
-            FullscreenActivity.setView = "N";
+            FullscreenActivity.setView = false;
             FullscreenActivity.myToastMessage = FullscreenActivity.songfilename;
             //Save preferences
             Preferences.savePreferences();
@@ -290,7 +290,7 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
             FullscreenActivity.songfilename = mFilename.getText().toString();
             FullscreenActivity.whichSongFolder = mFoldername.getText().toString();
             Preferences.savePreferences();
-            FullscreenActivity.setView = "N";
+            FullscreenActivity.setView = false;
             mListener.loadSong();
             dismiss();
         }

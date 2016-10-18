@@ -109,7 +109,7 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
 
         } else {
             FullscreenActivity.songfilename = mListView.getItemAtPosition(0).toString();
-            FullscreenActivity.setView = "N";
+            FullscreenActivity.setView = false;
             FullscreenActivity.myToastMessage = FullscreenActivity.songfilename;
             //Save preferences
             Preferences.savePreferences();
@@ -126,7 +126,7 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             String query = (String) mListView.getItemAtPosition(position);
             FullscreenActivity.songfilename = query;
-            FullscreenActivity.setView = "N";
+            FullscreenActivity.setView = false;
             FullscreenActivity.myToastMessage = query;
             //Save preferences
             Preferences.savePreferences();
@@ -161,7 +161,7 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
             Preferences.savePreferences();
 
             //String query = (String) ((TextView) view).getText();
-            FullscreenActivity.setView = "Y";
+            FullscreenActivity.setView = true;
             //Save preferences
             Preferences.savePreferences();
             // Vibrate to indicate something has happened

@@ -31,7 +31,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/autoScrollTimeFadeButton"
+                android:id="@+id/autoScrollTimeDefaultsButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -42,7 +42,7 @@
                 android:drawableLeft="@drawable/ic_update_white_36dp"
                 android:drawableStart="@drawable/ic_update_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/crossfade_time" />
+                android:text="@string/default_autoscroll" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/autoScrollStartButton"

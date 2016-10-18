@@ -30,7 +30,7 @@ public class MenuHandlers extends Activity {
     public static boolean setSetButtonVisibility() {
         // If we are not in set mode, this icons visibility should be set to GONE
         // Otherwise, set it to visible
-        return FullscreenActivity.setSize > 0 && FullscreenActivity.setView.equals("Y");
+        return FullscreenActivity.setSize > 0 && FullscreenActivity.setView;
     }
 
     public static int setBackAlpha() {
@@ -116,7 +116,7 @@ public class MenuHandlers extends Activity {
     }
 
     public static int dualScreenAlpha() {
-        if (FullscreenActivity.dualDisplayCapable.equals("Y")) {
+        if (FullscreenActivity.dualDisplayCapable) {
             return 255;
         } else {
             return 30;

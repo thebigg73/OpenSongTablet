@@ -3543,7 +3543,6 @@ containing a value of this type.
         public static final int LyricDisplay_onecoldisplay=0x7f0e0098;
         public static final int LyricDisplay_threecoldisplay=0x7f0e00a3;
         public static final int LyricDisplay_twocoldisplay=0x7f0e009d;
-        public static final int PadCrossFadeButton=0x7f0e02e2;
         public static final int Title=0x7f0e00b3;
         public static final int action0=0x7f0e0163;
         public static final int action_bar=0x7f0e007c;
@@ -3593,7 +3592,7 @@ containing a value of this type.
         public static final int author_entry=0x7f0e0465;
         public static final int auto=0x7f0e0021;
         public static final int autoScrollStartButton=0x7f0e02bf;
-        public static final int autoScrollTimeFadeButton=0x7f0e02be;
+        public static final int autoScrollTimeDefaultsButton=0x7f0e02be;
         public static final int autoscale_seekBar=0x7f0e0348;
         public static final int autoscroll=0x7f0e0178;
         public static final int autoscroll_default_RadioButton=0x7f0e01ab;
@@ -4165,15 +4164,16 @@ containing a value of this type.
         public static final int optionsotherscrollview=0x7f0e02da;
         public static final int optionspadscrollview=0x7f0e02e1;
         public static final int optionsstoragescrollview=0x7f0e02f6;
-        public static final int otheRateButton=0x7f0e02df;
-        public static final int otheStartButton=0x7f0e02de;
         public static final int otherHelpButton=0x7f0e02db;
         public static final int otherLanguageButton=0x7f0e02dd;
+        public static final int otherRateButton=0x7f0e02df;
+        public static final int otherStartButton=0x7f0e02de;
         public static final int otherStorage=0x7f0e0117;
         public static final int otherTweetButton=0x7f0e02dc;
         public static final int overWrite_CheckBox=0x7f0e026c;
         public static final int overrideFull_Switch=0x7f0e0354;
         public static final int overrideWidth_Switch=0x7f0e0355;
+        public static final int padCrossFadeButton=0x7f0e02e2;
         public static final int pad_menu_button=0x7f0e048b;
         public static final int padbutton=0x7f0e0177;
         public static final int padbutton_right=0x7f0e0182;
