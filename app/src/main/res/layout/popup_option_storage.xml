@@ -11,13 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="4dp"
-        android:gravity="center"
-        android:text="@string/options_storage"
-        android:textSize="14sp"
         android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
         android:drawablePadding="4dp"
         android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
-        android:textColor="#ff0" />
+        android:gravity="center"
+        android:text="@string/options_storage"
+        android:textColor="#ff0"
+        android:textSize="22sp" />
 
     <ScrollView
         android:id="@+id/optionsstoragescrollview"
@@ -35,13 +35,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_folder_new_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_folder_new_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_newfolder" />
+                android:text="@string/options_song_newfolder"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/storageEditButton"
@@ -49,13 +49,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_folder_edit_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_folder_edit_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_editfolder" />
+                android:text="@string/options_song_editfolder"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/storageManageButton"
@@ -63,13 +63,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_sd_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_sd_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/storage_choose" />
+                android:text="@string/storage_choose"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/storageImportOSBButton"
@@ -77,13 +77,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_unarchive_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_unarchive_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/backup_import" />
+                android:text="@string/backup_import"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/storageExportOSBButton"
@@ -91,13 +91,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_archive_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_archive_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/backup_export" />
+                android:text="@string/backup_export"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/storageImportOnSongButton"
@@ -105,13 +105,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_unarchive_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_unarchive_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/import_onsong_choose" />
+                android:text="@string/import_onsong_choose"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/storageSongMenuButton"
@@ -119,13 +119,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_sync_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_sync_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/refreshsongs" />
+                android:text="@string/refreshsongs"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/storageDatabaseButton"
@@ -133,13 +133,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_update_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_update_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/search_rebuild" />
+                android:text="@string/search_rebuild"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/storageLogButton"
@@ -147,13 +147,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/presenter_alert"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/presenter_alert"
                 android:gravity="center_vertical"
-                android:text="@string/search_log" />
+                android:text="@string/search_log"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
 
         </LinearLayout>

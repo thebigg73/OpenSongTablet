@@ -42,9 +42,6 @@ public class LoadXML extends Activity {
         Preferences.loadSongPrep();
 
         // Just in case
-        Log.d("d","songfilename="+FullscreenActivity.songfilename);
-        Log.d("d","whichSongFolder="+FullscreenActivity.whichSongFolder);
-
         FullscreenActivity.myLyrics = FullscreenActivity.songdoesntexist + "\n\n";
         FullscreenActivity.mLyrics = FullscreenActivity.songdoesntexist + "\n\n";
 
@@ -371,7 +368,7 @@ public class LoadXML extends Activity {
         FullscreenActivity.mKeyLine = temp_mKeyLine;
         FullscreenActivity.mHymnNumber = temp_mHymnNumber;
         FullscreenActivity.mLyrics = temp_mLyrics;
-        Preferences.savePreferences();
+        //Preferences.savePreferences();
     }
 
     public static void initialiseSongTags() {
@@ -498,7 +495,7 @@ public class LoadXML extends Activity {
                     FullscreenActivity.mLinkedSongs = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("pad_file")) {
                     FullscreenActivity.mPadFile = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("custom_chords")) {
+                 } else if (xpp.getName().equals("custom_chords")) {
                     FullscreenActivity.mCustomChords = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("link_youtube")) {
                     FullscreenActivity.mLinkYouTube = parseFromHTMLEntities(xpp.nextText());

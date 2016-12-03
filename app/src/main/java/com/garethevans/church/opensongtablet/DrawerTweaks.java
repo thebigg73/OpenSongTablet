@@ -5,21 +5,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 
-public class DrawerTweaks {
+class DrawerTweaks {
 
-    static Handler songMenuFlickClosed = new Handler();
-    static Handler optionMenuFlickClosed = new Handler();
+    private static Handler songMenuFlickClosed = new Handler();
+    private static Handler optionMenuFlickClosed = new Handler();
 
-    public static DrawerLayout.LayoutParams resizeMenu (LinearLayout thismenu, int width) {
+    static DrawerLayout.LayoutParams resizeMenu(LinearLayout thismenu, int width) {
         DrawerLayout.LayoutParams lp = (DrawerLayout.LayoutParams) thismenu.getLayoutParams();
         lp.width = width;
         return lp;
     }
 
-    public static void openMyDrawers(DrawerLayout drawer,
-                                     LinearLayout song,
-                                     LinearLayout option,
-                                     String which) {
+    static void openMyDrawers(DrawerLayout drawer,
+                              LinearLayout song,
+                              LinearLayout option,
+                              String which) {
         switch (which) {
             case "both":
                 drawer.openDrawer(song);
@@ -55,10 +55,10 @@ public class DrawerTweaks {
         }
     }
 
-    public static void openMyDrawersFS(DrawerLayout drawer,
-                                     LinearLayout song,
-                                     ExpandableListView option,
-                                     String which) {
+    static void openMyDrawersFS(DrawerLayout drawer,
+                                LinearLayout song,
+                                ExpandableListView option,
+                                String which) {
         switch (which) {
             case "both":
                 drawer.openDrawer(song);
@@ -94,10 +94,10 @@ public class DrawerTweaks {
         }
     }
 
-    public static void closeMyDrawers(final DrawerLayout drawer,
-                                      final LinearLayout song,
-                                      final LinearLayout option,
-                                      String which) {
+    static void closeMyDrawers(final DrawerLayout drawer,
+                               final LinearLayout song,
+                               final LinearLayout option,
+                               String which) {
         switch (which) {
             case "both":
                 drawer.closeDrawer(song);
@@ -133,10 +133,10 @@ public class DrawerTweaks {
         }
     }
 
-    public static void closeMyDrawersFS(final DrawerLayout drawer,
-                                      final LinearLayout song,
-                                      final ExpandableListView option,
-                                      String which) {
+    static void closeMyDrawersFS(final DrawerLayout drawer,
+                                 final LinearLayout song,
+                                 final ExpandableListView option,
+                                 String which) {
         switch (which) {
             case "both":
                 drawer.closeDrawer(song);

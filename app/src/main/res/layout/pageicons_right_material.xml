@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rightbar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right|end"
+    android:visibility="visible">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|end"
+        android:layout_margin="8dp">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/setButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@+id/extrabuttons"
+            app:fabSize="mini"
+            app:backgroundTint="@color/fab1"
+            android:contentDescription="@string/options_set"
+            android:tag="togglePlayPads"
+            android:src="@drawable/ic_format_list_numbers_white_36dp"
+            android:alpha="0.4"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/padButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_below="@id/setButton"
+            android:layout_toRightOf="@+id/extrabuttons"
+            app:backgroundTint="@color/fab1"
+            app:fabSize="mini"
+            android:contentDescription="@string/pad_onoroff"
+            android:tag="togglePlayPads"
+            android:src="@drawable/ic_amplifier_white_36dp"
+            android:alpha="0.4"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/autoscrollButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="8dp"
+            android:layout_below="@id/padButton"
+            android:layout_toRightOf="@+id/extrabuttons"
+            app:backgroundTint="@color/fab1"
+            app:fabSize="mini"
+            android:src="@drawable/ic_rotate_right_white_36dp"
+            android:alpha="0.4"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/metronomeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="8dp"
+            android:layout_below="@id/autoscrollButton"
+            android:layout_toRightOf="@+id/extrabuttons"
+            app:backgroundTint="@color/fab1"
+            app:fabSize="mini"
+            android:src="@drawable/ic_pulse_white_36dp"
+            android:alpha="0.4"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/extraButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="8dp"
+            android:layout_below="@id/metronomeButton"
+            android:layout_toRightOf="@+id/extrabuttons"
+            app:backgroundTint="@color/fab1"
+            app:fabSize="mini"
+            android:src="@drawable/ic_information_white_36dp"
+            android:alpha="0.4"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/customButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="8dp"
+            android:layout_below="@id/extraButton"
+            android:layout_toRightOf="@+id/extrabuttons"
+            app:backgroundTint="@color/fab1"
+            app:fabSize="mini"
+            android:src="@drawable/ic_bullseye_white_36dp"
+            android:alpha="0.4"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/extrabuttons"
+            android:layout_toRightOf="@+id/extrabuttons2"
+            android:layout_alignBottom="@+id/extraButton">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/chordButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:alpha="0.4"
+                android:contentDescription="@string/chords"
+                app:fabSize="mini"
+                app:backgroundTint="@color/fab2"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_guitar_electric_white_36dp"
+                android:visibility="visible" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/linkButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:alpha="0.4"
+                android:contentDescription="@string/link"
+                app:fabSize="mini"
+                app:backgroundTint="@color/fab2"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_link_white_36dp"
+                android:visibility="visible" />
+
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/stickyButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:fabSize="mini"
+                app:backgroundTint="@color/fab2"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_comment_text_white_36dp"
+                android:alpha="0.4"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/pageselectButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                app:fabSize="mini"
+                app:backgroundTint="@color/fab2"
+                android:src="@drawable/ic_book_white_48dp"
+                android:alpha="0.4"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/extrabuttons2"
+            android:layout_alignBottom="@+id/customButton">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/custom3Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:alpha="0.4"
+                app:fabSize="mini"
+                app:backgroundTint="@color/fab2"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_help_outline_white_36dp"
+                android:visibility="visible" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/custom2Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:fabSize="mini"
+                app:backgroundTint="@color/fab2"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_help_outline_white_36dp"
+                android:alpha="0.4"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/custom1Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                app:fabSize="mini"
+                app:backgroundTint="@color/fab2"
+                android:src="@drawable/ic_help_outline_white_36dp"
+                android:alpha="0.4"/>
+
+        </LinearLayout>
+
+
+
+
+
+
+    </RelativeLayout>
+
+</ScrollView>

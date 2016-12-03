@@ -102,7 +102,9 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
                 foldername = FullscreenActivity.mainfoldername;
             }
 
-            filesnfolders.add(filename + " _%%%_ " + foldername);
+            if (filename!=null && foldername!=null) {
+                filesnfolders.add(filename + " _%%%_ " + foldername);
+            }
         }
 
         Collator coll = Collator.getInstance(FullscreenActivity.locale);
@@ -128,14 +130,16 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
             // Replace unwanted symbols
             lyricstoadd = ProcessSong.removeUnwantedSymbolsAndSpaces(lyricstoadd);
 
-            mFileName.add(d, filename);
-            mFolder.add(d, foldername);
-            mTitle.add(d, filename);
-            mAuthor.add(d, "");
-            mShortLyrics.add(d, lyricstoadd);
-            mTheme.add(d, "");
-            mKey.add(d, "");
-            mHymnNumber.add(d, "");
+            if (filename!=null && foldername!=null && lyricstoadd!=null) {
+                mFileName.add(d, filename);
+                mFolder.add(d, foldername);
+                mTitle.add(d, filename);
+                mAuthor.add(d, "");
+                mShortLyrics.add(d, lyricstoadd);
+                mTheme.add(d, "");
+                mKey.add(d, "");
+                mHymnNumber.add(d, "");
+            }
         }
 
         mListView.setTextFilterEnabled(true);
@@ -144,7 +148,9 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
 
         for (int i = 0; i < filesnfolders.size(); i++) {
             SearchViewItems song = new SearchViewItems(mFileName.get(i), mTitle.get(i) , mFolder.get(i), mAuthor.get(i), mKey.get(i), mTheme.get(i), mShortLyrics.get(i), mHymnNumber.get(i));
-            searchlist.add(song);
+            if (song!=null) {
+                searchlist.add(song);
+            }
         }
 
         adapter = new SearchViewAdapter(getApplicationContext(), searchlist ,"search");
@@ -175,14 +181,17 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
 
         for (int d=0;d<FullscreenActivity.search_database.size();d++) {
             String[] songbits = FullscreenActivity.search_database.get(d).split("_%%%_");
-            mFileName.add(d, songbits[0].trim());
-            mFolder.add(d, songbits[1].trim());
-            mTitle.add(d, songbits[2].trim());
-            mAuthor.add(d, songbits[3].trim());
-            mShortLyrics.add(d, songbits[4].trim());
-            mTheme.add(d, songbits[5].trim());
-            mKey.add(d, songbits[6].trim());
-            mHymnNumber.add(d,songbits[7].trim());
+            if (songbits[0]!=null && songbits[1]!=null && songbits[2]!=null && songbits[3]!=null &&
+                    songbits[4]!=null && songbits[5]!=null && songbits[6]!=null && songbits[7]!=null) {
+                mFileName.add(d, songbits[0].trim());
+                mFolder.add(d, songbits[1].trim());
+                mTitle.add(d, songbits[2].trim());
+                mAuthor.add(d, songbits[3].trim());
+                mShortLyrics.add(d, songbits[4].trim());
+                mTheme.add(d, songbits[5].trim());
+                mKey.add(d, songbits[6].trim());
+                mHymnNumber.add(d, songbits[7].trim());
+            }
         }
 
         mListView.setTextFilterEnabled(true);
@@ -192,7 +201,9 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
 
         for (int i = 0; i < FullscreenActivity.search_database.size(); i++) {
             SearchViewItems song = new SearchViewItems(mFileName.get(i), mTitle.get(i) , mFolder.get(i), mAuthor.get(i), mKey.get(i), mTheme.get(i), mShortLyrics.get(i), mHymnNumber.get(i));
-            searchlist.add(song);
+            if (song!=null) {
+                searchlist.add(song);
+            }
         }
 
         adapter = new SearchViewAdapter(getApplicationContext(), searchlist , "search");

@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 import android.widget.SectionIndexer;
@@ -10,16 +11,19 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
-public class SongMenuAdapter extends ArrayAdapter<String> implements SectionIndexer {
+class SongMenuAdapter extends ArrayAdapter<String> implements SectionIndexer {
 
-    HashMap<String, Integer> mapIndex;
-    public HashMap<Integer,Integer> sectionPositions = new HashMap<>();
-    public HashMap<Integer,Integer> positionsForSection = new HashMap<>();
+    private HashMap<String, Integer> mapIndex;
+    @SuppressLint("UseSparseArrays")
+    private HashMap<Integer,Integer> sectionPositions = new HashMap<>();
+    @SuppressLint("UseSparseArrays")
+    private HashMap<Integer,Integer> positionsForSection = new HashMap<>();
     String[] sections;
     String[] songs;
     Context context;
 
-    public SongMenuAdapter(Context context, String[] songList) {
+    @SuppressLint("UseSparseArrays")
+    SongMenuAdapter(Context context, String[] songList) {
         //super(context, android.R.layout.simple_list_item_1, songList);
         super(context, R.layout.songlistitem, songList);
         this.context = context;
@@ -29,12 +33,21 @@ public class SongMenuAdapter extends ArrayAdapter<String> implements SectionInde
         sectionPositions = null;
         sectionPositions = new HashMap<>();
         this.songs = songList;
+        songs = songList;
         mapIndex = null;
         mapIndex = new LinkedHashMap<>();
         sections = null;
 
+        if (songs==null) {
+            songs=new String[1];
+            songs[0] = "";
+        }
+
         for (int x = 0; x < songs.length; x++) {
             String song = songs[x];
+            if (song==null) {
+                song = " ";
+            }
             String ch = song.substring(0, 1);
             ch = ch.toUpperCase(FullscreenActivity.locale);
 

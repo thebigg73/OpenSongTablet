@@ -89,9 +89,19 @@ public class PopUpImportExternalFile extends DialogFragment {
     String message = "";
     View V;
 
+    public void onStart() {
+        super.onStart();
+
+        // safety check
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.importnewsong));
+        getDialog().setCanceledOnTouchOutside(true);
 
         V = inflater.inflate(R.layout.popup_importexternalfile, container, false);
 
@@ -362,12 +372,14 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         for (String aScripture : scripture) {
             scriptureline = scriptureline + aScripture;
-            if (scriptureline.length() > 50) {
+            if (scriptureline!=null && scriptureline.length() > 50) {
                 scripturearray.add(scriptureline);
                 scriptureline = "";
             }
         }
-        scripturearray.add(scriptureline);
+        if (scriptureline!=null) {
+            scripturearray.add(scriptureline);
+        }
 
         // Convert the array back into one string separated by new lines
         FullscreenActivity.scripture = "";
@@ -562,7 +574,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         File[] backupfilecheck = FullscreenActivity.homedir.listFiles();
         if (backupfilecheck != null) {
             for (File aBackupfilecheck : backupfilecheck) {
-                if (aBackupfilecheck.isFile() && aBackupfilecheck.getPath().endsWith(".backup")) {
+                if (aBackupfilecheck!=null && aBackupfilecheck.isFile() && aBackupfilecheck.getPath().endsWith(".backup")) {
                     backups.add(aBackupfilecheck.getName());
                 }
             }
@@ -599,7 +611,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         File[] backupfilecheck = FullscreenActivity.homedir.listFiles();
         if (backupfilecheck != null) {
             for (File aBackupfilecheck : backupfilecheck) {
-                if (aBackupfilecheck.isFile() && aBackupfilecheck.getPath().endsWith(".osb")) {
+                if (aBackupfilecheck!=null && aBackupfilecheck.isFile() && aBackupfilecheck.getPath().endsWith(".osb")) {
                     backups.add(aBackupfilecheck.getName());
                 }
             }

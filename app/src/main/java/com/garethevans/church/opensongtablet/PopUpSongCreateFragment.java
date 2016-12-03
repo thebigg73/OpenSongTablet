@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,10 @@ public class PopUpSongCreateFragment extends DialogFragment {
         return frag;
     }
 
+    public interface MyInterface {
+        void openSongEdit();
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
@@ -49,8 +54,17 @@ public class PopUpSongCreateFragment extends DialogFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.createanewsong));
+        getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_songcreate, container, false);
 
         // Initialise the views
@@ -66,9 +80,11 @@ public class PopUpSongCreateFragment extends DialogFragment {
         // Reset to the main songs folder, so we can list them
         FullscreenActivity.currentFolder = FullscreenActivity.whichSongFolder;
         FullscreenActivity.newFolder = FullscreenActivity.whichSongFolder;
-        //FullscreenActivity.whichSongFolder = "";
-        ListSongFiles.listSongFolders();
+        AsyncTask<Object, Void, String> getfolders = new GetFolders();
+        getfolders.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
+
+/*
         // The song folder
         newtempfolders = new ArrayList<>();
         newtempfolders.add(FullscreenActivity.mainfoldername);
@@ -91,6 +107,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 FullscreenActivity.newFolder = newtempfolders.get(w);
             }
         }
+*/
 
         // Set the newFolderSpinnerListener
         newFolderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -179,7 +196,38 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
     }
 
-    public interface MyInterface {
-        void openSongEdit();
+    private class GetFolders extends AsyncTask<Object, Void, String> {
+        @Override
+        protected String doInBackground(Object... objects) {
+            ListSongFiles.getAllSongFolders();
+            return null;
+        }
+
+        protected void onPostExecute(String s) {
+            // The song folder
+            newtempfolders = new ArrayList<>();
+            if (FullscreenActivity.mainfoldername!=null) {
+                newtempfolders.add(FullscreenActivity.mainfoldername);
+            }
+            for (int e = 0; e < FullscreenActivity.mSongFolderNames.length; e++) {
+                if (FullscreenActivity.mSongFolderNames[e] != null &&
+                        !FullscreenActivity.mSongFolderNames[e].equals(FullscreenActivity.mainfoldername)) {
+                    newtempfolders.add(FullscreenActivity.mSongFolderNames[e]);
+                }
+            }
+            ArrayAdapter<String> folders = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, newtempfolders);
+            folders.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            newFolderSpinner.setAdapter(folders);
+
+            // Select the current folder as the preferred one - i.e. rename into the same folder
+            newFolderSpinner.setSelection(0);
+            for (int w = 0; w < newtempfolders.size(); w++) {
+                if (FullscreenActivity.currentFolder.equals(newtempfolders.get(w)) ||
+                        FullscreenActivity.currentFolder.equals("(" + newtempfolders.get(w) + ")")) {
+                    newFolderSpinner.setSelection(w);
+                    FullscreenActivity.newFolder = newtempfolders.get(w);
+                }
+            }
+        }
     }
 }

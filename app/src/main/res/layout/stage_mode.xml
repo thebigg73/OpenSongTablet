@@ -61,17 +61,28 @@
         android:layout_below="@id/mytoolbar"
         android:visibility="invisible"/>
 
-    <include layout="@layout/pageicons_bottom_material"
-        android:id="@+id/pagebuttonsbottom"
-        android:layout_width="match_parent"
+    <include layout="@layout/playback_progress"
+        android:id="@+id/padProgress"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/mytoolbar"/>
+
+    <include layout="@layout/pageicons_right_material"
+        android:id="@+id/pagebuttonsbottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/padProgress"/>
 
 </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/songmenu"
         android:orientation="vertical"
+        android:clickable="true"
         android:layout_width="220dp"
         android:layout_height="match_parent"
         android:background="@drawable/drawer_bg"
@@ -121,6 +132,7 @@
         android:layout_width="220dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:clickable="true"
         android:layout_gravity="end|right"
         android:background="@drawable/drawer_bg"
         android:padding="4dp">

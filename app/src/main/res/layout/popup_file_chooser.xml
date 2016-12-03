@@ -1,26 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (c) 2015.
-  ~ The code is provided free of charge.  You can use, modify, contribute and improve it as long as this source is referenced.
-  ~ Commercial use should seek permission.
-  -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/fileChooserTitle"
-        android:text="@string/file_chooser"
-        android:textColor="#ff0"
-        android:layout_marginBottom="12dp"
-        android:layout_margin="12dp" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -29,7 +14,7 @@
         android:choiceMode="singleChoice"
         android:fastScrollEnabled="true"
         android:layout_above="@+id/cancelFileButton"
-        android:layout_below="@+id/fileChooserTitle"
+        android:layout_alignParentTop="true"
         android:layout_margin="12dp"
         tools:listitem="@android:layout/simple_list_item_single_choice" />
 

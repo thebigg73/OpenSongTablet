@@ -12,6 +12,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -66,20 +67,20 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     }
 
     // Declare views
-    static View V;
-    static RadioGroup customRadioGroup;
-    static RadioButton noteRadioButton;
-    static RadioButton slideRadioButton;
-    static RadioButton imageRadioButton;
-    static RadioButton scriptureRadioButton;
-    static TextView slideTitleTextView;
-    static TextView slideContentTextView;
+    View V;
+    RadioGroup customRadioGroup;
+    RadioButton noteRadioButton;
+    RadioButton slideRadioButton;
+    RadioButton imageRadioButton;
+    RadioButton scriptureRadioButton;
+    TextView slideTitleTextView;
+    TextView slideContentTextView;
     static EditText slideTitleEditText;
     static EditText slideContentEditText;
-    static Button customSlideCancel;
-    static Button customSlideAdd;
-    static Button loadReusableButton;
-    static CheckBox saveReusableCheckBox;
+    Button customSlideCancel;
+    Button customSlideAdd;
+    Button loadReusableButton;
+    CheckBox saveReusableCheckBox;
     static Button addPageButton;
     static TableLayout slideImageTable;
     static CheckBox loopCheckBox;
@@ -91,8 +92,8 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     static RelativeLayout slideDetails_RelativeLayout;
     static EditText bibleSearch;
     static EditText bibleVersion;
-    static Button searchBibleGateway_Button;
-    static WebView bibleGateway_WebView;
+    Button searchBibleGateway_Button;
+    WebView bibleGateway_WebView;
     static Button grabVerse_Button;
     static ProgressBar searchBible_progressBar;
 
@@ -103,6 +104,8 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.add_custom_slide));
+        getDialog().setCanceledOnTouchOutside(true);
+
         V = inflater.inflate(R.layout.popup_customslidecreator, container, false);
 
         // Initialise the basic views
@@ -290,66 +293,79 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     }
 
     public void updateFields() {
-        Log.d("d","FullscreenActivity.whattodo="+FullscreenActivity.whattodo);
-        switch (FullscreenActivity.whattodo) {
-            case "customreusable_note":
-                // Fill in the details
-                noteRadioButton.setChecked(true);
-                slideRadioButton.setChecked(false);
-                imageRadioButton.setChecked(false);
-                scriptureRadioButton.setChecked(false);
-                switchViewToNote();
-                slideTitleEditText.setText(FullscreenActivity.customslide_title);
-                slideContentEditText.setText(FullscreenActivity.customslide_content);
-                break;
-            case "customreusable_scripture":
-                // Fill in the details
-                noteRadioButton.setChecked(false);
-                slideRadioButton.setChecked(false);
-                imageRadioButton.setChecked(false);
-                scriptureRadioButton.setChecked(true);
-                switchViewToScripture();
-                slideTitleEditText.setText(FullscreenActivity.customslide_title);
-                slideContentEditText.setText(FullscreenActivity.customslide_content);
-                break;
-            case "customreusable_slide":
-                // Fill in the details
-                noteRadioButton.setChecked(false);
-                slideRadioButton.setChecked(true);
-                imageRadioButton.setChecked(false);
-                scriptureRadioButton.setChecked(false);
-                switchViewToSlide();
-                slideTitleEditText.setText(FullscreenActivity.customslide_title);
-                slideContentEditText.setText(FullscreenActivity.customslide_content);
-                timeEditText.setText(FullscreenActivity.customimage_time);
-                if (FullscreenActivity.customimage_loop.equals("true")) {
-                    loopCheckBox.setChecked(true);
-                } else {
-                    loopCheckBox.setChecked(false);
-                }
-                break;
-            case "customreusable_image":
-                // Fill in the details
-                noteRadioButton.setChecked(false);
-                slideRadioButton.setChecked(false);
-                imageRadioButton.setChecked(true);
-                scriptureRadioButton.setChecked(false);
-                switchViewToImage();
-                slideTitleEditText.setText(FullscreenActivity.customslide_title);
-                slideContentEditText.setText("");
-                timeEditText.setText(FullscreenActivity.customimage_time);
-                if (FullscreenActivity.customimage_loop.equals("true")) {
-                    loopCheckBox.setChecked(true);
-                } else {
-                    loopCheckBox.setChecked(false);
-                }
-                // Now parse the list of images...
-                String imgs[] = FullscreenActivity.customimage_list.split("\n");
-                slideImageTable.removeAllViews();
-                for (String img : imgs) {
-                    addRow(img);
-                }
-                break;
+        AsyncTask<Object,Void,String> update_fields = new UpdateFields();
+        update_fields.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+    public class UpdateFields extends AsyncTask<Object, Void, String> {
+
+        @Override
+        protected String doInBackground(Object... objects) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Log.d("d", "FullscreenActivity.whattodo=" + FullscreenActivity.whattodo);
+            switch (FullscreenActivity.whattodo) {
+                case "customreusable_note":
+                    // Fill in the details
+                    noteRadioButton.setChecked(true);
+                    slideRadioButton.setChecked(false);
+                    imageRadioButton.setChecked(false);
+                    scriptureRadioButton.setChecked(false);
+                    switchViewToNote();
+                    slideTitleEditText.setText(FullscreenActivity.customslide_title);
+                    slideContentEditText.setText(FullscreenActivity.customslide_content);
+                    break;
+                case "customreusable_scripture":
+                    // Fill in the details
+                    noteRadioButton.setChecked(false);
+                    slideRadioButton.setChecked(false);
+                    imageRadioButton.setChecked(false);
+                    scriptureRadioButton.setChecked(true);
+                    switchViewToScripture();
+                    slideTitleEditText.setText(FullscreenActivity.customslide_title);
+                    slideContentEditText.setText(FullscreenActivity.customslide_content);
+                    break;
+                case "customreusable_slide":
+                    // Fill in the details
+                    noteRadioButton.setChecked(false);
+                    slideRadioButton.setChecked(true);
+                    imageRadioButton.setChecked(false);
+                    scriptureRadioButton.setChecked(false);
+                    switchViewToSlide();
+                    slideTitleEditText.setText(FullscreenActivity.customslide_title);
+                    slideContentEditText.setText(FullscreenActivity.customslide_content);
+                    timeEditText.setText(FullscreenActivity.customimage_time);
+                    if (FullscreenActivity.customimage_loop.equals("true")) {
+                        loopCheckBox.setChecked(true);
+                    } else {
+                        loopCheckBox.setChecked(false);
+                    }
+                    break;
+                case "customreusable_image":
+                    // Fill in the details
+                    noteRadioButton.setChecked(false);
+                    slideRadioButton.setChecked(false);
+                    imageRadioButton.setChecked(true);
+                    scriptureRadioButton.setChecked(false);
+                    switchViewToImage();
+                    slideTitleEditText.setText(FullscreenActivity.customslide_title);
+                    slideContentEditText.setText("");
+                    timeEditText.setText(FullscreenActivity.customimage_time);
+                    if (FullscreenActivity.customimage_loop.equals("true")) {
+                        loopCheckBox.setChecked(true);
+                    } else {
+                        loopCheckBox.setChecked(false);
+                    }
+                    // Now parse the list of images...
+                    String imgs[] = FullscreenActivity.customimage_list.split("\n");
+                    slideImageTable.removeAllViews();
+                    for (String img : imgs) {
+                        addRow(img);
+                    }
+                    break;
+            }
         }
     }
 
@@ -423,12 +439,9 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-
-        // safety check
-        if (getDialog() == null) {
-            return;
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     @Override

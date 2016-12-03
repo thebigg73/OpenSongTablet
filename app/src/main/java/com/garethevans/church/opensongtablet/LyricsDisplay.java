@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -11,7 +10,6 @@ public class LyricsDisplay extends Activity {
 
 	// This bit parses the lyrics
 	public static void parseLyrics() {
-		Log.d("LyricsDisplay","LyricsDisplay activity running");
 		// Keep myLyrics and mLyrics variables the same
 		FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
 		FullscreenActivity.myLyrics = ProcessSong.removeUnderScores(FullscreenActivity.mLyrics);
@@ -483,7 +481,6 @@ public class LyricsDisplay extends Activity {
 	}
 
 	public static void parseToPresentationOrder() {
-        Log.d("d","parseToPresentationOrder() is called");
 		// The presentation order is separated by spaces.  One issue is that custom tags might have spaces in them
 		// Go through the song and look for all tag.  Make a temp lyrics string
 		//FullscreenActivity.mLyrics = FullscreenActivity.myLyrics;
@@ -740,14 +737,16 @@ public class LyricsDisplay extends Activity {
 		for (int z=0;z<numtemplines;z++) {
 			if (lookfortagslyrics[z].indexOf("[")==0) {
 				// Add the content to the arraylist before getting ready for the next one
-				if (tagnum>-1 && !currentlyworkingthroughmultilineverse) {
+				if (tagnum>-1 && gathercontent!=null && !currentlyworkingthroughmultilineverse) {
 					temp_content.add(tagnum, gathercontent);
 				}
 				gathercontent = "";
 				tagnum ++;
 				lookfortagslyrics[z] = lookfortagslyrics[z].replace("[","");
 				lookfortagslyrics[z] = lookfortagslyrics[z].replace("]","");
-				temp_title.add(tagnum,lookfortagslyrics[z]);
+				if (tagnum>-1 && lookfortagslyrics[z]!=null) {
+					temp_title.add(tagnum, lookfortagslyrics[z]);
+				}
 
 			} else {
 					gathercontent = gathercontent + lookfortagslyrics[z] + "\n";
@@ -757,14 +756,14 @@ public class LyricsDisplay extends Activity {
 
 
 		// Add the last content to the arraylist
-		if (tagnum>-1 && !currentlyworkingthroughmultilineverse) {
+		if (tagnum>-1 && gathercontent!=null && !currentlyworkingthroughmultilineverse) {
 			temp_content.add(tagnum, gathercontent);
 		}
 
 
 		// Add on the multilineverses
 		if (multilpleverselines) {
-			if (!verse1contents.isEmpty() && !verse1contents.equals("")) {
+			if (verse1contents!=null && !verse1contents.isEmpty() && !verse1contents.equals("")) {
 				tagnum ++;
                 if (multiplechoruslines) {
                     temp_title.add(tagnum, "C1");
@@ -774,7 +773,7 @@ public class LyricsDisplay extends Activity {
                 }
 				temp_content.add(tagnum, verse1contents);
 			}
-			if (!verse2contents.isEmpty() && !verse2contents.equals("")) {
+			if (verse2contents!=null && !verse2contents.isEmpty() && !verse2contents.equals("")) {
 				tagnum ++;
                 if (multiplechoruslines) {
                     temp_title.add(tagnum, "C2");
@@ -784,7 +783,7 @@ public class LyricsDisplay extends Activity {
                 }
 				temp_content.add(tagnum, verse2contents);
 			}
-			if (!verse3contents.isEmpty() && !verse3contents.equals("")) {
+			if (verse3contents!=null && !verse3contents.isEmpty() && !verse3contents.equals("")) {
 				tagnum ++;
                 if (multiplechoruslines) {
                     temp_title.add(tagnum, "C3");
@@ -794,7 +793,7 @@ public class LyricsDisplay extends Activity {
                 }
 				temp_content.add(tagnum, verse3contents);
 			}
-			if (!verse4contents.isEmpty() && !verse4contents.equals("")) {
+			if (verse4contents!=null && !verse4contents.isEmpty() && !verse4contents.equals("")) {
 				tagnum ++;
                 if (multiplechoruslines) {
                     temp_title.add(tagnum, "C4");
@@ -804,7 +803,7 @@ public class LyricsDisplay extends Activity {
                 }
 				temp_content.add(tagnum, verse4contents);
 			}
-			if (!verse5contents.isEmpty() && !verse5contents.equals("")) {
+			if (verse5contents!=null && !verse5contents.isEmpty() && !verse5contents.equals("")) {
 				tagnum ++;
                 if (multiplechoruslines) {
                     temp_title.add(tagnum, "C5");
@@ -814,7 +813,7 @@ public class LyricsDisplay extends Activity {
                 }
 				temp_content.add(tagnum, verse5contents);
 			}
-			if (!verse6contents.isEmpty() && !verse6contents.equals("")) {
+			if (verse6contents!=null && !verse6contents.isEmpty() && !verse6contents.equals("")) {
 				tagnum ++;
                 if (multiplechoruslines) {
                     temp_title.add(tagnum, "C6");
@@ -824,7 +823,7 @@ public class LyricsDisplay extends Activity {
                 }
 				temp_content.add(tagnum, verse6contents);
 			}
-			if (!verse7contents.isEmpty() && !verse7contents.equals("")) {
+			if (verse7contents!=null && !verse7contents.isEmpty() && !verse7contents.equals("")) {
 				tagnum ++;
                 if (multiplechoruslines) {
                     temp_title.add(tagnum, "C7");
@@ -834,7 +833,7 @@ public class LyricsDisplay extends Activity {
                 }
 				temp_content.add(tagnum, verse7contents);
 			}
-			if (!verse8contents.isEmpty() && !verse8contents.equals("")) {
+			if (verse8contents!=null && !verse8contents.isEmpty() && !verse8contents.equals("")) {
 				tagnum ++;
                 if (multiplechoruslines) {
                     temp_title.add(tagnum, "C8");
@@ -844,7 +843,7 @@ public class LyricsDisplay extends Activity {
                 }
 				temp_content.add(tagnum, verse8contents);
 			}
-			if (!verse9contents.isEmpty() && !verse9contents.equals("")) {
+			if (verse9contents!=null && !verse9contents.isEmpty() && !verse9contents.equals("")) {
 				tagnum ++;
                 if (multiplechoruslines) {
                     temp_title.add(tagnum, "C9");

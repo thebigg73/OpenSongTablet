@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
 
     public interface MyInterface {
         void stickyNotesUpdate();
+        void pageButtonAlpha(String s);
     }
 
     private MyInterface mListener;
@@ -39,8 +41,17 @@ public class PopUpEditStickyFragment extends DialogFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.options_song_stickynotes));
+        getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_editsticky, container, false);
 
         // Initialise the views
@@ -75,5 +86,12 @@ public class PopUpEditStickyFragment extends DialogFragment {
             }
         });
         return V;
+    }
+
+    @Override
+    public void onDismiss(final DialogInterface dialog) {
+        if (mListener!=null) {
+            mListener.pageButtonAlpha("");
+        }
     }
 }

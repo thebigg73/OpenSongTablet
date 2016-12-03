@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/presenter_box_black"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
 
     <ScrollView
@@ -65,16 +66,14 @@
                 android:text="@string/pageturn_next"
                 android:textColor="#fff" />
 
-            <Button
+            <android.support.v7.widget.SwitchCompat
                 android:id="@+id/pedalToggleScrollBeforeSwipeButton"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="32dp"
-                android:background="@drawable/yellow_button"
-                android:padding="4dp"
+                android:layout_margin="8dp"
+                android:textColor="#fff"
                 android:text="@string/toggleScrollBeforeSwipe"
-                android:textColor="#fff" />
+                app:showText="false"/>
 
             <TextView
                 android:id="@+id/textView17"

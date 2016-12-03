@@ -130,6 +130,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static float popupAlpha_Set = 0.6f;
     public static float popupDim_Set = 0.7f;
     public static float popupScale_Set = 8.0f;
+    public static String popupPosition_Set = "c";
+    public static float popupAlpha_All = 0.6f;
+    public static float popupDim_All = 0.7f;
+    public static float popupScale_All = 8.0f;
+    public static String popupPosition_All = "c";
+    public static float pageButtonAlpha = 0.4f;
 
     // Song menu
     public static String indexlog = "";
@@ -165,8 +171,13 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     LinearLayout backingtrackProgress;
     TextView currentTime_TextView;
     TextView totalTime_TextView;
-    long time_start;
+    static long time_start;
     public static int audiolength = -1;
+    public static boolean pad1Playing;
+    public static boolean pad2Playing;
+    public static boolean pad1Fading;
+    public static boolean pad2Fading;
+    public static int fadeWhichPad;
 
     LinearLayout playbackProgress;
     TextView padcurrentTime_TextView;
@@ -241,7 +252,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
     @SuppressWarnings("unused")
     // Identify the chord images
-    private Drawable f1;
+    public  Drawable f1;
     private Drawable f2;
     private Drawable f3;
     private Drawable f4;
@@ -301,7 +312,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String chordInstrument = "g";
     public static String showNextInSet = "top";
     private Typeface lyrics_useThisFont;
-    private static String allchords = "";
+    public static String allchords = "";
     private static String allchordscapo = "";
     public static String chordnotes = "";
     public static String capoDisplay = "";
@@ -341,13 +352,13 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public boolean pressing_button = false;
 
     private ScrollView popupAutoscroll;
-    private static String popupAutoscroll_stoporstart = "stop";
+    public static String popupAutoscroll_stoporstart = "stop";
     private SeekBar popupAutoscroll_delay;
     private TextView popupAutoscroll_delay_text;
     private TextView popupAutoscroll_duration;
     private Button popupAutoscroll_startstopbutton;
     //private static int newPos;
-    private static int scrollpageHeight;
+    public static int scrollpageHeight;
     public static boolean autostartautoscroll;
     public boolean autoscrollactivated = false;
 
@@ -380,9 +391,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private ToggleButton popupMetronome_visualmetronometoggle;
 
     @SuppressWarnings("unused")
-    public boolean fadeout1 = false;
+    public static boolean fadeout1 = false;
     @SuppressWarnings("unused")
-    public boolean fadeout2 = false;
+    public static boolean fadeout2 = false;
     private final short minBpm = 40;
     private final short maxBpm = 199;
     private short bpm = 100;
@@ -429,33 +440,33 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static int timesigindex;
     public static boolean mTimeSigValid = false;
     public static int temposlider;
-    boolean usingdefaults = false;
-    private final int autoscroll_pause_time = 500; // specified in ms
+    static boolean usingdefaults = false;
+    public static final int autoscroll_pause_time = 500; // specified in ms
     public static int default_autoscroll_songlength;
     public static int default_autoscroll_predelay;
     public static String autoscroll_default_or_prompt = "";
-    private boolean pauseautoscroll = true;
-    private boolean autoscrollispaused = false;
-    private static boolean isautoscrolling = false;
-    private static float autoscroll_pixels = 0.0f;
-    private static float newPosFloat = 0.0f;
-    private static int total_pixels_to_scroll = 0;
-    private static String autoscrollonoff = "false";
+    public static boolean pauseautoscroll = true;
+    public static boolean autoscrollispaused = false;
+    public static boolean isautoscrolling = false;
+    public static float autoscroll_pixels = 0.0f;
+    public static float newPosFloat = 0.0f;
+    public static int total_pixels_to_scroll = 0;
+    public static String autoscrollonoff = "false";
     public static String pad_filename = "null";
     private static boolean killfadeout1 = false;
     private static boolean killfadeout2 = false;
-    private static boolean isfading1 = false;
-    private static boolean isfading2 = false;
-    private static boolean padson = false;
+    public static boolean isfading1 = false;
+    public static boolean isfading2 = false;
+    public static boolean padson = false;
     public static boolean needtorefreshsongmenu = false;
-    private static MediaPlayer mPlayer1 = null;
-    private static MediaPlayer mPlayer2 = null;
+    public static MediaPlayer mPlayer1 = new MediaPlayer();
+    public static MediaPlayer mPlayer2 = new MediaPlayer();
     private static ImageView padButton;
     private static ImageView linkButton;
     private static ImageView chordButton;
     private static ImageView autoscrollButton;
     private static ImageView metronomeButton;
-    private static boolean orientationchanged = false;
+    public static boolean orientationchanged = false;
     private static ImageButton uselinkaudiolength_ImageButton;
     private static int alreadyshowingpage;
     public static int keyindex;
@@ -493,7 +504,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String whichMode = "";
 
     // Views and bits on the pages
-    private static int mScreenOrientation;
+    public static int mScreenOrientation;
     private static int columnTest = 1;
     private static float onecolfontsize;
     private static float twocolfontsize;
@@ -894,6 +905,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     LinearLayout changefolder_LinearLayout;
     ListView song_list_view;
     TextView menuFolder_TextView;
+    public static int whichPad = 0;
 
     public static String[] songSections;
     public static String[] songSectionsLabels;
@@ -1124,6 +1136,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         // Or the default storage location isn't available, ask them!
         checkDirectories();
 
+        whichMode = "Stage";
         //whichMode = "Performance";
 
         // If whichMode is Presentation, open that app instead
@@ -1283,7 +1296,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         setButton_right = (ImageView) findViewById(R.id.setButton_right);
 
         // Decide if the user want the page buttons on the right or the bottom
-        setupPageButtons();
+        setupPageButtons("");
 
         scrollstickyholder = (ScrollView) findViewById(R.id.scrollstickyholder);
         mySticky = (TextView) findViewById(R.id.mySticky);
@@ -1530,7 +1543,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     }
                 }, delayswipe_time); // 1800ms delay
                 toggleActionBar();
-                setupPageButtons();
+                setupPageButtons("");
                 showpagebuttons();
             }
 
@@ -1718,7 +1731,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     }
 
     @Override
-    public void setupPageButtons() {
+    public void setupPageButtons(String s) {
 
         uparrow_top = (ImageView) findViewById(R.id.uparrow_top);
         uparrow_bottom = (ImageView) findViewById(R.id.uparrow_bottom);
@@ -1985,6 +1998,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         }
         if (currtempo<199) {
             // Add 1 then subtract 39;
+            mTempo = "" + (currtempo + 1);
             currtempo -= 38;
             popupMetronome_tempo.setProgress(currtempo);
         }
@@ -1998,8 +2012,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         } catch (Exception e) {
             currtempo = 39;
         }
+
         if (currtempo>40) {
             // Subtract 1 then subtract 39;
+            mTempo = "" + (currtempo - 1);
             currtempo -= 40;
             popupMetronome_tempo.setProgress(currtempo);
         }
@@ -4589,7 +4605,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         DrawerTweaks.closeMyDrawersFS(mDrawerLayout,songmenu,expListViewOption,which);
     }
 
-    private void prepareOptionMenu() {
+    @Override
+    public void prepareOptionMenu() {
         // preparing list data
         listDataHeaderOption = new ArrayList<>();
         listDataChildOption = new HashMap<>();
@@ -11227,6 +11244,18 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     }
 
     @Override
+    public void closePopUps() {
+        if (newFragment!=null) {
+            newFragment.dismiss();
+        }
+    }
+
+    @Override
+    public void pageButtonAlpha(String s) {
+        // Not needed here - required for StageMode
+    }
+
+    @Override
     public void openFragment() {
         // Initialise the newFragment
         newFragment = null;
@@ -11418,7 +11447,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         }
     }
 
-    @Override
+    //@Override
     public void updateLinksPopUp() {
         // This is called when a file is chosen from the PopUpDirectoryChooserFragment
         // We need to decide if it is an audiofile or otherfile

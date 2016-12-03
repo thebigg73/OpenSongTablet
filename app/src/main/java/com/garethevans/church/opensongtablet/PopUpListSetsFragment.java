@@ -88,6 +88,14 @@ public class PopUpListSetsFragment extends DialogFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View V = inflater.inflate(R.layout.popup_setlists, container, false);
@@ -150,6 +158,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         FullscreenActivity.myToastMessage = myTitle + " : " + getActivity().getResources().getString(R.string.ok);
 
         getDialog().setTitle(myTitle);
+        getDialog().setCanceledOnTouchOutside(true);
 
         // Set The Adapter
         setCorrectAdapter();
@@ -318,107 +327,126 @@ public class PopUpListSetsFragment extends DialogFragment {
         FullscreenActivity.settoload = null;
         FullscreenActivity.settoload = FullscreenActivity.setnamechosen;
 
-        // Run the script that generates the email text which has the set details in it.
-        try {
-            ExportPreparer.setParser();
-        } catch (XmlPullParserException | IOException e) {
-            e.printStackTrace();
-        }
+        AsyncTask<Object, Void, String> set_export = new ExportSet();
+        set_export.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
 
-        Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-        emailIntent.setType("text/plain");
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, FullscreenActivity.settoload);
-        emailIntent.putExtra(Intent.EXTRA_TITLE, FullscreenActivity.settoload);
-        emailIntent.putExtra(Intent.EXTRA_TEXT, FullscreenActivity.settoload + "\n\n" + FullscreenActivity.emailtext);
-        FullscreenActivity.emailtext = "";
-        File setfile  = new File(FullscreenActivity.dirsets + "/" + FullscreenActivity.settoload);
-        File ostsfile = new File(FullscreenActivity.homedir + "/Notes/_cache/" + FullscreenActivity.settoload + ".osts");
+    private class ExportSet extends AsyncTask<Object, Void, String> {
 
-        if (!setfile.exists() || !setfile.canRead()) {
-            return;
-        }
-
-        // Copy the set file to an .osts file
-        try {
-            FileInputStream in = new FileInputStream(setfile);
-            FileOutputStream out = new FileOutputStream(ostsfile);
-            byte[] buffer = new byte[1024];
-            int read;
-            while ((read = in.read(buffer)) != -1) {
-                out.write(buffer, 0, read);
-            }
-            in.close();
-
-            // write the output file (You have now copied the file)
-            out.flush();
-            out.close();
-
-        } catch (Exception e) {
-            // Error
-            e.printStackTrace();
-        }
-
-        Uri uri_set  = Uri.fromFile(setfile);
-        Uri uri_osts = Uri.fromFile(ostsfile);
-
-        ArrayList<Uri> uris = new ArrayList<>();
-        uris.add(uri_set);
-        uris.add(uri_osts);
-
-        // Go through each song in the set and attach them
-        // Also try to attach a copy of the song ending in .ost, as long as they aren't images
-        for (int q=0; q<FullscreenActivity.exportsetfilenames.size(); q++) {
-            // Remove any subfolder from the exportsetfilenames_ost.get(q)
-            String tempsong_ost = FullscreenActivity.exportsetfilenames_ost.get(q);
-            tempsong_ost = tempsong_ost.substring(tempsong_ost.indexOf("/")+1);
-            File songtoload  = new File(FullscreenActivity.dir + "/" + FullscreenActivity.exportsetfilenames.get(q));
-            File ostsongcopy = new File(FullscreenActivity.homedir + "/Notes/_cache/" + tempsong_ost + ".ost");
-            boolean isimage = false;
-            if (songtoload.toString().endsWith(".jpg") || songtoload.toString().endsWith(".JPG") ||
-                    songtoload.toString().endsWith(".jpeg") || songtoload.toString().endsWith(".JPEG") ||
-                    songtoload.toString().endsWith(".gif") || songtoload.toString().endsWith(".GIF") ||
-                    songtoload.toString().endsWith(".png") || songtoload.toString().endsWith(".PNG") ||
-                    songtoload.toString().endsWith(".bmp") || songtoload.toString().endsWith(".BMP")) {
-                songtoload = new File(FullscreenActivity.exportsetfilenames.get(q));
-                isimage = true;
+        @Override
+        protected String doInBackground(Object... objects) {
+            // Run the script that generates the email text which has the set details in it.
+            try {
+                ExportPreparer.setParser();
+            } catch (XmlPullParserException | IOException e) {
+                e.printStackTrace();
             }
 
-            // Copy the song
-            if (songtoload.exists()) {
-                try {
-                    if (!isimage) {
-                        FileInputStream in = new FileInputStream(songtoload);
-                        FileOutputStream out = new FileOutputStream(ostsongcopy);
+            Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+            emailIntent.setType("text/plain");
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, FullscreenActivity.settoload);
+            emailIntent.putExtra(Intent.EXTRA_TITLE, FullscreenActivity.settoload);
+            emailIntent.putExtra(Intent.EXTRA_TEXT, FullscreenActivity.settoload + "\n\n" + FullscreenActivity.emailtext);
+            FullscreenActivity.emailtext = "";
+            File setfile  = new File(FullscreenActivity.dirsets + "/" + FullscreenActivity.settoload);
+            File ostsfile = new File(FullscreenActivity.homedir + "/Notes/_cache/" + FullscreenActivity.settoload + ".osts");
 
-                        byte[] buffer = new byte[1024];
-                        int read;
-                        while ((read = in.read(buffer)) != -1) {
-                            out.write(buffer, 0, read);
+            if (!setfile.exists() || !setfile.canRead()) {
+                return null;
+            }
+
+            // Copy the set file to an .osts file
+            try {
+                FileInputStream in = new FileInputStream(setfile);
+                FileOutputStream out = new FileOutputStream(ostsfile);
+                byte[] buffer = new byte[1024];
+                int read;
+                while ((read = in.read(buffer)) != -1) {
+                    out.write(buffer, 0, read);
+                }
+                in.close();
+
+                // write the output file (You have now copied the file)
+                out.flush();
+                out.close();
+
+            } catch (Exception e) {
+                // Error
+                e.printStackTrace();
+            }
+
+            Uri uri_set  = Uri.fromFile(setfile);
+            Uri uri_osts = Uri.fromFile(ostsfile);
+
+            ArrayList<Uri> uris = new ArrayList<>();
+            if (uri_set!=null) {
+                uris.add(uri_set);
+            }
+            if (uri_osts!=null) {
+                uris.add(uri_osts);
+            }
+
+            // Go through each song in the set and attach them
+            // Also try to attach a copy of the song ending in .ost, as long as they aren't images
+            for (int q=0; q<FullscreenActivity.exportsetfilenames.size(); q++) {
+                // Remove any subfolder from the exportsetfilenames_ost.get(q)
+                String tempsong_ost = FullscreenActivity.exportsetfilenames_ost.get(q);
+                tempsong_ost = tempsong_ost.substring(tempsong_ost.indexOf("/")+1);
+                File songtoload  = new File(FullscreenActivity.dir + "/" + FullscreenActivity.exportsetfilenames.get(q));
+                File ostsongcopy = new File(FullscreenActivity.homedir + "/Notes/_cache/" + tempsong_ost + ".ost");
+                boolean isimage = false;
+                if (songtoload.toString().endsWith(".jpg") || songtoload.toString().endsWith(".JPG") ||
+                        songtoload.toString().endsWith(".jpeg") || songtoload.toString().endsWith(".JPEG") ||
+                        songtoload.toString().endsWith(".gif") || songtoload.toString().endsWith(".GIF") ||
+                        songtoload.toString().endsWith(".png") || songtoload.toString().endsWith(".PNG") ||
+                        songtoload.toString().endsWith(".bmp") || songtoload.toString().endsWith(".BMP")) {
+                    songtoload = new File(FullscreenActivity.exportsetfilenames.get(q));
+                    isimage = true;
+                }
+
+                // Copy the song
+                if (songtoload.exists()) {
+                    try {
+                        if (!isimage) {
+                            FileInputStream in = new FileInputStream(songtoload);
+                            FileOutputStream out = new FileOutputStream(ostsongcopy);
+
+                            byte[] buffer = new byte[1024];
+                            int read;
+                            while ((read = in.read(buffer)) != -1) {
+                                out.write(buffer, 0, read);
+                            }
+                            in.close();
+
+                            // write the output file (You have now copied the file)
+                            out.flush();
+                            out.close();
+
+                            Uri urisongs_ost = Uri.fromFile(ostsongcopy);
+                            uris.add(urisongs_ost);
+
                         }
-                        in.close();
+                        Uri urisongs = Uri.fromFile(songtoload);
+                        uris.add(urisongs);
 
-                        // write the output file (You have now copied the file)
-                        out.flush();
-                        out.close();
-
-                        Uri urisongs_ost = Uri.fromFile(ostsongcopy);
-                        uris.add(urisongs_ost);
+                    } catch (Exception e) {
+                        // Error
+                        e.printStackTrace();
                     }
-                    Uri urisongs = Uri.fromFile(songtoload);
-                    uris.add(urisongs);
-
-                } catch (Exception e) {
-                    // Error
-                    e.printStackTrace();
                 }
             }
+
+            emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+            startActivityForResult(Intent.createChooser(emailIntent, FullscreenActivity.exportsavedset), 12345);
+
+            return null;
         }
 
-        emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-        startActivityForResult(Intent.createChooser(emailIntent, FullscreenActivity.exportsavedset), 12345);
-
-        // Close this dialog
-        dismiss();
+        @Override
+        protected void onPostExecute(String s) {
+            // Close this dialog
+            dismiss();
+        }
     }
 
     public class FetchDataTask extends AsyncTask<String,Integer,String> {

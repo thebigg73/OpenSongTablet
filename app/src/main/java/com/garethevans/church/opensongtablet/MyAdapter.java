@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.content.res.ColorStateList;
 import android.graphics.drawable.GradientDrawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
@@ -59,6 +60,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_music_note_white_18dp);
             issong = true;
         }
+
+        setitemViewHolder.vIcon.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
 
         String folderrelocate;
         if (si.songicon.equals(FullscreenActivity.image)) {

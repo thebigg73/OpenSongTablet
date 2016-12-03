@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,8 +15,8 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-public class AmbilWarnaDialog {
-	public interface OnAmbilWarnaListener {
+class AmbilWarnaDialog {
+	interface OnAmbilWarnaListener {
 		void onCancel(AmbilWarnaDialog dialog);
 		void onOk(AmbilWarnaDialog dialog, int color);
 		}
@@ -23,41 +24,23 @@ public class AmbilWarnaDialog {
 	final AlertDialog dialog;
 	private final boolean supportsAlpha;
 	final OnAmbilWarnaListener listener;
-	final View viewHue;
-	final AmbilWarnaSquare viewSatVal;
-	final ImageView viewCursor;
-	final ImageView viewAlphaCursor;
-	final View viewOldColor;
-	final View viewNewColor;
-	final View viewAlphaOverlay;
-	final ImageView viewTarget;
-	final ImageView viewAlphaCheckered;
-	final ViewGroup viewContainer;
-	final float[] currentColorHsv = new float[3];
-	int alpha;
+	private final View viewHue;
+	private final AmbilWarnaSquare viewSatVal;
+	private final ImageView viewCursor;
+	private final ImageView viewAlphaCursor;
+	private final View viewNewColor;
+	private final View viewAlphaOverlay;
+	private final ImageView viewTarget;
+	private final ImageView viewAlphaCheckered;
+	private final ViewGroup viewContainer;
+	private final float[] currentColorHsv = new float[3];
+	private int alpha;
 
-	/**
-﻿   * Create an AmbilWarnaDialog.
-﻿   *
-﻿   * @param context activity context
-﻿   * @param color current color
-﻿   * @param listener an OnAmbilWarnaListener, allowing you to get back error or OK
-﻿   */
-	
-	public AmbilWarnaDialog(final Context context, int color, OnAmbilWarnaListener listener) {
+	AmbilWarnaDialog(final Context context, int color, OnAmbilWarnaListener listener) {
 		this(context, color, false, listener);
 		}
 
-	/**
-﻿   * Create an AmbilWarnaDialog.
-﻿   *
-﻿   * @param context activity context
-﻿   * @param color current color
-﻿   * @param supportsAlpha whether alpha/transparency controls are enabled
-﻿   * @param listener an OnAmbilWarnaListener, allowing you to get back error or OK
-﻿   */
-	
-	public AmbilWarnaDialog(final Context context, int color, boolean supportsAlpha, OnAmbilWarnaListener listener) {
+	private AmbilWarnaDialog(final Context context, int color, boolean supportsAlpha, OnAmbilWarnaListener listener) {
 		this.supportsAlpha = supportsAlpha;
 		this.listener = listener;
 
@@ -68,11 +51,11 @@ public class AmbilWarnaDialog {
 		Color.colorToHSV(color, currentColorHsv);
 		alpha = Color.alpha(color);
 
-		final View view = LayoutInflater.from(context).inflate(R.layout.ambilwarna_dialog, null);
+		@SuppressLint("InflateParams") final View view = LayoutInflater.from(context).inflate(R.layout.ambilwarna_dialog, null);
 		viewHue = view.findViewById(R.id.ambilwarna_viewHue);
 		viewSatVal = (AmbilWarnaSquare) view.findViewById(R.id.ambilwarna_viewSatBri);
 		viewCursor = (ImageView) view.findViewById(R.id.ambilwarna_cursor);
-		viewOldColor = view.findViewById(R.id.ambilwarna_oldColor);
+		View viewOldColor = view.findViewById(R.id.ambilwarna_oldColor);
 		viewNewColor = view.findViewById(R.id.ambilwarna_newColor);
 		viewTarget = (ImageView) view.findViewById(R.id.ambilwarna_target);
 		viewContainer = (ViewGroup) view.findViewById(R.id.ambilwarna_viewContainer);
@@ -219,7 +202,7 @@ public class AmbilWarnaDialog {
 			});
 		}
 
-	protected void moveCursor() {
+	private void moveCursor() {
 		float y = viewHue.getMeasuredHeight() - (getHue() * viewHue.getMeasuredHeight() / 360.f);
 		if (y == viewHue.getMeasuredHeight()) y = 0.f;
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) viewCursor.getLayoutParams();
@@ -228,7 +211,7 @@ public class AmbilWarnaDialog {
 		viewCursor.setLayoutParams(layoutParams);
 		}
 
-	protected void moveTarget() {
+	private void moveTarget() {
 		float x = getSat() * viewSatVal.getMeasuredWidth();
 		float y = (1.f - getVal()) * viewSatVal.getMeasuredHeight();
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) viewTarget.getLayoutParams();
@@ -237,7 +220,7 @@ public class AmbilWarnaDialog {
 		viewTarget.setLayoutParams(layoutParams);
 		}
 
-	protected void moveAlphaCursor() {
+	private void moveAlphaCursor() {
 		final int measuredHeight = this.viewAlphaCheckered.getMeasuredHeight();
 		float y = measuredHeight - ((this.getAlpha() * measuredHeight) / 255.f);
 		final RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) this.viewAlphaCursor.getLayoutParams();

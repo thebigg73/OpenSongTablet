@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
@@ -13,8 +12,6 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-//import android.widget.Switch;
 
 public class PopUpScalingFragment extends DialogFragment {
 
@@ -55,15 +52,22 @@ public class PopUpScalingFragment extends DialogFragment {
     TextView off_TextView;
     TextView on_TextView;
     TextView width_TextView;
-    //Switch overrideFull_Switch;
-    //Switch overrideWidth_Switch;
     SwitchCompat overrideFull_Switch;
     SwitchCompat overrideWidth_Switch;
     Button closebutton;
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.options_options_scale));
+        getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_scaling, container, false);
 
         // Initialise the views
@@ -79,10 +83,6 @@ public class PopUpScalingFragment extends DialogFragment {
         off_TextView = (TextView) V.findViewById(R.id.off_TextView);
         on_TextView = (TextView) V.findViewById(R.id.on_TextView);
         width_TextView = (TextView) V.findViewById(R.id.width_TextView);
-/*
-        overrideFull_Switch = (Switch) V.findViewById(R.id.overrideFull_Switch);
-        overrideWidth_Switch = (Switch) V.findViewById(R.id.overrideWidth_Switch);
-*/
         overrideFull_Switch = (SwitchCompat) V.findViewById(R.id.overrideFull_Switch);
         overrideWidth_Switch = (SwitchCompat) V.findViewById(R.id.overrideWidth_Switch);
         closebutton = (Button) V.findViewById(R.id.closebutton);
@@ -325,15 +325,6 @@ public class PopUpScalingFragment extends DialogFragment {
             FullscreenActivity.mMaxFontSize = FullscreenActivity.mMinFontSize + 1;
             setupmaxfontsizeseekbar();
         }
-    }
-
-    @Override
-    public void onResume() {
-        Dialog dialog = getDialog();
-        if (dialog != null) {
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        }
-        super.onResume();
     }
 
 }

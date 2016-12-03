@@ -28,9 +28,19 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
     RadioButton autoscroll_prompt_RadioButton;
     Button save_autoscroll_Button;
 
+    public void onStart() {
+        super.onStart();
+
+        // safety check
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.crossfade_time));
+        getDialog().setTitle(getActivity().getResources().getString(R.string.default_autoscroll));
+        getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_autoscrolldefaults, container, false);
 
         // Initialise the views

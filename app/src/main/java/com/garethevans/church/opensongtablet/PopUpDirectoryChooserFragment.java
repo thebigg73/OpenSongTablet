@@ -31,7 +31,8 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
 
     public interface MyInterface {
         void updateCustomStorage();
-        void updateLinksPopUp();
+        //void updateLinksPopUp();
+        void openFragment();
     }
 
     private MyInterface mListener;
@@ -50,7 +51,7 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
     }
 
     ImageView navigateUp;
-    public static TextView currentFolder;
+    public TextView currentFolder;
     ListView directoryList;
     Button closeButton;
     Button selectButton;
@@ -62,12 +63,22 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
     public static List<String> tempProperFiles;
     static Collator coll;
     String chooserAction;
-    public static Context context;
+    public Context context;
+
+    public void onStart() {
+        super.onStart();
+
+        // safety check
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         getDialog().setTitle(getActivity().getResources().getString(R.string.storage_choose));
+        getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_folderexplorer, container, false);
         context = getActivity().getBaseContext();
 
@@ -102,6 +113,7 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 StorageChooser.customStorageLoc = location;
+                FullscreenActivity.customStorage = location.toString();
                 mListener.updateCustomStorage();
                 dismiss();
             }
@@ -171,7 +183,10 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
                     Log.d("d",""+location.toString());
                     mListener.updateCustomStorage();
                     if (FullscreenActivity.filetoselect.equals("audiolink") || FullscreenActivity.filetoselect.equals("otherlink")) {
-                        mListener.updateLinksPopUp();
+                        //mListener.updateLinksPopUp();
+                        FullscreenActivity.whattodo = "page_links";
+                        mListener.openFragment();
+
                     }
                     dismiss();
                 }
@@ -230,8 +245,12 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
             Collections.sort(tempProperFolders, coll);
             Collections.sort(tempProperFiles, coll);
 
-            tempProperDirectoriesAndFiles.addAll(tempProperFolders);
-            tempProperDirectoriesAndFiles.addAll(tempProperFiles);
+            if (tempProperFolders!=null) {
+                tempProperDirectoriesAndFiles.addAll(tempProperFolders);
+            }
+            if (tempProperFiles!=null) {
+                tempProperDirectoriesAndFiles.addAll(tempProperFiles);
+            }
 
             // Update the listView with the folders
             ArrayAdapter<String> listAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, tempProperDirectoriesAndFiles);
@@ -277,17 +296,6 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
         directoryList.setAdapter(listAdapter);
 
         currentFolder.setText(location.toString());
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // safety check
-        if (getDialog() == null) {
-            return;
-        }
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
 }

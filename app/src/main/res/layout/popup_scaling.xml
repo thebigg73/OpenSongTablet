@@ -1,242 +1,235 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="0dp"
+    android:background="@drawable/popup_bg"
     android:orientation="vertical"
-    android:background="@drawable/presenter_box_black"
     android:padding="8dp"
     android:visibility="visible">
 
 
-        <ScrollView
-            android:id="@+id/scrollviewscale"
+    <ScrollView
+        android:id="@+id/scrollviewscale"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/closebutton"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/closebutton"
-            android:layout_alignParentTop="true">
+            android:orientation="vertical">
 
-            <LinearLayout
+            <SeekBar
+                android:id="@+id/autoscale_seekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:max="2"
+                android:progress="1"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.0"
+                    tools:ignore="UselessParent">
+
+                    <TextView
+                        android:id="@+id/off_TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.33"
+                        android:gravity="left"
+                        android:text="@string/off"
+                        android:textColor="#fff" />
+
+                    <TextView
+                        android:id="@+id/width_TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.33"
+                        android:gravity="center_horizontal"
+                        android:text="@string/on_width"
+                        android:textColor="#fff" />
+
+                    <TextView
+                        android:id="@+id/on_TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.33"
+                        android:gravity="right"
+                        android:text="@string/on"
+                        android:textColor="#fff" />
+                </TableRow>
+            </TableLayout>
+
+            <LinearLayout
+                android:id="@+id/maxAutoScale_Group"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
                 <TextView
+                    android:id="@+id/textView42"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/options_options_scale"
-                    android:id="@+id/textView40"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/maxfontsize"
                     android:textColor="#ff0"
                     android:textSize="18sp" />
 
                 <SeekBar
+                    android:id="@+id/maxAutoScale_seekBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/autoscale_seekBar"
-                    android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
-                    android:progress="1"
-                    android:max="2"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                    android:layout_marginBottom="12dp"
                     android:layout_marginLeft="0dp"
-                    android:layout_marginTop="12dp"
                     android:layout_marginRight="0dp"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:max="60"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
-                <TableLayout
+                <TextView
+                    android:id="@+id/maxAutoScale_TextView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textColor="#fff" />
 
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1.0">
+                <TextView
+                    android:id="@+id/textView67"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/minfontsize"
+                    android:textColor="#ff0"
+                    android:textSize="18sp" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/off"
-                            android:id="@+id/off_TextView"
-                            android:layout_weight="0.33"
-                            android:gravity="left"
-                            android:textColor="#fff" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/on_width"
-                            android:id="@+id/width_TextView"
-                            android:layout_weight="0.33"
-                            android:gravity="center_horizontal"
-                            android:textColor="#fff" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/on"
-                            android:id="@+id/on_TextView"
-                            android:layout_weight="0.33"
-                            android:gravity="right"
-                            android:textColor="#fff" />
-                    </TableRow>
-                </TableLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
+                <SeekBar
+                    android:id="@+id/minAutoScale_seekBar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/maxAutoScale_Group" >
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:max="28"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/maxfontsize"
-                        android:id="@+id/textView42"
-                        android:textColor="#ff0"
-                        android:textSize="18sp"
-                        android:layout_marginTop="32dp" />
-
-                    <SeekBar
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/maxAutoScale_seekBar"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginRight="0dp"
-                        android:layout_marginBottom="12dp"
-                        android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                        android:max="60"
-                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
-                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/maxAutoScale_TextView"
-                        android:gravity="center_horizontal"
-                        android:textColor="#fff" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/minfontsize"
-                        android:id="@+id/textView67"
-                        android:textColor="#ff0"
-                        android:textSize="18sp"
-                        android:layout_marginTop="32dp" />
-
-                    <SeekBar
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/minAutoScale_seekBar"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginRight="0dp"
-                        android:layout_marginBottom="12dp"
-                        android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                        android:max="28"
-                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
-                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/minAutoScale_TextView"
-                        android:gravity="center_horizontal"
-                        android:textColor="#fff" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/override_scale_explanation"
-                        android:id="@+id/textView69"
-                        android:textColor="#fff"
-                        android:textSize="16sp"
-                        android:layout_marginTop="32dp" />
-
-                    <android.support.v7.widget.SwitchCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/override_fullautoscale"
-                        android:id="@+id/overrideFull_Switch"
-                        android:textColor="#ff0"
-                        android:textSize="18sp"
-                        android:layout_marginTop="32dp" />
-
-                    <android.support.v7.widget.SwitchCompat
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/override_widthautoscale"
-                        android:id="@+id/overrideWidth_Switch"
-                        android:textSize="18sp"
-                        android:layout_marginTop="16dp"
-                        android:textColor="#ff0" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
+                <TextView
+                    android:id="@+id/minAutoScale_TextView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:alpha="0.2"
-                    android:id="@+id/fontsize_change_group">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textColor="#fff" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/options_options_fontsize"
-                        android:id="@+id/textView52"
-                        android:textColor="#ff0"
-                        android:textSize="18sp"
-                        android:layout_marginTop="32dp" />
+                <TextView
+                    android:id="@+id/textView69"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/override_scale_explanation"
+                    android:textColor="#fff"
+                    android:textSize="16sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/fontsize"
-                        android:id="@+id/textView65"
-                        android:textColor="#aaa"
-                        android:textSize="18sp" />
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/overrideFull_Switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/override_fullautoscale"
+                    android:textColor="#ff0"
+                    android:textSize="18sp" />
 
-                    <SeekBar
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/fontsize_seekbar"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginRight="0dp"
-                        android:layout_marginBottom="12dp"
-                        android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                        android:max="79"
-                        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
-                        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/fontsize_TextView"
-                        android:gravity="center_horizontal"
-                        android:textColor="#fff" />
-                </LinearLayout>
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/overrideWidth_Switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/override_widthautoscale"
+                    android:textColor="#ff0"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
-        </ScrollView>
+            <LinearLayout
+                android:id="@+id/fontsize_change_group"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView52"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/options_options_fontsize"
+                    android:textColor="#ff0"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textView65"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fontsize"
+                    android:textColor="#aaa"
+                    android:textSize="18sp" />
+
+                <SeekBar
+                    android:id="@+id/fontsize_seekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:max="79"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                <TextView
+                    android:id="@+id/fontsize_TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textColor="#fff" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 
     <Button
+        android:id="@+id/closebutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:background="@drawable/blue_button"
-        android:text="@string/drawer_close"
-        android:textColor="#fff"
-        android:id="@+id/closebutton"
-        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="8dp" />
+        android:layout_alignParentRight="true"
+        android:layout_gravity="end"
+        android:layout_margin="8dp"
+        android:background="@drawable/blue_button"
+        android:text="@string/drawer_close"
+        android:textColor="#fff" />
 
 </RelativeLayout>

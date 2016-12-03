@@ -2619,6 +2619,19 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
     }
 
     @Override
+    public void closePopUps() {
+        if (newFragment!=null) {
+            newFragment.dismiss();
+        }
+    }
+
+    @Override
+    public void pageButtonAlpha(String s) {
+        // Do nothing
+        // This override is for StageMode
+    }
+
+    @Override
     public void openFragment() {
 
     }

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
 
     <EditText
@@ -15,9 +15,10 @@
         android:layout_margin="8dp"
         android:hint="@string/stickynotes"
         android:gravity="top|left"
-        android:background="#FCF0AD"
         android:textColor="#000"
-        android:textColorHint="#555" />
+        android:textColorHint="#666"
+        android:background="#fff"
+        android:textSize="20sp" />
 
     <Button
         android:layout_width="wrap_content"

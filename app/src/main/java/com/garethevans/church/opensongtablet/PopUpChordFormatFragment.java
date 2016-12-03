@@ -38,9 +38,19 @@ public class PopUpChordFormatFragment extends DialogFragment {
     Button exitChordFormat;
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.choosechordformat));
-        View V = inflater.inflate(R.layout.choose_chordformat, container, false);
+        getDialog().setCanceledOnTouchOutside(true);
+
+        View V = inflater.inflate(R.layout.popup_chordformat, container, false);
 
         // Load the user preferences
         Preferences.loadPreferences();
@@ -165,17 +175,6 @@ public class PopUpChordFormatFragment extends DialogFragment {
         } else {
             myswitch.setChecked(true);
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // safety check
-        if (getDialog() == null) {
-            return;
-        }
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     public void exitChordFormat() {

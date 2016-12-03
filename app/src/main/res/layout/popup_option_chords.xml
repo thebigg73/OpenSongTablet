@@ -12,16 +12,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="4dp"
-        android:gravity="center"
-        android:text="@string/chords"
-        android:textSize="14sp"
         android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
         android:drawablePadding="4dp"
         android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+        android:gravity="center"
+        android:text="@string/chords"
         android:textColor="#ff0"
-
-
-        />
+        android:textSize="22sp" />
 
     <ScrollView
         android:id="@+id/optionschordsscrollview"
@@ -39,13 +36,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_transpose_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_transpose_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_transpose" />
+                android:text="@string/options_song_transpose"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/chordsSharpButton"
@@ -53,13 +50,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_sharp_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_sharp_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_sharp" />
+                android:text="@string/options_song_sharp"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/chordsFlatButton"
@@ -67,13 +64,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_flat_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_flat_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_flat" />
+                android:text="@string/options_song_flat"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/chordsToggleSwitch"
@@ -82,12 +79,12 @@
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
                 android:checked="true"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_guitar_electric_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_guitar_electric_white_36dp"
                 android:text="@string/showchords"
+                android:textColor="#fff"
+                android:textSize="12sp"
                 app:showText="false" />
 
             <android.support.v7.widget.SwitchCompat
@@ -97,12 +94,12 @@
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
                 android:checked="true"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_comment_text_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_comment_text_white_36dp"
                 android:text="@string/showlyrics"
+                android:textColor="#fff"
+                android:textSize="12sp"
                 app:showText="false" />
 
             <android.support.v7.widget.SwitchCompat
@@ -112,12 +109,12 @@
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
                 android:checked="true"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_capo_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_capo_white_36dp"
                 android:text="@string/showcapo"
+                android:textColor="#fff"
+                android:textSize="12sp"
                 app:showText="false" />
 
             <android.support.v7.widget.SwitchCompat
@@ -126,12 +123,12 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_capo_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_capo_white_36dp"
                 android:text="@string/capo_toggle_bothcapo"
+                android:textColor="#fff"
+                android:textSize="12sp"
                 app:showText="false" />
 
             <Button
@@ -140,13 +137,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_chordformat_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_chordformat_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_options_chordformat" />
+                android:text="@string/options_options_chordformat"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/chordsConvertButton"
@@ -154,13 +151,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_chordconvert_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_chordconvert_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_convert" />
+                android:text="@string/options_song_convert"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
         </LinearLayout>
     </ScrollView>

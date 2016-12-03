@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
 
     <ScrollView
@@ -205,7 +205,7 @@
                 android:layout_marginBottom="16dp"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:inputType="text"
                 android:background="#fff"
                 android:textColorHint="#888"
@@ -213,7 +213,8 @@
                 android:layout_below="@+id/slideTitleTextView"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="0dp" />
+                android:layout_marginTop="0dp"
+                android:padding="8dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -238,8 +239,9 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:inputType="number"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:textSize="18sp"
+                android:padding="8dp"
                 android:textCursorDrawable="@null"
                 android:hint="@string/time_slide_pages_help"
                 android:textColor="#000"
@@ -318,37 +320,39 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_below="@+id/addPageButton" />
+                android:layout_below="@+id/addPageButton"
+                android:padding="8dp"/>
 
         </RelativeLayout>
 
-        <LinearLayout
-            style="?android:attr/buttonBarButtonStyle"
-            android:orientation="horizontal"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end">
+            android:layout_height="wrap_content">
 
             <Button
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cancel"
-                android:id="@+id/customSlideCancel"
-                android:background="@drawable/blue_button"
-                android:layout_margin="8dp"
-                android:textColor="#fff" />
-
-            <Button
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/add_custom_slide"
                 android:id="@+id/customSlideAdd"
                 android:background="@drawable/green_button"
                 android:layout_margin="8dp"
-                android:textColor="#fff" />
-        </LinearLayout>
+                android:textColor="#fff"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                android:id="@+id/customSlideCancel"
+                android:background="@drawable/blue_button"
+                android:layout_margin="8dp"
+                android:textColor="#fff"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/customSlideAdd"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 </ScrollView>

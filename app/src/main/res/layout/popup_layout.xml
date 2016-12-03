@@ -36,8 +36,8 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
@@ -58,8 +58,8 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="24dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <ImageView
@@ -103,8 +103,8 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="24dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
@@ -155,8 +155,8 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="24dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
@@ -190,8 +190,8 @@
                 android:id="@+id/presoTitleSizeSeekBar"
                 android:focusableInTouchMode="false"
                 android:layout_margin="12dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
@@ -207,8 +207,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/presoAuthorSizeSeekBar"
                 android:layout_margin="12dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
@@ -225,9 +225,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/presoCopyrightSizeSeekBar"
                 android:layout_margin="12dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
-                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -243,8 +243,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/presoAlertSizeSeekBar"
                 android:layout_margin="12dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
         </LinearLayout>
     </ScrollView>

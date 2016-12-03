@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.io.File;
 import java.text.Collator;
@@ -57,9 +56,16 @@ public class PopUpFileChooseFragment extends DialogFragment {
     static String myswitch;
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        getDialog().setTitle(getActivity().getResources().getString(R.string.file_chooser));
         View V = inflater.inflate(R.layout.popup_file_chooser, container, false);
 
         fileListView = (ListView) V.findViewById(R.id.fileListView);
@@ -122,8 +128,8 @@ public class PopUpFileChooseFragment extends DialogFragment {
                 break;
         }
 
-        TextView mTitle = (TextView) V.findViewById(R.id.fileChooserTitle);
-        mTitle.setText(myTitle);
+        getDialog().setTitle(myTitle);
+        getDialog().setCanceledOnTouchOutside(true);
 
         Button cancelFileChoose = (Button) V.findViewById(R.id.cancelFileButton);
         cancelFileChoose.setOnClickListener(new View.OnClickListener() {
@@ -245,14 +251,14 @@ public class PopUpFileChooseFragment extends DialogFragment {
             // If we need to check the filetype and it is ok, add it to the array
             if (filechecks != null && filechecks.length > 0) {
                 for (String filecheck : filechecks) {
-                    if (tempmyFile.getName().contains(filecheck) && !tempmyFile.isDirectory()) {
+                    if (tempmyFile!=null && tempmyFile.getName().contains(filecheck) && !tempmyFile.isDirectory()) {
                         tempFoundFiles.add(tempmyFile.getName());
                     }
                 }
 
                 // Otherwise, no check needed, add to the array (if it isn't a directory)
             } else {
-                if (!tempmyFile.isDirectory()) {
+                if (tempmyFile!=null && !tempmyFile.isDirectory()) {
                     tempFoundFiles.add(tempmyFile.getName());
                 }
             }

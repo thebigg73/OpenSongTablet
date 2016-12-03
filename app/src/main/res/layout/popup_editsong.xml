@@ -3,15 +3,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
 <ScrollView
     android:id="@+id/scrollviewforeditsong"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:layout_margin="12dp"
-    android:background="#222">
+    android:layout_alignParentTop="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,7 +44,8 @@
                 android:hint="@string/edit_song_title"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
             
             <TextView
                 android:id="@+id/myAuthor"
@@ -69,7 +68,8 @@
                 android:hint="@string/edit_song_author"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myCopyright"
@@ -92,7 +92,8 @@
                 android:hint="@string/edit_song_copyright"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myKey"
@@ -102,7 +103,8 @@
                 android:layout_marginRight="8dp"
                 android:text="@string/edit_song_key"
                 android:textColor="#ff0"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp"/>
 
             <Spinner
                 android:id="@+id/edit_song_key"
@@ -114,7 +116,8 @@
                 android:background="#fff"
                 android:textColor="#000"
                 android:textSize="16sp"
-                android:visibility="visible" />
+                android:visibility="visible"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myPreDelay"
@@ -177,7 +180,8 @@
                 android:singleLine="true"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
 
 
             <TextView
@@ -237,8 +241,8 @@
                 android:background="#fff"
                 android:entries="@array/timesig"
                 android:textColor="#000"
-                android:textSize="16sp" />
-
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myCapo"
@@ -260,7 +264,8 @@
                 android:background="#fff"
                 android:entries="@array/capo"
                 android:textColor="#000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp"/>
 
             <TextView
                 android:id="@+id/myCapoPrint"
@@ -270,7 +275,8 @@
                 android:layout_marginRight="8dp"
                 android:text="@string/edit_song_capo_print"
                 android:textColor="#ff0"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone"/>
 
             <Spinner
                 android:id="@+id/edit_song_capo_print"
@@ -282,7 +288,9 @@
                 android:background="#fff"
                 android:entries="@array/capoprint"
                 android:textColor="#000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone"
+                android:padding="8dp"/>
 
             <TextView
                 android:id="@+id/myPresentation"
@@ -310,8 +318,8 @@
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
                 android:textSize="16sp"
-                android:minLines="2" />
-
+                android:minLines="2"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myNotes"
@@ -340,8 +348,8 @@
                 android:scrollbars="vertical"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
-
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myLyrics"
@@ -371,7 +379,8 @@
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
                 android:textSize="14sp"
-                android:typeface="monospace" />
+                android:typeface="monospace"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/availabletags"
@@ -415,8 +424,8 @@
                 android:hint="@string/edit_song_ccli"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
-
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myAka"
@@ -439,7 +448,8 @@
                 android:hint="@string/edit_song_aka"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myKeyLine"
@@ -461,7 +471,8 @@
                 android:hint="@string/edit_song_keyline"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myHymnNumber"
@@ -484,7 +495,8 @@
                 android:hint="@string/edit_song_hymn"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myUser1"
@@ -507,7 +519,8 @@
                 android:hint="@string/edit_song_user1"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myUser2"
@@ -530,7 +543,8 @@
                 android:hint="@string/edit_song_user2"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myUser3"
@@ -553,8 +567,8 @@
                 android:hint="@string/edit_song_user3"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
-
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myPadOnOrOff"
@@ -575,7 +589,8 @@
                 android:layout_marginRight="8dp"
                 android:background="#fff"
                 android:textColor="#000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myMidi"
@@ -598,7 +613,8 @@
                 android:hint="@string/edit_song_midi"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myMidiIndex"
@@ -621,7 +637,8 @@
                 android:hint="@string/edit_song_midi_index"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myRestrictions"
@@ -644,7 +661,8 @@
                 android:hint="@string/edit_song_restrictions"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myBooks"
@@ -667,7 +685,8 @@
                 android:hint="@string/edit_song_books"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myPitch"
@@ -690,7 +709,8 @@
                 android:hint="@string/edit_song_pitch"
                 android:textColor="#000"
                 android:textCursorDrawable="@null"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:padding="8dp" />
 
             <TextView
                 android:id="@+id/myTheme"

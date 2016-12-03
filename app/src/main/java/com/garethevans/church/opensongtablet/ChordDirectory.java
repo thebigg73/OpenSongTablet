@@ -1,10 +1,10 @@
 package com.garethevans.church.opensongtablet;
 
-public class ChordDirectory {
+class ChordDirectory {
 
-	static String chordtoworkon;
+	private static String chordtoworkon;
 	
-	public static void simplifyChords(String tempchord) {
+	private static void simplifyChords(String tempchord) {
 		chordtoworkon = tempchord;
 		
 		if (FullscreenActivity.chordFormat.equals("2")) {
@@ -131,7 +131,7 @@ public class ChordDirectory {
 		chordtoworkon = chordtoworkon.replace("$", "");
 	}
 
-	public static void guitarChords(String chord) {
+	static void guitarChords(String chord) {
 		
 		String chordnotes;
 		simplifyChords(chord);
@@ -680,7 +680,7 @@ public class ChordDirectory {
 		FullscreenActivity.chordnotes = chordnotes;
 	}
 
-    public static void ukuleleChords(String chord) {
+    static void ukuleleChords(String chord) {
 
         String chordnotes;
         simplifyChords(chord);
@@ -1230,7 +1230,7 @@ public class ChordDirectory {
         FullscreenActivity.chordnotes = chordnotes;
     }
 
-    public static void mandolinChords(String chord) {
+    static void mandolinChords(String chord) {
 
         String chordnotes;
         simplifyChords(chord);
@@ -1780,7 +1780,7 @@ public class ChordDirectory {
         FullscreenActivity.chordnotes = chordnotes;
     }
 
-	public static void cavaquinhoChords(String chord) {
+	static void cavaquinhoChords(String chord) {
 
 		String chordnotes;
 		simplifyChords(chord);
@@ -2330,7 +2330,7 @@ public class ChordDirectory {
 		FullscreenActivity.chordnotes = chordnotes;
 	}
 
-    public static void banjo4stringChords(String chord) {
+    static void banjo4stringChords(String chord) {
 
         String chordnotes;
         simplifyChords(chord);
@@ -2880,7 +2880,7 @@ public class ChordDirectory {
         FullscreenActivity.chordnotes = chordnotes;
     }
 
-    public static void banjo5stringChords(String chord) {
+    static void banjo5stringChords(String chord) {
 
         String chordnotes;
         simplifyChords(chord);

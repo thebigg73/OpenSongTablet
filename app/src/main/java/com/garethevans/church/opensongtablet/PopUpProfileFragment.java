@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,7 +37,7 @@ public class PopUpProfileFragment extends DialogFragment {
 
     public interface MyInterface {
         void refreshAll();
-        void setupPageButtons();
+        void setupPageButtons(String s);
         void showpagebuttons();
     }
 
@@ -80,8 +79,17 @@ public class PopUpProfileFragment extends DialogFragment {
     String what = "overview";
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.profile));
+        getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_profile, container, false);
 
         // Initialise the views
@@ -216,14 +224,14 @@ public class PopUpProfileFragment extends DialogFragment {
             // If we need to check the filetype and it is ok, add it to the array
             if (filechecks != null && filechecks.length > 0) {
                 for (String filecheck : filechecks) {
-                    if (tempmyFile.getName().contains(filecheck) && !tempmyFile.isDirectory()) {
+                    if (tempmyFile!=null && tempmyFile.getName().contains(filecheck) && !tempmyFile.isDirectory()) {
                         tempFoundFiles.add(tempmyFile.getName());
                     }
                 }
 
                 // Otherwise, no check needed, add to the array (if it isn't a directory)
             } else {
-                if (!tempmyFile.isDirectory()) {
+                if (tempmyFile!=null && !tempmyFile.isDirectory()) {
                     tempFoundFiles.add(tempmyFile.getName());
                 }
             }
@@ -410,33 +418,17 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("hideactionbaronoff")) {
                     text = xpp.nextText();
                     if (text!=null && !text.equals("")) {
-                        if (text.equals("true")) {
-                            FullscreenActivity.hideActionBar = true;
-                        } else {
-                            FullscreenActivity.hideActionBar = false;
-                        }
+                        FullscreenActivity.hideActionBar = text.equals("true");
                     }
                 } else if (xpp.getName().equals("hideActionBar")) {
                     text = xpp.nextText();
-                    if (text!=null && !text.equals("") && text.equals("true")) {
-                        FullscreenActivity.hideActionBar = true;
-                    } else {
-                        FullscreenActivity.hideActionBar = false;
-                    }
+                    FullscreenActivity.hideActionBar = text != null && !text.equals("") && text.equals("true");
                 } else if (xpp.getName().equals("swipeForMenus")) {
                     text = xpp.nextText();
-                    if (text!=null && !text.equals("") && text.equals("true")) {
-                        FullscreenActivity.swipeForMenus = true;
-                    } else {
-                        FullscreenActivity.swipeForMenus = false;
-                    }
+                    FullscreenActivity.swipeForMenus = text != null && !text.equals("") && text.equals("true");
                 } else if (xpp.getName().equals("swipeForSongs")) {
                     text = xpp.nextText();
-                    if (text!=null && !text.equals("") && text.equals("true")) {
-                        FullscreenActivity.swipeForSongs = true;
-                    } else {
-                        FullscreenActivity.swipeForSongs = false;
-                    }
+                    FullscreenActivity.swipeForSongs = text != null && !text.equals("") && text.equals("true");
                 } else if (xpp.getName().equals("transposeStyle")) {
                     text = xpp.nextText();
                     if (text!=null && !text.equals("")) {
@@ -444,11 +436,7 @@ public class PopUpProfileFragment extends DialogFragment {
                     }
                 } else if (xpp.getName().equals("showChords")) {
                     text = xpp.nextText();
-                    if (text!=null && !text.equals("") && text.equals("true")) {
-                        FullscreenActivity.showChords = true;
-                    } else {
-                        FullscreenActivity.showChords = false;
-                    }
+                    FullscreenActivity.showChords = text != null && !text.equals("") && text.equals("true");
                 } else if (xpp.getName().equals("mDisplayTheme")) {
                     text = xpp.nextText();
                     if (text!=null && !text.equals("")) {
@@ -458,6 +446,51 @@ public class PopUpProfileFragment extends DialogFragment {
                     text = xpp.nextText();
                     if (text!=null && !text.equals("")) {
                         FullscreenActivity.chordInstrument = text;
+                    }
+                } else if (xpp.getName().equals("popupScale_All")) {
+                    text = xpp.nextText();
+                    if (text!=null && !text.equals("")) {
+                        FullscreenActivity.popupScale_All = Float.parseFloat(text.replace("f",""));
+                    }
+                } else if (xpp.getName().equals("popupScale_Set")) {
+                    text = xpp.nextText();
+                    if (text!=null && !text.equals("")) {
+                        FullscreenActivity.popupScale_Set = Float.parseFloat(text.replace("f",""));
+                    }
+                } else if (xpp.getName().equals("popupDim_All")) {
+                    text = xpp.nextText();
+                    if (text!=null && !text.equals("")) {
+                        FullscreenActivity.popupDim_All = Float.parseFloat(text.replace("f",""));
+                    }
+                } else if (xpp.getName().equals("popupDim_Set")) {
+                    text = xpp.nextText();
+                    if (text!=null && !text.equals("")) {
+                        FullscreenActivity.popupDim_Set = Float.parseFloat(text.replace("f",""));
+                    }
+                } else if (xpp.getName().equals("popupAlpha_All")) {
+                    text = xpp.nextText();
+                    if (text!=null && !text.equals("")) {
+                        FullscreenActivity.popupAlpha_All = Float.parseFloat(text.replace("f",""));
+                    }
+                } else if (xpp.getName().equals("popupAlpha_Set")) {
+                    text = xpp.nextText();
+                    if (text!=null && !text.equals("")) {
+                        FullscreenActivity.popupAlpha_Set = Float.parseFloat(text.replace("f",""));
+                    }
+                } else if (xpp.getName().equals("popupPosition_All")) {
+                    text = xpp.nextText();
+                    if (text!=null && !text.equals("")) {
+                        FullscreenActivity.popupPosition_All = text;
+                    }
+                } else if (xpp.getName().equals("popupPosition_Set")) {
+                    text = xpp.nextText();
+                    if (text!=null && !text.equals("")) {
+                        FullscreenActivity.popupPosition_Set = text;
+                    }
+                } else if (xpp.getName().equals("pageButtonAlpha")) {
+                    text = xpp.nextText();
+                    if (text!=null && !text.equals("")) {
+                        FullscreenActivity.pageButtonAlpha = Float.parseFloat(text.replace("f",""));
                     }
                 }
 
@@ -477,7 +510,7 @@ public class PopUpProfileFragment extends DialogFragment {
         // Reload the display
         dismiss();
         mListener.refreshAll();
-        mListener.setupPageButtons();
+        mListener.setupPageButtons("");
         mListener.showpagebuttons();
     }
 
@@ -511,17 +544,16 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <showChords>" + FullscreenActivity.showChords + "</showChords>\n";
         text += "  <mDisplayTheme>" + FullscreenActivity.mDisplayTheme + "</mDisplayTheme>\n";
         text += "  <chordInstrument>" + FullscreenActivity.chordInstrument + "</chordInstrument>\n";
+        text += "  <popupScale_All>" + FullscreenActivity.popupScale_All + "</popupScale_All>\n";
+        text += "  <popupAlpha_All>" + FullscreenActivity.popupAlpha_All + "</popupAlpha_All>\n";
+        text += "  <popupDim_All>" + FullscreenActivity.popupDim_All + "</popupDim_All>\n";
+        text += "  <popupPosition_All>" + FullscreenActivity.popupPosition_All + "</popupPosition_All>\n";
+        text += "  <popupScale_Set>" + FullscreenActivity.popupScale_Set + "</popupScale_Set>\n";
+        text += "  <popupAlpha_Set>" + FullscreenActivity.popupAlpha_Set + "</popupAlpha_Set>\n";
+        text += "  <popupDim_Set>" + FullscreenActivity.popupDim_Set + "</popupDim_Set>\n";
+        text += "  <popupPosition_Set>" + FullscreenActivity.popupPosition_Set + "</popupPosition_Set>\n";
+        text += "  <pageButtonAlpha>" + FullscreenActivity.pageButtonAlpha + "</pageButtonAlpha>\n";
         text += "</profile>";
         return text;
     }
-
-    @Override
-    public void onResume() {
-        Dialog dialog = getDialog();
-        if (dialog != null) {
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        }
-        super.onResume();
-    }
-
 }

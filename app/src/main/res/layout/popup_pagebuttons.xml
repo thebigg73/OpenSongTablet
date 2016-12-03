@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="0dp"
     android:orientation="vertical"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp"
     android:visibility="visible">
 
@@ -20,15 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pagebuttons"
-                android:id="@+id/textView41"
-                android:textColor="#ff0"
-                android:textSize="28sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -46,10 +37,10 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginBottom="12dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
                 android:max="2"
                 android:progress="1"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TableLayout
@@ -101,11 +92,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/pageButtonScale_seekBar"
-                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
                 android:progress="0"
                 android:max="5"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:layout_marginLeft="0dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="0dp"
@@ -156,10 +147,10 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginBottom="12dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
                 android:max="1"
                 android:progress="1"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TableLayout

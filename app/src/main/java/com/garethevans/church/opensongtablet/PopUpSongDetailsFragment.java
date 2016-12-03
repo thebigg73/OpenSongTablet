@@ -36,10 +36,18 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         super.onDetach();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(FullscreenActivity.songfilename);
+        getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_song_details, container, false);
 
         Button closeFragDialog = (Button) V.findViewById(R.id.closeSongDetails);

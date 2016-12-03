@@ -3,13 +3,13 @@ package com.garethevans.church.opensongtablet;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 public class PopUpPedalsFragment extends DialogFragment {
 
     static PopUpPedalsFragment newInstance() {
@@ -22,7 +22,7 @@ public class PopUpPedalsFragment extends DialogFragment {
     Button pedalNextButton;
     Button pedalDownButton;
     Button pedalUpButton;
-    Button pedalToggleScrollBeforeSwipeButton;
+    SwitchCompat pedalToggleScrollBeforeSwipeButton;
     Button pedalPadButton;
     Button pedalAutoScrollButton;
     Button pedalMetronomeButton;
@@ -31,8 +31,17 @@ public class PopUpPedalsFragment extends DialogFragment {
     String assignWhich = "";
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.options_options_pedal));
+        getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_pedals, container, false);
 
         // Initialise the views
@@ -40,7 +49,7 @@ public class PopUpPedalsFragment extends DialogFragment {
         pedalNextButton = (Button) V.findViewById(R.id.pedalNextButton);
         pedalDownButton = (Button) V.findViewById(R.id.pedalDownButton);
         pedalUpButton = (Button) V.findViewById(R.id.pedalUpButton);
-        pedalToggleScrollBeforeSwipeButton = (Button) V.findViewById(R.id.pedalToggleScrollBeforeSwipeButton);
+        pedalToggleScrollBeforeSwipeButton = (SwitchCompat) V.findViewById(R.id.pedalToggleScrollBeforeSwipeButton);
         pedalPadButton = (Button) V.findViewById(R.id.pedalPadButton);
         pedalAutoScrollButton = (Button) V.findViewById(R.id.pedalAutoScrollButton);
         pedalMetronomeButton = (Button) V.findViewById(R.id.pedalMetronomeButton);
@@ -134,17 +143,9 @@ public class PopUpPedalsFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
-                    String text = getResources().getString(R.string.toggleScrollBeforeSwipe) + "\n" + getResources().getString(R.string.currently) + "=" + getResources().getString(R.string.no);
-                    pedalToggleScrollBeforeSwipeButton.setText(text);
                     FullscreenActivity.toggleScrollBeforeSwipe = "N";
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.toggleScrollBeforeSwipeToggle) + " " + getResources().getString(R.string.off);
-                    ShowToast.showToast(getActivity());
                 } else {
                     FullscreenActivity.toggleScrollBeforeSwipe = "Y";
-                    String text = getResources().getString(R.string.toggleScrollBeforeSwipe) + "\n" + getResources().getString(R.string.currently) + "=" + getResources().getString(R.string.yes);
-                    pedalToggleScrollBeforeSwipeButton.setText(text);
-                    FullscreenActivity.myToastMessage = getResources().getString(R.string.toggleScrollBeforeSwipeToggle) + " " + getResources().getString(R.string.on);
-                    ShowToast.showToast(getActivity());
                 }
                 Preferences.savePreferences();
             }
@@ -221,11 +222,10 @@ public class PopUpPedalsFragment extends DialogFragment {
         }
 
         if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
-            String text = getResources().getString(R.string.toggleScrollBeforeSwipe) + "\n" + getResources().getString(R.string.currently) + "=" + getResources().getString(R.string.yes);
-            pedalToggleScrollBeforeSwipeButton.setText(text);
+            pedalToggleScrollBeforeSwipeButton.setChecked(true);
+
         } else {
-            String text = getResources().getString(R.string.toggleScrollBeforeSwipe) + "\n" + getResources().getString(R.string.currently) + "=" + getResources().getString(R.string.no);
-            pedalToggleScrollBeforeSwipeButton.setText(text);
+            pedalToggleScrollBeforeSwipeButton.setChecked(false);
         }
     }
 
@@ -292,14 +292,4 @@ public class PopUpPedalsFragment extends DialogFragment {
 
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // safety check
-        if (getDialog() == null) {
-            return;
-        }
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-    }
 }

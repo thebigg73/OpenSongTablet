@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -17,7 +18,7 @@ import android.widget.ImageButton;
 
 import java.io.File;
 
-public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserFragment.MyInterface {
+public class PopUpLinks extends DialogFragment {
 
     ImageButton linkYouTube_ImageButton;
     ImageButton linkWeb_ImageButton;
@@ -40,19 +41,10 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
         return frag;
     }
 
-    @Override
-    public void updateCustomStorage() {
-        Log.d("d","File chosen = "+ FullscreenActivity.filechosen);
-    }
-
-    @Override
-    public void updateLinksPopUp() {
-        // Nothing here
-        Log.d("d","Nothing here");
-    }
-
     public interface MyInterface {
         void refreshAll();
+        void pageButtonAlpha(String s);
+        void openFragment();
     }
 
     private MyInterface mListener;
@@ -70,8 +62,18 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.link));
+        getDialog().setCanceledOnTouchOutside(true);
+        mListener.pageButtonAlpha("links");
 
         final View V = inflater.inflate(R.layout.popup_links, container, false);
 
@@ -137,6 +139,7 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
         // If a filetoselect has been set, add this to the view
         if (FullscreenActivity.filetoselect.equals("audiolink") && FullscreenActivity.filechosen!=null) {
             linkAudio_EditText.setText(Uri.fromFile(FullscreenActivity.filechosen).toString());
+            FullscreenActivity.mLinkAudio = FullscreenActivity.filechosen.toString();
             // If this is a genuine audio file, give the user the option of setting the song duration to match this file
             MediaPlayer mediafile = new MediaPlayer();
             try {
@@ -159,6 +162,7 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
 
         } else if (FullscreenActivity.filetoselect.equals("otherlink") && FullscreenActivity.filechosen!=null) {
             linkOther_EditText.setText(FullscreenActivity.filechosen.toString());
+            FullscreenActivity.mLinkOther = FullscreenActivity.filechosen.toString();
         }
         FullscreenActivity.filechosen = null;
         FullscreenActivity.filetoselect = "";
@@ -168,11 +172,14 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
             @Override
             public void onClick(View v) {
                 FullscreenActivity.filetoselect = "audiolink";
-                DialogFragment newFragment = PopUpDirectoryChooserFragment.newInstance();
+                FullscreenActivity.whattodo = "filechooser";
+                mListener.openFragment();
+
+                /*DialogFragment newFragment = PopUpDirectoryChooserFragment.newInstance();
                 Bundle args = new Bundle();
                 args.putString("type", "file");
                 newFragment.setArguments(args);
-                newFragment.show(getFragmentManager(), "dialog");
+                newFragment.show(getFragmentManager(), "dialog");*/
                 dismiss();
             }
         });
@@ -180,11 +187,15 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
             @Override
             public void onClick(View v) {
                 FullscreenActivity.filetoselect = "otherlink";
+                FullscreenActivity.whattodo = "filechooser";
+                mListener.openFragment();
+
+                /*FullscreenActivity.whattodo = "page_links";
                 DialogFragment newFragment = PopUpDirectoryChooserFragment.newInstance();
                 Bundle args = new Bundle();
                 args.putString("type", "file");
                 newFragment.setArguments(args);
-                newFragment.show(getFragmentManager(), "dialog");
+                newFragment.show(getFragmentManager(), "dialog");*/
                 dismiss();
             }
         });
@@ -304,6 +315,9 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
+        Log.d("d","requestCode="+requestCode);
+        Log.d("d","resultCode="+resultCode);
+        Log.d("d","intent="+intent);
         if (intent!=null) {
             Uri uri = intent.getData();
             if (requestCode==0) {
@@ -320,22 +334,11 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
         }
     }
 
- /*   private String fileExt(String url) {
-        if (url.contains("?")) {
-            url = url.substring(0, url.indexOf("?"));
+    @Override
+    public void onDismiss(final DialogInterface dialog) {
+        if (mListener!=null) {
+            mListener.pageButtonAlpha("");
         }
-        if (url.lastIndexOf(".") == -1) {
-            return null;
-        } else {
-            String ext = url.substring(url.lastIndexOf(".") + 1);
-            if (ext.contains("%")) {
-                ext = ext.substring(0, ext.indexOf("%"));
-            }
-            if (ext.contains("/")) {
-                ext = ext.substring(0, ext.indexOf("/"));
-            }
-            return ext.toLowerCase();
 
-        }
-    }*/
+    }
 }

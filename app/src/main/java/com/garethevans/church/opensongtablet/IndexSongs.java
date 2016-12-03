@@ -59,7 +59,7 @@ public class IndexSongs extends Activity {
         //Now read the folder names for the first level directories
         if (tempmyitems!=null) {
             for (File tempmyitem : tempmyitems) {
-                if (tempmyitem != null && tempmyitem.isDirectory()) {
+                if (tempmyitem != null && tempmyitem.isDirectory() && tempmyitem.getName() != null) {
                     firstleveldirectories.add(tempmyitem.getName());
                 }
             }
@@ -71,7 +71,7 @@ public class IndexSongs extends Activity {
             File[] subfoldersearch = foldtosearch.listFiles();
             if (subfoldersearch!=null) {
                 for (File aSubfoldersearch : subfoldersearch) {
-                    if (aSubfoldersearch != null && aSubfoldersearch.isDirectory()) {
+                    if (firstleveldirectories.get(x) != null && aSubfoldersearch != null && aSubfoldersearch.isDirectory()) {
                         secondleveldirectories.add(firstleveldirectories.get(x)+"/"+aSubfoldersearch.getName());
                     }
                 }
@@ -81,8 +81,13 @@ public class IndexSongs extends Activity {
         // Now combine the two arrays and save them as a string array
 
         fixedfolders.add("");
-        fixedfolders.addAll(firstleveldirectories);
-        fixedfolders.addAll(secondleveldirectories);
+        if (firstleveldirectories!=null) {
+            fixedfolders.addAll(firstleveldirectories);
+
+        }
+        if (secondleveldirectories!=null) {
+            fixedfolders.addAll(secondleveldirectories);
+        }
 
         /*File songfolder = new File(FullscreenActivity.dir.getAbsolutePath());
         File[] tempmyitems = null;
@@ -312,7 +317,9 @@ public class IndexSongs extends Activity {
                     String item_to_add = filename + " _%%%_ " + folder + " _%%%_ " + title + " _%%%_ " + author + " _%%%_ " + shortlyrics + " _%%%_ " +
                             theme + " _%%%_ " + key + " _%%%_ " + hymnnumber;
 
-                    FullscreenActivity.search_database.add(item_to_add);
+                    if (item_to_add!=null) {
+                        FullscreenActivity.search_database.add(item_to_add);
+                    }
 
                     String line_to_add = folder + "/" + filename+"\n";
 
@@ -353,11 +360,13 @@ public class IndexSongs extends Activity {
         ArrayList<String> allsongsinfolders = new ArrayList<>();
 
         // Add the MAIN folder
-        allsongfolders.add(FullscreenActivity.dir.toString());
+        if (FullscreenActivity.dir != null) {
+            allsongfolders.add(FullscreenActivity.dir.toString());
+        }
 
         File[] songsubfolders = FullscreenActivity.dir.listFiles();
         for (File isfolder:songsubfolders) {
-            if (isfolder.isDirectory()) {
+            if (isfolder!=null && isfolder.isDirectory()) {
                 allsongfolders.add(isfolder.toString());
             }
         }
@@ -373,7 +382,9 @@ public class IndexSongs extends Activity {
                     if (!simplesong.contains("/")) {
                         simplesong = "/" + simplesong;
                     }
-                    allsongsinfolders.add(simplesong);
+                    if (simplesong!=null) {
+                        allsongsinfolders.add(simplesong);
+                    }
                 }
             }
         }

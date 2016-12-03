@@ -130,15 +130,13 @@ public class ExportPreparer extends Activity {
 						songfile = null;
                         String thisline;
 						songfile = new File(FullscreenActivity.homedir + "/Songs/" + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"path")) + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name")));
-						Log.d("d","songfile="+songfile);
 						// Ensure there is a folder '/'
                         if (xpp.getAttributeValue(null,"path").equals("")) {
                             thisline = "/" + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
                         } else {
                             thisline = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"path")) + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
                         }
-						Log.d("d","thisline="+thisline);
-                        filesinset.add(thisline);
+						filesinset.add(thisline);
 						//filesinset_ost.add(xpp.getAttributeValue(0));
                         filesinset_ost.add(thisline);
 
@@ -395,7 +393,6 @@ public class ExportPreparer extends Activity {
         } else {
             makePDF(bmp);
         }
-        Log.d("d",FILE);
         try {
             uri4 = Uri.fromFile(new File(FILE));
         } catch (Exception e) {

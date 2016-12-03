@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
 
     <ScrollView
@@ -47,10 +47,13 @@
                 android:id="@+id/newSongNameEditText"
                 android:layout_margin="8dp"
                 android:inputType="textAutoCorrect|text"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:hint="@string/choosesongname"
-                android:textColor="#fff"
-                android:background="#555" />
+                android:textColor="#000"
+                android:textColorHint="#666"
+                android:background="#fff"
+                android:textSize="20sp" />
+            />
 
         </LinearLayout>
     </ScrollView>

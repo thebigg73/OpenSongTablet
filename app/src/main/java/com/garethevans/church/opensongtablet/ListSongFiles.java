@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.content.Context;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -39,7 +41,7 @@ public class ListSongFiles extends Activity {
 
         //Now read the stuff into the temp array
         for (int x=0; x<tempnumitems; x++) {
-            if (tempmyitems[x] != null && tempmyitems[x].isDirectory()) {
+            if (tempmyitems[x] != null && tempmyitems[x].getName()!=null && tempmyitems[x].isDirectory()) {
                 tempProperDirectories.add(tempmyitems[x].getName());
             }
         }
@@ -76,7 +78,7 @@ public class ListSongFiles extends Activity {
         ArrayList<String> tempMainProperFiles= new ArrayList<>();
         int temp_mainnumfilescount = 0;
         for (int x=0; x<main_numfiles; x++) {
-            if (temp_mainfiles[x] != null && !temp_mainfiles[x].isDirectory() && temp_mainfiles[x].isFile()){
+            if (temp_mainfiles[x] != null && temp_mainfiles[x].getName()!=null && !temp_mainfiles[x].isDirectory() && temp_mainfiles[x].isFile()){
                 tempMainProperFiles.add(temp_mainfiles[x].getName());
                 FullscreenActivity.allfilesforsearch.add(temp_mainfiles[x].getName() + " %%% " + FullscreenActivity.mainfoldername);
                 temp_mainnumfilescount++;
@@ -113,7 +115,7 @@ public class ListSongFiles extends Activity {
 
             //Now read the stuff into the temp array
             for (int x=0; x<numactualfiles; x++) {
-                if (tempmyfiles[x] != null && tempmyfiles[x].isFile()) {
+                if (tempmyfiles[x] != null && tempmyfiles[x].getName()!=null && tempmyfiles[x].isFile()) {
                     tempProperFiles.add(tempmyfiles[x].getName());
                 }
             }
@@ -128,9 +130,13 @@ public class ListSongFiles extends Activity {
 
             for (int f=0; f<tempProperFiles.size(); f++) {
                 try {
-                    FullscreenActivity.allfilesforsearch_folder.add(FullscreenActivity.mSongFolderNames[w]);
-                    FullscreenActivity.allfilesforsearch_song.add(tempProperFiles.get(f));
-                    FullscreenActivity.allfilesforsearch.add(tempProperFiles.get(f) + " %%% " + FullscreenActivity.mSongFolderNames[w]);
+                    if (FullscreenActivity.mSongFolderNames[w]!=null) {
+                        FullscreenActivity.allfilesforsearch_folder.add(FullscreenActivity.mSongFolderNames[w]);
+                    }
+                    if (tempProperFiles.get(f)!=null) {
+                        FullscreenActivity.allfilesforsearch_song.add(tempProperFiles.get(f));
+                        FullscreenActivity.allfilesforsearch.add(tempProperFiles.get(f) + " %%% " + FullscreenActivity.mSongFolderNames[w]);
+                    }
                 } catch (Exception e) {
                     //Something went wrong here
                     e.printStackTrace();
@@ -167,7 +173,7 @@ public class ListSongFiles extends Activity {
             File[] subfoldersearch = folder.listFiles();
             if (subfoldersearch!=null) {
                 for (File aSubfoldersearch : subfoldersearch) {
-                    if (aSubfoldersearch != null && aSubfoldersearch.isDirectory()) {
+                    if (firstleveldirectories.get(x)!=null && aSubfoldersearch != null && aSubfoldersearch.isDirectory()) {
                         secondleveldirectories.add(firstleveldirectories.get(x) + "/" + aSubfoldersearch.getName());
                     }
                 }
@@ -175,8 +181,12 @@ public class ListSongFiles extends Activity {
         }
 
         // Now combine the two arrays and save them as a string array
-        tempProperDirectories.addAll(firstleveldirectories);
-        tempProperDirectories.addAll(secondleveldirectories);
+        if (firstleveldirectories!=null) {
+            tempProperDirectories.addAll(firstleveldirectories);
+        }
+        if (secondleveldirectories!=null) {
+            tempProperDirectories.addAll(secondleveldirectories);
+        }
         coll = Collator.getInstance(FullscreenActivity.locale);
         coll.setStrength(Collator.SECONDARY);
         Collections.sort(tempProperDirectories,coll);
@@ -215,6 +225,19 @@ public class ListSongFiles extends Activity {
         FullscreenActivity.mSongFileNames = new String[tempProperSongFiles.size()];
 
         FullscreenActivity.mSongFileNames = tempProperSongFiles.toArray(FullscreenActivity.mSongFileNames);
+    }
+
+    public static boolean clearAllSongs(Context c) {
+        // Clear all songs in the songs folder
+        File delPath = FullscreenActivity.dir;
+        if (delPath.exists()) {
+            try {
+                FileUtils.deleteDirectory(delPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return delPath.mkdirs();
     }
 
     // OLD ONE
@@ -269,8 +292,12 @@ public class ListSongFiles extends Activity {
         Collections.sort(tempProperDirectories,coll);
 
         //Add folder name to first item of songlist
-        tempProperSongFiles.add(0, FullscreenActivity.whichSongFolder);
-        tempProperDirectories.add(0, FullscreenActivity.mainfoldername);
+        if (FullscreenActivity.whichSongFolder!=null) {
+            tempProperSongFiles.add(0, FullscreenActivity.whichSongFolder);
+        }
+        if (FullscreenActivity.mainfoldername!=null) {
+            tempProperDirectories.add(0, FullscreenActivity.mainfoldername);
+        }
 
         //Make the real arrays one bigger
         FullscreenActivity.mSongFileNames = new String[numactualfiles+1];

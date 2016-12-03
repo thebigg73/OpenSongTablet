@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,7 +18,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     }
 
     public interface MyInterface {
-        void setupPageButtons();
+        void setupPageButtons(String s);
         void showpagebuttons();
     }
 
@@ -44,8 +43,17 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     SeekBar scrollArrows_seekbar;
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.pagebuttons));
+        getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_pagebuttons, container, false);
 
         // Initialise the views
@@ -81,7 +89,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
                         break;
                 }
                 Preferences.savePreferences();
-                mListener.setupPageButtons();
+                mListener.setupPageButtons("");
             }
 
             @Override
@@ -119,7 +127,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
                         break;
                 }
                 Preferences.savePreferences();
-                mListener.setupPageButtons();
+                mListener.setupPageButtons("");
                 mListener.showpagebuttons();
             }
 
@@ -142,7 +150,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
                         break;
                 }
                 Preferences.savePreferences();
-                mListener.setupPageButtons();
+                mListener.setupPageButtons("");
                 mListener.showpagebuttons();
             }
 
@@ -194,15 +202,6 @@ public class PopUpPageButtonsFragment extends DialogFragment {
                 break;
         }
             return V;
-    }
-
-    @Override
-    public void onResume() {
-        Dialog dialog = getDialog();
-        if (dialog != null) {
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        }
-        super.onResume();
     }
 
 }

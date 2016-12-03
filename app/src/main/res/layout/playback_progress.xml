@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageView6"
-            android:src="@drawable/page_speaker_bw"
+            android:src="@drawable/ic_amplifier_white_36dp"
             android:contentDescription="@string/pad"
             android:layout_marginRight="12dp"
             android:layout_marginEnd="12dp" />
@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView5"
-        android:src="@drawable/page_autoscroll_bw"
+        android:src="@drawable/ic_rotate_right_white_36dp"
         android:contentDescription="@string/autoscroll"
         android:layout_marginRight="12dp"
         android:layout_marginEnd="12dp"/>

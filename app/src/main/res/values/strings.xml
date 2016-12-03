@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="options_display_popups">Customise popup windows</string>
+    <string name="transparency">Transparency</string>
+    <string name="dim">Background darken</string>
+
     <string name="longPressUp">Long press up pedal</string>
     <string name="longPressDown">Long press down pedal</string>
     <string name="longPressNext">Long press next pedal</string>

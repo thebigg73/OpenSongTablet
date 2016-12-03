@@ -40,11 +40,23 @@ public class PopUpChooseFolderFragment extends DialogFragment {
     ListView lv;
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        // safety check
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View V = inflater.inflate(R.layout.popup_choosefolder, container, false);
 
         getDialog().setTitle(getActivity().getResources().getString(R.string.songfolder));
+        getDialog().setCanceledOnTouchOutside(true);
+
         lv = (ListView) V.findViewById(R.id.songfolders_ListView);
 
         if (FullscreenActivity.mSongFolderNames!=null) {

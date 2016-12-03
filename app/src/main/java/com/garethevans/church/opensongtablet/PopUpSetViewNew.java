@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,6 +31,9 @@ import java.util.List;
 
 public class PopUpSetViewNew extends DialogFragment {
 
+    Context c;
+    Activity a;
+
     static PopUpSetViewNew newInstance() {
         PopUpSetViewNew frag;
         frag = new PopUpSetViewNew();
@@ -38,7 +43,10 @@ public class PopUpSetViewNew extends DialogFragment {
     public interface MyInterface {
         void loadSongFromSet();
         void shuffleSongsInSet();
+        void prepareOptionMenu();
         void refreshAll();
+        void closePopUps();
+        void pageButtonAlpha(String s);
     }
 
     private static MyInterface mListener;
@@ -64,10 +72,21 @@ public class PopUpSetViewNew extends DialogFragment {
     static ItemTouchHelper helper;
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        a = getActivity();
         getDialog().setTitle(getActivity().getResources().getString(R.string.options_set));
+        getDialog().setCanceledOnTouchOutside(true);
         final View V = inflater.inflate(R.layout.popup_setview_new, container, false);
 
+        mListener.pageButtonAlpha("set");
         TextView helpClickItem_TextView = (TextView) V.findViewById(R.id.helpClickItem_TextView);
         TextView helpDragItem_TextView = (TextView) V.findViewById(R.id.helpDragItem_TextView);
         TextView helpSwipeItem_TextView = (TextView) V.findViewById(R.id.helpSwipeItem_TextView);
@@ -172,23 +191,12 @@ public class PopUpSetViewNew extends DialogFragment {
 
         // If the song is found (indexSongInSet>-1 and lower than the number of items shown), smooth scroll to it
         if (FullscreenActivity.indexSongInSet>-1 && FullscreenActivity.indexSongInSet<FullscreenActivity.mTempSetList.size()) {
-            Log.d("d","position="+FullscreenActivity.indexSongInSet);
             //mRecyclerView.scrollToPosition(FullscreenActivity.indexSongInSet);
             //LinearLayoutManager llm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
             llm.scrollToPositionWithOffset(FullscreenActivity.indexSongInSet , 0);
         }
 
-
         return V;
-    }
-
-    @Override
-    public void onResume() {
-        Dialog dialog = getDialog();
-        if (dialog != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog);
-        }
-        super.onResume();
     }
 
     public void extractSongsAndFolders() {
@@ -222,8 +230,10 @@ public class PopUpSetViewNew extends DialogFragment {
                     mysongtitle = "!ERROR!";
                 }
 
-                mSongName.add(i, mysongtitle);
-                mFolderName.add(i, mysongfolder);
+                if (i>-1) {
+                    mSongName.add(i, mysongtitle);
+                    mFolderName.add(i, mysongfolder);
+                }
             }
         }
     }
@@ -317,6 +327,9 @@ public class PopUpSetViewNew extends DialogFragment {
         FullscreenActivity.myToastMessage = FullscreenActivity.variation_edit;
         // Now load the new variation item up
         loadSong();
+        mListener.prepareOptionMenu();
+        // Close the fragment
+        mListener.closePopUps();
     }
 
     public void doExportSetTweet() {
@@ -341,5 +354,12 @@ public class PopUpSetViewNew extends DialogFragment {
         String tweetUrl = "https://twitter.com/intent/tweet?text=" + tweet;
         Uri uri = Uri.parse(tweetUrl);
         startActivity(new Intent(Intent.ACTION_VIEW, uri));
+    }
+
+    @Override
+    public void onDismiss(final DialogInterface dialog) {
+        if (mListener!=null) {
+            mListener.pageButtonAlpha("");
+        }
     }
 }

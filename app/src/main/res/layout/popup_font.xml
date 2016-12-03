@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
 
     <ScrollView
@@ -66,8 +66,8 @@
                     android:id="@+id/scaleHeading_SeekBar"
                     android:layout_weight="0.7"
                     android:layout_margin="8dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                     android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                 <TextView
@@ -99,8 +99,8 @@
                     android:id="@+id/scaleComment_SeekBar"
                     android:layout_weight="0.7"
                     android:layout_margin="8dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                     android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                 <TextView
@@ -133,8 +133,8 @@
                     android:id="@+id/lineSpacingSeekBar"
                     android:layout_weight="0.7"
                     android:layout_margin="8dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                     android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                 <TextView

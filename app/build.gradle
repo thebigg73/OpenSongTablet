@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion '24.0.2'
     buildTypes {
         release {
@@ -17,6 +17,8 @@ android {
     }
     defaultConfig {
         applicationId "com.garethevans.church.opensongtablet"
+        // Enabling multidex support.
+        multiDexEnabled true
     }
 
     productFlavors {
@@ -25,11 +27,13 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.google.android.gms:play-services-appindexing:9.6.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.android.support:cardview-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.google.android.gms:play-services-appindexing:9.8.0'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
+    compile 'com.android.support:cardview-v7:25.0.1'
+    compile 'com.android.support:design:25.0.1'
     compile 'org.apache.commons:commons-compress:1.11'
     compile 'com.itextpdf:itextpdf:5.5.9'
+    compile 'org.apache.commons:commons-io:1.3.2'
+    compile 'com.android.support:multidex:1.0.1'
 }

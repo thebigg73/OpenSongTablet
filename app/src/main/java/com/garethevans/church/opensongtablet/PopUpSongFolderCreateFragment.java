@@ -42,6 +42,7 @@ public class PopUpSongFolderCreateFragment extends DialogFragment {
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
+        // This was an error on 45, see if it is now of 46
         mListener = (MyInterface) activity;
         super.onAttach(activity);
     }
@@ -56,6 +57,17 @@ public class PopUpSongFolderCreateFragment extends DialogFragment {
     EditText newFolderNameEditText;
     Button newFolderCancelButton;
     Button newFolderOkButton;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // safety check
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

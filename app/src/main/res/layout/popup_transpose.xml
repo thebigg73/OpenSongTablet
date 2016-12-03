@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -19,8 +19,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/transposeSeekBar"
                 android:layout_margin="8dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
@@ -29,8 +29,8 @@
                 android:id="@+id/transposeValTextView"
                 android:gravity="center_horizontal"
                 android:textColor="#ff0"
-                android:textSize="28sp"
-                android:layout_margin="8dp"
+                android:textSize="32sp"
+                android:layout_margin="16dp"
                 android:textIsSelectable="true" />
 
             <TextView

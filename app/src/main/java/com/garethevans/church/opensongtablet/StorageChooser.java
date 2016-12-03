@@ -80,9 +80,9 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
 	File extStorCheck;
     File otherStorCheck;
 	String numeral = "1";
-	static View copyAssets;
-	static View docopy;
-	static View dowipe;
+	View copyAssets;
+	View docopy;
+	View dowipe;
 	File dir;
 	File band;
 	File various;
@@ -527,7 +527,12 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
         }
     }
 
-    @Override
+	@Override
+	public void openFragment() {
+
+	}
+
+	//@Override
     public void updateLinksPopUp() {
         // Nothing needed here
         Log.d("d","Not required");

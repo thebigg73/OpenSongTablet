@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/drawer_bg"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
 <ScrollView
     android:layout_width="match_parent"
@@ -20,7 +20,8 @@
         android:id="@+id/itemTitle_TextView"
         android:textSize="18sp"
         android:textColor="#ff0"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"
+        android:visibility="gone"/>
 
     <EditText
         android:layout_width="match_parent"

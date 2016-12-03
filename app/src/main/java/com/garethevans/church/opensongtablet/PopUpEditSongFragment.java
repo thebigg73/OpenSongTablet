@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -113,16 +112,16 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
     CheckBox edit_song_theme_worship_prayer_devotion;
     CheckBox edit_song_theme_worship_provision_deliverance;
     CheckBox edit_song_theme_worship_thankfulness;
-    static LinearLayout generalSettings;
-    static LinearLayout advancedSettings;
+    LinearLayout generalSettings;
+    LinearLayout advancedSettings;
 
     // Buttons
-    static Button cancelEdit;
-    static Button saveEdit;
-    static Button toggleGeneralAdvanced;
+    Button cancelEdit;
+    Button saveEdit;
+    Button toggleGeneralAdvanced;
 
     static int temposlider;
-    static View V;
+    View V;
 
     @Override
     public void refreshAll() {
@@ -252,9 +251,12 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         edit_song_theme_worship_thankfulness = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_thankfulness);
         advancedSettings = (LinearLayout) V.findViewById(R.id.advanced_settings);
 
+/*
         edit_song_title.requestFocus();
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+*/
         // Listeners for the buttons
         cancelEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -991,6 +993,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
 
     public static void prepareSongXML() {
         // Prepare the new XML file
+
         String myNEWXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         myNEWXML += "<song>\n";
         myNEWXML += "  <title>" + parseToHTMLEntities(FullscreenActivity.mTitle.toString()) + "</title>\n";
@@ -1062,15 +1065,14 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
     }
 
     public static String parseToHTMLEntities(String val) {
+        if (val==null) {
+            val = "";
+        }
         // Make sure all vals are unencoded to start with
-        //val = val.replace("&amp;","&");
         // Now HTML encode everything
         val = val.replace("<","&lt;");
         val = val.replace(">","&gt;");
-        //val = val.replace("'","&apos;");
-        //val = val.replace("\"","&quote;");
         val = val.replace("&","&amp;");
-
 
         return val;
     }
@@ -1080,9 +1082,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         super.onStart();
 
         // safety check
-        if (getDialog() == null) {
-            return;
+        if (getDialog().getWindow() != null) {
+            getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 }

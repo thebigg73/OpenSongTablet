@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +19,7 @@ public class OptionMenuListeners extends Activity {
 
     public interface MyInterface {
         void openFragment();
+        void openMyDrawers(String which);
         void closeMyDrawers(String which);
         void refreshActionBar();
         void loadSong();
@@ -42,7 +42,6 @@ public class OptionMenuListeners extends Activity {
     public static LinearLayout prepareOptionMenu(Context c) {
         mListener = (MyInterface) c;
         LinearLayout menu;
-        Log.d ("d","whichOptionMenu="+FullscreenActivity.whichOptionMenu);
         switch (FullscreenActivity.whichOptionMenu) {
             case "MAIN":
             default:
@@ -616,7 +615,7 @@ public class OptionMenuListeners extends Activity {
         Button chordsFlatButton = (Button) v.findViewById(R.id.chordsFlatButton);
         SwitchCompat chordsToggleSwitch = (SwitchCompat) v.findViewById(R.id.chordsToggleSwitch);
         SwitchCompat chordsLyricsToggleSwitch = (SwitchCompat) v.findViewById(R.id.chordsLyricsToggleSwitch);
-        SwitchCompat chordsCapoToggleSwitch = (SwitchCompat) v.findViewById(R.id.chordsCapoToggleSwitch);
+        final SwitchCompat chordsCapoToggleSwitch = (SwitchCompat) v.findViewById(R.id.chordsCapoToggleSwitch);
         final SwitchCompat chordsNativeAndCapoToggleSwitch = (SwitchCompat) v.findViewById(R.id.chordsNativeAndCapoToggleSwitch);
         Button chordsFormatButton = (Button) v.findViewById(R.id.chordsFormatButton);
         Button chordsConvertButton = (Button) v.findViewById(R.id.chordsConvertButton);
@@ -625,7 +624,11 @@ public class OptionMenuListeners extends Activity {
         menuup.setText(c.getString(R.string.chords).toUpperCase(FullscreenActivity.locale));
         chordsTransposeButton.setText(c.getString(R.string.options_song_transpose).toUpperCase(FullscreenActivity.locale));
         chordsSharpButton.setText(c.getString(R.string.options_song_sharp).toUpperCase(FullscreenActivity.locale));
-        chordsFlatButton.setText(c.getString(R.string.options_song_flat).toUpperCase(FullscreenActivity.locale));
+        String temp = c.getString(R.string.options_song_flat).replace("b","#");
+        temp = temp.toUpperCase(FullscreenActivity.locale);
+        temp = temp.replace("#","\u266d");
+        chordsFlatButton.setTransformationMethod(null);
+        chordsFlatButton.setText(temp);
         chordsToggleSwitch.setText(c.getString(R.string.showchords).toUpperCase(FullscreenActivity.locale));
         chordsLyricsToggleSwitch.setText(c.getString(R.string.showlyrics).toUpperCase(FullscreenActivity.locale));
         chordsCapoToggleSwitch.setText(c.getString(R.string.showcapo).toUpperCase(FullscreenActivity.locale));
@@ -638,14 +641,27 @@ public class OptionMenuListeners extends Activity {
             chordsToggleSwitch.setChecked(true);
         } else {
             chordsToggleSwitch.setChecked(false);
+            chordsCapoToggleSwitch.setEnabled(false);
+            chordsNativeAndCapoToggleSwitch.setEnabled(false);
         }
         if (FullscreenActivity.showLyrics) {
             chordsLyricsToggleSwitch.setChecked(true);
         } else {
             chordsLyricsToggleSwitch.setChecked(false);
         }
+        boolean capochordsbuttonenabled = FullscreenActivity.showChords;
         chordsCapoToggleSwitch.setChecked(FullscreenActivity.showCapoChords);
+        chordsCapoToggleSwitch.setEnabled(capochordsbuttonenabled);
+        if (!capochordsbuttonenabled) {
+            chordsCapoToggleSwitch.setAlpha(0.4f);
+        }
+
+        boolean nativeandcapobuttonenabled = FullscreenActivity.showChords && capochordsbuttonenabled;
         chordsNativeAndCapoToggleSwitch.setChecked(FullscreenActivity.showNativeAndCapoChords);
+        chordsNativeAndCapoToggleSwitch.setEnabled(nativeandcapobuttonenabled);
+        if (!nativeandcapobuttonenabled) {
+            chordsNativeAndCapoToggleSwitch.setAlpha(0.4f);
+        }
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -734,11 +750,22 @@ public class OptionMenuListeners extends Activity {
         chordsToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    FullscreenActivity.showChords = true;
+                FullscreenActivity.showChords = b;
+                chordsCapoToggleSwitch.setEnabled(b);
+                if (!b) {
+                    chordsCapoToggleSwitch.setAlpha(0.4f);
                 } else {
-                    FullscreenActivity.showChords = false;
+                    chordsCapoToggleSwitch.setAlpha(1.0f);
                 }
+
+                boolean nativeandcapobuttonenabled = FullscreenActivity.showCapoChords && b;
+                chordsNativeAndCapoToggleSwitch.setEnabled(nativeandcapobuttonenabled);
+                if (!nativeandcapobuttonenabled) {
+                    chordsNativeAndCapoToggleSwitch.setAlpha(0.4f);
+                } else {
+                    chordsNativeAndCapoToggleSwitch.setAlpha(1.0f);
+                }
+
                 Preferences.savePreferences();
                 if (mListener!=null) {
                     mListener.loadSong();
@@ -749,11 +776,7 @@ public class OptionMenuListeners extends Activity {
         chordsLyricsToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    FullscreenActivity.showLyrics = true;
-                } else {
-                    FullscreenActivity.showLyrics = false;
-                }
+                FullscreenActivity.showLyrics = b;
                 Preferences.savePreferences();
                 if (mListener!=null) {
                     mListener.loadSong();
@@ -765,12 +788,13 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.showCapoChords = b;
-                if(b) {
-                    chordsNativeAndCapoToggleSwitch.setEnabled(true);
+                boolean nativeandcapobuttonenabled = FullscreenActivity.showChords && b;
+                chordsNativeAndCapoToggleSwitch.setEnabled(nativeandcapobuttonenabled);
+                if (!nativeandcapobuttonenabled) {
+                    chordsNativeAndCapoToggleSwitch.setAlpha(0.4f);
                 } else {
-                    chordsNativeAndCapoToggleSwitch.setEnabled(false);
+                    chordsNativeAndCapoToggleSwitch.setAlpha(1.0f);
                 }
-                Preferences.savePreferences();
                 Preferences.savePreferences();
                 if (mListener!=null) {
                     mListener.loadSong();
@@ -778,6 +802,16 @@ public class OptionMenuListeners extends Activity {
             }
         });
 
+        chordsNativeAndCapoToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.showNativeAndCapoChords = b;
+                Preferences.savePreferences();
+                if (mListener!=null) {
+                    mListener.loadSong();
+                }
+            }
+        });
         chordsFormatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -826,6 +860,7 @@ public class OptionMenuListeners extends Activity {
         Button displayAutoScaleButton = (Button) v.findViewById(R.id.displayAutoScaleButton);
         Button displayFontButton = (Button) v.findViewById(R.id.displayFontButton);
         Button displayButtonsButton = (Button) v.findViewById(R.id.displayButtonsButton);
+        Button displayPopUpsButton = (Button) v.findViewById(R.id.displayPopUpsButton);
         Button displayInfoButton = (Button) v.findViewById(R.id.displayInfoButton);
         SwitchCompat displayMenuToggleSwitch = (SwitchCompat) v.findViewById(R.id.displayMenuToggleSwitch);
         Button displayProfileButton = (Button) v.findViewById(R.id.displayProfileButton);
@@ -836,6 +871,7 @@ public class OptionMenuListeners extends Activity {
         displayAutoScaleButton.setText(c.getString(R.string.options_options_scale).toUpperCase(FullscreenActivity.locale));
         displayFontButton.setText(c.getString(R.string.options_options_fonts).toUpperCase(FullscreenActivity.locale));
         displayButtonsButton.setText(c.getString(R.string.pagebuttons).toUpperCase(FullscreenActivity.locale));
+        displayPopUpsButton.setText(c.getString(R.string.options_display_popups).toUpperCase(FullscreenActivity.locale));
         displayInfoButton.setText(c.getString(R.string.extra).toUpperCase(FullscreenActivity.locale));
         displayMenuToggleSwitch.setText(c.getString(R.string.options_options_hidebar).toUpperCase(FullscreenActivity.locale));
         displayProfileButton.setText(c.getString(R.string.profile).toUpperCase(FullscreenActivity.locale));
@@ -898,6 +934,17 @@ public class OptionMenuListeners extends Activity {
             }
         });
 
+        displayPopUpsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener!=null) {
+                    FullscreenActivity.whattodo = "popupsettings";
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
         displayInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -915,9 +962,9 @@ public class OptionMenuListeners extends Activity {
                 FullscreenActivity.hideActionBar = b;
                 if (mListener!=null) {
                     if (b) {
-                        mListener.showActionBar();
-                    } else {
                         mListener.hideActionBar();
+                    } else {
+                        mListener.showActionBar();
                     }
                 }
                 Preferences.savePreferences();
@@ -954,15 +1001,15 @@ public class OptionMenuListeners extends Activity {
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
-        storageNewFolderButton.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
-        storageEditButton.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
-        storageManageButton.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
-        storageImportOSBButton.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
-        storageExportOSBButton.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
-        storageImportOnSongButton.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
-        storageSongMenuButton.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
-        storageDatabaseButton.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
-        storageLogButton.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
+        storageNewFolderButton.setText(c.getString(R.string.options_song_newfolder).toUpperCase(FullscreenActivity.locale));
+        storageEditButton.setText(c.getString(R.string.options_song_editfolder).toUpperCase(FullscreenActivity.locale));
+        storageManageButton.setText(c.getString(R.string.storage_choose).toUpperCase(FullscreenActivity.locale));
+        storageImportOSBButton.setText(c.getString(R.string.backup_import).toUpperCase(FullscreenActivity.locale));
+        storageExportOSBButton.setText(c.getString(R.string.backup_export).toUpperCase(FullscreenActivity.locale));
+        storageImportOnSongButton.setText(c.getString(R.string.import_onsong_choose).toUpperCase(FullscreenActivity.locale));
+        storageSongMenuButton.setText(c.getString(R.string.refreshsongs).toUpperCase(FullscreenActivity.locale));
+        storageDatabaseButton.setText(c.getString(R.string.search_rebuild).toUpperCase(FullscreenActivity.locale));
+        storageLogButton.setText(c.getString(R.string.search_log).toUpperCase(FullscreenActivity.locale));
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -1043,8 +1090,10 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
+                    mListener.prepareSongMenu();
                     mListener.closeMyDrawers("option");
-                    mListener.openFragment();
+                    mListener.openMyDrawers("song");
+                    mListener.closeMyDrawers("song_delayed");
                 }
             }
         });
@@ -1065,7 +1114,7 @@ public class OptionMenuListeners extends Activity {
                 if (mListener!=null) {
                     FullscreenActivity.whattodo = "errorlog";
                     mListener.closeMyDrawers("option");
-                    mListener.prepareOptionMenu();
+                    mListener.openFragment();
                 }
             }
         });

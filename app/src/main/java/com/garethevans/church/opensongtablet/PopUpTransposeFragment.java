@@ -55,10 +55,20 @@ public class PopUpTransposeFragment extends DialogFragment {
     boolean updatekey = false;
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View V = inflater.inflate(R.layout.popup_transpose, container, false);
         getDialog().setTitle(getActivity().getResources().getString(R.string.transpose));
+        getDialog().setCanceledOnTouchOutside(true);
 
         // Initialise views
         transposeSeekBar = (SeekBar) V.findViewById(R.id.transposeSeekBar);
@@ -225,19 +235,6 @@ public class PopUpTransposeFragment extends DialogFragment {
         });
 
         return V;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // safety check
-        if (getDialog() == null) {
-            return;
-        }
-
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
     }
 
 }

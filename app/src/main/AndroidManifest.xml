@@ -21,8 +21,8 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/MyTheme">
-        //android:theme="@style/AppTheme"
+        android:theme="@style/MyTheme"
+        android:name="android.support.multidex.MultiDexApplication">
 
         <meta-data
             android:name="android.app.default_searchable"
@@ -245,6 +245,7 @@
         </activity>
         <activity
             android:name="com.garethevans.church.opensongtablet.StageMode"
+            android:configChanges="orientation|screenSize"
             android:label="@string/app_name">
         </activity>
         <activity

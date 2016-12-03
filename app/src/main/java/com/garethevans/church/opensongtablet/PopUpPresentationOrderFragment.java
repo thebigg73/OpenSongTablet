@@ -52,6 +52,7 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         final TextView m_mPresentation = (TextView) V.findViewById(R.id.popuppres_mPresentation);
         // Try to add buttons for each section
         // How many buttons?
+
         int numbuttons = FullscreenActivity.foundSongSections_heading.size();
         for (int r=0;r<numbuttons;r++) {
             Button but = new Button(getActivity());

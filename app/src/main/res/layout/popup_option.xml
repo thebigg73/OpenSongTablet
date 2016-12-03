@@ -11,13 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="4dp"
-        android:gravity="center"
-        android:text="@string/options_options"
-        android:textSize="14sp"
         android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
         android:drawablePadding="8dp"
         android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
-        android:textColor="#ff0" />
+        android:gravity="center"
+        android:text="@string/options_options"
+        android:textColor="#ff0"
+        android:textSize="22sp" />
 
     <ScrollView
         android:id="@+id/optionsdisplayscrollview"
@@ -35,13 +35,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_format_list_numbers_white_36dp"
                 android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                android:drawableLeft="@drawable/ic_format_list_bulleted_white_36dp"
-                android:drawableStart="@drawable/ic_format_list_bulleted_white_36dp"
+                android:drawableStart="@drawable/ic_format_list_numbers_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set" />
+                android:text="@string/options_set"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/menuSongButton"
@@ -49,13 +49,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_music_note_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_music_note_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song" />
+                android:text="@string/options_song"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/menuChordsButton"
@@ -63,13 +63,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_guitar_electric_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_guitar_electric_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/chords" />
+                android:text="@string/chords"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/menuDisplayButton"
@@ -77,13 +77,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_monitor_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_monitor_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_display" />
+                android:text="@string/options_display"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/menuGesturesButton"
@@ -91,13 +91,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_fingerprint_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_fingerprint_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_gesturesandmenus" />
+                android:text="@string/options_gesturesandmenus"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/menuStorageButton"
@@ -105,13 +105,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_sd_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_sd_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_storage" />
+                android:text="@string/options_storage"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/menuPadButton"
@@ -119,13 +119,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_volume_high_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_volume_high_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/pad" />
+                android:text="@string/pad"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/menuAutoScrollButton"
@@ -133,13 +133,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_rotate_right_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_rotate_right_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/autoscroll" />
+                android:text="@string/autoscroll"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/menuOtherButton"
@@ -147,15 +147,15 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_information_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_information_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_other" />
+                android:text="@string/options_other"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
 
         </LinearLayout>
-        </ScrollView>
+    </ScrollView>
 </LinearLayout>

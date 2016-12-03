@@ -206,7 +206,9 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable, Sectio
                                 mStringFilterList.get(i).getLyrics(),
                                 mStringFilterList.get(i).getHymnnum());
 
-                        filterList.add(song);
+                        if (song!=null) {
+                            filterList.add(song);
+                        }
                     }
                 }
                 results.count = filterList.size();

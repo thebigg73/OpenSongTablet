@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/setlistpage"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
+        android:padding="2dp"
         android:scrollbars="vertical"
         android:layout_above="@+id/helptext"/>
 
@@ -82,7 +82,8 @@
             android:src="@drawable/tweet"
             android:background="@drawable/blue_button"
             android:cropToPadding="false"
-            android:contentDescription="@string/exportsavedset" />
+            android:contentDescription="@string/exportsavedset"
+            android:visibility="gone"/>
 
         <ImageButton
             android:id="@+id/shuffle"

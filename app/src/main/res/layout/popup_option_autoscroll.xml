@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
@@ -12,13 +12,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="4dp"
-        android:gravity="center"
-        android:text="@string/autoscroll"
-        android:textSize="14sp"
         android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
         android:drawablePadding="4dp"
         android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
-        android:textColor="#ff0" />
+        android:gravity="center"
+        android:text="@string/autoscroll"
+        android:textColor="#ff0"
+        android:textSize="22sp" />
 
     <ScrollView
         android:id="@+id/optionsautoscrollscrollview"
@@ -36,13 +36,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:drawablePadding="4dp"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_update_white_36dp"
+                android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_update_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/default_autoscroll" />
+                android:text="@string/default_autoscroll"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/autoScrollStartButton"
@@ -50,13 +50,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_slow_motion_video_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_slow_motion_video_white_36dp"
                 android:text="@string/options_options_autostartscroll"
-                app:showText="false"/>
+                android:textColor="#fff"
+                android:textSize="12sp"
+                app:showText="false" />
 
         </LinearLayout>
     </ScrollView>

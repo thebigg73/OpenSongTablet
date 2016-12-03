@@ -2,21 +2,22 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class PopUpDisplayOptionsFragment extends DialogFragment {
+public class PopUpMetronomeFragment extends DialogFragment {
 
-    static PopUpDisplayOptionsFragment newInstance() {
-        PopUpDisplayOptionsFragment frag;
-        frag = new PopUpDisplayOptionsFragment();
+    static PopUpMetronomeFragment newInstance() {
+        PopUpMetronomeFragment frag;
+        frag = new PopUpMetronomeFragment();
         return frag;
     }
 
     public interface MyInterface {
-
+        void pageButtonAlpha(String s);
     }
 
     private MyInterface mListener;
@@ -37,21 +38,28 @@ public class PopUpDisplayOptionsFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-
-        // safety check
-        if (getDialog() == null) {
-            return;
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.colorchooser));
-        View V = inflater.inflate(R.layout.ambilwarna_dialog, container, false);
+        getDialog().setTitle(getActivity().getResources().getString(R.string.pad));
+        getDialog().setCanceledOnTouchOutside(true);
+        mListener.pageButtonAlpha("metronome");
+
+        View V = inflater.inflate(R.layout.popup_metronome, container, false);
 
         // Initialise the views
 
         return V;
     }
 
+    @Override
+    public void onDismiss(final DialogInterface dialog) {
+        if (mListener!=null) {
+            mListener.pageButtonAlpha("");
+        }
+    }
 }

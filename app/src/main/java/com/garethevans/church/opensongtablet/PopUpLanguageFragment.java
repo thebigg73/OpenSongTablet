@@ -19,40 +19,31 @@ public class PopUpLanguageFragment extends DialogFragment {
         return frag;
     }
 
-    public interface MyInterface {
-
-    }
-
-    private MyInterface mListener;
-
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
         super.onAttach(activity);
     }
 
     @Override
     public void onDetach() {
-        mListener = null;
         super.onDetach();
     }
 
-    @Override
     public void onStart() {
         super.onStart();
 
         // safety check
-        if (getDialog() == null) {
-            return;
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     String tempLanguage;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.language));
+        getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_language, container, false);
 
         // Initialise the views
@@ -75,6 +66,7 @@ public class PopUpLanguageFragment extends DialogFragment {
                 case "el":
                     positionselected = 3;
                     break;
+                default:
                 case "en":
                     positionselected = 4;
                     break;
@@ -117,7 +109,7 @@ public class PopUpLanguageFragment extends DialogFragment {
                 getActivity().getResources().getStringArray(R.array.languagelist));
         languagescroll.setAdapter(la);
 
-        languagescroll.setSelection(positionselected);
+        languagescroll.setItemChecked(positionselected,true);
 
         languagescroll.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

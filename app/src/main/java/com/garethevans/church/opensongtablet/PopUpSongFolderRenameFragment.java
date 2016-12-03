@@ -2,8 +2,8 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +25,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
     static String myTask;
     static ArrayList<String> oldtempfolders;
+    GetFoldersAsync getFolders_async;
 
     static PopUpSongFolderRenameFragment newInstance(String message) {
         myTask = message;
@@ -35,6 +36,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
     public interface MyInterface {
         void refreshAll();
+        void prepareSongMenu();
     }
 
     private MyInterface mListener;
@@ -58,9 +60,20 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
     Button newFolderOkButton;
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        // safety check
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.options_song_rename));
-        View V = inflater.inflate(R.layout.popup_songfoldercreate, container, false);
+        getDialog().setCanceledOnTouchOutside(true);
+        View V = inflater.inflate(R.layout.popup_songfolderrename, container, false);
 
         // Initialise the views
         oldFolderNameSpinner = (Spinner) V.findViewById(R.id.oldFolderNameSpinner);
@@ -75,33 +88,16 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         FullscreenActivity.currentFolder = FullscreenActivity.whichSongFolder;
         FullscreenActivity.newFolder = FullscreenActivity.whichSongFolder;
         //FullscreenActivity.whichSongFolder = "";
-        ListSongFiles.listSongFolders();
 
-        // The song folder
-        Log.d("d", "FullscreenActivity.currentFolder=" + FullscreenActivity.currentFolder);
-        oldtempfolders = new ArrayList<>();
-        for (int e=0;e<FullscreenActivity.mSongFolderNames.length;e++) {
-            if (FullscreenActivity.mSongFolderNames[e]!=null &&
-                    !FullscreenActivity.mSongFolderNames[e].equals(FullscreenActivity.mainfoldername)) {
-                oldtempfolders.add(FullscreenActivity.mSongFolderNames[e]);
-            }
-        }
-        ArrayAdapter<String> folders = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, oldtempfolders);
-        folders.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        oldFolderNameSpinner.setAdapter(folders);
-
-        // Select the current folder as the preferred one
-        oldFolderNameSpinner.setSelection(0);
-        for (int w=0;w<oldtempfolders.size();w++) {
-            if (FullscreenActivity.whichSongFolder.equals(oldtempfolders.get(w))) {
-                oldFolderNameSpinner.setSelection(w);
-                FullscreenActivity.currentFolder = oldtempfolders.get(w);
-            }
-        }
+        // Do the time consuming bit as an asynctask
+        getFolders_async = new GetFoldersAsync();
+        getFolders_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         if (myTask.equals("create")) {
             // Hide the spinner
             oldFolderNameSpinner.setVisibility(View.GONE);
+            getDialog().setTitle(getActivity().getResources().getString(R.string.options_song_newfolder));
+
         }
 
         // Set the oldFolderNameSpinnerListener
@@ -162,17 +158,14 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
                     }
 
                     // Load the songs and the folders
-                    ListSongFiles.listSongFolders();
-                    ListSongFiles.listSongs();
+
+                    mListener.prepareSongMenu();
 
                     try {
                         LoadXML.loadXML();
                     } catch (XmlPullParserException | IOException e) {
                         e.printStackTrace();
                     }
-
-                    // Get the song indexes
-                    ListSongFiles.getCurrentSongIndex();
 
                     // Save preferences
                     Preferences.savePreferences();
@@ -186,5 +179,39 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
             }
         });
         return V;
+    }
+
+    private class GetFoldersAsync extends AsyncTask<Object, Void, String> {
+
+        @Override
+        protected String doInBackground(Object... params) {
+            ListSongFiles.getAllSongFolders();
+
+            // The song folder
+            oldtempfolders = new ArrayList<>();
+            for (int e=0;e<FullscreenActivity.mSongFolderNames.length;e++) {
+                if (FullscreenActivity.mSongFolderNames[e]!=null &&
+                        !FullscreenActivity.mSongFolderNames[e].equals(FullscreenActivity.mainfoldername)) {
+                    oldtempfolders.add(FullscreenActivity.mSongFolderNames[e]);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            ArrayAdapter<String> folders = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, oldtempfolders);
+            folders.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            oldFolderNameSpinner.setAdapter(folders);
+
+            // Select the current folder as the preferred one
+            oldFolderNameSpinner.setSelection(0);
+            for (int w=0;w<oldtempfolders.size();w++) {
+                if (FullscreenActivity.whichSongFolder.equals(oldtempfolders.get(w))) {
+                    oldFolderNameSpinner.setSelection(w);
+                    FullscreenActivity.currentFolder = oldtempfolders.get(w);
+                }
+            }
+        }
     }
 }
