@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -95,6 +96,16 @@ public class PopUpImportExternalFile extends DialogFragment {
         // safety check
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
         }
     }
 
@@ -206,6 +217,10 @@ public class PopUpImportExternalFile extends DialogFragment {
     public void defaultSaveAction() {
         // Now check that the file doesn't already exist.  If it does alert the user to try again
         File testfile;
+        if (moveToFolder==null) {
+            moveToFolder=getResources().getString(R.string.mainfoldername);
+        }
+
         if (moveToFolder.equals(getResources().getString(R.string.mainfoldername))) {
             testfile = new File(FullscreenActivity.dir + "/" + fileTitle_EditText.getText().toString());
         } else {
@@ -861,4 +876,10 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
 
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
 }

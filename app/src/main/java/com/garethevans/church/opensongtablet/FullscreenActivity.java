@@ -129,11 +129,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     // PopUp window size and alpha
     public static float popupAlpha_Set = 0.6f;
     public static float popupDim_Set = 0.7f;
-    public static float popupScale_Set = 8.0f;
+    public static float popupScale_Set = 0.8f;
     public static String popupPosition_Set = "c";
     public static float popupAlpha_All = 0.6f;
     public static float popupDim_All = 0.7f;
-    public static float popupScale_All = 8.0f;
+    public static float popupScale_All = 0.8f;
     public static String popupPosition_All = "c";
     public static float pageButtonAlpha = 0.4f;
 
@@ -1136,7 +1136,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         // Or the default storage location isn't available, ask them!
         checkDirectories();
 
-        whichMode = "Stage";
         //whichMode = "Performance";
 
         // If whichMode is Presentation, open that app instead

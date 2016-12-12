@@ -214,6 +214,7 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
                 mypage = (RelativeLayout) findViewById(R.id.mypage);
 
                 mypage.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
+/*
                 mypage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -226,6 +227,7 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
                         loadSong();
                     }
                 });
+*/
 
                 // Set up the pad and autoscroll timing display
                 backingtrackProgress = (LinearLayout) findViewById(R.id.backingtrackProgress);
@@ -536,6 +538,13 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whattodo = "page_autoscroll";
+                openFragment();
+            }
+        });
+        metronomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "page_metronome";
                 openFragment();
             }
         });

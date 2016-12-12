@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -61,6 +62,16 @@ public class PopUpScalingFragment extends DialogFragment {
         super.onStart();
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
         }
     }
 
@@ -325,6 +336,11 @@ public class PopUpScalingFragment extends DialogFragment {
             FullscreenActivity.mMaxFontSize = FullscreenActivity.mMinFontSize + 1;
             setupmaxfontsizeseekbar();
         }
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
     }
 
 }

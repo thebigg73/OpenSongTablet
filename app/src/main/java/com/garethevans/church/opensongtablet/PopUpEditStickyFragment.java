@@ -49,6 +49,16 @@ public class PopUpEditStickyFragment extends DialogFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.options_song_stickynotes));
         getDialog().setCanceledOnTouchOutside(true);
@@ -94,4 +104,10 @@ public class PopUpEditStickyFragment extends DialogFragment {
             mListener.pageButtonAlpha("");
         }
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
 }

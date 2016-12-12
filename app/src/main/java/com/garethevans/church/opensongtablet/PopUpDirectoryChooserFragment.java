@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,6 +72,16 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
         // safety check
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
         }
     }
 
@@ -296,6 +307,11 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
         directoryList.setAdapter(listAdapter);
 
         currentFolder.setText(location.toString());
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
     }
 
 }

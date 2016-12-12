@@ -91,6 +91,16 @@ public class PopUpChordsFragment extends DialogFragment {
     private Drawable r4;
     private Drawable r5;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -966,5 +976,9 @@ public class PopUpChordsFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
 
 }

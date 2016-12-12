@@ -3,7 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.os.Handler;
 import android.os.Message;
 
-public class Metronome {
+class Metronome {
 	
 	private double bpm;
 	private short beat;
@@ -26,12 +26,12 @@ public class Metronome {
 	private int currentBeat = 1;
 	//private int currentBeatnum = 1;
 	
-	public Metronome(Handler handler) {
+	Metronome(Handler handler) {
 		audioGenerator.createPlayer();
 		this.mHandler = handler;
 	}
 	
-	public void calcSilence() {
+	void calcSilence() {
 		resolutionmeter = (int) ((float)noteValue/4.0f);
 		//silence = (int) (((60/bpm)*8000)-tick);
         if (noteValue==0) {
@@ -94,7 +94,7 @@ public class Metronome {
 		return bpm;
 	}
 
-	public void setBpm(int bpm) {
+	void setBpm(int bpm) {
 		this.bpm = bpm;
 	}
 
@@ -102,28 +102,28 @@ public class Metronome {
 		return noteValue;
 	}
 
-	public void setNoteValue(short noteValue) {
+	void setNoteValue(short noteValue) {
 		this.noteValue = noteValue;
 	}
 
 	public short getBeat() {
 		return beat;
 	}
-	public void setBeat(short beat_set) {
+	void setBeat(short beat_set) {
 		this.beat = beat_set;
 	}
 
 	public double getBeatSound() {
 		return beatSound;
 	}
-	public void setBeatSound(double sound1) {
+	void setBeatSound(double sound1) {
 		this.beatSound = sound1;
 	}
 
 	public double getSound() {
 		return sound;
 	}
-	public void setSound(double sound2) {
+	void setSound(double sound2) {
 		this.sound = sound2;
 	}
 
@@ -137,7 +137,7 @@ public class Metronome {
 	public int getCurrentBeat () {
 		return currentBeat;
 	}
-	public void setCurrentBeat (int currentBeat_set) {
+	void setCurrentBeat(int currentBeat_set) {
 		this.currentBeat = currentBeat_set;
 	}
 

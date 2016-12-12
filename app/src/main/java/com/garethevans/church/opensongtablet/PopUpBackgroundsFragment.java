@@ -7,6 +7,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -38,6 +39,16 @@ public class PopUpBackgroundsFragment extends DialogFragment {
         PopUpBackgroundsFragment frag;
         frag = new PopUpBackgroundsFragment();
         return frag;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
     }
 
     @Override
@@ -352,6 +363,11 @@ public class PopUpBackgroundsFragment extends DialogFragment {
             // Save preferences
             Preferences.savePreferences();
         }
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
     }
 
 }

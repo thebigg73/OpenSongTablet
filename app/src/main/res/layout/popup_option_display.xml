@@ -124,6 +124,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_menu_white_36dp"
                 android:text="@string/options_options_hidebar"
+                app:theme="@style/SwitchStyle"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 app:showText="false" />

@@ -178,6 +178,16 @@ public class PopUpCustomChordsFragment extends DialogFragment {
     ImageView string2_f5;
     ImageView string1_f5;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -1783,6 +1793,11 @@ public class PopUpCustomChordsFragment extends DialogFragment {
             FullscreenActivity.whattodo = "page_chords";
             mListener.openFragment();
         }
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
     }
 
 }

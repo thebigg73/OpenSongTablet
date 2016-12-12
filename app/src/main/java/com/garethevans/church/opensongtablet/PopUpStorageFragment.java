@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -106,6 +107,16 @@ public class PopUpStorageFragment extends DialogFragment {
         // safety check
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
         }
     }
 
@@ -411,4 +422,10 @@ public class PopUpStorageFragment extends DialogFragment {
         FullscreenActivity.dirvariations = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Variations");
         FullscreenActivity.dirprofiles = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Profiles");
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
 }

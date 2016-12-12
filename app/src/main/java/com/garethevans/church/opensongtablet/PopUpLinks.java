@@ -71,6 +71,9 @@ public class PopUpLinks extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
         getDialog().setTitle(getActivity().getResources().getString(R.string.link));
         getDialog().setCanceledOnTouchOutside(true);
         mListener.pageButtonAlpha("links");
@@ -339,6 +342,11 @@ public class PopUpLinks extends DialogFragment {
         if (mListener!=null) {
             mListener.pageButtonAlpha("");
         }
-
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
 }

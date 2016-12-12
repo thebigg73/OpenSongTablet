@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -46,6 +47,16 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
     public void onDetach() {
         mListener = null;
         super.onDetach();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
     }
 
     @Override
@@ -171,6 +182,11 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
             dismiss();
             return true;
         }
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
     }
 
 }

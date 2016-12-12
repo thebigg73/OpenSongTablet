@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -49,6 +50,17 @@ public class PopUpGesturesFragment extends DialogFragment {
     Spinner downPedalLongPress;
     Button saveGestures;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.customgestures));
         getDialog().setCanceledOnTouchOutside(true);
@@ -154,4 +166,10 @@ public class PopUpGesturesFragment extends DialogFragment {
         }
         spinner.setSelection(selection-1);
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
 }

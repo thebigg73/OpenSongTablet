@@ -56,6 +56,16 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
     };
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.volume));
         View V = inflater.inflate(R.layout.popup_soundlevelmeter, container, false);
@@ -402,4 +412,10 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
             //mHandlerStart.postDelayed(r,50);
         }
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
 }

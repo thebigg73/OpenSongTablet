@@ -71,6 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                app:theme="@style/SwitchStyle"
                 android:textColor="#fff"
                 android:text="@string/toggleScrollBeforeSwipe"
                 app:showText="false"/>

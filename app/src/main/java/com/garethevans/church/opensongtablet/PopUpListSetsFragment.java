@@ -96,6 +96,16 @@ public class PopUpListSetsFragment extends DialogFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View V = inflater.inflate(R.layout.popup_setlists, container, false);
@@ -536,4 +546,10 @@ public class PopUpListSetsFragment extends DialogFragment {
             setCorrectAdapter();
         }
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
 }

@@ -481,13 +481,17 @@ public class ProcessSong extends Activity {
                 FullscreenActivity.temposlider = 39;
             }
         }
+        if (FullscreenActivity.temposlider > 140) {
+            FullscreenActivity.temposlider = 140;
+        }
         FullscreenActivity.temposlider = FullscreenActivity.temposlider - 39;
     }
 
     public static String removeUnwantedSymbolsAndSpaces(String string) {
         // Replace unwanted symbols
+        // Split into lines
+        string = string.replace("|", "\n");
         string = string.replace("_", "");
-        string = string.replace("|", " ");
         string = string.replace(",", " ");
         string = string.replace(".", " ");
         string = string.replace(":", " ");
@@ -1139,6 +1143,7 @@ public class ProcessSong extends Activity {
 
         song = song.replace("-!!", "");
         song = song.replace("||", "%%LATERSPLITHERE%%");
+
         // Need to go back to chord lines that might have to have %%LATERSPLITHERE%% added
         if (!FullscreenActivity.whichSongFolder.contains(FullscreenActivity.scripture)) {
             song = song.replace("\n\n", "%%__SPLITHERE__%%");
@@ -1146,10 +1151,39 @@ public class ProcessSong extends Activity {
         } else {
             song = song.replace("---", "[]");
         }
+
+        String[] temp = song.split("\n");
+        song = "";
+        for (String t:temp) {
+            if (t.startsWith(".")) {
+                song += t + "\n";
+            } else {
+                song += t.replace("|","\n") + "\n";
+            }
+        }
+
         if (FullscreenActivity.presenterChords.equals("N")) {
-            song = song.replace("|", "\n");
+            // Split into lines
+            song = "";
+            for (String t:temp) {
+                if (t.startsWith(".")) {
+                    song += t + "\n";
+                } else {
+                    song += t.replace("|","\n") + "\n";
+                }
+            }
         } else {
-            song = song.replace("|", " ");
+            // Split into lines
+            String[] temp = song.split("\n");
+            song = "";
+            for (String t:temp) {
+                if (t.startsWith(".")) {
+                    song += t + "\n";
+                } else {
+                    song += t.replace("|"," ") + "\n";
+                }
+            }
+
         }
         song = song.replace("\n[","\n%%__SPLITHERE__%%\n[");
 

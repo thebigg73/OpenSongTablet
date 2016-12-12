@@ -125,6 +125,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_format_list_numbers_white_36dp"
                 android:text="@string/edit_song_presentation"
+                app:theme="@style/SwitchStyle"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 app:showText="false" />

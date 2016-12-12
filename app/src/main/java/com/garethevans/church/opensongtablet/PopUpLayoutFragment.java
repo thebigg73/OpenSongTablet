@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,16 @@ public class PopUpLayoutFragment extends DialogFragment {
     SeekBar presoCopyrightSizeSeekBar;
     SeekBar presoAlertSizeSeekBar;
     Button closeLayout;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -264,4 +275,10 @@ public class PopUpLayoutFragment extends DialogFragment {
             Preferences.savePreferences();
         }
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
 }

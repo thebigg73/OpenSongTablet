@@ -7,6 +7,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,16 @@ public class PopUpAlertFragment extends DialogFragment {
         PopUpAlertFragment frag;
         frag = new PopUpAlertFragment();
         return frag;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
     }
 
     @Override
@@ -75,4 +86,10 @@ public class PopUpAlertFragment extends DialogFragment {
         });
         return V;
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
 }

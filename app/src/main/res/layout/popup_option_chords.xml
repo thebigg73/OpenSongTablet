@@ -84,6 +84,7 @@
                 android:drawableStart="@drawable/ic_guitar_electric_white_36dp"
                 android:text="@string/showchords"
                 android:textColor="#fff"
+                app:theme="@style/SwitchStyle"
                 android:textSize="12sp"
                 app:showText="false" />
 
@@ -99,6 +100,7 @@
                 android:drawableStart="@drawable/ic_comment_text_white_36dp"
                 android:text="@string/showlyrics"
                 android:textColor="#fff"
+                app:theme="@style/SwitchStyle"
                 android:textSize="12sp"
                 app:showText="false" />
 
@@ -113,6 +115,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_capo_white_36dp"
                 android:text="@string/showcapo"
+                app:theme="@style/SwitchStyle"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 app:showText="false" />
@@ -127,6 +130,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_capo_white_36dp"
                 android:text="@string/capo_toggle_bothcapo"
+                app:theme="@style/SwitchStyle"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 app:showText="false" />

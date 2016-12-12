@@ -80,11 +80,23 @@ public class PopUpSetViewNew extends DialogFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         a = getActivity();
         getDialog().setTitle(getActivity().getResources().getString(R.string.options_set));
         getDialog().setCanceledOnTouchOutside(true);
         final View V = inflater.inflate(R.layout.popup_setview_new, container, false);
+
+        FullscreenActivity.whattodo = "";
 
         mListener.pageButtonAlpha("set");
         TextView helpClickItem_TextView = (TextView) V.findViewById(R.id.helpClickItem_TextView);
@@ -362,4 +374,10 @@ public class PopUpSetViewNew extends DialogFragment {
             mListener.pageButtonAlpha("");
         }
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
 }

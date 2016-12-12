@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -99,6 +100,16 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
     // Declare variables used
     static String whattype = "note";
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -570,4 +581,10 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             slideDetails_RelativeLayout.setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
 }

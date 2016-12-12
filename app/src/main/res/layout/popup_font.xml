@@ -161,7 +161,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/tag_verse"
                         android:id="@+id/headingPreview"
-                        android:textColor="#000" />
+                        android:textColor="#fff" />
                 </TableRow>
 
                 <TableRow
@@ -174,7 +174,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/font_chords_line1"
                         android:id="@+id/chordPreview1"
-                        android:textColor="#00f" />
+                        android:textColor="#ff0" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -182,7 +182,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/font_chords_line2"
                         android:id="@+id/chordPreview2"
-                        android:textColor="#00f" />
+                        android:textColor="#ff0" />
                 </TableRow>
 
                 <TableRow
@@ -195,7 +195,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/font_lyrics_line1"
                         android:id="@+id/lyricsPreview1"
-                        android:textColor="#000" />
+                        android:textColor="#fff" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -203,7 +203,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/font_lyrics_line2"
                         android:id="@+id/lyricsPreview2"
-                        android:textColor="#000" />
+                        android:textColor="#fff" />
                 </TableRow>
 
                 <TableRow
@@ -215,7 +215,7 @@
                         android:layout_height="wrap_content"
                         android:text="Repeat x2"
                         android:id="@+id/commentPreview"
-                        android:textColor="#000" />
+                        android:textColor="#fff" />
                 </TableRow>
 
             </TableLayout>

@@ -55,6 +55,7 @@
                 android:drawableStart="@drawable/ic_slow_motion_video_white_36dp"
                 android:text="@string/options_options_autostartscroll"
                 android:textColor="#fff"
+                app:theme="@style/SwitchStyle"
                 android:textSize="12sp"
                 app:showText="false" />
 

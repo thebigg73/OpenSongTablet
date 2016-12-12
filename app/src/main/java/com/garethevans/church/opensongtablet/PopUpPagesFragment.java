@@ -44,6 +44,16 @@ public class PopUpPagesFragment extends DialogFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.pad));
         getDialog().setCanceledOnTouchOutside(true);
@@ -62,4 +72,10 @@ public class PopUpPagesFragment extends DialogFragment {
             mListener.pageButtonAlpha("");
         }
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
 }

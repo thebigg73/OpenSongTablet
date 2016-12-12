@@ -34,7 +34,7 @@ public class Chordie extends Activity{
 
     static String response;
     static String weblink;
-    static WebView chordieWeb;
+    WebView chordieWeb;
     static String whatfolderselected=FullscreenActivity.mainfoldername;
     ProgressBar progressbar;
     static String[] availableFolders;
@@ -146,7 +146,7 @@ public class Chordie extends Activity{
             return response;
         }
 
-        public void makeNewFolder() {
+        void makeNewFolder() {
             AlertDialog.Builder alert = new AlertDialog.Builder(Chordie.this);
 
             alert.setTitle(getResources().getText(R.string.newfolder).toString());
@@ -489,7 +489,8 @@ public class Chordie extends Activity{
                 int numlines = templines.length;
                 String newtext = "";
                 for (int q=0;q<numlines;q++) {
-                    if (templines[q].contains("<span>") || templines[q].contains("<span class=\"text-chord js-tab-ch\">")) {
+                    if (templines[q].contains("<span>") || templines[q].contains("<span class=\"text-chord js-tab-ch\">") ||
+                            templines[q].contains("<span class=\"text-chord js-tab-ch js-tapped\">")) {
                         // Identify chord lines
                         templines[q] = "."+templines[q];
                     }
@@ -509,7 +510,12 @@ public class Chordie extends Activity{
                 // Ok remove all html tags
                 newtext = newtext.replace("<span>","");
                 newtext = newtext.replace("<span class=\"text-chord js-tab-ch\">","");
+                newtext = newtext.replace("<span class=\"text-chord js-tab-ch js-tapped\">","");
                 newtext = newtext.replace("</span>","");
+                newtext = newtext.replace("[[","[");
+                newtext = newtext.replace("]]","]");
+                newtext = newtext.replace("\n [","\n[");
+                newtext = newtext.replace("]\n \n","]\n");
                 newtext = newtext.replace("<i>","");
                 newtext = newtext.replace("</i>","");
                 newtext = newtext.replace("<b>","");
