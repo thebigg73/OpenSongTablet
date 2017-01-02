@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="nearby">Connect devices</string>
+
+    <string name="quicklaunch_title">Customise quick launch buttons</string>
+    <string name="quicklaunch_button1">Button 1</string>
+    <string name="quicklaunch_button2">Button 2</string>
+    <string name="quicklaunch_button3">Button 3</string>
+    <string name="quicklaunch_currentaction">Current action</string>
+
     <string name="options_display_popups">Customise popup windows</string>
     <string name="transparency">Transparency</string>
     <string name="dim">Background darken</string>

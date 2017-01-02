@@ -1174,7 +1174,7 @@ public class ProcessSong extends Activity {
             }
         } else {
             // Split into lines
-            String[] temp = song.split("\n");
+            temp = song.split("\n");
             song = "";
             for (String t:temp) {
                 if (t.startsWith(".")) {

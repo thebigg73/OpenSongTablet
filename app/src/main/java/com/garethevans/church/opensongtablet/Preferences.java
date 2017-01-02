@@ -52,6 +52,10 @@ public class Preferences extends Activity {
 		
 		Log.d("Preferences","Loading");
 
+		FullscreenActivity.quickLaunchButton_1 = myPreferences.getString("quickLaunchButton_1","");
+		FullscreenActivity.quickLaunchButton_2 = myPreferences.getString("quickLaunchButton_2","");
+		FullscreenActivity.quickLaunchButton_3 = myPreferences.getString("quickLaunchButton_3","");
+
 		FullscreenActivity.popupAlpha_Set = myPreferences.getFloat("popupAlpha_Set",0.6f);
 		FullscreenActivity.popupDim_Set = myPreferences.getFloat("popupDim_Set",0.7f);
 		FullscreenActivity.popupScale_Set = myPreferences.getFloat("popupScale_Set",0.8f);
@@ -278,7 +282,10 @@ public class Preferences extends Activity {
 
 		SharedPreferences.Editor editor = myPreferences.edit();
 
-        editor.putFloat("popupAlpha_Set",FullscreenActivity.popupAlpha_Set);
+		editor.putString("quickLaunchButton_1",FullscreenActivity.quickLaunchButton_1);
+		editor.putString("quickLaunchButton_2",FullscreenActivity.quickLaunchButton_2);
+		editor.putString("quickLaunchButton_3",FullscreenActivity.quickLaunchButton_3);
+		editor.putFloat("popupAlpha_Set",FullscreenActivity.popupAlpha_Set);
         editor.putFloat("popupDim_Set",FullscreenActivity.popupDim_Set);
         editor.putFloat("popupScale_Set",FullscreenActivity.popupScale_Set);
         editor.putString("popupPosition_Set",FullscreenActivity.popupPosition_Set);

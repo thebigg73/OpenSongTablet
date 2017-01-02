@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +59,22 @@ public class PopUpAutoscrollFragment extends DialogFragment {
     TextView popupautoscroll_delay_text;
     EditText popupautoscroll_duration;
     ImageButton uselinkaudiolength_ImageButton;
+
+    boolean mStopHandler = false;
+    Handler mHandler = new Handler();
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                checkAutoScrollStatus();
+            } catch (Exception e) {
+                mStopHandler = true;
+            }
+            if (!mStopHandler) {
+                mHandler.postDelayed(this, 2000);
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -148,6 +165,8 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             });
         }
 
+        mHandler.post(runnable);
+
         return V;
     }
 
@@ -156,10 +175,12 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         if (mListener!=null) {
             mListener.pageButtonAlpha("");
         }
+        mStopHandler = true;
     }
 
     @Override
     public void onCancel(DialogInterface dialog) {
+        mStopHandler = true;
         this.dismiss();
     }
 
@@ -188,6 +209,36 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.link_audio) + " - " +
                     getActivity().getResources().getString(R.string.notset);
             ShowToast.showToast(getActivity());
+        }
+    }
+
+    public void checkAutoScrollStatus() {
+        if (popupautoscroll_duration.getText().toString().equals("") || popupautoscroll_duration.getText().toString().isEmpty()) {
+            String text = getResources().getString(R.string.edit_song_duration) + " - " + getResources().getString(R.string.notset);
+            popupautoscroll_startstopbutton.setText(text);
+            popupautoscroll_startstopbutton.setEnabled(false);
+        } else if (FullscreenActivity.isautoscrolling){
+            popupautoscroll_startstopbutton.setText(getResources().getString(R.string.stop));
+            popupautoscroll_startstopbutton.setEnabled(true);
+            popupautoscroll_startstopbutton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    mListener.stopAutoScroll();
+                    dismiss();
+                }
+            });
+        } else {
+            popupautoscroll_startstopbutton.setText(getResources().getString(R.string.start));
+            popupautoscroll_startstopbutton.setEnabled(true);
+            popupautoscroll_startstopbutton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    mListener.startAutoScroll();
+                    dismiss();
+                }
+            });
         }
     }
 }

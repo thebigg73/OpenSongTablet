@@ -1127,12 +1127,14 @@ public class OptionMenuListeners extends Activity {
         TextView menuup = (TextView) v.findViewById(R.id.optionGestureTitle);
         Button gesturesPedalButton = (Button) v.findViewById(R.id.gesturesPedalButton);
         Button gesturesCustomButton = (Button) v.findViewById(R.id.gesturesCustomButton);
+        Button gesturesPageButton = (Button) v.findViewById(R.id.gesturesPageButton);
         SwitchCompat gesturesMenuSwipeButton = (SwitchCompat) v.findViewById(R.id.gesturesMenuSwipeButton);
         SwitchCompat gesturesSongSwipeButton = (SwitchCompat) v.findViewById(R.id.gesturesSongSwipeButton);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.options_gesturesandmenus).toUpperCase(FullscreenActivity.locale));
         gesturesPedalButton.setText(c.getString(R.string.options_options_pedal).toUpperCase(FullscreenActivity.locale));
+        gesturesPageButton.setText(c.getString(R.string.quicklaunch_title).toUpperCase(FullscreenActivity.locale));
         gesturesCustomButton.setText(c.getString(R.string.options_options_gestures).toUpperCase(FullscreenActivity.locale));
         gesturesMenuSwipeButton.setText(c.getString(R.string.options_options_menuswipe).toUpperCase(FullscreenActivity.locale));
         gesturesSongSwipeButton.setText(c.getString(R.string.options_options_songswipe).toUpperCase(FullscreenActivity.locale));
@@ -1157,6 +1159,17 @@ public class OptionMenuListeners extends Activity {
             public void onClick(View view) {
                 if (mListener!=null) {
                     FullscreenActivity.whattodo = "footpedal";
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        gesturesPageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener!=null) {
+                    FullscreenActivity.whattodo = "quicklaunch";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }

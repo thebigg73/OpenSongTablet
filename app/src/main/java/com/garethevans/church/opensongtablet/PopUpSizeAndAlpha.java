@@ -19,6 +19,7 @@ class PopUpSizeAndAlpha {
             // Get available width and height
             DisplayMetrics metrics = new DisplayMetrics();
             ac.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
             int height = metrics.heightPixels;
             int width = metrics.widthPixels;
 

@@ -164,7 +164,7 @@
             android:layout_alignBottom="@+id/customButton">
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/custom3Button"
+                android:id="@+id/custom1Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -187,7 +187,7 @@
                 android:alpha="0.4"/>
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/custom1Button"
+                android:id="@+id/custom3Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/popup_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/menu_button"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/button1_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/quicklaunch_button1"
+                android:textColor="#ff0"
+                android:layout_margin="8dp"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/button1_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:fabSize="mini"
+                app:backgroundTint="@color/fab2"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_help_outline_white_36dp"
+                android:visibility="visible"
+                android:layout_below="@id/button1_title"/>
+
+            <TextView
+                android:id="@+id/button1_currently"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/quicklaunch_currentaction"
+                android:layout_below="@+id/button1_title"
+                android:layout_toRightOf="@+id/button1_image"/>
+
+            <Spinner
+                android:id="@+id/button1_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="#fff"
+                android:textColor="#000"
+                android:layout_below="@+id/button1_currently"
+                android:layout_toRightOf="@+id/button1_image"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/menu_button"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/button2_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#ff0"
+                android:text="@string/quicklaunch_button2"
+                android:layout_margin="8dp"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/button2_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:fabSize="mini"
+                app:backgroundTint="@color/fab2"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_help_outline_white_36dp"
+                android:visibility="visible"
+                android:layout_below="@id/button2_title"/>
+
+            <TextView
+                android:id="@+id/button2_currently"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/quicklaunch_currentaction"
+                android:layout_below="@+id/button2_title"
+                android:layout_toRightOf="@+id/button2_image"/>
+
+            <Spinner
+                android:id="@+id/button2_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="#fff"
+                android:textColor="#000"
+                android:layout_below="@+id/button2_currently"
+                android:layout_toRightOf="@+id/button2_image"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/menu_button"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/button3_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#ff0"
+                android:text="@string/quicklaunch_button3"
+                android:layout_margin="8dp"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/button3_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:fabSize="mini"
+                app:backgroundTint="@color/fab2"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_help_outline_white_36dp"
+                android:visibility="visible"
+                android:layout_below="@id/button3_title"/>
+
+            <TextView
+                android:id="@+id/button3_currently"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/quicklaunch_currentaction"
+                android:layout_below="@+id/button3_title"
+                android:layout_toRightOf="@+id/button3_image"/>
+
+            <Spinner
+                android:id="@+id/button3_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:background="#fff"
+                android:textColor="#000"
+                android:layout_below="@+id/button3_currently"
+                android:layout_toRightOf="@+id/button3_image"/>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/quicklaunch_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="36dp"
+            android:background="@drawable/green_button"
+            android:text="@string/ok"
+            android:textColor="#fff"/>
+
+        <Button
+            android:id="@+id/quicklaunch_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/blue_button"
+            android:text="@string/cancel"
+            android:textColor="#fff"/>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -152,6 +152,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     ArrayAdapter<String> lva;
     public static boolean menuscroll = true;
 
+    // Custom QuickLaunch buttons
+    public static String quickLaunchButton_1 = "";
+    public static String quickLaunchButton_2 = "";
+    public static String quickLaunchButton_3 = "";
+
     // Long and short key presses
     public static boolean longKeyPress = false;
     public static boolean shortKeyPress = false;

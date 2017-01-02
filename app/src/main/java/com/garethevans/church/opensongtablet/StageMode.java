@@ -64,7 +64,8 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
         PopUpSongCreateFragment.MyInterface, PopUpFileChooseFragment.MyInterface,
         PopUpPadFragment.MyInterface, PopUpAutoscrollFragment.MyInterface,
         PopUpMetronomeFragment.MyInterface, PopUpChordsFragment.MyInterface,
-        PopUpStickyFragment.MyInterface, PopUpLinks.MyInterface, PopUpCustomChordsFragment.MyInterface {
+        PopUpStickyFragment.MyInterface, PopUpLinks.MyInterface, PopUpCustomChordsFragment.MyInterface,
+        PopUpQuickLaunchSetup.MyInterface {
 
     // The toolbar and menu
     public Toolbar ab_toolbar;
@@ -511,6 +512,7 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
                 extrabuttons.setVisibility(View.GONE);
                 extrabuttons2 = (LinearLayout) findViewById(R.id.extrabuttons2);
                 extrabuttons2.setVisibility(View.GONE);
+                setupQuickLaunchButtons();
 
             }
         });
@@ -694,6 +696,73 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
                 custom3Button.setAlpha(custom3Alpha);
             }
         });
+    }
+
+    @Override
+    public void setupQuickLaunchButtons() {
+        // Based on the user's choices for the custom quicklaunch buttons,
+        // set the appropriate icons and onClick listeners
+        custom1Button.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(StageMode.this,FullscreenActivity.quickLaunchButton_1));
+        custom2Button.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(StageMode.this,FullscreenActivity.quickLaunchButton_2));
+        custom3Button.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(StageMode.this,FullscreenActivity.quickLaunchButton_3));
+        custom1Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customButtonAction(FullscreenActivity.quickLaunchButton_1);
+            }
+        });
+        custom2Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customButtonAction(FullscreenActivity.quickLaunchButton_2);
+            }
+        });
+        custom3Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customButtonAction(FullscreenActivity.quickLaunchButton_3);
+            }
+        });
+    }
+
+    public void customButtonAction(String s) {
+        switch(s) {
+            case "":
+            default:
+                FullscreenActivity.whattodo = "quicklaunch";
+                openFragment();
+                break;
+
+            case "editsong":
+            case "changetheme":
+            case "autoscale":
+            case "changefonts":
+            case "profiles":
+            case "gestures":
+            case "footpedal":
+            case "transpose":
+                FullscreenActivity.whattodo = s;
+                openFragment();
+                break;
+
+            case "showchords":
+                FullscreenActivity.showChords = !FullscreenActivity.showChords;
+                Preferences.savePreferences();
+                loadSong();
+                break;
+
+            case "showcapo":
+                FullscreenActivity.showCapo = !FullscreenActivity.showCapo;
+                Preferences.savePreferences();
+                loadSong();
+                break;
+
+            case "showlyrics":
+                FullscreenActivity.showLyrics = !FullscreenActivity.showLyrics;
+                Preferences.savePreferences();
+                loadSong();
+                break;
+        }
     }
 
     @Override
@@ -2099,6 +2168,10 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
                 newFragment = PopUpPedalsFragment.newInstance();
                 break;
 
+            case "quicklaunch":
+                newFragment = PopUpQuickLaunchSetup.newInstance();
+                break;
+
             case "gestures":
                 newFragment = PopUpGesturesFragment.newInstance();
                 break;
@@ -2299,7 +2372,6 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
 
     @Override
     public void preparePad() {
-        Log.d("d","preparePads()");
         backingtrackProgress.setVisibility(View.VISIBLE);
         AsyncTask<Void,Void,Integer> prepare_pad = new PreparePad();
         prepare_pad.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -2337,7 +2409,6 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
 
         @Override
         protected void onPostExecute(Integer i) {
-            Log.d("d","PreparePads onPostExecute()");
             if (FullscreenActivity.pad1Fading) {
                 FullscreenActivity.fadeWhichPad = 1;
                 fadeoutPad();
@@ -2346,7 +2417,11 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
                 FullscreenActivity.fadeWhichPad = 2;
                 fadeoutPad();
             }
-            playPads(i);
+            try {
+                playPads(i);
+            } catch (Exception e ){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -2355,7 +2430,7 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
         play_pads.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
     private class PlayPads extends AsyncTask<Void,Void,Integer> {
-        final int which;
+        int which;
         int path;
         boolean validlinkaudio;
         boolean error;
@@ -2366,7 +2441,7 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
 
         @Override
         protected void onPreExecute(){
-            if (which == 1) {
+            if (which == 1 && FullscreenActivity.mPlayer1!=null) {
                 FullscreenActivity.mPlayer1.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mediaPlayer) {
@@ -2392,7 +2467,7 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
                     }
                 });
 
-            } else if (which == 2) {
+            } else if (which == 2 && FullscreenActivity.mPlayer2!=null) {
                 FullscreenActivity.mPlayer2.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mediaPlayer) {
@@ -2417,6 +2492,10 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
                         dopadProgressTime.post(onEverySecond);
                     }
                 });
+            } else if (which == 1 && FullscreenActivity.mPlayer1 == null) {
+                which = 0;
+            } else if (which == 2 && FullscreenActivity.mPlayer2 == null) {
+                which = 0;
             }
         }
         @Override
@@ -2430,7 +2509,13 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
                 FullscreenActivity.padson = true;
                 if (FullscreenActivity.pad_filename != null && FullscreenActivity.mKey != null) {
                     path = getResources().getIdentifier(FullscreenActivity.pad_filename, "raw", getPackageName());
-                    AssetFileDescriptor afd = getResources().openRawResourceFd(path);
+                    AssetFileDescriptor afd = null;
+                    try {
+                        afd = getResources().openRawResourceFd(path);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        which=0;
+                    }
                     if (which == 1) {
                         try {
                             PadFunctions.getPad1Status();
@@ -2549,7 +2634,6 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
 
     public void getPadsOnStatus() {
         FullscreenActivity.padson = FullscreenActivity.pad1Playing || FullscreenActivity.pad2Playing;
-        Log.d("d","padson="+FullscreenActivity.padson);
         if (!FullscreenActivity.padson) {
             backingtrackProgress.setVisibility(View.GONE);
         }
@@ -2677,7 +2761,7 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
     private class AutoScrollMusic extends AsyncTask<String, Integer, String> {
         @Override
         protected void onPreExecute() {
-            //FullscreenActivity.scrollpageHeight = songscrollview.getChildAt(0).getMeasuredHeight() - songscrollview.getHeight();
+            FullscreenActivity.scrollpageHeight = songscrollview.getChildAt(0).getMeasuredHeight() - songscrollview.getHeight();
             FullscreenActivity.time_start = System.currentTimeMillis();
         }
 
