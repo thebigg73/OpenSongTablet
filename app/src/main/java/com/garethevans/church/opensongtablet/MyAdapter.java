@@ -13,12 +13,12 @@ import android.widget.TextView;
 import java.util.Collections;
 import java.util.List;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
+class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
 
     //private static List<SetItemInfo> setList;
     private List<SetItemInfo> setList;
 
-    public MyAdapter(List<SetItemInfo> setList) {
+    MyAdapter(List<SetItemInfo> setList) {
         this.setList = setList;
     }
 
@@ -40,24 +40,24 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
         boolean issong = false;
         if (si.songicon.equals(FullscreenActivity.text_slide)) {
             //setitemViewHolder.vIcon.setImageResource(R.drawable.blackout_project_dark);
-            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_projector_screen_white_18dp);
+            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_projector_screen_white_36dp);
         } else if (si.songicon.equals(FullscreenActivity.text_note)) {
-            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_note_text_white_18dp);
+            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_note_text_white_36dp);
         } else if (si.songicon.equals(FullscreenActivity.text_scripture)) {
             //setitemViewHolder.vIcon.setImageResource(R.drawable.action_scripture_dark);
-            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_book_white_18dp);
+            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_book_white_36dp);
         } else if (si.songicon.equals(FullscreenActivity.image)) {
             //setitemViewHolder.vIcon.setImageResource(R.drawable.ic_action_picture_dark);
-            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_image_white_18dp);
+            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_image_white_36dp);
         } else if (si.songicon.equals(FullscreenActivity.text_variation)) {
             //setitemViewHolder.vIcon.setImageResource(R.drawable.action_variation_dark);
-            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_file_xml_white_18dp);
+            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_file_xml_white_36dp);
         } else if (si.songicon.equals(".pdf")) {
             //setitemViewHolder.vIcon.setImageResource(R.drawable.action_pdf_dark);
-            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_file_pdf_white_18dp);
+            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_file_pdf_white_36dp);
         } else {
             //setitemViewHolder.vIcon.setImageResource(R.drawable.action_song_dark);
-            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_music_note_white_18dp);
+            setitemViewHolder.vIcon.setImageResource(R.drawable.ic_music_note_white_36dp);
             issong = true;
         }
 
@@ -157,16 +157,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
         return new SetItemViewHolder(itemView);
     }
 
-    public static class SetItemViewHolder extends RecyclerView.ViewHolder {
+    static class SetItemViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextView vItem;
-        protected TextView vSongTitle;
-        protected TextView vSongFolder;
+        TextView vItem;
+        TextView vSongTitle;
+        TextView vSongFolder;
         //protected ImageView vIcon;
-        protected FloatingActionButton vIcon;
-        protected RelativeLayout vCard;
+        FloatingActionButton vIcon;
+        RelativeLayout vCard;
 
-        public SetItemViewHolder(View v) {
+        SetItemViewHolder(View v) {
             super(v);
             vCard = (RelativeLayout) v.findViewById(R.id.cardview_layout);
             vItem = (TextView) v.findViewById(R.id.cardview_item);
@@ -177,7 +177,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder>
         }
     }
 
-    public void swap(int firstPosition, int secondPosition){
+    void swap(int firstPosition, int secondPosition){
         Collections.swap(setList, firstPosition, secondPosition);
         notifyItemMoved(firstPosition, secondPosition);
         Collections.swap(FullscreenActivity.mTempSetList, firstPosition, secondPosition);

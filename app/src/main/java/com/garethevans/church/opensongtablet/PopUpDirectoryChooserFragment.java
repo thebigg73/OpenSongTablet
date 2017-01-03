@@ -97,7 +97,6 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
 
         // Set the emulated storage as the default location if it is empty or not valid
         if (!location.isDirectory() || !location.canWrite()) {
-            //location = Environment.getExternalStorageDirectory();
             location = FullscreenActivity.homedir;
         }
         currentFolder = (TextView) V.findViewById(R.id.currentFolderText);
@@ -204,7 +203,23 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
             }
         });
 
+        checkCanWrite();
+
         return V;
+    }
+
+    public void checkCanWrite() {
+        // If folder is writeable, set the button to OK
+        // If not, disable it.
+        if (location.canWrite()) {
+            selectButton.setText(getResources().getString(R.string.ok));
+            selectButton.setEnabled(true);
+            Log.d("d",location+" is writable");
+        } else {
+            selectButton.setText(getResources().getString(R.string.storage_notwritable));
+            selectButton.setEnabled(false);
+            Log.d("d",location+" is NOT writable");
+        }
     }
 
     public void doNavigateUp() {
@@ -307,6 +322,8 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
         directoryList.setAdapter(listAdapter);
 
         currentFolder.setText(location.toString());
+
+        checkCanWrite();
     }
 
     @Override

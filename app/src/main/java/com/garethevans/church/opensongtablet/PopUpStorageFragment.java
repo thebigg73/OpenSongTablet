@@ -134,13 +134,17 @@ public class PopUpStorageFragment extends DialogFragment {
         exitStorage = (Button) V.findViewById(R.id.exitStorage);
         wipeSongs = (Button) V.findViewById(R.id.wipeSongs);
 
+        Log.d("d","Started PopUpStorageFragment");
+
         // Check we have storage permission
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Storage permission has not been granted.
+            Log.d("d","Storage permission hasn't been granted yet, so asking...");
             requestStoragePermission();
 
         } else {
+            Log.d("d","Storage permission has been granted");
             storageGranted = true;
         }
 
@@ -206,6 +210,8 @@ public class PopUpStorageFragment extends DialogFragment {
             }
         });
 
+        Log.d("d","Numeral = "+numeral+"\n1=Internal, 2=External, 3=Custom");
+
         // If user has set their storage preference, set the appropriate radio button
         switch (FullscreenActivity.prefStorage) {
             default:
@@ -241,7 +247,7 @@ public class PopUpStorageFragment extends DialogFragment {
             if (secStorage.contains(":")) {
                 secStorage = secStorage.substring(0,secStorage.indexOf(":"));
             }
-
+            Log.d("d","secStorage="+secStorage);
         } else {
             // Lets look for alternative secondary storage positions
             for (String secStorageOption : secStorageOptions) {
@@ -250,6 +256,7 @@ public class PopUpStorageFragment extends DialogFragment {
                     secStorage = secStorageOption;
                 }
             }
+            Log.d("d","secStorageOption (alternative) = "+secStorage);
         }
 
         // If secondary and default storage are the same thing, hide secStorage
@@ -263,6 +270,7 @@ public class PopUpStorageFragment extends DialogFragment {
             String textother = getResources().getString(R.string.custom) + "\n(" + customStorageLoc.getAbsolutePath() + ")";
             otherStorageButton.setText(textother);
             otherStorageExists = true;
+            Log.d("d","customStorageLoc="+customStorageLoc);
         }
 
         // If external storage isn't found, disable this radiobutton
@@ -366,6 +374,7 @@ public class PopUpStorageFragment extends DialogFragment {
                 FullscreenActivity.root = extStorCheck;
                 getOtherFolders();
                 break;
+
             case "3":
                 FullscreenActivity.prefStorage = "other";
                 FullscreenActivity.root = customStorageLoc;
@@ -380,11 +389,16 @@ public class PopUpStorageFragment extends DialogFragment {
         Log.d("d","numeral="+numeral);
         Log.d("d","prefStorage="+FullscreenActivity.prefStorage);
         Log.d("d","dir="+FullscreenActivity.dir);
-        Preferences.savePreferences();
-        ListSongFiles.getAllSongFolders();
-        mListener.rebuildSearchIndex();
-        mListener.prepareSongMenu();
-        dismiss();
+        if (checkDirectories()) {
+            Preferences.savePreferences();
+            ListSongFiles.getAllSongFolders();
+            mListener.rebuildSearchIndex();
+            mListener.prepareSongMenu();
+            dismiss();
+        } else {
+            FullscreenActivity.myToastMessage = getResources().getString(R.string.storage_issues);
+            ShowToast.showToast(getActivity());
+        }
     }
 
     public void getOtherFolders() {
@@ -403,6 +417,8 @@ public class PopUpStorageFragment extends DialogFragment {
         FullscreenActivity.dircustomimages = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Images/_cache");
         FullscreenActivity.dirvariations = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Variations");
         FullscreenActivity.dirprofiles = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Profiles");
+        Log.d("d","getOtherFolders() called with prefStorage="+ FullscreenActivity.prefStorage);
+        Log.d("d","homedir="+ FullscreenActivity.homedir);
     }
 
     public void getOtherFoldersCustom() {
@@ -421,6 +437,56 @@ public class PopUpStorageFragment extends DialogFragment {
         FullscreenActivity.dircustomimages = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Images/_cache");
         FullscreenActivity.dirvariations = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Variations");
         FullscreenActivity.dirprofiles = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Profiles");
+        Log.d("d","getOtherFoldersCustom() called");
+        Log.d("d","homedir="+ FullscreenActivity.homedir);
+    }
+
+    public static boolean checkDirectories(){
+        boolean homedir_success = createDirectory(FullscreenActivity.homedir);
+        boolean dir_success = createDirectory(FullscreenActivity.dir);
+        boolean dirsets_success = createDirectory(FullscreenActivity.dirsets);
+        boolean dirPads_success = createDirectory(FullscreenActivity.dirPads);
+        boolean dirbackgrounds_success = createDirectory(FullscreenActivity.dirbackgrounds);
+        boolean dirbibles_success = createDirectory(FullscreenActivity.dirbibles);
+        boolean dirverses_success = createDirectory(FullscreenActivity.dirbibleverses);
+        boolean dirscripture_success = createDirectory(FullscreenActivity.dirscripture);
+        boolean dirscriptureverses_success = createDirectory(FullscreenActivity.dirscriptureverses);
+        boolean dircustomimages_success = createDirectory(FullscreenActivity.dircustomimages);
+        boolean dircustomnotes_success = createDirectory(FullscreenActivity.dircustomnotes);
+        boolean dircustomslides_success = createDirectory(FullscreenActivity.dircustomslides);
+        boolean dirvariations_success = createDirectory(FullscreenActivity.dirvariations);
+        boolean dirprofiles_success = createDirectory(FullscreenActivity.dirprofiles);
+        boolean success;
+        if (homedir_success && dir_success && dirsets_success && dirPads_success && dirbackgrounds_success &&
+                dirbibles_success && dirverses_success && dirscripture_success && dirscriptureverses_success &&
+                dircustomimages_success && dircustomnotes_success && dircustomslides_success &&
+                dirvariations_success && dirprofiles_success) {
+            success = true;
+        } else {
+            success = false;
+        }
+        return success;
+    }
+
+    public static boolean createDirectory(File folder){
+        boolean success = true;
+        if (!folder.exists()) {
+            if (!folder.mkdirs()) {
+                Log.d("d","Error creating directory - "+folder);
+                success = false;
+            } else {
+                Log.d("d","Successfully created directory - "+folder);
+            }
+        } else {
+            Log.d("d",folder+" already exist, trying to create it...");
+        }
+        if (folder.canWrite()) {
+            Log.d("d",folder+" is writeable.");
+        } else {
+            Log.d("d",folder+" is not writeable");
+            success = false;
+        }
+        return success;
     }
 
     @Override

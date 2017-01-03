@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             app:fabSize="mini"
             app:borderWidth="0dp"
             app:backgroundTint="#f00"
-            android:src="@drawable/ic_amplifier_white_24dp"
+            android:src="@drawable/ic_amplifier_white_36dp"
             android:alpha="0.8"
             android:layout_alignParentStart="true"
             android:id="@+id/cardview_icon" />
@@ -41,7 +41,6 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="0dp"
             android:layout_marginRight="8dp"/>
-
 
         <TextView
             android:id="@+id/cardview_songtitle"

@@ -307,7 +307,7 @@
                 android:layout_margin="8dp"
                 android:layout_gravity="center_vertical"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_folder_upload_white_48dp"
+                android:src="@drawable/ic_folder_upload_white_36dp"
                 android:contentDescription="@string/choosefolder">
             </ImageView>
 

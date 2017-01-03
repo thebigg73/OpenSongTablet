@@ -202,7 +202,7 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
             @Override
             public void run() {
                 ab_toolbar = (Toolbar) findViewById(R.id.mytoolbar); // Attaching the layout to the toolbar object
-                setSupportActionBar(ab_toolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
+                setSupportActionBar(ab_toolbar);                     // Setting toolbar as the ActionBar with setSupportActionBar() call
                 ab = getSupportActionBar();
                 if (ab != null) {
                     ab.setDisplayShowHomeEnabled(false); // show or hide the default home button

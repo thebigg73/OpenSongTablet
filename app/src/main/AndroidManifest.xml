@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
-    android:versionCode="107"
-    android:versionName="3.9.6"
+    android:versionCode="108"
+    android:versionName="3.9.900"
     android:installLocation="auto">
 
     <uses-sdk android:minSdkVersion="12" android:targetSdkVersion="23" />
@@ -18,6 +18,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
 
     <application
+        android:fullBackupContent="true"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"

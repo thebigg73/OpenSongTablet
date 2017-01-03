@@ -17,7 +17,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="4dp"
             app:fabSize="mini"
-            android:src="@drawable/ic_amplifier_white_48dp"
+            android:src="@drawable/ic_amplifier_white_36dp"
             android:alpha="0.4"/>
 
         <android.support.design.widget.FloatingActionButton
@@ -29,7 +29,7 @@
             android:layout_toEndOf="@id/padbutton"
             android:layout_margin="4dp"
             app:fabSize="mini"
-            android:src="@drawable/ic_rotate_right_white_48dp"
+            android:src="@drawable/ic_rotate_right_white_36dp"
             android:alpha="0.4"/>
 
         <android.support.design.widget.FloatingActionButton
@@ -41,7 +41,7 @@
             android:layout_toEndOf="@id/autoscroll"
             android:layout_margin="4dp"
             app:fabSize="mini"
-            android:src="@drawable/ic_pulse_white_48dp"
+            android:src="@drawable/ic_pulse_white_36dp"
             android:alpha="0.4"/>
 
 
@@ -82,7 +82,7 @@
             android:layout_toEndOf="@id/metronomebutton"
             android:layout_margin="4dp"
             app:fabSize="mini"
-            android:src="@drawable/ic_book_white_48dp"
+            android:src="@drawable/ic_book_white_36dp"
             android:onClick="pdfSelectPage"
             android:alpha="0.4"/>
 
@@ -95,7 +95,7 @@
             android:layout_toEndOf="@id/metronomebutton"
             android:layout_margin="4dp"
             app:fabSize="mini"
-            android:src="@drawable/ic_comment_text_white_48dp"
+            android:src="@drawable/ic_comment_text_white_36dp"
             android:onClick="stickyNotes"
             android:alpha="0.4"/>
 
@@ -108,7 +108,7 @@
             android:layout_toEndOf="@id/stickynotes"
             android:layout_margin="4dp"
             app:fabSize="mini"
-            android:src="@drawable/ic_guitar_electric_white_48dp"
+            android:src="@drawable/ic_guitar_electric_white_36dp"
             android:onClick="popupChords_toggle"
             android:alpha="0.4"/>
 
@@ -121,7 +121,7 @@
             android:layout_toEndOf="@id/chordbutton"
             android:layout_margin="4dp"
             app:fabSize="mini"
-            android:src="@drawable/ic_link_white_48dp"
+            android:src="@drawable/ic_link_white_36dp"
             android:onClick="popupLink"
             android:alpha="0.4"/>
 

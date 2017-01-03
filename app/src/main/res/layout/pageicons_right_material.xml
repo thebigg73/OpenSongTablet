@@ -151,7 +151,7 @@
                 android:layout_marginRight="8dp"
                 app:fabSize="mini"
                 app:backgroundTint="@color/fab2"
-                android:src="@drawable/ic_book_white_48dp"
+                android:src="@drawable/ic_book_white_36dp"
                 android:alpha="0.4"/>
 
         </LinearLayout>
