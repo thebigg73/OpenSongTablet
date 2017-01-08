@@ -21,6 +21,7 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class PopUpDirectoryChooserFragment extends DialogFragment {
 
@@ -266,6 +267,9 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
 
             //Sort these arrays
             // Add locale sort
+            if  (FullscreenActivity.locale==null) {
+                FullscreenActivity.locale = new Locale(Locale.getDefault().getDisplayLanguage());
+            }
             coll = Collator.getInstance(FullscreenActivity.locale);
             coll.setStrength(Collator.SECONDARY);
             Collections.sort(tempProperFolders, coll);

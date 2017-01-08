@@ -59,6 +59,8 @@ public class PopUpFontsFragment extends DialogFragment {
     SeekBar scaleHeading_SeekBar;
     TextView scaleComment_TextView;
     SeekBar scaleComment_SeekBar;
+    TextView scaleChords_TextView;
+    SeekBar scaleChords_SeekBar;
     SeekBar lineSpacingSeekBar;
     TextView lineSpacingText;
     Button savePopupFont;
@@ -97,6 +99,8 @@ public class PopUpFontsFragment extends DialogFragment {
         lyricsPreview2 = (TextView) V.findViewById(R.id.lyricsPreview2);
         chordPreview1 = (TextView) V.findViewById(R.id.chordPreview1);
         chordPreview2 = (TextView) V.findViewById(R.id.chordPreview2);
+        scaleChords_TextView = (TextView) V.findViewById(R.id.scaleChords_TextView);
+        scaleChords_SeekBar = (SeekBar) V.findViewById(R.id.scaleChords_SeekBar);
         scaleComment_TextView = (TextView) V.findViewById(R.id.scaleComment_TextView);
         scaleComment_SeekBar = (SeekBar) V.findViewById(R.id.scaleComment_SeekBar);
         scaleHeading_TextView = (TextView) V.findViewById(R.id.scaleHeading_TextView);
@@ -120,6 +124,8 @@ public class PopUpFontsFragment extends DialogFragment {
                 FullscreenActivity.headingfontscalesize = num;
                 num = (float) scaleComment_SeekBar.getProgress()/100.0f;
                 FullscreenActivity.commentfontscalesize = num;
+                num = (float) scaleChords_SeekBar.getProgress()/100.0f;
+                FullscreenActivity.chordfontscalesize = num;
                 Preferences.savePreferences();
                 mListener.refreshAll();
                 dismiss();
@@ -211,6 +217,29 @@ public class PopUpFontsFragment extends DialogFragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
+        scaleChords_SeekBar.setMax(200);
+        progress = (int) (FullscreenActivity.chordfontscalesize * 100);
+        scaleChords_SeekBar.setProgress(progress);
+        text = progress + "%";
+        scaleChords_TextView.setText(text);
+        scaleChords_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                String text = progress + "%";
+                scaleChords_TextView.setText(text);
+                float newsize = 12 * ((float) progress/100.0f);
+                chordPreview1.setTextSize(newsize);
+                chordPreview2.setTextSize(newsize);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
         scaleComment_SeekBar.setMax(200);
         progress = (int) (FullscreenActivity.commentfontscalesize * 100);
         scaleComment_SeekBar.setProgress(progress);
@@ -231,7 +260,6 @@ public class PopUpFontsFragment extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-
         lineSpacingSeekBar.setMax(30);
         lineSpacingSeekBar.setProgress(temp_linespacing);
         String spacing_text = temp_linespacing + " %";
@@ -263,7 +291,6 @@ public class PopUpFontsFragment extends DialogFragment {
         chordPreview1.setTextColor(FullscreenActivity.light_lyricsChordsColor);
         chordPreview2.setTextColor(FullscreenActivity.light_lyricsChordsColor);
         songPreview.setBackgroundColor(FullscreenActivity.light_lyricsBackgroundColor);
-
 
         // Decide on the font being used for the lyrics
         switch (temp_mylyricsfontnum) {

@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="storage_notwritable" translatable="false">Unable to use</string>
-
-    <string name="nearby" translatable="false">Connect devices</string>
-
-    <string name="quicklaunch_title" translatable="false">Customise quick launch buttons</string>
+    <string name="service_id" translatable="false">com.garethevans.church.opensongtablet.service</string>
+    <string name="chordline_scale" translatable="false">Scale chords</string>
+    <string name="dim" translatable="false">Background darken</string>
+    <string name="fab_mini" translatable="false">Mini page buttons</string>
+    <string name="options_connections" translatable="false">Connect devices</string>
+    <string name="options_connections_host" translatable="false">Broadcast as host</string>
+    <string name="options_connections_search" translatable="false">Search for other hosts</string>
+    <string name="options_display_popups" translatable="false">Customise popup windows</string>
     <string name="quicklaunch_button1" translatable="false">Button 1</string>
     <string name="quicklaunch_button2" translatable="false">Button 2</string>
     <string name="quicklaunch_button3" translatable="false">Button 3</string>
     <string name="quicklaunch_currentaction" translatable="false">Current action</string>
-
-    <string name="options_display_popups" translatable="false">Customise popup windows</string>
+    <string name="quicklaunch_title" translatable="false">Customise quick launch buttons</string>
+    <string name="size_mini" translatable="false">Mini</string>
+    <string name="size_normal" translatable="false">Normal</string>
+    <string name="storage_notwritable" translatable="false">Unable to use</string>
     <string name="transparency" translatable="false">Transparency</string>
-    <string name="dim" translatable="false">Background darken</string>
 
     <string name="longPressUp">Long press up pedal</string>
     <string name="longPressDown">Long press down pedal</string>

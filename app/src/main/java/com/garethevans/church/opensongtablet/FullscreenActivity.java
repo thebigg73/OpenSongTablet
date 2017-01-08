@@ -33,6 +33,7 @@ import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -156,6 +157,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String quickLaunchButton_1 = "";
     public static String quickLaunchButton_2 = "";
     public static String quickLaunchButton_3 = "";
+    public static int fabSize = FloatingActionButton.SIZE_MINI;
 
     // Long and short key presses
     public static boolean longKeyPress = false;
@@ -390,8 +392,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     SeekBar popupMetronome_pan;
     TextView popupMetronome_pan_text;
     Button popupMetronome_startstopbutton;
-    private static int beatoffcolour = 0xf232333;
-    private String whichbeat = "a";
+    public static int beatoffcolour = 0xf232333;
+    public static String whichbeat = "a";
     public static boolean visualmetronome = false;
     private ToggleButton popupMetronome_visualmetronometoggle;
 
@@ -399,20 +401,20 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static boolean fadeout1 = false;
     @SuppressWarnings("unused")
     public static boolean fadeout2 = false;
-    private final short minBpm = 40;
-    private final short maxBpm = 199;
+    public static final short minBpm = 40;
+    public static final short maxBpm = 199;
     private short bpm = 100;
     public static short noteValue = 4;
     public static short beats = 4;
-    public int currentBeat = 1;
+    public static int currentBeat = 1;
     @SuppressWarnings("unused")
-    private float metrovol;
+    public static float metrovol;
     @SuppressWarnings("unused")
     public short initialVolume;
-    public double beatSound = 1200;
-    public double sound = 1600;
+    public static double beatSound = 1200;
+    public static double sound = 1600;
     private AudioManager audio;
-    private MetronomeAsyncTask metroTask;
+    MetronomeAsyncTask metroTask;
     private Handler mHandler;
 
     @SuppressLint("HandlerLeak")
@@ -444,6 +446,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String padpan = "both";
     public static int timesigindex;
     public static boolean mTimeSigValid = false;
+    public static String[] timesigs;
     public static int temposlider;
     static boolean usingdefaults = false;
     public static final int autoscroll_pause_time = 500; // specified in ms
@@ -1012,6 +1015,19 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             Preferences.savePreferences();
         }
         locale = Locale.getDefault();
+        if  (locale==null) {
+            locale = new Locale(Locale.getDefault().getDisplayLanguage());
+        }
+
+        Log.d("d","locale="+locale);
+        if (locale.getLanguage()!="af" && locale.getLanguage()!="cz" && locale.getLanguage()!="de" &&
+                locale.getLanguage()!="el" && locale.getLanguage()!="es" && locale.getLanguage()!="fr" &&
+                locale.getLanguage()!="hu" && locale.getLanguage()!="it" && locale.getLanguage()!="ja" &&
+                locale.getLanguage()!="pl" && locale.getLanguage()!="pt" && locale.getLanguage()!="ru" &&
+                locale.getLanguage()!="sr" && locale.getLanguage()!="zh" ) {
+            locale = new Locale("en");
+        }
+        Log.d("d","locale="+locale);
 
         // Get the song folders
         ListSongFiles.getAllSongFolders();
@@ -1043,6 +1059,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         note = getResources().getString(R.string.note);
         image = getResources().getString(R.string.image);
         variation = getResources().getString(R.string.variation);
+
+        timesigs = getResources().getStringArray(R.array.timesig);
 
         tag_verse = getResources().getString(R.string.tag_verse);
         tag_chorus = getResources().getString(R.string.tag_chorus);
@@ -3116,7 +3134,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
         MetronomeAsyncTask() {
             mHandler = getHandler();
-            metronome = new Metronome(mHandler);
+            metronome = new Metronome();
         }
 
         protected String doInBackground(Void... params) {

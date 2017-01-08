@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -33,6 +34,9 @@ public class OptionMenuListeners extends Activity {
         void splashScreen();
         void showActionBar();
         void hideActionBar();
+        void startDiscovery();
+        void startAdvertising();
+        void stopAdvertising();
     }
 
     static DialogFragment newFragment;
@@ -62,6 +66,10 @@ public class OptionMenuListeners extends Activity {
 
             case "DISPLAY":
                 menu = createDisplayMenu(c);
+                break;
+
+            case "CONNECT":
+                menu = createConnectMenu(c);
                 break;
 
             case "STORAGE":
@@ -134,6 +142,13 @@ public class OptionMenuListeners extends Activity {
     }
 
     @SuppressWarnings("all")
+    public static LinearLayout createConnectMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option_connections,null);
+    }
+
+    @SuppressWarnings("all")
     public static LinearLayout createGesturesMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -190,6 +205,10 @@ public class OptionMenuListeners extends Activity {
                 storageOptionListener(v,c);
                 break;
 
+            case "CONNECT":
+                connectOptionListener(v,c);
+                break;
+
             case "GESTURES":
                 gestureOptionListener(v,c);
                 break;
@@ -217,6 +236,7 @@ public class OptionMenuListeners extends Activity {
         Button menuChordsButton = (Button) v.findViewById(R.id.menuChordsButton);
         Button menuDisplayButton = (Button) v.findViewById(R.id.menuDisplayButton);
         Button menuGesturesButton = (Button) v.findViewById(R.id.menuGesturesButton);
+        Button menuConnectButton = (Button) v.findViewById(R.id.menuConnectButton);
         Button menuStorageButton = (Button) v.findViewById(R.id.menuStorageButton);
         Button menuPadButton = (Button) v.findViewById(R.id.menuPadButton);
         Button menuAutoScrollButton = (Button) v.findViewById(R.id.menuAutoScrollButton);
@@ -228,11 +248,11 @@ public class OptionMenuListeners extends Activity {
         menuChordsButton.setText(c.getString(R.string.chords).toUpperCase(FullscreenActivity.locale));
         menuDisplayButton.setText(c.getString(R.string.options_display).toUpperCase(FullscreenActivity.locale));
         menuGesturesButton.setText(c.getString(R.string.options_gesturesandmenus).toUpperCase(FullscreenActivity.locale));
+        menuConnectButton.setText(c.getString(R.string.options_connections).toUpperCase(FullscreenActivity.locale));
         menuStorageButton.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
         menuPadButton.setText(c.getString(R.string.pad).toUpperCase(FullscreenActivity.locale));
         menuAutoScrollButton.setText(c.getString(R.string.autoscroll).toUpperCase(FullscreenActivity.locale));
         menuOtherButton.setText(c.getString(R.string.options_other).toUpperCase(FullscreenActivity.locale));
-
 
         // Set the listeners
         menuSetButton.setOnClickListener(new View.OnClickListener() {
@@ -284,6 +304,15 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whichOptionMenu = "STORAGE";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        menuConnectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "CONNECT";
                 if (mListener!=null) {
                     mListener.prepareOptionMenu();
                 }
@@ -1116,6 +1145,48 @@ public class OptionMenuListeners extends Activity {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
+            }
+        });
+    }
+
+    public static void connectOptionListener(View v, final Context c) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuUp = (TextView) v.findViewById(R.id.connectionsMenuTitle);
+        SwitchCompat connectionsHostSwitch = (SwitchCompat) v.findViewById(R.id.connectionsHostSwitch);
+        Button connectionsGuestButton = (Button) v.findViewById(R.id.connectionsGuestButton);
+        ImageView connectionsStatusImage = (ImageView) v.findViewById(R.id.connectionsStatusImage);
+
+        // Capitalise all the text by locale
+        menuUp.setText(c.getString(R.string.options_connections).toUpperCase(FullscreenActivity.locale));
+        connectionsHostSwitch.setText(c.getString(R.string.options_connections_host).toUpperCase(FullscreenActivity.locale));
+        connectionsGuestButton.setText(c.getString(R.string.options_connections_search).toUpperCase(FullscreenActivity.locale));
+
+        // Set the button listeners
+        menuUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        connectionsHostSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    mListener.startAdvertising();
+                } else {
+                    mListener.stopAdvertising();
+                }
+            }
+        });
+        connectionsGuestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.startDiscovery();
             }
         });
     }

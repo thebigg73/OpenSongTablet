@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class PopUpPageButtonsFragment extends DialogFragment {
 
@@ -39,9 +43,16 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     }
 
     Button closeButton;
+    // These are old and can be deleted on v4
     SeekBar pageButtons_seekBar;
     SeekBar pageButtonScale_seekBar;
     SeekBar scrollArrows_seekbar;
+    //
+
+    SwitchCompat pageButtonSize_Switch;
+    SwitchCompat scrollArrows_Switch;
+    SeekBar pageButtonTransparency_seekBar;
+    TextView transparency_TextView;
 
     @Override
     public void onStart() {
@@ -72,6 +83,11 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         pageButtons_seekBar = (SeekBar) V.findViewById(R.id.pageButtons_seekBar);
         pageButtonScale_seekBar = (SeekBar) V.findViewById(R.id.pageButtonScale_seekBar);
         scrollArrows_seekbar = (SeekBar) V.findViewById(R.id.scrollArrows_seekbar);
+
+        pageButtonSize_Switch = (SwitchCompat) V.findViewById(R.id.pageButtonSize_Switch);
+        scrollArrows_Switch = (SwitchCompat) V.findViewById(R.id.scrollArrows_Switch);
+        pageButtonTransparency_seekBar = (SeekBar) V.findViewById(R.id.pageButtonTransparency_seekBar);
+        transparency_TextView = (TextView) V.findViewById(R.id.transparency_TextView);
 
         // Set the listeners
         closeButton.setOnClickListener(new View.OnClickListener() {
@@ -171,6 +187,68 @@ public class PopUpPageButtonsFragment extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
+
+        if (FullscreenActivity.fabSize == FloatingActionButton.SIZE_NORMAL) {
+            pageButtonSize_Switch.setChecked(true);
+        } else {
+            pageButtonSize_Switch.setChecked(false);
+        }
+
+        if (FullscreenActivity.toggleScrollArrows.equals("D")) {
+            scrollArrows_Switch.setChecked(true);
+        } else {
+            scrollArrows_Switch.setChecked(false);
+        }
+
+        pageButtonSize_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    FullscreenActivity.fabSize = FloatingActionButton.SIZE_NORMAL;
+                } else {
+                    FullscreenActivity.fabSize = FloatingActionButton.SIZE_MINI;
+                }
+                Preferences.savePreferences();
+                mListener.setupPageButtons("");
+                mListener.showpagebuttons();
+            }
+        });
+        scrollArrows_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    FullscreenActivity.toggleScrollArrows = "D";
+                } else {
+                    FullscreenActivity.toggleScrollArrows = "S";
+                }
+                Preferences.savePreferences();
+                mListener.setupPageButtons("");
+                mListener.showpagebuttons();
+            }
+        });
+        int gettransp = (int) (FullscreenActivity.pageButtonAlpha * 100);
+        String text = gettransp + "%";
+        pageButtonTransparency_seekBar.setProgress(gettransp);
+        transparency_TextView.setText(text);
+
+        pageButtonTransparency_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // Transparency runs from 0% to 100%
+                FullscreenActivity.pageButtonAlpha = progress / 100.0f;
+                String text = progress + "%";
+                transparency_TextView.setText(text);
+                Preferences.savePreferences();
+                mListener.setupPageButtons("");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
 
         // Set the intial positions of the seekbars
         switch (FullscreenActivity.pagebutton_position) {

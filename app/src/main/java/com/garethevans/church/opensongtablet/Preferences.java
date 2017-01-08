@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Environment;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 
 import static com.garethevans.church.opensongtablet.FullscreenActivity.backtooptions;
@@ -55,16 +56,16 @@ public class Preferences extends Activity {
 		FullscreenActivity.quickLaunchButton_1 = myPreferences.getString("quickLaunchButton_1","");
 		FullscreenActivity.quickLaunchButton_2 = myPreferences.getString("quickLaunchButton_2","");
 		FullscreenActivity.quickLaunchButton_3 = myPreferences.getString("quickLaunchButton_3","");
-
+		FullscreenActivity.fabSize = myPreferences.getInt("fabSize", FloatingActionButton.SIZE_MINI);
 		FullscreenActivity.popupAlpha_Set = myPreferences.getFloat("popupAlpha_Set",0.6f);
 		FullscreenActivity.popupDim_Set = myPreferences.getFloat("popupDim_Set",0.7f);
 		FullscreenActivity.popupScale_Set = myPreferences.getFloat("popupScale_Set",0.8f);
 		FullscreenActivity.popupPosition_Set = myPreferences.getString("popupPosition_Set","c");
-		FullscreenActivity.popupAlpha_All = myPreferences.getFloat("popupAlpha_All",0.6f);
-		FullscreenActivity.popupDim_All = myPreferences.getFloat("popupDim_All",0.7f);
+		FullscreenActivity.popupAlpha_All = myPreferences.getFloat("popupAlpha_All",0.7f);
+		FullscreenActivity.popupDim_All = myPreferences.getFloat("popupDim_All",0.5f);
 		FullscreenActivity.popupScale_All = myPreferences.getFloat("popupScale_All",0.8f);
 		FullscreenActivity.popupPosition_All = myPreferences.getString("popupPosition_All","c");
-		FullscreenActivity.pageButtonAlpha = myPreferences.getFloat("pageButtonAlpha",0.4f);
+		FullscreenActivity.pageButtonAlpha = myPreferences.getFloat("pageButtonAlpha",0.2f);
 
 		FullscreenActivity.longpresspreviouspedalgesture = myPreferences.getString("longpresspreviouspedalgesture","1");
         FullscreenActivity.longpressnextpedalgesture = myPreferences.getString("longpressnextpedalgesture","4");
@@ -282,6 +283,7 @@ public class Preferences extends Activity {
 
 		SharedPreferences.Editor editor = myPreferences.edit();
 
+		editor.putInt("fabSize",FullscreenActivity.fabSize);
 		editor.putString("quickLaunchButton_1",FullscreenActivity.quickLaunchButton_1);
 		editor.putString("quickLaunchButton_2",FullscreenActivity.quickLaunchButton_2);
 		editor.putString("quickLaunchButton_3",FullscreenActivity.quickLaunchButton_3);

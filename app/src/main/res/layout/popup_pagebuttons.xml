@@ -3,6 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="0dp"
     android:orientation="vertical"
     android:background="@drawable/popup_bg"
@@ -21,14 +22,84 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
+            <android.support.v7.widget.SwitchCompat
+                app:showText="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pageButtonSize_Switch"
+                android:layout_margin="8dp"
+                android:checked="false"
+                android:text="@string/size"
+                android:textColor="#ff0"
+                android:textOff="@string/size_mini"
+                android:textOn="@string/size_normal"
+                android:thumb="@drawable/switch_button"
+                app:thumbTextPadding="4dp"
+                app:thumbTint="#444488" />
+
+
+            <android.support.v7.widget.SwitchCompat
+                app:showText="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/scrollArrows_Switch"
+                android:layout_margin="8dp"
+                android:checked="false"
+                android:text="@string/scrollbuttons_toggle"
+                android:textColor="#ff0"
+                android:textOff="@string/scrollbuttons_single"
+                android:textOn="@string/scrollbuttons_double"
+                android:thumb="@drawable/switch_button"
+                app:thumbTextPadding="4dp"
+                app:thumbTint="#444488" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/transparency"
+                android:textColor="#ff0"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"/>
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/pageButtonTransparency_seekBar"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
+                    android:progress="40"
+                    android:max="100"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:layout_margin="24dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:id="@+id/transparency_TextView"
+                    android:textColor="#fff"/>
+
+
+
+
+
+
+
+
+
+
+
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pagebuttons"
                 android:textColor="#ff0"
                 android:textSize="18sp"
-                android:layout_marginTop="32dp" />
-
+                android:layout_marginTop="32dp"
+                android:visibility="gone"/>
             <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,17 +112,16 @@
                 android:max="2"
                 android:progress="1"
                 android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
-
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
+                android:visibility="gone" />
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
+                android:layout_height="match_parent"
+                android:visibility="gone">
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1.0">
-
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -59,7 +129,6 @@
                         android:layout_weight="0.333"
                         android:gravity="left"
                         android:textColor="#fff" />
-
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -67,7 +136,6 @@
                         android:layout_weight="0.333"
                         android:gravity="center"
                         android:textColor="#fff" />
-
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -75,10 +143,8 @@
                         android:layout_weight="0.333"
                         android:gravity="right"
                         android:textColor="#fff" />
-
                 </TableRow>
             </TableLayout>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -86,8 +152,8 @@
                 android:id="@+id/textView40"
                 android:textColor="#ff0"
                 android:textSize="18sp"
-                android:layout_marginTop="32dp" />
-
+                android:layout_marginTop="32dp"
+                android:visibility="gone"/>
             <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -100,12 +166,12 @@
                 android:layout_marginLeft="0dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="0dp"
-                android:layout_marginBottom="12dp" />
-
+                android:layout_marginBottom="12dp"
+                android:visibility="gone" />
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
+                android:layout_height="match_parent"
+                android:visibility="gone">
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -129,7 +195,6 @@
 
                 </TableRow>
             </TableLayout>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -137,8 +202,8 @@
                 android:id="@+id/textView52"
                 android:textColor="#ff0"
                 android:textSize="18sp"
-                android:layout_marginTop="32dp" />
-
+                android:layout_marginTop="32dp"
+                android:visibility="gone"/>
             <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -151,12 +216,12 @@
                 android:max="1"
                 android:progress="1"
                 android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
-
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
+                android:visibility="gone"/>
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
+                android:layout_height="match_parent"
+                android:visibility="gone">
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -179,6 +244,7 @@
                         android:textColor="#fff" />
                 </TableRow>
             </TableLayout>
+
 
         </LinearLayout>
     </ScrollView>

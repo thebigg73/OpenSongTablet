@@ -41,7 +41,7 @@ public class ListSongFiles extends Activity {
 
         //Now read the stuff into the temp array
         for (int x=0; x<tempnumitems; x++) {
-            if (tempmyitems[x] != null && tempmyitems[x].getName()!=null && tempmyitems[x].isDirectory()) {
+            if (tempmyitems[x] != null && tempmyitems[x].isDirectory()) {
                 tempProperDirectories.add(tempmyitems[x].getName());
             }
         }
@@ -78,7 +78,7 @@ public class ListSongFiles extends Activity {
         ArrayList<String> tempMainProperFiles= new ArrayList<>();
         int temp_mainnumfilescount = 0;
         for (int x=0; x<main_numfiles; x++) {
-            if (temp_mainfiles[x] != null && temp_mainfiles[x].getName()!=null && !temp_mainfiles[x].isDirectory() && temp_mainfiles[x].isFile()){
+            if (temp_mainfiles[x] != null && !temp_mainfiles[x].isDirectory() && temp_mainfiles[x].isFile()){
                 tempMainProperFiles.add(temp_mainfiles[x].getName());
                 FullscreenActivity.allfilesforsearch.add(temp_mainfiles[x].getName() + " %%% " + FullscreenActivity.mainfoldername);
                 temp_mainnumfilescount++;
@@ -115,7 +115,7 @@ public class ListSongFiles extends Activity {
 
             //Now read the stuff into the temp array
             for (int x=0; x<numactualfiles; x++) {
-                if (tempmyfiles[x] != null && tempmyfiles[x].getName()!=null && tempmyfiles[x].isFile()) {
+                if (tempmyfiles[x] != null && tempmyfiles[x].isFile()) {
                     tempProperFiles.add(tempmyfiles[x].getName());
                 }
             }
@@ -181,12 +181,8 @@ public class ListSongFiles extends Activity {
         }
 
         // Now combine the two arrays and save them as a string array
-        if (firstleveldirectories!=null) {
-            tempProperDirectories.addAll(firstleveldirectories);
-        }
-        if (secondleveldirectories!=null) {
-            tempProperDirectories.addAll(secondleveldirectories);
-        }
+        tempProperDirectories.addAll(firstleveldirectories);
+        tempProperDirectories.addAll(secondleveldirectories);
         coll = Collator.getInstance(FullscreenActivity.locale);
         coll.setStrength(Collator.SECONDARY);
         Collections.sort(tempProperDirectories,coll);
@@ -227,6 +223,7 @@ public class ListSongFiles extends Activity {
         FullscreenActivity.mSongFileNames = tempProperSongFiles.toArray(FullscreenActivity.mSongFileNames);
     }
 
+    @SuppressWarnings("unused")
     public static boolean clearAllSongs(Context c) {
         // Clear all songs in the songs folder
         File delPath = FullscreenActivity.dir;

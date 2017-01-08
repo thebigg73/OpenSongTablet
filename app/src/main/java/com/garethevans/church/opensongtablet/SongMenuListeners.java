@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Vibrator;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -76,9 +75,8 @@ public class SongMenuListeners extends Activity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 FullscreenActivity.addingtoset = true;
-                // Vibrate to indicate something has happened
-                Vibrator vb = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-                vb.vibrate(200);
+                // Vibrate to let the user know something happened
+                DoVibrate.vibrate(c,200);
 
                 // If the song is in .pro, .onsong, .txt format, tell the user to convert it first
                 // This is done by viewing it (avoids issues with file extension renames)

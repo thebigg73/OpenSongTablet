@@ -11,12 +11,15 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.Configuration;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Vibrator;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -39,14 +42,28 @@ import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.connection.AppIdentifier;
+import com.google.android.gms.nearby.connection.AppMetadata;
+import com.google.android.gms.nearby.connection.Connections;
+
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragment.MyInterface,
+public class StageMode extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, Connections.ConnectionRequestListener,
+        Connections.MessageListener,
+        Connections.EndpointDiscoveryListener,
+        PopUpAreYouSureFragment.MyInterface,
         PopUpEditSongFragment.MyInterface, PopUpSongDetailsFragment.MyInterface,
         PopUpPresentationOrderFragment.MyInterface, PopUpListSetsFragment.MyInterface,
         SongMenuListeners.MyInterface, OptionMenuListeners.MyInterface, MenuHandlers.MyInterface,
@@ -69,7 +86,7 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
 
     // The toolbar and menu
     public Toolbar ab_toolbar;
-    public ActionBar ab;
+    public static ActionBar ab;
     public TextView songandauthor;
     Menu menu;
 
@@ -162,6 +179,12 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
             preparePadProgress();
         }
     };
+
+    // Nearby connections
+    // Identify if the device is the host
+    private boolean mIsHost = false;
+    private GoogleApiClient mGoogleApiClient;
+    private static int[] NETWORK_TYPES = {ConnectivityManager.TYPE_WIFI};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -296,8 +319,199 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
                 // Load the song and get started
                 loadSong();
 
+                // Check connections via nearby
+                mGoogleApiClient = new GoogleApiClient.Builder(StageMode.this)
+                        .addConnectionCallbacks(StageMode.this)
+                        .addOnConnectionFailedListener(StageMode.this)
+                        .addApi(Nearby.CONNECTIONS_API)
+                        .build();
             }
         });
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        isConnectedToNetwork();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private boolean isConnectedToNetwork() {
+        ConnectivityManager connManager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        for (int networkType : NETWORK_TYPES) {
+            NetworkInfo info = connManager.getNetworkInfo(networkType);
+            if (info != null && info.isConnectedOrConnecting()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void stopAdvertising() {
+        FullscreenActivity.myToastMessage = "Stopping advertising";
+        ShowToast.showToast(StageMode.this);
+        Nearby.Connections.stopAdvertising(mGoogleApiClient);
+    }
+
+    @Override
+    public void startAdvertising() {
+        if (!isConnectedToNetwork()) {
+            // Implement logic when device is not connected to a network
+            Log.d("d","Not connected to a network");
+        }
+
+        // Identify that this device is the host
+        mIsHost = true;
+
+        // Advertising with an AppIdentifer lets other devices on the
+        // network discover this application and prompt the user to
+        // install the application.
+        List<AppIdentifier> appIdentifierList = new ArrayList<>();
+        appIdentifierList.add(new AppIdentifier(getPackageName()));
+        AppMetadata appMetadata = new AppMetadata(appIdentifierList);
+
+        // The advertising timeout is set to run indefinitely
+        // Positive values represent timeout in milliseconds
+        long NO_TIMEOUT = 0L;
+
+        Nearby.Connections.startAdvertising(mGoogleApiClient, null, appMetadata, NO_TIMEOUT,
+                this).setResultCallback(new ResultCallback<Connections.StartAdvertisingResult>() {
+            @Override
+            public void onResult(@NonNull Connections.StartAdvertisingResult result) {
+                if (result.getStatus().isSuccess()) {
+                    // Device is advertising
+                    int statusCode = result.getStatus().getStatusCode();
+                    FullscreenActivity.myToastMessage = "Device is advertising\nstatusCode="+statusCode;
+                    ShowToast.showToast(StageMode.this);
+
+                } else {
+                    int statusCode = result.getStatus().getStatusCode();
+                    FullscreenActivity.myToastMessage = "Device failed to advertise\nstatusCode="+statusCode;
+                    ShowToast.showToast(StageMode.this);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void startDiscovery() {
+        if (!isConnectedToNetwork()) {
+            // Implement logic when device is not connected to a network
+            FullscreenActivity.myToastMessage = "Not connected to a network";
+            ShowToast.showToast(StageMode.this);
+        }
+        String serviceId = getString(R.string.service_id);
+
+        // Set an appropriate timeout length in milliseconds
+        long DISCOVER_TIMEOUT = 1000L;
+
+        // Discover nearby apps that are advertising with the required service ID.
+        Nearby.Connections.startDiscovery(mGoogleApiClient, serviceId, DISCOVER_TIMEOUT, this)
+                .setResultCallback(new ResultCallback<Status>() {
+                    @Override
+                    
+                    public void onResult(@NonNull Status status) {
+                        if (status.isSuccess()) {
+                            // Device is discovering
+                            int statusCode = status.getStatusCode();
+                            FullscreenActivity.myToastMessage = "Discovery started successfully\nstatusCode=" + statusCode;
+                            ShowToast.showToast(StageMode.this);
+
+                        } else {
+                            int statusCode = status.getStatusCode();
+                            FullscreenActivity.myToastMessage = "Discovery failed to start\nstatusCode=" + statusCode;
+                            ShowToast.showToast(StageMode.this);
+
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    private void connectTo(String endpointId, final String endpointName) {
+        // Send a connection request to a remote endpoint. By passing 'null' for
+        // the name, the Nearby Connections API will construct a default name
+        // based on device model such as 'LGE Nexus 5'.
+        Log.d("d","endpointId="+endpointId);
+        Log.d("d","endpointName="+endpointName);
+
+        //byte[] myPayload = null;
+
+        String remoteEndpointId = "STILL TO SORT";
+        // First null is client name - leaving it as null makes the system get the device name
+        // Second null will be replaced with myPayload varaible above (once I get nearby to work)
+        Nearby.Connections.sendConnectionRequest(mGoogleApiClient, null,
+                remoteEndpointId, null, new Connections.ConnectionResponseCallback() {
+                    @Override
+                    public void onConnectionResponse(String remoteEndpointId, Status status,
+                                                     byte[] bytes) {
+                        if (status.isSuccess()) {
+                            // Successful connection
+                            Log.d("d","Successfully connected");
+                        } else {
+                            // Failed connection
+                            Log.d("d","Failed connection");
+                        }
+                    }
+                }, this);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onConnectionRequest(String s, String s1, String s2, byte[] bytes) {
+        if (mIsHost) {
+            connectTo("Still to fix", "Added this to stop function showing as unused!");
+        }
+    }
+
+    @Override
+    public void onEndpointFound(final String endpointId, String deviceId,
+                                String serviceId, final String endpointName) {
+        // This device is discovering endpoints and has located an advertiser.
+        // Write your logic to initiate a connection with the device at
+        // the endpoint ID
+        FullscreenActivity.myToastMessage = "endpointId="+endpointId + "\n" + "deviceId="+deviceId + "\n" +
+                "serviceId="+serviceId + "\n" + "endpointName="+ endpointName;
+        ShowToast.showToast(StageMode.this);
+    }
+
+    @Override
+    public void onEndpointLost(String s) {
+
+    }
+
+    @Override
+    public void onMessageReceived(String s, byte[] bytes, boolean b) {
+
+    }
+
+    @Override
+    public void onDisconnected(String s) {
 
     }
 
@@ -550,6 +764,15 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
                 openFragment();
             }
         });
+        metronomeButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                // Vibrate to let the user know something happened
+                DoVibrate.vibrate(StageMode.this,200);
+                PopUpMetronomeFragment.startstopMetronome(StageMode.this);
+                return true;
+            }
+        });
         extraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -680,7 +903,6 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
                     }
                 }
 
-
                 setButton.setAlpha(setAlpha);
                 padButton.setAlpha(padAlpha);
                 autoscrollButton.setAlpha(autoscrollAlpha);
@@ -694,6 +916,20 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
                 custom1Button.setAlpha(custom1Alpha);
                 custom2Button.setAlpha(custom2Alpha);
                 custom3Button.setAlpha(custom3Alpha);
+
+                setButton.setSize(FullscreenActivity.fabSize);
+                padButton.setSize(FullscreenActivity.fabSize);
+                autoscrollButton.setSize(FullscreenActivity.fabSize);
+                metronomeButton.setSize(FullscreenActivity.fabSize);
+                extraButton.setSize(FullscreenActivity.fabSize);
+                chordButton.setSize(FullscreenActivity.fabSize);
+                stickyButton.setSize(FullscreenActivity.fabSize);
+                pageselectButton.setSize(FullscreenActivity.fabSize);
+                linkButton.setSize(FullscreenActivity.fabSize);
+                customButton.setSize(FullscreenActivity.fabSize);
+                custom1Button.setSize(FullscreenActivity.fabSize);
+                custom2Button.setSize(FullscreenActivity.fabSize);
+                custom3Button.setSize(FullscreenActivity.fabSize);
             }
         });
     }
@@ -1031,8 +1267,7 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
             ShowToast.showToast(StageMode.this);
 
             // Vibrate to let the user know something happened
-            Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            vb.vibrate(200);
+            DoVibrate.vibrate(StageMode.this,200);
 
             invalidateOptionsMenu();
             prepareOptionMenu();
@@ -1898,6 +2133,8 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
         if (preparesongmenu_async!=null) {
             preparesongmenu_async.cancel(true);
         }
+        song_list_view.setFastScrollEnabled(false);
+        song_list_view.setScrollingCacheEnabled(false);
         preparesongmenu_async = new PrepareSongMenu();
         preparesongmenu_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
@@ -1922,6 +2159,9 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
             // Set the ListView to show the songs
             ArrayAdapter<String> lva = new SongMenuAdapter(StageMode.this, FullscreenActivity.mSongFileNames);
             song_list_view.setAdapter(lva);
+            song_list_view.setFastScrollEnabled(true);
+            song_list_view.setScrollingCacheEnabled(true);
+            lva.notifyDataSetChanged();
 
             // Listen for long clicks in the song menu (songs only, not folders) - ADD TO SET!!!!
             song_list_view.setOnItemLongClickListener(SongMenuListeners.myLongClickListener(StageMode.this));
@@ -2008,9 +2248,8 @@ public class StageMode extends AppCompatActivity implements PopUpAreYouSureFragm
 
     @Override
     public void removeSongFromSet(int val) {
-        // Let the user know something is happening
-        Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        vb.vibrate(200);
+        // Vibrate to let the user know something happened
+        DoVibrate.vibrate(StageMode.this,200);
 
         // Take away the menu item
         String tempSong = FullscreenActivity.mSetList[val];
