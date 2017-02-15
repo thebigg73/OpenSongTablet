@@ -871,7 +871,9 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         @Override
         public void onPostExecute(String s) {
-            mListener.backupInstall(s);
+            if (mListener!=null) {
+                mListener.backupInstall(s);
+            }
             dismiss();
         }
 

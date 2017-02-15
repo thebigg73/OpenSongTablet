@@ -34,10 +34,9 @@ public class OptionMenuListeners extends Activity {
         void splashScreen();
         void showActionBar();
         void hideActionBar();
-        void startDiscovery();
-        void startAdvertising();
-        void stopAdvertising();
+        void toggleDrawerSwipe();
     }
+
 
     static DialogFragment newFragment;
     public static MyInterface mListener;
@@ -997,6 +996,7 @@ public class OptionMenuListeners extends Activity {
                     }
                 }
                 Preferences.savePreferences();
+                mListener.loadSong();
             }
         });
 
@@ -1177,16 +1177,16 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    mListener.startAdvertising();
+
                 } else {
-                    mListener.stopAdvertising();
+
                 }
             }
         });
         connectionsGuestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.startDiscovery();
+
             }
         });
     }
@@ -1263,6 +1263,7 @@ public class OptionMenuListeners extends Activity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.swipeForMenus = b;
                 Preferences.savePreferences();
+                mListener.toggleDrawerSwipe();
             }
         });
 

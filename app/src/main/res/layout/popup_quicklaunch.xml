@@ -14,8 +14,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/menu_button"
-            android:layout_margin="8dp">
+            android:background="@drawable/section_box"
+            android:layout_margin="8dp"
+            android:padding="8dp">
 
             <TextView
                 android:id="@+id/button1_title"
@@ -60,8 +61,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/menu_button"
-            android:layout_margin="8dp">
+            android:background="@drawable/section_box"
+            android:layout_margin="8dp"
+            android:padding="8dp">
 
             <TextView
                 android:id="@+id/button2_title"
@@ -87,7 +89,6 @@
                 android:id="@+id/button2_currently"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:text="@string/quicklaunch_currentaction"
                 android:layout_below="@+id/button2_title"
                 android:layout_toRightOf="@+id/button2_image"/>
@@ -107,8 +108,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/menu_button"
-            android:layout_margin="8dp">
+            android:background="@drawable/section_box"
+            android:layout_margin="8dp"
+            android:padding="8dp">
 
             <TextView
                 android:id="@+id/button3_title"
@@ -134,7 +136,6 @@
                 android:id="@+id/button3_currently"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:text="@string/quicklaunch_currentaction"
                 android:layout_below="@+id/button3_title"
                 android:layout_toRightOf="@+id/button3_image"/>

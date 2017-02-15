@@ -38,6 +38,9 @@ public class LoadXML extends Activity {
     // This bit loads the lyrics from the required file
     public static void loadXML() throws XmlPullParserException, IOException {
 
+        // Clear the heading default
+        FullscreenActivity.songSection_holder = "";
+
         // Set the song load status to false (helps check if it didn't load
         Preferences.loadSongPrep();
 

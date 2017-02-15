@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="service_id" translatable="false">com.garethevans.church.opensongtablet.service</string>
+    <string name="app_id" translatable="false">4E2B0891</string>
+    <string name="cast_namespace" translatable="false">urn:x-cast:com.garethevans.church.opensongtablet</string>
+
+    <string name="autoscale" translatable="false">Autoscale</string>
+    <string name="scale_style" translatable="false">Scale style</string>
+    <string name="width" translatable="false">Width</string>
+    <string name="full" translatable="false">Full</string>
+
+    <string name="service_id" translatable="false">com.garethevans.church.opensongtablet</string>
     <string name="chordline_scale" translatable="false">Scale chords</string>
     <string name="dim" translatable="false">Background darken</string>
     <string name="fab_mini" translatable="false">Mini page buttons</string>

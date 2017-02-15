@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +103,11 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
         // Do the time consuming bit as an asynctask
         getFolders_async = new GetFoldersAsync();
-        getFolders_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        try {
+            getFolders_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            Log.d("d","Probably closed popup before folders listed\n"+e);
+        }
 
         if (myTask.equals("create")) {
             // Hide the spinner
@@ -228,7 +233,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
+        getFolders_async.cancel(true);
         this.dismiss();
     }
-
 }

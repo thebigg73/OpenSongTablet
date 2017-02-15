@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,8 +100,6 @@ public class PopUpDefaultsFragment extends DialogFragment {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 Float val = (i+6.0f) / 10.0f;
                 FullscreenActivity.popupAlpha_All = val;
-                Log.d("d","seekbarposition="+i);
-                Log.d("d","popupAlpha_All="+ val);
                 PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
             }
 
@@ -120,8 +117,6 @@ public class PopUpDefaultsFragment extends DialogFragment {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 Float val = (float) i / 10.0f;
                 FullscreenActivity.popupDim_All = val;
-                Log.d("d","seekbarposition="+i);
-                Log.d("d","popupDim_All="+ val);
                 PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
             }
 
@@ -139,8 +134,6 @@ public class PopUpDefaultsFragment extends DialogFragment {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 Float val = (i+6.0f)/10.0f;
                 FullscreenActivity.popupScale_All = val;
-                Log.d("d","seekbarposition="+i);
-                Log.d("d","popupScale_All="+ val);
             }
 
             @Override

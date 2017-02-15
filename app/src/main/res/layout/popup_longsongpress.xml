@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_bg">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/cancelSong_Button"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/addSongToSet_Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_plus_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_plus_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/add_song_to_set"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/deleteSong_Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_delete_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_delete_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_song_delete"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/renameSong_Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_rename_box_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_rename_box_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_song_rename"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/shareSong_Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_share_variant_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_share_variant_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/options_song_export"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/cancelSong_Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/blue_button"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/cancel"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

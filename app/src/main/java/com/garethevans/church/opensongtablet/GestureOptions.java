@@ -473,8 +473,6 @@ public class GestureOptions extends AppCompatActivity {
 	}
 
 
-
-
 	@Override
 	public void onBackPressed() {
 		Intent viewsong = new Intent(GestureOptions.this, FullscreenActivity.class);

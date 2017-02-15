@@ -3,18 +3,14 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.Dialog;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
 class PopUpSizeAndAlpha {
 
-
     static void decoratePopUp(Activity ac, Dialog dialog) {
 
-        Log.d ("d","PopUpSizeAndAlpha.decoratePopUp called");
-        Log.d("d","whattodo="+FullscreenActivity.whattodo);
         try {
             // Get available width and height
             DisplayMetrics metrics = new DisplayMetrics();
@@ -23,8 +19,6 @@ class PopUpSizeAndAlpha {
             int height = metrics.heightPixels;
             int width = metrics.widthPixels;
 
-            Log.d("d","width="+width);
-            Log.d("d","height="+height);
             float myscale;
             float myalpha;
             float mydim;
@@ -49,12 +43,7 @@ class PopUpSizeAndAlpha {
             int desired_width = (int) ((float) width * myscale);
             int desired_height = (int) ((float) height * myscale);
 
-            Log.d("d","myscale="+myscale);
-
             Window dw = dialog.getWindow();
-            Log.d("d","dw="+dw);
-            Log.d("d","desired_width="+desired_width);
-            Log.d("d","desired_height="+desired_height);
             if (dw != null) {
                 dw.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                 dw.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
@@ -100,11 +89,8 @@ class PopUpSizeAndAlpha {
                     case "br":
                         dw.setGravity(Gravity.BOTTOM|Gravity.RIGHT);
                         break;
-
                 }
-
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

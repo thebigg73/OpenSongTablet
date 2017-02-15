@@ -123,7 +123,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_connections"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/menuPadButton"

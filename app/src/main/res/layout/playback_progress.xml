@@ -3,32 +3,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:gravity="right"
+    android:layout_alignParentRight="true">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="horizontal" android:layout_width="wrap_content"
+        android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/backingtrackProgress"
         android:background="#888888"
         android:alpha="0.4"
-        android:padding="10dp"
+        android:padding="4dp"
         android:gravity="center_vertical|center_horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:id="@+id/imageView6"
             android:src="@drawable/ic_amplifier_white_36dp"
             android:contentDescription="@string/pad"
-            android:layout_marginRight="12dp"
-            android:layout_marginEnd="12dp" />
+            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/padcurrentTime_TextView"
             android:textStyle="bold|italic"
-            android:textSize="24sp"
+            android:textSize="14sp"
             android:textColor="#fff" />
 
         <TextView
@@ -37,7 +39,7 @@
             android:text=" / "
             android:id="@+id/textView47"
             android:textStyle="bold|italic"
-            android:textSize="24sp"
+            android:textSize="14sp"
             android:textColor="#fff" />
 
         <TextView
@@ -45,34 +47,34 @@
             android:layout_height="wrap_content"
             android:id="@+id/padtotalTime_TextView"
             android:textStyle="bold|italic"
-            android:textSize="24sp"
+            android:textSize="14sp"
             android:textColor="#fff" />
     </LinearLayout>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/playbackProgress"
     android:background="#888888"
     android:alpha="0.4"
-    android:padding="10dp"
+    android:padding="4dp"
     android:gravity="center_vertical|center_horizontal">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:id="@+id/imageView5"
         android:src="@drawable/ic_rotate_right_white_36dp"
         android:contentDescription="@string/autoscroll"
-        android:layout_marginRight="12dp"
-        android:layout_marginEnd="12dp"/>
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/currentTime_TextView"
         android:textStyle="bold|italic"
-        android:textSize="24sp"
+        android:textSize="14sp"
         android:textColor="#fff" />
 
     <TextView
@@ -81,7 +83,7 @@
         android:text=" / "
         android:id="@+id/textView46"
         android:textStyle="bold|italic"
-        android:textSize="24sp"
+        android:textSize="14sp"
         android:textColor="#fff" />
 
     <TextView
@@ -89,7 +91,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/totalTime_TextView"
         android:textStyle="bold|italic"
-        android:textSize="24sp"
+        android:textSize="14sp"
         android:textColor="#fff" />
 </LinearLayout>
 </LinearLayout>

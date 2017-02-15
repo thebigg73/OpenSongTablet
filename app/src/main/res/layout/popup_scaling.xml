@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -23,70 +22,54 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <SeekBar
-                android:id="@+id/autoscale_seekBar"
+            <android.support.v7.widget.SwitchCompat
+                app:showText="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo"
-                android:max="2"
-                android:progress="1"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+                android:text="@string/autoscale"
+                app:textAllCaps="true"
+                android:id="@+id/switchAutoScaleOnOff_SwitchCompat"
+                android:textOff="@string/off"
+                android:textOn="@string/on"
+                app:splitTrack="false"
+                android:thumb="@drawable/switch_button"
+                app:thumbTextPadding="4dp"
+                android:layout_margin="12dp"
+                app:thumbTint="#444488"
+                android:padding="12dp"
+                android:textColor="#ff0"
+                android:textSize="18sp"/>
 
-            <TableLayout
+            <android.support.v7.widget.SwitchCompat
+                app:showText="true"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.0"
-                    tools:ignore="UselessParent">
-
-                    <TextView
-                        android:id="@+id/off_TextView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.33"
-                        android:gravity="left"
-                        android:text="@string/off"
-                        android:textColor="#fff" />
-
-                    <TextView
-                        android:id="@+id/width_TextView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.33"
-                        android:gravity="center_horizontal"
-                        android:text="@string/on_width"
-                        android:textColor="#fff" />
-
-                    <TextView
-                        android:id="@+id/on_TextView"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.33"
-                        android:gravity="right"
-                        android:text="@string/on"
-                        android:textColor="#fff" />
-                </TableRow>
-            </TableLayout>
+                android:layout_height="wrap_content"
+                android:text="@string/scale_style"
+                app:textAllCaps="true"
+                android:id="@+id/switchAutoScaleWidthFull_SwitchCompat"
+                android:textOff="@string/width"
+                android:textOn="@string/full"
+                app:splitTrack="false"
+                android:thumb="@drawable/switch_button"
+                app:thumbTextPadding="4dp"
+                android:layout_margin="12dp"
+                app:thumbTint="#444488"
+                android:padding="12dp"
+                android:textColor="#ff0"
+                android:textSize="18sp"/>
 
             <LinearLayout
                 android:id="@+id/maxAutoScale_Group"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="12dp">
 
                 <TextView
                     android:id="@+id/textView42"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_margin="12dp"
                     android:text="@string/maxfontsize"
                     android:textColor="#ff0"
                     android:textSize="18sp" />
@@ -115,7 +98,7 @@
                     android:id="@+id/textView67"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_margin="12dp"
                     android:text="@string/minfontsize"
                     android:textColor="#ff0"
                     android:textSize="18sp" />
@@ -144,30 +127,45 @@
                     android:id="@+id/textView69"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_margin="12dp"
                     android:text="@string/override_scale_explanation"
                     android:textColor="#fff"
                     android:textSize="16sp" />
 
                 <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/overrideFull_Switch"
+                    app:showText="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    app:theme="@style/SwitchStyle"
                     android:text="@string/override_fullautoscale"
+                    app:textAllCaps="true"
+                    android:id="@+id/overrideFull_Switch"
+                    android:textOff="@string/off"
+                    android:textOn="@string/on"
+                    app:splitTrack="false"
+                    android:thumb="@drawable/switch_button"
+                    app:thumbTextPadding="4dp"
+                    android:layout_margin="12dp"
+                    app:thumbTint="#444488"
                     android:textColor="#ff0"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
+
 
                 <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/overrideWidth_Switch"
+                    app:showText="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:theme="@style/SwitchStyle"
                     android:text="@string/override_widthautoscale"
+                    app:textAllCaps="true"
+                    android:id="@+id/overrideWidth_Switch"
+                    android:textOff="@string/off"
+                    android:textOn="@string/on"
+                    app:splitTrack="false"
+                    android:thumb="@drawable/switch_button"
+                    app:thumbTextPadding="4dp"
+                    android:layout_margin="12dp"
+                    app:thumbTint="#444488"
                     android:textColor="#ff0"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
             </LinearLayout>
 
@@ -175,7 +173,6 @@
                 android:id="@+id/fontsize_change_group"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:alpha="0.2"
                 android:orientation="vertical">
 
                 <TextView

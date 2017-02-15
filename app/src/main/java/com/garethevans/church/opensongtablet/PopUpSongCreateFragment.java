@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
     Button createSongCancelButton;
     Button createSongOkButton;
     private MyInterface mListener;
+    AsyncTask<Object, Void, String> getfolders;
 
     static PopUpSongCreateFragment newInstance() {
         PopUpSongCreateFragment frag;
@@ -91,9 +93,12 @@ public class PopUpSongCreateFragment extends DialogFragment {
         // Reset to the main songs folder, so we can list them
         FullscreenActivity.currentFolder = FullscreenActivity.whichSongFolder;
         FullscreenActivity.newFolder = FullscreenActivity.whichSongFolder;
-        AsyncTask<Object, Void, String> getfolders = new GetFolders();
-        getfolders.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
+        getfolders = new GetFolders();
+        try {
+            getfolders.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            Log.d("d","Probably closed popup before folders listed\n"+e);
+        }
 
 /*
         // The song folder
@@ -245,6 +250,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         this.dismiss();
+        getfolders.cancel(true);
     }
 
 }

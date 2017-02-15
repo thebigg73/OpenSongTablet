@@ -31,6 +31,7 @@ import java.util.List;
 
 public class PopUpSetViewNew extends DialogFragment {
 
+    public static Dialog setfrag;
     Context c;
     Activity a;
 
@@ -47,6 +48,7 @@ public class PopUpSetViewNew extends DialogFragment {
         void refreshAll();
         void closePopUps();
         void pageButtonAlpha(String s);
+        void windowFlags();
     }
 
     private static MyInterface mListener;
@@ -96,7 +98,7 @@ public class PopUpSetViewNew extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         final View V = inflater.inflate(R.layout.popup_setview_new, container, false);
 
-        FullscreenActivity.whattodo = "";
+        setfrag = getDialog();
 
         mListener.pageButtonAlpha("set");
         TextView helpClickItem_TextView = (TextView) V.findViewById(R.id.helpClickItem_TextView);
@@ -281,7 +283,9 @@ public class PopUpSetViewNew extends DialogFragment {
     }
 
     public static void loadSong() {
+        FullscreenActivity.setView = true;
         mListener.loadSongFromSet();
+        setfrag.dismiss();
     }
 
     public static void makeVariation() {
@@ -372,6 +376,8 @@ public class PopUpSetViewNew extends DialogFragment {
     public void onDismiss(final DialogInterface dialog) {
         if (mListener!=null) {
             mListener.pageButtonAlpha("");
+            mListener.windowFlags();
+            mListener.pageButtonAlpha(null);
         }
     }
 

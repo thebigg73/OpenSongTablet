@@ -41,7 +41,6 @@ public class PopUpScalingFragment extends DialogFragment {
         super.onDetach();
     }
 
-    SeekBar autoscale_seekBar;
     LinearLayout fontsize_change_group;
     LinearLayout maxAutoScale_Group;
     SeekBar fontsize_seekbar;
@@ -50,9 +49,8 @@ public class PopUpScalingFragment extends DialogFragment {
     TextView fontsize_TextView;
     TextView maxAutoScale_TextView;
     TextView minAutoScale_TextView;
-    TextView off_TextView;
-    TextView on_TextView;
-    TextView width_TextView;
+    SwitchCompat switchAutoScaleOnOff_SwitchCompat;
+    SwitchCompat switchAutoScaleWidthFull_SwitchCompat;
     SwitchCompat overrideFull_Switch;
     SwitchCompat overrideWidth_Switch;
     Button closebutton;
@@ -67,9 +65,7 @@ public class PopUpScalingFragment extends DialogFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
         if (savedInstanceState != null) {
             this.dismiss();
         }
@@ -82,7 +78,6 @@ public class PopUpScalingFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_scaling, container, false);
 
         // Initialise the views
-        autoscale_seekBar = (SeekBar) V.findViewById(R.id.autoscale_seekBar);
         maxAutoScale_seekBar = (SeekBar) V.findViewById(R.id.maxAutoScale_seekBar);
         minAutoScale_seekBar = (SeekBar) V.findViewById(R.id.minAutoScale_seekBar);
         fontsize_change_group = (LinearLayout) V.findViewById(R.id.fontsize_change_group);
@@ -91,71 +86,63 @@ public class PopUpScalingFragment extends DialogFragment {
         maxAutoScale_TextView = (TextView) V.findViewById(R.id.maxAutoScale_TextView);
         minAutoScale_TextView = (TextView) V.findViewById(R.id.minAutoScale_TextView);
         fontsize_TextView = (TextView) V.findViewById(R.id.fontsize_TextView);
-        off_TextView = (TextView) V.findViewById(R.id.off_TextView);
-        on_TextView = (TextView) V.findViewById(R.id.on_TextView);
-        width_TextView = (TextView) V.findViewById(R.id.width_TextView);
+        switchAutoScaleOnOff_SwitchCompat = (SwitchCompat) V.findViewById(R.id.switchAutoScaleOnOff_SwitchCompat);
+        switchAutoScaleWidthFull_SwitchCompat = (SwitchCompat) V.findViewById(R.id.switchAutoScaleWidthFull_SwitchCompat);
         overrideFull_Switch = (SwitchCompat) V.findViewById(R.id.overrideFull_Switch);
         overrideWidth_Switch = (SwitchCompat) V.findViewById(R.id.overrideWidth_Switch);
         closebutton = (Button) V.findViewById(R.id.closebutton);
+
+        // Set the seekbars to the currently chosen values;
+        switch (FullscreenActivity.toggleYScale) {
+            case "W":
+                // Width only
+                switchAutoScaleOnOff_SwitchCompat.setChecked(true);
+                switchAutoScaleWidthFull_SwitchCompat.setChecked(false);
+                switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.VISIBLE);
+                maxAutoScale_Group.setVisibility(View.VISIBLE);
+                fontsize_change_group.setVisibility(View.GONE);
+                break;
+            case "Y":
+                // Full
+                switchAutoScaleOnOff_SwitchCompat.setChecked(true);
+                switchAutoScaleWidthFull_SwitchCompat.setChecked(true);
+                switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.VISIBLE);
+                maxAutoScale_Group.setVisibility(View.VISIBLE);
+                fontsize_change_group.setVisibility(View.GONE);
+                break;
+            default:
+                // Off
+                switchAutoScaleOnOff_SwitchCompat.setChecked(false);
+                switchAutoScaleWidthFull_SwitchCompat.setChecked(false);
+                switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.GONE);
+                maxAutoScale_Group.setVisibility(View.GONE);
+                fontsize_change_group.setVisibility(View.VISIBLE);
+                break;
+        }
+
+        overrideFull_Switch.setChecked(FullscreenActivity.override_fullscale);
+        overrideWidth_Switch.setChecked(FullscreenActivity.override_widthscale);
+        setupfontsizeseekbar();
+        setupmaxfontsizeseekbar();
+        setupminfontsizeseekbar();
+
+        // If user has enabled autoscale and is allowing overriding the width, the font size should be shown
+        if ((FullscreenActivity.toggleYScale.equals("W") || FullscreenActivity.toggleYScale.equals("Y")) &&
+                FullscreenActivity.override_widthscale) {
+            fontsize_change_group.setVisibility(View.VISIBLE);
+        } else {
+            fontsize_change_group.setVisibility(View.GONE);
+        }
 
         // Set up listeners
         closebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
-                Preferences.savePreferences();
                 mListener.refreshAll();
             }
         });
-        autoscale_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                off_TextView.setTextColor(0xffffffff);
-                width_TextView.setTextColor(0xffffffff);
-                on_TextView.setTextColor(0xffffffff);
-                if (seekBar.getProgress()==1) {
-                    FullscreenActivity.toggleYScale = "W";
-                    width_TextView.setTextColor(0xffffff00);
-                    overrideFull_Switch.setEnabled(false);
-                    overrideWidth_Switch.setEnabled(true);
-                } else if (seekBar.getProgress()==2) {
-                    FullscreenActivity.toggleYScale = "Y";
-                    overrideFull_Switch.setEnabled(true);
-                    overrideWidth_Switch.setEnabled(true);
-                    on_TextView.setTextColor(0xffffff00);
-                } else {
-                    FullscreenActivity.toggleYScale = "N";
-                    off_TextView.setTextColor(0xffffff00);
-                    overrideFull_Switch.setEnabled(false);
-                    overrideWidth_Switch.setEnabled(false);
-                }
-                checkforallowfontsizechange();
-            }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
-        off_TextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                autoscale_seekBar.setProgress(0);
-            }
-        });
-        width_TextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                autoscale_seekBar.setProgress(1);
-            }
-        });
-        on_TextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                autoscale_seekBar.setProgress(2);
-            }
-        });
         fontsize_seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -208,44 +195,67 @@ public class PopUpScalingFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 FullscreenActivity.override_widthscale = isChecked;
+                // If user has enabled autoscale and is allowing overriding the width, the font size should be shown
+                if ((FullscreenActivity.toggleYScale.equals("W") || FullscreenActivity.toggleYScale.equals("Y")) &&
+                        FullscreenActivity.override_widthscale) {
+                    fontsize_change_group.setVisibility(View.VISIBLE);
+                } else {
+                    fontsize_change_group.setVisibility(View.GONE);
+                }
+                Preferences.savePreferences();
+             }
+        });
+        switchAutoScaleOnOff_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    switchAutoScaleWidthFull_SwitchCompat.setEnabled(true);
+                    switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.VISIBLE);
+                    maxAutoScale_Group.setVisibility(View.VISIBLE);
+                    fontsize_change_group.setVisibility(View.GONE);
+                    if (switchAutoScaleWidthFull_SwitchCompat.isChecked()) {
+                        FullscreenActivity.toggleYScale = "Y";
+                    } else {
+                        FullscreenActivity.toggleYScale = "W";
+                    }
+                } else {
+                    FullscreenActivity.toggleYScale = "N";
+                    switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.GONE);
+                    maxAutoScale_Group.setVisibility(View.GONE);
+                    fontsize_change_group.setVisibility(View.VISIBLE);
+                }
+                // If user has enabled autoscale and is allowing overriding the width, the font size should be shown
+                if ((FullscreenActivity.toggleYScale.equals("W") || FullscreenActivity.toggleYScale.equals("Y")) &&
+                        FullscreenActivity.override_widthscale) {
+                    fontsize_change_group.setVisibility(View.VISIBLE);
+                } else {
+                    fontsize_change_group.setVisibility(View.GONE);
+                }
+                Preferences.savePreferences();
             }
         });
-        // Set the seekbars to the currently chosen values;
-        checkforallowfontsizechange();
-        switch (FullscreenActivity.toggleYScale) {
-            case "W":
-                // Width only
-                autoscale_seekBar.setProgress(1);
-                break;
-            case "Y":
-                // Full
-                autoscale_seekBar.setProgress(2);
-                break;
-            default:
-                // Off
-                autoscale_seekBar.setProgress(0);
-        }
-        overrideFull_Switch.setChecked(FullscreenActivity.override_fullscale);
-        overrideWidth_Switch.setChecked(FullscreenActivity.override_widthscale);
-        setupfontsizeseekbar();
-        setupmaxfontsizeseekbar();
-        setupminfontsizeseekbar();
+
+        switchAutoScaleWidthFull_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b && switchAutoScaleOnOff_SwitchCompat.isChecked()) {
+                    FullscreenActivity.toggleYScale = "Y";
+                    maxAutoScale_Group.setVisibility(View.VISIBLE);
+                    fontsize_change_group.setVisibility(View.GONE);
+                } else if (!b &&switchAutoScaleOnOff_SwitchCompat.isChecked()) {
+                    FullscreenActivity.toggleYScale = "W";
+                    maxAutoScale_Group.setVisibility(View.VISIBLE);
+                    fontsize_change_group.setVisibility(View.GONE);
+                } else {
+                    FullscreenActivity.toggleYScale = "N";
+                    maxAutoScale_Group.setVisibility(View.GONE);
+                    fontsize_change_group.setVisibility(View.VISIBLE);
+                }
+                Preferences.savePreferences();
+            }
+        });
 
         return V;
-    }
-
-    public void checkforallowfontsizechange() {
-        if (FullscreenActivity.toggleYScale.equals("N")) {
-            fontsize_change_group.setAlpha(1.0f);
-            fontsize_seekbar.setEnabled(true);
-            maxAutoScale_Group.setAlpha(0.2f);
-            maxAutoScale_seekBar.setEnabled(false);
-        } else {
-            fontsize_change_group.setAlpha(0.2f);
-            fontsize_seekbar.setEnabled(false);
-            maxAutoScale_Group.setAlpha(1.0f);
-            maxAutoScale_seekBar.setEnabled(true);
-        }
     }
 
     public void setupfontsizeseekbar() {
@@ -270,6 +280,7 @@ public class PopUpScalingFragment extends DialogFragment {
         String text = (int) FullscreenActivity.mFontSize + " sp";
         fontsize_TextView.setText(text);
         fontsize_TextView.setTextSize(FullscreenActivity.mFontSize);
+        Preferences.savePreferences();
     }
 
     public void setupmaxfontsizeseekbar() {
@@ -323,7 +334,7 @@ public class PopUpScalingFragment extends DialogFragment {
             FullscreenActivity.mMinFontSize = FullscreenActivity.mMaxFontSize - 1;
             setupminfontsizeseekbar();
         }
-
+        Preferences.savePreferences();
     }
 
     public void updateminfontsize() {
@@ -336,6 +347,7 @@ public class PopUpScalingFragment extends DialogFragment {
             FullscreenActivity.mMaxFontSize = FullscreenActivity.mMinFontSize + 1;
             setupmaxfontsizeseekbar();
         }
+        Preferences.savePreferences();
     }
 
     @Override

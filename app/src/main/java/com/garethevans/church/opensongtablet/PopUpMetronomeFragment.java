@@ -67,7 +67,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
     Button save_button;
     Button popupmetronome_startstopbutton;
     public static String[] bpmValues;
-    int tempo;
+    public static int tempo;
     public static short bpm;
     public static String[] timesigvals;
 
@@ -111,7 +111,6 @@ public class PopUpMetronomeFragment extends DialogFragment {
         visualmetronome = (SwitchCompat) V.findViewById(R.id.visualmetronome);
         save_button = (Button) V.findViewById(R.id.save_button);
         popupmetronome_startstopbutton = (Button) V.findViewById(R.id.popupmetronome_startstopbutton);
-
 
         // Set up the default values
         if (FullscreenActivity.metronomeonoff.equals("on")) {
@@ -218,6 +217,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
                 ShowToast.showToast(getActivity());
             }
         });
+
         return V;
     }
 
@@ -291,11 +291,14 @@ public class PopUpMetronomeFragment extends DialogFragment {
             bpm = (short) Integer.parseInt(t);
         } catch (NumberFormatException nfe) {
             System.out.println("Could not parse " + nfe);
-            bpm = 200; // This is the 'Not set' value
+            bpm = 0;
         }
 
         if (bpm<40 || bpm>199) {
-            bpm = 160;
+            bpm = 200;
+            tempo = 200;
+        } else {
+            tempo = bpm;
         }
 
         return (int) bpm;
@@ -340,7 +343,11 @@ public class PopUpMetronomeFragment extends DialogFragment {
 
         //Specify the NumberPicker data source as array elements
         bpm_numberPicker.setDisplayedValues(bpmValues);
+        Log.d("d","mTempo="+FullscreenActivity.mTempo);
+        Log.d("d","tempo="+tempo);
+        Log.d("d","bpm="+bpm);
 
+        bpm_numberPicker.setValue(tempo-40);
         bpm_numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
@@ -357,7 +364,6 @@ public class PopUpMetronomeFragment extends DialogFragment {
             }
         });
         Log.d("d","tempo="+tempo);
-        bpm_numberPicker.setValue(tempo-40);
     }
 
     public void getTimeSigValues() {
@@ -427,32 +433,6 @@ public class PopUpMetronomeFragment extends DialogFragment {
         FullscreenActivity.noteValue = r;
     }
 
-/*
-    @SuppressWarnings("HandlerLeak")
-    public static Handler getHandler() {
-        return new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                */
-/*if (FullscreenActivity.visualmetronome) {
-                    if (FullscreenActivity.whichbeat.equals("a")) {
-                        FullscreenActivity.whichbeat = "b";
-                        if (StageMode.ab != null) {
-                            StageMode.ab.setBackgroundDrawable(new ColorDrawable(FullscreenActivity.beatoffcolour));
-                        }
-                    } else {
-                        FullscreenActivity.whichbeat = "a";
-                        if (StageMode.ab != null) {
-                            StageMode.ab.setBackgroundDrawable(new ColorDrawable(FullscreenActivity.metronomeColor));
-                        }
-                    }
-                }*//*
-
-            }
-        };
-    }
-*/
-
     public static void startstopMetronome(Activity activity) {
         if (checkMetronomeValid() && FullscreenActivity.metronomeonoff.equals("off")) {
             // Start the metronome
@@ -518,6 +498,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         long oldtime = System.currentTimeMillis();
         long nexttime = oldtime + time_in_millisecs;
 
+
         @Override
         protected String doInBackground(Void... voids) {
             publishProgress(1);
@@ -534,7 +515,6 @@ public class PopUpMetronomeFragment extends DialogFragment {
 
         @Override
         protected void onProgressUpdate(Integer... integers) {
-            Log.d("d","updating progress");
             if (FullscreenActivity.visualmetronome) {
                 if (FullscreenActivity.whichbeat.equals("a")) {
                     FullscreenActivity.whichbeat = "b";

@@ -337,7 +337,13 @@ public class PopUpPadFragment extends DialogFragment {
 
     private void startenabled() {
         validpad = false;
-        File file = new File(FullscreenActivity.mLinkAudio);
+        String filetext = FullscreenActivity.mLinkAudio;
+        // If this is a localised file, we need to unlocalise it to enable it to be read
+        if (filetext.startsWith("../OpenSong/")) {
+            filetext = filetext.replace("../OpenSong/",FullscreenActivity.homedir+"/");
+        }
+        filetext = filetext.replace("file://","");
+        File file = new File(filetext);
 
         if (popupPad_file.getSelectedItemPosition() == 0 && popupPad_key.getSelectedItemPosition() > 0) {
             validpad = true;
@@ -375,7 +381,6 @@ public class PopUpPadFragment extends DialogFragment {
         if (pad1playing && !pad2playing) {
             text = getResources().getString(R.string.stop);
             validpad = true;
-            // start_stop_padplay.setText(getResources().getString(R.string.stop));
             start_stop_padplay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

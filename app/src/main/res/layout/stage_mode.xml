@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -10,55 +12,68 @@
     android:layout_height="match_parent"
     android:id="@+id/mypage">
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/mytoolbar"
+        android:id="@+id/horizontalscrollview">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/songscrollview"/>
+
+    </HorizontalScrollView>
+
     <include layout="@layout/toolbar"
         android:id="@+id/mytoolbar"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/mytoolbar"
-        android:id="@+id/songscrollview"/>
-
     <RelativeLayout
         android:id="@+id/testpane"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/mytoolbar"
-        android:visibility="invisible"/>
-
-    <RelativeLayout
-        android:id="@+id/testpane2_2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/mytoolbar"
-        android:visibility="invisible"/>
+        android:layout_alignParentLeft="true"
+        android:visibility="visible"/>
 
     <RelativeLayout
         android:id="@+id/testpane1_2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mytoolbar"
+        android:layout_alignParentLeft="true"
+        android:visibility="visible"/>
+
+    <RelativeLayout
+        android:id="@+id/testpane2_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/mytoolbar"
-        android:visibility="invisible"/>
+        android:layout_toRightOf="@id/testpane1_2"
+        android:visibility="visible"/>
 
     <RelativeLayout
         android:id="@+id/testpane1_3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/mytoolbar"
-        android:visibility="invisible"/>
+        android:layout_alignParentLeft="true"
+        android:visibility="visible"/>
 
     <RelativeLayout
         android:id="@+id/testpane2_3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/mytoolbar"
+        android:layout_toRightOf="@id/testpane1_3"
         android:visibility="invisible"/>
 
     <RelativeLayout
         android:id="@+id/testpane3_3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/mytoolbar"
+        android:layout_toRightOf="@id/testpane2_3"
         android:visibility="invisible"/>
 
     <include layout="@layout/playback_progress"
@@ -75,7 +90,61 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_below="@id/padProgress"/>
+        android:layout_below="@id/padProgress"
+        android:layout_above="@+id/setForwardButton"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/scrollUpButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/mytoolbar"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/fab2"
+        app:fabSize="mini"
+        android:src="@drawable/ic_arrow_up_white_36dp"
+        android:alpha="0.4"
+        android:visibility="gone"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/scrollDownButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/fab2"
+        app:fabSize="mini"
+        android:src="@drawable/ic_arrow_down_white_36dp"
+        android:alpha="0.4"
+        android:visibility="gone"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/setBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/fab2"
+        app:fabSize="mini"
+        android:src="@drawable/ic_arrow_left_white_36dp"
+        android:alpha="0.4"
+        android:visibility="gone"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/setForwardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/fab2"
+        app:fabSize="mini"
+        android:src="@drawable/ic_arrow_right_white_36dp"
+        android:alpha="0.4"
+        android:visibility="gone"
+        tools:ignore="RelativeOverlap" />
 
 </RelativeLayout>
 

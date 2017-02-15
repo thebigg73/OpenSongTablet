@@ -140,7 +140,7 @@ public class MenuHandlers extends Activity {
                 break;
 
             case R.id.stage_mode:
-                // Switch to performance mode
+                // Switch to stage mode
                 FullscreenActivity.whichMode = "Stage";
                 Preferences.savePreferences();
                 Intent stagemode = new Intent();

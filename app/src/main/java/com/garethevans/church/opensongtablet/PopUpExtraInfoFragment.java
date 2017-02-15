@@ -4,11 +4,12 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.SeekBar;
+import android.widget.CompoundButton;
 
 public class PopUpExtraInfoFragment extends DialogFragment {
 
@@ -37,8 +38,10 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         super.onDetach();
     }
 
-    SeekBar nextSong_seekBar;
-    SeekBar stickyNotes_seekBar;
+    SwitchCompat nextSongOnOff_Switch;
+    SwitchCompat nextSongTopBottom_Switch;
+    SwitchCompat stickyNotesOnOff_Switch;
+    SwitchCompat stickyNotesTopBottom_Switch;
     Button closebutton;
 
     @Override
@@ -66,60 +69,112 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_extrainfo, container, false);
 
         // Initialise the views
-        nextSong_seekBar = (SeekBar) V.findViewById(R.id.nextSong_seekBar);
-        stickyNotes_seekBar = (SeekBar) V.findViewById(R.id.stickyNotes_seekBar);
+        nextSongOnOff_Switch = (SwitchCompat) V.findViewById(R.id.nextSongOnOff_Switch);
+        nextSongTopBottom_Switch = (SwitchCompat) V.findViewById(R.id.nextSongTopBottom_Switch);
+        stickyNotesOnOff_Switch = (SwitchCompat) V.findViewById(R.id.stickyNotesOnOff_Switch);
+        stickyNotesTopBottom_Switch = (SwitchCompat) V.findViewById(R.id.stickyNotesTopBottom_Switch);
+
         closebutton = (Button) V.findViewById(R.id.closebutton);
 
+        // Set the default values
+        switch (FullscreenActivity.showNextInSet) {
+            case "off":
+                nextSongOnOff_Switch.setChecked(false);
+                nextSongTopBottom_Switch.setVisibility(View.GONE);
+                break;
+
+            case "bottom":
+            default:
+                nextSongOnOff_Switch.setChecked(true);
+                nextSongTopBottom_Switch.setChecked(true);
+                nextSongTopBottom_Switch.setVisibility(View.VISIBLE);
+                break;
+
+            case "top":
+                nextSongOnOff_Switch.setChecked(true);
+                nextSongTopBottom_Switch.setChecked(false);
+                nextSongTopBottom_Switch.setVisibility(View.VISIBLE);
+                break;
+        }
+        switch (FullscreenActivity.toggleAutoSticky) {
+
+            case "N":
+                stickyNotesOnOff_Switch.setChecked(false);
+                stickyNotesTopBottom_Switch.setVisibility(View.GONE);
+                break;
+
+            case "B":
+            default:
+                stickyNotesOnOff_Switch.setChecked(true);
+                stickyNotesTopBottom_Switch.setChecked(true);
+                stickyNotesTopBottom_Switch.setVisibility(View.VISIBLE);
+                break;
+
+            case "T":
+                stickyNotesOnOff_Switch.setChecked(true);
+                stickyNotesTopBottom_Switch.setChecked(false);
+                stickyNotesTopBottom_Switch.setVisibility(View.VISIBLE);
+                break;
+        }
+
         // Set the listeners
-        nextSong_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        nextSongOnOff_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                switch (progress) {
-                    case 0:
-                        FullscreenActivity.showNextInSet = "off";
-                        break;
-                    case 1:
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    nextSongTopBottom_Switch.setVisibility((View.VISIBLE));
+                    if (nextSongTopBottom_Switch.isChecked()) {
                         FullscreenActivity.showNextInSet = "bottom";
-                        break;
-                    case 2:
+                    } else {
                         FullscreenActivity.showNextInSet = "top";
-                        break;
+                    }
+                } else {
+                    nextSongTopBottom_Switch.setVisibility((View.GONE));
+                    FullscreenActivity.showNextInSet = "off";
                 }
                 Preferences.savePreferences();
             }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-        stickyNotes_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        nextSongTopBottom_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                switch (progress) {
-                    case 0:
-                        FullscreenActivity.toggleAutoSticky = "N";
-                        break;
-                    case 1:
-                        FullscreenActivity.toggleAutoSticky = "Y";
-                        break;
-                    case 2:
-                        FullscreenActivity.toggleAutoSticky = "T";
-                        break;
-                    case 3:
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    FullscreenActivity.showNextInSet = "bottom";
+                } else {
+                    FullscreenActivity.showNextInSet = "top";
+                }
+                Preferences.savePreferences();
+            }
+        });
+        stickyNotesOnOff_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    stickyNotesTopBottom_Switch.setVisibility((View.VISIBLE));
+                    if (stickyNotesTopBottom_Switch.isChecked()) {
                         FullscreenActivity.toggleAutoSticky = "B";
-                        break;
+                    } else {
+                        FullscreenActivity.toggleAutoSticky = "T";
+                    }
+                } else {
+                    stickyNotesTopBottom_Switch.setVisibility((View.GONE));
+                    FullscreenActivity.toggleAutoSticky = "N";
                 }
                 Preferences.savePreferences();
             }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
+        stickyNotesTopBottom_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    FullscreenActivity.showNextInSet = "B";
+                } else {
+                    FullscreenActivity.showNextInSet = "T";
+                }
+                Preferences.savePreferences();
+            }
+        });
+
         closebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,40 +182,13 @@ public class PopUpExtraInfoFragment extends DialogFragment {
                 mListener.refreshAll();
             }
         });
-
-        // Set the intial positions of the seekbars
-        switch (FullscreenActivity.showNextInSet) {
-            case "off":
-                nextSong_seekBar.setProgress(0);
-                break;
-            case "bottom":
-                nextSong_seekBar.setProgress(1);
-                break;
-            case "top":
-                nextSong_seekBar.setProgress(2);
-                break;
-        }
-
-        switch (FullscreenActivity.toggleAutoSticky) {
-            case "N":
-                stickyNotes_seekBar.setProgress(0);
-                break;
-            case "Y":
-                stickyNotes_seekBar.setProgress(1);
-                break;
-            case "T":
-                stickyNotes_seekBar.setProgress(2);
-                break;
-            case "B":
-                stickyNotes_seekBar.setProgress(3);
-                break;
-        }
         return V;
     }
 
     @Override
     public void onCancel(DialogInterface dialog) {
         this.dismiss();
+        mListener.refreshAll();
     }
 
 }

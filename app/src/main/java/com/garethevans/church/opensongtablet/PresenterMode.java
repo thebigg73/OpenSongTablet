@@ -471,6 +471,11 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
     }
 
     @Override
+    public void windowFlags() {
+
+    }
+
+    @Override
     public void onBackPressed() {
         if (mp.isPlaying()) {
             // Stop the media player

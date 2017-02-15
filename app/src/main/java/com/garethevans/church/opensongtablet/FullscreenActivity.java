@@ -121,7 +121,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         PopUpPageButtonsFragment.MyInterface, PopUpExtraInfoFragment.MyInterface,
         PopUpLinks.MyInterface, IndexSongs.MyInterface, SongMenuListeners.MyInterface,
         PopUpChooseFolderFragment.MyInterface, PopUpFullSearchFragment.MyInterface,
-        OnSongConvert.MyInterface {
+        OnSongConvert.MyInterface, PopUpLongSongPressFragment.MyInterface {
 
     //First up, declare all of the variables needed by this application
 
@@ -212,7 +212,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     // The toolbar
     public Toolbar toolbar;
     public ActionBar ab;
-    public TextView songandauthor;
+    public RelativeLayout songandauthor;
+    public TextView songtitle_ab;
+    public TextView songkey_ab;
+    public TextView songauthor_ab;
 
     // Immersive mode stuff
     private Handler mRestoreImmersiveModeHandler = new Handler();
@@ -250,7 +253,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String text_note = "";
     public static String text_variation = "";
     public int slideout_time = 200;
-    public int checkscroll_time = 800;
+    public static int checkscroll_time = 1600;
     public static int delayswipe_time = 800;
     public static int crossFadeTime = 8000;
     public static String toggleScrollArrows = "";
@@ -356,7 +359,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private TextView popupPad_pan_text;
     private Button popupPad_startstopbutton;
 
-    public boolean pressing_button = false;
+    public static boolean pressing_button = false;
 
     private ScrollView popupAutoscroll;
     public static String popupAutoscroll_stoporstart = "stop";
@@ -502,9 +505,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private static Handler delayautoscroll;
 
     // Swipe
-    private static final int SWIPE_MIN_DISTANCE = 250;
-    private static final int SWIPE_MAX_OFF_PATH = 250;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 800;
+    public static final int SWIPE_MIN_DISTANCE = 250;
+    public static final int SWIPE_MAX_OFF_PATH = 250;
+    public static final int SWIPE_THRESHOLD_VELOCITY = 800;
     private GestureDetector gestureDetector;
     public static boolean swipeForMenus;
     public static boolean swipeForSongs;
@@ -534,8 +537,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private static Handler doProgressTime;
     private static Handler dopadProgressTime;
 
-    private static boolean scrollbutton = false;
-    private static boolean actionbarbutton = false;
+    public static boolean scrollbutton = false;
+    public static boolean actionbarbutton = false;
 
     // Font sizes (relative)
     private boolean alreadyloaded = false;
@@ -643,7 +646,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static int autoScrollDuration;
     public static String prefStorage = "";
     public static String customStorage = "";
-    private static boolean wasscrolling = false;
+    public static boolean wasscrolling = false;
     public static String alwaysPreferredChordFormat = "";
     public static String gesture_doubletap = "";
     public static String gesture_longpress = "";
@@ -784,6 +787,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static int splitpoint;
     public static int thirdsplitpoint;
     public static int twothirdsplitpoint;
+    public static int halfsplit_section;
+    public static int thirdsplit_section;
+    public static int twothirdsplit_section;
     public static String[] whatisthisblock;
     public static String[] whatisthisline;
     public static String mStorage = "";
@@ -799,6 +805,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String myXML = "";
     public static String mynewXML = "";
     public static String[] myParsedLyrics;
+    public static String myTempLyrics;
     public static String[] myTransposedLyrics;
     public static String songfilename = "";
     private DrawerLayout mDrawerLayout;
@@ -920,6 +927,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String[][] sectionContents;
     public static String[][] sectionLineTypes;
     public static String[] songSectionsTypes;
+    public static String songSection_holder; // This carries on section types after line breaks
     public static float[] sectionScaleValue;
     public static int currentSection;
 
@@ -1172,6 +1180,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             stagemode.setClass(FullscreenActivity.this, StageMode.class);
             startActivity(stagemode);
             finish();
+        } else if (whichMode.equals("Performance") && !needtoimport) {
+            Intent stagemode = new Intent();
+            stagemode.setClass(FullscreenActivity.this, StageMode.class);
+            startActivity(stagemode);
+            finish();
         }
 
         // Load the page
@@ -1206,14 +1219,18 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         // Set up the toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        songandauthor = (TextView) findViewById(R.id.songandauthor);
+        songandauthor = (RelativeLayout) findViewById(R.id.songandauthor);
+        songkey_ab = (TextView) findViewById(R.id.songkey_ab);
+        songauthor_ab = (TextView) findViewById(R.id.songauthor_ab);
+        songtitle_ab = (TextView) findViewById(R.id.songtitle_ab);
         ab = getSupportActionBar();
         beatoffcolour = getResources().getColor(R.color.toolbar);
 
         ab.setDisplayHomeAsUpEnabled(false);
         ab.setDisplayShowTitleEnabled(false);
-        String text = "OpenSong" + "\n" + "Gareth Evans";
-        songandauthor.setText(text);
+        songtitle_ab.setText("OpenSong");
+        songkey_ab.setText("");
+        songauthor_ab.setText("Gareth Evans");
 
         // Set up runnable used to hide the actionbar
         delayactionBarHide = new Handler();
@@ -1294,8 +1311,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                 newFragment.show(getFragmentManager(), "dialog");
             }
         });
-        text = songfilename + keytext + "\n" + mAuthor;
-        songandauthor.setText(text);
+        songtitle_ab.setText(songfilename);
+        songkey_ab.setText(keytext);
+        songauthor_ab.setText(mAuthor);
         main_page = findViewById(R.id.main_page);
         // Set a listener for the main_page.
         // If a popup is open, clicking on the main page will hide it.
@@ -2059,6 +2077,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         // we restore it now and after 500 ms!
         restoreTransparentBars();
         mRestoreImmersiveModeHandler.postDelayed(restoreImmersiveModeRunnable, 500);
+    }
+
+    @Override
+    public void windowFlags() {
+        setWindowFlags();
+        setWindowFlagsAdvanced();
     }
 
     public void setWindowFlags() {
@@ -4598,7 +4622,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     }
 
     @Override
-    public void songLongClick(int mychild) {
+    public void songLongClick() {
         // Close both drawers
         closeMyDrawers("both");
         // Rebuild the options and menu to update the set items
@@ -7251,7 +7275,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             columnTest = 0;
             writeSongToPage();
 
-            songandauthor.setText("");
+            songtitle_ab.setText("");
+            songkey_ab.setText("");
+            songauthor_ab.setText("");
 
             // Decide on best title
             String songtitleorfilename;
@@ -7275,7 +7301,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
             // Put the title together
             String text = songtitleorfilename + keytext + "\n" + mTempAuthor;
-            songandauthor.setText(text);
+            songtitle_ab.setText(songtitleorfilename);
+            songkey_ab.setText(keytext);
+            songauthor_ab.setText(mTempAuthor);
 
         } else {
             Preferences.savePreferences();
@@ -7328,8 +7356,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     pdfPageCurrent = 0;
                 }
 
-                String text = tempsongtitle + "\n" + (pdfPageCurrent + 1) + "/" + pdfPageCount;
-                songandauthor.setText(text);
+                String text = (pdfPageCurrent + 1) + "/" + pdfPageCount;
+                songtitle_ab.setText(tempsongtitle);
+                songkey_ab.setText("");
+                songauthor_ab.setText(text);
 
                 if (pdfPageCount > 1 && togglePageButtons.equals("Y")) {
                     // Show page select button
@@ -7458,7 +7488,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     pdfView.getLayoutParams().width = main_page.getWidth();
                 }
                 String text = tempsongtitle + "\n" + getResources().getString(R.string.nothighenoughapi);
-                songandauthor.setText(text);
+                songtitle_ab.setText(tempsongtitle);
+                songkey_ab.setText("");
+                songauthor_ab.setText(getResources().getString(R.string.nothighenoughapi));
                 Preferences.savePreferences();
                 invalidateOptionsMenu();
 
