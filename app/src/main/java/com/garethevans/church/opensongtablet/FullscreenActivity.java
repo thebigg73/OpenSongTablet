@@ -169,7 +169,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     // Updated scaled view stuff
     public static int[] viewwidth;
     public static int[] viewheight;
-    public static int padding = 15;
+    public static int padding = 18;
     // Song sections
     public static View[] sectionviews;
     public static boolean[] sectionrendered;
@@ -505,9 +505,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private static Handler delayautoscroll;
 
     // Swipe
-    public static final int SWIPE_MIN_DISTANCE = 250;
-    public static final int SWIPE_MAX_OFF_PATH = 250;
-    public static final int SWIPE_THRESHOLD_VELOCITY = 800;
+    public static int SWIPE_MIN_DISTANCE = 300;
+    public static int SWIPE_MAX_OFF_PATH = 200;
+    public static int SWIPE_THRESHOLD_VELOCITY = 1000;
     private GestureDetector gestureDetector;
     public static boolean swipeForMenus;
     public static boolean swipeForSongs;
@@ -1691,7 +1691,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             try {
                 IndexSongs.ListAllSongs();
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d("d","Issue with song index");
             }
         }
 

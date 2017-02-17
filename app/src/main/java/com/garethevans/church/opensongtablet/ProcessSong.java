@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -1470,14 +1473,14 @@ public class ProcessSong extends Activity {
 
     public static LinearLayout songSectionView(Context c, int x) {
 
-            LinearLayout.LayoutParams llparams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            final LinearLayout ll = new LinearLayout(c);
-            ll.setLayoutParams(llparams);
-            ll.setOrientation(LinearLayout.VERTICAL);
-            ll.setPadding(8,8,8,8);
+        LinearLayout.LayoutParams llparams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        final LinearLayout ll = new LinearLayout(c);
 
+        ll.setLayoutParams(llparams);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        ll.setPadding(0,0,0,0);
             String[] returnvals = beautifyHeadings(FullscreenActivity.songSectionsLabels[x]);
             ll.addView(ProcessSong.titletoTextView(c, returnvals[0]));
 
@@ -1568,6 +1571,10 @@ public class ProcessSong extends Activity {
                 }
                 ll.addView(tl);
             }
+        TextView emptyline = new TextView(c);
+        emptyline.setText("");
+        emptyline.setTextSize(3f);
+        ll.addView(emptyline);
         return ll;
     }
 
@@ -1628,5 +1635,66 @@ public class ProcessSong extends Activity {
             text3_3 += FullscreenActivity.myParsedLyrics[i3_3] + "\n";
         }
         FullscreenActivity.songSections[5] = text3_3;
+    }
+
+    public static void removeParents(View v) {
+        try {
+            if (v.getParent() != null) {
+                ((RelativeLayout) v.getParent()).removeView(v);
+            }
+        } catch (Exception e) {
+            Log.d("d","Had a problem trying to remove a view!");
+        }
+    }
+
+    public static void setUpStageModeSectionView(int s) {
+        int height_diff = FullscreenActivity.viewheight[s] - FullscreenActivity.sectionviews[s].getHeight();
+        int width_diff = FullscreenActivity.viewwidth[s] - FullscreenActivity.sectionviews[s].getWidth();
+        RelativeLayout.LayoutParams section = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        section.width = FullscreenActivity.sectionviews[s].getWidth();
+        section.height = FullscreenActivity.sectionviews[s].getHeight();
+        section.setMargins(0,0,width_diff,height_diff);
+        FullscreenActivity.sectionviews[s].setLayoutParams(section);
+        FullscreenActivity.sectionviews[s].setAlpha(0.5f);
+    }
+
+    public static RelativeLayout createStageModeSectionBox(Context c,int s) {
+        RelativeLayout sectionholder = new RelativeLayout(c);
+        LinearLayout.LayoutParams sectionholderparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        sectionholderparams.setMargins(0,0,0,8 * (int) (c.getResources().getDisplayMetrics().densityDpi / 160f));
+        sectionholder.setLayoutParams(sectionholderparams);
+        sectionholder.addView(FullscreenActivity.sectionviews[s]);
+        int colortouse = ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[s]);
+        sectionholder.setBackgroundResource(R.drawable.section_box);
+        GradientDrawable drawable = (GradientDrawable) sectionholder.getBackground();
+        drawable.setColor(colortouse);
+        return sectionholder;
+    }
+
+    public static RelativeLayout createPerformanceModeSectionBox(Context c, int s, int right_margin) {
+        RelativeLayout sectionholder = new RelativeLayout(c);
+        LinearLayout.LayoutParams sectionholderparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        sectionholderparams.setMargins(0, 0, right_margin, 0);
+        sectionholder.setLayoutParams(sectionholderparams);
+        sectionholder.addView(FullscreenActivity.sectionviews[s]);
+        sectionholder.setBackgroundResource(R.drawable.section_box);
+        return sectionholder;
+    }
+
+    public static void setUpPerformanceModeSectionView(int s,int width,int height) {
+        LinearLayout.LayoutParams section = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        section.width = width;
+        section.height = height;
+        FullscreenActivity.sectionviews[s].setLayoutParams(section);
+        FullscreenActivity.sectionviews[s].setAlpha(1.0f);
+    }
+
+    public static void setWidthAndHeightOfSectionViewIfZero(int s) {
+        if (FullscreenActivity.viewheight[s] == 0) {
+            FullscreenActivity.viewheight[s] = (int) ((float) FullscreenActivity.sectionviews[s].getHeight() * FullscreenActivity.sectionScaleValue[s]);
+        }
+        if (FullscreenActivity.viewwidth[s] == 0) {
+            FullscreenActivity.viewwidth[s] = (int) ((float) FullscreenActivity.sectionviews[s].getWidth() * FullscreenActivity.sectionScaleValue[s]);
+        }
     }
 }

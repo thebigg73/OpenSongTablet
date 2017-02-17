@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/mytoolbar"
         android:layout_alignParentLeft="true"
-        android:visibility="visible"/>
+        android:visibility="invisible"/>
 
     <RelativeLayout
         android:id="@+id/testpane1_2"
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/mytoolbar"
         android:layout_alignParentLeft="true"
-        android:visibility="visible"/>
+        android:visibility="invisible"/>
 
     <RelativeLayout
         android:id="@+id/testpane2_2"
@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/mytoolbar"
         android:layout_toRightOf="@id/testpane1_2"
-        android:visibility="visible"/>
+        android:visibility="invisible"/>
 
     <RelativeLayout
         android:id="@+id/testpane1_3"
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/mytoolbar"
         android:layout_alignParentLeft="true"
-        android:visibility="visible"/>
+        android:visibility="invisible"/>
 
     <RelativeLayout
         android:id="@+id/testpane2_3"

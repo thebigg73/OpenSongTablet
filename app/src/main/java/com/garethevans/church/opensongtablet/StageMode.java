@@ -11,7 +11,6 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Configuration;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -60,7 +59,6 @@ import com.google.android.gms.cast.CastMediaControlIntent;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.Collator;
@@ -127,6 +125,12 @@ public class StageMode extends AppCompatActivity implements
     LinearLayout column1_3;
     LinearLayout column2_3;
     LinearLayout column3_3;
+    float column1_1_scale;
+    float column1_2_scale;
+    float column2_2_scale;
+    float column1_3_scale;
+    float column2_3_scale;
+    float column3_3_scale;
     LinearLayout backingtrackProgress;
     TextView padcurrentTime_TextView;
     TextView padtotalTime_TextView;
@@ -138,6 +142,7 @@ public class StageMode extends AppCompatActivity implements
     float biggestscale_3col = 1000.0f;
     boolean overridingfull;
     boolean overridingwidth;
+    boolean rendercalled = false;
 
     int coltouse = 1;
 
@@ -791,7 +796,12 @@ public class StageMode extends AppCompatActivity implements
         checkScrollPosition = new Runnable() {
             @Override
             public void run() {
-                int height = songscrollview.getChildAt(0).getMeasuredHeight() - songscrollview.getHeight();
+                int height;
+                try {
+                    height = songscrollview.getChildAt(0).getMeasuredHeight() - songscrollview.getHeight();
+                } catch (Exception e) {
+                    height=0;
+                }
 
                 // Decide if the down arrow should be displayed.
                 if (height > songscrollview.getScrollY() && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu)) {
@@ -1722,6 +1732,7 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected void onPreExecute() {
+            rendercalled = false;
             mypage.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
             songscrollview.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
             biggestscale_1col = 1000.0f;
@@ -1736,6 +1747,13 @@ public class StageMode extends AppCompatActivity implements
             }
 
             FullscreenActivity.currentSection = 0;
+
+            testpane.removeAllViews();
+            testpane1_2.removeAllViews();
+            testpane2_2.removeAllViews();
+            testpane1_3.removeAllViews();
+            testpane2_3.removeAllViews();
+            testpane3_3.removeAllViews();
         }
 
         @Override
@@ -1802,6 +1820,7 @@ public class StageMode extends AppCompatActivity implements
                 section1_1 = ProcessSong.songSectionView(StageMode.this, x);
                 section1_1.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
                 column1_1.addView(section1_1);
+
                 if (x < FullscreenActivity.halfsplit_section) {
                     section1_2 = ProcessSong.songSectionView(StageMode.this, x);
                     section1_2.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[x]));
@@ -1884,6 +1903,7 @@ public class StageMode extends AppCompatActivity implements
                 vto_views[4] = column2_3;
                 vto_views[5] = column3_3;
 
+                //
                 for (int x=0; x<vto_cols.length; x++) {
                     final int val = x;
                     vto_cols[x].addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -1931,6 +1951,7 @@ public class StageMode extends AppCompatActivity implements
         float maxscale = FullscreenActivity.mMaxFontSize / 6.0f;
         // Decide on the min scale size, based on min font size
         float minscale = FullscreenActivity.mMinFontSize / 6.0f;
+        float nonscaled = FullscreenActivity.mFontSize / 6.0f;
 
         ResizeSongSections(LinearLayout v, RelativeLayout test, int section){
             this.v = v;
@@ -1940,13 +1961,15 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected void onPreExecute() {
+
+            // The padding space that will be used in the section boxes is 8dp each side = 16dp
+            // However, to convert to pixels, we need to scale by the screen density
+
             width = v.getWidth();
             height = v.getHeight();
-            // Decide the padding space
-            // Padding on each side -> 2*padding
-            // Thickness of the box on each side --> 2*2
-            // Padding inside the box on each side --> 2*12
-            paddingspace = (2 * FullscreenActivity.padding) + (2 * 2) + (2 * 12);
+
+            paddingspace = getPixelsFromDpi(16);
+            FullscreenActivity.padding = paddingspace;
 
             available_width = getAvailableWidth();
             available_height = getAvailableHeight();
@@ -1961,8 +1984,7 @@ public class StageMode extends AppCompatActivity implements
             // For performance mode, we need to scale each possible column and then decide on the best view
 
             if (FullscreenActivity.whichMode.equals("Stage")) {
-                int paddingspace = (2 * FullscreenActivity.padding) + (2 * 2) + (2 * 12);
-                available_width = available_width - paddingspace;                     // Remove the padding space
+                available_width = available_width - paddingspace;      // Remove the padding space
                 available_height = (int) (0.70f * available_height) - paddingspace;   // Remove the padding space
                 float x_scale = ((float) available_width / (float) width);
                 float y_scale = ((float) available_height / (float) height);
@@ -1977,7 +1999,7 @@ public class StageMode extends AppCompatActivity implements
                 }
 
                 // Do the scaling
-                int new_width = (int) (width * myscale);
+                int new_width = (int) ((width)* myscale);
                 int new_height = (int) (height * myscale);
 
                 FullscreenActivity.sectionrendered[section] = true;
@@ -1992,10 +2014,10 @@ public class StageMode extends AppCompatActivity implements
                 // Padding on each side -> 2*padding
                 // Thickness of the box on each side --> 2*2
                 // Padding inside the box on each side --> 2*12
-                available_width_1 = available_width - FullscreenActivity.padding*2;                  // Remove the padding space
-                available_width_2 = (int) ((available_width) / 2.0f) - FullscreenActivity.padding*2; // Remove the padding space
-                available_width_3 = (int) ((available_width) / 3.0f) - FullscreenActivity.padding*2; // Remove the padding space
-                available_height = available_height - FullscreenActivity.padding*2;                  // Remove the padding space
+                available_width_1 = available_width - paddingspace;                                            // Remove the padding space
+                available_width_2 = (int) ((available_width) / 2.0f) - paddingspace - getPixelsFromDpi(4);   // Remove the padding space
+                available_width_3 = (int) ((available_width) / 3.0f) - paddingspace - getPixelsFromDpi(4)*2; // Remove the padding space
+                available_height = available_height - paddingspace;                                            // Remove the padding space
                 float x_scale;
                 float y_scale = ((float) available_height / (float) height);
                 switch (section) {
@@ -2003,12 +2025,50 @@ public class StageMode extends AppCompatActivity implements
                     default:
                         // Single column view
                         x_scale = ((float) available_width_1 / (float) width);
+                        // Use the smallest of the two scale values so we can fit everything in
+                        myscale = x_scale;
+                        if (x_scale >= y_scale) {
+                            myscale = y_scale;
+                        }
+                        // If we are scaling to width only
+                        if (FullscreenActivity.toggleYScale.equals("W")) {
+                            myscale = x_scale;
+                        }
+
+                        // If autoscale is off
+                        if (FullscreenActivity.toggleYScale.equals("N")) {
+                            // Test font size is 6.0f - base scaling on this
+                            myscale = FullscreenActivity.mFontSize / 6.0f;
+                        }
+                        // Decide on the max scale size, based on max font size
+                        if (myscale > maxscale) {
+                            myscale = maxscale;
+                        }
                         break;
 
                     case 1:
                     case 2:
                         // Two column view
                         x_scale = ((float) available_width_2 / (float) width);
+                        // Use the smallest of the two scale values so we can fit everything in
+                        myscale = x_scale;
+                        if (x_scale >= y_scale) {
+                            myscale = y_scale;
+                        }
+                        // If we are scaling to width only
+                        if (FullscreenActivity.toggleYScale.equals("W")) {
+                            myscale = x_scale;
+                        }
+
+                        // If autoscale is off
+                        if (FullscreenActivity.toggleYScale.equals("N")) {
+                            // Test font size is 6.0f - base scaling on this
+                            myscale = FullscreenActivity.mFontSize / 6.0f;
+                        }
+                        // Decide on the max scale size, based on max font size
+                        if (myscale > maxscale) {
+                            myscale = maxscale;
+                        }
                         break;
 
                     case 3:
@@ -2016,52 +2076,26 @@ public class StageMode extends AppCompatActivity implements
                     case 5:
                         // Three column view
                         x_scale = ((float) available_width_3 / (float) width);
-                        break;
-                }
-
-                // Use the smallest of the two scale values so we can fit everything in
-                myscale = x_scale;
-                if (x_scale >= y_scale) {
-                    myscale = y_scale;
-                }
-                // If we are scaling to width only
-                if (FullscreenActivity.toggleYScale.equals("W")) {
-                    myscale = x_scale;
-                    //maxscale = x_scale*2;
-                }
-
-                // If autoscale is off
-                if (FullscreenActivity.toggleYScale.equals("N")) {
-                    // Test font size is 6.0f - base scaling on this
-                    myscale = FullscreenActivity.mFontSize / 6.0f;
-                    //maxscale = x_scale*2;
-                }
-
-                // Decide on the max scale size, based on max font size
-                if (myscale > maxscale) {
-                    myscale = maxscale;
-                }
-
-                FullscreenActivity.myToastMessage = "";
-                // Decide on the min scale size
-                if (myscale < minscale) {
-                    if (FullscreenActivity.toggleYScale.equals("Y") && FullscreenActivity.override_fullscale) {
-                        // Trying to use full autoscale, but the text is now too small.
-                        // Switching to width only autoscale
+                        // Use the smallest of the two scale values so we can fit everything in
                         myscale = x_scale;
-                        overridingfull = true;
-                        FullscreenActivity.myToastMessage = getString(R.string.override_fullautoscale);
-                    }
-                }
+                        if (x_scale >= y_scale) {
+                            myscale = y_scale;
+                        }
+                        // If we are scaling to width only
+                        if (FullscreenActivity.toggleYScale.equals("W")) {
+                            myscale = x_scale;
+                        }
 
-                if (myscale < minscale) {
-                    if (FullscreenActivity.toggleYScale.equals("Y") && FullscreenActivity.override_widthscale) {
-                        // Trying to use width autoscale, but the text is still too small.
-                        // Switch autoscale off
-                        myscale = minscale;
-                        overridingwidth = true;
-                        FullscreenActivity.myToastMessage = getString(R.string.override_widthautoscale);
-                    }
+                        // If autoscale is off
+                        if (FullscreenActivity.toggleYScale.equals("N")) {
+                            // Test font size is 6.0f - base scaling on this
+                            myscale = FullscreenActivity.mFontSize / 6.0f;
+                        }
+                        // Decide on the max scale size, based on max font size
+                        if (myscale > maxscale) {
+                            myscale = maxscale;
+                        }
+                        break;
                 }
 
 
@@ -2097,44 +2131,63 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected void onPostExecute(String s) {
-            v.setPivotX(0.5f);
-            v.setPivotY(0.5f);
-            v.setScaleX(FullscreenActivity.sectionScaleValue[section]);
-            v.setScaleY(FullscreenActivity.sectionScaleValue[section]);
 
+            if (section==0) {
+                FullscreenActivity.sectionScaleValue[0] = myscale;
+                column1_1_scale = myscale;
+            } else if (section==1) {
+                FullscreenActivity.sectionScaleValue[1] = myscale;
+                column1_2_scale = myscale;
+            } else if (section==2) {
+                FullscreenActivity.sectionScaleValue[2] = myscale;
+                column2_2_scale = myscale;
+            } else if (section==3) {
+                FullscreenActivity.sectionScaleValue[3] = myscale;
+                column1_3_scale = myscale;
+            } else if (section==4) {
+                FullscreenActivity.sectionScaleValue[4] = myscale;
+                column2_3_scale = myscale;
+            } else if (section==5) {
+                FullscreenActivity.sectionScaleValue[5] = myscale;
+                column3_3_scale = myscale;
+            }
+
+            test.removeView(v);
             FullscreenActivity.sectionviews[section] = v;
 
             if (FullscreenActivity.whichMode.equals("Stage")) {
                 // Stage mode with separate sections
-                v.setOnClickListener(new View.OnClickListener() {
+                FullscreenActivity.sectionviews[section].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         selectSection(section);
                     }
                 });
 
-                // Remove the view from the test pane
-                ((RelativeLayout) v.getParent()).removeView(v);
-
-                // Check if all the views are rendered.
-                // If so, add them to the song section view
+                // Check if all the views are rendered, if so, add them to the song section view
                 boolean alldone = true;
-                for (boolean yesorno : FullscreenActivity.sectionrendered) {
-                    if (!yesorno) {
+                for (View yesorno : FullscreenActivity.sectionviews) {
+                    if (yesorno==null) {
                         alldone = false;
                     }
                 }
                 if (alldone) {
-                    renderthesongsections();
+                    if (!rendercalled) {
+                        // Go through each section and do the scaling
+                        for (int w=0;w<FullscreenActivity.sectionviews.length;w++) {
+                            FullscreenActivity.sectionviews[w].setPivotX(0.5f);
+                            FullscreenActivity.sectionviews[w].setPivotY(0.5f);
+                            FullscreenActivity.sectionviews[w].setScaleX(FullscreenActivity.sectionScaleValue[w]);
+                            FullscreenActivity.sectionviews[w].setScaleY(FullscreenActivity.sectionScaleValue[w]);
+                        }
+
+                        renderthesongsections();
+                        rendercalled = true;
+                    }
                 }
 
             } else {
-                // Performance mode with up to 3 columns
-
-                // Remove the view from the test pane
-
-                ((RelativeLayout) v.getParent()).removeView(v);
-                // Check to see if we've done all we need to do
+                // Performance mode
                 boolean alldone = true;
                 for (int r = 0; r < 6; r++) {
                     if (!FullscreenActivity.sectionrendered[r] || FullscreenActivity.sectionviews[r]==null) {
@@ -2148,34 +2201,69 @@ public class StageMode extends AppCompatActivity implements
                     float scaletouse = biggestscale_1col;
                     coltouse = 1;
                     if (biggestscale_2col>scaletouse) {
-                        scaletouse = biggestscale_2col;
                         coltouse = 2;
                     }
                     if (biggestscale_3col>scaletouse) {
-                        scaletouse = biggestscale_3col;
                         coltouse = 3;
                     }
 
-                    if (FullscreenActivity.toggleYScale.equals("W") ||
-                            (FullscreenActivity.toggleYScale.equals("Y") && FullscreenActivity.override_fullscale && overridingfull)) {
-                        coltouse = 1;
-                        scaletouse = biggestscale_1col;
-                        width = FullscreenActivity.sectionviews[0].getWidth();
-                        height = FullscreenActivity.sectionviews[0].getHeight();
+                    // Decide if 2 cols or 3 cols are all bigger than the minscale
+                    float smallest2colscale;
+                    if (column1_2_scale>column2_2_scale) {
+                        smallest2colscale = column2_2_scale;
+                    } else {
+                        smallest2colscale = column1_2_scale;
+                    }
+                    float smallest3colscale = column1_3_scale;
+                    if (column2_3_scale<smallest3colscale) {
+                        smallest3colscale = column2_3_scale;
+                    }
+                    if (column3_3_scale<smallest3colscale) {
+                        smallest3colscale = column3_3_scale;
                     }
 
-                    if (FullscreenActivity.toggleYScale.equals("N") ||
-                            (FullscreenActivity.toggleYScale.equals("Y") && FullscreenActivity.override_widthscale && overridingwidth)) {
-                        coltouse = 1;
-                        scaletouse = biggestscale_1col;
-                        width = FullscreenActivity.sectionviews[0].getWidth();
-                        height = FullscreenActivity.sectionviews[0].getHeight();
+                    boolean acceptable1cols = column1_1_scale>=minscale;
+                    coltouse = 1;
+
+                    boolean acceptable2cols = column1_2_scale>=minscale && column2_2_scale>=minscale;
+                    if (FullscreenActivity.toggleYScale.equals("Y") && acceptable2cols && smallest2colscale>column1_1_scale && smallest2colscale>smallest3colscale) {
+                        coltouse = 2;
+                        overridingfull = false;
+                        overridingwidth = false;
                     }
-                    for (int r = 0; r < FullscreenActivity.sectionrendered.length; r++) {
+
+                    boolean acceptable3cols = column1_3_scale>=minscale && column2_3_scale>=minscale && column3_3_scale>=minscale;
+                    if (FullscreenActivity.toggleYScale.equals("Y") && acceptable3cols && smallest2colscale>column1_1_scale && smallest3colscale>=smallest2colscale) {
+                        coltouse = 3;
+                        overridingfull = false;
+                        overridingwidth = false;
+                    }
+
+                    if (!acceptable1cols && !acceptable2cols && !acceptable3cols &&
+                            FullscreenActivity.toggleYScale.equals("Y") && FullscreenActivity.override_fullscale) {
+                        coltouse = 1;
+                        FullscreenActivity.sectionScaleValue[0] = (float)available_width / (float)FullscreenActivity.sectionviews[0].getWidth();
+                        overridingfull = true;
+
+                        if (FullscreenActivity.sectionScaleValue[0]<minscale && FullscreenActivity.override_widthscale) {
+                            FullscreenActivity.sectionScaleValue[0] = nonscaled;
+                            overridingwidth = true;
+                        }
+                    }
+
+                    for (int w=0;w<FullscreenActivity.sectionviews.length;w++) {
                         // Do the scaling
-                        int new_width = (int) (width * scaletouse);
-                        int new_height = (int) (height * scaletouse);
+                        FullscreenActivity.sectionviews[w].setPivotX(0.5f);
+                        FullscreenActivity.sectionviews[w].setPivotY(0.5f);
+                        FullscreenActivity.sectionviews[w].setScaleX(FullscreenActivity.sectionScaleValue[w]);
+                        FullscreenActivity.sectionviews[w].setScaleY(FullscreenActivity.sectionScaleValue[w]);
+                    }
 
+                    for (int r = 0; r < FullscreenActivity.sectionrendered.length; r++) {
+                        width = FullscreenActivity.sectionviews[r].getWidth();
+                        height = FullscreenActivity.sectionviews[r].getHeight();
+                        int new_width = (int) (width * FullscreenActivity.sectionScaleValue[r]);
+                        int new_height = (int) (height * FullscreenActivity.sectionScaleValue[r]);
                         FullscreenActivity.viewwidth[r] = new_width;
                         FullscreenActivity.viewheight[r] = new_height;
                     }
@@ -2250,11 +2338,14 @@ public class StageMode extends AppCompatActivity implements
         return val;
     }
 
+    public int getPixelsFromDpi(int dps) {
+        return dps * (int) (getResources().getDisplayMetrics().densityDpi / 160f);
+    }
+
     public void renderthesongsections() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
                 LinearLayout mysongsections = new LinearLayout(StageMode.this);
                 mysongsections.setLayoutParams(new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT));
                 mysongsections.setOrientation(LinearLayout.VERTICAL);
@@ -2262,30 +2353,22 @@ public class StageMode extends AppCompatActivity implements
 
                 if (FullscreenActivity.whichMode.equals("Stage")) {
                     for (int z = 0; z < FullscreenActivity.sectionContents.length; z++) {
-                        int diff = FullscreenActivity.viewheight[z] - FullscreenActivity.sectionviews[z].getHeight();
-                        LinearLayout.LayoutParams section = new LinearLayout.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT - 2 * FullscreenActivity.padding, ScrollView.LayoutParams.WRAP_CONTENT);
-
-                        // Decide on margins
-                        int side_margins = (int) ((songscrollview.getWidth() - FullscreenActivity.viewwidth[z] -
-                                (FullscreenActivity.sectionScaleValue[z] * 8)) / 2.0f);
-                        if (side_margins < 0) {
-                            side_margins = 0;
+                        ProcessSong.removeParents(FullscreenActivity.sectionviews[z]);
+                        if (FullscreenActivity.sectionviews[z] != null && FullscreenActivity.sectionviews[z].getParent()==null) {
+                            ProcessSong.setUpStageModeSectionView(z);
+                            RelativeLayout sectionholder = ProcessSong.createStageModeSectionBox(StageMode.this,z);
+                            mysongsections.addView(sectionholder);
                         }
-                        int top_margin = (int) (FullscreenActivity.sectionScaleValue[z] * 4);
-                        int bottom_margin = diff + (int) (FullscreenActivity.sectionScaleValue[z] * 8);
-                        section.setMargins(side_margins, top_margin, side_margins, bottom_margin);
-                        FullscreenActivity.sectionviews[z].setLayoutParams(section);
-                        FullscreenActivity.sectionviews[z].setAlpha(0.5f);
-                        // Decide on the background color
-                        if (FullscreenActivity.whichMode.equals("Stage")) {
-                            int colortouse = ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[z]);
-                            FullscreenActivity.sectionviews[z].setBackgroundResource(R.drawable.section_box);
-                            GradientDrawable drawable = (GradientDrawable) FullscreenActivity.sectionviews[z].getBackground();
-                            drawable.setColor(colortouse);
-                        }
-                        mysongsections.addView(FullscreenActivity.sectionviews[z]);
                     }
-                    FullscreenActivity.sectionviews[0].setAlpha(1.0f);
+
+                    if (FullscreenActivity.sectionviews[0]!=null) {
+                        // Make the first section active (full alpha)
+                        try {
+                            FullscreenActivity.sectionviews[0].setAlpha(1.0f);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
 
                 } else {
                     // In Performance Mode, so decide which view to create
@@ -2297,27 +2380,18 @@ public class StageMode extends AppCompatActivity implements
                     ScrollView.LayoutParams col_llp = new ScrollView.LayoutParams(ScrollView.LayoutParams.WRAP_CONTENT, ScrollView.LayoutParams.WRAP_CONTENT);
                     columns.setLayoutParams(col_llp);
 
-                    int top_margin = FullscreenActivity.padding;
-                    int bottom_margin = FullscreenActivity.padding;
-                    int side_margins = FullscreenActivity.padding;
-
                     if (FullscreenActivity.toggleYScale.equals("W") ||
                             (FullscreenActivity.toggleYScale.equals("Y") && FullscreenActivity.override_fullscale && overridingfull && !overridingwidth)) {
-                        coltouse = 1;
-                        if (FullscreenActivity.hideActionBar) {
-                            height = FullscreenActivity.viewheight[0];
-                        } else {
-                            height = FullscreenActivity.viewheight[0];
-                        }
-                    } else if (FullscreenActivity.toggleYScale.equals("N") ||
-                            (FullscreenActivity.toggleYScale.equals("Y") && FullscreenActivity.override_widthscale && overridingwidth)) {
+                        Log.d("d","Overriding to width only");
                         coltouse = 1;
                         width = FullscreenActivity.viewwidth[0];
-                        if (FullscreenActivity.hideActionBar) {
-                            height = FullscreenActivity.viewheight[0];
-                        } else {
-                            height = FullscreenActivity.viewheight[0];
-                        }
+                        height = FullscreenActivity.viewheight[0];
+                    } else if (FullscreenActivity.toggleYScale.equals("N") ||
+                            (FullscreenActivity.toggleYScale.equals("Y") && FullscreenActivity.override_widthscale && overridingwidth)) {
+                        Log.d("d","Overriding to autoscale off");
+                        coltouse = 1;
+                        width = FullscreenActivity.viewwidth[0];
+                        height = FullscreenActivity.viewheight[0];
                     }
 
                     // If we have overriden the scaling, there will be a toast message ready
@@ -2328,8 +2402,6 @@ public class StageMode extends AppCompatActivity implements
                         if (height>pageheight) {
                             // Page is taller than available, so definitely overriding
                             FullscreenActivity.myToastMessage = getResources().getString(R.string.override_fullautoscale);
-                            height = height + FullscreenActivity.padding*2;
-
                             if (width>pagewidth) {
                                 // Page is wider than available, so definitely overriding
                                 FullscreenActivity.myToastMessage = getResources().getString(R.string.override_widthautoscale);
@@ -2341,73 +2413,48 @@ public class StageMode extends AppCompatActivity implements
                     switch (coltouse) {
 
                         case 1:
-                            LinearLayout.LayoutParams section = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                            // Decide on margins
-                            section.setMargins(side_margins, top_margin, side_margins, bottom_margin);
-                            //section.height = height - ab.getHeight() - FullscreenActivity.padding*2;
-                            if (!FullscreenActivity.hideActionBar) {
-                                section.height = height - FullscreenActivity.padding * 2;
-                            } else {
-                                section.height = height - FullscreenActivity.padding * 2;
-                            }
-                            section.width = width - FullscreenActivity.padding*2;
-                            FullscreenActivity.sectionviews[0].setLayoutParams(section);
-                            FullscreenActivity.sectionviews[0].setAlpha(1.0f);
-                            columns.addView(FullscreenActivity.sectionviews[0]);
+                            ProcessSong.removeParents(FullscreenActivity.sectionviews[0]);
+                            ProcessSong.setWidthAndHeightOfSectionViewIfZero(0);
+                            ProcessSong.setUpPerformanceModeSectionView(0,width - getPixelsFromDpi(16),height - getPixelsFromDpi(16));
+                            RelativeLayout sectionholder = ProcessSong.createPerformanceModeSectionBox(StageMode.this,0,0);
+                            columns.addView(sectionholder);
                             break;
 
                         case 2:
                             columns.setOrientation(LinearLayout.HORIZONTAL);
-                            if (FullscreenActivity.sectionviews[1].getParent()==null) {
-                                LinearLayout.LayoutParams section1_2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                section1_2.setMargins(side_margins, top_margin, side_margins, bottom_margin);
-                                section1_2.width = width/2  - FullscreenActivity.padding*2;
-                                section1_2.height = height - ab.getHeight() - FullscreenActivity.padding*2;
-                                FullscreenActivity.sectionviews[1].setLayoutParams(section1_2);
-                                FullscreenActivity.sectionviews[1].setAlpha(1.0f);
-                                columns.addView(FullscreenActivity.sectionviews[1]);
-                            }
-                            if (FullscreenActivity.sectionviews[2].getParent()==null) {
-                                LinearLayout.LayoutParams section2_2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                section2_2.setMargins(side_margins, top_margin, side_margins, bottom_margin);
-                                section2_2.width = width/2  - FullscreenActivity.padding*2;
-                                section2_2.height = height - FullscreenActivity.padding*2;
-                                FullscreenActivity.sectionviews[2].setLayoutParams(section2_2);
-                                FullscreenActivity.sectionviews[2].setAlpha(1.0f);
-                                columns.addView(FullscreenActivity.sectionviews[2]);
-                            }
+                            ProcessSong.removeParents(FullscreenActivity.sectionviews[1]);
+                            ProcessSong.setWidthAndHeightOfSectionViewIfZero(1);
+                            ProcessSong.setUpPerformanceModeSectionView(1,width / 2 - getPixelsFromDpi(16 + 2),height - getPixelsFromDpi(16));
+                            RelativeLayout sectionholder1_2 = ProcessSong.createPerformanceModeSectionBox(StageMode.this,1,getPixelsFromDpi(4));
+                            columns.addView(sectionholder1_2);
 
+                            ProcessSong.removeParents(FullscreenActivity.sectionviews[2]);
+                            ProcessSong.setWidthAndHeightOfSectionViewIfZero(2);
+                            ProcessSong.setUpPerformanceModeSectionView(2,width / 2 - getPixelsFromDpi(16 + 2),height - getPixelsFromDpi(16));
+                            RelativeLayout sectionholder2_2 = ProcessSong.createPerformanceModeSectionBox(StageMode.this,2,0);
+                            columns.addView(sectionholder2_2);
                             break;
 
                         case 3:
                             columns.setOrientation(LinearLayout.HORIZONTAL);
-                            if (FullscreenActivity.sectionviews[3].getParent()==null) {
-                                LinearLayout.LayoutParams section1_3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                section1_3.setMargins(side_margins, top_margin, side_margins, bottom_margin);
-                                section1_3.width = width/3  - FullscreenActivity.padding*2;
-                                section1_3.height = height - FullscreenActivity.padding*2;
-                                FullscreenActivity.sectionviews[3].setLayoutParams(section1_3);
-                                FullscreenActivity.sectionviews[3].setAlpha(1.0f);
-                                columns.addView(FullscreenActivity.sectionviews[3]);
-                            }
-                            if (FullscreenActivity.sectionviews[4].getParent()==null) {
-                                LinearLayout.LayoutParams section2_3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                section2_3.setMargins(side_margins, top_margin, side_margins, bottom_margin);
-                                section2_3.width = width/3  - FullscreenActivity.padding*2;
-                                section2_3.height = height - FullscreenActivity.padding*2;
-                                FullscreenActivity.sectionviews[4].setLayoutParams(section2_3);
-                                FullscreenActivity.sectionviews[4].setAlpha(1.0f);
-                                columns.addView(FullscreenActivity.sectionviews[4]);
-                            }
-                            if (FullscreenActivity.sectionviews[5].getParent()==null) {
-                                LinearLayout.LayoutParams section3_3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                section3_3.setMargins(side_margins, top_margin, side_margins, bottom_margin);
-                                section3_3.width = width/3  - FullscreenActivity.padding*2;
-                                section3_3.height = height - FullscreenActivity.padding*2;
-                                FullscreenActivity.sectionviews[5].setLayoutParams(section3_3);
-                                FullscreenActivity.sectionviews[5].setAlpha(1.0f);
-                                columns.addView(FullscreenActivity.sectionviews[5]);
-                            }
+
+                            ProcessSong.removeParents(FullscreenActivity.sectionviews[3]);
+                            ProcessSong.setWidthAndHeightOfSectionViewIfZero(3);
+                            ProcessSong.setUpPerformanceModeSectionView(3,width / 3 - getPixelsFromDpi(16 + 3),height - getPixelsFromDpi(16));
+                            RelativeLayout sectionholder1_3 = ProcessSong.createPerformanceModeSectionBox(StageMode.this,3,getPixelsFromDpi(3));
+                            columns.addView(sectionholder1_3);
+
+                            ProcessSong.removeParents(FullscreenActivity.sectionviews[4]);
+                            ProcessSong.setWidthAndHeightOfSectionViewIfZero(4);
+                            ProcessSong.setUpPerformanceModeSectionView(4,width / 3 - getPixelsFromDpi(16 + 3),height - getPixelsFromDpi(16));
+                            RelativeLayout sectionholder2_3 = ProcessSong.createPerformanceModeSectionBox(StageMode.this,4,getPixelsFromDpi(3));
+                            columns.addView(sectionholder2_3);
+
+                            ProcessSong.removeParents(FullscreenActivity.sectionviews[5]);
+                            ProcessSong.setWidthAndHeightOfSectionViewIfZero(5);
+                            ProcessSong.setUpPerformanceModeSectionView(5,width / 3 - getPixelsFromDpi(16 + 3),height - getPixelsFromDpi(16));
+                            RelativeLayout sectionholder3_3 = ProcessSong.createPerformanceModeSectionBox(StageMode.this,5,0);
+                            columns.addView(sectionholder3_3);
                             break;
                     }
                     mysongsections.addView(columns);
@@ -2884,7 +2931,7 @@ public class StageMode extends AppCompatActivity implements
         // Smooth scroll to show this view at the top of the page
         // Unless we are autoscrolling
         if (!FullscreenActivity.isautoscrolling) {
-            songscrollview.smoothScrollTo(0,FullscreenActivity.sectionviews[whichone].getTop());
+            songscrollview.smoothScrollTo(0,((RelativeLayout)(FullscreenActivity.sectionviews[whichone].getParent())).getTop());
         }
 
         // Go through each of the views and set the alpha of the others to 0.5f;
@@ -3175,9 +3222,6 @@ public class StageMode extends AppCompatActivity implements
                         if (filetext.startsWith("../OpenSong/")) {
                             filetext = filetext.replace("../OpenSong/",FullscreenActivity.homedir+"/");
                         }
-                        File myfile = new File(filetext);
-                        Log.d("d","filetext.exists()="+myfile.exists());
-                        Log.d("d","filetext="+filetext);
                         PadFunctions.getPad2Status();
                         if (FullscreenActivity.pad1Playing) {
                             FullscreenActivity.mPlayer1.stop();
@@ -3672,139 +3716,48 @@ public class StageMode extends AppCompatActivity implements
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                                float velocityY) {
 
+            FullscreenActivity.SWIPE_MIN_DISTANCE = (int) ((float)getAvailableWidth()/3f);       // Third the screen width
+            FullscreenActivity.SWIPE_MAX_OFF_PATH = FullscreenActivity.SWIPE_MIN_DISTANCE/2;     // Half the allowed width
+            FullscreenActivity.SWIPE_THRESHOLD_VELOCITY = FullscreenActivity.SWIPE_MIN_DISTANCE; //Cover this in one second
+
             // Check movement along the Y-axis. If it exceeds
-            // SWIPE_MAX_OFF_PATH, then dismiss the swipe.
-            int screenwidth = mypage.getWidth();
-            int leftmargin = 40;
-            int rightmargin = screenwidth - 40;
-            if (Math.abs(e1.getY() - e2.getY()) > FullscreenActivity.SWIPE_MAX_OFF_PATH) {
-                return false;
-            }
-
-            if (FullscreenActivity.tempswipeSet.equals("disable")) {
-                return false; // Currently disabled swiping to let screen finish drawing.
-            }
-
-            // Swipe from right to left.
-            // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
-            // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
-            if (e1.getX() - e2.getX() > FullscreenActivity.SWIPE_MIN_DISTANCE
-                    && e1.getX() < rightmargin
-                    && Math.abs(velocityX) > FullscreenActivity.SWIPE_THRESHOLD_VELOCITY
-                    && (FullscreenActivity.swipeSet.equals("Y") || FullscreenActivity.swipeSet.equals("S"))) {
-                // Set the direction as right to left
-                FullscreenActivity.whichDirection = "R2L";
-                // If we are viewing a set, move to the next song.
-
-                if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)) {
-                    FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
-                    //redrawTheLyricsTable(main_page);
+                // SWIPE_MAX_OFF_PATH, then dismiss the swipe.
+                int screenwidth = mypage.getWidth();
+                int leftmargin = 40;
+                int rightmargin = screenwidth - 40;
+                if (Math.abs(e1.getY() - e2.getY()) > FullscreenActivity.SWIPE_MAX_OFF_PATH) {
                     return false;
-                }  else {
-                    FullscreenActivity.pdfPageCurrent = 0;
                 }
 
-                if (FullscreenActivity.setSize > 1 && FullscreenActivity.setView && FullscreenActivity.indexSongInSet >= 0
-                        && FullscreenActivity.indexSongInSet < (FullscreenActivity.setSize - 1)) {
-                    // temporarily disable swipe
-                    FullscreenActivity.tempswipeSet = "disable";
-                    FullscreenActivity.indexSongInSet += 1;
-                    doMoveInSet();
-                    // Set a runnable to reset swipe back to original value
-                    // after 1 second
-                    Handler delayfadeinredraw = new Handler();
-                    delayfadeinredraw.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            FullscreenActivity.tempswipeSet = "enable";
-                        }
-                    }, FullscreenActivity.delayswipe_time);
-
+                if (FullscreenActivity.tempswipeSet.equals("disable")) {
+                    return false; // Currently disabled swiping to let screen finish drawing.
                 }
-                // If not in a set, see if we can move to the next song in the list
-                // Only if swipeSet is Y (not S)
-                if (!FullscreenActivity.setView && FullscreenActivity.swipeSet.equals("Y")
-                        && !FullscreenActivity.whichSongFolder.equals("../Variations")
-                        && !FullscreenActivity.whichSongFolder.equals("../Scripture/_cache")
-                        && !FullscreenActivity.whichSongFolder.equals("../Images/_cache")
-                        && !FullscreenActivity.whichSongFolder.equals("../Slides/_cache")
-                        && !FullscreenActivity.whichSongFolder.equals("../Notes/_cache")) {
-                    if (FullscreenActivity.nextSongIndex < FullscreenActivity.mSongFileNames.length
-                            && FullscreenActivity.nextSongIndex != -1
-                            && !FullscreenActivity.songfilename.equals(FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex])) {
-                        // Move to the next song
-                        // temporarily disable swipe
-                        FullscreenActivity.tempswipeSet = "disable";
 
-                        FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex];
-                        loadSong();
+                // Swipe from right to left.
+                // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
+                // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
+                if (e1.getX() - e2.getX() > FullscreenActivity.SWIPE_MIN_DISTANCE
+                        && e1.getX() < rightmargin
+                        && Math.abs(velocityX) > FullscreenActivity.SWIPE_THRESHOLD_VELOCITY
+                        && (FullscreenActivity.swipeSet.equals("Y") || FullscreenActivity.swipeSet.equals("S"))) {
+                    // Set the direction as right to left
+                    FullscreenActivity.whichDirection = "R2L";
+                    // If we are viewing a set, move to the next song.
 
-                        // Set a runnable to reset swipe back to original value after 1 second
-                        Handler delayfadeinredraw = new Handler();
-                        delayfadeinredraw.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                FullscreenActivity.tempswipeSet = "enable";
-                            }
-                        }, FullscreenActivity.delayswipe_time);
+                    if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)) {
+                        FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
+                        //redrawTheLyricsTable(main_page);
+                        return false;
+                    } else {
+                        FullscreenActivity.pdfPageCurrent = 0;
                     }
-                }
-                return true;
-            }
 
-            // Swipe from left to right.
-            // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
-            // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
-            if (e2.getX() - e1.getX() > FullscreenActivity.SWIPE_MIN_DISTANCE
-                    && e1.getX() > leftmargin
-                    && Math.abs(velocityX) > FullscreenActivity.SWIPE_THRESHOLD_VELOCITY
-                    && (FullscreenActivity.swipeSet.equals("Y") || FullscreenActivity.swipeSet.equals("S"))) {
-                // Set the direction as left to right
-                FullscreenActivity.whichDirection = "L2R";
-
-                if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0) {
-                    FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
-                    //redrawTheLyricsTable(main_page);
-                    return false;
-                } else {
-                    FullscreenActivity.pdfPageCurrent = 0;
-                }
-
-                // If we are viewing a set, move to the previous song.
-                if (FullscreenActivity.setSize > 2 && FullscreenActivity.setView && FullscreenActivity.indexSongInSet >= 1) {
-                    // temporarily disable swipe
-                    FullscreenActivity.tempswipeSet = "disable";
-
-                    FullscreenActivity.indexSongInSet -= 1;
-                    doMoveInSet();
-                    // Set a runnable to reset swipe back to original value after 1 second
-                    Handler delayfadeinredraw = new Handler();
-                    delayfadeinredraw.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            FullscreenActivity.tempswipeSet = "enable";
-                        }
-                    }, FullscreenActivity.delayswipe_time);
-                }
-                // If not in a set, see if we can move to the previous song in the list
-                // Only if swipeSet is Y (not S)
-                if (!FullscreenActivity.setView && FullscreenActivity.swipeSet.equals("Y")
-                        && !FullscreenActivity.whichSongFolder.equals("../Variations")
-                        && !FullscreenActivity.whichSongFolder.equals("../Scripture/_cache")
-                        && !FullscreenActivity.whichSongFolder.equals("../Images/_cache")
-                        && !FullscreenActivity.whichSongFolder.equals("../Slides/_cache")
-                        && !FullscreenActivity.whichSongFolder.equals("../Notes/_cache")) {
-
-                    if (FullscreenActivity.previousSongIndex < FullscreenActivity.mSongFileNames.length
-                            && FullscreenActivity.previousSongIndex != -1
-                            && !FullscreenActivity.songfilename.equals(FullscreenActivity.mSongFileNames[FullscreenActivity.previousSongIndex])) {
+                    if (FullscreenActivity.setSize > 1 && FullscreenActivity.setView && FullscreenActivity.indexSongInSet >= 0
+                            && FullscreenActivity.indexSongInSet < (FullscreenActivity.setSize - 1)) {
                         // temporarily disable swipe
                         FullscreenActivity.tempswipeSet = "disable";
-
-                        // Move to the previous song
-                        FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[FullscreenActivity.previousSongIndex];
-                        loadSong();
-
+                        FullscreenActivity.indexSongInSet += 1;
+                        doMoveInSet();
                         // Set a runnable to reset swipe back to original value
                         // after 1 second
                         Handler delayfadeinredraw = new Handler();
@@ -3814,10 +3767,106 @@ public class StageMode extends AppCompatActivity implements
                                 FullscreenActivity.tempswipeSet = "enable";
                             }
                         }, FullscreenActivity.delayswipe_time);
+
                     }
+                    // If not in a set, see if we can move to the next song in the list
+                    // Only if swipeSet is Y (not S)
+                    if (!FullscreenActivity.setView && FullscreenActivity.swipeSet.equals("Y")
+                            && !FullscreenActivity.whichSongFolder.equals("../Variations")
+                            && !FullscreenActivity.whichSongFolder.equals("../Scripture/_cache")
+                            && !FullscreenActivity.whichSongFolder.equals("../Images/_cache")
+                            && !FullscreenActivity.whichSongFolder.equals("../Slides/_cache")
+                            && !FullscreenActivity.whichSongFolder.equals("../Notes/_cache")) {
+                        if (FullscreenActivity.nextSongIndex < FullscreenActivity.mSongFileNames.length
+                                && FullscreenActivity.nextSongIndex != -1
+                                && !FullscreenActivity.songfilename.equals(FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex])) {
+                            // Move to the next song
+                            // temporarily disable swipe
+                            FullscreenActivity.tempswipeSet = "disable";
+
+                            FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex];
+                            loadSong();
+
+                            // Set a runnable to reset swipe back to original value after 1 second
+                            Handler delayfadeinredraw = new Handler();
+                            delayfadeinredraw.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    FullscreenActivity.tempswipeSet = "enable";
+                                }
+                            }, FullscreenActivity.delayswipe_time);
+                        }
+                    }
+                    return true;
                 }
-                return true;
-            }
+
+                // Swipe from left to right.
+                // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
+                // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
+                if (e2.getX() - e1.getX() > FullscreenActivity.SWIPE_MIN_DISTANCE
+                        && e1.getX() > leftmargin
+                        && Math.abs(velocityX) > FullscreenActivity.SWIPE_THRESHOLD_VELOCITY
+                        && (FullscreenActivity.swipeSet.equals("Y") || FullscreenActivity.swipeSet.equals("S"))) {
+                    // Set the direction as left to right
+                    FullscreenActivity.whichDirection = "L2R";
+
+                    if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0) {
+                        FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
+                        //redrawTheLyricsTable(main_page);
+                        return false;
+                    } else {
+                        FullscreenActivity.pdfPageCurrent = 0;
+                    }
+
+                    // If we are viewing a set, move to the previous song.
+                    if (FullscreenActivity.setSize > 2 && FullscreenActivity.setView && FullscreenActivity.indexSongInSet >= 1) {
+                        // temporarily disable swipe
+                        FullscreenActivity.tempswipeSet = "disable";
+
+                        FullscreenActivity.indexSongInSet -= 1;
+                        doMoveInSet();
+                        // Set a runnable to reset swipe back to original value after 1 second
+                        Handler delayfadeinredraw = new Handler();
+                        delayfadeinredraw.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                FullscreenActivity.tempswipeSet = "enable";
+                            }
+                        }, FullscreenActivity.delayswipe_time);
+                    }
+                    // If not in a set, see if we can move to the previous song in the list
+                    // Only if swipeSet is Y (not S)
+                    if (!FullscreenActivity.setView && FullscreenActivity.swipeSet.equals("Y")
+                            && !FullscreenActivity.whichSongFolder.equals("../Variations")
+                            && !FullscreenActivity.whichSongFolder.equals("../Scripture/_cache")
+                            && !FullscreenActivity.whichSongFolder.equals("../Images/_cache")
+                            && !FullscreenActivity.whichSongFolder.equals("../Slides/_cache")
+                            && !FullscreenActivity.whichSongFolder.equals("../Notes/_cache")) {
+
+                        if (FullscreenActivity.previousSongIndex < FullscreenActivity.mSongFileNames.length
+                                && FullscreenActivity.previousSongIndex != -1
+                                && !FullscreenActivity.songfilename.equals(FullscreenActivity.mSongFileNames[FullscreenActivity.previousSongIndex])) {
+                            // temporarily disable swipe
+                            FullscreenActivity.tempswipeSet = "disable";
+
+                            // Move to the previous song
+                            FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[FullscreenActivity.previousSongIndex];
+                            loadSong();
+
+                            // Set a runnable to reset swipe back to original value
+                            // after 1 second
+                            Handler delayfadeinredraw = new Handler();
+                            delayfadeinredraw.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    FullscreenActivity.tempswipeSet = "enable";
+                                }
+                            }, FullscreenActivity.delayswipe_time);
+                        }
+                    }
+                    return true;
+                }
+
             return false;
         }
     }

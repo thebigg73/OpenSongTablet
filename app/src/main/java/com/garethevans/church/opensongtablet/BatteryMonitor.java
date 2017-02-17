@@ -36,7 +36,7 @@ public class BatteryMonitor extends BroadcastReceiver {
         acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC;
     }
 
-    public static float getBatteryStatus  (Context context) {
+    public static float getBatteryStatus (Context context) {
 
         ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         batteryStatus = context.registerReceiver(null, ifilter);

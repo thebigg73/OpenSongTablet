@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import org.apache.commons.io.FileUtils;
 
@@ -315,25 +316,29 @@ public class ListSongFiles extends Activity {
 
 
         // Go through the array
-        if (FullscreenActivity.mSongFileNames!=null && FullscreenActivity.songfilename!=null) {
-            for (int s = 0; s < FullscreenActivity.mSongFileNames.length; s++) {
-                if (FullscreenActivity.mSongFileNames != null &&
-                        FullscreenActivity.songfilename != null &&
-                        FullscreenActivity.mSongFileNames[s] != null &&
-                        FullscreenActivity.mSongFileNames[s].equals(FullscreenActivity.songfilename)) {
-                    FullscreenActivity.currentSongIndex = s;
-                    if (s > 1) {
-                        FullscreenActivity.previousSongIndex = s - 1;
-                    } else {
-                        FullscreenActivity.previousSongIndex = s;
-                    }
-                    if (s < FullscreenActivity.mSongFileNames.length - 1) {
-                        FullscreenActivity.nextSongIndex = s + 1;
-                    } else {
-                        FullscreenActivity.nextSongIndex = s;
+        try {
+            if (FullscreenActivity.mSongFileNames != null && FullscreenActivity.songfilename != null) {
+                for (int s = 0; s < FullscreenActivity.mSongFileNames.length; s++) {
+                    if (FullscreenActivity.mSongFileNames != null &&
+                            FullscreenActivity.songfilename != null &&
+                            FullscreenActivity.mSongFileNames[s] != null &&
+                            FullscreenActivity.mSongFileNames[s].equals(FullscreenActivity.songfilename)) {
+                        FullscreenActivity.currentSongIndex = s;
+                        if (s > 1) {
+                            FullscreenActivity.previousSongIndex = s - 1;
+                        } else {
+                            FullscreenActivity.previousSongIndex = s;
+                        }
+                        if (s < FullscreenActivity.mSongFileNames.length - 1) {
+                            FullscreenActivity.nextSongIndex = s + 1;
+                        } else {
+                            FullscreenActivity.nextSongIndex = s;
+                        }
                     }
                 }
             }
+        } catch (Exception e) {
+            Log.d("d","Some error with the song list");
         }
     }
 

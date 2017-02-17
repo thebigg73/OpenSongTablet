@@ -189,6 +189,7 @@ public class PopUpScalingFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 FullscreenActivity.override_fullscale = isChecked;
+                Preferences.savePreferences();
             }
         });
         overrideWidth_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -338,7 +339,7 @@ public class PopUpScalingFragment extends DialogFragment {
     }
 
     public void updateminfontsize() {
-        FullscreenActivity.mMinFontSize = minAutoScale_seekBar.getProgress() + 2;
+        FullscreenActivity.mMinFontSize = (minAutoScale_seekBar.getProgress() + 2);
         String text = FullscreenActivity.mMinFontSize + " sp";
         minAutoScale_TextView.setText(text);
         minAutoScale_TextView.setTextSize(FullscreenActivity.mMinFontSize);
