@@ -128,7 +128,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         font_choices.add(getResources().getString(R.string.font_latoregular));
         font_choices.add(getResources().getString(R.string.font_leaguegothic));
         ArrayAdapter<String> choose_fonts = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, font_choices);
-        choose_fonts.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        choose_fonts.setDropDownViewResource(R.layout.my_spinner);
         presoFontSpinner.setAdapter(choose_fonts);
         presoFontSpinner.setSelection(FullscreenActivity.mypresofontnum);
 

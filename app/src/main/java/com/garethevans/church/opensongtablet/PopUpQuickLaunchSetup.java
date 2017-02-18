@@ -112,9 +112,9 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
         ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
         ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
         ArrayAdapter<String> adapter_3 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
-        adapter_1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapter_2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapter_3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter_1.setDropDownViewResource(R.layout.my_spinner);
+        adapter_2.setDropDownViewResource(R.layout.my_spinner);
+        adapter_3.setDropDownViewResource(R.layout.my_spinner);
         button1_spinner.setAdapter(adapter_1);
         button2_spinner.setAdapter(adapter_2);
         button3_spinner.setAdapter(adapter_3);

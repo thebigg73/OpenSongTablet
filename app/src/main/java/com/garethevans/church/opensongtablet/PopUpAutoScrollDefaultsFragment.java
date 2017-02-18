@@ -28,6 +28,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
     RadioButton autoscroll_default_RadioButton;
     RadioButton autoscroll_prompt_RadioButton;
     Button save_autoscroll_Button;
+    Button cancel_autoscroll_Button;
 
     public void onStart() {
         super.onStart();
@@ -62,6 +63,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
         autoscroll_default_RadioButton = (RadioButton) V.findViewById(R.id.autoscroll_default_RadioButton);
         autoscroll_prompt_RadioButton = (RadioButton) V.findViewById(R.id.autoscroll_prompt_RadioButton);
         save_autoscroll_Button = (Button) V.findViewById(R.id.save_autoscroll_Button);
+        cancel_autoscroll_Button = (Button) V.findViewById(R.id.cancel_autoscroll_Button);
 
         // Set them to the default values
         default_delaytime_SeekBar.setMax(30);
@@ -107,6 +109,12 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
                     FullscreenActivity.autoscroll_default_or_prompt = "default";
                 }
                 Preferences.savePreferences();
+                dismiss();
+            }
+        });
+        cancel_autoscroll_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 dismiss();
             }
         });

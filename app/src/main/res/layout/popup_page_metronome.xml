@@ -39,15 +39,13 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:text="@string/edit_song_timesig"
-                        android:textColor="#fff"
-                        android:textAppearance="@android:style/TextAppearance.Medium" />
+                        style="@style/MyHeadingText" />
 
                     <NumberPicker
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/timesig_numberPicker"
-                        android:textColor="#fff"
-                        android:textAppearance="@android:style/TextAppearance.Medium"/>
+                        style="@style/MyInfoText"/>
 
                 </LinearLayout>
 
@@ -66,8 +64,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/edit_song_tempo"
                     android:layout_margin="8dp"
-                    android:textColor="#fff"
-                    android:textAppearance="@android:style/TextAppearance.Medium" />
+                    style="@style/MyHeadingText" />
 
 
                 <LinearLayout
@@ -81,15 +78,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/bpm_numberPicker"
-                        android:textColor="#fff"
-                        android:textAppearance="@android:style/TextAppearance.Medium"/>
+                        style="@style/MyInfoText"/>
                     <TextView
                         android:id="@+id/bpmtext"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/bpm"
-                        android:textColor="#fff"
-                        android:textAppearance="@android:style/TextAppearance.Medium" />
+                        style="@style/MyInfoText" />
 
                 </LinearLayout>
 
@@ -115,8 +110,7 @@
             android:layout_height="wrap_content"
             android:text="@string/volume"
             android:layout_margin="8dp"
-            android:textColor="#fff"
-            android:textAppearance="@android:style/TextAppearance.Medium" />
+            style="@style/MyHeadingText" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -139,8 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:textColor="#fff"
-                android:textAppearance="@android:style/TextAppearance.Medium" />
+                style="@style/MyInfoText" />
         </LinearLayout>
 
         <TextView
@@ -148,8 +141,7 @@
             android:layout_height="wrap_content"
             android:text="@string/pan"
             android:layout_margin="8dp"
-            android:textColor="#fff"
-            android:textAppearance="@android:style/TextAppearance.Medium" />
+            style="@style/MyHeadingText" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -172,8 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:textColor="#000"
-                android:textAppearance="@android:style/TextAppearance.Medium" />
+                style="@style/MyInfoText" />
         </LinearLayout>
 
         <android.support.v7.widget.SwitchCompat
@@ -181,9 +172,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:textColor="#fff"
             android:text="@string/visualmetronome"
-            android:textAppearance="@android:style/TextAppearance.Medium"
+            style="@style/MyHeadingText"
             app:theme="@style/SwitchStyle" />
 
         <Button

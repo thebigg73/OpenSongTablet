@@ -45,7 +45,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
-import android.widget.ArrayAdapter;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -335,7 +334,7 @@ public class StageMode extends AppCompatActivity implements
                 optionmenu = (LinearLayout) findViewById(R.id.optionmenu);
                 song_list_view = (ListView) findViewById(R.id.song_list_view);
                 menuFolder_TextView = (TextView) findViewById(R.id.menuFolder_TextView);
-                menuFolder_TextView.setText(FullscreenActivity.whichSongFolder);
+                menuFolder_TextView.setText(getString(R.string.wait));
                 changefolder_LinearLayout = (LinearLayout) findViewById(R.id.changefolder_LinearLayout);
                 changefolder_LinearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -1948,10 +1947,10 @@ public class StageMode extends AppCompatActivity implements
         float myscale;
 
         // Decide on the max scale size, based on max font size
-        float maxscale = FullscreenActivity.mMaxFontSize / 6.0f;
+        float maxscale = FullscreenActivity.mMaxFontSize / 12.0f;
         // Decide on the min scale size, based on min font size
-        float minscale = FullscreenActivity.mMinFontSize / 6.0f;
-        float nonscaled = FullscreenActivity.mFontSize / 6.0f;
+        float minscale = FullscreenActivity.mMinFontSize / 12.0f;
+        float nonscaled = FullscreenActivity.mFontSize / 12.0f;
 
         ResizeSongSections(LinearLayout v, RelativeLayout test, int section){
             this.v = v;
@@ -2015,7 +2014,7 @@ public class StageMode extends AppCompatActivity implements
                 // Thickness of the box on each side --> 2*2
                 // Padding inside the box on each side --> 2*12
                 available_width_1 = available_width - paddingspace;                                            // Remove the padding space
-                available_width_2 = (int) ((available_width) / 2.0f) - paddingspace - getPixelsFromDpi(4);   // Remove the padding space
+                available_width_2 = (int) ((available_width) / 12.0f) - paddingspace - getPixelsFromDpi(4);   // Remove the padding space
                 available_width_3 = (int) ((available_width) / 3.0f) - paddingspace - getPixelsFromDpi(4)*2; // Remove the padding space
                 available_height = available_height - paddingspace;                                            // Remove the padding space
                 float x_scale;
@@ -2037,8 +2036,8 @@ public class StageMode extends AppCompatActivity implements
 
                         // If autoscale is off
                         if (FullscreenActivity.toggleYScale.equals("N")) {
-                            // Test font size is 6.0f - base scaling on this
-                            myscale = FullscreenActivity.mFontSize / 6.0f;
+                            // Test font size is 12.0f - base scaling on this
+                            myscale = FullscreenActivity.mFontSize / 12.0f;
                         }
                         // Decide on the max scale size, based on max font size
                         if (myscale > maxscale) {
@@ -2062,8 +2061,8 @@ public class StageMode extends AppCompatActivity implements
 
                         // If autoscale is off
                         if (FullscreenActivity.toggleYScale.equals("N")) {
-                            // Test font size is 6.0f - base scaling on this
-                            myscale = FullscreenActivity.mFontSize / 6.0f;
+                            // Test font size is 12.0f - base scaling on this
+                            myscale = FullscreenActivity.mFontSize / 12.0f;
                         }
                         // Decide on the max scale size, based on max font size
                         if (myscale > maxscale) {
@@ -2088,8 +2087,8 @@ public class StageMode extends AppCompatActivity implements
 
                         // If autoscale is off
                         if (FullscreenActivity.toggleYScale.equals("N")) {
-                            // Test font size is 6.0f - base scaling on this
-                            myscale = FullscreenActivity.mFontSize / 6.0f;
+                            // Test font size is 12.0f - base scaling on this
+                            myscale = FullscreenActivity.mFontSize / 12.0f;
                         }
                         // Decide on the max scale size, based on max font size
                         if (myscale > maxscale) {
@@ -2384,14 +2383,14 @@ public class StageMode extends AppCompatActivity implements
                             (FullscreenActivity.toggleYScale.equals("Y") && FullscreenActivity.override_fullscale && overridingfull && !overridingwidth)) {
                         Log.d("d","Overriding to width only");
                         coltouse = 1;
-                        width = FullscreenActivity.viewwidth[0];
-                        height = FullscreenActivity.viewheight[0];
+                        width = FullscreenActivity.viewwidth[0] + FullscreenActivity.padding;
+                        height = FullscreenActivity.viewheight[0] + FullscreenActivity.padding;
                     } else if (FullscreenActivity.toggleYScale.equals("N") ||
                             (FullscreenActivity.toggleYScale.equals("Y") && FullscreenActivity.override_widthscale && overridingwidth)) {
                         Log.d("d","Overriding to autoscale off");
                         coltouse = 1;
-                        width = FullscreenActivity.viewwidth[0];
-                        height = FullscreenActivity.viewheight[0];
+                        width = FullscreenActivity.viewwidth[0] + FullscreenActivity.padding;
+                        height = FullscreenActivity.viewheight[0] + FullscreenActivity.padding;
                     }
 
                     // If we have overriden the scaling, there will be a toast message ready
@@ -2512,6 +2511,7 @@ public class StageMode extends AppCompatActivity implements
             // List all of the songs in the current folder
             ListSongFiles.getAllSongFolders();
             ListSongFiles.getAllSongFiles();
+            ListSongFiles.getSongDetails();
             return null;
         }
 
@@ -2524,7 +2524,31 @@ public class StageMode extends AppCompatActivity implements
             ListSongFiles.getCurrentSongIndex();
 
             // Set the ListView to show the songs
-            ArrayAdapter<String> lva = new SongMenuAdapter(StageMode.this, FullscreenActivity.mSongFileNames);
+            //ArrayAdapter<String> lva = new SongMenuAdapter(StageMode.this, FullscreenActivity.mSongFileNames);
+            //ArrayAdapter<String> lva = new SongMenuAdapter(StageMode.this, FullscreenActivity.mSongFileNames);
+
+            ArrayList<SongMenuViewItems> songmenulist = new ArrayList<>();
+            for (int i = 0; i < FullscreenActivity.songDetails.length; i++) {
+                if (FullscreenActivity.songDetails[i][0]==null) {
+                    FullscreenActivity.songDetails[i][0] = "Can't find title";
+                }
+                if (FullscreenActivity.songDetails[i][1]==null) {
+                    FullscreenActivity.songDetails[i][1] = "Can't find author";
+                }
+                if (FullscreenActivity.songDetails[i][2]==null) {
+                    FullscreenActivity.songDetails[i][2] = "Can't find key";
+                }
+                SongMenuViewItems song = new SongMenuViewItems(FullscreenActivity.mSongFileNames[i],
+                        FullscreenActivity.songDetails[i][0] , FullscreenActivity.songDetails[i][1], FullscreenActivity.songDetails[i][2]);
+                songmenulist.add(song);
+            }
+
+            String[] songtitles = new String[FullscreenActivity.songDetails.length];
+            for (int z=0;z<FullscreenActivity.songDetails.length;z++) {
+                songtitles[z] = FullscreenActivity.songDetails[z][0];
+            }
+
+            SongMenuAdapter lva = new SongMenuAdapter(StageMode.this, songmenulist);
             song_list_view.setAdapter(lva);
             song_list_view.setFastScrollEnabled(true);
             song_list_view.setScrollingCacheEnabled(true);

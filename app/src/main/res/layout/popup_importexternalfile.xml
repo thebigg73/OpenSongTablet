@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
     android:padding="8dp">
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:ignore="UselessParent">
 
     <LinearLayout
         android:orientation="vertical"
@@ -18,8 +20,7 @@
         android:layout_height="wrap_content"
         android:text="@string/title"
         android:id="@+id/itemTitle_TextView"
-        android:textSize="18sp"
-        android:textColor="#ff0"
+        style="@style/MyHeadingText"
         android:layout_margin="8dp"
         android:visibility="gone"/>
 
@@ -28,9 +29,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/fileTitle_EditText"
         android:inputType="text"
-        android:singleLine="true"
-        android:textSize="20sp"
-        android:textColor="#fff"
+        android:maxLines="1"
+        style="@style/MyEditText"
         android:layout_marginBottom="12dp"
         android:layout_margin="8dp" />
 
@@ -39,8 +39,7 @@
         android:layout_height="wrap_content"
         android:text="@string/file_type"
         android:id="@+id/fileType_heading"
-        android:textColor="#ff0"
-        android:textSize="18sp"
+        style="@style/MyHeadingText"
         android:layout_margin="8dp" />
 
     <TextView
@@ -58,8 +57,7 @@
             android:layout_height="wrap_content"
             android:text="@string/onsonglocation"
             android:id="@+id/messageOnSong_TextView"
-            android:textColor="#ff0"
-            android:textSize="18sp"
+            style="@style/MyInfoText"
             android:layout_margin="8dp" />
 
         <TextView
@@ -67,8 +65,7 @@
             android:layout_height="wrap_content"
             android:text="@string/onsonglocation"
             android:id="@+id/messageOpenSong_TextView"
-            android:textColor="#ff0"
-            android:textSize="18sp"
+            style="@style/MyInfoText"
             android:layout_margin="8dp" />
 
         <TextView
@@ -76,15 +73,14 @@
             android:layout_height="wrap_content"
             android:text="@string/choosefolder"
             android:id="@+id/chooseFolder_TextView"
-            android:textColor="#ff0"
-            android:textSize="18sp"
+            style="@style/MyHeadingText"
             android:layout_margin="8dp" />
 
         <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/chooseFolder_Spinner"
-        android:layout_margin="8dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/chooseFolder_Spinner"
+            android:layout_margin="8dp" />
 
         <CheckBox
             android:layout_width="match_parent"

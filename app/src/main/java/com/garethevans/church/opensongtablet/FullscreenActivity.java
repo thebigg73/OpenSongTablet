@@ -698,6 +698,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     //public static String settodelete = "";
     public static String[] mSongFileNames;
     public static String[] mSongFolderNames;
+    public static String[][] songDetails;
 
     public static String setMoveDirection = "";
     public static ArrayList<String> allfilesforsearch = new ArrayList<>();
@@ -4602,9 +4603,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
             menuFolder_TextView.setText(FullscreenActivity.whichSongFolder);
 
             // Set the ListView to show the songs
-            lva = new SongMenuAdapter(FullscreenActivity.this, FullscreenActivity.mSongFileNames);
+            /*lva = new SongMenuAdapter(FullscreenActivity.this, FullscreenActivity.mSongFileNames);
             song_list_view.setAdapter(lva);
-            lva.notifyDataSetChanged();
+            lva.notifyDataSetChanged();*/
 
             // Bug in KitKat that doesn't update FastScrollVisible
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

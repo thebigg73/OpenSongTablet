@@ -11,5 +11,6 @@
     <color name="black">#000000</color>
     <color name="fab1">#565699</color>
     <color name="fab2">#ff0000</color>
+    <color name="tranparent">#00ffffff</color>
 
 </resources>

@@ -41,8 +41,7 @@
         android:layout_marginRight="12dp"
         android:layout_marginTop="20dp"
         android:text="@string/options_set_nameofset"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#ff0" />
+        style="@style/MyHeadingText" />
 
     <EditText
         android:id="@+id/setListName"
@@ -50,14 +49,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/listSetCancelButton"
         android:layout_centerHorizontal="true"
-        android:background="#ffacacac"
         android:hint="@string/options_set_nameofset"
-        android:inputType="text"
-        android:padding="12dp"
-        android:singleLine="true"
-        android:textAppearance="@android:style/TextAppearance.Medium"
-        android:textColor="#000"
-        android:textColorHint="#333" />
+        android:maxLines="1"
+        style="@style/MyEditText" />
 
     <Button
         android:id="@+id/listSetCancelButton"

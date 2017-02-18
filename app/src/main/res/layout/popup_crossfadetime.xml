@@ -28,8 +28,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/crossFadeText"
                 android:layout_margin="24dp"
-                android:textSize="24sp"
-                android:textColor="#fff"
+                style="@style/MyInfoText"
                 android:gravity="center_horizontal" />
 
         </LinearLayout>

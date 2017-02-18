@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
 
     <ScrollView
@@ -20,10 +20,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                style="@style/MyHeadingText"
                 android:text="@string/alert_text"
-                android:id="@+id/alert_title"
-                android:textColor="#ff0" />
+                android:id="@+id/alert_title" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -31,7 +30,8 @@
                 android:id="@+id/alertMessage"
                 android:hint="@string/alert_text"
                 android:inputType="textAutoComplete|textAutoCorrect"
-                android:singleLine="true" />
+                android:maxLines="1"
+                style="@style/MyEditText" />
         </LinearLayout>
     </ScrollView>
 

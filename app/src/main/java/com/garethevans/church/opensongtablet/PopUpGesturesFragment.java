@@ -87,8 +87,8 @@ public class PopUpGesturesFragment extends DialogFragment {
         vals.add(getString(R.string.off));
 
         // Set up the spinners
-        ArrayAdapter<String> gestures = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, vals);
-        gestures.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> gestures = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, vals);
+        gestures.setDropDownViewResource(R.layout.my_spinner);
         screenDoubleTap.setAdapter(gestures);
         screenLongPress.setAdapter(gestures);
         previousPedalLongPress.setAdapter(gestures);

@@ -79,6 +79,8 @@ public class PopUpImportExternalFile extends DialogFragment {
     Button importFile_Cancel;
     Button importFile_Save;
     CheckBox overWrite_CheckBox;
+    ImportOnSongBackup import_os;
+    Backup_Install import_osb;
 
     //static ArrayList<String> newtempfolders;
     String moveToFolder;
@@ -387,14 +389,12 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         for (String aScripture : scripture) {
             scriptureline = scriptureline + aScripture;
-            if (scriptureline!=null && scriptureline.length() > 50) {
+            if (scriptureline.length() > 50) {
                 scripturearray.add(scriptureline);
                 scriptureline = "";
             }
         }
-        if (scriptureline!=null) {
-            scripturearray.add(scriptureline);
-        }
+        scripturearray.add(scriptureline);
 
         // Convert the array back into one string separated by new lines
         FullscreenActivity.scripture = "";
@@ -562,7 +562,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     public void showSongFolders() {
         ListSongFiles.getAllSongFolders();
-        ArrayAdapter<String> folders = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, FullscreenActivity.mSongFolderNames);
+        ArrayAdapter<String> folders = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, FullscreenActivity.mSongFolderNames);
         chooseFolder_Spinner.setAdapter(folders);
         moveToFolder = FullscreenActivity.mSongFolderNames[0];
         chooseFolder_Spinner.setSelection(0);
@@ -596,7 +596,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
 
         if (backups.size()>0) {
-            ArrayAdapter<String> files = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, backups);
+            ArrayAdapter<String> files = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, backups);
             chooseFolder_Spinner.setAdapter(files);
             chooseFolder_Spinner.setSelection(0);
             backupchosen = backups.get(0);
@@ -633,7 +633,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         }
 
         if (backups.size()>0) {
-            ArrayAdapter<String> files = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, backups);
+            ArrayAdapter<String> files = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, backups);
             chooseFolder_Spinner.setAdapter(files);
             chooseFolder_Spinner.setSelection(0);
             backupchosen = backups.get(0);
@@ -666,8 +666,12 @@ public class PopUpImportExternalFile extends DialogFragment {
         importFile_Save.setClickable(false);
 
         // Now start the AsyncTask
-        ImportOnSongBackup import_os = new ImportOnSongBackup();
-        import_os.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        import_os = new ImportOnSongBackup();
+        try {
+            import_os.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            Log.d("d","Error importing");
+        }
     }
     public class ImportOnSongBackup extends AsyncTask<String, Void, String> {
 
@@ -683,7 +687,9 @@ public class PopUpImportExternalFile extends DialogFragment {
             File dbfile = new File(FullscreenActivity.homedir + "/OnSong.Backup.sqlite3");
 
             if (dbfile.exists()) {
-                dbfile.delete();
+                if (!dbfile.delete()) {
+                    Log.d("d","Error deleting db file");
+                }
             }
 
             InputStream is;
@@ -808,8 +814,12 @@ public class PopUpImportExternalFile extends DialogFragment {
         importFile_Save.setClickable(false);
 
         // Now start the AsyncTask
-        Backup_Install import_osb = new Backup_Install();
-        import_osb.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        import_osb = new Backup_Install();
+        try {
+            import_osb.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            Log.d("d","Error importing");
+        }
     }
     public class Backup_Install extends AsyncTask<String, Void, String> {
 
@@ -849,9 +859,11 @@ public class PopUpImportExternalFile extends DialogFragment {
                             e.printStackTrace();
                         }
                     }
-            long time = ze.getTime();
-            if (time > 0)
-                file.setLastModified(time);
+                    long time = ze.getTime();
+                    if (time > 0)
+                        if (!file.setLastModified(time)) {
+                            Log.d("d", "Couldn't get last modified time");
+                        }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -862,7 +874,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                         zis.close();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        message = getActivity().getResources().getString(R.string.backup_error);
+                        message = getActivity().getString(R.string.backup_error);
                     }
                 }
             }
@@ -881,6 +893,12 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
+        if (import_os!=null) {
+            import_os.cancel(true);
+        }
+        if (import_osb!=null) {
+            import_osb.cancel(true);
+        }
         this.dismiss();
     }
 

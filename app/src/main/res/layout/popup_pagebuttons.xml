@@ -34,6 +34,8 @@
                 android:thumb="@drawable/switch_button"
                 app:showText="true"
                 app:thumbTextPadding="4dp"
+                style="@style/MyTextSwitch"
+                app:switchTextAppearance="@style/MyInfoText"
                 android:layout_gravity="center_vertical"
                 app:thumbTint="#444488" />
 
@@ -45,7 +47,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/transparency"
-                android:textColor="#ff0"
+                style="@style/MyHeadingText"
                 android:layout_gravity="center_vertical"/>
 
             <LinearLayout

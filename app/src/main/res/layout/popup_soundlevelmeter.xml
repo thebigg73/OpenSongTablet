@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
     <ScrollView
         android:layout_width="match_parent"
@@ -116,13 +116,12 @@
                     android:id="@+id/textView31"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
-                    android:textColor="#ff0"
-                    android:textAppearance="@android:style/TextAppearance.Large" />
+                    style="@style/MyHeadingText" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    style="@style/MyHeadingText"
                     android:id="@+id/dBTextView"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal" />
@@ -134,13 +133,12 @@
                     android:id="@+id/textView34"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
-                    android:textColor="#ff0"
-                    android:textAppearance="@android:style/TextAppearance.Large" />
+                    style="@style/MyWhiteHeadingText" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    style="@style/MyWhiteHeadingText"
                     android:id="@+id/averagevol"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal" />
@@ -150,7 +148,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/resetaverage"
                     android:text="@string/reset"
-                    android:gravity="center_horizontal"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/green_button"
                     android:layout_margin="8dp"
@@ -172,8 +169,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
-                    android:textAppearance="@android:style/TextAppearance.Large"
-                    android:textColor="#ff0" />
+                    style="@style/MyHeadingText" />
 
                 <SeekBar
                     android:layout_width="match_parent"
@@ -191,7 +187,7 @@
                     android:id="@+id/volval"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    style="@style/MyWhiteHeadingText" />
             </LinearLayout>
 
             <Button

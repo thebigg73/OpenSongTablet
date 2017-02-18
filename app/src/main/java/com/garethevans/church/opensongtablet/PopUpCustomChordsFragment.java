@@ -59,6 +59,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         }
     }
 
+    AsyncTask<Object,Void,String> prepare_custom;
     String string6_text = "x";
     String string5_text = "x";
     String string4_text = "x";
@@ -273,7 +274,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         instrument_choice.add(getActivity().getResources().getString(R.string.banjo4));
         instrument_choice.add(getActivity().getResources().getString(R.string.banjo5));
         ArrayAdapter<String> adapter_instrument = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, instrument_choice);
-        adapter_instrument.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter_instrument.setDropDownViewResource(R.layout.my_spinner);
         customchords_instrument.setAdapter(adapter_instrument);
 
         // Set the current instrument
@@ -582,7 +583,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
 
         String[] fret_choice = {"","1","2","3","4","5","6","7","8","9"};
         ArrayAdapter<String> adapter_fret = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, fret_choice);
-        adapter_fret.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter_fret.setDropDownViewResource(R.layout.my_spinner);
         customchords_fret.setAdapter(adapter_fret);
         customchords_fret.setOnItemSelectedListener(new FretListener());
         prepareCustomChords();
@@ -590,8 +591,12 @@ public class PopUpCustomChordsFragment extends DialogFragment {
     }
 
     public void prepareCustomChords() {
-        AsyncTask<Object,Void,String> prepare_custom = new PrepareCustom();
-        prepare_custom.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        prepare_custom = new PrepareCustom();
+        try {
+            prepare_custom.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            Log.d("d","Custom chord fragment error");
+        }
     }
     @SuppressWarnings("deprecation")
     private class PrepareCustom extends AsyncTask<Object,Void,String> {
@@ -1798,6 +1803,9 @@ public class PopUpCustomChordsFragment extends DialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         this.dismiss();
+        if (prepare_custom!=null) {
+            prepare_custom.cancel(true);
+        }
     }
 
 }

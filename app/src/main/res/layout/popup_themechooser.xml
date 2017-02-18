@@ -41,8 +41,7 @@
                     android:gravity="center_vertical"
                     android:minHeight="48dp"
                     android:text="@string/item"
-                    android:textColor="#ffff00"
-                    android:textSize="14sp" />
+                    style="@style/MyHeadingText" />
 
                 <TextView
                     android:id="@+id/dark_theme_heading"
@@ -67,8 +66,7 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:minHeight="48dp"
                     android:text="@string/light_theme"
-                    android:textColor="#ffff00"
-                    android:textSize="14sp" />
+                    style="@style/MyHeadingText" />
 
                 <TextView
                     android:id="@+id/custom1_theme_heading"
@@ -80,8 +78,7 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:minHeight="48dp"
                     android:text="@string/custom1_theme"
-                    android:textColor="#ffff00"
-                    android:textSize="14sp" />
+                    style="@style/MyHeadingText" />
 
                 <TextView
                     android:id="@+id/custom2_theme_heading"
@@ -93,8 +90,7 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:minHeight="48dp"
                     android:text="@string/custom2_theme"
-                    android:textColor="#ffff00"
-                    android:textSize="14sp" />
+                    style="@style/MyHeadingText" />
             </TableRow>
         </TableLayout>
 
@@ -123,7 +119,7 @@
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/page_background"
-                        android:textSize="14sp" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/page_dark"
@@ -174,11 +170,10 @@
                         android:id="@+id/textView54"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/lyrics_color"
-                        android:textSize="14sp" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/lyrics_dark"
@@ -233,11 +228,10 @@
                         android:id="@+id/textView55"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/chord_color"
-                        android:textSize="14sp" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/chords_dark"
@@ -291,11 +285,10 @@
                         android:id="@+id/textView56"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/capo_color"
-                        android:textSize="14sp" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/capo_dark"
@@ -346,11 +339,10 @@
                         android:id="@+id/textView57"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/verse_background"
-                        android:textSize="14sp" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/verse_dark"
@@ -401,11 +393,10 @@
                         android:id="@+id/textView58"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/chorus_background"
-                        android:textSize="14sp" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/chorus_dark"
@@ -456,11 +447,10 @@
                         android:id="@+id/textView59"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/prechorus_background"
-                        android:textSize="14sp" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/prechorus_dark"
@@ -511,11 +501,10 @@
                         android:id="@+id/textView60"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/bridge_background"
-                        android:textSize="14sp" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/bridge_dark"
@@ -566,11 +555,10 @@
                         android:id="@+id/textView61"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/tag_background"
-                        android:textSize="14sp" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/tag_dark"
@@ -621,11 +609,10 @@
                         android:id="@+id/textView62"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/custom_background"
-                        android:textSize="14sp" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/custom_dark"
@@ -676,11 +663,10 @@
                         android:id="@+id/textView63"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/comment_background"
-                        android:textSize="14sp" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/comment_dark"
@@ -731,11 +717,10 @@
                         android:id="@+id/textView64"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-
                         android:layout_margin="4dp"
                         android:layout_weight="0.28"
                         android:text="@string/metronome"
-                        android:textSize="14sp" />
+                        style="@style/MyInfoText" />
 
                     <ImageView
                         android:id="@+id/metronome_dark"

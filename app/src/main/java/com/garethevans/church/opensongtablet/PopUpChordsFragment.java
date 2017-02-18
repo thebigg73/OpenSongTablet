@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,7 @@ public class PopUpChordsFragment extends DialogFragment {
 
     TableLayout chordimageshere;
     ArrayList<String> unique_chords;
+    AsyncTask<Object,Void,String> prepare_chords;
 
     // Identify the chord images
     private Drawable f1;
@@ -170,7 +172,7 @@ public class PopUpChordsFragment extends DialogFragment {
         instrument_choice.add(getResources().getString(R.string.banjo4));
         instrument_choice.add(getResources().getString(R.string.banjo5));
         ArrayAdapter<String> adapter_instrument = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, instrument_choice);
-        adapter_instrument.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter_instrument.setDropDownViewResource(R.layout.my_spinner);
         popupchord_instrument.setAdapter(adapter_instrument);
         switch (FullscreenActivity.chordInstrument) {
             case "g":
@@ -233,8 +235,12 @@ public class PopUpChordsFragment extends DialogFragment {
     }
 
     public void prepareChords() {
-        AsyncTask<Object,Void,String> prepare_chords = new PrepareChords();
-        prepare_chords.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        prepare_chords = new PrepareChords();
+        try {
+            prepare_chords.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            Log.d("d","Error preparing chords");
+        }
     }
     private class PrepareChords extends AsyncTask<Object,Void,String> {
 
@@ -978,6 +984,9 @@ public class PopUpChordsFragment extends DialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
+        if (prepare_chords!=null) {
+            prepare_chords.cancel(true);
+        }
         this.dismiss();
     }
 

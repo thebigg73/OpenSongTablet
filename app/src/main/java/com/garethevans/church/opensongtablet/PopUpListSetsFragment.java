@@ -294,7 +294,11 @@ public class PopUpListSetsFragment extends DialogFragment {
         FullscreenActivity.lastSetName = FullscreenActivity.setnamechosen;
         dataTask = null;
         dataTask = new FetchDataTask();
-        dataTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        try {
+            dataTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            Log.d("d","Error getting data");
+        }
     }
 
     public void doSaveSet() {
@@ -549,6 +553,9 @@ public class PopUpListSetsFragment extends DialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
+        if (dataTask!=null) {
+            dataTask.cancel(true);
+        }
         this.dismiss();
     }
 

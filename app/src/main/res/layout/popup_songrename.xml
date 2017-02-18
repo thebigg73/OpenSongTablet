@@ -20,10 +20,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/choosefolder"
                 android:id="@+id/textView14"
-                android:textColor="#ff0"
+                style="@style/MyHeadingText"
                 android:layout_margin="8dp" />
 
             <Spinner
@@ -35,10 +34,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/textView12"
                 android:text="@string/rename"
-                android:textColor="#ff0"
+                style="@style/MyHeadingText"
                 android:layout_margin="8dp" />
 
             <EditText
@@ -49,13 +47,8 @@
                 android:inputType="textAutoCorrect|text"
                 android:maxLines="1"
                 android:hint="@string/choosesongname"
-                android:textColor="#000"
-                android:textColorHint="#666"
-                android:background="#fff"
-                android:textSize="20sp" />
-            />
-
-        </LinearLayout>
+                style="@style/MyEditText" />
+            </LinearLayout>
     </ScrollView>
 
     <Button

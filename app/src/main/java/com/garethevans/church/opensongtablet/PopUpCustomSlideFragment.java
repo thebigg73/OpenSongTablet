@@ -67,6 +67,8 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         super.onDetach();
     }
 
+    AsyncTask<Object,Void,String> update_fields;
+
     // Declare views
     View V;
     RadioGroup customRadioGroup;
@@ -304,8 +306,12 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     }
 
     public void updateFields() {
-        AsyncTask<Object,Void,String> update_fields = new UpdateFields();
-        update_fields.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        update_fields = new UpdateFields();
+        try {
+            update_fields.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            Log.d("d","Error updating fields");
+        }
     }
     public class UpdateFields extends AsyncTask<Object, Void, String> {
 
@@ -584,6 +590,9 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
+        if (update_fields!=null) {
+            update_fields.cancel(true);
+        }
         this.dismiss();
     }
 

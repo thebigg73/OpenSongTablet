@@ -26,10 +26,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/newfoldername"
                 android:id="@+id/textView13"
-                android:textColor="#ff0"
+                style="@style/MyHeadingText"
                 android:layout_margin="8dp" />
 
             <EditText
@@ -37,8 +36,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/newFolderNameEditText"
                 android:inputType="text"
-                android:singleLine="true"
-                android:layout_margin="8dp" />
+                android:maxLines="1"
+                android:layout_margin="8dp"
+                style="@style/MyEditText" />
         </LinearLayout>
     </ScrollView>
 

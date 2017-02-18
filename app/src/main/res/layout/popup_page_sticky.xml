@@ -19,10 +19,9 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/stickynotes"
             android:text="@string/stickynotes"
-            android:textColor="#fff"
             android:layout_margin="8dp"
             android:padding="8dp"
-            android:textAppearance="@android:style/TextAppearance.Medium" />
+            style="@style/MyWhiteHeadingText" />
 
         <Button
             android:layout_width="match_parent"

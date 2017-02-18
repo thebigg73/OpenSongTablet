@@ -54,7 +54,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/warning"
-                android:id="@+id/warningTextView" />
+                android:id="@+id/warningTextView"
+                style="@style/MyInfoText" />
 
         </RadioGroup>
 
@@ -108,7 +109,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/bible_search"
                         android:id="@+id/textView48"
-                        android:layout_margin="8dp" />
+                        android:layout_margin="8dp"
+                        style="@style/MyHeadingText"/>
 
                     <EditText
                         android:layout_width="match_parent"
@@ -116,10 +118,8 @@
                         android:id="@+id/bibleSearch"
                         android:layout_margin="8dp"
                         android:layout_weight="1"
-                        android:background="#fff"
                         android:inputType="text"
-                        android:textColorHint="#555"
-                        android:textColor="#000"
+                        style="@style/MyEditText"
                         android:hint="@string/bible_search" />
                 </TableRow>
 
@@ -132,7 +132,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/bible_translation"
                         android:id="@+id/textView49"
-                        android:layout_margin="8dp" />
+                        android:layout_margin="8dp"
+                        style="@style/MyHeadingText"/>
 
                     <EditText
                         android:layout_width="match_parent"
@@ -140,10 +141,8 @@
                         android:id="@+id/bibleVersion"
                         android:layout_margin="8dp"
                         android:layout_weight="1"
-                        android:background="#fff"
+                        style="@style/MyEditText"
                         android:inputType="text"
-                        android:textColorHint="#555"
-                        android:textColor="#000"
                         android:hint="@string/bible_translation" />
                 </TableRow>
             </TableLayout>
@@ -188,8 +187,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/title"
                 android:id="@+id/slideTitleTextView"
-                android:textColor="#ff0"
-                android:textSize="18sp"
+                style="@style/MyHeadingText"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
@@ -203,18 +201,13 @@
                 android:id="@+id/slideTitleEditText"
                 android:hint="@string/title"
                 android:layout_marginBottom="16dp"
-                android:textColor="#000"
-                android:textCursorDrawable="@null"
                 android:maxLines="1"
                 android:inputType="text"
-                android:background="#fff"
-                android:textColorHint="#888"
-                android:textSize="14sp"
+                style="@style/MyEditText"
                 android:layout_below="@+id/slideTitleTextView"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="0dp"
-                android:padding="8dp"/>
+                android:layout_marginTop="0dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -224,9 +217,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
-                android:textColor="#ff0"
+                style="@style/MyHeadingText"
                 android:text="@string/time_slide_pages"
-                android:textSize="18sp"
                 android:layout_below="@+id/slideTitleEditText" />
 
             <EditText
@@ -240,13 +232,8 @@
                 android:layout_marginBottom="8dp"
                 android:inputType="number"
                 android:maxLines="1"
-                android:textSize="18sp"
-                android:padding="8dp"
-                android:textCursorDrawable="@null"
                 android:hint="@string/time_slide_pages_help"
-                android:textColor="#000"
-                android:textColorHint="#888"
-                android:background="#fff" />
+                style="@style/MyEditText" />
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -265,8 +252,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/content"
                 android:id="@+id/slideContentTextView"
-                android:textColor="#ff0"
-                android:textSize="18sp"
+                style="@style/MyHeadingText"
                 android:layout_below="@+id/loopCheckBox"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
@@ -309,19 +295,14 @@
                 android:id="@+id/slideContentEditText"
                 android:hint="@string/content"
                 android:layout_marginBottom="16dp"
-                android:textColor="#000"
-                android:textCursorDrawable="@null"
                 android:minLines="8"
                 android:inputType="textMultiLine"
                 android:gravity="top|start"
-                android:background="#fff"
-                android:textColorHint="#888"
-                android:textSize="14sp"
+                style="@style/MyEditText"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_below="@+id/addPageButton"
-                android:padding="8dp"/>
+                android:layout_below="@+id/addPageButton"/>
 
         </RelativeLayout>
 

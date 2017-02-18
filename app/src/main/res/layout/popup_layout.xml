@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
 
     <ScrollView
@@ -21,10 +21,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/setxmargins"
                 android:id="@+id/textView4"
-                android:textColor="#ff0" />
+                style="@style/MyHeadingText" />
 
             <SeekBar
                 style="?android:attr/progressBarStyleHorizontal"
@@ -43,10 +42,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/setymargins"
                 android:id="@+id/textView8"
-                android:textColor="#ff0" />
+                style="@style/MyHeadingText" />
 
             <SeekBar
                 style="?android:attr/progressBarStyleHorizontal"
@@ -73,10 +71,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/options_options_scale"
                 android:id="@+id/textView9"
-                android:textColor="#ff0" />
+                style="@style/MyHeadingText" />
 
             <ToggleButton
                 android:layout_width="match_parent"
@@ -88,10 +85,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/maxfontsize"
                 android:id="@+id/textView151"
-                android:textColor="#ff0" />
+                style="@style/MyHeadingText" />
 
             <SeekBar
                 style="?android:attr/progressBarStyleHorizontal"
@@ -110,7 +106,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                style="@style/MyInfoText"
                 android:id="@+id/maxfontSizePreview"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="36dp" />
@@ -126,10 +122,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/options_options_fonts"
                 android:id="@+id/textView23"
-                android:textColor="#ff0" />
+                style="@style/MyHeadingText" />
 
             <Spinner
                 android:layout_width="wrap_content"
@@ -140,10 +135,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/options_options_fontsize"
                 android:id="@+id/textView10"
-                android:textColor="#ff0" />
+                style="@style/MyHeadingText" />
 
             <SeekBar
                 style="?android:attr/progressBarStyleHorizontal"
@@ -162,7 +156,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                style="@style/MyInfoText"
                 android:id="@+id/fontSizePreview"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="36dp" />
@@ -178,10 +172,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/edit_song_title"
                 android:id="@+id/textView24"
-                android:textColor="#ff0"
+                style="@style/MyHeadingText"
                 android:layout_margin="8dp" />
 
             <SeekBar
@@ -197,7 +190,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                style="@style/MyInfoText"
                 android:text="@string/edit_song_author"
                 android:id="@+id/textView25"
                 android:layout_margin="8dp" />
@@ -214,10 +207,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/edit_song_copyright"
                 android:id="@+id/textView26"
-                android:textColor="#ff0"
+                style="@style/MyHeadingText"
                 android:layout_margin="8dp" />
 
             <SeekBar
@@ -232,10 +224,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/alert"
                 android:id="@+id/textView27"
-                android:textColor="#ff0"
+                style="@style/MyHeadingText"
                 android:layout_margin="8dp" />
 
             <SeekBar

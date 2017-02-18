@@ -19,11 +19,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/chooselyricfont"
                 android:id="@+id/textView19"
-                android:layout_margin="8dp"
-                android:textColor="#ff0" />
+                style="@style/MyHeadingText" />
 
             <Spinner
                 android:layout_width="match_parent"
@@ -34,11 +32,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/choosechordfont"
                 android:id="@+id/textView20"
-                android:layout_margin="8dp"
-                android:textColor="#ff0" />
+                style="@style/MyHeadingText" />
 
             <Spinner
                 android:layout_width="match_parent"
@@ -49,11 +45,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/textView47"
                 android:layout_margin="8dp"
-                android:textColor="#ff0"
-                android:text="@string/headingline_scale" />
+                style="@style/MyHeadingText" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -73,7 +67,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    style="@style/MyInfoText"
                     android:id="@+id/scaleHeading_TextView"
                     android:layout_weight="0.3"
                     android:layout_margin="8dp" />
@@ -82,9 +76,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_margin="8dp"
-                android:textColor="#ff0"
+                style="@style/MyHeadingText"
                 android:text="@string/chordline_scale" />
 
             <LinearLayout
@@ -105,7 +98,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    style="@style/MyInfoText"
                     android:id="@+id/scaleChords_TextView"
                     android:layout_weight="0.3"
                     android:layout_margin="8dp" />
@@ -114,10 +107,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/textView45"
                 android:layout_margin="8dp"
-                android:textColor="#ff0"
+                style="@style/MyHeadingText"
                 android:text="@string/commentline_scale" />
 
             <LinearLayout
@@ -138,7 +130,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    style="@style/MyInfoText"
                     android:id="@+id/scaleComment_TextView"
                     android:layout_weight="0.3"
                     android:layout_margin="8dp" />
@@ -148,11 +140,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/textView21"
                 android:text="@string/linespacing"
                 android:layout_margin="8dp"
-                android:textColor="#ff0" />
+                style="@style/MyHeadingText" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -172,7 +163,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    style="@style/MyInfoText"
                     android:id="@+id/lineSpacingText"
                     android:layout_weight="0.3"
                     android:layout_margin="8dp" />
@@ -193,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/tag_verse"
                         android:id="@+id/headingPreview"
-                        android:textColor="#fff" />
+                        style="@style/MyInfoText" />
                 </TableRow>
 
                 <TableRow
@@ -203,18 +194,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/font_chords_line1"
                         android:id="@+id/chordPreview1"
-                        android:textColor="#ff0" />
+                        style="@style/MyHeadingText" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/font_chords_line2"
                         android:id="@+id/chordPreview2"
-                        android:textColor="#ff0" />
+                        style="@style/MyHeadingText" />
                 </TableRow>
 
                 <TableRow
@@ -224,18 +213,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/font_lyrics_line1"
                         android:id="@+id/lyricsPreview1"
-                        android:textColor="#fff" />
+                        style="@style/MyWhiteHeadingText" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/font_lyrics_line2"
                         android:id="@+id/lyricsPreview2"
-                        android:textColor="#fff" />
+                        style="@style/MyWhiteHeadingText" />
                 </TableRow>
 
                 <TableRow
@@ -247,7 +234,7 @@
                         android:layout_height="wrap_content"
                         android:text="Repeat x2"
                         android:id="@+id/commentPreview"
-                        android:textColor="#fff" />
+                        style="@style/MyWhiteHeadingText"  />
                 </TableRow>
 
             </TableLayout>

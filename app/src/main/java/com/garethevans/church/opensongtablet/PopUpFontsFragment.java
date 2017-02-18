@@ -160,7 +160,7 @@ public class PopUpFontsFragment extends DialogFragment {
         font_choices.add(getResources().getString(R.string.font_roboto_medium));
 
         ArrayAdapter<String> choose_fonts = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, font_choices);
-        choose_fonts.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        choose_fonts.setDropDownViewResource(R.layout.my_spinner);
         lyricsFontSpinner.setAdapter(choose_fonts);
         chordsFontSpinner.setAdapter(choose_fonts);
         lyricsFontSpinner.setSelection(temp_mylyricsfontnum);

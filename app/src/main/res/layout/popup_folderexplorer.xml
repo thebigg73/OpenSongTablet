@@ -22,8 +22,7 @@
             android:layout_height="match_parent"
             android:text="@string/storage_int"
             android:id="@+id/currentFolderText"
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:singleLine="false"
+            style="@style/MyWhiteHeadingText"
             android:gravity="center_vertical|right" />
     </LinearLayout>
 

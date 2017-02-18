@@ -26,8 +26,7 @@
             android:layout_height="wrap_content"
             android:text="@string/set_manage_click"
             android:id="@+id/helpClickItem_TextView"
-            android:textSize="14sp"
-            android:textColor="#fff"
+            style="@style/MyInfoText"
             android:gravity="center_horizontal" />
 
         <TextView
@@ -35,8 +34,7 @@
             android:layout_height="wrap_content"
             android:text="@string/set_help"
             android:id="@+id/helpDragItem_TextView"
-            android:textSize="14sp"
-            android:textColor="#fff"
+            style="@style/MyInfoText"
             android:gravity="center_horizontal" />
 
         <TextView
@@ -44,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="@string/set_manage_swipe"
             android:id="@+id/helpSwipeItem_TextView"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="#fff"
             android:gravity="center_horizontal" />
 
@@ -53,8 +51,7 @@
             android:layout_height="wrap_content"
             android:text="@string/select_item_variation"
             android:id="@+id/helpVariationItem_TextView"
-            android:textSize="14sp"
-            android:textColor="#fff"
+            style="@style/MyInfoText"
             android:gravity="center_horizontal" />
     </LinearLayout>
 
@@ -99,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
-            android:background="@drawable/yellow_button"
+            android:background="@drawable/blue_button"
             android:text="@string/cancel"
             android:textColor="#fff" />
 

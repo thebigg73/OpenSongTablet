@@ -42,7 +42,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/link_youtube"
-                        android:textColor="#ff0"
+                        style="@style/MyHeadingText"
                         android:layout_margin="8dp"
                         android:gravity="left" />
 
@@ -58,12 +58,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/linkYouTube_EditText"
                         android:layout_margin="8dp"
-                        android:padding="8dp"
-                        android:textColor="#000"
-                        android:background="#fff"
+                        style="@style/MyEditText"
                         android:inputType="text"
-                        android:textSize="14sp"
-                        android:textColorHint="#888"
                         android:hint="@string/link_choose"
                         android:layout_weight="1" />
 
@@ -110,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/link_web"
                         android:id="@+id/linkWeb"
-                        android:textColor="#ff0"
+                        style="@style/MyHeadingText"
                         android:layout_margin="8dp" />
                 </LinearLayout>
 
@@ -125,11 +121,7 @@
                         android:id="@+id/linkWeb_EditText"
                         android:layout_margin="8dp"
                         android:inputType="text"
-                        android:textSize="14sp"
-                        android:textColor="#000"
-                        android:background="#fff"
-                        android:padding="8dp"
-                        android:textColorHint="#888"
+                        style="@style/MyEditText"
                         android:hint="@string/link_choose"
                         android:layout_weight="1" />
 
@@ -176,7 +168,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/link_audio"
                         android:id="@+id/textView33"
-                        android:textColor="#ff0"
+                        style="@style/MyHeadingText"
                         android:layout_margin="8dp" />
                 </LinearLayout>
 
@@ -192,11 +184,7 @@
                         android:layout_margin="8dp"
                         android:inputType="text"
                         android:hint="@string/link_choose"
-                        android:textColor="#000"
-                        android:background="#fff"
-                        android:padding="8dp"
-                        android:textColorHint="#888"
-                        android:textSize="14sp"
+                        style="@style/MyEditText"
                         android:layout_weight="1" />
 
                     <ImageButton
@@ -242,7 +230,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/link_file"
                         android:id="@+id/textView35"
-                        android:textColor="#ff0"
+                        style="@style/MyHeadingText"
                         android:layout_margin="8dp" />
                 </LinearLayout>
 
@@ -256,12 +244,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/linkOther_EditText"
                         android:layout_margin="8dp"
-                        android:padding="8dp"
-                        android:textColor="#000"
-                        android:background="#fff"
-                        android:textColorHint="#888"
+                        style="@style/MyEditText"
                         android:inputType="text"
-                        android:textSize="14sp"
                         android:hint="@string/link_choose"
                         android:layout_weight="1" />
 

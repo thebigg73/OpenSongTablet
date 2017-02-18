@@ -84,6 +84,8 @@ public class PopUpPadFragment extends DialogFragment {
     String text;
     boolean validpad;
 
+    AsyncTask<Object,Void,String> set_pad;
+
     boolean mStopHandler = false;
     Handler mHandler = new Handler();
     Runnable runnable = new Runnable() {
@@ -134,19 +136,23 @@ public class PopUpPadFragment extends DialogFragment {
         ArrayAdapter<CharSequence> adapter_key = ArrayAdapter.createFromResource(getActivity(),
                 R.array.key_choice,
                 R.layout.my_spinner);
-        adapter_key.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter_key.setDropDownViewResource(R.layout.my_spinner);
         popupPad_key.setAdapter(adapter_key);
         ArrayList<String> padfiles = new ArrayList<>();
         padfiles.add(getResources().getString(R.string.pad_auto));
         padfiles.add(getResources().getString(R.string.link_audio));
         padfiles.add(getResources().getString(R.string.off));
         ArrayAdapter<String> adapter_file = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, padfiles);
-        adapter_file.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter_file.setDropDownViewResource(R.layout.my_spinner);
         popupPad_file.setAdapter(adapter_file);
 
         // Set pad values
-        AsyncTask<Object,Void,String> set_pad = new SetPad();
-        set_pad.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        set_pad = new SetPad();
+        try {
+            set_pad.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            Log.d("d","Error setting pad values");
+        }
 
         ProcessSong.processKey();
         popupPad_key.setSelection(FullscreenActivity.keyindex);
@@ -450,6 +456,9 @@ public class PopUpPadFragment extends DialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         mStopHandler = true;
+        if (set_pad!=null) {
+            set_pad.cancel(true);
+        }
         this.dismiss();
     }
 

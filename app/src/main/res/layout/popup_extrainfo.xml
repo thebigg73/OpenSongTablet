@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:background="@drawable/section_box"
+                android:color="@android:color/transparent"
                 android:orientation="vertical"
                 android:padding="8dp">
 
@@ -39,8 +40,8 @@
                     android:textColor="#ff0"
                     android:textOff="@string/off"
                     android:textOn="@string/on"
-                    android:textSize="16sp"
-                    android:thumb="@drawable/switch_button"
+                    app:switchTextAppearance="@style/MyInfoText"
+                    style="@style/MyTextSwitch"
                     app:showText="true"
                     app:thumbTextPadding="4dp"
                     app:thumbTint="#444488" />
@@ -56,8 +57,8 @@
                     android:textColor="#ff0"
                     android:textOff="@string/top"
                     android:textOn="@string/bottom"
-                    android:textSize="16sp"
-                    android:thumb="@drawable/switch_button"
+                    app:switchTextAppearance="@style/MyInfoText"
+                    style="@style/MyTextSwitch"
                     app:showText="true"
                     app:thumbTextPadding="4dp"
                     app:thumbTint="#444488" />
@@ -68,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:background="@drawable/section_box"
+                android:color="@android:color/transparent"
                 android:orientation="vertical"
                 android:padding="8dp">
 
@@ -82,8 +84,8 @@
                     android:textColor="#ff0"
                     android:textOff="@string/off"
                     android:textOn="@string/on"
-                    android:textSize="16sp"
-                    android:thumb="@drawable/switch_button"
+                    app:switchTextAppearance="@style/MyInfoText"
+                    style="@style/MyTextSwitch"
                     app:showText="true"
                     app:thumbTextPadding="4dp"
                     app:thumbTint="#444488" />
@@ -95,15 +97,15 @@
                     android:layout_gravity="center_vertical"
                     android:layout_margin="8dp"
                     android:checked="false"
-                    android:text="@string/position"
                     android:textColor="#ff0"
-                    android:textOff="@string/top"
-                    android:textOn="@string/bottom"
-                    android:textSize="16sp"
-                    android:thumb="@drawable/switch_button"
+                    app:switchTextAppearance="@style/MyInfoText"
+                    style="@style/MyTextSwitch"
                     app:showText="true"
                     app:thumbTextPadding="4dp"
-                    app:thumbTint="#444488" />
+                    app:thumbTint="#444488"
+                    android:text="@string/position"
+                    android:textOff="@string/top"
+                    android:textOn="@string/bottom" />
 
             </LinearLayout>
 

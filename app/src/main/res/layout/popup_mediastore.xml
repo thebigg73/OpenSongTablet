@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_bg">
 
     <android.support.v7.widget.SwitchCompat
         android:layout_width="match_parent"
@@ -11,7 +12,7 @@
         android:checked="false"
         android:padding="8dp"
         android:textColor="#ff0"
-        android:textSize="16sp"
+        style="@style/MySwitch"
         android:layout_margin="8dp" />
 
     <ListView
@@ -37,15 +38,14 @@
             android:layout_height="wrap_content"
             android:text="@string/media_selected"
             android:id="@+id/textView28"
-            android:textSize="14sp"
-            android:textColor="#ff0"
+            style="@style/MyHeadingText"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="8dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            style="@style/MyWhiteHeadingText"
             android:id="@+id/mediaSelected" />
     </LinearLayout>
 

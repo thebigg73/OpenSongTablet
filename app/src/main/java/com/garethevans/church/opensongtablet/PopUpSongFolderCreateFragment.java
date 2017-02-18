@@ -109,7 +109,7 @@ public class PopUpSongFolderCreateFragment extends DialogFragment {
             }
         }
         ArrayAdapter<String> folders = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, oldtempfolders);
-        folders.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        folders.setDropDownViewResource(R.layout.my_spinner);
         oldFolderNameSpinner.setAdapter(folders);
 
         // Select the current folder as the preferred one

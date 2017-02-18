@@ -190,7 +190,11 @@ public class PopUpMetronomeFragment extends DialogFragment {
                     FullscreenActivity.metronomeonoff = "on";
                     FullscreenActivity.whichbeat = "b";
                     metroTask = new MetronomeAsyncTask();
-                    metroTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    try {
+                        metroTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                    } catch (Exception e) {
+                        Log.d ("d","Error starting metronmone");
+                    }
                     startstopVisualMetronome();
                 } else {
                     Runtime.getRuntime().gc();
@@ -270,6 +274,12 @@ public class PopUpMetronomeFragment extends DialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
+        if (metroTask!=null) {
+            metroTask.cancel(true);
+        }
+        if (visualMetronome!=null) {
+            visualMetronome.cancel(true);
+        }
         this.dismiss();
     }
 
@@ -440,7 +450,11 @@ public class PopUpMetronomeFragment extends DialogFragment {
             FullscreenActivity.metronomeonoff = "on";
             FullscreenActivity.whichbeat = "b";
             metroTask = new MetronomeAsyncTask();
-            metroTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            try {
+                metroTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            } catch (Exception e) {
+                Log.d("d","Error starting the metronome");
+            }
             startstopVisualMetronome();
 
         } else if (checkMetronomeValid() && FullscreenActivity.metronomeonoff.equals("on")) {
@@ -488,7 +502,11 @@ public class PopUpMetronomeFragment extends DialogFragment {
 
     public static void startstopVisualMetronome() {
         visualMetronome = new VisualMetronomeAsyncTask();
-        visualMetronome.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        try {
+            visualMetronome.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            Log.d("d","Error starting visual metronome");
+        }
     }
     public static class VisualMetronomeAsyncTask extends AsyncTask<Void, Integer, String> {
 

@@ -29,8 +29,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/newfoldername"
                 android:id="@+id/textView13"
-                android:textColor="#ff0"
-                android:layout_margin="8dp" />
+                style="@style/MyHeadingText" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -38,7 +37,8 @@
                 android:id="@+id/newFolderNameEditText"
                 android:inputType="text"
                 android:maxLines="1"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                style="@style/MyEditText"/>
         </LinearLayout>
     </ScrollView>
 

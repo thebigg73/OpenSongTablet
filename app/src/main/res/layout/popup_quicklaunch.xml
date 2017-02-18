@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/quicklaunch_button1"
-                android:textColor="#ff0"
+                style="@style/MyHeadingText"
                 android:layout_margin="8dp"/>
 
             <android.support.design.widget.FloatingActionButton
@@ -43,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/quicklaunch_currentaction"
+                style="@style/MyInfoText"
                 android:layout_below="@+id/button1_title"
                 android:layout_toRightOf="@+id/button1_image"/>
 
@@ -50,9 +51,6 @@
                 android:id="@+id/button1_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:background="#fff"
-                android:textColor="#000"
                 android:layout_below="@+id/button1_currently"
                 android:layout_toRightOf="@+id/button1_image"/>
 
@@ -69,7 +67,7 @@
                 android:id="@+id/button2_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#ff0"
+                style="@style/MyHeadingText"
                 android:text="@string/quicklaunch_button2"
                 android:layout_margin="8dp"/>
 
@@ -89,6 +87,7 @@
                 android:id="@+id/button2_currently"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/MyInfoText"
                 android:text="@string/quicklaunch_currentaction"
                 android:layout_below="@+id/button2_title"
                 android:layout_toRightOf="@+id/button2_image"/>
@@ -97,9 +96,6 @@
                 android:id="@+id/button2_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:background="#fff"
-                android:textColor="#000"
                 android:layout_below="@+id/button2_currently"
                 android:layout_toRightOf="@+id/button2_image"/>
 
@@ -116,7 +112,7 @@
                 android:id="@+id/button3_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#ff0"
+                style="@style/MyHeadingText"
                 android:text="@string/quicklaunch_button3"
                 android:layout_margin="8dp"/>
 
@@ -136,6 +132,7 @@
                 android:id="@+id/button3_currently"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/MyInfoText"
                 android:text="@string/quicklaunch_currentaction"
                 android:layout_below="@+id/button3_title"
                 android:layout_toRightOf="@+id/button3_image"/>
@@ -144,9 +141,6 @@
                 android:id="@+id/button3_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:background="#fff"
-                android:textColor="#000"
                 android:layout_below="@+id/button3_currently"
                 android:layout_toRightOf="@+id/button3_image"/>
 

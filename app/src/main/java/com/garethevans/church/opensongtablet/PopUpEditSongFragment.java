@@ -820,7 +820,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         ArrayAdapter<CharSequence> song_key = ArrayAdapter.createFromResource(getActivity(),
                 R.array.key_choice,
                 R.layout.my_spinner);
-        song_key.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        song_key.setDropDownViewResource(R.layout.my_spinner);
         edit_song_key.setAdapter(song_key);
         // Where is the key in the available array
         int index = -1;
@@ -836,7 +836,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         ArrayAdapter<CharSequence> time_sigs = ArrayAdapter.createFromResource(getActivity(),
                 R.array.timesig,
                 R.layout.my_spinner);
-        time_sigs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        time_sigs.setDropDownViewResource(R.layout.my_spinner);
         edit_song_timesig.setAdapter(time_sigs);
         // Where is the key in the available array
         index = -1;
@@ -852,7 +852,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         ArrayAdapter<CharSequence> capo_fret = ArrayAdapter.createFromResource(getActivity(),
                 R.array.capo,
                 R.layout.my_spinner);
-        capo_fret.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        capo_fret.setDropDownViewResource(R.layout.my_spinner);
         edit_song_capo.setAdapter(capo_fret);
         // Where is the key in the available array
         index = -1;
@@ -868,7 +868,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         ArrayAdapter<CharSequence> capo_print = ArrayAdapter.createFromResource(getActivity(),
                 R.array.capoprint,
                 R.layout.my_spinner);
-        capo_print.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        capo_print.setDropDownViewResource(R.layout.my_spinner);
         edit_song_capo_print.setAdapter(capo_print);
         // Where is the key in the available array
         // List<String> capoprint_choice = Arrays.asList(getResources().getStringArray(R.array.capoprint));
@@ -892,7 +892,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         pad_option.add(getResources().getString(R.string.off));
         ArrayAdapter<String> pad_file;
         pad_file = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, pad_option);
-        pad_file.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        pad_file.setDropDownViewResource(R.layout.my_spinner);
         edit_song_pad_file.setAdapter(pad_file);
         // Only allow auto for now (first index)
         edit_song_pad_file.setSelection(0);

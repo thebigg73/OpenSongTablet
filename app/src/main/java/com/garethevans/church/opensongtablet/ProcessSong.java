@@ -754,9 +754,9 @@ public class ProcessSong extends Activity {
             capobit.setText(FullscreenActivity.temptranspChords);
             if (FullscreenActivity.toggleYScale.equals("N")) {
                 //capobit.setTextSize(FullscreenActivity.mFontSize * FullscreenActivity.chordfontscalesize);
-                capobit.setTextSize(6.0f * FullscreenActivity.chordfontscalesize);
+                capobit.setTextSize(12.0f * FullscreenActivity.chordfontscalesize);
             } else {
-                capobit.setTextSize(6.0f * FullscreenActivity.chordfontscalesize);
+                capobit.setTextSize(12.0f * FullscreenActivity.chordfontscalesize);
             }
             capobit.setTextColor(FullscreenActivity.lyricsCapoColor);
             capobit.setTypeface(FullscreenActivity.chordsfont);
@@ -779,9 +779,9 @@ public class ProcessSong extends Activity {
             chordbit.setText(bit);
             if (FullscreenActivity.toggleYScale.equals("N")) {
                 //chordbit.setTextSize(FullscreenActivity.mFontSize * FullscreenActivity.chordfontscalesize);
-                chordbit.setTextSize(6.0f * FullscreenActivity.chordfontscalesize);
+                chordbit.setTextSize(12.0f * FullscreenActivity.chordfontscalesize);
             } else {
-                chordbit.setTextSize(6.0f * FullscreenActivity.chordfontscalesize);
+                chordbit.setTextSize(12.0f * FullscreenActivity.chordfontscalesize);
             }
             chordbit.setTextColor(FullscreenActivity.lyricsChordsColor);
             chordbit.setTypeface(FullscreenActivity.chordsfont);
@@ -805,9 +805,9 @@ public class ProcessSong extends Activity {
             lyricbit.setText(bit);
             if (FullscreenActivity.toggleYScale.equals("N")) {
                 //lyricbit.setTextSize(FullscreenActivity.mFontSize);
-                lyricbit.setTextSize(6.0f);
+                lyricbit.setTextSize(12.0f);
             } else {
-                lyricbit.setTextSize(6.0f);
+                lyricbit.setTextSize(12.0f);
             }
             lyricbit.setTextColor(FullscreenActivity.lyricsTextColor);
             lyricbit.setTypeface(FullscreenActivity.lyricsfont);
@@ -830,9 +830,9 @@ public class ProcessSong extends Activity {
             lyricbit.setText(bit);
             if (FullscreenActivity.toggleYScale.equals("N")) {
                 //lyricbit.setTextSize(FullscreenActivity.mFontSize * FullscreenActivity.commentfontscalesize);
-                lyricbit.setTextSize(6.0f * FullscreenActivity.commentfontscalesize);
+                lyricbit.setTextSize(12.0f * FullscreenActivity.commentfontscalesize);
             } else {
-                lyricbit.setTextSize(6.0f * FullscreenActivity.commentfontscalesize);
+                lyricbit.setTextSize(12.0f * FullscreenActivity.commentfontscalesize);
             }
             lyricbit.setTextColor(FullscreenActivity.lyricsTextColor);
             lyricbit.setTypeface(FullscreenActivity.lyricsfont);
@@ -848,9 +848,9 @@ public class ProcessSong extends Activity {
         titleview.setTypeface(FullscreenActivity.lyricsfont);
         if (FullscreenActivity.toggleYScale.equals("N")) {
             //titleview.setTextSize(FullscreenActivity.mFontSize * FullscreenActivity.headingfontscalesize);
-            titleview.setTextSize(6.0f * FullscreenActivity.headingfontscalesize);
+            titleview.setTextSize(12.0f * FullscreenActivity.headingfontscalesize);
         } else {
-            titleview.setTextSize(6.0f * FullscreenActivity.headingfontscalesize);
+            titleview.setTextSize(12.0f * FullscreenActivity.headingfontscalesize);
         }
         titleview.setPaintFlags(titleview.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
 
@@ -1678,6 +1678,8 @@ public class ProcessSong extends Activity {
         sectionholder.setLayoutParams(sectionholderparams);
         sectionholder.addView(FullscreenActivity.sectionviews[s]);
         sectionholder.setBackgroundResource(R.drawable.section_box);
+        GradientDrawable drawable = (GradientDrawable) sectionholder.getBackground();
+        drawable.setColor(c.getColor(R.color.tranparent));
         return sectionholder;
     }
 

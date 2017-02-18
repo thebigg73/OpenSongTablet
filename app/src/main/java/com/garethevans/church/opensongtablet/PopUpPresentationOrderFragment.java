@@ -57,13 +57,15 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
     @SuppressWarnings("deprecation")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(FullscreenActivity.songfilename);
+        getDialog().setTitle(getActivity().getResources().getString(R.string.edit_song_presentation));
+        getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_presentation_order, container, false);
         LinearLayout root_buttonshere = (LinearLayout) V.findViewById(R.id.songsectionstoadd);
         final TextView m_mPresentation = (TextView) V.findViewById(R.id.popuppres_mPresentation);
         // Try to add buttons for each section
         // How many buttons?
-
+        TextView popuppresorder_presorder_title = (TextView) V.findViewById(R.id.popuppresorder_presorder_title);
+        popuppresorder_presorder_title.setText(FullscreenActivity.mTitle);
         int numbuttons = FullscreenActivity.foundSongSections_heading.size();
         for (int r=0;r<numbuttons;r++) {
             Button but = new Button(getActivity());

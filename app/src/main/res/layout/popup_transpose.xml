@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/transposeValTextView"
                 android:gravity="center_horizontal"
-                android:textColor="#ff0"
+                style="@style/MyHeadingText"
                 android:textSize="32sp"
                 android:layout_margin="16dp"
                 android:textIsSelectable="true" />
@@ -47,9 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/oldchordformat"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#ff0"
-                android:textSize="14sp"
+                style="@style/MyHeadingText"
                 android:layout_margin="8dp" />
 
             <RadioGroup
@@ -62,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/chordFormat1"
                     android:id="@+id/chordFormat1Radio"
-                    android:textSize="12sp" />
+                    style="@style/MyInfoText" />
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -74,20 +72,19 @@
                     android:layout_height="wrap_content"
                     android:text="@string/chordFormat3"
                     android:id="@+id/chordFormat3Radio"
-                    android:textSize="12sp" />
+                    style="@style/MyInfoText" />
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/chordFormat4"
                     android:id="@+id/chordFormat4Radio"
-                    android:textSize="12sp" />
-
+                    style="@style/MyInfoText" />
                 <RadioButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/chordFormat5"
                     android:id="@+id/chordFormat5Radio"
-                    android:textSize="12sp" />
+                    style="@style/MyInfoText" />
 
             </RadioGroup>
 

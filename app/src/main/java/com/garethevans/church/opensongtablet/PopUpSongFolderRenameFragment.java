@@ -217,7 +217,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         @Override
         protected void onPostExecute(String s) {
             ArrayAdapter<String> folders = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, oldtempfolders);
-            folders.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            folders.setDropDownViewResource(R.layout.my_spinner);
             oldFolderNameSpinner.setAdapter(folders);
 
             // Select the current folder as the preferred one
@@ -233,7 +233,9 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        getFolders_async.cancel(true);
+        if (getFolders_async!=null) {
+            getFolders_async.cancel(true);
+        }
         this.dismiss();
     }
 }

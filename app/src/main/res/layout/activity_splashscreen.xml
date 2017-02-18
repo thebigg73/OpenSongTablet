@@ -40,8 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:gravity="center_horizontal"
-                android:textColor="#fff"
-                android:textSize="18sp" />
+                style="@style/MyHeadingText" />
 
             <Button
                 android:id="@+id/latest_updates"
@@ -66,7 +65,6 @@
                 android:onClick="gotothesongs"
                 android:padding="4dp"
                 android:text="@string/gotosong"
-                android:textSize="26sp"
                 android:textColor="#fff" />
 
             <TextView
@@ -75,8 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="@string/intro"
-                android:textColor="#fff"
-                android:textSize="20sp" />
+                style="@style/MyInfoText" />
 
             <TextView
                 android:id="@+id/user_guide_text"
@@ -84,20 +81,18 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="@string/user_guide_text"
-                android:textColor="#fff"
-                android:textSize="20sp" />
+                style="@style/MyInfoText" />
 
             <Button
                 android:id="@+id/user_guide"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/blue_button"
                 android:onClick="userGuide"
                 android:text="@string/user_guide"
-                android:textColor="#ff0"
-                android:textSize="22sp" />
+                android:textColor="#ff0" />
 
             <!--
                         <TextView
@@ -139,17 +134,15 @@
                             android:textSize="20sp" />
 
 -->
-            <Button
+            <TextView
                 android:id="@+id/webLink"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="8dp"
-                android:background="#000"
                 android:onClick="webLink"
                 android:text="@string/webLink"
-                android:textColor="#ff0"
-                android:textSize="22sp" />
+                style="@style/MyHeadingText" />
 
 
         </LinearLayout>

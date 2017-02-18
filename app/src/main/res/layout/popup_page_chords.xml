@@ -20,18 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/instrument"
-            android:textColor="#fff"
-            android:textAppearance="@android:style/TextAppearance.Medium" />
+            style="@style/MyHeadingText" />
 
         <Spinner
             android:id="@+id/popupchord_instrument"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="#fff"
-            android:padding="8dp"
-            android:textColor="#000"
-            android:textSize="16sp" />
+            android:layout_weight="1" />
 
         <TableLayout
             android:id="@+id/chordimageshere"
@@ -48,6 +43,7 @@
             android:text="@string/customchords"
             android:background="@drawable/grey_button"
             android:layout_margin="8dp"
+            android:textColor="#fff"
             android:layout_gravity="center_horizontal"/>
 
         <Button
@@ -57,6 +53,7 @@
             android:text="@string/drawer_close"
             android:background="@drawable/blue_button"
             android:layout_margin="8dp"
+            android:textColor="#fff"
             android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>

@@ -5,8 +5,12 @@ import android.content.Context;
 import android.util.Log;
 
 import org.apache.commons.io.FileUtils;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -222,6 +226,106 @@ public class ListSongFiles extends Activity {
         FullscreenActivity.mSongFileNames = new String[tempProperSongFiles.size()];
 
         FullscreenActivity.mSongFileNames = tempProperSongFiles.toArray(FullscreenActivity.mSongFileNames);
+    }
+
+    public static void getSongDetails() {
+        // Go through each song in the current folder and extract the title, key and author
+        // If not a valid song, just return the file name
+        FullscreenActivity.songDetails = new String[FullscreenActivity.mSongFileNames.length][3];
+        boolean fileextensionok;
+        String s_f;
+        String utf;
+        for (int r = 0; r < FullscreenActivity.mSongFileNames.length; r++) {
+            String s = FullscreenActivity.mSongFileNames[r];
+            String[] vals = new String[3];
+            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) ||
+                    FullscreenActivity.whichSongFolder.equals("")) {
+                s_f = FullscreenActivity.dir + "/" + s;
+            } else {
+                s_f = FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + s;
+            }
+            File f = new File(s_f);
+            if (f.exists()) {
+                fileextensionok = checkFileExtension(s);
+                utf = checkUtfEncoding(s_f);
+                if (fileextensionok) {
+                    vals = getSongDetailsXML(f,s,utf);
+                } else {
+                    // Non OpenSong
+                    vals[0] = s;
+                    vals[1] = "";
+                    vals[2] = "";
+                }
+                if (vals[2]==null || vals[2].equals("")) {
+                    vals[2] = "";
+                }
+                FullscreenActivity.songDetails[r][0] = vals[0];
+                FullscreenActivity.songDetails[r][1] = vals[1];
+                FullscreenActivity.songDetails[r][2] = vals[2];
+            }
+        }
+    }
+
+    public static String[] getSongDetailsXML(File f, String s, String utf) {
+        String vals[] = new String[3];
+        vals[0] = s;
+
+        try {
+            XmlPullParserFactory factory;
+            factory = XmlPullParserFactory.newInstance();
+
+            factory.setNamespaceAware(true);
+            XmlPullParser xpp;
+            xpp = factory.newPullParser();
+
+            InputStream inputStream = new FileInputStream(f);
+            xpp.setInput(inputStream, utf);
+
+            int eventType;
+            eventType = xpp.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                if (eventType == XmlPullParser.START_TAG) {
+                    if (xpp.getName().equals("author")) {
+                        vals[1] = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    } else if (xpp.getName().equals("key")) {
+                        vals[2] = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    }
+                }
+                try {
+                    eventType = xpp.next();
+                } catch (Exception e) {
+                    // Oops!
+                }
+            }
+        } catch (Exception e) {
+            vals[0] = s;
+            vals[1] = "";
+            vals[2] = "";
+        }
+         return vals;
+    }
+
+    public static boolean checkFileExtension(String s) {
+        boolean isxml = true;
+        if (s.endsWith(".pdf") || s.endsWith(".PDF")) {
+            isxml = false;
+        }
+        if (s.endsWith(".doc") || s.endsWith(".DOC") || s.endsWith(".docx") || s.endsWith(".docx")) {
+            isxml = false;
+        }
+        if (s.endsWith(".jpg") || s.endsWith(".JPG") || s.endsWith(".png") || s.endsWith(".PNG") || s.endsWith(".gif") || s.endsWith(".GIF")) {
+            isxml = false;
+        }
+        return isxml;
+    }
+
+    public static String checkUtfEncoding(String s_f) {
+        String utf = "";
+        File file = new File (s_f);
+        if (file.exists()) {
+            utf = LoadXML.getUTFEncoding(file);
+        }
+        return utf;
     }
 
     @SuppressWarnings("unused")

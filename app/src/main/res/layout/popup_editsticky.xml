@@ -15,10 +15,7 @@
         android:layout_margin="8dp"
         android:hint="@string/stickynotes"
         android:gravity="top|left"
-        android:textColor="#000"
-        android:textColorHint="#666"
-        android:background="#fff"
-        android:textSize="20sp" />
+        style="@style/MyEditText" />
 
     <Button
         android:layout_width="wrap_content"
