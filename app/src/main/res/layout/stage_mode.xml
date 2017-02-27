@@ -5,85 +5,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mypage">
+    android:id="@+id/mypage"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/mytoolbar"
-        android:id="@+id/horizontalscrollview">
+        android:id="@+id/horizontalscrollview"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/songscrollview"/>
+        android:id="@+id/songscrollview"
+        android:clipChildren="false"
+        android:clipToPadding="false"/>
 
     </HorizontalScrollView>
 
     <include layout="@layout/toolbar"
-        android:id="@+id/mytoolbar"/>
+        android:id="@+id/mytoolbar"
+        android:clipChildren="false"
+        android:clipToPadding="false"/>
 
-    <HorizontalScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/mytoolbar"
-        android:layout_alignParentLeft="true"
-        android:visibility="invisible">>
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible">
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+
     <RelativeLayout
         android:id="@+id/testpane"
+        android:layout_below="@id/toolbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"/>
+        android:layout_alignParentLeft="true"
+        android:visibility="invisible"
+        android:clipChildren="false"
+        android:clipToPadding="false" />
 
     <RelativeLayout
         android:id="@+id/testpane1_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:clipChildren="false"
+        android:clipToPadding="false"/>
 
     <RelativeLayout
         android:id="@+id/testpane2_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/testpane1_2"
-        android:visibility="invisible"/>
+        android:layout_alignParentLeft="true"
+        android:visibility="invisible"
+        android:clipChildren="false"
+        android:clipToPadding="false"/>
 
     <RelativeLayout
         android:id="@+id/testpane1_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:clipChildren="false"
+        android:clipToPadding="false"/>
 
     <RelativeLayout
         android:id="@+id/testpane2_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/testpane1_3"
-        android:visibility="invisible"/>
+        android:layout_alignParentLeft="true"
+        android:visibility="invisible"
+        android:clipChildren="false"
+        android:clipToPadding="false"/>
 
     <RelativeLayout
         android:id="@+id/testpane3_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/testpane2_3"
-        android:visibility="invisible"/>
-        </RelativeLayout>
-    </ScrollView>
-    </HorizontalScrollView>
+        android:layout_alignParentLeft="true"
+        android:visibility="invisible"
+        android:clipChildren="false"
+        android:clipToPadding="false"/>
 
     <include layout="@layout/playback_progress"
         android:id="@+id/padProgress"
@@ -166,6 +175,7 @@
         android:background="@drawable/drawer_bg"
         android:layout_gravity="start|left"
         android:padding="4dp">
+
         <LinearLayout
             android:id="@+id/changefolder_LinearLayout"
             android:layout_width="match_parent"
@@ -192,17 +202,35 @@
                 android:layout_gravity="center_vertical">
             </TextView>
         </LinearLayout>
+
+        <LinearLayout
+            android:baselineAligned="false"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/side_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" />
+            </ScrollView>
         <ListView
             android:id="@+id/song_list_view"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:choiceMode="singleChoice"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_margin="8dp"
             android:divider="#aaa"
             android:dividerHeight="1dp"
             android:fastScrollEnabled="true"/>
 
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout

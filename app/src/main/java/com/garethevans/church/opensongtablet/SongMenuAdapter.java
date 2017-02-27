@@ -80,7 +80,6 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
 
     }
 
-
     @SuppressLint({"ViewHolder", "InflateParams"})
     @Override
     public View getView(int position , View convertView , ViewGroup parent ) {
@@ -175,4 +174,14 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
         return i;
     }
 
+    static void getIndexList() {
+        FullscreenActivity.mapIndex = new LinkedHashMap<>();
+        for (int i = 0; i < FullscreenActivity.songDetails.length; i++) {
+            String title = FullscreenActivity.songDetails[i][0];
+            String index = title.substring(0, 1);
+
+            if (FullscreenActivity.mapIndex.get(index) == null)
+                FullscreenActivity.mapIndex.put(index, i);
+        }
+    }
 }

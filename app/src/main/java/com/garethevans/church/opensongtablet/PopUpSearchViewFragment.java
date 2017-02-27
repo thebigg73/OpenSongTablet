@@ -44,6 +44,14 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
     public void onDetach() {
         mListener = null;
         super.onDetach();

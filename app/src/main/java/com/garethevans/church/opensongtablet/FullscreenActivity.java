@@ -106,6 +106,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 @SuppressWarnings("deprecation")
 @SuppressLint({"DefaultLocale", "RtlHardcoded", "InflateParams", "SdCardPath"})
@@ -171,8 +172,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static int[] viewheight;
     public static int padding = 18;
     // Song sections
-    public static View[] sectionviews;
+    public static LinearLayout[] sectionviews;
     public static boolean[] sectionrendered;
+    public static Bitmap[] sectionbitmaps;
 
     // Playback progress
     LinearLayout backingtrackProgress;
@@ -212,6 +214,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     // The toolbar
     public Toolbar toolbar;
     public ActionBar ab;
+    public static int ab_height;
     public RelativeLayout songandauthor;
     public TextView songtitle_ab;
     public TextView songkey_ab;
@@ -666,7 +669,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String whichDirection = "R2L";
     public static int indexSongInSet;
     public static String previousSongInSet = "";
+    public static String previousSongKeyInSet = "";
     public static String nextSongInSet = "";
+    public static String nextSongKeyInSet = "";
     public static String mTheme = "";
     public static String mDisplayTheme = "Theme.Holo";
     public static boolean setView;
@@ -699,6 +704,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String[] mSongFileNames;
     public static String[] mSongFolderNames;
     public static String[][] songDetails;
+    public static Map<String, Integer> mapIndex;
 
     public static String setMoveDirection = "";
     public static ArrayList<String> allfilesforsearch = new ArrayList<>();
@@ -801,6 +807,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static boolean override_fullscale;
     public static boolean override_widthscale;
     public static String toggleYScale = "";
+    public static String thissong_scale;
     public static String mySetXML = "";
     public static String[] myParsedSet;
     public static String myXML = "";

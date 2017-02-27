@@ -272,21 +272,33 @@ public class LoadXML extends Activity {
             // Initialise the variables
             initialiseSongTags();
         }
+
+        FullscreenActivity.thissong_scale = FullscreenActivity.toggleYScale;
     }
 
     public static String getUTFEncoding(File filetoload) {
         // Try to determine the BOM for UTF encoding
+        FileInputStream fis = null;
+        UnicodeBOMInputStream ubis = null;
         try {
-            FileInputStream fis = new FileInputStream(filetoload);
-            UnicodeBOMInputStream ubis = new UnicodeBOMInputStream(fis);
+            fis = new FileInputStream(filetoload);
+            ubis = new UnicodeBOMInputStream(fis);
             utf = ubis.getBOM().toString();
         } catch (Exception e) {
-            Log.d("d","Error getting BOM");
             FullscreenActivity.myXML = "<title>Love everlasting</title>\n<author></author>\n<lyrics>"
                     + FullscreenActivity.songdoesntexist + "\n\n" + "</lyrics>";
             FullscreenActivity.myLyrics = "ERROR!";
         }
-
+        try {
+            if (fis != null) {
+                fis.close();
+            }
+            if (ubis != null) {
+                ubis.close();
+            }
+        } catch (Exception e) {
+            // Error closing
+        }
         return utf;
     }
 

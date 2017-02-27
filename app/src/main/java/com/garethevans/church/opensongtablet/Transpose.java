@@ -1,8 +1,9 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
+
 import java.io.IOException;
 import java.util.Arrays;
-import android.app.Activity;
 
 public class Transpose extends Activity {
 	
@@ -1017,36 +1018,38 @@ public class Transpose extends Activity {
 
 		// Check if the user is using the same chord format as the song
 		// Go through the chord lines and look for clues
-		for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
-			if (FullscreenActivity.myTransposedLyrics[x].indexOf(".")==0) {
-				// Chord line
-				if (FullscreenActivity.myTransposedLyrics[x].contains("es") || FullscreenActivity.myTransposedLyrics[x].contains("is") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" a") || FullscreenActivity.myTransposedLyrics[x].contains(".a") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" b") || FullscreenActivity.myTransposedLyrics[x].contains(".b") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" h") || FullscreenActivity.myTransposedLyrics[x].contains(".h") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" c") || FullscreenActivity.myTransposedLyrics[x].contains(".c") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" d") || FullscreenActivity.myTransposedLyrics[x].contains(".d") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" e") || FullscreenActivity.myTransposedLyrics[x].contains(".e") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" f") || FullscreenActivity.myTransposedLyrics[x].contains(".f") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" g") || FullscreenActivity.myTransposedLyrics[x].contains(".g"))	{
-					contains_es_is = true;
-				} else if (FullscreenActivity.myTransposedLyrics[x].contains("H")) {
-					contains_H = true;
-				} else if (FullscreenActivity.myTransposedLyrics[x].contains("Do") || FullscreenActivity.myTransposedLyrics[x].contains("Re") || FullscreenActivity.myTransposedLyrics[x].contains("Ré") ||
-						FullscreenActivity.myTransposedLyrics[x].contains("Me") || FullscreenActivity.myTransposedLyrics[x].contains("Fa") ||
-						FullscreenActivity.myTransposedLyrics[x].contains("Sol") || FullscreenActivity.myTransposedLyrics[x].contains("La") ||
-						FullscreenActivity.myTransposedLyrics[x].contains("Si")) {
-					contains_do = true;
-				} else if (FullscreenActivity.myTransposedLyrics[x].contains(".2") || FullscreenActivity.myTransposedLyrics[x].contains(" 2") ||
-                        FullscreenActivity.myTransposedLyrics[x].contains(".3") || FullscreenActivity.myTransposedLyrics[x].contains(" 3") ||
-                        FullscreenActivity.myTransposedLyrics[x].contains(".4") || FullscreenActivity.myTransposedLyrics[x].contains(" 4") ||
-                        FullscreenActivity.myTransposedLyrics[x].contains(".5") || FullscreenActivity.myTransposedLyrics[x].contains(" 5") ||
-                        FullscreenActivity.myTransposedLyrics[x].contains(".6") || FullscreenActivity.myTransposedLyrics[x].contains(" 6") ||
-                        FullscreenActivity.myTransposedLyrics[x].contains(".7") || FullscreenActivity.myTransposedLyrics[x].contains(" 7")) {
-                    contains_nash = true;
+        if (FullscreenActivity.myTransposedLyrics!=null) {
+            for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
+                if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
+                    // Chord line
+                    if (FullscreenActivity.myTransposedLyrics[x].contains("es") || FullscreenActivity.myTransposedLyrics[x].contains("is") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" a") || FullscreenActivity.myTransposedLyrics[x].contains(".a") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" b") || FullscreenActivity.myTransposedLyrics[x].contains(".b") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" h") || FullscreenActivity.myTransposedLyrics[x].contains(".h") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" c") || FullscreenActivity.myTransposedLyrics[x].contains(".c") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" d") || FullscreenActivity.myTransposedLyrics[x].contains(".d") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" e") || FullscreenActivity.myTransposedLyrics[x].contains(".e") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" f") || FullscreenActivity.myTransposedLyrics[x].contains(".f") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" g") || FullscreenActivity.myTransposedLyrics[x].contains(".g")) {
+                        contains_es_is = true;
+                    } else if (FullscreenActivity.myTransposedLyrics[x].contains("H")) {
+                        contains_H = true;
+                    } else if (FullscreenActivity.myTransposedLyrics[x].contains("Do") || FullscreenActivity.myTransposedLyrics[x].contains("Re") || FullscreenActivity.myTransposedLyrics[x].contains("Ré") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains("Me") || FullscreenActivity.myTransposedLyrics[x].contains("Fa") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains("Sol") || FullscreenActivity.myTransposedLyrics[x].contains("La") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains("Si")) {
+                        contains_do = true;
+                    } else if (FullscreenActivity.myTransposedLyrics[x].contains(".2") || FullscreenActivity.myTransposedLyrics[x].contains(" 2") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(".3") || FullscreenActivity.myTransposedLyrics[x].contains(" 3") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(".4") || FullscreenActivity.myTransposedLyrics[x].contains(" 4") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(".5") || FullscreenActivity.myTransposedLyrics[x].contains(" 5") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(".6") || FullscreenActivity.myTransposedLyrics[x].contains(" 6") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(".7") || FullscreenActivity.myTransposedLyrics[x].contains(" 7")) {
+                        contains_nash = true;
+                    }
                 }
-			}
-		}
+            }
+        }
 
 		//int detected = 0;
 		// Set the chord style detected

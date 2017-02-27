@@ -328,7 +328,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         setSupportActionBar(toolbar);
         ab = getSupportActionBar();
 
-        TextView title = (TextView) findViewById(R.id.songandauthor);
+        TextView title = (TextView) findViewById(R.id.songtitle_ab);
         if (ab != null && title != null) {
             ab.setTitle("");
             ab.setDisplayHomeAsUpEnabled(false);

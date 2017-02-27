@@ -100,7 +100,6 @@ public class PopUpScalingFragment extends DialogFragment {
                 switchAutoScaleWidthFull_SwitchCompat.setChecked(false);
                 switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.VISIBLE);
                 maxAutoScale_Group.setVisibility(View.VISIBLE);
-                fontsize_change_group.setVisibility(View.GONE);
                 break;
             case "Y":
                 // Full
@@ -108,7 +107,6 @@ public class PopUpScalingFragment extends DialogFragment {
                 switchAutoScaleWidthFull_SwitchCompat.setChecked(true);
                 switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.VISIBLE);
                 maxAutoScale_Group.setVisibility(View.VISIBLE);
-                fontsize_change_group.setVisibility(View.GONE);
                 break;
             default:
                 // Off
@@ -116,7 +114,6 @@ public class PopUpScalingFragment extends DialogFragment {
                 switchAutoScaleWidthFull_SwitchCompat.setChecked(false);
                 switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.GONE);
                 maxAutoScale_Group.setVisibility(View.GONE);
-                fontsize_change_group.setVisibility(View.VISIBLE);
                 break;
         }
 
@@ -126,13 +123,7 @@ public class PopUpScalingFragment extends DialogFragment {
         setupmaxfontsizeseekbar();
         setupminfontsizeseekbar();
 
-        // If user has enabled autoscale and is allowing overriding the width, the font size should be shown
-        if ((FullscreenActivity.toggleYScale.equals("W") || FullscreenActivity.toggleYScale.equals("Y")) &&
-                FullscreenActivity.override_widthscale) {
-            fontsize_change_group.setVisibility(View.VISIBLE);
-        } else {
-            fontsize_change_group.setVisibility(View.GONE);
-        }
+        fontsize_change_group.setVisibility(View.VISIBLE);
 
         // Set up listeners
         closebutton.setOnClickListener(new View.OnClickListener() {
@@ -196,13 +187,6 @@ public class PopUpScalingFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 FullscreenActivity.override_widthscale = isChecked;
-                // If user has enabled autoscale and is allowing overriding the width, the font size should be shown
-                if ((FullscreenActivity.toggleYScale.equals("W") || FullscreenActivity.toggleYScale.equals("Y")) &&
-                        FullscreenActivity.override_widthscale) {
-                    fontsize_change_group.setVisibility(View.VISIBLE);
-                } else {
-                    fontsize_change_group.setVisibility(View.GONE);
-                }
                 Preferences.savePreferences();
              }
         });
@@ -213,7 +197,6 @@ public class PopUpScalingFragment extends DialogFragment {
                     switchAutoScaleWidthFull_SwitchCompat.setEnabled(true);
                     switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.VISIBLE);
                     maxAutoScale_Group.setVisibility(View.VISIBLE);
-                    fontsize_change_group.setVisibility(View.GONE);
                     if (switchAutoScaleWidthFull_SwitchCompat.isChecked()) {
                         FullscreenActivity.toggleYScale = "Y";
                     } else {
@@ -223,14 +206,6 @@ public class PopUpScalingFragment extends DialogFragment {
                     FullscreenActivity.toggleYScale = "N";
                     switchAutoScaleWidthFull_SwitchCompat.setVisibility(View.GONE);
                     maxAutoScale_Group.setVisibility(View.GONE);
-                    fontsize_change_group.setVisibility(View.VISIBLE);
-                }
-                // If user has enabled autoscale and is allowing overriding the width, the font size should be shown
-                if ((FullscreenActivity.toggleYScale.equals("W") || FullscreenActivity.toggleYScale.equals("Y")) &&
-                        FullscreenActivity.override_widthscale) {
-                    fontsize_change_group.setVisibility(View.VISIBLE);
-                } else {
-                    fontsize_change_group.setVisibility(View.GONE);
                 }
                 Preferences.savePreferences();
             }
@@ -242,15 +217,12 @@ public class PopUpScalingFragment extends DialogFragment {
                 if (b && switchAutoScaleOnOff_SwitchCompat.isChecked()) {
                     FullscreenActivity.toggleYScale = "Y";
                     maxAutoScale_Group.setVisibility(View.VISIBLE);
-                    fontsize_change_group.setVisibility(View.GONE);
                 } else if (!b &&switchAutoScaleOnOff_SwitchCompat.isChecked()) {
                     FullscreenActivity.toggleYScale = "W";
                     maxAutoScale_Group.setVisibility(View.VISIBLE);
-                    fontsize_change_group.setVisibility(View.GONE);
                 } else {
                     FullscreenActivity.toggleYScale = "N";
                     maxAutoScale_Group.setVisibility(View.GONE);
-                    fontsize_change_group.setVisibility(View.VISIBLE);
                 }
                 Preferences.savePreferences();
             }
