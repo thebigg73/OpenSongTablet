@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/findSongMenuTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="4dp"
+        android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+        android:drawablePadding="4dp"
+        android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+        android:gravity="center"
+        android:text="@string/findnewsongs"
+        android:textColor="#ff0"
+        android:textSize="22sp" />
+
+    <ScrollView
+        android:id="@+id/optionschordsscrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/ugSearchButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_ultimateguitar_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_ultimateguitar_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/ultimateguitarsearch"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/chordieSearchButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_chordie_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_chordie_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/chordiesearch"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/worshipreadySearchButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_worshipready_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_worshipready_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/worshipready"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

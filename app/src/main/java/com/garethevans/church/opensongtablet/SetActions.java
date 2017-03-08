@@ -166,7 +166,7 @@ public class SetActions extends Activity {
         xpp.setInput(inputStream, utf);
 
         int eventType;
-        if (PopUpListSetsFragment.dataTask!=null && !PopUpListSetsFragment.dataTask.isCancelled()) {
+        if (PopUpListSetsFragment.dataTask!=null) {
 
             eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -820,11 +820,20 @@ public class SetActions extends Activity {
 
     public static void getSongFileAndFolder() {
 
-        if (!FullscreenActivity.linkclicked.contains("/")) {
+        if (FullscreenActivity.linkclicked!=null && !FullscreenActivity.linkclicked.contains("/")) {
             // Right it doesn't, so add the /
             FullscreenActivity.linkclicked = "/" + FullscreenActivity.linkclicked;
         }
 
+        if (FullscreenActivity.linkclicked==null || FullscreenActivity.linkclicked.equals("/")) {
+            // There was no song clicked, so just reload the current one
+            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+                FullscreenActivity.linkclicked = "/"+FullscreenActivity.songfilename;
+            } else {
+                FullscreenActivity.linkclicked = FullscreenActivity.whichSongFolder + "/" +
+                        FullscreenActivity.songfilename;
+            }
+        }
         // Now split the linkclicked into two song parts 0=folder 1=file
         String[] songpart = FullscreenActivity.linkclicked.split("/");
 

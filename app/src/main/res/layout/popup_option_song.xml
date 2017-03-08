@@ -60,6 +60,34 @@
                 android:textSize="12sp" />
 
             <Button
+                android:id="@+id/songOnYouTubeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_youtube_play_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_youtube_play_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/youtube"
+                android:textColor="#fff"
+                android:textSize="12sp"/>
+
+            <Button
+                android:id="@+id/songOnWebButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_web_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_web_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/websearch"
+                android:textColor="#fff"
+                android:textSize="12sp"/>
+
+            <Button
                 android:id="@+id/songRenameButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

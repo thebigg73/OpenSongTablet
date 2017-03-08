@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/popup_bg">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+
+    <LinearLayout
+        android:id="@+id/searchtext_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phrasesearch"
+            style="@style/MyHeadingText"
+            android:layout_margin="8dp"/>
+
+        <EditText
+            android:id="@+id/searchphrase_EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/MyEditText"
+            android:hint="@string/phrasesearch"
+            android:layout_margin="8dp"/>
+
+        <Button
+            android:id="@+id/doSearch_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="8dp"
+            android:text="@string/action_search"
+            android:background="@drawable/green_button"/>
+
+        <Button
+            android:id="@+id/cancelSearch_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="8dp"
+            android:text="@string/cancel"
+            android:background="@drawable/blue_button"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/searchresults_RelativeLayout"
+        android:layout_below="@+id/searchtext_LinearLayout"
+        android:layout_above="@+id/newfileinfo_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+    <WebView
+        android:id="@+id/webresults_WebView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/grabSongData_Button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="8dp"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/webBack_ImageButton"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_arrow_left_white_36dp"
+            />
+
+    <Button
+        android:id="@+id/grabSongData_Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/green_button"
+        android:layout_above="@+id/cancelSongData_Button"
+        android:layout_centerHorizontal="true"
+        android:text="@string/grabchordpro"
+        android:layout_margin="8dp"/>
+
+    <Button
+        android:id="@+id/cancelSongData_Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/blue_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/closesearch"
+        android:layout_margin="8dp"/>
+
+    <ProgressBar
+        android:id="@+id/grabSongData_ProgressBar"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        android:layout_margin="8dp"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/newfileinfo_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/MyHeadingText"
+            android:text="@string/choosesongname"
+            android:layout_margin="8dp"/>
+
+        <EditText
+            android:id="@+id/songfilename_EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            style="@style/MyEditText"
+            android:hint="@string/choosesongname"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/MyHeadingText"
+            android:text="@string/choosefolder"
+            android:layout_margin="8dp"/>
+
+        <Spinner
+            android:id="@+id/choosefolder_Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            style="@style/MySpinner" />
+
+        <Button
+            android:id="@+id/saveSong_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="8dp"
+            android:text="@string/savesong"
+            android:background="@drawable/green_button"/>
+
+        <Button
+            android:id="@+id/cancelProcess_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="8dp"
+            android:text="@string/cancel"
+            android:background="@drawable/blue_button"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
+
+</ScrollView>

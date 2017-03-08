@@ -167,9 +167,9 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    FullscreenActivity.showNextInSet = "B";
+                    FullscreenActivity.toggleAutoSticky = "B";
                 } else {
-                    FullscreenActivity.showNextInSet = "T";
+                    FullscreenActivity.toggleAutoSticky = "T";
                 }
                 Preferences.savePreferences();
             }

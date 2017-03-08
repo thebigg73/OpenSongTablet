@@ -36,6 +36,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -86,7 +87,8 @@ public class StageMode extends AppCompatActivity implements
         PopUpPadFragment.MyInterface, PopUpAutoscrollFragment.MyInterface,
         PopUpMetronomeFragment.MyInterface, PopUpChordsFragment.MyInterface,
         PopUpStickyFragment.MyInterface, PopUpLinks.MyInterface, PopUpCustomChordsFragment.MyInterface,
-        PopUpQuickLaunchSetup.MyInterface, PopUpLongSongPressFragment.MyInterface {
+        PopUpQuickLaunchSetup.MyInterface, PopUpLongSongPressFragment.MyInterface,
+        PopUpFindNewSongsFragment.MyInterface {
 
     // The toolbar and menu
     public Toolbar ab_toolbar;
@@ -107,6 +109,7 @@ public class StageMode extends AppCompatActivity implements
     TextView menuFolder_TextView;
     LinearLayout songmenu;
     LinearLayout optionmenu;
+    ScrollView optionsdisplayscrollview;
     LinearLayout changefolder_LinearLayout;
     ListView song_list_view;
 
@@ -131,16 +134,18 @@ public class StageMode extends AppCompatActivity implements
     LinearLayout playbackProgress;
     TextView currentTime_TextView;
     TextView totalTime_TextView;
+/*
     float section1_scale = 0f;
     float section1_2_scale = 0f;
     float section2_2_scale = 0f;
     float section1_3_scale = 0f;
     float section2_3_scale = 0f;
     float section3_3_scale = 0f;
+*/
     float width_scale = 0f;
-    float biggestscale_1col = 1000.0f;
-    float biggestscale_2col = 1000.0f;
-    float biggestscale_3col = 1000.0f;
+    float biggestscale_1col = 0.0f;
+    float biggestscale_2col = 0.0f;
+    float biggestscale_3col = 0.0f;
     boolean overridingfull;
     boolean overridingwidth;
     boolean rendercalled = false;
@@ -340,6 +345,7 @@ public class StageMode extends AppCompatActivity implements
                 songmenu = (LinearLayout) findViewById(R.id.songmenu);
                 optionmenu = (LinearLayout) findViewById(R.id.optionmenu);
                 song_list_view = (ListView) findViewById(R.id.song_list_view);
+                optionsdisplayscrollview = (ScrollView) findViewById(R.id.optionsdisplayscrollview);
                 menuFolder_TextView = (TextView) findViewById(R.id.menuFolder_TextView);
                 menuFolder_TextView.setText(getString(R.string.wait));
                 changefolder_LinearLayout = (LinearLayout) findViewById(R.id.changefolder_LinearLayout);
@@ -664,6 +670,7 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
+
         String message = getResources().getString(R.string.exit);
         FullscreenActivity.whattodo = "exit";
         newFragment = PopUpAreYouSureFragment.newInstance(message);
@@ -803,26 +810,18 @@ public class StageMode extends AppCompatActivity implements
         checkScrollPosition = new Runnable() {
             @Override
             public void run() {
-                int height;
-                try {
-                    height = songscrollview.getChildAt(0).getMeasuredHeight() - songscrollview.getHeight();
-                } catch (Exception e) {
-                    height=0;
-                }
 
-                // Decide if the down arrow should be displayed.
-                if (height > songscrollview.getScrollY() && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu)) {
+                if (checkCanScrollDown()) {
                     scrollDownButton.setVisibility(View.VISIBLE);
                 } else {
                     scrollDownButton.setVisibility(View.INVISIBLE);
                 }
-                // Decide if the up arrow should be displayed.
-                if (songscrollview.getScrollY() > 0 && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu)) {
+
+                if (checkCanScrollUp()) {
                     scrollUpButton.setVisibility(View.VISIBLE);
                 } else {
                     scrollUpButton.setVisibility(View.INVISIBLE);
                 }
-                FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY();
             }
         };
     }
@@ -964,6 +963,22 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 doScrollDown();
+            }
+        });
+        setForwardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.indexSongInSet += 1;
+                FullscreenActivity.whichDirection="R2L";
+                doMoveInSet();
+            }
+        });
+        setBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.indexSongInSet -= 1;
+                FullscreenActivity.whichDirection="L2R";
+                doMoveInSet();
             }
         });
     }
@@ -1316,7 +1331,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-    public class ResizeDrawers extends AsyncTask<Object,Void,String> {
+    private class ResizeDrawers extends AsyncTask<Object,Void,String> {
         int width;
 
         @Override
@@ -1361,6 +1376,8 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected String doInBackground(Object... objects) {
+            // Get the appropriate song
+            FullscreenActivity.linkclicked = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet];
             return null;
         }
 
@@ -1498,7 +1515,7 @@ public class StageMode extends AppCompatActivity implements
             ShowToast.showToast(StageMode.this);
 
             // Vibrate to let the user know something happened
-            DoVibrate.vibrate(StageMode.this,200);
+            DoVibrate.vibrate(StageMode.this,50);
 
             invalidateOptionsMenu();
             prepareOptionMenu();
@@ -1547,6 +1564,7 @@ public class StageMode extends AppCompatActivity implements
         h.postDelayed(new Runnable() {
             @Override
             public void run() {
+                songscrollview.scrollTo(0,0);
                 songscrollview.setAlpha(0.0f);
                 // Load the song
                 if (loadsong_async!=null) {
@@ -1564,6 +1582,8 @@ public class StageMode extends AppCompatActivity implements
     private class LoadSongAsync extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... params) {
+            FullscreenActivity.scalingfiguredout = false;
+
             if (!FullscreenActivity.isPDF) {
                 try {
                     LoadXML.loadXML();
@@ -1577,6 +1597,9 @@ public class StageMode extends AppCompatActivity implements
             prepareSongMenu();
             // Get the current song index
             ListSongFiles.getCurrentSongIndex();
+
+            // Get info on the nextSongInSet
+            ListSongFiles.getNextSongInSetInfo(StageMode.this);
 
             FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
 
@@ -1600,7 +1623,11 @@ public class StageMode extends AppCompatActivity implements
 
             // Sort song formatting
             // 1. Sort multiline verse/chord formats
-            FullscreenActivity.myLyrics = ProcessSong.fixMultiLineFormat(FullscreenActivity.mLyrics);
+            FullscreenActivity.myLyrics = ProcessSong.fixMultiLineFormat(FullscreenActivity.myLyrics);
+
+            // If we want info on the next song in the set, add it as a comment line
+            ProcessSong.addExtraInfo(StageMode.this);
+
 
             // 2. Split the song into sections
             FullscreenActivity.songSections = ProcessSong.splitSongIntoSections(FullscreenActivity.myLyrics);
@@ -1702,30 +1729,31 @@ public class StageMode extends AppCompatActivity implements
 
     public void fixSetActionButtons() {
         FullscreenActivity.setView = SetActions.isSongInSet();
+
         if (FullscreenActivity.setView) {
             // Now get the position in the set and decide on the set move buttons
             if (FullscreenActivity.indexSongInSet < 0) {
                 // We weren't in set mode, so find the first instance of this song.
                 SetActions.indexSongInSet();
-
-                // If we aren't at the beginning, enable the setBackButton
-                if (FullscreenActivity.indexSongInSet>0) {
-                    setBackButton.setVisibility(View.VISIBLE);
-                } else {
-                    setBackButton.setVisibility(View.GONE);
-                }
-
-                // If we aren't at the end of the set, enable the setForwardButton
-                if (FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length-1) {
-                    setForwardButton.setVisibility(View.VISIBLE);
-                } else {
-                    setForwardButton.setVisibility(View.GONE);
-                }
             }
+            // If we aren't at the beginning, enable the setBackButton
+            if (FullscreenActivity.indexSongInSet>0) {
+                setBackButton.setVisibility(View.VISIBLE);
+            } else {
+                setBackButton.setVisibility(View.INVISIBLE);
+            }
+
+            // If we aren't at the end of the set, enable the setForwardButton
+            if (FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length-1) {
+                setForwardButton.setVisibility(View.VISIBLE);
+            } else {
+                setForwardButton.setVisibility(View.INVISIBLE);
+            }
+
         } else {
             FullscreenActivity.indexSongInSet = -1;
-            setBackButton.setVisibility(View.GONE);
-            setForwardButton.setVisibility(View.GONE);
+            setBackButton.setVisibility(View.INVISIBLE);
+            setForwardButton.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -1945,13 +1973,13 @@ public class StageMode extends AppCompatActivity implements
             biggestscale_2col = 0f;
             biggestscale_3col = 0f;
 
-            section1_scale = 0f;
+/*            section1_scale = 0f;
             section1_2_scale = 0f;
             section2_2_scale = 0f;
             section1_3_scale = 0f;
             section2_3_scale = 0f;
             section3_3_scale = 0f;
-            width_scale = 0f;
+ */           width_scale = 0f;
 
             // Make sure the view is animated out
             if (FullscreenActivity.whichDirection.equals("L2R")) {
@@ -2120,7 +2148,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-    public class ResizeStageView extends AsyncTask<Void, Void, String> {
+    private class ResizeStageView extends AsyncTask<Void, Void, String> {
 
         @Override
         protected void onPreExecute() {
@@ -2151,6 +2179,8 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         public void onPostExecute(String s) {
+
+            FullscreenActivity.scalingfiguredout = true;
 
             // Now render the scaled song!
             createStageView1col();
@@ -2229,7 +2259,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-    public class ResizePerformanceView extends AsyncTask<Void, Void, String> {
+    private class ResizePerformanceView extends AsyncTask<Void, Void, String> {
 
         @Override
         protected void onPreExecute() {
@@ -2266,18 +2296,19 @@ public class StageMode extends AppCompatActivity implements
             int availablewidth_3col = getAvailableWidth()/3 - getPixelsFromDpi(16 + 2*3);
             int availableheight = getAvailableHeight() - getPixelsFromDpi(16);
 
-            float myscale_1_1_col_x = availablewidth_1col / (float)FullscreenActivity.viewwidth[0];
-            float myscale_1_2_col_x = availablewidth_2col / (float)FullscreenActivity.viewwidth[1];
-            float myscale_2_2_col_x = availablewidth_2col / (float)FullscreenActivity.viewwidth[2];
-            float myscale_1_3_col_x = availablewidth_3col / (float)FullscreenActivity.viewwidth[3];
-            float myscale_2_3_col_x = availablewidth_3col / (float)FullscreenActivity.viewwidth[4];
-            float myscale_3_3_col_x = availablewidth_3col / (float)FullscreenActivity.viewwidth[5];
-            float myscale_1_1_col_y = availableheight / (float)FullscreenActivity.viewheight[0];
-            float myscale_1_2_col_y = availableheight / (float)FullscreenActivity.viewheight[1];
-            float myscale_2_2_col_y = availableheight / (float)FullscreenActivity.viewheight[2];
-            float myscale_1_3_col_y = availableheight / (float)FullscreenActivity.viewheight[3];
-            float myscale_2_3_col_y = availableheight / (float)FullscreenActivity.viewheight[4];
-            float myscale_3_3_col_y = availableheight / (float)FullscreenActivity.viewheight[5];
+            float myscale_1_1_col_x = (float) availablewidth_1col / (float)FullscreenActivity.viewwidth[0];
+            width_scale = myscale_1_1_col_x;
+            float myscale_1_2_col_x = (float) availablewidth_2col / (float)FullscreenActivity.viewwidth[1];
+            float myscale_2_2_col_x = (float) availablewidth_2col / (float)FullscreenActivity.viewwidth[2];
+            float myscale_1_3_col_x = (float) availablewidth_3col / (float)FullscreenActivity.viewwidth[3];
+            float myscale_2_3_col_x = (float) availablewidth_3col / (float)FullscreenActivity.viewwidth[4];
+            float myscale_3_3_col_x = (float) availablewidth_3col / (float)FullscreenActivity.viewwidth[5];
+            float myscale_1_1_col_y = (float) availableheight / (float)FullscreenActivity.viewheight[0];
+            float myscale_1_2_col_y = (float) availableheight / (float)FullscreenActivity.viewheight[1];
+            float myscale_2_2_col_y = (float) availableheight / (float)FullscreenActivity.viewheight[2];
+            float myscale_1_3_col_y = (float) availableheight / (float)FullscreenActivity.viewheight[3];
+            float myscale_2_3_col_y = (float) availableheight / (float)FullscreenActivity.viewheight[4];
+            float myscale_3_3_col_y = (float) availableheight / (float)FullscreenActivity.viewheight[5];
 
             FullscreenActivity.sectionScaleValue[0] = ProcessSong.getScaleValue(myscale_1_1_col_x,myscale_1_1_col_y,12.0f);
             FullscreenActivity.sectionScaleValue[1] = ProcessSong.getScaleValue(myscale_1_2_col_x,myscale_1_2_col_y,12.0f);
@@ -2296,16 +2327,17 @@ public class StageMode extends AppCompatActivity implements
             float minscale = FullscreenActivity.mMinFontSize/12.0f;
             float nonscaled = FullscreenActivity.mFontSize/12.0f;
 
+            float minscale1col = FullscreenActivity.sectionScaleValue[0];
+
             // Now we need to decide on the scale values to use and which view style we are going for.
             // First up, if we are going for full scaling..
             if (FullscreenActivity.thissong_scale.equals("Y")) {
-                float minscale1col = FullscreenActivity.sectionScaleValue[0];
                 float minscale2col = FullscreenActivity.sectionScaleValue[1];
                 float minscale3col = FullscreenActivity.sectionScaleValue[3];
 
                 // Decide if the other columns are smaller
-                if (FullscreenActivity.sectionScaleValue[1] < minscale2col) {
-                    minscale2col = FullscreenActivity.sectionScaleValue[1];
+                if (FullscreenActivity.sectionScaleValue[2] < minscale2col) {
+                    minscale2col = FullscreenActivity.sectionScaleValue[2];
                 }
 
                 if (FullscreenActivity.sectionScaleValue[4] < minscale3col) {
@@ -2316,6 +2348,7 @@ public class StageMode extends AppCompatActivity implements
                 }
 
                 // We will prefer the view with the biggest scaling
+                FullscreenActivity.myToastMessage = "";
                 myscale = minscale1col;
                 coltouse = 1;
                 if (minscale2col > myscale) {
@@ -2333,6 +2366,14 @@ public class StageMode extends AppCompatActivity implements
                     FullscreenActivity.thissong_scale = "W";
                     FullscreenActivity.myToastMessage = getString(R.string.override_fullautoscale);
                     FullscreenActivity.sectionScaleValue[0] = width_scale;
+                    coltouse = 1;
+                }
+
+                if (myscale < minscale && FullscreenActivity.override_widthscale && !FullscreenActivity.override_fullscale) {
+                    //Set to non scaled
+                    FullscreenActivity.thissong_scale = "N";
+                    FullscreenActivity.myToastMessage = getString(R.string.override_widthautoscale);
+                    FullscreenActivity.sectionScaleValue[0] = nonscaled;
                     coltouse = 1;
                 }
             }
@@ -2358,6 +2399,9 @@ public class StageMode extends AppCompatActivity implements
                 coltouse = 1;
                 FullscreenActivity.sectionScaleValue[0] = nonscaled;
             }
+
+            FullscreenActivity.scalingfiguredout = true;
+            ShowToast.showToast(StageMode.this);
 
             // Now render the scaled song!
             if (coltouse==1) {
@@ -2494,9 +2538,13 @@ public class StageMode extends AppCompatActivity implements
                 if (FullscreenActivity.songDetails[i][2]==null) {
                     FullscreenActivity.songDetails[i][2] = "Can't find key";
                 }
-                SongMenuViewItems song = new SongMenuViewItems(FullscreenActivity.mSongFileNames[i],
-                        FullscreenActivity.songDetails[i][0] , FullscreenActivity.songDetails[i][1], FullscreenActivity.songDetails[i][2]);
-                songmenulist.add(song);
+                try {
+                    SongMenuViewItems song = new SongMenuViewItems(FullscreenActivity.mSongFileNames[i],
+                            FullscreenActivity.songDetails[i][0], FullscreenActivity.songDetails[i][1], FullscreenActivity.songDetails[i][2]);
+                    songmenulist.add(song);
+                } catch (Exception e) {
+                    // Probably moving too quickly
+                }
             }
 
             SongMenuAdapter lva = new SongMenuAdapter(StageMode.this, songmenulist);
@@ -2590,9 +2638,8 @@ public class StageMode extends AppCompatActivity implements
     public void songLongClick() {
         // Rebuild the set list as we've just added a song
         SetActions.prepareSetList();
+        prepareOptionMenu();
         closeMyDrawers("song");
-        openMyDrawers("option");
-        closeMyDrawers("option_delayed");
     }
 
     @Override
@@ -2610,7 +2657,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void removeSongFromSet(int val) {
         // Vibrate to let the user know something happened
-        DoVibrate.vibrate(StageMode.this,200);
+        DoVibrate.vibrate(StageMode.this,50);
 
         // Take away the menu item
         String tempSong = FullscreenActivity.mSetList[val];
@@ -2717,6 +2764,7 @@ public class StageMode extends AppCompatActivity implements
             case "saveset":
             case "deleteset":
             case "exportset":
+            case "managesets":
                 newFragment = PopUpListSetsFragment.newInstance();
                 break;
 
@@ -2818,6 +2866,10 @@ public class StageMode extends AppCompatActivity implements
                 newFragment = PopUpStorageFragment.newInstance();
                 break;
 
+            case "exportsonglist":
+                newFragment = PopUpExportSongListFragment.newInstance();
+                break;
+            
             case "customstoragefind":
                 newFragment = PopUpDirectoryChooserFragment.newInstance();
                 Bundle args = new Bundle();
@@ -2908,6 +2960,11 @@ public class StageMode extends AppCompatActivity implements
                 newFragment = PopUpLongSongPressFragment.newInstance();
                 break;
 
+            case "chordie":
+            case "ultimate-guitar":
+            case "worshipready":
+                newFragment = PopUpFindNewSongsFragment.newInstance();
+                break;
         }
 
         if (newFragment!=null) {
@@ -2916,9 +2973,6 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.myToastMessage = "Fragment not found!";
             ShowToast.showToast(StageMode.this);
         }
-
-        //FullscreenActivity.whattodo = "";
-
     }
 
     public void selectSection(int whichone) {
@@ -3055,7 +3109,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-    public class Player1Prepared implements MediaPlayer.OnPreparedListener {
+    private class Player1Prepared implements MediaPlayer.OnPreparedListener {
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
             Log.d("d", "mPlayer1 is prepared");
@@ -3084,7 +3138,7 @@ public class StageMode extends AppCompatActivity implements
             dopadProgressTime.post(onEverySecond);
         }
     }
-    public class Player2Prepared implements MediaPlayer.OnPreparedListener {
+    private class Player2Prepared implements MediaPlayer.OnPreparedListener {
 
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
@@ -3477,7 +3531,11 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected void onProgressUpdate(Integer... intg) {
-            FullscreenActivity.newPosFloat = FullscreenActivity.newPosFloat + FullscreenActivity.autoscroll_pixels;
+            if (!FullscreenActivity.wasscrolling) {
+                FullscreenActivity.newPosFloat = FullscreenActivity.newPosFloat + FullscreenActivity.autoscroll_pixels;
+            } else {
+                FullscreenActivity.newPosFloat = songscrollview.getScrollY();
+            }
         }
 
         @Override
@@ -3520,8 +3578,121 @@ public class StageMode extends AppCompatActivity implements
         FullscreenActivity.isautoscrolling = false;
     }
 
+    public boolean checkCanScrollDown() {
+        int height;
+        try {
+            height = songscrollview.getChildAt(0).getMeasuredHeight() - songscrollview.getHeight();
+        } catch (Exception e) {
+            height=0;
+        }
 
+        FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY();
 
+        // Decide if the down arrow should be displayed.
+        return height > songscrollview.getScrollY() && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
+    }
+
+    public boolean checkCanScrollUp() {
+        FullscreenActivity.newPosFloat = (float) songscrollview.getScrollY();
+
+        // Decide if the up arrow should be displayed.
+        return songscrollview.getScrollY() > 0 && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerOpen(songmenu);
+    }
+
+    public void scrollMenu(String direction) {
+        if (direction.equals("up")) {
+            song_list_view.smoothScrollBy((int) (-0.8f * songmenu.getHeight()), 1600);
+        } else {
+            song_list_view.smoothScrollBy((int) (+0.8f * songmenu.getHeight()), 1600);
+        }
+    }
+
+    public void goToNextItem() {
+        FullscreenActivity.whichDirection = "R2L";
+        boolean dealtwithaspdf = false;
+
+        // If this is a PDF, check we can't move pages
+        if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)) {
+            FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
+
+            // Load the next pdf page
+            dealtwithaspdf = true;
+
+        } else {
+            FullscreenActivity.pdfPageCurrent = 0;
+        }
+
+        // If this hasn't been dealt with
+        if (!dealtwithaspdf && FullscreenActivity.setView) {
+            // Is there another song in the set?  If so move, if not, do nothing
+            if (FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length-1) {
+                FullscreenActivity.indexSongInSet += 1;
+                doMoveInSet();
+            }
+        } else if (!dealtwithaspdf) {
+            // Try to move to the next song alphabetically
+            if (FullscreenActivity.nextSongIndex < FullscreenActivity.mSongFileNames.length
+                    && FullscreenActivity.nextSongIndex != -1
+                    && !FullscreenActivity.songfilename.equals(FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex])) {
+                FullscreenActivity.tempswipeSet = "disable";
+
+                FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex];
+                Preferences.savePreferences();
+                loadSong();
+
+                // Set a runnable to reset swipe back to original value after 1 second
+                Handler delayfadeinredraw = new Handler();
+                delayfadeinredraw.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        FullscreenActivity.tempswipeSet = "enable";
+                    }
+                }, FullscreenActivity.delayswipe_time);
+            }
+        }
+    }
+
+    public void goToPreviousItem() {
+        FullscreenActivity.whichDirection = "L2R";
+        boolean dealtwithaspdf = false;
+
+        // If this is a PDF, check we can't move pages
+        if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0) {
+            FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
+
+            dealtwithaspdf = true;
+        } else {
+            FullscreenActivity.pdfPageCurrent = 0;
+        }
+
+        // If this hasn't been dealt with
+        if (!dealtwithaspdf && FullscreenActivity.setView) {
+            // Is there another song in the set?  If so move, if not, do nothing
+            if (FullscreenActivity.indexSongInSet>0 && FullscreenActivity.mSetList.length>0) {
+                FullscreenActivity.indexSongInSet -= 1;
+                doMoveInSet();
+            }
+        } else if (!dealtwithaspdf) {
+            // Try to move to the previous song alphabetically
+            if (FullscreenActivity.previousSongIndex >= 0
+                    && !FullscreenActivity.songfilename.equals(FullscreenActivity.mSongFileNames[FullscreenActivity.previousSongIndex])) {
+                FullscreenActivity.tempswipeSet = "disable";
+
+                FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[FullscreenActivity.previousSongIndex];
+                Preferences.savePreferences();
+                loadSong();
+
+                // Set a runnable to reset swipe back to original value after 1 second
+                Handler delayfadeinredraw = new Handler();
+                delayfadeinredraw.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        FullscreenActivity.tempswipeSet = "enable";
+                    }
+                }, FullscreenActivity.delayswipe_time);
+            }
+        }
+    }
 
     // The page action gestures stuff is below
     public boolean oktoregistergesture() {
@@ -3529,12 +3700,12 @@ public class StageMode extends AppCompatActivity implements
         boolean oktogo = false;
 
         if (!FullscreenActivity.pressing_button  // Button pressing
-                && !setButton.isFocused() && !padButton.isFocused() && !autoscrollButton.isFocused()
-                && !metronomeButton.isFocused() && !extraButton.isFocused() && !chordButton.isFocused()
-                && !linkButton.isFocused() && !stickyButton.isFocused() && !pageselectButton.isFocused()
-                && !customButton.isFocused() && !custom1Button.isFocused() && !custom2Button.isFocused()
-                && !custom3Button.isFocused()
-                && !scrollDownButton.isFocused() && !scrollUpButton.isFocused()
+                && !setButton.isPressed() && !padButton.isPressed() && !autoscrollButton.isPressed()
+                && !metronomeButton.isPressed() && !extraButton.isPressed() && !chordButton.isPressed()
+                && !linkButton.isPressed() && !stickyButton.isPressed() && !pageselectButton.isPressed()
+                && !customButton.isPressed() && !custom1Button.isPressed() && !custom2Button.isPressed()
+                && !custom3Button.isPressed()
+                && !scrollDownButton.isPressed() && !scrollUpButton.isPressed()
                 && !mDrawerLayout.isDrawerOpen(songmenu) && !mDrawerLayout.isDrawerVisible(songmenu)
                 && !mDrawerLayout.isDrawerOpen(optionmenu) && !mDrawerLayout.isDrawerVisible(optionmenu)) {
             oktogo =true;
@@ -3542,6 +3713,184 @@ public class StageMode extends AppCompatActivity implements
 
         return oktogo;
         }
+    // This bit listens for long key presses (disables the menu long press action)
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU && event.isLongPress()) {
+            // Open up the song search intent instead of bringing up the keyboard
+            if (FullscreenActivity.longKeyPress) {
+                FullscreenActivity.shortKeyPress = false;
+            } else {
+                FullscreenActivity.shortKeyPress = true;
+                FullscreenActivity.longKeyPress = false;
+            }
+            return true;
+        }
+
+        if (keyCode == FullscreenActivity.pageturner_DOWN || keyCode == FullscreenActivity.pageturner_UP ||
+                keyCode == FullscreenActivity.pageturner_PREVIOUS || keyCode == FullscreenActivity.pageturner_NEXT) {
+            event.startTracking();
+            if (FullscreenActivity.longKeyPress) {
+                FullscreenActivity.shortKeyPress = false;
+            } else {
+                FullscreenActivity.shortKeyPress = true;
+                FullscreenActivity.longKeyPress = false;
+            }
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+        //return false;
+    }
+
+    // This bit listens for key presses (for page turn and scroll)
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+
+        event.startTracking();
+        if (FullscreenActivity.shortKeyPress) {
+            FullscreenActivity.pressing_button = false;
+
+            // Reset immersive mode
+            if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+                restoreTranslucentBarsDelayed();
+            }
+
+            // Set a runnable to reset swipe back to original value after 1 second
+
+            // Eat the long press event so the keyboard doesn't come up.
+            if (keyCode == KeyEvent.KEYCODE_MENU) {
+                if (event.isLongPress()) {
+                    // Open up the song search intent instead of bringing up the keyboard
+                    return true;
+                } else {
+                    // User wants the menu opened/closed
+                    if (mDrawerLayout.isDrawerOpen(optionmenu)) {
+                        mDrawerLayout.closeDrawer(optionmenu);
+                    }
+                    if (mDrawerLayout.isDrawerOpen(songmenu)) {
+                        mDrawerLayout.closeDrawer(songmenu);
+                    }
+                }
+            }
+
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                onBackPressed();
+
+            } else if (keyCode == FullscreenActivity.pageturner_NEXT) {
+                if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
+                    if (mDrawerLayout.isDrawerOpen(songmenu)) {
+                        // Scroll the song menu down
+                        scrollMenu("down");
+                    } else {
+                        if (checkCanScrollDown()) {
+                            doScrollDown();
+                        } else {
+                            goToNextItem();
+                        }
+                    }
+                } else {
+                    goToNextItem();
+                }
+
+            } else if (keyCode == FullscreenActivity.pageturner_PREVIOUS) {
+                if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
+                    if (mDrawerLayout.isDrawerOpen(songmenu)) {
+                        // Scroll the song menu up
+                        scrollMenu("up");
+                    } else {
+                        if (checkCanScrollUp()) {
+                            doScrollUp();
+                        } else {
+                            goToPreviousItem();
+                        }
+                    }
+                } else {
+                    goToPreviousItem();
+                }
+
+            } else if (keyCode == FullscreenActivity.pageturner_UP) {
+                if (mDrawerLayout.isDrawerOpen(songmenu)) {
+                    // Scroll the song menu up
+                    scrollMenu("up");
+                } else {
+                    if (checkCanScrollUp()) {
+                        doScrollUp();
+                    }
+                }
+
+            } else if (keyCode == FullscreenActivity.pageturner_DOWN) {
+                if (mDrawerLayout.isDrawerOpen(songmenu)) {
+                    // Scroll the song menu down
+                    scrollMenu("down");
+                } else {
+                    if (checkCanScrollDown()) {
+                        doScrollDown();
+                    }
+                }
+
+            } else if (keyCode == FullscreenActivity.pageturner_PAD) {
+                gesture6();
+
+            } else if (keyCode == FullscreenActivity.pageturner_AUTOSCROLL) {
+                gesture5();
+
+            } else if (keyCode == FullscreenActivity.pageturner_METRONOME) {
+                gesture7();
+            }
+        }
+        FullscreenActivity.shortKeyPress = true;
+        FullscreenActivity.longKeyPress = false;
+        return true;
+    }
+
+    @Override
+    public boolean onKeyLongPress(int keyCode, KeyEvent event) {
+        String action = "";
+        if (keyCode == FullscreenActivity.pageturner_DOWN) {
+            action = FullscreenActivity.longpressdownpedalgesture;
+        } else if (keyCode == FullscreenActivity.pageturner_UP) {
+            action = FullscreenActivity.longpressuppedalgesture;
+        } else if (keyCode == FullscreenActivity.pageturner_PREVIOUS) {
+            action = FullscreenActivity.longpresspreviouspedalgesture;
+        } else if (keyCode == FullscreenActivity.pageturner_NEXT) {
+            action = FullscreenActivity.longpressnextpedalgesture;
+        }
+
+        switch (action) {
+            case "1":
+                gesture1();
+                break;
+            case "2":
+                gesture2();
+                 break;
+            case "3":
+                gesture3();
+                break;
+            case "4":
+                gesture4();
+                break;
+            case "5":
+                gesture5();
+                break;
+            case "6":
+                gesture6();
+                break;
+            case "7":
+                gesture7();
+                break;
+            default:
+                break;
+        }
+
+        if (action.length()>0) {
+            FullscreenActivity.shortKeyPress = false;
+            FullscreenActivity.longKeyPress = true;
+            return true;
+        }
+        return super.onKeyLongPress( keyCode, event );
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         scaleGestureDetector.onTouchEvent(event);
@@ -3571,6 +3920,7 @@ public class StageMode extends AppCompatActivity implements
             if (!gestureDetector.onTouchEvent(ev)) {
                 if (action == MotionEvent.ACTION_UP && !FullscreenActivity.scrollbutton) {
                     toggleActionBar();
+                    FullscreenActivity.wasscrolling = false;
 
                 } else {
                     if (delayactionBarHide!=null && hideActionBarRunnable!=null) {
@@ -3583,7 +3933,7 @@ public class StageMode extends AppCompatActivity implements
         }
         return super.dispatchTouchEvent(ev);
     }
-    public class SwipeDetector extends GestureDetector.SimpleOnGestureListener {
+    private class SwipeDetector extends GestureDetector.SimpleOnGestureListener {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
@@ -3664,37 +4014,21 @@ public class StageMode extends AppCompatActivity implements
                 switch (FullscreenActivity.gesture_longpress) {
                     case "1":
                         gesture1();
-
                         break;
                     case "2":
-                        if (FullscreenActivity.isPDF) {
-                            // Can't do this action on a pdf!
-                            FullscreenActivity.myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
-                            ShowToast.showToast(StageMode.this);
-                        } else if (!FullscreenActivity.isSong) {
-                            // Editing a slide / note / scripture / image
-                            FullscreenActivity.myToastMessage = getResources().getString(R.string.not_allowed);
-                            ShowToast.showToast(StageMode.this);
-                        } else {
-                            gesture2();
-                        }
-
+                        gesture2();
                         break;
                     case "3":
                         gesture3();
-
                         break;
                     case "4":
                         gesture4();
-
                         break;
                     case "5":
                         gesture5();
-
                         break;
                     case "6":
                         gesture6();
-
                         break;
                     case "7":
                         gesture7();
@@ -3739,64 +4073,9 @@ public class StageMode extends AppCompatActivity implements
                         && e1.getX() < rightmargin
                         && Math.abs(velocityX) > FullscreenActivity.SWIPE_THRESHOLD_VELOCITY
                         && (FullscreenActivity.swipeSet.equals("Y") || FullscreenActivity.swipeSet.equals("S"))) {
-                    // Set the direction as right to left
-                    FullscreenActivity.whichDirection = "R2L";
-                    // If we are viewing a set, move to the next song.
 
-                    if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)) {
-                        FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent + 1;
-                        //redrawTheLyricsTable(main_page);
-                        return false;
-                    } else {
-                        FullscreenActivity.pdfPageCurrent = 0;
-                    }
-
-                    if (FullscreenActivity.setSize > 1 && FullscreenActivity.setView && FullscreenActivity.indexSongInSet >= 0
-                            && FullscreenActivity.indexSongInSet < (FullscreenActivity.setSize - 1)) {
-                        // temporarily disable swipe
-                        FullscreenActivity.tempswipeSet = "disable";
-                        FullscreenActivity.indexSongInSet += 1;
-                        doMoveInSet();
-                        // Set a runnable to reset swipe back to original value
-                        // after 1 second
-                        Handler delayfadeinredraw = new Handler();
-                        delayfadeinredraw.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                FullscreenActivity.tempswipeSet = "enable";
-                            }
-                        }, FullscreenActivity.delayswipe_time);
-
-                    }
-                    // If not in a set, see if we can move to the next song in the list
-                    // Only if swipeSet is Y (not S)
-                    if (!FullscreenActivity.setView && FullscreenActivity.swipeSet.equals("Y")
-                            && !FullscreenActivity.whichSongFolder.equals("../Variations")
-                            && !FullscreenActivity.whichSongFolder.equals("../Scripture/_cache")
-                            && !FullscreenActivity.whichSongFolder.equals("../Images/_cache")
-                            && !FullscreenActivity.whichSongFolder.equals("../Slides/_cache")
-                            && !FullscreenActivity.whichSongFolder.equals("../Notes/_cache")) {
-                        if (FullscreenActivity.nextSongIndex < FullscreenActivity.mSongFileNames.length
-                                && FullscreenActivity.nextSongIndex != -1
-                                && !FullscreenActivity.songfilename.equals(FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex])) {
-                            // Move to the next song
-                            // temporarily disable swipe
-                            FullscreenActivity.tempswipeSet = "disable";
-
-                            FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex];
-                            Preferences.savePreferences();
-                            loadSong();
-
-                            // Set a runnable to reset swipe back to original value after 1 second
-                            Handler delayfadeinredraw = new Handler();
-                            delayfadeinredraw.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    FullscreenActivity.tempswipeSet = "enable";
-                                }
-                            }, FullscreenActivity.delayswipe_time);
-                        }
-                    }
+                    // Trying to move to the next item
+                    goToNextItem();
                     return true;
                 }
 
@@ -3807,81 +4086,39 @@ public class StageMode extends AppCompatActivity implements
                         && e1.getX() > leftmargin
                         && Math.abs(velocityX) > FullscreenActivity.SWIPE_THRESHOLD_VELOCITY
                         && (FullscreenActivity.swipeSet.equals("Y") || FullscreenActivity.swipeSet.equals("S"))) {
-                    // Set the direction as left to right
-                    FullscreenActivity.whichDirection = "L2R";
 
-                    if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0) {
-                        FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCurrent - 1;
-                        //redrawTheLyricsTable(main_page);
-                        return false;
-                    } else {
-                        FullscreenActivity.pdfPageCurrent = 0;
-                    }
-
-                    // If we are viewing a set, move to the previous song.
-                    if (FullscreenActivity.setSize > 2 && FullscreenActivity.setView && FullscreenActivity.indexSongInSet >= 1) {
-                        // temporarily disable swipe
-                        FullscreenActivity.tempswipeSet = "disable";
-
-                        FullscreenActivity.indexSongInSet -= 1;
-                        doMoveInSet();
-                        // Set a runnable to reset swipe back to original value after 1 second
-                        Handler delayfadeinredraw = new Handler();
-                        delayfadeinredraw.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                FullscreenActivity.tempswipeSet = "enable";
-                            }
-                        }, FullscreenActivity.delayswipe_time);
-                    }
-                    // If not in a set, see if we can move to the previous song in the list
-                    // Only if swipeSet is Y (not S)
-                    if (!FullscreenActivity.setView && FullscreenActivity.swipeSet.equals("Y")
-                            && !FullscreenActivity.whichSongFolder.equals("../Variations")
-                            && !FullscreenActivity.whichSongFolder.equals("../Scripture/_cache")
-                            && !FullscreenActivity.whichSongFolder.equals("../Images/_cache")
-                            && !FullscreenActivity.whichSongFolder.equals("../Slides/_cache")
-                            && !FullscreenActivity.whichSongFolder.equals("../Notes/_cache")) {
-
-                        if (FullscreenActivity.previousSongIndex < FullscreenActivity.mSongFileNames.length
-                                && FullscreenActivity.previousSongIndex != -1
-                                && !FullscreenActivity.songfilename.equals(FullscreenActivity.mSongFileNames[FullscreenActivity.previousSongIndex])) {
-                            // temporarily disable swipe
-                            FullscreenActivity.tempswipeSet = "disable";
-
-                            // Move to the previous song
-                            FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[FullscreenActivity.previousSongIndex];
-                            Preferences.savePreferences();
-                            loadSong();
-
-                            // Set a runnable to reset swipe back to original value
-                            // after 1 second
-                            Handler delayfadeinredraw = new Handler();
-                            delayfadeinredraw.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    FullscreenActivity.tempswipeSet = "enable";
-                                }
-                            }, FullscreenActivity.delayswipe_time);
-                        }
-                    }
+                    // Go to previous item
+                    goToPreviousItem();
                     return true;
                 }
-
             return false;
         }
     }
     public void gesture1() {
-        openMyDrawers("song");
+        if (mDrawerLayout.isDrawerOpen(songmenu)) {
+            closeMyDrawers("song");
+        } else {
+            openMyDrawers("song");
+        }
         FullscreenActivity.wasscrolling = false;
         if (delayactionBarHide != null && hideActionBarRunnable != null) {
             delayactionBarHide.removeCallbacks(hideActionBarRunnable);
         }
     }
     public void gesture2() {
-        // Edit the song
-        FullscreenActivity.whattodo = "editsong";
-        openFragment();
+        if (FullscreenActivity.isPDF) {
+            // Can't do this action on a pdf!
+            FullscreenActivity.myToastMessage = getResources().getString(R.string.pdf_functionnotavailable);
+            ShowToast.showToast(StageMode.this);
+        } else if (!FullscreenActivity.isSong) {
+            // Editing a slide / note / scripture / image
+            FullscreenActivity.myToastMessage = getResources().getString(R.string.not_allowed);
+            ShowToast.showToast(StageMode.this);
+        } else {
+            // Edit the song
+            FullscreenActivity.whattodo = "editsong";
+            openFragment();
+        }
     }
     public void gesture3() {
         // Add to set
@@ -3899,7 +4136,7 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.songfilename + "\" "
                     + getResources().getString(R.string.addedtoset);
             // Vibrate to let the user know something happened
-            DoVibrate.vibrate(StageMode.this,200);
+            DoVibrate.vibrate(StageMode.this,50);
             ShowToast.showToast(StageMode.this);
 
             // Save the set and other preferences
@@ -3929,7 +4166,7 @@ public class StageMode extends AppCompatActivity implements
     }
     public void gesture5() {
         // Stop or start autoscroll
-        DoVibrate.vibrate(StageMode.this,200);
+        DoVibrate.vibrate(StageMode.this,50);
         if (FullscreenActivity.isautoscrolling) {
             stopAutoScroll();
         } else {
@@ -3940,7 +4177,7 @@ public class StageMode extends AppCompatActivity implements
         // Stop or start pad
         PadFunctions.getPad1Status();
         PadFunctions.getPad2Status();
-        DoVibrate.vibrate(StageMode.this,200);
+        DoVibrate.vibrate(StageMode.this,50);
         if (FullscreenActivity.pad1Playing || FullscreenActivity.pad2Playing) {
             if (FullscreenActivity.pad1Playing) {
                 FullscreenActivity.mPlayer1.stop();
@@ -3960,8 +4197,8 @@ public class StageMode extends AppCompatActivity implements
     public void gesture7() {
         // Start or stop metronome
         // Vibrate to let the user know something happened
-        DoVibrate.vibrate(StageMode.this,200);
-        PopUpMetronomeFragment.startstopMetronome(StageMode.this);
+        DoVibrate.vibrate(StageMode.this,50);
+        Metronome.startstopMetronome(StageMode.this);
     }
 
 }

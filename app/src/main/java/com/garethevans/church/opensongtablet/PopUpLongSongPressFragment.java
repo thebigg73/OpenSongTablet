@@ -69,7 +69,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_longsongpress, container, false);
 
         // Vibreate to let the user know something happened
-        DoVibrate.vibrate(getActivity(),100);
+        DoVibrate.vibrate(getActivity(),50);
 
         // Initialise the views
         addSongToSet_Button = (Button) V.findViewById(R.id.addSongToSet_Button);

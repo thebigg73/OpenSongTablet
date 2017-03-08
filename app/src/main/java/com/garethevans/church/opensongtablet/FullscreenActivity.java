@@ -262,6 +262,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String toggleScrollArrows = "";
 
     public static boolean converting = false;
+    public static String phrasetosearchfor;
 
     @SuppressWarnings("unused")
     // Identify the chord images
@@ -650,6 +651,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String prefStorage = "";
     public static String customStorage = "";
     public static boolean wasscrolling = false;
+    public static boolean isManualDragging = false;
     public static String alwaysPreferredChordFormat = "";
     public static String gesture_doubletap = "";
     public static String gesture_longpress = "";
@@ -689,11 +691,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     // Song filenames, folders, set filenames, folders
     public static String currentFolder = "";
     public static String newFolder = "";
-    private static int next_song;
+    public static int next_song;
     private static int prev_song;
     public static String whichSongFolder = "";
     public static String[] mySetsFileNames;
     public static File[] mySetsFiles;
+    public static String whichSetCategory;
     public static String[] mySetsFolderNames;
     public static File[] mySetsDirectories;
     public static File filechosen;
@@ -789,6 +792,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
     // Info for the lyrics table
     private static float mScaleFactor = 1.0f;
+    public static boolean scalingfiguredout = false;
     private ScaleGestureDetector scaleGestureDetector;
     public static boolean botherwithcolumns;
     public static int splitpoint;
@@ -6177,7 +6181,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         return true;
         //return false;
     }
-
 
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {

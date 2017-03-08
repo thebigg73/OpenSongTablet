@@ -8,13 +8,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.animation.PathInterpolatorCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -97,10 +100,11 @@ public class PopUpSetViewNew extends DialogFragment {
         getDialog().setTitle(getActivity().getResources().getString(R.string.options_set));
         getDialog().setCanceledOnTouchOutside(true);
         final View V = inflater.inflate(R.layout.popup_setview_new, container, false);
-
         setfrag = getDialog();
 
-        mListener.pageButtonAlpha("set");
+        if (mListener!=null) {
+            mListener.pageButtonAlpha("set");
+        }
         TextView helpClickItem_TextView = (TextView) V.findViewById(R.id.helpClickItem_TextView);
         TextView helpDragItem_TextView = (TextView) V.findViewById(R.id.helpDragItem_TextView);
         TextView helpSwipeItem_TextView = (TextView) V.findViewById(R.id.helpSwipeItem_TextView);
@@ -162,9 +166,12 @@ public class PopUpSetViewNew extends DialogFragment {
                 FullscreenActivity.mySet = null;
                 FullscreenActivity.mySet = tempmySet;
                 FullscreenActivity.mTempSetList = null;
+                SetActions.prepareSetList();
                 Preferences.savePreferences();
                 // Tell the listener to do something
-                mListener.refreshAll();
+                if (mListener!=null) {
+                    mListener.refreshAll();
+                }
                 dismiss();
             }
         });
@@ -181,7 +188,9 @@ public class PopUpSetViewNew extends DialogFragment {
 
                 // Run the listener
                 dismiss();
-                mListener.shuffleSongsInSet();
+                if (mListener!=null) {
+                    mListener.shuffleSongsInSet();
+                }
             }
         });
 
@@ -284,7 +293,9 @@ public class PopUpSetViewNew extends DialogFragment {
 
     public static void loadSong() {
         FullscreenActivity.setView = true;
-        mListener.loadSongFromSet();
+        if (mListener!=null) {
+            mListener.loadSongFromSet();
+        }
         setfrag.dismiss();
     }
 
@@ -343,9 +354,11 @@ public class PopUpSetViewNew extends DialogFragment {
         FullscreenActivity.myToastMessage = FullscreenActivity.variation_edit;
         // Now load the new variation item up
         loadSong();
-        mListener.prepareOptionMenu();
-        // Close the fragment
-        mListener.closePopUps();
+        if (mListener!=null) {
+            mListener.prepareOptionMenu();
+            // Close the fragment
+            mListener.closePopUps();
+        }
     }
 
     public void doExportSetTweet() {
@@ -380,6 +393,43 @@ public class PopUpSetViewNew extends DialogFragment {
             mListener.pageButtonAlpha(null);
         }
     }
+
+    public void onPause() {
+        super.onPause();
+        Log.d("d","onPause() called");
+        this.dismiss();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener()
+        {
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event){
+
+                if ((keyCode == FullscreenActivity.pageturner_PREVIOUS && FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) ||
+                        keyCode == FullscreenActivity.pageturner_UP) {
+                    doScroll("up");
+                    return true;
+                } else if ((keyCode == FullscreenActivity.pageturner_NEXT && FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) ||
+                        keyCode == FullscreenActivity.pageturner_DOWN){
+                    doScroll("down");
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    public void doScroll(String direction) {
+        Interpolator customInterpolator = PathInterpolatorCompat.create(0.445f, 0.050f, 0.550f, 0.950f);
+        if (direction.equals("up")) {
+            mRecyclerView.smoothScrollBy(0,(int) (-0.5f * mRecyclerView.getHeight()),customInterpolator);
+        } else {
+            mRecyclerView.smoothScrollBy(0,(int) (+0.5f * mRecyclerView.getHeight()),customInterpolator);
+        }
+    }
+
 
     @Override
     public void onCancel(DialogInterface dialog) {

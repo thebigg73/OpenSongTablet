@@ -5,8 +5,6 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Vibrator;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -28,9 +25,6 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
 
     private SearchView mSearchView;
     private ListView mListView;
-
-    // Vibrate to indicate something has happened
-    Vibrator vb;
 
     SearchViewAdapter adapter;
     public final ArrayList<String> mFileName = new ArrayList<>();
@@ -47,6 +41,7 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
 
     public interface MyInterface {
         void loadSong();
+        void songLongClick();
     }
 
     public static PopUpFullSearchFragment newInstance () {
@@ -96,12 +91,12 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
 
         super.onCreate(savedInstanceState);
 
-        vb = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
-
         mSearchView = (SearchView) V.findViewById(R.id.search_view);
         mListView = (ListView) V.findViewById(R.id.list_view);
         mSearchView.requestFocus();
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
         // Decide if we are using full blown search or a simplified one
         if (FullscreenActivity.safetosearch) {
             Fullsearch();
@@ -262,8 +257,11 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
             //Save preferences
             Preferences.savePreferences();
             // Vibrate to indicate something has happened
-            vb.vibrate(30);
-            mListener.loadSong();
+            DoVibrate.vibrate(getActivity(),50);
+            if (mListener!=null) {
+                mListener.songLongClick();
+                mListener.loadSong();
+            }
             dismiss();
             return true;
         }
@@ -291,7 +289,7 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             // Vibrate to indicate that something has happened.
-            vb.vibrate(30);
+            DoVibrate.vibrate(getActivity(),50);
 
             TextView mFilename = (TextView) view.findViewById(R.id.cardview_filename);
             TextView mFoldername = (TextView) view.findViewById(R.id.cardview_folder);
@@ -299,7 +297,9 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
             FullscreenActivity.whichSongFolder = mFoldername.getText().toString();
             Preferences.savePreferences();
             FullscreenActivity.setView = false;
-            mListener.loadSong();
+            if (mListener!=null) {
+                mListener.loadSong();
+            }
             dismiss();
         }
     }
@@ -311,7 +311,7 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
             // Each song is saved in the set string as $**_Love everlasting_**$
             // Vibrate to indicate that something has happened.
-            vb.vibrate(50);
+            DoVibrate.vibrate(getActivity(),50);
 
             TextView mFilename = (TextView) view.findViewById(R.id.cardview_filename);
             TextView mFoldername = (TextView) view.findViewById(R.id.cardview_folder);
@@ -328,16 +328,16 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
             // Allow the song to be added, even if it is already there
             FullscreenActivity.mySet = FullscreenActivity.mySet + FullscreenActivity.whatsongforsetwork;
             // Tell the user that the song has been added.
-            Toast toast = Toast.makeText(getActivity(), "\""+tsong+"\" "+getResources().getString(R.string.addedtoset), Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
+            FullscreenActivity.myToastMessage = "\"" + tsong + "\" " +getResources().getString(R.string.addedtoset);
+            ShowToast.showToast(getActivity());
 
             // Save the set and other preferences
             Preferences.savePreferences();
 
-            /*FullscreenActivity.setView = "N";
-            mListener.loadSong();*/
-            return true;
+            if (mListener!=null) {
+                mListener.songLongClick();
+            }
+                return true;
         }
     }
 

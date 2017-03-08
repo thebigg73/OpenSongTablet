@@ -53,6 +53,7 @@ public class Preferences extends Activity {
 		
 		Log.d("Preferences","Loading");
 
+		FullscreenActivity.whichSetCategory = myPreferences.getString("whichSetCategory",FullscreenActivity.mainfoldername);
 		FullscreenActivity.quickLaunchButton_1 = myPreferences.getString("quickLaunchButton_1","");
 		FullscreenActivity.quickLaunchButton_2 = myPreferences.getString("quickLaunchButton_2","");
 		FullscreenActivity.quickLaunchButton_3 = myPreferences.getString("quickLaunchButton_3","");
@@ -283,6 +284,7 @@ public class Preferences extends Activity {
 
 		SharedPreferences.Editor editor = myPreferences.edit();
 
+		editor.putString("whichSetCategory", FullscreenActivity.whichSetCategory);
 		editor.putInt("fabSize",FullscreenActivity.fabSize);
 		editor.putString("quickLaunchButton_1",FullscreenActivity.quickLaunchButton_1);
 		editor.putString("quickLaunchButton_2",FullscreenActivity.quickLaunchButton_2);

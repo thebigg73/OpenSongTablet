@@ -32,39 +32,27 @@
         app:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"
         app:showAsAction="always" />
 
-    <item android:id="@+id/song_share"
+<!--    <item android:id="@+id/song_share"
         android:icon="@drawable/ic_share_variant_white_36dp"
         android:title="@string/options_song_export"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"/>-->
 
-    <item android:id="@+id/youtube_websearch"
+<!--    <item android:id="@+id/youtube_websearch"
         android:title="@string/youtube"
         android:icon="@drawable/ic_youtube_play_white_36dp"
         android:label="@string/youtube"
         android:hint="@string/youtube"
-        app:showAsAction="never"/>
+        app:showAsAction="never"/>-->
 
+<!--
     <item android:id="@+id/web_search"
         android:title="@string/websearch"
         android:icon="@drawable/ic_cloud_white_36dp"
         android:label="@string/websearch"
         android:hint="@string/websearch"
         app:showAsAction="never"/>
-
-    <item android:id="@+id/chordie_websearch"
-        android:title="@string/chordiesearch"
-        android:icon="@drawable/ic_cloud_white_36dp"
-        android:label="@string/chordiesearch"
-        android:hint="@string/chordiesearch"
-        app:showAsAction="never"/>
-
-    <item android:id="@+id/ultimateguitar_websearch"
-        android:title="@string/ultimateguitarsearch"
-        android:icon="@drawable/ic_cloud_white_36dp"
-        android:label="@string/ultimateguitarsearch"
-        android:hint="@string/ultimateguitarsearch"
-        app:showAsAction="never"/>
-
+    
+-->
     <item android:id="@+id/perform_mode"
         android:icon="@drawable/ic_microphone_variant_white_36dp"
         android:title="@string/switchtoperformmode"

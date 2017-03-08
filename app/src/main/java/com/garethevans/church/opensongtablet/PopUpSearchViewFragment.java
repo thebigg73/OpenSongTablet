@@ -26,20 +26,15 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
 
     public interface MyInterface {
         void searchResults();
-    }
-
-    public interface MyVibrator {
-        void doVibrate();
+        void songLongClick();
     }
 
     private MyInterface mListener;
-    private MyVibrator mVibrator;
 
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         mListener = (MyInterface) activity;
-        mVibrator = (MyVibrator) activity;
         super.onAttach(activity);
     }
 
@@ -133,7 +128,7 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
             //Save preferences
             Preferences.savePreferences();
             // Vibrate to indicate something has happened
-            mVibrator.doVibrate();
+            DoVibrate.vibrate(getActivity(),50);
             mListener.searchResults();
             dismiss();
             return false;
@@ -149,9 +144,11 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
             FullscreenActivity.myToastMessage = query;
             //Save preferences
             Preferences.savePreferences();
-            // Vibrate to indicate something has happened
-            mVibrator.doVibrate();
-            mListener.searchResults();
+            // Vibrate to let the user know something happened
+            DoVibrate.vibrate(getActivity(),50);
+            if (mListener!=null) {
+                mListener.searchResults();
+            }
             dismiss();
         }
     }
@@ -183,10 +180,13 @@ public class PopUpSearchViewFragment extends DialogFragment implements SearchVie
             FullscreenActivity.setView = true;
             //Save preferences
             Preferences.savePreferences();
-            // Vibrate to indicate something has happened
-            mVibrator.doVibrate();
+            // Vibrate to let the user know something happened
+            DoVibrate.vibrate(getActivity(),50);
             FullscreenActivity.myToastMessage = "\"" + linkclicked + "\" " + getResources().getString(R.string.addedtoset);
-            mListener.searchResults();
+            if (mListener!=null) {
+                mListener.songLongClick();
+                mListener.searchResults();
+            }
             dismiss();
             return true;
         }

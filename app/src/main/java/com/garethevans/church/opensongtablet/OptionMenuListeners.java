@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,8 +36,6 @@ public class OptionMenuListeners extends Activity {
         void toggleDrawerSwipe();
     }
 
-
-    static DialogFragment newFragment;
     public static MyInterface mListener;
 
     @SuppressWarnings("all")
@@ -57,6 +54,10 @@ public class OptionMenuListeners extends Activity {
 
             case "SONG":
                 menu = createSongMenu(c);
+                break;
+
+            case "FIND":
+                menu = createFindSongsMenu(c);
                 break;
 
             case "CHORDS":
@@ -141,6 +142,13 @@ public class OptionMenuListeners extends Activity {
     }
 
     @SuppressWarnings("all")
+    public static LinearLayout createFindSongsMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option_findsongs,null);
+    }
+
+    @SuppressWarnings("all")
     public static LinearLayout createConnectMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -200,6 +208,10 @@ public class OptionMenuListeners extends Activity {
                 displayOptionListener(v,c);
                 break;
 
+            case "FIND":
+                findSongsOptionListener(v,c);
+                break;
+
             case "STORAGE":
                 storageOptionListener(v,c);
                 break;
@@ -236,6 +248,7 @@ public class OptionMenuListeners extends Activity {
         Button menuDisplayButton = (Button) v.findViewById(R.id.menuDisplayButton);
         Button menuGesturesButton = (Button) v.findViewById(R.id.menuGesturesButton);
         Button menuConnectButton = (Button) v.findViewById(R.id.menuConnectButton);
+        Button menuFindSongsButton = (Button) v.findViewById(R.id.menuFindSongsButton);
         Button menuStorageButton = (Button) v.findViewById(R.id.menuStorageButton);
         Button menuPadButton = (Button) v.findViewById(R.id.menuPadButton);
         Button menuAutoScrollButton = (Button) v.findViewById(R.id.menuAutoScrollButton);
@@ -248,6 +261,7 @@ public class OptionMenuListeners extends Activity {
         menuDisplayButton.setText(c.getString(R.string.options_display).toUpperCase(FullscreenActivity.locale));
         menuGesturesButton.setText(c.getString(R.string.options_gesturesandmenus).toUpperCase(FullscreenActivity.locale));
         menuConnectButton.setText(c.getString(R.string.options_connections).toUpperCase(FullscreenActivity.locale));
+        menuFindSongsButton.setText(c.getString(R.string.findnewsongs).toUpperCase(FullscreenActivity.locale));
         menuStorageButton.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
         menuPadButton.setText(c.getString(R.string.pad).toUpperCase(FullscreenActivity.locale));
         menuAutoScrollButton.setText(c.getString(R.string.autoscroll).toUpperCase(FullscreenActivity.locale));
@@ -294,6 +308,15 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whichOptionMenu = "GESTURES";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        menuFindSongsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "FIND";
                 if (mListener!=null) {
                     mListener.prepareOptionMenu();
                 }
@@ -356,6 +379,7 @@ public class OptionMenuListeners extends Activity {
         Button setSaveButton = (Button) v.findViewById(R.id.setSaveButton);
         Button setNewButton = (Button) v.findViewById(R.id.setNewButton);
         Button setDeleteButton = (Button) v.findViewById(R.id.setDeleteButton);
+        Button setOrganiseButton = (Button) v.findViewById(R.id.setOrganiseButton);
         Button setExportButton = (Button) v.findViewById(R.id.setExportButton);
         Button setCustomButton = (Button) v.findViewById(R.id.setCustomButton);
         Button setVariationButton = (Button) v.findViewById(R.id.setVariationButton);
@@ -368,6 +392,7 @@ public class OptionMenuListeners extends Activity {
         setSaveButton.setText(c.getString(R.string.options_set_save).toUpperCase(FullscreenActivity.locale));
         setNewButton.setText(c.getString(R.string.options_set_clear).toUpperCase(FullscreenActivity.locale));
         setDeleteButton.setText(c.getString(R.string.options_set_delete).toUpperCase(FullscreenActivity.locale));
+        setOrganiseButton.setText(c.getString(R.string.managesets).toUpperCase(FullscreenActivity.locale));
         setExportButton.setText(c.getString(R.string.options_set_export).toUpperCase(FullscreenActivity.locale));
         setCustomButton.setText(c.getString(R.string.add_custom_slide).toUpperCase(FullscreenActivity.locale));
         setVariationButton.setText(c.getString(R.string.customise_set_item).toUpperCase(FullscreenActivity.locale));
@@ -410,6 +435,17 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whattodo = "clearset";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        setOrganiseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "managesets";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -523,6 +559,8 @@ public class OptionMenuListeners extends Activity {
         TextView menuup = (TextView) v.findViewById(R.id.songMenuTitle);
         Button songEditButton = (Button) v.findViewById(R.id.songEditButton);
         Button songStickyButton = (Button) v.findViewById(R.id.songStickyButton);
+        Button songOnYouTubeButton = (Button) v.findViewById(R.id.songOnYouTubeButton);
+        Button songOnWebButton = (Button) v.findViewById(R.id.songOnWebButton);
         Button songRenameButton = (Button) v.findViewById(R.id.songRenameButton);
         Button songNewButton = (Button) v.findViewById(R.id.songNewButton);
         Button songDeleteButton = (Button) v.findViewById(R.id.songDeleteButton);
@@ -533,6 +571,8 @@ public class OptionMenuListeners extends Activity {
         menuup.setText(c.getString(R.string.options_song).toUpperCase(FullscreenActivity.locale));
         songEditButton.setText(c.getString(R.string.options_song_edit).toUpperCase(FullscreenActivity.locale));
         songStickyButton.setText(c.getString(R.string.options_song_stickynotes).toUpperCase(FullscreenActivity.locale));
+        songOnYouTubeButton.setText(c.getString(R.string.youtube).toUpperCase(FullscreenActivity.locale));
+        songOnWebButton.setText(c.getString(R.string.websearch).toUpperCase(FullscreenActivity.locale));
         songRenameButton.setText(c.getString(R.string.options_song_rename).toUpperCase(FullscreenActivity.locale));
         songNewButton.setText(c.getString(R.string.options_song_new).toUpperCase(FullscreenActivity.locale));
         songDeleteButton.setText(c.getString(R.string.options_song_delete).toUpperCase(FullscreenActivity.locale));
@@ -571,6 +611,32 @@ public class OptionMenuListeners extends Activity {
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
+                }
+            }
+        });
+
+        songOnYouTubeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "youtube";
+                if (mListener!=null) {
+                    Intent youtube = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://www.youtube.com/results?search_query=" + FullscreenActivity.mTitle + "+" + FullscreenActivity.mAuthor));
+                    mListener.callIntent("web", youtube);
+                    mListener.closeMyDrawers("option");
+                }
+            }
+        });
+
+        songOnWebButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "websearch";
+                if (mListener!=null) {
+                    Intent web = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://www.google.com/search?q=" + FullscreenActivity.mTitle + "+" + FullscreenActivity.mAuthor));
+                    mListener.callIntent("web", web);
+                    mListener.closeMyDrawers("option");
                 }
             }
         });
@@ -1013,6 +1079,66 @@ public class OptionMenuListeners extends Activity {
 
     }
 
+    public static void findSongsOptionListener(View v, Context c) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuup = (TextView) v.findViewById(R.id.findSongMenuTitle);
+        Button ugSearchButton = (Button) v.findViewById(R.id.ugSearchButton);
+        Button chordieSearchButton = (Button) v.findViewById(R.id.chordieSearchButton);
+        Button worshipreadySearchButton = (Button) v.findViewById(R.id.worshipreadySearchButton);
+
+        // Capitalise all the text by locale
+        menuup.setText(c.getString(R.string.findnewsongs).toUpperCase(FullscreenActivity.locale));
+        ugSearchButton.setText(c.getString(R.string.ultimateguitarsearch).toUpperCase(FullscreenActivity.locale));
+        chordieSearchButton.setText(c.getString(R.string.chordiesearch).toUpperCase(FullscreenActivity.locale));
+        String wr = c.getString(R.string.worshipready) + " " + c.getString(R.string.subscription);
+        worshipreadySearchButton.setText(wr.toUpperCase(FullscreenActivity.locale));
+
+        // Set the button listeners
+        menuup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+        ugSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "ultimate-guitar";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+        chordieSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "chordie";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+        worshipreadySearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "worshipready";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+    }
+
     public static void storageOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
 
@@ -1021,6 +1147,7 @@ public class OptionMenuListeners extends Activity {
         Button storageNewFolderButton = (Button) v.findViewById(R.id.storageNewFolderButton);
         Button storageEditButton = (Button) v.findViewById(R.id.storageEditButton);
         Button storageManageButton = (Button) v.findViewById(R.id.storageManageButton);
+        Button exportSongListButton = (Button) v.findViewById(R.id.exportSongListButton);
         Button storageImportOSBButton = (Button) v.findViewById(R.id.storageImportOSBButton);
         Button storageExportOSBButton = (Button) v.findViewById(R.id.storageExportOSBButton);
         Button storageImportOnSongButton = (Button) v.findViewById(R.id.storageImportOnSongButton);
@@ -1033,6 +1160,7 @@ public class OptionMenuListeners extends Activity {
         storageNewFolderButton.setText(c.getString(R.string.options_song_newfolder).toUpperCase(FullscreenActivity.locale));
         storageEditButton.setText(c.getString(R.string.options_song_editfolder).toUpperCase(FullscreenActivity.locale));
         storageManageButton.setText(c.getString(R.string.storage_choose).toUpperCase(FullscreenActivity.locale));
+        exportSongListButton.setText(c.getString(R.string.exportsongdirectory).toUpperCase(FullscreenActivity.locale));
         storageImportOSBButton.setText(c.getString(R.string.backup_import).toUpperCase(FullscreenActivity.locale));
         storageExportOSBButton.setText(c.getString(R.string.backup_export).toUpperCase(FullscreenActivity.locale));
         storageImportOnSongButton.setText(c.getString(R.string.import_onsong_choose).toUpperCase(FullscreenActivity.locale));
@@ -1078,6 +1206,17 @@ public class OptionMenuListeners extends Activity {
             public void onClick(View view) {
                 if (mListener!=null) {
                     FullscreenActivity.whattodo = "managestorage";
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+
+        exportSongListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener!=null) {
+                    FullscreenActivity.whattodo = "exportsonglist";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }

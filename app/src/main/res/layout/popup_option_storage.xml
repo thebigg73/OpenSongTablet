@@ -72,6 +72,20 @@
                 android:textSize="12sp" />
 
             <Button
+                android:id="@+id/exportSongListButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_format_list_bulleted_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_format_list_bulleted_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/exportsongdirectory"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
                 android:id="@+id/storageImportOSBButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

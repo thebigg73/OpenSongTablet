@@ -5,7 +5,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
-import android.view.ViewGroup;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
@@ -20,12 +20,12 @@ public class ProcessSong extends Activity {
     public static String parseLyrics(String myLyrics) {
         myLyrics = myLyrics.replace("\n \n","\n\n");
         myLyrics = myLyrics.replace("]\n\n","]\n");
-        myLyrics = myLyrics.replace("\n\n","\n");
+        //myLyrics = myLyrics.replace("\n\n","\n");
         myLyrics = myLyrics.replaceAll("\r\n", "\n");
         myLyrics = myLyrics.replaceAll("\r", "\n");
         myLyrics = myLyrics.replaceAll("\t", "    ");
         myLyrics = myLyrics.replaceAll("\\t", "    ");
-        myLyrics = myLyrics.replaceAll("\b", "    ");
+        //myLyrics = myLyrics.replaceAll("\\b", "    ");
         myLyrics = myLyrics.replaceAll("\f", "    ");
         myLyrics = myLyrics.replace("\r", "");
         myLyrics = myLyrics.replace("\t", "    ");
@@ -107,10 +107,10 @@ public class ProcessSong extends Activity {
             if (FullscreenActivity.songSections[x].startsWith("["+FullscreenActivity.songSectionsLabels[x]+"]")) {
                 tempLyrics += FullscreenActivity.songSections[x] + "\n";
             } else {
-                // If the section starts with a linespace, remove it
+                /*// If the section starts with a linespace, remove it
                 if (FullscreenActivity.songSections[x].startsWith("\n") || FullscreenActivity.songSections[x].startsWith(" \n")) {
                     FullscreenActivity.songSections[x] = FullscreenActivity.songSections[x].trim();
-                }
+                }*/
                 tempLyrics += FullscreenActivity.songSections[x] + "\n";
             }
         }
@@ -564,6 +564,8 @@ public class ProcessSong extends Activity {
         String type;
         if (string.indexOf(".")==0) {
             type = "chord";
+        } else if (string.indexOf(";__")==0) {
+            type = "extra";
         } else if (string.indexOf(";")==0) {
             type = "comment";
         } else if (string.indexOf("[")==0) {
@@ -738,8 +740,20 @@ public class ProcessSong extends Activity {
         return chordhtml;
     }
 
-    public static TableLayout.LayoutParams tablerow_params() {
-        return new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT,TableLayout.LayoutParams.WRAP_CONTENT);
+    public static TableLayout.LayoutParams tablelayout_params() {
+        return new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.WRAP_CONTENT);
+    }
+
+    public static TableRow.LayoutParams tablerow_params() {
+        return new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT);
+    }
+
+    public static LinearLayout.LayoutParams linearlayout_params() {
+        if (FullscreenActivity.scalingfiguredout) {
+            return new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        } else {
+            return new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        }
     }
 
     public static TableRow capolinetoTableRow(Context c, String[] chords, float fontsize) {
@@ -753,6 +767,7 @@ public class ProcessSong extends Activity {
                 bit = bit.substring(1);
             }
             TextView capobit  = new TextView(c);
+            capobit.setLayoutParams(tablerow_params());
             FullscreenActivity.temptranspChords = bit;
             try {
                 Transpose.capoTranspose();
@@ -770,7 +785,7 @@ public class ProcessSong extends Activity {
 
     public static TableRow chordlinetoTableRow(Context c, String[] chords, float fontsize) {
         TableRow chordrow = new TableRow(c);
-        chordrow.setLayoutParams(tablerow_params());
+        chordrow.setLayoutParams(tablelayout_params());
         chordrow.setPadding(0, -(int) ((float) FullscreenActivity.linespacing / fontsize), 0, 0);
         chordrow.setClipChildren(false);
         chordrow.setClipToPadding(false);
@@ -794,7 +809,7 @@ public class ProcessSong extends Activity {
 
     public static TableRow lyriclinetoTableRow(Context c, String[] lyrics, float fontsize) {
         TableRow lyricrow = new TableRow(c);
-        lyricrow.setLayoutParams(tablerow_params());
+        lyricrow.setLayoutParams(tablelayout_params());
         lyricrow.setPadding(0, -(int) ((float) FullscreenActivity.linespacing / fontsize), 0, 0);
         lyricrow.setClipChildren(false);
         lyricrow.setClipToPadding(false);
@@ -807,6 +822,7 @@ public class ProcessSong extends Activity {
                 bit = bit.replace("_","");
             }
             TextView lyricbit = new TextView(c);
+            lyricbit.setLayoutParams(tablerow_params());
             lyricbit.setText(bit);
             lyricbit.setTextSize(fontsize);
             lyricbit.setTextColor(FullscreenActivity.lyricsTextColor);
@@ -818,7 +834,7 @@ public class ProcessSong extends Activity {
 
     public static TableRow commentlinetoTableRow(Context c, String[] comment, float fontsize) {
         TableRow commentrow = new TableRow(c);
-        commentrow.setLayoutParams(tablerow_params());
+        commentrow.setLayoutParams(tablelayout_params());
         commentrow.setClipChildren(false);
         commentrow.setClipToPadding(false);
 
@@ -830,6 +846,7 @@ public class ProcessSong extends Activity {
                 bit = bit.replace("_","");
             }
             TextView lyricbit = new TextView(c);
+            lyricbit.setLayoutParams(tablerow_params());
             lyricbit.setText(bit);
             lyricbit.setTextSize(fontsize * FullscreenActivity.commentfontscalesize);
             lyricbit.setTextColor(FullscreenActivity.lyricsTextColor);
@@ -841,6 +858,7 @@ public class ProcessSong extends Activity {
 
     public static TextView titletoTextView (Context c, String title, float fontsize) {
         TextView titleview = new TextView(c);
+        titleview.setLayoutParams(linearlayout_params());
         titleview.setText(title);
         titleview.setTextColor(FullscreenActivity.lyricsTextColor);
         titleview.setTypeface(FullscreenActivity.lyricsfont);
@@ -862,6 +880,8 @@ public class ProcessSong extends Activity {
             what = "lyric_no_chord";
         } else if (thislinetype.equals("comment") && !previouslinetype.equals("chord")) {
             what = "comment_no_chord";
+        } else if (thislinetype.equals("extra")) {
+            what = "extra_info";
         } else {
             what = "null"; // Probably a lyric line with a chord above it - already dealt with
         }
@@ -1343,13 +1363,13 @@ public class ProcessSong extends Activity {
 
     public static void trimSongSections() {
         for (int z=0;z<FullscreenActivity.songSections.length;z++) {
-            FullscreenActivity.songSections[z] = FullscreenActivity.songSections[z].trim();
+            //FullscreenActivity.songSections[z] = FullscreenActivity.songSections[z].trim();
         }
     }
 
     public static String getSectionHeadings(String songsection) {
         String label = "";
-        songsection = songsection.trim();
+        //songsection = songsection.trim();
         if (songsection.indexOf("[")==0) {
             int startoftag = songsection.indexOf("[");
             int endoftag = songsection.indexOf("]");
@@ -1360,7 +1380,13 @@ public class ProcessSong extends Activity {
             FullscreenActivity.songSection_holder = label;
         }
         if (label.equals("")) {
-            label = FullscreenActivity.songSection_holder;
+            // If section is just a comment line, have no label
+            int lines = songsection.split("\n").length;
+            if (lines<2 || songsection.startsWith(";")) {
+                label = "";
+            } else {
+                label = FullscreenActivity.songSection_holder;
+            }
         }
         return label;
     }
@@ -1456,19 +1482,17 @@ public class ProcessSong extends Activity {
 
     public static LinearLayout songSectionView(Context c, int x, float fontsize) {
 
-        LinearLayout.LayoutParams llparams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
         final LinearLayout ll = new LinearLayout(c);
 
-        ll.setLayoutParams(llparams);
+        ll.setLayoutParams(linearlayout_params());
         ll.setOrientation(LinearLayout.VERTICAL);
         ll.setPadding(0,0,0,0);
         ll.setClipChildren(false);
         ll.setClipToPadding(false);
 
         String[] returnvals = beautifyHeadings(FullscreenActivity.songSectionsLabels[x]);
-        ll.addView(ProcessSong.titletoTextView(c, returnvals[0], fontsize));
+
+        ll.addView(titletoTextView(c, returnvals[0], fontsize));
 
         // Identify the section type
         if (x<FullscreenActivity.songSectionsTypes.length) {
@@ -1556,23 +1580,30 @@ public class ProcessSong extends Activity {
                         tl.setBackgroundColor(FullscreenActivity.lyricsCommentColor);
                         break;
 
+                    case "extra_info":
+                        lyrics_returned = new String[1];
+                        lyrics_returned[0] = FullscreenActivity.sectionContents[x][y];
+                        TableRow tr = commentlinetoTableRow(c, lyrics_returned, fontsize);
+                        tr.setGravity(Gravity.RIGHT);
+                        tl.addView(tr);
+                        tl.setGravity(Gravity.RIGHT);
+                        tl.setBackgroundColor(FullscreenActivity.lyricsCustomColor);
+                        break;
+
                 }
                 ll.addView(tl);
             }
         TextView emptyline = new TextView(c);
-        emptyline.setText("");
-        emptyline.setTextSize(3f);
+        emptyline.setLayoutParams(linearlayout_params());
+        emptyline.setText(" ");
+        emptyline.setTextSize(fontsize*0.5f);
         ll.addView(emptyline);
         return ll;
     }
 
-
     public static LinearLayout createLinearLayout(Context c) {
-        LinearLayout.LayoutParams llparams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
         final LinearLayout ll = new LinearLayout(c);
-        ll.setLayoutParams(llparams);
+        ll.setLayoutParams(linearlayout_params());
         ll.setOrientation(LinearLayout.VERTICAL);
         ll.setClipChildren(false);
         ll.setClipToPadding(false);
@@ -1580,11 +1611,8 @@ public class ProcessSong extends Activity {
     }
 
     public static TableLayout createTableLayout(Context c) {
-        LinearLayout.LayoutParams llparams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
         TableLayout tl = new TableLayout(c);
-        tl.setLayoutParams(llparams);
+        tl.setLayoutParams(linearlayout_params());
         tl.setClipChildren(false);
         tl.setClipToPadding(false);
         return tl;
@@ -1636,8 +1664,7 @@ public class ProcessSong extends Activity {
 
     public static RelativeLayout preparePerformanceBoxView(Context c, int m) {
         RelativeLayout boxbit  = new RelativeLayout(c);
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams llp = linearlayout_params();
         llp.setMargins(0,0,m,0);
         boxbit.setLayoutParams(llp);
         boxbit.setBackgroundResource(R.drawable.section_box);
@@ -1649,8 +1676,7 @@ public class ProcessSong extends Activity {
 
     public static LinearLayout prepareStageBoxView(Context c, int m) {
         LinearLayout boxbit  = new LinearLayout(c);
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams llp = linearlayout_params();
         llp.setMargins(0,0,m,0);
         boxbit.setLayoutParams(llp);
         boxbit.setBackgroundResource(R.drawable.section_box);
@@ -1662,9 +1688,7 @@ public class ProcessSong extends Activity {
 
     public static LinearLayout preparePerformanceColumnView(Context c) {
         LinearLayout column = new LinearLayout(c);
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        column.setLayoutParams(llp);
+        column.setLayoutParams(linearlayout_params());
         column.setOrientation(LinearLayout.VERTICAL);
         column.setClipChildren(false);
         column.setClipToPadding(false);
@@ -1673,14 +1697,12 @@ public class ProcessSong extends Activity {
 
     public static LinearLayout preparePerformanceSongBitView(Context c,boolean horizontal) {
         LinearLayout songbit = new LinearLayout(c);
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
         if (horizontal) {
             songbit.setOrientation(LinearLayout.HORIZONTAL);
         } else {
             songbit.setOrientation(LinearLayout.VERTICAL);
         }
-        songbit.setLayoutParams(llp);
+        songbit.setLayoutParams(linearlayout_params());
         songbit.setClipChildren(false);
         songbit.setClipToPadding(false);
         return songbit;
@@ -1688,10 +1710,8 @@ public class ProcessSong extends Activity {
 
     public static LinearLayout prepareStageSongBitView(Context c) {
         LinearLayout songbit = new LinearLayout(c);
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
         songbit.setOrientation(LinearLayout.VERTICAL);
-        songbit.setLayoutParams(llp);
+        songbit.setLayoutParams(linearlayout_params());
         songbit.setClipChildren(false);
         songbit.setClipToPadding(false);
         return songbit;
@@ -1700,7 +1720,51 @@ public class ProcessSong extends Activity {
     public static float setScaledFontSize(int s) {
         float fontsize = 12.0f * FullscreenActivity.sectionScaleValue[s];
         // Make the font size marginally smaller
-        fontsize -= 0.6f;
+        fontsize -= 0.5f;
         return fontsize;
+    }
+
+    public static void addExtraInfo(Context c) {
+        String nextinset = "";
+        if (FullscreenActivity.setView) {
+            nextinset = ";__"+c.getString(R.string.next) + ": " + FullscreenActivity.nextSongInSet;
+            if (!FullscreenActivity.nextSongKeyInSet.equals("")) {
+                nextinset = nextinset + " ("+FullscreenActivity.nextSongKeyInSet+")";
+            }
+        }
+
+        String stickyNotes = "";
+        if (FullscreenActivity.toggleAutoSticky.equals("T")||FullscreenActivity.toggleAutoSticky.equals("B")) {
+            String notes[] = FullscreenActivity.mNotes.split("\n");
+            stickyNotes += ";__"+c.getString(R.string.note)+": ";
+            for (String line:notes) {
+                stickyNotes += ";__" + line + "\n";
+            }
+            stickyNotes = stickyNotes.replace(";__"+c.getString(R.string.note)+": "+";__",";__"+c.getString(R.string.note)+": ");
+            if (FullscreenActivity.toggleAutoSticky.equals("T") && !FullscreenActivity.mNotes.equals("")) {
+                FullscreenActivity.myLyrics = stickyNotes + "\n" + FullscreenActivity.myLyrics;
+            }
+        }
+
+        // If we want to add this to the top of the song page,
+        if (FullscreenActivity.setView &&
+                FullscreenActivity.indexSongInSet < FullscreenActivity.mSetList.length &&
+                FullscreenActivity.showNextInSet.equals(("top"))) {
+            FullscreenActivity.myLyrics = nextinset + "\n" + FullscreenActivity.myLyrics;
+        }
+
+        if (FullscreenActivity.toggleAutoSticky.equals("B")) {
+            if (!FullscreenActivity.mNotes.equals("")) {
+                FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n\n" + stickyNotes;
+            }
+        }
+
+        // If we want to add this to the top of the song page,
+        if (FullscreenActivity.setView &&
+                FullscreenActivity.indexSongInSet < FullscreenActivity.mSetList.length &&
+                FullscreenActivity.showNextInSet.equals(("bottom"))) {
+            FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n\n" + nextinset;
+        }
+
     }
 }

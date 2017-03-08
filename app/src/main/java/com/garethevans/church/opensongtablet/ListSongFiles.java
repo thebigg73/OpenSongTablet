@@ -221,7 +221,11 @@ public class ListSongFiles extends Activity {
         // Sort the files alphabetically using locale
         coll = Collator.getInstance(FullscreenActivity.locale);
         coll.setStrength(Collator.SECONDARY);
-        Collections.sort(tempProperSongFiles, coll);
+        try {
+            Collections.sort(tempProperSongFiles, coll);
+        } catch (Exception e) {
+            // Problem sorting
+        }
 
         FullscreenActivity.mSongFileNames = new String[tempProperSongFiles.size()];
 
@@ -259,12 +263,39 @@ public class ListSongFiles extends Activity {
                 if (vals[2]==null || vals[2].equals("")) {
                     vals[2] = "";
                 }
-                FullscreenActivity.songDetails[r][0] = vals[0];
-                FullscreenActivity.songDetails[r][1] = vals[1];
-                FullscreenActivity.songDetails[r][2] = vals[2];
+                try {
+                    FullscreenActivity.songDetails[r][0] = vals[0];
+                    FullscreenActivity.songDetails[r][1] = vals[1];
+                    FullscreenActivity.songDetails[r][2] = vals[2];
+                } catch (Exception e) {
+                    // Error trying to get song details
+                }
             }
         }
     }
+
+    public static void getNextSongInSetInfo(Context c) {
+        // Get the filename of the nextsong in set
+        int i = FullscreenActivity.indexSongInSet;
+        if (i<FullscreenActivity.mSetList.length-1) {
+            FullscreenActivity.nextSongInSet = FullscreenActivity.mSetList[i+1];
+            // Now load this song quickly and extract the key
+            String s_f = FullscreenActivity.dir + "/" + FullscreenActivity.nextSongInSet;
+            File f = new File(s_f);
+            String utf = checkUtfEncoding(s_f);
+            String[] vals = getSongDetailsXML(f,FullscreenActivity.nextSongInSet,utf);
+            if (!FullscreenActivity.nextSongInSet.contains("/")) {
+                FullscreenActivity.nextSongInSet = "/" + FullscreenActivity.nextSongInSet;
+            }
+            String[] parts = FullscreenActivity.nextSongInSet.split("/");
+            FullscreenActivity.nextSongInSet = parts[parts.length-1];
+            FullscreenActivity.nextSongKeyInSet = vals[2];
+        } else {
+            FullscreenActivity.nextSongInSet = c.getString(R.string.lastsong);
+            FullscreenActivity.nextSongKeyInSet = "";
+        }
+    }
+
 
     public static String[] getSongDetailsXML(File f, String s, String utf) {
         String vals[] = new String[3];
@@ -390,8 +421,13 @@ public class ListSongFiles extends Activity {
         // Add locale sort
         coll = Collator.getInstance(FullscreenActivity.locale);
         coll.setStrength(Collator.SECONDARY);
-        Collections.sort(tempProperSongFiles, coll);
-        Collections.sort(tempProperDirectories,coll);
+        try {
+            Collections.sort(tempProperSongFiles, coll);
+            Collections.sort(tempProperDirectories,coll);
+        } catch (Exception e) {
+            // Error sorting for some reason
+        }
+
 
         //Add folder name to first item of songlist
         if (FullscreenActivity.whichSongFolder!=null) {
@@ -465,4 +501,5 @@ public class ListSongFiles extends Activity {
                     + c.getString(R.string.deleteerror_end_song);
         }
     }
+
 }

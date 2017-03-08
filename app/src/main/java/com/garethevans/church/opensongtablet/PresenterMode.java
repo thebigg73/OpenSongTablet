@@ -76,7 +76,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         PopUpListSetsFragment.MyInterface, PopUpAreYouSureFragment.MyInterface,
         PopUpSongRenameFragment.MyInterface, PopUpSearchViewFragment.MyInterface,
         PopUpSetViewNew.MyInterface, PopUpSongCreateFragment.MyInterface,
-        PopUpSearchViewFragment.MyVibrator, PopUpSongDetailsFragment.MyInterface,
+        PopUpSongDetailsFragment.MyInterface,
         PopUpFontsFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
         PopUpFileChooseFragment.MyInterface, PopUpPresentationOrderFragment.MyInterface {
 
@@ -2527,14 +2527,6 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         return super.onKeyUp(keyCode,event);
     }
 
-    // Listener for popups
-    @Override
-    public void doVibrate() {
-        // Vibrate to indicate something has happened
-        Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        vb.vibrate(25);
-    }
-
     @Override
     public void doEdit() {
         FullscreenActivity.whattodo = "editsong";
@@ -2551,6 +2543,11 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
             e.printStackTrace();
         }
         refreshAll();
+    }
+
+    @Override
+    public void songLongClick() {
+
     }
 
     @Override

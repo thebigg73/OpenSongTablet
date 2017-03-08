@@ -3,9 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
-import android.os.Vibrator;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
@@ -19,7 +17,6 @@ public class MenuHandlers extends Activity {
     public interface MyInterface {
         void callIntent(String what, Intent i);
         void openMyDrawers(String what);
-        void shareSong();
         void openFragment();
         void prepareOptionMenu();
         void doMoveInSet();
@@ -27,6 +24,7 @@ public class MenuHandlers extends Activity {
 
     public static MyInterface mListener;
 
+/*
     public static boolean setSetButtonVisibility() {
         // If we are not in set mode, this icons visibility should be set to GONE
         // Otherwise, set it to visible
@@ -114,6 +112,7 @@ public class MenuHandlers extends Activity {
         }
         return (anothersection || anothersong || anotherpdfpage);
     }
+*/
 
     public static int dualScreenAlpha() {
         if (FullscreenActivity.dualDisplayCapable) {
@@ -175,12 +174,14 @@ public class MenuHandlers extends Activity {
                 }
                 break;
 
+/*
             case R.id.song_share:
                 // Share this song
                 if (mListener!=null) {
                     mListener.shareSong();
                 }
                 break;
+*/
 
             case R.id.action_fullsearch:
                 // Full search window
@@ -188,6 +189,7 @@ public class MenuHandlers extends Activity {
                 mListener.openFragment();
                 break;
 
+/*
             case R.id.youtube_websearch:
                 // Open a youtube search for the current song
                 Intent youtube = new Intent(Intent.ACTION_VIEW,
@@ -196,7 +198,9 @@ public class MenuHandlers extends Activity {
                     mListener.callIntent("web", youtube);
                 }
                 break;
+*/
 
+/*
             case R.id.web_search:
                 // Open a web search for the current song
                 Intent web = new Intent(Intent.ACTION_VIEW,
@@ -205,22 +209,8 @@ public class MenuHandlers extends Activity {
                     mListener.callIntent("web", web);
                 }
                 break;
+*/
 
-            case R.id.chordie_websearch:
-                // Search Chordie
-                FullscreenActivity.whattodo = "chordie";
-                if (mListener!=null) {
-                    mListener.openFragment();
-                }
-                break;
-
-            case R.id.ultimateguitar_websearch:
-                // Search Chordie
-                FullscreenActivity.whattodo = "ultimate-guitar";
-                if (mListener!=null) {
-                    mListener.openFragment();
-                }
-                break;
 
             case R.id.set_add:
                 if ((FullscreenActivity.isSong || FullscreenActivity.isPDF) && !FullscreenActivity.whichSongFolder.startsWith("..")) {
@@ -237,8 +227,7 @@ public class MenuHandlers extends Activity {
                             + c.getResources().getString(R.string.addedtoset);
                     ShowToast.showToast(c);
                     // Vibrate to indicate something has happened
-                    Vibrator vb = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-                    vb.vibrate(50);
+                    DoVibrate.vibrate(c,50);
 
                     // Save the set and other preferences
                     Preferences.savePreferences();

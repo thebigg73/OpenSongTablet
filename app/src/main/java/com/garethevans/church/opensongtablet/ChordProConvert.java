@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -210,6 +211,7 @@ public class ChordProConvert extends Activity {
 				line[x] = line[x].replace("Intro:", "[Intro]");
 				line[x] = line[x].replace("Outro:", "[Outro]");
 				line[x] = line[x].replace("Verse:", "[V]");
+				line[x] = line[x].replace("VERSE:", "[V]");
 				line[x] = line[x].replace("Verse 1:", "[V1]");
 				line[x] = line[x].replace("Verse 2:", "[V2]");
 				line[x] = line[x].replace("Verse 3:", "[V3]");
@@ -220,14 +222,19 @@ public class ChordProConvert extends Activity {
 				line[x] = line[x].replace("(Verse 3)", "[V3]");				
 				line[x] = line[x].replace("(Chorus)", "[C]");
 				line[x] = line[x].replace("Chorus:", "[C]");
+				line[x] = line[x].replace("CHORUS:", "[C]");
 				line[x] = line[x].replace("Chorus 1:", "[C1]");
 				line[x] = line[x].replace("Chorus 2:", "[C2]");
 				line[x] = line[x].replace("Chorus 3:", "[C3]");
 				line[x] = line[x].replace("Prechorus:", "[P]");
-				line[x] = line[x].replace("Prechorus 1:", "[P1]");
+				line[x] = line[x].replace("Pre-chorus:", "[P]");
+				line[x] = line[x].replace("Prechorus:", "[P]");
+				line[x] = line[x].replace("Pre-Chorus 1:", "[P1]");
+				line[x] = line[x].replace("PRECHORUS:", "[P]");
 				line[x] = line[x].replace("Prechorus 2:", "[P2]");
 				line[x] = line[x].replace("Prechorus 3:", "[P3]");
 				line[x] = line[x].replace("Bridge:", "[B]");
+				line[x] = line[x].replace("BRIDGE:", "[B]");
 				line[x] = line[x].replace("Tag:", "[T]");
 				line[x] = line[x].replace("[[", "[");
                 line[x] = line[x].replace("]]", "]");

@@ -102,15 +102,6 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@id/mytoolbar"/>
 
-    <include layout="@layout/pageicons_right_material"
-        android:id="@+id/pagebuttonsbottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/padProgress"
-        android:layout_above="@+id/setForwardButton"/>
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/scrollUpButton"
         android:layout_width="wrap_content"
@@ -148,7 +139,7 @@
         app:fabSize="mini"
         android:src="@drawable/ic_arrow_left_white_36dp"
         android:alpha="0.4"
-        android:visibility="gone"/>
+        android:visibility="invisible"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/setForwardButton"
@@ -161,8 +152,11 @@
         app:fabSize="mini"
         android:src="@drawable/ic_arrow_right_white_36dp"
         android:alpha="0.4"
-        android:visibility="gone"
+        android:visibility="invisible"
         tools:ignore="RelativeOverlap" />
+
+    <include layout="@layout/pageicons_right_material"
+        android:id="@+id/pagebuttons" />
 
 </RelativeLayout>
 
@@ -244,8 +238,9 @@
         android:padding="4dp">
 
         <include layout="@layout/popup_option"
-        android:id="@+id/mytoolbar"/>
+            android:id="@+id/myoptionmenucontents"/>
 
     </LinearLayout>
+
 
 </android.support.v4.widget.DrawerLayout>

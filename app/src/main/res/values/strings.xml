@@ -4,6 +4,16 @@
     <string name="app_id" translatable="false">4E2B0891</string>
     <string name="cast_namespace" translatable="false">urn:x-cast:com.garethevans.church.opensongtablet</string>
 
+    <string name="exportsongdirectory">Export list of songs</string>
+    <string name="current_category">Current category</string>
+    <string name="new_category">New category</string>
+    <string name="songsinfolder">Song folder</string>
+
+    <string name="category" translatable="false">Category</string>
+    <string name="managesets" translatable="false">Rename sets</string>
+    <string name="findnewsongs" translatable="false">Find new songs</string>
+    <string name="worshipready" translatable="false">WorshipReady.com</string>
+    <string name="subscription" translatable="false">(Subscription required)</string>
     <string name="autoscale" translatable="false">Autoscale</string>
     <string name="scale_style" translatable="false">Scale style</string>
     <string name="width" translatable="false">Width</string>

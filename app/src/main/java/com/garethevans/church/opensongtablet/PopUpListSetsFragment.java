@@ -16,9 +16,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -27,6 +31,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,6 +46,20 @@ public class PopUpListSetsFragment extends DialogFragment {
 
     EditText setListName;
     TextView newSetPromptTitle;
+    Button listSetCancelButton;
+    Button listSetOkButton;
+    Spinner setCategory_Spinner;
+    Spinner oldCategory_Spinner;
+    ImageButton newCategory_ImageButton;
+    EditText newCategory_EditText;
+    RelativeLayout setCategory;
+    TextView setCategory_TextView;
+    RelativeLayout filelist_RelativeLayout;
+    LinearLayout oldCategory_LinearLayout;
+    LinearLayout newCategory_LinearLayout;
+    LinearLayout newSetTitle_LinearLayout;
+    ImageButton sort_ImageButton;
+    CheckBox overWrite_CheckBox;
     static String myTitle;
     static FetchDataTask dataTask;
     static ProgressDialog prog;
@@ -50,6 +69,8 @@ public class PopUpListSetsFragment extends DialogFragment {
     public static String[] setnames;
     public static ArrayAdapter<String> adapter;
     public ListView setListView1;
+    ArrayList<String> cats = new ArrayList<>();
+    String[] filteredsetnames;
 
     public interface MyInterface {
         void refreshAll();
@@ -117,20 +138,24 @@ public class PopUpListSetsFragment extends DialogFragment {
         // Get a note of the available sets
         SetActions.updateOptionListSets();
 
-        ImageButton listSort_imageButton = (ImageButton) V.findViewById(R.id.listSort_imageButton);
-        listSort_imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.sortAlphabetically = !FullscreenActivity.sortAlphabetically;
-                sortSetLists();
-            }
-        });
         setListView1 = (ListView) V.findViewById(R.id.setListView1);
         setListName = (EditText) V.findViewById(R.id.setListName);
         newSetPromptTitle = (TextView) V.findViewById(R.id.newSetPromptTitle);
-        Button listSetCancelButton = (Button) V.findViewById(R.id.listSetCancelButton);
-        Button listSetOkButton = (Button) V.findViewById(R.id.listSetOkButton);
+        listSetCancelButton = (Button) V.findViewById(R.id.listSetCancelButton);
+        listSetOkButton = (Button) V.findViewById(R.id.listSetOkButton);
+        oldCategory_Spinner = (Spinner) V.findViewById(R.id.oldCategory_Spinner);
+        setCategory_Spinner = (Spinner) V.findViewById(R.id.setCategory_Spinner);
+        newCategory_ImageButton = (ImageButton) V.findViewById(R.id.newCategory_ImageButton);
+        newCategory_EditText = (EditText) V.findViewById(R.id.newCategory_EditText);
+        setCategory_TextView = (TextView) V.findViewById(R.id.setCategory_TextView);
+        setCategory = (RelativeLayout) V.findViewById(R.id.setCategory);
+        filelist_RelativeLayout = (RelativeLayout) V.findViewById(R.id.filelist_RelativeLayout);
+        oldCategory_LinearLayout = (LinearLayout) V.findViewById(R.id.oldCategory_LinearLayout);
+        newCategory_LinearLayout = (LinearLayout) V.findViewById(R.id.newCategory_LinearLayout);
+        newSetTitle_LinearLayout = (LinearLayout) V.findViewById(R.id.newSetTitle_LinearLayout);
+        overWrite_CheckBox = (CheckBox) V.findViewById(R.id.overWrite_CheckBox);
         setListName.setText(FullscreenActivity.lastSetName);
+        sort_ImageButton = (ImageButton) V.findViewById(R.id.sort_ImageButton);
 
         // Sort the available set lists
         sortSetLists();
@@ -142,26 +167,57 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         switch (FullscreenActivity.whattodo) {
             default:
+            case "loadset":
                 myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_load);
-                setListName.setVisibility(View.GONE);
-                newSetPromptTitle.setVisibility(View.GONE);
+                filelist_RelativeLayout.setVisibility(View.VISIBLE);
+                oldCategory_LinearLayout.setVisibility(View.GONE);
+                newCategory_LinearLayout.setVisibility(View.VISIBLE);
+                newSetTitle_LinearLayout.setVisibility(View.GONE);
+                newCategory_ImageButton.setVisibility(View.GONE);
+                newCategory_EditText.setVisibility(View.GONE);
                 break;
 
             case "saveset":
                 myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_save);
+                filelist_RelativeLayout.setVisibility(View.VISIBLE);
+                oldCategory_LinearLayout.setVisibility(View.GONE);
+                newCategory_LinearLayout.setVisibility(View.VISIBLE);
+                newSetTitle_LinearLayout.setVisibility(View.VISIBLE);
+                newCategory_EditText.setVisibility(View.GONE);
                 break;
 
             case "deleteset":
                 myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_delete);
+                filelist_RelativeLayout.setVisibility(View.VISIBLE);
+                oldCategory_LinearLayout.setVisibility(View.GONE);
+                newCategory_LinearLayout.setVisibility(View.VISIBLE);
+                newSetTitle_LinearLayout.setVisibility(View.GONE);
                 setListName.setVisibility(View.GONE);
                 newSetPromptTitle.setVisibility(View.GONE);
+                newCategory_ImageButton.setVisibility(View.GONE);
+                newCategory_EditText.setVisibility(View.GONE);
                 break;
 
             case "exportset":
                 myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_export);
+                oldCategory_LinearLayout.setVisibility(View.GONE);
+                newSetTitle_LinearLayout.setVisibility(View.GONE);
                 setListName.setVisibility(View.GONE);
                 newSetPromptTitle.setVisibility(View.GONE);
+                newCategory_ImageButton.setVisibility(View.GONE);
+                newCategory_EditText.setVisibility(View.GONE);
                 break;
+
+            case "managesets":
+                myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.managesets);
+                setListView1.setVisibility(View.VISIBLE);
+                setCategory_TextView.setText(getActivity().getString(R.string.new_category));
+                setCategory.setVisibility(View.VISIBLE);
+                newSetPromptTitle.setVisibility(View.VISIBLE);
+                setListName.setVisibility(View.VISIBLE);
+                newCategory_LinearLayout.setVisibility(View.VISIBLE);
+                newSetTitle_LinearLayout.setVisibility(View.VISIBLE);
+                newCategory_EditText.setVisibility(View.GONE);
         }
 
         // Prepare the toast message using the title.  It is cleared if cancel is clicked
@@ -171,26 +227,80 @@ public class PopUpListSetsFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
 
         // Set The Adapter
-        setCorrectAdapter();
+        setCorrectAdapter(setnames);
+
+        // Set the category filter
+        setCategory_Spinner.setAdapter(setCategories());
+        oldCategory_Spinner.setAdapter(setCategories());
+
+        // Look for whichSetCategory and set the spinners
+        whichSetCategory();
+
+        if (!FullscreenActivity.whattodo.equals("managesets")) {
+            setCategory_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    filterByCategory(i);
+                    FullscreenActivity.whichSetCategory = cats.get(i);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });
+        }
+
+        if (FullscreenActivity.whattodo.equals("managesets")) {
+            oldCategory_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    setCategory_Spinner.setSelection(i);
+                    filterByCategory(i);
+                    FullscreenActivity.whichSetCategory = cats.get(i);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {}
+            });
+        }
+
 
         setListView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the name of the set to do stuff with
                 // Since we can select multiple sets, check it isn't already in the setnamechosen field
+
+                // Get the set name
+                String msetname = filteredsetnames[position];
+                // If we have a category selected, add this to the file name
+
+                if (!FullscreenActivity.whattodo.equals("managesets") && setCategory_Spinner.getSelectedItemPosition()>0) {
+                    msetname = cats.get(setCategory_Spinner.getSelectedItemPosition()) + "__" + msetname;
+                }
+
+                if (FullscreenActivity.whattodo.equals("managesets") && oldCategory_Spinner.getSelectedItemPosition()>0) {
+                    msetname = cats.get(oldCategory_Spinner.getSelectedItemPosition()) + "__" + msetname;
+                }
+
+                Log.d("d","msetname="+msetname);
+
                 if (FullscreenActivity.whattodo.equals("exportset")) {
-                    FullscreenActivity.setnamechosen = setnames[position] + "%_%";
+                    FullscreenActivity.setnamechosen = msetname + "%_%";
                 } else {
-                    if (!FullscreenActivity.setnamechosen.contains(setnames[position])) {
+                    if (!FullscreenActivity.setnamechosen.contains(msetname)) {
                         // Add it to the setnamechosen
-                        FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen + setnames[position] + "%_%";
+                        FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen + msetname + "%_%";
                     } else {
                         // Remove it from the setnamechosen
-                        FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen.replace(setnames[position] + "%_%", "");
+                        FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen.replace(msetname + "%_%", "");
                     }
                 }
 
-                setListName.setText(setnames[position]);
+                Log.d("d","setnamechosen="+FullscreenActivity.setnamechosen);
+                Log.d("d","filteredsetnames["+position+"]="+setnames[position]);
+
+                setListName.setText(filteredsetnames[position]);
             }
         });
 
@@ -219,6 +329,33 @@ public class PopUpListSetsFragment extends DialogFragment {
                     doDeleteSet();
                 } else if (FullscreenActivity.whattodo.equals("exportset") && !FullscreenActivity.setnamechosen.isEmpty() && !FullscreenActivity.setnamechosen.equals("")) {
                     doExportSet();
+                } else if (FullscreenActivity.whattodo.equals("managesets")) {
+                    if (!FullscreenActivity.setnamechosen.equals("") && !setListName.getText().toString().equals("")) {
+                        doRenameSet();
+                    } else {
+                        FullscreenActivity.myToastMessage = getActivity().getString(R.string.error_notset);
+                    }
+                }
+            }
+        });
+
+        newCategory_ImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Change button function and image
+                changeCategoryButton(true);
+            }
+        });
+
+        sort_ImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (FullscreenActivity.sortAlphabetically) {
+                    FullscreenActivity.sortAlphabetically = false;
+                    sortFilteredSetLists();
+                } else {
+                    FullscreenActivity.sortAlphabetically = true;
+                    sortFilteredSetLists();
                 }
             }
         });
@@ -228,33 +365,172 @@ public class PopUpListSetsFragment extends DialogFragment {
         return V;
     }
 
-    public void setCorrectAdapter() {
+    public void whichSetCategory() {
+        // Try to set the spinners to match the recently used set category
+        boolean done = false;
+        for (int i=0;i<cats.size();i++) {
+            if (cats.get(i).equals(FullscreenActivity.whichSetCategory)) {
+                oldCategory_Spinner.setSelection(i);
+                setCategory_Spinner.setSelection(i);
+                done = true;
+            }
+        }
+        if (!done) {
+            // Can't find the set category, so default to the MAIN one (position 0)
+            oldCategory_Spinner.setSelection(0);
+            setCategory_Spinner.setSelection(0);
+        }
+    }
+
+    public void changeCategoryButton(boolean makedelete) {
+        if (makedelete) {
+            setCategory_Spinner.setVisibility(View.GONE);
+            newCategory_EditText.setVisibility(View.VISIBLE);
+            newCategory_ImageButton.setImageResource(R.drawable.ic_delete_white_36dp);
+            newCategory_ImageButton.setVisibility(View.VISIBLE);
+            newCategory_ImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    changeCategoryButton(false);
+                }
+            });
+        } else {
+            setCategory_Spinner.setVisibility(View.VISIBLE);
+            newCategory_EditText.setVisibility(View.GONE);
+            newCategory_EditText.setText("");
+            newCategory_ImageButton.setImageResource(R.drawable.ic_plus_white_36dp);
+            newCategory_ImageButton.setVisibility(View.VISIBLE);
+            newCategory_ImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    changeCategoryButton(true);
+                }
+            });
+        }
+    }
+
+    public ArrayAdapter<String> setCategories() {
+        // Go through the available sets and only show those matching the filter
+        // Set categories are identified by mycategory__setname
+        // Those with no category are in the main category
+        cats = new ArrayList<>();
+        String log = "";
+        for (int w=0;w<FullscreenActivity.mySetsFileNames.length;w++) {
+            if (FullscreenActivity.mySetsFileNames[w].contains("__")) {
+                // Split it into category and set name;
+                String[] msplit = FullscreenActivity.mySetsFileNames[w].split("__");
+                if (!log.contains(msplit[0])) {
+                    log += msplit[0] + ",";
+                }
+            }
+        }
+        Log.d("d","log="+log);
+
+        // Now split the log into available categories
+        String[] categoriesfound = log.split(",");
+        for (String s:categoriesfound) {
+            if (!s.equals("")) {
+                cats.add(s);
+            }
+        }
+
+        // Sort the categories alphabetically using locale
+        Collator coll = Collator.getInstance(FullscreenActivity.locale);
+        coll.setStrength(Collator.SECONDARY);
+        Collections.sort(cats, coll);
+
+        cats.add(0,FullscreenActivity.mainfoldername);
+
+        ArrayAdapter<String> myadapter = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,cats);
+        myadapter.setDropDownViewResource(R.layout.my_spinner);
+
+        return myadapter;
+    }
+
+    public void filterByCategory(int i) {
+        // Get the text to filter the sets by
+        String filter = cats.get(i);
+        ArrayList<String> filtered = new ArrayList<>();
+
+        // Go through the setnames list and only show the available ones
+        for (String setname : setnames) {
+            if (setname != null && setname.contains(filter + "__")) {
+                String addthis = setname.replace(filter + "__", "");
+                filtered.add(addthis);
+            } else if (filter.equals(FullscreenActivity.mainfoldername)) {
+                if (setname != null && !setname.contains("__")) {
+                    filtered.add(setname);
+                }
+            }
+        }
+
+        // Sort the categories alphabetically using locale
+        Collator coll = Collator.getInstance(FullscreenActivity.locale);
+        coll.setStrength(Collator.SECONDARY);
+        Collections.sort(filtered, coll);
+
+        filteredsetnames = new String[filtered.size()];
+
+        filteredsetnames = filtered.toArray(filteredsetnames);
+
+        setCorrectAdapter(filteredsetnames);
+
+        // Go through new list and re tick any currently selected ones
+        if (FullscreenActivity.whattodo.equals("loadset")) {
+            tickSelectedSetsInCategory(filter);
+        }
+    }
+
+    public void setCorrectAdapter(String[] setstoshow) {
         switch (FullscreenActivity.whattodo) {
             default:
-                adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, setnames);
+                adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, setstoshow);
                 setListView1.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
                 break;
 
             case "saveset":
-                adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, setnames);
+                adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, setstoshow);
                 setListView1.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
                 break;
 
             case "deleteset":
-                adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, setnames);
+                adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, setstoshow);
                 setListView1.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
                 break;
 
             case "exportset":
-                adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_checked, setnames);
+                adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_checked, setstoshow);
                 setListView1.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
                 break;
+
+            case "managesets":
+                adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_checked, setstoshow);
+                setListView1.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+                break;
+
         }
+        adapter.notifyDataSetChanged();
         setListView1.setAdapter(adapter);
-        FullscreenActivity.setnamechosen = "";
     }
 
-    // Actions to do with the selected set
+    public void tickSelectedSetsInCategory(String filter) {
+        if (filter.equals(FullscreenActivity.mainfoldername)) {
+            filter="";
+        } else {
+            filter=filter+"__";
+        }
+
+        for (int f=0;f<filteredsetnames.length;f++) {
+            if (FullscreenActivity.setnamechosen.contains(filter+filteredsetnames[f])) {
+                setListView1.setItemChecked(f,true);
+            } else {
+                setListView1.setItemChecked(f,false);
+            }
+        }
+        Log.d("d","setnamechosen="+FullscreenActivity.setnamechosen);
+
+    }
+
     public void doLoadSet() {
         // Load the set up
         // Show the progress bar
@@ -291,7 +567,9 @@ public class PopUpListSetsFragment extends DialogFragment {
         FullscreenActivity.abort = false;
 
         FullscreenActivity.settoload = FullscreenActivity.setnamechosen;
-        FullscreenActivity.lastSetName = FullscreenActivity.setnamechosen;
+        FullscreenActivity.lastSetName = setListName.getText().toString();
+
+        Log.d("d","settoload="+FullscreenActivity.settoload);
         dataTask = null;
         dataTask = new FetchDataTask();
         try {
@@ -305,13 +583,31 @@ public class PopUpListSetsFragment extends DialogFragment {
         // Save the set into the settoload name
         FullscreenActivity.settoload = setListName.getText().toString().trim();
         FullscreenActivity.lastSetName = setListName.getText().toString().trim();
+        String new_cat = newCategory_EditText.getText().toString();
+
+        if (!new_cat.equals("")) {
+            FullscreenActivity.settoload = new_cat + "__" + setListName.getText().toString().trim();
+        } else if (setCategory_Spinner.getSelectedItemPosition()>0) {
+            FullscreenActivity.settoload = cats.get(setCategory_Spinner.getSelectedItemPosition()) +
+                    "__" + setListName.getText().toString().trim();
+        }
 
         // Popup the are you sure alert into another dialog fragment
-        String message = getResources().getString(R.string.options_set_save) + " \'" + setListName.getText().toString().trim() + "\"?";
-        FullscreenActivity.myToastMessage = message;
-        DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
-        newFragment.show(getFragmentManager(), "dialog");
-        dismiss();
+        File newsetname = new File(FullscreenActivity.dirsets + "/" +
+                FullscreenActivity.settoload);
+
+        if (newsetname.exists() && !overWrite_CheckBox.isChecked()) {
+            FullscreenActivity.myToastMessage = getActivity().getString(R.string.renametitle) + " - " +
+                    getActivity().getString(R.string.file_exists);
+
+            ShowToast.showToast(getActivity());
+        } else {
+            String message = getResources().getString(R.string.options_set_save) + " \'" + setListName.getText().toString().trim() + "\"?";
+            FullscreenActivity.myToastMessage = message;
+            DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+            newFragment.show(getFragmentManager(), "dialog");
+            dismiss();
+        }
         // If the user clicks on the areyousureYesButton, then action is confirmed as ConfirmedAction
     }
 
@@ -463,7 +759,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         }
     }
 
-    public class FetchDataTask extends AsyncTask<String,Integer,String> {
+    private class FetchDataTask extends AsyncTask<String,Integer,String> {
 
         @Override
         public void onPreExecute() {
@@ -544,11 +840,108 @@ public class PopUpListSetsFragment extends DialogFragment {
         }
 
         setnames = new String[setnames_ar.size()];
+        filteredsetnames = new String[setnames_ar.size()];
         setnames = setnames_ar.toArray(setnames);
+        filteredsetnames = setnames_ar.toArray(filteredsetnames);
 
         if (adapter!=null) {
-            setCorrectAdapter();
+            setCorrectAdapter(filteredsetnames);
         }
+    }
+
+    public void sortFilteredSetLists() {
+        // Sort the filtered set lists either alphabetically or reverse alphabetically
+        ArrayList<String> setnames_ar = new ArrayList<>(Arrays.asList(filteredsetnames));
+
+        if (!FullscreenActivity.sortAlphabetically) {
+            Collections.sort(setnames_ar);
+            Collections.reverse(setnames_ar);
+        } else {
+            Collections.sort(setnames_ar);
+        }
+
+        setnames = new String[setnames_ar.size()];
+        filteredsetnames = new String[setnames_ar.size()];
+        setnames = setnames_ar.toArray(setnames);
+        filteredsetnames = setnames_ar.toArray(filteredsetnames);
+
+        if (adapter!=null) {
+            setCorrectAdapter(filteredsetnames);
+        }
+
+        // Need to recheck any ones that were checked before.
+        for (int i=0;i<filteredsetnames.length;i++) {
+            if (FullscreenActivity.setnamechosen.contains(filteredsetnames[i])) {
+                setListView1.setItemChecked(i,true);
+            } else {
+                setListView1.setItemChecked(i,false);
+            }
+        }
+    }
+
+    public void doRenameSet() {
+        Log.d("d","doRenameSet() called");
+        // Get the values from the page
+        Log.d("d","setnamechosen="+FullscreenActivity.setnamechosen);
+        String newcat_edittext = newCategory_EditText.getText().toString();
+        String newcat_spinner = cats.get(setCategory_Spinner.getSelectedItemPosition());
+
+        Log.d("d","newcat_edittext="+newcat_edittext);
+        Log.d("d","newcat_spinner="+newcat_spinner);
+
+        String newsettitle = setListName.getText().toString();
+        Log.d("d","newsettitle="+newsettitle);
+
+        String newsetname;
+        if (!newcat_edittext.equals("")) {
+            newsetname = newcat_edittext + "__" + newsettitle;
+        } else {
+            if (newcat_spinner.equals(FullscreenActivity.mainfoldername)) {
+                newsetname = newsettitle;
+            } else {
+                newsetname = newcat_spinner + "__" + newsettitle;
+            }
+        }
+
+        File oldsetfile = new File(FullscreenActivity.dirsets+"/"+FullscreenActivity.setnamechosen);
+        File newsetfile = new File(FullscreenActivity.dirsets+"/"+newsetname);
+        boolean success;
+
+        Log.d("d","oldsetfile="+oldsetfile.toString());
+        Log.d("d","newsetfile="+newsetfile.toString());
+        Log.d("d","overWrite_CheckBox.isChecked()="+overWrite_CheckBox.isChecked());
+
+        // Check the new song doesn't exist already
+        if (newsetfile.exists() && !overWrite_CheckBox.isChecked()) {
+            success = false;
+        } else {
+            success = oldsetfile.renameTo(newsetfile);
+            if (!success) {
+                Log.d("d","error renaming");
+            }
+        }
+        Log.d("d","newsetname="+newsetname);
+
+        if (success) {
+            FullscreenActivity.myToastMessage = getActivity().getString(R.string.renametitle) + " - " +
+                    getActivity().getString(R.string.success);
+        } else {
+            FullscreenActivity.myToastMessage = getActivity().getString(R.string.renametitle) + " - " +
+                    getActivity().getString(R.string.file_exists);
+        }
+        ShowToast.showToast(getActivity());
+
+        setListName.setText("");
+        FullscreenActivity.setnamechosen="";
+
+        // Refresh the category spinners
+        SetActions.updateOptionListSets();
+        sortSetLists();
+        setCategory_Spinner.setAdapter(setCategories());
+        oldCategory_Spinner.setAdapter(setCategories());
+        setCorrectAdapter(setnames);
+        whichSetCategory();
+
     }
 
     @Override

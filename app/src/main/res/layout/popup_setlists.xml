@@ -1,83 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
-    android:padding="8dp">
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <ImageButton
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/filelist_RelativeLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listSort_imageButton"
-        android:src="@drawable/ic_action_sort_by_size"
+        android:layout_weight="0.6"
+        android:background="@drawable/lyrics_box"
         android:layout_margin="8dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:contentDescription="@string/options_set" />
+        android:minHeight="200dp">
 
-    <ListView
-        android:id="@+id/setListView1"
+ <!--       <ImageButton
+            android:id="@+id/listSort_imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/options_set"
+            android:src="@drawable/ic_action_sort_by_size" />-->
+        <ListView
+            android:id="@+id/setListView1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="false"
+            android:choiceMode="multipleChoice"
+            android:isScrollContainer="true" />
+    </RelativeLayout>
+
+    <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_bg"
+        android:layout_weight="0.4">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:choiceMode="singleChoice"
-        android:layout_above="@+id/newSetPromptTitle"
-        android:layout_alignLeft="@+id/newSetPromptTitle"
-        android:layout_alignStart="@+id/newSetPromptTitle"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentTop="false"
-        android:layout_below="@+id/listSort_imageButton" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/newSetPromptTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/setListName"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/options_set_nameofset"
-        style="@style/MyHeadingText" />
+        <LinearLayout
+            android:id="@+id/oldCategory_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp"
+            android:background="@drawable/lyrics_box">
 
-    <EditText
-        android:id="@+id/setListName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/listSetCancelButton"
-        android:layout_centerHorizontal="true"
-        android:hint="@string/options_set_nameofset"
-        android:maxLines="1"
-        style="@style/MyEditText" />
+            <TextView
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/current_category"
+                android:layout_margin="8dp"/>
 
-    <Button
-        android:id="@+id/listSetCancelButton"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="12dp"
-        android:layout_toLeftOf="@+id/listSetOkButton"
-        android:layout_toStartOf="@+id/listSetOkButton"
-        android:background="@drawable/red_button"
-        android:text="@string/cancel"
-        android:textColor="#fff" />
+            <Spinner
+                android:id="@+id/oldCategory_Spinner"
+                style="@style/MySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/category"
+                android:layout_margin="8dp"/>
 
-    <Button
-        android:id="@+id/listSetOkButton"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="12dp"
-        android:background="@drawable/green_button"
-        android:text="@string/ok"
-        android:textColor="#fff" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/newCategory_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="8dp"
+            android:background="@drawable/lyrics_box">
 
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/setCategory_TextView"
+                style="@style/MyHeadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category"
+                android:layout_margin="8dp" />
+
+            <RelativeLayout
+                android:id="@+id/setCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Spinner
+                    android:id="@+id/setCategory_Spinner"
+                    style="@style/MySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/newCategory_ImageButton"
+                    android:layout_margin="8dp" />
+
+                <EditText
+                    android:id="@+id/newCategory_EditText"
+                    style="@style/MyEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/newCategory_ImageButton"
+                    android:hint="@string/category"
+                    android:maxLines="1"
+                    android:layout_margin="8dp" />
+
+                <ImageButton
+                    android:id="@+id/newCategory_ImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:contentDescription="@string/category"
+                    android:src="@drawable/ic_plus_white_36dp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/newSetTitle_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/lyrics_box"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/newSetPromptTitle"
+                style="@style/MyHeadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/options_set_nameofset"
+                android:layout_margin="8dp" />
+
+            <EditText
+                android:id="@+id/setListName"
+                style="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/options_set_nameofset"
+                android:maxLines="1"
+                android:layout_margin="8dp" />
+
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/overwrite"
+                android:id="@+id/overWrite_CheckBox" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/sort_ImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_sort_white_36dp"
+                android:layout_margin="8dp" />
+
+            <Button
+                android:id="@+id/listSetCancelButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/red_button"
+                android:text="@string/cancel"
+                android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/listSetOkButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/green_button"
+                android:text="@string/ok"
+                android:textColor="#fff" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
+    </LinearLayout>
