@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_margin="0dp"
     android:background="@drawable/popup_bg"
     android:orientation="vertical"
     android:padding="8dp"
     android:visibility="visible">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/closebutton"
-        android:layout_alignParentTop="true">
-
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -78,21 +72,17 @@
                     android:layout_gravity="right|center_vertical" />
             </LinearLayout>
 
-        </LinearLayout>
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/pageButtonGroup_Switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/pagebutton_group"
+            app:theme="@style/SwitchStyle"
+            style="@style/MyHeadingText"
+            android:textColor="#ff0"
+            android:layout_gravity="center_vertical" />
 
-    </ScrollView>
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/closebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="end"
-        android:layout_margin="8dp"
-        android:background="@drawable/blue_button"
-        android:text="@string/drawer_close"
-        android:textColor="#fff" />
-
-</RelativeLayout>
+</ScrollView>

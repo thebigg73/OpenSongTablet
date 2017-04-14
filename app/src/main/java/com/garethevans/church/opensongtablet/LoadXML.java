@@ -49,7 +49,6 @@ public class LoadXML extends Activity {
         FullscreenActivity.mLyrics = FullscreenActivity.songdoesntexist + "\n\n";
 
         needtoloadextra = false;
-        System.gc();
         FullscreenActivity.myXML = null;
         FullscreenActivity.myXML = "";
 
@@ -73,6 +72,13 @@ public class LoadXML extends Activity {
         }
 
         // Determine the file encoding
+        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            FullscreenActivity.file = new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename);
+        } else {
+            FullscreenActivity.file = new File(FullscreenActivity.dir + "/" +
+                    FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename);
+        }
+
         utf = getUTFEncoding(FullscreenActivity.file);
 
         if (androidapi > 20 || !filetype.equals("PDF") && (!filetype.equals("DOC") && (!filetype.equals("IMG")))) {
@@ -94,9 +100,10 @@ public class LoadXML extends Activity {
             isxml = true;
             if (!FullscreenActivity.songfilename.endsWith(".sqlite3") && !FullscreenActivity.songfilename.endsWith(".preferences")) {
                 try {
-                    grabOpenSongXML();
+                     grabOpenSongXML();
                 } catch (Exception e) {
                     Log.d("d", "Error performing grabOpenSongXML()");
+                    FullscreenActivity.thissong_scale = "W";
                 }
             } else {
                 FullscreenActivity.myXML = "<title>Love everlasting</title>\n<author></author>\n<lyrics>"
@@ -280,6 +287,7 @@ public class LoadXML extends Activity {
         // Try to determine the BOM for UTF encoding
         FileInputStream fis = null;
         UnicodeBOMInputStream ubis = null;
+
         try {
             fis = new FileInputStream(filetoload);
             ubis = new UnicodeBOMInputStream(fis);
@@ -429,7 +437,6 @@ public class LoadXML extends Activity {
 
     public static void grabOpenSongXML() throws Exception {
         // Extract all of the key bits of the song
-
         XmlPullParserFactory factory;
         factory = XmlPullParserFactory.newInstance();
 
@@ -437,9 +444,16 @@ public class LoadXML extends Activity {
         XmlPullParser xpp;
         xpp = factory.newPullParser();
 
-        // Just in case
-        FullscreenActivity.myLyrics = FullscreenActivity.songdoesntexist + "\n\n";
-        FullscreenActivity.mLyrics = FullscreenActivity.songdoesntexist + "\n\n";
+        // Just in case use the Welcome to OpenSongApp file
+        initialiseSongTags();
+        FullscreenActivity.mTitle  = "Welcome to OpenSongApp";
+        FullscreenActivity.mAuthor = "Gareth Evans";
+        FullscreenActivity.mLinkWeb = "http://www.opensongapp.com";
+        FullscreenActivity.mLyrics = templyrics;
+        FullscreenActivity.myLyrics = templyrics;
+
+        //FullscreenActivity.myLyrics = FullscreenActivity.songdoesntexist + "\n\n";
+        //FullscreenActivity.mLyrics = FullscreenActivity.songdoesntexist + "\n\n";
 
         InputStream inputStream = new FileInputStream(FullscreenActivity.file);
         xpp.setInput(inputStream, utf);
@@ -625,5 +639,109 @@ public class LoadXML extends Activity {
         }
         return isvalid;
     }
+
+    public static String templyrics = "[Intro]\n" +
+            " Welcome to OpenSongApp!\n" +
+            " This is a test page to show you some of the features of the app.\n" +
+            " The app contains 2 modes -\n" +
+            ";• Performance Mode - use your Android device as a song book on stage\n" +
+            ";• Presentation Mode - hook up to a projector and displaying lyrics\n" +
+            "\n" +
+            "[Menus]\n" +
+            " The left hand slide out menu - lists all folders and songs.\n" +
+            " The right hand slide out menu - all options/settings.\n" +
+            " The taskbar menu - access different modes, menus or features.\n" +
+            " The page icons let you access special song features:\n" +
+            ";Backing track, auto scroll, metronome, chords, notes, links, etc.\n" +
+            "\n" +
+            "[Get help with all of the cool features...]\n" +
+            " To find out all of the app features and how to use them,\n" +
+            " please check out the online help pages.\n" +
+            " Use the link in the options menu under the 'Other' category -\n" +
+            " http://www.opensongapp.com\n" +
+            " You can also click on the link icon page button.\n" +
+            "\n" +
+            "[Adding songs]\n" +
+            " You can manually enter/create any song you like\n" +
+            " The app only comes with this 'song' by default due to copyright.\n" +
+            " You can also import songs from other services:\n" +
+            ";• Desktop OpenSong - I highly recommend syncing using Dropbox\n" +
+            ";• OnSong files\n" +
+            ";• ChordPro files\n" +
+            ";• Ultimate Guitar website (using the import feature)\n" +
+            ";• Chordie website (using the import feature)\n" +
+            ";• SongSelect .usr files\n" +
+            " Songs are stored in OpenSong format (XML files without the .xml etension)\n" +
+            "\n" +
+            " Songs are stored on your device in the /OpenSong/Songs folder.\n" +
+            " This location is found at the storage location you chose\n" +
+            " when you first ran the app.  Check out the 'Storage' category\n" +
+            " of the options menu to see where this is.\n" +
+            "\n" +
+            "[Edit the song]\n" +
+            " Click on the song title in the menu bar to see a song preview.\n" +
+            " This also allows you to quickly edit the song\n" +
+            "\n" +
+            "[Chords at work]\n" +
+            " This song has been set as having a key of G.\n" +
+            " You can also set capo display options easily\n" +
+            ".G     D      Em           C      G         G7\n" +
+            " Chord lines (above) start with a full stop/period (.)\n" +
+            ".C       Em            D      G\n" +
+            " You can transpose the chords easily.\n" +
+            " This is done from the chords category in the options menu\n" +
+            " Nashville, European and Do Ré Mi chords are understood\n" +
+            "\n" +
+            "[Scaling]\n" +
+            " By default OpenSongApp scales a song to fit the page.\n" +
+            " You can change the auto scale options in the right hand menu\n" +
+            "\n" +
+            "[Sets]\n" +
+            " Add songs to sets by long pressing on them in the song menu\n" +
+            "\n" +
+            "[Customising]\n" +
+            " You can customise colours, themes,fonts, gestures, pedals, etc.\n" +
+            " These customisations can be saved as user profiles.\n" +
+            " Check out the categories in the right hand options menu.\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "HERE IS AN EXAMPLE OF HOW A SONG WOULD LOOK\n" +
+            "\n" +
+            "\n" +
+            "\n" +
+            "[V1]\n" +
+            ".G2                D/F#\n" +
+            " Love everlasting, love without measure,\n" +
+            ".Em7                 D       \n" +
+            " Full of compassion, righteous and pure;\n" +
+            ".C     G/B             Am7   C/D      D\n" +
+            " Is my Saviour's love, is my Father's heart.\n" +
+            "\n" +
+            "[V2]\n" +
+            ".G2                   D/F#\n" +
+            " Loved by the Father, saved by the Son,\n" +
+            ".Em7                 D           \n" +
+            " Born of His Spirit, washed in the blood;\n" +
+            ".C          G/B             Am7        C/D      D\n" +
+            " This is my Saviour's love, this is my Father's heart.\n" +
+            "\n" +
+            "[B]\n" +
+            ".Em            Cmaj7 Em                Cmaj7\n" +
+            " Your love for me,   it reaches to the heavens,\n" +
+            ".Em              Cmaj7             Bm7\n" +
+            " Let my love for You just grow and grow !    \n" +
+            ".Em            Cmaj7 Em                Cmaj7\n" +
+            " Your love for me,   it reaches to the heavens,\n" +
+            ".Em              Cmaj7             D  D/F#\n" +
+            " Let my love for You just grow and grow !    \n" +
+            "\n" +
+            "[V3]\n" +
+            ".G2                       D/F#\n" +
+            " Love sent from heaven, received in our hearts,\n" +
+            ".Em7                      D               \n" +
+            " Loving each other, since Christ first loved us;\n" +
+            ".C          G/B             Am7        C/D      D  \n" +
+            " Sharing my Saviour's love, showing my Father's heart.";
 
 }

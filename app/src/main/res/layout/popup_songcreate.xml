@@ -1,79 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:background="@drawable/popup_bg"
-    android:padding="8dp">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_bg">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView5"
-        android:layout_above="@+id/createSongOkButton"
-        android:layout_alignParentTop="true">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <TextView
+            android:id="@+id/textView11"
+            style="@style/MyHeadingText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/choosefolder" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/choosefolder"
-                android:id="@+id/textView11"
-                style="@style/MyHeadingText"
-                android:layout_margin="8dp" />
+        <Spinner
+            android:id="@+id/newFolderSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            style="@style/MySpinner"/>
 
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/newFolderSpinner"
-                android:layout_margin="8dp" />
+        <TextView
+            android:id="@+id/textView12"
+            style="@style/MyHeadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/rename" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView12"
-                android:text="@string/rename"
-                style="@style/MyHeadingText"
-                android:layout_margin="8dp" />
+        <EditText
+            android:id="@+id/newSongNameEditText"
+            style="@style/MyEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/choosesongname"
+            android:inputType="textAutoCorrect|text"
+            android:maxLines="1" />
+    </LinearLayout>
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/newSongNameEditText"
-                android:layout_margin="8dp"
-                android:inputType="textAutoCorrect|text"
-                android:maxLines="1"
-                android:hint="@string/choosesongname"
-                style="@style/MyEditText" />
-        </LinearLayout>
-    </ScrollView>
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cancel"
-        android:id="@+id/createSongCancelButton"
-        android:background="@drawable/blue_button"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/createSongOkButton"
-        android:layout_toStartOf="@+id/createSongOkButton"
-        android:layout_margin="8dp"
-        android:textColor="#fff" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ok"
-        android:id="@+id/createSongOkButton"
-        android:background="@drawable/green_button"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="8dp"
-        android:textColor="#fff" />
-
-</RelativeLayout>
+</ScrollView>

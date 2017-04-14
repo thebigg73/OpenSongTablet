@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
     android:padding="8dp">
@@ -35,23 +37,17 @@
         </LinearLayout>
     </ScrollView>
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <android.support.v7.widget.SwitchCompat
         android:id="@+id/alertToggleButton"
-        android:layout_above="@+id/alertClose"
-        android:layout_centerHorizontal="true"
-        android:textColor="#fff" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+        android:text="@string/options_display"
+        android:padding="8dp"
+        style="@style/MyHeadingText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/drawer_close"
-        android:id="@+id/alertClose"
+        android:layout_margin="8dp"
+        app:theme="@style/SwitchStyle"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/blue_button"
         android:textColor="#fff" />
 
 </RelativeLayout>

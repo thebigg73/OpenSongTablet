@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,121 +9,100 @@
     android:orientation="vertical"
     android:visibility="visible">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/closebutton"
-        android:layout_alignParentTop="true">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_margin="8dp"
+            android:background="@drawable/section_box"
+            android:color="@android:color/transparent"
+            android:orientation="vertical"
+            android:padding="8dp">
 
-            <LinearLayout
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/nextSongOnOff_Switch"
+                style="@style/MyTextSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
-                android:background="@drawable/section_box"
-                android:color="@android:color/transparent"
-                android:orientation="vertical"
-                android:padding="8dp">
+                android:checked="false"
+                android:text="@string/shownextinset"
+                android:textColor="#ff0"
+                android:textOff="@string/off"
+                android:textOn="@string/on"
+                app:showText="true"
+                app:switchTextAppearance="@style/MyInfoText"
+                app:thumbTextPadding="4dp"
+                app:thumbTint="#444488" />
 
-                <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/nextSongOnOff_Switch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
-                    android:checked="false"
-                    android:text="@string/shownextinset"
-                    android:textColor="#ff0"
-                    android:textOff="@string/off"
-                    android:textOn="@string/on"
-                    app:switchTextAppearance="@style/MyInfoText"
-                    style="@style/MyTextSwitch"
-                    app:showText="true"
-                    app:thumbTextPadding="4dp"
-                    app:thumbTint="#444488" />
-
-                <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/nextSongTopBottom_Switch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
-                    android:checked="false"
-                    android:text="@string/position"
-                    android:textColor="#ff0"
-                    android:textOff="@string/top"
-                    android:textOn="@string/bottom"
-                    app:switchTextAppearance="@style/MyInfoText"
-                    style="@style/MyTextSwitch"
-                    app:showText="true"
-                    app:thumbTextPadding="4dp"
-                    app:thumbTint="#444488" />
-            </LinearLayout>
-
-            <LinearLayout
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/nextSongTopBottom_Switch"
+                style="@style/MyTextSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
-                android:background="@drawable/section_box"
-                android:color="@android:color/transparent"
-                android:orientation="vertical"
-                android:padding="8dp">
+                android:checked="false"
+                android:text="@string/position"
+                android:textColor="#ff0"
+                android:textOff="@string/top"
+                android:textOn="@string/bottom"
+                app:showText="true"
+                app:switchTextAppearance="@style/MyInfoText"
+                app:thumbTextPadding="4dp"
+                app:thumbTint="#444488" />
+        </LinearLayout>
 
-                <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/stickyNotesOnOff_Switch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
-                    android:checked="false"
-                    android:text="@string/toggle_autoshow_stickynotes"
-                    android:textColor="#ff0"
-                    android:textOff="@string/off"
-                    android:textOn="@string/on"
-                    app:switchTextAppearance="@style/MyInfoText"
-                    style="@style/MyTextSwitch"
-                    app:showText="true"
-                    app:thumbTextPadding="4dp"
-                    app:thumbTint="#444488" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/section_box"
+            android:color="@android:color/transparent"
+            android:orientation="vertical"
+            android:padding="8dp">
 
-                <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/stickyNotesTopBottom_Switch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="8dp"
-                    android:checked="false"
-                    android:textColor="#ff0"
-                    app:switchTextAppearance="@style/MyInfoText"
-                    style="@style/MyTextSwitch"
-                    app:showText="true"
-                    app:thumbTextPadding="4dp"
-                    app:thumbTint="#444488"
-                    android:text="@string/position"
-                    android:textOff="@string/top"
-                    android:textOn="@string/bottom" />
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/stickyNotesOnOff_Switch"
+                style="@style/MyTextSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:checked="false"
+                android:text="@string/toggle_autoshow_stickynotes"
+                android:textColor="#ff0"
+                android:textOff="@string/off"
+                android:textOn="@string/on"
+                app:showText="true"
+                app:switchTextAppearance="@style/MyInfoText"
+                app:thumbTextPadding="4dp"
+                app:thumbTint="#444488" />
 
-            </LinearLayout>
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/stickyNotesTopBottom_Switch"
+                style="@style/MyTextSwitch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:checked="false"
+                android:text="@string/position"
+                android:textColor="#ff0"
+                android:textOff="@string/top"
+                android:textOn="@string/bottom"
+                app:showText="true"
+                app:switchTextAppearance="@style/MyInfoText"
+                app:thumbTextPadding="4dp"
+                app:thumbTint="#444488" />
 
         </LinearLayout>
 
-    </ScrollView>
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/closebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="end"
-        android:layout_margin="8dp"
-        android:background="@drawable/blue_button"
-        android:text="@string/drawer_close"
-        android:textColor="#fff" />
-
-</RelativeLayout>
+</ScrollView>

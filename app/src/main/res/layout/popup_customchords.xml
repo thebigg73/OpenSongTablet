@@ -395,15 +395,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
-        <Button
-            android:id="@+id/close"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/blue_button"
-            android:padding="8dp"
-            android:text="@string/drawer_close"
-            android:textColor="#fff" />
-
     </LinearLayout>
     </HorizontalScrollView>
 </ScrollView>

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.animation.PathInterpolatorCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +18,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Interpolator;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.File;
@@ -75,6 +77,7 @@ public class PopUpSetViewNew extends DialogFragment {
 
     static ItemTouchHelper.Callback callback;
     static ItemTouchHelper helper;
+    FloatingActionButton saveMe;
 
     @Override
     public void onStart() {
@@ -82,11 +85,31 @@ public class PopUpSetViewNew extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.options_set));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    doSave();
+                }
+            });
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.options_set));
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null) {
@@ -96,15 +119,18 @@ public class PopUpSetViewNew extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater,container,savedInstanceState);
         a = getActivity();
-        getDialog().setTitle(getActivity().getResources().getString(R.string.options_set));
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
+
         final View V = inflater.inflate(R.layout.popup_setview_new, container, false);
         setfrag = getDialog();
 
         if (mListener!=null) {
             mListener.pageButtonAlpha("set");
         }
+
         TextView helpClickItem_TextView = (TextView) V.findViewById(R.id.helpClickItem_TextView);
         TextView helpDragItem_TextView = (TextView) V.findViewById(R.id.helpDragItem_TextView);
         TextView helpSwipeItem_TextView = (TextView) V.findViewById(R.id.helpSwipeItem_TextView);
@@ -144,39 +170,20 @@ public class PopUpSetViewNew extends DialogFragment {
             }
         });
 
-        Button cancel = (Button) V.findViewById(R.id.setview_cancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton info = (FloatingActionButton) V.findViewById(R.id.info);
+        final LinearLayout helptext = (LinearLayout) V.findViewById(R.id.helptext);
+        info.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                FullscreenActivity.mTempSetList = null;
-                dismiss();
+            public void onClick(View view) {
+                if (helptext.getVisibility()==View.VISIBLE) {
+                    helptext.setVisibility(View.GONE);
+                } else {
+                    helptext.setVisibility(View.VISIBLE);
+                }
             }
         });
 
-        Button save = (Button) V.findViewById(R.id.setview_save);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tempmySet = "";
-                String tempItem;
-                for (int z=0; z<FullscreenActivity.mTempSetList.size(); z++) {
-                    tempItem = FullscreenActivity.mTempSetList.get(z);
-                    tempmySet = tempmySet + "$**_"+ tempItem + "_**$";
-                }
-                FullscreenActivity.mySet = null;
-                FullscreenActivity.mySet = tempmySet;
-                FullscreenActivity.mTempSetList = null;
-                SetActions.prepareSetList();
-                Preferences.savePreferences();
-                // Tell the listener to do something
-                if (mListener!=null) {
-                    mListener.refreshAll();
-                }
-                dismiss();
-            }
-        });
-
-        ImageButton set_shuffle = (ImageButton) V.findViewById(R.id.shuffle);
+        FloatingActionButton set_shuffle = (FloatingActionButton) V.findViewById(R.id.shuffle);
         set_shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,7 +206,7 @@ public class PopUpSetViewNew extends DialogFragment {
             helpDragItem_TextView.setVisibility(View.GONE);
             helpSwipeItem_TextView.setVisibility(View.GONE);
             listSetTweetButton.setVisibility(View.GONE);
-            save.setVisibility(View.GONE);
+            saveMe.setVisibility(View.GONE);
             set_shuffle.setVisibility(View.GONE);
             helpVariationItem_TextView.setVisibility(View.VISIBLE);
         }
@@ -220,6 +227,25 @@ public class PopUpSetViewNew extends DialogFragment {
         }
 
         return V;
+    }
+
+    public void doSave() {
+        String tempmySet = "";
+        String tempItem;
+        for (int z=0; z<FullscreenActivity.mTempSetList.size(); z++) {
+            tempItem = FullscreenActivity.mTempSetList.get(z);
+            tempmySet = tempmySet + "$**_"+ tempItem + "_**$";
+        }
+        FullscreenActivity.mySet = null;
+        FullscreenActivity.mySet = tempmySet;
+        FullscreenActivity.mTempSetList = null;
+        SetActions.prepareSetList();
+        Preferences.savePreferences();
+        // Tell the listener to do something
+        if (mListener!=null) {
+            mListener.refreshAll();
+        }
+        dismiss();
     }
 
     public void extractSongsAndFolders() {
@@ -396,7 +422,6 @@ public class PopUpSetViewNew extends DialogFragment {
 
     public void onPause() {
         super.onPause();
-        Log.d("d","onPause() called");
         this.dismiss();
     }
 

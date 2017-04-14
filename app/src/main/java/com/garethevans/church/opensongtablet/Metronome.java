@@ -172,7 +172,6 @@ class Metronome {
         try {
             PopUpMetronomeFragment.bpm = (short) Integer.parseInt(t);
         } catch (NumberFormatException nfe) {
-            System.out.println("Could not parse " + nfe);
             PopUpMetronomeFragment.bpm = 0;
         }
 
@@ -442,5 +441,19 @@ class Metronome {
         }
     }
 
+    static boolean isMetronomeValid() {
+        int t;
+        try {
+            t = Integer.parseInt(FullscreenActivity.mTempo.replaceAll("[\\D]", ""));
+        } catch (NumberFormatException nfe) {
+            t = 39;
+        }
+        ProcessSong.processTimeSig();
+        if (t>=40 && t<199 && FullscreenActivity.mTimeSigValid) {
+            return true;
+        } else {
+            return false;
+        }
 
+    }
 }

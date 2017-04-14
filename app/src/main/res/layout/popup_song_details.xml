@@ -148,17 +148,4 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="8dp" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/drawer_close"
-        android:id="@+id/closeSongDetails"
-        android:background="@drawable/blue_button"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/editSongDetails"
-        android:layout_toStartOf="@+id/editSongDetails"
-        android:layout_margin="8dp"
-        android:textColor="#fff" />
-
 </RelativeLayout>

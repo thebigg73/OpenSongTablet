@@ -9,8 +9,12 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
     <color name="black">#000000</color>
-    <color name="fab1">#565699</color>
-    <color name="fab2">#ff0000</color>
+    <color name="purple">#452277</color>
+    <color name="blue">#0000aa</color>
+    <color name="red">#aa0000</color>
+    <color name="green">#00aa00</color>
+    <color name="grey">#555555</color>
+    <color name="dark">#221233</color>
     <color name="tranparent">#00ffffff</color>
 
 </resources>

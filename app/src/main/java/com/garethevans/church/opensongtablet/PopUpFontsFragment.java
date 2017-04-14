@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -63,7 +64,6 @@ public class PopUpFontsFragment extends DialogFragment {
     SeekBar scaleChords_SeekBar;
     SeekBar lineSpacingSeekBar;
     TextView lineSpacingText;
-    Button savePopupFont;
     TableLayout songPreview;
 
     @Override
@@ -71,6 +71,25 @@ public class PopUpFontsFragment extends DialogFragment {
         super.onStart();
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.options_options_fonts));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) { doSave();     }
+            });
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.options_options_fonts));
         }
     }
 
@@ -86,7 +105,7 @@ public class PopUpFontsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.options_options_fonts));
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_font, container, false);
 
@@ -107,30 +126,11 @@ public class PopUpFontsFragment extends DialogFragment {
         scaleHeading_SeekBar = (SeekBar) V.findViewById(R.id.scaleHeading_SeekBar);
         lineSpacingSeekBar = (SeekBar) V.findViewById(R.id.lineSpacingSeekBar);
         lineSpacingText = (TextView) V.findViewById(R.id.lineSpacingText);
-        savePopupFont = (Button) V.findViewById(R.id.savePopupFont);
         songPreview = (TableLayout) V.findViewById(R.id.songPreview);
 
         // Set up the typefaces
         SetTypeFace.setTypeface();
 
-        // Set up the close button
-        savePopupFont.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.mylyricsfontnum = lyricsFontSpinner.getSelectedItemPosition();
-                FullscreenActivity.mychordsfontnum = chordsFontSpinner.getSelectedItemPosition();
-                FullscreenActivity.linespacing = lineSpacingSeekBar.getProgress();
-                float num = (float) scaleHeading_SeekBar.getProgress()/100.0f;
-                FullscreenActivity.headingfontscalesize = num;
-                num = (float) scaleComment_SeekBar.getProgress()/100.0f;
-                FullscreenActivity.commentfontscalesize = num;
-                num = (float) scaleChords_SeekBar.getProgress()/100.0f;
-                FullscreenActivity.chordfontscalesize = num;
-                Preferences.savePreferences();
-                mListener.refreshAll();
-                dismiss();
-            }
-        });
 
         // Set the lyrics and chord font preview to what they should look like
         headingPreview.setTextSize(12*FullscreenActivity.headingfontscalesize);
@@ -283,6 +283,21 @@ public class PopUpFontsFragment extends DialogFragment {
         });
 
         return V;
+    }
+
+    public void doSave() {
+        FullscreenActivity.mylyricsfontnum = lyricsFontSpinner.getSelectedItemPosition();
+        FullscreenActivity.mychordsfontnum = chordsFontSpinner.getSelectedItemPosition();
+        FullscreenActivity.linespacing = lineSpacingSeekBar.getProgress();
+        float num = (float) scaleHeading_SeekBar.getProgress()/100.0f;
+        FullscreenActivity.headingfontscalesize = num;
+        num = (float) scaleComment_SeekBar.getProgress()/100.0f;
+        FullscreenActivity.commentfontscalesize = num;
+        num = (float) scaleChords_SeekBar.getProgress()/100.0f;
+        FullscreenActivity.chordfontscalesize = num;
+        Preferences.savePreferences();
+        mListener.refreshAll();
+        dismiss();
     }
 
     public void lyricnchordsPreviewUpdate() {

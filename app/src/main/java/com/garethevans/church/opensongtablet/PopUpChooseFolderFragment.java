@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class PopUpChooseFolderFragment extends DialogFragment {
 
@@ -43,10 +46,25 @@ public class PopUpChooseFolderFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-
         // safety check
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.songfolder));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setVisibility(View.GONE);
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.songfolder));
         }
     }
 
@@ -62,11 +80,10 @@ public class PopUpChooseFolderFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
 
         final View V = inflater.inflate(R.layout.popup_choosefolder, container, false);
-
-        getDialog().setTitle(getActivity().getResources().getString(R.string.songfolder));
-        getDialog().setCanceledOnTouchOutside(true);
 
         lv = (ListView) V.findViewById(R.id.songfolders_ListView);
 
@@ -78,7 +95,7 @@ public class PopUpChooseFolderFragment extends DialogFragment {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     FullscreenActivity.whichSongFolder = FullscreenActivity.mSongFolderNames[i];
-                    Preferences.savePreferences();
+                    //Preferences.savePreferences();  // Remove this to avoid bugs if user is only browsing
                     if (mListener!=null) {
                         mListener.prepareSongMenu();
                     }

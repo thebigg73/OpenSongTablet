@@ -85,13 +85,13 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
 
-        TextView title = (TextView) findViewById(R.id.songandauthor);
-        if (ab != null && title != null) {
+        //TextView title = (TextView) findViewById(R.id.songandauthor);
+        if (ab != null) {
             ab.setTitle("");
             ab.setDisplayHomeAsUpEnabled(false);
             ab.setDisplayShowTitleEnabled(false);
             //title.setText(getResources().getString(R.string.colorchooser));
-			title.setText(getString(R.string.options_options_theme));
+			//title.setText(getString(R.string.options_options_theme));
         }
 
 		// Define the buttons

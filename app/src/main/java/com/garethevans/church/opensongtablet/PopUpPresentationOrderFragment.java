@@ -5,9 +5,11 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -45,6 +47,35 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.edit_song_presentation));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    doSave();
+                }
+            });
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.edit_song_presentation));
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -54,18 +85,30 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         }
     }
 
+    TextView m_mPresentation;
+    TextView popuppresorder_presorder_title;
+    LinearLayout root_buttonshere;
+    Button deletePresOrder;
+
     @SuppressWarnings("deprecation")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.edit_song_presentation));
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
+
         View V = inflater.inflate(R.layout.popup_presentation_order, container, false);
-        LinearLayout root_buttonshere = (LinearLayout) V.findViewById(R.id.songsectionstoadd);
-        final TextView m_mPresentation = (TextView) V.findViewById(R.id.popuppres_mPresentation);
-        // Try to add buttons for each section
-        // How many buttons?
-        TextView popuppresorder_presorder_title = (TextView) V.findViewById(R.id.popuppresorder_presorder_title);
+
+        // Define the views
+        root_buttonshere = (LinearLayout) V.findViewById(R.id.songsectionstoadd);
+        m_mPresentation = (TextView) V.findViewById(R.id.popuppres_mPresentation);
+        popuppresorder_presorder_title = (TextView) V.findViewById(R.id.popuppresorder_presorder_title);
+        deletePresOrder = (Button) V.findViewById(R.id.deletePresOrder);
+
+        // Set the values
         popuppresorder_presorder_title.setText(FullscreenActivity.mTitle);
+        m_mPresentation.setText(FullscreenActivity.mPresentation);
+
+        // Set the buttons up
         int numbuttons = FullscreenActivity.foundSongSections_heading.size();
         for (int r=0;r<numbuttons;r++) {
             Button but = new Button(getActivity());
@@ -101,42 +144,6 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
             root_buttonshere.addView(but);
         }
 
-        m_mPresentation.setText(FullscreenActivity.mPresentation);
-        Button cancelPresentationOrder = (Button) V.findViewById(R.id.cancelPresentationOrder);
-        cancelPresentationOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-        Button savePresentationOrder = (Button) V.findViewById(R.id.savePresentationOrder);
-        savePresentationOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.mPresentation = m_mPresentation.getText().toString().trim();
-                // If we are in presentation mode, update the page directly
-                if (FullscreenActivity.whichMode.equals("Presentation")) {
-                    CheckBox presorder = (CheckBox) getActivity().findViewById(R.id.presenter_order_text);
-                    presorder.setText(m_mPresentation.getText().toString().trim());
-                    presorder.setChecked(false);
-                    presorder.setChecked(true);
-                }
-                PopUpEditSongFragment.prepareSongXML();
-                try {
-                    PopUpEditSongFragment.justSaveSongXML();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    LoadXML.loadXML();
-                } catch (XmlPullParserException | IOException e) {
-                    e.printStackTrace();
-                }
-                mListener.updatePresentationOrder();
-                dismiss();
-            }
-        });
-        Button deletePresOrder = (Button) V.findViewById(R.id.deletePresOrder);
         deletePresOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,6 +151,32 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
             }
         });
         return V;
+    }
+
+    public void doSave() {
+        FullscreenActivity.mPresentation = m_mPresentation.getText().toString().trim();
+        // If we are in presentation mode, update the page directly
+        if (FullscreenActivity.whichMode.equals("Presentation")) {
+            CheckBox presorder = (CheckBox) getActivity().findViewById(R.id.presenter_order_text);
+            presorder.setText(m_mPresentation.getText().toString().trim());
+            presorder.setChecked(false);
+            presorder.setChecked(true);
+        }
+        PopUpEditSongFragment.prepareSongXML();
+        try {
+            PopUpEditSongFragment.justSaveSongXML();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            LoadXML.loadXML();
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
+        }
+        if (mListener!=null) {
+            mListener.updatePresentationOrder();
+        }
+        dismiss();
     }
 
     @Override

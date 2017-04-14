@@ -4,7 +4,12 @@
     <style name="CustomDialog" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="android:windowNoTitle">false</item>
         <item name="android:colorBackground">@color/toolbar</item>
-        <item name="android:textColor">#ff0</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+
+    <style name="MyDialogHeadingText" parent="MyTheme.Base">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="MyHeadingText" parent="MyTheme.Base">

@@ -80,15 +80,6 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/closeProfile_Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|end"
-                android:layout_margin="8dp"
-                android:background="@drawable/blue_button"
-                android:text="@string/drawer_close"
-                android:textColor="#fff" />
         </LinearLayout>
     </ScrollView>
 

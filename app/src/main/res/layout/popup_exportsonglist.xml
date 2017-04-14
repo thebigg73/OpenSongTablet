@@ -11,24 +11,4 @@
         android:layout_above="@+id/cancel_Button"
         android:layout_margin="8dp"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_above="@+id/export_Button"
-        android:id="@+id/cancel_Button"
-        android:layout_gravity="right"
-        android:layout_margin="8dp"
-        android:text="@string/cancel"
-        android:background="@drawable/blue_button"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:id="@+id/export_Button"
-        android:layout_gravity="right"
-        android:layout_margin="8dp"
-        android:background="@drawable/green_button"
-        android:text="@string/exportsongdirectory"/>
 </RelativeLayout>

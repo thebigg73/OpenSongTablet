@@ -13,7 +13,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-         android:layout_height="wrap_content">
+        android:layout_height="wrap_content">
 
     <TextView
         android:layout_width="match_parent"
@@ -80,6 +80,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/chooseFolder_Spinner"
+            style="@style/MySpinner"
             android:layout_margin="8dp" />
 
         <CheckBox
@@ -89,25 +90,13 @@
             android:id="@+id/overWrite_CheckBox"
             android:layout_margin="8dp" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:id="@+id/importFile_Cancel"
-            android:background="@drawable/blue_button"
-            android:layout_margin="8dp"
-            android:textColor="#fff"
-            android:layout_gravity="right" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/options_set_save"
-            android:id="@+id/importFile_Save"
-            android:background="@drawable/red_button"
-            android:layout_margin="8dp"
-            android:textColor="#fff"
-            android:layout_gravity="right" />
     </LinearLayout>
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 </RelativeLayout>

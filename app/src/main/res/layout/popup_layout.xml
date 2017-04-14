@@ -1,256 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:background="@drawable/popup_bg"
-    android:padding="8dp">
 
-    <ScrollView
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollView4"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:background="@drawable/popup_bg">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView4"
-        android:layout_above="@+id/closeLayout"
-        android:layout_alignParentTop="true"
-        android:layout_margin="12dp">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/margins_LinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/section_box"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/setxmargins"
                 android:id="@+id/textView4"
-                style="@style/MyHeadingText" />
-
-            <SeekBar
-                style="?android:attr/progressBarStyleHorizontal"
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/setxmargins" />
+
+            <SeekBar
                 android:id="@+id/setXMarginProgressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginBottom="24dp"
                 android:background="@drawable/apptheme_scrubber_primary_holo"
                 android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/setymargins"
                 android:id="@+id/textView8"
-                style="@style/MyHeadingText" />
+                style="@style/MyHeadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setymargins" />
 
             <SeekBar
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/setYMarginProgressBar"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="24dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView"
-                android:src="@drawable/grey_line"
-                android:layout_margin="12dp"
-                android:contentDescription="@string/layout" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/options_options_scale"
-                android:id="@+id/textView9"
-                style="@style/MyHeadingText" />
-
-            <ToggleButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/toggleAutoScaleButton"
-                android:layout_marginBottom="12dp"
-                android:textColor="#fff" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/maxfontsize"
-                android:id="@+id/textView151"
-                style="@style/MyHeadingText" />
-
-            <SeekBar
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/setMaxFontSizeProgressBar"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginBottom="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/chords_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/section_box"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/toggleChordsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/MyHeadingText"
+                app:theme="@style/SwitchStyle"
+                android:text="@string/showchords"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/scale1_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/section_box"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/toggleAutoScaleButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:theme="@style/SwitchStyle"
+                style="@style/MyHeadingText"
+                android:text="@string/options_options_scale"/>
+
+            <TextView
+                android:id="@+id/textView151"
+                android:layout_marginTop="16dp"
+                style="@style/MyHeadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/maxfontsize" />
+
+            <SeekBar
+                android:id="@+id/setMaxFontSizeProgressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/apptheme_scrubber_primary_holo"
                 android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
+                android:id="@+id/maxfontSizePreview"
+                style="@style/MyInfoText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/MyInfoText"
-                android:id="@+id/maxfontSizePreview"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="36dp" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView2"
-                android:src="@drawable/grey_line"
-                android:layout_margin="12dp"
-                android:contentDescription="@string/layout" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fonts_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/section_box"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textView23"
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/options_options_fonts"
-                android:id="@+id/textView23"
-                style="@style/MyHeadingText" />
+                android:text="@string/options_options_fonts" />
 
             <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/presoFontSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/MySpinner"
                 android:layout_margin="8dp" />
 
             <TextView
+                android:id="@+id/textView10"
+                style="@style/MyHeadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/options_options_fontsize"
-                android:id="@+id/textView10"
-                style="@style/MyHeadingText" />
+                android:text="@string/options_options_fontsize" />
 
             <SeekBar
+                android:id="@+id/setFontSizeProgressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/setFontSizeProgressBar"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginBottom="24dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/apptheme_scrubber_primary_holo"
                 android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
+                android:id="@+id/fontSizePreview"
+                style="@style/MyInfoText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/MyInfoText"
-                android:id="@+id/fontSizePreview"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="36dp" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView4"
-                android:src="@drawable/grey_line"
-                android:layout_margin="12dp"
-                android:contentDescription="@string/layout" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/scale2_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/section_box"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/edit_song_title"
                 android:id="@+id/textView24"
                 style="@style/MyHeadingText"
-                android:layout_margin="8dp" />
-
-            <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/edit_song_title" />
+
+            <SeekBar
                 android:id="@+id/presoTitleSizeSeekBar"
-                android:focusableInTouchMode="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="12dp"
                 android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:focusableInTouchMode="false"
                 android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
+                android:id="@+id/textView25"
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/MyInfoText"
-                android:text="@string/edit_song_author"
-                android:id="@+id/textView25"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:text="@string/edit_song_author" />
 
             <SeekBar
+                android:id="@+id/presoAuthorSizeSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/presoAuthorSizeSeekBar"
                 android:layout_margin="12dp"
                 android:background="@drawable/apptheme_scrubber_primary_holo"
                 android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/edit_song_copyright"
                 android:id="@+id/textView26"
                 style="@style/MyHeadingText"
-                android:layout_margin="8dp" />
-
-            <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/edit_song_copyright" />
+
+            <SeekBar
                 android:id="@+id/presoCopyrightSizeSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="12dp"
                 android:background="@drawable/apptheme_scrubber_primary_holo"
                 android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/alert"
                 android:id="@+id/textView27"
                 style="@style/MyHeadingText"
-                android:layout_margin="8dp" />
-
-            <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/alert" />
+
+            <SeekBar
                 android:id="@+id/presoAlertSizeSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="12dp"
                 android:background="@drawable/apptheme_scrubber_primary_holo"
                 android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
         </LinearLayout>
-    </ScrollView>
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/drawer_close"
-        android:id="@+id/closeLayout"
-        android:background="@drawable/blue_button"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/scrollView4"
-        android:layout_alignEnd="@+id/scrollView4"
-        android:layout_margin="12dp"
-        android:textColor="#fff" />
-
-</RelativeLayout>
+    </LinearLayout>
+</ScrollView>

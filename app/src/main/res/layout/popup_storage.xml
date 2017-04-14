@@ -18,90 +18,80 @@
             android:orientation="vertical">
 
             <TextView
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:text="@string/storage_help"
-                style="@style/MyHeadingText" />
+                android:text="@string/storage_help" />
 
             <TextView
                 android:id="@+id/textView30"
+                style="@style/MyInfoText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:text="@string/storage_issues"
-                style="@style/MyInfoText" />
+                android:text="@string/storage_issues" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/section_box">
-
-                    <RadioButton
-                        android:id="@+id/intStorage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
-                        android:checked="true"
-                        android:text="@string/storage_int"
-                        style="@style/MyWhiteHeadingText" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/section_box">
-
-                    <RadioButton
-                        android:id="@+id/extStorage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
-                        android:checked="false"
-                        android:text="@string/storage_ext"
-                        style="@style/MyWhiteHeadingText" />
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/section_box"
-                    android:orientation="vertical">
-
-                    <RadioButton
-                        android:id="@+id/otherStorage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="20dp"
-                        android:text="@string/options_other"
-                        style="@style/MyWhiteHeadingText" />
-
-                    <Button
-                        android:id="@+id/editCustomStorage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="0dp"
-                        android:background="@drawable/grey_button"
-                        android:text="@string/options_song_edit"
-                        android:textColor="#fff" />
-
-                </LinearLayout>
-
-            <Button
-                android:id="@+id/exitStorage"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_margin="8dp"
-                android:background="@drawable/blue_button"
-                android:text="@string/edit_save"
-                android:textColor="#fff" />
+                android:background="@drawable/section_box">
+
+                <RadioButton
+                    android:id="@+id/intStorage"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:checked="true"
+                    android:text="@string/storage_int" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/section_box">
+
+                <RadioButton
+                    android:id="@+id/extStorage"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:checked="false"
+                    android:text="@string/storage_ext" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/otherStorage"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:text="@string/options_other" />
+
+                <Button
+                    android:id="@+id/editCustomStorage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/grey_button"
+                    android:text="@string/options_song_edit"
+                    android:textColor="#fff" />
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/wipeSongs"

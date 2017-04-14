@@ -6,13 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    card_view:cardCornerRadius="4dp"
+    card_view:contentPadding="2dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardBackgroundColor="@color/dark"
     android:layout_margin="2dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
         android:id="@+id/cardview_layout">
 
         <android.support.design.widget.FloatingActionButton
@@ -22,7 +23,7 @@
             android:layout_alignParentLeft="true"
             app:fabSize="mini"
             app:borderWidth="0dp"
-            app:backgroundTint="#f00"
+            app:backgroundTint="@color/grey"
             android:src="@drawable/ic_amplifier_white_36dp"
             android:alpha="0.8"
             android:layout_alignParentStart="true"
@@ -36,8 +37,7 @@
             android:layout_toRightOf="@id/cardview_icon"
             android:layout_toEndOf="@id/cardview_icon"
             android:text="@string/title"
-            style="@style/MyHeadingText"
-            android:textColor="#006"
+            style="@style/MyWhiteHeadingText"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="0dp"
             android:layout_marginRight="8dp"/>
@@ -51,8 +51,7 @@
             android:layout_toEndOf="@id/cardview_item"
             android:gravity="center_vertical"
             android:text="@string/title"
-            style="@style/MyHeadingText"
-            android:textColor="#000"
+            style="@style/MyWhiteHeadingText"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="0dp"
             android:layout_marginRight="8dp"
@@ -69,7 +68,6 @@
             android:gravity="center_vertical"
             android:text="@string/mainfoldername"
             style="@style/MyInfoText"
-            android:textColor="#006"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="0dp"
             android:layout_marginRight="8dp"

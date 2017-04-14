@@ -1,99 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/popup_bg">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/saveGestures">
+        android:layout_margin="8dp"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            style="@style/MyHeadingText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="8dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/doubleTap"
-                style="@style/MyHeadingText"
-                android:layout_margin="8dp" />
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/screenDoubleTap"
-                android:layout_margin="8dp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/longPress"
-                style="@style/MyHeadingText"
-                android:layout_margin="8dp" />
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/screenLongPress"
-                android:layout_margin="8dp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/longPressUp"
-                style="@style/MyHeadingText"
-                android:layout_margin="8dp" />
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/upPedalLongPress"
-                android:layout_margin="8dp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/longPressDown"
-                style="@style/MyHeadingText"
-                android:layout_margin="8dp" />
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/downPedalLongPress"
-                android:layout_margin="8dp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/longPressPrevious"
-                style="@style/MyHeadingText"
-                android:layout_margin="8dp" />
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/previousPedalLongPress"
-                android:layout_margin="8dp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/longPressNext"
-                style="@style/MyHeadingText"
-                android:layout_margin="8dp" />
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/nextPedalLongPress"
-                android:layout_margin="8dp" />
-         </LinearLayout>
+            android:layout_margin="8dp"
+            android:text="@string/doubleTap" />
 
-    </ScrollView>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_margin="8dp"
-        android:id="@+id/saveGestures"
-        android:text="@string/ok"
-        android:textColor="#fff"
-        android:background="@drawable/green_button"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"/>
+        <Spinner
+            android:id="@+id/screenDoubleTap"
+            style="@style/MySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" />
 
-</RelativeLayout>
+        <TextView
+            style="@style/MyHeadingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/longPress" />
+
+        <Spinner
+            android:id="@+id/screenLongPress"
+            style="@style/MySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" />
+
+        <TextView
+            style="@style/MyHeadingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/longPressUp" />
+
+        <Spinner
+            android:id="@+id/upPedalLongPress"
+            style="@style/MySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" />
+
+        <TextView
+            style="@style/MyHeadingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/longPressDown" />
+
+        <Spinner
+            android:id="@+id/downPedalLongPress"
+            style="@style/MySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" />
+
+        <TextView
+            style="@style/MyHeadingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/longPressPrevious" />
+
+        <Spinner
+            android:id="@+id/previousPedalLongPress"
+            style="@style/MySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" />
+
+        <TextView
+            style="@style/MyHeadingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/longPressNext" />
+
+        <Spinner
+            android:id="@+id/nextPedalLongPress"
+            style="@style/MySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" />
+    </LinearLayout>
+
+</ScrollView>

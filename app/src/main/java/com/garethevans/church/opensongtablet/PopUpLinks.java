@@ -7,33 +7,32 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.MimeTypeMap;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.io.File;
 
 public class PopUpLinks extends DialogFragment {
 
-    ImageButton linkYouTube_ImageButton;
-    ImageButton linkWeb_ImageButton;
-    ImageButton linkAudio_ImageButton;
-    ImageButton linkOther_ImageButton;
-    Button linkClose;
-    Button linkSave;
+    FloatingActionButton linkYouTube_ImageButton;
+    FloatingActionButton linkWeb_ImageButton;
+    FloatingActionButton linkAudio_ImageButton;
+    FloatingActionButton linkOther_ImageButton;
     EditText linkYouTube_EditText;
     EditText linkWeb_EditText;
     EditText linkAudio_EditText;
     EditText linkOther_EditText;
-    ImageButton linkYouTubeClear_ImageButton;
-    ImageButton linkWebClear_ImageButton;
-    ImageButton linkAudioClear_ImageButton;
-    ImageButton linkOtherClear_ImageButton;
+    FloatingActionButton linkYouTubeClear_ImageButton;
+    FloatingActionButton linkWebClear_ImageButton;
+    FloatingActionButton linkAudioClear_ImageButton;
+    FloatingActionButton linkOtherClear_ImageButton;
 
     static PopUpLinks newInstance() {
         PopUpLinks frag;
@@ -64,6 +63,27 @@ public class PopUpLinks extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.link));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    doSave();
+                }
+            });
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.link));
+        }
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
@@ -77,27 +97,25 @@ public class PopUpLinks extends DialogFragment {
         if (getDialog()==null) {
             dismiss();
         }
-        getDialog().setTitle(getActivity().getResources().getString(R.string.link));
         getDialog().setCanceledOnTouchOutside(true);
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         mListener.pageButtonAlpha("links");
 
         final View V = inflater.inflate(R.layout.popup_links, container, false);
 
         // Initialise the views
-        linkYouTube_ImageButton = (ImageButton) V.findViewById(R.id.linkYouTube_ImageButton);
-        linkWeb_ImageButton = (ImageButton) V.findViewById(R.id.linkWeb_ImageButton);
-        linkAudio_ImageButton = (ImageButton) V.findViewById(R.id.linkAudio_ImageButton);
-        linkOther_ImageButton = (ImageButton) V.findViewById(R.id.linkOther_ImageButton);
+        linkYouTube_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkYouTube_ImageButton);
+        linkWeb_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkWeb_ImageButton);
+        linkAudio_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkAudio_ImageButton);
+        linkOther_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkOther_ImageButton);
         linkYouTube_EditText = (EditText) V.findViewById(R.id.linkYouTube_EditText);
         linkWeb_EditText = (EditText) V.findViewById(R.id.linkWeb_EditText);
         linkAudio_EditText = (EditText) V.findViewById(R.id.linkAudio_EditText);
         linkOther_EditText = (EditText) V.findViewById(R.id.linkOther_EditText);
-        linkYouTubeClear_ImageButton = (ImageButton) V.findViewById(R.id.linkYouTubeClear_ImageButton);
-        linkWebClear_ImageButton = (ImageButton) V.findViewById(R.id.linkWebClear_ImageButton);
-        linkAudioClear_ImageButton = (ImageButton) V.findViewById(R.id.linkAudioClear_ImageButton);
-        linkOtherClear_ImageButton = (ImageButton) V.findViewById(R.id.linkOtherClear_ImageButton);
-        linkClose = (Button) V.findViewById(R.id.linkClose);
-        linkSave = (Button) V.findViewById(R.id.linkSave);
+        linkYouTubeClear_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkYouTubeClear_ImageButton);
+        linkWebClear_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkWebClear_ImageButton);
+        linkAudioClear_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkAudioClear_ImageButton);
+        linkOtherClear_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkOtherClear_ImageButton);
 
         // Put any links in to the text fields
         linkYouTube_EditText.setText(FullscreenActivity.mLinkYouTube);
@@ -143,7 +161,8 @@ public class PopUpLinks extends DialogFragment {
             Log.d("d", "filechosen=" + FullscreenActivity.filechosen);
         }
         // If a filetoselect has been set, add this to the view
-        if (FullscreenActivity.filetoselect.equals("audiolink") && FullscreenActivity.filechosen!=null) {
+        if (FullscreenActivity.filetoselect.equals("audiolink") &&
+                FullscreenActivity.filechosen!=null && !FullscreenActivity.filechosen.toString().equals("")) {
             // Get audio link
             String link = Uri.fromFile(FullscreenActivity.filechosen).toString();
             if (link.contains("/OpenSong/")) {
@@ -214,32 +233,6 @@ public class PopUpLinks extends DialogFragment {
         });
 
         // Set up button actions
-        linkClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-        linkSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get the values from the page
-                FullscreenActivity.mLinkYouTube = linkYouTube_EditText.getText().toString();
-                FullscreenActivity.mLinkWeb = linkWeb_EditText.getText().toString();
-                FullscreenActivity.mLinkAudio = linkAudio_EditText.getText().toString();
-                FullscreenActivity.mLinkOther = linkOther_EditText.getText().toString();
-
-                // Now resave the song with these new links
-                PopUpEditSongFragment.prepareSongXML();
-                try {
-                    PopUpEditSongFragment.justSaveSongXML();
-                    mListener.refreshAll();
-                    dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
         linkYouTube_ImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -269,66 +262,96 @@ public class PopUpLinks extends DialogFragment {
         linkAudio_ImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MimeTypeMap myMime = MimeTypeMap.getSingleton();
-                Intent newIntent = new Intent(Intent.ACTION_VIEW);
-                String grabbedaudiofile = linkAudio_EditText.getText().toString();
-                if (grabbedaudiofile.startsWith("../OpenSong/")) {
-                    // This is local to the packge, so fix it
-                    grabbedaudiofile = "file://"+grabbedaudiofile.replace("../OpenSong/",FullscreenActivity.homedir+"/");
-                }
-                Uri uri2 = Uri.parse(grabbedaudiofile);
-                File getfile = new File(grabbedaudiofile);
+                String mytext = linkAudio_EditText.getText().toString();
+                if (!mytext.equals("")) {
+                    MimeTypeMap myMime = MimeTypeMap.getSingleton();
+                    Intent newIntent = new Intent(Intent.ACTION_VIEW);
+                    String grabbedaudiofile = linkAudio_EditText.getText().toString();
+                    if (grabbedaudiofile.startsWith("../OpenSong/")) {
+                        // This is local to the packge, so fix it
+                        grabbedaudiofile = "file://" + grabbedaudiofile.replace("../OpenSong/", FullscreenActivity.homedir + "/");
+                    }
+                    Uri uri2 = Uri.parse(grabbedaudiofile);
+                    File getfile = new File(grabbedaudiofile);
 
-                String ext = MimeTypeMap.getFileExtensionFromUrl(getfile.getName()).toLowerCase();
-                if (ext.isEmpty()) {
-                    ext = "";
-                }
-                String mimeType;
-                 try {
-                     mimeType = myMime.getMimeTypeFromExtension(ext);
-                 } catch (Exception e ) {
-                     mimeType = "*/*";
-                 }
+                    String ext = MimeTypeMap.getFileExtensionFromUrl(getfile.getName()).toLowerCase();
+                    if (ext.isEmpty()) {
+                        ext = "";
+                    }
+                    String mimeType;
+                    try {
+                        mimeType = myMime.getMimeTypeFromExtension(ext);
+                    } catch (Exception e) {
+                        mimeType = "*/*";
+                    }
 
-                if (mimeType == null) {
-                    mimeType = "*/*";
-                }
+                    if (mimeType == null) {
+                        mimeType = "*/*";
+                    }
 
-                newIntent.setDataAndType(uri2,mimeType);
-                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
-                    startActivity(newIntent);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    newIntent.setDataAndType(uri2, mimeType);
+                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        startActivity(newIntent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    FullscreenActivity.myToastMessage = getResources().getString(R.string.error_notset);
+                    ShowToast.showToast(getActivity());
                 }
             }
         });
         linkOther_ImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MimeTypeMap myMime = MimeTypeMap.getSingleton();
-                Intent newIntent = new Intent(Intent.ACTION_VIEW);
-                Uri uri2 = Uri.parse(linkOther_EditText.getText().toString());
-                File getfile = new File(linkOther_EditText.getText().toString());
-                String ext = MimeTypeMap.getFileExtensionFromUrl(getfile.getName()).toLowerCase();
-                String mimeType = myMime.getMimeTypeFromExtension(ext);
+                String mytext = linkOther_EditText.getText().toString();
+                if (!mytext.equals("")) {
+                    MimeTypeMap myMime = MimeTypeMap.getSingleton();
+                    Intent newIntent = new Intent(Intent.ACTION_VIEW);
+                    Uri uri2 = Uri.parse(linkOther_EditText.getText().toString());
+                    File getfile = new File(linkOther_EditText.getText().toString());
+                    String ext = MimeTypeMap.getFileExtensionFromUrl(getfile.getName()).toLowerCase();
+                    String mimeType = myMime.getMimeTypeFromExtension(ext);
 
-                if (mimeType == null) {
-                    mimeType = "*/*";
-                }
+                    if (mimeType == null) {
+                        mimeType = "*/*";
+                    }
 
-                Log.d("d","mimeType="+mimeType);
-                newIntent.setDataAndType(uri2,mimeType);
-                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
-                    startActivity(newIntent);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.d("d", "mimeType=" + mimeType);
+                    newIntent.setDataAndType(uri2, mimeType);
+                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        startActivity(newIntent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    FullscreenActivity.myToastMessage = getResources().getString(R.string.error_notset);
+                    ShowToast.showToast(getActivity());
                 }
             }
         });
 
         return V;
+    }
+
+    public void doSave() {
+        // Get the values from the page
+        FullscreenActivity.mLinkYouTube = linkYouTube_EditText.getText().toString();
+        FullscreenActivity.mLinkWeb = linkWeb_EditText.getText().toString();
+        FullscreenActivity.mLinkAudio = linkAudio_EditText.getText().toString();
+        FullscreenActivity.mLinkOther = linkOther_EditText.getText().toString();
+
+        // Now resave the song with these new links
+        PopUpEditSongFragment.prepareSongXML();
+        try {
+            PopUpEditSongFragment.justSaveSongXML();
+            mListener.refreshAll();
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -66,6 +66,7 @@ public class BatteryMonitor extends BroadcastReceiver {
     public static BitmapDrawable batteryImage(int charge, int abheight, Context c) {
 
         int size = (int)(abheight*0.75f);
+        int thickness = 4;
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
         Bitmap bmp = Bitmap.createBitmap(size,size, conf);
 
@@ -78,6 +79,16 @@ public class BatteryMonitor extends BroadcastReceiver {
         } else if (charge<=10) {
             color = 0xffff0000;
         }
+
+        Paint bPaint = new Paint();
+        bPaint.setDither(true);
+        bPaint.setColor(0xff666666);
+        bPaint.setAntiAlias(true);
+        bPaint.setStyle(Paint.Style.STROKE);
+        bPaint.setStrokeJoin(Paint.Join.ROUND);
+        bPaint.setStrokeCap(Paint.Cap.ROUND);
+        bPaint.setStrokeWidth(thickness);
+
         Paint mPaint = new Paint();
         mPaint.setDither(true);
         mPaint.setColor(color);
@@ -85,14 +96,20 @@ public class BatteryMonitor extends BroadcastReceiver {
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(8);
+        mPaint.setStrokeWidth(thickness);
 
         Path circle = new Path();
-        RectF box = new RectF(8,8,size-8,size-8);
+        RectF box = new RectF(thickness,thickness,size-thickness,size-thickness);
         float sweep = 360 * charge * 0.01f;
         circle.addArc(box, 270, sweep);
 
+        Path circle2 = new Path();
+        RectF box2 = new RectF(thickness,thickness,size-thickness,size-thickness);
+        float sweep2 = 360;
+        circle2.addArc(box2, 270, sweep2);
+
         Canvas canvas = new Canvas(bmp);
+        canvas.drawPath(circle2, bPaint);
         canvas.drawPath(circle, mPaint);
 
         return drawable;

@@ -58,7 +58,7 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 
-        setContentView(R.layout.searchview_filter);
+        setContentView(R.layout.popup_searchview);
 
         vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 

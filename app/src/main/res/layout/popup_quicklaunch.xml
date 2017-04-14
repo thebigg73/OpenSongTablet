@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 app:fabSize="mini"
-                app:backgroundTint="@color/fab2"
+                app:backgroundTint="@color/red"
                 app:borderWidth="0dp"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 android:visibility="visible"
@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 app:fabSize="mini"
-                app:backgroundTint="@color/fab2"
+                app:backgroundTint="@color/red"
                 app:borderWidth="0dp"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 android:visibility="visible"
@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 app:fabSize="mini"
-                app:backgroundTint="@color/fab2"
+                app:backgroundTint="@color/red"
                 app:borderWidth="0dp"
                 android:src="@drawable/ic_help_outline_white_36dp"
                 android:visibility="visible"
@@ -145,27 +145,6 @@
                 android:layout_toRightOf="@+id/button3_image"/>
 
         </RelativeLayout>
-
-        <Button
-            android:id="@+id/quicklaunch_ok"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="36dp"
-            android:background="@drawable/green_button"
-            android:text="@string/ok"
-            android:textColor="#fff"/>
-
-        <Button
-            android:id="@+id/quicklaunch_cancel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/blue_button"
-            android:text="@string/cancel"
-            android:textColor="#fff"/>
 
     </LinearLayout>
 

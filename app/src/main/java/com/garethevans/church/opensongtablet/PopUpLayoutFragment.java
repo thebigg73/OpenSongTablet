@@ -3,17 +3,19 @@ package com.garethevans.church.opensongtablet;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -27,7 +29,8 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     SeekBar setXMarginProgressBar;
     SeekBar setYMarginProgressBar;
-    ToggleButton toggleAutoScaleButton;
+    SwitchCompat toggleAutoScaleButton;
+    SwitchCompat toggleChordsButton;
     SeekBar setMaxFontSizeProgressBar;
     SeekBar setFontSizeProgressBar;
     TextView fontSizePreview;
@@ -37,7 +40,11 @@ public class PopUpLayoutFragment extends DialogFragment {
     SeekBar presoAuthorSizeSeekBar;
     SeekBar presoCopyrightSizeSeekBar;
     SeekBar presoAlertSizeSeekBar;
-    Button closeLayout;
+    LinearLayout margins_LinearLayout;
+    LinearLayout chords_LinearLayout;
+    LinearLayout scale1_LinearLayout;
+    LinearLayout scale2_LinearLayout;
+    LinearLayout fonts_LinearLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,27 +57,88 @@ public class PopUpLayoutFragment extends DialogFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.connected_display));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    doSave();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setVisibility(View.GONE);
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.connected_display));
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.settings));
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
+
         final View V = inflater.inflate(R.layout.popup_layout, container, false);
 
         setXMarginProgressBar = (SeekBar) V.findViewById(R.id.setXMarginProgressBar);
         setYMarginProgressBar = (SeekBar) V.findViewById(R.id.setYMarginProgressBar);
-        toggleAutoScaleButton = (ToggleButton) V.findViewById(R.id.toggleAutoScaleButton);
+        toggleAutoScaleButton = (SwitchCompat) V.findViewById(R.id.toggleAutoScaleButton);
+        toggleChordsButton = (SwitchCompat) V.findViewById(R.id.toggleChordsButton);
         setMaxFontSizeProgressBar = (SeekBar) V.findViewById(R.id.setMaxFontSizeProgressBar);
         setFontSizeProgressBar = (SeekBar) V.findViewById(R.id.setFontSizeProgressBar);
         fontSizePreview = (TextView) V.findViewById(R.id.fontSizePreview);
         maxfontSizePreview = (TextView) V.findViewById(R.id.maxfontSizePreview);
-        closeLayout = (Button) V.findViewById(R.id.closeLayout);
         presoFontSpinner = (Spinner) V.findViewById(R.id.presoFontSpinner);
         presoTitleSizeSeekBar = (SeekBar) V.findViewById(R.id.presoTitleSizeSeekBar);
         presoAuthorSizeSeekBar = (SeekBar) V.findViewById(R.id.presoAuthorSizeSeekBar);
         presoCopyrightSizeSeekBar = (SeekBar) V.findViewById(R.id.presoCopyrightSizeSeekBar);
         presoAlertSizeSeekBar = (SeekBar) V.findViewById(R.id.presoAlertSizeSeekBar);
+        margins_LinearLayout = (LinearLayout) V.findViewById(R.id.margins_LinearLayout);
+        chords_LinearLayout = (LinearLayout) V.findViewById(R.id.chords_LinearLayout);
+        scale1_LinearLayout = (LinearLayout) V.findViewById(R.id.scale1_LinearLayout);
+        scale2_LinearLayout = (LinearLayout) V.findViewById(R.id.scale2_LinearLayout);
+        fonts_LinearLayout = (LinearLayout) V.findViewById(R.id.fonts_LinearLayout);
 
         SetTypeFace.setTypeface();
 
+        // Hide the appropriate views for Stage and Performance mode
+        switch (FullscreenActivity.whichMode) {
+            case "Performance":
+                margins_LinearLayout.setVisibility(View.VISIBLE);
+                chords_LinearLayout.setVisibility(View.VISIBLE);
+                scale1_LinearLayout.setVisibility(View.VISIBLE);
+                toggleAutoScaleButton.setVisibility(View.GONE);
+                scale2_LinearLayout.setVisibility(View.GONE);
+                fonts_LinearLayout.setVisibility(View.GONE);
+
+                break;
+            case "Stage":
+                margins_LinearLayout.setVisibility(View.VISIBLE);
+                chords_LinearLayout.setVisibility(View.VISIBLE);
+                scale1_LinearLayout.setVisibility(View.VISIBLE);
+                toggleAutoScaleButton.setVisibility(View.GONE);
+                scale2_LinearLayout.setVisibility(View.GONE);
+                fonts_LinearLayout.setVisibility(View.GONE);
+
+                break;
+            default:
+                margins_LinearLayout.setVisibility(View.VISIBLE);
+                chords_LinearLayout.setVisibility(View.VISIBLE);
+                scale1_LinearLayout.setVisibility(View.VISIBLE);
+                scale2_LinearLayout.setVisibility(View.VISIBLE);
+                fonts_LinearLayout.setVisibility(View.VISIBLE);
+                break;
+        }
+
         // Set the stuff up to what it should be from preferences
+        toggleChordsButton.setChecked(FullscreenActivity.presoShowChords);
         fontSizePreview.setTypeface(FullscreenActivity.presofont);
         String newtext = (FullscreenActivity.presoFontSize) + " sp";
         fontSizePreview.setText(newtext);
@@ -79,8 +147,8 @@ public class PopUpLayoutFragment extends DialogFragment {
         newtext = (FullscreenActivity.presoMaxFontSize) + " sp";
         maxfontSizePreview.setText(newtext);
         maxfontSizePreview.setTextSize(FullscreenActivity.presoMaxFontSize);
-        setXMarginProgressBar.setMax(200);
-        setYMarginProgressBar.setMax(200);
+        setXMarginProgressBar.setMax(100);
+        setYMarginProgressBar.setMax(100);
         setMaxFontSizeProgressBar.setMax(70);
         setFontSizeProgressBar.setMax(70);
         presoTitleSizeSeekBar.setMax(32);
@@ -153,20 +221,13 @@ public class PopUpLayoutFragment extends DialogFragment {
         presoCopyrightSizeSeekBar.setOnSeekBarChangeListener(new presoSectionSizeListener());
         presoAlertSizeSeekBar.setOnSeekBarChangeListener(new presoSectionSizeListener());
 
-        closeLayout.setOnClickListener(new View.OnClickListener() {
+        toggleChordsButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                // Grab the variables, save and close
-                FullscreenActivity.xmargin_presentation = setXMarginProgressBar.getProgress();
-                FullscreenActivity.ymargin_presentation = setYMarginProgressBar.getProgress();
-                FullscreenActivity.presoAutoScale = toggleAutoScaleButton.isChecked();
-                FullscreenActivity.presoFontSize = setFontSizeProgressBar.getProgress() + 4;
-                FullscreenActivity.presoMaxFontSize = setMaxFontSizeProgressBar.getProgress() + 4;
-                Preferences.savePreferences();
-                dismiss();
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.presoShowChords = b;
+                PresentationService.ExternalDisplay.doUpdate();
             }
         });
-
         toggleAutoScaleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -201,12 +262,39 @@ public class PopUpLayoutFragment extends DialogFragment {
         return V;
     }
 
+    public void doSave() {
+        // Grab the variables, save and close
+        FullscreenActivity.xmargin_presentation = setXMarginProgressBar.getProgress();
+        FullscreenActivity.ymargin_presentation = setYMarginProgressBar.getProgress();
+        FullscreenActivity.presoAutoScale = toggleAutoScaleButton.isChecked();
+        FullscreenActivity.presoFontSize = setFontSizeProgressBar.getProgress() + 4;
+        FullscreenActivity.presoMaxFontSize = setMaxFontSizeProgressBar.getProgress() + 4;
+        Preferences.savePreferences();
+        dismiss();
+    }
+
     private class setMargin_Listener implements SeekBar.OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             PresenterMode.tempxmargin = setXMarginProgressBar.getProgress();
             PresenterMode.tempymargin = setYMarginProgressBar.getProgress();
-            MyPresentation.changeMargins();
+            if (FullscreenActivity.whichMode.equals("Presentation")) {
+                MyPresentation.changeMargins();
+            } else {
+                if (FullscreenActivity.isPresenting) {
+                    try {
+                        PresentationService.ExternalDisplay.changeMargins();
+                    } catch (Exception e) {
+                        FullscreenActivity.myToastMessage = getActivity().getString(R.string.nodisplays);
+                        ShowToast.showToast(getActivity());
+                        dismiss();
+                    }
+                } else {
+                    FullscreenActivity.myToastMessage = getActivity().getString(R.string.nodisplays);
+                    ShowToast.showToast(getActivity());
+                    dismiss();
+                }
+            }
         }
 
         public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -214,8 +302,28 @@ public class PopUpLayoutFragment extends DialogFragment {
         public void onStopTrackingTouch(SeekBar seekBar) {
             FullscreenActivity.xmargin_presentation = setXMarginProgressBar.getProgress();
             FullscreenActivity.ymargin_presentation = setYMarginProgressBar.getProgress();
-            // Save preferences
-            Preferences.savePreferences();
+            if (FullscreenActivity.whichMode.equals("Presentation")) {
+                MyPresentation.changeMargins();
+            } else {
+                if (FullscreenActivity.isPresenting) {
+                    try {
+                        PresentationService.ExternalDisplay.changeMargins();
+                        PresentationService.ExternalDisplay.getScreenSizes();
+                        PresentationService.ExternalDisplay.doUpdate();
+                    } catch (Exception e) {
+                        FullscreenActivity.myToastMessage = getActivity().getString(R.string.nodisplays);
+                        ShowToast.showToast(getActivity());
+                        dismiss();
+                    }
+                } else {
+                    FullscreenActivity.myToastMessage = getActivity().getString(R.string.nodisplays);
+                    ShowToast.showToast(getActivity());
+                    dismiss();
+                }
+
+                // Save preferences
+                Preferences.savePreferences();
+            }
         }
     }
 
@@ -251,7 +359,22 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         public void onStopTrackingTouch(SeekBar seekBar) {
             FullscreenActivity.presoMaxFontSize = seekBar.getProgress() + 4;
-            // Save preferences
+
+            if (!FullscreenActivity.whichMode.equals("Presentation")) {
+                if (FullscreenActivity.isPresenting) {
+                    try {
+                        PresentationService.ExternalDisplay.doUpdate();
+                    } catch (Exception e) {
+                        FullscreenActivity.myToastMessage = getActivity().getString(R.string.nodisplays);
+                        ShowToast.showToast(getActivity());
+                        dismiss();
+                    }
+                } else {
+                    FullscreenActivity.myToastMessage = getActivity().getString(R.string.nodisplays);
+                    ShowToast.showToast(getActivity());
+                    dismiss();
+                }
+            }
             Preferences.savePreferences();
         }
     }

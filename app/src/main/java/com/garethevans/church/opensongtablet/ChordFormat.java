@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.TextView;
 
 public class ChordFormat extends AppCompatActivity {
 	
@@ -64,12 +63,12 @@ public class ChordFormat extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
 
-        TextView title = (TextView) findViewById(R.id.songandauthor);
-        if (ab != null && title != null) {
+        //TextView title = (TextView) findViewById(R.id.songandauthor);
+        if (ab != null) {
             ab.setTitle("");
             ab.setDisplayHomeAsUpEnabled(false);
             ab.setDisplayShowTitleEnabled(false);
-            title.setText(getResources().getString(R.string.choosechordformat));
+            //title.setText(getResources().getString(R.string.choosechordformat));
         }
 
         // Set up the preferred chord buttons

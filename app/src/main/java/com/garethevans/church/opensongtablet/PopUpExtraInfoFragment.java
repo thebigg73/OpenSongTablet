@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 public class PopUpExtraInfoFragment extends DialogFragment {
 
@@ -42,13 +44,29 @@ public class PopUpExtraInfoFragment extends DialogFragment {
     SwitchCompat nextSongTopBottom_Switch;
     SwitchCompat stickyNotesOnOff_Switch;
     SwitchCompat stickyNotesTopBottom_Switch;
-    Button closebutton;
 
     @Override
     public void onStart() {
         super.onStart();
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.extra));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.refreshAll();
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setVisibility(View.GONE);
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.extra));
         }
     }
 
@@ -64,7 +82,7 @@ public class PopUpExtraInfoFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.extra));
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_extrainfo, container, false);
 
@@ -73,8 +91,6 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         nextSongTopBottom_Switch = (SwitchCompat) V.findViewById(R.id.nextSongTopBottom_Switch);
         stickyNotesOnOff_Switch = (SwitchCompat) V.findViewById(R.id.stickyNotesOnOff_Switch);
         stickyNotesTopBottom_Switch = (SwitchCompat) V.findViewById(R.id.stickyNotesTopBottom_Switch);
-
-        closebutton = (Button) V.findViewById(R.id.closebutton);
 
         // Set the default values
         switch (FullscreenActivity.showNextInSet) {
@@ -175,13 +191,6 @@ public class PopUpExtraInfoFragment extends DialogFragment {
             }
         });
 
-        closebutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-                mListener.refreshAll();
-            }
-        });
         return V;
     }
 

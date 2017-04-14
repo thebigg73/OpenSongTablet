@@ -1068,4 +1068,8 @@ public final class MyPresentation extends Presentation
         }
     }
 
+    public void fullSong(String lyrics) {
+        Log.d("d","lyrics="+lyrics);
+    }
+
 }

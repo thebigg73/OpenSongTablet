@@ -16,11 +16,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -78,26 +80,39 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     RadioButton scriptureRadioButton;
     TextView slideTitleTextView;
     TextView slideContentTextView;
+    @SuppressLint("StaticFieldLeak")
     static EditText slideTitleEditText;
+    @SuppressLint("StaticFieldLeak")
     static EditText slideContentEditText;
-    Button customSlideCancel;
-    Button customSlideAdd;
     Button loadReusableButton;
     CheckBox saveReusableCheckBox;
+    @SuppressLint("StaticFieldLeak")
     static Button addPageButton;
+    @SuppressLint("StaticFieldLeak")
     static TableLayout slideImageTable;
+    @SuppressLint("StaticFieldLeak")
     static CheckBox loopCheckBox;
+    @SuppressLint("StaticFieldLeak")
     static TextView timeTextView;
+    @SuppressLint("StaticFieldLeak")
     static EditText timeEditText;
+    @SuppressLint("StaticFieldLeak")
     static TextView warningTextView;
+    @SuppressLint("StaticFieldLeak")
     static LinearLayout reusable_LinearLayout;
+    @SuppressLint("StaticFieldLeak")
     static LinearLayout searchBible_LinearLayout;
+    @SuppressLint("StaticFieldLeak")
     static RelativeLayout slideDetails_RelativeLayout;
+    @SuppressLint("StaticFieldLeak")
     static EditText bibleSearch;
+    @SuppressLint("StaticFieldLeak")
     static EditText bibleVersion;
     Button searchBibleGateway_Button;
     WebView bibleGateway_WebView;
+    @SuppressLint("StaticFieldLeak")
     static Button grabVerse_Button;
+    @SuppressLint("StaticFieldLeak")
     static ProgressBar searchBible_progressBar;
 
     // Declare variables used
@@ -116,7 +131,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.add_custom_slide));
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         V = inflater.inflate(R.layout.popup_customslidecreator, container, false);
@@ -131,8 +146,6 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         slideContentTextView = (TextView) V.findViewById(R.id.slideContentTextView);
         slideTitleEditText = (EditText) V.findViewById(R.id.slideTitleEditText);
         slideContentEditText = (EditText) V.findViewById(R.id.slideContentEditText);
-        customSlideCancel = (Button) V.findViewById(R.id.customSlideCancel);
-        customSlideAdd = (Button) V.findViewById(R.id.customSlideAdd);
         addPageButton = (Button) V.findViewById(R.id.addPageButton);
         loadReusableButton = (Button) V.findViewById(R.id.loadReusableButton);
         saveReusableCheckBox = (CheckBox) V.findViewById(R.id.saveReusableCheckBox);
@@ -223,61 +236,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 }
             }
         });
-        customSlideCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-        customSlideAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.noteorslide = whattype;
-                String text = slideContentEditText.getText().toString().trim();
-                FullscreenActivity.customreusable = saveReusableCheckBox.isChecked();
-                String imagecontents;
-                if (whattype.equals("image")) {
-                    imagecontents = "";
-                    // Go through images in list and extract the full location and the filename
-                    Log.d("table", "getChildCount=" + slideImageTable.getChildCount());
-                    for (int r = 0; r < slideImageTable.getChildCount(); r++) {
-                        // Look for image file location
-                        if (slideImageTable.getChildAt(r) instanceof TableRow) {
-                            TextView tv = (TextView) ((TableRow) slideImageTable.getChildAt(r)).getChildAt(0);
-                            String tv_text = tv.getText().toString();
-                            imagecontents = imagecontents + tv_text + "\n";
-                        }
-                    }
 
-                    while (imagecontents.contains("\n\n")) {
-                        imagecontents = imagecontents.replace("\n\n", "\n");
-                    }
-                    imagecontents = imagecontents.trim();
-                    String[] individual_images = imagecontents.split("\n");
-
-                    // Prepare the lyrics
-                    text = "";
-                    for (int t = 0; t < individual_images.length; t++) {
-                        text = text + "[" + FullscreenActivity.image + "_" + (t + 1) + "]\n" + individual_images[t] + "\n\n";
-                    }
-                    text = text.trim();
-
-                } else {
-                    imagecontents = "";
-                }
-                FullscreenActivity.customslide_title = slideTitleEditText.getText().toString();
-                FullscreenActivity.customslide_content = text;
-                FullscreenActivity.customimage_list = imagecontents;
-                FullscreenActivity.customimage_loop = "" + loopCheckBox.isChecked() + "";
-                FullscreenActivity.customimage_time = timeEditText.getText().toString();
-                // Check the slide has a title.  If not, use _
-                if (FullscreenActivity.customslide_title == null || FullscreenActivity.customslide_title.equals("") || FullscreenActivity.customslide_title.isEmpty()) {
-                    FullscreenActivity.customslide_title = "_";
-                }
-                mListener.addSlideToSet();
-                dismiss();
-            }
-        });
         loadReusableButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -305,6 +264,53 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         return V;
     }
 
+    public void doSave(){
+        FullscreenActivity.noteorslide = whattype;
+        String text = slideContentEditText.getText().toString().trim();
+        FullscreenActivity.customreusable = saveReusableCheckBox.isChecked();
+        String imagecontents;
+        if (whattype.equals("image")) {
+            imagecontents = "";
+            // Go through images in list and extract the full location and the filename
+            Log.d("table", "getChildCount=" + slideImageTable.getChildCount());
+            for (int r = 0; r < slideImageTable.getChildCount(); r++) {
+                // Look for image file location
+                if (slideImageTable.getChildAt(r) instanceof TableRow) {
+                    TextView tv = (TextView) ((TableRow) slideImageTable.getChildAt(r)).getChildAt(0);
+                    String tv_text = tv.getText().toString();
+                    imagecontents = imagecontents + tv_text + "\n";
+                }
+            }
+
+            while (imagecontents.contains("\n\n")) {
+                imagecontents = imagecontents.replace("\n\n", "\n");
+            }
+            imagecontents = imagecontents.trim();
+            String[] individual_images = imagecontents.split("\n");
+
+            // Prepare the lyrics
+            text = "";
+            for (int t = 0; t < individual_images.length; t++) {
+                text = text + "[" + FullscreenActivity.image + "_" + (t + 1) + "]\n" + individual_images[t] + "\n\n";
+            }
+            text = text.trim();
+
+        } else {
+            imagecontents = "";
+        }
+        FullscreenActivity.customslide_title = slideTitleEditText.getText().toString();
+        FullscreenActivity.customslide_content = text;
+        FullscreenActivity.customimage_list = imagecontents;
+        FullscreenActivity.customimage_loop = "" + loopCheckBox.isChecked() + "";
+        FullscreenActivity.customimage_time = timeEditText.getText().toString();
+        // Check the slide has a title.  If not, use _
+        if (FullscreenActivity.customslide_title == null || FullscreenActivity.customslide_title.equals("") || FullscreenActivity.customslide_title.isEmpty()) {
+            FullscreenActivity.customslide_title = "_";
+        }
+        mListener.addSlideToSet();
+        dismiss();
+    }
+
     public void updateFields() {
         update_fields = new UpdateFields();
         try {
@@ -313,7 +319,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             Log.d("d","Error updating fields");
         }
     }
-    public class UpdateFields extends AsyncTask<Object, Void, String> {
+    private class UpdateFields extends AsyncTask<Object, Void, String> {
 
         @Override
         protected String doInBackground(Object... objects) {
@@ -459,6 +465,27 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.add_custom_slide));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    doSave();
+                }
+            });
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.add_custom_slide));
+        }
     }
 
     @Override
@@ -523,6 +550,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         });
     }
 
+    @SuppressWarnings("deprecation")
     public void addRow(String fullpath) {
         TableRow row = new TableRow(getActivity());
         TableLayout.LayoutParams layoutRow = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
@@ -562,7 +590,9 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 String rowtag = v.getTag().toString();
                 rowtag = rowtag.replace("_delete", "");
                 try {
-                    slideImageTable.removeView(getView().findViewWithTag(rowtag));
+                    if (getView()!=null) {
+                        slideImageTable.removeView(getView().findViewWithTag(rowtag));
+                    }
                 } catch (Exception e) {
                     // oh well
                     Log.d("error", "No table row with this tag");

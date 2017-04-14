@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/projectedPage_RelativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000">
+
+    <ImageView
+        android:id="@+id/projected_Logo"
+        android:layout_width="256dp"
+        android:layout_height="178dp"
+        android:src="@drawable/ost_logo"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/app_name" />
+
+    <ImageView
+        android:id="@+id/projected_ImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_above="@+id/bottom_infobar"
+        android:contentDescription="@string/app_name"
+        android:visibility="invisible"/>
+
+    <LinearLayout
+        android:id="@+id/projected_LinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical"
+        android:layout_above="@+id/bottom_infobar"
+        android:visibility="visible"/>
+
+    <LinearLayout
+        android:id="@+id/bottom_infobar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_round_launcher"
+            android:contentDescription="@string/app_name"/>
+
+        <TextView
+            android:id="@+id/songinfo_TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_margin="0dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/col1_1"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/col1_2"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/col2_2"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/col1_3"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/col2_3"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/col3_3"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:visibility="invisible" />
+
+</RelativeLayout>

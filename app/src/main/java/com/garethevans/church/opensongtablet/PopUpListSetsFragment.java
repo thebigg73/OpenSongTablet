@@ -9,13 +9,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -44,10 +45,9 @@ public class PopUpListSetsFragment extends DialogFragment {
         return frag;
     }
 
+    TextView title;
     EditText setListName;
     TextView newSetPromptTitle;
-    Button listSetCancelButton;
-    Button listSetOkButton;
     Spinner setCategory_Spinner;
     Spinner oldCategory_Spinner;
     ImageButton newCategory_ImageButton;
@@ -114,6 +114,53 @@ public class PopUpListSetsFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
+
+        myTitle = getActivity().getResources().getString(R.string.options_set);
+
+        switch (FullscreenActivity.whattodo) {
+            default:
+            case "loadset":
+                myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_load);
+                break;
+
+            case "saveset":
+                myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_save);
+                break;
+
+            case "deleteset":
+                myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_delete);
+                break;
+
+            case "exportset":
+                myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_export);
+                break;
+
+            case "managesets":
+                myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.managesets);
+                break;
+
+        }
+
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(myTitle);
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FullscreenActivity.myToastMessage = "";
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) { doAction();     }
+            });
+        } else {
+            getDialog().setTitle(myTitle);
+        }
     }
 
     @Override
@@ -129,6 +176,9 @@ public class PopUpListSetsFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
+
         final View V = inflater.inflate(R.layout.popup_setlists, container, false);
 
         // Reset the setname chosen
@@ -141,8 +191,6 @@ public class PopUpListSetsFragment extends DialogFragment {
         setListView1 = (ListView) V.findViewById(R.id.setListView1);
         setListName = (EditText) V.findViewById(R.id.setListName);
         newSetPromptTitle = (TextView) V.findViewById(R.id.newSetPromptTitle);
-        listSetCancelButton = (Button) V.findViewById(R.id.listSetCancelButton);
-        listSetOkButton = (Button) V.findViewById(R.id.listSetOkButton);
         oldCategory_Spinner = (Spinner) V.findViewById(R.id.oldCategory_Spinner);
         setCategory_Spinner = (Spinner) V.findViewById(R.id.setCategory_Spinner);
         newCategory_ImageButton = (ImageButton) V.findViewById(R.id.newCategory_ImageButton);
@@ -160,7 +208,6 @@ public class PopUpListSetsFragment extends DialogFragment {
         // Sort the available set lists
         sortSetLists();
 
-        myTitle = getActivity().getResources().getString(R.string.options_set);
 
         // Customise the view depending on what we are doing
         adapter = null;
@@ -168,7 +215,6 @@ public class PopUpListSetsFragment extends DialogFragment {
         switch (FullscreenActivity.whattodo) {
             default:
             case "loadset":
-                myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_load);
                 filelist_RelativeLayout.setVisibility(View.VISIBLE);
                 oldCategory_LinearLayout.setVisibility(View.GONE);
                 newCategory_LinearLayout.setVisibility(View.VISIBLE);
@@ -178,7 +224,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                 break;
 
             case "saveset":
-                myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_save);
                 filelist_RelativeLayout.setVisibility(View.VISIBLE);
                 oldCategory_LinearLayout.setVisibility(View.GONE);
                 newCategory_LinearLayout.setVisibility(View.VISIBLE);
@@ -187,7 +232,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                 break;
 
             case "deleteset":
-                myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_delete);
                 filelist_RelativeLayout.setVisibility(View.VISIBLE);
                 oldCategory_LinearLayout.setVisibility(View.GONE);
                 newCategory_LinearLayout.setVisibility(View.VISIBLE);
@@ -199,7 +243,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                 break;
 
             case "exportset":
-                myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.options_set_export);
                 oldCategory_LinearLayout.setVisibility(View.GONE);
                 newSetTitle_LinearLayout.setVisibility(View.GONE);
                 setListName.setVisibility(View.GONE);
@@ -209,7 +252,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                 break;
 
             case "managesets":
-                myTitle = myTitle + " - " + getActivity().getResources().getString(R.string.managesets);
                 setListView1.setVisibility(View.VISIBLE);
                 setCategory_TextView.setText(getActivity().getString(R.string.new_category));
                 setCategory.setVisibility(View.VISIBLE);
@@ -218,13 +260,11 @@ public class PopUpListSetsFragment extends DialogFragment {
                 newCategory_LinearLayout.setVisibility(View.VISIBLE);
                 newSetTitle_LinearLayout.setVisibility(View.VISIBLE);
                 newCategory_EditText.setVisibility(View.GONE);
+                break;
         }
 
         // Prepare the toast message using the title.  It is cleared if cancel is clicked
         FullscreenActivity.myToastMessage = myTitle + " : " + getActivity().getResources().getString(R.string.ok);
-
-        getDialog().setTitle(myTitle);
-        getDialog().setCanceledOnTouchOutside(true);
 
         // Set The Adapter
         setCorrectAdapter(setnames);
@@ -304,41 +344,6 @@ public class PopUpListSetsFragment extends DialogFragment {
             }
         });
 
-        // Set up the cancel button
-        listSetCancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.myToastMessage = "";
-                dismiss();
-            }
-        });
-
-        // Set up the OK button
-        listSetOkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (FullscreenActivity.setnamechosen.endsWith("%_%")) {
-                    FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen.substring(0,FullscreenActivity.setnamechosen.length()-3);
-                }
-
-                if (FullscreenActivity.whattodo.equals("loadset") && !FullscreenActivity.setnamechosen.isEmpty() && !FullscreenActivity.setnamechosen.equals("")) {
-                    doLoadSet();
-                } else if (FullscreenActivity.whattodo.equals("saveset") && !setListName.getText().toString().trim().isEmpty() && !setListName.getText().toString().trim().equals("")) {
-                    doSaveSet();
-                } else if (FullscreenActivity.whattodo.equals("deleteset") && !FullscreenActivity.setnamechosen.isEmpty() && !FullscreenActivity.setnamechosen.equals("")) {
-                    doDeleteSet();
-                } else if (FullscreenActivity.whattodo.equals("exportset") && !FullscreenActivity.setnamechosen.isEmpty() && !FullscreenActivity.setnamechosen.equals("")) {
-                    doExportSet();
-                } else if (FullscreenActivity.whattodo.equals("managesets")) {
-                    if (!FullscreenActivity.setnamechosen.equals("") && !setListName.getText().toString().equals("")) {
-                        doRenameSet();
-                    } else {
-                        FullscreenActivity.myToastMessage = getActivity().getString(R.string.error_notset);
-                    }
-                }
-            }
-        });
-
         newCategory_ImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -363,6 +368,28 @@ public class PopUpListSetsFragment extends DialogFragment {
         dataTask = new FetchDataTask();
 
         return V;
+    }
+
+    public void doAction() {
+        if (FullscreenActivity.setnamechosen.endsWith("%_%")) {
+            FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen.substring(0,FullscreenActivity.setnamechosen.length()-3);
+        }
+
+        if (FullscreenActivity.whattodo.equals("loadset") && !FullscreenActivity.setnamechosen.isEmpty() && !FullscreenActivity.setnamechosen.equals("")) {
+            doLoadSet();
+        } else if (FullscreenActivity.whattodo.equals("saveset") && !setListName.getText().toString().trim().isEmpty() && !setListName.getText().toString().trim().equals("")) {
+            doSaveSet();
+        } else if (FullscreenActivity.whattodo.equals("deleteset") && !FullscreenActivity.setnamechosen.isEmpty() && !FullscreenActivity.setnamechosen.equals("")) {
+            doDeleteSet();
+        } else if (FullscreenActivity.whattodo.equals("exportset") && !FullscreenActivity.setnamechosen.isEmpty() && !FullscreenActivity.setnamechosen.equals("")) {
+            doExportSet();
+        } else if (FullscreenActivity.whattodo.equals("managesets")) {
+            if (!FullscreenActivity.setnamechosen.equals("") && !setListName.getText().toString().equals("")) {
+                doRenameSet();
+            } else {
+                FullscreenActivity.myToastMessage = getActivity().getString(R.string.error_notset);
+            }
+        }
     }
 
     public void whichSetCategory() {

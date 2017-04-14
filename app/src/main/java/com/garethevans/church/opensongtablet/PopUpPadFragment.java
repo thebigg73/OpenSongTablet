@@ -6,11 +6,13 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -62,6 +64,29 @@ public class PopUpPadFragment extends DialogFragment {
             Log.d("d","orientation="+myor);
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
+
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.pad));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    doSave();
+                }
+            });
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.pad));
+        }
+
     }
 
     @Override
@@ -79,7 +104,6 @@ public class PopUpPadFragment extends DialogFragment {
     TextView popupPad_volume_text;
     SeekBar popupPad_pan;
     TextView popupPad_pan_text;
-    Button savesong;
     Button start_stop_padplay;
     String text;
     boolean validpad;
@@ -108,8 +132,8 @@ public class PopUpPadFragment extends DialogFragment {
             this.dismiss();
         }
 
-        getDialog().setTitle(getResources().getString(R.string.pad));
         getDialog().setCanceledOnTouchOutside(true);
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         mListener.pageButtonAlpha("pad");
 
         View V = inflater.inflate(R.layout.popup_page_pad, container, false);
@@ -128,7 +152,6 @@ public class PopUpPadFragment extends DialogFragment {
         popupPad_volume_text = (TextView) V.findViewById(R.id.popupPad_volume_text);
         popupPad_pan = (SeekBar) V.findViewById(R.id.popupPad_pan);
         popupPad_pan_text = (TextView) V.findViewById(R.id.popupPad_pan_text);
-        savesong = (Button) V.findViewById(R.id.savesong);
         start_stop_padplay = (Button) V.findViewById(R.id.start_stop_padplay);
 
         //checkPadStatus();
@@ -169,24 +192,22 @@ public class PopUpPadFragment extends DialogFragment {
                 Preferences.savePreferences();
             }
         });
-        savesong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopUpEditSongFragment.prepareSongXML();
-                try {
-                    PopUpEditSongFragment.justSaveSongXML();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Preferences.savePreferences();
-                mListener.loadSong();
-                dismiss();
-            }
-        });
 
         mHandler.post(runnable);
 
         return V;
+    }
+
+    public void doSave() {
+        PopUpEditSongFragment.prepareSongXML();
+        try {
+            PopUpEditSongFragment.justSaveSongXML();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Preferences.savePreferences();
+        mListener.loadSong();
+        dismiss();
     }
 
     private class popupPad_keyListener implements AdapterView.OnItemSelectedListener {

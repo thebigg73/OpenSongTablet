@@ -145,4 +145,16 @@ class AutoScrollFunctions {
         }
     }
 
+    static boolean isAutoScrollValid() {
+
+        return true;
+/*        getAutoScrollTimes();
+        if ((FullscreenActivity.autoScrollDuration > 0 && FullscreenActivity.autoScrollDelay > 0) ||
+                FullscreenActivity.usingdefaults) {
+            return true;
+        } else {
+            return false;
+        }*/
+    }
+
 }

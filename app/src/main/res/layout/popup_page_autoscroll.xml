@@ -74,15 +74,6 @@
                 android:layout_margin="8dp"
                 android:contentDescription="@string/link_audio"/>
         </LinearLayout>
-        <Button
-            android:id="@+id/save_autoscroll_Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/green_button"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/savesong"
-            android:textColor="#fff" />
 
         <Button
             android:id="@+id/popupautoscroll_startstopbutton"

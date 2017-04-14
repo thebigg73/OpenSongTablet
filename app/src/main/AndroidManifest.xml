@@ -43,7 +43,7 @@
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
             </intent-filter>
         </receiver>
-
+        <service android:name=".PresentationService" android:exported="false" />
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".SearchSongs" />
@@ -51,6 +51,10 @@
             android:exported="false"
             android:name="com.garethevans.church.opensongtablet.SoftKeyboardForce">
         </service>
+
+        <!-- Required for Nearby Connections API -->
+        <meta-data android:name="com.google.android.gms.nearby.connection.SERVICE_ID"
+            android:value="@string/service_id" />
 
         <meta-data
                 android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"

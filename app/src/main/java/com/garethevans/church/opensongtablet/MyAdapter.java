@@ -1,7 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import android.content.res.ColorStateList;
-import android.graphics.drawable.GradientDrawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,29 +37,21 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
         setitemViewHolder.vSongFolder.setText(newfoldername);
         boolean issong = false;
         if (si.songicon.equals(FullscreenActivity.text_slide)) {
-            //setitemViewHolder.vIcon.setImageResource(R.drawable.blackout_project_dark);
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_projector_screen_white_36dp);
         } else if (si.songicon.equals(FullscreenActivity.text_note)) {
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_note_text_white_36dp);
         } else if (si.songicon.equals(FullscreenActivity.text_scripture)) {
-            //setitemViewHolder.vIcon.setImageResource(R.drawable.action_scripture_dark);
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_book_white_36dp);
         } else if (si.songicon.equals(FullscreenActivity.image)) {
-            //setitemViewHolder.vIcon.setImageResource(R.drawable.ic_action_picture_dark);
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_image_white_36dp);
         } else if (si.songicon.equals(FullscreenActivity.text_variation)) {
-            //setitemViewHolder.vIcon.setImageResource(R.drawable.action_variation_dark);
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_file_xml_white_36dp);
         } else if (si.songicon.equals(".pdf")) {
-            //setitemViewHolder.vIcon.setImageResource(R.drawable.action_pdf_dark);
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_file_pdf_white_36dp);
         } else {
-            //setitemViewHolder.vIcon.setImageResource(R.drawable.action_song_dark);
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_music_note_white_36dp);
             issong = true;
         }
-
-        setitemViewHolder.vIcon.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
 
         String folderrelocate;
         if (si.songicon.equals(FullscreenActivity.image)) {
@@ -140,19 +130,22 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
                 from(viewGroup.getContext()).
                 inflate(R.layout.recycler_row, viewGroup, false);
 
-        RelativeLayout card = (RelativeLayout) itemView.findViewById(R.id.cardview_layout);
-        card.setBackgroundResource(R.drawable.section_box);
-        GradientDrawable drawable = (GradientDrawable) card.getBackground();
-        drawable.setColor(FullscreenActivity.lyricsBackgroundColor);
+        //RelativeLayout card = (RelativeLayout) itemView.findViewById(R.id.cardview_layout);
+        //card.setPadding(8,8,8,8);
+        //card.setBackgroundResource(R.drawable.section_box);
+        //GradientDrawable drawable = (GradientDrawable) card.getBackground();
+        //drawable.setColor(card.getContext().getResources().getColor(R.color.dark));
+        //drawable.setStroke(2, 0xffffffff); // set stroke width and stroke color
+        //drawable.setCornerRadius(FullscreenActivity.padding);
 
-        TextView title = (TextView) itemView.findViewById(R.id.cardview_songtitle);
-        title.setTextColor(FullscreenActivity.lyricsTextColor);
+        //TextView title = (TextView) itemView.findViewById(R.id.cardview_songtitle);
+        //title.setTextColor(FullscreenActivity.lyricsTextColor);
 
-        TextView item = (TextView) itemView.findViewById(R.id.cardview_item);
-        item.setTextColor(FullscreenActivity.lyricsTextColor);
+        //TextView item = (TextView) itemView.findViewById(R.id.cardview_item);
+        //item.setTextColor(FullscreenActivity.lyricsTextColor);
 
-        TextView folder = (TextView) itemView.findViewById(R.id.cardview_folder);
-        folder.setTextColor(FullscreenActivity.lyricsTextColor);
+        //TextView folder = (TextView) itemView.findViewById(R.id.cardview_folder);
+        //folder.setTextColor(FullscreenActivity.lyricsTextColor);
 
         return new SetItemViewHolder(itemView);
     }

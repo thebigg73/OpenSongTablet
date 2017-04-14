@@ -31,13 +31,5 @@
             android:text="@string/set_edit"
             android:background="@drawable/grey_button"/>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/closesticky"
-            android:layout_margin="8dp"
-            android:text="@string/drawer_close"
-            android:background="@drawable/blue_button"/>
-
     </LinearLayout>
 </ScrollView>

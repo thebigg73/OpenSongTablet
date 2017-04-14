@@ -188,9 +188,13 @@ public class ListSongFiles extends Activity {
         // Now combine the two arrays and save them as a string array
         tempProperDirectories.addAll(firstleveldirectories);
         tempProperDirectories.addAll(secondleveldirectories);
-        coll = Collator.getInstance(FullscreenActivity.locale);
-        coll.setStrength(Collator.SECONDARY);
-        Collections.sort(tempProperDirectories,coll);
+        try {
+            coll = Collator.getInstance(FullscreenActivity.locale);
+            coll.setStrength(Collator.SECONDARY);
+            Collections.sort(tempProperDirectories, coll);
+        } catch (Exception e) {
+            // Error sorting
+        }
 
         // Add the main directory - +1 to add the MAIN folder as position 0
         FullscreenActivity.mSongFolderNames = new String[tempProperDirectories.size()+1];
@@ -295,7 +299,6 @@ public class ListSongFiles extends Activity {
             FullscreenActivity.nextSongKeyInSet = "";
         }
     }
-
 
     public static String[] getSongDetailsXML(File f, String s, String utf) {
         String vals[] = new String[3];
@@ -464,7 +467,7 @@ public class ListSongFiles extends Activity {
                             FullscreenActivity.mSongFileNames[s] != null &&
                             FullscreenActivity.mSongFileNames[s].equals(FullscreenActivity.songfilename)) {
                         FullscreenActivity.currentSongIndex = s;
-                        if (s > 1) {
+                        if (s > 0) {
                             FullscreenActivity.previousSongIndex = s - 1;
                         } else {
                             FullscreenActivity.previousSongIndex = s;
@@ -484,6 +487,9 @@ public class ListSongFiles extends Activity {
 
     public static void deleteSong(Context c) {
         FullscreenActivity.setView = false;
+        Log.d("d","whichSongFolder="+FullscreenActivity.whichSongFolder);
+        Log.d("d","songfilename="+FullscreenActivity.songfilename);
+
         String setFileLocation;
         if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
             setFileLocation = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
@@ -491,6 +497,9 @@ public class ListSongFiles extends Activity {
             setFileLocation = FullscreenActivity.dir + "/" +
                     FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename;
         }
+
+        Log.d("d","setFileLocation="+setFileLocation);
+
         File filetoremove = new File(setFileLocation);
         if (filetoremove.delete()) {
             FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.songfilename + "\" "

@@ -150,6 +150,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static ArrayList<String> searchKey = new ArrayList<>();
     public static ArrayList<String> searchHymnNumber = new ArrayList<>();
     public static ArrayList<SearchViewItems> searchlist = new ArrayList<>();
+    @SuppressLint("StaticFieldLeak")
     public static SearchViewAdapter sva;
     ArrayAdapter<String> lva;
     public static boolean menuscroll = true;
@@ -166,6 +167,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
 
     // Option menu
     public static String whichOptionMenu = "MAIN";
+
+    // Checks for metronome, pad, autoscroll
+    public static boolean metronomeok;
+    public static boolean padok;
+    public static boolean autoscrollok;
 
     // Updated scaled view stuff
     public static int[] viewwidth;
@@ -571,6 +577,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static int dark_lyricsCustomColor;
     public static int dark_lyricsCapoColor;
     public static int dark_metronome;
+    public static int dark_pagebuttons;
 
     public static int light_lyricsTextColor;
     public static int light_lyricsBackgroundColor;
@@ -584,6 +591,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static int light_lyricsCustomColor;
     public static int light_lyricsCapoColor;
     public static int light_metronome;
+    public static int light_pagebuttons;
 
     public static int custom1_lyricsTextColor;
     public static int custom1_lyricsBackgroundColor;
@@ -597,6 +605,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static int custom1_lyricsCustomColor;
     public static int custom1_lyricsCapoColor;
     public static int custom1_metronome;
+    public static int custom1_pagebuttons;
 
     public static int custom2_lyricsTextColor;
     public static int custom2_lyricsBackgroundColor;
@@ -610,6 +619,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static int custom2_lyricsCustomColor;
     public static int custom2_lyricsCapoColor;
     public static int custom2_metronome;
+    public static int custom2_pagebuttons;
 
     public static int lyricsBoxColor;
     public static int lyricsTextColor;
@@ -624,6 +634,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static int lyricsCustomColor;
     public static int lyricsCapoColor;
     public static int metronomeColor;
+    public static int pagebuttonsColor;
     public static int chords_useThisBGColor;
     public static int capo_useThisBGColor;
     public static int lyrics_useThisBGColor;
@@ -789,6 +800,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     public static String mLinkOther = "";
 
     public static String capokey = null;
+
+    //public static MyPresentation myPresentation;
+    public static boolean isPresenting;
+    public static int scalingDensity = 240;
 
     // Info for the lyrics table
     private static float mScaleFactor = 1.0f;
@@ -988,10 +1003,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private boolean storageIsValid = true;
 
     public static String pagebutton_position = "right";
+    public static boolean grouppagebuttons = false;
 
     public static File root = Environment.getExternalStorageDirectory();
     public static File homedir = new File(root.getAbsolutePath() + "/documents/OpenSong");
     public static File dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
+    public static File dirsettings = new File(root.getAbsolutePath() + "/documents/OpenSong/Settings");
     public static File dironsong = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong");
     public static File dirsets = new File(root.getAbsolutePath() + "/documents/OpenSong/Sets");
     public static File dirPads = new File(root.getAbsolutePath() + "/documents/OpenSong/Pads");
@@ -2977,6 +2994,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         root = Environment.getExternalStorageDirectory();
         homedir = new File(root.getAbsolutePath() + "/documents/OpenSong");
         dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
+        dirsettings = new File(root.getAbsolutePath() + "/documents/OpenSong/Settings");
         dironsong = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong");
         dirsets = new File(root.getAbsolutePath() + "/documents/OpenSong/Sets");
         dirPads = new File(root.getAbsolutePath() + "/documents/OpenSong/Pads");
@@ -3000,6 +3018,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     root = extStorCheck;
                     homedir = new File(root.getAbsolutePath() + "/documents/OpenSong");
                     dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
+                    dirsettings = new File(root.getAbsolutePath() + "/documents/OpenSong/Settings");
                     dironsong = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong");
                     dirsets = new File(root.getAbsolutePath() + "/documents/OpenSong/Sets");
                     dirPads = new File(root.getAbsolutePath() + "/documents/OpenSong/Pads");
@@ -3027,6 +3046,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
                     root = customStorCheck;
                     homedir = new File(root.getAbsolutePath() + "/OpenSong");
                     dir = new File(root.getAbsolutePath() + "/OpenSong/Songs");
+                    dirsettings = new File(root.getAbsolutePath() + "/OpenSong/Settings");
                     dironsong = new File(root.getAbsolutePath() + "/OpenSong/Songs/OnSong");
                     dirsets = new File(root.getAbsolutePath() + "/OpenSong/Sets");
                     dirPads = new File(root.getAbsolutePath() + "/OpenSong/Pads");
@@ -11488,9 +11508,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
         try {
             // Default song Welcome to OpenSongApp
             filename = "Welcome to OpenSongApp";
+
             in = assetManager_bg.open("Songs" + File.separator + filename);
 
-            File outFile = new File(FullscreenActivity.dir, filename);
+            File outFile = new File(FullscreenActivity.dirsettings, filename);
 
             out = new FileOutputStream(outFile);
             copyFile(in, out);

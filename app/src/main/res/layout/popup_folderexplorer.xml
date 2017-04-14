@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
     android:padding="8dp">
@@ -10,47 +12,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+        <android.support.design.widget.FloatingActionButton
+            app:fabSize="mini"
+            app:backgroundTint="@color/blue"
+            app:borderWidth="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/upFolderButton"
-            android:src="@android:drawable/ic_menu_upload"
+            android:src="@drawable/ic_upload_white_36dp"
             android:contentDescription="@string/abc_action_bar_up_description" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/storage_int"
-            android:id="@+id/currentFolderText"
-            style="@style/MyWhiteHeadingText"
-            android:gravity="center_vertical|right" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_margin="8dp"
-        android:gravity="right">
-
-        <Button
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:id="@+id/folderChooseCancel"
-            android:layout_margin="8dp"
-            android:background="@drawable/blue_button"
-            android:textColor="#fff" />
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/storage_int"
+                android:id="@+id/currentFolderText"
+                style="@style/MyWhiteHeadingText"
+                android:gravity="center_vertical|right" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/storage_notwritable"
+                android:id="@+id/isWritableText"
+                style="@style/MyInfoText"
+                android:gravity="center_vertical|right"
+                android:visibility="invisible"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/folderChooseOk"
-            android:background="@drawable/green_button"
-            android:layout_margin="8dp"
-            android:text="@string/ok"
-            android:textColor="#fff" />
+        </LinearLayout>
     </LinearLayout>
 
     <ListView

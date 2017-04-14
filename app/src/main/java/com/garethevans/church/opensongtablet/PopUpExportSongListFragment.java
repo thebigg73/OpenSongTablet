@@ -4,13 +4,15 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.text.Collator;
@@ -26,14 +28,33 @@ public class PopUpExportSongListFragment extends DialogFragment {
     }
 
     ListView songDirectoy_ListView;
-    Button cancel_Button;
-    Button export_Button;
 
     @Override
     public void onStart() {
         super.onStart();
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.exportsongdirectory));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getFoldersSelected();
+                }
+            });
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.exportsongdirectory));
         }
     }
 
@@ -49,32 +70,15 @@ public class PopUpExportSongListFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View V = inflater.inflate(R.layout.popup_exportsonglist, container, false);
-        getDialog().setTitle(getActivity().getString(R.string.exportsongdirectory));
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         songDirectoy_ListView = (ListView) V.findViewById(R.id.songDirectoy_ListView);
-        cancel_Button = (Button) V.findViewById(R.id.cancel_Button);
-        export_Button = (Button) V.findViewById(R.id.export_Button);
 
         // Prepare a list of the song directories
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_multiple_choice, FullscreenActivity.mSongFolderNames);
         songDirectoy_ListView.setAdapter(adapter);
         songDirectoy_ListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-        // Listener
-        cancel_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
-
-        export_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getFoldersSelected();
-            }
-        });
 
         return V;
     }

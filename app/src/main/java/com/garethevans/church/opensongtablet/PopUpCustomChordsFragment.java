@@ -6,10 +6,12 @@ import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -56,6 +58,22 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         super.onStart();
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
+        }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.customchords));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setVisibility(View.GONE);
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.customchords));
         }
     }
 
@@ -140,7 +158,6 @@ public class PopUpCustomChordsFragment extends DialogFragment {
     EditText customchord_name;
     TextView customchord_code;
     Button customChordSave;
-    Button closeButton;
     LinearLayout savedcustomchords;
     ImageView string6_top;
     ImageView string5_top;
@@ -192,8 +209,8 @@ public class PopUpCustomChordsFragment extends DialogFragment {
     @SuppressWarnings("deprecation")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.customchords));
         getDialog().setCanceledOnTouchOutside(true);
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         mListener.pageButtonAlpha("chords");
 
         View V = inflater.inflate(R.layout.popup_customchords, container, false);
@@ -228,7 +245,6 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         customchord_code = (TextView) V.findViewById(R.id.customchord_code);
         customChordSave = (Button) V.findViewById(R.id.customChordSave);
         savedcustomchords = (LinearLayout) V.findViewById(R.id.savedcustomchords);
-        closeButton = (Button) V.findViewById(R.id.close);
         string6_top = (ImageView) V.findViewById(R.id.string6_top);
         string5_top = (ImageView) V.findViewById(R.id.string5_top);
         string4_top = (ImageView) V.findViewById(R.id.string4_top);
@@ -572,12 +588,6 @@ public class PopUpCustomChordsFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 customChordSave();
-            }
-        });
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
             }
         });
 

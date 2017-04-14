@@ -74,7 +74,7 @@ import java.util.Locale;
 
 public class PresenterMode extends AppCompatActivity implements PopUpEditSongFragment.MyInterface,
         PopUpListSetsFragment.MyInterface, PopUpAreYouSureFragment.MyInterface,
-        PopUpSongRenameFragment.MyInterface, PopUpSearchViewFragment.MyInterface,
+        PopUpSongRenameFragment.MyInterface, PopUpFullSearchFragment.MyInterface,
         PopUpSetViewNew.MyInterface, PopUpSongCreateFragment.MyInterface,
         PopUpSongDetailsFragment.MyInterface,
         PopUpFontsFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
@@ -242,9 +242,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
         if (ActivityCompat.checkSelfPermission(PresenterMode.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             finish();
         }
-
-        System.gc();
-
+        
         mp = new MediaPlayer();
 
         super.onCreate(savedInstanceState);
@@ -1101,7 +1099,6 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
 
         for (Display display : presentationDisplays) {
             MyPresentation mPresentation = new MyPresentation(this, display);
-            mPresentation.show();
         }
     }
 
@@ -2342,14 +2339,6 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
                     FullscreenActivity.myToastMessage = getString(R.string.wait);
                     ShowToast.showToast(PresenterMode.this);
                 }
-
-/*
-
-
-
-                newFragment = PopUpSearchViewFragment.newInstance();
-                newFragment.show(getFragmentManager(), "dialog");
-*/
                 return true;
 
             case R.id.action_settings:
@@ -2535,7 +2524,7 @@ public class PresenterMode extends AppCompatActivity implements PopUpEditSongFra
     }
 
     @Override
-    public void searchResults() {
+    public void loadSong() {
         // Load up the song
         try {
             LoadXML.loadXML();

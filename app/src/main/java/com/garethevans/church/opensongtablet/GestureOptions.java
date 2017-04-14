@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.TextView;
 
 public class GestureOptions extends AppCompatActivity {
 
@@ -49,12 +48,12 @@ public class GestureOptions extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 		ActionBar ab = getSupportActionBar();
 
-		TextView title = (TextView) findViewById(R.id.songandauthor);
-		if (ab != null && title != null) {
+		//TextView title = (TextView) findViewById(R.id.songandauthor);
+		if (ab != null) {
 			ab.setTitle("");
 			ab.setDisplayHomeAsUpEnabled(false);
 			ab.setDisplayShowTitleEnabled(false);
-			title.setText(getResources().getString(R.string.customgestures));
+			//title.setText(getResources().getString(R.string.customgestures));
 		}
 
 		radioGroup = (RadioGroup) findViewById(R.id.doubleTap);

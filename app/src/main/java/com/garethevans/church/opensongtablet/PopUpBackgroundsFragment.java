@@ -1,9 +1,3 @@
-/*
- * Copyright (c) 2015.
- * The code is provided free of charge.  You can use, modify, contribute and improve it as long as this source is referenced.
- * Commercial use should seek permission.
- */
-
 package com.garethevans.church.opensongtablet;
 
 import android.app.DialogFragment;
@@ -12,12 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -31,8 +26,8 @@ public class PopUpBackgroundsFragment extends DialogFragment {
 
     static int whichvideobgpressd;
     String whichCheckBox = "";
-    static TextView presoAlphaText;
-    static SeekBar presoAlphaProgressBar;
+    TextView presoAlphaText;
+    SeekBar presoAlphaProgressBar;
 
 
     static PopUpBackgroundsFragment newInstance() {
@@ -52,19 +47,41 @@ public class PopUpBackgroundsFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.presoBackground));
-        final View V = inflater.inflate(R.layout.popup_projector_background, container, false);
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
+        }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.presoBackground));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    doClose();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setVisibility(View.GONE);
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.presoBackground));
+        }
+    }
 
-        Button closeFragDialog = (Button) V.findViewById(R.id.closeFragButtonBackground);
-        closeFragDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Save the images and videos chosen (files and which is selected)
-                Preferences.savePreferences();
-                dismiss();
-            }
-        });
+    public void doClose() {
+        // Save the images and videos chosen (files and which is selected)
+        Preferences.savePreferences();
+        dismiss();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
+
+        final View V = inflater.inflate(R.layout.popup_projector_background, container, false);
 
         ImageView chooseImage1Button = (ImageView) V.findViewById(R.id.chooseImage1Button);
         ImageView chooseImage2Button = (ImageView) V.findViewById(R.id.chooseImage2Button);

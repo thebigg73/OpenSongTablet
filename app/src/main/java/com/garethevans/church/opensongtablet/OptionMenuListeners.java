@@ -34,6 +34,10 @@ public class OptionMenuListeners extends Activity {
         void showActionBar();
         void hideActionBar();
         void toggleDrawerSwipe();
+        void startAdvertising();
+        void startDiscovery();
+        void doDisconnect();
+        void sendMessage(String message);
     }
 
     public static MyInterface mListener;
@@ -958,6 +962,7 @@ public class OptionMenuListeners extends Activity {
         Button displayInfoButton = (Button) v.findViewById(R.id.displayInfoButton);
         SwitchCompat displayMenuToggleSwitch = (SwitchCompat) v.findViewById(R.id.displayMenuToggleSwitch);
         Button displayProfileButton = (Button) v.findViewById(R.id.displayProfileButton);
+        Button displayConnectedDisplayButton = (Button) v.findViewById(R.id.displayConnectedDisplayButton);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.options_display).toUpperCase(FullscreenActivity.locale));
@@ -969,6 +974,7 @@ public class OptionMenuListeners extends Activity {
         displayInfoButton.setText(c.getString(R.string.extra).toUpperCase(FullscreenActivity.locale));
         displayMenuToggleSwitch.setText(c.getString(R.string.options_options_hidebar).toUpperCase(FullscreenActivity.locale));
         displayProfileButton.setText(c.getString(R.string.profile).toUpperCase(FullscreenActivity.locale));
+        displayConnectedDisplayButton.setText(c.getString(R.string.connected_display).toUpperCase(FullscreenActivity.locale));
 
         // Set the switches up based on preferences
         displayMenuToggleSwitch.setChecked(FullscreenActivity.hideActionBar);
@@ -1077,6 +1083,20 @@ public class OptionMenuListeners extends Activity {
             }
         });
 
+        displayConnectedDisplayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener!=null && FullscreenActivity.isPresenting) {
+                    FullscreenActivity.whattodo = "connecteddisplay";
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                } else {
+                    FullscreenActivity.myToastMessage = view.getContext().getString(R.string.nodisplays);
+                    ShowToast.showToast(view.getContext());
+                }
+            }
+        });
+
     }
 
     public static void findSongsOptionListener(View v, Context c) {
@@ -1087,6 +1107,8 @@ public class OptionMenuListeners extends Activity {
         Button ugSearchButton = (Button) v.findViewById(R.id.ugSearchButton);
         Button chordieSearchButton = (Button) v.findViewById(R.id.chordieSearchButton);
         Button worshipreadySearchButton = (Button) v.findViewById(R.id.worshipreadySearchButton);
+
+        worshipreadySearchButton.setVisibility(View.GONE);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.findnewsongs).toUpperCase(FullscreenActivity.locale));
@@ -1227,7 +1249,9 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "importosb";
+                    //FullscreenActivity.whattodo = "importosb";
+                    FullscreenActivity.filechosen = null;
+                    FullscreenActivity.whattodo = "processimportosb";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -1237,9 +1261,14 @@ public class OptionMenuListeners extends Activity {
         storageExportOSBButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.myToastMessage = c.getResources().getString(R.string.wait);
+                /*FullscreenActivity.myToastMessage = c.getResources().getString(R.string.wait);
                 ShowToast.showToast(c);
-                ExportPreparer.createOpenSongBackup(c);
+                ExportPreparer.createOpenSongBackup(c);*/
+                if (mListener!=null) {
+                    FullscreenActivity.whattodo = "exportosb";
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
             }
         });
 
@@ -1316,9 +1345,15 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-
+                    StageMode.isHost = b;
+                    if (mListener!=null) {
+                        mListener.startAdvertising();
+                    }
                 } else {
-
+                    StageMode.isHost = b;
+                    if (mListener!=null) {
+                        mListener.startDiscovery();
+                    }
                 }
             }
         });

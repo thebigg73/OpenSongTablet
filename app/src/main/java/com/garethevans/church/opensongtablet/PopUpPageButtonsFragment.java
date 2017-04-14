@@ -9,7 +9,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -23,6 +23,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     }
 
     public interface MyInterface {
+        void pageButtonAlpha(String s);
         void setupPageButtons(String s);
         void showpagebuttons();
     }
@@ -42,8 +43,8 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         super.onDetach();
     }
 
-    Button closeButton;
     SwitchCompat pageButtonSize_Switch;
+    SwitchCompat pageButtonGroup_Switch;
     SeekBar pageButtonTransparency_seekBar;
     TextView transparency_TextView;
 
@@ -52,6 +53,22 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         super.onStart();
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.pagebuttons));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setVisibility(View.GONE);
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.pagebuttons));
         }
     }
 
@@ -67,13 +84,14 @@ public class PopUpPageButtonsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.pagebuttons));
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
+
         View V = inflater.inflate(R.layout.popup_pagebuttons, container, false);
 
         // Initialise the views
-        closeButton = (Button) V.findViewById(R.id.closebutton);
         pageButtonSize_Switch = (SwitchCompat) V.findViewById(R.id.pageButtonSize_Switch);
+        pageButtonGroup_Switch = (SwitchCompat) V.findViewById(R.id.pageButtonGroup_Switch);
         pageButtonTransparency_seekBar = (SeekBar) V.findViewById(R.id.pageButtonTransparency_seekBar);
         transparency_TextView = (TextView) V.findViewById(R.id.transparency_TextView);
 
@@ -87,14 +105,9 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         String text = gettransp + "%";
         pageButtonTransparency_seekBar.setProgress(gettransp);
         transparency_TextView.setText(text);
+        pageButtonGroup_Switch.setChecked(FullscreenActivity.grouppagebuttons);
 
         // Set the listeners
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
         pageButtonSize_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -103,6 +116,15 @@ public class PopUpPageButtonsFragment extends DialogFragment {
                 } else {
                     FullscreenActivity.fabSize = FloatingActionButton.SIZE_MINI;
                 }
+                Preferences.savePreferences();
+                mListener.setupPageButtons("");
+                mListener.showpagebuttons();
+            }
+        });
+        pageButtonGroup_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.grouppagebuttons = b;
                 Preferences.savePreferences();
                 mListener.setupPageButtons("");
                 mListener.showpagebuttons();
@@ -127,6 +149,13 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         });
 
         return V;
+    }
+
+    @Override
+    public void onDismiss(final DialogInterface dialog) {
+        if (mListener!=null) {
+            mListener.pageButtonAlpha("");
+        }
     }
 
     @Override

@@ -55,9 +55,12 @@ public class ExportPreparer extends Activity {
     static Image image;
     static byte[] bArray;
     static Backup_Create backup_create;
+    static Backup_Create_Selected backup_create_selected;
     static Context context;
     static Activity activity;
     static Intent emailIntent;
+    static String folderstoexport = "";
+    static ZipOutputStream outSelected;
 
 	public static void songParser() throws XmlPullParserException, IOException {
 
@@ -249,7 +252,6 @@ public class ExportPreparer extends Activity {
 		songxml = songxml.replaceAll("\r", "\n");
 		songxml = songxml.replaceAll("\t", "    ");
 		songxml = songxml.replaceAll("\\t", "    ");
-		songxml = songxml.replaceAll("\b", "    ");
 		songxml = songxml.replaceAll("\f", "    ");
 		songxml = songxml.replace("\r", "");
 		songxml = songxml.replace("\t", "    ");
@@ -501,6 +503,90 @@ public class ExportPreparer extends Activity {
         }
     }
 
+    public static void createSelectedOSB(Context c) {
+        activity = (Activity) c;
+        context = c;
+        if (backup_create!=null) {
+            backup_create.cancel(true);
+        }
+        backup_create_selected = new Backup_Create_Selected();
+        backup_create_selected.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+    public static class Backup_Create_Selected extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... strings) {
+            return makeBackupZipSelected();
+        }
+
+        @Override
+        public void onPostExecute(String s) {
+            File f = new File(s);
+            FullscreenActivity.myToastMessage = context.getString(R.string.backup_success);
+            ShowToast.showToast(context);
+            emailIntent = exportBackup(context, f);
+            activity.startActivityForResult(Intent.createChooser(emailIntent, context.getString(R.string.backup_info)), 12345);
+        }
+    }
+    public static String makeBackupZipSelected() {
+        // Get the date for the file
+        Calendar c = Calendar.getInstance();
+        System.out.println("Current time => " + c.getTime());
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy_MM_dd", FullscreenActivity.locale);
+        String formattedDate = df.format(c.getTime());
+        String backup = FullscreenActivity.homedir + "/OpenSongBackup_" + formattedDate + ".osb";
+        String songfolder = FullscreenActivity.dir.toString();
+        try {
+            zipDirSelected(backup, songfolder);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return backup;
+    }
+    private static void zipDirSelected(String zipFileName, String dir) throws Exception {
+        outSelected = new ZipOutputStream(new FileOutputStream(zipFileName));
+        System.out.println("Creating : " + zipFileName);
+
+        // Go through each of the selected folders and add them to the zip file
+        String[] whichfolders = folderstoexport.split("__%%__");
+        for (int i=0;i<whichfolders.length;i++) {
+            if (!whichfolders[i].equals("")) {
+                whichfolders[i] = whichfolders[i].replace("%__", "");
+                whichfolders[i] = whichfolders[i].replace("__%", "");
+                Log.d("d", "whichfolders[" + i + "]=" + whichfolders[i]);
+                File dirObj = new File(dir + "/" + whichfolders[i]);
+                addDirSelected(dirObj);
+            }
+        }
+        outSelected.close();
+    }
+    static void addDirSelected(File dirObj) throws IOException {
+        Log.d("d","dirObj="+dirObj.toString());
+        if (dirObj.toString().contains("/"+FullscreenActivity.mainfoldername)) {
+            dirObj = new File(FullscreenActivity.dir.toString());
+        }
+        File[] files = dirObj.listFiles();
+        byte[] tmpBuf = new byte[1024];
+
+        for (int i = 0; i < files.length; i++) {
+            if (files[i].isFile()) {
+                FileInputStream in = new FileInputStream(files[i].getAbsolutePath());
+                System.out.println(" Adding: " + files[i].getAbsolutePath().replace(FullscreenActivity.dir.toString() + "/", ""));
+                outSelected.putNextEntry(new ZipEntry((files[i].getAbsolutePath()).replace(FullscreenActivity.dir.toString() + "/", "")));
+                int len;
+                while ((len = in.read(tmpBuf)) > 0) {
+                    outSelected.write(tmpBuf, 0, len);
+                }
+                outSelected.closeEntry();
+                in.close();
+            }
+        }
+    }
+
+
+
+
+
     public static void createOpenSongBackup(Context c) {
         context = c;
         activity = (Activity) context;
@@ -510,7 +596,6 @@ public class ExportPreparer extends Activity {
         backup_create = new Backup_Create();
         backup_create.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
-
     public static class Backup_Create extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... strings) {
@@ -526,7 +611,6 @@ public class ExportPreparer extends Activity {
             activity.startActivityForResult(Intent.createChooser(emailIntent, context.getString(R.string.backup_info)), 12345);
         }
     }
-
     public static String makeBackupZip() {
         // Get the date for the file
         Calendar c = Calendar.getInstance();
@@ -544,7 +628,6 @@ public class ExportPreparer extends Activity {
 
         return backup;
     }
-
     private static void zipDir(String zipFileName, String dir) throws Exception {
         File dirObj = new File(dir);
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName));
@@ -552,13 +635,13 @@ public class ExportPreparer extends Activity {
         addDir(dirObj, out);
         out.close();
     }
-
     static void addDir(File dirObj, ZipOutputStream out) throws IOException {
         File[] files = dirObj.listFiles();
         byte[] tmpBuf = new byte[1024];
 
         for (int i = 0; i < files.length; i++) {
             if (files[i].isDirectory()) {
+                Log.d("d","files["+i+"]="+files[i]);
                 addDir(files[i], out);
                 continue;
             }

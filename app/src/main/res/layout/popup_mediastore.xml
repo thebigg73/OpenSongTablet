@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/popup_bg">
 
     <android.support.v7.widget.SwitchCompat
@@ -11,8 +12,8 @@
         android:id="@+id/externalSwitch"
         android:checked="false"
         android:padding="8dp"
-        android:textColor="#ff0"
-        style="@style/MySwitch"
+        app:theme="@style/MySwitch"
+        style="@style/MyHeadingText"
         android:layout_margin="8dp" />
 
     <ListView
@@ -49,11 +50,13 @@
             android:id="@+id/mediaSelected" />
     </LinearLayout>
 
-    <ImageButton
+    <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:fabSize="mini"
+        app:backgroundTint="@color/purple"
         android:id="@+id/startPlay"
-        android:src="@drawable/ic_action_play"
+        android:src="@drawable/ic_play_white_36dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/media_play" />

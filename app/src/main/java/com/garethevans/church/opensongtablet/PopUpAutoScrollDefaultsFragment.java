@@ -3,10 +3,11 @@ package com.garethevans.church.opensongtablet;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -27,8 +28,6 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
     RadioGroup autoscroll_defaults_RadioGroup;
     RadioButton autoscroll_default_RadioButton;
     RadioButton autoscroll_prompt_RadioButton;
-    Button save_autoscroll_Button;
-    Button cancel_autoscroll_Button;
 
     public void onStart() {
         super.onStart();
@@ -36,6 +35,27 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
         // safety check
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.default_autoscroll));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    doSave();
+                }
+            });
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.default_autoscroll));
         }
     }
 
@@ -51,7 +71,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.default_autoscroll));
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_autoscrolldefaults, container, false);
 
@@ -62,8 +82,6 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
         autoscroll_defaults_RadioGroup = (RadioGroup) V.findViewById(R.id.autoscroll_defaults_RadioGroup);
         autoscroll_default_RadioButton = (RadioButton) V.findViewById(R.id.autoscroll_default_RadioButton);
         autoscroll_prompt_RadioButton = (RadioButton) V.findViewById(R.id.autoscroll_prompt_RadioButton);
-        save_autoscroll_Button = (Button) V.findViewById(R.id.save_autoscroll_Button);
-        cancel_autoscroll_Button = (Button) V.findViewById(R.id.cancel_autoscroll_Button);
 
         // Set them to the default values
         default_delaytime_SeekBar.setMax(30);
@@ -97,29 +115,21 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        save_autoscroll_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.default_autoscroll_predelay = default_delaytime_SeekBar.getProgress();
-                String length = default_duration_EditText.getText().toString();
-                FullscreenActivity.default_autoscroll_songlength = Integer.parseInt(length);
-                if (autoscroll_prompt_RadioButton.isChecked()) {
-                    FullscreenActivity.autoscroll_default_or_prompt = "prompt";
-                } else {
-                    FullscreenActivity.autoscroll_default_or_prompt = "default";
-                }
-                Preferences.savePreferences();
-                dismiss();
-            }
-        });
-        cancel_autoscroll_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
 
         return V;
+    }
+
+    public void doSave(){
+        FullscreenActivity.default_autoscroll_predelay = default_delaytime_SeekBar.getProgress();
+        String length = default_duration_EditText.getText().toString();
+        FullscreenActivity.default_autoscroll_songlength = Integer.parseInt(length);
+        if (autoscroll_prompt_RadioButton.isChecked()) {
+            FullscreenActivity.autoscroll_default_or_prompt = "prompt";
+        } else {
+            FullscreenActivity.autoscroll_default_or_prompt = "default";
+        }
+        Preferences.savePreferences();
+        dismiss();
     }
 
     @Override

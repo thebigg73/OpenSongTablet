@@ -23,6 +23,7 @@ public class SetUpColours extends AppCompatActivity {
                 FullscreenActivity.lyricsCustomColor = FullscreenActivity.light_lyricsCustomColor;
                 FullscreenActivity.lyricsBoxColor = FullscreenActivity.light_lyricsTextColor;
                 FullscreenActivity.metronomeColor = FullscreenActivity.light_metronome;
+                FullscreenActivity.pagebuttonsColor = FullscreenActivity.light_pagebuttons;
                 break;
             case "Theme_Holo":
             case "Theme.Holo":
@@ -39,6 +40,7 @@ public class SetUpColours extends AppCompatActivity {
                 FullscreenActivity.lyricsCustomColor = FullscreenActivity.dark_lyricsCustomColor;
                 FullscreenActivity.lyricsBoxColor = FullscreenActivity.dark_lyricsTextColor;
                 FullscreenActivity.metronomeColor = FullscreenActivity.dark_metronome;
+                FullscreenActivity.pagebuttonsColor = FullscreenActivity.dark_pagebuttons;
                 break;
             case "custom1":
                 FullscreenActivity.lyricsTextColor = FullscreenActivity.custom1_lyricsTextColor;
@@ -54,6 +56,7 @@ public class SetUpColours extends AppCompatActivity {
                 FullscreenActivity.lyricsCustomColor = FullscreenActivity.custom1_lyricsCustomColor;
                 FullscreenActivity.lyricsBoxColor = FullscreenActivity.custom1_lyricsTextColor;
                 FullscreenActivity.metronomeColor = FullscreenActivity.custom1_metronome;
+                FullscreenActivity.pagebuttonsColor = FullscreenActivity.custom1_pagebuttons;
                 break;
             case "custom2":
                 FullscreenActivity.lyricsTextColor = FullscreenActivity.custom2_lyricsTextColor;
@@ -69,6 +72,7 @@ public class SetUpColours extends AppCompatActivity {
                 FullscreenActivity.lyricsCustomColor = FullscreenActivity.custom2_lyricsCustomColor;
                 FullscreenActivity.lyricsBoxColor = FullscreenActivity.custom2_lyricsTextColor;
                 FullscreenActivity.metronomeColor = FullscreenActivity.custom2_metronome;
+                FullscreenActivity.pagebuttonsColor = FullscreenActivity.custom2_pagebuttons;
                 break;
         }
     }

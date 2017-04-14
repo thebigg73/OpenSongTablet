@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollviewscale"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,14 +11,7 @@
     android:padding="8dp"
     android:visibility="visible">
 
-    <ScrollView
-        android:id="@+id/scrollviewscale"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/closebutton"
-        android:layout_alignParentTop="true">
-
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -209,19 +203,4 @@
 
         </LinearLayout>
 
-    </ScrollView>
-
-    <Button
-        android:id="@+id/closebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="end"
-        android:layout_margin="8dp"
-        android:background="@drawable/blue_button"
-        android:text="@string/drawer_close"
-        android:textColor="#fff" />
-
-</RelativeLayout>
+</ScrollView>

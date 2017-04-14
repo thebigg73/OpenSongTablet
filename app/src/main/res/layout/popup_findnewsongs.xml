@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/popup_bg">
-
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_bg"
+    android:orientation="vertical"
     android:padding="8dp">
-
 
     <LinearLayout
         android:id="@+id/searchtext_LinearLayout"
@@ -19,19 +15,19 @@
         android:visibility="gone">
 
         <TextView
+            style="@style/MyHeadingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/phrasesearch"
-            style="@style/MyHeadingText"
-            android:layout_margin="8dp"/>
+            android:layout_margin="8dp"
+            android:text="@string/phrasesearch" />
 
         <EditText
             android:id="@+id/searchphrase_EditText"
+            style="@style/MyEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/MyEditText"
-            android:hint="@string/phrasesearch"
-            android:layout_margin="8dp"/>
+            android:layout_margin="8dp"
+            android:hint="@string/phrasesearch" />
 
         <Button
             android:id="@+id/doSearch_Button"
@@ -39,75 +35,60 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_margin="8dp"
-            android:text="@string/action_search"
-            android:background="@drawable/green_button"/>
-
-        <Button
-            android:id="@+id/cancelSearch_Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_margin="8dp"
-            android:text="@string/cancel"
-            android:background="@drawable/blue_button"/>
+            android:background="@drawable/green_button"
+            android:text="@string/action_search" />
 
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/searchresults_RelativeLayout"
-        android:layout_below="@+id/searchtext_LinearLayout"
-        android:layout_above="@+id/newfileinfo_LinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
-    <WebView
-        android:id="@+id/webresults_WebView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/grabSongData_Button"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="8dp"/>
+        <WebView
+            android:id="@+id/webresults_WebView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="8dp"
+            android:background="#ffffff"
+            android:focusable="true"
+            android:layout_above="@+id/grabSongData_Button"
+            android:focusableInTouchMode="true"
+            android:minHeight="200dp" />
 
-        <ImageButton
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/webBack_ImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/webBack_ImageButton"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:contentDescription="@string/set_back"
+            app:fabSize="mini"
             android:src="@drawable/ic_arrow_left_white_36dp"
-            />
+            app:backgroundTint="@color/grey"
+            app:borderWidth="0dp" />
 
-    <Button
-        android:id="@+id/grabSongData_Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/green_button"
-        android:layout_above="@+id/cancelSongData_Button"
-        android:layout_centerHorizontal="true"
-        android:text="@string/grabchordpro"
-        android:layout_margin="8dp"/>
+        <Button
+            android:id="@+id/grabSongData_Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="8dp"
+            android:background="@drawable/green_button"
+            android:text="@string/grabchordpro" />
 
-    <Button
-        android:id="@+id/cancelSongData_Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/blue_button"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/closesearch"
-        android:layout_margin="8dp"/>
-
-    <ProgressBar
-        android:id="@+id/grabSongData_ProgressBar"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_centerInParent="true"
-        android:visibility="invisible"
-        android:layout_margin="8dp"/>
+        <ProgressBar
+            android:id="@+id/grabSongData_ProgressBar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:layout_margin="8dp"
+            android:visibility="invisible" />
 
     </RelativeLayout>
 
@@ -116,36 +97,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <TextView
+            style="@style/MyHeadingText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/MyHeadingText"
-            android:text="@string/choosesongname"
-            android:layout_margin="8dp"/>
+            android:layout_margin="8dp"
+            android:text="@string/choosesongname" />
 
         <EditText
             android:id="@+id/songfilename_EditText"
+            style="@style/MyEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            style="@style/MyEditText"
-            android:hint="@string/choosesongname"/>
+            android:hint="@string/choosesongname" />
 
         <TextView
+            style="@style/MyHeadingText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/MyHeadingText"
-            android:text="@string/choosefolder"
-            android:layout_margin="8dp"/>
+            android:layout_margin="8dp"
+            android:text="@string/choosefolder" />
 
         <Spinner
             android:id="@+id/choosefolder_Spinner"
+            style="@style/MySpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            style="@style/MySpinner" />
+            android:layout_margin="8dp" />
 
         <Button
             android:id="@+id/saveSong_Button"
@@ -153,21 +134,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_margin="8dp"
-            android:text="@string/savesong"
-            android:background="@drawable/green_button"/>
-
-        <Button
-            android:id="@+id/cancelProcess_Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_margin="8dp"
-            android:text="@string/cancel"
-            android:background="@drawable/blue_button"/>
-
+            android:background="@drawable/green_button"
+            android:text="@string/savesong" />
 
     </LinearLayout>
 
-</RelativeLayout>
-
-</ScrollView>
+</LinearLayout>

@@ -10,12 +10,11 @@
     android:padding="8dp"
     android:visibility="visible">
 
-
     <LinearLayout
         android:id="@+id/coloursTable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/closebutton"
+        android:layout_above="@+id/resetcolours"
         android:orientation="vertical">
 
         <TableLayout
@@ -759,6 +758,62 @@
                         android:background="#444"
                         android:contentDescription="@string/colorchooser" />
                 </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow26"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/textView669"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/pagebuttons"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/pagebuttons_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser"
+                        tools:ignore="TooManyViews" />
+
+                    <ImageView
+                        android:id="@+id/pagebuttons_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/pagebuttons_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/pagebuttons_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
             </TableLayout>
         </ScrollView>
 
@@ -769,27 +824,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="false"
-        android:layout_gravity="end"
-        android:layout_margin="8dp"
-        android:layout_toLeftOf="@+id/closebutton"
-        android:layout_toStartOf="@+id/closebutton"
-        android:background="@drawable/red_button"
-        android:text="@string/reset_colours"
-        android:textColor="#fff" />
-
-    <Button
-        android:id="@+id/closebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="false"
         android:layout_gravity="end"
         android:layout_margin="8dp"
-        android:background="@drawable/blue_button"
-        android:text="@string/drawer_close"
+        android:background="@drawable/red_button"
+        android:text="@string/reset_colours"
         android:textColor="#fff" />
 
 </RelativeLayout>

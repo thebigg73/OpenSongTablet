@@ -46,15 +46,5 @@
             android:textColor="#fff"
             android:layout_gravity="center_horizontal"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/close"
-            android:text="@string/drawer_close"
-            android:background="@drawable/blue_button"
-            android:layout_margin="8dp"
-            android:textColor="#fff"
-            android:layout_gravity="center_horizontal"/>
-
     </LinearLayout>
 </ScrollView>

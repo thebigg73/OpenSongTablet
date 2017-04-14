@@ -6,7 +6,6 @@
     android:background="@drawable/popup_bg"
     android:padding="8dp">
 
-
     <TextView
         android:id="@+id/popuppresorder_presorder_title"
         android:layout_width="match_parent"
@@ -30,7 +29,6 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/cancelPresentationOrder"
         android:layout_below="@+id/popuppres_mPresentation"
         android:layout_marginTop="8dp">
 
@@ -76,31 +74,5 @@
                 android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/cancelPresentationOrder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="12dp"
-        android:layout_toLeftOf="@+id/savePresentationOrder"
-        android:layout_toStartOf="@+id/savePresentationOrder"
-        android:background="@drawable/blue_button"
-        android:enabled="true"
-        android:text="@string/cancel"
-        android:textColor="#fff" />
-
-    <Button
-        android:id="@+id/savePresentationOrder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="12dp"
-        android:background="@drawable/red_button"
-        android:enabled="true"
-        android:text="@string/edit_save"
-        android:textColor="#fff" />
 
 </RelativeLayout>

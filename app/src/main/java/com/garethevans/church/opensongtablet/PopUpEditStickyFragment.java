@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -46,6 +48,27 @@ public class PopUpEditStickyFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.options_song_stickynotes));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    doSave();
+                }
+            });
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.options_song_stickynotes));
+        }
     }
 
     @Override
@@ -58,44 +81,34 @@ public class PopUpEditStickyFragment extends DialogFragment {
         }
     }
 
+    EditText editStickyText;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.options_song_stickynotes));
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_editsticky, container, false);
 
         // Initialise the views
-        final EditText editStickyText = (EditText) V.findViewById(R.id.editStickyText);
-        Button editStickySave = (Button) V.findViewById(R.id.editStickySave);
-        Button editStickCancel = (Button) V.findViewById(R.id.editStickyCancel);
+        editStickyText = (EditText) V.findViewById(R.id.editStickyText);
 
         // Set the text if it exists
         editStickyText.setText(FullscreenActivity.mNotes);
 
-        // Listen for the buttons
-        editStickCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
-        editStickySave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FullscreenActivity.mNotes = editStickyText.getText().toString();
-                // Save the file
-                PopUpEditSongFragment.prepareSongXML();
-                try {
-                    PopUpEditSongFragment.justSaveSongXML();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                dismiss();
-                mListener.stickyNotesUpdate();
-            }
-        });
         return V;
+    }
+
+    public void doSave() {
+        FullscreenActivity.mNotes = editStickyText.getText().toString();
+        // Save the file
+        PopUpEditSongFragment.prepareSongXML();
+        try {
+            PopUpEditSongFragment.justSaveSongXML();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        dismiss();
+        mListener.stickyNotesUpdate();
     }
 
     @Override

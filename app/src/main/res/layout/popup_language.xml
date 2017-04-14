@@ -8,19 +8,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/languagescroll"
         android:layout_alignParentTop="true"
-        android:choiceMode="singleChoice"
-        android:layout_above="@+id/savelanguage">
+        android:choiceMode="singleChoice">
 
     </ListView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ok"
-        android:id="@+id/savelanguage"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/blue_button"
-        android:layout_margin="8dp" />
 </RelativeLayout>

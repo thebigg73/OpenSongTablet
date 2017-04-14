@@ -8,16 +8,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +53,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         void refreshAll();
         void onSongImportDone(String message);
         void backupInstall(String message);
+        void openFragment();
     }
 
     private MyInterface mListener;
@@ -76,11 +79,10 @@ public class PopUpImportExternalFile extends DialogFragment {
     TextView messageOpenSong_TextView;
     TextView chooseFolder_TextView;
     Spinner chooseFolder_Spinner;
-    Button importFile_Cancel;
-    Button importFile_Save;
     CheckBox overWrite_CheckBox;
     ImportOnSongBackup import_os;
     Backup_Install import_osb;
+    String mTitle = "";
 
     //static ArrayList<String> newtempfolders;
     String moveToFolder;
@@ -91,6 +93,10 @@ public class PopUpImportExternalFile extends DialogFragment {
     ArrayList<String> backups = new ArrayList<>();
     String message = "";
     View V;
+    FloatingActionButton saveMe;
+    FloatingActionButton closeMe;
+    ProgressBar progressbar;
+    TextView title;
 
     public void onStart() {
         super.onStart();
@@ -98,6 +104,33 @@ public class PopUpImportExternalFile extends DialogFragment {
         // safety check
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.importnewsong));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) { defaultSaveAction(); }
+            });
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.importnewsong));
+        }
+    }
+
+    public void setTitle(String s) {
+        if (title!=null) {
+            title.setText(s);
+        } else {
+            getDialog().setTitle(s);
         }
     }
 
@@ -113,7 +146,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.importnewsong));
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         V = inflater.inflate(R.layout.popup_importexternalfile, container, false);
@@ -127,26 +160,11 @@ public class PopUpImportExternalFile extends DialogFragment {
         messageOnSong_TextView = (TextView) V.findViewById(R.id.messageOnSong_TextView);
         messageOpenSong_TextView = (TextView) V.findViewById(R.id.messageOpenSong_TextView);
         chooseFolder_Spinner = (Spinner) V.findViewById(R.id.chooseFolder_Spinner);
-        importFile_Cancel = (Button) V.findViewById(R.id.importFile_Cancel);
-        importFile_Save = (Button) V.findViewById(R.id.importFile_Save);
         overWrite_CheckBox = (CheckBox) V.findViewById(R.id.overWrite_CheckBox);
+        progressbar = (ProgressBar) V.findViewById(R.id.progressbar);
 
         // By default, we will assume this is a song
         FullscreenActivity.file_type = getResources().getString(R.string.options_song);
-
-        // Set the default button actions.  These might be changed depending on the file type
-        importFile_Cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-        importFile_Save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                defaultSaveAction();
-            }
-        });
 
         // Decide if this has been actioned by needtoimport
         switch (FullscreenActivity.whattodo) {
@@ -282,7 +300,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         chooseFolder_Spinner.setVisibility(View.GONE);
         chooseFolder_TextView.setVisibility(View.GONE);
         // Change the title
-        getDialog().setTitle(getActivity().getResources().getString(R.string.importnewset));
+        setTitle(getActivity().getResources().getString(R.string.importnewset));
         fileTitle_EditText.setText(FullscreenActivity.file_name);
         fileType_TextView.setText(FullscreenActivity.file_type);
         messageOnSong_TextView.setVisibility(View.GONE);
@@ -302,10 +320,11 @@ public class PopUpImportExternalFile extends DialogFragment {
         overWrite_CheckBox.setVisibility(View.GONE);
 
         // Change the views to read what we want
-        getDialog().setTitle(getActivity().getResources().getString(R.string.backup_import));
+        setTitle(getActivity().getResources().getString(R.string.backup_import));
         itemTitle_TextView.setText(getActivity().getResources().getString(R.string.backup_import));
         chooseFolder_TextView.setText(getActivity().getResources().getString(R.string.file_chooser));
-        importFile_Save.setText(getActivity().getResources().getString(R.string.ok));
+        progressbar.setVisibility(View.GONE);
+
 
         FullscreenActivity.file_type = getResources().getString(R.string.backup_info);
 
@@ -314,15 +333,20 @@ public class PopUpImportExternalFile extends DialogFragment {
             // No files exist in the appropriate location
             chooseFolder_TextView.setText(getActivity().getResources().getString(R.string.backup_error));
             chooseFolder_Spinner.setVisibility(View.GONE);
-            importFile_Save.setVisibility(View.GONE);
+            if (saveMe!=null) {
+                saveMe.setVisibility(View.GONE);
+            }
+
         } else {
             // Set the OK button to import
-            importFile_Save.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    importOSB();
-                }
-            });
+            if (saveMe!=null) {
+                saveMe.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        importOSB();
+                    }
+                });
+            }
         }
     }
 
@@ -351,10 +375,13 @@ public class PopUpImportExternalFile extends DialogFragment {
         overWrite_CheckBox.setVisibility(View.GONE);
 
         // Change the views to read what we want
-        getDialog().setTitle(getActivity().getResources().getString(R.string.import_onsong_choose));
+        setTitle(getActivity().getResources().getString(R.string.import_onsong_choose));
         itemTitle_TextView.setText(getActivity().getResources().getString(R.string.import_onsong_choose));
         chooseFolder_TextView.setText(getActivity().getResources().getString(R.string.file_chooser));
-        importFile_Save.setText(getActivity().getResources().getString(R.string.ok));
+        if (saveMe!=null) {
+            saveMe.setClickable(true);
+        }
+        progressbar.setVisibility(View.GONE);
 
         FullscreenActivity.file_type = "ONSONGARCHIVE";
 
@@ -363,15 +390,19 @@ public class PopUpImportExternalFile extends DialogFragment {
             // No files exist in the appropriate location
             chooseFolder_TextView.setText(getActivity().getResources().getString(R.string.import_onsong_error));
             chooseFolder_Spinner.setVisibility(View.GONE);
-            importFile_Save.setVisibility(View.GONE);
+            if (saveMe!=null) {
+                saveMe.setVisibility(View.GONE);
+            }
         } else {
             // Set the OK button to import
-            importFile_Save.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    importOS();
-                }
-            });
+            if (saveMe!=null) {
+                saveMe.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        importOS();
+                    }
+                });
+            }
         }
     }
 
@@ -453,7 +484,7 @@ public class PopUpImportExternalFile extends DialogFragment {
             chooseFolder_TextView.setVisibility(View.GONE);
             FullscreenActivity.file_type = getResources().getString(R.string.options_set);
             // Change the title
-            getDialog().setTitle(getActivity().getResources().getString(R.string.importnewset));
+            setTitle(getActivity().getResources().getString(R.string.importnewset));
         } else if (FullscreenActivity.file_contents.contains("<lyrics>")) {
             FullscreenActivity.file_type = getResources().getString(R.string.options_song);
         } else {
@@ -660,10 +691,12 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     public void importOS() {
         // Hide the cancel button
-        importFile_Cancel.setVisibility(View.GONE);
+        closeMe.setVisibility(View.GONE);
         //Change the text of the save button
-        importFile_Save.setText(getActivity().getResources().getString(R.string.wait));
-        importFile_Save.setClickable(false);
+        progressbar.setVisibility(View.GONE);
+        if (saveMe!=null) {
+            saveMe.setClickable(false);
+        }
 
         // Now start the AsyncTask
         import_os = new ImportOnSongBackup();
@@ -673,7 +706,7 @@ public class PopUpImportExternalFile extends DialogFragment {
             Log.d("d","Error importing");
         }
     }
-    public class ImportOnSongBackup extends AsyncTask<String, Void, String> {
+    private class ImportOnSongBackup extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -808,20 +841,26 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     public void importOSB() {
         // Hide the cancel button
-        importFile_Cancel.setVisibility(View.GONE);
+        closeMe.setVisibility(View.GONE);
         //Change the text of the save button
-        importFile_Save.setText(getActivity().getResources().getString(R.string.wait));
-        importFile_Save.setClickable(false);
+        progressbar.setVisibility(View.VISIBLE);
+        if (saveMe!=null) {
+            saveMe.setClickable(false);
+        }
 
         // Now start the AsyncTask
         import_osb = new Backup_Install();
-        try {
+/*        try {
             import_osb.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
             Log.d("d","Error importing");
-        }
+        }*/
+
+        // The new fancy one!
+        FullscreenActivity.whattodo = "processimportosb";
+        mListener.openFragment();
     }
-    public class Backup_Install extends AsyncTask<String, Void, String> {
+    private class Backup_Install extends AsyncTask<String, Void, String> {
 
         @Override
         public void onPreExecute() {

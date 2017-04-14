@@ -36,6 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/default_delaytime_SeekBar"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
@@ -90,25 +92,6 @@
                     android:id="@+id/autoscroll_prompt_RadioButton" />
 
             </RadioGroup>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cancel"
-                android:id="@+id/cancel_autoscroll_Button"
-                android:layout_margin="8dp"
-                android:background="@drawable/blue_button"
-                android:layout_gravity="right"
-                android:textColor="#fff" />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/options_set_save"
-                android:id="@+id/save_autoscroll_Button"
-                android:layout_margin="8dp"
-                android:background="@drawable/green_button"
-                android:layout_gravity="right"
-                android:textColor="#fff" />
 
         </LinearLayout>
     </ScrollView>

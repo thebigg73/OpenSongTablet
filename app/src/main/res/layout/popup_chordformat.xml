@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@drawable/popup_bg"
-    android:layout_margin="8dp">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="UselessParent">
+    android:background="@drawable/popup_bg">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -227,7 +219,8 @@
             <RadioGroup
                 android:id="@+id/chordFormat_decideaction"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp">
 
                 <RadioButton
                     android:id="@+id/chordformat_check"
@@ -242,17 +235,6 @@
                     android:text="@string/chordformat_default" />
             </RadioGroup>
 
-            <Button
-                android:id="@+id/exitChordFormat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="20dp"
-                android:background="@drawable/red_button"
-                android:text="@string/edit_save"
-                android:textColor="#fff" />
         </LinearLayout>
 
-    </ScrollView>
-
-</LinearLayout>
+</ScrollView>

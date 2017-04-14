@@ -6,11 +6,13 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.NumberPicker;
@@ -51,6 +53,22 @@ public class PopUpMetronomeFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.metronome));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    doSave();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setVisibility(View.GONE);
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.metronome));
+        }
     }
 
     //Spinner popupmetronome_timesig;
@@ -63,7 +81,6 @@ public class PopUpMetronomeFragment extends DialogFragment {
     SeekBar popupmetronome_pan;
     TextView popupmetronome_pan_text;
     SwitchCompat visualmetronome;
-    Button save_button;
     Button popupmetronome_startstopbutton;
     public static String[] bpmValues;
     public static int tempo;
@@ -87,8 +104,8 @@ public class PopUpMetronomeFragment extends DialogFragment {
         if (getDialog()==null) {
             dismiss();
         }
-        getDialog().setTitle(getActivity().getResources().getString(R.string.metronome));
         getDialog().setCanceledOnTouchOutside(true);
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         mListener.pageButtonAlpha("metronome");
 
         View V = inflater.inflate(R.layout.popup_page_metronome, container, false);
@@ -103,10 +120,13 @@ public class PopUpMetronomeFragment extends DialogFragment {
         popupmetronome_pan = (SeekBar) V.findViewById(R.id.popupmetronome_pan);
         popupmetronome_pan_text = (TextView) V.findViewById(R.id.popupmetronome_pan_text);
         visualmetronome = (SwitchCompat) V.findViewById(R.id.visualmetronome);
-        save_button = (Button) V.findViewById(R.id.save_button);
         popupmetronome_startstopbutton = (Button) V.findViewById(R.id.popupmetronome_startstopbutton);
 
         // Set up the default values
+        popupmetronome_pan_text.setText(FullscreenActivity.metronomepan);
+        String vol = (int)(FullscreenActivity.metronomevol * 100.0f) + "%";
+        popupmetronome_volume_text.setText(vol);
+
         if (FullscreenActivity.metronomeonoff.equals("on")) {
             popupmetronome_startstopbutton.setText(getResources().getString(R.string.stop));
         } else {
@@ -125,12 +145,15 @@ public class PopUpMetronomeFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 tapTempo();
+                FullscreenActivity.metronomeok = Metronome.isMetronomeValid();
             }
         });
         popupmetronome_volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 FullscreenActivity.metronomevol = (float) i/100.0f;
+                String text = i + "%";
+                popupmetronome_volume_text.setText(text);
             }
 
             @Override
@@ -138,6 +161,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                FullscreenActivity.metronomeok = Metronome.isMetronomeValid();
                 Preferences.savePreferences();
             }
         });
@@ -147,15 +171,17 @@ public class PopUpMetronomeFragment extends DialogFragment {
                 switch (i) {
                     case 0:
                         FullscreenActivity.metronomepan = "L";
+                        popupmetronome_pan_text.setText("L");
                         break;
                     case 1:
                         FullscreenActivity.metronomepan = "C";
+                        popupmetronome_pan_text.setText("C");
                         break;
                     case 2:
                         FullscreenActivity.metronomepan = "R";
+                        popupmetronome_pan_text.setText("R");
                         break;
                 }
-                Preferences.savePreferences();
             }
 
             @Override
@@ -165,20 +191,22 @@ public class PopUpMetronomeFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                FullscreenActivity.metronomeok = Metronome.isMetronomeValid();
+                Preferences.savePreferences();
             }
         });
         visualmetronome.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.visualmetronome = b;
+                FullscreenActivity.metronomeok = Metronome.isMetronomeValid();
                 Preferences.savePreferences();
             }
         });
         popupmetronome_startstopbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (FullscreenActivity.metronomeonoff.equals("off")) {
+                if (FullscreenActivity.metronomeonoff.equals("off") && FullscreenActivity.metronomeok) {
                     Runtime.getRuntime().gc();
                     popupmetronome_startstopbutton.setText(getResources().getString(R.string.stop));
                     FullscreenActivity.metronomeonoff = "on";
@@ -190,33 +218,34 @@ public class PopUpMetronomeFragment extends DialogFragment {
                         Log.d ("d","Error starting metronmone");
                     }
                     Metronome.startstopVisualMetronome();
-                } else {
+                } else if (FullscreenActivity.metronomeonoff.equals("on")) {
                     Runtime.getRuntime().gc();
                     popupmetronome_startstopbutton.setText(getResources().getString(R.string.start));
                     FullscreenActivity.metronomeonoff = "off";
                     if (Metronome.metroTask!=null) {
                         Metronome.metroTask.stop();
                     }
+                } else {
+                    FullscreenActivity.myToastMessage = getString(R.string.error_notset);
+                    ShowToast.showToast(getActivity());
                 }
-            }
-        });
-        save_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopUpEditSongFragment.prepareSongXML();
-                try {
-                    PopUpEditSongFragment.justSaveSongXML();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                Preferences.savePreferences();
-                FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
-                        getResources().getString(R.string.ok);
-                ShowToast.showToast(getActivity());
             }
         });
 
         return V;
+    }
+
+    public void doSave() {
+        PopUpEditSongFragment.prepareSongXML();
+        try {
+            PopUpEditSongFragment.justSaveSongXML();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Preferences.savePreferences();
+        FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
+                getResources().getString(R.string.ok);
+        ShowToast.showToast(getActivity());
     }
 
     @SuppressLint("SetTextI18n")
@@ -342,6 +371,8 @@ public class PopUpMetronomeFragment extends DialogFragment {
                     bpm = (short) (i1+40);
                     Log.d("d","mTempo="+FullscreenActivity.mTempo);
                 }
+                FullscreenActivity.metronomeok = Metronome.isMetronomeValid();
+                Preferences.savePreferences();
             }
         });
         Log.d("d","tempo="+tempo);
@@ -380,6 +411,8 @@ public class PopUpMetronomeFragment extends DialogFragment {
                     Metronome.setBeatValues();
                     Metronome.setNoteValues();
                 }
+                FullscreenActivity.metronomeok = Metronome.isMetronomeValid();
+                Preferences.savePreferences();
             }
         });
     }

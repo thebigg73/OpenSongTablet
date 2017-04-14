@@ -2,9 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/setlistpage"
     android:background="@drawable/popup_bg"
     android:padding="8dp">
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
@@ -19,7 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/icons"
-        android:id="@+id/helptext">
+        android:id="@+id/helptext"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
@@ -70,6 +73,25 @@
         android:orientation="horizontal"
         android:gravity="right">
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            android:src="@drawable/ic_information_outline_white_36dp"
+            app:borderWidth="0dp"
+            android:layout_margin="8dp"
+            app:backgroundTint="@color/grey"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/shuffle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            app:borderWidth="0dp"
+            android:src="@drawable/ic_shuffle_white_36dp"
+            android:layout_margin="8dp"
+            app:backgroundTint="@color/purple"/>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -82,32 +104,6 @@
             android:contentDescription="@string/exportsavedset"
             android:visibility="gone"/>
 
-        <ImageButton
-            android:id="@+id/shuffle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:background="@drawable/grey_button"
-            android:contentDescription="@string/set_manage_shuffle"
-            android:src="@drawable/ic_action_shuffle" />
-
-        <Button
-            android:id="@+id/setview_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:background="@drawable/blue_button"
-            android:text="@string/cancel"
-            android:textColor="#fff" />
-
-        <Button
-            android:id="@+id/setview_save"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:background="@drawable/green_button"
-            android:text="@string/ok"
-            android:textColor="#fff" />
     </LinearLayout>
     </HorizontalScrollView>
 

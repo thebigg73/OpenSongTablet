@@ -5,10 +5,12 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.support.design.widget.FloatingActionButton;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -51,9 +53,26 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
+
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.autoscroll));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    doSave();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setVisibility(View.GONE);
+
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.autoscroll));
+        }
     }
 
-    Button save_autoscroll_Button;
     Button popupautoscroll_startstopbutton;
     SeekBar popupautoscroll_delay;
     TextView popupautoscroll_delay_text;
@@ -81,14 +100,13 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         if (savedInstanceState != null) {
             this.dismiss();
         }
-        getDialog().setTitle(getActivity().getResources().getString(R.string.autoscroll));
         getDialog().setCanceledOnTouchOutside(true);
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         mListener.pageButtonAlpha("autoscroll");
 
         View V = inflater.inflate(R.layout.popup_page_autoscroll, container, false);
 
         // Initialise the views
-        save_autoscroll_Button = (Button) V.findViewById(R.id.save_autoscroll_Button);
         popupautoscroll_startstopbutton = (Button) V.findViewById(R.id.popupautoscroll_startstopbutton);
         popupautoscroll_delay = (SeekBar) V.findViewById(R.id.popupautoscroll_delay);
         popupautoscroll_delay_text = (TextView) V.findViewById(R.id.popupautoscroll_delay_text);
@@ -106,8 +124,6 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             text = FullscreenActivity.autoScrollDelay + " s";
         }
         popupautoscroll_delay_text.setText(text);
-        Log.d("d","mDuration="+FullscreenActivity.mDuration);
-        Log.d("d","autoScrollDuration="+FullscreenActivity.autoScrollDuration);
 
         String text2 = FullscreenActivity.autoScrollDuration + "";
         if (FullscreenActivity.autoScrollDuration>-1) {
@@ -117,10 +133,13 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         }
 
         // Set up the listeners
-        save_autoscroll_Button.setOnClickListener(new View.OnClickListener() {
+        popupautoscroll_duration.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
-                doSave();
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                FullscreenActivity.mDuration = textView.getText().toString();
+                FullscreenActivity.autoscrollok = ProcessSong.isAutoScrollValid();
+                Preferences.savePreferences();
+                return false;
             }
         });
         popupautoscroll_delay.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -135,12 +154,17 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             public void onStartTrackingTouch(SeekBar seekBar) { }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) { }
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                FullscreenActivity.autoscrollok = ProcessSong.isAutoScrollValid();
+                Preferences.savePreferences();
+            }
         });
         uselinkaudiolength_ImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 grabLinkAudioTime();
+                FullscreenActivity.autoscrollok = ProcessSong.isAutoScrollValid();
+                Preferences.savePreferences();
             }
         });
         if (FullscreenActivity.isautoscrolling) {
@@ -159,8 +183,10 @@ public class PopUpAutoscrollFragment extends DialogFragment {
 
                 @Override
                 public void onClick(View view) {
-                    mListener.startAutoScroll();
-                    dismiss();
+                    if (FullscreenActivity.autoscrollok) {
+                        mListener.startAutoScroll();
+                        dismiss();
+                    }
                 }
             });
         }
@@ -188,7 +214,11 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         try {
             FullscreenActivity.mPreDelay = popupautoscroll_delay.getProgress()+"";
             FullscreenActivity.mDuration = popupautoscroll_duration.getText().toString();
-            FullscreenActivity.autoScrollDuration = Integer.parseInt(popupautoscroll_duration.getText().toString());
+            if (!popupautoscroll_duration.getText().toString().equals("")) {
+                FullscreenActivity.autoScrollDuration = Integer.parseInt(popupautoscroll_duration.getText().toString());
+            } else {
+                FullscreenActivity.autoScrollDuration = -1;
+            }
             PopUpEditSongFragment.prepareSongXML();
             PopUpEditSongFragment.justSaveSongXML();
             FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +

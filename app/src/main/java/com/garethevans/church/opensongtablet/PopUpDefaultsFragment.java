@@ -3,11 +3,14 @@ package com.garethevans.church.opensongtablet;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class PopUpDefaultsFragment extends DialogFragment {
 
@@ -37,6 +40,22 @@ public class PopUpDefaultsFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.options_display_popups));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setVisibility(View.GONE);
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.options_display_popups));
+        }
     }
 
     @Override
@@ -52,7 +71,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View V = inflater.inflate(R.layout.popup_popupdefaults, container, false);
-        getDialog().setTitle(getActivity().getResources().getString(R.string.options_display_popups));
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         // Initialise the views
@@ -68,7 +87,6 @@ public class PopUpDefaultsFragment extends DialogFragment {
         bl_button = (Button) V.findViewById(R.id.bl_button);
         bc_button = (Button) V.findViewById(R.id.bc_button);
         br_button = (Button) V.findViewById(R.id.br_button);
-        Button closebutton = (Button) V.findViewById((R.id.closebutton));
 
         // Set the seekBars to their current positions
         if (FullscreenActivity.popupAlpha_All >= 0.6f && FullscreenActivity.popupAlpha_All <= 1.0f) {
@@ -98,8 +116,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
         popupAlpha_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                Float val = (i+6.0f) / 10.0f;
-                FullscreenActivity.popupAlpha_All = val;
+                FullscreenActivity.popupAlpha_All = (i+6.0f) / 10.0f;
                 PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
             }
 
@@ -115,8 +132,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
         popupDim_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                Float val = (float) i / 10.0f;
-                FullscreenActivity.popupDim_All = val;
+                FullscreenActivity.popupDim_All = (float) i / 10.0f;
                 PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
             }
 
@@ -132,8 +148,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
         popupScale_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                Float val = (i+6.0f)/10.0f;
-                FullscreenActivity.popupScale_All = val;
+                FullscreenActivity.popupScale_All = (i+6.0f)/10.0f;
             }
 
             @Override
@@ -216,12 +231,6 @@ public class PopUpDefaultsFragment extends DialogFragment {
                 FullscreenActivity.popupPosition_All = "br";
                 fixbuttons();
                 Preferences.savePreferences();
-            }
-        });
-        closebutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
             }
         });
         return V;

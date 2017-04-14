@@ -9,14 +9,17 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import java.io.File;
 
@@ -41,7 +44,6 @@ public class PopUpStorageFragment extends DialogFragment {
     RadioButton otherStorageButton;
     Button changeCustom;
     Button wipeSongs;
-    Button exitStorage;
     String numeral = "1";
 
     File intStorCheck;
@@ -108,6 +110,22 @@ public class PopUpStorageFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.storage_choose));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    saveStorageLocation();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setVisibility(View.GONE);
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.storage_choose));
+        }
     }
 
     @Override
@@ -121,7 +139,7 @@ public class PopUpStorageFragment extends DialogFragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.storage_choose));
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_storage, container, false);
 
@@ -131,7 +149,6 @@ public class PopUpStorageFragment extends DialogFragment {
         extStorageButton = (RadioButton) V.findViewById(R.id.extStorage);
         otherStorageButton = (RadioButton) V.findViewById(R.id.otherStorage);
         changeCustom = (Button) V.findViewById(R.id.editCustomStorage);
-        exitStorage = (Button) V.findViewById(R.id.exitStorage);
         wipeSongs = (Button) V.findViewById(R.id.wipeSongs);
 
         Log.d("d","Started PopUpStorageFragment");
@@ -149,12 +166,6 @@ public class PopUpStorageFragment extends DialogFragment {
         }
 
         // Set the button listeners
-        exitStorage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveStorageLocation();
-            }
-        });
         wipeSongs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -368,6 +379,8 @@ public class PopUpStorageFragment extends DialogFragment {
 
     public void saveStorageLocation() {
         //Rewrite the shared preference
+        FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
+
         switch (numeral) {
             case "2":
                 FullscreenActivity.prefStorage = "ext";
@@ -403,6 +416,7 @@ public class PopUpStorageFragment extends DialogFragment {
 
     public void getOtherFolders() {
         FullscreenActivity.homedir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong");
+        FullscreenActivity.dirsettings = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Settings");
         FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
         FullscreenActivity.dironsong = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong");
         FullscreenActivity.dirsets = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Sets");
@@ -424,6 +438,7 @@ public class PopUpStorageFragment extends DialogFragment {
     public void getOtherFoldersCustom() {
         FullscreenActivity.homedir = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong");
         FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Songs");
+        FullscreenActivity.dirsettings = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Settings/");
         FullscreenActivity.dironsong = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Songs/OnSong");
         FullscreenActivity.dirsets = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Sets");
         FullscreenActivity.dirPads = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Pads");
@@ -444,6 +459,7 @@ public class PopUpStorageFragment extends DialogFragment {
     public static boolean checkDirectories(){
         boolean homedir_success = createDirectory(FullscreenActivity.homedir);
         boolean dir_success = createDirectory(FullscreenActivity.dir);
+        boolean dirsettings_success = createDirectory(FullscreenActivity.dirsettings);
         boolean dirsets_success = createDirectory(FullscreenActivity.dirsets);
         boolean dirPads_success = createDirectory(FullscreenActivity.dirPads);
         boolean dirbackgrounds_success = createDirectory(FullscreenActivity.dirbackgrounds);
@@ -457,14 +473,10 @@ public class PopUpStorageFragment extends DialogFragment {
         boolean dirvariations_success = createDirectory(FullscreenActivity.dirvariations);
         boolean dirprofiles_success = createDirectory(FullscreenActivity.dirprofiles);
         boolean success;
-        if (homedir_success && dir_success && dirsets_success && dirPads_success && dirbackgrounds_success &&
+        success = homedir_success && dirsettings_success && dir_success && dirsets_success && dirPads_success && dirbackgrounds_success &&
                 dirbibles_success && dirverses_success && dirscripture_success && dirscriptureverses_success &&
                 dircustomimages_success && dircustomnotes_success && dircustomslides_success &&
-                dirvariations_success && dirprofiles_success) {
-            success = true;
-        } else {
-            success = false;
-        }
+                dirvariations_success && dirprofiles_success;
         return success;
     }
 

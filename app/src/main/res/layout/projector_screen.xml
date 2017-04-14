@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
@@ -16,7 +17,8 @@
         <TextureView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/presoBGVideo" />
+            android:id="@+id/presoBGVideo"
+            tools:ignore="NewApi" />
 
         <ImageView
             android:id="@+id/presoBGImage"
@@ -45,8 +47,8 @@
 
         <ImageView
             android:id="@+id/presoLogo"
-            android:layout_width="200dp"
-            android:layout_height="150dp"
+            android:layout_width="400dp"
+            android:layout_height="300dp"
             android:layout_gravity="center"
             android:contentDescription="@string/presoBackground"
             android:src="@drawable/ost_logo"
@@ -223,7 +225,6 @@
             </RelativeLayout>
 
         </RelativeLayout>
-
 
     </FrameLayout>
 

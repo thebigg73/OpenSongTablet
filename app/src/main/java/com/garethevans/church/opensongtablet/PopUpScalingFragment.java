@@ -4,11 +4,12 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -53,13 +54,29 @@ public class PopUpScalingFragment extends DialogFragment {
     SwitchCompat switchAutoScaleWidthFull_SwitchCompat;
     SwitchCompat overrideFull_Switch;
     SwitchCompat overrideWidth_Switch;
-    Button closebutton;
 
     @Override
     public void onStart() {
         super.onStart();
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+        if (getDialog().getWindow()!=null) {
+            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
+            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
+            title.setText(getActivity().getResources().getString(R.string.options_options_scale));
+            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.refreshAll();
+                    dismiss();
+                }
+            });
+            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            saveMe.setVisibility(View.GONE);
+        } else {
+            getDialog().setTitle(getActivity().getResources().getString(R.string.options_options_scale));
         }
     }
 
@@ -73,7 +90,7 @@ public class PopUpScalingFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.options_options_scale));
+        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_scaling, container, false);
 
@@ -90,7 +107,6 @@ public class PopUpScalingFragment extends DialogFragment {
         switchAutoScaleWidthFull_SwitchCompat = (SwitchCompat) V.findViewById(R.id.switchAutoScaleWidthFull_SwitchCompat);
         overrideFull_Switch = (SwitchCompat) V.findViewById(R.id.overrideFull_Switch);
         overrideWidth_Switch = (SwitchCompat) V.findViewById(R.id.overrideWidth_Switch);
-        closebutton = (Button) V.findViewById(R.id.closebutton);
 
         // Set the seekbars to the currently chosen values;
         switch (FullscreenActivity.toggleYScale) {
@@ -124,15 +140,6 @@ public class PopUpScalingFragment extends DialogFragment {
         setupminfontsizeseekbar();
 
         fontsize_change_group.setVisibility(View.VISIBLE);
-
-        // Set up listeners
-        closebutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-                mListener.refreshAll();
-            }
-        });
 
         fontsize_seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

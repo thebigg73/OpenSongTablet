@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/popup_bg"
-    android:padding="8dp">
-<ScrollView
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollviewforeditsong"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true">
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:background="@drawable/popup_bg"
+    android:padding="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -322,7 +319,8 @@
                 android:scrollbars="vertical"
                 style="@style/MyEditText"
                 android:textSize="10sp"
-                android:typeface="monospace" />
+                android:typeface="monospace"
+                tools:ignore="SmallSp" />
 
             <TextView
                 android:id="@+id/availabletags"
@@ -1246,38 +1244,5 @@
             android:text="@string/show_general_advanced"
             android:textColor="#fff" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/cancel_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:layout_toLeftOf="@+id/save_edit"
-                android:layout_toStartOf="@+id/save_edit"
-                android:background="@drawable/blue_button"
-                android:padding="5dp"
-                android:text="@string/cancel"
-                android:textColor="#fff" />
-
-            <Button
-                android:id="@+id/save_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:background="@drawable/red_button"
-                android:padding="5dp"
-                android:text="@string/edit_save"
-                android:textColor="#fff" />
-        </RelativeLayout>
     </LinearLayout>
 </ScrollView>
-</RelativeLayout>

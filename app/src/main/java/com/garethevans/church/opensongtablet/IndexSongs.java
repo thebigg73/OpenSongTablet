@@ -27,7 +27,6 @@ public class IndexSongs extends Activity {
         FullscreenActivity.safetosearch = false;
         FullscreenActivity.search_database = null;
         FullscreenActivity.search_database = new ArrayList<>();
-        System.gc();
 
         // Prepare a blank log file to show the search index progress
 /*
@@ -350,7 +349,6 @@ public class IndexSongs extends Activity {
         logoutput.close();
 */
 
-        System.gc();
         FullscreenActivity.safetosearch = true;
     }
 
@@ -382,9 +380,7 @@ public class IndexSongs extends Activity {
                     if (!simplesong.contains("/")) {
                         simplesong = "/" + simplesong;
                     }
-                    if (simplesong!=null) {
-                        allsongsinfolders.add(simplesong);
-                    }
+                    allsongsinfolders.add(simplesong);
                 }
             }
         }
@@ -393,11 +389,11 @@ public class IndexSongs extends Activity {
         FullscreenActivity.allfilesforsearch = allsongsinfolders;
     }
 
-    public static class IndexMySongs extends AsyncTask<Object,Void,String> {
+    static class IndexMySongs extends AsyncTask<Object,Void,String> {
 
         Context context;
 
-        public IndexMySongs(Context c) {
+        IndexMySongs(Context c) {
             context = c;
             mListener = (MyInterface) c;
         }

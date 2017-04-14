@@ -76,6 +76,9 @@ public class SongMenuListeners extends Activity {
 
                 mListener = (MyInterface) c;
 
+                // Save the preferences (to keep the folder and filename)
+                Preferences.savePreferences();
+
                 // Get the songfilename from the position we clicked on
                 if (position!=-1 && FullscreenActivity.mSongFileNames!=null && FullscreenActivity.mSongFileNames.length>=position) {
                     FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[position];

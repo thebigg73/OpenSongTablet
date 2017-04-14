@@ -1,46 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
-    android:padding="8dp">
+    android:orientation="vertical">
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/closebutton">
+        tools:ignore="ScrollViewSize">
 
-        <RelativeLayout
+        <WebView
+            android:id="@+id/webview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"/>
 
-            <WebView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/webview">
-            </WebView>
+        <TextView
+            android:id="@+id/textview"
+            style="@style/MyInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textview"
-                style="@style/MyInfoText"/>
-        </RelativeLayout>
-    </ScrollView>
+    </RelativeLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="8dp"
-        android:background="@drawable/blue_button"
-        android:text="@string/drawer_close"
-        android:textColor="#fff"
-        android:id="@+id/closebutton"/>
-
-</RelativeLayout>
+</ScrollView>

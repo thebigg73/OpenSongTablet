@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
     android:padding="8dp">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView8"
-        android:layout_above="@+id/savePopupFont">
-
-        <LinearLayout
+    <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -19,6 +13,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="@string/chooselyricfont"
                 android:id="@+id/textView19"
                 style="@style/MyHeadingText" />
@@ -26,6 +21,7 @@
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/MySpinner"
                 android:id="@+id/lyricsFontSpinner"
                 android:layout_margin="8dp" />
 
@@ -33,12 +29,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/choosechordfont"
+                android:layout_margin="8dp"
                 android:id="@+id/textView20"
                 style="@style/MyHeadingText" />
 
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/MySpinner"
                 android:id="@+id/chordsFontSpinner"
                 android:layout_margin="8dp" />
 
@@ -47,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/textView47"
                 android:layout_margin="8dp"
+                android:text="@string/headingline_scale"
                 style="@style/MyHeadingText" />
 
             <LinearLayout
@@ -58,7 +57,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/scaleHeading_SeekBar"
-                    android:layout_weight="0.7"
+                    android:layout_weight="1"
                     android:layout_margin="8dp"
                     android:background="@drawable/apptheme_scrubber_primary_holo"
                     android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
@@ -69,7 +68,6 @@
                     android:layout_height="wrap_content"
                     style="@style/MyInfoText"
                     android:id="@+id/scaleHeading_TextView"
-                    android:layout_weight="0.3"
                     android:layout_margin="8dp" />
             </LinearLayout>
 
@@ -89,7 +87,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/scaleChords_SeekBar"
-                    android:layout_weight="0.7"
+                    android:layout_weight="1"
                     android:layout_margin="8dp"
                     android:background="@drawable/apptheme_scrubber_primary_holo"
                     android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
@@ -100,7 +98,6 @@
                     android:layout_height="wrap_content"
                     style="@style/MyInfoText"
                     android:id="@+id/scaleChords_TextView"
-                    android:layout_weight="0.3"
                     android:layout_margin="8dp" />
             </LinearLayout>
 
@@ -121,7 +118,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/scaleComment_SeekBar"
-                    android:layout_weight="0.7"
+                    android:layout_weight="1"
                     android:layout_margin="8dp"
                     android:background="@drawable/apptheme_scrubber_primary_holo"
                     android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
@@ -132,7 +129,6 @@
                     android:layout_height="wrap_content"
                     style="@style/MyInfoText"
                     android:id="@+id/scaleComment_TextView"
-                    android:layout_weight="0.3"
                     android:layout_margin="8dp" />
 
             </LinearLayout>
@@ -154,7 +150,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/lineSpacingSeekBar"
-                    android:layout_weight="0.7"
+                    android:layout_weight="1"
                     android:layout_margin="8dp"
                     android:background="@drawable/apptheme_scrubber_primary_holo"
                     android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
@@ -165,7 +161,6 @@
                     android:layout_height="wrap_content"
                     style="@style/MyInfoText"
                     android:id="@+id/lineSpacingText"
-                    android:layout_weight="0.3"
                     android:layout_margin="8dp" />
             </LinearLayout>
 
@@ -240,18 +235,5 @@
             </TableLayout>
 
         </LinearLayout>
-    </ScrollView>
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_save"
-        android:id="@+id/savePopupFont"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="8dp"
-        android:background="@drawable/green_button"
-        android:textColor="#fff" />
-</RelativeLayout>
+</ScrollView>

@@ -130,15 +130,6 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/savesong"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/green_button"
-            android:text="@string/savesong"
-            android:textColor="#fff" />
-
-        <Button
             android:id="@+id/start_stop_padplay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

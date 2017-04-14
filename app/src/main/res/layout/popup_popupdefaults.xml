@@ -166,17 +166,4 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:background="@drawable/blue_button"
-        android:text="@string/drawer_close"
-        android:textColor="#fff"
-        android:id="@+id/closebutton"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="8dp" />
-
 </RelativeLayout>
