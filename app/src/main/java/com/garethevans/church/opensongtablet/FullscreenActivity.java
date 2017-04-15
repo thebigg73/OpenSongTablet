@@ -492,9 +492,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpListSe
     private static int alreadyshowingpage;
     public static int keyindex;
 
+    public static final int REQUEST_CAMERA_CODE = 1973;
+    public static String mCurrentPhotoPath;
+    public static int cameraAllowed = 0;
+
     public static int pdfPageCurrent = 0;
     public static int pdfPageCount = 0;
     public static boolean isPDF = false;
+    public static boolean isImage = false;
     public static boolean isSong = false;
     private static ImageView pdf_selectpage;
     private static ImageView stickynotes;

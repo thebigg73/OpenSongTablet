@@ -205,76 +205,84 @@ public class ListSongFiles extends Activity {
     }
 
     public static void getAllSongFiles() {
-        File foldertoindex;
-        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-            foldertoindex = FullscreenActivity.dir;
-        } else {
-            foldertoindex = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder);
-        }
-        File[] tempmyFiles = foldertoindex.listFiles();
+        try {
+            File foldertoindex;
+            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+                foldertoindex = FullscreenActivity.dir;
+            } else {
+                foldertoindex = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder);
+            }
+            File[] tempmyFiles = foldertoindex.listFiles();
 
-        ArrayList<String> tempProperSongFiles = new ArrayList<>();
-        if (tempmyFiles!=null) {
-            for (File tempmyFile : tempmyFiles) {
-                if (tempmyFile != null && tempmyFile.isFile()) {
-                    tempProperSongFiles.add(tempmyFile.getName());
+            ArrayList<String> tempProperSongFiles = new ArrayList<>();
+            if (tempmyFiles != null) {
+                for (File tempmyFile : tempmyFiles) {
+                    if (tempmyFile != null && tempmyFile.isFile()) {
+                        tempProperSongFiles.add(tempmyFile.getName());
+                    }
                 }
             }
-        }
 
-        // Sort the files alphabetically using locale
-        coll = Collator.getInstance(FullscreenActivity.locale);
-        coll.setStrength(Collator.SECONDARY);
-        try {
-            Collections.sort(tempProperSongFiles, coll);
+            // Sort the files alphabetically using locale
+            coll = Collator.getInstance(FullscreenActivity.locale);
+            coll.setStrength(Collator.SECONDARY);
+            try {
+                Collections.sort(tempProperSongFiles, coll);
+            } catch (Exception e) {
+                // Problem sorting
+            }
+
+            FullscreenActivity.mSongFileNames = new String[tempProperSongFiles.size()];
+
+            FullscreenActivity.mSongFileNames = tempProperSongFiles.toArray(FullscreenActivity.mSongFileNames);
         } catch (Exception e) {
-            // Problem sorting
+            // Some error occured
         }
-
-        FullscreenActivity.mSongFileNames = new String[tempProperSongFiles.size()];
-
-        FullscreenActivity.mSongFileNames = tempProperSongFiles.toArray(FullscreenActivity.mSongFileNames);
     }
 
     public static void getSongDetails() {
         // Go through each song in the current folder and extract the title, key and author
         // If not a valid song, just return the file name
-        FullscreenActivity.songDetails = new String[FullscreenActivity.mSongFileNames.length][3];
-        boolean fileextensionok;
-        String s_f;
-        String utf;
-        for (int r = 0; r < FullscreenActivity.mSongFileNames.length; r++) {
-            String s = FullscreenActivity.mSongFileNames[r];
-            String[] vals = new String[3];
-            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) ||
-                    FullscreenActivity.whichSongFolder.equals("")) {
-                s_f = FullscreenActivity.dir + "/" + s;
-            } else {
-                s_f = FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + s;
-            }
-            File f = new File(s_f);
-            if (f.exists()) {
-                fileextensionok = checkFileExtension(s);
-                utf = checkUtfEncoding(s_f);
-                if (fileextensionok) {
-                    vals = getSongDetailsXML(f,s,utf);
+        try {
+            FullscreenActivity.songDetails = new String[FullscreenActivity.mSongFileNames.length][3];
+            boolean fileextensionok;
+            String s_f;
+            String utf;
+            for (int r = 0; r < FullscreenActivity.mSongFileNames.length; r++) {
+                String s = FullscreenActivity.mSongFileNames[r];
+                String[] vals = new String[3];
+                if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) ||
+                        FullscreenActivity.whichSongFolder.equals("")) {
+                    s_f = FullscreenActivity.dir + "/" + s;
                 } else {
-                    // Non OpenSong
-                    vals[0] = s;
-                    vals[1] = "";
-                    vals[2] = "";
+                    s_f = FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + s;
                 }
-                if (vals[2]==null || vals[2].equals("")) {
-                    vals[2] = "";
-                }
-                try {
-                    FullscreenActivity.songDetails[r][0] = vals[0];
-                    FullscreenActivity.songDetails[r][1] = vals[1];
-                    FullscreenActivity.songDetails[r][2] = vals[2];
-                } catch (Exception e) {
-                    // Error trying to get song details
+                File f = new File(s_f);
+                if (f.exists()) {
+                    fileextensionok = checkFileExtension(s);
+                    utf = checkUtfEncoding(s_f);
+                    if (fileextensionok) {
+                        vals = getSongDetailsXML(f, s, utf);
+                    } else {
+                        // Non OpenSong
+                        vals[0] = s;
+                        vals[1] = "";
+                        vals[2] = "";
+                    }
+                    if (vals[2] == null || vals[2].equals("")) {
+                        vals[2] = "";
+                    }
+                    try {
+                        FullscreenActivity.songDetails[r][0] = vals[0];
+                        FullscreenActivity.songDetails[r][1] = vals[1];
+                        FullscreenActivity.songDetails[r][2] = vals[2];
+                    } catch (Exception e) {
+                        // Error trying to get song details
+                    }
                 }
             }
+        } catch (Exception e) {
+            // Ooops, error
         }
     }
 

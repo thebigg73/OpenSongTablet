@@ -660,29 +660,33 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
 
         protected void onPostExecute(String s) {
-            // The song folder
-            newtempfolders = new ArrayList<>();
-            if (FullscreenActivity.mainfoldername != null) {
-                newtempfolders.add(FullscreenActivity.mainfoldername);
-            }
-            for (int e = 0; e < FullscreenActivity.mSongFolderNames.length; e++) {
-                if (FullscreenActivity.mSongFolderNames[e] != null &&
-                        !FullscreenActivity.mSongFolderNames[e].equals(FullscreenActivity.mainfoldername)) {
-                    newtempfolders.add(FullscreenActivity.mSongFolderNames[e]);
+            try {
+                // The song folder
+                newtempfolders = new ArrayList<>();
+                if (FullscreenActivity.mainfoldername != null) {
+                    newtempfolders.add(FullscreenActivity.mainfoldername);
                 }
-            }
-            ArrayAdapter<String> folders = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, newtempfolders);
-            folders.setDropDownViewResource(R.layout.my_spinner);
-            choosefolder_Spinner.setAdapter(folders);
+                for (int e = 0; e < FullscreenActivity.mSongFolderNames.length; e++) {
+                    if (FullscreenActivity.mSongFolderNames[e] != null &&
+                            !FullscreenActivity.mSongFolderNames[e].equals(FullscreenActivity.mainfoldername)) {
+                        newtempfolders.add(FullscreenActivity.mSongFolderNames[e]);
+                    }
+                }
+                ArrayAdapter<String> folders = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, newtempfolders);
+                folders.setDropDownViewResource(R.layout.my_spinner);
+                choosefolder_Spinner.setAdapter(folders);
 
-            // Select the current folder as the preferred one - i.e. rename into the same folder
-            choosefolder_Spinner.setSelection(0);
-            for (int w = 0; w < newtempfolders.size(); w++) {
-                if (FullscreenActivity.currentFolder.equals(newtempfolders.get(w)) ||
-                        FullscreenActivity.currentFolder.equals("(" + newtempfolders.get(w) + ")")) {
-                    choosefolder_Spinner.setSelection(w);
-                    FullscreenActivity.newFolder = newtempfolders.get(w);
+                // Select the current folder as the preferred one - i.e. rename into the same folder
+                choosefolder_Spinner.setSelection(0);
+                for (int w = 0; w < newtempfolders.size(); w++) {
+                    if (FullscreenActivity.currentFolder.equals(newtempfolders.get(w)) ||
+                            FullscreenActivity.currentFolder.equals("(" + newtempfolders.get(w) + ")")) {
+                        choosefolder_Spinner.setSelection(w);
+                        FullscreenActivity.newFolder = newtempfolders.get(w);
+                    }
                 }
+            } catch (Exception e) {
+                // Oops error
             }
         }
     }

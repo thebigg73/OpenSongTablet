@@ -104,6 +104,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         if (getDialog()==null) {
             dismiss();
         }
+
         getDialog().setCanceledOnTouchOutside(true);
         getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         mListener.pageButtonAlpha("metronome");

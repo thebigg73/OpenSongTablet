@@ -33,11 +33,25 @@
 
     </HorizontalScrollView>
 
+    <ScrollView
+        android:id="@+id/glideimage_ScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/mytoolbar">
+
+        <ImageView
+            android:id="@+id/glideimage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:isScrollContainer="true"/>
+
+    </ScrollView>
+
     <include layout="@layout/toolbar"
         android:id="@+id/mytoolbar"
         android:clipChildren="false"
         android:clipToPadding="false"/>
-
 
     <RelativeLayout
         android:id="@+id/testpane"

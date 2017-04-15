@@ -20,7 +20,10 @@ import android.widget.TextView;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
 public class PopUpSongCreateFragment extends DialogFragment {
@@ -41,6 +44,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
     public interface MyInterface {
         void openSongEdit();
+        void loadSong();
     }
 
     @Override
@@ -106,7 +110,17 @@ public class PopUpSongCreateFragment extends DialogFragment {
         newFolderSpinner = (Spinner) V.findViewById(R.id.newFolderSpinner);
         newSongNameEditText = (EditText) V.findViewById(R.id.newSongNameEditText);
 
-        newSongNameEditText.setText("");
+        if (FullscreenActivity.whattodo.equals("savecameraimage")) {
+            try {
+                String currimagename = FullscreenActivity.mCurrentPhotoPath.
+                        substring(FullscreenActivity.mCurrentPhotoPath.lastIndexOf("/") + 1);
+                    newSongNameEditText.setText(currimagename);
+            } catch (Exception e) {
+                newSongNameEditText.setText(FullscreenActivity.imagetext);
+            }
+        } else {
+            newSongNameEditText.setText("");
+        }
 
         // Set up the folderspinner
         // Populate the list view with the current song folders
@@ -140,59 +154,118 @@ public class PopUpSongCreateFragment extends DialogFragment {
         // Get the variables
         String tempNewSong = newSongNameEditText.getText().toString().trim();
 
-        File to;
-        if (FullscreenActivity.newFolder.equals(FullscreenActivity.mainfoldername)) {
-            to = new File(FullscreenActivity.dir + "/" + tempNewSong);
-        } else {
-            to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.newFolder + "/" + tempNewSong);
-        }
+        if (FullscreenActivity.whattodo.equals("savecameraimage")) {
+            File from = new File(FullscreenActivity.mCurrentPhotoPath);
+            String currimagename = FullscreenActivity.mCurrentPhotoPath.
+                    substring(FullscreenActivity.mCurrentPhotoPath.lastIndexOf("/")+1);
 
-        if (!tempNewSong.equals("") && !tempNewSong.isEmpty()
-                && !tempNewSong.contains("/") && !to.exists()
-                && !tempNewSong.equals(FullscreenActivity.mainfoldername)) {
+            Log.d("d","currimagename="+currimagename);
+            Log.d("d","from="+FullscreenActivity.mCurrentPhotoPath);
 
-            FullscreenActivity.whichSongFolder = FullscreenActivity.newFolder;
-
-            // Try to create
-            if (tempNewSong.endsWith(".pdf") || tempNewSong.endsWith(".PDF")) {
-                // Naughty, naughty, it shouldn't be a pdf extension
-                tempNewSong = tempNewSong.replace(".pdf", "");
-                tempNewSong = tempNewSong.replace(".PDF", "");
+            // If no name is specified, use the original ugly one
+            if (tempNewSong.isEmpty() || tempNewSong.equals("")) {
+                Log.d("d","currimagename="+currimagename);
+                tempNewSong = currimagename;
             }
 
-            LoadXML.initialiseSongTags();
+            // Check the camera image ends with .jpg.  If not, add it!
+            if (!tempNewSong.endsWith(".jpg")) {
+                tempNewSong = tempNewSong + ".jpg";
+            }
+            File to;
+            if (FullscreenActivity.newFolder.equals(FullscreenActivity.mainfoldername)) {
+                to = new File(FullscreenActivity.dir + "/" + tempNewSong);
+            } else {
+                to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.newFolder + "/" + tempNewSong);
+            }
 
-            // Prepare the XML
-            FullscreenActivity.songfilename = tempNewSong;
-            FullscreenActivity.mTitle = tempNewSong;
-            Preferences.savePreferences();
+            Log.d("d","to="+to);
 
-            PopUpEditSongFragment.prepareBlankSongXML();
-
-            // Save the file
             try {
-                PopUpEditSongFragment.justSaveSongXML();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                FileChannel inChannel = new FileInputStream(from).getChannel();
+                FileChannel outChannel = new FileOutputStream(to).getChannel();
+                try {
+                    inChannel.transferTo(0, inChannel.size(), outChannel);
+                } finally {
+                    if (inChannel != null)
+                        inChannel.close();
+                    outChannel.close();
+                }
 
-            // Load the XML up into memory
-            try {
-                LoadXML.loadXML();
-            } catch (XmlPullParserException | IOException e) {
-                e.printStackTrace();
-            }
+                FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.success);
+                from.delete();
 
-            // Tell the main page to now edit the song
-            if (mListener!=null) {
-                mListener.openSongEdit();
-            }
+                if (mListener != null) {
+                    FullscreenActivity.songfilename = tempNewSong;
+                    FullscreenActivity.whichSongFolder = FullscreenActivity.newFolder;
+                    mListener.loadSong();
+                }
 
-            // Close the popup
-            dismiss();
-        } else {
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.error_notset);
+            } catch (Exception e) {
+                from.delete();
+                FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.error);
+                ShowToast.showToast(getActivity());
+            }
+            // Remove the file anyway as a tidy up
+
             ShowToast.showToast(getActivity());
+            dismiss();
+
+        } else {
+            File to;
+            if (FullscreenActivity.newFolder.equals(FullscreenActivity.mainfoldername)) {
+                to = new File(FullscreenActivity.dir + "/" + tempNewSong);
+            } else {
+                to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.newFolder + "/" + tempNewSong);
+            }
+
+            if (!tempNewSong.equals("") && !tempNewSong.isEmpty()
+                    && !tempNewSong.contains("/") && !to.exists()
+                    && !tempNewSong.equals(FullscreenActivity.mainfoldername)) {
+
+                FullscreenActivity.whichSongFolder = FullscreenActivity.newFolder;
+
+                // Try to create
+                if (tempNewSong.endsWith(".pdf") || tempNewSong.endsWith(".PDF")) {
+                    // Naughty, naughty, it shouldn't be a pdf extension
+                    tempNewSong = tempNewSong.replace(".pdf", "");
+                    tempNewSong = tempNewSong.replace(".PDF", "");
+                }
+
+                LoadXML.initialiseSongTags();
+
+                // Prepare the XML
+                FullscreenActivity.songfilename = tempNewSong;
+                FullscreenActivity.mTitle = tempNewSong;
+                Preferences.savePreferences();
+
+                PopUpEditSongFragment.prepareBlankSongXML();
+
+                // Save the file
+                try {
+                    PopUpEditSongFragment.justSaveSongXML();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // Load the XML up into memory
+                try {
+                    LoadXML.loadXML();
+                } catch (XmlPullParserException | IOException e) {
+                    e.printStackTrace();
+                }
+
+                // Tell the main page to now edit the song
+                if (mListener != null) {
+                    mListener.openSongEdit();
+                }
+
+                // Close the popup
+                dismiss();
+            } else {
+                FullscreenActivity.myToastMessage = getResources().getString(R.string.error_notset);
+                ShowToast.showToast(getActivity());
+            }
         }
     }
 

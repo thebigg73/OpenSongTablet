@@ -138,7 +138,7 @@
                 android:text="@string/options_connections"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                android:visibility="visible"/>
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/menuPadButton"

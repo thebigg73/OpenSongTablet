@@ -17,7 +17,7 @@
         com.google.android.gms.tasks"/>
 
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
-
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -26,6 +26,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:fullBackupContent="true"
@@ -36,6 +37,17 @@
         android:theme="@style/MyTheme">
 
         <!--android:name="android.support.multidex.MultiDexApplication"-->
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.garethevans.church.opensongtablet.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
 
         <receiver android:name=".BatteryMonitor">
             <intent-filter>

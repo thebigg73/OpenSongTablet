@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,10 +34,7 @@ public class OptionMenuListeners extends Activity {
         void showActionBar();
         void hideActionBar();
         void toggleDrawerSwipe();
-        void startAdvertising();
-        void startDiscovery();
-        void doDisconnect();
-        void sendMessage(String message);
+        void useCamera();
     }
 
     public static MyInterface mListener;
@@ -1099,7 +1096,7 @@ public class OptionMenuListeners extends Activity {
 
     }
 
-    public static void findSongsOptionListener(View v, Context c) {
+    public static void findSongsOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -1107,6 +1104,7 @@ public class OptionMenuListeners extends Activity {
         Button ugSearchButton = (Button) v.findViewById(R.id.ugSearchButton);
         Button chordieSearchButton = (Button) v.findViewById(R.id.chordieSearchButton);
         Button worshipreadySearchButton = (Button) v.findViewById(R.id.worshipreadySearchButton);
+        Button cameraButton = (Button) v.findViewById(R.id.cameraButton);
 
         worshipreadySearchButton.setVisibility(View.GONE);
 
@@ -1116,6 +1114,7 @@ public class OptionMenuListeners extends Activity {
         chordieSearchButton.setText(c.getString(R.string.chordiesearch).toUpperCase(FullscreenActivity.locale));
         String wr = c.getString(R.string.worshipready) + " " + c.getString(R.string.subscription);
         worshipreadySearchButton.setText(wr.toUpperCase(FullscreenActivity.locale));
+        cameraButton.setText(c.getString(R.string.camera).toUpperCase(FullscreenActivity.locale));
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -1157,6 +1156,17 @@ public class OptionMenuListeners extends Activity {
                     mListener.openFragment();
                 }
             }
+        });
+
+
+        cameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (mListener!=null) {
+                    mListener.useCamera();
+                }
+           }
         });
 
     }
@@ -1324,7 +1334,7 @@ public class OptionMenuListeners extends Activity {
         TextView menuUp = (TextView) v.findViewById(R.id.connectionsMenuTitle);
         SwitchCompat connectionsHostSwitch = (SwitchCompat) v.findViewById(R.id.connectionsHostSwitch);
         Button connectionsGuestButton = (Button) v.findViewById(R.id.connectionsGuestButton);
-        ImageView connectionsStatusImage = (ImageView) v.findViewById(R.id.connectionsStatusImage);
+        // ImageView connectionsStatusImage = (ImageView) v.findViewById(R.id.connectionsStatusImage);
 
         // Capitalise all the text by locale
         menuUp.setText(c.getString(R.string.options_connections).toUpperCase(FullscreenActivity.locale));
@@ -1344,17 +1354,7 @@ public class OptionMenuListeners extends Activity {
         connectionsHostSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    StageMode.isHost = b;
-                    if (mListener!=null) {
-                        mListener.startAdvertising();
-                    }
-                } else {
-                    StageMode.isHost = b;
-                    if (mListener!=null) {
-                        mListener.startDiscovery();
-                    }
-                }
+                Log.d("d","isHost="+b);
             }
         });
         connectionsGuestButton.setOnClickListener(new View.OnClickListener() {

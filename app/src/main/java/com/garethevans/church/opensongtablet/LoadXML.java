@@ -38,6 +38,10 @@ public class LoadXML extends Activity {
     // This bit loads the lyrics from the required file
     public static void loadXML() throws XmlPullParserException, IOException {
 
+        FullscreenActivity.isPDF = false;
+        FullscreenActivity.isSong = true;
+        FullscreenActivity.isImage = false;
+
         // Clear the heading default
         FullscreenActivity.songSection_holder = "";
 
@@ -65,34 +69,27 @@ public class LoadXML extends Activity {
             isxml = false;
         }
         if (FullscreenActivity.songfilename.endsWith(".jpg") || FullscreenActivity.songfilename.endsWith(".JPG") ||
+                FullscreenActivity.songfilename.endsWith(".jpeg") || FullscreenActivity.songfilename.endsWith(".JPEG") ||
                 FullscreenActivity.songfilename.endsWith(".png") || FullscreenActivity.songfilename.endsWith(".PNG") ||
-                FullscreenActivity.songfilename.endsWith(".gif") || FullscreenActivity.songfilename.endsWith(".GIF")) {
+                FullscreenActivity.songfilename.endsWith(".gif") || FullscreenActivity.songfilename.endsWith(".GIF") ||
+                FullscreenActivity.songfilename.endsWith(".bmp") || FullscreenActivity.songfilename.endsWith(".GIF")) {
             filetype = "IMG";
             isxml = false;
         }
 
+        Log.d("d","filetype="+filetype);
+
         // Determine the file encoding
-        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-            FullscreenActivity.file = new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename);
-        } else {
-            FullscreenActivity.file = new File(FullscreenActivity.dir + "/" +
-                    FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename);
+        getFileLocation();
+
+        if (filetype.equals("SONG")) {
+            utf = getUTFEncoding(FullscreenActivity.file);
         }
 
-        utf = getUTFEncoding(FullscreenActivity.file);
+        // if (androidapi > 20 || !filetype.equals("PDF") && (!filetype.equals("DOC") && (!filetype.equals("IMG")))) {
+        if (!filetype.equals("PDF") && !filetype.equals("DOC") && (!filetype.equals("IMG"))) {
 
-        if (androidapi > 20 || !filetype.equals("PDF") && (!filetype.equals("DOC") && (!filetype.equals("IMG")))) {
-            // Identify the file location
-            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                FullscreenActivity.file = new File(FullscreenActivity.dir + "/"
-                        + FullscreenActivity.songfilename);
-            } else {
-                FullscreenActivity.file = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
-                        + FullscreenActivity.songfilename);
-            }
-
-
-
+            Log.d("d","Trying to load song");
             // Initialise all the xml tags a song should have
             initialiseSongTags();
 
@@ -156,13 +153,8 @@ public class LoadXML extends Activity {
                     // Run the ChordProConvert script
                     OnSongConvert.doExtract();
                     ListSongFiles.listSongs();
-                    if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                        FullscreenActivity.file = new File(FullscreenActivity.dir + "/"
-                                + FullscreenActivity.songfilename);
-                    } else {
-                        FullscreenActivity.file = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
-                                + FullscreenActivity.songfilename);
-                    }
+                    getFileLocation();
+
                     // Now read in the proper OpenSong xml file
                     try {
                         grabOpenSongXML();
@@ -179,13 +171,8 @@ public class LoadXML extends Activity {
                     // Run the UsrConvert script
                     UsrConvert.doExtract();
                     ListSongFiles.listSongs();
-                    if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                        FullscreenActivity.file = new File(FullscreenActivity.dir + "/"
-                                + FullscreenActivity.songfilename);
-                    } else {
-                        FullscreenActivity.file = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
-                                + FullscreenActivity.songfilename);
-                    }
+                    getFileLocation();
+
                     // Now read in the proper OpenSong xml file
                     try {
                         grabOpenSongXML();
@@ -211,13 +198,7 @@ public class LoadXML extends Activity {
                     // Run the ChordProConvert script
                     ChordProConvert.doExtract();
                     ListSongFiles.listSongs();
-                    if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                        FullscreenActivity.file = new File(FullscreenActivity.dir + "/"
-                                + FullscreenActivity.songfilename);
-                    } else {
-                        FullscreenActivity.file = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
-                                + FullscreenActivity.songfilename);
-                    }
+                    getFileLocation();
                     // Now read in the proper OpenSong xml file
                     try {
                         grabOpenSongXML();
@@ -275,6 +256,12 @@ public class LoadXML extends Activity {
         } else {
             if (filetype.equals("PDF")) {
                 FullscreenActivity.isPDF = true;
+                FullscreenActivity.isSong = false;
+                FullscreenActivity.isImage = false;
+            } else if (filetype.equals("IMG")) {
+                FullscreenActivity.isPDF = false;
+                FullscreenActivity.isSong = false;
+                FullscreenActivity.isImage = true;
             }
             // Initialise the variables
             initialiseSongTags();
@@ -549,7 +536,7 @@ public class LoadXML extends Activity {
                 eventType = xpp.next();
             } catch (Exception e) {
                 //Ooops!
-                Log.d("d","error in file, or not xml");
+                Log.d("d","Line 534 - error in file, or not xml");
                 isxml = false;
             }
         }
@@ -638,6 +625,16 @@ public class LoadXML extends Activity {
             isvalid = true;
         }
         return isvalid;
+    }
+
+    public static void getFileLocation() {
+        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            FullscreenActivity.file = new File(FullscreenActivity.dir + "/"
+                    + FullscreenActivity.songfilename);
+        } else {
+            FullscreenActivity.file = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
+                    + FullscreenActivity.songfilename);
+        }
     }
 
     public static String templyrics = "[Intro]\n" +
