@@ -2,8 +2,12 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.pdf.PdfRenderer;
+import android.os.Build;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.LinearLayout;
@@ -12,6 +16,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -1829,11 +1834,120 @@ public class ProcessSong extends Activity {
         return tl;
     }
 
-    public static RelativeLayout createPDFSectionBox(Context c, int page) {
-        RelativeLayout sectionholder = new RelativeLayout(c);
-        sectionholder.setClipChildren(false);
-        sectionholder.setClipToPadding(false);
-        return sectionholder;
+    public static Bitmap createPDFPage(Context c, int pagewidth, int pageheight, String scale) {
+        String tempsongtitle = FullscreenActivity.songfilename.replace(".pdf", "");
+        tempsongtitle = tempsongtitle.replace(".PDF", "");
+        FullscreenActivity.mTitle = tempsongtitle;
+        FullscreenActivity.mAuthor = "";
+
+        // This only works for post Lollipop devices
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            LoadXML.getFileLocation();
+
+            // FileDescriptor for file, it allows you to close file when you are done with it
+            ParcelFileDescriptor mFileDescriptor = null;
+            PdfRenderer mPdfRenderer = null;
+
+            try {
+                mFileDescriptor = ParcelFileDescriptor.open(FullscreenActivity.file, ParcelFileDescriptor.MODE_READ_ONLY);
+                if (mFileDescriptor != null) {
+                    mPdfRenderer = new PdfRenderer(mFileDescriptor);
+                    FullscreenActivity.pdfPageCount = mPdfRenderer.getPageCount();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                FullscreenActivity.pdfPageCount = 0;
+            }
+
+            if (FullscreenActivity.pdfPageCurrent >= FullscreenActivity.pdfPageCount) {
+                FullscreenActivity.pdfPageCurrent = 0;
+            }
+
+            // Open page 0
+            PdfRenderer.Page mCurrentPage = null;
+            if (mPdfRenderer != null) {
+                //noinspection AndroidLintNewApi
+                mCurrentPage = mPdfRenderer.openPage(FullscreenActivity.pdfPageCurrent);
+            }
+
+            // Get pdf size from page
+            int pdfwidth;
+            int pdfheight;
+            if (mCurrentPage != null) {
+                pdfwidth = mCurrentPage.getWidth();
+                pdfheight = mCurrentPage.getHeight();
+            } else {
+                pdfwidth = 1;
+                pdfheight = 1;
+            }
+
+            switch (scale) {
+                case "Y":
+                    float xscale = (float) pagewidth / (float) pdfwidth;
+                    float yscale = (float) pageheight / (float) pdfheight;
+                    if (xscale > yscale) {
+                        xscale = yscale;
+                    } else {
+                        yscale = xscale;
+                    }
+                    pdfheight = (int) ((float) pdfheight * yscale);
+                    pdfwidth = (int) ((float) pdfwidth * xscale);
+                    break;
+
+                case "W":
+                    pdfheight = (int) (((float) pagewidth / (float) pdfwidth) * (float) pdfheight);
+                    pdfwidth = pagewidth;
+                    break;
+
+                default:
+                    // This means pdf will never be bigger than needed (even if scale is off)
+                    // This avoids massive files calling out of memory error
+                    if (pdfwidth > pagewidth) {
+                        pdfheight = (int) (((float) pagewidth / (float) pdfwidth) * (float) pdfheight);
+                        pdfwidth = pagewidth;
+                    }
+                    break;
+            }
+            if (pdfwidth == 0) {
+                pdfwidth = 1;
+            }
+            if (pdfheight == 0) {
+                pdfheight = 1;
+            }
+            Bitmap bitmap = Bitmap.createBitmap(pdfwidth, pdfheight, Bitmap.Config.ARGB_8888);
+            // Be aware this pdf might have transparency.  For now, I've just set the background
+            // of the image view to white.  This is fine for most PDF files.
+
+            // Pdf page is rendered on Bitmap
+            if (mCurrentPage != null) {
+                mCurrentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+            }
+
+            if (mCurrentPage != null) {
+                mCurrentPage.close();
+            }
+
+            if (mPdfRenderer != null) {
+                mPdfRenderer.close();
+            }
+
+            if (mFileDescriptor != null) {
+                try {
+                    mFileDescriptor.close();
+                } catch (Exception e) {
+                    // Problem closing the file descriptor, but not critical
+                }
+            }
+            return bitmap;
+
+        } else {
+            // Make the image to be displayed on the screen a pdf icon
+            FullscreenActivity.myToastMessage = c.getResources().getString(R.string.nothighenoughapi);
+            ShowToast.showToast(c);
+
+            return null;
+        }
     }
 
     public static float getScaleValue(float x, float y, float fontsize) {

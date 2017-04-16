@@ -16,7 +16,6 @@ class CastOptionsProvider implements OptionsProvider {
                 .setReceiverApplicationId(context.getString(R.string.app_id)).build();
     }
 
-
     @Override
     public List<SessionProvider> getAdditionalSessionProviders(Context context) {
         return null;

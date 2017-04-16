@@ -2,7 +2,9 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,11 +13,13 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 
@@ -111,6 +115,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         static AsyncTask<Object, Void, String> projectedPerformanceView2Col_async;
         static AsyncTask<Object, Void, String> projectedPerformanceView3Col_async;
 
+        @SuppressLint("StaticFieldLeak")
+        static Context c;
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -128,6 +135,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             col1_3                       = (LinearLayout)   findViewById(R.id.col1_3);
             col2_3                       = (LinearLayout)   findViewById(R.id.col2_3);
             col3_3                       = (LinearLayout)   findViewById(R.id.col3_3);
+
+            c = projectedPage_RelativeLayout.getContext();
 
             // Change margins
             changeMargins();
@@ -176,21 +185,62 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         }
 
         static void doUpdate() {
-            // Check the background page colour
-            projectedPage_RelativeLayout.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
-            songinfo_TextView.setTextColor(FullscreenActivity.lyricsTextColor);
+            // First up, animate everything away
+            animateOut();
 
-            //projected_LinearLayout.removeAllViews();
+            // Now run the next bit post delayed (to wait for the animate out)
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // Wipe any current views
+                    wipeAllViews();
 
-            // Set the title of the song and author (if available)
-            setSongTitle();
+                    // Check the background page colour
+                    projectedPage_RelativeLayout.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
+                    songinfo_TextView.setTextColor(FullscreenActivity.lyricsTextColor);
 
-            // Decide on what we are going to show
-            if (FullscreenActivity.whichMode.equals("Stage")) {
-                prepareStageProjected();
-            } else {
-                prepareFullProjected();
-            }
+                    //projected_LinearLayout.removeAllViews();
+
+                    // Set the title of the song and author (if available)
+                    setSongTitle();
+
+                    // Decide on what we are going to show
+                    if (FullscreenActivity.isPDF) {
+                        doPDFPage();
+                    } else if (FullscreenActivity.isImage) {
+                        doImagePage();
+                    } else {
+                        projected_ImageView.setVisibility(View.GONE);
+                        projected_ImageView.setBackgroundColor(0x00000000);
+                        if (FullscreenActivity.whichMode.equals("Stage")) {
+                            prepareStageProjected();
+                        } else {
+                            prepareFullProjected();
+                        }
+                    }
+
+                    animateIn();
+                }
+            }, 800);
+        }
+
+        static void doPDFPage() {
+
+            Bitmap bmp = ProcessSong.createPDFPage(c, availableScreenWidth, availableScreenHeight, "Y");
+            projected_ImageView.setVisibility(View.GONE);
+            projected_ImageView.setBackgroundColor(0xffffffff);
+            projected_ImageView.setImageBitmap(bmp);
+            projected_ImageView.setVisibility(View.VISIBLE);
+        }
+
+        static void doImagePage() {
+            projected_ImageView.setVisibility(View.GONE);
+            projected_ImageView.setBackgroundColor(0x00000000);
+            // Process the image location into an URI
+            Uri imageUri = Uri.fromFile(FullscreenActivity.file);
+            Glide.with(c).load(imageUri).into(projected_ImageView);
+            projected_ImageView.setVisibility(View.VISIBLE);
         }
 
         static void setSongTitle() {
@@ -722,5 +772,22 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             }
         }
 
+        static void animateOut() {
+            // Fade out the main page
+            projected_LinearLayout.startAnimation(AnimationUtils.loadAnimation(c.getApplicationContext(), R.anim.fadeout));
+            projected_ImageView.startAnimation(AnimationUtils.loadAnimation(c.getApplicationContext(), R.anim.fadeout));
+        }
+
+        static void animateIn() {
+            // Fade in the main page
+            projected_LinearLayout.startAnimation(AnimationUtils.loadAnimation(c.getApplicationContext(), R.anim.fadein));
+            projected_ImageView.startAnimation(AnimationUtils.loadAnimation(c.getApplicationContext(), R.anim.fadein));
+        }
+
+        static void wipeAllViews() {
+            projected_LinearLayout.removeAllViews();
+            projected_ImageView.setImageBitmap(null);
+        }
     }
-}
+
+ }
