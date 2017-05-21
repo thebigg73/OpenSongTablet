@@ -1,10 +1,13 @@
 package com.garethevans.church.opensongtablet;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.view.View;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -119,7 +122,15 @@ class AutoScrollFunctions {
 
         @Override
         public void run() {
-            sv.smoothScrollTo(0, (int) FullscreenActivity.newPosFloat);
+            ObjectAnimator animator;
+
+            animator = ObjectAnimator.ofInt(sv, "scrollY", sv.getScrollY(), (int) FullscreenActivity.newPosFloat);
+            Interpolator linearInterpolator = new LinearInterpolator();
+            animator.setInterpolator(linearInterpolator);
+            animator.setDuration(FullscreenActivity.autoscroll_pause_time);
+            if (!FullscreenActivity.isManualDragging) {
+                animator.start();
+            }
         }
     }
 
@@ -144,17 +155,4 @@ class AutoScrollFunctions {
             }
         }
     }
-
-    static boolean isAutoScrollValid() {
-
-        return true;
-/*        getAutoScrollTimes();
-        if ((FullscreenActivity.autoScrollDuration > 0 && FullscreenActivity.autoScrollDelay > 0) ||
-                FullscreenActivity.usingdefaults) {
-            return true;
-        } else {
-            return false;
-        }*/
-    }
-
 }

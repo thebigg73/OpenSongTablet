@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.content.Intent;
@@ -61,11 +62,10 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 	View custom2_metronome;
     Button goback;
 
-    public static TextView dark_theme_heading;
-    public static TextView light_theme_heading;
-    public static TextView custom1_theme_heading;
-    public static TextView custom2_theme_heading;
-
+    public TextView dark_theme_heading;
+    public TextView light_theme_heading;
+    public TextView custom1_theme_heading;
+    public TextView custom2_theme_heading;
 
 	int initialcolor;
 	int newcolor;
@@ -857,4 +857,4 @@ public class ChangeDisplayPreferences extends AppCompatActivity {
 		intent.setClass(ChangeDisplayPreferences.this, FullscreenActivity.class);
 		startActivity(intent);
 	}
-}
+}*/

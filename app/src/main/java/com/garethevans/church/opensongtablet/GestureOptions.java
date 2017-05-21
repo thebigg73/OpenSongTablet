@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.content.Intent;
@@ -495,4 +496,4 @@ public class GestureOptions extends AppCompatActivity {
 		finish();
 	}
 
-}
+}*/

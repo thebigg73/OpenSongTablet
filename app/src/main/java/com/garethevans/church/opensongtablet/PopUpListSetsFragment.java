@@ -674,7 +674,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         protected String doInBackground(Object... objects) {
             // Run the script that generates the email text which has the set details in it.
             try {
-                ExportPreparer.setParser();
+                ExportPreparer.setParser(getActivity());
             } catch (XmlPullParserException | IOException e) {
                 e.printStackTrace();
             }
@@ -774,7 +774,7 @@ public class PopUpListSetsFragment extends DialogFragment {
             }
 
             emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-            startActivityForResult(Intent.createChooser(emailIntent, FullscreenActivity.exportsavedset), 12345);
+            startActivityForResult(Intent.createChooser(emailIntent, getActivity().getResources().getString(R.string.exportsavedset)), 12345);
 
             return null;
         }
@@ -809,7 +809,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 if (tempfile!=null && !tempfile.equals("") && !tempfile.isEmpty()) {
                     try {
                         FullscreenActivity.settoload = tempfile;
-                        SetActions.loadASet();
+                        SetActions.loadASet(getActivity());
                     } catch (XmlPullParserException | IOException e) {
                         e.printStackTrace();
                     }
@@ -838,7 +838,7 @@ public class PopUpListSetsFragment extends DialogFragment {
 
             if (result.equals("LOADED") && !dataTask.isCancelled()) {
                 // Get the set first item
-                SetActions.prepareFirstItem();
+                SetActions.prepareFirstItem(getActivity());
 
                 // Save the new set to the preferences
                 Preferences.savePreferences();

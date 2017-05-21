@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
     xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="109"
-    android:versionName="3.9.901"
+    android:versionCode="112"
+    android:versionName="3.9.904"
     android:installLocation="auto">
 
     <!--Overrides are for Sdk=12/13 but library specifies Sdk=14+-->
@@ -14,7 +14,8 @@
         com.google.android.gms.cast.framework,
         com.google.android.gms.cast,
         com.google.android.gms.base,
-        com.google.android.gms.tasks"/>
+        com.google.android.gms.tasks,
+        com.peak.salut"/>
 
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
@@ -22,6 +23,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -34,7 +37,8 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_round_launcher"
         android:label="@string/app_name"
-        android:theme="@style/MyTheme">
+        android:theme="@style/MyTheme"
+        android:name="android.support.multidex.MultiDexApplication">
 
         <!--android:name="android.support.multidex.MultiDexApplication"-->
 
@@ -75,7 +79,9 @@
             android:name="com.garethevans.church.opensongtablet.SettingsActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:label="@string/app_name" >
-            <intent-filter>
+            <intent-filter
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -105,7 +111,8 @@
             </intent-filter>
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
-                android:roundIcon="@mipmap/ic_round_launcher">
+                android:roundIcon="@mipmap/ic_round_launcher"
+                tools:ignore="GoogleAppIndexingWarning">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -254,32 +261,44 @@
             </intent-filter>
 
         </activity>
+<!--
         <activity
             android:name="com.garethevans.church.opensongtablet.ChangeDisplayPreferences"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:label="@string/app_name" >
         </activity>
+-->
+<!--
         <activity
             android:name="com.garethevans.church.opensongtablet.CustomChord"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:label="@string/app_name" >
         </activity>
+-->
+<!--
         <activity
             android:name="com.garethevans.church.opensongtablet.ListSongFiles"
             android:label="@string/app_name" >
         </activity>
+-->
+<!--
         <activity
             android:name="com.garethevans.church.opensongtablet.SearchViewFilterModeNew"
             android:label="@string/app_name" >
         </activity>
+-->
+<!--
         <activity
             android:name="com.garethevans.church.opensongtablet.ChordProConvert"
             android:label="@string/app_name" >
         </activity>
+-->
+<!--
         <activity
             android:name="com.garethevans.church.opensongtablet.Chordie"
             android:label="@string/app_name" >
         </activity>
+-->
         <activity
             android:name="com.garethevans.church.opensongtablet.PresenterMode"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
@@ -291,22 +310,28 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name">
         </activity>
+<!--
         <activity
             android:name="com.garethevans.church.opensongtablet.ChordFormat"
             android:label="@string/app_name" >
         </activity>
-        <activity
+        -->
+ <!--       <activity
             android:name="com.garethevans.church.opensongtablet.BibleSelect"
             android:label="@string/app_name" >
         </activity>
+--><!--
         <activity
             android:name="com.garethevans.church.opensongtablet.GestureOptions"
             android:label="@string/app_name" >
         </activity>
+-->
+<!--
         <activity
             android:name="com.garethevans.church.opensongtablet.StorageChooser"
             android:label="@string/app_name" >
         </activity>
+-->
 
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->

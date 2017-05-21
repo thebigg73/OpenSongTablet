@@ -1,8 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Base64;
+
 import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +15,7 @@ public class CreateNewSet extends Activity {
     public static String tempsongfilename;
     public static String tempdir;
 
-    public static boolean doCreation() {
+    public static boolean doCreation(Context c) {
 
         // Keep the current song and directory aside for now
         tempsongfilename = FullscreenActivity.songfilename;
@@ -43,11 +46,11 @@ public class CreateNewSet extends Activity {
                 if (songparts[0].length() > 0) {
                     songparts[0] = songparts[0] + "/";
                 }
-                if (!songparts[0].contains("**"+FullscreenActivity.image) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_variation) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_scripture) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_slide) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_note)) {
+                if (!songparts[0].contains("**"+c.getResources().getString(R.string.image)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.variation)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.scripture)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.slide)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.note))) {
                     // Adding a song
                     FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
                             + "  <slide_group name=\""
@@ -56,17 +59,17 @@ public class CreateNewSet extends Activity {
                             + PopUpEditSongFragment.parseToHTMLEntities(songparts[0]) + "\"/>\n";
 
 
-                } else if (songparts[0].contains("**"+FullscreenActivity.text_scripture) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_variation) &&
-                        !songparts[0].contains("**"+FullscreenActivity.image) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_slide) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_note)) {
+                } else if (songparts[0].contains("**"+c.getResources().getString(R.string.scripture)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.variation)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.image)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.slide)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.note))) {
                     // Adding a scripture
                     // Load the scripture file up
                     FullscreenActivity.whichSongFolder = "../Scripture/_cache";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML();
+                        LoadXML.loadXML(c);
                     } catch (XmlPullParserException | IOException e) {
                         e.printStackTrace();
                     }
@@ -104,18 +107,18 @@ public class CreateNewSet extends Activity {
                             + "    <notes />\n"
                             + "  </slide_group>\n";
 
-                } else if (songparts[0].contains("**"+FullscreenActivity.text_slide) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_variation) &&
-                        !songparts[0].contains("**"+FullscreenActivity.image) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_note) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_scripture)) {
+                } else if (songparts[0].contains("**"+c.getResources().getString(R.string.slide)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.variation)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.image)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.note)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.scripture))) {
                     // Adding a custom slide
                     // Load the slide file up
                     // Keep the songfile as a temp
                     FullscreenActivity.whichSongFolder = "../Slides/_cache";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML();
+                        LoadXML.loadXML(c);
                     } catch (XmlPullParserException | IOException e) {
                         e.printStackTrace();
                     }
@@ -156,18 +159,18 @@ public class CreateNewSet extends Activity {
                             + "  </slide_group>\n";
 
 
-                } else if (songparts[0].contains("**"+FullscreenActivity.text_note) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_variation) &&
-                        !songparts[0].contains("**"+FullscreenActivity.image) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_slide) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_scripture)) {
+                } else if (songparts[0].contains("**"+c.getResources().getString(R.string.note)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.variation)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.image)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.slide)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.scripture))) {
                     // Adding a custom note
 
                     // Load the note up to grab the contents
                     FullscreenActivity.whichSongFolder = "../Notes/_cache";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML();
+                        LoadXML.loadXML(c);
                     } catch (XmlPullParserException | IOException e) {
                         e.printStackTrace();
                     }
@@ -177,7 +180,7 @@ public class CreateNewSet extends Activity {
                     String slide_lyrics = FullscreenActivity.mLyrics;
 
                     FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
-                            + "  <slide_group name=\"# " + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.text_note) + " # - " + songparts[1] + "\""
+                            + "  <slide_group name=\"# " + PopUpEditSongFragment.parseToHTMLEntities(c.getResources().getString(R.string.note)) + " # - " + songparts[1] + "\""
                             + " type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n"
                             + "    <title></title>\n"
                             + "    <subtitle></subtitle>\n"
@@ -187,11 +190,11 @@ public class CreateNewSet extends Activity {
 
 
 
-                } else if (songparts[0].contains("**"+FullscreenActivity.text_variation) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_note) &&
-                        !songparts[0].contains("**"+FullscreenActivity.image) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_slide) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_scripture)) {
+                } else if (songparts[0].contains("**"+c.getResources().getString(R.string.variation)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.note)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.image)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.slide)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.scripture))) {
                     // Adding a variation
                     // The entire song is copied to the notes, and a simplified version is copied to the text
 
@@ -199,7 +202,7 @@ public class CreateNewSet extends Activity {
                     FullscreenActivity.whichSongFolder = "../Variations";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML();
+                        LoadXML.loadXML(c);
                     } catch (XmlPullParserException | IOException e) {
                         e.printStackTrace();
                     }
@@ -248,7 +251,7 @@ public class CreateNewSet extends Activity {
                     }
 
                     FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
-                            + "  <slide_group name=\"# " + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.text_variation) + " # - " + songparts[1] + "\""
+                            + "  <slide_group name=\"# " + PopUpEditSongFragment.parseToHTMLEntities(c.getResources().getString(R.string.variation)) + " # - " + songparts[1] + "\""
                             + " type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n"
                             + "    <title>"+PopUpEditSongFragment.parseToHTMLEntities(songparts[1])+"</title>\n"
                             + "    <subtitle>"+PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mAuthor.toString())+"</subtitle>\n"
@@ -258,18 +261,18 @@ public class CreateNewSet extends Activity {
                             + "  </slide_group>\n";
 
 
-                } else if (songparts[0].contains("**"+FullscreenActivity.image) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_variation) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_note) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_slide) &&
-                        !songparts[0].contains("**"+FullscreenActivity.text_scripture)) {
+                } else if (songparts[0].contains("**"+c.getResources().getString(R.string.image)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.variation)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.note)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.slide)) &&
+                        !songparts[0].contains("**"+c.getResources().getString(R.string.scripture))) {
                     // Adding a custom image slide
 
                     // Load the image slide up to grab the contents
                     FullscreenActivity.whichSongFolder = "../Images/_cache";
                     FullscreenActivity.songfilename = songparts[1];
                     try {
-                        LoadXML.loadXML();
+                        LoadXML.loadXML(c);
                     } catch (XmlPullParserException | IOException e) {
                         e.printStackTrace();
                     }
@@ -339,7 +342,7 @@ public class CreateNewSet extends Activity {
             FullscreenActivity.songfilename = tempsongfilename;
             FullscreenActivity.whichSongFolder = tempdir;
             try {
-                LoadXML.loadXML();
+                LoadXML.loadXML(c);
             } catch (XmlPullParserException | IOException e) {
                 e.printStackTrace();
             }

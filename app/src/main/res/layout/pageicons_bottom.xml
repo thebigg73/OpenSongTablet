@@ -21,7 +21,7 @@
             android:layout_marginEnd="8dp"
             android:alpha="0.4"
             android:contentDescription="@string/pad_onoroff"
-            android:src="@drawable/page_speaker_bw"
+            android:src="@drawable/ic_amplifier_white_36dp"
             android:tag="togglePlayPads"
             android:visibility="gone" />
 
@@ -37,7 +37,7 @@
             android:layout_toEndOf="@id/padbutton"
             android:alpha="0.4"
             android:contentDescription="@string/stickynotes"
-            android:src="@drawable/page_autoscroll_bw"
+            android:src="@drawable/ic_rotate_right_white_36dp"
             android:visibility="gone" />
 
         <ImageView
@@ -52,7 +52,7 @@
             android:layout_toEndOf="@id/autoscroll"
             android:alpha="0.4"
             android:contentDescription="@string/stickynotes"
-            android:src="@drawable/page_metronome_bw"
+            android:src="@drawable/ic_pulse_white_36dp"
             android:visibility="gone" />
 
         <ImageView
@@ -68,7 +68,7 @@
             android:alpha="0.6"
             android:contentDescription="@string/set_back"
             android:onClick="doScrollUp"
-            android:src="@drawable/page_up_bw"
+            android:src="@drawable/ic_arrow_up_white_36dp"
             android:visibility="gone" />
 
         <ImageView
@@ -84,7 +84,7 @@
             android:alpha="0.6"
             android:contentDescription="@string/set_forward"
             android:onClick="doScrollDown"
-            android:src="@drawable/page_down_bw"
+            android:src="@drawable/ic_arrow_down_white_36dp"
             android:visibility="gone" />
 
         <ImageView
@@ -100,7 +100,7 @@
             android:alpha="0.4"
             android:contentDescription="@string/pdf_selectpage"
             android:onClick="pdfSelectPage"
-            android:src="@drawable/page_pdf_bw"
+            android:src="@drawable/ic_file_pdf_white_36dp"
             android:visibility="gone" />
 
         <ImageView
@@ -116,7 +116,7 @@
             android:alpha="0.4"
             android:contentDescription="@string/stickynotes"
             android:onClick="stickyNotes"
-            android:src="@drawable/page_notes_bw"
+            android:src="@drawable/ic_note_text_white_36dp"
             android:visibility="gone" />
 
         <ImageView
@@ -132,7 +132,7 @@
             android:alpha="0.4"
             android:contentDescription="@string/chords"
             android:onClick="popupChords_toggle"
-            android:src="@drawable/page_guitar_bw"
+            android:src="@drawable/ic_guitar_electric_white_36dp"
             android:visibility="gone" />
 
         <ImageView
@@ -147,7 +147,7 @@
             android:layout_toEndOf="@id/chordbutton"
             android:alpha="0.4"
             android:contentDescription="@string/link"
-            android:src="@drawable/page_link_bw"
+            android:src="@drawable/ic_link_white_36dp"
             android:onClick="popupLink"
             android:visibility="gone" />
     </RelativeLayout>

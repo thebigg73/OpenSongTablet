@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.content.Context;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,9 +16,11 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
 
     //private static List<SetItemInfo> setList;
     private List<SetItemInfo> setList;
+    Context c;
 
-    MyAdapter(List<SetItemInfo> setList) {
+    MyAdapter(List<SetItemInfo> setList, Context context) {
         this.setList = setList;
+        c = context;
     }
 
     @Override
@@ -36,15 +39,15 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
         setitemViewHolder.vSongTitle.setText(si.songtitle);
         setitemViewHolder.vSongFolder.setText(newfoldername);
         boolean issong = false;
-        if (si.songicon.equals(FullscreenActivity.text_slide)) {
+        if (si.songicon.equals(c.getResources().getString(R.string.slide))) {
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_projector_screen_white_36dp);
-        } else if (si.songicon.equals(FullscreenActivity.text_note)) {
+        } else if (si.songicon.equals(c.getResources().getString(R.string.note))) {
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_note_text_white_36dp);
-        } else if (si.songicon.equals(FullscreenActivity.text_scripture)) {
+        } else if (si.songicon.equals(c.getResources().getString(R.string.scripture))) {
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_book_white_36dp);
-        } else if (si.songicon.equals(FullscreenActivity.image)) {
+        } else if (si.songicon.equals(c.getResources().getString(R.string.image))) {
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_image_white_36dp);
-        } else if (si.songicon.equals(FullscreenActivity.text_variation)) {
+        } else if (si.songicon.equals(c.getResources().getString(R.string.variation))) {
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_file_xml_white_36dp);
         } else if (si.songicon.equals(".pdf")) {
             setitemViewHolder.vIcon.setImageResource(R.drawable.ic_file_pdf_white_36dp);
@@ -54,15 +57,15 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
         }
 
         String folderrelocate;
-        if (si.songicon.equals(FullscreenActivity.image)) {
+        if (si.songicon.equals(c.getResources().getString(R.string.image))) {
             folderrelocate = "../Images/_cache";
-        } else if (si.songicon.equals(FullscreenActivity.text_note)) {
+        } else if (si.songicon.equals(c.getResources().getString(R.string.note))) {
             folderrelocate = "../Notes/_cache";
-        } else if (si.songicon.equals(FullscreenActivity.text_scripture)) {
+        } else if (si.songicon.equals(c.getResources().getString(R.string.scripture))) {
             folderrelocate = "../Scripture/_cache";
-        } else if (si.songicon.equals(FullscreenActivity.text_slide)) {
+        } else if (si.songicon.equals(c.getResources().getString(R.string.slide))) {
             folderrelocate = "../Slides/_cache";
-        } else if (si.songicon.equals(FullscreenActivity.variation)) {
+        } else if (si.songicon.equals(c.getResources().getString(R.string.variation))) {
             folderrelocate = "../Variations";
         } else {
             folderrelocate = si.songfolder;
@@ -110,7 +113,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
                 }
 
                 if (FullscreenActivity.whattodo.equals("setitemvariation")) {
-                    PopUpSetViewNew.makeVariation();
+                    PopUpSetViewNew.makeVariation(c);
 
                 } else {
                     PopUpSetViewNew.loadSong();

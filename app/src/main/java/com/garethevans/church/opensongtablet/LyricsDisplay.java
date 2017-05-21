@@ -1,6 +1,8 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
+import android.content.Context;
 
 import java.util.ArrayList;
 
@@ -9,7 +11,9 @@ public class LyricsDisplay extends Activity {
 	static String tempPresentationOrder;
 
 	// This bit parses the lyrics
-	public static void parseLyrics() {
+	public static void parseLyrics(Context c) {
+*/
+/*
 		// Keep myLyrics and mLyrics variables the same
 		FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
 		FullscreenActivity.myLyrics = ProcessSong.removeUnderScores(FullscreenActivity.mLyrics);
@@ -17,7 +21,7 @@ public class LyricsDisplay extends Activity {
 		// Does the user want to use the custom presentation order?
 		// If so, parse the song into an appropriate format first
 		// Only do this if this isn't a scripture - as it starts with numbers!
-		if (!FullscreenActivity.whichSongFolder.contains(FullscreenActivity.scripture)) {
+		if (!FullscreenActivity.whichSongFolder.contains(c.getResources().getString(R.string.scripture))) {
 			parseToPresentationOrder();
 		}
 
@@ -54,10 +58,14 @@ public class LyricsDisplay extends Activity {
 				}
 			}
 		}
+*//*
+
 	}
 
 	public static void replaceLyricsCode() {
 
+*/
+/*
 		// Set the size of the whatisthisline and whatisthisblock arrays
 		FullscreenActivity.whatisthisblock = new String[FullscreenActivity.numrowstowrite];
 		FullscreenActivity.whatisthisline = new String[FullscreenActivity.numrowstowrite];
@@ -336,10 +344,17 @@ public class LyricsDisplay extends Activity {
                 }
             }
         }
+*//*
+
 	}
 	
 	public static void lookForSplitPoints() {
-		// Script to determine 2 columns split details
+*/
+/*
+		// Script to determine 2 columns split details*//*
+
+*/
+/*
 		int halfwaypoint = Math.round(FullscreenActivity.numrowstowrite / 2);
 		// Look for nearest split point before halfway
 		int splitpoint_1sthalf = 0;
@@ -477,13 +492,16 @@ public class LyricsDisplay extends Activity {
 			FullscreenActivity.twothirdsplitpoint = splitpoint_beforetwothirdway;
 		} else {
 			FullscreenActivity.twothirdsplitpoint = splitpoint_pasttwothirdway;
-		}
+		}*//*
+
 	}
 
 	public static void parseToPresentationOrder() {
 		// The presentation order is separated by spaces.  One issue is that custom tags might have spaces in them
 		// Go through the song and look for all tag.  Make a temp lyrics string
 		//FullscreenActivity.mLyrics = FullscreenActivity.myLyrics;
+*/
+/*
 		String[] lookfortagslyrics = FullscreenActivity.myLyrics.split("\n");
 		ArrayList<String> temp_title = new ArrayList<> ();
 		ArrayList<String> temp_content = new ArrayList<> ();
@@ -908,5 +926,7 @@ public class LyricsDisplay extends Activity {
 		FullscreenActivity.myLyrics = newimprovedlyrics;
 		FullscreenActivity.foundSongSections_heading = temp_title;
 		FullscreenActivity.foundSongSections_content = temp_content;
+*//*
+
 	}
-}
+}*/

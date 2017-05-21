@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/popup_bg"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/menu_width"
+            style="@style/MyHeadingText" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <SeekBar
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/scalemenu_SeekBar"
+                android:layout_weight="1"
+                android:layout_margin="8dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
+                android:max="5"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/MyInfoText"
+                android:id="@+id/scalemenu_TextView"
+                android:layout_margin="8dp" />
+        </LinearLayout>
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/gesturesMenuSwipeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="24dp"
+            android:layout_margin="8dp"
+            android:theme="@style/SwitchStyle"
+            android:text="@string/options_options_menuswipe"
+            android:textColor="#ff0"
+            app:showText="false" />
+
+    </LinearLayout>
+
+</ScrollView>

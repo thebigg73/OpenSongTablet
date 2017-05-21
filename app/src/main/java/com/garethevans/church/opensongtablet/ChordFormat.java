@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.content.Intent;
@@ -15,12 +16,13 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 public class ChordFormat extends AppCompatActivity {
 	
 	//Variables
-	static RadioGroup radioGroup;
-	static RadioGroup radioGroup2;
+	RadioGroup radioGroup;
+	RadioGroup radioGroup2;
 	static String numeral;
 	static String numeral2;
-    static Button exitChordFormat;
+    Button exitChordFormat;
 
+*/
 /*
     Switch switchAb;
     Switch switchBb;
@@ -32,7 +34,8 @@ public class ChordFormat extends AppCompatActivity {
     Switch switchDbm;
     Switch switchEbm;
     Switch switchGbm;
-*/
+*//*
+
 
     SwitchCompat switchAb;
     SwitchCompat switchBb;
@@ -72,6 +75,7 @@ public class ChordFormat extends AppCompatActivity {
         }
 
         // Set up the preferred chord buttons
+*/
 /*
         switchAb = (Switch) findViewById(R.id.switchAb);
         switchBb = (Switch) findViewById(R.id.switchBb);
@@ -83,7 +87,8 @@ public class ChordFormat extends AppCompatActivity {
         switchDbm = (Switch) findViewById(R.id.switchDbm);
         switchEbm = (Switch) findViewById(R.id.switchEbm);
         switchGbm = (Switch) findViewById(R.id.switchGbm);
-*/
+*//*
+
 
         switchAb = (SwitchCompat) findViewById(R.id.switchAb);
         switchBb = (SwitchCompat) findViewById(R.id.switchBb);
@@ -260,13 +265,15 @@ public class ChordFormat extends AppCompatActivity {
 		finish();
 	}
 
+*/
 /*    public void setSwitches(String what, Switch myswitch) {
         if (what.equals("b")) {
             myswitch.setChecked(false);
         } else {
             myswitch.setChecked(true);
         }
-    }*/
+    }*//*
+
 
     public void setSwitches(String what, SwitchCompat myswitch) {
         if (what.equals("b")) {
@@ -275,4 +282,4 @@ public class ChordFormat extends AppCompatActivity {
             myswitch.setChecked(true);
         }
     }
-}
+}*/

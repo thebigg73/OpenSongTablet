@@ -41,7 +41,6 @@ public class PopUpProfileFragment extends DialogFragment {
     public interface MyInterface {
         void refreshAll();
         void setupPageButtons(String s);
-        void showpagebuttons();
     }
 
     private MyInterface mListener;
@@ -390,7 +389,10 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.hideActionBar = getBooleanValue(xpp.nextText(),false);
 
                 } else if (xpp.getName().equals("swipeForMenus")) {
-                    FullscreenActivity.swipeForMenus = getBooleanValue(xpp.nextText(),true);
+                    FullscreenActivity.swipeForMenus = getBooleanValue(xpp.nextText(), true);
+
+                } else if (xpp.getName().equals("menuSize")) {
+                    FullscreenActivity.menuSize = getFloatValue(xpp.nextText(), 0.5f);
 
                 } else if (xpp.getName().equals("swipeForSongs")) {
                     FullscreenActivity.swipeForSongs = getBooleanValue(xpp.nextText(),true);
@@ -566,7 +568,6 @@ public class PopUpProfileFragment extends DialogFragment {
         SetUpColours.colours();
         mListener.refreshAll();
         mListener.setupPageButtons("");
-        mListener.showpagebuttons();
     }
 
     public int getIntegerValue(String s, int def) {
@@ -637,6 +638,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <swipeSet>" + FullscreenActivity.swipeSet + "</swipeSet>\n";
         text += "  <hideActionBar>" + FullscreenActivity.hideActionBar + "</hideActionBar>\n";
         text += "  <swipeForMenus>" + FullscreenActivity.swipeForSongs + "</swipeForMenus>\n";
+        text += "  <menuSize>" + FullscreenActivity.menuSize + "</menuSize>\n";
         text += "  <swipeForSongs>" + FullscreenActivity.swipeForSongs + "</swipeForSongs>\n";
         text += "  <transposeStyle>" + FullscreenActivity.transposeStyle + "</transposeStyle>\n";
         text += "  <showChords>" + FullscreenActivity.showChords + "</showChords>\n";

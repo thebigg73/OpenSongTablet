@@ -60,7 +60,6 @@ public class PopUpAlertFragment extends DialogFragment {
     }
 
     public void doClose() {
-        PresenterMode.myAlert = alertMessage.getText().toString().trim();
         FullscreenActivity.myAlert = alertMessage.getText().toString().trim();
         Preferences.savePreferences();
         dismiss();
@@ -91,13 +90,13 @@ public class PopUpAlertFragment extends DialogFragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // Turn on the alert
-                    PresenterMode.myAlert = alertMessage.getText().toString().trim();
+                    FullscreenActivity.myAlert = alertMessage.getText().toString().trim();
                     PresenterMode.alert_on = "Y";
-                    MyPresentation.fadeinAlert();
+                    PresentationService.ExternalDisplay.fadeinAlert();
                 } else {
                     // Turn off the alert
                     PresenterMode.alert_on = "N";
-                    MyPresentation.fadeoutAlert();
+                    PresentationService.ExternalDisplay.fadeoutAlert();
                 }
                 FullscreenActivity.myAlert = alertMessage.getText().toString().trim();
                 Preferences.savePreferences();

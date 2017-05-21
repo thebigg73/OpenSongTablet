@@ -227,6 +227,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        dismiss();
     }
 
     public void grabLinkAudioTime() {

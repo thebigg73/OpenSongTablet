@@ -172,7 +172,7 @@ public class PopUpOptionMenuSet extends DialogFragment {
                         FullscreenActivity.linkclicked = FullscreenActivity.mSetList[val];
                         FullscreenActivity.indexSongInSet = val;
                         SetActions.songIndexClickInSet();
-                        SetActions.getSongFileAndFolder();
+                        SetActions.getSongFileAndFolder(getActivity());
                         mListener.loadSong();
                         dismiss();
                     }

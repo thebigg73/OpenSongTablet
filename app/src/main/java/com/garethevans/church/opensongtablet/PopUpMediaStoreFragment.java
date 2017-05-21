@@ -163,7 +163,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
                 String fullname = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                 String data = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                 mediaSelected.setText(fullname);
-                startPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play));
+                startPlay.setImageDrawable(getResources().getDrawable(R.drawable.ic_play_white_36dp));
                 PresenterMode.mpTitle = fullname;
                 if (PresenterMode.mp.isPlaying()) {
                     PresenterMode.mp.stop();

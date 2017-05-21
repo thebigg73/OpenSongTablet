@@ -1,8 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
-
-public class SetTypeFace extends Activity {
+class SetTypeFace {
 
     public static void setTypeface() {
         switch (FullscreenActivity.mylyricsfontnum) {
@@ -145,7 +143,7 @@ public class SetTypeFace extends Activity {
         }
     }
 
-    public static String setupWebViewLyricFont(int fontnum) {
+    static String setupWebViewLyricFont(int fontnum) {
 
         String fontcode = "";
 
@@ -239,7 +237,7 @@ public class SetTypeFace extends Activity {
         return fontcode;
     }
 
-    public static String setupWebViewChordFont(int fontnum) {
+    static String setupWebViewChordFont(int fontnum) {
 
         String fontcode = "";
         boolean already = false;

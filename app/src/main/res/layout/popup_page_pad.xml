@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:theme="@style/SwitchStyle"
+                android:theme="@style/SwitchStyle"
                 android:text="@string/loop"
                 android:textAppearance="@android:style/TextAppearance.Medium"
                 style="@style/MyHeadingText"

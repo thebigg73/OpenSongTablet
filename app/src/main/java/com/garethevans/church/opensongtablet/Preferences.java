@@ -6,18 +6,14 @@ import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 
-import static com.garethevans.church.opensongtablet.FullscreenActivity.backtooptions;
-import static com.garethevans.church.opensongtablet.FullscreenActivity.clearthisset;
+import java.util.Locale;
+
 import static com.garethevans.church.opensongtablet.FullscreenActivity.mainfoldername;
-import static com.garethevans.church.opensongtablet.FullscreenActivity.menu_menutitle;
 import static com.garethevans.church.opensongtablet.FullscreenActivity.myPreferences;
-import static com.garethevans.church.opensongtablet.FullscreenActivity.savethisset;
-import static com.garethevans.church.opensongtablet.FullscreenActivity.set_clear;
-import static com.garethevans.church.opensongtablet.FullscreenActivity.set_edit;
-import static com.garethevans.church.opensongtablet.FullscreenActivity.set_export;
-import static com.garethevans.church.opensongtablet.FullscreenActivity.set_load;
-import static com.garethevans.church.opensongtablet.FullscreenActivity.set_menutitle;
-import static com.garethevans.church.opensongtablet.FullscreenActivity.set_save;
+
+//import static com.garethevans.church.opensongtablet.FullscreenActivity.backtooptions;
+//import static com.garethevans.church.opensongtablet.FullscreenActivity.clearthisset;
+//import static com.garethevans.church.opensongtablet.FullscreenActivity.menu_menutitle;
 
 public class Preferences extends Activity {
 
@@ -52,6 +48,32 @@ public class Preferences extends Activity {
         FullscreenActivity.whichSongFolder = myPreferences.getString("whichSongFolder", mainfoldername);
     }
 
+    public static Locale getStoredLocale() {
+        String locale = myPreferences.getString("locale", getDefaultLocaleString().toString());
+        if (locale==null || locale.isEmpty() || locale.equals("")) {
+            locale = getDefaultLocaleString().toString();
+        }
+        Log.d("d","locale loaded="+locale);
+        return new Locale(locale);
+    }
+
+    public static Locale getDefaultLocaleString() {
+        Locale locale = Locale.getDefault();
+        if  (locale==null) {
+            locale = new Locale(Locale.getDefault().getDisplayLanguage());
+        }
+
+        if (!locale.toString().equals("af") && !locale.toString().equals("cz") && !locale.toString().equals("de") &&
+                !locale.toString().equals("el") && !locale.toString().equals("es") && !locale.toString().equals("fr") &&
+                !locale.toString().equals("hu") && !locale.toString().equals("it") && !locale.toString().equals("ja") &&
+                !locale.toString().equals("pl") && !locale.toString().equals("pt") && !locale.toString().equals("ru") &&
+                !locale.toString().equals("sr") && !locale.toString().equals("zh")) {
+            locale = new Locale("en");
+        }
+        Log.d("d","Default locale="+locale);
+        return locale;
+    }
+
     public static void loadPreferences() {
         // Load up the user preferences
         // Set to blank if not used before
@@ -59,21 +81,23 @@ public class Preferences extends Activity {
         Log.d("Preferences", "Loading");
 
         try {
+            FullscreenActivity.locale = getStoredLocale();
             FullscreenActivity.whichSetCategory = myPreferences.getString("whichSetCategory", FullscreenActivity.mainfoldername);
             FullscreenActivity.quickLaunchButton_1 = myPreferences.getString("quickLaunchButton_1", "");
             FullscreenActivity.quickLaunchButton_2 = myPreferences.getString("quickLaunchButton_2", "");
             FullscreenActivity.quickLaunchButton_3 = myPreferences.getString("quickLaunchButton_3", "");
             FullscreenActivity.fabSize = myPreferences.getInt("fabSize", FloatingActionButton.SIZE_MINI);
-            FullscreenActivity.popupAlpha_Set = myPreferences.getFloat("popupAlpha_Set", 0.7f);
-            FullscreenActivity.popupDim_Set = myPreferences.getFloat("popupDim_Set", 0.7f);
+            FullscreenActivity.popupAlpha_Set = myPreferences.getFloat("popupAlpha_Set", 0.9f);
+            FullscreenActivity.popupDim_Set = myPreferences.getFloat("popupDim_Set", 0.9f);
             FullscreenActivity.popupScale_Set = myPreferences.getFloat("popupScale_Set", 0.8f);
             FullscreenActivity.popupPosition_Set = myPreferences.getString("popupPosition_Set", "c");
-            FullscreenActivity.popupAlpha_All = myPreferences.getFloat("popupAlpha_All", 0.7f);
-            FullscreenActivity.popupDim_All = myPreferences.getFloat("popupDim_All", 0.7f);
+            FullscreenActivity.popupAlpha_All = myPreferences.getFloat("popupAlpha_All", 0.9f);
+            FullscreenActivity.popupDim_All = myPreferences.getFloat("popupDim_All", 0.9f);
             FullscreenActivity.popupScale_All = myPreferences.getFloat("popupScale_All", 0.8f);
             FullscreenActivity.popupPosition_All = myPreferences.getString("popupPosition_All", "c");
-            FullscreenActivity.pageButtonAlpha = myPreferences.getFloat("pageButtonAlpha", 0.2f);
+            FullscreenActivity.pageButtonAlpha = myPreferences.getFloat("pageButtonAlpha", 0.3f);
             FullscreenActivity.grouppagebuttons = myPreferences.getBoolean("grouppagebuttons", false);
+            FullscreenActivity.menuSize = myPreferences.getFloat("menuSize",0.5f);
 
             FullscreenActivity.longpresspreviouspedalgesture = myPreferences.getString("longpresspreviouspedalgesture", "1");
             FullscreenActivity.longpressnextpedalgesture = myPreferences.getString("longpressnextpedalgesture", "4");
@@ -223,7 +247,7 @@ public class Preferences extends Activity {
             FullscreenActivity.usePresentationOrder = myPreferences.getBoolean("usePresentationOrder", false);
 
             //Now activity resizes to fit the x scale - option to also fit to the Y scale
-            FullscreenActivity.toggleYScale = myPreferences.getString("toggleYScale", "Y");
+            FullscreenActivity.toggleYScale = myPreferences.getString("toggleYScale", "W");
             FullscreenActivity.swipeSet = myPreferences.getString("swipeSet", "Y");
             FullscreenActivity.hideActionBar = myPreferences.getBoolean("hideActionBar", false);
             FullscreenActivity.songfilename = myPreferences.getString("songfilename", "Welcome to OpenSongApp");
@@ -243,281 +267,207 @@ public class Preferences extends Activity {
 
             FullscreenActivity.chordInstrument = myPreferences.getString("chordInstrument", "g");
 
-            // This bit purges old set details and puts in the newer format menu
-            // It is done to ensure that menu items are always written at the start of the saved set!
-            // Not any more!!!!!!!
-            if (FullscreenActivity.mySet.contains("$**_" + savethisset + "_**$")) {
-                // Old 'Save this set' text.
-                FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + savethisset + "_**$", "");
-            }
-            if (FullscreenActivity.mySet.contains("$**_" + clearthisset + "_**$")) {
-                // Old 'Save this set' text.
-                FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + clearthisset + "_**$", "");
-            }
-            if (FullscreenActivity.mySet.contains("$**_" + backtooptions + "_**$")) {
-                // Old 'Save this set' text.
-                FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + backtooptions + "_**$", "");
-            }
-            if (FullscreenActivity.mySet.contains("$**__**$")) {
-                // Blank entry
-                FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**__**$", "");
-            }
-            if (FullscreenActivity.mySet.contains("$**_" + set_edit + "_**$")) {
-                // Set save
-                FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + set_edit + "_**$", "");
-            }
-            if (FullscreenActivity.mySet.contains("$**_" + set_save + "_**$")) {
-                // Set save
-                FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + set_save + "_**$", "");
-            }
-            if (FullscreenActivity.mySet.contains("$**_" + set_load + "_**$")) {
-                // Set load
-                FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + set_load + "_**$", "");
-            }
-            if (FullscreenActivity.mySet.contains("$**_" + set_clear + "_**$")) {
-                // Set clear
-                FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + set_clear + "_**$", "");
-            }
-            if (FullscreenActivity.mySet.contains("$**_" + set_export + "_**$")) {
-                // menu button
-                FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + set_export + "_**$", "");
-            }
-            if (FullscreenActivity.mySet.contains("$**_" + menu_menutitle + "_**$")) {
-                // menu button
-                FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + menu_menutitle + "_**$", "");
-            }
-
         } catch (Exception e) {
             // Error loading the preferences
+            e.printStackTrace();
         }
 
     }
 
     public static void savePreferences() {
 
-        Log.d("Preferences", "Saving");
+        try {
+            Log.d("Preferences", "Saving");
 
-        SharedPreferences.Editor editor = myPreferences.edit();
+            SharedPreferences.Editor editor = myPreferences.edit();
 
-        editor.putString("whichSetCategory", FullscreenActivity.whichSetCategory);
-        editor.putInt("fabSize", FullscreenActivity.fabSize);
-        editor.putString("quickLaunchButton_1", FullscreenActivity.quickLaunchButton_1);
-        editor.putString("quickLaunchButton_2", FullscreenActivity.quickLaunchButton_2);
-        editor.putString("quickLaunchButton_3", FullscreenActivity.quickLaunchButton_3);
-        editor.putFloat("popupAlpha_Set", FullscreenActivity.popupAlpha_Set);
-        editor.putFloat("popupDim_Set", FullscreenActivity.popupDim_Set);
-        editor.putFloat("popupScale_Set", FullscreenActivity.popupScale_Set);
-        editor.putString("popupPosition_Set", FullscreenActivity.popupPosition_Set);
-        editor.putFloat("popupAlpha_All", FullscreenActivity.popupAlpha_All);
-        editor.putFloat("popupDim_All", FullscreenActivity.popupDim_All);
-        editor.putFloat("popupScale_All", FullscreenActivity.popupScale_All);
-        editor.putString("popupPosition_All", FullscreenActivity.popupPosition_All);
-        editor.putFloat("pageButtonAlpha", FullscreenActivity.pageButtonAlpha);
-        editor.putBoolean("grouppagebuttons", FullscreenActivity.grouppagebuttons);
+            editor.putString("locale", FullscreenActivity.locale.toString());
+            editor.putString("whichSetCategory", FullscreenActivity.whichSetCategory);
+            editor.putInt("fabSize", FullscreenActivity.fabSize);
+            editor.putString("quickLaunchButton_1", FullscreenActivity.quickLaunchButton_1);
+            editor.putString("quickLaunchButton_2", FullscreenActivity.quickLaunchButton_2);
+            editor.putString("quickLaunchButton_3", FullscreenActivity.quickLaunchButton_3);
+            editor.putFloat("popupAlpha_Set", FullscreenActivity.popupAlpha_Set);
+            editor.putFloat("popupDim_Set", FullscreenActivity.popupDim_Set);
+            editor.putFloat("popupScale_Set", FullscreenActivity.popupScale_Set);
+            editor.putString("popupPosition_Set", FullscreenActivity.popupPosition_Set);
+            editor.putFloat("popupAlpha_All", FullscreenActivity.popupAlpha_All);
+            editor.putFloat("popupDim_All", FullscreenActivity.popupDim_All);
+            editor.putFloat("popupScale_All", FullscreenActivity.popupScale_All);
+            editor.putString("popupPosition_All", FullscreenActivity.popupPosition_All);
+            editor.putFloat("pageButtonAlpha", FullscreenActivity.pageButtonAlpha);
+            editor.putBoolean("grouppagebuttons", FullscreenActivity.grouppagebuttons);
+            editor.putFloat("menuSize", FullscreenActivity.menuSize);
 
-        editor.putString("longpresspreviouspedalgesture", FullscreenActivity.longpresspreviouspedalgesture);
-        editor.putString("longpressnextpedalgesture", FullscreenActivity.longpressnextpedalgesture);
-        editor.putString("longpressuppedalgesture", FullscreenActivity.longpressuppedalgesture);
-        editor.putString("longpressdownpedalgesture", FullscreenActivity.longpressdownpedalgesture);
+            editor.putString("longpresspreviouspedalgesture", FullscreenActivity.longpresspreviouspedalgesture);
+            editor.putString("longpressnextpedalgesture", FullscreenActivity.longpressnextpedalgesture);
+            editor.putString("longpressuppedalgesture", FullscreenActivity.longpressuppedalgesture);
+            editor.putString("longpressdownpedalgesture", FullscreenActivity.longpressdownpedalgesture);
 
-        editor.putBoolean("override_fullscale", FullscreenActivity.override_fullscale);
-        editor.putBoolean("override_widthscale", FullscreenActivity.override_widthscale);
-        editor.putString("pagebutton_scale", FullscreenActivity.pagebutton_scale);
-        editor.putString("profile", FullscreenActivity.profile);
-        editor.putString("prefChord_Aflat_Gsharp", FullscreenActivity.prefChord_Aflat_Gsharp);
-        editor.putString("prefChord_Bflat_Asharp", FullscreenActivity.prefChord_Bflat_Asharp);
-        editor.putString("prefChord_Dflat_Csharp", FullscreenActivity.prefChord_Dflat_Csharp);
-        editor.putString("prefChord_Eflat_Dsharp", FullscreenActivity.prefChord_Eflat_Dsharp);
-        editor.putString("prefChord_Gflat_Fsharp", FullscreenActivity.prefChord_Gflat_Fsharp);
-        editor.putString("prefChord_Aflatm_Gsharpm", FullscreenActivity.prefChord_Aflatm_Gsharpm);
-        editor.putString("prefChord_Bflatm_Asharpm", FullscreenActivity.prefChord_Bflatm_Asharpm);
-        editor.putString("prefChord_Dflatm_Csharpm", FullscreenActivity.prefChord_Dflatm_Csharpm);
-        editor.putString("prefChord_Eflatm_Dsharpm", FullscreenActivity.prefChord_Eflatm_Dsharpm);
-        editor.putString("prefChord_Gflatm_Fsharpm", FullscreenActivity.prefChord_Gflatm_Fsharpm);
+            editor.putBoolean("override_fullscale", FullscreenActivity.override_fullscale);
+            editor.putBoolean("override_widthscale", FullscreenActivity.override_widthscale);
+            editor.putString("pagebutton_scale", FullscreenActivity.pagebutton_scale);
+            editor.putString("profile", FullscreenActivity.profile);
+            editor.putString("prefChord_Aflat_Gsharp", FullscreenActivity.prefChord_Aflat_Gsharp);
+            editor.putString("prefChord_Bflat_Asharp", FullscreenActivity.prefChord_Bflat_Asharp);
+            editor.putString("prefChord_Dflat_Csharp", FullscreenActivity.prefChord_Dflat_Csharp);
+            editor.putString("prefChord_Eflat_Dsharp", FullscreenActivity.prefChord_Eflat_Dsharp);
+            editor.putString("prefChord_Gflat_Fsharp", FullscreenActivity.prefChord_Gflat_Fsharp);
+            editor.putString("prefChord_Aflatm_Gsharpm", FullscreenActivity.prefChord_Aflatm_Gsharpm);
+            editor.putString("prefChord_Bflatm_Asharpm", FullscreenActivity.prefChord_Bflatm_Asharpm);
+            editor.putString("prefChord_Dflatm_Csharpm", FullscreenActivity.prefChord_Dflatm_Csharpm);
+            editor.putString("prefChord_Eflatm_Dsharpm", FullscreenActivity.prefChord_Eflatm_Dsharpm);
+            editor.putString("prefChord_Gflatm_Fsharpm", FullscreenActivity.prefChord_Gflatm_Fsharpm);
 
-        editor.putString("pagebutton_position", FullscreenActivity.pagebutton_position);
-        editor.putString("autoscroll_default_or_prompt", FullscreenActivity.autoscroll_default_or_prompt);
-        editor.putInt("default_autoscroll_songlength", FullscreenActivity.default_autoscroll_songlength);
-        editor.putInt("default_autoscroll_predelay", FullscreenActivity.default_autoscroll_predelay);
-        editor.putInt("maxvolrange", FullscreenActivity.maxvolrange);
-        editor.putString("toggleAutoSticky", FullscreenActivity.toggleAutoSticky);
-        editor.putString("toggleScrollArrows", FullscreenActivity.toggleScrollArrows);
-        editor.putString("mediaStore", FullscreenActivity.mediaStore);
-        editor.putString("lastSetName", FullscreenActivity.lastSetName);
-        editor.putFloat("presoAlpha", FullscreenActivity.presoAlpha);
-        editor.putBoolean("presoAutoScale", FullscreenActivity.presoAutoScale);
-        editor.putInt("presoFontSize", FullscreenActivity.presoFontSize);
-        editor.putInt("presoMaxFontSize", FullscreenActivity.presoMaxFontSize);
-        editor.putBoolean("presoShowChords", FullscreenActivity.presoShowChords);
-        editor.putInt("presoTitleSize", FullscreenActivity.presoTitleSize);
-        editor.putInt("presoAuthorSize", FullscreenActivity.presoAuthorSize);
-        editor.putInt("presoCopyrightSize", FullscreenActivity.presoCopyrightSize);
-        editor.putInt("presoAlertSize", FullscreenActivity.presoAlertSize);
-        editor.putString("myAlert", FullscreenActivity.myAlert);
-        editor.putString("capoDisplay", FullscreenActivity.capoDisplay);
-        editor.putBoolean("showCapoChords", FullscreenActivity.showCapoChords);
-        editor.putBoolean("showNativeAndCapoChords", FullscreenActivity.showNativeAndCapoChords);
-        editor.putString("languageToLoad", FullscreenActivity.languageToLoad);
-        editor.putInt("mylyricsfontnum", FullscreenActivity.mylyricsfontnum);
-        editor.putInt("mychordsfontnum", FullscreenActivity.mychordsfontnum);
-        editor.putInt("mypresofontnum", FullscreenActivity.mypresofontnum);
-        editor.putInt("linespacing", FullscreenActivity.linespacing);
-        editor.putInt("pageturner_NEXT", FullscreenActivity.pageturner_NEXT);
-        editor.putInt("pageturner_PREVIOUS", FullscreenActivity.pageturner_PREVIOUS);
-        editor.putInt("pageturner_UP", FullscreenActivity.pageturner_UP);
-        editor.putInt("pageturner_DOWN", FullscreenActivity.pageturner_DOWN);
-        editor.putInt("pageturner_PAD", FullscreenActivity.pageturner_PAD);
-        editor.putInt("pageturner_AUTOSCROLL", FullscreenActivity.pageturner_AUTOSCROLL);
-        editor.putInt("pageturner_METRONOME", FullscreenActivity.pageturner_METRONOME);
-        editor.putString("toggleScrollBeforeSwipe", FullscreenActivity.toggleScrollBeforeSwipe);
-        editor.putString("togglePageButtons", FullscreenActivity.togglePageButtons);
-        editor.putString("alwaysPreferredChordFormat", FullscreenActivity.alwaysPreferredChordFormat);
-        editor.putString("presenterChords", FullscreenActivity.presenterChords);
-        editor.putBoolean("usePresentationOrder", FullscreenActivity.usePresentationOrder);
-        editor.putString("backgroundImage1", FullscreenActivity.backgroundImage1);
-        editor.putString("backgroundImage2", FullscreenActivity.backgroundImage2);
-        editor.putString("backgroundVideo1", FullscreenActivity.backgroundVideo1);
-        editor.putString("backgroundVideo2", FullscreenActivity.backgroundVideo2);
-        editor.putString("backgroundToUse", FullscreenActivity.backgroundToUse);
-        editor.putString("backgroundTypeToUse", FullscreenActivity.backgroundTypeToUse);
-        editor.putString("bibleFile", FullscreenActivity.bibleFile);
-        editor.putString("prefStorage", FullscreenActivity.prefStorage);
-        editor.putString("customStorage", FullscreenActivity.customStorage);
-        editor.putString("whichMode", FullscreenActivity.whichMode);
-        editor.putString("chordFormat", FullscreenActivity.chordFormat);
-        editor.putInt("autoScrollDelay", FullscreenActivity.autoScrollDelay);
-        editor.putBoolean("autostartautoscroll", FullscreenActivity.autostartautoscroll);
-        editor.putString("metronomepan", FullscreenActivity.metronomepan);
-        editor.putString("padpan", FullscreenActivity.padpan);
-        editor.putFloat("metronomevol", FullscreenActivity.metronomevol);
-        editor.putFloat("padvol", FullscreenActivity.padvol);
-        editor.putBoolean("visualmetronome", FullscreenActivity.visualmetronome);
-        editor.putInt("xmargin_presentation", FullscreenActivity.xmargin_presentation);
-        editor.putInt("ymargin_presentation", FullscreenActivity.ymargin_presentation);
-        editor.putInt("dark_lyricsTextColor", FullscreenActivity.dark_lyricsTextColor);
-        editor.putInt("dark_lyricsCapoColor", FullscreenActivity.dark_lyricsCapoColor);
-        editor.putInt("dark_lyricsBackgroundColor", FullscreenActivity.dark_lyricsBackgroundColor);
-        editor.putInt("dark_lyricsVerseColor", FullscreenActivity.dark_lyricsVerseColor);
-        editor.putInt("dark_lyricsChorusColor", FullscreenActivity.dark_lyricsChorusColor);
-        editor.putInt("dark_lyricsBridgeColor", FullscreenActivity.dark_lyricsBridgeColor);
-        editor.putInt("dark_lyricsCommentColor", FullscreenActivity.dark_lyricsCommentColor);
-        editor.putInt("dark_lyricsPreChorusColor", FullscreenActivity.dark_lyricsPreChorusColor);
-        editor.putInt("dark_lyricsTagColor", FullscreenActivity.dark_lyricsTagColor);
-        editor.putInt("dark_lyricsChordsColor", FullscreenActivity.dark_lyricsChordsColor);
-        editor.putInt("dark_lyricsCustomColor", FullscreenActivity.dark_lyricsCustomColor);
-        editor.putInt("dark_metronome", FullscreenActivity.dark_metronome);
-        editor.putInt("dark_pagebuttons", FullscreenActivity.dark_pagebuttons);
-        editor.putInt("light_lyricsTextColor", FullscreenActivity.light_lyricsTextColor);
-        editor.putInt("light_lyricsCapoColor", FullscreenActivity.light_lyricsCapoColor);
-        editor.putInt("light_lyricsBackgroundColor", FullscreenActivity.light_lyricsBackgroundColor);
-        editor.putInt("light_lyricsVerseColor", FullscreenActivity.light_lyricsVerseColor);
-        editor.putInt("light_lyricsChorusColor", FullscreenActivity.light_lyricsChorusColor);
-        editor.putInt("light_lyricsBridgeColor", FullscreenActivity.light_lyricsBridgeColor);
-        editor.putInt("light_lyricsCommentColor", FullscreenActivity.light_lyricsCommentColor);
-        editor.putInt("light_lyricsPreChorusColor", FullscreenActivity.light_lyricsPreChorusColor);
-        editor.putInt("light_lyricsTagColor", FullscreenActivity.light_lyricsTagColor);
-        editor.putInt("light_lyricsChordsColor", FullscreenActivity.light_lyricsChordsColor);
-        editor.putInt("light_lyricsCustomColor", FullscreenActivity.light_lyricsCustomColor);
-        editor.putInt("light_metronome", FullscreenActivity.light_metronome);
-        editor.putInt("light_pagebuttons", FullscreenActivity.light_pagebuttons);
-        editor.putInt("custom1_lyricsTextColor", FullscreenActivity.custom1_lyricsTextColor);
-        editor.putInt("custom1_lyricsCapoColor", FullscreenActivity.custom1_lyricsCapoColor);
-        editor.putInt("custom1_lyricsBackgroundColor", FullscreenActivity.custom1_lyricsBackgroundColor);
-        editor.putInt("custom1_lyricsVerseColor", FullscreenActivity.custom1_lyricsVerseColor);
-        editor.putInt("custom1_lyricsChorusColor", FullscreenActivity.custom1_lyricsChorusColor);
-        editor.putInt("custom1_lyricsBridgeColor", FullscreenActivity.custom1_lyricsBridgeColor);
-        editor.putInt("custom1_lyricsCommentColor", FullscreenActivity.custom1_lyricsCommentColor);
-        editor.putInt("custom1_lyricsPreChorusColor", FullscreenActivity.custom1_lyricsPreChorusColor);
-        editor.putInt("custom1_lyricsTagColor", FullscreenActivity.custom1_lyricsTagColor);
-        editor.putInt("custom1_lyricsChordsColor", FullscreenActivity.custom1_lyricsChordsColor);
-        editor.putInt("custom1_lyricsCustomColor", FullscreenActivity.custom1_lyricsCustomColor);
-        editor.putInt("custom1_metronome", FullscreenActivity.custom1_metronome);
-        editor.putInt("custom1_pagebuttons", FullscreenActivity.custom1_pagebuttons);
-        editor.putInt("custom2_lyricsTextColor", FullscreenActivity.custom2_lyricsTextColor);
-        editor.putInt("custom2_lyricsCapoColor", FullscreenActivity.custom2_lyricsCapoColor);
-        editor.putInt("custom2_lyricsBackgroundColor", FullscreenActivity.custom2_lyricsBackgroundColor);
-        editor.putInt("custom2_lyricsVerseColor", FullscreenActivity.custom2_lyricsVerseColor);
-        editor.putInt("custom2_lyricsChorusColor", FullscreenActivity.custom2_lyricsChorusColor);
-        editor.putInt("custom2_lyricsBridgeColor", FullscreenActivity.custom2_lyricsBridgeColor);
-        editor.putInt("custom2_lyricsCommentColor", FullscreenActivity.custom2_lyricsCommentColor);
-        editor.putInt("custom2_lyricsPreChorusColor", FullscreenActivity.custom2_lyricsPreChorusColor);
-        editor.putInt("custom2_lyricsTagColor", FullscreenActivity.custom2_lyricsTagColor);
-        editor.putInt("custom2_lyricsChordsColor", FullscreenActivity.custom2_lyricsChordsColor);
-        editor.putInt("custom2_lyricsCustomColor", FullscreenActivity.custom2_lyricsCustomColor);
-        editor.putInt("custom2_metronome", FullscreenActivity.custom2_metronome);
-        editor.putInt("custom2_pagebuttons", FullscreenActivity.custom2_pagebuttons);
-        editor.putString("chordInstrument", FullscreenActivity.chordInstrument);
-        editor.putString("showNextInSet", FullscreenActivity.showNextInSet);
-        editor.putBoolean("hideActionBar", FullscreenActivity.hideActionBar);
-        editor.putString("mStorage", FullscreenActivity.mStorage);
-        editor.putFloat("mFontSize", FullscreenActivity.mFontSize);
-        editor.putFloat("commentfontscalesize", FullscreenActivity.commentfontscalesize);
-        editor.putFloat("headingfontscalesize", FullscreenActivity.headingfontscalesize);
-        editor.putFloat("chordfontscalesize", FullscreenActivity.chordfontscalesize);
-        editor.putInt("mMaxFontSize", FullscreenActivity.mMaxFontSize);
-        editor.putInt("mMinFontSize", FullscreenActivity.mMinFontSize);
-        editor.putString("toggleYScale", FullscreenActivity.toggleYScale);
-        editor.putString("swipeSet", FullscreenActivity.swipeSet);
-        editor.putBoolean("swipeForMenus", FullscreenActivity.swipeForMenus);
-        editor.putBoolean("swipeForSongs", FullscreenActivity.swipeForSongs);
-        editor.putString("swipeDrawer", FullscreenActivity.swipeDrawer);
-        editor.putString("songfilename", FullscreenActivity.songfilename);
-        editor.putString("mAuthor", FullscreenActivity.mAuthor.toString());
-        editor.putString("mCopyright", FullscreenActivity.mCopyright.toString());
-        editor.putString("mTitle", FullscreenActivity.mTitle.toString());
-        editor.putString("transposeStyle", FullscreenActivity.transposeStyle);
-        editor.putBoolean("showChords", FullscreenActivity.showChords);
-        editor.putBoolean("showLyrics", FullscreenActivity.showLyrics);
-        editor.putString("mDisplayTheme", FullscreenActivity.mDisplayTheme);
-        editor.putString("whichSongFolder", FullscreenActivity.whichSongFolder);
-        editor.putString("gesture_doubletap", FullscreenActivity.gesture_doubletap);
-        editor.putString("gesture_longpress", FullscreenActivity.gesture_longpress);
+            editor.putString("pagebutton_position", FullscreenActivity.pagebutton_position);
+            editor.putString("autoscroll_default_or_prompt", FullscreenActivity.autoscroll_default_or_prompt);
+            editor.putInt("default_autoscroll_songlength", FullscreenActivity.default_autoscroll_songlength);
+            editor.putInt("default_autoscroll_predelay", FullscreenActivity.default_autoscroll_predelay);
+            editor.putInt("maxvolrange", FullscreenActivity.maxvolrange);
+            editor.putString("toggleAutoSticky", FullscreenActivity.toggleAutoSticky);
+            editor.putString("toggleScrollArrows", FullscreenActivity.toggleScrollArrows);
+            editor.putString("mediaStore", FullscreenActivity.mediaStore);
+            editor.putString("lastSetName", FullscreenActivity.lastSetName);
+            editor.putFloat("presoAlpha", FullscreenActivity.presoAlpha);
+            editor.putBoolean("presoAutoScale", FullscreenActivity.presoAutoScale);
+            editor.putInt("presoFontSize", FullscreenActivity.presoFontSize);
+            editor.putInt("presoMaxFontSize", FullscreenActivity.presoMaxFontSize);
+            editor.putBoolean("presoShowChords", FullscreenActivity.presoShowChords);
+            editor.putInt("presoTitleSize", FullscreenActivity.presoTitleSize);
+            editor.putInt("presoAuthorSize", FullscreenActivity.presoAuthorSize);
+            editor.putInt("presoCopyrightSize", FullscreenActivity.presoCopyrightSize);
+            editor.putInt("presoAlertSize", FullscreenActivity.presoAlertSize);
+            editor.putString("myAlert", FullscreenActivity.myAlert);
+            editor.putString("capoDisplay", FullscreenActivity.capoDisplay);
+            editor.putBoolean("showCapoChords", FullscreenActivity.showCapoChords);
+            editor.putBoolean("showNativeAndCapoChords", FullscreenActivity.showNativeAndCapoChords);
+            editor.putString("languageToLoad", FullscreenActivity.languageToLoad);
+            editor.putInt("mylyricsfontnum", FullscreenActivity.mylyricsfontnum);
+            editor.putInt("mychordsfontnum", FullscreenActivity.mychordsfontnum);
+            editor.putInt("mypresofontnum", FullscreenActivity.mypresofontnum);
+            editor.putInt("linespacing", FullscreenActivity.linespacing);
+            editor.putInt("pageturner_NEXT", FullscreenActivity.pageturner_NEXT);
+            editor.putInt("pageturner_PREVIOUS", FullscreenActivity.pageturner_PREVIOUS);
+            editor.putInt("pageturner_UP", FullscreenActivity.pageturner_UP);
+            editor.putInt("pageturner_DOWN", FullscreenActivity.pageturner_DOWN);
+            editor.putInt("pageturner_PAD", FullscreenActivity.pageturner_PAD);
+            editor.putInt("pageturner_AUTOSCROLL", FullscreenActivity.pageturner_AUTOSCROLL);
+            editor.putInt("pageturner_METRONOME", FullscreenActivity.pageturner_METRONOME);
+            editor.putString("toggleScrollBeforeSwipe", FullscreenActivity.toggleScrollBeforeSwipe);
+            editor.putString("togglePageButtons", FullscreenActivity.togglePageButtons);
+            editor.putString("alwaysPreferredChordFormat", FullscreenActivity.alwaysPreferredChordFormat);
+            editor.putString("presenterChords", FullscreenActivity.presenterChords);
+            editor.putBoolean("usePresentationOrder", FullscreenActivity.usePresentationOrder);
+            editor.putString("backgroundImage1", FullscreenActivity.backgroundImage1);
+            editor.putString("backgroundImage2", FullscreenActivity.backgroundImage2);
+            editor.putString("backgroundVideo1", FullscreenActivity.backgroundVideo1);
+            editor.putString("backgroundVideo2", FullscreenActivity.backgroundVideo2);
+            editor.putString("backgroundToUse", FullscreenActivity.backgroundToUse);
+            editor.putString("backgroundTypeToUse", FullscreenActivity.backgroundTypeToUse);
+            editor.putString("bibleFile", FullscreenActivity.bibleFile);
+            editor.putString("prefStorage", FullscreenActivity.prefStorage);
+            editor.putString("customStorage", FullscreenActivity.customStorage);
+            editor.putString("whichMode", FullscreenActivity.whichMode);
+            editor.putString("chordFormat", FullscreenActivity.chordFormat);
+            editor.putInt("autoScrollDelay", FullscreenActivity.autoScrollDelay);
+            editor.putBoolean("autostartautoscroll", FullscreenActivity.autostartautoscroll);
+            editor.putString("metronomepan", FullscreenActivity.metronomepan);
+            editor.putString("padpan", FullscreenActivity.padpan);
+            editor.putFloat("metronomevol", FullscreenActivity.metronomevol);
+            editor.putFloat("padvol", FullscreenActivity.padvol);
+            editor.putBoolean("visualmetronome", FullscreenActivity.visualmetronome);
+            editor.putInt("xmargin_presentation", FullscreenActivity.xmargin_presentation);
+            editor.putInt("ymargin_presentation", FullscreenActivity.ymargin_presentation);
+            editor.putInt("dark_lyricsTextColor", FullscreenActivity.dark_lyricsTextColor);
+            editor.putInt("dark_lyricsCapoColor", FullscreenActivity.dark_lyricsCapoColor);
+            editor.putInt("dark_lyricsBackgroundColor", FullscreenActivity.dark_lyricsBackgroundColor);
+            editor.putInt("dark_lyricsVerseColor", FullscreenActivity.dark_lyricsVerseColor);
+            editor.putInt("dark_lyricsChorusColor", FullscreenActivity.dark_lyricsChorusColor);
+            editor.putInt("dark_lyricsBridgeColor", FullscreenActivity.dark_lyricsBridgeColor);
+            editor.putInt("dark_lyricsCommentColor", FullscreenActivity.dark_lyricsCommentColor);
+            editor.putInt("dark_lyricsPreChorusColor", FullscreenActivity.dark_lyricsPreChorusColor);
+            editor.putInt("dark_lyricsTagColor", FullscreenActivity.dark_lyricsTagColor);
+            editor.putInt("dark_lyricsChordsColor", FullscreenActivity.dark_lyricsChordsColor);
+            editor.putInt("dark_lyricsCustomColor", FullscreenActivity.dark_lyricsCustomColor);
+            editor.putInt("dark_metronome", FullscreenActivity.dark_metronome);
+            editor.putInt("dark_pagebuttons", FullscreenActivity.dark_pagebuttons);
+            editor.putInt("light_lyricsTextColor", FullscreenActivity.light_lyricsTextColor);
+            editor.putInt("light_lyricsCapoColor", FullscreenActivity.light_lyricsCapoColor);
+            editor.putInt("light_lyricsBackgroundColor", FullscreenActivity.light_lyricsBackgroundColor);
+            editor.putInt("light_lyricsVerseColor", FullscreenActivity.light_lyricsVerseColor);
+            editor.putInt("light_lyricsChorusColor", FullscreenActivity.light_lyricsChorusColor);
+            editor.putInt("light_lyricsBridgeColor", FullscreenActivity.light_lyricsBridgeColor);
+            editor.putInt("light_lyricsCommentColor", FullscreenActivity.light_lyricsCommentColor);
+            editor.putInt("light_lyricsPreChorusColor", FullscreenActivity.light_lyricsPreChorusColor);
+            editor.putInt("light_lyricsTagColor", FullscreenActivity.light_lyricsTagColor);
+            editor.putInt("light_lyricsChordsColor", FullscreenActivity.light_lyricsChordsColor);
+            editor.putInt("light_lyricsCustomColor", FullscreenActivity.light_lyricsCustomColor);
+            editor.putInt("light_metronome", FullscreenActivity.light_metronome);
+            editor.putInt("light_pagebuttons", FullscreenActivity.light_pagebuttons);
+            editor.putInt("custom1_lyricsTextColor", FullscreenActivity.custom1_lyricsTextColor);
+            editor.putInt("custom1_lyricsCapoColor", FullscreenActivity.custom1_lyricsCapoColor);
+            editor.putInt("custom1_lyricsBackgroundColor", FullscreenActivity.custom1_lyricsBackgroundColor);
+            editor.putInt("custom1_lyricsVerseColor", FullscreenActivity.custom1_lyricsVerseColor);
+            editor.putInt("custom1_lyricsChorusColor", FullscreenActivity.custom1_lyricsChorusColor);
+            editor.putInt("custom1_lyricsBridgeColor", FullscreenActivity.custom1_lyricsBridgeColor);
+            editor.putInt("custom1_lyricsCommentColor", FullscreenActivity.custom1_lyricsCommentColor);
+            editor.putInt("custom1_lyricsPreChorusColor", FullscreenActivity.custom1_lyricsPreChorusColor);
+            editor.putInt("custom1_lyricsTagColor", FullscreenActivity.custom1_lyricsTagColor);
+            editor.putInt("custom1_lyricsChordsColor", FullscreenActivity.custom1_lyricsChordsColor);
+            editor.putInt("custom1_lyricsCustomColor", FullscreenActivity.custom1_lyricsCustomColor);
+            editor.putInt("custom1_metronome", FullscreenActivity.custom1_metronome);
+            editor.putInt("custom1_pagebuttons", FullscreenActivity.custom1_pagebuttons);
+            editor.putInt("custom2_lyricsTextColor", FullscreenActivity.custom2_lyricsTextColor);
+            editor.putInt("custom2_lyricsCapoColor", FullscreenActivity.custom2_lyricsCapoColor);
+            editor.putInt("custom2_lyricsBackgroundColor", FullscreenActivity.custom2_lyricsBackgroundColor);
+            editor.putInt("custom2_lyricsVerseColor", FullscreenActivity.custom2_lyricsVerseColor);
+            editor.putInt("custom2_lyricsChorusColor", FullscreenActivity.custom2_lyricsChorusColor);
+            editor.putInt("custom2_lyricsBridgeColor", FullscreenActivity.custom2_lyricsBridgeColor);
+            editor.putInt("custom2_lyricsCommentColor", FullscreenActivity.custom2_lyricsCommentColor);
+            editor.putInt("custom2_lyricsPreChorusColor", FullscreenActivity.custom2_lyricsPreChorusColor);
+            editor.putInt("custom2_lyricsTagColor", FullscreenActivity.custom2_lyricsTagColor);
+            editor.putInt("custom2_lyricsChordsColor", FullscreenActivity.custom2_lyricsChordsColor);
+            editor.putInt("custom2_lyricsCustomColor", FullscreenActivity.custom2_lyricsCustomColor);
+            editor.putInt("custom2_metronome", FullscreenActivity.custom2_metronome);
+            editor.putInt("custom2_pagebuttons", FullscreenActivity.custom2_pagebuttons);
+            editor.putString("chordInstrument", FullscreenActivity.chordInstrument);
+            editor.putString("showNextInSet", FullscreenActivity.showNextInSet);
+            editor.putBoolean("hideActionBar", FullscreenActivity.hideActionBar);
+            editor.putString("mStorage", FullscreenActivity.mStorage);
+            editor.putFloat("mFontSize", FullscreenActivity.mFontSize);
+            editor.putFloat("commentfontscalesize", FullscreenActivity.commentfontscalesize);
+            editor.putFloat("headingfontscalesize", FullscreenActivity.headingfontscalesize);
+            editor.putFloat("chordfontscalesize", FullscreenActivity.chordfontscalesize);
+            editor.putInt("mMaxFontSize", FullscreenActivity.mMaxFontSize);
+            editor.putInt("mMinFontSize", FullscreenActivity.mMinFontSize);
+            editor.putString("toggleYScale", FullscreenActivity.toggleYScale);
+            editor.putString("swipeSet", FullscreenActivity.swipeSet);
+            editor.putBoolean("swipeForMenus", FullscreenActivity.swipeForMenus);
+            editor.putBoolean("swipeForSongs", FullscreenActivity.swipeForSongs);
+            editor.putString("swipeDrawer", FullscreenActivity.swipeDrawer);
+            editor.putString("songfilename", FullscreenActivity.songfilename);
+            editor.putString("mAuthor", FullscreenActivity.mAuthor.toString());
+            editor.putString("mCopyright", FullscreenActivity.mCopyright.toString());
+            editor.putString("mTitle", FullscreenActivity.mTitle.toString());
+            editor.putString("transposeStyle", FullscreenActivity.transposeStyle);
+            editor.putBoolean("showChords", FullscreenActivity.showChords);
+            editor.putBoolean("showLyrics", FullscreenActivity.showLyrics);
+            editor.putString("mDisplayTheme", FullscreenActivity.mDisplayTheme);
+            editor.putString("whichSongFolder", FullscreenActivity.whichSongFolder);
+            editor.putString("gesture_doubletap", FullscreenActivity.gesture_doubletap);
+            editor.putString("gesture_longpress", FullscreenActivity.gesture_longpress);
 
-        //Strip out any old menu items from the set
-        if (FullscreenActivity.mySet.contains("$**_" + FullscreenActivity.savethisset + "_**$")) {
-            // Old 'Save this set' text.
-            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + FullscreenActivity.savethisset + "_**$", "");
-        }
-        if (FullscreenActivity.mySet.contains("$**_" + clearthisset + "_**$")) {
-            // Old 'Save this set' text.
-            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + FullscreenActivity.clearthisset + "_**$", "");
-        }
-        if (FullscreenActivity.mySet.contains("$**_" + backtooptions + "_**$")) {
-            // Old 'Save this set' text.
-            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + FullscreenActivity.backtooptions + "_**$", "");
-        }
-        if (FullscreenActivity.mySet.contains("$**__**$")) {
-            // Blank entry
-            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**__**$", "");
-        }
-        if (FullscreenActivity.mySet.contains("$**_" + FullscreenActivity.set_edit + "_**$")) {
-            // Set edit
-            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + FullscreenActivity.set_edit + "_**$", "");
-        }
-        if (FullscreenActivity.mySet.contains("$**_" + set_save + "_**$")) {
-            // Set save
-            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + FullscreenActivity.set_save + "_**$", "");
-        }
-        if (FullscreenActivity.mySet.contains("$**_" + set_load + "_**$")) {
-            // Set load
-            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + FullscreenActivity.set_load + "_**$", "");
-        }
-        if (FullscreenActivity.mySet.contains("$**_" + set_clear + "_**$")) {
-            // Set clear
-            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + FullscreenActivity.set_clear + "_**$", "");
-        }
-        if (FullscreenActivity.mySet.contains("$**_" + set_export + "_**$")) {
-            // Set clear
-            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + FullscreenActivity.set_export + "_**$", "");
-        }
-        if (FullscreenActivity.mySet.contains("$**_" + set_menutitle + "_**$")) {
-            // menu button
-            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**_" + FullscreenActivity.set_menutitle + "_**$", "");
-        }
+            if (FullscreenActivity.mySet.contains("$**__**$")) {
+                // Blank entry
+                FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**__**$", "");
+            }
 
-        // Save the set without the menus
-        editor.putString("mySet", FullscreenActivity.mySet);
-        editor.apply();
+            // Save the set without the menus
+            editor.putString("mySet", FullscreenActivity.mySet);
+            editor.apply();
+        } catch (Exception e) {
+            // Error saving.  Normally happens if app was closed before this happens
+        }
     }
 
     public static void loadSongPrep() {

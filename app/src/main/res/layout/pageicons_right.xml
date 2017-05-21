@@ -24,7 +24,7 @@
             android:alpha="0.4"
             android:contentDescription="@string/options_set"
             android:onClick="popUpSetList"
-            android:src="@drawable/setlist"
+            android:src="@drawable/ic_format_list_numbers_white_36dp"
             android:visibility="visible"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="24dp" />
@@ -38,7 +38,7 @@
             android:layout_margin="8dp"
             android:alpha="0.4"
             android:contentDescription="@string/pad_onoroff"
-            android:src="@drawable/page_speaker_bw"
+            android:src="@drawable/ic_amplifier_white_36dp"
             android:tag="togglePlayPads"
             android:visibility="visible" />
 
@@ -64,7 +64,7 @@
             android:layout_margin="8dp"
             android:alpha="0.4"
             android:contentDescription="@string/stickynotes"
-            android:src="@drawable/page_autoscroll_bw"
+            android:src="@drawable/ic_rotate_right_white_36dp"
             android:visibility="visible" />
 
         <ImageView
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:alpha="0.4"
             android:contentDescription="@string/stickynotes"
-            android:src="@drawable/page_metronome_bw"
+            android:src="@drawable/ic_pulse_white_36dp"
             android:visibility="visible"
             android:layout_margin="8dp" />
 
@@ -87,7 +87,7 @@
             android:alpha="0.4"
             android:contentDescription="@string/pdf_selectpage"
             android:onClick="pdfSelectPage"
-            android:src="@drawable/page_pdf_bw"
+            android:src="@drawable/ic_file_pdf_white_36dp"
             android:visibility="visible" />
 
         <ImageView
@@ -99,7 +99,7 @@
             android:alpha="0.4"
             android:contentDescription="@string/stickynotes"
             android:onClick="stickyNotes"
-            android:src="@drawable/page_notes_bw"
+            android:src="@drawable/ic_note_text_white_36dp"
             android:visibility="visible" />
 
         <ImageView
@@ -111,7 +111,7 @@
             android:alpha="0.4"
             android:contentDescription="@string/chords"
             android:onClick="popupChords_toggle"
-            android:src="@drawable/page_guitar_bw"
+            android:src="@drawable/ic_guitar_electric_white_36dp"
             android:visibility="visible" />
 
         <ImageView
@@ -122,7 +122,7 @@
             android:layout_margin="8dp"
             android:alpha="0.4"
             android:contentDescription="@string/link"
-            android:src="@drawable/page_link_bw"
+            android:src="@drawable/ic_link_white_36dp"
             android:onClick="popupLink"
             android:visibility="visible" />
     </RelativeLayout>

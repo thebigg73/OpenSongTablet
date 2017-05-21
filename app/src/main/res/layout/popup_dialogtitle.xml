@@ -3,22 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_bg"
+    android:id="@+id/title_layout">
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:maxLines="1"
         android:ellipsize="end"
         android:id="@+id/dialogtitle"
         style="@style/MyDialogHeadingText"
-        android:layout_gravity="center_vertical" />
+        android:layout_gravity="center_vertical"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/closeMe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:useCompatPadding="true"
         app:fabSize="mini"
         app:backgroundTint="@color/red"
         app:borderWidth="0dp"
@@ -32,7 +34,7 @@
         app:fabSize="mini"
         app:backgroundTint="@color/green"
         app:borderWidth="0dp"
-        android:layout_marginLeft="8dp"
+        app:useCompatPadding="true"
         android:layout_gravity="center_vertical"
         android:src="@drawable/ic_check_white_36dp"/>
 

@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,12 +39,21 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
         void openFragment();
     }
 
+    interface SettingsInterface {
+        void openStorageFragment();
+    }
+
     private MyInterface mListener;
+    private SettingsInterface sListener;
 
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
+        if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
+            sListener = (SettingsInterface) activity;
+        } else {
+            mListener = (MyInterface) activity;
+        }
         super.onAttach(activity);
     }
 
@@ -56,7 +66,7 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
     ImageView navigateUp;
     public TextView currentFolder;
     ListView directoryList;
-    public static File location = StorageChooser.customStorageLoc;
+    public static File location = Environment.getExternalStorageDirectory();
     public static String[] splitlocation;
     public static List<String> tempProperDirectories;
     public static List<String> tempProperDirectoriesAndFiles;
@@ -233,9 +243,14 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
     }
 
     public void doSave() {
-        StorageChooser.customStorageLoc = location;
+        //StorageChooser.customStorageLoc = location;
         FullscreenActivity.customStorage = location.toString();
-        mListener.updateCustomStorage();
+        if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
+            sListener.openStorageFragment();
+        } else {
+            mListener.updateCustomStorage();
+        }
+
         dismiss();
     }
 

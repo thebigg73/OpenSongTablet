@@ -169,7 +169,7 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
             e.printStackTrace();
         }
         try {
-            LoadXML.loadXML();
+            LoadXML.loadXML(getActivity());
         } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
         }

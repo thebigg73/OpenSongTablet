@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -26,16 +27,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+*/
 /**
  * Shows a list that can be filtered in-place with a SearchView in non-iconified mode.
- */
+ *//*
+
 
 public class SearchViewFilterModeNew extends Activity implements SearchView.OnQueryTextListener {
 
     private SearchView mSearchView;
     private ListView mListView;
-    @SuppressWarnings("unused")
-    private Menu menu;
 
     // Vibrate to indicate something has happened
     Vibrator vb;
@@ -130,7 +131,7 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
             // Replace unwanted symbols
             lyricstoadd = ProcessSong.removeUnwantedSymbolsAndSpaces(lyricstoadd);
 
-            if (filename!=null && foldername!=null && lyricstoadd!=null) {
+            if (lyricstoadd != null) {
                 mFileName.add(d, filename);
                 mFolder.add(d, foldername);
                 mTitle.add(d, filename);
@@ -148,9 +149,7 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
 
         for (int i = 0; i < filesnfolders.size(); i++) {
             SearchViewItems song = new SearchViewItems(mFileName.get(i), mTitle.get(i) , mFolder.get(i), mAuthor.get(i), mKey.get(i), mTheme.get(i), mShortLyrics.get(i), mHymnNumber.get(i));
-            if (song!=null) {
-                searchlist.add(song);
-            }
+            searchlist.add(song);
         }
 
         adapter = new SearchViewAdapter(getApplicationContext(), searchlist ,"search");
@@ -201,9 +200,7 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
 
         for (int i = 0; i < FullscreenActivity.search_database.size(); i++) {
             SearchViewItems song = new SearchViewItems(mFileName.get(i), mTitle.get(i) , mFolder.get(i), mAuthor.get(i), mKey.get(i), mTheme.get(i), mShortLyrics.get(i), mHymnNumber.get(i));
-            if (song!=null) {
-                searchlist.add(song);
-            }
+            searchlist.add(song);
         }
 
         adapter = new SearchViewAdapter(getApplicationContext(), searchlist , "search");
@@ -225,7 +222,7 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
         menu.clear();
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_actions, menu);
-        this.menu = menu;
+        //Menu menu1 = menu;
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -384,4 +381,4 @@ public class SearchViewFilterModeNew extends Activity implements SearchView.OnQu
             return true;
         }
     }
-}
+}*/

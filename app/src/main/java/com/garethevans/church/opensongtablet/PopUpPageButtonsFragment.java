@@ -25,7 +25,6 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     public interface MyInterface {
         void pageButtonAlpha(String s);
         void setupPageButtons(String s);
-        void showpagebuttons();
     }
 
     private MyInterface mListener;
@@ -118,7 +117,6 @@ public class PopUpPageButtonsFragment extends DialogFragment {
                 }
                 Preferences.savePreferences();
                 mListener.setupPageButtons("");
-                mListener.showpagebuttons();
             }
         });
         pageButtonGroup_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -127,7 +125,6 @@ public class PopUpPageButtonsFragment extends DialogFragment {
                 FullscreenActivity.grouppagebuttons = b;
                 Preferences.savePreferences();
                 mListener.setupPageButtons("");
-                mListener.showpagebuttons();
             }
         });
         pageButtonTransparency_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

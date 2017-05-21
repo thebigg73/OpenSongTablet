@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -15,140 +14,9 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ListSongFiles extends Activity {
+public class ListSongFiles {
 
     static Collator coll;
-
-    // OLD ONE
-    public static void listSongFolders() {
-        FullscreenActivity.allfilesforsearch.clear();
-        File songfolder = new File(FullscreenActivity.dir.getAbsolutePath());
-        File[] tempmyitems = null;
-        if (songfolder.isDirectory()) {
-            tempmyitems = songfolder.listFiles();
-        }
-        // Go through this list and check if the item is a directory or a file.
-        int tempnumitems;
-        if (tempmyitems != null && tempmyitems.length>0) {
-            tempnumitems = tempmyitems.length;
-        } else {
-            tempnumitems = 0;
-        }
-        int numactualdirs  = 0;
-        for (int x=0; x<tempnumitems; x++) {
-            if (tempmyitems[x] != null && tempmyitems[x].isDirectory()){
-                numactualdirs ++;
-            }
-        }
-
-        //Now set the size of the temp arrays
-        ArrayList<String> tempProperDirectories = new ArrayList<>();
-
-        //Now read the stuff into the temp array
-        for (int x=0; x<tempnumitems; x++) {
-            if (tempmyitems[x] != null && tempmyitems[x].isDirectory()) {
-                tempProperDirectories.add(tempmyitems[x].getName());
-            }
-        }
-
-        //Sort these arrays
-        // Add locale sort
-        coll = Collator.getInstance(FullscreenActivity.locale);
-        coll.setStrength(Collator.SECONDARY);
-        Collections.sort(tempProperDirectories, coll);
-
-        // Because the MAIN folder doesn't exist as a listed folder, it is just the root,
-        // We need to add it as the first folder manually.
-        // All other folders go as an index 1 higher
-        FullscreenActivity.mSongFolderNames = new String[numactualdirs+1];
-        FullscreenActivity.mSongFolderNames = tempProperDirectories.toArray(FullscreenActivity.mSongFolderNames);
-
-        // Now go through each folder and add the file names to these arrays
-        FullscreenActivity.childSongs = new String[numactualdirs+1][];
-
-        // Add the MAIN folder first
-        File[] temp_mainfiles = songfolder.listFiles();
-        int main_numfiles = 0;
-        if (songfolder.isDirectory() && temp_mainfiles != null) {
-            main_numfiles = temp_mainfiles.length;
-        }
-
-        // Go through this list and check if the item is a directory or a file.
-        if (temp_mainfiles != null && main_numfiles>0 && songfolder.isDirectory()) {
-            main_numfiles = temp_mainfiles.length;
-        } else {
-            main_numfiles = 0;
-        }
-        //Now set the size of the temp arrays
-        ArrayList<String> tempMainProperFiles= new ArrayList<>();
-        int temp_mainnumfilescount = 0;
-        for (int x=0; x<main_numfiles; x++) {
-            if (temp_mainfiles[x] != null && !temp_mainfiles[x].isDirectory() && temp_mainfiles[x].isFile()){
-                tempMainProperFiles.add(temp_mainfiles[x].getName());
-                FullscreenActivity.allfilesforsearch.add(temp_mainfiles[x].getName() + " %%% " + FullscreenActivity.mainfoldername);
-                temp_mainnumfilescount++;
-            }
-        }
-
-        //Sort these arrays
-        // Add locale sort
-        Collections.sort(tempMainProperFiles,coll);
-        //Collections.sort(tempMainProperFiles, String.CASE_INSENSITIVE_ORDER);
-
-        FullscreenActivity.childSongs[0] = new String[temp_mainnumfilescount];
-        FullscreenActivity.childSongs[0] = tempMainProperFiles.toArray(FullscreenActivity.childSongs[0]);
-
-        for (int w=0;w<numactualdirs;w++) {
-            File currsongfolder = new File(FullscreenActivity.dir.getAbsolutePath() + "/"+FullscreenActivity.mSongFolderNames[w]);
-            File[] tempmyfiles = currsongfolder.listFiles();
-            // Go through this list and check if the item is a directory or a file.
-            int tempnumfiles;
-            if (tempmyfiles != null && tempmyfiles.length>0) {
-                tempnumfiles = tempmyfiles.length;
-            } else {
-                tempnumfiles = 0;
-            }
-            int numactualfiles  = 0;
-            for (int x=0; x<tempnumfiles; x++) {
-                if (tempmyfiles[x] != null && tempmyfiles[x].isFile()){
-                    numactualfiles ++;
-                }
-            }
-
-            //Now set the size of the temp arrays
-            ArrayList<String> tempProperFiles= new ArrayList<>();
-
-            //Now read the stuff into the temp array
-            for (int x=0; x<numactualfiles; x++) {
-                if (tempmyfiles[x] != null && tempmyfiles[x].isFile()) {
-                    tempProperFiles.add(tempmyfiles[x].getName());
-                }
-            }
-
-            //Sort these arrays
-            // Add locale sort
-            Collections.sort(tempProperFiles,coll);
-            //Collections.sort(tempProperFiles, String.CASE_INSENSITIVE_ORDER);
-
-            FullscreenActivity.childSongs[w+1] = new String[numactualfiles];
-            FullscreenActivity.childSongs[w+1] = tempProperFiles.toArray(FullscreenActivity.childSongs[w+1]);
-
-            for (int f=0; f<tempProperFiles.size(); f++) {
-                try {
-                    if (FullscreenActivity.mSongFolderNames[w]!=null) {
-                        FullscreenActivity.allfilesforsearch_folder.add(FullscreenActivity.mSongFolderNames[w]);
-                    }
-                    if (tempProperFiles.get(f)!=null) {
-                        FullscreenActivity.allfilesforsearch_song.add(tempProperFiles.get(f));
-                        FullscreenActivity.allfilesforsearch.add(tempProperFiles.get(f) + " %%% " + FullscreenActivity.mSongFolderNames[w]);
-                    }
-                } catch (Exception e) {
-                    //Something went wrong here
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
     public static void getAllSongFolders() {
         FullscreenActivity.allfilesforsearch.clear();
@@ -204,7 +72,7 @@ public class ListSongFiles extends Activity {
         }
     }
 
-    public static void getAllSongFiles() {
+    static void getAllSongFiles() {
         try {
             File foldertoindex;
             if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
@@ -240,7 +108,7 @@ public class ListSongFiles extends Activity {
         }
     }
 
-    public static void getSongDetails() {
+    static void getSongDetails(Context c) {
         // Go through each song in the current folder and extract the title, key and author
         // If not a valid song, just return the file name
         try {
@@ -260,7 +128,7 @@ public class ListSongFiles extends Activity {
                 File f = new File(s_f);
                 if (f.exists()) {
                     fileextensionok = checkFileExtension(s);
-                    utf = checkUtfEncoding(s_f);
+                    utf = checkUtfEncoding(s_f, c);
                     if (fileextensionok) {
                         vals = getSongDetailsXML(f, s, utf);
                     } else {
@@ -286,7 +154,7 @@ public class ListSongFiles extends Activity {
         }
     }
 
-    public static void getNextSongInSetInfo(Context c) {
+/*    public static void getNextSongInSetInfo(Context c) {
         // Get the filename of the nextsong in set
         int i = FullscreenActivity.indexSongInSet;
         if (i<FullscreenActivity.mSetList.length-1) {
@@ -294,7 +162,7 @@ public class ListSongFiles extends Activity {
             // Now load this song quickly and extract the key
             String s_f = FullscreenActivity.dir + "/" + FullscreenActivity.nextSongInSet;
             File f = new File(s_f);
-            String utf = checkUtfEncoding(s_f);
+            String utf = checkUtfEncoding(s_f, c);
             String[] vals = getSongDetailsXML(f,FullscreenActivity.nextSongInSet,utf);
             if (!FullscreenActivity.nextSongInSet.contains("/")) {
                 FullscreenActivity.nextSongInSet = "/" + FullscreenActivity.nextSongInSet;
@@ -306,9 +174,9 @@ public class ListSongFiles extends Activity {
             FullscreenActivity.nextSongInSet = c.getString(R.string.lastsong);
             FullscreenActivity.nextSongKeyInSet = "";
         }
-    }
+    }*/
 
-    public static String[] getSongDetailsXML(File f, String s, String utf) {
+    private static String[] getSongDetailsXML(File f, String s, String utf) {
         String vals[] = new String[3];
         vals[0] = s;
 
@@ -347,7 +215,7 @@ public class ListSongFiles extends Activity {
          return vals;
     }
 
-    public static boolean checkFileExtension(String s) {
+    private static boolean checkFileExtension(String s) {
         boolean isxml = true;
         if (s.endsWith(".pdf") || s.endsWith(".PDF")) {
             isxml = false;
@@ -361,17 +229,16 @@ public class ListSongFiles extends Activity {
         return isxml;
     }
 
-    public static String checkUtfEncoding(String s_f) {
+    private static String checkUtfEncoding(String s_f, Context c) {
         String utf = "";
         File file = new File (s_f);
         if (file.exists()) {
-            utf = LoadXML.getUTFEncoding(file);
+            utf = LoadXML.getUTFEncoding(file, c);
         }
         return utf;
     }
 
-    @SuppressWarnings("unused")
-    public static boolean clearAllSongs(Context c) {
+    static boolean clearAllSongs() {
         // Clear all songs in the songs folder
         File delPath = FullscreenActivity.dir;
         if (delPath.exists()) {
@@ -385,7 +252,7 @@ public class ListSongFiles extends Activity {
     }
 
     // OLD ONE
-    public static void listSongs() {
+ /*   public static void listSongs() {
         // A temporary array to put the file names into.  Do this, sort the array
         // List the items in the main storage location into a temporary array.
         // What song folder is being viewed?
@@ -457,8 +324,8 @@ public class ListSongFiles extends Activity {
         FullscreenActivity.mSongFileNames = tempProperSongFiles.toArray(FullscreenActivity.mSongFileNames);
         FullscreenActivity.mSongFolderNames = tempProperDirectories.toArray(FullscreenActivity.mSongFolderNames);
     }
-
-    public static void getCurrentSongIndex() {
+*/
+    static void getCurrentSongIndex() {
         // Find the current song index from the song filename
         // Set them all to 0
         FullscreenActivity.currentSongIndex = 0;
@@ -493,7 +360,7 @@ public class ListSongFiles extends Activity {
         }
     }
 
-    public static void deleteSong(Context c) {
+    static void deleteSong(Context c) {
         FullscreenActivity.setView = false;
         Log.d("d","whichSongFolder="+FullscreenActivity.whichSongFolder);
         Log.d("d","songfilename="+FullscreenActivity.songfilename);

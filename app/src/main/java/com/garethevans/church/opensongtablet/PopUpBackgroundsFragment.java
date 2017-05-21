@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -28,7 +29,6 @@ public class PopUpBackgroundsFragment extends DialogFragment {
     String whichCheckBox = "";
     TextView presoAlphaText;
     SeekBar presoAlphaProgressBar;
-
 
     static PopUpBackgroundsFragment newInstance() {
         PopUpBackgroundsFragment frag;
@@ -112,7 +112,7 @@ public class PopUpBackgroundsFragment extends DialogFragment {
             chooseImage1Button.setImageBitmap(bitmap1);
         } else {
             //Ok file doesn't exist.  Use the default icon
-            chooseImage1Button.setImageResource(R.drawable.ic_action_picture);
+            chooseImage1Button.setImageResource(R.drawable.ic_image_white_36dp);
         }
         if (img2File.isFile()) {
             //Ok file exists.  Try to load it (but beware of errors!
@@ -120,7 +120,7 @@ public class PopUpBackgroundsFragment extends DialogFragment {
             chooseImage2Button.setImageBitmap(bitmap2);
         } else {
             //Ok file doesn't exist.  Use the default icon
-            chooseImage2Button.setImageResource(R.drawable.ic_action_picture);
+            chooseImage2Button.setImageResource(R.drawable.ic_image_white_36dp);
         }
         if (vid1File.isFile()) {
             //Ok file exists.  Try to load it (but beware of errors!
@@ -216,11 +216,11 @@ public class PopUpBackgroundsFragment extends DialogFragment {
                     FullscreenActivity.backgroundTypeToUse = "image";
                     FullscreenActivity.backgroundToUse = whichCheckBox;
                     Preferences.savePreferences();
-                    MyPresentation.img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
-                    MyPresentation.imgFile = MyPresentation.img1File;
+                    PresentationService.ExternalDisplay.img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
+                    PresentationService.ExternalDisplay.imgFile = PresentationService.ExternalDisplay.img1File;
                     // Try to change the background!
                     if (PresenterMode.numdisplays > 0) {
-                        MyPresentation.fixBackground();
+                        PresentationService.ExternalDisplay.fixBackground();
                     }
 
                 } else {
@@ -231,7 +231,7 @@ public class PopUpBackgroundsFragment extends DialogFragment {
                         Preferences.savePreferences();
                         // Try to change the background!
                         if (PresenterMode.numdisplays > 0) {
-                            MyPresentation.fixBackground();
+                            PresentationService.ExternalDisplay.fixBackground();
                         }
                     }
                     // Been uncheck by checking another option, so do nothing
@@ -252,11 +252,11 @@ public class PopUpBackgroundsFragment extends DialogFragment {
                     FullscreenActivity.backgroundTypeToUse = "image";
                     FullscreenActivity.backgroundToUse = whichCheckBox;
                     Preferences.savePreferences();
-                    MyPresentation.img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
-                    MyPresentation.imgFile = MyPresentation.img2File;
+                    PresentationService.ExternalDisplay.img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
+                    PresentationService.ExternalDisplay.imgFile = PresentationService.ExternalDisplay.img2File;
                     // Try to change the background!
                     if (PresenterMode.numdisplays > 0) {
-                        MyPresentation.fixBackground();
+                        PresentationService.ExternalDisplay.fixBackground();
                     }
 
                 } else {
@@ -267,7 +267,7 @@ public class PopUpBackgroundsFragment extends DialogFragment {
                         Preferences.savePreferences();
                         // Try to change the background!
                         if (PresenterMode.numdisplays > 0) {
-                            MyPresentation.fixBackground();
+                            PresentationService.ExternalDisplay.fixBackground();
                         }
                     }
                     // Been uncheck by checking another option, so do nothing
@@ -290,13 +290,15 @@ public class PopUpBackgroundsFragment extends DialogFragment {
                     Preferences.savePreferences();
                     // Try to change the background!
                     if (PresenterMode.numdisplays > 0) {
-                        MyPresentation.vidFile = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
+                        PresentationService.ExternalDisplay.vidFile = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
                         try {
-                            MyPresentation.reloadVideo();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                                PresentationService.ExternalDisplay.reloadVideo();
+                            }
                         } catch (Exception e) {
                             Log.d("e","Problem preparing video");
                         }
-                        MyPresentation.fixBackground();
+                        PresentationService.ExternalDisplay.fixBackground();
                     }
 
                 } else {
@@ -307,7 +309,7 @@ public class PopUpBackgroundsFragment extends DialogFragment {
                         Preferences.savePreferences();
                         // Try to change the background!
                         if (PresenterMode.numdisplays > 0) {
-                            MyPresentation.fixBackground();
+                            PresentationService.ExternalDisplay.fixBackground();
                         }
                     }
                     // Been uncheck by checking another option, so do nothing
@@ -330,13 +332,15 @@ public class PopUpBackgroundsFragment extends DialogFragment {
                     Preferences.savePreferences();
                     // Try to change the background!
                     if (PresenterMode.numdisplays > 0) {
-                        MyPresentation.vidFile = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
+                        PresentationService.ExternalDisplay.vidFile = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
                         try {
-                            MyPresentation.reloadVideo();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                                PresentationService.ExternalDisplay.reloadVideo();
+                            }
                         } catch (Exception e) {
                             Log.d("e","Problem preparing video");
                         }
-                        MyPresentation.fixBackground();
+                        PresentationService.ExternalDisplay.fixBackground();
                     }
 
                 } else {
@@ -347,7 +351,7 @@ public class PopUpBackgroundsFragment extends DialogFragment {
                         Preferences.savePreferences();
                         // Try to change the background!
                         if (PresenterMode.numdisplays > 0) {
-                            MyPresentation.fixBackground();
+                            PresentationService.ExternalDisplay.fixBackground();
                         }
                         // Been uncheck by checking another option, so do nothing
                     }
@@ -371,7 +375,7 @@ public class PopUpBackgroundsFragment extends DialogFragment {
             FullscreenActivity.presoAlpha = (float)progress / 100f;
             String update = progress + " %";
             presoAlphaText.setText(update);
-            MyPresentation.updateAlpha();
+            PresentationService.ExternalDisplay.updateAlpha();
         }
 
         public void onStartTrackingTouch(SeekBar seekBar) {}

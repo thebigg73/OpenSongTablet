@@ -709,7 +709,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     public void cancelEdit() {
         // Load the song back up with the default values
         try {
-            LoadXML.loadXML();
+            LoadXML.loadXML(getActivity());
         } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
         }

@@ -185,7 +185,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         }
 
         try {
-            LoadXML.loadXML();
+            LoadXML.loadXML(getActivity());
         } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();
         }

@@ -12,7 +12,7 @@
         android:id="@+id/externalSwitch"
         android:checked="false"
         android:padding="8dp"
-        app:theme="@style/MySwitch"
+        android:theme="@style/MySwitch"
         style="@style/MyHeadingText"
         android:layout_margin="8dp" />
 

@@ -291,7 +291,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             // Prepare the lyrics
             text = "";
             for (int t = 0; t < individual_images.length; t++) {
-                text = text + "[" + FullscreenActivity.image + "_" + (t + 1) + "]\n" + individual_images[t] + "\n\n";
+                text = text + "[" + getActivity().getResources().getString(R.string.image) + "_" + (t + 1) + "]\n" + individual_images[t] + "\n\n";
             }
             text = text.trim();
 
@@ -582,7 +582,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         layoutImage.height = 150;
         thumbnail.setLayoutParams(layoutImage);
         ImageButton delete = new ImageButton (getActivity());
-        delete.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_discard));
+        delete.setImageDrawable(getResources().getDrawable(R.drawable.ic_delete_white_36dp));
         delete.setTag(fullpath + "_delete");
         delete.setOnClickListener(new View.OnClickListener() {
             @Override

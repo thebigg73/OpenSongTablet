@@ -28,11 +28,11 @@ class Metronome {
     static MetronomeAsyncTask metroTask;
     static VisualMetronomeAsyncTask visualMetronome;
 
-	Metronome() {
+	private Metronome() {
 		audioGenerator.createPlayer();
 	}
 	
-	void calcSilence() {
+	private void calcSilence() {
 		//silence = (int) (((60/bpm)*8000)-tick);
 
         //TEST
@@ -132,22 +132,22 @@ class Metronome {
 		return FullscreenActivity.noteValue;
 	}
 
-	void setNoteValue(short noteValue) {
+	private void setNoteValue(short noteValue) {
 		this.noteValue = noteValue;
 	}
 
 	private short getBeat() {
 		return FullscreenActivity.beats;
 	}
-	void setBeat(short beat_set) {
+	private void setBeat(short beat_set) {
 		this.beat = beat_set;
 	}
 
-	void setBeatSound(double sound1) {
+	private void setBeatSound(double sound1) {
 		this.beatSound = sound1;
 	}
 
-	void setSound(double sound2) {
+	private void setSound(double sound2) {
 		this.sound = sound2;
 	}
 
@@ -158,7 +158,7 @@ class Metronome {
 		return metrovol;
 	}
 
-	void setCurrentBeat(int currentBeat_set) {
+	private void setCurrentBeat(int currentBeat_set) {
 		this.currentBeat = currentBeat_set;
 	}
 
@@ -218,7 +218,7 @@ class Metronome {
     static void startstopMetronome(Activity activity) {
         if (checkMetronomeValid() && FullscreenActivity.metronomeonoff.equals("off")) {
             // Start the metronome
-            Runtime.getRuntime().gc();
+            //Runtime.getRuntime().gc();
             FullscreenActivity.metronomeonoff = "on";
             FullscreenActivity.whichbeat = "b";
             metroTask = new MetronomeAsyncTask();
@@ -231,7 +231,7 @@ class Metronome {
 
         } else if (checkMetronomeValid() && FullscreenActivity.metronomeonoff.equals("on")) {
             // Stop the metronome
-            Runtime.getRuntime().gc();
+            //Runtime.getRuntime().gc();
             FullscreenActivity.metronomeonoff = "off";
             if (metroTask!=null) {
                 metroTask.stop();
@@ -449,11 +449,7 @@ class Metronome {
             t = 39;
         }
         ProcessSong.processTimeSig();
-        if (t>=40 && t<199 && FullscreenActivity.mTimeSigValid) {
-            return true;
-        } else {
-            return false;
-        }
+        return t >= 40 && t < 199 && FullscreenActivity.mTimeSigValid;
 
     }
 }

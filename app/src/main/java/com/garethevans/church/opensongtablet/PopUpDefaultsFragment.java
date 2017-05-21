@@ -103,10 +103,10 @@ public class PopUpDefaultsFragment extends DialogFragment {
             FullscreenActivity.popupDim_All = 0.7f;
         }
 
-        if (FullscreenActivity.popupScale_All >= 0.6f && FullscreenActivity.popupScale_All <= 0.9f) {
-            popupScale_seekBar.setProgress((int) (FullscreenActivity.popupScale_All*10)-6);
+        if (FullscreenActivity.popupScale_All >= 0.3f && FullscreenActivity.popupScale_All <= 1.0f) {
+            popupScale_seekBar.setProgress((int) (FullscreenActivity.popupScale_All*10)-3);
         } else {
-            popupScale_seekBar.setProgress(2);
+            popupScale_seekBar.setProgress(5);
             FullscreenActivity.popupScale_All = 0.8f;
         }
 
@@ -148,7 +148,7 @@ public class PopUpDefaultsFragment extends DialogFragment {
         popupScale_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                FullscreenActivity.popupScale_All = (i+6.0f)/10.0f;
+                FullscreenActivity.popupScale_All = (i+3.0f)/10.0f;
             }
 
             @Override

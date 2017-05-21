@@ -200,22 +200,22 @@ public class PopUpFileChooseFragment extends DialogFragment {
                         break;
 
                     case "customnote":
-                        FullscreenActivity.customreusabletoload = FullscreenActivity.text_note  + "/" + foundFiles[position];
+                        FullscreenActivity.customreusabletoload = getActivity().getResources().getString(R.string.note)  + "/" + foundFiles[position];
                         mListener.loadCustomReusable();
                         break;
 
                     case "customslide":
-                        FullscreenActivity.customreusabletoload = FullscreenActivity.text_slide  + "/" + foundFiles[position];
+                        FullscreenActivity.customreusabletoload = getActivity().getResources().getString(R.string.slide)  + "/" + foundFiles[position];
                         mListener.loadCustomReusable();
                         break;
 
                     case "customimage":
-                        FullscreenActivity.customreusabletoload = FullscreenActivity.image  + "/" + foundFiles[position];
+                        FullscreenActivity.customreusabletoload = getActivity().getResources().getString(R.string.image)  + "/" + foundFiles[position];
                         mListener.loadCustomReusable();
                         break;
 
                     case "customscripture":
-                        FullscreenActivity.customreusabletoload = FullscreenActivity.text_scripture  + "/" + foundFiles[position];
+                        FullscreenActivity.customreusabletoload = getActivity().getResources().getString(R.string.scripture)  + "/" + foundFiles[position];
                         mListener.loadCustomReusable();
                         break;
 

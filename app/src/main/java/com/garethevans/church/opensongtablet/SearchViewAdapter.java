@@ -178,8 +178,29 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
     }
 
     @Override
+    public void notifyDataSetInvalidated() {
+        super.notifyDataSetInvalidated();
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
+
+    @SuppressWarnings("SuspiciousMethodCalls")
+    @Override
     public int getSectionForPosition(int i) {
-        return 0;
+        try {
+            if (mapIndex!=null && i>-1 && mapIndex.size()>i) {
+                return mapIndex.get(i);
+            } else {
+                return 0;
+            }
+        } catch (Exception e) {
+            return 0;
+        }
+
+        //return i;
     }
 
     private class ValueFilter extends Filter {
@@ -221,7 +242,40 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
         protected void publishResults(CharSequence constraint,
                                       FilterResults results) {
             searchlist = (ArrayList<SearchViewItems>) results.values;
-            notifyDataSetChanged();
+            updateListIndex(searchlist);
+            // Let the adapter know about the updated list
+            if (results.count > 0) {
+                notifyDataSetChanged();
+            } else {
+                notifyDataSetInvalidated();
+            }
         }
+
+    }
+
+    private void updateListIndex(ArrayList<SearchViewItems> results) {
+
+        mapIndex = new LinkedHashMap<>();
+
+        for (int x = 0; x < results.size(); x++) {
+            String title = results.get(x).getTitle();
+            String ch = title.substring(0, 1);
+            ch = ch.toUpperCase(FullscreenActivity.locale);
+
+            // HashMap will prevent duplicates
+            mapIndex.put(ch, x);
+        }
+
+        Set<String> sectionLetters = mapIndex.keySet();
+
+        // create a list from the set to sort
+        ArrayList<String> sectionList = new ArrayList<>(sectionLetters);
+
+        Collections.sort(sectionList);
+
+        sections = new String[sectionList.size()];
+
+        sectionList.toArray(sections);
+
     }
 }

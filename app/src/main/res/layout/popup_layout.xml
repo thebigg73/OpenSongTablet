@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scrollView4"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -78,7 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/MyHeadingText"
-                app:theme="@style/SwitchStyle"
+                android:theme="@style/SwitchStyle"
                 android:text="@string/showchords"/>
 
         </LinearLayout>
@@ -95,7 +94,7 @@
                 android:id="@+id/toggleAutoScaleButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:theme="@style/SwitchStyle"
+                android:theme="@style/SwitchStyle"
                 style="@style/MyHeadingText"
                 android:text="@string/options_options_scale"/>
 

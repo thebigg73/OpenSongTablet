@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import java.io.BufferedReader;
@@ -33,9 +34,7 @@ public class BibleSelect extends Activity {
 		
 		try {
 			loadBible();
-		} catch (XmlPullParserException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -52,20 +51,18 @@ public class BibleSelect extends Activity {
 							FullscreenActivity.dirbibles + "/"
 									+ FullscreenActivity.bibleFile));
 
-					if (inputStream != null) {
-						InputStreamReader streamReader = new InputStreamReader(inputStream);
-						BufferedReader bufferedReader = new BufferedReader(streamReader);
-						String l;
-						int count = 0;
-						while ((l = bufferedReader.readLine()) != null) {
-							// do what you want with the line
-							FullscreenActivity.bibleFileContents = FullscreenActivity.bibleFileContents + l
-									+ "\n";
-							count = count + 1;
-						}
-						inputStream.close();
-						bufferedReader.close();
-					}
+					InputStreamReader streamReader = new InputStreamReader(inputStream);
+					BufferedReader bufferedReader = new BufferedReader(streamReader);
+					String l;
+					int count = 0;
+					while ((l = bufferedReader.readLine()) != null) {
+                        // do what you want with the line
+                        FullscreenActivity.bibleFileContents = FullscreenActivity.bibleFileContents + l
+                                + "\n";
+                        count = count + 1;
+                    }
+					inputStream.close();
+					bufferedReader.close();
 					inputStream.close(); // close the file
 				} catch (java.io.FileNotFoundException e) {
 					// file doesn't exist
@@ -79,13 +76,13 @@ public class BibleSelect extends Activity {
 		}
 			
 		// Extract all of the key bits of the bible
-		XmlPullParserFactory factory = null;
+		XmlPullParserFactory factory;
 		factory = XmlPullParserFactory.newInstance();
 		factory.setNamespaceAware(true);
-		XmlPullParser xpp = null;
+		XmlPullParser xpp;
 		xpp = factory.newPullParser();
 		xpp.setInput(new StringReader(FullscreenActivity.bibleFileContents));
-		int eventType = 0;
+		int eventType;
 		eventType = xpp.getEventType();
 				 
 		// Initialise arrays and strings
@@ -120,3 +117,4 @@ public class BibleSelect extends Activity {
 	}
 }
 
+*/

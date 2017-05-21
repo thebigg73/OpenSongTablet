@@ -108,7 +108,7 @@
                 android:id="@+id/uselinkaudiolength_ImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/page_link_bw"
+                android:src="@drawable/ic_link_white_36dp"
                 android:contentDescription="@string/link_audio"/>
         </LinearLayout>
         <Button

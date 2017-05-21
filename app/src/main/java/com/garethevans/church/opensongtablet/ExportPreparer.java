@@ -56,7 +56,7 @@ public class ExportPreparer extends Activity {
     static byte[] bArray;
     static Backup_Create backup_create;
     static Backup_Create_Selected backup_create_selected;
-    static Context context;
+    Context context;
     static Activity activity;
     static Intent emailIntent;
     static String folderstoexport = "";
@@ -89,7 +89,7 @@ public class ExportPreparer extends Activity {
 		FullscreenActivity.emailtext = songtext;
 	}
 
-	public static boolean setParser() throws IOException, XmlPullParserException {
+	public static boolean setParser(Context c) throws IOException, XmlPullParserException {
 
         settext = "";
         FullscreenActivity.exportsetfilenames.clear();
@@ -153,7 +153,7 @@ public class ExportPreparer extends Activity {
 							// Read in the song title, author, copyright, hymnnumber, key
 							getSongData();
 						}
-						settext = settext + FullscreenActivity.song + " : " + song_title;
+						settext = settext + c.getResources().getString(R.string.options_song) + " : " + song_title;
 						if (!song_author.isEmpty()) {
 							settext = settext + ", " + song_author;
 						}
@@ -165,16 +165,18 @@ public class ExportPreparer extends Activity {
 						}
 						settext = settext + "\n";
 					} else if (xpp.getAttributeValue(null,"type").equals("scripture")) {
-						settext = settext + FullscreenActivity.scripture.toUpperCase(Locale.getDefault()) + " : " + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name")) + "\n";
+						settext = settext + c.getResources().getString(R.string.scripture).toUpperCase(Locale.getDefault()) +
+                                " : " + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name")) + "\n";
 
 					} else if (xpp.getAttributeValue(null,"type").equals("custom")) {
                         // Decide if this is a note or a slide
-                        if (xpp.getAttributeValue(null,"name").contains("# " + FullscreenActivity.text_note + " # - ")) {
+                        if (xpp.getAttributeValue(null,"name").contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
                             String nametemp = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
-                            nametemp = nametemp.replace("# " + FullscreenActivity.note + " # - ","");
-                            settext = settext + FullscreenActivity.note.toUpperCase(Locale.getDefault()) + " : " + nametemp + "\n";
+                            nametemp = nametemp.replace("# " + c.getResources().getString(R.string.note) + " # - ","");
+                            settext = settext + c.getResources().getString(R.string.note).toUpperCase(Locale.getDefault()) +
+                                    " : " + nametemp + "\n";
                         } else {
-                            settext = settext + FullscreenActivity.slide.toUpperCase(Locale.getDefault()) + " : " + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name")) + "\n";
+                            settext = settext + c.getResources().getString(R.string.slide).toUpperCase(Locale.getDefault()) + " : " + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name")) + "\n";
                         }
 					} else if (xpp.getAttributeValue(null,"type").equals("image")) {
                         // Go through the descriptions of each image and extract the absolute file locations
@@ -200,7 +202,7 @@ public class ExportPreparer extends Activity {
                             eventType = xpp.next(); // Set the current event type from the return value of next()
                         }
                         // Go through each of these images and add a line for each one
-                        settext = settext + FullscreenActivity.image.toUpperCase(Locale.getDefault()) + " : " + imgname + "\n";
+                        settext = settext + c.getResources().getString(R.string.image).toUpperCase(Locale.getDefault()) + " : " + imgname + "\n";
                         for (int im=0;im<theseimages.size();im++) {
                             settext = settext + "     - " + theseimages.get(im) + "\n";
                         }
@@ -505,14 +507,17 @@ public class ExportPreparer extends Activity {
 
     public static void createSelectedOSB(Context c) {
         activity = (Activity) c;
-        context = c;
         if (backup_create!=null) {
             backup_create.cancel(true);
         }
-        backup_create_selected = new Backup_Create_Selected();
+        backup_create_selected = new Backup_Create_Selected(c);
         backup_create_selected.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
-    public static class Backup_Create_Selected extends AsyncTask<String, Void, String> {
+    private static class Backup_Create_Selected extends AsyncTask<String, Void, String> {
+        Context c;
+        Backup_Create_Selected(Context context) {
+            c = context;
+        }
         @Override
         protected String doInBackground(String... strings) {
             return makeBackupZipSelected();
@@ -521,10 +526,10 @@ public class ExportPreparer extends Activity {
         @Override
         public void onPostExecute(String s) {
             File f = new File(s);
-            FullscreenActivity.myToastMessage = context.getString(R.string.backup_success);
-            ShowToast.showToast(context);
-            emailIntent = exportBackup(context, f);
-            activity.startActivityForResult(Intent.createChooser(emailIntent, context.getString(R.string.backup_info)), 12345);
+            FullscreenActivity.myToastMessage = c.getString(R.string.backup_success);
+            ShowToast.showToast(c);
+            emailIntent = exportBackup(c, f);
+            activity.startActivityForResult(Intent.createChooser(emailIntent, c.getString(R.string.backup_info)), 12345);
         }
     }
     public static String makeBackupZipSelected() {
@@ -568,11 +573,11 @@ public class ExportPreparer extends Activity {
         File[] files = dirObj.listFiles();
         byte[] tmpBuf = new byte[1024];
 
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isFile()) {
-                FileInputStream in = new FileInputStream(files[i].getAbsolutePath());
-                System.out.println(" Adding: " + files[i].getAbsolutePath().replace(FullscreenActivity.dir.toString() + "/", ""));
-                outSelected.putNextEntry(new ZipEntry((files[i].getAbsolutePath()).replace(FullscreenActivity.dir.toString() + "/", "")));
+        for (File file : files) {
+            if (file.isFile()) {
+                FileInputStream in = new FileInputStream(file.getAbsolutePath());
+                System.out.println(" Adding: " + file.getAbsolutePath().replace(FullscreenActivity.dir.toString() + "/", ""));
+                outSelected.putNextEntry(new ZipEntry((file.getAbsolutePath()).replace(FullscreenActivity.dir.toString() + "/", "")));
                 int len;
                 while ((len = in.read(tmpBuf)) > 0) {
                     outSelected.write(tmpBuf, 0, len);
@@ -588,15 +593,19 @@ public class ExportPreparer extends Activity {
 
 
     public static void createOpenSongBackup(Context c) {
-        context = c;
-        activity = (Activity) context;
+        activity = (Activity) c;
         if (backup_create!=null) {
             backup_create.cancel(true);
         }
-        backup_create = new Backup_Create();
+        backup_create = new Backup_Create(c);
         backup_create.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
     public static class Backup_Create extends AsyncTask<String, Void, String> {
+        Context c;
+
+        Backup_Create(Context context) {
+            c = context;
+        }
         @Override
         protected String doInBackground(String... strings) {
             return makeBackupZip();
@@ -605,10 +614,10 @@ public class ExportPreparer extends Activity {
         @Override
         public void onPostExecute(String s) {
             File f = new File(s);
-            FullscreenActivity.myToastMessage = context.getString(R.string.backup_success);
-            ShowToast.showToast(context);
-            emailIntent = exportBackup(context, f);
-            activity.startActivityForResult(Intent.createChooser(emailIntent, context.getString(R.string.backup_info)), 12345);
+            FullscreenActivity.myToastMessage = c.getString(R.string.backup_success);
+            ShowToast.showToast(c);
+            emailIntent = exportBackup(c, f);
+            activity.startActivityForResult(Intent.createChooser(emailIntent, c.getString(R.string.backup_info)), 12345);
         }
     }
     public static String makeBackupZip() {

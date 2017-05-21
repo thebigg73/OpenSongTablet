@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
@@ -90,6 +91,8 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
 	private View mLayout;
     public boolean storageGranted = false;
 
+*/
+/*
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -272,8 +275,11 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
 
         }
 	}
+*//*
 
-    public void onBackPressed() {
+
+ */
+/*   public void onBackPressed() {
         if (FullscreenActivity.prefStorage.equals("ext") || FullscreenActivity.prefStorage.equals("int") || FullscreenActivity.prefStorage.equals("other")) {
             Intent intent_stop = new Intent();
             intent_stop.setClass(this, FullscreenActivity.class);
@@ -284,7 +290,10 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
             ShowToast.showToast(StorageChooser.this);
         }
     }
+*//*
 
+*/
+/*
     public void getOtherStorage() {
         if (storageGranted) {
             DialogFragment newFragment = PopUpDirectoryChooserFragment.newInstance();
@@ -296,7 +305,11 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
             requestStoragePermission();
         }
     }
+*//*
 
+
+*/
+/*
 	public void saveStorageLocation(View view) {
 		//Rewrite the shared preference
 		switch (numeral) {
@@ -316,7 +329,11 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
 		startActivity(intent_stop);
 		finish();
 	}
+*//*
 
+
+*/
+/*
 	public boolean deleteDirectory(File path) {
 		if (storageGranted) {
             if (path.exists()) {
@@ -341,7 +358,11 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
             return false;
         }
 	}
+*//*
 
+
+*/
+/*
 	public void wipeSongs(View view) {
         if (storageGranted) {
             // Wipe the user's song folder and reset it by calling script
@@ -395,7 +416,13 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
                                             Log.d("StorageChooser", "Failed to create songs folder");
                                         }
 
-                                        /*// Copy Love Everlasting since folder is empty.
+                                        *//*
+
+*/
+/*//*
+*/
+/*
+/ Copy Love Everlasting since folder is empty.
                                         AssetManager assetManager = getAssets();
                                         InputStream in;
                                         OutputStream out;
@@ -410,7 +437,10 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
                                             out.close();
                                         } catch (IOException e) {
                                             Log.e("tag", "Failed to copy asset file: " + "Love everlasting", e);
-                                        }*/
+                                        }*//*
+*/
+/*
+
                                     }
                                     break;
                                 case "3":
@@ -422,7 +452,13 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
                                             Log.d("StorageChooser", "Failed to create songs folder");
                                         }
 
-                                        /*// Copy Love Everlasting since folder is empty.
+                                        *//*
+
+*/
+/*//*
+*/
+/*
+/ Copy Love Everlasting since folder is empty.
                                         AssetManager assetManager = getAssets();
                                         InputStream in;
                                         OutputStream out;
@@ -437,7 +473,10 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
                                             out.close();
                                         } catch (IOException e) {
                                             Log.e("tag", "Failed to copy asset file: " + "Love everlasting", e);
-                                        }*/
+                                        }*//*
+*/
+/*
+
                                     }
                                     break;
                                 default:
@@ -448,7 +487,13 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
                                         if (!domkdirs) {
                                             Log.d("StorageChooser", "Failed to create songs folder");
                                         }
-                                        /*// Copy Love Everlasting since folder is empty.
+                                        *//*
+
+*/
+/*//*
+*/
+/*
+/ Copy Love Everlasting since folder is empty.
                                         AssetManager assetManager = getAssets();
                                         InputStream in;
                                         OutputStream out;
@@ -463,7 +508,10 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
                                             out.close();
                                         } catch (IOException e) {
                                             Log.e("tag", "Failed to copy asset file: " + "Love everlasting", e);
-                                        }*/
+                                        }*//*
+*/
+/*
+
                                     }
                                     break;
                             }
@@ -493,6 +541,8 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
             requestStoragePermission();
         }
 	}
+*//*
+
 
 	private void copyFile(InputStream in, OutputStream out) throws IOException {
 		byte[] buffer = new byte[1024];
@@ -502,6 +552,8 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
 		}
 	}
 
+*/
+/*
 	public void copymyassets(View view) {
         if (storageGranted) {
             copyAssets.setVisibility(View.VISIBLE);
@@ -515,6 +567,8 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
             requestStoragePermission();
         }
 	}
+*//*
+
 
 	@Override
 	public void updateCustomStorage() {
@@ -532,12 +586,9 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
 
 	}
 
-	//@Override
-    public void updateLinksPopUp() {
-        // Nothing needed here
-        Log.d("d","Not required");
-    }
 
+*/
+/*
     private class CopyAssetsTask extends AsyncTask<String, Void, String> {
 		@Override
 		protected void onPostExecute(String result)  {
@@ -700,7 +751,11 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
 			return null;
 		}
 	}
+*//*
 
+
+*/
+/*
     // The permission requests
     private void requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -717,6 +772,8 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestStorage);
         }
     }
+*//*
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -736,4 +793,4 @@ public class StorageChooser extends AppCompatActivity implements PopUpDirectoryC
             }
         }
     }
-}
+}*/

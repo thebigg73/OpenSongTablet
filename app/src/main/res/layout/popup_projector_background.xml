@@ -70,7 +70,7 @@
                 android:layout_weight="0.4"
                 android:contentDescription="@string/choose_image1"
                 android:padding="10dp"
-                android:src="@drawable/ic_action_picture" />
+                android:src="@drawable/ic_image_white_36dp" />
 
             <CheckBox
                 android:id="@+id/image1CheckBox"
@@ -107,7 +107,7 @@
                 android:contentDescription="@string/choose_image2"
                 android:padding="10dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_action_picture" />
+                android:src="@drawable/ic_image_white_36dp" />
 
             <CheckBox
                 android:id="@+id/image2CheckBox"
@@ -130,7 +130,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.3"
-                android:elegantTextHeight="false"
                 android:padding="10dp"
                 android:text="@string/choose_video1"
                 android:textAppearance="@android:style/TextAppearance.Small"
@@ -142,7 +141,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.4"
-                android:background="@drawable/ic_action_video"
+                android:background="@drawable/ic_video_white_36dp"
                 android:contentDescription="@string/choose_video1"
                 android:padding="10dp" />
 
@@ -178,7 +177,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.4"
-                android:background="@drawable/ic_action_video"
+                android:background="@drawable/ic_video_white_36dp"
                 android:contentDescription="@string/choose_video2"
                 android:padding="10dp" />
 

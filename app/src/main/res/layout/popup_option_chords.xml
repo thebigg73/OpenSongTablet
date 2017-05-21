@@ -6,19 +6,34 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/chordsMenuTitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="4dp"
-        android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
-        android:drawablePadding="4dp"
-        android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
-        android:gravity="center"
-        android:text="@string/chords"
-        android:textColor="#ff0"
-        android:textSize="22sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/chordsMenuTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+            android:drawablePadding="4dp"
+            android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+            android:gravity="center"
+            android:text="@string/chords"
+            style="@style/MyMenuHeadingText" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/closeOptionsFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:fabSize="mini"
+            android:src="@drawable/ic_close_white_36dp"/>
+
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/optionschordsscrollview"
@@ -84,7 +99,7 @@
                 android:drawableStart="@drawable/ic_guitar_electric_white_36dp"
                 android:text="@string/showchords"
                 android:textColor="#fff"
-                app:theme="@style/SwitchStyle"
+                android:theme="@style/SwitchStyle"
                 android:textSize="12sp"
                 app:showText="false" />
 
@@ -100,7 +115,7 @@
                 android:drawableStart="@drawable/ic_comment_text_white_36dp"
                 android:text="@string/showlyrics"
                 android:textColor="#fff"
-                app:theme="@style/SwitchStyle"
+                android:theme="@style/SwitchStyle"
                 android:textSize="12sp"
                 app:showText="false" />
 
@@ -115,7 +130,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_capo_white_36dp"
                 android:text="@string/showcapo"
-                app:theme="@style/SwitchStyle"
+                android:theme="@style/SwitchStyle"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 app:showText="false" />
@@ -130,7 +145,7 @@
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_capo_white_36dp"
                 android:text="@string/capo_toggle_bothcapo"
-                app:theme="@style/SwitchStyle"
+                android:theme="@style/SwitchStyle"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 app:showText="false" />

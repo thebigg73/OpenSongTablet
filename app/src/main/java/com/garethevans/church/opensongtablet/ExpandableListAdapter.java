@@ -14,18 +14,18 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.List;
 
-public class ExpandableListAdapter extends BaseExpandableListAdapter implements SectionIndexer,
+class ExpandableListAdapter extends BaseExpandableListAdapter implements SectionIndexer,
         AbsListView.OnScrollListener {
 
     private Context _context;
-    public final ExpandableListView expandableListView;
+    private final ExpandableListView expandableListView;
     private boolean manualScroll;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
 
-    public ExpandableListAdapter(ExpandableListView expandableListView, Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData) {
+    ExpandableListAdapter(ExpandableListView expandableListView, Context context, List<String> listDataHeader,
+                          HashMap<String, List<String>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;

@@ -10,7 +10,7 @@
     card_view:cardCornerRadius="8dp"
     card_view:contentPadding="4dp">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -27,8 +27,7 @@
             android:layout_toRightOf="@id/cardview_item"
             android:gravity="center_vertical"
             android:text="@string/title"
-            style="@style/MyWhiteHeadingText"
-            android:textStyle="bold" />
+            android:theme="@style/MyWhiteHeadingText" />
 
         <TextView
             android:id="@+id/cardview_folder"
@@ -44,35 +43,31 @@
             android:layout_toRightOf="@id/cardview_item"
             android:gravity="center_vertical"
             android:text="@string/mainfoldername"
-            style="@style/MyInfoText"
-            android:textColor="#ccc"
-            android:textStyle="italic" />
+            android:theme="@style/MyInfoText"
+            android:textColor="#ccc" />
 
         <TextView
             android:id="@+id/text_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
             android:layout_below="@+id/cardview_folder"
             android:text="@string/edit_song_author"
-            style="@style/MyInfoText"
-            android:textColor="#ccc"
-            android:textStyle="bold" />
+            android:theme="@style/MyInfoText"
+            android:textColor="#ccc" />
 
         <TextView
             android:id="@+id/cardview_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_below="@+id/cardview_folder"
             android:layout_toRightOf="@+id/text_author"
             android:layout_toLeftOf="@+id/text_key"
             android:text="@string/edit_song_author"
-            style="@style/MyInfoText"
+            android:theme="@style/MyInfoText"
             android:ellipsize="end"/>
 
         <TextView
@@ -80,24 +75,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_below="@+id/cardview_folder"
             android:layout_toLeftOf="@+id/cardview_key"
             android:text="@string/edit_song_key"
-            style="@style/MyInfoText"
-            android:textColor="#ccc"
-            android:textStyle="bold" />
+            android:theme="@style/MyInfoText"
+            android:textColor="#ccc" />
 
         <TextView
             android:id="@+id/cardview_key"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_below="@+id/cardview_folder"
             android:layout_alignParentRight="true"
-            style="@style/MyInfoText"
+            android:theme="@style/MyInfoText"
             android:text="@string/edit_song_key" />
 
 
@@ -122,17 +114,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:text="@string/edit_song_theme"
-                    android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="#888" />
 
                 <TextView
                     android:id="@+id/cardview_theme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="#000"
                     android:textSize="16sp" />
             </TableRow>
@@ -146,10 +135,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:text="@string/edit_song_title"
-                    android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="#888" />
 
                 <TextView
@@ -157,7 +144,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/edit_song_title"
-                    android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="#888" />
             </TableRow>
 
@@ -170,10 +156,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:text="@string/edit_song_hymn"
-                    android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="#888" />
 
                 <TextView
@@ -181,7 +165,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/edit_song_hymn"
-                    android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="#888" />
             </TableRow>
 
@@ -194,10 +177,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:text="@string/edit_song_lyrics"
-                    android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="#888" />
 
                 <TextView
@@ -205,7 +186,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/edit_song_lyrics"
-                    android:textAppearance="@android:style/TextAppearance.Small"
                     android:textColor="#888" />
             </TableRow>
         </TableLayout>

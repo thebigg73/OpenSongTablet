@@ -51,6 +51,7 @@ public class PopUpPagesFragment extends DialogFragment {
             getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
             TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
             title.setText(getActivity().getResources().getString(R.string.pdf_selectpage));
+            getDialog().getWindow().findViewById(R.id.saveMe).setVisibility(View.GONE);
             FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
             closeMe.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -103,20 +104,30 @@ public class PopUpPagesFragment extends DialogFragment {
 
             // Get the pdf page info
             pagetextView.setText(pageInfo(FullscreenActivity.pdfPageCurrent+1));
-            pageseekbar.setMax(FullscreenActivity.pdfPageCount);
+            pageseekbar.setMax(FullscreenActivity.pdfPageCount - 1);
             pageseekbar.setProgress(FullscreenActivity.pdfPageCurrent);
 
             // Set the listeners
             nextpage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    moveToNextPage();
+                    int newpos = pageseekbar.getProgress()+1;
+                    if (newpos<FullscreenActivity.pdfPageCount) {
+                        FullscreenActivity.whichDirection = "R2L";
+                        pageseekbar.setProgress(newpos);
+                        moveToSelectedPage(newpos);
+                    }
                 }
             });
-            nextpage.setOnClickListener(new View.OnClickListener() {
+            previouspage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    moveToPreviousPage();
+                    int newpos = pageseekbar.getProgress()-1;
+                    if (newpos>-1) {
+                        FullscreenActivity.whichDirection = "L2R";
+                        pageseekbar.setProgress(newpos);
+                        moveToSelectedPage(newpos);
+                    }
                 }
             });
             pageseekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -154,26 +165,6 @@ public class PopUpPagesFragment extends DialogFragment {
         FullscreenActivity.pdfPageCurrent = newpos;
         if (mListener!=null) {
             mListener.changePDFPage(FullscreenActivity.pdfPageCurrent, dir);
-        }
-    }
-
-    public void moveToNextPage() {
-        // Check if we can
-        if (FullscreenActivity.pdfPageCurrent<FullscreenActivity.pdfPageCount) {
-            FullscreenActivity.pdfPageCurrent++;
-            if (mListener!=null) {
-                mListener.changePDFPage(FullscreenActivity.pdfPageCurrent, "R2L");
-            }
-        }
-    }
-
-    public void moveToPreviousPage() {
-        // Check if we can
-        if (FullscreenActivity.pdfPageCurrent>0) {
-            FullscreenActivity.pdfPageCurrent--;
-            if (mListener!=null) {
-                mListener.changePDFPage(FullscreenActivity.pdfPageCurrent, "L2R");
-            }
         }
     }
 

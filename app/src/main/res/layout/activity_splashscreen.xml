@@ -50,7 +50,6 @@
                 android:gravity="center_horizontal"
                 android:layout_marginBottom="8dp"
                 android:background="#000"
-                android:onClick="latestUpdates"
                 android:text="@string/latest_updates"
                 android:textColor="#ff0"
                 android:textSize="18sp" />
@@ -62,9 +61,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="8dp"
-                android:onClick="gotothesongs"
                 android:padding="4dp"
-                android:text="@string/gotosong"
+                android:text="@string/storage_help"
                 android:textColor="#fff" />
 
             <TextView
@@ -90,7 +88,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/blue_button"
-                android:onClick="userGuide"
                 android:text="@string/user_guide"
                 android:textColor="#ff0" />
 
@@ -140,7 +137,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="8dp"
-                android:onClick="webLink"
                 android:text="@string/webLink"
                 style="@style/MyHeadingText" />
 

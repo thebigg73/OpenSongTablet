@@ -252,7 +252,7 @@ public final class MyPresentation extends Presentation
                 textwidth = presoLyricsIN.getWidth();
                 screenheight = lyricsHolder.getHeight();
                 textheight = presoLyricsIN.getHeight();
-                if (PresenterMode.autoscale) {
+                if (FullscreenActivity.presoAutoScale) {
                     doScale();
                 } else {
                     presoLyricsIN.setTextSize(FullscreenActivity.presoFontSize);
@@ -461,7 +461,7 @@ public final class MyPresentation extends Presentation
     }
 
     public static void fadeinAlert() {
-        presoAlert.setText(PresenterMode.myAlert);
+        presoAlert.setText(FullscreenActivity.myAlert);
         presoAlert.setTypeface(FullscreenActivity.presofont);
 
         if (PresenterMode.alert_on.equals("Y") && presoAlert.getVisibility() == View.INVISIBLE) {
@@ -475,7 +475,7 @@ public final class MyPresentation extends Presentation
     }
 
     public static void fadeoutAlert() {
-        presoAlert.setText(PresenterMode.myAlert);
+        presoAlert.setText(FullscreenActivity.myAlert);
         if (presoAlert.getVisibility() == View.VISIBLE) {
             presoAlert.setAlpha(1f);
             presoAlert.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
@@ -655,7 +655,7 @@ public final class MyPresentation extends Presentation
                 textwidth = presoLyricsIN.getWidth();
                 screenheight = lyricsHolder.getHeight();
                 textheight = presoLyricsIN.getHeight();
-                if (PresenterMode.autoscale) {
+                if (FullscreenActivity.presoAutoScale) {
                     doScale();
                 } else {
                     presoLyricsIN.setTextSize(FullscreenActivity.presoFontSize);
@@ -964,7 +964,7 @@ public final class MyPresentation extends Presentation
                 textwidth = presoLyricsIN.getWidth();
                 screenheight = lyricsHolder.getHeight();
                 textheight = presoLyricsIN.getHeight();
-                if (PresenterMode.autoscale) {
+                if (FullscreenActivity.presoAutoScale) {
                     doScale();
                 } else {
                     presoLyricsIN.setTextSize(FullscreenActivity.presoFontSize);
@@ -978,7 +978,7 @@ public final class MyPresentation extends Presentation
         // Get width and height
         presoLyricsIN.setTextSize(72);
         preso.setPadding(PresenterMode.tempxmargin, PresenterMode.tempymargin, PresenterMode.tempxmargin, PresenterMode.tempymargin);
-        if (PresenterMode.autoscale) {
+        if (FullscreenActivity.presoAutoScale) {
             doScale();
         } else {
             presoLyrics1.setTextSize(FullscreenActivity.presoFontSize);
@@ -990,6 +990,8 @@ public final class MyPresentation extends Presentation
         presoBGImage.setAlpha(FullscreenActivity.presoAlpha);
         presoBGVideo.setAlpha(FullscreenActivity.presoAlpha);
     }
+
+
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {

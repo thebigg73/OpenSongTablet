@@ -1,30 +1,33 @@
 package com.garethevans.church.opensongtablet;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+
 public class BibleGateway extends Activity{
 
     public static String response = "";
-    public static Context context;
 
     public static void grabBibleText(Context c, String weblink) {
-        context = c;
-        DownloadWebTextTask task = new DownloadWebTextTask();
+        DownloadWebTextTask task = new DownloadWebTextTask(c);
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,weblink);
     }
 
     private static class DownloadWebTextTask extends AsyncTask<String, Void, String> {
+        Context c;
 
+        DownloadWebTextTask (Context context) {
+            c = context;
+        }
         @Override
         protected String doInBackground(String... addresses) {
             response = "";
@@ -69,6 +72,7 @@ public class BibleGateway extends Activity{
             return response;
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         protected void onPostExecute(String result)  {
             String scripture;
@@ -85,8 +89,8 @@ public class BibleGateway extends Activity{
                 newbit = newbit.substring(startoffull,endoffull);
             } else {
                 Log.d("d","Error getting scripture");
-                FullscreenActivity.myToastMessage = FullscreenActivity.error_missingsection;
-                ShowToast.showToast(context);
+                FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
+                ShowToast.showToast(c);
             }
 
             newbit = Html.fromHtml(newbit).toString();
@@ -120,8 +124,8 @@ public class BibleGateway extends Activity{
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.d("d","Error getting scripture title");
-                    FullscreenActivity.myToastMessage = FullscreenActivity.error_missingsection;
-                    ShowToast.showToast(context);
+                    FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
+                    ShowToast.showToast(c);
                 }
 
                 // Make the scripture more readable by making a line break at the start of the word after 40 chars
@@ -163,8 +167,8 @@ public class BibleGateway extends Activity{
                 PopUpCustomSlideFragment.addScripture();
 
             } else {
-                FullscreenActivity.myToastMessage = FullscreenActivity.error_missingsection;
-                ShowToast.showToast(context);
+                FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
+                ShowToast.showToast(c);
             }
         }
     }

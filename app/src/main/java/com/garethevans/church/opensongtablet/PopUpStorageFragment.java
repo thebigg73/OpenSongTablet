@@ -37,7 +37,13 @@ public class PopUpStorageFragment extends DialogFragment {
         void openFragment();
     }
 
+    interface SettingsInterface {
+        void recheckStorage();
+        void selectStorage();
+    }
+
     private MyInterface mListener;
+    private SettingsInterface sListener;
 
     RadioButton intStorageButton;
     RadioButton extStorageButton;
@@ -93,7 +99,11 @@ public class PopUpStorageFragment extends DialogFragment {
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
+        if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
+            sListener = (SettingsInterface) activity;
+        } else {
+            mListener = (MyInterface) activity;
+        }
         super.onAttach(activity);
     }
 
@@ -115,14 +125,24 @@ public class PopUpStorageFragment extends DialogFragment {
             TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
             title.setText(getActivity().getResources().getString(R.string.storage_choose));
             FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    saveStorageLocation();
-                }
-            });
             FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            saveMe.setVisibility(View.GONE);
+            if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
+                closeMe.setVisibility(View.GONE);
+                saveMe.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        saveStorageLocation();
+                    }
+                });
+            } else {
+                closeMe.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        saveStorageLocation();
+                    }
+                });
+                saveMe.setVisibility(View.GONE);
+            }
         } else {
             getDialog().setTitle(getActivity().getResources().getString(R.string.storage_choose));
         }
@@ -150,6 +170,11 @@ public class PopUpStorageFragment extends DialogFragment {
         otherStorageButton = (RadioButton) V.findViewById(R.id.otherStorage);
         changeCustom = (Button) V.findViewById(R.id.editCustomStorage);
         wipeSongs = (Button) V.findViewById(R.id.wipeSongs);
+
+        // If the storage hasn't been set, don't allow users to try to wipe it!
+        if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
+            wipeSongs.setVisibility(View.GONE);
+        }
 
         Log.d("d","Started PopUpStorageFragment");
 
@@ -215,9 +240,15 @@ public class PopUpStorageFragment extends DialogFragment {
         changeCustom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullscreenActivity.whattodo = "customstoragefind";
-                mListener.openFragment();
-                dismiss();
+                if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
+                    sListener.selectStorage();
+                    dismiss();
+
+                } else {
+                    FullscreenActivity.whattodo = "customstoragefind";
+                    mListener.openFragment();
+                    dismiss();
+                }
             }
         });
 
@@ -385,78 +416,93 @@ public class PopUpStorageFragment extends DialogFragment {
             case "2":
                 FullscreenActivity.prefStorage = "ext";
                 FullscreenActivity.root = extStorCheck;
-                getOtherFolders();
+                getOtherFolders(FullscreenActivity.root);
                 break;
 
             case "3":
                 FullscreenActivity.prefStorage = "other";
                 FullscreenActivity.root = customStorageLoc;
-                getOtherFoldersCustom();
+                getOtherFolders(FullscreenActivity.root);
                 break;
             default:
                 FullscreenActivity.prefStorage = "int";
-                FullscreenActivity.root = Environment.getExternalStorageDirectory();
-                getOtherFolders();
+                FullscreenActivity.root = new File(Environment.getExternalStorageDirectory()+"/documents/");
+                getOtherFolders(FullscreenActivity.root);
                 break;
         }
         Log.d("d","numeral="+numeral);
         Log.d("d","prefStorage="+FullscreenActivity.prefStorage);
         Log.d("d","dir="+FullscreenActivity.dir);
-        if (checkDirectories()) {
-            Preferences.savePreferences();
-            ListSongFiles.getAllSongFolders();
-            mListener.rebuildSearchIndex();
-            mListener.prepareSongMenu();
+
+        Log.d("d","whattodo="+FullscreenActivity.whattodo);
+        if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
+            if (!createDirectories()) {
+                FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.createfoldererror);
+                ShowToast.showToast(getActivity());
+            }
+            sListener.recheckStorage();
             dismiss();
         } else {
-            FullscreenActivity.myToastMessage = getResources().getString(R.string.storage_issues);
-            ShowToast.showToast(getActivity());
+            if (createDirectories()) {
+                Preferences.savePreferences();
+                ListSongFiles.getAllSongFolders();
+                mListener.rebuildSearchIndex();
+                mListener.prepareSongMenu();
+                dismiss();
+            } else {
+                FullscreenActivity.myToastMessage = getResources().getString(R.string.storage_issues);
+                ShowToast.showToast(getActivity());
+            }
         }
     }
 
-    public void getOtherFolders() {
-        FullscreenActivity.homedir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong");
-        FullscreenActivity.dirsettings = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Settings");
-        FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs");
-        FullscreenActivity.dironsong = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong");
-        FullscreenActivity.dirsets = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Sets");
-        FullscreenActivity.dirPads = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Pads");
-        FullscreenActivity.dirbackgrounds = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Backgrounds");
-        FullscreenActivity.dirbibles = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture");
-        FullscreenActivity.dirbibleverses = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
-        FullscreenActivity.dirscripture = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Scripture");
-        FullscreenActivity.dirscriptureverses = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Scripture/_cache");
-        FullscreenActivity.dircustomslides = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
-        FullscreenActivity.dircustomnotes = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
-        FullscreenActivity.dircustomimages = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Images/_cache");
-        FullscreenActivity.dirvariations = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Variations");
-        FullscreenActivity.dirprofiles = new File(FullscreenActivity.root.getAbsolutePath() + "/documents/OpenSong/Profiles");
-        Log.d("d","getOtherFolders() called with prefStorage="+ FullscreenActivity.prefStorage);
-        Log.d("d","homedir="+ FullscreenActivity.homedir);
+    public static void getOtherFolders(File myroot) {
+        FullscreenActivity.homedir = new File(myroot.getAbsolutePath() + "/OpenSong");
+        FullscreenActivity.dirsettings = new File(myroot.getAbsolutePath() + "/OpenSong/Settings");
+        FullscreenActivity.dir = new File(myroot.getAbsolutePath() + "/OpenSong/Songs");
+        FullscreenActivity.dironsong = new File(myroot.getAbsolutePath() + "/OpenSong/Songs/OnSong");
+        FullscreenActivity.dirsets = new File(myroot.getAbsolutePath() + "/OpenSong/Sets");
+        FullscreenActivity.dirPads = new File(myroot.getAbsolutePath() + "/OpenSong/Pads");
+        FullscreenActivity.dirbackgrounds = new File(myroot.getAbsolutePath() + "/OpenSong/Backgrounds");
+        FullscreenActivity.dirbibles = new File(myroot.getAbsolutePath() + "/OpenSong/OpenSong Scripture");
+        FullscreenActivity.dirbibleverses = new File(myroot.getAbsolutePath() + "/OpenSong/OpenSong Scripture/_cache");
+        FullscreenActivity.dirscripture = new File(myroot.getAbsolutePath() + "/OpenSong/Scripture");
+        FullscreenActivity.dirscriptureverses = new File(myroot.getAbsolutePath() + "/OpenSong/Scripture/_cache");
+        FullscreenActivity.dircustomslides = new File(myroot.getAbsolutePath() + "/OpenSong/Slides/_cache");
+        FullscreenActivity.dircustomnotes = new File(myroot.getAbsolutePath() + "/OpenSong/Notes/_cache");
+        FullscreenActivity.dircustomimages = new File(myroot.getAbsolutePath() + "/OpenSong/Images/_cache");
+        FullscreenActivity.dirvariations = new File(myroot.getAbsolutePath() + "/OpenSong/Variations");
+        FullscreenActivity.dirprofiles = new File(myroot.getAbsolutePath() + "/OpenSong/Profiles");
     }
 
-    public void getOtherFoldersCustom() {
-        FullscreenActivity.homedir = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong");
-        FullscreenActivity.dir = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Songs");
-        FullscreenActivity.dirsettings = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Settings/");
-        FullscreenActivity.dironsong = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Songs/OnSong");
-        FullscreenActivity.dirsets = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Sets");
-        FullscreenActivity.dirPads = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Pads");
-        FullscreenActivity.dirbackgrounds = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Backgrounds");
-        FullscreenActivity.dirbibles = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/OpenSong Scripture");
-        FullscreenActivity.dirbibleverses = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/OpenSong Scripture/_cache");
-        FullscreenActivity.dirscripture = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Scripture");
-        FullscreenActivity.dirscriptureverses = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Scripture/_cache");
-        FullscreenActivity.dircustomslides = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Slides/_cache");
-        FullscreenActivity.dircustomnotes = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Notes/_cache");
-        FullscreenActivity.dircustomimages = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Images/_cache");
-        FullscreenActivity.dirvariations = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Variations");
-        FullscreenActivity.dirprofiles = new File(FullscreenActivity.root.getAbsolutePath() + "/OpenSong/Profiles");
-        Log.d("d","getOtherFoldersCustom() called");
-        Log.d("d","homedir="+ FullscreenActivity.homedir);
+    public static void setUpStoragePreferences() {
+        Log.d("d","Setting up storage preferences");
+        Log.d("d","prefStorage="+FullscreenActivity.prefStorage);
+        switch (FullscreenActivity.prefStorage) {
+            case "int":
+                // The default folders on internal storage
+                FullscreenActivity.root = new File(Environment.getExternalStorageDirectory() + "/documents/");
+                getOtherFolders(FullscreenActivity.root);
+                break;
+
+            case "ext":
+                FullscreenActivity.root = new File(System.getenv("SECONDARY_STORAGE"));
+                getOtherFolders(FullscreenActivity.root);
+                break;
+
+            case "other":
+                // User defined storage
+                FullscreenActivity.root = new File(FullscreenActivity.customStorage);
+                getOtherFolders(FullscreenActivity.root);
+                break;
+        }
+
+        Log.d("d","dir="+FullscreenActivity.dir);
+
     }
 
-    public static boolean checkDirectories(){
+
+    public static boolean createDirectories(){
         boolean homedir_success = createDirectory(FullscreenActivity.homedir);
         boolean dir_success = createDirectory(FullscreenActivity.dir);
         boolean dirsettings_success = createDirectory(FullscreenActivity.dirsettings);
@@ -499,6 +545,34 @@ public class PopUpStorageFragment extends DialogFragment {
             success = false;
         }
         return success;
+    }
+
+    public static boolean checkDirectoriesExistOnly(){
+        boolean homedir_success = checkDirectory(FullscreenActivity.homedir);
+        boolean dir_success = checkDirectory(FullscreenActivity.dir);
+        boolean dirsettings_success = checkDirectory(FullscreenActivity.dirsettings);
+        boolean dirsets_success = checkDirectory(FullscreenActivity.dirsets);
+        boolean dirPads_success = checkDirectory(FullscreenActivity.dirPads);
+        boolean dirbackgrounds_success = checkDirectory(FullscreenActivity.dirbackgrounds);
+        boolean dirbibles_success = checkDirectory(FullscreenActivity.dirbibles);
+        boolean dirverses_success = checkDirectory(FullscreenActivity.dirbibleverses);
+        boolean dirscripture_success = checkDirectory(FullscreenActivity.dirscripture);
+        boolean dirscriptureverses_success = checkDirectory(FullscreenActivity.dirscriptureverses);
+        boolean dircustomimages_success = checkDirectory(FullscreenActivity.dircustomimages);
+        boolean dircustomnotes_success = checkDirectory(FullscreenActivity.dircustomnotes);
+        boolean dircustomslides_success = checkDirectory(FullscreenActivity.dircustomslides);
+        boolean dirvariations_success = checkDirectory(FullscreenActivity.dirvariations);
+        boolean dirprofiles_success = checkDirectory(FullscreenActivity.dirprofiles);
+        boolean success;
+        success = homedir_success && dirsettings_success && dir_success && dirsets_success && dirPads_success && dirbackgrounds_success &&
+                dirbibles_success && dirverses_success && dirscripture_success && dirscriptureverses_success &&
+                dircustomimages_success && dircustomnotes_success && dircustomslides_success &&
+                dirvariations_success && dirprofiles_success;
+        return success;
+    }
+
+    public static boolean checkDirectory(File folder){
+        return folder.exists();
     }
 
     @Override

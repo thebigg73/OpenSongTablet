@@ -138,7 +138,7 @@ public class SetActions extends Activity {
         }
     }
 
-    public static void loadASet() throws XmlPullParserException, IOException {
+    public static void loadASet(Context c) throws XmlPullParserException, IOException {
 
         FullscreenActivity.mySetXML = null;
         FullscreenActivity.mySetXML = "";
@@ -156,7 +156,7 @@ public class SetActions extends Activity {
 
         // Try the new, improved method of loading in a set
         // First up, try to get the encoding of the set file
-        String utf = LoadXML.getUTFEncoding(FullscreenActivity.setfile);
+        String utf = LoadXML.getUTFEncoding(FullscreenActivity.setfile, c);
 
         // Now we know the encoding, iterate through the file extracting the items as we go
         factory = XmlPullParserFactory.newInstance();
@@ -178,13 +178,13 @@ public class SetActions extends Activity {
                             getSong();
                         } else if (xpp.getAttributeValue(null, "type").equals("scripture")) {
                             // Get Scripture
-                            getScripture();
+                            getScripture(c);
                         } else if (xpp.getAttributeValue(null, "type").equals("custom")) {
                             // Get Custom (Note or slide or variation)
-                            getCustom();
+                            getCustom(c);
                         } else if (xpp.getAttributeValue(null, "type").equals("image")) {
                             // Get the Image(s)
-                            getImage();
+                            getImage(c);
                         }
                     }
                 }
@@ -242,7 +242,7 @@ public class SetActions extends Activity {
     public static void saveSetMessage(Context c) {
         FullscreenActivity.whattodo = "";
         if (FullscreenActivity.mSetList!=null && FullscreenActivity.mSetList.length>0) {
-            CreateNewSet.doCreation();
+            CreateNewSet.doCreation(c);
         }
         if (FullscreenActivity.myToastMessage.equals("yes")) {
             FullscreenActivity.myToastMessage = c.getString(R.string.set_save)
@@ -282,29 +282,29 @@ public class SetActions extends Activity {
         FullscreenActivity.myToastMessage = FullscreenActivity.myToastMessage + " " + c.getString(R.string.sethasbeendeleted);
     }
 
-    public static void getSongForSetWork() {
+    public static void getSongForSetWork(Context c) {
         if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
             FullscreenActivity.whatsongforsetwork = FullscreenActivity.songfilename;
         } else if (FullscreenActivity.whichSongFolder.equals("../Scripture/_cache")) {
-            FullscreenActivity.whatsongforsetwork = FullscreenActivity.scripture + "/" + FullscreenActivity.songfilename;
+            FullscreenActivity.whatsongforsetwork = c.getResources().getString(R.string.scripture) + "/" + FullscreenActivity.songfilename;
         } else if (FullscreenActivity.whichSongFolder.equals("../Slides/_cache")) {
-            FullscreenActivity.whatsongforsetwork = FullscreenActivity.slide + "/" + FullscreenActivity.songfilename;
+            FullscreenActivity.whatsongforsetwork = c.getResources().getString(R.string.slide) + "/" + FullscreenActivity.songfilename;
         } else if (FullscreenActivity.whichSongFolder.equals("../Notes/_cache")) {
-            FullscreenActivity.whatsongforsetwork = FullscreenActivity.note + "/" + FullscreenActivity.songfilename;
+            FullscreenActivity.whatsongforsetwork = c.getResources().getString(R.string.note) + "/" + FullscreenActivity.songfilename;
         } else if (FullscreenActivity.whichSongFolder.equals("../Images/_cache")) {
-            FullscreenActivity.whatsongforsetwork = FullscreenActivity.image + "/" + FullscreenActivity.songfilename;
+            FullscreenActivity.whatsongforsetwork = c.getResources().getString(R.string.image) + "/" + FullscreenActivity.songfilename;
         } else if (FullscreenActivity.whichSongFolder.equals("../Variations")) {
-            FullscreenActivity.whatsongforsetwork = FullscreenActivity.text_variation + "/" + FullscreenActivity.songfilename;
+            FullscreenActivity.whatsongforsetwork = c.getResources().getString(R.string.variation) + "/" + FullscreenActivity.songfilename;
         } else {
             FullscreenActivity.whatsongforsetwork = FullscreenActivity.whichSongFolder + "/"
                     + FullscreenActivity.songfilename;
         }
     }
 
-    public static boolean isSongInSet() {
+    public static boolean isSongInSet(Context c) {
         if (FullscreenActivity.setSize > 0) {
             // Get the name of the song to look for (including folders if need be)
-            getSongForSetWork();
+            getSongForSetWork(c);
 
             if (FullscreenActivity.setView && FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
                 // If we are currently in set mode, check if the new song is there, in which case do nothing else
@@ -410,7 +410,7 @@ public class SetActions extends Activity {
 
     }
 
-    public static void writeTempSlide(String where, String what) throws IOException {
+    public static void writeTempSlide(String where, String what, Context c) throws IOException {
         // Fix the custom name so there are no illegal characters
         what = what.replaceAll("[|?*<\":>+\\[\\]']", " ");
         File temp;
@@ -418,21 +418,21 @@ public class SetActions extends Activity {
         String foldername;
         String setprefix;
 
-        if (where.equals(FullscreenActivity.text_scripture)) {
+        if (where.equals(c.getResources().getString(R.string.scripture))) {
             foldername = FullscreenActivity.dirscriptureverses.toString();
-            setprefix  = "$**_**" + FullscreenActivity.scripture + "/";
-        } else if (where.equals(FullscreenActivity.text_slide)) {
+            setprefix  = "$**_**" + c.getResources().getString(R.string.scripture) + "/";
+        } else if (where.equals(c.getResources().getString(R.string.slide))) {
             foldername = FullscreenActivity.dircustomslides.toString();
-            setprefix  = "$**_**" + FullscreenActivity.slide + "/";
-        } else if (where.equals(FullscreenActivity.image)) {
+            setprefix  = "$**_**" + c.getResources().getString(R.string.slide) + "/";
+        } else if (where.equals(c.getResources().getString(R.string.image))) {
             foldername = FullscreenActivity.dircustomimages.toString();
-            setprefix  = "$**_**" + FullscreenActivity.image + "/";
-        } else if (where.equals(FullscreenActivity.text_variation)) {
+            setprefix  = "$**_**" + c.getResources().getString(R.string.image) + "/";
+        } else if (where.equals(c.getResources().getString(R.string.variation))) {
             foldername = FullscreenActivity.dirvariations.toString();
-            setprefix  = "$**_**" + FullscreenActivity.text_variation + "/";
+            setprefix  = "$**_**" + c.getResources().getString(R.string.variation) + "/";
         } else {
             foldername = FullscreenActivity.dircustomnotes.toString();
-            setprefix  = "$**_**" + FullscreenActivity.note + "/";
+            setprefix  = "$**_**" + c.getResources().getString(R.string.note) + "/";
         }
 
         // Check to see if that file already exists (same name).  If so, add _ to the end
@@ -459,7 +459,7 @@ public class SetActions extends Activity {
         my_NEW_XML += "  <lyrics>" + PopUpEditSongFragment.parseToHTMLEntities(lyrics) + "</lyrics>\n";
         my_NEW_XML += "</song>";
 
-        if (where.equals(FullscreenActivity.text_variation)) {
+        if (where.equals(c.getResources().getString(R.string.variation))) {
             // Create a full song instead
             byte[] data = Base64.decode(custom_notes, Base64.DEFAULT);
             my_NEW_XML = new String(data, "UTF-8");
@@ -487,7 +487,7 @@ public class SetActions extends Activity {
 
     }
 
-    public static void getScripture() throws IOException, XmlPullParserException {
+    public static void getScripture(Context c) throws IOException, XmlPullParserException {
         // Ok parse this bit seperately.  Initialise the values
         scripture_title = "";
         scripture_translation = "";
@@ -573,12 +573,12 @@ public class SetActions extends Activity {
         key_line = "";
         hymn_number = "";
 
-        writeTempSlide(FullscreenActivity.text_scripture,scripture_title);
+        writeTempSlide(c.getResources().getString(R.string.scripture),scripture_title,c);
 
         xpp.nextTag();
      }
 
-    public static void getCustom() throws IOException, XmlPullParserException {
+    public static void getCustom(Context c) throws IOException, XmlPullParserException {
         // Ok parse this bit seperately.  Could be a note or a slide or a variation
         // Notes have # Note # - in the name
         // Variations have # Variation # - in the name
@@ -619,10 +619,10 @@ public class SetActions extends Activity {
         }
 
         // If the custom slide is just a note (no content), fix the content
-        String noteorslide = FullscreenActivity.text_slide;
-        if (custom_name.contains("# " + FullscreenActivity.text_note + " # - ")) {
+        String noteorslide = c.getResources().getString(R.string.slide);
+        if (custom_name.contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
             // Prepare for a note
-            custom_name = custom_name.replace("# " + FullscreenActivity.text_note + " # - ", "");
+            custom_name = custom_name.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");
             custom_text = custom_notes;
             if (custom_notes.equals("")) {
                 custom_text = custom_name;
@@ -631,18 +631,18 @@ public class SetActions extends Activity {
             custom_title = "";
             custom_subtitle = "";
             custom_seconds = "";
-            noteorslide = FullscreenActivity.text_note;
+            noteorslide = c.getResources().getString(R.string.note);
 
         // If it is a song variation, the full song contents are written to the notes part
         // The contents will be a compatible slide for OpenSong desktop presentation, not needed in this app
-        } else if (custom_name.contains("# " + FullscreenActivity.text_variation + " # - ")) {
+        } else if (custom_name.contains("# " + c.getResources().getString(R.string.variation) + " # - ")) {
             // Prepare for a variation
-            custom_name = custom_name.replace("# " + FullscreenActivity.text_variation + " # - ", "");
+            custom_name = custom_name.replace("# " + c.getResources().getString(R.string.variation) + " # - ", "");
             custom_text = custom_notes;
             custom_title = custom_name;
             custom_subtitle = "";
             custom_seconds = "";
-            noteorslide = FullscreenActivity.text_variation;
+            noteorslide = c.getResources().getString(R.string.variation);
         }
 
         title = custom_title;
@@ -655,11 +655,11 @@ public class SetActions extends Activity {
         lyrics = custom_text;
         hymn_number = "";
 
-        writeTempSlide(noteorslide, custom_name);
+        writeTempSlide(noteorslide, custom_name,c);
 
     }
 
-    public static void getImage() throws IOException, XmlPullParserException {
+    public static void getImage(Context c) throws IOException, XmlPullParserException {
         // Ok parse this bit separately.  This could have multiple images
         image_name = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
         image_seconds = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"seconds"));
@@ -699,7 +699,8 @@ public class SetActions extends Activity {
                     image_filename = LoadXML.parseFromHTMLEntities(xpp.nextText());
                     if (image_filename!=null && !image_filename.equals("") && !image_filename.isEmpty()) {
                         slide_images = slide_images + image_filename + "\n";
-                        slide_image_titles = slide_image_titles + "[" + FullscreenActivity.image + "_" + (imagenums + 1) + "]\n" + image_filename + "\n\n";
+                        slide_image_titles = slide_image_titles + "[" + c.getResources().getString(R.string.image) + "_" +
+                                (imagenums + 1) + "]\n" + image_filename + "\n\n";
                         imagenums++;
                         encodedimage = false;
                     }
@@ -718,7 +719,7 @@ public class SetActions extends Activity {
                         // Save this image content
                         // Need to see if the image already exists
                         if (image_title==null || image_title.equals("")) {
-                            image_title = FullscreenActivity.image;
+                            image_title = c.getResources().getString(R.string.image);
                         }
 
                         File imgfile = new File(FullscreenActivity.dircustomimages + "/" + image_title + imagenums + image_type);
@@ -734,7 +735,8 @@ public class SetActions extends Activity {
                         overWrite.close();
                         image_content = "";
                         slide_images = slide_images + imgfile.toString() + "\n";
-                        slide_image_titles = slide_image_titles + "[" + FullscreenActivity.image + "_" + (imagenums+1) + "]\n" + imgfile + "\n\n";
+                        slide_image_titles = slide_image_titles + "[" + c.getResources().getString(R.string.image) + "_" +
+                                (imagenums+1) + "]\n" + imgfile + "\n\n";
                         imagenums++;
                         encodedimage=false;
                     }
@@ -755,7 +757,7 @@ public class SetActions extends Activity {
         }
 
         if (image_title==null || image_title.equals("")) {
-            image_title = FullscreenActivity.image;
+            image_title = c.getResources().getString(R.string.image);
         }
 
         if (image_subtitle==null) {
@@ -795,10 +797,10 @@ public class SetActions extends Activity {
         hymn_number = hymn_number_imagecode;
         key_line = image_notes;
         lyrics = slide_image_titles.trim();
-        writeTempSlide(FullscreenActivity.image,title);
+        writeTempSlide(c.getResources().getString(R.string.image),title,c);
     }
 
-    public static void prepareFirstItem() {
+    public static void prepareFirstItem(Context c) {
         // If we have just loaded a set, and it isn't empty,  load the first item
         if (FullscreenActivity.mSetList.length>0) {
             FullscreenActivity.whatsongforsetwork = FullscreenActivity.mSetList[0];
@@ -808,21 +810,23 @@ public class SetActions extends Activity {
             FullscreenActivity.pdfPageCurrent = 0;
 
             // Get the song and folder names from the item clicked in the set list
-            getSongFileAndFolder();
+            getSongFileAndFolder(c);
 
             // Match the song folder
-            ListSongFiles.listSongs();
+            ListSongFiles.getAllSongFiles();
 
             // Get the index of the song in the current set
             SetActions.indexSongInSet();
         }
     }
 
-    public static void getSongFileAndFolder() {
+    public static void getSongFileAndFolder(Context c) {
 
         if (FullscreenActivity.linkclicked!=null && !FullscreenActivity.linkclicked.contains("/")) {
             // Right it doesn't, so add the /
             FullscreenActivity.linkclicked = "/" + FullscreenActivity.linkclicked;
+        } else {
+            FullscreenActivity.linkclicked="/";
         }
 
         if (FullscreenActivity.linkclicked==null || FullscreenActivity.linkclicked.equals("/")) {
@@ -841,55 +845,55 @@ public class SetActions extends Activity {
 
         // If the folder length isn't 0, it is a folder
         if (songpart[0].length() > 0 &&
-                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_scripture) &&
-                !songpart[0].contains("**"+FullscreenActivity.image) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_note)) {
+                !songpart[0].contains("**"+c.getResources().getString(R.string.variation)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.scripture)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.image)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.slide)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.note))) {
             FullscreenActivity.whichSongFolder = songpart[0];
 
         } else if (songpart[0].length() > 0 &&
-                songpart[0].contains("**"+FullscreenActivity.text_scripture) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
-                !songpart[0].contains("**"+FullscreenActivity.image) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_note)) {
+                songpart[0].contains("**"+c.getResources().getString(R.string.scripture)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.variation)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.image)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.slide)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.note))) {
             FullscreenActivity.whichSongFolder = "../Scripture/_cache";
             songpart[0] = "../Scripture/_cache";
 
         } else if (songpart[0].length() > 0 &&
-                songpart[0].contains("**"+FullscreenActivity.text_slide) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
-                !songpart[0].contains("**"+FullscreenActivity.image) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_note) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_scripture)) {
+                songpart[0].contains("**"+c.getResources().getString(R.string.slide)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.variation)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.image)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.note)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.scripture))) {
             FullscreenActivity.whichSongFolder = "../Slides/_cache";
             songpart[0] = "../Slides/_cache";
 
         } else if (songpart[0].length() > 0 &&
-                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
-                !songpart[0].contains("**"+FullscreenActivity.image) &&
-                songpart[0].contains("**"+FullscreenActivity.text_note) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_scripture)) {
+                !songpart[0].contains("**"+c.getResources().getString(R.string.variation)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.slide)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.image)) &&
+                songpart[0].contains("**"+c.getResources().getString(R.string.note)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.scripture))) {
             FullscreenActivity.whichSongFolder = "../Notes/_cache";
             songpart[0] = "../Notes/_cache";
 
         } else if (songpart[0].length() > 0 &&
-                !songpart[0].contains("**"+FullscreenActivity.text_variation) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
-                songpart[0].contains("**"+FullscreenActivity.image) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_note) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_scripture)) {
+                !songpart[0].contains("**"+c.getResources().getString(R.string.variation)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.slide)) &&
+                songpart[0].contains("**"+c.getResources().getString(R.string.image)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.note)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.scripture))) {
             FullscreenActivity.whichSongFolder = "../Images/_cache";
             songpart[0] = "../Images/_cache";
 
         } else if (songpart[0].length() > 0 &&
-                songpart[0].contains("**"+FullscreenActivity.text_variation) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_slide) &&
-                !songpart[0].contains("**"+FullscreenActivity.image) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_note) &&
-                !songpart[0].contains("**"+FullscreenActivity.text_scripture)) {
+                songpart[0].contains("**"+c.getResources().getString(R.string.variation)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.slide)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.image)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.note)) &&
+                !songpart[0].contains("**"+c.getResources().getString(R.string.scripture))) {
             FullscreenActivity.whichSongFolder = "../Variations";
             songpart[0] = "../Variations";
 
@@ -948,17 +952,18 @@ public class SetActions extends Activity {
             FullscreenActivity.setMoveDirection = "";
 
             // Get the song and folder names from the item clicked in the set list
-            getSongFileAndFolder();
+            getSongFileAndFolder(c);
 
             // Save the preferences
             Preferences.savePreferences();
 
             // Match the song folder
-            ListSongFiles.listSongs();
+            ListSongFiles.getAllSongFiles();
 
             FullscreenActivity.setMoveDirection = "";
             mListener.loadSong();
         }
 
     }
+
 }

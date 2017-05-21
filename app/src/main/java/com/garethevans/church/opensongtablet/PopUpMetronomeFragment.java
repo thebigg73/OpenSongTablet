@@ -207,8 +207,8 @@ public class PopUpMetronomeFragment extends DialogFragment {
         popupmetronome_startstopbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                doSave();
                 if (FullscreenActivity.metronomeonoff.equals("off") && FullscreenActivity.metronomeok) {
-                    Runtime.getRuntime().gc();
                     popupmetronome_startstopbutton.setText(getResources().getString(R.string.stop));
                     FullscreenActivity.metronomeonoff = "on";
                     FullscreenActivity.whichbeat = "b";
@@ -247,6 +247,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
                 getResources().getString(R.string.ok);
         ShowToast.showToast(getActivity());
+        dismiss();
     }
 
     @SuppressLint("SetTextI18n")

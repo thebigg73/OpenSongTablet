@@ -98,7 +98,7 @@
             android:layout_height="match_parent"
             android:id="@+id/listSetTweetButton"
             android:layout_margin="4dp"
-            android:src="@drawable/tweet"
+            android:src="@drawable/ic_twitter_white_36dp"
             android:background="@drawable/blue_button"
             android:cropToPadding="false"
             android:contentDescription="@string/exportsavedset"

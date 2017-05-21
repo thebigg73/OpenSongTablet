@@ -3,25 +3,45 @@
 
     <string name="app_id" translatable="false">4E2B0891</string>
     <string name="autoscale" translatable="false">Autoscale</string>
-    <string name="camera" translatable="camera">Camera</string>
+    <string name="camera" translatable="false">Camera</string>
     <string name="cast_namespace" translatable="false">urn:x-cast:com.garethevans.church.opensongtablet</string>
     <string name="category" translatable="false">Category</string>
     <string name="choosefolders" translatable="false">Choose folders</string>
     <string name="chordline_scale" translatable="false">Scale chords</string>
     <string name="connected_display" translatable="false">Connected display</string>
     <string name="current_category" translatable="false">Current category</string>
+    <string name="device_list" translatable="false">Available devices</string>
     <string name="dim" translatable="false">Background darken</string>
     <string name="exportsongdirectory" translatable="false">Export list of songs</string>
     <string name="fab_mini" translatable="false">Mini page buttons</string>
     <string name="findnewsongs" translatable="false">Find new songs</string>
     <string name="full" translatable="false">Full</string>
     <string name="managesets" translatable="false">Rename sets</string>
+    <string name="menu_settings" translatable="false">Menu settings</string>
+    <string name="menu_width" translatable="false">Menu width (percentage of screen width)</string>
+    <string name="navigate" translatable="false">Quick navigate</string>
     <string name="new_category" translatable="false">New category</string>
+    <string name="nowifidirect" translatable="false">Sorry, this device does not support WiFi direct</string>
     <string name="options_connections" translatable="false">Connect devices</string>
-    <string name="options_connections_host" translatable="false">Broadcast as host</string>
-    <string name="options_connections_search" translatable="false">Search for other hosts</string>
+    <string name="options_connections_broadcast" translatable="false">Broadcasting device:</string>
+    <string name="options_connections_connected" translatable="false">Connected to</string>
+    <string name="options_connections_host" translatable="false">Found host:</string>
+    <string name="options_connections_log" translatable="false">Connection log (click to clear).  If you have any issues, reset your WiFi and restart the app.</string>
+    <string name="options_connections_disconnect" translatable="false">Disconnect from</string>
+    <string name="options_connections_discover_start" translatable="false">Discover services</string>
+    <string name="options_connections_discover_stop" translatable="false">Stop discovery</string>
+    <string name="options_connections_failure" translatable="false">Connection failure</string>
+    <string name="options_connections_receive_host" translatable="false">Receive host songs</string>
+    <string name="options_connections_searching" translatable="false">Searching...</string>
+    <string name="options_connections_service_start" translatable="false">Start service</string>
+    <string name="options_connections_service_stop" translatable="false">Stop service</string>
+    <string name="options_connections_success" translatable="false">Connection success</string>
     <string name="options_display_popups" translatable="false">Customise popup windows</string>
+    <string name="options_modes" translatable="false">Choose app mode</string>
     <string name="pagebutton_group" translatable="false">Group page buttons</string>
+    <string name="perform" translatable="false">Perform</string>
+    <string name="performancemode" translatable="false">Performance mode</string>
+    <string name="present" translatable="false">Present</string>
     <string name="quicklaunch_button1" translatable="false">Button 1</string>
     <string name="quicklaunch_button2" translatable="false">Button 2</string>
     <string name="quicklaunch_button3" translatable="false">Button 3</string>
@@ -32,6 +52,7 @@
     <string name="size_mini" translatable="false">Mini</string>
     <string name="size_normal" translatable="false">Normal</string>
     <string name="songsinfolder" translatable="false">Song folder</string>
+    <string name="stage" translatable="false">Stage</string>
     <string name="storage_notwritable" translatable="false">Unable to use</string>
     <string name="subscription" translatable="false">(Subscription required)</string>
     <string name="transparency" translatable="false">Transparency</string>

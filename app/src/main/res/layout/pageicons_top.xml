@@ -17,7 +17,7 @@
         android:layout_marginRight="8dp"
         android:contentDescription="@string/set_back"
         android:onClick="doScrollUp"
-        android:src="@drawable/page_up_bw"
+        android:src="@drawable/ic_arrow_up_white_36dp"
         android:visibility="visible" />
 
     <ImageView
@@ -31,7 +31,7 @@
         android:layout_marginRight="8dp"
         android:contentDescription="@string/set_forward"
         android:onClick="doScrollDown"
-        android:src="@drawable/page_down_bw"
+        android:src="@drawable/ic_arrow_down_white_36dp"
         android:visibility="visible" />
 
 </RelativeLayout>

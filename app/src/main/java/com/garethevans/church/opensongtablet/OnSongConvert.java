@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -14,7 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 
-public class OnSongConvert extends Activity {
+class OnSongConvert {
 
     public interface MyInterface {
         void prepareSongMenu();
@@ -24,8 +23,8 @@ public class OnSongConvert extends Activity {
     private static MyInterface mListener;
 
     static String message = "";
-    public static boolean isbatch = false;
-	public static boolean doExtract() throws IOException {
+    private static boolean isbatch = false;
+	static boolean doExtract() throws IOException {
 
 		// This is called when a OnSong format song has been loaded.
 		// This tries to extract the relevant stuff and reformat the
@@ -58,8 +57,7 @@ public class OnSongConvert extends Activity {
 		int numlines = line.length;
 		if (numlines < 0) {
 			numlines = 1;
-			temp = " ";
-		}
+        }
 
         //Go through the lines and get rid of rubbish
         for (int c=0;c<numlines;c++) {
@@ -585,8 +583,7 @@ public class OnSongConvert extends Activity {
 			if (tempchordline.length() > 0) {
 				line[x] = "." + tempchordline + "\n" + line[x];
 			}
-			tempchordline = "";
-		}
+        }
 
 		// Join the individual lines back up
 		parsedlines = "";
@@ -905,7 +902,9 @@ public class OnSongConvert extends Activity {
 
 		FullscreenActivity.needtorefreshsongmenu = true;
         if (!isempty) {
-            from.renameTo(to);
+            if (!from.renameTo(to)) {
+                Log.d("d","Error renaming");
+            }
             FullscreenActivity.songfilename = newSongTitle;
 
             if (!isbatch) {
@@ -920,22 +919,23 @@ public class OnSongConvert extends Activity {
             }
 
         } else {
-            from.delete();
+            if (!from.delete()) {
+                Log.d("d", "Error deleting");
+            }
         }
-
 
 		return true;
 	}
 
-	public static void doBatchConvert(Context contxt) {
+	static void doBatchConvert(Context contxt) {
 		DoBatchConvert dobatch = new DoBatchConvert(contxt);
 		dobatch.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
-	public static class DoBatchConvert extends AsyncTask<String, Void, String> {
+	private static class DoBatchConvert extends AsyncTask<String, Void, String> {
 
         Context context;
 
-        public DoBatchConvert(Context c) {
+        DoBatchConvert(Context c) {
             context = c;
             mListener = (MyInterface) c;
         }
@@ -971,7 +971,7 @@ public class OnSongConvert extends Activity {
                         } catch (Exception e) {
                             // file doesn't exist
                             FullscreenActivity.myXML = "<title>ERROR</title>\n<author></author>\n<lyrics>"
-                                    + FullscreenActivity.songdoesntexist + "\n\n" + "</lyrics>";
+                                    + context.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
                             FullscreenActivity.myLyrics = "ERROR!";
 							e.printStackTrace();
 							message += thisfile.getName() + " - " + context.getResources().getString(R.string.error);

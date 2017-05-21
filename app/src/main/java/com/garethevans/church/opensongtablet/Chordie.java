@@ -1,51 +1,31 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class Chordie extends Activity{
 
     static String response;
-    static String weblink;
-    WebView chordieWeb;
-    static String whatfolderselected=FullscreenActivity.mainfoldername;
-    ProgressBar progressbar;
-    static String[] availableFolders;
-    AlertDialog.Builder dialogBuilder;
-    String filenametosave;
-    String authorname = "";
+    //static String weblink;
+    //WebView chordieWeb;
+    //static String whatfolderselected=FullscreenActivity.mainfoldername;
+    //ProgressBar progressbar;
+    //static String[] availableFolders;
+    //AlertDialog.Builder dialogBuilder;
+    //String filenametosave;
+    //String authorname = "";
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+*/
+/*
+
         Bundle bundle = getIntent().getExtras();
         String thissearch = bundle.getString("thissearch");
         String engine = bundle.getString("engine");
@@ -81,21 +61,33 @@ public class Chordie extends Activity{
         chordieWeb.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
         chordieWeb.setScrollbarFadingEnabled(false);
         chordieWeb.loadUrl(weblink);
+*//*
+
     }
 
     @Override
     public void onBackPressed() {
+*/
+/*
         // Make the back button go back in the Browser history
         chordieWeb.goBack();
+*//*
+
     }
 
     public void closesearch(View view) {
+*/
+/*
         Intent viewsong = new Intent(this, FullscreenActivity.class);
         startActivity(viewsong);
         finish();
+*//*
+
     }
 
     public void grabchordpro(View view) {
+*/
+/*
         // Need to run a async task to grab html text
         progressbar = (ProgressBar) findViewById(R.id.progressbar);
         progressbar.setVisibility(View.VISIBLE);
@@ -108,12 +100,17 @@ public class Chordie extends Activity{
 
         DownloadWebTextTask task = new DownloadWebTextTask();
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,weblink);
+*//*
+
     }
 
+    @SuppressWarnings("unused")
     private class DownloadWebTextTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... addresses) {
+*/
+/*
             response = "";
             for (String address:addresses) {
                 URL url;
@@ -143,10 +140,14 @@ public class Chordie extends Activity{
                     }
                 }
             }
+*//*
+
             return response;
         }
 
         void makeNewFolder() {
+*/
+/*
             AlertDialog.Builder alert = new AlertDialog.Builder(Chordie.this);
 
             alert.setTitle(getResources().getText(R.string.newfolder).toString());
@@ -204,10 +205,14 @@ public class Chordie extends Activity{
                 }
             });
             alert.show();
+*//*
+
         }
 
         @Override
         protected void onPostExecute(String result)  {
+*/
+/*
             String resultposted = result;
             final String resultfinal;
             //Now look to see if the webcontent has the ChordPro text in it
@@ -395,13 +400,22 @@ public class Chordie extends Activity{
                     filenametosave = title_resultposted;
                 }
 
-                /*// Other alternative
+                *//*
+
+*/
+/*//*
+*/
+/*
+/ Other alternative
                 endpos = resultposted.indexOf("property=\"og:title\"")-2;
                 startpos = resultposted.indexOf("meta content=",endpos-40)+14;
                 if (startpos >0 && endpos>startpos) {
                     title_resultposted = resultposted.substring(startpos, endpos);
                     filenametosave = title_resultposted;
-                }*/
+                }*//*
+*/
+/*
+
 
                 // Look for a better author
                 // Desktop site
@@ -660,6 +674,8 @@ public class Chordie extends Activity{
                 toast.show();
                 progressbar.setVisibility(View.INVISIBLE);
             }
+*//*
+
         }
     }
-}
+}*/

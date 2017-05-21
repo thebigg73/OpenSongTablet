@@ -9,179 +9,183 @@
     android:clipChildren="false"
     android:clipToPadding="false">
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/mypage"
-    android:clipChildren="false"
-    android:clipToPadding="false">
-
-    <HorizontalScrollView
+    <RelativeLayout
+        android:id="@+id/mypage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/mytoolbar"
-        android:id="@+id/horizontalscrollview"
         android:clipChildren="false"
         android:clipToPadding="false">
 
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/songscrollview"
-        android:clipChildren="false"
-        android:clipToPadding="false"/>
-
-    </HorizontalScrollView>
-
-    <ScrollView
-        android:id="@+id/glideimage_ScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/mytoolbar">
-
-        <ImageView
-            android:id="@+id/glideimage"
+        <HorizontalScrollView
+            android:id="@+id/horizontalscrollview"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/mytoolbar"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+            <ScrollView
+                android:id="@+id/songscrollview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clipChildren="false"
+                android:clipToPadding="false" />
+
+        </HorizontalScrollView>
+
+        <ScrollView
+            android:id="@+id/glideimage_ScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/mytoolbar">
+
+            <ImageView
+                android:id="@+id/glideimage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/image"
+                android:isScrollContainer="true"
+                android:visibility="visible" />
+
+        </ScrollView>
+
+        <include
+            android:id="@+id/mytoolbar"
+            layout="@layout/toolbar"
+            android:clipChildren="false"
+            android:clipToPadding="false" />
+
+        <RelativeLayout
+            android:id="@+id/testpane"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/toolbar"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:id="@+id/testpane1_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:id="@+id/testpane2_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:id="@+id/testpane1_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:id="@+id/testpane2_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:id="@+id/testpane3_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:visibility="invisible" />
+
+        <include
+            android:id="@+id/padProgress"
+            layout="@layout/playback_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/mytoolbar" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/scrollUpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mytoolbar"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="16dp"
+            android:alpha="0.4"
+            android:src="@drawable/ic_arrow_up_white_36dp"
             android:visibility="gone"
-            android:isScrollContainer="true"/>
+            app:backgroundTint="@color/purple"
+            app:fabSize="mini" />
 
-    </ScrollView>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/scrollDownButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="16dp"
+            android:alpha="0.4"
+            android:src="@drawable/ic_arrow_down_white_36dp"
+            android:visibility="gone"
+            app:backgroundTint="@color/purple"
+            app:fabSize="mini" />
 
-    <include layout="@layout/toolbar"
-        android:id="@+id/mytoolbar"
-        android:clipChildren="false"
-        android:clipToPadding="false"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/setBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="16dp"
+            android:alpha="0.4"
+            android:src="@drawable/ic_arrow_left_white_36dp"
+            android:visibility="invisible"
+            app:backgroundTint="@color/purple"
+            app:fabSize="mini" />
 
-    <RelativeLayout
-        android:id="@+id/testpane"
-        android:layout_below="@id/toolbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:visibility="invisible"
-        android:clipChildren="false"
-        android:clipToPadding="false" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/setForwardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="16dp"
+            android:alpha="0.4"
+            android:src="@drawable/ic_arrow_right_white_36dp"
+            android:visibility="invisible"
+            app:backgroundTint="@color/purple"
+            app:fabSize="mini"
+            tools:ignore="RelativeOverlap" />
 
-    <RelativeLayout
-        android:id="@+id/testpane1_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:visibility="invisible"
-        android:clipChildren="false"
-        android:clipToPadding="false"/>
+        <include
+            android:id="@+id/pagebuttons"
+            layout="@layout/pageicons_right_material" />
 
-    <RelativeLayout
-        android:id="@+id/testpane2_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:visibility="invisible"
-        android:clipChildren="false"
-        android:clipToPadding="false"/>
+    </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/testpane1_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:visibility="invisible"
-        android:clipChildren="false"
-        android:clipToPadding="false"/>
-
-    <RelativeLayout
-        android:id="@+id/testpane2_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:visibility="invisible"
-        android:clipChildren="false"
-        android:clipToPadding="false"/>
-
-    <RelativeLayout
-        android:id="@+id/testpane3_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:visibility="invisible"
-        android:clipChildren="false"
-        android:clipToPadding="false"/>
-
-    <include layout="@layout/playback_progress"
-        android:id="@+id/padProgress"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/mytoolbar"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/scrollUpButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/mytoolbar"
-        android:layout_margin="16dp"
-        app:backgroundTint="@color/purple"
-        app:fabSize="mini"
-        android:src="@drawable/ic_arrow_up_white_36dp"
-        android:alpha="0.4"
-        android:visibility="gone"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/scrollDownButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        app:backgroundTint="@color/purple"
-        app:fabSize="mini"
-        android:src="@drawable/ic_arrow_down_white_36dp"
-        android:alpha="0.4"
-        android:visibility="gone"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/setBackButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        app:backgroundTint="@color/purple"
-        app:fabSize="mini"
-        android:src="@drawable/ic_arrow_left_white_36dp"
-        android:alpha="0.4"
-        android:visibility="invisible"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/setForwardButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        app:backgroundTint="@color/purple"
-        app:fabSize="mini"
-        android:src="@drawable/ic_arrow_right_white_36dp"
-        android:alpha="0.4"
-        android:visibility="invisible"
-        tools:ignore="RelativeOverlap" />
-
-    <include layout="@layout/pageicons_right_material"
-        android:id="@+id/pagebuttons" />
-
-</RelativeLayout>
-
-    <LinearLayout
+<!--    <LinearLayout
         android:id="@+id/songmenu"
-        android:orientation="vertical"
-        android:clickable="true"
         android:layout_width="220dp"
         android:layout_height="match_parent"
-        android:background="@drawable/drawer_bg"
         android:layout_gravity="start|left"
+        android:background="@drawable/drawer_bg"
+        android:clickable="true"
+        android:orientation="vertical"
         android:padding="4dp">
 
         <LinearLayout
@@ -193,50 +197,50 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:layout_gravity="center_vertical"
+                android:layout_margin="8dp"
+                android:contentDescription="@string/choosefolder"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_folder_upload_white_36dp"
-                android:contentDescription="@string/choosefolder">
-            </ImageView>
+                android:src="@drawable/ic_folder_upload_white_36dp"></ImageView>
 
             <TextView
                 android:id="@+id/menuFolder_TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
                 android:textColor="#ffff00"
-                android:textSize="16sp"
-                android:layout_gravity="center_vertical">
-            </TextView>
+                android:textSize="16sp"></TextView>
         </LinearLayout>
 
         <LinearLayout
-            android:baselineAligned="false"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <ScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent">
-        <LinearLayout
-            android:id="@+id/side_index"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical" />
+
+                <LinearLayout
+                    android:id="@+id/side_index"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical" />
             </ScrollView>
-        <ListView
-            android:id="@+id/song_list_view"
-            android:layout_width="0dp"
-            android:choiceMode="singleChoice"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:divider="#aaa"
-            android:dividerHeight="1dp"
-            android:fastScrollEnabled="true"/>
+
+            <ListView
+                android:id="@+id/song_list_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:choiceMode="singleChoice"
+                android:divider="#aaa"
+                android:dividerHeight="1dp"
+                android:fastScrollEnabled="true" />
 
         </LinearLayout>
     </LinearLayout>
@@ -245,16 +249,21 @@
         android:id="@+id/optionmenu"
         android:layout_width="220dp"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:clickable="true"
         android:layout_gravity="end|right"
         android:background="@drawable/drawer_bg"
+        android:clickable="true"
+        android:orientation="vertical"
         android:padding="4dp">
 
-        <include layout="@layout/popup_option"
-            android:id="@+id/myoptionmenucontents"/>
+        <include
+            android:id="@+id/myoptionmenucontents"
+            layout="@layout/popup_option" />
 
-    </LinearLayout>
+    </LinearLayout>-->
+
+    <include layout="@layout/songmenu"/>
+
+    <include layout="@layout/optionmenu" />
 
 
 </android.support.v4.widget.DrawerLayout>

@@ -103,6 +103,9 @@ public class PopUpSetViewNew extends DialogFragment {
                     doSave();
                 }
             });
+            if (FullscreenActivity.whattodo.equals("setitemvariation")) {
+                saveMe.setVisibility(View.GONE);
+            }
         } else {
             getDialog().setTitle(getActivity().getResources().getString(R.string.options_set));
         }
@@ -155,7 +158,7 @@ public class PopUpSetViewNew extends DialogFragment {
         extractSongsAndFolders();
         FullscreenActivity.doneshuffle = false;
 
-        MyAdapter ma = new MyAdapter(createList(FullscreenActivity.mTempSetList.size()));
+        MyAdapter ma = new MyAdapter(createList(FullscreenActivity.mTempSetList.size()),getActivity());
         mRecyclerView.setAdapter(ma);
         callback = new SetListItemTouchHelper(ma);
         helper = new ItemTouchHelper(callback);
@@ -202,11 +205,12 @@ public class PopUpSetViewNew extends DialogFragment {
         });
 
         if (FullscreenActivity.whattodo.equals("setitemvariation")) {
-            helpClickItem_TextView.setVisibility(View.GONE);
+            helpClickItem_TextView.setVisibility(View.VISIBLE);
+            info.setVisibility(View.GONE);
             helpDragItem_TextView.setVisibility(View.GONE);
             helpSwipeItem_TextView.setVisibility(View.GONE);
             listSetTweetButton.setVisibility(View.GONE);
-            saveMe.setVisibility(View.GONE);
+            //saveMe.setVisibility(View.GONE);
             set_shuffle.setVisibility(View.GONE);
             helpVariationItem_TextView.setVisibility(View.VISIBLE);
         }
@@ -296,20 +300,20 @@ public class PopUpSetViewNew extends DialogFragment {
                 si.songtitle = mSongName.get(i - 1);
                 si.songfolder = mFolderName.get(i - 1);
                 // Decide what image we'll need - song, image, note, slide, scripture, variation
-                if (mFolderName.get(i - 1).equals("**"+FullscreenActivity.text_slide)) {
-                    si.songicon = FullscreenActivity.text_slide;
-                } else if (mFolderName.get(i - 1).equals("**"+FullscreenActivity.text_note)) {
-                    si.songicon = FullscreenActivity.text_note;
-                } else if (mFolderName.get(i - 1).equals("**"+FullscreenActivity.text_scripture)) {
-                    si.songicon = FullscreenActivity.text_scripture;
-                } else if (mFolderName.get(i - 1).equals("**"+FullscreenActivity.image)) {
-                    si.songicon = FullscreenActivity.image;
-                } else if (mFolderName.get(i - 1).equals("**"+FullscreenActivity.text_variation)) {
-                    si.songicon = FullscreenActivity.text_variation;
+                if (mFolderName.get(i - 1).equals("**"+getActivity().getResources().getString(R.string.slide))) {
+                    si.songicon = getActivity().getResources().getString(R.string.slide);
+                } else if (mFolderName.get(i - 1).equals("**"+getActivity().getResources().getString(R.string.note))) {
+                    si.songicon = getActivity().getResources().getString(R.string.note);
+                } else if (mFolderName.get(i - 1).equals("**"+getActivity().getResources().getString(R.string.scripture))) {
+                    si.songicon = getActivity().getResources().getString(R.string.scripture);
+                } else if (mFolderName.get(i - 1).equals("**"+getActivity().getResources().getString(R.string.image))) {
+                    si.songicon = getActivity().getResources().getString(R.string.image);
+                } else if (mFolderName.get(i - 1).equals("**"+getActivity().getResources().getString(R.string.variation))) {
+                    si.songicon = getActivity().getResources().getString(R.string.variation);
                 } else if (mSongName.get(i - 1).contains(".pdf") || mSongName.get(i - 1).contains(".PDF")) {
                     si.songicon = ".pdf";
                 } else {
-                    si.songicon = FullscreenActivity.song;
+                    si.songicon = getActivity().getResources().getString(R.string.options_song);
                 }
                 result.add(si);
             }
@@ -325,7 +329,7 @@ public class PopUpSetViewNew extends DialogFragment {
         setfrag.dismiss();
     }
 
-    public static void makeVariation() {
+    public static void makeVariation(Context c) {
         // Prepare the name of the new variation slide
         // If the file already exists, add _ to the filename
         String newfilename = FullscreenActivity.dirvariations + "/" + FullscreenActivity.songfilename;
@@ -366,10 +370,10 @@ public class PopUpSetViewNew extends DialogFragment {
         // Fix the song name and folder for loading
         FullscreenActivity.songfilename = newsongname;
         FullscreenActivity.whichSongFolder = "../Variations";
-        FullscreenActivity.whatsongforsetwork = "\"$**_**"+FullscreenActivity.text_variation+"/"+newsongname+"_**$";
+        FullscreenActivity.whatsongforsetwork = "\"$**_**"+c.getResources().getString(R.string.variation)+"/"+newsongname+"_**$";
 
         // Replace the set item with the variation item
-        FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet] = "**"+FullscreenActivity.text_variation+"/"+newsongname;
+        FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet] = "**"+c.getResources().getString(R.string.variation)+"/"+newsongname;
         // Rebuild the mySet variable
         String new_mySet = "";
         for (String thisitem:FullscreenActivity.mSetList) {
@@ -377,7 +381,8 @@ public class PopUpSetViewNew extends DialogFragment {
         }
         FullscreenActivity.mySet = new_mySet;
 
-        FullscreenActivity.myToastMessage = FullscreenActivity.variation_edit;
+        FullscreenActivity.myToastMessage = c.getResources().getString(R.string.variation_edit);
+        ShowToast.showToast(c);
         // Now load the new variation item up
         loadSong();
         if (mListener!=null) {

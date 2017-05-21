@@ -25,6 +25,12 @@ public class BatteryMonitor extends BroadcastReceiver {
     public static int status;
     public static boolean isCharging;
 
+    public interface MyInterface {
+        void setUpBatteryMonitor();
+    }
+
+    public static MyInterface mListener;
+
     @Override
     public void onReceive(Context context, Intent intent) {
         int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
@@ -34,6 +40,13 @@ public class BatteryMonitor extends BroadcastReceiver {
         chargePlug = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
         usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB;
         acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC;
+
+        if (FullscreenActivity.mContext!=null) {
+            mListener = (MyInterface) FullscreenActivity.mContext;
+            if (mListener!=null) {
+                mListener.setUpBatteryMonitor();
+            }
+        }
     }
 
     public static float getBatteryStatus (Context context) {
@@ -80,9 +93,14 @@ public class BatteryMonitor extends BroadcastReceiver {
             color = 0xffff0000;
         }
 
+        int bgcolor = 0xff666666;
+        if (isCharging) {
+            bgcolor = 0xff88ff88;
+        }
+
         Paint bPaint = new Paint();
         bPaint.setDither(true);
-        bPaint.setColor(0xff666666);
+        bPaint.setColor(bgcolor);
         bPaint.setAntiAlias(true);
         bPaint.setStyle(Paint.Style.STROKE);
         bPaint.setStrokeJoin(Paint.Join.ROUND);

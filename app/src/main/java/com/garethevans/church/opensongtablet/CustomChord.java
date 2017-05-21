@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
@@ -131,18 +132,16 @@ public class CustomChord extends Activity implements View.OnClickListener {
 
     LinearLayout CustomChord_Buttons;
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Set the screen and title
         setContentView(R.layout.custom_chord_creator);
-        try {
-            getActionBar().setTitle(getResources().getString(R.string.customchords)+ " - "+ FullscreenActivity.mTitle);
-        } catch (Exception e) {
-            // Struggled to name the title bar;
+        if (getActionBar()!=null) {
+        getActionBar().setTitle(getResources().getString(R.string.customchords)+ " - "+ FullscreenActivity.mTitle);
         }
-
 
         stringtop = getResources().getDrawable(R.drawable.string_top);
         stringtop_X = getResources().getDrawable(R.drawable.string_top_x);
@@ -362,6 +361,7 @@ public class CustomChord extends Activity implements View.OnClickListener {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public void redrawRemoveButtons() {
         // Try to decipher any custom chords that have been saved.
         // Split the mCustomChords into an array separated by a space
@@ -1446,3 +1446,4 @@ public class CustomChord extends Activity implements View.OnClickListener {
 
     }
 }
+*/

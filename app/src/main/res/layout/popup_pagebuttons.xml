@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@string/pagebutton_group"
-            app:theme="@style/SwitchStyle"
+            android:theme="@style/SwitchStyle"
             style="@style/MyHeadingText"
             android:textColor="#ff0"
             android:layout_gravity="center_vertical" />

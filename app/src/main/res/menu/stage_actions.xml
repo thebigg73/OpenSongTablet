@@ -52,7 +52,7 @@
         android:hint="@string/websearch"
         app:showAsAction="never"/>
     
--->
+
     <item android:id="@+id/perform_mode"
         android:icon="@drawable/ic_microphone_variant_white_36dp"
         android:title="@string/switchtoperformmode"
@@ -67,5 +67,6 @@
         android:icon="@drawable/ic_projector_white_36dp"
         android:title="@string/switchtopresentmode"
         app:showAsAction="ifRoom"/>
+-->
 
 </menu>

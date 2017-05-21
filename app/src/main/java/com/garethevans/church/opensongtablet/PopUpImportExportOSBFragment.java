@@ -103,7 +103,6 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
     ListView folderlist;
     String selectednote;
     String mTitle;
-    String backupchosen;
     ArrayAdapter<String> adapter;
     PrepareFolderListImport prepare_folder_list_import;
     SelectedFolderImport selected_folder_import;
@@ -343,12 +342,12 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                 while ((ze = zis.getNextEntry()) != null) {
                     // Look to see if ze is in one of the folders we are wanting to import
                     boolean oktoimportthisone = false;
-                    for (int x=0;x<foldersselectedtoimport.length;x++) {
+                    for (String aFoldersselectedtoimport : foldersselectedtoimport) {
                         // Is it in the main folder
-                        if (foldersselectedtoimport[x].equals(FullscreenActivity.mainfoldername+"/") && !ze.getName().contains("/")) {
+                        if (aFoldersselectedtoimport.equals(FullscreenActivity.mainfoldername + "/") && !ze.getName().contains("/")) {
                             oktoimportthisone = true;
-                        // Or another folder
-                        } else if (ze.getName().contains(foldersselectedtoimport[x])) {
+                            // Or another folder
+                        } else if (ze.getName().contains(aFoldersselectedtoimport)) {
                             oktoimportthisone = true;
                         }
                     }

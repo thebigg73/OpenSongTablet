@@ -414,7 +414,7 @@ public class PopUpImportExternalFile extends DialogFragment {
         String translation = FullscreenActivity.scripture_title.substring(FullscreenActivity.scripture_title.lastIndexOf(" "));
         String verses = FullscreenActivity.scripture_title.replace(translation, "");
         // Since the scripture is one big line, split it up a little (50 chars max)
-        String[] scripture = FullscreenActivity.scripture.split(" ");
+        String[] scripture = FullscreenActivity.mScripture.split(" ");
         String scriptureline = "";
         ArrayList<String> scripturearray = new ArrayList<>();
 
@@ -428,12 +428,12 @@ public class PopUpImportExternalFile extends DialogFragment {
         scripturearray.add(scriptureline);
 
         // Convert the array back into one string separated by new lines
-        FullscreenActivity.scripture = "";
+        FullscreenActivity.mScripture = "";
         for (int x=0;x<scripturearray.size();x++) {
-            FullscreenActivity.scripture = FullscreenActivity.scripture + scripturearray.get(x) + "\n";
+            FullscreenActivity.mScripture = FullscreenActivity.mScripture + scripturearray.get(x) + "\n";
         }
 
-        FullscreenActivity.scripture = FullscreenActivity.scripture.trim();
+        FullscreenActivity.mScripture = FullscreenActivity.mScripture.trim();
 
         String text = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<song>" +
@@ -445,7 +445,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                 "  <aka></aka>\n" +
                 "  <key_line></key_line>\n" +
                 "  <hymn_number></hymn_number>\n" +
-                "  <lyrics>"+FullscreenActivity.scripture+"</lyrics>\n" +
+                "  <lyrics>"+FullscreenActivity.mScripture+"</lyrics>\n" +
                 "</song>";
 
         // Write the file
@@ -714,7 +714,7 @@ public class PopUpImportExternalFile extends DialogFragment {
 
             if (!FullscreenActivity.dironsong.exists()) {
                 // No OnSong folder exists - make it
-                StorageChooser.createDirectory(FullscreenActivity.dironsong);
+                PopUpStorageFragment.createDirectory(FullscreenActivity.dironsong);
             }
 
             File dbfile = new File(FullscreenActivity.homedir + "/OnSong.Backup.sqlite3");

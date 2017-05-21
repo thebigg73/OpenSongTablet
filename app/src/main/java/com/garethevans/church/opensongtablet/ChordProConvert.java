@@ -1,15 +1,14 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class ChordProConvert extends Activity {
+public class ChordProConvert {
 
-	public static boolean doExtract() throws IOException {
+	static boolean doExtract() throws IOException {
 
 		// This is called when a ChordPro format song has been loaded.
 		// This tries to extract the relevant stuff and reformat the
@@ -424,7 +423,7 @@ public class ChordProConvert extends Activity {
 		FullscreenActivity.songfilename = newSongTitle;
 
 		// Load the songs
-		ListSongFiles.listSongs();
+		ListSongFiles.getAllSongFiles();
 
 		// Get the song indexes
 		ListSongFiles.getCurrentSongIndex();

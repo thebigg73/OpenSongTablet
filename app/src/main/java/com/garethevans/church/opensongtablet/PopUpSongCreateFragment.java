@@ -193,7 +193,9 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 }
 
                 FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.success);
-                from.delete();
+                if (!from.delete()) {
+                    Log.d("d","Error deleting");
+                }
 
                 if (mListener != null) {
                     FullscreenActivity.songfilename = tempNewSong;
@@ -202,7 +204,9 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 }
 
             } catch (Exception e) {
-                from.delete();
+                if (!from.delete()) {
+                    Log.d("d","Error deleting");
+                }
                 FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.error);
                 ShowToast.showToast(getActivity());
             }
@@ -250,7 +254,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
                 // Load the XML up into memory
                 try {
-                    LoadXML.loadXML();
+                    LoadXML.loadXML(getActivity());
                 } catch (XmlPullParserException | IOException e) {
                     e.printStackTrace();
                 }

@@ -23,7 +23,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
     }
 
     public interface MyInterface {
-        void stickyNotesUpdate();
+        void loadSong();
         void pageButtonAlpha(String s);
     }
 
@@ -108,7 +108,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
             e.printStackTrace();
         }
         dismiss();
-        mListener.stickyNotesUpdate();
+        mListener.loadSong();
     }
 
     @Override

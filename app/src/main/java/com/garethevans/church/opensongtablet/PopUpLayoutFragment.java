@@ -239,11 +239,10 @@ public class PopUpLayoutFragment extends DialogFragment {
                     setMaxFontSizeProgressBar.setAlpha(1.0f);
                     maxfontSizePreview.setAlpha(1.0f);
 
-                    PresenterMode.autoscale = true;
                     FullscreenActivity.presoAutoScale = true;
                     Preferences.savePreferences();
-                    //MyPresentation.doScale();
-                    MyPresentation.resetFontSize();
+                    //PresentationService.ExternalDisplay.doScale();
+                    PresentationService.ExternalDisplay.resetFontSize();
                 } else {
                     setFontSizeProgressBar.setEnabled(true);
                     setFontSizeProgressBar.setAlpha(1.0f);
@@ -251,10 +250,9 @@ public class PopUpLayoutFragment extends DialogFragment {
                     setMaxFontSizeProgressBar.setEnabled(false);
                     setMaxFontSizeProgressBar.setAlpha(0.5f);
                     maxfontSizePreview.setAlpha(0.5f);
-                    PresenterMode.autoscale = false;
                     FullscreenActivity.presoAutoScale = false;
                     Preferences.savePreferences();
-                    MyPresentation.updateFontSize();
+                    PresentationService.ExternalDisplay.updateFontSize();
                 }
             }
         });
@@ -279,7 +277,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             PresenterMode.tempxmargin = setXMarginProgressBar.getProgress();
             PresenterMode.tempymargin = setYMarginProgressBar.getProgress();
             if (FullscreenActivity.whichMode.equals("Presentation")) {
-                MyPresentation.changeMargins();
+                PresentationService.ExternalDisplay.changeMargins();
             } else {
                 if (FullscreenActivity.isPresenting) {
                     try {
@@ -303,7 +301,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             FullscreenActivity.xmargin_presentation = setXMarginProgressBar.getProgress();
             FullscreenActivity.ymargin_presentation = setYMarginProgressBar.getProgress();
             if (FullscreenActivity.whichMode.equals("Presentation")) {
-                MyPresentation.changeMargins();
+                PresentationService.ExternalDisplay.changeMargins();
             } else {
                 if (FullscreenActivity.isPresenting) {
                     try {
@@ -334,7 +332,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             String newtext = (progress + 4) + " sp";
             fontSizePreview.setText(newtext);
             fontSizePreview.setTextSize(progress + 4);
-            MyPresentation.updateFontSize();
+            PresentationService.ExternalDisplay.updateFontSize();
         }
 
         public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -386,7 +384,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             FullscreenActivity.presoAuthorSize = presoAuthorSizeSeekBar.getProgress();
             FullscreenActivity.presoCopyrightSize = presoCopyrightSizeSeekBar.getProgress();
             FullscreenActivity.presoAlertSize = presoAlertSizeSeekBar.getProgress();
-            MyPresentation.updateFontSize();
+            PresentationService.ExternalDisplay.updateFontSize();
         }
 
         @Override

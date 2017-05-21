@@ -480,9 +480,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 templines[q] = "." + templines[q];
             }
             if (!templines[q].startsWith(".") &&
-                    ((templines[q].toLowerCase(FullscreenActivity.locale).contains(FullscreenActivity.tag_verse.toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12) ||
-                            (templines[q].toLowerCase(FullscreenActivity.locale).contains(FullscreenActivity.tag_chorus.toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12) ||
-                            (templines[q].toLowerCase(FullscreenActivity.locale).contains(FullscreenActivity.tag_bridge.toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12))) {
+                    ((templines[q].toLowerCase(FullscreenActivity.locale).contains(getActivity().getResources().getString(R.string.tag_verse).toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12) ||
+                            (templines[q].toLowerCase(FullscreenActivity.locale).contains(getActivity().getResources().getString(R.string.tag_chorus).toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12) ||
+                            (templines[q].toLowerCase(FullscreenActivity.locale).contains(getActivity().getResources().getString(R.string.tag_bridge).toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12))) {
                 // Looks like a tag
                 templines[q] = "[" + templines[q].trim() + "]";
             }
