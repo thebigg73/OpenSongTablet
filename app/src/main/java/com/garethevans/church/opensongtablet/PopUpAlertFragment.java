@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -22,6 +23,25 @@ public class PopUpAlertFragment extends DialogFragment {
         PopUpAlertFragment frag;
         frag = new PopUpAlertFragment();
         return frag;
+    }
+
+    public interface MyInterface {
+        void updateAlert(boolean ison);
+    }
+
+    private MyInterface mListener;
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onAttach(Activity activity) {
+        mListener = (MyInterface) activity;
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onDetach() {
+        mListener = null;
+        super.onDetach();
     }
 
     @Override
@@ -88,18 +108,11 @@ public class PopUpAlertFragment extends DialogFragment {
         alertToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // Turn on the alert
-                    FullscreenActivity.myAlert = alertMessage.getText().toString().trim();
-                    PresenterMode.alert_on = "Y";
-                    PresentationService.ExternalDisplay.fadeinAlert();
-                } else {
-                    // Turn off the alert
-                    PresenterMode.alert_on = "N";
-                    PresentationService.ExternalDisplay.fadeoutAlert();
-                }
                 FullscreenActivity.myAlert = alertMessage.getText().toString().trim();
                 Preferences.savePreferences();
+                if (mListener!=null) {
+                    mListener.updateAlert(isChecked);
+                }
             }
         });
         return V;

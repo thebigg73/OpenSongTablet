@@ -28,6 +28,7 @@ public class PopUpFontsFragment extends DialogFragment {
 
     public interface MyInterface {
         void refreshAll();
+        void refreshSecondaryDisplay(String which);
     }
 
     private MyInterface mListener;
@@ -47,9 +48,13 @@ public class PopUpFontsFragment extends DialogFragment {
 
     int temp_mylyricsfontnum = FullscreenActivity.mylyricsfontnum;
     int temp_mychordsfontnum = FullscreenActivity.mychordsfontnum;
+    int temp_mypresofontnum = FullscreenActivity.mypresofontnum;
+    int temp_mypresoinfofontnum = FullscreenActivity.mypresoinfofontnum;
     int temp_linespacing = FullscreenActivity.linespacing;
     Spinner lyricsFontSpinner;
     Spinner chordsFontSpinner;
+    Spinner presoFontSpinner;
+    Spinner presoFontInfoSpinner;
     TextView headingPreview;
     TextView commentPreview;
     TextView lyricsPreview1;
@@ -165,6 +170,8 @@ public class PopUpFontsFragment extends DialogFragment {
         chordsFontSpinner.setAdapter(choose_fonts);
         lyricsFontSpinner.setSelection(temp_mylyricsfontnum);
         chordsFontSpinner.setSelection(temp_mychordsfontnum);
+        presoFontSpinner.setSelection(temp_mypresofontnum);
+        presoFontInfoSpinner.setSelection(temp_mypresoinfofontnum);
         lyricnchordsPreviewUpdate();
 
         // Listen for font changes
@@ -186,6 +193,40 @@ public class PopUpFontsFragment extends DialogFragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 temp_mychordsfontnum = position;
                 lyricnchordsPreviewUpdate();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                lyricnchordsPreviewUpdate();
+            }
+        });
+        presoFontSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                temp_mypresofontnum = position;
+                FullscreenActivity.mypresofontnum = position;
+                Preferences.savePreferences();
+                SetTypeFace.setTypeface();
+                if (mListener!=null) {
+                    mListener.refreshSecondaryDisplay("all");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                lyricnchordsPreviewUpdate();
+            }
+        });
+        presoFontInfoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                temp_mypresoinfofontnum = position;
+                FullscreenActivity.mypresoinfofontnum = position;
+                Preferences.savePreferences();
+                SetTypeFace.setTypeface();
+                if (mListener!=null) {
+                    mListener.refreshSecondaryDisplay("all");
+                }
             }
 
             @Override
@@ -288,6 +329,8 @@ public class PopUpFontsFragment extends DialogFragment {
     public void doSave() {
         FullscreenActivity.mylyricsfontnum = lyricsFontSpinner.getSelectedItemPosition();
         FullscreenActivity.mychordsfontnum = chordsFontSpinner.getSelectedItemPosition();
+        FullscreenActivity.mypresofontnum = presoFontSpinner.getSelectedItemPosition();
+        FullscreenActivity.mypresoinfofontnum = presoFontInfoSpinner.getSelectedItemPosition();
         FullscreenActivity.linespacing = lineSpacingSeekBar.getProgress();
         float num = (float) scaleHeading_SeekBar.getProgress()/100.0f;
         FullscreenActivity.headingfontscalesize = num;

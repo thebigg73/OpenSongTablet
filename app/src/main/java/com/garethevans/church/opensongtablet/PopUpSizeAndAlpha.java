@@ -32,6 +32,15 @@ class PopUpSizeAndAlpha {
                     position = FullscreenActivity.popupPosition_Set;
                     break;
 
+                case "chordie":
+                case "ultimate-guitar":
+                case "worshipready":
+                    myscale = 1.0f;
+                    myalpha = FullscreenActivity.popupAlpha_All;
+                    mydim = FullscreenActivity.popupDim_All;
+                    position = "C";
+                    break;
+
                 default:
                 case "default":
                     myscale = FullscreenActivity.popupScale_All;

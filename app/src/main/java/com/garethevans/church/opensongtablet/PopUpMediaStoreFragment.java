@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -33,6 +34,11 @@ public class PopUpMediaStoreFragment extends DialogFragment {
     SwitchCompat externalSwitch;
     TextView mediaSelected;
     MediaPlayer mp;
+    SeekBar scrubbar_SeekBar;
+    TextView scrubbar_TextView;
+    int mptotaltimesecs = 0;
+    String totaltime = "";
+    String currentposition = "";
 
     String[] from;
     int[] to;
@@ -92,6 +98,8 @@ public class PopUpMediaStoreFragment extends DialogFragment {
 
         mp = new MediaPlayer();
 
+        scrubbar_SeekBar = (SeekBar) V.findViewById(R.id.scrubbar_SeekBar);
+        scrubbar_TextView = (TextView) V.findViewById(R.id.scrubbar_TextView);
         mediaStore_ListView = (ListView) V.findViewById(R.id.mediaStore_ListView);
         mediaSelected = (TextView) V.findViewById(R.id.mediaSelected);
         mediaSelected.setText(PresenterMode.mpTitle);
@@ -172,6 +180,14 @@ public class PopUpMediaStoreFragment extends DialogFragment {
                 try {
                     PresenterMode.mp.setDataSource(data);
                     PresenterMode.mp.prepare();
+                    PresenterMode.mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mediaPlayer) {
+                            mptotaltimesecs = PresenterMode.mp.getDuration();
+                            scrubbar_SeekBar.setMax(mptotaltimesecs);
+                            totaltime = TimeTools.timeFormatFixer(PresenterMode.mp.getDuration());
+                        }
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

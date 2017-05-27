@@ -110,31 +110,34 @@ public class SetActions extends Activity {
     }
 
     public static void prepareSetList() {
+        try {
+            FullscreenActivity.mSet = null;
+            FullscreenActivity.mSetList = null;
 
-        FullscreenActivity.mSet = null;
-        FullscreenActivity.mSetList = null;
+            // Remove any blank set entries that shouldn't be there
+            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**__**$", "");
 
-        // Remove any blank set entries that shouldn't be there
-        FullscreenActivity.mySet = FullscreenActivity.mySet.replace("$**__**$", "");
+            // Add a delimiter between songs
+            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("_**$$**_", "_**$%%%$**_");
 
-        // Add a delimiter between songs
-        FullscreenActivity.mySet = FullscreenActivity.mySet.replace("_**$$**_",	"_**$%%%$**_");
+            // Break the saved set up into a new String[]
+            FullscreenActivity.mSet = FullscreenActivity.mySet.split("%%%");
+            FullscreenActivity.mSetList = FullscreenActivity.mSet;
 
-        // Break the saved set up into a new String[]
-        FullscreenActivity.mSet = FullscreenActivity.mySet.split("%%%");
-        FullscreenActivity.mSetList = FullscreenActivity.mSet;
+            // Restore the set back to what it was
+            FullscreenActivity.mySet = FullscreenActivity.mySet.replace("_**$%%%$**_", "_**$$**_");
 
-        // Restore the set back to what it was
-        FullscreenActivity.mySet = FullscreenActivity.mySet.replace("_**$%%%$**_", "_**$$**_");
+            FullscreenActivity.setSize = FullscreenActivity.mSetList.length;
 
-        FullscreenActivity.setSize = FullscreenActivity.mSetList.length;
-
-        // Get rid of tags before and after folder/filenames
-        for (int x = 0; x < FullscreenActivity.mSetList.length; x++) {
-            FullscreenActivity.mSetList[x] = FullscreenActivity.mSetList[x]
-                    .replace("$**_", "");
-            FullscreenActivity.mSetList[x] = FullscreenActivity.mSetList[x]
-                    .replace("_**$", "");
+            // Get rid of tags before and after folder/filenames
+            for (int x = 0; x < FullscreenActivity.mSetList.length; x++) {
+                FullscreenActivity.mSetList[x] = FullscreenActivity.mSetList[x]
+                        .replace("$**_", "");
+                FullscreenActivity.mSetList[x] = FullscreenActivity.mSetList[x]
+                        .replace("_**$", "");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -821,12 +824,8 @@ public class SetActions extends Activity {
     }
 
     public static void getSongFileAndFolder(Context c) {
-
-        if (FullscreenActivity.linkclicked!=null && !FullscreenActivity.linkclicked.contains("/")) {
-            // Right it doesn't, so add the /
+        if (!FullscreenActivity.linkclicked.contains("/")) {
             FullscreenActivity.linkclicked = "/" + FullscreenActivity.linkclicked;
-        } else {
-            FullscreenActivity.linkclicked="/";
         }
 
         if (FullscreenActivity.linkclicked==null || FullscreenActivity.linkclicked.equals("/")) {
@@ -838,67 +837,67 @@ public class SetActions extends Activity {
                         FullscreenActivity.songfilename;
             }
         }
-        // Now split the linkclicked into two song parts 0=folder 1=file
-        String[] songpart = FullscreenActivity.linkclicked.split("/");
 
-        FullscreenActivity.songfilename = songpart[1];
+        // The song is the bit after the last /
+        int songpos = FullscreenActivity.linkclicked.lastIndexOf("/");
+        if (songpos==0) {
+            // Empty folder
+            FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
+        } else {
+            FullscreenActivity.whichSongFolder = FullscreenActivity.linkclicked.substring(0,songpos);
+        }
+        if (songpos>=FullscreenActivity.linkclicked.length()) {
+            // Empty song
+            FullscreenActivity.songfilename = "";
+        } else {
+            FullscreenActivity.songfilename = FullscreenActivity.linkclicked.substring(songpos + 1);
+        }
+
+        if (FullscreenActivity.whichSongFolder!=null && FullscreenActivity.whichSongFolder.equals("")) {
+            FullscreenActivity.whichSongFolder = c.getResources().getString(R.string.mainfoldername);
+        }
 
         // If the folder length isn't 0, it is a folder
-        if (songpart[0].length() > 0 &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.variation)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.scripture)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.image)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.slide)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.note))) {
-            FullscreenActivity.whichSongFolder = songpart[0];
-
-        } else if (songpart[0].length() > 0 &&
-                songpart[0].contains("**"+c.getResources().getString(R.string.scripture)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.variation)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.image)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.slide)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.note))) {
+        if (FullscreenActivity.whichSongFolder.length() > 0 &&
+                FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.note))) {
             FullscreenActivity.whichSongFolder = "../Scripture/_cache";
-            songpart[0] = "../Scripture/_cache";
 
-        } else if (songpart[0].length() > 0 &&
-                songpart[0].contains("**"+c.getResources().getString(R.string.slide)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.variation)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.image)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.note)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.scripture))) {
+        } else if (FullscreenActivity.whichSongFolder.length() > 0 &&
+                FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.note)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture))) {
             FullscreenActivity.whichSongFolder = "../Slides/_cache";
-            songpart[0] = "../Slides/_cache";
 
-        } else if (songpart[0].length() > 0 &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.variation)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.slide)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.image)) &&
-                songpart[0].contains("**"+c.getResources().getString(R.string.note)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.scripture))) {
+        } else if (FullscreenActivity.whichSongFolder.length() > 0 &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
+                FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.note)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture))) {
             FullscreenActivity.whichSongFolder = "../Notes/_cache";
-            songpart[0] = "../Notes/_cache";
 
-        } else if (songpart[0].length() > 0 &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.variation)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.slide)) &&
-                songpart[0].contains("**"+c.getResources().getString(R.string.image)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.note)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.scripture))) {
+        } else if (FullscreenActivity.whichSongFolder.length() > 0 &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
+                FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.note)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture))) {
             FullscreenActivity.whichSongFolder = "../Images/_cache";
-            songpart[0] = "../Images/_cache";
 
-        } else if (songpart[0].length() > 0 &&
-                songpart[0].contains("**"+c.getResources().getString(R.string.variation)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.slide)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.image)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.note)) &&
-                !songpart[0].contains("**"+c.getResources().getString(R.string.scripture))) {
+        } else if (FullscreenActivity.whichSongFolder.length() > 0 &&
+                FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.variation)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.slide)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.image)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.note)) &&
+                !FullscreenActivity.whichSongFolder.contains("**"+c.getResources().getString(R.string.scripture))) {
             FullscreenActivity.whichSongFolder = "../Variations";
-            songpart[0] = "../Variations";
 
-        } else {
-            FullscreenActivity.whichSongFolder = FullscreenActivity.mainfoldername;
         }
     }
 
@@ -907,8 +906,8 @@ public class SetActions extends Activity {
 
         boolean justmovingsections = false;
 
-        // If we are in Stage Mode or Presentation Mode, check the sections first
-        if (FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Presentation")) {
+        // If we are in Stage Mode, check the sections first
+        if (FullscreenActivity.whichMode.equals("Stage")) {
 
             // Might be staying on the same song but moving section
             if (FullscreenActivity.setMoveDirection.equals("back")) {
@@ -934,8 +933,10 @@ public class SetActions extends Activity {
                 if (FullscreenActivity.indexSongInSet>0) {
                     FullscreenActivity.indexSongInSet -= 1;
                     FullscreenActivity.linkclicked = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet];
+                    FullscreenActivity.whatsongforsetwork = FullscreenActivity.linkclicked;
                     if (FullscreenActivity.linkclicked == null) {
                         FullscreenActivity.linkclicked = "";
+                        FullscreenActivity.whatsongforsetwork = "";
                     }
                 }
 
@@ -943,8 +944,10 @@ public class SetActions extends Activity {
                 if (FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length-1) {
                     FullscreenActivity.indexSongInSet += 1;
                     FullscreenActivity.linkclicked = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet];
+                    FullscreenActivity.whatsongforsetwork = FullscreenActivity.linkclicked;
                     if (FullscreenActivity.linkclicked == null) {
                         FullscreenActivity.linkclicked = "";
+                        FullscreenActivity.whatsongforsetwork = "";
                     }
                 }
             }

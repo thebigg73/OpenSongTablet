@@ -2,7 +2,10 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.pdf.PdfRenderer;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -272,13 +275,13 @@ public class LoadXML extends Activity {
 
         String loc = FullscreenActivity.file.toString();
 
-        if (loc.contains("OpenSong/Images")) {
+        if (loc.contains("../Images")) {
             FullscreenActivity.isImageSlide = true;
-        } else if (loc.contains("OpenSong/Scripture")) {
+        } else if (loc.contains("../Scripture")) {
             FullscreenActivity.isScripture = true;
-        } else if (loc.contains("OpenSong/Slides")) {
+        } else if (loc.contains("../Slides")) {
             FullscreenActivity.isSlide = true;
-        } else if (loc.contains("OpenSong/Variations")) {
+        } else if (loc.contains("../Variations")) {
             FullscreenActivity.isSong = true;
         }
 
@@ -640,6 +643,28 @@ public class LoadXML extends Activity {
             isvalid = true;
         }
         return isvalid;
+    }
+
+    public static void getPDFPageCount() {
+        // This only works for post Lollipop devices
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            LoadXML.getFileLocation();
+            // FileDescriptor for file, it allows you to close file when you are done with it
+            ParcelFileDescriptor mFileDescriptor;
+            PdfRenderer mPdfRenderer;
+            Log.d("d","file="+FullscreenActivity.file);
+            try {
+                mFileDescriptor = ParcelFileDescriptor.open(FullscreenActivity.file, ParcelFileDescriptor.MODE_READ_ONLY);
+                if (mFileDescriptor != null) {
+                    mPdfRenderer = new PdfRenderer(mFileDescriptor);
+                    FullscreenActivity.pdfPageCount = mPdfRenderer.getPageCount();
+                    Preferences.loadSongSuccess();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                FullscreenActivity.pdfPageCount = 0;
+            }
+        }
     }
 
     public static void getFileLocation() {

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/pres_col3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="2dp"
+    android:background="@drawable/presenter_box_blue"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/preso_actions_title"
+        style="@style/MyHeadingText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/actions" />
+
+    <ScrollView
+        android:id="@+id/preso_action_buttons_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/preso_Action_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/presenter_project_group"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:drawableLeft="@drawable/ic_projector_white_36dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/sendtoprojector" />
+
+            <TextView
+                android:id="@+id/presenter_logo_group"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:drawableLeft="@drawable/ic_projector_logo_white_36dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/presoShowLogo" />
+
+            <TextView
+                android:id="@+id/presenter_blank_group"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:drawableLeft="@drawable/ic_video_off_white_36dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/black_screen" />
+
+            <TextView
+                android:id="@+id/presenter_alert_group"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:drawableLeft="@drawable/ic_message_alert_white_36dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/alert" />
+
+            <TextView
+                android:id="@+id/presenter_audio_group"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:drawableLeft="@drawable/ic_amplifier_white_36dp"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:text="@string/media" />
+
+            <TextView
+                android:id="@+id/presenter_dB_group"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:drawableLeft="@drawable/ic_volume_high_white_36dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/volume" />
+
+            <TextView
+                android:id="@+id/presenter_slide_group"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:drawableLeft="@drawable/ic_projector_screen_white_36dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/slide" />
+
+            <TextView
+                android:id="@+id/presenter_scripture_group"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:drawableLeft="@drawable/ic_bible_white_36dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/scripture" />
+
+            <TextView
+                android:id="@+id/presenter_display_group"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:drawableLeft="@drawable/ic_monitor_white_36dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:text="@string/connected_display" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

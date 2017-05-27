@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pres_col1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/pres_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/presenter_box_blue"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/presenter_songtitle"
+            style="@style/MyHeadingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_song_title" />
+
+        <TextView
+            android:id="@+id/presenter_author"
+            style="@style/MyInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_song_author" />
+
+        <TextView
+            android:id="@+id/presenter_copyright"
+            style="@style/MyInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_song_copyright" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/pres_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/presenter_box_green"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/presenter_order_title"
+            style="@style/MyHeadingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_song_presentation" />
+
+        <CheckBox
+            android:id="@+id/presenter_order_text"
+            style="@style/MyInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="2"
+            android:text="@string/edit_song_presentation" />
+
+        <Button
+            android:id="@+id/presenter_order_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/presenter_green_button"
+            android:minHeight="0dp"
+            android:text="@string/options_set_edit"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/preso_set_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/presenter_box_red"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/set_view_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useCompatPadding="true"
+                app:elevation="0dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:src="@drawable/ic_format_list_numbers_white_36dp"
+                app:fabSize="mini" />
+
+            <TextView
+                android:id="@+id/presenter_set"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:text="@string/currentset" />
+
+        </LinearLayout>
+
+
+        <ScrollView
+            android:id="@+id/presenter_setbuttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/presenter_set_buttonsListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

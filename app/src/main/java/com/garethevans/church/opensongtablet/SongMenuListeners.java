@@ -16,8 +16,12 @@ public class SongMenuListeners extends Activity {
 
     public static TextView.OnClickListener itemShortClickListener(final int i) {
         final Context c =  FullscreenActivity.mContext;
-        mListener = (MyInterface) c;
-
+        mListener = null;
+        try {
+            mListener = (MyInterface) c;
+        } catch (Exception e) {
+            mListener = (MyInterface) c.getApplicationContext();
+        }
         return new TextView.OnClickListener() {
             @Override
             public void onClick(View v) {

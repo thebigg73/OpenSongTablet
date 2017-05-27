@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.app.DialogFragment;
@@ -362,13 +363,6 @@ public class PopUpBackgroundsFragment extends DialogFragment {
         return V;
     }
 
-    public void chooseFile() {
-        // This calls the generic file chooser popupFragment
-        DialogFragment newFragment = PopUpFileChooseFragment.newInstance();
-        newFragment.show(getFragmentManager(), "dialog");
-        dismiss();
-    }
-
     private class setAlphaListener implements SeekBar.OnSeekBarChangeListener {
 
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -391,4 +385,4 @@ public class PopUpBackgroundsFragment extends DialogFragment {
         this.dismiss();
     }
 
-}
+}*/

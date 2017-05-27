@@ -57,8 +57,26 @@
         app:backgroundTint="@color/purple"
         android:id="@+id/startPlay"
         android:src="@drawable/ic_play_white_36dp"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/scrubbar_SeekBar"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/media_play" />
+
+    <SeekBar
+        android:id="@+id/scrubbar_SeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/scrubbar_TextView"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/apptheme_scrubber_primary_holo"
+        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+    <TextView
+        android:id="@+id/scrubbar_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        style="@style/MyInfoText"/>
 
 </RelativeLayout>

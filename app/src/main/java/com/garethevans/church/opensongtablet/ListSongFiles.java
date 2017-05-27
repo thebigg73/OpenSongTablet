@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 import org.apache.commons.io.FileUtils;
 import org.xmlpull.v1.XmlPullParser;
@@ -191,21 +192,26 @@ public class ListSongFiles {
             InputStream inputStream = new FileInputStream(f);
             xpp.setInput(inputStream, utf);
 
-            int eventType;
-            eventType = xpp.getEventType();
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                if (eventType == XmlPullParser.START_TAG) {
-                    if (xpp.getName().equals("author")) {
-                        vals[1] = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                    } else if (xpp.getName().equals("key")) {
-                        vals[2] = LoadXML.parseFromHTMLEntities(xpp.nextText());
+            if (f.length()>0 && f.length()<500000) {
+                int eventType;
+                eventType = xpp.getEventType();
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    if (eventType == XmlPullParser.START_TAG) {
+                        if (xpp.getName().equals("author")) {
+                            vals[1] = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                        } else if (xpp.getName().equals("key")) {
+                            vals[2] = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                        }
+                    }
+                    try {
+                        eventType = xpp.next();
+                    } catch (Exception e) {
+                        // Oops!
                     }
                 }
-                try {
-                    eventType = xpp.next();
-                } catch (Exception e) {
-                    // Oops!
-                }
+            } else {
+                vals[1] = "";
+                vals[2] = "";
             }
         } catch (Exception e) {
             vals[0] = s;
@@ -217,13 +223,25 @@ public class ListSongFiles {
 
     private static boolean checkFileExtension(String s) {
         boolean isxml = true;
-        if (s.endsWith(".pdf") || s.endsWith(".PDF")) {
-            isxml = false;
+        s = s.toLowerCase();
+        String type = null;
+        if (s.lastIndexOf(".")>1 && s.lastIndexOf(".")<s.length()-1) {
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            int index = s.lastIndexOf('.')+1;
+            String ext = s.substring(index).toLowerCase();
+            type = mime.getMimeTypeFromExtension(ext);
         }
-        if (s.endsWith(".doc") || s.endsWith(".DOC") || s.endsWith(".docx") || s.endsWith(".docx")) {
-            isxml = false;
+
+        if (type!=null && !type.equals("")) {
+            if (type.contains("image") || type.contains("application") || type.contains("video") || type.contains("audio")) {
+                return false;
+            }
         }
-        if (s.endsWith(".jpg") || s.endsWith(".JPG") || s.endsWith(".png") || s.endsWith(".PNG") || s.endsWith(".gif") || s.endsWith(".GIF")) {
+
+        if (s.endsWith(".pdf") ||
+                s.endsWith(".doc") || s.endsWith(".docx") ||
+                s.endsWith(".jpg") || s.endsWith(".png") || s.endsWith(".gif") ||
+                s.endsWith(".zip") || s.endsWith(".apk") || s.endsWith(".tar")  || s.endsWith(".backup")) {
             isxml = false;
         }
         return isxml;
@@ -332,7 +350,6 @@ public class ListSongFiles {
         FullscreenActivity.nextSongIndex = 0;
         FullscreenActivity.previousSongIndex = 0;
 
-
         // Go through the array
         try {
             if (FullscreenActivity.mSongFileNames != null && FullscreenActivity.songfilename != null) {
@@ -362,9 +379,6 @@ public class ListSongFiles {
 
     static void deleteSong(Context c) {
         FullscreenActivity.setView = false;
-        Log.d("d","whichSongFolder="+FullscreenActivity.whichSongFolder);
-        Log.d("d","songfilename="+FullscreenActivity.songfilename);
-
         String setFileLocation;
         if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
             setFileLocation = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
@@ -372,8 +386,6 @@ public class ListSongFiles {
             setFileLocation = FullscreenActivity.dir + "/" +
                     FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename;
         }
-
-        Log.d("d","setFileLocation="+setFileLocation);
 
         File filetoremove = new File(setFileLocation);
         if (filetoremove.delete()) {
@@ -386,4 +398,24 @@ public class ListSongFiles {
         }
     }
 
+    static boolean blacklistFileType(String s) {
+        s = s.toLowerCase();
+        String type = null;
+        if (s.lastIndexOf(".")>1 && s.lastIndexOf(".")<s.length()-1) {
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            int index = s.lastIndexOf('.')+1;
+            String ext = s.substring(index).toLowerCase();
+            type = mime.getMimeTypeFromExtension(ext);
+        }
+
+        if (type!=null && !type.equals("")) {
+            if (type.contains("pdf")) {
+                return false;
+            } else if (type.contains("audio") || type.contains("application") || type.contains("video")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

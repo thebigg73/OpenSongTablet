@@ -176,17 +176,13 @@ public class PopUpStorageFragment extends DialogFragment {
             wipeSongs.setVisibility(View.GONE);
         }
 
-        Log.d("d","Started PopUpStorageFragment");
-
         // Check we have storage permission
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Storage permission has not been granted.
-            Log.d("d","Storage permission hasn't been granted yet, so asking...");
             requestStoragePermission();
 
         } else {
-            Log.d("d","Storage permission has been granted");
             storageGranted = true;
         }
 
@@ -252,8 +248,6 @@ public class PopUpStorageFragment extends DialogFragment {
             }
         });
 
-        Log.d("d","Numeral = "+numeral+"\n1=Internal, 2=External, 3=Custom");
-
         // If user has set their storage preference, set the appropriate radio button
         switch (FullscreenActivity.prefStorage) {
             default:
@@ -289,7 +283,6 @@ public class PopUpStorageFragment extends DialogFragment {
             if (secStorage.contains(":")) {
                 secStorage = secStorage.substring(0,secStorage.indexOf(":"));
             }
-            Log.d("d","secStorage="+secStorage);
         } else {
             // Lets look for alternative secondary storage positions
             for (String secStorageOption : secStorageOptions) {
@@ -298,7 +291,6 @@ public class PopUpStorageFragment extends DialogFragment {
                     secStorage = secStorageOption;
                 }
             }
-            Log.d("d","secStorageOption (alternative) = "+secStorage);
         }
 
         // If secondary and default storage are the same thing, hide secStorage
@@ -312,7 +304,6 @@ public class PopUpStorageFragment extends DialogFragment {
             String textother = getResources().getString(R.string.custom) + "\n(" + customStorageLoc.getAbsolutePath() + ")";
             otherStorageButton.setText(textother);
             otherStorageExists = true;
-            Log.d("d","customStorageLoc="+customStorageLoc);
         }
 
         // If external storage isn't found, disable this radiobutton
@@ -401,7 +392,6 @@ public class PopUpStorageFragment extends DialogFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == requestStorage) {
             storageGranted = grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
-            Log.d("d", "onRequestPermissionResult\nstorageGranted=" + storageGranted);
 
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -430,11 +420,6 @@ public class PopUpStorageFragment extends DialogFragment {
                 getOtherFolders(FullscreenActivity.root);
                 break;
         }
-        Log.d("d","numeral="+numeral);
-        Log.d("d","prefStorage="+FullscreenActivity.prefStorage);
-        Log.d("d","dir="+FullscreenActivity.dir);
-
-        Log.d("d","whattodo="+FullscreenActivity.whattodo);
         if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
             if (!createDirectories()) {
                 FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.createfoldererror);
@@ -476,8 +461,6 @@ public class PopUpStorageFragment extends DialogFragment {
     }
 
     public static void setUpStoragePreferences() {
-        Log.d("d","Setting up storage preferences");
-        Log.d("d","prefStorage="+FullscreenActivity.prefStorage);
         switch (FullscreenActivity.prefStorage) {
             case "int":
                 // The default folders on internal storage
@@ -496,9 +479,6 @@ public class PopUpStorageFragment extends DialogFragment {
                 getOtherFolders(FullscreenActivity.root);
                 break;
         }
-
-        Log.d("d","dir="+FullscreenActivity.dir);
-
     }
 
 
@@ -532,16 +512,9 @@ public class PopUpStorageFragment extends DialogFragment {
             if (!folder.mkdirs()) {
                 Log.d("d","Error creating directory - "+folder);
                 success = false;
-            } else {
-                Log.d("d","Successfully created directory - "+folder);
             }
-        } else {
-            Log.d("d",folder+" already exist, trying to create it...");
         }
-        if (folder.canWrite()) {
-            Log.d("d",folder+" is writeable.");
-        } else {
-            Log.d("d",folder+" is not writeable");
+        if (!folder.canWrite()) {
             success = false;
         }
         return success;

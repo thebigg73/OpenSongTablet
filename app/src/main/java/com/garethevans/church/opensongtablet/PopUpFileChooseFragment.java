@@ -34,6 +34,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
 
     public interface MyInterface {
         void loadCustomReusable();
+        void openFragment();
     }
 
     private MyInterface mListener;
@@ -113,8 +114,6 @@ public class PopUpFileChooseFragment extends DialogFragment {
         fileListView = (ListView) V.findViewById(R.id.fileListView);
 
         // Decide on the title of the file chooser
-
-
         if (PresenterMode.whatBackgroundLoaded!=null) {
             myswitch = PresenterMode.whatBackgroundLoaded;
         } else {
@@ -230,8 +229,11 @@ public class PopUpFileChooseFragment extends DialogFragment {
 
     public void reOpenBackgrounds() {
         // This reopens the choose backgrounds popupFragment
-        DialogFragment newFragment = PopUpBackgroundsFragment.newInstance();
-        newFragment.show(getFragmentManager(), "dialog");
+        if (mListener!=null) {
+            if (FullscreenActivity.whichMode.equals("Presentation"))
+            FullscreenActivity.whattodo = "connecteddisplay";
+            mListener.openFragment();
+        }
     }
 
     public void listimageslides() {

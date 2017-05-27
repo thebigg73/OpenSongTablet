@@ -431,6 +431,7 @@ public class OptionMenuListeners extends Activity {
         Button setCustomButton = (Button) v.findViewById(R.id.setCustomButton);
         Button setVariationButton = (Button) v.findViewById(R.id.setVariationButton);
         Button setEditButton = (Button) v.findViewById(R.id.setEditButton);
+        SwitchCompat showSetTickBoxInSongMenu = (SwitchCompat) v.findViewById(R.id.showSetTickBoxInSongMenu);
         LinearLayout setLinearLayout = (LinearLayout) v.findViewById(R.id.setLinearLayout);
         FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
 
@@ -445,6 +446,9 @@ public class OptionMenuListeners extends Activity {
         setCustomButton.setText(c.getString(R.string.add_custom_slide).toUpperCase(FullscreenActivity.locale));
         setVariationButton.setText(c.getString(R.string.customise_set_item).toUpperCase(FullscreenActivity.locale));
         setEditButton.setText(c.getString(R.string.options_set_edit).toUpperCase(FullscreenActivity.locale));
+        showSetTickBoxInSongMenu.setText(c.getString(R.string.setquickcheck).toUpperCase(FullscreenActivity.locale));
+
+        showSetTickBoxInSongMenu.setChecked(FullscreenActivity.showSetTickBoxInSongMenu);
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -552,6 +556,17 @@ public class OptionMenuListeners extends Activity {
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
+                }
+            }
+        });
+
+        showSetTickBoxInSongMenu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.showSetTickBoxInSongMenu = b;
+                Preferences.savePreferences();
+                if (mListener!=null) {
+                    mListener.prepareSongMenu();
                 }
             }
         });

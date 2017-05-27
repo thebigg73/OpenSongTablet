@@ -11,9 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.net.nsd.NsdServiceInfo;
-import android.net.wifi.p2p.WifiP2pDeviceList;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,7 +18,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -75,6 +71,21 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static String quickLaunchButton_2 = "";
     public static String quickLaunchButton_3 = "";
     public static int fabSize = FloatingActionButton.SIZE_MINI;
+    public static boolean page_set_visible;
+    public static boolean page_pad_visible;
+    public static boolean page_metronome_visible;
+    public static boolean page_autoscroll_visible;
+    public static boolean page_extra_visible;
+    public static boolean page_custom_visible;
+    public static boolean page_chord_visible;
+    public static boolean page_links_visible;
+    public static boolean page_sticky_visible;
+    public static boolean page_pages_visible;
+    public static boolean page_custom1_visible;
+    public static boolean page_custom2_visible;
+    public static boolean page_custom3_visible;
+    public static boolean page_extra_grouped;
+    public static boolean page_custom_grouped;
 
     // Long and short key presses
     public static boolean longKeyPress = false;
@@ -98,9 +109,6 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static Bitmap[] sectionbitmaps;
 
     // Playback progress
-    //LinearLayout backingtrackProgress;
-    //TextView currentTime_TextView;
-    //TextView totalTime_TextView;
     static long time_start;
     public static int audiolength = -1;
     public static boolean pad1Playing;
@@ -142,14 +150,6 @@ public class FullscreenActivity extends AppCompatActivity  {
     //public TextView songauthor_ab;
 
     // Immersive mode stuff
-/*
-    private Handler mRestoreImmersiveModeHandler = new Handler();
-    private Runnable restoreImmersiveModeRunnable = new Runnable() {
-        public void run() {
-            restoreTransparentBars();
-        }
-    };
-*/
 
     // This is for trying to automatically open songs via intent
     public static Intent incomingfile;
@@ -174,11 +174,6 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static String customreusabletoload = "";
     public static boolean isImageSection = false;
     public static String imagetext="";
-    //public static String text_slide;
-    //public static String text_scripture;
-    //public static String text_note = "";
-    //public static String text_variation = "";
-    //public int slideout_time = 200;
     public static int checkscroll_time = 1600;
     public static int delayswipe_time = 800;
     public static int crossFadeTime = 8000;
@@ -215,12 +210,9 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static ArrayList<String> exportsetfilenames = new ArrayList<>();
     public static ArrayList<String> exportsetfilenames_ost = new ArrayList<>();
     public static String lastSetName = "";
-    //private TableLayout chordimageshere;
     public static String chordInstrument = "g";
     public static String showNextInSet = "top";
-    //private Typeface lyrics_useThisFont;
     public static String allchords = "";
-    //private static String allchordscapo = "";
     public static String chordnotes = "";
     public static String capoDisplay = "";
     public static String languageToLoad = "";
@@ -232,7 +224,6 @@ public class FullscreenActivity extends AppCompatActivity  {
     @SuppressLint("StaticFieldLeak")
     public static Context mContext;
     public static boolean receiveHostFiles;
-    public static boolean waitingforHostFile;
 
     public static int currentapiVersion;
 
@@ -242,70 +233,21 @@ public class FullscreenActivity extends AppCompatActivity  {
 
     public static int maxvolrange;
 
-    //public ScrollView pagebuttons;
-    //public ImageView setlisticon;
-
-/*
-    public static ImageView setButton_normal;
-    public static ImageView setButton_right;
-*/
-
     public static String whattodo = "";
-/*
-    private ScrollView popupChord;
-    private ScrollView popupPad;
-    private static String popupPad_stoporstart = "stop";
-    private Spinner popupPad_key;
-    private Spinner popupPad_file;
-    private SeekBar popupPad_volume;
-    private TextView popupPad_volume_text;
-    //private Switch popupPad_loopaudio;
-    private SwitchCompat popupPad_loopaudio;
-    private SeekBar popupPad_pan;
-    private TextView popupPad_pan_text;
-    private Button popupPad_startstopbutton;
-*/
 
     public static boolean pressing_button = false;
 
-    //private ScrollView popupAutoscroll;
     public static String popupAutoscroll_stoporstart = "stop";
-    //private SeekBar popupAutoscroll_delay;
-    //private TextView popupAutoscroll_delay_text;
-    //private TextView popupAutoscroll_duration;
-    //private Button popupAutoscroll_startstopbutton;
-    //private static int newPos;
     public static int scrollpageHeight;
     public static boolean autostartautoscroll;
-    //public boolean autoscrollactivated = false;
 
     public DialogFragment newFragment;
 
-    //ScrollView popupMetronome;
-    //public static int total_calc_bpm;
-    //int total_counts = 0;
-    //public static int av_bpm;
-    //public static long new_time = 0;
     public static long time_passed = 0;
-    //public static long padtime_passed = 0;
     public static int padtime_length = 0;
-    //public static long old_time = 0;
-    //public static int calc_bpm;
-    //public static String popupMetronome_stoporstart = "stop";
-    //Spinner popupMetronome_timesig;
-    //public SeekBar popupMetronome_tempo;
-    //TextView popupMetronome_tempo_text;
-    //public SeekBar popupMetronome_volume;
-    //Button increaseTempo_Button;
-    //Button decreaseTempo_Button;
-    //TextView popupMetronome_volume_text;
-    //SeekBar popupMetronome_pan;
-    //TextView popupMetronome_pan_text;
-    //Button popupMetronome_startstopbutton;
     public static int beatoffcolour = 0xf232333;
     public static String whichbeat = "a";
     public static boolean visualmetronome = false;
-    //private ToggleButton popupMetronome_visualmetronometoggle;
 
     @SuppressWarnings("unused")
     public static boolean fadeout1 = false;
@@ -370,10 +312,10 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static boolean isSlide = false;
     public static boolean isScripture = false;
     public static boolean isImageSlide = false;
+    public static boolean isVideo = false;
 
     public static String toggleAutoSticky = "";
     public static boolean hideActionBar;
-    public static String[][] childSongs;
     public static String setnamechosen = "";
     public static boolean addingtoset = false;
 
@@ -406,6 +348,10 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static int dark_lyricsChordsColor;
     public static int dark_lyricsCustomColor;
     public static int dark_lyricsCapoColor;
+    public static int dark_presoFont;
+    public static int dark_presoInfoFont;
+    public static int dark_presoAlertFont;
+    public static int dark_presoShadow;
     public static int dark_metronome;
     public static int dark_pagebuttons;
 
@@ -420,6 +366,10 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static int light_lyricsChordsColor;
     public static int light_lyricsCustomColor;
     public static int light_lyricsCapoColor;
+    public static int light_presoFont;
+    public static int light_presoInfoFont;
+    public static int light_presoAlertFont;
+    public static int light_presoShadow;
     public static int light_metronome;
     public static int light_pagebuttons;
 
@@ -434,6 +384,10 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static int custom1_lyricsChordsColor;
     public static int custom1_lyricsCustomColor;
     public static int custom1_lyricsCapoColor;
+    public static int custom1_presoFont;
+    public static int custom1_presoInfoFont;
+    public static int custom1_presoAlertFont;
+    public static int custom1_presoShadow;
     public static int custom1_metronome;
     public static int custom1_pagebuttons;
 
@@ -448,6 +402,10 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static int custom2_lyricsChordsColor;
     public static int custom2_lyricsCustomColor;
     public static int custom2_lyricsCapoColor;
+    public static int custom2_presoFont;
+    public static int custom2_presoInfoFont;
+    public static int custom2_presoAlertFont;
+    public static int custom2_presoShadow;
     public static int custom2_metronome;
     public static int custom2_pagebuttons;
 
@@ -465,12 +423,10 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static int lyricsCapoColor;
     public static int metronomeColor;
     public static int pagebuttonsColor;
-    //public static int chords_useThisBGColor;
-    //public static int capo_useThisBGColor;
-    //public static int lyrics_useThisBGColor;
-    //public static float lyrics_useThisTextSize;
-    //public static float chords_useThisTextSize;
-    //public static int temp_useThisBGColor;
+    public static int presoAlertFontColor;
+    public static int presoFontColor;
+    public static int presoInfoFontColor;
+    public static int presoShadowColor;
     public static float commentfontscalesize;
     public static float headingfontscalesize;
     public static float chordfontscalesize;
@@ -501,8 +457,6 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static String longpresspreviouspedalgesture = "";
     public static String longpressnextpedalgesture = "";
     public static String bibleFile = "";
-    public static boolean bibleLoaded = false;
-    public static String bibleFileContents = "";
     public static String chordFormat = "";
     public static String oldchordformat = "";
     public static String presenterChords = "";
@@ -512,7 +466,6 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static String whichDirection = "R2L";
     public static int indexSongInSet;
     public static String previousSongInSet = "";
-    //public static String previousSongKeyInSet = "";
     public static String nextSongInSet = "";
     public static String nextSongKeyInSet = "";
     public static String mTheme = "";
@@ -527,15 +480,13 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static String[] mSetList;
     public static ArrayList<String> mTempSetList;
     public static boolean doneshuffle = false;
-    //public static String[] songpart;
 
     public static float menuSize;
+    public static boolean showSetTickBoxInSongMenu;
 
     // Song filenames, folders, set filenames, folders
     public static String currentFolder = "";
     public static String newFolder = "";
-    //public static int next_song;
-    //private static int prev_song;
     public static String whichSongFolder = "";
     public static String[] mySetsFileNames;
     public static File[] mySetsFiles;
@@ -546,7 +497,6 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static File file;
     public static File setfile;
     public static String settoload = "";
-    //public static String settodelete = "";
     public static String[] mSongFileNames;
     public static String[] mSongFolderNames;
     public static String[][] songDetails;
@@ -554,8 +504,8 @@ public class FullscreenActivity extends AppCompatActivity  {
 
     public static String setMoveDirection = "";
     public static ArrayList<String> allfilesforsearch = new ArrayList<>();
-    public static ArrayList<String> allfilesforsearch_folder = new ArrayList<>();
-    public static ArrayList<String> allfilesforsearch_song = new ArrayList<>();
+    //public static ArrayList<String> allfilesforsearch_folder = new ArrayList<>();
+    //public static ArrayList<String> allfilesforsearch_song = new ArrayList<>();
     public static ArrayList<String> search_database = new ArrayList<>();
     public static boolean safetosearch = false;
 
@@ -568,11 +518,16 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static boolean presoShowChords;
     public static int presoFontSize;
     public static int presoMaxFontSize;
-    public static int presoTitleSize;
-    public static int presoAuthorSize;
-    public static int presoCopyrightSize;
-    public static int presoAlertSize;
+    public static float presoTitleSize;
+    public static float presoAuthorSize;
+    public static float presoCopyrightSize;
+    public static float presoAlertSize;
+    public static int presoLyricsAlign;
+    public static int presoInfoAlign;
+    public static Typeface presoInfoFont;
 
+    public static String customLogo = "";
+    public static float customLogoSize;
     public static float presoAlpha;
     public static String myAlert = "";
     public static boolean dualDisplayCapable;
@@ -585,6 +540,7 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static int xmargin_presentation;
     public static int ymargin_presentation;
     public static boolean usePresentationOrder = false;
+    public static int presoTransitionTime = 800;
 
     // Song xml data
     public static ArrayList<String> foundSongSections_heading = new ArrayList<>();
@@ -619,7 +575,6 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static String mRestrictions = "";
     public static String mNotes = "";
     public static String temptranspChords = "";
-    //private static String tempChords = "";
     public static String mLinkedSongs = "";
     public static String mExtraStuff1 = "";
     public static String mExtraStuff2 = "";
@@ -633,14 +588,11 @@ public class FullscreenActivity extends AppCompatActivity  {
 
     public static String capokey = null;
 
-    //public static MyPresentation myPresentation;
     public static boolean isPresenting;
     public static int scalingDensity = 240;
 
     // Info for the lyrics table
-    //private static float mScaleFactor = 1.0f;
     public static boolean scalingfiguredout = false;
-    //private ScaleGestureDetector scaleGestureDetector;
     public static boolean botherwithcolumns;
     public static int splitpoint;
     public static int thirdsplitpoint;
@@ -648,8 +600,6 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static int halfsplit_section;
     public static int thirdsplit_section;
     public static int twothirdsplit_section;
-    //public static String[] whatisthisblock;
-    //public static String[] whatisthisline;
     public static String mStorage = "";
     public static String myLyrics = "";
     public static float mFontSize;
@@ -664,7 +614,6 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static String myXML = "";
     public static String mynewXML = "";
     public static String[] myParsedLyrics;
-    //public static String myTempLyrics;
     public static String[] myTransposedLyrics;
     public static String songfilename = "";
     public static String linkclicked = "";
@@ -690,6 +639,7 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static int mylyricsfontnum;
     public static int mychordsfontnum;
     public static int mypresofontnum;
+    public static int mypresoinfofontnum;
     public static Typeface lyricsfont;
     public static Typeface commentfont;
     public static Typeface chordsfont;
@@ -705,6 +655,8 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static String songSection_holder; // This carries on section types after line breaks
     public static float[] sectionScaleValue;
     public static int currentSection;
+    public static String[][] projectedContents;
+    public static String[][] projectedLineTypes;
 
 
     public static String pagebutton_position = "right";
@@ -732,18 +684,18 @@ public class FullscreenActivity extends AppCompatActivity  {
 
     public static boolean firstload = true;
 
-    public static String[][][] bibleVerse; // bibleVerse[book][chapter#][verse#]
+    //public static String[][][] bibleVerse; // bibleVerse[book][chapter#][verse#]
 
-    public static ArrayList<String> deviceList;
-    public static WifiP2pDeviceList wifiP2PDeviceList;
+    //public static ArrayList<String> deviceList;
+    //public static WifiP2pDeviceList wifiP2PDeviceList;
     //public static boolean isHost = true;
-    public static WifiP2pManager mManager;
-    public static WifiP2pManager.Channel mChannel;
+    //public static WifiP2pManager mManager;
+    //public static WifiP2pManager.Channel mChannel;
     //public static BroadcastReceiver mReceiver;
     //public static IntentFilter mIntentFilter;
-    public static WifiP2pManager.PeerListListener mWifiP2PListener;
-    public static NsdServiceInfo serviceInfo;
-    public static String deviceConnectedTo = "";
+    //public static WifiP2pManager.PeerListListener mWifiP2PListener;
+    //public static NsdServiceInfo serviceInfo;
+    //public static String deviceConnectedTo = "";
 
     @SuppressLint("StaticFieldLeak")
     public static Button hostButton;
@@ -767,18 +719,12 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static String mySalutXML = "";
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("d","whichMode before loading="+whichMode);
-        // Load up the user preferences
-        //myPreferences = getPreferences(MODE_PRIVATE);
-        //Preferences.loadPreferences();
-        Log.d("d","whichMode after loading="+whichMode);
-
+        myPreferences = getPreferences(MODE_PRIVATE);
+        Preferences.loadPreferences();
 
         mainfoldername = getResources().getString(R.string.mainfoldername);
 
@@ -939,7 +885,7 @@ public class FullscreenActivity extends AppCompatActivity  {
             stagemode.setClass(FullscreenActivity.this, StageMode.class);
             startActivity(stagemode);
             finish();
-        } else if (whichMode.equals("Performance") && !needtoimport) {
+        } else {
             Intent stagemode = new Intent();
             stagemode.setClass(FullscreenActivity.this, StageMode.class);
             startActivity(stagemode);

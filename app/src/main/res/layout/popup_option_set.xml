@@ -172,6 +172,22 @@
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/showSetTickBoxInSongMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_check_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_check_white_36dp"
+                android:gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:theme="@style/SwitchStyle"
+                android:text="@string/setquickcheck"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:background="@drawable/menu_button"
+                app:showText="false" />
+
             <LinearLayout
                 android:id="@+id/setLinearLayout"
                 android:layout_width="match_parent"

@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.animation.Animator;
@@ -108,7 +109,7 @@ public final class MyPresentation extends Presentation
     protected void onCreate(Bundle savedinstancestate) {
         // Notice that we get resources from the context of the Presentation
         //Resources resources = getContext().getResources();
-        setContentView(R.layout.projector_screen);
+        setContentView(R.layout._oldprojector_screen);
         context = getContext();
         // Get width and height
         DisplayMetrics metrics = new DisplayMetrics();
@@ -1074,4 +1075,4 @@ public final class MyPresentation extends Presentation
         Log.d("d","lyrics="+lyrics);
     }
 
-}
+}*/

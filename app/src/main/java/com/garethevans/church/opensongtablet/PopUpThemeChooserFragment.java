@@ -25,6 +25,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
     View dark_chord;
     View dark_custom;
     View dark_capo;
+    View dark_presofont;
+    View dark_presoinfofont;
+    View dark_presoshadow;
+    View dark_presoalertfont;
     View dark_metronome;
     View dark_pagebuttons;
     View light_font;
@@ -38,6 +42,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
     View light_chord;
     View light_custom;
     View light_capo;
+    View light_presofont;
+    View light_presoinfofont;
+    View light_presoalertfont;
+    View light_presoshadow;
     View light_metronome;
     View light_pagebuttons;
     View custom1_font;
@@ -51,6 +59,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
     View custom1_chord;
     View custom1_custom;
     View custom1_capo;
+    View custom1_presofont;
+    View custom1_presoinfofont;
+    View custom1_presoalertfont;
+    View custom1_presoshadow;
     View custom1_metronome;
     View custom1_pagebuttons;
     View custom2_font;
@@ -64,6 +76,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
     View custom2_chord;
     View custom2_custom;
     View custom2_capo;
+    View custom2_presofont;
+    View custom2_presoinfofont;
+    View custom2_presoalertfont;
+    View custom2_presoshadow;
     View custom2_metronome;
     View custom2_pagebuttons;
     Button resetcolours;
@@ -156,6 +172,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         dark_chord = V.findViewById(R.id.chords_dark);
         dark_custom = V.findViewById(R.id.custom_dark);
         dark_capo = V.findViewById(R.id.capo_dark);
+        dark_presofont = V.findViewById(R.id.presofont_dark);
+        dark_presoinfofont = V.findViewById(R.id.presoinfofont_dark);
+        dark_presoalertfont = V.findViewById(R.id.presoalertfont_dark);
+        dark_presoshadow = V.findViewById(R.id.presofontshadow_dark);
         dark_metronome = V.findViewById(R.id.metronome_dark);
         dark_pagebuttons = V.findViewById(R.id.pagebuttons_dark);
 
@@ -170,6 +190,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         light_chord = V.findViewById(R.id.chords_light);
         light_custom = V.findViewById(R.id.custom_light);
         light_capo = V.findViewById(R.id.capo_light);
+        light_presofont = V.findViewById(R.id.presofont_light);
+        light_presoinfofont = V.findViewById(R.id.presoinfofont_light);
+        light_presoalertfont = V.findViewById(R.id.presoalertfont_light);
+        light_presoshadow = V.findViewById(R.id.presofontshadow_light);
         light_metronome = V.findViewById(R.id.metronome_light);
         light_pagebuttons = V.findViewById(R.id.pagebuttons_light);
 
@@ -184,6 +208,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom1_chord = V.findViewById(R.id.chords_custom1);
         custom1_custom = V.findViewById(R.id.custom_custom1);
         custom1_capo = V.findViewById(R.id.capo_custom1);
+        custom1_presofont = V.findViewById(R.id.presofont_custom1);
+        custom1_presoinfofont = V.findViewById(R.id.presoinfofont_custom1);
+        custom1_presoalertfont = V.findViewById(R.id.presoalertfont_custom1);
+        custom1_presoshadow = V.findViewById(R.id.presofontshadow_custom1);
         custom1_metronome = V.findViewById(R.id.metronome_custom1);
         custom1_pagebuttons = V.findViewById(R.id.pagebuttons_custom1);
 
@@ -198,6 +226,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom2_chord = V.findViewById(R.id.chords_custom2);
         custom2_custom = V.findViewById(R.id.custom_custom2);
         custom2_capo = V.findViewById(R.id.capo_custom2);
+        custom2_presofont = V.findViewById(R.id.presofont_custom2);
+        custom2_presoinfofont = V.findViewById(R.id.presoinfofont_custom2);
+        custom2_presoalertfont = V.findViewById(R.id.presoalertfont_custom2);
+        custom2_presoshadow = V.findViewById(R.id.presofontshadow_custom2);
         custom2_metronome = V.findViewById(R.id.metronome_custom2);
         custom2_pagebuttons = V.findViewById(R.id.pagebuttons_custom2);
 
@@ -205,9 +237,6 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         light_theme_heading = (TextView) V.findViewById(R.id.light_theme_heading);
         custom1_theme_heading = (TextView) V.findViewById(R.id.custom1_theme_heading);
         custom2_theme_heading = (TextView) V.findViewById(R.id.custom2_theme_heading);
-
-        // Set the appropriate theme button based on what is already set
-        setUpButtons();
 
         resetcolours = (Button) V.findViewById(R.id.resetcolours);
         resetcolours.setOnClickListener(new View.OnClickListener() {
@@ -252,6 +281,9 @@ public class PopUpThemeChooserFragment extends DialogFragment {
 
         // Run the script to set the button colours
         setButtonColors();
+
+        // Set the appropriate theme button based on what is already set
+        setUpButtons();
 
         return V;
     }
@@ -301,6 +333,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         dark_tag.setTag("dark_lyricsTagColor");
         dark_chord.setTag("dark_lyricsChordsColor");
         dark_custom.setTag("dark_lyricsCustomColor");
+        dark_presofont.setTag("dark_presoFontColor");
+        dark_presoinfofont.setTag("dark_presoInfoFontColor");
+        dark_presoalertfont.setTag("dark_presoAlertFontColor");
+        dark_presoshadow.setTag("dark_presoShadowFontColor");
         dark_capo.setTag("dark_lyricsCapoColor");
         dark_metronome.setTag("dark_metronome");
         dark_pagebuttons.setTag("dark_pagebuttons");
@@ -316,6 +352,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         light_chord.setTag("light_lyricsChordsColor");
         light_custom.setTag("light_lyricsCustomColor");
         light_capo.setTag("light_lyricsCapoColor");
+        light_presofont.setTag("light_presoFontColor");
+        light_presoinfofont.setTag("light_presoInfoFontColor");
+        light_presoalertfont.setTag("light_presoAlertFontColor");
+        light_presoshadow.setTag("light_presoShadowFontColor");
         light_metronome.setTag("light_metronome");
         light_pagebuttons.setTag("light_pagebuttons");
 
@@ -330,6 +370,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom1_chord.setTag("custom1_lyricsChordsColor");
         custom1_custom.setTag("custom1_lyricsCustomColor");
         custom1_capo.setTag("custom1_lyricsCapoColor");
+        custom1_presofont.setTag("custom1_presoFontColor");
+        custom1_presoinfofont.setTag("custom1_presoInfoFontColor");
+        custom1_presoalertfont.setTag("custom1_presoAlertFontColor");
+        custom1_presoshadow.setTag("custom1_presoShadowFontColor");
         custom1_metronome.setTag("custom1_metronome");
         custom1_pagebuttons.setTag("custom1_pagebuttons");
 
@@ -344,6 +388,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom2_chord.setTag("custom2_lyricsChordsColor");
         custom2_custom.setTag("custom2_lyricsCustomColor");
         custom2_capo.setTag("custom2_lyricsCapoColor");
+        custom2_presofont.setTag("custom2_presoFontColor");
+        custom2_presoinfofont.setTag("custom2_presoInfoFontColor");
+        custom2_presoalertfont.setTag("custom2_presoAlertFontColor");
+        custom2_presoshadow.setTag("custom2_presoShadowFontColor");
         custom2_metronome.setTag("custom2_metronome");
         custom2_pagebuttons.setTag("custom2_pagebuttons");
 
@@ -359,6 +407,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         dark_chord.setOnClickListener(new ChangeColorListener("dark_lyricsChordsColor"));
         dark_custom.setOnClickListener(new ChangeColorListener("dark_lyricsCustomColor"));
         dark_capo.setOnClickListener(new ChangeColorListener("dark_lyricsCapoColor"));
+        dark_presofont.setOnClickListener(new ChangeColorListener("dark_presoFontColor"));
+        dark_presoinfofont.setOnClickListener(new ChangeColorListener("dark_presoInfoFontColor"));
+        dark_presoalertfont.setOnClickListener(new ChangeColorListener("dark_presoAlertFontColor"));
+        dark_presoshadow.setOnClickListener(new ChangeColorListener("dark_presoShadowFontColor"));
         dark_metronome.setOnClickListener(new ChangeColorListener("dark_metronome"));
         dark_pagebuttons.setOnClickListener(new ChangeColorListener("dark_pagebuttons"));
 
@@ -373,6 +425,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         light_chord.setOnClickListener(new ChangeColorListener("light_lyricsChordsColor"));
         light_custom.setOnClickListener(new ChangeColorListener("light_lyricsCustomColor"));
         light_capo.setOnClickListener(new ChangeColorListener("light_lyricsCapoColor"));
+        light_presofont.setOnClickListener(new ChangeColorListener("light_presoFontColor"));
+        light_presoinfofont.setOnClickListener(new ChangeColorListener("light_presoInfoFontColor"));
+        light_presoalertfont.setOnClickListener(new ChangeColorListener("light_presoAlertFontColor"));
+        light_presoshadow.setOnClickListener(new ChangeColorListener("light_presoShadowFontColor"));
         light_metronome.setOnClickListener(new ChangeColorListener("light_metronome"));
         light_pagebuttons.setOnClickListener(new ChangeColorListener("light_pagebuttons"));
 
@@ -387,6 +443,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom1_chord.setOnClickListener(new ChangeColorListener("custom1_lyricsChordsColor"));
         custom1_custom.setOnClickListener(new ChangeColorListener("custom1_lyricsCustomColor"));
         custom1_capo.setOnClickListener(new ChangeColorListener("custom1_lyricsCapoColor"));
+        custom1_presofont.setOnClickListener(new ChangeColorListener("custom1_presoFontColor"));
+        custom1_presoinfofont.setOnClickListener(new ChangeColorListener("custom1_presoInfoFontColor"));
+        custom1_presoalertfont.setOnClickListener(new ChangeColorListener("custom1_presoAlertFontColor"));
+        custom1_presoshadow.setOnClickListener(new ChangeColorListener("custom1_presoShadowFontColor"));
         custom1_metronome.setOnClickListener(new ChangeColorListener("custom1_metronome"));
         custom1_pagebuttons.setOnClickListener(new ChangeColorListener("custom1_pagebuttons"));
 
@@ -401,6 +461,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom2_chord.setOnClickListener(new ChangeColorListener("custom2_lyricsChordsColor"));
         custom2_custom.setOnClickListener(new ChangeColorListener("custom2_lyricsCustomColor"));
         custom2_capo.setOnClickListener(new ChangeColorListener("custom2_lyricsCapoColor"));
+        custom2_presofont.setOnClickListener(new ChangeColorListener("custom2_presoFontColor"));
+        custom2_presoinfofont.setOnClickListener(new ChangeColorListener("custom2_presoInfoFontColor"));
+        custom2_presoalertfont.setOnClickListener(new ChangeColorListener("custom2_presoAlertFontColor"));
+        custom2_presoshadow.setOnClickListener(new ChangeColorListener("custom2_presoShadowFontColor"));
         custom2_metronome.setOnClickListener(new ChangeColorListener("custom2_metronome"));
         custom2_pagebuttons.setOnClickListener(new ChangeColorListener("custom2_pagebuttons"));
     }
@@ -439,6 +503,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         dark_tag.setBackgroundColor(FullscreenActivity.dark_lyricsTagColor);
         dark_chord.setBackgroundColor(FullscreenActivity.dark_lyricsChordsColor);
         dark_custom.setBackgroundColor(FullscreenActivity.dark_lyricsCustomColor);
+        dark_presoalertfont.setBackgroundColor(FullscreenActivity.dark_presoAlertFont);
+        dark_presofont.setBackgroundColor(FullscreenActivity.dark_presoFont);
+        dark_presoinfofont.setBackgroundColor(FullscreenActivity.dark_presoInfoFont);
+        dark_presoshadow.setBackgroundColor(FullscreenActivity.dark_presoShadow);
         dark_metronome.setBackgroundColor(FullscreenActivity.dark_metronome);
         dark_pagebuttons.setBackgroundColor(FullscreenActivity.dark_pagebuttons);
         light_background.setBackgroundColor(FullscreenActivity.light_lyricsBackgroundColor);
@@ -454,6 +522,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         light_custom.setBackgroundColor(FullscreenActivity.light_lyricsCustomColor);
         light_metronome.setBackgroundColor(FullscreenActivity.light_metronome);
         light_pagebuttons.setBackgroundColor(FullscreenActivity.light_pagebuttons);
+        light_presoalertfont.setBackgroundColor(FullscreenActivity.light_presoAlertFont);
+        light_presofont.setBackgroundColor(FullscreenActivity.light_presoFont);
+        light_presoinfofont.setBackgroundColor(FullscreenActivity.light_presoInfoFont);
+        light_presoshadow.setBackgroundColor(FullscreenActivity.light_presoShadow);
         custom1_background.setBackgroundColor(FullscreenActivity.custom1_lyricsBackgroundColor);
         custom1_font.setBackgroundColor(FullscreenActivity.custom1_lyricsTextColor);
         custom1_capo.setBackgroundColor(FullscreenActivity.custom1_lyricsCapoColor);
@@ -467,6 +539,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom1_custom.setBackgroundColor(FullscreenActivity.custom1_lyricsCustomColor);
         custom1_metronome.setBackgroundColor(FullscreenActivity.custom1_metronome);
         custom1_pagebuttons.setBackgroundColor(FullscreenActivity.custom1_pagebuttons);
+        custom1_presoalertfont.setBackgroundColor(FullscreenActivity.custom1_presoAlertFont);
+        custom1_presofont.setBackgroundColor(FullscreenActivity.custom1_presoFont);
+        custom1_presoinfofont.setBackgroundColor(FullscreenActivity.custom1_presoInfoFont);
+        custom1_presoshadow.setBackgroundColor(FullscreenActivity.custom1_presoShadow);
         custom2_background.setBackgroundColor(FullscreenActivity.custom2_lyricsBackgroundColor);
         custom2_font.setBackgroundColor(FullscreenActivity.custom2_lyricsTextColor);
         custom2_capo.setBackgroundColor(FullscreenActivity.custom2_lyricsCapoColor);
@@ -480,6 +556,14 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom2_custom.setBackgroundColor(FullscreenActivity.custom2_lyricsCustomColor);
         custom2_metronome.setBackgroundColor(FullscreenActivity.custom2_metronome);
         custom2_pagebuttons.setBackgroundColor(FullscreenActivity.custom2_pagebuttons);
+        custom2_presoalertfont.setBackgroundColor(FullscreenActivity.custom2_presoAlertFont);
+        custom2_presofont.setBackgroundColor(FullscreenActivity.custom2_presoFont);
+        custom2_presoinfofont.setBackgroundColor(FullscreenActivity.custom2_presoInfoFont);
+        custom2_presoshadow.setBackgroundColor(FullscreenActivity.custom2_presoShadow);
+        dark_presoalertfont.setBackgroundColor(FullscreenActivity.dark_presoAlertFont);
+        dark_presofont.setBackgroundColor(FullscreenActivity.dark_presoFont);
+        dark_presoinfofont.setBackgroundColor(FullscreenActivity.dark_presoInfoFont);
+        dark_presoshadow.setBackgroundColor(FullscreenActivity.dark_presoShadow);
     }
 
     private class ChangeColorListener implements View.OnClickListener {
@@ -530,6 +614,18 @@ public class PopUpThemeChooserFragment extends DialogFragment {
                 case "dark_pagebuttons":
                     initialcolor = FullscreenActivity.dark_pagebuttons;
                     break;
+                case "dark_presoalertfont":
+                    initialcolor = FullscreenActivity.dark_presoAlertFont;
+                    break;
+                case "dark_presfont":
+                    initialcolor = FullscreenActivity.dark_presoFont;
+                    break;
+                case "dark_presoinfofont":
+                    initialcolor = FullscreenActivity.dark_presoInfoFont;
+                    break;
+                case "dark_presoshadow":
+                    initialcolor = FullscreenActivity.dark_presoShadow;
+                    break;
 
                 case "light_lyricsBackgroundColor":
                     initialcolor = FullscreenActivity.light_lyricsBackgroundColor;
@@ -569,6 +665,18 @@ public class PopUpThemeChooserFragment extends DialogFragment {
                     break;
                 case "light_pagebuttons":
                     initialcolor = FullscreenActivity.light_pagebuttons;
+                    break;
+                case "light_presoalertfont":
+                    initialcolor = FullscreenActivity.light_presoAlertFont;
+                    break;
+                case "light_presfont":
+                    initialcolor = FullscreenActivity.light_presoFont;
+                    break;
+                case "light_presoinfofont":
+                    initialcolor = FullscreenActivity.light_presoInfoFont;
+                    break;
+                case "light_presoshadow":
+                    initialcolor = FullscreenActivity.light_presoShadow;
                     break;
 
                 case "custom1_lyricsBackgroundColor":
@@ -610,6 +718,18 @@ public class PopUpThemeChooserFragment extends DialogFragment {
                 case "custom1_pagebuttons":
                     initialcolor = FullscreenActivity.custom1_pagebuttons;
                     break;
+                case "custom1_presoalertfont":
+                    initialcolor = FullscreenActivity.custom1_presoAlertFont;
+                    break;
+                case "custom1_presfont":
+                    initialcolor = FullscreenActivity.custom1_presoFont;
+                    break;
+                case "custom1_presoinfofont":
+                    initialcolor = FullscreenActivity.custom1_presoInfoFont;
+                    break;
+                case "custom1_presoshadow":
+                    initialcolor = FullscreenActivity.custom1_presoShadow;
+                    break;
 
                 case "custom2_lyricsBackgroundColor":
                     initialcolor = FullscreenActivity.custom2_lyricsBackgroundColor;
@@ -650,6 +770,19 @@ public class PopUpThemeChooserFragment extends DialogFragment {
                 case "custom2_pagebuttons":
                     initialcolor = FullscreenActivity.custom2_pagebuttons;
                     break;
+                case "custom2_presoalertfont":
+                    initialcolor = FullscreenActivity.custom2_presoAlertFont;
+                    break;
+                case "custom2_presfont":
+                    initialcolor = FullscreenActivity.custom2_presoFont;
+                    break;
+                case "custom2_presoinfofont":
+                    initialcolor = FullscreenActivity.custom2_presoInfoFont;
+                    break;
+                case "custom2_presoshadow":
+                    initialcolor = FullscreenActivity.custom2_presoShadow;
+                    break;
+
             }
             doDisplay();
         }
@@ -849,6 +982,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         FullscreenActivity.dark_lyricsCustomColor = Preferences.default_dark_lyricsCustomColor;
         FullscreenActivity.dark_metronome = Preferences.default_metronomeColor;
         FullscreenActivity.dark_pagebuttons = Preferences.default_pagebuttonsColor;
+        FullscreenActivity.dark_presoAlertFont = Preferences.default_dark_presoAlertColor;
+        FullscreenActivity.dark_presoFont = Preferences.default_dark_presoFontColor;
+        FullscreenActivity.dark_presoInfoFont = Preferences.default_dark_presoInfoFontColor;
+        FullscreenActivity.dark_presoShadow = Preferences.default_dark_presoShadowFontColor;
 
         FullscreenActivity.light_lyricsTextColor = Preferences.default_light_lyricsTextColor;
         FullscreenActivity.light_lyricsVerseColor = Preferences.default_light_lyricsVerseColor;
@@ -863,6 +1000,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         FullscreenActivity.light_lyricsCustomColor = Preferences.default_light_lyricsCustomColor;
         FullscreenActivity.light_metronome = Preferences.default_metronomeColor;
         FullscreenActivity.light_pagebuttons = Preferences.default_pagebuttonsColor;
+        FullscreenActivity.light_presoAlertFont = Preferences.default_dark_presoAlertColor;
+        FullscreenActivity.light_presoFont = Preferences.default_dark_presoFontColor;
+        FullscreenActivity.light_presoInfoFont = Preferences.default_dark_presoInfoFontColor;
+        FullscreenActivity.light_presoShadow = Preferences.default_dark_presoShadowFontColor;
 
         FullscreenActivity.custom1_lyricsTextColor = Preferences.default_dark_lyricsTextColor;
         FullscreenActivity.custom1_lyricsVerseColor = Preferences.default_dark_lyricsVerseColor;
@@ -877,6 +1018,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         FullscreenActivity.custom1_lyricsCustomColor = Preferences.default_dark_lyricsBackgroundColor;
         FullscreenActivity.custom1_metronome = Preferences.default_metronomeColor;
         FullscreenActivity.custom1_pagebuttons = Preferences.default_pagebuttonsColor;
+        FullscreenActivity.custom1_presoAlertFont = Preferences.default_dark_presoAlertColor;
+        FullscreenActivity.custom1_presoFont = Preferences.default_dark_presoFontColor;
+        FullscreenActivity.custom1_presoInfoFont = Preferences.default_dark_presoInfoFontColor;
+        FullscreenActivity.custom1_presoShadow = Preferences.default_dark_presoShadowFontColor;
 
         FullscreenActivity.custom2_lyricsTextColor = Preferences.default_light_lyricsTextColor;
         FullscreenActivity.custom2_lyricsVerseColor = Preferences.default_light_lyricsVerseColor;
@@ -891,6 +1036,10 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         FullscreenActivity.custom2_lyricsCustomColor = Preferences.default_light_lyricsBackgroundColor;
         FullscreenActivity.custom2_metronome = Preferences.default_metronomeColor;
         FullscreenActivity.custom2_pagebuttons = Preferences.default_pagebuttonsColor;
+        FullscreenActivity.custom2_presoAlertFont = Preferences.default_dark_presoAlertColor;
+        FullscreenActivity.custom2_presoFont = Preferences.default_dark_presoFontColor;
+        FullscreenActivity.custom2_presoInfoFont = Preferences.default_dark_presoInfoFontColor;
+        FullscreenActivity.custom2_presoShadow = Preferences.default_dark_presoShadowFontColor;
     }
 
     @Override

@@ -22,6 +22,10 @@ class SetUpColours {
                 FullscreenActivity.lyricsBoxColor = FullscreenActivity.light_lyricsTextColor;
                 FullscreenActivity.metronomeColor = FullscreenActivity.light_metronome;
                 FullscreenActivity.pagebuttonsColor = FullscreenActivity.light_pagebuttons;
+                FullscreenActivity.presoAlertFontColor = FullscreenActivity.light_presoAlertFont;
+                FullscreenActivity.presoFontColor = FullscreenActivity.light_presoFont;
+                FullscreenActivity.presoInfoFontColor = FullscreenActivity.light_presoInfoFont;
+                FullscreenActivity.presoShadowColor = FullscreenActivity.light_presoShadow;
                 break;
             case "Theme_Holo":
             case "Theme.Holo":
@@ -39,6 +43,10 @@ class SetUpColours {
                 FullscreenActivity.lyricsBoxColor = FullscreenActivity.dark_lyricsTextColor;
                 FullscreenActivity.metronomeColor = FullscreenActivity.dark_metronome;
                 FullscreenActivity.pagebuttonsColor = FullscreenActivity.dark_pagebuttons;
+                FullscreenActivity.presoAlertFontColor = FullscreenActivity.dark_presoAlertFont;
+                FullscreenActivity.presoFontColor = FullscreenActivity.dark_presoFont;
+                FullscreenActivity.presoInfoFontColor = FullscreenActivity.dark_presoInfoFont;
+                FullscreenActivity.presoShadowColor = FullscreenActivity.dark_presoShadow;
                 break;
             case "custom1":
                 FullscreenActivity.lyricsTextColor = FullscreenActivity.custom1_lyricsTextColor;
@@ -55,6 +63,10 @@ class SetUpColours {
                 FullscreenActivity.lyricsBoxColor = FullscreenActivity.custom1_lyricsTextColor;
                 FullscreenActivity.metronomeColor = FullscreenActivity.custom1_metronome;
                 FullscreenActivity.pagebuttonsColor = FullscreenActivity.custom1_pagebuttons;
+                FullscreenActivity.presoAlertFontColor = FullscreenActivity.custom1_presoAlertFont;
+                FullscreenActivity.presoFontColor = FullscreenActivity.custom1_presoFont;
+                FullscreenActivity.presoInfoFontColor = FullscreenActivity.custom1_presoInfoFont;
+                FullscreenActivity.presoShadowColor = FullscreenActivity.custom1_presoShadow;
                 break;
             case "custom2":
                 FullscreenActivity.lyricsTextColor = FullscreenActivity.custom2_lyricsTextColor;
@@ -71,6 +83,10 @@ class SetUpColours {
                 FullscreenActivity.lyricsBoxColor = FullscreenActivity.custom2_lyricsTextColor;
                 FullscreenActivity.metronomeColor = FullscreenActivity.custom2_metronome;
                 FullscreenActivity.pagebuttonsColor = FullscreenActivity.custom2_pagebuttons;
+                FullscreenActivity.presoAlertFontColor = FullscreenActivity.custom2_presoAlertFont;
+                FullscreenActivity.presoFontColor = FullscreenActivity.custom2_presoFont;
+                FullscreenActivity.presoInfoFontColor = FullscreenActivity.custom2_presoInfoFont;
+                FullscreenActivity.presoShadowColor = FullscreenActivity.custom2_presoShadow;
                 break;
         }
     }

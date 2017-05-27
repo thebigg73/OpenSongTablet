@@ -38,10 +38,16 @@
     <string name="options_connections_success" translatable="false">Connection success</string>
     <string name="options_display_popups" translatable="false">Customise popup windows</string>
     <string name="options_modes" translatable="false">Choose app mode</string>
-    <string name="pagebutton_group" translatable="false">Group page buttons</string>
+    <string name="pagebutton_custom_group" translatable="false">Group custom buttons</string>
+    <string name="pagebutton_extrainfo_group" translatable="false">Group extra information buttons</string>
+    <string name="pagebutton_group" translatable="false">Group all page buttons</string>
+    <string name="pagebutton_visibility" translatable="false">Show/hide page buttons</string>
     <string name="perform" translatable="false">Perform</string>
     <string name="performancemode" translatable="false">Performance mode</string>
     <string name="present" translatable="false">Present</string>
+    <string name="presoFont" translatable="false">Presentation font</string>
+    <string name="presoInfoFont" translatable="false">Presentation information font</string>
+    <string name="presoFontShadow" translatable="false">Presentation font shadow</string>
     <string name="quicklaunch_button1" translatable="false">Button 1</string>
     <string name="quicklaunch_button2" translatable="false">Button 2</string>
     <string name="quicklaunch_button3" translatable="false">Button 3</string>
@@ -49,6 +55,7 @@
     <string name="quicklaunch_title" translatable="false">Customise quick launch buttons</string>
     <string name="scale_style" translatable="false">Scale style</string>
     <string name="service_id" translatable="false">com.garethevans.church.opensongtablet</string>
+    <string name="setquickcheck" translatable="false">Show set checkboxes in song menu</string>
     <string name="size_mini" translatable="false">Mini</string>
     <string name="size_normal" translatable="false">Normal</string>
     <string name="songsinfolder" translatable="false">Song folder</string>
@@ -654,7 +661,7 @@
 	<string name="page_background">Page background</string>
 	<string name="lyrics_color">Lyrics font</string>
 	<string name="chord_color">Chords font</string>
-	<string name="capo_color">Capo font</string>
+    <string name="capo_color">Capo font</string>
 	<string name="verse_background">Verse background</string>
 	<string name="chorus_background">Chorus background</string>
 	<string name="prechorus_background">Prechorus background</string>

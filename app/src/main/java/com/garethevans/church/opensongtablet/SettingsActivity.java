@@ -21,7 +21,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -80,7 +79,6 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         // Load up the user preferences
         FullscreenActivity.myPreferences = getPreferences(MODE_PRIVATE);
         Preferences.loadPreferences();
-        Log.d("d","whichMode after loading prefs from Fullscreen =" + FullscreenActivity.whichMode);
 
         // We may have arrived via a shortcut (Nougat+)
         String newMode = "";
@@ -90,8 +88,6 @@ PopUpDirectoryChooserFragment.SettingsInterface {
             // Oops
             e.printStackTrace();
         }
-
-        Log.d("d","newMode="+newMode);
 
         if (newMode!=null && (newMode.equals("Performance") || newMode.equals("Stage") || newMode.equals("Presentation"))) {
             FullscreenActivity.whichMode = newMode;
@@ -117,12 +113,6 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         }
         PopUpStorageFragment.getOtherFolders(myroot);
         final boolean storageexists = PopUpStorageFragment.checkDirectoriesExistOnly();
-
-        Log.d("d","prefStorage="+FullscreenActivity.prefStorage);
-        Log.d("d","customStorage="+FullscreenActivity.customStorage);
-        Log.d("d","homedir="+FullscreenActivity.homedir);
-        Log.d("d","storageexists="+storageexists);
-        Log.d("d","locale="+FullscreenActivity.locale);
 
         // Wait 1000ms before either showing the introduction page or the main app
         // This only happens if the storage exists
@@ -320,13 +310,11 @@ PopUpDirectoryChooserFragment.SettingsInterface {
     public void recheckStorage() {
         // This is called when the storage fragment has been closed
         boolean storageexists = PopUpStorageFragment.checkDirectoriesExistOnly();
-        Log.d("d","storageexists="+storageexists);
         if (storageexists) {
             goToSongs.setText(getResources().getString(R.string.gotosong));
             goToSongs.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("d","Ok to go to the songs");
                     gotothesongs();
                 }
             });
@@ -335,7 +323,6 @@ PopUpDirectoryChooserFragment.SettingsInterface {
             goToSongs.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("d","Need to sort the folders");
                     openStorageFragment();
                 }
             });
@@ -344,7 +331,6 @@ PopUpDirectoryChooserFragment.SettingsInterface {
             goToSongs.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("d","Need permission");
                     requestStoragePermission();
                 }
             });

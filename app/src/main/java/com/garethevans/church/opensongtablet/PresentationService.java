@@ -1,14 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.SurfaceTexture;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -25,7 +22,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -92,6 +89,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         }
         static Display myscreen;
         @SuppressLint("StaticFieldLeak")
+        static RelativeLayout pageHolder;
+        @SuppressLint("StaticFieldLeak")
         static LinearLayout projected_LinearLayout;
         @SuppressLint("StaticFieldLeak")
         static RelativeLayout projectedPage_RelativeLayout;
@@ -117,6 +116,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         static LinearLayout col3_3;
         @SuppressLint("StaticFieldLeak")
         static TextureView projected_TextureView;
+        @SuppressLint("StaticFieldLeak")
+        static ImageView projected_BackgroundImage;
         @SuppressLint("StaticFieldLeak")
         static LinearLayout presentermode_bottombit;
         @SuppressLint("StaticFieldLeak")
@@ -164,6 +165,28 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         static Bitmap myBitmap;
         static Drawable dr;
         static Surface s;
+        static Animation mypage_fadein;
+        static Animation mypage_fadeout;
+        static Animation background_fadein;
+        static Animation background_fadeout;
+        static Animation image_fadein;
+        static Animation image_fadeout;
+        static Animation video_fadein;
+        static Animation video_fadeout;
+        static Animation logo_fadein;
+        static Animation logo_fadeout;
+        static Animation lyrics_fadein;
+        static Animation lyrics_fadeout;
+        static Animation songinfo_fadein;
+        static Animation songinfo_fadeout;
+        static Animation songtitle_fadein;
+        static Animation songtitle_fadeout;
+        static Animation songauthor_fadein;
+        static Animation songauthor_fadeout;
+        static Animation songcopyright_fadein;
+        static Animation songcopyright_fadeout;
+        static Animation songalert_fadein;
+        static Animation songalert_fadeout;
 
 
         @SuppressLint("StaticFieldLeak")
@@ -174,9 +197,11 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.cast_screen);
 
+            pageHolder                   = (RelativeLayout) findViewById(R.id.pageHolder);
             projectedPage_RelativeLayout = (RelativeLayout) findViewById(R.id.projectedPage_RelativeLayout);
             projected_LinearLayout       = (LinearLayout)   findViewById(R.id.projected_LinearLayout);
             projected_ImageView          = (ImageView)      findViewById(R.id.projected_ImageView);
+            projected_BackgroundImage    = (ImageView)      findViewById(R.id.projected_BackgroundImage);
             projected_TextureView        = (TextureView)    findViewById(R.id.projected_TextureView);
             projected_Logo               = (ImageView)      findViewById(R.id.projected_Logo);
             songinfo_TextView            = (TextView)       findViewById(R.id.songinfo_TextView);
@@ -195,7 +220,13 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
             c = projectedPage_RelativeLayout.getContext();
 
-            // Based on the mode we are in, hide the appropriate stuff
+            // Set up the custom background animations (to base on final alpha)
+            prepareBackgroundAnimations();
+
+            // Set the default background image
+            setDefaultBackgroundImage();
+
+            // Based on the mode we are in, hide the appropriate stuff at the bottom of the page
             matchPresentationToMode();
 
             // Change margins
@@ -204,29 +235,31 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             // Decide on screen sizes
             getScreenSizes();
 
+            // Set up the logo
+            setUpLogo();
+
             // Prepare the display after 2 secs (a chance for stuff to be measured and show the logo
             Handler h = new Handler();
             h.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    projected_Logo.setVisibility(View.GONE);
-                    doUpdate();
+                    if (!FullscreenActivity.whichMode.equals("Presentation")) {
+                        normalStartUp();
+                    } else {
+                        // Switch to the user background and logo
+                        presenterStartUp();
+                    }
                 }
             },2000);
-
         }
 
-        static void cancelAsyncTask(AsyncTask ast) {
-            if (ast!=null) {
-                ast.cancel(true);
-            }
-        }
-
+        // Setup some default stuff
         void matchPresentationToMode() {
             switch (FullscreenActivity.whichMode) {
                 case "Stage":
                 case "Performance":
                 default:
+                    songinfo_TextView.setAlpha(0.0f);
                     songinfo_TextView.setVisibility(View.VISIBLE);
                     presentermode_bottombit.setVisibility(View.GONE);
                     break;
@@ -237,7 +270,46 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     break;
             }
         }
+        void prepareBackgroundAnimations() {
+            mypage_fadein = CustomAnimations.setUpAnimation(pageHolder,0.0f,1.0f);
+            mypage_fadeout = CustomAnimations.setUpAnimation(pageHolder,1.0f,0.0f);
+            background_fadein = CustomAnimations.setUpAnimation(projected_BackgroundImage,0.0f,1.0f);
+            background_fadeout = CustomAnimations.setUpAnimation(projected_BackgroundImage,1.0f,0.0f);
+            logo_fadein = CustomAnimations.setUpAnimation(projected_Logo,0.0f,1.0f);
+            logo_fadeout = CustomAnimations.setUpAnimation(projected_Logo,1.0f,0.0f);
+            image_fadein = CustomAnimations.setUpAnimation(projected_ImageView,0.0f,1.0f);
+            image_fadeout = CustomAnimations.setUpAnimation(projected_ImageView,1.0f,0.0f);
+            video_fadein = CustomAnimations.setUpAnimation(projected_TextureView,0.0f,1.0f);
+            video_fadeout = CustomAnimations.setUpAnimation(projected_TextureView,1.0f,0.0f);
+            lyrics_fadein = CustomAnimations.setUpAnimation(projected_LinearLayout,0.0f,1.0f);
+            lyrics_fadeout = CustomAnimations.setUpAnimation(projected_LinearLayout,1.0f,0.0f);
+            songinfo_fadein = CustomAnimations.setUpAnimation(songinfo_TextView,0.0f,1.0f);
+            songinfo_fadeout = CustomAnimations.setUpAnimation(songinfo_TextView,1.0f,0.0f);
+            songtitle_fadein = CustomAnimations.setUpAnimation(presentermode_title,0.0f,1.0f);
+            songtitle_fadeout = CustomAnimations.setUpAnimation(presentermode_title,1.0f,0.0f);
+            songauthor_fadein = CustomAnimations.setUpAnimation(presentermode_author,0.0f,1.0f);
+            songauthor_fadeout = CustomAnimations.setUpAnimation(presentermode_author,1.0f,0.0f);
+            songcopyright_fadein = CustomAnimations.setUpAnimation(presentermode_copyright,0.0f,1.0f);
+            songcopyright_fadeout = CustomAnimations.setUpAnimation(presentermode_copyright,1.0f,0.0f);
+            songalert_fadein = CustomAnimations.setUpAnimation(presentermode_alert,0.0f,1.0f);
+            songalert_fadeout = CustomAnimations.setUpAnimation(presentermode_alert,1.0f,0.0f);
+        }
+        @SuppressWarnings("deprecation")
+        void setDefaultBackgroundImage() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                defimage = getResources().getDrawable(R.drawable.preso_default_bg,null);
+            } else {
+                defimage = getResources().getDrawable(R.drawable.preso_default_bg);
+            }
+        }
 
+        // Get and setup screen sizes
+        static void changeMargins() {
+            songinfo_TextView.setTextColor(FullscreenActivity.lyricsTextColor);
+            projectedPage_RelativeLayout.setPadding(FullscreenActivity.xmargin_presentation,
+                    FullscreenActivity.ymargin_presentation,FullscreenActivity.xmargin_presentation,
+                    FullscreenActivity.ymargin_presentation);
+        }
         @SuppressLint("NewApi")
         static void getScreenSizes() {
             DisplayMetrics metrics = new DisplayMetrics();
@@ -260,15 +332,181 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             int screenHeight = metrics.heightPixels;
             int toppadding = projectedPage_RelativeLayout.getPaddingTop();
             int bottompadding = projectedPage_RelativeLayout.getPaddingBottom();
-            availableScreenHeight = screenHeight - toppadding - bottompadding - bottombarheight - (padding*2);
+            availableScreenHeight = screenHeight - toppadding - bottompadding - bottombarheight - (padding*4);
             availableWidth_1col = availableScreenWidth - (padding*2);
             availableWidth_2col = (int) ((float)availableScreenWidth / 2.0f) - (padding*3);
-            availableWidth_3col = (int) ((float)availableScreenWidth / 3.0f) - (padding*3);
+            availableWidth_3col = (int) ((float)availableScreenWidth / 3.0f) - (padding*4);
+        }
+
+        // The logo stuff
+        @SuppressWarnings("deprecation")
+        static void setUpLogo() {
+            // If the customLogo doesn't exist, use the default one
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            int imgwidth = 1024;
+            int imgheight = 500;
+            float xscale;
+            float yscale;
+            boolean usingcustom = false;
+
+            File customLogo = new File(FullscreenActivity.customLogo);
+            if (customLogo.exists()) {
+                // Get the sizes of the custom logo
+                BitmapFactory.decodeFile(FullscreenActivity.customLogo, options);
+                imgwidth = options.outWidth;
+                imgheight = options.outHeight;
+                if (imgwidth>0 && imgheight>0) {
+                    usingcustom = true;
+                }
+            }
+
+            xscale = ((float) availableWidth_1col * FullscreenActivity.customLogoSize) / (float) imgwidth;
+            yscale = ((float) availableScreenHeight * FullscreenActivity.customLogoSize) / (float) imgheight;
+
+            if (xscale>yscale) {
+                xscale = yscale;
+            }
+
+            int logowidth  = (int) ((float)imgwidth  * xscale);
+            int logoheight = (int) ((float)imgheight * xscale);
+
+            RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(logowidth,logoheight);
+            rlp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+            projected_Logo.setLayoutParams(rlp);
+
+            if (usingcustom) {
+                Uri logoUri = Uri.fromFile(customLogo);
+                Glide.with(c).load(logoUri).override(logowidth,logoheight).into(projected_Logo);
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo,c.getTheme()));
+                } else {
+                    projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo));
+                }
+            }
+            projected_Logo.startAnimation(logo_fadein);
+        }
+        static void showLogo() {
+            // Animate out the lyrics if they were visible and animate in the logo
+            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                projected_ImageView.startAnimation(image_fadeout);
+            } else {
+                projected_LinearLayout.startAnimation(lyrics_fadeout);
+            }
+            presentermode_title.startAnimation(songtitle_fadeout);
+            presentermode_author.startAnimation(songauthor_fadeout);
+            presentermode_copyright.startAnimation(songcopyright_fadeout);
+            projected_Logo.startAnimation(logo_fadein);
+        }
+        static void hideLogo() {
+            // Animate out the logo and animate in the lyrics if they were visible
+            // Animate out the lyrics if they were visible and animate in the logo
+            if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+                projected_ImageView.startAnimation(image_fadein);
+            } else {
+                projected_LinearLayout.startAnimation(lyrics_fadein);
+            }
+            presentermode_title.startAnimation(songtitle_fadein);
+            presentermode_author.startAnimation(songauthor_fadein);
+            presentermode_copyright.startAnimation(songcopyright_fadein);
+            projected_Logo.startAnimation(logo_fadeout);
+        }
+        static void blankDisplay() {
+            pageHolder.startAnimation(mypage_fadeout);
+        }
+        static void unblankDisplay() {
+            pageHolder.startAnimation(mypage_fadein);
+        }
+
+        // Set up the screen changes
+        void presenterStartUp() {
+            // Set up the text styles and fonts for the bottom info bar
+            presenterThemeSetUp();
+
+            // After the fadeout time, set the background and fade in
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // Try to set the new background
+                    fixBackground();
+
+                    if (FullscreenActivity.backgroundTypeToUse.equals("image")) {
+                        projected_BackgroundImage.startAnimation(background_fadein);
+                    } else if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
+                        projected_TextureView.startAnimation(background_fadein);
+                    }
+                }
+            },FullscreenActivity.presoTransitionTime);
+        }
+        void normalStartUp() {
+            // Animate out the default logo
+            projected_Logo.startAnimation(logo_fadeout);
+            doUpdate();
+        }
+        static void presenterThemeSetUp() {
+            // Set the text at the bottom of the page to match the presentation text colour
+            presentermode_title.setTypeface(FullscreenActivity.presoInfoFont);
+            presentermode_author.setTypeface(FullscreenActivity.presoInfoFont);
+            presentermode_copyright.setTypeface(FullscreenActivity.presoInfoFont);
+            presentermode_alert.setTypeface(FullscreenActivity.presoInfoFont);
+            presentermode_title.setTextColor(FullscreenActivity.presoInfoFontColor);
+            presentermode_author.setTextColor(FullscreenActivity.presoInfoFontColor);
+            presentermode_copyright.setTextColor(FullscreenActivity.presoInfoFontColor);
+            presentermode_alert.setTextColor(FullscreenActivity.presoInfoFontColor);
+            presentermode_title.setTextSize(FullscreenActivity.presoTitleSize);
+            presentermode_author.setTextSize(FullscreenActivity.presoAuthorSize);
+            presentermode_copyright.setTextSize(FullscreenActivity.presoCopyrightSize);
+            presentermode_alert.setTextSize(FullscreenActivity.presoAlertSize);
+            presentermode_title.setShadowLayer(FullscreenActivity.presoTitleSize/2.0f, 4, 4, FullscreenActivity.presoShadowColor);
+            presentermode_author.setShadowLayer(FullscreenActivity.presoAuthorSize/2.0f, 4, 4, FullscreenActivity.presoShadowColor);
+            presentermode_copyright.setShadowLayer(FullscreenActivity.presoCopyrightSize/2.0f, 4, 4, FullscreenActivity.presoShadowColor);
+            presentermode_alert.setShadowLayer(FullscreenActivity.presoAlertSize/2.0f, 4, 4, FullscreenActivity.presoShadowColor);
+            presentermode_title.setGravity(FullscreenActivity.presoInfoAlign);
+            presentermode_author.setGravity(FullscreenActivity.presoInfoAlign);
+            presentermode_copyright.setGravity(FullscreenActivity.presoInfoAlign);
+            presentermode_alert.setGravity(FullscreenActivity.presoInfoAlign);
+        }
+        static void panicShowViews() {
+            // After 3x the transition times, make sure the correct view is visible regardless of animations
+            if (FullscreenActivity.whichMode.equals("Presentation")) {
+                if (FullscreenActivity.isImage || FullscreenActivity.isPDF || FullscreenActivity.isImageSlide) {
+                    projected_ImageView.setVisibility(View.VISIBLE);
+                    projected_LinearLayout.setVisibility(View.GONE);
+                    projected_ImageView.setAlpha(1.0f);
+                } else if (FullscreenActivity.isVideo) {
+                    projected_TextureView.setVisibility(View.VISIBLE);
+                    projected_LinearLayout.setVisibility(View.GONE);
+                    projected_ImageView.setVisibility(View.GONE);
+                    projected_TextureView.setAlpha(1.0f);
+                } else {
+                    projected_LinearLayout.setVisibility(View.VISIBLE);
+                    projected_ImageView.setVisibility(View.GONE);
+                    projected_LinearLayout.setAlpha(1.0f);
+                }
+            }
         }
 
         static void doUpdate() {
             // First up, animate everything away
             animateOut();
+
+            // Just in case there is a glitch, make the stuff visible after 3x transition time
+            Handler panic = new Handler();
+            panic.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    panicShowViews();
+                }
+            },3*FullscreenActivity.presoTransitionTime);
+
+            // Set the title of the song and author (if available).  Only does this for changes
+            if (FullscreenActivity.whichMode.equals("Presentation")) {
+                presenterWriteSongInfo();
+            } else {
+                setSongTitle();
+            }
 
             // Now run the next bit post delayed (to wait for the animate out)
             Handler h = new Handler();
@@ -278,24 +516,19 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     // Wipe any current views
                     wipeAllViews();
 
-                    // Check the background page colour
-                    projectedPage_RelativeLayout.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
-                    songinfo_TextView.setTextColor(FullscreenActivity.lyricsTextColor);
-
-                    //projected_LinearLayout.removeAllViews();
-
-                    // Set the title of the song and author (if available)
-                    setSongTitle();
-                    presenterWriteSongInfo();
+                    // Check the colours colour
+                    if (!FullscreenActivity.whichMode.equals("Presentation")) {
+                        // Set the page background to the correct colour for Peformance/Stage modes
+                        projectedPage_RelativeLayout.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
+                        songinfo_TextView.setTextColor(FullscreenActivity.lyricsTextColor);
+                    }
 
                     // Decide on what we are going to show
                     if (FullscreenActivity.isPDF) {
                         doPDFPage();
-                    } else if (FullscreenActivity.isImage) {
+                    } else if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide) {
                         doImagePage();
                     } else {
-                        projected_ImageView.setVisibility(View.GONE);
-                        projected_ImageView.setBackgroundColor(0x00000000);
                         switch (FullscreenActivity.whichMode) {
                             case "Stage":
                                 prepareStageProjected();
@@ -308,67 +541,163 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                                 break;
                         }
                     }
-
-                    animateIn();
                 }
-            }, 800);
+            }, FullscreenActivity.presoTransitionTime);
         }
 
-        static void doPDFPage() {
+        // Change background images/videos
+        static void fixBackground() {
+            // Decide if user is using video or image for background
+            switch (FullscreenActivity.backgroundTypeToUse) {
+                case "image":
+                    projected_BackgroundImage.setVisibility(View.VISIBLE);
+                    projected_TextureView.setVisibility(View.INVISIBLE);
+                    if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+                        mMediaPlayer.pause();
+                    }
+                    if (FullscreenActivity.backgroundToUse.equals("img1")) {
+                        imgFile = img1File;
+                    } else {
+                        imgFile = img2File;
+                    }
 
+                    if (imgFile.exists()) {
+                        if (imgFile.toString().contains("ost_bg.png")) {
+                            projected_BackgroundImage.setImageDrawable(defimage);
+                        } else {
+                            // Process the image location into an URI
+                            Uri imageUri = Uri.fromFile(imgFile);
+                            Glide.with(c).load(imageUri).centerCrop().into(projected_BackgroundImage);
+                        }
+                        projected_BackgroundImage.setVisibility(View.VISIBLE);
+                    }
+                    break;
+                case "video":
+                    projected_BackgroundImage.setVisibility(View.INVISIBLE);
+                    projected_TextureView.setVisibility(View.VISIBLE);
+
+                    if (FullscreenActivity.backgroundToUse.equals("vid1")) {
+                        vidFile = vid1File;
+                    } else {
+                        vidFile = vid2File;
+                    }
+                    if (mMediaPlayer != null) {
+                        mMediaPlayer.start();
+                    }
+                    myBitmap = null;
+                    dr = null;
+                    projected_BackgroundImage.setImageDrawable(null);
+                    projected_BackgroundImage.setVisibility(View.GONE);
+                    break;
+                default:
+                    myBitmap = null;
+                    dr = null;
+                    projected_BackgroundImage.setImageDrawable(null);
+                    projected_BackgroundImage.setVisibility(View.GONE);
+                    break;
+            }
+            updateAlpha();
+        }
+
+
+
+        // Change the song info at the bottom of the page
+        static void setSongTitle() {
+            String old_title = songinfo_TextView.getText().toString();
+            String new_title = FullscreenActivity.mTitle.toString();
+            if (!FullscreenActivity.mAuthor.equals("")) {
+                new_title = new_title + "\n" + FullscreenActivity.mAuthor;
+            }
+            if (!old_title.equals(new_title)) {
+                // It has changed, so make the text update on the screen
+                normalChangeSongInfo(new_title);
+            }
+        }
+        static void presenterWriteSongInfo() {
+            String old_title     = presentermode_title.getText().toString();
+            String old_author    = presentermode_author.getText().toString();
+            String old_copyright = presentermode_copyright.getText().toString();
+            if (!old_title.equals(FullscreenActivity.mTitle)) {
+                presenterFadeOutSongInfo(presentermode_title, songtitle_fadeout, songtitle_fadein, FullscreenActivity.mTitle.toString());
+            }
+            if (!old_author.equals(FullscreenActivity.mAuthor)) {
+                presenterFadeOutSongInfo(presentermode_author, songauthor_fadeout, songauthor_fadein, FullscreenActivity.mAuthor.toString());
+            }
+            if (!old_copyright.equals(FullscreenActivity.mCopyright)) {
+                presenterFadeOutSongInfo(presentermode_copyright, songcopyright_fadeout, songcopyright_fadein, FullscreenActivity.mCopyright.toString());
+            }
+        }
+        static void normalChangeSongInfo(final String s) {
+            songinfo_TextView.startAnimation(songinfo_fadeout);
+            // After the transition delay, write the new value and fade it back in
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    songinfo_TextView.setTextColor(FullscreenActivity.lyricsTextColor);
+                    songinfo_TextView.setText(s);
+                    songinfo_TextView.startAnimation(songinfo_fadein);
+                }
+            }, FullscreenActivity.presoTransitionTime);
+        }
+        static void presenterFadeOutSongInfo(final TextView tv, Animation out, final Animation in, final String s) {
+            if (tv.getAlpha()>0.0f) {
+                tv.startAnimation(out);
+            } else {
+                tv.setAlpha(0.0f);
+            }
+            // After the transition time, change the text and fade it back in
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    tv.setText(s);
+                    // If this is a pdf or image, hide the song info
+                    if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
+                        presentermode_title.setVisibility(View.GONE);
+                        presentermode_author.setVisibility(View.GONE);
+                        presentermode_copyright.setVisibility(View.GONE);
+                    } else {
+                        presentermode_title.setVisibility(View.VISIBLE);
+                        presentermode_author.setVisibility(View.VISIBLE);
+                        presentermode_copyright.setVisibility(View.VISIBLE);
+                        presenterFadeInSongInfo(tv, in);
+                    }
+                }
+            }, FullscreenActivity.presoTransitionTime);
+        }
+        static void presenterFadeInSongInfo(TextView tv, Animation in) {
+            tv.startAnimation(in);
+        }
+
+
+
+
+        static void doPDFPage() {
             Bitmap bmp = ProcessSong.createPDFPage(c, availableScreenWidth, availableScreenHeight, "Y");
             projected_ImageView.setVisibility(View.GONE);
             projected_ImageView.setBackgroundColor(0xffffffff);
             projected_ImageView.setImageBitmap(bmp);
             projected_ImageView.setVisibility(View.VISIBLE);
+            animateIn();
         }
-
         static void doImagePage() {
             projected_ImageView.setVisibility(View.GONE);
             projected_ImageView.setBackgroundColor(0x00000000);
             // Process the image location into an URI
             Uri imageUri = Uri.fromFile(FullscreenActivity.file);
-            Glide.with(c).load(imageUri).into(projected_ImageView);
+            Glide.with(c).load(imageUri).fitCenter().into(projected_ImageView);
             projected_ImageView.setVisibility(View.VISIBLE);
+            animateIn();
         }
 
-        static void setSongTitle() {
-            String s = FullscreenActivity.mTitle.toString();
-            if (!FullscreenActivity.mAuthor.equals("")) {
-                s = s + "\n" + FullscreenActivity.mAuthor;
-            }
-            songinfo_TextView.setText(s);
-        }
 
-        static void presenterWriteSongInfo() {
-            presentermode_title.setText(FullscreenActivity.mTitle);
-            presentermode_author.setText(FullscreenActivity.mAuthor);
-            presentermode_copyright.setText(FullscreenActivity.mCopyright);
-            // TODO
-            // Set custom font, size and alignment for the bottom info
-            // Hide the ones we don't want
-            // After writing it, pass the measure height of this section into the available height
-        }
-        static void presenterFadeOutSongInfo() {
-            if (presentermode_bottombit.getAlpha()>0) {
-                presentermode_bottombit.startAnimation(AnimationUtils.loadAnimation(c.getApplicationContext(), R.anim.fadeout));
-            } else {
-                presentermode_bottombit.setAlpha(0.0f);
+        // Async stuff to prepare and write the page
+        static void cancelAsyncTask(AsyncTask ast) {
+            if (ast!=null) {
+                ast.cancel(true);
             }
         }
-        static void presenterFadeInSongInfo() {
-            presentermode_bottombit.setAlpha(0.0f);
-            presentermode_bottombit.startAnimation(AnimationUtils.loadAnimation(c.getApplicationContext(), R.anim.fadein));
-        }
-
-        static void changeMargins() {
-            projectedPage_RelativeLayout.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
-            songinfo_TextView.setTextColor(FullscreenActivity.lyricsTextColor);
-            projectedPage_RelativeLayout.setPadding(FullscreenActivity.xmargin_presentation,
-                    FullscreenActivity.ymargin_presentation,FullscreenActivity.xmargin_presentation,
-                    FullscreenActivity.ymargin_presentation);
-        }
-
         static void prepareStageProjected() {
             cancelAsyncTask(preparestageprojected_async);
             preparestageprojected_async = new PrepareStageProjected();
@@ -486,6 +815,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         projected_LinearLayout.setOrientation(LinearLayout.HORIZONTAL);
                         box1_1.setLayoutParams(llp);
                         projected_LinearLayout.addView(box1_1);
+                        animateIn();
                     } catch (Exception e) {
                         // Ooops
                     }
@@ -545,6 +875,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         // Ooops
                     }
                 }
+
             }
         }
         static void projectedPresenterView1Col() {
@@ -600,7 +931,6 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(availableWidth_1col, LinearLayout.LayoutParams.WRAP_CONTENT);
                         llp1_1.setMargins(0, 0, 0, 0);
                         lyrics1_1.setLayoutParams(llp1_1);
-                        //lyrics1_1.setBackgroundColor(ProcessSong.getSectionColors(FullscreenActivity.songSectionsTypes[FullscreenActivity.currentSection]));
                         box1_1.addView(lyrics1_1);
 
                         // Now add the display
@@ -609,11 +939,12 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         projected_LinearLayout.setOrientation(LinearLayout.HORIZONTAL);
                         box1_1.setLayoutParams(llp);
                         projected_LinearLayout.addView(box1_1);
+                        animateIn();
                     } catch (Exception e) {
                         // Ooops
                     }
                 }
-            }
+             }
         }
 
         static void displayFullSong() {
@@ -884,6 +1215,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         projected_LinearLayout.setOrientation(LinearLayout.HORIZONTAL);
                         box1_1.setLayoutParams(llp);
                         projected_LinearLayout.addView(box1_1);
+                        animateIn();
                     } catch (Exception e) {
                         // Ooops
                     }
@@ -968,6 +1300,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         box2_2.setLayoutParams(llp2);
                         projected_LinearLayout.addView(box1_2);
                         projected_LinearLayout.addView(box2_2);
+                        animateIn();
                     } catch (Exception e) {
                         // Ooops
                     }
@@ -1068,6 +1401,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         projected_LinearLayout.addView(box1_3);
                         projected_LinearLayout.addView(box2_3);
                         projected_LinearLayout.addView(box3_3);
+                        animateIn();
                     } catch (Exception e) {
                         // Ooops
                     }
@@ -1075,16 +1409,29 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             }
         }
 
-        static void animateOut() {
-            // Fade out the main page
-            projected_LinearLayout.startAnimation(AnimationUtils.loadAnimation(c.getApplicationContext(), R.anim.fadeout));
-            projected_ImageView.startAnimation(AnimationUtils.loadAnimation(c.getApplicationContext(), R.anim.fadeout));
-        }
 
+
+
+        static void animateOut() {
+            // If the logo is showing, fade it away
+            if (projected_Logo.getAlpha()>0.0f) {
+                projected_Logo.startAnimation(logo_fadeout);
+            }
+            // Fade in the main page
+            if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
+                projected_ImageView.startAnimation(image_fadeout);
+            } else {
+                projected_LinearLayout.startAnimation(lyrics_fadeout);
+            }
+
+        }
         static void animateIn() {
             // Fade in the main page
-            projected_LinearLayout.startAnimation(AnimationUtils.loadAnimation(c.getApplicationContext(), R.anim.fadein));
-            projected_ImageView.startAnimation(AnimationUtils.loadAnimation(c.getApplicationContext(), R.anim.fadein));
+            if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide || FullscreenActivity.isPDF) {
+                projected_ImageView.startAnimation(image_fadein);
+            } else {
+                projected_LinearLayout.startAnimation(lyrics_fadein);
+            }
         }
 
         static void wipeAllViews() {
@@ -1093,64 +1440,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         }
 
         static void updateAlpha() {
-            projected_ImageView.setAlpha(FullscreenActivity.presoAlpha);
+            projected_BackgroundImage.setAlpha(FullscreenActivity.presoAlpha);
             projected_TextureView.setAlpha(FullscreenActivity.presoAlpha);
         }
 
-        static void fixBackground() {
-            // Decide if user is using video or image for background
-            switch (FullscreenActivity.backgroundTypeToUse) {
-                case "image":
-                    projected_ImageView.setVisibility(View.VISIBLE);
-                    projected_TextureView.setVisibility(View.INVISIBLE);
-                    if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
-                        mMediaPlayer.pause();
-                    }
-                    if (FullscreenActivity.backgroundToUse.equals("img1")) {
-                        imgFile = img1File;
-                    } else {
-                        imgFile = img2File;
-                    }
-                    if (imgFile.exists()) {
-                        if (imgFile.toString().contains("ost_bg.png")) {
-                            projected_ImageView.setImageDrawable(defimage);
-                        } else {
-                            myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                            dr = new BitmapDrawable(null,myBitmap);
-                            //dr = new BitmapDrawable(myBitmap);
-                            projected_ImageView.setImageDrawable(dr);
-                        }
-                        projected_ImageView.setVisibility(View.VISIBLE);
-                    }
-                    break;
-                case "video":
-                    projected_ImageView.setVisibility(View.INVISIBLE);
-                    projected_TextureView.setVisibility(View.VISIBLE);
-
-                    if (FullscreenActivity.backgroundToUse.equals("vid1")) {
-                        vidFile = vid1File;
-                    } else {
-                        vidFile = vid2File;
-                    }
-                    if (mMediaPlayer != null) {
-                        mMediaPlayer.start();
-                    }
-                    projectedPage_RelativeLayout.setBackgroundColor(0xff000000);
-                    myBitmap = null;
-                    dr = null;
-                    projected_ImageView.setImageDrawable(null);
-                    projected_ImageView.setVisibility(View.GONE);
-                    break;
-                default:
-                    projectedPage_RelativeLayout.setBackgroundColor(0xff000000);
-                    myBitmap = null;
-                    dr = null;
-                    projected_ImageView.setImageDrawable(null);
-                    projected_ImageView.setVisibility(View.GONE);
-                    break;
-            }
-            updateAlpha();
-        }
 
         @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
         static void reloadVideo() throws IOException {
@@ -1171,48 +1464,31 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             }
         }
 
+        static void updateAlert(boolean show){
+            if (show) {
+                PresenterMode.alert_on = "Y";
+                fadeinAlert();
+            } else {
+                PresenterMode.alert_on = "N";
+                fadeoutAlert();
+            }
+        }
         static void fadeinAlert() {
             presentermode_alert.setText(FullscreenActivity.myAlert);
-            presentermode_alert.setTypeface(FullscreenActivity.presofont);
-
-            if (PresenterMode.alert_on.equals("Y") && presentermode_alert.getVisibility() == View.INVISIBLE) {
-                presentermode_alert.setAlpha(0f);
-                presentermode_alert.setVisibility(View.VISIBLE);
-                presentermode_alert.animate().alpha(1f).setDuration(1000).setListener(null);
-            } else {
-                presentermode_alert.setAlpha(0f);
-                presentermode_alert.setVisibility(View.VISIBLE);
-            }
-        }
-
-        static void fadeoutAlert() {
-            presentermode_alert.setText(FullscreenActivity.myAlert);
-            if (presentermode_alert.getVisibility() == View.VISIBLE) {
-                presentermode_alert.setAlpha(1f);
-                presentermode_alert.animate().alpha(0f).setDuration(1000).setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        presentermode_alert.setVisibility(View.INVISIBLE);
-                    }
-                });
-            } else {
-                presentermode_alert.setAlpha(0f);
-                presentermode_alert.setVisibility(View.INVISIBLE);
-            }
-        }
-
-        static void resetFontSize() {
-            // This set the autoscaling on
-            // TODO
-        }
-
-        static void updateFontSize() {
-            // This sets the autoscaling off
-            // TODO
-            presentermode_title.setTextSize(FullscreenActivity.presoTitleSize);
-            presentermode_author.setTextSize(FullscreenActivity.presoAuthorSize);
-            presentermode_copyright.setTextSize(FullscreenActivity.presoCopyrightSize);
+            presentermode_alert.setTypeface(FullscreenActivity.presoInfoFont);
             presentermode_alert.setTextSize(FullscreenActivity.presoAlertSize);
+            presentermode_alert.setTextColor(FullscreenActivity.presoAlertFontColor);
+            presentermode_alert.setShadowLayer(FullscreenActivity.presoAlertSize/2.0f,4,4,FullscreenActivity.presoShadowColor);
+            presentermode_alert.startAnimation(songalert_fadein);
+        }
+        static void fadeoutAlert() {
+            presentermode_alert.startAnimation(songalert_fadein);
+        }
+
+
+        static void updateFonts() {
+            presenterThemeSetUp(); // Sets the bottom info bar for presentation
+            doUpdate(); // Updates the page
         }
 
         @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

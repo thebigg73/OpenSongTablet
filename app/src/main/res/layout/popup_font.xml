@@ -40,7 +40,35 @@
                 android:id="@+id/chordsFontSpinner"
                 android:layout_margin="8dp" />
 
-            <TextView
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/presoFont"
+            style="@style/MyHeadingText" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/MySpinner"
+            android:id="@+id/presoFontSpinner"
+            android:layout_margin="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/presoInfoFont"
+            style="@style/MyHeadingText" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/MySpinner"
+            android:id="@+id/presoInfoFontSpinner"
+            android:layout_margin="8dp" />
+
+        <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView47"

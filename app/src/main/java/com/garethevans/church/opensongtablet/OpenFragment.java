@@ -51,14 +51,6 @@ class OpenFragment {
                 newFragment = PopUpAlertFragment.newInstance();
                 break;
 
-            case "presenter_background":
-                newFragment = PopUpBackgroundsFragment.newInstance();
-                break;
-
-            case "presenter_layout":
-                newFragment = PopUpLayoutFragment.newInstance();
-                break;
-
             case "presenter_audio":
                 newFragment = PopUpMediaStoreFragment.newInstance();
                 break;
@@ -185,6 +177,11 @@ class OpenFragment {
                 args2.putString("type", "file");
                 newFragment.setArguments(args2);
                 break;
+
+            case "choosefile": //For connected display backgrounds
+                newFragment = PopUpFileChooseFragment.newInstance();
+                break;
+
 
             case "wipeallsongs":
                 newFragment = PopUpAreYouSureFragment.newInstance(c.getResources().getString(R.string.wipesongs));

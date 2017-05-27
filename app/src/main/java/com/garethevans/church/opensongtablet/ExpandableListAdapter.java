@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
@@ -141,3 +142,4 @@ class ExpandableListAdapter extends BaseExpandableListAdapter implements Section
                         .getExpandableListPosition(position));
     }
 }
+*/

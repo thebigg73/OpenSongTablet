@@ -25,6 +25,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
     public interface MyInterface {
         void toggleDrawerSwipe();
         void resizeDrawers();
+        void prepareSongMenu();
     }
 
     private MyInterface mListener;
@@ -69,6 +70,7 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
     SeekBar scalemenu_SeekBar;
     TextView scalemenu_TextView;
     SwitchCompat gesturesMenuSwipeButton;
+    SwitchCompat showSetTickBoxInSongMenu;
     int pos;
     String scale;
 
@@ -90,11 +92,14 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         scalemenu_SeekBar = (SeekBar) V.findViewById(R.id.scalemenu_SeekBar);
         scalemenu_TextView = (TextView) V.findViewById(R.id.scalemenu_TextView);
         gesturesMenuSwipeButton = (SwitchCompat) V.findViewById(R.id.gesturesMenuSwipeButton);
+        showSetTickBoxInSongMenu = (SwitchCompat) V.findViewById(R.id.showSetTickBoxInSongMenu);
 
         pos = (int) (FullscreenActivity.menuSize * 10.0f) - 2;
         scale = (int) ((FullscreenActivity.menuSize * 100.0f)) + "%";
         scalemenu_SeekBar.setProgress(pos);
         scalemenu_TextView.setText(scale);
+        gesturesMenuSwipeButton.setChecked(FullscreenActivity.swipeForMenus);
+        showSetTickBoxInSongMenu.setChecked(FullscreenActivity.showSetTickBoxInSongMenu);
 
         // Set up the listeners
         scalemenu_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -124,6 +129,16 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
                 Preferences.savePreferences();
                 if (mListener!=null) {
                     mListener.toggleDrawerSwipe();
+                }
+            }
+        });
+        showSetTickBoxInSongMenu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.showSetTickBoxInSongMenu = b;
+                Preferences.savePreferences();
+                if (mListener!=null) {
+                    mListener.prepareSongMenu();
                 }
             }
         });

@@ -46,6 +46,19 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     SwitchCompat pageButtonGroup_Switch;
     SeekBar pageButtonTransparency_seekBar;
     TextView transparency_TextView;
+    SwitchCompat extraButtonGroup_Switch;
+    SwitchCompat customButtonGroup_Switch;
+    SwitchCompat setVisible_Switch;
+    SwitchCompat padVisible_Switch;
+    SwitchCompat autoscrollVisible_Switch;
+    SwitchCompat metronomeVisible_Switch;
+    SwitchCompat chordsVisible_Switch;
+    SwitchCompat linksVisible_Switch;
+    SwitchCompat stickyVisible_Switch;
+    SwitchCompat pageselectVisible_Switch;
+    SwitchCompat custom1Visible_Switch;
+    SwitchCompat custom2Visible_Switch;
+    SwitchCompat custom3Visible_Switch;
 
     @Override
     public void onStart() {
@@ -93,6 +106,19 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         pageButtonGroup_Switch = (SwitchCompat) V.findViewById(R.id.pageButtonGroup_Switch);
         pageButtonTransparency_seekBar = (SeekBar) V.findViewById(R.id.pageButtonTransparency_seekBar);
         transparency_TextView = (TextView) V.findViewById(R.id.transparency_TextView);
+        extraButtonGroup_Switch = (SwitchCompat) V.findViewById(R.id.extraButtonGroup_Switch);
+        customButtonGroup_Switch = (SwitchCompat) V.findViewById(R.id.customButtonGroup_Switch);
+        setVisible_Switch = (SwitchCompat) V.findViewById(R.id.setVisible_Switch);
+        padVisible_Switch = (SwitchCompat) V.findViewById(R.id.padVisible_Switch);
+        autoscrollVisible_Switch = (SwitchCompat) V.findViewById(R.id.autoscrollVisible_Switch);
+        metronomeVisible_Switch = (SwitchCompat) V.findViewById(R.id.metronomeVisible_Switch);
+        chordsVisible_Switch = (SwitchCompat) V.findViewById(R.id.chordsVisible_Switch);
+        linksVisible_Switch = (SwitchCompat) V.findViewById(R.id.linksVisible_Switch);
+        stickyVisible_Switch = (SwitchCompat) V.findViewById(R.id.stickyVisible_Switch);
+        pageselectVisible_Switch = (SwitchCompat) V.findViewById(R.id.pageselectVisible_Switch);
+        custom1Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom1Visible_Switch);
+        custom2Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom2Visible_Switch);
+        custom3Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom3Visible_Switch);
 
         // Set the default values
         if (FullscreenActivity.fabSize == FloatingActionButton.SIZE_NORMAL) {
@@ -106,6 +132,29 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         transparency_TextView.setText(text);
         pageButtonGroup_Switch.setChecked(FullscreenActivity.grouppagebuttons);
 
+        extraButtonGroup_Switch.setChecked(FullscreenActivity.page_extra_grouped);
+        customButtonGroup_Switch.setChecked(FullscreenActivity.page_custom_grouped);
+        setVisible_Switch.setChecked(FullscreenActivity.page_set_visible);
+        padVisible_Switch.setChecked(FullscreenActivity.page_pad_visible);
+        autoscrollVisible_Switch.setChecked(FullscreenActivity.page_autoscroll_visible);
+        metronomeVisible_Switch.setChecked(FullscreenActivity.page_metronome_visible);
+        chordsVisible_Switch.setChecked(FullscreenActivity.page_chord_visible);
+        linksVisible_Switch.setChecked(FullscreenActivity.page_links_visible);
+        stickyVisible_Switch.setChecked(FullscreenActivity.page_sticky_visible);
+        pageselectVisible_Switch.setChecked(FullscreenActivity.page_pages_visible);
+        custom1Visible_Switch.setChecked(FullscreenActivity.page_custom1_visible);
+        custom2Visible_Switch.setChecked(FullscreenActivity.page_custom2_visible);
+        custom3Visible_Switch.setChecked(FullscreenActivity.page_custom3_visible);
+        custom3Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom3Visible_Switch);
+        String c1 = getActivity().getString(R.string.custom) + " (1)";
+        String c2 = getActivity().getString(R.string.custom) + " (2)";
+        String c3 = getActivity().getString(R.string.custom) + " (3)";
+        custom1Visible_Switch.setText(c1);
+        custom2Visible_Switch.setText(c2);
+        custom3Visible_Switch.setText(c3);
+
+        enableordisablegrouping();
+
         // Set the listeners
         pageButtonSize_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -115,16 +164,15 @@ public class PopUpPageButtonsFragment extends DialogFragment {
                 } else {
                     FullscreenActivity.fabSize = FloatingActionButton.SIZE_MINI;
                 }
-                Preferences.savePreferences();
-                mListener.setupPageButtons("");
+                quickSave();
             }
         });
         pageButtonGroup_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.grouppagebuttons = b;
-                Preferences.savePreferences();
-                mListener.setupPageButtons("");
+                enableordisablegrouping();
+                quickSave();
             }
         });
         pageButtonTransparency_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -134,18 +182,121 @@ public class PopUpPageButtonsFragment extends DialogFragment {
                 FullscreenActivity.pageButtonAlpha = progress / 100.0f;
                 String text = progress + "%";
                 transparency_TextView.setText(text);
-                Preferences.savePreferences();
-                mListener.setupPageButtons("");
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {}
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                quickSave();
+            }
         });
 
+        extraButtonGroup_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_extra_grouped = b;
+                quickSave();
+            }
+        });
+        customButtonGroup_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_custom_grouped = b;
+                quickSave();
+            }
+        });
+        setVisible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_set_visible = b;
+                quickSave();
+            }
+        });
+        padVisible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_pad_visible = b;
+                quickSave();
+            }
+        });
+        metronomeVisible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_metronome_visible = b;
+                quickSave();
+            }
+        });
+        autoscrollVisible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_autoscroll_visible = b;
+                quickSave();
+            }
+        });
+        chordsVisible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_chord_visible = b;
+                quickSave();
+            }
+        });
+        linksVisible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_links_visible = b;
+                quickSave();
+            }
+        });
+        stickyVisible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_sticky_visible = b;
+                quickSave();
+            }
+        });
+        pageselectVisible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_pages_visible = b;
+                quickSave();
+            }
+        });
+        custom1Visible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_custom1_visible = b;
+                quickSave();
+            }
+        });
+        custom2Visible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_custom2_visible = b;
+                quickSave();
+            }
+        });
+        custom3Visible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_custom3_visible = b;
+                quickSave();
+            }
+        });
         return V;
+    }
+
+    public void enableordisablegrouping() {
+        extraButtonGroup_Switch.setEnabled(!FullscreenActivity.grouppagebuttons);
+        customButtonGroup_Switch.setEnabled(!FullscreenActivity.grouppagebuttons);
+    }
+
+    public void quickSave() {
+        Preferences.savePreferences();
+        if (mListener!=null) {
+            mListener.setupPageButtons("");
+        }
     }
 
     @Override

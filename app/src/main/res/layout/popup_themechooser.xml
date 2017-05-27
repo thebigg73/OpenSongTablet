@@ -705,6 +705,219 @@
                 </TableRow>
 
                 <TableRow
+                    android:id="@+id/tableRow24b"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/presoFont"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/presofont_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser"
+                        tools:ignore="TooManyViews" />
+
+                    <ImageView
+                        android:id="@+id/presofont_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presofont_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presofont_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow24c"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/presoInfoFont"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/presoinfofont_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presoinfofont_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presoinfofont_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presoinfofont_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow24d"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/alert"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/presoalertfont_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presoalertfont_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presoalertfont_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presoalertfont_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow24e"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/presoFontShadow"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/presofontshadow_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presofontshadow_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presofontshadow_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presofontshadow_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
                     android:id="@+id/tableRow25"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

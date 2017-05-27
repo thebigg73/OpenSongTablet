@@ -53,6 +53,17 @@
             android:textColor="#ff0"
             app:showText="false" />
 
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/showSetTickBoxInSongMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="24dp"
+            android:layout_margin="8dp"
+            android:theme="@style/SwitchStyle"
+            android:text="@string/setquickcheck"
+            android:textColor="#ff0"
+            app:showText="false" />
+
     </LinearLayout>
 
 </ScrollView>

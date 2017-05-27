@@ -141,6 +141,49 @@ class SetTypeFace {
                 FullscreenActivity.presofont = FullscreenActivity.typeface0;
                 break;
         }
+
+        switch (FullscreenActivity.mypresoinfofontnum) {
+            case 1:
+                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface1;
+                break;
+            case 2:
+                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface2;
+                break;
+            case 3:
+                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface3;
+                break;
+            case 4:
+                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface4;
+                break;
+            case 5:
+                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface5;
+                break;
+            case 6:
+                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface6;
+                break;
+            case 7:
+                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface7;
+                break;
+            case 8:
+                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface8;
+                break;
+            case 9:
+                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface9;
+                break;
+            case 10:
+                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface10;
+                break;
+            case 11:
+                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface11;
+                break;
+            case 12:
+                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface12;
+                break;
+            default:
+                FullscreenActivity.presoInfoFont = FullscreenActivity.typeface0;
+                break;
+        }
+
     }
 
     static String setupWebViewLyricFont(int fontnum) {
