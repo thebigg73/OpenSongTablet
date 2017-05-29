@@ -81,17 +81,23 @@ public class PopUpFontsFragment extends DialogFragment {
             getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
             TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
             title.setText(getActivity().getResources().getString(R.string.options_options_fonts));
-            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
             closeMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    CustomAnimations.animateFAB(closeMe,getActivity());
+                    closeMe.setEnabled(false);
                     dismiss();
                 }
             });
-            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            final FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
             saveMe.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) { doSave();     }
+                public void onClick(View view) {
+                    CustomAnimations.animateFAB(saveMe,getActivity());
+                    saveMe.setEnabled(false);
+                    doSave();
+                }
             });
         } else {
             getDialog().setTitle(getActivity().getResources().getString(R.string.options_options_fonts));

@@ -4,8 +4,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -22,6 +24,9 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class PopUpStorageFragment extends DialogFragment {
 
@@ -124,13 +129,15 @@ public class PopUpStorageFragment extends DialogFragment {
             getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
             TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
             title.setText(getActivity().getResources().getString(R.string.storage_choose));
-            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            final FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
             if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
                 closeMe.setVisibility(View.GONE);
                 saveMe.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        CustomAnimations.animateFAB(saveMe,getActivity());
+                        saveMe.setEnabled(false);
                         saveStorageLocation();
                     }
                 });
@@ -138,6 +145,8 @@ public class PopUpStorageFragment extends DialogFragment {
                 closeMe.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        CustomAnimations.animateFAB(closeMe,getActivity());
+                        closeMe.setEnabled(false);
                         saveStorageLocation();
                     }
                 });
@@ -551,6 +560,48 @@ public class PopUpStorageFragment extends DialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         this.dismiss();
+    }
+
+    public static void copyAssets(Context c) {
+        AssetManager assetManager = c.getAssets();
+        String[] files = new String[2];
+        files[0] = "backgrounds/ost_bg.png";
+        files[1] = "backgrounds/ost_logo.png";
+        for (String filename : files) {
+            InputStream in = null;
+            OutputStream out = null;
+            try {
+                in = assetManager.open(filename);
+                File outFile = new File(FullscreenActivity.dirbackgrounds, filename.replace("backgrounds/",""));
+                out = new FileOutputStream(outFile);
+                copyFile(in, out);
+            } catch(Exception e) {
+                Log.e("tag", "Failed to copy asset file: " + filename, e);
+            }
+            finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (Exception e) {
+                        // NOOP
+                    }
+                }
+                if (out != null) {
+                    try {
+                        out.close();
+                    } catch (Exception e) {
+                        // NOOP
+                    }
+                }
+            }
+        }
+    }
+    private static void copyFile(InputStream in, OutputStream out) throws Exception {
+        byte[] buffer = new byte[1024];
+        int read;
+        while((read = in.read(buffer)) != -1){
+            out.write(buffer, 0, read);
+        }
     }
 
 }

@@ -52,10 +52,12 @@ public class PopUpPagesFragment extends DialogFragment {
             TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
             title.setText(getActivity().getResources().getString(R.string.pdf_selectpage));
             getDialog().getWindow().findViewById(R.id.saveMe).setVisibility(View.GONE);
-            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
             closeMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    CustomAnimations.animateFAB(closeMe,getActivity());
+                    closeMe.setEnabled(false);
                     dismiss();
                 }
             });

@@ -66,7 +66,7 @@ class CustomAnimations {
         },100);
     }
 
-    static class MyAnimationListener implements Animation.AnimationListener {
+    private static class MyAnimationListener implements Animation.AnimationListener {
 
         View v;
         float start;

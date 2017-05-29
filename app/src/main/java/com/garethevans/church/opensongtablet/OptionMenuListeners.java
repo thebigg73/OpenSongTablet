@@ -39,6 +39,7 @@ public class OptionMenuListeners extends Activity {
         void showActionBar();
         void hideActionBar();
         void useCamera();
+        void doDownload(String file);
     }
 
     public static MyInterface mListener;
@@ -1184,6 +1185,8 @@ public class OptionMenuListeners extends Activity {
         Button ugSearchButton = (Button) v.findViewById(R.id.ugSearchButton);
         Button chordieSearchButton = (Button) v.findViewById(R.id.chordieSearchButton);
         Button worshipreadySearchButton = (Button) v.findViewById(R.id.worshipreadySearchButton);
+        Button bandDownloadButton = (Button) v.findViewById(R.id.bandDownloadButton);
+        Button churchDownloadButton = (Button) v.findViewById(R.id.churchDownloadButton);
         Button cameraButton = (Button) v.findViewById(R.id.cameraButton);
         FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
 
@@ -1194,6 +1197,8 @@ public class OptionMenuListeners extends Activity {
         ugSearchButton.setText(c.getString(R.string.ultimateguitarsearch).toUpperCase(FullscreenActivity.locale));
         chordieSearchButton.setText(c.getString(R.string.chordiesearch).toUpperCase(FullscreenActivity.locale));
         String wr = c.getString(R.string.worshipready) + " " + c.getString(R.string.subscription);
+        bandDownloadButton.setText(c.getString(R.string.my_band).toUpperCase(FullscreenActivity.locale));
+        churchDownloadButton.setText(c.getString(R.string.my_church).toUpperCase(FullscreenActivity.locale));
         worshipreadySearchButton.setText(wr.toUpperCase(FullscreenActivity.locale));
         cameraButton.setText(c.getString(R.string.camera).toUpperCase(FullscreenActivity.locale));
 
@@ -1238,7 +1243,30 @@ public class OptionMenuListeners extends Activity {
                 }
             }
         });
-
+        bandDownloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "download_band";
+                FullscreenActivity.myToastMessage = c.getString(R.string.wait);
+                ShowToast.showToast(c);
+                if (mListener!=null) {
+                    mListener.doDownload("https://sites.google.com/site/opensongtabletmusicviewer/downloads/Band.osb?attredirects=0&d=1");
+                    mListener.closeMyDrawers("option");
+                }
+            }
+        });
+        churchDownloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "download_church";
+                FullscreenActivity.myToastMessage = c.getString(R.string.wait);
+                ShowToast.showToast(c);
+                if (mListener!=null) {
+                    mListener.doDownload("https://sites.google.com/site/opensongtabletmusicviewer/downloads/Church.osb?attredirects=0&d=1");
+                    mListener.closeMyDrawers("option");
+                }
+            }
+        });
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

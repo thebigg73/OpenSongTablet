@@ -4,3 +4,5 @@
 -keep class !android.support.v7.internal.view.menu.**,android.support.** {*;}
 -keep class com.itextpdf.** { *; }
 -dontwarn com.itextpdf.**
+-keep class org.apache.commons.compress.** { *; }
+-dontwarn org.apache.commons.compress.**

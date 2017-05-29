@@ -125,16 +125,23 @@ public class ProcessSong extends Activity {
             if (lineLyrics[l].contains("_")) {
                 if (l>0 && !lineLyrics[l].contains("["+c.getResources().getString(R.string.image)+"_") &&
                         !lineLyrics[l-1].contains("["+c.getResources().getString(R.string.image)+"_")) {
-                    if (!FullscreenActivity.showChords) {
-                        lineLyrics[l] = lineLyrics[l].replace("_","");
+                    if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
+                        lineLyrics[l] = lineLyrics[l].replace("_", "");
+                    } else if ((FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Performance")) &&
+                            !FullscreenActivity.showChords) {
+                        lineLyrics[l] = lineLyrics[l].replace("_", "");
                     } else {
-                        lineLyrics[l] = lineLyrics[l].replace("_"," ");
+                        lineLyrics[l] = lineLyrics[l].replace("_", " ");
                     }
                 } else if (l==0 && !lineLyrics[l].contains("["+c.getResources().getString(R.string.image)+"_")) {
-                    if (!FullscreenActivity.showChords || FullscreenActivity.whichMode.equals("Presenter")) {
-                        lineLyrics[l] = lineLyrics[l].replace("_","");
+
+                    if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
+                        lineLyrics[l] = lineLyrics[l].replace("_", "");
+                    } else if ((FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Performance")) &&
+                            !FullscreenActivity.showChords) {
+                        lineLyrics[l] = lineLyrics[l].replace("_", "");
                     } else {
-                        lineLyrics[l] = lineLyrics[l].replace("_"," ");
+                        lineLyrics[l] = lineLyrics[l].replace("_", " ");
                     }
                 }
             }
@@ -150,10 +157,6 @@ public class ProcessSong extends Activity {
             if (FullscreenActivity.songSections[x].startsWith("["+FullscreenActivity.songSectionsLabels[x]+"]")) {
                 tempLyrics += FullscreenActivity.songSections[x] + "\n";
             } else {
-                /*// If the section starts with a linespace, remove it
-                if (FullscreenActivity.songSections[x].startsWith("\n") || FullscreenActivity.songSections[x].startsWith(" \n")) {
-                    FullscreenActivity.songSections[x] = FullscreenActivity.songSections[x].trim();
-                }*/
                 tempLyrics += FullscreenActivity.songSections[x] + "\n";
             }
         }
@@ -632,7 +635,14 @@ public class ProcessSong extends Activity {
         // Replace unwanted symbols
         // Split into lines
         //string = string.replace("|", "\n");
-        string = string.replace("_", "");
+        if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
+            string = string.replace("_", "");
+        } else if ((FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Performance")) &&
+                !FullscreenActivity.showChords) {
+            string = string.replace("_", "");
+        } else {
+            string = string.replace("_", " ");
+        }
         string = string.replace(",", " ");
         string = string.replace(".", " ");
         string = string.replace(":", " ");
@@ -911,10 +921,11 @@ public class ProcessSong extends Activity {
     @SuppressWarnings("deprecation")
     public static TableRow lyriclinetoTableRow(Context c, String[] lyrics, float fontsize) {
         TableRow lyricrow = new TableRow(c);
-        if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
+        if (FullscreenActivity.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
+                !FullscreenActivity.presoShowChords) {
             lyricrow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
-            lyricrow.setGravity(Gravity.CENTER_HORIZONTAL);
+            lyricrow.setGravity(FullscreenActivity.presoLyricsAlign);
         } else {
             lyricrow.setLayoutParams(tablelayout_params());
         }
@@ -925,10 +936,6 @@ public class ProcessSong extends Activity {
         lyricrow.setClipToPadding(false);
 
         for (String bit:lyrics) {
-            if (bit.indexOf(" ") == 0 && bit.length() > 1) {
-                bit = bit.substring(1);
-            }
-
             String imagetext;
             if (bit.contains("/Images/_cache/")) {
                 FullscreenActivity.isImageSection = true;
@@ -940,11 +947,19 @@ public class ProcessSong extends Activity {
 
 
             if (!FullscreenActivity.whichSongFolder.contains(c.getResources().getString(R.string.image))) {
-                bit = bit.replace("_", "");
+                if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
+                    bit = bit.replace("_", "");
+                } else if ((FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Performance")) &&
+                        !FullscreenActivity.showChords) {
+                    bit = bit.replace("_", "");
+                } else {
+                    bit = bit.replace("_", " ");
+                }
             }
 
             TextView lyricbit = new TextView(c);
-            if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
+            if (FullscreenActivity.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
+                    !FullscreenActivity.presoShowChords) {
                 lyricbit.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT));
                 lyricbit.setGravity(FullscreenActivity.presoLyricsAlign);
@@ -1037,9 +1052,15 @@ public class ProcessSong extends Activity {
                 bit = bit.substring(1);
             }
             if (!FullscreenActivity.whichSongFolder.contains(c.getResources().getString(R.string.image))) {
-                bit = bit.replace("_","");
+                if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
+                    bit = bit.replace("_", "");
+                } else if ((FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Performance")) &&
+                        !FullscreenActivity.showChords) {
+                    bit = bit.replace("_", "");
+                } else {
+                    bit = bit.replace("_", " ");
+                }
             }
-            bit = bit.replace("_","");
             TextView lyricbit = new TextView(c);
             lyricbit.setLayoutParams(tablerow_params());
             lyricbit.setText(bit);

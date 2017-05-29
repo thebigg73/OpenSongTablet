@@ -64,6 +64,7 @@ public class PopUpLayoutFragment extends DialogFragment {
     SeekBar setFontSizeProgressBar;
     TextView fontSizePreview;
     LinearLayout group_alignment;
+    TextView lyrics_title_align;
     FloatingActionButton lyrics_left_align;
     FloatingActionButton lyrics_center_align;
     FloatingActionButton lyrics_right_align;
@@ -78,6 +79,7 @@ public class PopUpLayoutFragment extends DialogFragment {
     LinearLayout group_backgrounds;
     SeekBar presoAlphaProgressBar;
     TextView presoAlphaText;
+    ImageView chooseLogoButton;
     ImageView chooseImage1Button;
     ImageView chooseImage2Button;
     ImageView chooseVideo1Button;
@@ -110,10 +112,12 @@ public class PopUpLayoutFragment extends DialogFragment {
             getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
             TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
             title.setText(getActivity().getResources().getString(R.string.connected_display));
-            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
             closeMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    CustomAnimations.animateFAB(closeMe,getActivity());
+                    closeMe.setEnabled(false);
                     dismiss();
                 }
             });
@@ -140,6 +144,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         setFontSizeProgressBar = (SeekBar) V.findViewById(R.id.setFontSizeProgressBar);
         fontSizePreview = (TextView) V.findViewById(R.id.fontSizePreview);
         group_alignment = (LinearLayout) V.findViewById(R.id.group_alignment);
+        lyrics_title_align = (TextView) V.findViewById(R.id.lyrics_title_align);
         lyrics_left_align = (FloatingActionButton) V.findViewById(R.id.lyrics_left_align);
         lyrics_center_align = (FloatingActionButton) V.findViewById(R.id.lyrics_center_align);
         lyrics_right_align = (FloatingActionButton) V.findViewById(R.id.lyrics_right_align);
@@ -154,6 +159,7 @@ public class PopUpLayoutFragment extends DialogFragment {
         group_backgrounds = (LinearLayout) V.findViewById(R.id.group_backgrounds);
         presoAlphaProgressBar = (SeekBar) V.findViewById(R.id.presoAlphaProgressBar);
         presoAlphaText = (TextView) V.findViewById(R.id.presoAlphaText);
+        chooseLogoButton = (ImageView) V.findViewById(R.id.chooseLogoButton);
         chooseImage1Button = (ImageView) V.findViewById(R.id.chooseImage1Button);
         chooseImage2Button = (ImageView) V.findViewById(R.id.chooseImage2Button);
         chooseVideo1Button = (ImageView) V.findViewById(R.id.chooseVideo1Button);
@@ -202,12 +208,12 @@ public class PopUpLayoutFragment extends DialogFragment {
         presoAlphaProgressBar.setProgress((int)(FullscreenActivity.presoAlpha * 100.0f));
         newtext = (int) (FullscreenActivity.presoAlpha * 100.0f) + " %";
         presoAlphaText.setText(newtext);
+        setButtonBackground(chooseLogoButton,FullscreenActivity.customLogo);
         setButtonBackground(chooseImage1Button,FullscreenActivity.backgroundImage1);
         setButtonBackground(chooseImage2Button,FullscreenActivity.backgroundImage2);
         setButtonBackground(chooseVideo1Button,FullscreenActivity.backgroundVideo1);
         setButtonBackground(chooseVideo2Button,FullscreenActivity.backgroundVideo2);
         setCheckBoxes();
-
         setXMarginProgressBar.setMax(50);
         setYMarginProgressBar.setMax(50);
         setXMarginProgressBar.setProgress(FullscreenActivity.xmargin_presentation);
@@ -219,6 +225,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.presoShowChords = b;
                 sendUpdateToScreen("chords");
+                setUpAlignmentButtons();
             }
         });
         toggleAutoScaleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -239,6 +246,7 @@ public class PopUpLayoutFragment extends DialogFragment {
                 FullscreenActivity.presoLyricsAlign = Gravity.LEFT;
                 Preferences.savePreferences();
                 setUpAlignmentButtons();
+                sendUpdateToScreen("all");
             }
         });
         lyrics_center_align.setOnClickListener(new View.OnClickListener() {
@@ -248,6 +256,7 @@ public class PopUpLayoutFragment extends DialogFragment {
                 FullscreenActivity.presoLyricsAlign = Gravity.CENTER;
                 Preferences.savePreferences();
                 setUpAlignmentButtons();
+                sendUpdateToScreen("all");
             }
         });
         lyrics_right_align.setOnClickListener(new View.OnClickListener() {
@@ -257,6 +266,7 @@ public class PopUpLayoutFragment extends DialogFragment {
                 FullscreenActivity.presoLyricsAlign = Gravity.RIGHT;
                 Preferences.savePreferences();
                 setUpAlignmentButtons();
+                sendUpdateToScreen("all");
             }
         });
         info_left_align.setOnClickListener(new View.OnClickListener() {
@@ -266,6 +276,7 @@ public class PopUpLayoutFragment extends DialogFragment {
                 FullscreenActivity.presoInfoAlign = Gravity.LEFT;
                 Preferences.savePreferences();
                 setUpAlignmentButtons();
+                sendUpdateToScreen("info");
             }
         });
         info_center_align.setOnClickListener(new View.OnClickListener() {
@@ -275,6 +286,7 @@ public class PopUpLayoutFragment extends DialogFragment {
                 FullscreenActivity.presoInfoAlign = Gravity.CENTER;
                 Preferences.savePreferences();
                 setUpAlignmentButtons();
+                sendUpdateToScreen("info");
             }
         });
         info_right_align.setOnClickListener(new View.OnClickListener() {
@@ -284,6 +296,7 @@ public class PopUpLayoutFragment extends DialogFragment {
                 FullscreenActivity.presoInfoAlign = Gravity.RIGHT;
                 Preferences.savePreferences();
                 setUpAlignmentButtons();
+                sendUpdateToScreen("info");
             }
         });
         presoTitleSizeSeekBar.setOnSeekBarChangeListener(new presoSectionSizeListener());
@@ -293,6 +306,14 @@ public class PopUpLayoutFragment extends DialogFragment {
         presoAlphaProgressBar.setOnSeekBarChangeListener(new presoAlphaListener());
         setXMarginProgressBar.setOnSeekBarChangeListener(new setMargin_Listener());
         setYMarginProgressBar.setOnSeekBarChangeListener(new setMargin_Listener());
+        chooseLogoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open another popup listing the files to choose from
+                PresenterMode.whatBackgroundLoaded = "logo";
+                chooseFile();
+            }
+        });
         chooseImage1Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -374,33 +395,42 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     public void setUpAlignmentButtons() {
         if (FullscreenActivity.presoLyricsAlign == Gravity.LEFT) {
-            lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff888888));
-            lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-            lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
+            lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
+            lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
         } else if (FullscreenActivity.presoLyricsAlign == Gravity.CENTER ||
                 FullscreenActivity.presoLyricsAlign == Gravity.CENTER_HORIZONTAL) {
-            lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-            lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff888888));
-            lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-        } else if (FullscreenActivity.presoLyricsAlign == Gravity.RIGHT) {
-            lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
+            lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
             lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-            lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff888888));
+            lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+        } else {
+            lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
         }
         if (FullscreenActivity.presoInfoAlign == Gravity.LEFT) {
-            info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff888888));
-            info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-            info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-        } else if (FullscreenActivity.presoInfoAlign == Gravity.CENTER ||
-                FullscreenActivity.presoInfoAlign == Gravity.CENTER_HORIZONTAL) {
             info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-            info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff888888));
-            info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
+            info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
         } else if (FullscreenActivity.presoInfoAlign == Gravity.RIGHT) {
-            info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
+            info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
+            info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
+        } else {
+            info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
             info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
-            info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff888888));
+            info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
         }
+
+        // If chords are being show, hide the lyrics align, otherwise it is ok to show
+        int vis = View.VISIBLE;
+        if (FullscreenActivity.presoShowChords) {
+            vis = View.GONE;
+        }
+        lyrics_left_align.setVisibility(vis);
+        lyrics_center_align.setVisibility(vis);
+        lyrics_right_align.setVisibility(vis);
+        lyrics_title_align.setVisibility(vis);
     }
 
     public void setCheckBoxes() {

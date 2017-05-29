@@ -109,17 +109,23 @@ public class PopUpImportExternalFile extends DialogFragment {
             getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
             title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
             title.setText(getActivity().getResources().getString(R.string.importnewsong));
-            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
             closeMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    CustomAnimations.animateFAB(closeMe,getActivity());
+                    closeMe.setEnabled(false);
                     dismiss();
                 }
             });
             saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
             saveMe.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) { defaultSaveAction(); }
+                public void onClick(View view) {
+                    CustomAnimations.animateFAB(saveMe,getActivity());
+                    saveMe.setEnabled(false);
+                    defaultSaveAction();
+                }
             });
         } else {
             getDialog().setTitle(getActivity().getResources().getString(R.string.importnewsong));
@@ -174,7 +180,6 @@ public class PopUpImportExternalFile extends DialogFragment {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
                 switch (scheme) {
                     case "content":
                         schemeContent();
@@ -570,8 +575,6 @@ public class PopUpImportExternalFile extends DialogFragment {
         moveToFolder = FullscreenActivity.homedir.toString();
         File importIt = new File (FullscreenActivity.file_location);
         File newFile = new File (moveToFolder + "/" + FullscreenActivity.file_name);
-        Log.d("d","importIt="+importIt);
-        Log.d("d","newFile="+newFile);
         if (importIt.renameTo(newFile)) {
             Log.d("d","Move successful");
         } else {
@@ -850,11 +853,6 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         // Now start the AsyncTask
         import_osb = new Backup_Install();
-/*        try {
-            import_osb.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            Log.d("d","Error importing");
-        }*/
 
         // The new fancy one!
         FullscreenActivity.whattodo = "processimportosb";

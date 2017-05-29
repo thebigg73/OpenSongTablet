@@ -3,8 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.Manifest;
 import android.app.DialogFragment;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -21,12 +19,15 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.File;
 import java.util.Arrays;
+
+import static com.garethevans.church.opensongtablet.FullscreenActivity.myPreferences;
 
 public class SettingsActivity extends AppCompatActivity implements PopUpStorageFragment.SettingsInterface,
 PopUpDirectoryChooserFragment.SettingsInterface {
@@ -37,11 +38,6 @@ PopUpDirectoryChooserFragment.SettingsInterface {
     // Let's define the variables needed for the Settings Page.
     Handler delayfadeinredraw;
 
-    int showSplashVersion; // Show splash on start up first time only if lower than current version
-
-    static int version;
-    static SharedPreferences myPreferences;
-    static SharedPreferences indexSongPreferences;
     static int test;
     static int want;
     Button latest_updates;
@@ -59,44 +55,50 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         super.onCreate(savedInstanceState);
 
         setupMyShortCuts();
+        FullscreenActivity.version = 0;
 
-        version = 0;
+        myPreferences = getPreferences(MODE_PRIVATE);
+        Preferences.loadPreferences();
+
         // Decide if user has already seen the splash screen
         PackageInfo pInfo;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            version = pInfo.versionCode;
+            FullscreenActivity.version = pInfo.versionCode;
         } catch (NameNotFoundException e1) {
             e1.printStackTrace();
         }
-        myPreferences = getSharedPreferences("mysettings", MODE_PRIVATE);
-        showSplashVersion = myPreferences.getInt("showSplashVersion", version);
 
-        indexSongPreferences = getSharedPreferences("indexsongs",MODE_PRIVATE);
+        Log.d("d", "this version=" + FullscreenActivity.version);
+        Log.d("d", "Stored last version showSplashVersion=" + FullscreenActivity.showSplashVersion);
+
+        //myPreferences = getSharedPreferences("mysettings", MODE_PRIVATE);
+        //showSplashVersion = myPreferences.getInt("showSplashVersion", version);
+
+
+        //indexSongPreferences = getSharedPreferences("indexsongs",MODE_PRIVATE);
 
 
         // Set up the folders
         // Load up the user preferences
-        FullscreenActivity.myPreferences = getPreferences(MODE_PRIVATE);
-        Preferences.loadPreferences();
+        //FullscreenActivity.myPreferences = getPreferences(MODE_PRIVATE);
+        //Preferences.loadPreferences();
 
         // We may have arrived via a shortcut (Nougat+)
         String newMode = "";
         try {
-            newMode = getIntent().getStringExtra("whichMode");
+            if (getIntent() != null && getIntent().getStringExtra("whichMode") != null) {
+                newMode = getIntent().getStringExtra("whichMode");
+            }
         } catch (Exception e) {
             // Oops
             e.printStackTrace();
         }
-
-        if (newMode!=null && (newMode.equals("Performance") || newMode.equals("Stage") || newMode.equals("Presentation"))) {
+        if (newMode != null && (newMode.equals("Performance") || newMode.equals("Stage") || newMode.equals("Presentation"))) {
             FullscreenActivity.whichMode = newMode;
+            Log.d("d", "newMode=" + newMode);
             Preferences.savePreferences();
         }
-
-        Editor editor_index = indexSongPreferences.edit();
-        editor_index.putBoolean("buildSearchIndex", true);
-        editor_index.apply();
 
         setContentView(R.layout.activity_logosplash);
 
@@ -106,13 +108,25 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         storageGranted = test == want;
 
         File myroot;
-        if (FullscreenActivity.prefStorage.equals("int")) {
-            myroot = new File(Environment.getExternalStorageDirectory() + "/documents/");
-        } else {
-            myroot = new File(FullscreenActivity.customStorage);
+        switch (FullscreenActivity.prefStorage) {
+            case "other":
+                myroot = new File(FullscreenActivity.customStorage);
+                if (!myroot.exists()) {
+                    myroot = new File(System.getenv("SECONDARY_STORAGE"));
+                }
+                break;
+            case "ext":
+                myroot = new File(System.getenv("SECONDARY_STORAGE"));
+                break;
+            case "int":
+            default:
+                myroot = new File(Environment.getExternalStorageDirectory() + "/documents/");
+                break;
         }
+
         PopUpStorageFragment.getOtherFolders(myroot);
         final boolean storageexists = PopUpStorageFragment.checkDirectoriesExistOnly();
+
 
         // Wait 1000ms before either showing the introduction page or the main app
         // This only happens if the storage exists
@@ -122,22 +136,17 @@ PopUpDirectoryChooserFragment.SettingsInterface {
             public void run() {
                 // This bit then redirects the user to the main app if they've got the newest version
 
-                if (showSplashVersion>version && test==want && storageexists) {
+                if (FullscreenActivity.showSplashVersion > FullscreenActivity.version && test == want && storageexists) {
                     //User version is bigger than current - this means they've seen the splash
-                    showSplashVersion = version+1;
-                    //Rewrite the shared preference
-                    Editor editor = myPreferences.edit();
-                    editor.putInt("showSplashVersion", showSplashVersion);
-                    editor.apply();
+                    FullscreenActivity.showSplashVersion = FullscreenActivity.version + 1;
+                    Preferences.savePreferences();
                     gotothesongs();
                     return;
                 } else {
                     //Set the showSplashVersion to the next level - it will only show on next update
-                    showSplashVersion = version+1;
-                    //Rewrite the shared preference
-                    Editor editor = myPreferences.edit();
-                    editor.putInt("showSplashVersion", showSplashVersion);
-                    editor.apply();
+                    FullscreenActivity.showSplashVersion = FullscreenActivity.version + 1;
+                    Preferences.savePreferences();
+
                 }
 
                 setContentView(R.layout.activity_splashscreen);
@@ -156,8 +165,8 @@ PopUpDirectoryChooserFragment.SettingsInterface {
                 }
 
                 TextView showVersion = (TextView) findViewById(R.id.version);
-                String temptext = "V"+versionName+" ("+versionNumber+")";
-                if (showVersion!=null) {
+                String temptext = "V" + versionName + " (" + versionNumber + ")";
+                if (showVersion != null) {
                     showVersion.setText(temptext);
                 }
 
@@ -189,17 +198,18 @@ PopUpDirectoryChooserFragment.SettingsInterface {
                 });
                 mLayout = findViewById(R.id.page);
 
-                if (test!=want) {
+                if (test != want) {
                     requestStoragePermission();
-                    storageGranted=false;
+                    storageGranted = false;
                 } else {
-                    storageGranted=true;
+                    storageGranted = true;
                 }
-
             }
+
         }, 1500); // 1500ms delay
     }
 
+    // This is for Nougat+ when users can long press on the launcher to quick open a mode
     private void setupMyShortCuts() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
             Intent intent = new Intent();
@@ -282,7 +292,6 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         }
         recheckStorage();
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
@@ -335,7 +344,6 @@ PopUpDirectoryChooserFragment.SettingsInterface {
                 }
             });
         }
-
     }
 
     @Override

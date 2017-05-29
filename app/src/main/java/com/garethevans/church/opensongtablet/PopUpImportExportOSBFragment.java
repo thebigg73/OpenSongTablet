@@ -68,7 +68,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
             TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
             title.setText(mTitle);
-            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
             closeMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -81,6 +81,8 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                 saveMe.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        CustomAnimations.animateFAB(closeMe,getActivity());
+                        closeMe.setEnabled(false);
                         doTheImporting();
                     }
                 });
@@ -88,6 +90,8 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                 saveMe.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        CustomAnimations.animateFAB(saveMe,getActivity());
+                        saveMe.setEnabled(false);
                         doTheExporting();
                     }
                 });
@@ -302,6 +306,9 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         }
     }
     public void doTheImporting() {
+        // Send an alert to the screen
+        FullscreenActivity.myToastMessage = getActivity().getString(R.string.wait);
+        ShowToast.showToast(getActivity());
         // Check the selected folders
         selectednote = "";
         for (int i=0; i<foldersfoundinzip.size(); i++) {

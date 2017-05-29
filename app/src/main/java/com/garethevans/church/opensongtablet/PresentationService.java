@@ -349,7 +349,6 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             float xscale;
             float yscale;
             boolean usingcustom = false;
-
             File customLogo = new File(FullscreenActivity.customLogo);
             if (customLogo.exists()) {
                 // Get the sizes of the custom logo
@@ -394,6 +393,12 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             } else {
                 projected_LinearLayout.startAnimation(lyrics_fadeout);
             }
+
+            // If we had a black screen, fade that in
+            if (pageHolder.getVisibility()==4) {
+                pageHolder.startAnimation(mypage_fadein);
+            }
+
             presentermode_title.startAnimation(songtitle_fadeout);
             presentermode_author.startAnimation(songauthor_fadeout);
             presentermode_copyright.startAnimation(songcopyright_fadeout);
@@ -454,7 +459,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             presentermode_title.setTextColor(FullscreenActivity.presoInfoFontColor);
             presentermode_author.setTextColor(FullscreenActivity.presoInfoFontColor);
             presentermode_copyright.setTextColor(FullscreenActivity.presoInfoFontColor);
-            presentermode_alert.setTextColor(FullscreenActivity.presoInfoFontColor);
+            presentermode_alert.setTextColor(FullscreenActivity.presoAlertFontColor);
             presentermode_title.setTextSize(FullscreenActivity.presoTitleSize);
             presentermode_author.setTextSize(FullscreenActivity.presoAuthorSize);
             presentermode_copyright.setTextSize(FullscreenActivity.presoCopyrightSize);
@@ -467,6 +472,11 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             presentermode_author.setGravity(FullscreenActivity.presoInfoAlign);
             presentermode_copyright.setGravity(FullscreenActivity.presoInfoAlign);
             presentermode_alert.setGravity(FullscreenActivity.presoInfoAlign);
+            if (PresenterMode.alert_on.equals("Y")) {
+                presentermode_alert.setVisibility(View.VISIBLE);
+            } else {
+                presentermode_alert.setVisibility(View.GONE);
+            }
         }
         static void panicShowViews() {
             // After 3x the transition times, make sure the correct view is visible regardless of animations
@@ -491,6 +501,11 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         static void doUpdate() {
             // First up, animate everything away
             animateOut();
+
+            // If we had a black screen, fade that in
+            if (pageHolder.getVisibility()==4) {
+                pageHolder.startAnimation(mypage_fadein);
+            }
 
             // Just in case there is a glitch, make the stuff visible after 3x transition time
             Handler panic = new Handler();
@@ -1423,7 +1438,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             } else {
                 projected_LinearLayout.startAnimation(lyrics_fadeout);
             }
-
+            getScreenSizes();  // Just in case something changed
         }
         static void animateIn() {
             // Fade in the main page
@@ -1479,10 +1494,20 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             presentermode_alert.setTextSize(FullscreenActivity.presoAlertSize);
             presentermode_alert.setTextColor(FullscreenActivity.presoAlertFontColor);
             presentermode_alert.setShadowLayer(FullscreenActivity.presoAlertSize/2.0f,4,4,FullscreenActivity.presoShadowColor);
+            presentermode_alert.setVisibility(View.VISIBLE);
+            getScreenSizes();
             presentermode_alert.startAnimation(songalert_fadein);
         }
         static void fadeoutAlert() {
             presentermode_alert.startAnimation(songalert_fadein);
+            Handler ha = new Handler();
+            ha.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    presentermode_alert.setVisibility(View.GONE);
+                    getScreenSizes();
+                }
+            }, FullscreenActivity.presoTransitionTime*2);
         }
 
 

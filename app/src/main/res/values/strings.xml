@@ -16,9 +16,12 @@
     <string name="fab_mini" translatable="false">Mini page buttons</string>
     <string name="findnewsongs" translatable="false">Find new songs</string>
     <string name="full" translatable="false">Full</string>
+    <string name="logo" translatable="false">Logo</string>
     <string name="managesets" translatable="false">Rename sets</string>
     <string name="menu_settings" translatable="false">Menu settings</string>
     <string name="menu_width" translatable="false">Menu width (percentage of screen width)</string>
+    <string name="my_band" translatable="false">Import Band sample songs</string>
+    <string name="my_church" translatable="false">Import Church sample songs</string>
     <string name="navigate" translatable="false">Quick navigate</string>
     <string name="new_category" translatable="false">New category</string>
     <string name="nowifidirect" translatable="false">Sorry, this device does not support WiFi direct</string>

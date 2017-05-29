@@ -7,13 +7,19 @@
     android:background="@drawable/popup_bg"
     android:padding="8dp">
 
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        style="@style/MyInfoText"/>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/location"
         android:id="@+id/fileListView"
         android:choiceMode="singleChoice"
         android:fastScrollEnabled="true"
-        android:layout_alignParentTop="true"
         android:layout_margin="12dp"
         tools:listitem="@android:layout/simple_list_item_single_choice" />
 

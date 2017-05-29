@@ -236,6 +236,7 @@ class OpenFragment {
                 break;
 
             case "importos":
+            case "doimport":
                 newFragment = PopUpImportExternalFile.newInstance();
                 break;
 

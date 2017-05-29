@@ -14,8 +14,6 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.io.IOException;
-
 public class PopUpTransposeFragment extends DialogFragment {
 
     static PopUpTransposeFragment newInstance() {
@@ -64,17 +62,21 @@ public class PopUpTransposeFragment extends DialogFragment {
             getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
             TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
             title.setText(getActivity().getResources().getString(R.string.transpose));
-            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
             closeMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    CustomAnimations.animateFAB(closeMe,getActivity());
+                    closeMe.setEnabled(false);
                     dismiss();
                 }
             });
-            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            final FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
             saveMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    CustomAnimations.animateFAB(saveMe,getActivity());
+                    saveMe.setEnabled(false);
                     doTranspose();
                 }
             });
@@ -249,7 +251,7 @@ public class PopUpTransposeFragment extends DialogFragment {
         // Do the transpose
         try {
             Transpose.doTranspose();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         mListener.refreshAll();

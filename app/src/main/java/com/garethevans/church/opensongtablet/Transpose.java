@@ -74,175 +74,120 @@ class Transpose {
     private static boolean capousesflats;
 
     static void doTranspose() throws IOException {
-        // Go through each line and change each chord to $..$
-        // This marks the bit to be changed
 
-        FullscreenActivity.transposedLyrics = null;
-        FullscreenActivity.transposedLyrics = "";
-        FullscreenActivity.myTransposedLyrics = null;
-        FullscreenActivity.myTransposedLyrics = FullscreenActivity.mLyrics.split("\n");
+        try {
+            // Go through each line and change each chord to $..$
+            // This marks the bit to be changed
 
-        oldchordformat = FullscreenActivity.oldchordformat;
+            FullscreenActivity.transposedLyrics = null;
+            FullscreenActivity.transposedLyrics = "";
+            FullscreenActivity.myTransposedLyrics = null;
+            FullscreenActivity.myTransposedLyrics = FullscreenActivity.mLyrics.split("\n");
 
-        // Change the saved key to a number
-        if (originalkey != null && !FullscreenActivity.mKey.equals("")) {
-            newkey = keyToNumber(FullscreenActivity.mKey);
-        }
-        // Transpose the key
-        newkey = transposeKey(newkey, FullscreenActivity.transposeDirection, FullscreenActivity.transposeTimes);
+            oldchordformat = FullscreenActivity.oldchordformat;
 
-        // Convert the keynumber to a key
-        newkey = numberToKey(newkey);
-
-        // Decide if flats should be used
-        usesflats = keyUsesFlats(newkey);
-
-        if (!FullscreenActivity.mKey.equals("")) {
-            FullscreenActivity.mKey = newkey;
-        }
-
-        // Now we change the chords into numbers
-        for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
-            if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
-                // Since this line has chords, do the changing!
-                // Decide on the chord format to use
-                switch (oldchordformat) {
-                    default:
-                        FullscreenActivity.myTransposedLyrics[x] = chordToNumber1(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
-
-                    case "2":
-                        FullscreenActivity.myTransposedLyrics[x] = chordToNumber2(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
-
-                    case "3":
-                        FullscreenActivity.myTransposedLyrics[x] = chordToNumber3(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
-
-                    case "4":
-                        FullscreenActivity.myTransposedLyrics[x] = chordToNumber4(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
-
-                }
+            // Change the saved key to a number
+            if (originalkey != null && !FullscreenActivity.mKey.equals("")) {
+                newkey = keyToNumber(FullscreenActivity.mKey);
             }
-        }
+            // Transpose the key
+            newkey = transposeKey(newkey, FullscreenActivity.transposeDirection, FullscreenActivity.transposeTimes);
 
-        // Next up we do the transposing
+            // Convert the keynumber to a key
+            newkey = numberToKey(newkey);
 
-        transposeChords();
+            // Decide if flats should be used
+            usesflats = keyUsesFlats(newkey);
 
-        // Now we put the numbers back into chords in the correct format and using either the key preference or the forced sharps or flats
-        for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
-            if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
-                // Since this line has chords, do the changing!
-                // Decide on the chord format to use
-                switch (oldchordformat) {
-                    default:
-                        FullscreenActivity.myTransposedLyrics[x] = numberToChord1(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
+            if (!FullscreenActivity.mKey.equals("")) {
+                FullscreenActivity.mKey = newkey;
+            }
 
-                    case "2":
-                        FullscreenActivity.myTransposedLyrics[x] = numberToChord2(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
+            // Now we change the chords into numbers
+            for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
+                if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
+                    // Since this line has chords, do the changing!
+                    // Decide on the chord format to use
+                    switch (oldchordformat) {
+                        default:
+                            FullscreenActivity.myTransposedLyrics[x] = chordToNumber1(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
 
-                    case "3":
-                        FullscreenActivity.myTransposedLyrics[x] = numberToChord3(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
+                        case "2":
+                            FullscreenActivity.myTransposedLyrics[x] = chordToNumber2(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
 
-                    case "4":
-                        FullscreenActivity.myTransposedLyrics[x] = numberToChord4(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
+                        case "3":
+                            FullscreenActivity.myTransposedLyrics[x] = chordToNumber3(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                        case "4":
+                            FullscreenActivity.myTransposedLyrics[x] = chordToNumber4(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                    }
                 }
             }
 
-        // Add all the lines back up as a string
-        FullscreenActivity.transposedLyrics += FullscreenActivity.myTransposedLyrics[x] + "\n";
+            // Next up we do the transposing
+
+            transposeChords();
+
+            // Now we put the numbers back into chords in the correct format and using either the key preference or the forced sharps or flats
+            for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
+                if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
+                    // Since this line has chords, do the changing!
+                    // Decide on the chord format to use
+                    switch (oldchordformat) {
+                        default:
+                            FullscreenActivity.myTransposedLyrics[x] = numberToChord1(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                        case "2":
+                            FullscreenActivity.myTransposedLyrics[x] = numberToChord2(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                        case "3":
+                            FullscreenActivity.myTransposedLyrics[x] = numberToChord3(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                        case "4":
+                            FullscreenActivity.myTransposedLyrics[x] = numberToChord4(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+                    }
+                }
+
+                // Add all the lines back up as a string
+                FullscreenActivity.transposedLyrics += FullscreenActivity.myTransposedLyrics[x] + "\n";
+            }
+
+
+            // Now that the chords have been changed, replace the myTransposedLyrics
+            // into the file
+            FullscreenActivity.mynewXML = null;
+            FullscreenActivity.mynewXML = "";
+
+            // Write the new improved XML file
+            FullscreenActivity.mLyrics = FullscreenActivity.transposedLyrics;
+
+            PopUpEditSongFragment.prepareSongXML();
+            PopUpEditSongFragment.justSaveSongXML();
+
+            FullscreenActivity.transposedLyrics = null;
+            FullscreenActivity.transposedLyrics = "";
+            Arrays.fill(FullscreenActivity.myTransposedLyrics, null);
+            Arrays.fill(FullscreenActivity.myParsedLyrics, null);
+            FullscreenActivity.myLyrics = null;
+            FullscreenActivity.myLyrics = "";
+            FullscreenActivity.mynewXML = null;
+            FullscreenActivity.mynewXML = "";
+            FullscreenActivity.myXML = null;
+            FullscreenActivity.myXML = "";
+
+            Preferences.savePreferences();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-
-        // Now that the chords have been changed, replace the myTransposedLyrics
-        // into the file
-        FullscreenActivity.mynewXML = null;
-        FullscreenActivity.mynewXML = "";
-
-        // Write the new improved XML file
-        FullscreenActivity.mLyrics = FullscreenActivity.transposedLyrics;
-
-        PopUpEditSongFragment.prepareSongXML();
-        PopUpEditSongFragment.justSaveSongXML();
-
- /*       String myNEWXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-        myNEWXML += "<song>\n";
-        myNEWXML += "  <title>" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mTitle.toString() + "</title>\n";
-        myNEWXML += "  <author>" + FullscreenActivity.mAuthor + "</author>\n";
-        myNEWXML += "  <copyright>" + FullscreenActivity.mCopyright + "</copyright>\n";
-        myNEWXML += "  <presentation>" + FullscreenActivity.mPresentation + "</presentation>\n";
-        myNEWXML += "  <hymn_number>" + FullscreenActivity.mHymnNumber + "</hymn_number>\n";
-        myNEWXML += "  <capo print=\"" + FullscreenActivity.mCapoPrint + "\">" + FullscreenActivity.mCapo + "</capo>\n";
-        myNEWXML += "  <tempo>" + FullscreenActivity.mTempo + "</tempo>\n";
-        myNEWXML += "  <time_sig>" + FullscreenActivity.mTimeSig + "</time_sig>\n";
-        myNEWXML += "  <duration>" + FullscreenActivity.mDuration + "</duration>\n";
-        myNEWXML += "  <ccli>" + FullscreenActivity.mCCLI + "</ccli>\n";
-        myNEWXML += "  <theme>" + FullscreenActivity.mTheme + "</theme>\n";
-        myNEWXML += "  <alttheme>" + FullscreenActivity.mAltTheme + "</alttheme>\n";
-        myNEWXML += "  <user1>" + FullscreenActivity.mUser1 + "</user1>\n";
-        myNEWXML += "  <user2>" + FullscreenActivity.mUser2 + "</user2>\n";
-        myNEWXML += "  <user3>" + FullscreenActivity.mUser3 + "</user3>\n";
-        myNEWXML += "  <key>" + FullscreenActivity.mKey + "</key>\n";
-        myNEWXML += "  <aka>" + FullscreenActivity.mAka + "</aka>\n";
-        myNEWXML += "  <key_line>" + FullscreenActivity.mKeyLine + "</key_line>\n";
-        myNEWXML += "  <books>" + FullscreenActivity.mBooks + "</books>\n";
-        myNEWXML += "  <midi>" + FullscreenActivity.mMidi + "</midi>\n";
-        myNEWXML += "  <midi_index>" + FullscreenActivity.mMidiIndex + "</midi_index>\n";
-        myNEWXML += "  <pitch>" + FullscreenActivity.mPitch + "</pitch>\n";
-        myNEWXML += "  <restrictions>" + FullscreenActivity.mRestrictions + "</restrictions>\n";
-        myNEWXML += "  <notes>" + FullscreenActivity.mNotes + "</notes>\n";
-        myNEWXML += "  <linked_songs>" + FullscreenActivity.mLinkedSongs + "</linked_songs>\n";
-        myNEWXML += "  <pad_file>" + FullscreenActivity.mPadFile + "</pad_file>\n";
-        myNEWXML += "  <custom_chords>" + FullscreenActivity.mCustomChords + "</custom_chords>\n";
-        myNEWXML += "  <lyrics>" + FullscreenActivity.transposedLyrics + "</lyrics>\n";
-        if (!FullscreenActivity.mExtraStuff1.isEmpty()) {
-            myNEWXML += "  " + FullscreenActivity.mExtraStuff1 + "\n";
-        }
-        if (!FullscreenActivity.mExtraStuff2.isEmpty()) {
-            myNEWXML += "  " + FullscreenActivity.mExtraStuff2 + "\n";
-        }
-        myNEWXML += "</song>";
-
-        FullscreenActivity.mynewXML = myNEWXML;
-
-        // Makes sure all & are replaced with &amp;
-        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&amp;","&");
-        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&","&amp;");
-
-        // Now write the modified song
-        FileOutputStream overWrite;
-
-        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-            overWrite = new FileOutputStream(
-                    FullscreenActivity.dir + "/" + FullscreenActivity.songfilename,
-                    false);
-        } else {
-            overWrite = new FileOutputStream(
-                    FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
-                    false);
-        }
-        overWrite.write(FullscreenActivity.mynewXML.getBytes());
-        overWrite.flush();
-        overWrite.close();
-*/
-        FullscreenActivity.transposedLyrics = null;
-        FullscreenActivity.transposedLyrics = "";
-        Arrays.fill(FullscreenActivity.myTransposedLyrics, null);
-        Arrays.fill(FullscreenActivity.myParsedLyrics, null);
-        FullscreenActivity.myLyrics = null;
-        FullscreenActivity.myLyrics = "";
-        FullscreenActivity.mynewXML = null;
-        FullscreenActivity.mynewXML = "";
-        FullscreenActivity.myXML = null;
-        FullscreenActivity.myXML = "";
-
-        Preferences.savePreferences();
     }
 
     static String keyToNumber(String key) {

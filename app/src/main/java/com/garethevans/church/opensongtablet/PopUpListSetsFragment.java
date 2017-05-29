@@ -145,18 +145,24 @@ public class PopUpListSetsFragment extends DialogFragment {
             getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
             title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
             title.setText(myTitle);
-            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
             closeMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    CustomAnimations.animateFAB(closeMe,getActivity());
+                    closeMe.setEnabled(false);
                     FullscreenActivity.myToastMessage = "";
                     dismiss();
                 }
             });
-            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
+            final FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
             saveMe.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) { doAction();     }
+                public void onClick(View view) {
+                    CustomAnimations.animateFAB(saveMe,getActivity());
+                    saveMe.setEnabled(false);
+                    doAction();
+                }
             });
         } else {
             getDialog().setTitle(myTitle);

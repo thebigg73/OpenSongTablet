@@ -21,6 +21,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcEvent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -98,7 +100,6 @@ public class StageMode extends AppCompatActivity implements
         SetActions.MyInterface, PopUpFullSearchFragment.MyInterface, IndexSongs.MyInterface,
         SearchView.OnQueryTextListener, PopUpSetViewNew.MyInterface,
         PopUpChooseFolderFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
-        PopUpOptionMenuSet.MyInterface, PopUpOptionMenuSong.MyInterface,
         PopUpImportExternalFile.MyInterface, PopUpDirectoryChooserFragment.MyInterface,
         OnSongConvert.MyInterface, PopUpStorageFragment.MyInterface,
         PopUpSongFolderRenameFragment.MyInterface, PopUpThemeChooserFragment.MyInterface,
@@ -114,7 +115,7 @@ public class StageMode extends AppCompatActivity implements
         PopUpFindNewSongsFragment.MyInterface, PopUpGroupedPageButtonsFragment.MyInterface,
         PopUpImportExportOSBFragment.MyInterface, SalutDataCallback, SongMenuAdapter.MyInterface,
         BatteryMonitor.MyInterface, PopUpMenuSettingsFragment.MyInterface,
-        PopUpLayoutFragment.MyInterface {
+        PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface {
 
     // The toolbar and menu
     public Toolbar ab_toolbar;
@@ -241,6 +242,7 @@ public class StageMode extends AppCompatActivity implements
     IndexSongs.IndexMySongs indexsongs_task;
     AsyncTask<Void, Void, Integer> prepare_pad;
     AsyncTask<Void, Void, Integer> play_pads;
+    AsyncTask<String, Integer, String> do_download;
 
     // Allow the menus to flash open to show where they are on first run
     boolean firstrun_option = true;
@@ -291,6 +293,8 @@ public class StageMode extends AppCompatActivity implements
     SalutMessage myMessage;
     SalutMessage mySongMessage;
 
+    // NFC
+    FileUriCallback mFileUriCallback;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -446,6 +450,37 @@ public class StageMode extends AppCompatActivity implements
                     FullscreenActivity.firstload = false;
                     rebuildSearchIndex();
                 }
+
+                try {
+                    //FullscreenActivity.incomingfile = getIntent();
+                    if (FullscreenActivity.incomingfile != null) {
+                        Log.d("d","this is in oncreate and intent has been found");
+                        FullscreenActivity.file_location = FullscreenActivity.incomingfile.getData().getPath();
+                        FullscreenActivity.file_name = FullscreenActivity.incomingfile.getData().getLastPathSegment();
+                        FullscreenActivity.file_uri = FullscreenActivity.incomingfile.getData();
+                        if (FullscreenActivity.file_name.endsWith(".osb")) {
+                            FullscreenActivity.whattodo = "processimportosb";
+                        } else {
+                            FullscreenActivity.whattodo = "doimport";
+                        }
+                        Log.d("d","file_name="+FullscreenActivity.file_name);
+                        Log.d("d","whattodo="+FullscreenActivity.whattodo);
+                        openFragment();
+                    }
+                } catch (Exception e) {
+                    // No file
+                    //needtoimport = false;
+                }
+
+                // Set up stuff for NFC transfer (if allowed)
+                if (FullscreenActivity.mAndroidBeamAvailable) {
+                    FullscreenActivity.mNfcAdapter = NfcAdapter.getDefaultAdapter(StageMode.this);
+                    mFileUriCallback = new FileUriCallback();
+                    // Set the dynamic callback for URI requests.
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        FullscreenActivity.mNfcAdapter.setBeamPushUrisCallback(mFileUriCallback,StageMode.this);
+                    }
+                }
             }
         });
      }
@@ -478,6 +513,7 @@ public class StageMode extends AppCompatActivity implements
             });
 
         } catch (Exception e) {
+            FullscreenActivity.salutLog += "\n" + getResources().getString(R.string.nowifidirect);
             e.printStackTrace();
         }
     }
@@ -702,6 +738,26 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @Override
+    protected void onNewIntent (Intent intent) {
+        Log.d("d","onNewIntent called");
+        // This is used to listen for stuff being imported if the app is already open
+        FullscreenActivity.whattodo = "";
+        try {
+            FullscreenActivity.file_location = intent.getData().getPath();
+            FullscreenActivity.file_name = intent.getData().getLastPathSegment();
+            FullscreenActivity.file_uri = intent.getData();
+            if (FullscreenActivity.file_name.endsWith(".osb")) {
+                FullscreenActivity.whattodo = "processimportosb";
+            } else {
+                FullscreenActivity.whattodo = "doimport";
+            }
+            openFragment();
+        } catch (Exception e) {
+            // No file
+            //needtoimport = false;
+        }
+    }
+    @Override
     public void onDataReceived(Object data) {
         // Attempt to extract the song details
         if (data!=null && (data.toString().contains("_____") || data.toString().contains("<lyrics>"))) {
@@ -856,7 +912,7 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(indexsongs_task);
         doCancelAsyncTask(prepare_pad);
         doCancelAsyncTask(play_pads);
-
+        doCancelAsyncTask(do_download);
     }
     public void doCancelAsyncTask(AsyncTask ast) {
         if (ast!=null) {
@@ -1277,7 +1333,8 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.setMoveDirection = "forward";
                 //FullscreenActivity.indexSongInSet += 1;
                 FullscreenActivity.whichDirection = "R2L";
-                doMoveInSet();
+                goToNextItem();
+                //doMoveInSet();
             }
         });
         setBackButton.setOnClickListener(new View.OnClickListener() {
@@ -1287,7 +1344,8 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.setMoveDirection = "back";
                 //FullscreenActivity.indexSongInSet -= 1;
                 FullscreenActivity.whichDirection = "L2R";
-                doMoveInSet();
+                goToPreviousItem();
+                //doMoveInSet();
             }
         });
     }
@@ -1753,6 +1811,9 @@ public class StageMode extends AppCompatActivity implements
         showToastMessage(message);
         prepareSongMenu();
         rebuildSearchIndex();
+        openMyDrawers("song");
+        FullscreenActivity.whattodo = "choosefolder";
+        openFragment();
     }
 
     @Override
@@ -2117,6 +2178,35 @@ public class StageMode extends AppCompatActivity implements
         openFragment();
     }
 
+    // List of URIs to provide to Android Beam
+    private Uri[] mFileUris = new Uri[10];
+    @SuppressLint("NewApi")
+    private class FileUriCallback implements NfcAdapter.CreateBeamUrisCallback {
+        public FileUriCallback() {}
+
+        @Override
+        public Uri[] createBeamUris(NfcEvent event) {
+            String transferFile = FullscreenActivity.songfilename;
+            File extDir;
+            if (FullscreenActivity.whichSongFolder.equals(getString(R.string.mainfoldername))) {
+                extDir =FullscreenActivity.dir;
+            } else {
+                extDir = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/");
+            }
+            File requestFile = new File(extDir, transferFile);
+            requestFile.setReadable(true, false);
+            // Get a URI for the File and add it to the list of URIs
+            Uri fileUri = Uri.fromFile(requestFile);
+            if (fileUri != null) {
+                mFileUris[0] = fileUri;
+            } else {
+                Log.e("My Activity", "No File URI available for file.");
+            }
+            return mFileUris;
+        }
+    }
+
+
     public void holdBeforeSending() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we send it, check this is the first time
@@ -2478,6 +2568,23 @@ public class StageMode extends AppCompatActivity implements
 
                     // Decide if we have loaded a song in the current set
                     fixSetActionButtons();
+
+                    // If the user has shown the 'Welcome to OpenSongApp' file, and their song lists are empty,
+                    // open the find new songs menu
+                    Log.d("d","numsongs="+FullscreenActivity.mSongFileNames.length);
+                    if (FullscreenActivity.mTitle.equals("Welcome to OpenSongApp") ||
+                            FullscreenActivity.mSongFileNames==null ||
+                            (FullscreenActivity.mSongFileNames!=null && FullscreenActivity.mSongFileNames.length==0)) {
+                        FullscreenActivity.whichOptionMenu = "FIND";
+                        prepareOptionMenu();
+                        Handler find = new Handler();
+                        find.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                openMyDrawers("option");
+                            }
+                        },2000);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2491,7 +2598,6 @@ public class StageMode extends AppCompatActivity implements
                     e.printStackTrace();
                 }
             }
-
         }
     }
 
@@ -2504,15 +2610,17 @@ public class StageMode extends AppCompatActivity implements
                 // We weren't in set mode, so find the first instance of this song.
                 SetActions.indexSongInSet();
             }
-            // If we aren't at the beginning, enable the setBackButton
-            if (FullscreenActivity.indexSongInSet > 0) {
+            // If we aren't at the beginning or have pdf pages before this, enable the setBackButton
+            if ((FullscreenActivity.indexSongInSet > 0) ||
+                    (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent>0)) {
                 setBackButton.setVisibility(View.VISIBLE);
             } else {
                 setBackButton.setVisibility(View.INVISIBLE);
             }
 
-            // If we aren't at the end of the set, enable the setForwardButton
-            if (FullscreenActivity.indexSongInSet < FullscreenActivity.mSetList.length - 1) {
+            // If we aren't at the end of the set or inside a multipage pdf, enable the setForwardButton
+            if ((FullscreenActivity.indexSongInSet < FullscreenActivity.mSetList.length - 1) ||
+                    (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent<FullscreenActivity.pdfPageCount - 1)) {
                 setForwardButton.setVisibility(View.VISIBLE);
             } else {
                 setForwardButton.setVisibility(View.INVISIBLE);
@@ -2616,6 +2724,21 @@ public class StageMode extends AppCompatActivity implements
 
         Preferences.loadSongSuccess();
     }
+
+    @Override
+    public void doDownload(String filename) {
+        if (do_download!=null) {
+            doCancelAsyncTask(do_download);
+        }
+        do_download = new DownloadTask(StageMode.this,filename);
+        try {
+            do_download.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public void createPerformanceView1col() {
         doCancelAsyncTask(createperformanceview1col_async);

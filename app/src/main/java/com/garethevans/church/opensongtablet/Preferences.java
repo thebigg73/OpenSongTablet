@@ -137,7 +137,7 @@ public class Preferences extends Activity {
             FullscreenActivity.custom2_presoFont = myPreferences.getInt("custom2_presoFont", default_dark_presoFontColor);
             FullscreenActivity.custom2_presoInfoFont = myPreferences.getInt("custom2_presoInfoFont", default_dark_presoInfoFontColor);
             FullscreenActivity.custom2_presoShadow = myPreferences.getInt("custom2_presoShadow", default_dark_presoShadowFontColor);
-            FullscreenActivity.customLogo = myPreferences.getString("customLogo","");
+            FullscreenActivity.customLogo = myPreferences.getString("customLogo","ost_logo.png");
             FullscreenActivity.customLogoSize = myPreferences.getFloat("customLogoSize", 0.5f);
             FullscreenActivity.customStorage = myPreferences.getString("customStorage", Environment.getExternalStorageDirectory().getAbsolutePath());
             FullscreenActivity.dark_lyricsBackgroundColor = myPreferences.getInt("dark_lyricsBackgroundColor", default_dark_lyricsBackgroundColor);
@@ -274,6 +274,7 @@ public class Preferences extends Activity {
             FullscreenActivity.showNativeAndCapoChords = myPreferences.getBoolean("showNativeAndCapoChords", true);
             FullscreenActivity.showNextInSet = myPreferences.getString("showNextInSet", "bottom");
             FullscreenActivity.showSetTickBoxInSongMenu = myPreferences.getBoolean("showSetTickBoxInSongMenu", true);
+            FullscreenActivity.showSplashVersion = myPreferences.getInt("showSplashVersion", FullscreenActivity.version);
             FullscreenActivity.songfilename = myPreferences.getString("songfilename", "Welcome to OpenSongApp");
             FullscreenActivity.swipeDrawer = myPreferences.getString("swipeDrawer", "Y");
             FullscreenActivity.swipeForMenus = myPreferences.getBoolean("swipeForMenus", true);
@@ -535,6 +536,7 @@ public class Preferences extends Activity {
             editor.putBoolean("showNativeAndCapoChords", FullscreenActivity.showNativeAndCapoChords);
             editor.putString("showNextInSet", FullscreenActivity.showNextInSet);
             editor.putBoolean("showSetTickBoxInSongMenu",FullscreenActivity.showSetTickBoxInSongMenu);
+            editor.putInt("showSplashVersion", FullscreenActivity.showSplashVersion);
             editor.putString("songfilename", FullscreenActivity.songfilename);
             editor.putString("swipeDrawer", FullscreenActivity.swipeDrawer);
             editor.putBoolean("swipeForMenus", FullscreenActivity.swipeForMenus);

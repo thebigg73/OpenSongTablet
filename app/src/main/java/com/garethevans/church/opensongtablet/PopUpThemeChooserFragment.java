@@ -127,10 +127,12 @@ public class PopUpThemeChooserFragment extends DialogFragment {
             getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
             TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
             title.setText(getActivity().getResources().getString(R.string.options_options_theme));
-            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
             closeMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    CustomAnimations.animateFAB(closeMe,getActivity());
+                    closeMe.setEnabled(false);
                     doClose();
                 }
             });
@@ -300,11 +302,13 @@ public class PopUpThemeChooserFragment extends DialogFragment {
 
         switch (FullscreenActivity.mDisplayTheme) {
             case "Theme_Holo":
+            case "dark":
                 dark_theme_heading.setBackgroundColor(0xffffff00);
                 dark_theme_heading.setTextColor(0xff000000);
                 break;
 
             case "Theme_Holo_Light":
+            case "light":
                 light_theme_heading.setBackgroundColor(0xffffff00);
                 light_theme_heading.setTextColor(0xff000000);
                 break;
@@ -614,16 +618,16 @@ public class PopUpThemeChooserFragment extends DialogFragment {
                 case "dark_pagebuttons":
                     initialcolor = FullscreenActivity.dark_pagebuttons;
                     break;
-                case "dark_presoalertfont":
+                case "dark_presoAlertFontColor":
                     initialcolor = FullscreenActivity.dark_presoAlertFont;
                     break;
-                case "dark_presfont":
+                case "dark_presoFontColor":
                     initialcolor = FullscreenActivity.dark_presoFont;
                     break;
-                case "dark_presoinfofont":
+                case "dark_presoInfoFontColor":
                     initialcolor = FullscreenActivity.dark_presoInfoFont;
                     break;
-                case "dark_presoshadow":
+                case "dark_presoShadowFontColor":
                     initialcolor = FullscreenActivity.dark_presoShadow;
                     break;
 
@@ -666,16 +670,16 @@ public class PopUpThemeChooserFragment extends DialogFragment {
                 case "light_pagebuttons":
                     initialcolor = FullscreenActivity.light_pagebuttons;
                     break;
-                case "light_presoalertfont":
+                case "light_presoAlertFontColor":
                     initialcolor = FullscreenActivity.light_presoAlertFont;
                     break;
-                case "light_presfont":
+                case "light_presoFontColor":
                     initialcolor = FullscreenActivity.light_presoFont;
                     break;
-                case "light_presoinfofont":
+                case "light_presoInfoFontColor":
                     initialcolor = FullscreenActivity.light_presoInfoFont;
                     break;
-                case "light_presoshadow":
+                case "light_presoShadowFontColor":
                     initialcolor = FullscreenActivity.light_presoShadow;
                     break;
 
@@ -718,16 +722,16 @@ public class PopUpThemeChooserFragment extends DialogFragment {
                 case "custom1_pagebuttons":
                     initialcolor = FullscreenActivity.custom1_pagebuttons;
                     break;
-                case "custom1_presoalertfont":
+                case "custom1_presoAlertFontColor":
                     initialcolor = FullscreenActivity.custom1_presoAlertFont;
                     break;
-                case "custom1_presfont":
+                case "custom1_presoFontColor":
                     initialcolor = FullscreenActivity.custom1_presoFont;
                     break;
-                case "custom1_presoinfofont":
+                case "custom1_presoInfoFontColor":
                     initialcolor = FullscreenActivity.custom1_presoInfoFont;
                     break;
-                case "custom1_presoshadow":
+                case "custom1_presoShadowFontColor":
                     initialcolor = FullscreenActivity.custom1_presoShadow;
                     break;
 
@@ -770,16 +774,16 @@ public class PopUpThemeChooserFragment extends DialogFragment {
                 case "custom2_pagebuttons":
                     initialcolor = FullscreenActivity.custom2_pagebuttons;
                     break;
-                case "custom2_presoalertfont":
+                case "custom2_presoAlertFontColor":
                     initialcolor = FullscreenActivity.custom2_presoAlertFont;
                     break;
-                case "custom2_presfont":
+                case "custom2_presoFontColor":
                     initialcolor = FullscreenActivity.custom2_presoFont;
                     break;
-                case "custom2_presoinfofont":
+                case "custom2_presoInfoFontColor":
                     initialcolor = FullscreenActivity.custom2_presoInfoFont;
                     break;
-                case "custom2_presoshadow":
+                case "custom2_presoShadowFontColor":
                     initialcolor = FullscreenActivity.custom2_presoShadow;
                     break;
 

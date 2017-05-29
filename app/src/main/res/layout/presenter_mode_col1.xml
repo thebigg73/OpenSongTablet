@@ -10,12 +10,7 @@
         android:id="@+id/pres_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="2dp"
+        android:layout_margin="2dp"
         android:background="@drawable/presenter_box_blue"
         android:orientation="vertical">
 
@@ -46,12 +41,7 @@
         android:id="@+id/pres_order"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="2dp"
+        android:layout_margin="2dp"
         android:background="@drawable/presenter_box_green"
         android:orientation="vertical">
 
@@ -85,12 +75,7 @@
         android:id="@+id/preso_set_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="2dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="2dp"
+        android:layout_margin="2dp"
         android:background="@drawable/presenter_box_red"
         android:orientation="vertical">
 
@@ -105,10 +90,7 @@
                 android:layout_height="wrap_content"
                 app:useCompatPadding="true"
                 app:elevation="0dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginBottom="0dp"
+                android:layout_margin="0dp"
                 android:src="@drawable/ic_format_list_numbers_white_36dp"
                 app:fabSize="mini" />
 

@@ -91,9 +91,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         SetActions.MyInterface, PopUpPresentationOrderFragment.MyInterface,
         PopUpSetViewNew.MyInterface, IndexSongs.MyInterface, SearchView.OnQueryTextListener,
         OptionMenuListeners.MyInterface, PopUpFullSearchFragment.MyInterface,
-        PopUpListSetsFragment.MyInterface, PopUpOptionMenuSet.MyInterface,
+        PopUpListSetsFragment.MyInterface, PopUpDirectoryChooserFragment.MyInterface,
         PopUpLongSongPressFragment.MyInterface, PopUpProfileFragment.MyInterface,
-        PopUpOptionMenuSong.MyInterface, PopUpDirectoryChooserFragment.MyInterface,
         PopUpStorageFragment.MyInterface, PopUpFileChooseFragment.MyInterface,
         PopUpSongFolderRenameFragment.MyInterface, PopUpSongCreateFragment.MyInterface,
         PopUpSongRenameFragment.MyInterface, PopUpImportExportOSBFragment.MyInterface,
@@ -110,7 +109,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpLinks.MyInterface, PopUpAreYouSureFragment.MyInterface,
         SongMenuAdapter.MyInterface, BatteryMonitor.MyInterface, SalutDataCallback,
         PopUpMenuSettingsFragment.MyInterface, PopUpAlertFragment.MyInterface,
-        PopUpLayoutFragment.MyInterface {
+        PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface {
 
     DialogFragment newFragment;
 
@@ -146,6 +145,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     AsyncTask<Object, Void, String> close_drawers;
     AsyncTask<Object, Void, String> resize_drawers;
     AsyncTask<Object, Void, String> do_moveinset;
+    AsyncTask<String, Integer, String> do_download;
 
     // The views
     LinearLayout mLayout;
@@ -339,6 +339,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 .addControlCategory(CastMediaControlIntent.categoryForCast("4E2B0891"))
                 .build();
 
+        // If we had an import to do, do it
+        if (FullscreenActivity.whattodo.equals("doimport")) {
+            openFragment();
+        }
     }
 
 
@@ -468,6 +472,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         doCancelAsyncTask(add_slidetoset);
         doCancelAsyncTask(indexsongs_task);
         doCancelAsyncTask(autoslideshowtask);
+        doCancelAsyncTask(do_download);
     }
     public void doCancelAsyncTask(AsyncTask ast) {
         if (ast != null) {
@@ -1142,12 +1147,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // Create a new button for each song in the Set
         SetActions.prepareSetList();
         presenter_set_buttonsListView.removeAllViews();
-        if (FullscreenActivity.mSetList != null && FullscreenActivity.mSetList.length > 0) {
-            for (int x = 0; x < FullscreenActivity.mSet.length; x++) {
-                newSetButton = ProcessSong.makePresenterSetButton(x, PresenterMode.this);
-                newSetButton.setOnClickListener(new SetButtonClickListener(x));
-                presenter_set_buttonsListView.addView(newSetButton);
+        try {
+            if (FullscreenActivity.mSetList != null && FullscreenActivity.mSetList.length > 0) {
+                for (int x = 0; x < FullscreenActivity.mSet.length; x++) {
+                    newSetButton = ProcessSong.makePresenterSetButton(x, PresenterMode.this);
+                    newSetButton.setOnClickListener(new SetButtonClickListener(x));
+                    presenter_set_buttonsListView.addView(newSetButton);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     private class SetButtonClickListener implements View.OnClickListener {
@@ -1779,6 +1788,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             });
 
         } catch (Exception e) {
+            FullscreenActivity.salutLog += "\n" + getResources().getString(R.string.nowifidirect);
             e.printStackTrace();
         }
     }
@@ -1949,6 +1959,20 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                             e.printStackTrace();
                         }
                     }
+                    // If the user has shown the 'Welcome to OpenSongApp' file, open the find new songs menu
+                    if (FullscreenActivity.mTitle.equals("Welcome to OpenSongApp") ||
+                            FullscreenActivity.mSongFileNames==null ||
+                            (FullscreenActivity.mSongFileNames!=null && FullscreenActivity.mSongFileNames.length==0)) {
+                        FullscreenActivity.whichOptionMenu = "FIND";
+                        prepareOptionMenu();
+                        Handler find = new Handler();
+                        find.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                openMyDrawers("option");
+                            }
+                        },2000);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2029,11 +2053,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // Prepare the text to go in the view
         String s = "";
         try {
-            for (int w = 0; w < FullscreenActivity.projectedContents[FullscreenActivity.currentSection].length; w++) {
-                if (FullscreenActivity.presoShowChords) {
-                    s += FullscreenActivity.projectedContents[FullscreenActivity.currentSection][w] + "\n";
-                } else {
-                    s += FullscreenActivity.projectedContents[FullscreenActivity.currentSection][w].trim() + "\n";
+            if (FullscreenActivity.projectedContents[FullscreenActivity.currentSection]!=null) {
+                for (int w = 0; w < FullscreenActivity.projectedContents[FullscreenActivity.currentSection].length; w++) {
+                    if (FullscreenActivity.presoShowChords) {
+                        s += FullscreenActivity.projectedContents[FullscreenActivity.currentSection][w] + "\n";
+                    } else {
+                        s += FullscreenActivity.projectedContents[FullscreenActivity.currentSection][w].trim() + "\n";
+                    }
                 }
             }
         } catch (Exception e) {
@@ -2058,6 +2084,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         showToastMessage(message);
         prepareSongMenu();
         rebuildSearchIndex();
+        openMyDrawers("song");
+        FullscreenActivity.whattodo = "choosefolder";
+        openFragment();
     }
     @Override
     public void fixSet() {
@@ -2384,6 +2413,18 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             thisbutton.performClick();
         }
     }
+    @Override
+    public void doDownload(String filename) {
+        if (do_download!=null) {
+            doCancelAsyncTask(do_download);
+        }
+        do_download = new DownloadTask(PresenterMode.this,filename);
+        try {
+            do_download.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     // The song index
@@ -2632,48 +2673,52 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     // The right hand column buttons
     public void projectButtonClick() {
-        projectButton_isSelected = !projectButton_isSelected;
+        try {
+            projectButton_isSelected = !projectButton_isSelected;
 
-        if (!FullscreenActivity.isPDF && !FullscreenActivity.isImage && !FullscreenActivity.isImageSlide) {
-            FullscreenActivity.projectedContents[FullscreenActivity.currentSection] = presenter_lyrics.getText().toString().split("\n");
-            int linesnow = FullscreenActivity.projectedContents[FullscreenActivity.currentSection].length;
-            FullscreenActivity.projectedLineTypes[FullscreenActivity.currentSection] = new String[linesnow];
-            for (int i = 0; i < linesnow; i++) {
-                FullscreenActivity.projectedLineTypes[FullscreenActivity.currentSection][i] =
-                        ProcessSong.determineLineTypes(FullscreenActivity.projectedContents[FullscreenActivity.currentSection][i], PresenterMode.this);
+            if (!FullscreenActivity.isPDF && !FullscreenActivity.isImage && !FullscreenActivity.isImageSlide) {
+                FullscreenActivity.projectedContents[FullscreenActivity.currentSection] = presenter_lyrics.getText().toString().split("\n");
+                int linesnow = FullscreenActivity.projectedContents[FullscreenActivity.currentSection].length;
+                FullscreenActivity.projectedLineTypes[FullscreenActivity.currentSection] = new String[linesnow];
+                for (int i = 0; i < linesnow; i++) {
+                    FullscreenActivity.projectedLineTypes[FullscreenActivity.currentSection][i] =
+                            ProcessSong.determineLineTypes(FullscreenActivity.projectedContents[FullscreenActivity.currentSection][i], PresenterMode.this);
+                }
             }
-        }
 
-        // Turn off the other actions buttons as we are now projecting!
-        if (logoButton_isSelected) {
-            presenter_logo_group.performClick();  // This turns off the logo
-        }
-        if (blankButton_isSelected) {
-            presenter_blank_group.performClick();
-        }
-
-
-        // Turn on the project button for now
-        highlightButtonClicked(presenter_project_group);
-
-
-        // Update the projector
-        if (mSelectedDevice != null) {
-            try {
-                PresentationService.ExternalDisplay.doUpdate();
-            } catch (Exception e) {
-                e.printStackTrace();
+            // Turn off the other actions buttons as we are now projecting!
+            if (logoButton_isSelected) {
+                presenter_logo_group.performClick();  // This turns off the logo
             }
-        }
-
-        Handler unhighlight = new Handler();
-        unhighlight.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                projectButton_isSelected = false;
-                unhighlightButtonClicked(presenter_project_group);
+            if (blankButton_isSelected) {
+                presenter_blank_group.performClick();
             }
-        }, 800);
+
+
+            // Turn on the project button for now
+            highlightButtonClicked(presenter_project_group);
+
+
+            // Update the projector
+            if (mSelectedDevice != null) {
+                try {
+                    PresentationService.ExternalDisplay.doUpdate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            Handler unhighlight = new Handler();
+            unhighlight.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    projectButton_isSelected = false;
+                    unhighlightButtonClicked(presenter_project_group);
+                }
+            }, 800);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public void logoButtonClick() {
         if (projectButton_isSelected) {

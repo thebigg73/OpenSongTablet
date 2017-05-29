@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +19,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,7 +35,8 @@ import java.util.Map;
 
 @SuppressWarnings("deprecation")
 @SuppressLint({"DefaultLocale", "RtlHardcoded", "InflateParams", "SdCardPath"})
-public class FullscreenActivity extends AppCompatActivity  {
+public class FullscreenActivity extends AppCompatActivity implements PopUpImportExportOSBFragment.MyInterface,
+        PopUpImportExternalFile.MyInterface {
 
     //First up, declare all of the variables needed by this application
 
@@ -219,6 +222,10 @@ public class FullscreenActivity extends AppCompatActivity  {
     //private static String tempLanguage = "";
     //private String[] backUpFiles;
     //private String backupchosen = "";
+
+    // Stuff to deal with the splash screen/version
+    public static int version = 0;
+    public static int showSplashVersion;
 
 
     @SuppressLint("StaticFieldLeak")
@@ -718,6 +725,31 @@ public class FullscreenActivity extends AppCompatActivity  {
     public static boolean firstReceivingOfSalutXML = true;
     public static String mySalutXML = "";
 
+    static NfcAdapter mNfcAdapter;
+    // Flag to indicate that Android Beam is available
+    public static boolean mAndroidBeamAvailable  = false;
+
+    // Just for the popups - let StageMode or PresenterMode try to deal with them
+    // @Override
+    public void refreshAll() {
+        Log.d("d","refreshAll() called from FullscreenActivity");
+    }
+
+    @Override
+    public void onSongImportDone(String message) {
+        Log.d("d","onSongImportDone() called from FullscreenActivity");
+    }
+
+    @Override
+    public void backupInstall(String message) {
+        Log.d("d","backupInstall() called from FullscreenActivity");
+    }
+
+    @Override
+    public void openFragment() {
+        Log.d("d","openFragment() called from FullscreenActivity");
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -818,26 +850,41 @@ public class FullscreenActivity extends AppCompatActivity  {
         //importnewset = getResources().getString(R.string.importnewset);
         mainfoldername = getResources().getString(R.string.mainfoldername);
 
-        //text_slide = slide;
-        //text_scripture = scripture;
-        //text_note = note;
-        //text_variation = variation;
 
-        // If we have opened the app by an intent (clicking on an ost, osts or osb file)
-        // Get the popup
-        boolean needtoimport = false;
+        // Test for NFC capability
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            mAndroidBeamAvailable = false;
+        } else {
+            mAndroidBeamAvailable = true;
+            try {
+                mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+            } catch (Exception e) {
+                mAndroidBeamAvailable = false;
+            }
+            if (mNfcAdapter==null) {
+                mAndroidBeamAvailable = false;
+            }
+        }
+        Log.d("d","NFC available="+mAndroidBeamAvailable);
+        Log.d("d","NFC adapter="+mNfcAdapter);
 
+        whattodo = "";
         try {
             incomingfile = getIntent();
             if (incomingfile != null) {
                 file_location = incomingfile.getData().getPath();
+                filechosen = new File(incomingfile.getData().getPath());
                 file_name = incomingfile.getData().getLastPathSegment();
                 file_uri = incomingfile.getData();
-                needtoimport = true;
+                if (file_name.endsWith(".osb")) {
+                    whattodo = "processimportosb";
+                } else {
+                    whattodo = "doimport";
+                }
             }
         } catch (Exception e) {
             // No file
-            needtoimport = false;
+            //needtoimport = false;
         }
 
         // Initialise api
@@ -874,22 +921,36 @@ public class FullscreenActivity extends AppCompatActivity  {
         SetUpColours.colours();
         SetTypeFace.setTypeface();
 
+        // Copy assets (background images)
+        PopUpStorageFragment.copyAssets(FullscreenActivity.this);
+
+        // Prepare import varaibale
+        // Copy the default files into the image folder (from assets)
+
+
         // If whichMode is Presentation, open that app instead
-        if (whichMode.equals("Presentation") && dualDisplayCapable && !needtoimport) {
-            Intent performmode = new Intent();
-            performmode.setClass(FullscreenActivity.this, PresenterMode.class);
-            startActivity(performmode);
-            finish();
-        } else if (whichMode.equals("Stage") && !needtoimport) {
-            Intent stagemode = new Intent();
-            stagemode.setClass(FullscreenActivity.this, StageMode.class);
-            startActivity(stagemode);
-            finish();
-        } else {
-            Intent stagemode = new Intent();
-            stagemode.setClass(FullscreenActivity.this, StageMode.class);
-            startActivity(stagemode);
-            finish();
+        switch (whichMode) {
+            case "Presentation":
+                Intent performmode = new Intent();
+                performmode.setClass(FullscreenActivity.this, PresenterMode.class);
+                startActivity(performmode);
+                finish();
+                break;
+            case "Stage": {
+                Intent stagemode = new Intent();
+                stagemode.setClass(FullscreenActivity.this, StageMode.class);
+                startActivity(stagemode);
+                finish();
+                break;
+            }
+            case "Performance":
+            default: {
+                Intent stagemode = new Intent();
+                stagemode.setClass(FullscreenActivity.this, StageMode.class);
+                startActivity(stagemode);
+                finish();
+                break;
+            }
         }
 
         finish();

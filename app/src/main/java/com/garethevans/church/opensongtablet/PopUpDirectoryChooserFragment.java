@@ -93,10 +93,12 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
             } else {
                 title.setText(getActivity().getResources().getString(R.string.storage_choose));
             }
-            FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
+            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
             closeMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    CustomAnimations.animateFAB(closeMe,getActivity());
+                    closeMe.setEnabled(false);
                     dismiss();
                 }
             });
@@ -104,6 +106,8 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
             selectButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    CustomAnimations.animateFAB(selectButton,getActivity());
+                    selectButton.setEnabled(false);
                     doSave();
                 }
             });

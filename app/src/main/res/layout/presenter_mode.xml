@@ -50,6 +50,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.75"
+                android:layout_marginBottom="2dp"
                 android:orientation="vertical"
                 android:weightSum="1">
 
@@ -81,6 +82,8 @@
                         android:id="@+id/col3_layout"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
                         android:layout_weight="0.35">
 
                         <include

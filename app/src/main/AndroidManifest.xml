@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
     xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="113"
-    android:versionName="3.9.905"
+    android:versionCode="114"
+    android:versionName="3.9.906"
     android:installLocation="auto">
 
     <!--Overrides are for Sdk=12/13 but library specifies Sdk=14+-->
@@ -19,6 +19,7 @@
 
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.nfc" android:required="false" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -30,6 +31,7 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.NFC" />
 
     <application
         android:fullBackupContent="true"
@@ -38,7 +40,8 @@
         android:roundIcon="@mipmap/ic_round_launcher"
         android:label="@string/app_name"
         android:theme="@style/MyTheme"
-        android:name="android.support.multidex.MultiDexApplication">
+        android:name="android.support.multidex.MultiDexApplication"
+        android:launchMode="singleTask">
 
         <!--android:name="android.support.multidex.MultiDexApplication"-->
 
@@ -108,6 +111,15 @@
                 <data android:scheme="file" />
                 <data android:host="*" />
                 <data android:mimeType="application/txt" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_name"
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="application/xhtml+xml" />
             </intent-filter>
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
