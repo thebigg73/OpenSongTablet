@@ -86,28 +86,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
-        if (getDialog().getWindow() != null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(mTitle);
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        CustomAnimations.animateFAB(closeMe,getActivity());
-                        closeMe.setEnabled(false);
-                        dismiss();
-                    } catch (Exception e) {
-                        // Error cancelling
-                    }
-                }
-            });
-            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            saveMe.setVisibility(View.GONE);
-        } else {
-            getDialog().setTitle(mTitle);
-        }
     }
 
     @Override
@@ -127,9 +105,27 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         } else {
             mTitle = getActivity().getResources().getString(R.string.ultimateguitarsearch);
         }
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_findnewsongs, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(mTitle);
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    CustomAnimations.animateFAB(closeMe,getActivity());
+                    closeMe.setEnabled(false);
+                    dismiss();
+                } catch (Exception e) {
+                    // Error cancelling
+                }
+            }
+        });
+        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setVisibility(View.GONE);
 
         // Initialise the views
         searchtext_LinearLayout = (LinearLayout) V.findViewById(R.id.searchtext_LinearLayout);

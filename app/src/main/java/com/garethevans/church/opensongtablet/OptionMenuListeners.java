@@ -40,6 +40,7 @@ public class OptionMenuListeners extends Activity {
         void hideActionBar();
         void useCamera();
         void doDownload(String file);
+        void connectHDMI();
     }
 
     public static MyInterface mListener;
@@ -751,10 +752,11 @@ public class OptionMenuListeners extends Activity {
         songExportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "exportsong";
+                FullscreenActivity.whattodo = "customise_exportsong";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
-                    mListener.shareSong();
+                    mListener.openFragment();
+                    //mListener.shareSong();
                 }
             }
         });
@@ -1051,6 +1053,7 @@ public class OptionMenuListeners extends Activity {
         Button displayInfoButton = (Button) v.findViewById(R.id.displayInfoButton);
         Button displayProfileButton = (Button) v.findViewById(R.id.displayProfileButton);
         Button displayConnectedDisplayButton = (Button) v.findViewById(R.id.displayConnectedDisplayButton);
+        Button displayHDMIButton = (Button) v.findViewById(R.id.displayHDMIButton);
         FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
@@ -1063,6 +1066,7 @@ public class OptionMenuListeners extends Activity {
         displayInfoButton.setText(c.getString(R.string.extra).toUpperCase(FullscreenActivity.locale));
         displayProfileButton.setText(c.getString(R.string.profile).toUpperCase(FullscreenActivity.locale));
         displayConnectedDisplayButton.setText(c.getString(R.string.connected_display).toUpperCase(FullscreenActivity.locale));
+        displayHDMIButton.setText(c.getString(R.string.hdmi).toUpperCase(FullscreenActivity.locale));
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -1155,13 +1159,25 @@ public class OptionMenuListeners extends Activity {
         displayConnectedDisplayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mListener!=null && FullscreenActivity.isPresenting) {
+                if (mListener!=null && (FullscreenActivity.isPresenting || FullscreenActivity.isHDMIConnected)) {
                     FullscreenActivity.whattodo = "connecteddisplay";
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 } else {
                     FullscreenActivity.myToastMessage = view.getContext().getString(R.string.nodisplays);
                     ShowToast.showToast(view.getContext());
+                }
+            }
+        });
+
+        displayHDMIButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener!=null) {
+                    FullscreenActivity.myToastMessage = view.getContext().getString(R.string.options_connections_searching);
+                    ShowToast.showToast(view.getContext());
+                    FullscreenActivity.whattodo = "hdmi";
+                    mListener.connectHDMI();
                 }
             }
         });
@@ -1885,14 +1901,21 @@ public class OptionMenuListeners extends Activity {
         Button autoScrollTimeDefaultsButton = (Button) v.findViewById(R.id.autoScrollTimeDefaultsButton);
         SwitchCompat autoScrollStartButton = (SwitchCompat) v.findViewById(R.id.autoScrollStartButton);
         FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
+        SwitchCompat switchTimerSize = (SwitchCompat) v.findViewById(R.id.switchTimerSize);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.autoscroll).toUpperCase(FullscreenActivity.locale));
         autoScrollTimeDefaultsButton.setText(c.getString(R.string.default_autoscroll).toUpperCase(FullscreenActivity.locale));
         autoScrollStartButton.setText(c.getString(R.string.options_options_autostartscroll).toUpperCase(FullscreenActivity.locale));
+        switchTimerSize.setText(c.getString(R.string.timer_size).toUpperCase(FullscreenActivity.locale));
 
         // Set the switches up based on preferences
         autoScrollStartButton.setChecked(FullscreenActivity.autostartautoscroll);
+        if (FullscreenActivity.timerFontSizeAutoScroll==20.0f) {
+            switchTimerSize.setChecked(true);
+        } else {
+            switchTimerSize.setChecked(false);
+        }
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -1924,6 +1947,17 @@ public class OptionMenuListeners extends Activity {
             }
         });
 
+        switchTimerSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    FullscreenActivity.timerFontSizeAutoScroll = 20.0f;
+                } else {
+                    FullscreenActivity.timerFontSizeAutoScroll = 14.0f;
+                }
+            }
+        });
+
         closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1941,11 +1975,19 @@ public class OptionMenuListeners extends Activity {
         TextView menuup = (TextView) v.findViewById(R.id.optionPadTitle);
         Button padCrossFadeButton = (Button) v.findViewById(R.id.padCrossFadeButton);
         FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
+        SwitchCompat switchTimerSize = (SwitchCompat) v.findViewById(R.id.switchTimerSize);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.pad).toUpperCase(FullscreenActivity.locale));
         padCrossFadeButton.setText(c.getString(R.string.crossfade_time).toUpperCase(FullscreenActivity.locale));
+        switchTimerSize.setText(c.getString(R.string.timer_size).toUpperCase(FullscreenActivity.locale));
 
+        // Set the switch
+        if (FullscreenActivity.timerFontSizePad==20.0f) {
+            switchTimerSize.setChecked(true);
+        } else {
+            switchTimerSize.setChecked(false);
+        }
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1976,7 +2018,16 @@ public class OptionMenuListeners extends Activity {
                 }
             }
         });
-
+        switchTimerSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    FullscreenActivity.timerFontSizePad = 20.0f;
+                } else {
+                    FullscreenActivity.timerFontSizePad = 14.0f;
+                }
+            }
+        });
     }
 
     public static void otherOptionListener(View v, final Context c) {

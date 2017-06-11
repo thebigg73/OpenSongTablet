@@ -41,10 +41,18 @@ public class BatteryMonitor extends BroadcastReceiver {
         usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB;
         acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC;
 
+        if (FullscreenActivity.mContext==null) {
+            FullscreenActivity.mContext = context;
+        }
+
         if (FullscreenActivity.mContext!=null) {
-            mListener = (MyInterface) FullscreenActivity.mContext;
-            if (mListener!=null) {
-                mListener.setUpBatteryMonitor();
+            try {
+                mListener = (MyInterface) FullscreenActivity.mContext;
+                if (mListener != null) {
+                    mListener.setUpBatteryMonitor();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

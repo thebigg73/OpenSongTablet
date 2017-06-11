@@ -265,15 +265,15 @@
             android:alpha="0.4"
             android:onClick="popUpSetList"/>
 
-        <include layout="@layout/popup_stickynote" />
+        <include layout="@layout/_oldpopup_stickynote" />
 
-        <include layout="@layout/popup_pad" />
+        <include layout="@layout/_oldpopup_pad" />
 
-        <include layout="@layout/popup_autoscroll" />
+        <include layout="@layout/_oldpopup_autoscroll" />
 
-        <include layout="@layout/popup_metronome" />
+        <include layout="@layout/_oldpopup_metronome" />
 
-        <include layout="@layout/popup_chords" />
+        <include layout="@layout/_oldpopup_chords" />
 
         <ProgressBar
             android:id="@+id/mainProgressBar"

@@ -31,12 +31,17 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
     @Override
     public void onBindViewHolder(SetItemViewHolder setitemViewHolder, int i) {
         SetItemInfo si = setList.get(i);
+        String key = si.songkey;
+        String titlesongname = si.songtitle;
+        if (!key.equals("")) {
+            titlesongname = titlesongname + " ("+key+")";
+        }
         setitemViewHolder.vItem.setText(si.songitem);
         String newfoldername = si.songfolder;
         if (newfoldername.startsWith("**")) {
             newfoldername = newfoldername.replace("**","");
         }
-        setitemViewHolder.vSongTitle.setText(si.songtitle);
+        setitemViewHolder.vSongTitle.setText(titlesongname);
         setitemViewHolder.vSongFolder.setText(newfoldername);
         boolean issong = false;
         if (si.songicon.equals(c.getResources().getString(R.string.slide))) {

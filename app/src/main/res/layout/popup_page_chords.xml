@@ -1,50 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    android:id="@+id/popupchords"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fadeScrollbars="false"
-    android:visibility="visible"
     android:background="@drawable/popup_bg"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:padding="8dp">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/myTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:minWidth="250dp"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_alignParentTop="true">
 
-        <TextView
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
+
+    <ScrollView
+        android:id="@+id/popupchords"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle"
+        android:fadeScrollbars="false"
+        android:visibility="visible">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/instrument"
-            style="@style/MyHeadingText" />
+            android:layout_gravity="center_horizontal"
+            android:minWidth="250dp"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <Spinner
-            android:id="@+id/popupchord_instrument"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            <TextView
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/instrument" />
 
-        <TableLayout
-            android:id="@+id/chordimageshere"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:padding="16dp"
-            android:layout_gravity="center_horizontal"/>
+            <Spinner
+                android:id="@+id/popupchord_instrument"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/customchordedit"
-            android:text="@string/customchords"
-            android:background="@drawable/grey_button"
-            android:layout_margin="8dp"
-            android:textColor="#fff"
-            android:layout_gravity="center_horizontal"/>
+            <TableLayout
+                android:id="@+id/chordimageshere"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:padding="16dp" />
 
-    </LinearLayout>
-</ScrollView>
+            <Button
+                android:id="@+id/customchordedit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:background="@drawable/grey_button"
+                android:text="@string/customchords"
+                android:textColor="#fff" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

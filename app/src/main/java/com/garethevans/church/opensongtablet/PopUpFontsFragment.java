@@ -54,7 +54,7 @@ public class PopUpFontsFragment extends DialogFragment {
     Spinner lyricsFontSpinner;
     Spinner chordsFontSpinner;
     Spinner presoFontSpinner;
-    Spinner presoFontInfoSpinner;
+    Spinner presoInfoFontSpinner;
     TextView headingPreview;
     TextView commentPreview;
     TextView lyricsPreview1;
@@ -77,31 +77,6 @@ public class PopUpFontsFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
-        if (getDialog().getWindow()!=null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(getActivity().getResources().getString(R.string.options_options_fonts));
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    dismiss();
-                }
-            });
-            final FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            saveMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(saveMe,getActivity());
-                    saveMe.setEnabled(false);
-                    doSave();
-                }
-            });
-        } else {
-            getDialog().setTitle(getActivity().getResources().getString(R.string.options_options_fonts));
-        }
     }
 
     @Override
@@ -116,13 +91,36 @@ public class PopUpFontsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_font, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.options_options_fonts));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(saveMe,getActivity());
+                saveMe.setEnabled(false);
+                doSave();
+            }
+        });
 
         // Initialise the views
         lyricsFontSpinner = (Spinner) V.findViewById(R.id.lyricsFontSpinner);
         chordsFontSpinner = (Spinner) V.findViewById(R.id.chordsFontSpinner);
+        presoFontSpinner = (Spinner) V.findViewById(R.id.presoFontSpinner);
+        presoInfoFontSpinner = (Spinner) V.findViewById(R.id.presoInfoFontSpinner);
         headingPreview = (TextView) V.findViewById(R.id.headingPreview);
         commentPreview = (TextView) V.findViewById(R.id.commentPreview);
         lyricsPreview1 = (TextView) V.findViewById(R.id.lyricsPreview1);
@@ -174,10 +172,12 @@ public class PopUpFontsFragment extends DialogFragment {
         choose_fonts.setDropDownViewResource(R.layout.my_spinner);
         lyricsFontSpinner.setAdapter(choose_fonts);
         chordsFontSpinner.setAdapter(choose_fonts);
+        presoFontSpinner.setAdapter(choose_fonts);
+        presoInfoFontSpinner.setAdapter(choose_fonts);
         lyricsFontSpinner.setSelection(temp_mylyricsfontnum);
         chordsFontSpinner.setSelection(temp_mychordsfontnum);
         presoFontSpinner.setSelection(temp_mypresofontnum);
-        presoFontInfoSpinner.setSelection(temp_mypresoinfofontnum);
+        presoInfoFontSpinner.setSelection(temp_mypresoinfofontnum);
         lyricnchordsPreviewUpdate();
 
         // Listen for font changes
@@ -223,7 +223,7 @@ public class PopUpFontsFragment extends DialogFragment {
                 lyricnchordsPreviewUpdate();
             }
         });
-        presoFontInfoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        presoInfoFontSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 temp_mypresoinfofontnum = position;
@@ -336,7 +336,7 @@ public class PopUpFontsFragment extends DialogFragment {
         FullscreenActivity.mylyricsfontnum = lyricsFontSpinner.getSelectedItemPosition();
         FullscreenActivity.mychordsfontnum = chordsFontSpinner.getSelectedItemPosition();
         FullscreenActivity.mypresofontnum = presoFontSpinner.getSelectedItemPosition();
-        FullscreenActivity.mypresoinfofontnum = presoFontInfoSpinner.getSelectedItemPosition();
+        FullscreenActivity.mypresoinfofontnum = presoInfoFontSpinner.getSelectedItemPosition();
         FullscreenActivity.linespacing = lineSpacingSeekBar.getProgress();
         float num = (float) scaleHeading_SeekBar.getProgress()/100.0f;
         FullscreenActivity.headingfontscalesize = num;

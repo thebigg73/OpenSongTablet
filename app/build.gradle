@@ -36,7 +36,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
@@ -57,16 +57,16 @@ dependencies {
     compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'org.apache.commons:commons-compress:1.11'
-    compile 'com.itextpdf:itextpdf:5.5.9'
+    //compile 'com.itextpdf:itextpdf:5.5.11'
     //compile 'org.apache.commons:commons-io:1.3.2'
-    compile 'com.google.android.gms:play-services-nearby:10.2.6'
-    compile 'com.google.android.gms:play-services-cast-framework:10.2.6'
+    compile 'com.google.android.gms:play-services-nearby:11.0.0'
+    compile 'com.google.android.gms:play-services-cast-framework:11.0.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:support-v4:25.3.1'
-
     compile 'com.github.markrjr:Salut:v0.5.0'
     apt 'com.bluelinelabs:logansquare-compiler:1.3.4'
     compile 'com.bluelinelabs:logansquare:1.3.6'
-
     compile 'com.android.support:multidex:1.0.1'
+    compile 'com.itextpdf:itextg:5.5.9'
+    compile 'ru.egslava:MaskedEditText:1.0.5'
 }

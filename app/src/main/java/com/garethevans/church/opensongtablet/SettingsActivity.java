@@ -43,6 +43,7 @@ PopUpDirectoryChooserFragment.SettingsInterface {
     Button latest_updates;
     Button goToSongs;
     Button user_guide;
+    File myroot;
 
     private static boolean storageGranted = false;
     private static final int requestStorage = 0;
@@ -60,6 +61,11 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         myPreferences = getPreferences(MODE_PRIVATE);
         Preferences.loadPreferences();
 
+        // If version is pre v4 reset the gesture choices
+        if (FullscreenActivity.showSplashVersion<120) {
+            FullscreenActivity.resetSomePreferences = true;
+        }
+
         // Decide if user has already seen the splash screen
         PackageInfo pInfo;
         try {
@@ -68,9 +74,6 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         } catch (NameNotFoundException e1) {
             e1.printStackTrace();
         }
-
-        Log.d("d", "this version=" + FullscreenActivity.version);
-        Log.d("d", "Stored last version showSplashVersion=" + FullscreenActivity.showSplashVersion);
 
         //myPreferences = getSharedPreferences("mysettings", MODE_PRIVATE);
         //showSplashVersion = myPreferences.getInt("showSplashVersion", version);
@@ -107,16 +110,29 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         want = PackageManager.PERMISSION_GRANTED;
         storageGranted = test == want;
 
-        File myroot;
+        boolean other_works = tryCustom();
+        boolean ext_works = tryExternal();
+
         switch (FullscreenActivity.prefStorage) {
             case "other":
-                myroot = new File(FullscreenActivity.customStorage);
-                if (!myroot.exists()) {
+                if (other_works) {
+                    myroot = new File(FullscreenActivity.customStorage);
+                } else if (ext_works) {
                     myroot = new File(System.getenv("SECONDARY_STORAGE"));
+                    FullscreenActivity.prefStorage = "ext";
+                } else {
+                    myroot = new File(Environment.getExternalStorageDirectory() + "/documents/");
+                    FullscreenActivity.prefStorage = "int";
                 }
                 break;
             case "ext":
-                myroot = new File(System.getenv("SECONDARY_STORAGE"));
+                if (ext_works) {
+                    myroot = new File(System.getenv("SECONDARY_STORAGE"));
+                    FullscreenActivity.prefStorage = "ext";
+                } else {
+                    myroot = new File(Environment.getExternalStorageDirectory() + "/documents/");
+                    FullscreenActivity.prefStorage = "int";
+                }
                 break;
             case "int":
             default:
@@ -126,7 +142,7 @@ PopUpDirectoryChooserFragment.SettingsInterface {
 
         PopUpStorageFragment.getOtherFolders(myroot);
         final boolean storageexists = PopUpStorageFragment.checkDirectoriesExistOnly();
-
+        PopUpStorageFragment.wipeExportFolder();
 
         // Wait 1000ms before either showing the introduction page or the main app
         // This only happens if the storage exists
@@ -237,6 +253,28 @@ PopUpDirectoryChooserFragment.SettingsInterface {
                     .build();
             shortcutManager.setDynamicShortcuts(Arrays.asList(shortcut3,shortcut2, shortcut1));
         }
+    }
+
+    private boolean tryCustom() {
+        boolean works;
+        try {
+            new File(FullscreenActivity.customStorage);
+            works = true;
+        } catch (Exception e) {
+            works = false;
+        }
+        return works;
+    }
+
+    private boolean tryExternal() {
+        boolean works;
+        try {
+            new File(System.getenv("SECONDARY_STORAGE"));
+            works = true;
+        } catch (Exception e) {
+            works = false;
+        }
+        return works;
     }
 
     private void setupToolbar(){

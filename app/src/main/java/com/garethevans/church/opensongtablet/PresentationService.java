@@ -395,7 +395,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             }
 
             // If we had a black screen, fade that in
-            if (pageHolder.getVisibility()==4) {
+            if (pageHolder.getVisibility()==View.INVISIBLE) {
                 pageHolder.startAnimation(mypage_fadein);
             }
 
@@ -503,7 +503,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             animateOut();
 
             // If we had a black screen, fade that in
-            if (pageHolder.getVisibility()==4) {
+            if (pageHolder.getVisibility()==View.INVISIBLE) {
                 pageHolder.startAnimation(mypage_fadein);
             }
 
@@ -1499,7 +1499,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             presentermode_alert.startAnimation(songalert_fadein);
         }
         static void fadeoutAlert() {
-            presentermode_alert.startAnimation(songalert_fadein);
+            presentermode_alert.startAnimation(songalert_fadeout);
             Handler ha = new Handler();
             ha.postDelayed(new Runnable() {
                 @Override

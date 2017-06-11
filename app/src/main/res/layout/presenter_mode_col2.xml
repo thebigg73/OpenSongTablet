@@ -62,6 +62,18 @@
                     android:layout_marginStart="4dp"
                     android:contentDescription="@string/page_background" />
 
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/autoProject"
+                    android:text="@string/update_projector"
+                    android:padding="8dp"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:theme="@style/SwitchStyle"
+                    android:textColor="#ff0" />
+
                 <LinearLayout
                     android:id="@+id/loopandtimeLinearLayout"
                     android:layout_width="match_parent"

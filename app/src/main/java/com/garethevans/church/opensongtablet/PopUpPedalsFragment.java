@@ -30,6 +30,10 @@ public class PopUpPedalsFragment extends DialogFragment {
     Button pedalPadButton;
     Button pedalAutoScrollButton;
     Button pedalMetronomeButton;
+    Button pedalAutoScrollPadButton;
+    Button pedalAutoScrollMetronomeButton;
+    Button pedalPadMetronomeButton;
+    Button pedalAutoScrollPadMetronomeButton;
 
     String assignWhich = "";
 
@@ -38,24 +42,6 @@ public class PopUpPedalsFragment extends DialogFragment {
         super.onStart();
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-        if (getDialog().getWindow()!=null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(getActivity().getResources().getString(R.string.options_options_pedal));
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    dismiss();
-                }
-            });
-            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            saveMe.setVisibility(View.GONE);
-        } else {
-            getDialog().setTitle(getActivity().getResources().getString(R.string.options_options_pedal));
         }
     }
 
@@ -71,9 +57,23 @@ public class PopUpPedalsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_pedals, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.options_options_pedal));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setVisibility(View.GONE);
 
         // Initialise the views
         pedalPreviousButton = (Button) V.findViewById(R.id.pedalPreviousButton);
@@ -84,6 +84,12 @@ public class PopUpPedalsFragment extends DialogFragment {
         pedalPadButton = (Button) V.findViewById(R.id.pedalPadButton);
         pedalAutoScrollButton = (Button) V.findViewById(R.id.pedalAutoScrollButton);
         pedalMetronomeButton = (Button) V.findViewById(R.id.pedalMetronomeButton);
+        pedalAutoScrollPadButton = (Button) V.findViewById(R.id.pedalAutoScrollPadButton);
+        pedalAutoScrollMetronomeButton = (Button) V.findViewById(R.id.pedalAutoScrollMetronomeButton);
+        pedalPadMetronomeButton = (Button) V.findViewById(R.id.pedalPadMetronomeButton);
+        pedalAutoScrollPadMetronomeButton = (Button) V.findViewById(R.id.pedalAutoScrollPadMetronomeButton);
+
+        resetButtons();
 
         // Set up button listeners
         pedalPreviousButton.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +181,48 @@ public class PopUpPedalsFragment extends DialogFragment {
             }
         });
 
-        resetButtons();
+        pedalAutoScrollPadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetButtons();
+                pedalAutoScrollPadButton.setEnabled(false);
+                pedalAutoScrollPadButton.setText(getResources().getString(
+                        R.string.pageturn_waiting));
+                assignWhich="autoscrollpad";
+            }
+        });
+
+        pedalAutoScrollMetronomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetButtons();
+                pedalAutoScrollMetronomeButton.setEnabled(false);
+                pedalAutoScrollMetronomeButton.setText(getResources().getString(
+                        R.string.pageturn_waiting));
+                assignWhich="autoscrollmetronome";
+            }
+        });
+
+        pedalPadMetronomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetButtons();
+                pedalPadMetronomeButton.setEnabled(false);
+                pedalPadMetronomeButton.setText(getResources().getString(
+                        R.string.pageturn_waiting));
+                assignWhich="padmetronome";
+            }
+        });
+        pedalAutoScrollPadMetronomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetButtons();
+                pedalAutoScrollPadMetronomeButton.setEnabled(false);
+                pedalAutoScrollPadMetronomeButton.setText(getResources().getString(
+                        R.string.pageturn_waiting));
+                assignWhich="autoscrollpadmetronome";
+            }
+        });
 
         return V;
     }
@@ -189,6 +236,10 @@ public class PopUpPedalsFragment extends DialogFragment {
         pedalPadButton.setEnabled(true);
         pedalAutoScrollButton.setEnabled(true);
         pedalMetronomeButton.setEnabled(true);
+        pedalAutoScrollPadButton.setEnabled(true);
+        pedalAutoScrollMetronomeButton.setEnabled(true);
+        pedalPadMetronomeButton.setEnabled(true);
+        pedalAutoScrollPadMetronomeButton.setEnabled(true);
         if (FullscreenActivity.pageturner_PREVIOUS==-1) {
             String text = getResources().getString(R.string.pageturn_previous) + "\n" + getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset);
             pedalPreviousButton.setText(text);
@@ -245,6 +296,58 @@ public class PopUpPedalsFragment extends DialogFragment {
             pedalMetronomeButton.setText(text);
         }
 
+        if (FullscreenActivity.pageturner_AUTOSCROLLPAD==-1) {
+            String text = getResources().getString(R.string.autoscrollPedalText) + " +\n " +
+                    getResources().getString(R.string.padPedalText) + "\n" +
+                    getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset);
+            pedalAutoScrollPadButton.setText(text);
+        } else {
+            String text = getResources().getString(R.string.autoscrollPedalText) + " +\n " +
+                    getResources().getString(R.string.padPedalText) + "\n" +
+                    getResources().getString(R.string.currentkeycode) + "=" +  FullscreenActivity.pageturner_AUTOSCROLLPAD;
+            pedalAutoScrollPadButton.setText(text);
+        }
+
+        if (FullscreenActivity.pageturner_AUTOSCROLLMETRONOME==-1) {
+            String text = getResources().getString(R.string.autoscrollPedalText) + " +\n " +
+                    getResources().getString(R.string.metronomePedalText) + "\n" +
+                    getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset);
+            pedalAutoScrollMetronomeButton.setText(text);
+        } else {
+            String text = getResources().getString(R.string.autoscrollPedalText) + " +\n " +
+                    getResources().getString(R.string.metronomePedalText) + "\n" +
+                    getResources().getString(R.string.currentkeycode) + "=" +  FullscreenActivity.pageturner_AUTOSCROLLMETRONOME;
+            pedalAutoScrollMetronomeButton.setText(text);
+        }
+
+        if (FullscreenActivity.pageturner_PADMETRONOME==-1) {
+            String text = getResources().getString(R.string.padPedalText) + " +\n " +
+                    getResources().getString(R.string.metronomePedalText) + "\n" +
+                    getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset);
+            pedalPadMetronomeButton.setText(text);
+        } else {
+            String text = getResources().getString(R.string.padPedalText) + " +\n " +
+                    getResources().getString(R.string.metronomePedalText) + "\n" +
+                    getResources().getString(R.string.currentkeycode) + "=" +  FullscreenActivity.pageturner_PADMETRONOME;
+            pedalPadMetronomeButton.setText(text);
+        }
+
+        if (FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME==-1) {
+            String text = getResources().getString(R.string.autoscrollPedalText) + " +\n " +
+                    getResources().getString(R.string.padPedalText) + " +\n" +
+                    getResources().getString(R.string.metronomePedalText) + "\n" +
+                    getResources().getString(R.string.currentkeycode) + "=" + getResources().getString(R.string.notset);
+            pedalAutoScrollPadMetronomeButton.setText(text);
+        } else {
+            String text = getResources().getString(R.string.autoscrollPedalText) + " +\n " +
+                    getResources().getString(R.string.padPedalText) + " +\n" +
+                    getResources().getString(R.string.metronomePedalText) + "\n" +
+                    getResources().getString(R.string.currentkeycode) + "=" +  FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME;
+            pedalAutoScrollPadMetronomeButton.setText(text);
+        }
+
+
+
         if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
             pedalToggleScrollBeforeSwipeButton.setChecked(true);
 
@@ -275,6 +378,14 @@ public class PopUpPedalsFragment extends DialogFragment {
                         FullscreenActivity.pageturner_AUTOSCROLL = -1;
                     } else if (FullscreenActivity.pageturner_METRONOME == keyCode) {
                         FullscreenActivity.pageturner_METRONOME = -1;
+                    } else if (FullscreenActivity.pageturner_AUTOSCROLLPAD == keyCode) {
+                        FullscreenActivity.pageturner_AUTOSCROLLPAD = -1;
+                    } else if (FullscreenActivity.pageturner_AUTOSCROLLMETRONOME == keyCode) {
+                        FullscreenActivity.pageturner_AUTOSCROLLMETRONOME = -1;
+                    } else if (FullscreenActivity.pageturner_PADMETRONOME == keyCode) {
+                        FullscreenActivity.pageturner_PADMETRONOME = -1;
+                    } else if (FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME == keyCode) {
+                        FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME = -1;
                     }
 
                     if (keyCode == KeyEvent.KEYCODE_BACK && assignWhich.length()>0) {
@@ -304,6 +415,18 @@ public class PopUpPedalsFragment extends DialogFragment {
                         Preferences.savePreferences();
                     } else if (assignWhich.equals("metronome")) {
                         FullscreenActivity.pageturner_METRONOME = keyCode;
+                        Preferences.savePreferences();
+                    } else if (assignWhich.equals("autoscrollpad")) {
+                        FullscreenActivity.pageturner_AUTOSCROLLPAD = keyCode;
+                        Preferences.savePreferences();
+                    } else if (assignWhich.equals("autoscrollmetronome")) {
+                        FullscreenActivity.pageturner_AUTOSCROLLMETRONOME = keyCode;
+                        Preferences.savePreferences();
+                    } else if (assignWhich.equals("padmetronome")) {
+                        FullscreenActivity.pageturner_PADMETRONOME = keyCode;
+                        Preferences.savePreferences();
+                    } else if (assignWhich.equals("autoscrollpadmetronome")) {
+                        FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME = keyCode;
                         Preferences.savePreferences();
                     }
                     assignWhich = "";

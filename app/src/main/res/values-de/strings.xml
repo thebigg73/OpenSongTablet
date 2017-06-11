@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="capo_toggle">"Kapo-Akkorde anzeigen ein/aus"</string>
     <string name="capo_toggle_onlycapo">Nur Capo-Akkorde zeigen (wenn verfügbar)"</string>
@@ -390,7 +390,7 @@
 	<string name="capo_toggle_native">Nur native Akkorde anzeigen</string>
 	<string name="display_manager">Anzeige schließen</string>
 	<string name="error_missingsection">fehlende Teile</string>
-	<string name="error_notset">Nich gesetzt</string>
+	<string name="error_notset" tools:ignore="Typos">Nich gesetzt</string>
 	<string name="file_chooser">Dateiauswahl</string>
 	<string name="layout">Anordnung </string>
 	<string name="preso_alpha">Hintergrund Deckkraft</string>
@@ -504,7 +504,7 @@
 	<string name="songfolder">"Wählen Sie einen Song-Ordner"</string>
 	<string name="stagemode">"Bühnenmodus"</string>
 	<string name="switchtostagemode">"Wechseln Sie in den Bühnenmodus"</string>
-	<string name="toobig">"Bitte schalten Sie die automatische Skalierung für PDF-Export ein"</string>
+	<string name="toobig">\"Bitte schalten Sie die automatische Skalierung für PNG/PDF-Export ein\"</string>
 	<string name="showcapo">"Capo-Akkorde anzeigen"</string>
 	<string name="showchords">"Akkorde anzeigen"</string>
 	<string name="showlyrics">"Texte anzeigen"</string>
@@ -521,5 +521,81 @@
 	<string name="longPressNext">\"Langes Drücken nächste Pedal\"</string>
 	<string name="longPressPrevious">\"Langes Drücken vorherigen Pedal\"</string>
 	<string name="longPressUp">\"Langes Drücken auf Pedal\"</string>
+
+	<string name="autoscale">"Autoskalierung"</string>
+	<string name="camera">"Kamera"</string>
+	<string name="category">"Kategorie"</string>
+	<string name="choosefolders">"Ordner wählen"</string>
+	<string name="chordline_scale">"Skalierung Akkorde"</string>
+	<string name="connected_display">"Verbundene Anzeige"</string>
+	<string name="current_category">"Aktuelle Kategorie"</string>
+	<string name="device_list">"Verfügbare Geräte"</string>
+	<string name="dim">"Hintergrund abdunkeln"</string>
+	<string name="exportsongdirectory">"Liste der Songs exportieren"</string>
+	<string name="fab_mini">"Mini"</string>
+	<string name="findnewsongs">"Neue Songs finden"</string>
+	<string name="full">"Komplett"</string>
+	<string name="logo">"Logo"</string>
+	<string name="managesets">"Sets umbenennen"</string>
+	<string name="menu_settings">"Menüeinstellungen"</string>
+	<string name="menu_width">"Menübreite (in Prozent der Bildschirmbreite)"</string>
+	<string name="my_band">"Band Beispielsongs importieren"</string>
+	<string name="my_church">"Kirchen Beispielsongs importieren"</string>
+	<string name="navigate">"Schnell navigieren"</string>
+	<string name="new_category">"Neue Kategorie"</string>
+	<string name="nowifidirect">"Entschuldigung, dieses Gerät unterstützt WiFi direct nicht"</string>
+	<string name="options_connections">"Geräte anschließen"</string>
+	<string name="options_connections_broadcast">"Sendendes Gerät:"</string>
+	<string name="options_connections_connected">"Angeschlossen"</string>
+	<string name="options_connections_host">"Gefundener Host:"</string>
+	<string name="options_connections_log">"Verbindungsprotokoll (zum Löschen klicken). Wenn Sie irgendwelche Probleme haben, setzen Sie Ihr WiFi zurück und starten Sie die App neu."</string>
+	<string name="options_connections_disconnect">"Trennen von"</string>
+	<string name="options_connections_discover_start">"Dienste suchen"</string>
+	<string name="options_connections_discover_stop">"Suche beenden"</string>
+	<string name="options_connections_failure">"Verbindungsfehler"</string>
+	<string name="options_connections_receive_host">"Host-Songs empfangen"</string>
+	<string name="options_connections_searching">"Suchen …"</string>
+	<string name="options_connections_service_start">"Dienst starten"</string>
+	<string name="options_connections_service_stop">"Dienst anhalten"</string>
+	<string name="options_connections_success">"Verbindungserfolg"</string>
+	<string name="options_display_popups">"Popup-Fenster anpassen"</string>
+	<string name="options_modes">"App-Modus wählen"</string>
+	<string name="pagebutton_custom_group">"Benutzerdefinierte Schaltflächen gruppieren"</string>
+	<string name="pagebutton_extrainfo_group">"Zusätzliche Informationstasten gruppieren"</string>
+	<string name="pagebutton_group">"Alle Seitentasten gruppieren"</string>
+	<string name="pagebutton_visibility">"Schaltflächen anzeigen / ausblenden"</string>
+	<string name="perform">"Vortragen"</string>
+	<string name="performancemode">"Vortragsmodus"</string>
+	<string name="present">"Präsentieren"</string>
+	<string name="presoFont">"Schriftart für Präsentation"</string>
+	<string name="presoInfoFont">"Schriftart für Informationen während der Präsentation"</string>
+	<string name="presoFontShadow">"Text in Präsentation schattieren"</string>
+	<string name="quicklaunch_button1">"Schaltfläche 1"</string>
+	<string name="quicklaunch_button2">"Schaltfläche 2"</string>
+	<string name="quicklaunch_button3">"Schaltfläche 3"</string>
+	<string name="quicklaunch_currentaction">"Derzeitige Aktion"</string>
+	<string name="quicklaunch_title">"Anpassen der Schnellstarttasten"</string>
+	<string name="scale_style">"Skalierung"</string>
+    <string name="setquickcheck">"Set Kontrollkästchen im Liedmenü anzeigen"</string>
+	<string name="size_mini">"Mini"</string>
+	<string name="size_normal">"Normal"</string>
+	<string name="songsinfolder">"Song Ordner"</string>
+	<string name="stage">"Bühne"</string>
+	<string name="storage_notwritable">"Kann nicht verwendet werden"</string>
+	<string name="subscription">"(Abonnement erforderlich)"</string>
+	<string name="transparency">"Transparenz"</string>
+	<string name="width">"Breite"</string>
+    <string name="quicklaunch_button4">"Schaltfläche 4"</string>
+
+	<string name="export_chordpro">"ChordPro Song (.cho)"</string>
+	<string name="export_desktop">"Desktop-Datei (keine Dateierweiterung)"</string>
+	<string name="export_onsong">"OnSong Lied (.onsong)"</string>
+	<string name="export_ost">"OpenSongApp Song (OST)"</string>
+	<string name="export_pdf">"Screenshot PDF (.pdf)"</string>
+	<string name="export_png">"Screenshot Bild (.png)"</string>
+	<string name="export_set">"OpenSongApp gesetzt (.osts)"</string>
+	<string name="export_text">"Text (.txt)"</string>
+	<string name="floating_window">"Schwimmendes Fenster"</string>
+	<string name="timer_size">"Timergröße"</string>
 
 </resources>

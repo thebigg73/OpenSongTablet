@@ -1,181 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/popup_bg">
+    android:background="@drawable/popup_bg"
+    android:padding="8dp">
+
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
+
+    <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pref_key_text"
                 android:id="@+id/textView43"
                 style="@style/MyHeadingText"
-                android:layout_margin="8dp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/pref_key_text" />
 
             <android.support.v7.widget.SwitchCompat
-                app:showText="true"
+                android:id="@+id/switchAb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
                 android:text="Ab / G#"
-                app:textAllCaps="false"
-                android:id="@+id/switchAb"
                 android:textOff="Ab"
                 android:textOn="G#"
-                app:splitTrack="false"
                 android:thumb="@drawable/switch_button"
+                app:showText="true"
+                app:splitTrack="false"
+                app:textAllCaps="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488"
-                android:padding="12dp" />
+                app:thumbTint="#444488" />
 
             <android.support.v7.widget.SwitchCompat
-                app:showText="true"
+                android:id="@+id/switchBb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
                 android:text="Bb / A#"
-                android:id="@+id/switchBb"
                 android:textOff="Bb"
                 android:textOn="A#"
-                app:splitTrack="false"
                 android:thumb="@drawable/switch_button"
+                app:showText="true"
+                app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488"
-                android:padding="12dp" />
+                app:thumbTint="#444488" />
 
             <android.support.v7.widget.SwitchCompat
-                app:showText="true"
+                android:id="@+id/switchDb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
                 android:text="Db / C#"
-                android:id="@+id/switchDb"
                 android:textOff="Db"
                 android:textOn="C#"
-                app:splitTrack="false"
                 android:thumb="@drawable/switch_button"
+                app:showText="true"
+                app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488"
-                android:padding="12dp" />
+                app:thumbTint="#444488" />
 
             <android.support.v7.widget.SwitchCompat
-                app:showText="true"
+                android:id="@+id/switchEb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
                 android:text="Eb / D#"
-                android:id="@+id/switchEb"
                 android:textOff="Eb"
                 android:textOn="D#"
-                app:splitTrack="false"
                 android:thumb="@drawable/switch_button"
+                app:showText="true"
+                app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488"
-                android:padding="12dp" />
+                app:thumbTint="#444488" />
 
             <android.support.v7.widget.SwitchCompat
-                app:showText="true"
+                android:id="@+id/switchGb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
                 android:text="Gb / F#"
-                android:id="@+id/switchGb"
                 android:textOff="Gb"
                 android:textOn="F#"
-                app:splitTrack="false"
                 android:thumb="@drawable/switch_button"
+                app:showText="true"
+                app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488"
-                android:padding="12dp" />
+                app:thumbTint="#444488" />
 
             <android.support.v7.widget.SwitchCompat
-                app:showText="true"
+                android:id="@+id/switchAbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="true"
+                android:padding="12dp"
                 android:text="Abm / G#m"
-                android:id="@+id/switchAbm"
                 android:textOff="Abm"
                 android:textOn="G#m"
-                app:splitTrack="false"
                 android:thumb="@drawable/switch_button"
+                app:showText="true"
+                app:splitTrack="false"
                 app:switchPadding="12dp"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488"
-                android:padding="12dp"
-                android:checked="true" />
+                app:thumbTint="#444488" />
 
             <android.support.v7.widget.SwitchCompat
-                app:showText="true"
+                android:id="@+id/switchBbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
                 android:text="Bbm / A#m"
-                android:id="@+id/switchBbm"
                 android:textOff="Bbm"
                 android:textOn="A#m"
-                app:splitTrack="false"
                 android:thumb="@drawable/switch_button"
+                app:showText="true"
+                app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488"
-                android:padding="12dp" />
+                app:thumbTint="#444488" />
 
             <android.support.v7.widget.SwitchCompat
-                app:showText="true"
+                android:id="@+id/switchDbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="true"
+                android:padding="12dp"
                 android:text="Dbm / C#m"
-                android:id="@+id/switchDbm"
                 android:textOff="Dbm"
                 android:textOn="C#m"
-                app:splitTrack="false"
                 android:thumb="@drawable/switch_button"
+                app:showText="true"
+                app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488"
-                android:padding="12dp"
-                android:checked="true" />
+                app:thumbTint="#444488" />
 
             <android.support.v7.widget.SwitchCompat
-                app:showText="true"
+                android:id="@+id/switchEbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
                 android:text="Ebm / D#m"
-                android:id="@+id/switchEbm"
                 android:textOff="Ebm"
                 android:textOn="D#m"
-                app:splitTrack="false"
                 android:thumb="@drawable/switch_button"
+                app:showText="true"
+                app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488"
-                android:padding="12dp" />
+                app:thumbTint="#444488" />
 
             <android.support.v7.widget.SwitchCompat
-                app:showText="true"
+                android:id="@+id/switchGbm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="true"
+                android:padding="12dp"
                 android:text="Gbm / F#m"
-                android:id="@+id/switchGbm"
+                android:textColor="#fff"
                 android:textOff="Gbm"
                 android:textOn="F#m"
-                app:splitTrack="false"
-                android:textColor="#fff"
                 android:thumb="@drawable/switch_button"
-                android:checked="true"
+                app:showText="true"
+                app:splitTrack="false"
                 app:thumbTextPadding="4dp"
-                app:thumbTint="#444488"
-                android:padding="12dp" />
+                app:thumbTint="#444488" />
 
             <TextView
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@string/choosechordformat"
-                style="@style/MyHeadingText" />
+                android:text="@string/choosechordformat" />
 
             <RadioGroup
                 android:id="@+id/chordFormat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <RadioButton
                     android:id="@+id/chordFormat1"
@@ -210,11 +226,11 @@
             </RadioGroup>
 
             <TextView
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="@string/chordformat_help"
-                style="@style/MyHeadingText" />
+                android:text="@string/chordformat_help" />
 
             <RadioGroup
                 android:id="@+id/chordFormat_decideaction"
@@ -237,4 +253,5 @@
 
         </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
+</RelativeLayout>

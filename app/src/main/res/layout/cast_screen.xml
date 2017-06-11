@@ -41,7 +41,7 @@
     <LinearLayout
         android:id="@+id/projected_LinearLayout"
         android:layout_width="match_parent"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"

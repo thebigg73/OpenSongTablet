@@ -1,151 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/popup_bg">
+    android:background="@drawable/popup_bg"
+    android:padding="8dp">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/myTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_alignParentTop="true">
 
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
 
-        <RelativeLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/section_box"
-            android:layout_margin="8dp"
-            android:padding="8dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/button1_title"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/quicklaunch_button1"
-                style="@style/MyHeadingText"
-                android:layout_margin="8dp"/>
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/button1_image"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:fabSize="mini"
-                app:backgroundTint="@color/red"
-                app:borderWidth="0dp"
-                android:src="@drawable/ic_help_outline_white_36dp"
-                android:visibility="visible"
-                android:layout_below="@id/button1_title"/>
+                android:background="@drawable/section_box"
+                android:padding="8dp">
 
-            <TextView
-                android:id="@+id/button1_currently"
+                <TextView
+                    android:id="@+id/button1_title"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/quicklaunch_button1" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/button1_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/button1_title"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/ic_help_outline_white_36dp"
+                    android:visibility="visible"
+                    app:backgroundTint="@color/red"
+                    app:borderWidth="0dp"
+                    app:fabSize="mini" />
+
+                <TextView
+                    android:id="@+id/button1_currently"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/button1_title"
+                    android:layout_toRightOf="@+id/button1_image"
+                    android:text="@string/quicklaunch_currentaction" />
+
+                <Spinner
+                    android:id="@+id/button1_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/button1_currently"
+                    android:layout_toRightOf="@+id/button1_image" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/quicklaunch_currentaction"
-                style="@style/MyInfoText"
-                android:layout_below="@+id/button1_title"
-                android:layout_toRightOf="@+id/button1_image"/>
-
-            <Spinner
-                android:id="@+id/button1_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/button1_currently"
-                android:layout_toRightOf="@+id/button1_image"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/section_box"
-            android:layout_margin="8dp"
-            android:padding="8dp">
-
-            <TextView
-                android:id="@+id/button2_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/MyHeadingText"
-                android:text="@string/quicklaunch_button2"
-                android:layout_margin="8dp"/>
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/button2_image"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:fabSize="mini"
-                app:backgroundTint="@color/red"
-                app:borderWidth="0dp"
-                android:src="@drawable/ic_help_outline_white_36dp"
-                android:visibility="visible"
-                android:layout_below="@id/button2_title"/>
+                android:background="@drawable/section_box"
+                android:padding="8dp">
 
-            <TextView
-                android:id="@+id/button2_currently"
+                <TextView
+                    android:id="@+id/button2_title"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/quicklaunch_button2" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/button2_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/button2_title"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/ic_help_outline_white_36dp"
+                    android:visibility="visible"
+                    app:backgroundTint="@color/red"
+                    app:borderWidth="0dp"
+                    app:fabSize="mini" />
+
+                <TextView
+                    android:id="@+id/button2_currently"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/button2_title"
+                    android:layout_toRightOf="@+id/button2_image"
+                    android:text="@string/quicklaunch_currentaction" />
+
+                <Spinner
+                    android:id="@+id/button2_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/button2_currently"
+                    android:layout_toRightOf="@+id/button2_image" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/MyInfoText"
-                android:text="@string/quicklaunch_currentaction"
-                android:layout_below="@+id/button2_title"
-                android:layout_toRightOf="@+id/button2_image"/>
-
-            <Spinner
-                android:id="@+id/button2_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/button2_currently"
-                android:layout_toRightOf="@+id/button2_image"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/section_box"
-            android:layout_margin="8dp"
-            android:padding="8dp">
-
-            <TextView
-                android:id="@+id/button3_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/MyHeadingText"
-                android:text="@string/quicklaunch_button3"
-                android:layout_margin="8dp"/>
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/button3_image"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:fabSize="mini"
-                app:backgroundTint="@color/red"
-                app:borderWidth="0dp"
-                android:src="@drawable/ic_help_outline_white_36dp"
-                android:visibility="visible"
-                android:layout_below="@id/button3_title"/>
+                android:background="@drawable/section_box"
+                android:padding="8dp">
 
-            <TextView
-                android:id="@+id/button3_currently"
+                <TextView
+                    android:id="@+id/button3_title"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/quicklaunch_button3" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/button3_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/button3_title"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/ic_help_outline_white_36dp"
+                    android:visibility="visible"
+                    app:backgroundTint="@color/red"
+                    app:borderWidth="0dp"
+                    app:fabSize="mini" />
+
+                <TextView
+                    android:id="@+id/button3_currently"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/button3_title"
+                    android:layout_toRightOf="@+id/button3_image"
+                    android:text="@string/quicklaunch_currentaction" />
+
+                <Spinner
+                    android:id="@+id/button3_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/button3_currently"
+                    android:layout_toRightOf="@+id/button3_image" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/MyInfoText"
-                android:text="@string/quicklaunch_currentaction"
-                android:layout_below="@+id/button3_title"
-                android:layout_toRightOf="@+id/button3_image"/>
+                android:layout_margin="8dp"
+                android:background="@drawable/section_box"
+                android:padding="8dp">
 
-            <Spinner
-                android:id="@+id/button3_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/button3_currently"
-                android:layout_toRightOf="@+id/button3_image"/>
+                <TextView
+                    android:id="@+id/button4_title"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/quicklaunch_button4" />
 
-        </RelativeLayout>
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/button4_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/button4_title"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/ic_help_outline_white_36dp"
+                    android:visibility="visible"
+                    app:backgroundTint="@color/red"
+                    app:borderWidth="0dp"
+                    app:fabSize="mini" />
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/button4_currently"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/button4_title"
+                    android:layout_toRightOf="@+id/button4_image"
+                    android:text="@string/quicklaunch_currentaction" />
 
-</ScrollView>
+                <Spinner
+                    android:id="@+id/button4_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/button4_currently"
+                    android:layout_toRightOf="@+id/button4_image" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -7,11 +7,19 @@
     android:background="@drawable/popup_bg"
     android:padding="8dp">
 
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
+
     <TextView
         android:id="@+id/location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/myTitle"
         style="@style/MyInfoText"/>
     <ListView
         android:layout_width="match_parent"

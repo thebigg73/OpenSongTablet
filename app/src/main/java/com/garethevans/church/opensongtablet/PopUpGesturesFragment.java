@@ -49,31 +49,6 @@ public class PopUpGesturesFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
-        if (getDialog().getWindow() != null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(getActivity().getResources().getString(R.string.customgestures));
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    dismiss();
-                }
-            });
-            final FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            saveMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(saveMe,getActivity());
-                    saveMe.setEnabled(false);
-                    doSave();
-                }
-            });
-        } else {
-            getDialog().setTitle(getActivity().getResources().getString(R.string.customgestures));
-        }
     }
 
     @Override
@@ -88,9 +63,30 @@ public class PopUpGesturesFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_gestures, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.customgestures));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(saveMe,getActivity());
+                saveMe.setEnabled(false);
+                doSave();
+            }
+        });
 
         // Initialise the views
         screenDoubleTap = (Spinner) V.findViewById(R.id.screenDoubleTap);
@@ -102,6 +98,7 @@ public class PopUpGesturesFragment extends DialogFragment {
 
         // Set up the spinner options
         ArrayList<String> vals = new ArrayList<>();
+        vals.add(getString(R.string.off));
         vals.add(getString(R.string.gesture1));
         vals.add(getString(R.string.gesture2));
         vals.add(getString(R.string.gesture3));
@@ -109,7 +106,10 @@ public class PopUpGesturesFragment extends DialogFragment {
         vals.add(getString(R.string.autoscrollPedalText));
         vals.add(getString(R.string.padPedalText));
         vals.add(getString(R.string.metronomePedalText));
-        vals.add(getString(R.string.off));
+        vals.add(getString(R.string.autoscrollPedalText)+" + "+getString(R.string.padPedalText));
+        vals.add(getString(R.string.autoscrollPedalText)+" + "+getString(R.string.metronomePedalText));
+        vals.add(getString(R.string.padPedalText)+" + "+getString(R.string.metronomePedalText));
+        vals.add(getString(R.string.autoscrollPedalText)+" + "+getString(R.string.padPedalText) + " + " + getString(R.string.metronomePedalText));
 
         // Set up the spinners
         ArrayAdapter<String> gestures = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, vals);
@@ -140,32 +140,32 @@ public class PopUpGesturesFragment extends DialogFragment {
         int val_uppedallongpress = upPedalLongPress.getSelectedItemPosition();
         int val_downpedallongpress = downPedalLongPress.getSelectedItemPosition();
 
-        // if any of these values are -1, set them to 7
+        // if any of these values are -1, set them to 0
         if (val_doubletap < 0) {
-            val_doubletap = 7;
+            val_doubletap = 0;
         }
         if (val_longpress < 0) {
-            val_longpress = 7;
+            val_longpress = 0;
         }
         if (val_prevpedallongpress < 0) {
-            val_prevpedallongpress = 7;
+            val_prevpedallongpress = 0;
         }
         if (val_nextpedallongpress < 0) {
-            val_nextpedallongpress = 7;
+            val_nextpedallongpress = 0;
         }
         if (val_uppedallongpress < 0) {
-            val_uppedallongpress = 7;
+            val_uppedallongpress = 0;
         }
         if (val_downpedallongpress < 0) {
-            val_downpedallongpress = 7;
+            val_downpedallongpress = 0;
         }
 
-        FullscreenActivity.gesture_doubletap = "" + (val_doubletap + 1);
-        FullscreenActivity.gesture_longpress = "" + (val_longpress + 1);
-        FullscreenActivity.longpresspreviouspedalgesture = "" + (val_prevpedallongpress + 1);
-        FullscreenActivity.longpressnextpedalgesture = "" + (val_nextpedallongpress + 1);
-        FullscreenActivity.longpressuppedalgesture = "" + (val_uppedallongpress + 1);
-        FullscreenActivity.longpressdownpedalgesture = "" + (val_downpedallongpress + 1);
+        FullscreenActivity.gesture_doubletap = "" + (val_doubletap);
+        FullscreenActivity.gesture_longpress = "" + (val_longpress);
+        FullscreenActivity.longpresspreviouspedalgesture = "" + (val_prevpedallongpress);
+        FullscreenActivity.longpressnextpedalgesture = "" + (val_nextpedallongpress);
+        FullscreenActivity.longpressuppedalgesture = "" + (val_uppedallongpress);
+        FullscreenActivity.longpressdownpedalgesture = "" + (val_downpedallongpress);
 
         // Save the values
         Preferences.savePreferences();
@@ -174,7 +174,7 @@ public class PopUpGesturesFragment extends DialogFragment {
 
     public void setSpinnerVal(Spinner spinner, String val) {
         // Convert to integer
-        int selection = 8;
+        int selection = 0;  // OFF is default for most
         if (val != null && !val.equals("")) {
             try {
                 selection = Integer.parseInt(val);
@@ -182,11 +182,11 @@ public class PopUpGesturesFragment extends DialogFragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (selection < 1 || selection > 8) {
-                selection = 8;
+            if (selection < 1 || selection > 12) {
+                selection = 0;  // OFF
             }
         }
-        spinner.setSelection(selection - 1);
+        spinner.setSelection(selection);
     }
 
     @Override

@@ -73,24 +73,6 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
-        if (getDialog().getWindow()!=null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(getActivity().getResources().getString(R.string.action_search));
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    dismiss();
-                }
-            });
-            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            saveMe.setVisibility(View.GONE);
-        } else {
-            getDialog().setTitle(getActivity().getResources().getString(R.string.action_search));
-        }
     }
 
     @Override
@@ -106,9 +88,23 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_searchview, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.action_search));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setVisibility(View.GONE);
 
         super.onCreate(savedInstanceState);
 
@@ -130,134 +126,142 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
 
 
     public void Simplesearch() {
-        // This gets called if the database wasn't built properly
-        // Tell the user there was a problem
-        FullscreenActivity.myToastMessage = getResources().getString(R.string.search_index_error);
-        ShowToast.showToast(getActivity());
+        try {
+            // This gets called if the database wasn't built properly
+            // Tell the user there was a problem
+            FullscreenActivity.myToastMessage = getResources().getString(R.string.search_index_error);
+            ShowToast.showToast(getActivity());
 
-        // Convert the list of folder/files into a database sorted by filenames
-        ArrayList<String> filesnfolders = new ArrayList<>();
-        for (String foldernfile:FullscreenActivity.allfilesforsearch) {
-            String[] file_split = foldernfile.split("/");
-            String filename;
-            String foldername;
+            // Convert the list of folder/files into a database sorted by filenames
+            ArrayList<String> filesnfolders = new ArrayList<>();
+            for (String foldernfile : FullscreenActivity.allfilesforsearch) {
+                String[] file_split = foldernfile.split("/");
+                String filename;
+                String foldername;
 
-            try {
-                filename = file_split[1];
-            } catch (Exception e) {
-                filename = "";
+                try {
+                    filename = file_split[1];
+                } catch (Exception e) {
+                    filename = "";
+                }
+
+                try {
+                    foldername = file_split[0];
+                } catch (Exception e) {
+                    foldername = "";
+                }
+
+                if (foldername.equals("")) {
+                    foldername = FullscreenActivity.mainfoldername;
+                }
+
+                filesnfolders.add(filename + " _%%%_ " + foldername);
             }
 
-            try {
-                foldername = file_split[0];
-            } catch (Exception e) {
-                foldername = "";
+            Collator coll = Collator.getInstance(FullscreenActivity.locale);
+            coll.setStrength(Collator.SECONDARY);
+            Collections.sort(filesnfolders, coll);
+
+            // Copy the full search string, now it is sorted, into a song and folder array
+            mFileName.clear();
+            mFolder.clear();
+            mTitle.clear();
+            mAuthor.clear();
+            mShortLyrics.clear();
+            mTheme.clear();
+            mKey.clear();
+            mHymnNumber.clear();
+
+            for (int d = 0; d < filesnfolders.size(); d++) {
+                String[] songbits = filesnfolders.get(d).split("_%%%_");
+                String filename = songbits[0].trim();
+                String foldername = songbits[1].trim();
+                String lyricstoadd = filename + " " + foldername;
+
+                // Replace unwanted symbols
+                lyricstoadd = ProcessSong.removeUnwantedSymbolsAndSpaces(lyricstoadd);
+
+                mFileName.add(d, filename);
+                mFolder.add(d, foldername);
+                mTitle.add(d, filename);
+                mAuthor.add(d, "");
+                mShortLyrics.add(d, lyricstoadd);
+                mTheme.add(d, "");
+                mKey.add(d, "");
+                mHymnNumber.add(d, "");
             }
 
-            if (foldername.equals("")) {
-                foldername = FullscreenActivity.mainfoldername;
+            mListView.setTextFilterEnabled(true);
+            mListView.setFastScrollEnabled(true);
+            setupSearchView();
+
+            for (int i = 0; i < filesnfolders.size(); i++) {
+                SearchViewItems song = new SearchViewItems(mFileName.get(i), mTitle.get(i), mFolder.get(i), mAuthor.get(i), mKey.get(i), mTheme.get(i), mShortLyrics.get(i), mHymnNumber.get(i));
+                searchlist.add(song);
             }
 
-            filesnfolders.add(filename + " _%%%_ " + foldername);
+            adapter = new SearchViewAdapter(getActivity().getApplicationContext(), searchlist, "search");
+            mListView.setAdapter(adapter);
+            mListView.setTextFilterEnabled(true);
+            mListView.setFastScrollEnabled(true);
+            setupSearchView();
+
+            mSearchView.setOnQueryTextListener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        Collator coll = Collator.getInstance(FullscreenActivity.locale);
-        coll.setStrength(Collator.SECONDARY);
-        Collections.sort(filesnfolders,coll);
-
-        // Copy the full search string, now it is sorted, into a song and folder array
-        mFileName.clear();
-        mFolder.clear();
-        mTitle.clear();
-        mAuthor.clear();
-        mShortLyrics.clear();
-        mTheme.clear();
-        mKey.clear();
-        mHymnNumber.clear();
-
-        for (int d=0;d<filesnfolders.size();d++) {
-            String[] songbits = filesnfolders.get(d).split("_%%%_");
-            String filename = songbits[0].trim();
-            String foldername = songbits[1].trim();
-            String lyricstoadd = filename + " " + foldername;
-
-            // Replace unwanted symbols
-            lyricstoadd = ProcessSong.removeUnwantedSymbolsAndSpaces(lyricstoadd);
-
-            mFileName.add(d, filename);
-            mFolder.add(d, foldername);
-            mTitle.add(d, filename);
-            mAuthor.add(d, "");
-            mShortLyrics.add(d, lyricstoadd);
-            mTheme.add(d, "");
-            mKey.add(d, "");
-            mHymnNumber.add(d, "");
-        }
-
-        mListView.setTextFilterEnabled(true);
-        mListView.setFastScrollEnabled(true);
-        setupSearchView();
-
-        for (int i = 0; i < filesnfolders.size(); i++) {
-            SearchViewItems song = new SearchViewItems(mFileName.get(i), mTitle.get(i) , mFolder.get(i), mAuthor.get(i), mKey.get(i), mTheme.get(i), mShortLyrics.get(i), mHymnNumber.get(i));
-            searchlist.add(song);
-        }
-
-        adapter = new SearchViewAdapter(getActivity().getApplicationContext(), searchlist, "search");
-        mListView.setAdapter(adapter);
-        mListView.setTextFilterEnabled(true);
-        mListView.setFastScrollEnabled(true);
-        setupSearchView();
-
-        mSearchView.setOnQueryTextListener(this);
     }
 
     public void Fullsearch() {
         // Add locale sort
-        Collator coll = Collator.getInstance(FullscreenActivity.locale);
-        coll.setStrength(Collator.SECONDARY);
-        Collections.sort(FullscreenActivity.search_database, coll);
+        try {
+            Collator coll = Collator.getInstance(FullscreenActivity.locale);
+            coll.setStrength(Collator.SECONDARY);
+            Collections.sort(FullscreenActivity.search_database, coll);
 
-        // Copy the full search string, now it is sorted, into a song and folder array
-        mFileName.clear();
-        mFolder.clear();
-        mTitle.clear();
-        mAuthor.clear();
-        mShortLyrics.clear();
-        mTheme.clear();
-        mKey.clear();
-        mHymnNumber.clear();
+            // Copy the full search string, now it is sorted, into a song and folder array
+            mFileName.clear();
+            mFolder.clear();
+            mTitle.clear();
+            mAuthor.clear();
+            mShortLyrics.clear();
+            mTheme.clear();
+            mKey.clear();
+            mHymnNumber.clear();
 
 
-        for (int d=0;d<FullscreenActivity.search_database.size();d++) {
-            String[] songbits = FullscreenActivity.search_database.get(d).split("_%%%_");
-            mFileName.add(d, songbits[0].trim());
-            mFolder.add(d, songbits[1].trim());
-            mTitle.add(d, songbits[2].trim());
-            mAuthor.add(d, songbits[3].trim());
-            mShortLyrics.add(d, songbits[4].trim());
-            mTheme.add(d, songbits[5].trim());
-            mKey.add(d, songbits[6].trim());
-            mHymnNumber.add(d,songbits[7].trim());
+            for (int d = 0; d < FullscreenActivity.search_database.size(); d++) {
+                String[] songbits = FullscreenActivity.search_database.get(d).split("_%%%_");
+                mFileName.add(d, songbits[0].trim());
+                mFolder.add(d, songbits[1].trim());
+                mTitle.add(d, songbits[2].trim());
+                mAuthor.add(d, songbits[3].trim());
+                mShortLyrics.add(d, songbits[4].trim());
+                mTheme.add(d, songbits[5].trim());
+                mKey.add(d, songbits[6].trim());
+                mHymnNumber.add(d, songbits[7].trim());
+            }
+
+            mListView.setTextFilterEnabled(true);
+            mListView.setFastScrollEnabled(true);
+            setupSearchView();
+
+
+            for (int i = 0; i < FullscreenActivity.search_database.size(); i++) {
+                SearchViewItems song = new SearchViewItems(mFileName.get(i), mTitle.get(i), mFolder.get(i), mAuthor.get(i), mKey.get(i), mTheme.get(i), mShortLyrics.get(i), mHymnNumber.get(i));
+                searchlist.add(song);
+            }
+
+            adapter = new SearchViewAdapter(getActivity().getApplicationContext(), searchlist, "search");
+            mListView.setAdapter(adapter);
+            mListView.setTextFilterEnabled(true);
+            mListView.setFastScrollEnabled(true);
+            setupSearchView();
+
+            mSearchView.setOnQueryTextListener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        mListView.setTextFilterEnabled(true);
-        mListView.setFastScrollEnabled(true);
-        setupSearchView();
-
-
-        for (int i = 0; i < FullscreenActivity.search_database.size(); i++) {
-            SearchViewItems song = new SearchViewItems(mFileName.get(i), mTitle.get(i) , mFolder.get(i), mAuthor.get(i), mKey.get(i), mTheme.get(i), mShortLyrics.get(i), mHymnNumber.get(i));
-            searchlist.add(song);
-        }
-
-        adapter = new SearchViewAdapter(getActivity().getApplicationContext(), searchlist, "search" );
-        mListView.setAdapter(adapter);
-        mListView.setTextFilterEnabled(true);
-        mListView.setFastScrollEnabled(true);
-        setupSearchView();
-
-        mSearchView.setOnQueryTextListener(this);
     }
 
     @Override

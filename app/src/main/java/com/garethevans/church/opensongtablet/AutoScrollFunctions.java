@@ -24,7 +24,7 @@ class AutoScrollFunctions {
         try {
             FullscreenActivity.autoScrollDelay = Integer.parseInt(FullscreenActivity.mPreDelay.replaceAll("[\\D]", ""));
         } catch (Exception e) {
-            FullscreenActivity.autoScrollDelay = -1;
+            FullscreenActivity.autoScrollDelay = 0;
         }
         FullscreenActivity.usingdefaults = false;
         if (FullscreenActivity.mDuration.isEmpty() && FullscreenActivity.autoscroll_default_or_prompt.equals("default")) {
@@ -145,11 +145,16 @@ class AutoScrollFunctions {
         public void run() {
             FullscreenActivity.time_passed = System.currentTimeMillis();
             int currtimesecs = (int) ((FullscreenActivity.time_passed - FullscreenActivity.time_start)/1000);
-            String text = TimeTools.timeFormatFixer(currtimesecs);
+            String text;
+            tv.setTextSize(FullscreenActivity.timerFontSizeAutoScroll);
             if (currtimesecs<FullscreenActivity.autoScrollDelay) {
+                // Set the time as a backwards count down
+                currtimesecs = FullscreenActivity.autoScrollDelay - currtimesecs;
+                text = TimeTools.timeFormatFixer(currtimesecs);
                 tv.setTextColor(0xffff0000);
                 tv.setText(text);
             } else {
+                text = TimeTools.timeFormatFixer(currtimesecs);
                 tv.setTextColor(0xffffffff);
                 tv.setText(text);
             }

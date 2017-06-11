@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" / "
-            android:id="@+id/textView47"
+            android:id="@+id/padTimeSeparator_TextView"
             android:textStyle="bold|italic"
             android:textSize="14sp"
             android:textColor="#fff" />
@@ -81,7 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=" / "
-        android:id="@+id/textView46"
+        android:id="@+id/timeSeparator_TextView"
         android:textStyle="bold|italic"
         android:textSize="14sp"
         android:textColor="#fff" />

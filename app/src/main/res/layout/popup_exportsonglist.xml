@@ -4,10 +4,19 @@
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg">
 
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
+
     <ListView
         android:id="@+id/songDirectoy_ListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle"
         android:layout_margin="8dp"/>
 
 </RelativeLayout>

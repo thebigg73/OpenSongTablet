@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
     xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="114"
-    android:versionName="3.9.906"
+    android:versionCode="121"
+    android:versionName="4.0.1"
     android:installLocation="auto">
 
     <!--Overrides are for Sdk=12/13 but library specifies Sdk=14+-->
@@ -273,44 +273,7 @@
             </intent-filter>
 
         </activity>
-<!--
-        <activity
-            android:name="com.garethevans.church.opensongtablet.ChangeDisplayPreferences"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-            android:label="@string/app_name" >
-        </activity>
--->
-<!--
-        <activity
-            android:name="com.garethevans.church.opensongtablet.CustomChord"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-            android:label="@string/app_name" >
-        </activity>
--->
-<!--
-        <activity
-            android:name="com.garethevans.church.opensongtablet.ListSongFiles"
-            android:label="@string/app_name" >
-        </activity>
--->
-<!--
-        <activity
-            android:name="com.garethevans.church.opensongtablet.SearchViewFilterModeNew"
-            android:label="@string/app_name" >
-        </activity>
--->
-<!--
-        <activity
-            android:name="com.garethevans.church.opensongtablet.ChordProConvert"
-            android:label="@string/app_name" >
-        </activity>
--->
-<!--
-        <activity
-            android:name="com.garethevans.church.opensongtablet.Chordie"
-            android:label="@string/app_name" >
-        </activity>
--->
+
         <activity
             android:name="com.garethevans.church.opensongtablet.PresenterMode"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
@@ -322,28 +285,6 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name">
         </activity>
-<!--
-        <activity
-            android:name="com.garethevans.church.opensongtablet.ChordFormat"
-            android:label="@string/app_name" >
-        </activity>
-        -->
- <!--       <activity
-            android:name="com.garethevans.church.opensongtablet.BibleSelect"
-            android:label="@string/app_name" >
-        </activity>
---><!--
-        <activity
-            android:name="com.garethevans.church.opensongtablet.GestureOptions"
-            android:label="@string/app_name" >
-        </activity>
--->
-<!--
-        <activity
-            android:name="com.garethevans.church.opensongtablet.StorageChooser"
-            android:label="@string/app_name" >
-        </activity>
--->
 
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->

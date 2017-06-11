@@ -5,92 +5,103 @@
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
     android:padding="8dp">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:ignore="UselessParent">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    <TextView
+    <FrameLayout
+        android:id="@+id/myTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title"
-        android:id="@+id/itemTitle_TextView"
-        style="@style/MyHeadingText"
-        android:layout_margin="8dp"
-        android:visibility="gone"/>
+        android:layout_alignParentTop="true">
 
-    <EditText
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/fileTitle_EditText"
-        android:inputType="text"
-        android:maxLines="1"
-        style="@style/MyEditText"
-        android:layout_marginBottom="12dp"
-        android:layout_margin="8dp" />
+        android:layout_below="@+id/myTitle"
+        tools:ignore="UselessParent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/file_type"
-        android:id="@+id/fileType_heading"
-        style="@style/MyHeadingText"
-        android:layout_margin="8dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/file_type"
-        android:id="@+id/fileType_TextView"
-        android:textSize="20sp"
-        android:textColor="#fff"
-        android:layout_marginBottom="12sp"
-        android:layout_margin="8dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/onsonglocation"
-            android:id="@+id/messageOnSong_TextView"
-            style="@style/MyInfoText"
-            android:layout_margin="8dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/onsonglocation"
-            android:id="@+id/messageOpenSong_TextView"
-            style="@style/MyInfoText"
-            android:layout_margin="8dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/choosefolder"
-            android:id="@+id/chooseFolder_TextView"
-            style="@style/MyHeadingText"
-            android:layout_margin="8dp" />
-
-        <Spinner
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/chooseFolder_Spinner"
-            style="@style/MySpinner"
-            android:layout_margin="8dp" />
+            android:orientation="vertical">
 
-        <CheckBox
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/overwrite"
-            android:id="@+id/overWrite_CheckBox"
-            android:layout_margin="8dp" />
+            <TextView
+                android:id="@+id/itemTitle_TextView"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/title"
+                android:visibility="gone" />
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/fileTitle_EditText"
+                style="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginBottom="12dp"
+                android:inputType="text"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/fileType_heading"
+                style="@style/MyHeadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/file_type" />
+
+            <TextView
+                android:id="@+id/fileType_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginBottom="12sp"
+                android:text="@string/file_type"
+                android:textColor="#fff"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/messageOnSong_TextView"
+                style="@style/MyInfoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/onsonglocation" />
+
+            <TextView
+                android:id="@+id/messageOpenSong_TextView"
+                style="@style/MyInfoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/onsonglocation" />
+
+            <TextView
+                android:id="@+id/chooseFolder_TextView"
+                style="@style/MyHeadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/choosefolder" />
+
+            <Spinner
+                android:id="@+id/chooseFolder_Spinner"
+                style="@style/MySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp" />
+
+            <CheckBox
+                android:id="@+id/overWrite_CheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/overwrite" />
+
+        </LinearLayout>
     </ScrollView>
 
     <ProgressBar
@@ -98,5 +109,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </RelativeLayout>

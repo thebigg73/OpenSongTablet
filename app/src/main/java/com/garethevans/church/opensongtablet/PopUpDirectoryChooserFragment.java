@@ -85,38 +85,6 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
-        if (getDialog().getWindow()!=null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            if (chooserAction!=null && chooserAction.equals("findosbfile")) {
-                title.setText(getActivity().getResources().getString(R.string.backup_import));
-            } else {
-                title.setText(getActivity().getResources().getString(R.string.storage_choose));
-            }
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    dismiss();
-                }
-            });
-            selectButton = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            selectButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(selectButton,getActivity());
-                    selectButton.setEnabled(false);
-                    doSave();
-                }
-            });
-            if (chooserAction != null && chooserAction.contains("file")) {
-                selectButton.setVisibility(View.GONE);
-            }
-        } else {
-            getDialog().setTitle(getActivity().getResources().getString(R.string.storage_choose));
-        }
     }
 
     @Override
@@ -133,10 +101,38 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         getDialog().setTitle(getActivity().getResources().getString(R.string.storage_choose));
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_folderexplorer, container, false);
         context = getActivity().getBaseContext();
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        if (chooserAction!=null && chooserAction.equals("findosbfile")) {
+            title.setText(getActivity().getResources().getString(R.string.backup_import));
+        } else {
+            title.setText(getActivity().getResources().getString(R.string.storage_choose));
+        }
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        selectButton = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        selectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(selectButton,getActivity());
+                selectButton.setEnabled(false);
+                doSave();
+            }
+        });
+        if (chooserAction != null && chooserAction.contains("file")) {
+            selectButton.setVisibility(View.GONE);
+        }
 
         FullscreenActivity.filechosen = null;
 
@@ -249,6 +245,7 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
     public void doSave() {
         //StorageChooser.customStorageLoc = location;
         FullscreenActivity.customStorage = location.toString();
+        Preferences.savePreferences();
         if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
             sListener.openStorageFragment();
         } else {

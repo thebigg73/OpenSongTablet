@@ -5,6 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/popup_bg">
 
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
+
     <android.support.v7.widget.SwitchCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,7 +22,8 @@
         android:padding="8dp"
         android:theme="@style/MySwitch"
         style="@style/MyHeadingText"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"
+        android:layout_below="@+id/myTitle"/>
 
     <ListView
         android:layout_width="match_parent"

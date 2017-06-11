@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="0dp"
@@ -9,12 +9,20 @@
     android:padding="8dp"
     android:visibility="visible">
 
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
 
     <ScrollView
         android:id="@+id/profile_overview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_below="@+id/myTitle">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,7 +95,8 @@
         android:id="@+id/profile_save"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_below="@+id/profile_overview">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -156,7 +165,8 @@
         android:id="@+id/profile_load"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_below="@+id/profile_save">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -194,4 +204,4 @@
 
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

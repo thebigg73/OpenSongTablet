@@ -53,39 +53,16 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
-        if (getDialog().getWindow()!=null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(getActivity().getResources().getString(R.string.quicklaunch_title));
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    dismiss();
-                }
-            });
-            final FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            saveMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(saveMe,getActivity());
-                    saveMe.setEnabled(false);
-                    doSave();
-                }
-            });
-        } else {
-            getDialog().setTitle(getActivity().getResources().getString(R.string.quicklaunch_title));
-        }
     }
 
     FloatingActionButton button1_image;
     FloatingActionButton button2_image;
     FloatingActionButton button3_image;
+    FloatingActionButton button4_image;
     Spinner button1_spinner;
     Spinner button2_spinner;
     Spinner button3_spinner;
+    Spinner button4_spinner;
 
     @SuppressWarnings("deprecation")
     @Override
@@ -93,24 +70,48 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
         if (savedInstanceState != null) {
             this.dismiss();
         }
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         mListener.pageButtonAlpha("");
 
         View V = inflater.inflate(R.layout.popup_quicklaunch, container, false);
 
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.quicklaunch_title));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(saveMe,getActivity());
+                saveMe.setEnabled(false);
+                doSave();
+            }
+        });
+
         // Initialise the views
         button1_image = (FloatingActionButton) V.findViewById(R.id.button1_image);
         button2_image = (FloatingActionButton) V.findViewById(R.id.button2_image);
         button3_image = (FloatingActionButton) V.findViewById(R.id.button3_image);
+        button4_image = (FloatingActionButton) V.findViewById(R.id.button4_image);
         button1_spinner = (Spinner) V.findViewById(R.id.button1_spinner);
         button2_spinner = (Spinner) V.findViewById(R.id.button2_spinner);
         button3_spinner = (Spinner) V.findViewById(R.id.button3_spinner);
+        button4_spinner = (Spinner) V.findViewById(R.id.button4_spinner);
 
         // Set the floatingactionbuttons to the correct color
         button1_image.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         button2_image.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         button3_image.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
+        button4_image.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
 
         ArrayList<String> actionOptions = new ArrayList<>();
         //0
@@ -135,23 +136,32 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
         actionOptions.add(getResources().getString(R.string.showcapo));
         actionOptions.add(getResources().getString(R.string.showlyrics));
 
+        //12
+        actionOptions.add(getActivity().getResources().getString(R.string.action_search));
+
         ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
         ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
         ArrayAdapter<String> adapter_3 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
+        ArrayAdapter<String> adapter_4 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
         adapter_1.setDropDownViewResource(R.layout.my_spinner);
         adapter_2.setDropDownViewResource(R.layout.my_spinner);
         adapter_3.setDropDownViewResource(R.layout.my_spinner);
+        adapter_3.setDropDownViewResource(R.layout.my_spinner);
+        adapter_4.setDropDownViewResource(R.layout.my_spinner);
         button1_spinner.setAdapter(adapter_1);
         button2_spinner.setAdapter(adapter_2);
         button3_spinner.setAdapter(adapter_3);
+        button4_spinner.setAdapter(adapter_4);
 
         button1_spinner.setSelection(decideOnItemPosition(FullscreenActivity.quickLaunchButton_1));
         button2_spinner.setSelection(decideOnItemPosition(FullscreenActivity.quickLaunchButton_2));
         button3_spinner.setSelection(decideOnItemPosition(FullscreenActivity.quickLaunchButton_3));
+        button4_spinner.setSelection(decideOnItemPosition(FullscreenActivity.quickLaunchButton_4));
 
         button1_image.setBackgroundDrawable(getButtonImage(getActivity(),FullscreenActivity.quickLaunchButton_1));
         button2_image.setBackgroundDrawable(getButtonImage(getActivity(),FullscreenActivity.quickLaunchButton_2));
         button3_image.setBackgroundDrawable(getButtonImage(getActivity(),FullscreenActivity.quickLaunchButton_3));
+        button4_image.setBackgroundDrawable(getButtonImage(getActivity(),FullscreenActivity.quickLaunchButton_4));
 
         button1_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -180,6 +190,15 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
+        button4_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                button4_image.setImageDrawable(getButtonImage(getActivity(),decideOnItemText(i)));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
 
         return V;
 
@@ -189,6 +208,7 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
         FullscreenActivity.quickLaunchButton_1 = decideOnItemText(button1_spinner.getSelectedItemPosition());
         FullscreenActivity.quickLaunchButton_2 = decideOnItemText(button2_spinner.getSelectedItemPosition());
         FullscreenActivity.quickLaunchButton_3 = decideOnItemText(button3_spinner.getSelectedItemPosition());
+        FullscreenActivity.quickLaunchButton_4 = decideOnItemText(button4_spinner.getSelectedItemPosition());
         Preferences.savePreferences();
         if (mListener!=null) {
             mListener.setupQuickLaunchButtons();
@@ -248,6 +268,9 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
                 t = "showlyrics";
                 break;
 
+            case 12:
+                t = "fullsearch";
+                break;
         }
 
         return t;
@@ -303,6 +326,10 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
 
             case "showlyrics":
                 i = 11;
+                break;
+
+            case "search":
+                i = 12;
                 break;
 
         }
@@ -361,7 +388,11 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
                 break;
 
             case "showlyrics":
-                d = c.getResources().getDrawable(R.drawable.ic_comment_text_white_36dp);
+                d = c.getResources().getDrawable(R.drawable.ic_voice_white_36dp);
+                break;
+
+            case "fullsearch":
+                d = c.getResources().getDrawable(R.drawable.ic_magnify_white_36dp);
                 break;
 
         }

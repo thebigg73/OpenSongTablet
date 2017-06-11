@@ -36,11 +36,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.MediaRouteActionProvider;
+import android.support.v7.media.MediaControlIntent;
 import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -109,7 +112,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpLinks.MyInterface, PopUpAreYouSureFragment.MyInterface,
         SongMenuAdapter.MyInterface, BatteryMonitor.MyInterface, SalutDataCallback,
         PopUpMenuSettingsFragment.MyInterface, PopUpAlertFragment.MyInterface,
-        PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface {
+        PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface,
+        PopUpExportFragment.MyInterface {
 
     DialogFragment newFragment;
 
@@ -118,6 +122,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     MediaRouteSelector mMediaRouteSelector;
     MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
     CastDevice mSelectedDevice;
+    PresentationServiceHDMI hdmi;
 
     // The toolbar and menu
     public Toolbar ab_toolbar;
@@ -137,6 +142,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     LoadSong loadsong_async;
     AsyncTask<Object, Void, String> autoslideshowtask;
     AsyncTask<Object, Void, String> sharesong_async;
+    AsyncTask<Object, Void, String> shareset_async;
     AsyncTask<Object, Void, String> load_customreusable;
     AsyncTask<Object, Void, String> add_slidetoset;
     IndexSongs.IndexMySongs indexsongs_task;
@@ -208,6 +214,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     LinearLayout changefolder_LinearLayout;
     boolean firstrun_option = true;
     boolean firstrun_song = true;
+    SwitchCompat autoProject;
 
     // The media player
     public static MediaPlayer mp;
@@ -337,6 +344,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         mMediaRouter = MediaRouter.getInstance(getApplicationContext());
         mMediaRouteSelector = new MediaRouteSelector.Builder()
                 .addControlCategory(CastMediaControlIntent.categoryForCast("4E2B0891"))
+                .addControlCategory(MediaControlIntent.CATEGORY_LIVE_VIDEO)
                 .build();
 
         // If we had an import to do, do it
@@ -463,6 +471,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         doCancelAsyncTask(preparesongmenu_async);
         doCancelAsyncTask(prepareoptionmenu_async);
         doCancelAsyncTask(sharesong_async);
+        doCancelAsyncTask(shareset_async);
         doCancelAsyncTask(load_customreusable);
         doCancelAsyncTask(open_drawers);
         doCancelAsyncTask(close_drawers);
@@ -897,6 +906,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_setbuttons = (ScrollView) findViewById(R.id.presenter_setbuttons);
         preso_settings_scroll = (ScrollView) findViewById(R.id.preso_settings_scroll);
         presenter_song_buttonsListView = (LinearLayout) findViewById(R.id.presenter_song_buttonsListView);
+        autoProject = (SwitchCompat) findViewById(R.id.autoProject);
 
         // The page columns
         col1_layout = (RelativeLayout) findViewById(R.id.col1_layout);
@@ -961,6 +971,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_songtitle.isFocusable();
         presenter_songtitle.requestFocus();
 
+        autoProject.setChecked(FullscreenActivity.autoProject);
+
         // Set the button listeners
         presenter_set.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -990,6 +1002,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 } else {
                     prepareStartAutoSlideShow();
                 }
+            }
+        });
+        autoProject.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.autoProject = b;
+                Preferences.savePreferences();
             }
         });
 
@@ -1288,7 +1307,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         thisloc = imagelocs[x];
                     }
 
-                    String buttonText = FullscreenActivity.songSections[x];
+                    String buttonText;
+                    if (FullscreenActivity.songSections!=null && FullscreenActivity.songSections.length>x) {
+                        buttonText = FullscreenActivity.songSections[x];
+                    } else {
+                        buttonText = "";
+                    }
                     // Get the text for the button
                     if (FullscreenActivity.isImageSlide) {
                         if (thisloc == null) {
@@ -1959,7 +1983,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                             e.printStackTrace();
                         }
                     }
-                    // If the user has shown the 'Welcome to OpenSongApp' file, open the find new songs menu
+                    // If the user has shown the 'Welcome to OpenSongApp' file, and their song lists are empty,
+                    // open the find new songs menu
                     if (FullscreenActivity.mTitle.equals("Welcome to OpenSongApp") ||
                             FullscreenActivity.mSongFileNames==null ||
                             (FullscreenActivity.mSongFileNames!=null && FullscreenActivity.mSongFileNames.length==0)) {
@@ -2005,7 +2030,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             callIntent("openpdf", target);
         }
-        if (autoproject) {
+        if (autoproject || FullscreenActivity.autoProject) {
             autoproject = false;
             presenter_project_group.performClick();
         }
@@ -2040,7 +2065,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_lyrics_image.setBackgroundColor(0x00000000);
         Glide.with(PresenterMode.this).load(imageUri).override(glidewidth, glideheight).into(presenter_lyrics_image);
 
-        if (autoproject) {
+        if (autoproject || FullscreenActivity.autoProject) {
             autoproject = false;
             presenter_project_group.performClick();
         }
@@ -2070,7 +2095,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // And write it
         presenter_lyrics.setText(s);
 
-        if (autoproject) {
+        if (autoproject || FullscreenActivity.autoProject) {
             autoproject = false;
             presenter_project_group.performClick();
         }
@@ -2135,37 +2160,43 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             case "saveset":
                 // Save the set
                 SetActions.saveSetMessage(PresenterMode.this);
-                fixSet();
                 refreshAll();
                 break;
 
             case "clearset":
                 // Clear the set
                 SetActions.clearSet(PresenterMode.this);
-                fixSet();
                 refreshAll();
                 break;
 
             case "deletesong":
                 // Delete current song
                 ListSongFiles.deleteSong(PresenterMode.this);
+                invalidateOptionsMenu();
                 Preferences.savePreferences();
-                fixSet();
                 refreshAll();
                 break;
 
             case "deleteset":
                 // Delete set
                 SetActions.deleteSet(PresenterMode.this);
-                fixSet();
                 refreshAll();
                 break;
 
             case "wipeallsongs":
                 // Wipe all songs
                 ListSongFiles.clearAllSongs();
-                fixSet();
                 refreshAll();
+                break;
+
+            case "resetcolours":
+                // Reset the theme colours
+                PopUpThemeChooserFragment.getDefaultColours();
+                Preferences.savePreferences();
+                refreshAll();
+                FullscreenActivity.whattodo = "changetheme";
+                openFragment();
+                break;
         }
     }
     @Override
@@ -2226,11 +2257,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     private class ShareSong extends AsyncTask<Object, Void, String> {
         @Override
-        protected void onPreExecute() {
-            FullscreenActivity.bmScreen = null;
-        }
-
-        @Override
         protected String doInBackground(Object... objects) {
             // Send this off to be processed and sent via an intent
             Intent emailIntent = ExportPreparer.exportSong(PresenterMode.this, FullscreenActivity.bmScreen);
@@ -2239,10 +2265,42 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
 
         boolean cancelled = false;
-
         @Override
         protected void onCancelled() {
             cancelled = true;
+        }
+    }
+    public void shareSet() {
+        doCancelAsyncTask(shareset_async);
+        shareset_async = new ShareSet();
+        try {
+            shareset_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private class ShareSet extends AsyncTask<Object, Void, String> {
+        @Override
+        protected String doInBackground(Object... objects) {
+            // Send this off to be processed and sent via an intent
+            Intent emailIntent = ExportPreparer.exportSet(PresenterMode.this);
+            startActivityForResult(Intent.createChooser(emailIntent, getResources().getString(R.string.exportsavedset)), 12345);
+            return null;
+        }
+
+        boolean cancelled = false;
+        @Override
+        protected void onCancelled() {
+            cancelled = true;
+        }
+    }
+    @Override
+    public void doExport() {
+        // This is called after the user has specified what should be exported.
+        if (FullscreenActivity.whattodo.equals("customise_exportsong")) {
+            shareSong();
+        } else {
+            shareSet();
         }
     }
     @Override
@@ -2554,10 +2612,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         loadSong();
     }
     @Override
-    public void prepareView() {
-        refreshAll();
-    }
-    @Override
     public void closePopUps() {
         try {
             if (newFragment != null) {
@@ -2706,6 +2760,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else if (FullscreenActivity.isHDMIConnected) {
+                try {
+                    PresentationServiceHDMI.doUpdate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             Handler unhighlight = new Handler();
@@ -2742,6 +2802,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else if (FullscreenActivity.isHDMIConnected) {
+                try {
+                    PresentationServiceHDMI.showLogo();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
             Handler h = new Handler();
             h.postDelayed(new Runnable() {
@@ -2757,6 +2824,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             if (mSelectedDevice != null) {
                 try {
                     PresentationService.ExternalDisplay.hideLogo();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (FullscreenActivity.isHDMIConnected) {
+                try {
+                    PresentationServiceHDMI.hideLogo();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -2792,6 +2865,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else if (FullscreenActivity.isHDMIConnected) {
+                try {
+                    PresentationServiceHDMI.blankDisplay();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
             Handler h = new Handler();
             h.postDelayed(new Runnable() {
@@ -2810,7 +2890,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else if (FullscreenActivity.isHDMIConnected) {
+                try {
+                    PresentationServiceHDMI.unblankDisplay();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+
             Handler h = new Handler();
             h.postDelayed(new Runnable() {
                 @Override
@@ -3069,6 +3156,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
 
     // The stuff to deal with the second screen
+    @Override
+    public void connectHDMI() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
+                    MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
+        }
+        updateDisplays();
+    }
     @SuppressLint("NewApi")
     private class MyMediaRouterCallback extends MediaRouter.Callback {
 
@@ -3085,10 +3180,17 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         public void onRouteUnselected(MediaRouter router, MediaRouter.RouteInfo info) {
             teardown();
             mSelectedDevice = null;
+            FullscreenActivity.isPresenting = false;
+            FullscreenActivity.isHDMIConnected = false;
         }
 
         void teardown() {
-            CastRemoteDisplayLocalService.stopService();
+            try {
+                CastRemoteDisplayLocalService.stopService();
+                hdmi.dismiss();
+            } catch (Exception e) {
+                // Ooops
+            }
             logoButton_isSelected = false;
             noSecondScreen();
         }
@@ -3109,7 +3211,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         public void onRouteVolumeChanged(MediaRouter mediaRouter, MediaRouter.RouteInfo routeInfo) {
         }
     }
-
     public void updateDisplays() {
         // This is called when display devices are changed (connected, disconnected, etc.)
         Intent intent = new Intent(PresenterMode.this,
@@ -3122,28 +3223,46 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 new CastRemoteDisplayLocalService.NotificationSettings.Builder()
                         .setNotificationPendingIntent(notificationPendingIntent).build();
 
-        CastRemoteDisplayLocalService.startService(
-                getApplicationContext(),
-                PresentationService.class, getString(R.string.app_id),
-                mSelectedDevice, settings,
-                new CastRemoteDisplayLocalService.Callbacks() {
-                    @Override
-                    public void onServiceCreated(
-                            CastRemoteDisplayLocalService service) {
+        if (mSelectedDevice!=null) {
+            CastRemoteDisplayLocalService.startService(
+                    getApplicationContext(),
+                    PresentationService.class, getString(R.string.app_id),
+                    mSelectedDevice, settings,
+                    new CastRemoteDisplayLocalService.Callbacks() {
+                        @Override
+                        public void onServiceCreated(
+                                CastRemoteDisplayLocalService service) {
+                        }
 
+                        @Override
+                        public void onRemoteDisplaySessionStarted(
+                                CastRemoteDisplayLocalService service) {
+                        }
+
+                        @Override
+                        public void onRemoteDisplaySessionError(Status status) {
+
+                        }
+
+                    });
+        } else {
+            // Might be a hdmi connection
+            try {
+                Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
+                if (mDisplay != null) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                        hdmi = new PresentationServiceHDMI(PresenterMode.this, mDisplay);
+                        hdmi.show();
+                        isSecondScreen();
+                        logoButton_isSelected = true;
+                        highlightButtonClicked(presenter_logo_group);
+                        FullscreenActivity.isHDMIConnected = true;
                     }
-
-                    @Override
-                    public void onRemoteDisplaySessionStarted(
-                            CastRemoteDisplayLocalService service) {
-                    }
-
-                    @Override
-                    public void onRemoteDisplaySessionError(Status status) {
-
-                    }
-
-                });
+                }
+            } catch (Exception e) {
+               // Ooops
+            }
+        }
     }
     @Override
     public void refreshSecondaryDisplay(String which) {
@@ -3155,19 +3274,80 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 case "maxfontsize":
                 case "manualfontsize":
                 default:
-                    PresentationService.ExternalDisplay.doUpdate();
+                    if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
+                        try {
+                            PresentationService.ExternalDisplay.doUpdate();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (FullscreenActivity.isHDMIConnected) {
+                        try {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                PresentationServiceHDMI.doUpdate();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     break;
 
                 case "info":
-                    PresentationService.ExternalDisplay.updateFonts();
+                    if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
+                        try {
+                            PresentationService.ExternalDisplay.updateFonts();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (FullscreenActivity.isHDMIConnected) {
+                        try {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                PresentationServiceHDMI.updateFonts();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     break;
 
                 case "backgrounds":
-                    PresentationService.ExternalDisplay.fixBackground();
+                    if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
+                        try {
+                            PresentationService.ExternalDisplay.fixBackground();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (FullscreenActivity.isHDMIConnected) {
+                        try {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                PresentationServiceHDMI.fixBackground();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     break;
 
                 case "margins":
-                    PresentationService.ExternalDisplay.changeMargins();
+                    if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
+                        try {
+                            PresentationService.ExternalDisplay.changeMargins();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (FullscreenActivity.isHDMIConnected) {
+                        try {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                PresentationServiceHDMI.changeMargins();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
             }
 
         } catch (Exception e) {
@@ -3176,10 +3356,21 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void updateAlert(boolean ison) {
-        try {
-            PresentationService.ExternalDisplay.updateAlert(ison);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
+            try {
+                PresentationService.ExternalDisplay.updateAlert(ison);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (FullscreenActivity.isHDMIConnected) {
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    PresentationServiceHDMI.updateAlert(ison);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -6,12 +6,20 @@
     android:background="@drawable/popup_bg"
     android:padding="8dp">
 
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
+
     <TextView
         android:id="@+id/popuppresorder_presorder_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_below="@+id/myTitle"
         android:layout_margin="12dp"
         style="@style/MyHeadingText" />
 

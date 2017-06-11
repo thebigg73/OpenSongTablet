@@ -64,41 +64,6 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
-        if (getDialog().getWindow() != null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(mTitle);
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dismiss();
-                }
-            });
-            saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            if (FullscreenActivity.whattodo.equals("processimportosb")) {
-                saveMe.setVisibility(View.GONE);
-                saveMe.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        CustomAnimations.animateFAB(closeMe,getActivity());
-                        closeMe.setEnabled(false);
-                        doTheImporting();
-                    }
-                });
-            } else {
-                saveMe.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        CustomAnimations.animateFAB(saveMe,getActivity());
-                        saveMe.setEnabled(false);
-                        doTheExporting();
-                    }
-                });
-            }
-        } else {
-            getDialog().setTitle(mTitle);
-        }
     }
 
     LinearLayout importfilechooser;
@@ -136,10 +101,41 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         } else {
             mTitle = getActivity().getResources().getString(R.string.backup_export);
         }
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         View V = inflater.inflate(R.layout.popup_importexportosb, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(mTitle);
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+        saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        if (FullscreenActivity.whattodo.equals("processimportosb")) {
+            saveMe.setVisibility(View.GONE);
+            saveMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CustomAnimations.animateFAB(closeMe,getActivity());
+                    closeMe.setEnabled(false);
+                    doTheImporting();
+                }
+            });
+        } else {
+            saveMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CustomAnimations.animateFAB(saveMe,getActivity());
+                    saveMe.setEnabled(false);
+                    doTheExporting();
+                }
+            });
+        }
 
         // Initialise the views
         importfilechooser = (LinearLayout) V.findViewById(R.id.importfilechooser);

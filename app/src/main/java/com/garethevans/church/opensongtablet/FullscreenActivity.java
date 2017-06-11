@@ -1,7 +1,9 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
@@ -73,6 +75,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static String quickLaunchButton_1 = "";
     public static String quickLaunchButton_2 = "";
     public static String quickLaunchButton_3 = "";
+    public static String quickLaunchButton_4 = "";
     public static int fabSize = FloatingActionButton.SIZE_MINI;
     public static boolean page_set_visible;
     public static boolean page_pad_visible;
@@ -87,6 +90,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static boolean page_custom1_visible;
     public static boolean page_custom2_visible;
     public static boolean page_custom3_visible;
+    public static boolean page_custom4_visible;
     public static boolean page_extra_grouped;
     public static boolean page_custom_grouped;
 
@@ -101,6 +105,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static boolean metronomeok;
     public static boolean padok;
     public static boolean autoscrollok;
+    public static float timerFontSizePad;
+    public static float timerFontSizeAutoScroll;
 
     // Updated scaled view stuff
     public static int[] viewwidth;
@@ -252,7 +258,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
     public static long time_passed = 0;
     public static int padtime_length = 0;
-    public static int beatoffcolour = 0xf232333;
+    public static int beatoffcolour = 0xff232333;
     public static String whichbeat = "a";
     public static boolean visualmetronome = false;
 
@@ -322,14 +328,16 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static boolean isVideo = false;
 
     public static String toggleAutoSticky = "";
+    public static int stickyNotesShowSecs;
+    public static int stickyWidth;
     public static boolean hideActionBar;
     public static String setnamechosen = "";
     public static boolean addingtoset = false;
 
     // Swipe
-    public static int SWIPE_MIN_DISTANCE = 300;
+    public static int SWIPE_MIN_DISTANCE = 250;
     public static int SWIPE_MAX_OFF_PATH = 200;
-    public static int SWIPE_THRESHOLD_VELOCITY = 1000;
+    public static int SWIPE_THRESHOLD_VELOCITY = 600;
     public static boolean swipeForMenus;
     public static boolean swipeForSongs;
 
@@ -361,6 +369,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static int dark_presoShadow;
     public static int dark_metronome;
     public static int dark_pagebuttons;
+    public static int dark_stickytext;
+    public static int dark_stickybg;
 
     public static int light_lyricsTextColor;
     public static int light_lyricsBackgroundColor;
@@ -379,6 +389,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static int light_presoShadow;
     public static int light_metronome;
     public static int light_pagebuttons;
+    public static int light_stickytext;
+    public static int light_stickybg;
 
     public static int custom1_lyricsTextColor;
     public static int custom1_lyricsBackgroundColor;
@@ -397,6 +409,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static int custom1_presoShadow;
     public static int custom1_metronome;
     public static int custom1_pagebuttons;
+    public static int custom1_stickytext;
+    public static int custom1_stickybg;
 
     public static int custom2_lyricsTextColor;
     public static int custom2_lyricsBackgroundColor;
@@ -415,6 +429,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static int custom2_presoShadow;
     public static int custom2_metronome;
     public static int custom2_pagebuttons;
+    public static int custom2_stickytext;
+    public static int custom2_stickybg;
 
     public static int lyricsBoxColor;
     public static int lyricsTextColor;
@@ -437,6 +453,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static float commentfontscalesize;
     public static float headingfontscalesize;
     public static float chordfontscalesize;
+    public static int stickytextColor;
+    public static int stickybgColor;
+    public static float stickyOpacity;
+    public static float stickyTextSize;
 
     // Page turner
     public static int pageturner_NEXT;
@@ -446,6 +466,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static int pageturner_PAD;
     public static int pageturner_AUTOSCROLL;
     public static int pageturner_METRONOME;
+    public static int pageturner_AUTOSCROLLPAD;
+    public static int pageturner_AUTOSCROLLMETRONOME;
+    public static int pageturner_PADMETRONOME;
+    public static int pageturner_AUTOSCROLLPADMETRONOME;
     public static String toggleScrollBeforeSwipe = "";
     public static String togglePageButtons = "";
 
@@ -596,7 +620,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static String capokey = null;
 
     public static boolean isPresenting;
+    public static boolean isHDMIConnected = false;
     public static int scalingDensity = 240;
+    public static boolean autoProject;
 
     // Info for the lyrics table
     public static boolean scalingfiguredout = false;
@@ -675,6 +701,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static File dirsettings = new File(root.getAbsolutePath() + "/documents/OpenSong/Settings");
     public static File dironsong = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong");
     public static File dirsets = new File(root.getAbsolutePath() + "/documents/OpenSong/Sets");
+    public static File direxport = new File(root.getAbsolutePath() + "/documents/OpenSong/Export");
     public static File dirPads = new File(root.getAbsolutePath() + "/documents/OpenSong/Pads");
     public static File dirbackgrounds = new File(root.getAbsolutePath() + "/documents/OpenSong/Backgrounds");
     public static File dirbibles = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture");
@@ -686,10 +713,27 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static File dircustomimages = new File(root.getAbsolutePath() + "/documents/OpenSong/Images/_cache");
     public static File dirvariations = new File(root.getAbsolutePath() + "/documents/OpenSong/Variations");
     public static File dirprofiles = new File(root.getAbsolutePath() + "/documents/OpenSong/Profiles");
+    public static File dirreceived = new File(root.getAbsolutePath() + "/documents/OpenSong/Received");
 
     public static Locale locale;
 
     public static boolean firstload = true;
+
+    // Stuff for customising the export feature
+    public static boolean exportOpenSongAppSet;
+    public static boolean exportOpenSongApp;
+    public static boolean exportDesktop;
+    public static boolean exportText;
+    public static boolean exportChordPro;
+    public static boolean exportOnSong;
+    public static boolean exportImage;
+    public static boolean exportPDF;
+    public static String exportOpenSongAppSet_String = "";
+    public static String exportOpenSongApp_String = "";
+    public static String exportDesktop_String = "";
+    public static String exportText_String = "";
+    public static String exportChordPro_String = "";
+    public static String exportOnSong_String = "";
 
     //public static String[][][] bibleVerse; // bibleVerse[book][chapter#][verse#]
 
@@ -725,6 +769,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static boolean firstReceivingOfSalutXML = true;
     public static String mySalutXML = "";
 
+    public static boolean resetSomePreferences;
+
     static NfcAdapter mNfcAdapter;
     // Flag to indicate that Android Beam is available
     public static boolean mAndroidBeamAvailable  = false;
@@ -757,6 +803,18 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
         myPreferences = getPreferences(MODE_PRIVATE);
         Preferences.loadPreferences();
+
+        if (resetSomePreferences) {
+            Log.d("d","Doing the resetting!");
+            FullscreenActivity.longpressdownpedalgesture = "0";
+            FullscreenActivity.longpressuppedalgesture = "0";
+            FullscreenActivity.longpressnextpedalgesture = "0";
+            FullscreenActivity.longpresspreviouspedalgesture = "0";
+            FullscreenActivity.gesture_doubletap = "2";
+            FullscreenActivity.gesture_longpress = "3";
+            Preferences.savePreferences();
+            resetSomePreferences = false;
+        }
 
         mainfoldername = getResources().getString(R.string.mainfoldername);
 
@@ -956,4 +1014,13 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
         finish();
     }
 
+    public static void restart(Context context) {
+        Intent mStartActivity = new Intent(context, SettingsActivity.class);
+        int mPendingIntentId = 123456;
+        PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+        System.exit(0);
+    }
 }

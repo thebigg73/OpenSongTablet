@@ -1,93 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
     android:padding="8dp">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/myTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_alignParentTop="true">
 
-        <SeekBar
-            android:id="@+id/transposeSeekBar"
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/apptheme_scrubber_primary_holo"
-            android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-            android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/transposeValTextView"
-            style="@style/MyHeadingText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:gravity="center_horizontal"
-            android:textIsSelectable="true"
-            android:textSize="32sp" />
-
-        <TextView
-            android:id="@+id/keyChange_TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:gravity="center_horizontal"
-            android:text="@string/edit_song_key"
-            android:textSize="28sp" />
-
-        <TextView
-            android:id="@+id/detectedChordFormatText"
-            style="@style/MyHeadingText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/oldchordformat" />
-
-        <RadioGroup
-            android:id="@+id/detectedChordFormat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/chordFormat1Radio"
-                style="@style/MyInfoText"
+            <SeekBar
+                android:id="@+id/transposeSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/chordFormat1" />
+                android:layout_margin="8dp"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
-            <RadioButton
-                android:id="@+id/chordFormat2Radio"
+            <TextView
+                android:id="@+id/transposeValTextView"
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/chordFormat2"
-                android:textSize="12sp" />
+                android:layout_margin="16dp"
+                android:gravity="center_horizontal"
+                android:textIsSelectable="true"
+                android:textSize="32sp" />
 
-            <RadioButton
-                android:id="@+id/chordFormat3Radio"
-                style="@style/MyInfoText"
+            <TextView
+                android:id="@+id/keyChange_TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/chordFormat3" />
+                android:layout_margin="8dp"
+                android:gravity="center_horizontal"
+                android:text="@string/edit_song_key"
+                android:textSize="28sp" />
 
-            <RadioButton
-                android:id="@+id/chordFormat4Radio"
-                style="@style/MyInfoText"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/detectedChordFormatText"
+                style="@style/MyHeadingText"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/chordFormat4" />
+                android:layout_margin="8dp"
+                android:text="@string/oldchordformat" />
 
-            <RadioButton
-                android:id="@+id/chordFormat5Radio"
-                style="@style/MyInfoText"
+            <RadioGroup
+                android:id="@+id/detectedChordFormat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/chordFormat5" />
+                android:layout_height="wrap_content">
 
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/chordFormat1Radio"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chordFormat1" />
 
-    </LinearLayout>
+                <RadioButton
+                    android:id="@+id/chordFormat2Radio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chordFormat2"
+                    android:textSize="12sp" />
 
-</ScrollView>
+                <RadioButton
+                    android:id="@+id/chordFormat3Radio"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chordFormat3" />
+
+                <RadioButton
+                    android:id="@+id/chordFormat4Radio"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chordFormat4" />
+
+                <RadioButton
+                    android:id="@+id/chordFormat5Radio"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chordFormat5" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

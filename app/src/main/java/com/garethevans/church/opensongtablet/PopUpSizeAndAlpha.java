@@ -2,6 +2,8 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.Window;
@@ -54,6 +56,7 @@ class PopUpSizeAndAlpha {
 
             Window dw = dialog.getWindow();
             if (dw != null) {
+                dw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dw.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                 dw.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                 dialog.getWindow().setLayout(desired_width, desired_height);

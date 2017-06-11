@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg">
 
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/importfilechooser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/myTitle"
         android:orientation="vertical">
 
         <TextView
@@ -48,6 +57,7 @@
         android:id="@+id/zipcontents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/importfilechooser"
         android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
@@ -67,4 +77,4 @@
         android:isScrollContainer="true" />
 
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

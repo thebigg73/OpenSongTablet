@@ -382,13 +382,13 @@ public class ChordProConvert {
 
 		newSongTitle = newSongTitle.replace(".pro", "");
         newSongTitle = newSongTitle.replace(".PRO", "");
-		newSongTitle = newSongTitle.replace(".cho", "");
 		newSongTitle = newSongTitle.replace(".chopro", "");
 		newSongTitle = newSongTitle.replace(".chordpro", "");
-        newSongTitle = newSongTitle.replace(".CHO", "");
         newSongTitle = newSongTitle.replace(".CHOPRO", "");
         newSongTitle = newSongTitle.replace(".CHORDPRO", "");
-        newSongTitle = newSongTitle.replace(".txt", "");
+		newSongTitle = newSongTitle.replace(".cho", "");
+		newSongTitle = newSongTitle.replace(".CHO", "");
+		newSongTitle = newSongTitle.replace(".txt", "");
         newSongTitle = newSongTitle.replace(".TXT", "");
 
         File from;

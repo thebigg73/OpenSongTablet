@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,8 +27,6 @@ import android.widget.TextView;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -114,6 +110,23 @@ public class PopUpListSetsFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
 
         myTitle = getActivity().getResources().getString(R.string.options_set);
 
@@ -141,51 +154,32 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         }
 
-        if (getDialog().getWindow()!=null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(myTitle);
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    FullscreenActivity.myToastMessage = "";
-                    dismiss();
-                }
-            });
-            final FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            saveMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(saveMe,getActivity());
-                    saveMe.setEnabled(false);
-                    doAction();
-                }
-            });
-        } else {
-            getDialog().setTitle(myTitle);
-        }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            this.dismiss();
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        getDialog().setCanceledOnTouchOutside(true);
-
         final View V = inflater.inflate(R.layout.popup_setlists, container, false);
+
+        title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(myTitle);
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                FullscreenActivity.myToastMessage = "";
+                dismiss();
+            }
+        });
+        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(saveMe,getActivity());
+                //saveMe.setEnabled(false);
+                doAction();
+            }
+        });
+
+        // Prepare the toast message using the title.  It is cleared if cancel is clicked
+        FullscreenActivity.myToastMessage = myTitle + " : " + getActivity().getResources().getString(R.string.ok);
 
         // Reset the setname chosen
         FullscreenActivity.setnamechosen = "";
@@ -269,8 +263,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                 break;
         }
 
-        // Prepare the toast message using the title.  It is cleared if cancel is clicked
-        FullscreenActivity.myToastMessage = myTitle + " : " + getActivity().getResources().getString(R.string.ok);
 
         // Set The Adapter
         setCorrectAdapter(setnames);
@@ -388,6 +380,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         } else if (FullscreenActivity.whattodo.equals("deleteset") && !FullscreenActivity.setnamechosen.isEmpty() && !FullscreenActivity.setnamechosen.equals("")) {
             doDeleteSet();
         } else if (FullscreenActivity.whattodo.equals("exportset") && !FullscreenActivity.setnamechosen.isEmpty() && !FullscreenActivity.setnamechosen.equals("")) {
+            FullscreenActivity.settoload = FullscreenActivity.setnamechosen;
             doExportSet();
         } else if (FullscreenActivity.whattodo.equals("managesets")) {
             if (!FullscreenActivity.setnamechosen.equals("") && !setListName.getText().toString().equals("")) {
@@ -666,128 +659,10 @@ public class PopUpListSetsFragment extends DialogFragment {
     }
 
     public void doExportSet() {
-        // Load the set up
-        FullscreenActivity.settoload = null;
-        FullscreenActivity.settoload = FullscreenActivity.setnamechosen;
 
-        AsyncTask<Object, Void, String> set_export = new ExportSet();
-        set_export.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-    }
-
-    private class ExportSet extends AsyncTask<Object, Void, String> {
-
-        @Override
-        protected String doInBackground(Object... objects) {
-            // Run the script that generates the email text which has the set details in it.
-            try {
-                ExportPreparer.setParser(getActivity());
-            } catch (XmlPullParserException | IOException e) {
-                e.printStackTrace();
-            }
-
-            Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-            emailIntent.setType("text/plain");
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, FullscreenActivity.settoload);
-            emailIntent.putExtra(Intent.EXTRA_TITLE, FullscreenActivity.settoload);
-            emailIntent.putExtra(Intent.EXTRA_TEXT, FullscreenActivity.settoload + "\n\n" + FullscreenActivity.emailtext);
-            FullscreenActivity.emailtext = "";
-            File setfile  = new File(FullscreenActivity.dirsets + "/" + FullscreenActivity.settoload);
-            File ostsfile = new File(FullscreenActivity.homedir + "/Notes/_cache/" + FullscreenActivity.settoload + ".osts");
-
-            if (!setfile.exists() || !setfile.canRead()) {
-                return null;
-            }
-
-            // Copy the set file to an .osts file
-            try {
-                FileInputStream in = new FileInputStream(setfile);
-                FileOutputStream out = new FileOutputStream(ostsfile);
-                byte[] buffer = new byte[1024];
-                int read;
-                while ((read = in.read(buffer)) != -1) {
-                    out.write(buffer, 0, read);
-                }
-                in.close();
-
-                // write the output file (You have now copied the file)
-                out.flush();
-                out.close();
-
-            } catch (Exception e) {
-                // Error
-                e.printStackTrace();
-            }
-
-            Uri uri_set  = Uri.fromFile(setfile);
-            Uri uri_osts = Uri.fromFile(ostsfile);
-
-            ArrayList<Uri> uris = new ArrayList<>();
-            if (uri_set!=null) {
-                uris.add(uri_set);
-            }
-            if (uri_osts!=null) {
-                uris.add(uri_osts);
-            }
-
-            // Go through each song in the set and attach them
-            // Also try to attach a copy of the song ending in .ost, as long as they aren't images
-            for (int q=0; q<FullscreenActivity.exportsetfilenames.size(); q++) {
-                // Remove any subfolder from the exportsetfilenames_ost.get(q)
-                String tempsong_ost = FullscreenActivity.exportsetfilenames_ost.get(q);
-                tempsong_ost = tempsong_ost.substring(tempsong_ost.indexOf("/")+1);
-                File songtoload  = new File(FullscreenActivity.dir + "/" + FullscreenActivity.exportsetfilenames.get(q));
-                File ostsongcopy = new File(FullscreenActivity.homedir + "/Notes/_cache/" + tempsong_ost + ".ost");
-                boolean isimage = false;
-                if (songtoload.toString().endsWith(".jpg") || songtoload.toString().endsWith(".JPG") ||
-                        songtoload.toString().endsWith(".jpeg") || songtoload.toString().endsWith(".JPEG") ||
-                        songtoload.toString().endsWith(".gif") || songtoload.toString().endsWith(".GIF") ||
-                        songtoload.toString().endsWith(".png") || songtoload.toString().endsWith(".PNG") ||
-                        songtoload.toString().endsWith(".bmp") || songtoload.toString().endsWith(".BMP")) {
-                    songtoload = new File(FullscreenActivity.exportsetfilenames.get(q));
-                    isimage = true;
-                }
-
-                // Copy the song
-                if (songtoload.exists()) {
-                    try {
-                        if (!isimage) {
-                            FileInputStream in = new FileInputStream(songtoload);
-                            FileOutputStream out = new FileOutputStream(ostsongcopy);
-
-                            byte[] buffer = new byte[1024];
-                            int read;
-                            while ((read = in.read(buffer)) != -1) {
-                                out.write(buffer, 0, read);
-                            }
-                            in.close();
-
-                            // write the output file (You have now copied the file)
-                            out.flush();
-                            out.close();
-
-                            Uri urisongs_ost = Uri.fromFile(ostsongcopy);
-                            uris.add(urisongs_ost);
-
-                        }
-                        Uri urisongs = Uri.fromFile(songtoload);
-                        uris.add(urisongs);
-
-                    } catch (Exception e) {
-                        // Error
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-            startActivityForResult(Intent.createChooser(emailIntent, getActivity().getResources().getString(R.string.exportsavedset)), 12345);
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            // Close this dialog
+        if (mListener!=null) {
+            FullscreenActivity.whattodo = "customise_exportset";
+            mListener.openFragment();
             dismiss();
         }
     }

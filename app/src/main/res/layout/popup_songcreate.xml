@@ -1,47 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/popup_bg">
+    android:background="@drawable/popup_bg"
+    android:padding="8dp">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/myTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_alignParentTop="true">
 
-        <TextView
-            android:id="@+id/textView11"
-            style="@style/MyHeadingText"
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/choosefolder" />
+            android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/newFolderSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            style="@style/MySpinner"/>
+            <TextView
+                android:id="@+id/textView11"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/choosefolder" />
 
-        <TextView
-            android:id="@+id/textView12"
-            style="@style/MyHeadingText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/rename" />
+            <Spinner
+                android:id="@+id/newFolderSpinner"
+                style="@style/MySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp" />
 
-        <EditText
-            android:id="@+id/newSongNameEditText"
-            style="@style/MyEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:hint="@string/choosesongname"
-            android:inputType="textAutoCorrect|text"
-            android:maxLines="1" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textView12"
+                style="@style/MyHeadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/rename" />
 
+            <EditText
+                android:id="@+id/newSongNameEditText"
+                style="@style/MyEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:hint="@string/choosesongname"
+                android:inputType="textAutoCorrect|text"
+                android:maxLines="1" />
+        </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
+
+</RelativeLayout>

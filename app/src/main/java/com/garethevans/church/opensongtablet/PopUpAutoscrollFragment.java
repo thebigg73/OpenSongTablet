@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -53,33 +52,13 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
-
-        if (getDialog().getWindow()!=null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(getActivity().getResources().getString(R.string.autoscroll));
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    doSave();
-                }
-            });
-            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            saveMe.setVisibility(View.GONE);
-
-        } else {
-            getDialog().setTitle(getActivity().getResources().getString(R.string.autoscroll));
-        }
     }
 
     Button popupautoscroll_startstopbutton;
     SeekBar popupautoscroll_delay;
     TextView popupautoscroll_delay_text;
     EditText popupautoscroll_duration;
-    ImageButton uselinkaudiolength_ImageButton;
+    FloatingActionButton uselinkaudiolength_ImageButton;
 
     boolean mStopHandler = false;
     Handler mHandler = new Handler();
@@ -103,17 +82,31 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             this.dismiss();
         }
         getDialog().setCanceledOnTouchOutside(true);
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         mListener.pageButtonAlpha("autoscroll");
 
         View V = inflater.inflate(R.layout.popup_page_autoscroll, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.autoscroll));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                doSave();
+            }
+        });
+        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setVisibility(View.GONE);
 
         // Initialise the views
         popupautoscroll_startstopbutton = (Button) V.findViewById(R.id.popupautoscroll_startstopbutton);
         popupautoscroll_delay = (SeekBar) V.findViewById(R.id.popupautoscroll_delay);
         popupautoscroll_delay_text = (TextView) V.findViewById(R.id.popupautoscroll_delay_text);
         popupautoscroll_duration = (EditText) V.findViewById(R.id.popupautoscroll_duration);
-        uselinkaudiolength_ImageButton = (ImageButton) V.findViewById(R.id.uselinkaudiolength_ImageButton);
+        uselinkaudiolength_ImageButton = (FloatingActionButton) V.findViewById(R.id.uselinkaudiolength_ImageButton);
 
         // Set up current values
         AutoScrollFunctions.getAutoScrollTimes();
@@ -164,6 +157,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         uselinkaudiolength_ImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CustomAnimations.animateFAB(uselinkaudiolength_ImageButton,getActivity());
                 grabLinkAudioTime();
                 FullscreenActivity.autoscrollok = ProcessSong.isAutoScrollValid();
                 Preferences.savePreferences();

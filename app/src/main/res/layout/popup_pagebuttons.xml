@@ -1,24 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="0dp"
     android:background="@drawable/popup_bg"
-    android:orientation="vertical"
-    android:padding="8dp"
-    android:visibility="visible">
+    android:padding="8dp">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle"
+        android:layout_margin="0dp"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/pageButtonSize_Switch"
+                style="@style/MyTextSwitch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_margin="8dp"
                 android:checked="false"
                 android:text="@string/size"
@@ -27,22 +43,20 @@
                 android:textOn="@string/size_normal"
                 android:thumb="@drawable/switch_button"
                 app:showText="true"
-                app:thumbTextPadding="4dp"
-                style="@style/MyTextSwitch"
                 app:switchTextAppearance="@style/MyInfoText"
-                android:layout_gravity="center_vertical"
+                app:thumbTextPadding="4dp"
                 app:thumbTint="#444488" />
 
             <TextView
+                style="@style/MyHeadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/transparency"
-                style="@style/MyHeadingText"
-                android:layout_gravity="center_vertical"/>
+                android:text="@string/transparency" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -53,194 +67,207 @@
                     android:id="@+id/pageButtonTransparency_seekBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_margin="24dp"
                     android:layout_weight="1"
                     android:background="@drawable/apptheme_scrubber_primary_holo"
                     android:max="100"
                     android:progress="40"
                     android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
-                    android:layout_gravity="center_vertical" />
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                 <TextView
                     android:id="@+id/transparency_TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
                     android:minEms="3"
                     android:textColor="#fff"
-                    android:textSize="14sp"
-                    android:layout_gravity="right|center_vertical" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/section_box">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical">
 
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/pageButtonGroup_Switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/pagebutton_group"
-            android:theme="@style/SwitchStyle"
-            style="@style/MyHeadingText"
-            android:textColor="#ff0"
-            android:layout_gravity="center_vertical" />
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/pageButtonGroup_Switch"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/pagebutton_group"
+                    android:textColor="#ff0"
+                    android:theme="@style/SwitchStyle" />
 
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/extraButtonGroup_Switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/pagebutton_extrainfo_group"
-            android:theme="@style/SwitchStyle"
-            style="@style/MyHeadingText"
-            android:textColor="#ff0"
-            android:layout_gravity="center_vertical" />
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/extraButtonGroup_Switch"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/pagebutton_extrainfo_group"
+                    android:textColor="#ff0"
+                    android:theme="@style/SwitchStyle" />
 
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/customButtonGroup_Switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/pagebutton_custom_group"
-            android:theme="@style/SwitchStyle"
-            style="@style/MyHeadingText"
-            android:textColor="#ff0"
-            android:layout_gravity="center_vertical" />
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/customButtonGroup_Switch"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/pagebutton_custom_group"
+                    android:textColor="#ff0"
+                    android:theme="@style/SwitchStyle" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/section_box"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/pagebutton_visibility" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/setVisible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/options_set"
+                    android:theme="@style/SwitchStyle" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/padVisible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/pad"
+                    android:theme="@style/SwitchStyle" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/metronomeVisible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/metronome"
+                    android:theme="@style/SwitchStyle" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/autoscrollVisible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/autoscroll"
+                    android:theme="@style/SwitchStyle" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/chordsVisible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/chords"
+                    android:theme="@style/SwitchStyle" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/linksVisible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/link"
+                    android:theme="@style/SwitchStyle" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/stickyVisible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/stickynotes"
+                    android:theme="@style/SwitchStyle" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/pageselectVisible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/pdf_selectpage"
+                    android:theme="@style/SwitchStyle" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/custom1Visible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/custom"
+                    android:theme="@style/SwitchStyle" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/custom2Visible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/custom"
+                    android:theme="@style/SwitchStyle" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/custom3Visible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/custom"
+                    android:theme="@style/SwitchStyle" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/custom4Visible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/custom"
+                    android:theme="@style/SwitchStyle" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/section_box">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/MyHeadingText"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
-            android:text="@string/pagebutton_visibility"/>
+    </ScrollView>
 
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/setVisible_Switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/options_set"
-            android:theme="@style/SwitchStyle"
-            style="@style/MyWhiteHeadingText"
-            android:layout_gravity="center_vertical" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/padVisible_Switch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/pad"
-                android:theme="@style/SwitchStyle"
-                style="@style/MyWhiteHeadingText"
-                android:layout_gravity="center_vertical" />
-
-            <android.support.v7.widget.SwitchCompat
-            android:id="@+id/metronomeVisible_Switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/metronome"
-            android:theme="@style/SwitchStyle"
-            style="@style/MyWhiteHeadingText"
-            android:layout_gravity="center_vertical" />
-
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/autoscrollVisible_Switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/autoscroll"
-            android:theme="@style/SwitchStyle"
-            style="@style/MyWhiteHeadingText"
-            android:layout_gravity="center_vertical" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/chordsVisible_Switch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/chords"
-                android:theme="@style/SwitchStyle"
-                style="@style/MyWhiteHeadingText"
-                android:layout_gravity="center_vertical" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/linksVisible_Switch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/link"
-                android:theme="@style/SwitchStyle"
-                style="@style/MyWhiteHeadingText"
-                android:layout_gravity="center_vertical" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/stickyVisible_Switch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/stickynotes"
-                android:theme="@style/SwitchStyle"
-                style="@style/MyWhiteHeadingText"
-                android:layout_gravity="center_vertical" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/pageselectVisible_Switch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/pdf_selectpage"
-                android:theme="@style/SwitchStyle"
-                style="@style/MyWhiteHeadingText"
-                android:layout_gravity="center_vertical" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/custom1Visible_Switch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/custom"
-                android:theme="@style/SwitchStyle"
-                style="@style/MyWhiteHeadingText"
-                android:layout_gravity="center_vertical" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/custom2Visible_Switch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/custom"
-                android:theme="@style/SwitchStyle"
-                style="@style/MyWhiteHeadingText"
-                android:layout_gravity="center_vertical" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/custom3Visible_Switch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/custom"
-                android:theme="@style/SwitchStyle"
-                style="@style/MyWhiteHeadingText"
-                android:layout_gravity="center_vertical" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</ScrollView>
+</RelativeLayout>

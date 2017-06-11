@@ -105,31 +105,6 @@ public class PopUpImportExternalFile extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
-        if (getDialog().getWindow()!=null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(getActivity().getResources().getString(R.string.importnewsong));
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    dismiss();
-                }
-            });
-            saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            saveMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(saveMe,getActivity());
-                    saveMe.setEnabled(false);
-                    defaultSaveAction();
-                }
-            });
-        } else {
-            getDialog().setTitle(getActivity().getResources().getString(R.string.importnewsong));
-        }
     }
 
     public void setTitle(String s) {
@@ -152,10 +127,31 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         V = inflater.inflate(R.layout.popup_importexternalfile, container, false);
+
+        title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.importnewsong));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(saveMe,getActivity());
+                saveMe.setEnabled(false);
+                defaultSaveAction();
+            }
+        });
 
         // Initialise the views
         itemTitle_TextView = (TextView) V.findViewById(R.id.itemTitle_TextView);
@@ -694,9 +690,13 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     public void importOS() {
         // Hide the cancel button
-        closeMe.setVisibility(View.GONE);
+        if (closeMe!=null) {
+            closeMe.setVisibility(View.GONE);
+        }
         //Change the text of the save button
-        progressbar.setVisibility(View.GONE);
+        if (progressbar!=null) {
+            progressbar.setVisibility(View.GONE);
+        }
         if (saveMe!=null) {
             saveMe.setClickable(false);
         }
@@ -746,8 +746,9 @@ public class PopUpImportExternalFile extends DialogFragment {
                     Log.d("d", "filename=" + filename);
 
                     FileOutputStream fout;
-                    if (filename.equals("OnSong.Backup.sqlite3")) {
-                        fout = new FileOutputStream(FullscreenActivity.homedir + "/" + filename);
+                    if (filename.equals("OnSong.Backup.sqlite3") || filename.equals("OnSong.sqlite3")) {
+                        //fout = new FileOutputStream(FullscreenActivity.homedir + "/" + filename);
+                        fout = new FileOutputStream(FullscreenActivity.homedir + "/" + "OnSong.Backup.sqlite3");
                     } else {
                         fout = new FileOutputStream(FullscreenActivity.dironsong + "/" + filename);
                     }

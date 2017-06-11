@@ -52,30 +52,13 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
     FloatingActionButton group_custom1;
     FloatingActionButton group_custom2;
     FloatingActionButton group_custom3;
+    FloatingActionButton group_custom4;
 
     @Override
     public void onStart() {
         super.onStart();
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
-        }
-        if (getDialog().getWindow() != null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(getActivity().getResources().getString(R.string.pagebuttons));
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    dismiss();
-                }
-            });
-            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            saveMe.setVisibility(View.GONE);
-        } else {
-            getDialog().setTitle(getActivity().getResources().getString(R.string.pagebuttons));
         }
     }
 
@@ -91,10 +74,24 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         View V = inflater.inflate(R.layout.popup_groupedpagebuttons, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.pagebuttons));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setVisibility(View.GONE);
 
         // Initialise the views
         group_pad = (FloatingActionButton) V.findViewById(R.id.group_pad);
@@ -107,6 +104,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         group_custom1 = (FloatingActionButton) V.findViewById(R.id.group_custom1);
         group_custom2 = (FloatingActionButton) V.findViewById(R.id.group_custom2);
         group_custom3 = (FloatingActionButton) V.findViewById(R.id.group_custom3);
+        group_custom4 = (FloatingActionButton) V.findViewById(R.id.group_custom4);
 
         // Set the quicklaunch icons
         setupQuickLaunchButtons();
@@ -122,6 +120,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         group_custom1.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_custom2.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_custom3.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
+        group_custom4.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
 
         // Set shortclick listeners
         group_pad.setOnClickListener(new View.OnClickListener() {
@@ -173,6 +172,10 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         group_custom3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {customButtonAction(FullscreenActivity.quickLaunchButton_3);}
+        });
+        group_custom4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {customButtonAction(FullscreenActivity.quickLaunchButton_4);}
         });
 
         // Set longclick listeners
@@ -229,6 +232,13 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
                 return true;
             }
         });
+        group_custom4.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                openAction("quicklaunch");
+                return true;
+            }
+        });
 
         return V;
     }
@@ -239,6 +249,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         group_custom1.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(getActivity(), FullscreenActivity.quickLaunchButton_1));
         group_custom2.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(getActivity(), FullscreenActivity.quickLaunchButton_2));
         group_custom3.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(getActivity(), FullscreenActivity.quickLaunchButton_3));
+        group_custom4.setImageDrawable(PopUpQuickLaunchSetup.getButtonImage(getActivity(), FullscreenActivity.quickLaunchButton_4));
     }
 
     public void customButtonAction(String s) {
@@ -256,6 +267,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
             case "gestures":
             case "footpedal":
             case "transpose":
+            case "fullsearch":
                 openAction(s);
                 break;
 

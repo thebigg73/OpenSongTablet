@@ -5,147 +5,156 @@
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg">
 
-    <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/editSongDetails"
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
 
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp">
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/t_mTitle"
-        android:text="@string/edit_song_title"
-        style="@style/MyHeadingText"/>
+        android:layout_above="@+id/editSongDetails"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/myTitle">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/v_mTitle"
-        style="@style/MyInfoText"
-        android:layout_marginBottom="16dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_song_author"
-        android:id="@+id/t_mAuthor"
-        style="@style/MyHeadingText" />
+            <TextView
+                android:id="@+id/t_mTitle"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_song_title" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/v_mAuthor"
-        style="@style/MyInfoText"
-        android:layout_marginBottom="16dp" />
+            <TextView
+                android:id="@+id/v_mTitle"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_song_copyright"
-        android:id="@+id/t_mCopyright"
-        style="@style/MyHeadingText" />
+            <TextView
+                android:id="@+id/t_mAuthor"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_song_author" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/v_mCopyright"
-        style="@style/MyInfoText"
-        android:layout_marginBottom="16dp" />
+            <TextView
+                android:id="@+id/v_mAuthor"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_song_ccli"
-        android:id="@+id/t_mCCLI"
-        style="@style/MyHeadingText" />
+            <TextView
+                android:id="@+id/t_mCopyright"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_song_copyright" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/v_mCCLI"
-        style="@style/MyInfoText"
-        android:layout_marginBottom="16dp" />
+            <TextView
+                android:id="@+id/v_mCopyright"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_song_presentation"
-        android:id="@+id/t_mPresentation"
-        style="@style/MyHeadingText" />
+            <TextView
+                android:id="@+id/t_mCCLI"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_song_ccli" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/v_mPresentation"
-        style="@style/MyInfoText"
-        android:layout_marginBottom="16dp" />
+            <TextView
+                android:id="@+id/v_mCCLI"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_song_hymn"
-        android:id="@+id/t_mHymnNumber"
-        style="@style/MyHeadingText"/>
+            <TextView
+                android:id="@+id/t_mPresentation"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_song_presentation" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/v_mHymnNumber"
-        style="@style/MyInfoText"
-        android:layout_marginBottom="16dp" />
+            <TextView
+                android:id="@+id/v_mPresentation"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/stickynotes"
-        android:id="@+id/t_mNotes"
-        style="@style/MyHeadingText" />
+            <TextView
+                android:id="@+id/t_mHymnNumber"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_song_hymn" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/v_mNotes"
-        style="@style/MyInfoText"
-        android:layout_marginBottom="16dp" />
+            <TextView
+                android:id="@+id/v_mHymnNumber"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_song_lyrics"
-        android:id="@+id/t_mLyrics"
-        style="@style/MyHeadingText" />
+            <TextView
+                android:id="@+id/t_mNotes"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/stickynotes" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/v_mLyrics"
-        style="@style/MyInfoText"
-        android:layout_marginBottom="16dp" />
+            <TextView
+                android:id="@+id/v_mNotes"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
 
-</LinearLayout>
-</ScrollView>
+            <TextView
+                android:id="@+id/t_mLyrics"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_song_lyrics" />
+
+            <TextView
+                android:id="@+id/v_mLyrics"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <Button
+        android:id="@+id/editSongDetails"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/options_song_edit"
-        android:id="@+id/editSongDetails"
-        android:enabled="true"
-        android:background="@drawable/green_button"
-        android:textColor="#fff"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="8dp" />
+        android:layout_alignParentRight="true"
+        android:layout_margin="8dp"
+        android:background="@drawable/green_button"
+        android:enabled="true"
+        android:text="@string/options_song_edit"
+        android:textColor="#fff" />
 
 </RelativeLayout>

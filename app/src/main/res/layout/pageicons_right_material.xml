@@ -202,12 +202,27 @@
             android:visibility="visible"/>
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/customButton"
+            android:id="@+id/custom4Button_ungrouped"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             app:useCompatPadding="true"
             android:layout_below="@id/custom3Button_ungrouped"
+            android:layout_toRightOf="@+id/extrabuttons"
+            app:backgroundTint="@color/purple"
+            app:borderWidth="0dp"
+            app:fabSize="mini"
+            android:src="@drawable/ic_help_outline_white_36dp"
+            android:alpha="0.4"
+            android:visibility="visible"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/customButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            app:useCompatPadding="true"
+            android:layout_below="@id/custom4Button_ungrouped"
             android:layout_toRightOf="@+id/extrabuttons"
             app:backgroundTint="@color/purple"
             app:borderWidth="0dp"
@@ -310,6 +325,18 @@
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/custom3Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useCompatPadding="true"
+                app:fabSize="mini"
+                app:borderWidth="0dp"
+                app:backgroundTint="@color/purple"
+                android:src="@drawable/ic_help_outline_white_36dp"
+                android:alpha="0.4"
+                android:visibility="visible"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/custom4Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:useCompatPadding="true"

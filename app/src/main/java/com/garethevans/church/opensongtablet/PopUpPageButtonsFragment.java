@@ -59,30 +59,13 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     SwitchCompat custom1Visible_Switch;
     SwitchCompat custom2Visible_Switch;
     SwitchCompat custom3Visible_Switch;
+    SwitchCompat custom4Visible_Switch;
 
     @Override
     public void onStart() {
         super.onStart();
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-        }
-        if (getDialog().getWindow()!=null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(getActivity().getResources().getString(R.string.pagebuttons));
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    dismiss();
-                }
-            });
-            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            saveMe.setVisibility(View.GONE);
-        } else {
-            getDialog().setTitle(getActivity().getResources().getString(R.string.pagebuttons));
         }
     }
 
@@ -98,10 +81,24 @@ public class PopUpPageButtonsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         View V = inflater.inflate(R.layout.popup_pagebuttons, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.pagebuttons));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setVisibility(View.GONE);
 
         // Initialise the views
         pageButtonSize_Switch = (SwitchCompat) V.findViewById(R.id.pageButtonSize_Switch);
@@ -121,6 +118,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         custom1Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom1Visible_Switch);
         custom2Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom2Visible_Switch);
         custom3Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom3Visible_Switch);
+        custom4Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom4Visible_Switch);
 
         // Set the default values
         if (FullscreenActivity.fabSize == FloatingActionButton.SIZE_NORMAL) {
@@ -147,13 +145,15 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         custom1Visible_Switch.setChecked(FullscreenActivity.page_custom1_visible);
         custom2Visible_Switch.setChecked(FullscreenActivity.page_custom2_visible);
         custom3Visible_Switch.setChecked(FullscreenActivity.page_custom3_visible);
-        custom3Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom3Visible_Switch);
+        custom4Visible_Switch.setChecked(FullscreenActivity.page_custom4_visible);
         String c1 = getActivity().getString(R.string.custom) + " (1)";
         String c2 = getActivity().getString(R.string.custom) + " (2)";
         String c3 = getActivity().getString(R.string.custom) + " (3)";
+        String c4 = getActivity().getString(R.string.custom) + " (4)";
         custom1Visible_Switch.setText(c1);
         custom2Visible_Switch.setText(c2);
         custom3Visible_Switch.setText(c3);
+        custom4Visible_Switch.setText(c4);
 
         enableordisablegrouping();
 
@@ -283,6 +283,13 @@ public class PopUpPageButtonsFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.page_custom3_visible = b;
+                quickSave();
+            }
+        });
+        custom4Visible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_custom4_visible = b;
                 quickSave();
             }
         });

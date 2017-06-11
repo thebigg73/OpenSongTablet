@@ -1,56 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollviewscale"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="0dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
-    android:orientation="vertical"
-    android:padding="8dp"
-    android:visibility="visible">
+    android:padding="8dp">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
+
+    <ScrollView
+        android:id="@+id/scrollviewscale"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/myTitle"
+        android:layout_margin="0dp"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <android.support.v7.widget.SwitchCompat
-                app:showText="true"
+                android:id="@+id/switchAutoScaleOnOff_SwitchCompat"
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:padding="12dp"
                 android:text="@string/autoscale"
-                app:textAllCaps="true"
-                android:id="@+id/switchAutoScaleOnOff_SwitchCompat"
                 android:textOff="@string/off"
                 android:textOn="@string/on"
-                app:splitTrack="false"
                 android:thumb="@drawable/switch_button"
+                app:showText="true"
+                app:splitTrack="false"
+                app:switchTextAppearance="@style/MyTextSwitch"
+                app:textAllCaps="true"
                 app:thumbTextPadding="4dp"
-                android:layout_margin="12dp"
-                app:thumbTint="#444488"
-                android:padding="12dp"
-                style="@style/MyHeadingText"
-                app:switchTextAppearance="@style/MyTextSwitch"/>
+                app:thumbTint="#444488" />
 
             <android.support.v7.widget.SwitchCompat
-                app:showText="true"
+                android:id="@+id/switchAutoScaleWidthFull_SwitchCompat"
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:padding="12dp"
                 android:text="@string/scale_style"
-                app:textAllCaps="true"
-                android:id="@+id/switchAutoScaleWidthFull_SwitchCompat"
                 android:textOff="@string/width"
                 android:textOn="@string/full"
-                app:splitTrack="false"
                 android:thumb="@drawable/switch_button"
+                app:showText="true"
+                app:splitTrack="false"
+                app:switchTextAppearance="@style/MyTextSwitch"
+                app:textAllCaps="true"
                 app:thumbTextPadding="4dp"
-                android:layout_margin="12dp"
-                app:thumbTint="#444488"
-                android:padding="12dp"
-                style="@style/MyHeadingText"
-                app:switchTextAppearance="@style/MyTextSwitch"/>
+                app:thumbTint="#444488" />
 
             <LinearLayout
                 android:id="@+id/maxAutoScale_Group"
@@ -61,11 +75,11 @@
 
                 <TextView
                     android:id="@+id/textView42"
+                    style="@style/MyHeadingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="12dp"
-                    android:text="@string/maxfontsize"
-                    style="@style/MyHeadingText" />
+                    android:text="@string/maxfontsize" />
 
                 <SeekBar
                     android:id="@+id/maxAutoScale_seekBar"
@@ -82,18 +96,18 @@
 
                 <TextView
                     android:id="@+id/maxAutoScale_TextView"
+                    style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    style="@style/MyInfoText" />
+                    android:gravity="center_horizontal" />
 
                 <TextView
                     android:id="@+id/textView67"
+                    style="@style/MyHeadingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="12dp"
-                    android:text="@string/minfontsize"
-                    style="@style/MyHeadingText" />
+                    android:text="@string/minfontsize" />
 
                 <SeekBar
                     android:id="@+id/minAutoScale_seekBar"
@@ -110,52 +124,52 @@
 
                 <TextView
                     android:id="@+id/minAutoScale_TextView"
+                    style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    style="@style/MyInfoText" />
+                    android:gravity="center_horizontal" />
 
                 <TextView
                     android:id="@+id/textView69"
+                    style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="12dp"
-                    android:text="@string/override_scale_explanation"
-                    style="@style/MyInfoText" />
+                    android:text="@string/override_scale_explanation" />
 
                 <android.support.v7.widget.SwitchCompat
-                    app:showText="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/override_fullautoscale"
-                    app:textAllCaps="true"
                     android:id="@+id/overrideFull_Switch"
-                    android:textOff="@string/off"
-                    android:textOn="@string/on"
-                    app:splitTrack="false"
-                    android:thumb="@drawable/switch_button"
-                    app:thumbTextPadding="4dp"
-                    android:layout_margin="12dp"
-                    app:thumbTint="#444488"
                     style="@style/MyHeadingText"
-                    app:switchTextAppearance="@style/MyTextSwitch"/>
-
-                <android.support.v7.widget.SwitchCompat
-                    app:showText="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/override_widthautoscale"
-                    app:textAllCaps="true"
-                    android:id="@+id/overrideWidth_Switch"
+                    android:layout_margin="12dp"
+                    android:text="@string/override_fullautoscale"
                     android:textOff="@string/off"
                     android:textOn="@string/on"
-                    app:splitTrack="false"
                     android:thumb="@drawable/switch_button"
+                    app:showText="true"
+                    app:splitTrack="false"
+                    app:switchTextAppearance="@style/MyTextSwitch"
+                    app:textAllCaps="true"
                     app:thumbTextPadding="4dp"
-                    android:layout_margin="12dp"
-                    app:thumbTint="#444488"
+                    app:thumbTint="#444488" />
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/overrideWidth_Switch"
                     style="@style/MyHeadingText"
-                    app:switchTextAppearance="@style/MyTextSwitch"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:text="@string/override_widthautoscale"
+                    android:textOff="@string/off"
+                    android:textOn="@string/on"
+                    android:thumb="@drawable/switch_button"
+                    app:showText="true"
+                    app:splitTrack="false"
+                    app:switchTextAppearance="@style/MyTextSwitch"
+                    app:textAllCaps="true"
+                    app:thumbTextPadding="4dp"
+                    app:thumbTint="#444488" />
 
             </LinearLayout>
 
@@ -167,18 +181,18 @@
 
                 <TextView
                     android:id="@+id/textView52"
+                    style="@style/MyHeadingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:text="@string/options_options_fontsize"
-                    style="@style/MyHeadingText" />
+                    android:text="@string/options_options_fontsize" />
 
                 <TextView
                     android:id="@+id/textView65"
+                    style="@style/MyHeadingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/fontsize"
-                    style="@style/MyHeadingText" />
+                    android:text="@string/fontsize" />
 
                 <SeekBar
                     android:id="@+id/fontsize_seekbar"
@@ -195,12 +209,14 @@
 
                 <TextView
                     android:id="@+id/fontsize_TextView"
+                    style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    style="@style/MyInfoText" />
+                    android:gravity="center_horizontal" />
             </LinearLayout>
 
         </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
+
+</RelativeLayout>

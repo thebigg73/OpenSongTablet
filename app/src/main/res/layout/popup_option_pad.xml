@@ -59,6 +59,28 @@
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switchTimerSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_format_text_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_format_text_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/timer_size"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                app:showText="true"
+                app:textAllCaps="false"
+                android:textOff="@string/size_mini"
+                android:textOn="@string/size_normal"
+                app:splitTrack="false"
+                android:thumb="@drawable/switch_button"
+                app:thumbTextPadding="4dp"
+                app:thumbTint="#444488" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -1,37 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/popup_bg"
     android:padding="8dp">
 
-    <LinearLayout
-            android:orientation="vertical"
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView15"
+                style="@style/MyInfoText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/pageturn_instructions"
-                style="@style/MyInfoText"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:text="@string/pageturn_instructions" />
 
             <TextView
                 android:id="@+id/textView16"
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/pageturn_set"
-                style="@style/MyHeadingText"
                 android:layout_margin="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="24dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginTop="24dp"
+                android:text="@string/pageturn_set" />
 
             <Button
                 android:id="@+id/pedalPreviousButton"
@@ -57,26 +71,26 @@
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/pedalToggleScrollBeforeSwipeButton"
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:theme="@style/SwitchStyle"
-                style="@style/MyHeadingText"
                 android:text="@string/toggleScrollBeforeSwipe"
-                app:showText="false"/>
+                android:theme="@style/SwitchStyle"
+                app:showText="false" />
 
             <TextView
                 android:id="@+id/textView17"
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/pageturn_song"
-                style="@style/MyHeadingText"
                 android:layout_margin="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="24dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginTop="24dp"
+                android:text="@string/pageturn_song" />
 
             <Button
                 android:id="@+id/pedalDownButton"
@@ -102,16 +116,16 @@
 
             <TextView
                 android:id="@+id/textView18"
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="24dp"
-                android:text="@string/songactionsbuttons"
-                style="@style/MyHeadingText"
                 android:layout_margin="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginTop="24dp"
+                android:text="@string/songactionsbuttons" />
 
             <Button
                 android:id="@+id/pedalPadButton"
@@ -146,6 +160,52 @@
                 android:text="@string/metronomePedalText"
                 android:textColor="#fff" />
 
+            <Button
+                android:id="@+id/pedalAutoScrollPadButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:background="@drawable/green_button"
+                android:padding="4dp"
+                android:text="@string/autoscrollPedalText"
+                android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/pedalAutoScrollMetronomeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:background="@drawable/green_button"
+                android:padding="4dp"
+                android:text="@string/autoscrollPedalText"
+                android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/pedalPadMetronomeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:background="@drawable/green_button"
+                android:padding="4dp"
+                android:text="@string/autoscrollPedalText"
+                android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/pedalAutoScrollPadMetronomeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:background="@drawable/green_button"
+                android:padding="4dp"
+                android:text="@string/autoscrollPedalText"
+                android:textColor="#fff" />
+
         </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
+
+</RelativeLayout>

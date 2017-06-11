@@ -88,24 +88,6 @@ public class PopUpProfileFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
-        if (getDialog().getWindow()!=null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(getActivity().getResources().getString(R.string.profile));
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    dismiss();
-                }
-            });
-            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            saveMe.setVisibility(View.GONE);
-        } else {
-            getDialog().setTitle(getActivity().getResources().getString(R.string.profile));
-        }
     }
 
     @Override
@@ -120,9 +102,23 @@ public class PopUpProfileFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_profile, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.profile));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setVisibility(View.GONE);
 
         // Initialise the views
         profile_overview = (ScrollView) V.findViewById(R.id.profile_overview);
@@ -325,6 +321,9 @@ public class PopUpProfileFragment extends DialogFragment {
                 if (xpp.getName().equals("alwaysPreferredChordFormat")) {
                     FullscreenActivity.alwaysPreferredChordFormat = getTextValue(xpp.nextText(), "N");
 
+                } else if (xpp.getName().equals("autoProject")) {
+                    FullscreenActivity.autoProject = getBooleanValue(xpp.nextText(),false);
+
                 } else if (xpp.getName().equals("autoscroll_default_or_prompt")) {
                     FullscreenActivity.autoscroll_default_or_prompt = getTextValue(xpp.nextText(),"prompt");
 
@@ -489,6 +488,23 @@ public class PopUpProfileFragment extends DialogFragment {
 
                 } else if (xpp.getName().equals("default_autoscroll_songlength")) {
                     FullscreenActivity.default_autoscroll_songlength = getIntegerValue(xpp.nextText(),180);
+
+                } else if (xpp.getName().equals("exportOpenSongAppSet")) {
+                    FullscreenActivity.exportOpenSongAppSet = getBooleanValue(xpp.nextText(),false);
+                } else if (xpp.getName().equals("exportOpenSongApp")) {
+                    FullscreenActivity.exportOpenSongApp = getBooleanValue(xpp.nextText(),false);
+                } else if (xpp.getName().equals("exportDesktop")) {
+                    FullscreenActivity.exportDesktop = getBooleanValue(xpp.nextText(),false);
+                } else if (xpp.getName().equals("exportText")) {
+                    FullscreenActivity.exportText = getBooleanValue(xpp.nextText(),false);
+                } else if (xpp.getName().equals("exportChordPro")) {
+                    FullscreenActivity.exportChordPro = getBooleanValue(xpp.nextText(),false);
+                } else if (xpp.getName().equals("exportOnSong")) {
+                    FullscreenActivity.exportOnSong = getBooleanValue(xpp.nextText(),false);
+                } else if (xpp.getName().equals("exportImage")) {
+                    FullscreenActivity.exportImage = getBooleanValue(xpp.nextText(),false);
+                } else if (xpp.getName().equals("exportPDF")) {
+                    FullscreenActivity.exportPDF = getBooleanValue(xpp.nextText(),false);
 
                 } else if (xpp.getName().equals("fabSize")) {
                     FullscreenActivity.fabSize = getIntegerValue(xpp.nextText(), FloatingActionButton.SIZE_MINI);
@@ -657,6 +673,9 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("page_custom3_visible")) {
                     FullscreenActivity.page_custom3_visible = getBooleanValue(xpp.nextText(),true);
 
+                } else if (xpp.getName().equals("page_custom4_visible")) {
+                    FullscreenActivity.page_custom4_visible = getBooleanValue(xpp.nextText(),true);
+
                 } else if (xpp.getName().equals("page_extra_grouped")) {
                     FullscreenActivity.page_extra_grouped = getBooleanValue(xpp.nextText(),true);
 
@@ -693,6 +712,15 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("pageturner_AUTOSCROLL")) {
                     FullscreenActivity.pageturner_AUTOSCROLL = getIntegerValue(xpp.nextText(), -1);
 
+                } else if (xpp.getName().equals("pageturner_AUTOSCROLLPAD")) {
+                    FullscreenActivity.pageturner_AUTOSCROLLPAD = getIntegerValue(xpp.nextText(), -1);
+
+                } else if (xpp.getName().equals("pageturner_AUTOSCROLLMETRONOME")) {
+                    FullscreenActivity.pageturner_AUTOSCROLLMETRONOME = getIntegerValue(xpp.nextText(), -1);
+
+                } else if (xpp.getName().equals("pageturner_AUTOSCROLLPADMETRONOME")) {
+                    FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME = getIntegerValue(xpp.nextText(), -1);
+
                 } else if (xpp.getName().equals("pageturner_DOWN")) {
                     FullscreenActivity.pageturner_DOWN = getIntegerValue(xpp.nextText(), 20);
 
@@ -704,6 +732,9 @@ public class PopUpProfileFragment extends DialogFragment {
 
                 } else if (xpp.getName().equals("pageturner_PAD")) {
                     FullscreenActivity.pageturner_PAD = getIntegerValue(xpp.nextText(), -1);
+
+                } else if (xpp.getName().equals("pageturner_PADMETRONOME")) {
+                    FullscreenActivity.pageturner_PADMETRONOME = getIntegerValue(xpp.nextText(), -1);
 
                 } else if (xpp.getName().equals("pageturner_PREVIOUS")) {
                     FullscreenActivity.pageturner_PREVIOUS = getIntegerValue(xpp.nextText(), 21);
@@ -807,6 +838,9 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("quickLaunchButton_3")) {
                     FullscreenActivity.quickLaunchButton_3 = getTextValue(xpp.nextText(),"");
 
+                } else if (xpp.getName().equals("quickLaunchButton_4")) {
+                    FullscreenActivity.quickLaunchButton_4 = getTextValue(xpp.nextText(),"");
+
                 } else if (xpp.getName().equals("showCapoChords")) {
                     FullscreenActivity.showCapoChords = getBooleanValue(xpp.nextText(),true);
 
@@ -826,7 +860,19 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.showSetTickBoxInSongMenu = getBooleanValue(xpp.nextText(),true);
 
                 } else if (xpp.getName().equals("songfilename")) {
-                    FullscreenActivity.songfilename = getTextValue(xpp.nextText(),"");
+                    FullscreenActivity.songfilename = getTextValue(xpp.nextText(), "");
+
+                } else if (xpp.getName().equals("stickyNotesShowSecs")) {
+                    FullscreenActivity.stickyNotesShowSecs = getIntegerValue(xpp.nextText(), 8);
+
+                } else if (xpp.getName().equals("stickyOpacity")) {
+                    FullscreenActivity.stickyOpacity = getFloatValue(xpp.nextText(), 0.8f);
+
+                } else if (xpp.getName().equals("stickyTextSize")) {
+                    FullscreenActivity.stickyTextSize = getFloatValue(xpp.nextText(), 14.0f);
+
+                } else if (xpp.getName().equals("stickyWidth")) {
+                    FullscreenActivity.stickyWidth = getIntegerValue(xpp.nextText(), 400);
 
                 } else if (xpp.getName().equals("swipeDrawer")) {
                     FullscreenActivity.swipeDrawer = getTextValue(xpp.nextText(),"Y");
@@ -839,6 +885,12 @@ public class PopUpProfileFragment extends DialogFragment {
 
                 } else if (xpp.getName().equals("swipeSet")) {
                     FullscreenActivity.swipeSet = getTextValue(xpp.nextText(),"Y");
+
+                } else if (xpp.getName().equals("timerFontSizeAutoScroll")) {
+                    FullscreenActivity.timerFontSizeAutoScroll = getFloatValue(xpp.nextText(),14.0f);
+
+                } else if (xpp.getName().equals("timerFontSizePad")) {
+                    FullscreenActivity.timerFontSizePad = getFloatValue(xpp.nextText(),14.0f);
 
                 } else if (xpp.getName().equals("toggleAutoSticky")) {
                     FullscreenActivity.toggleAutoSticky = getTextValue(xpp.nextText(),"N");
@@ -944,8 +996,9 @@ public class PopUpProfileFragment extends DialogFragment {
     public String prepareProfile() {
 
         String text = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-        text += "<profile>\n";
+        text += "<myprofile>\n";
         text += "  <alwaysPreferredChordFormat>" + FullscreenActivity.alwaysPreferredChordFormat + "</alwaysPreferredChordFormat>\n";
+        text += "  <autoProject>" + FullscreenActivity.autoProject + "</autoProject>\n";
         text += "  <autoscroll_default_or_prompt>" + FullscreenActivity.autoscroll_default_or_prompt + "</autoscroll_default_or_prompt>\n";
         text += "  <autoScrollDelay>" + FullscreenActivity.autoScrollDelay + "</autoScrollDelay>\n";
         text += "  <autostartautoscroll>" + FullscreenActivity.autostartautoscroll + "</autostartautoscroll>\n";
@@ -1017,6 +1070,14 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <dark_presoShadow>" + FullscreenActivity.dark_presoShadow + "</dark_presoShadow>\n";
         text += "  <default_autoscroll_predelay>" + FullscreenActivity.default_autoscroll_predelay + "</default_autoscroll_predelay>\n";
         text += "  <default_autoscroll_songlength>" + FullscreenActivity.default_autoscroll_songlength + "</default_autoscroll_songlength>\n";
+        text += "  <exportOpenSongAppSet>" + FullscreenActivity.exportOpenSongAppSet + "</exportOpenSongAppSet>\n";
+        text += "  <exportOpenSongApp>" + FullscreenActivity.exportOpenSongApp + "</exportOpenSongApp>\n";
+        text += "  <exportDesktop>" + FullscreenActivity.exportDesktop + "</exportDesktop>\n";
+        text += "  <exportText>" + FullscreenActivity.exportText + "</exportText>\n";
+        text += "  <exportChordPro>" + FullscreenActivity.exportChordPro + "</exportChordPro>\n";
+        text += "  <exportOnSong>" + FullscreenActivity.exportOnSong + "</exportOnSong>\n";
+        text += "  <exportImage>" + FullscreenActivity.exportImage + "</exportImage>\n";
+        text += "  <exportPDF>" + FullscreenActivity.exportPDF + "</exportPDF>\n";
         text += "  <fabSize>" + FullscreenActivity.fabSize + "</fabSize>\n";
         text += "  <gesture_doubletap>" + FullscreenActivity.gesture_doubletap + "</gesture_doubletap>\n";
         text += "  <gesture_longpress>" + FullscreenActivity.gesture_longpress + "</gesture_longpress>\n";
@@ -1078,6 +1139,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <page_custom1_visible>" + FullscreenActivity.page_custom1_visible + "</page_custom1_visible>\n";
         text += "  <page_custom2_visible>" + FullscreenActivity.page_custom2_visible + "</page_custom2_visible>\n";
         text += "  <page_custom3_visible>" + FullscreenActivity.page_custom3_visible + "</page_custom3_visible>\n";
+        text += "  <page_custom4_visible>" + FullscreenActivity.page_custom4_visible + "</page_custom4_visible>\n";
         text += "  <page_extra_grouped>" + FullscreenActivity.page_extra_grouped + "</page_extra_grouped>\n";
         text += "  <page_extra_visible>" + FullscreenActivity.page_extra_visible + "</page_extra_visible>\n";
         text += "  <page_links_visible>" + FullscreenActivity.page_links_visible + "</page_links_visible>\n";
@@ -1089,10 +1151,14 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <pagebutton_position>" + FullscreenActivity.pagebutton_position + "</pagebutton_position>\n";
         text += "  <pagebutton_scale>" + FullscreenActivity.pagebutton_scale + "</pagebutton_scale>\n";
         text += "  <pageturner_AUTOSCROLL>" + FullscreenActivity.pageturner_AUTOSCROLL + "</pageturner_AUTOSCROLL>\n";
+        text += "  <pageturner_AUTOSCROLLPAD>" + FullscreenActivity.pageturner_AUTOSCROLLPAD + "</pageturner_AUTOSCROLLPAD>\n";
+        text += "  <pageturner_AUTOSCROLLMETRONOME>" + FullscreenActivity.pageturner_AUTOSCROLLMETRONOME + "</pageturner_AUTOSCROLLMETRONOME>\n";
+        text += "  <pageturner_AUTOSCROLLPADMETRONOME>" + FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME + "</pageturner_AUTOSCROLLPADMETRONOME>\n";
         text += "  <pageturner_DOWN>" + FullscreenActivity.pageturner_DOWN + "</pageturner_DOWN>\n";
         text += "  <pageturner_METRONOME>" + FullscreenActivity.pageturner_METRONOME + "</pageturner_METRONOME>\n";
         text += "  <pageturner_NEXT>" + FullscreenActivity.pageturner_NEXT + "</pageturner_NEXT>\n";
         text += "  <pageturner_PAD>" + FullscreenActivity.pageturner_PAD + "</pageturner_PAD>\n";
+        text += "  <pageturner_PADMETRONOME>" + FullscreenActivity.pageturner_PADMETRONOME + "</pageturner_PADMETRONOME>\n";
         text += "  <pageturner_PREVIOUS>" + FullscreenActivity.pageturner_PREVIOUS + "</pageturner_PREVIOUS>\n";
         text += "  <pageturner_UP>" + FullscreenActivity.pageturner_UP + "</pageturner_UP>\n";
         text += "  <pageButtonAlpha>" + FullscreenActivity.pageButtonAlpha + "</pageButtonAlpha>\n";
@@ -1129,7 +1195,8 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <profile>" + FullscreenActivity.profile + "</profile>\n";
         text += "  <quickLaunchButton_1>" + FullscreenActivity.quickLaunchButton_1 + "</quickLaunchButton_1>\n";
         text += "  <quickLaunchButton_2>" + FullscreenActivity.quickLaunchButton_2 + "</quickLaunchButton_2>\n";
-        text += "  <quickLaunchButton_3>" + FullscreenActivity.showChords + "</quickLaunchButton_3>\n";
+        text += "  <quickLaunchButton_3>" + FullscreenActivity.quickLaunchButton_3 + "</quickLaunchButton_3>\n";
+        text += "  <quickLaunchButton_4>" + FullscreenActivity.quickLaunchButton_4 + "</quickLaunchButton_4>\n";
         text += "  <showCapoChords>" + FullscreenActivity.showCapoChords + "</showCapoChords>\n";
         text += "  <showChords>" + FullscreenActivity.showChords + "</showChords>\n";
         text += "  <showNativeAndCapoChords>" + FullscreenActivity.showNativeAndCapoChords + "</showNativeAndCapoChords>\n";
@@ -1137,10 +1204,16 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <showLyrics>" + FullscreenActivity.showLyrics + "</showLyrics>\n";
         text += "  <showSetTickBoxInSongMenu>" + FullscreenActivity.showSetTickBoxInSongMenu + "</showSetTickBoxInSongMenu>\n";
         text += "  <songfilename>" + FullscreenActivity.songfilename + "</songfilename>\n";
+        text += "  <stickyNotesShowSecs>" + FullscreenActivity.stickyNotesShowSecs + "</stickyNotesShowSecs>\n";
+        text += "  <stickyOpacity>" + FullscreenActivity.stickyOpacity + "</stickyOpacity>\n";
+        text += "  <stickyTextSize>" + FullscreenActivity.stickyTextSize + "</stickyTextSize>\n";
+        text += "  <stickyWidth>" + FullscreenActivity.stickyWidth + "</stickyWidth>\n";
         text += "  <swipeDrawer>" + FullscreenActivity.swipeDrawer + "</swipeDrawer>\n";
         text += "  <swipeForMenus>" + FullscreenActivity.swipeForSongs + "</swipeForMenus>\n";
         text += "  <swipeForSongs>" + FullscreenActivity.swipeForSongs + "</swipeForSongs>\n";
         text += "  <swipeSet>" + FullscreenActivity.swipeSet + "</swipeSet>\n";
+        text += "  <timerFontSizeAutoScroll>" + FullscreenActivity.timerFontSizeAutoScroll + "</timerFontSizeAutoScroll>\n";
+        text += "  <timerFontSizePad>" + FullscreenActivity.timerFontSizePad + "</timerFontSizePad>\n";
         text += "  <toggleAutoSticky>" + FullscreenActivity.toggleAutoSticky + "</toggleAutoSticky>\n";
         text += "  <togglePageButtons>" + FullscreenActivity.togglePageButtons + "</togglePageButtons>\n";
         text += "  <toggleScrollArrows>" + FullscreenActivity.toggleScrollArrows + "</toggleScrollArrows>\n";
@@ -1154,7 +1227,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <whichSongFolder>" + FullscreenActivity.whichSongFolder + "</whichSongFolder>\n";
         text += "  <xmargin_presentation>" + FullscreenActivity.xmargin_presentation + "</xmargin_presentation>\n";
         text += "  <ymargin_presentation>" + FullscreenActivity.visualmetronome + "</ymargin_presentation>\n";
-        text += "</profile>";
+        text += "</myprofile>";
         return text;
     }
 

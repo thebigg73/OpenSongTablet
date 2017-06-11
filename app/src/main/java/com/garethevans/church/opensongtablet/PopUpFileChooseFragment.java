@@ -67,33 +67,6 @@ public class PopUpFileChooseFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
-        if (getDialog().getWindow()!=null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(myTitle);
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            closeMe.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
-                    if (FullscreenActivity.whattodo.equals("customnote") ||
-                            FullscreenActivity.whattodo.equals("customslide") ||
-                            FullscreenActivity.whattodo.equals("customimage") ||
-                            FullscreenActivity.whattodo.equals("customscripture")) {
-                        dismiss();
-                        DialogFragment newFragment = PopUpCustomSlideFragment.newInstance();
-                        newFragment.show(getFragmentManager(), "dialog");
-                    } else {
-                        dismiss();
-                    }
-                }
-            });
-            FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            saveMe.setVisibility(View.GONE);
-        } else {
-            getDialog().setTitle(myTitle);
-        }
     }
 
     @Override
@@ -109,11 +82,10 @@ public class PopUpFileChooseFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
         View V = inflater.inflate(R.layout.popup_file_chooser, container, false);
-
         fileListView = (ListView) V.findViewById(R.id.fileListView);
         location = (TextView) V.findViewById(R.id.location);
 
@@ -187,6 +159,30 @@ public class PopUpFileChooseFragment extends DialogFragment {
                 listscriptures();
                 break;
         }
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(myTitle);
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                if (FullscreenActivity.whattodo.equals("customnote") ||
+                        FullscreenActivity.whattodo.equals("customslide") ||
+                        FullscreenActivity.whattodo.equals("customimage") ||
+                        FullscreenActivity.whattodo.equals("customscripture")) {
+                    dismiss();
+                    DialogFragment newFragment = PopUpCustomSlideFragment.newInstance();
+                    newFragment.show(getFragmentManager(), "dialog");
+                } else {
+                    dismiss();
+                }
+            }
+        });
+        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setVisibility(View.GONE);
+
 
         // Populate the file list view
         fileListView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_single_choice, foundFiles));

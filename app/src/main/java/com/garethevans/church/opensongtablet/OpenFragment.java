@@ -20,6 +20,16 @@ class OpenFragment {
                 newFragment = PopUpListSetsFragment.newInstance();
                 break;
 
+            case "customise_exportsong":
+            case "customise_exportset":
+                newFragment = PopUpExportFragment.newInstance();
+                break;
+
+            case "resetcolours":
+                message = c.getResources().getString(R.string.reset_colours);
+                newFragment = PopUpAreYouSureFragment.newInstance(message);
+                break;
+
             case "clearset":
                 message = c.getResources().getString(R.string.options_clearthisset);
                 newFragment = PopUpAreYouSureFragment.newInstance(message);

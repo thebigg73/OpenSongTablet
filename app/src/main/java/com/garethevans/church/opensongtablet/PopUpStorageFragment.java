@@ -125,36 +125,6 @@ public class PopUpStorageFragment extends DialogFragment {
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
-        if (getDialog().getWindow()!=null) {
-            getDialog().getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.popup_dialogtitle);
-            TextView title = (TextView) getDialog().getWindow().findViewById(R.id.dialogtitle);
-            title.setText(getActivity().getResources().getString(R.string.storage_choose));
-            final FloatingActionButton closeMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.closeMe);
-            final FloatingActionButton saveMe = (FloatingActionButton) getDialog().getWindow().findViewById(R.id.saveMe);
-            if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
-                closeMe.setVisibility(View.GONE);
-                saveMe.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        CustomAnimations.animateFAB(saveMe,getActivity());
-                        saveMe.setEnabled(false);
-                        saveStorageLocation();
-                    }
-                });
-            } else {
-                closeMe.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        CustomAnimations.animateFAB(closeMe,getActivity());
-                        closeMe.setEnabled(false);
-                        saveStorageLocation();
-                    }
-                });
-                saveMe.setVisibility(View.GONE);
-            }
-        } else {
-            getDialog().setTitle(getActivity().getResources().getString(R.string.storage_choose));
-        }
     }
 
     @Override
@@ -168,9 +138,35 @@ public class PopUpStorageFragment extends DialogFragment {
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_storage, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.storage_choose));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
+            closeMe.setVisibility(View.GONE);
+            saveMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CustomAnimations.animateFAB(saveMe,getActivity());
+                    saveMe.setEnabled(false);
+                    saveStorageLocation();
+                }
+            });
+        } else {
+            closeMe.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CustomAnimations.animateFAB(closeMe,getActivity());
+                    closeMe.setEnabled(false);
+                    saveStorageLocation();
+                }
+            });
+            saveMe.setVisibility(View.GONE);
+        }
 
         // Initialise the views
         mLayout = V.findViewById(R.id.page);
@@ -456,6 +452,7 @@ public class PopUpStorageFragment extends DialogFragment {
         FullscreenActivity.dir = new File(myroot.getAbsolutePath() + "/OpenSong/Songs");
         FullscreenActivity.dironsong = new File(myroot.getAbsolutePath() + "/OpenSong/Songs/OnSong");
         FullscreenActivity.dirsets = new File(myroot.getAbsolutePath() + "/OpenSong/Sets");
+        FullscreenActivity.direxport = new File(myroot.getAbsolutePath() + "/OpenSong/Export");
         FullscreenActivity.dirPads = new File(myroot.getAbsolutePath() + "/OpenSong/Pads");
         FullscreenActivity.dirbackgrounds = new File(myroot.getAbsolutePath() + "/OpenSong/Backgrounds");
         FullscreenActivity.dirbibles = new File(myroot.getAbsolutePath() + "/OpenSong/OpenSong Scripture");
@@ -467,6 +464,7 @@ public class PopUpStorageFragment extends DialogFragment {
         FullscreenActivity.dircustomimages = new File(myroot.getAbsolutePath() + "/OpenSong/Images/_cache");
         FullscreenActivity.dirvariations = new File(myroot.getAbsolutePath() + "/OpenSong/Variations");
         FullscreenActivity.dirprofiles = new File(myroot.getAbsolutePath() + "/OpenSong/Profiles");
+        FullscreenActivity.dirreceived = new File(myroot.getAbsolutePath() + "/OpenSong/Received");
     }
 
     public static void setUpStoragePreferences() {
@@ -490,12 +488,12 @@ public class PopUpStorageFragment extends DialogFragment {
         }
     }
 
-
     public static boolean createDirectories(){
         boolean homedir_success = createDirectory(FullscreenActivity.homedir);
         boolean dir_success = createDirectory(FullscreenActivity.dir);
         boolean dirsettings_success = createDirectory(FullscreenActivity.dirsettings);
         boolean dirsets_success = createDirectory(FullscreenActivity.dirsets);
+        boolean direxport_success = createDirectory(FullscreenActivity.direxport);
         boolean dirPads_success = createDirectory(FullscreenActivity.dirPads);
         boolean dirbackgrounds_success = createDirectory(FullscreenActivity.dirbackgrounds);
         boolean dirbibles_success = createDirectory(FullscreenActivity.dirbibles);
@@ -507,11 +505,12 @@ public class PopUpStorageFragment extends DialogFragment {
         boolean dircustomslides_success = createDirectory(FullscreenActivity.dircustomslides);
         boolean dirvariations_success = createDirectory(FullscreenActivity.dirvariations);
         boolean dirprofiles_success = createDirectory(FullscreenActivity.dirprofiles);
+        boolean dirreceived_success = createDirectory(FullscreenActivity.dirreceived);
         boolean success;
         success = homedir_success && dirsettings_success && dir_success && dirsets_success && dirPads_success && dirbackgrounds_success &&
                 dirbibles_success && dirverses_success && dirscripture_success && dirscriptureverses_success &&
                 dircustomimages_success && dircustomnotes_success && dircustomslides_success &&
-                dirvariations_success && dirprofiles_success;
+                dirvariations_success && dirprofiles_success && direxport_success && dirreceived_success;
         return success;
     }
 
@@ -534,6 +533,7 @@ public class PopUpStorageFragment extends DialogFragment {
         boolean dir_success = checkDirectory(FullscreenActivity.dir);
         boolean dirsettings_success = checkDirectory(FullscreenActivity.dirsettings);
         boolean dirsets_success = checkDirectory(FullscreenActivity.dirsets);
+        boolean direxport_success = checkDirectory(FullscreenActivity.direxport);
         boolean dirPads_success = checkDirectory(FullscreenActivity.dirPads);
         boolean dirbackgrounds_success = checkDirectory(FullscreenActivity.dirbackgrounds);
         boolean dirbibles_success = checkDirectory(FullscreenActivity.dirbibles);
@@ -545,11 +545,12 @@ public class PopUpStorageFragment extends DialogFragment {
         boolean dircustomslides_success = checkDirectory(FullscreenActivity.dircustomslides);
         boolean dirvariations_success = checkDirectory(FullscreenActivity.dirvariations);
         boolean dirprofiles_success = checkDirectory(FullscreenActivity.dirprofiles);
+        boolean dirreceived_success = checkDirectory(FullscreenActivity.dirreceived);
         boolean success;
         success = homedir_success && dirsettings_success && dir_success && dirsets_success && dirPads_success && dirbackgrounds_success &&
                 dirbibles_success && dirverses_success && dirscripture_success && dirscriptureverses_success &&
                 dircustomimages_success && dircustomnotes_success && dircustomslides_success &&
-                dirvariations_success && dirprofiles_success;
+                dirvariations_success && dirprofiles_success && direxport_success && dirreceived_success;
         return success;
     }
 
@@ -604,4 +605,18 @@ public class PopUpStorageFragment extends DialogFragment {
         }
     }
 
+    public static void wipeExportFolder() {
+        try {
+            File[] Files = FullscreenActivity.direxport.listFiles();
+            if (Files != null) {
+                int j;
+                for (j = 0; j < Files.length; j++) {
+                    boolean success = Files[j].delete();
+                    Log.d("d", "Wipe export folder = " + success);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

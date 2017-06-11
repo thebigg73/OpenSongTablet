@@ -64,20 +64,20 @@ public class LoadXML extends Activity {
 
         // Get the android version
         String filetype = "SONG";
-        if (FullscreenActivity.songfilename.endsWith(".pdf") || FullscreenActivity.songfilename.endsWith(".PDF")) {
+        if (FullscreenActivity.songfilename.toLowerCase().endsWith(".pdf")) {
             filetype = "PDF";
             isxml = false;
         }
-        if (FullscreenActivity.songfilename.endsWith(".doc") || FullscreenActivity.songfilename.endsWith(".DOC") ||
-                FullscreenActivity.songfilename.endsWith(".docx") || FullscreenActivity.songfilename.endsWith(".docx")) {
+        if (FullscreenActivity.songfilename.toLowerCase().endsWith(".doc") ||
+                FullscreenActivity.songfilename.toLowerCase().endsWith(".docx")) {
             filetype = "DOC";
             isxml = false;
         }
-        if (FullscreenActivity.songfilename.endsWith(".jpg") || FullscreenActivity.songfilename.endsWith(".JPG") ||
-                FullscreenActivity.songfilename.endsWith(".jpeg") || FullscreenActivity.songfilename.endsWith(".JPEG") ||
-                FullscreenActivity.songfilename.endsWith(".png") || FullscreenActivity.songfilename.endsWith(".PNG") ||
-                FullscreenActivity.songfilename.endsWith(".gif") || FullscreenActivity.songfilename.endsWith(".GIF") ||
-                FullscreenActivity.songfilename.endsWith(".bmp") || FullscreenActivity.songfilename.endsWith(".GIF")) {
+        if (FullscreenActivity.songfilename.toLowerCase().endsWith(".jpg") ||
+                FullscreenActivity.songfilename.toLowerCase().endsWith(".jpeg") ||
+                FullscreenActivity.songfilename.toLowerCase().endsWith(".png") ||
+                FullscreenActivity.songfilename.toLowerCase().endsWith(".gif") ||
+                FullscreenActivity.songfilename.toLowerCase().endsWith(".bmp")) {
             filetype = "IMG";
             isxml = false;
         }
@@ -329,6 +329,8 @@ public class LoadXML extends Activity {
             inputStream.close();
         } catch (IOException e) {
             Log.d("d","Error reading text file");
+        } catch (OutOfMemoryError e2) {
+            e2.printStackTrace();
         }
         return outputStream.toString();
     }
@@ -476,6 +478,8 @@ public class LoadXML extends Activity {
                     String testthetitle = parseFromHTMLEntities(xpp.nextText());
                     if (testthetitle!=null && !testthetitle.equals("") && !testthetitle.isEmpty()) {
                         FullscreenActivity.mTitle = parseFromHTMLEntities(testthetitle);
+                    } else if (testthetitle!=null && testthetitle.equals("")) {
+                        FullscreenActivity.mTitle = FullscreenActivity.songfilename;
                     }
                 } else if (xpp.getName().equals("lyrics")) {
                     FullscreenActivity.mLyrics = parseFromHTMLEntities(xpp.nextText());
@@ -652,7 +656,6 @@ public class LoadXML extends Activity {
             // FileDescriptor for file, it allows you to close file when you are done with it
             ParcelFileDescriptor mFileDescriptor;
             PdfRenderer mPdfRenderer;
-            Log.d("d","file="+FullscreenActivity.file);
             try {
                 mFileDescriptor = ParcelFileDescriptor.open(FullscreenActivity.file, ParcelFileDescriptor.MODE_READ_ONLY);
                 if (mFileDescriptor != null) {
@@ -671,10 +674,28 @@ public class LoadXML extends Activity {
         if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
             FullscreenActivity.file = new File(FullscreenActivity.dir + "/"
                     + FullscreenActivity.songfilename);
-        } else {
+        } else if (!FullscreenActivity.songfilename.equals("ReceivedSong")) {
             FullscreenActivity.file = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
                     + FullscreenActivity.songfilename);
         }
+    }
+
+    public static String getTempFileLocation(Context c, String folder, String file) {
+        String where = folder + "/" + file;
+        if (folder.equals(FullscreenActivity.mainfoldername)) {
+            where = file;
+        } else if (folder.contains("**" + c.getResources().getString(R.string.note))) {
+            where = "../Notes/_cache/" + file;
+        } else if (folder.contains("**" + c.getResources().getString(R.string.image))) {
+            where = "../Images/_cache/" + file;
+        } else if (folder.contains("**" + c.getResources().getString(R.string.scripture))) {
+            where = "../Scripture/_cache/" + file;
+        } else if (folder.contains("**" + c.getResources().getString(R.string.slide))) {
+            where = "../Slides/_cache/" + file;
+        } else if (folder.contains("**" + c.getResources().getString(R.string.variation))) {
+            where = "../Variations/" + file;
+        }
+        return where;
     }
 
     public static String templyrics = "[Intro]\n" +
@@ -781,4 +802,63 @@ public class LoadXML extends Activity {
             ".C          G/B             Am7        C/D      D  \n" +
             " Sharing my Saviour's love, showing my Father's heart.";
 
+
+    public static String grabNextSongInSetKey(Context c, String nextsong) {
+        String nextkey = "";
+        File nextfile = new File(FullscreenActivity.dir,nextsong);
+        // Get the android version
+        boolean nextisxml = true;
+        if (nextsong.toLowerCase().endsWith(".pdf") ||
+                nextsong.toLowerCase().endsWith(".doc") ||
+                nextsong.toLowerCase().endsWith(".docx") ||
+                nextsong.toLowerCase().endsWith(".jpg") ||
+                nextsong.toLowerCase().endsWith(".jpeg") ||
+                nextsong.toLowerCase().endsWith(".png") ||
+                nextsong.toLowerCase().endsWith(".gif") ||
+                nextsong.toLowerCase().endsWith(".bmp")) {
+            nextisxml = false;
+        }
+
+        String nextutf = null;
+
+        if (nextisxml) {
+            nextutf = getUTFEncoding(FullscreenActivity.file, c);
+        }
+
+        try {
+            if (nextisxml && nextutf!=null && !nextutf.equals("")) {
+                // Extract all of the key bits of the song
+                XmlPullParserFactory factory;
+                factory = XmlPullParserFactory.newInstance();
+
+                factory.setNamespaceAware(true);
+                XmlPullParser xpp;
+                xpp = factory.newPullParser();
+
+                nextkey = "";
+
+                InputStream inputStream = new FileInputStream(nextfile);
+                xpp.setInput(inputStream, nextutf);
+
+                int eventType;
+                eventType = xpp.getEventType();
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    if (eventType == XmlPullParser.START_TAG) {
+                        if (xpp.getName().equals("key")) {
+                            nextkey = parseFromHTMLEntities(xpp.nextText());
+                        }
+                    }
+                    try {
+                        eventType = xpp.next();
+                    } catch (Exception e) {
+                        //Ooops!
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // Ooops
+        }
+
+        return nextkey;
+    }
 }

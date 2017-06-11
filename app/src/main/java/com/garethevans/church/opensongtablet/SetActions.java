@@ -213,13 +213,17 @@ public class SetActions extends Activity {
 
         for (int x = 0; x < FullscreenActivity.setSize; x++) {
 //		for (int x = FullscreenActivity.setSize-1; x<1; x--) {
-            if (FullscreenActivity.mSet[x].equals(FullscreenActivity.whatsongforsetwork)) {
+
+            if (FullscreenActivity.mSet[x].equals(FullscreenActivity.whatsongforsetwork) ||
+                    FullscreenActivity.mSet[x].equals("**"+FullscreenActivity.whatsongforsetwork)) {
                 FullscreenActivity.indexSongInSet = x;
                 if (x>0) {
                     FullscreenActivity.previousSongInSet = FullscreenActivity.mSet[x - 1];
                 }
                 if (x != FullscreenActivity.setSize - 1) {
                     FullscreenActivity.nextSongInSet = FullscreenActivity.mSet[x + 1];
+                    // Get the key of the next song in set
+
                 }
             }
         }
@@ -341,7 +345,6 @@ public class SetActions extends Activity {
                 FullscreenActivity.indexSongInSet = 0;
                 return false;
             }
-
 
         } else {
             // User wasn't in set view, or the set was empty

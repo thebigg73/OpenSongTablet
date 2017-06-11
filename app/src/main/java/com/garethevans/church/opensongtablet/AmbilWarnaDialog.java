@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +15,9 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import br.com.sapereaude.maskedEditText.MaskedEditText;
 
 class AmbilWarnaDialog {
 	interface OnAmbilWarnaListener {
@@ -33,8 +37,12 @@ class AmbilWarnaDialog {
 	private final ImageView viewTarget;
 	private final ImageView viewAlphaCheckered;
 	private final ViewGroup viewContainer;
+	private final MaskedEditText colorhex;
+    private static String hexColor;
 	private final float[] currentColorHsv = new float[3];
+    private final float[] newColorHsv = new float[3];
 	private int alpha;
+    private int mColor;
 
 	AmbilWarnaDialog(final Context context, int color, OnAmbilWarnaListener listener) {
 		this(context, color, false, listener);
@@ -43,6 +51,7 @@ class AmbilWarnaDialog {
 	private AmbilWarnaDialog(final Context context, int color, boolean supportsAlpha, OnAmbilWarnaListener listener) {
 		this.supportsAlpha = supportsAlpha;
 		this.listener = listener;
+        mColor = color;
 
 		if (!supportsAlpha) { // remove alpha if not supported
 			color = color | 0xff000000;
@@ -50,8 +59,10 @@ class AmbilWarnaDialog {
 
 		Color.colorToHSV(color, currentColorHsv);
 		alpha = Color.alpha(color);
+        hexColor = String.format("%06X",(0xFFFFFF & color));
 
-		@SuppressLint("InflateParams") final View view = LayoutInflater.from(context).inflate(R.layout.ambilwarna_dialog, null);
+
+        @SuppressLint("InflateParams") final View view = LayoutInflater.from(context).inflate(R.layout.ambilwarna_dialog, null);
 		viewHue = view.findViewById(R.id.ambilwarna_viewHue);
 		viewSatVal = (AmbilWarnaSquare) view.findViewById(R.id.ambilwarna_viewSatBri);
 		viewCursor = (ImageView) view.findViewById(R.id.ambilwarna_cursor);
@@ -62,6 +73,40 @@ class AmbilWarnaDialog {
 		viewAlphaOverlay = view.findViewById(R.id.ambilwarna_overlay);
 		viewAlphaCursor = (ImageView) view.findViewById(R.id.ambilwarna_alphaCursor);
 		viewAlphaCheckered = (ImageView) view.findViewById(R.id.ambilwarna_alphaCheckered);
+        colorhex = (MaskedEditText) view.findViewById(R.id.colorhex);
+
+        colorhex.setText(hexColor);
+        colorhex.setKeepHint(true);
+        colorhex.setHint(hexColor);
+
+        colorhex.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                // Checks the textView matches the appropriate format
+                String gettext = textView.getText().toString().toUpperCase();
+                int mycolor;
+                try {
+                    mycolor = Color.parseColor("#FF"+gettext);
+                } catch (Exception e) {
+                    mycolor = mColor;
+                }
+                hexColor = String.format("%06X",(0xFFFFFF & mycolor));
+                mColor = mycolor;
+                textView.setText(hexColor);
+                Color.colorToHSV(mycolor, newColorHsv);
+
+                // update view
+                viewSatVal.setHue(getNewHue());
+                moveTargetNew();
+                moveCursorNew();
+                viewNewColor.setBackgroundColor(mycolor);
+                updateAlphaView();
+                currentColorHsv[0] = newColorHsv[0];
+                currentColorHsv[1] = newColorHsv[1];
+                currentColorHsv[2] = newColorHsv[2];
+                return true;
+            }
+        });
 
 		{ // hide/show alpha
 			viewAlphaOverlay.setVisibility(supportsAlpha? View.VISIBLE: View.GONE);
@@ -94,6 +139,7 @@ class AmbilWarnaDialog {
 					moveCursor();
 					viewNewColor.setBackgroundColor(getColor());
 					updateAlphaView();
+
 					return true;
 					}
 				return false;
@@ -211,7 +257,16 @@ class AmbilWarnaDialog {
 		viewCursor.setLayoutParams(layoutParams);
 		}
 
-	private void moveTarget() {
+    private void moveCursorNew() {
+        float y = viewHue.getMeasuredHeight() - (getNewHue() * viewHue.getMeasuredHeight() / 360.f);
+        if (y == viewHue.getMeasuredHeight()) y = 0.f;
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) viewCursor.getLayoutParams();
+        layoutParams.leftMargin = (int) (viewHue.getLeft() - Math.floor(viewCursor.getMeasuredWidth() / 2) - viewContainer.getPaddingLeft());
+        layoutParams.topMargin = (int) (viewHue.getTop() + y - Math.floor(viewCursor.getMeasuredHeight() / 2) - viewContainer.getPaddingTop());
+        viewCursor.setLayoutParams(layoutParams);
+    }
+
+    private void moveTarget() {
 		float x = getSat() * viewSatVal.getMeasuredWidth();
 		float y = (1.f - getVal()) * viewSatVal.getMeasuredHeight();
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) viewTarget.getLayoutParams();
@@ -220,7 +275,16 @@ class AmbilWarnaDialog {
 		viewTarget.setLayoutParams(layoutParams);
 		}
 
-	private void moveAlphaCursor() {
+    private void moveTargetNew() {
+        float x = getNewSat() * viewSatVal.getMeasuredWidth();
+        float y = (1.f - getNewVal()) * viewSatVal.getMeasuredHeight();
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) viewTarget.getLayoutParams();
+        layoutParams.leftMargin = (int) (viewSatVal.getLeft() + x - Math.floor(viewTarget.getMeasuredWidth() / 2) - viewContainer.getPaddingLeft());
+        layoutParams.topMargin = (int) (viewSatVal.getTop() + y - Math.floor(viewTarget.getMeasuredHeight() / 2) - viewContainer.getPaddingTop());
+        viewTarget.setLayoutParams(layoutParams);
+    }
+
+    private void moveAlphaCursor() {
 		final int measuredHeight = this.viewAlphaCheckered.getMeasuredHeight();
 		float y = measuredHeight - ((this.getAlpha() * measuredHeight) / 255.f);
 		final RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) this.viewAlphaCursor.getLayoutParams();
@@ -232,26 +296,40 @@ class AmbilWarnaDialog {
 
 	private int getColor() {
 		final int argb = Color.HSVToColor(currentColorHsv);
+        hexColor = String.format("%06X", (0xFFFFFF & argb));
+        colorhex.setText(hexColor);
 		return alpha << 24 | (argb & 0x00ffffff);
 		}
 
 	private float getHue() {
 		return currentColorHsv[0];
-		}
+    }
+
+    private float getNewHue() {
+        return newColorHsv[0];
+    }
 
 	private float getAlpha() {
 		return this.alpha;
-		}
+    }
 
 	private float getSat() {
 		return currentColorHsv[1];
-		}
-	
-	private float getVal() {
+    }
+
+    private float getNewSat() {
+        return newColorHsv[1];
+    }
+
+    private float getVal() {
 		return currentColorHsv[2];
 		}
 
-	private void setHue(float hue) {
+    private float getNewVal() {
+        return newColorHsv[2];
+    }
+
+    private void setHue(float hue) {
 		currentColorHsv[0] = hue;
 		}
 
