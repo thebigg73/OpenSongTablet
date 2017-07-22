@@ -308,7 +308,7 @@ class PresentationServiceHDMI extends Presentation
 
     // The logo stuff
     @SuppressWarnings("deprecation")
-    private static void setUpLogo() {
+    static void setUpLogo() {
         // If the customLogo doesn't exist, use the default one
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -352,7 +352,9 @@ class PresentationServiceHDMI extends Presentation
                 projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo));
             }
         }
-        projected_Logo.startAnimation(logo_fadein);
+        if (PresenterMode.logoButton_isSelected) {
+            projected_Logo.startAnimation(logo_fadein);
+        }
     }
 
     static void showLogo() {

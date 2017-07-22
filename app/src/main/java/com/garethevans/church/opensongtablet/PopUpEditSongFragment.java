@@ -724,7 +724,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         FullscreenActivity.mTitle = edit_song_title.getText().toString();
         FullscreenActivity.mAuthor = edit_song_author.getText().toString();
         FullscreenActivity.mCopyright = edit_song_copyright.getText().toString();
-        FullscreenActivity.mLyrics = edit_song_lyrics.getText().toString();
+        FullscreenActivity.mLyrics = ProcessSong.fixStartOfLines(edit_song_lyrics.getText().toString());
         FullscreenActivity.mPresentation = edit_song_presentation.getText().toString();
         FullscreenActivity.mHymnNumber = edit_song_hymn.getText().toString();
         FullscreenActivity.mCCLI = edit_song_CCLI.getText().toString();
@@ -1066,25 +1066,21 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     }
 
     public static void justSaveSongXML() throws IOException {
-/*
-        // NOW DONE SEPARATELY FOR EACH FIELD TO COPE WITH ALL HTML ENTITIES
-        // Makes sure all & are replaced with &amp;
-        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&amp;","&");
-        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&","&amp;");
-*/
+        // Only do this if the title isn't welcome to opensongapp!
+        if (!FullscreenActivity.mTitle.equals("Welcome to OpenSongApp")) {
+            // Now write the modified song
+            String filename;
+            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) || FullscreenActivity.whichSongFolder.isEmpty()) {
+                filename = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
+            } else {
+                filename = FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename;
+            }
 
-        // Now write the modified song
-        String filename;
-        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) || FullscreenActivity.whichSongFolder.isEmpty()) {
-            filename = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
-        } else {
-            filename = FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename;
+            FileOutputStream overWrite = new FileOutputStream(filename, false);
+            overWrite.write(FullscreenActivity.mynewXML.getBytes());
+            overWrite.flush();
+            overWrite.close();
         }
-
-        FileOutputStream overWrite = new FileOutputStream(filename,	false);
-        overWrite.write(FullscreenActivity.mynewXML.getBytes());
-        overWrite.flush();
-        overWrite.close();
     }
 
     public static String parseToHTMLEntities(String val) {

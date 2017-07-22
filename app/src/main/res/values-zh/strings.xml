@@ -599,4 +599,14 @@
 	<string name="floating_window">"浮动窗口"</string>
 	<string name="timer_size">"计时器大小"</string>
 
+	<string name="scrollbuttons">"滚动设置"</string>
+	<string name="scrollbuttons_distance">"滚动量"</string>
+	<string name="speed">"速度"</string>
+	<string name="swipe">"滑动设置"</string>
+	<string name="swipe_allowance">"允许垂直运动"</string>
+	<string name="swipe_distance">"滑动距离"</string>
+    <string name="actionbar">\"Traka izbornika info\"</string>
+	<string name="battery">\"电池\"</string>
+	<string name="timeformat">\"24小时\"</string>
+	<string name="text">\"正文\"</string>
 </resources>

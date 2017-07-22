@@ -670,4 +670,15 @@
     <string name="floating_window">"Πλωτό παράθυρο"</string>
     <string name="timer_size">"Χρονικό μέγεθος"</string>
 
+    <string name="scrollbuttons">"Ρυθμίσεις κύλισης"</string>
+    <string name="scrollbuttons_distance">"Μετακινήστε το ποσό"</string>
+    <string name="speed">"Ταχύτητα"</string>
+    <string name="swipe">"Ρυθμίστε τις ρυθμίσεις"</string>
+    <string name="swipe_allowance">"Η κάθετη κίνηση επιτρέπεται"</string>
+    <string name="swipe_distance">"Σύρετε την απόσταση"</string>
+    <string name="actionbar">\"Πληροφορίες Γραμμή μενού\"</string>
+    <string name="battery">\"μπαταρία\"</string>
+    <string name="timeformat">\"24 ώρες\"</string>
+    <string name="text">\"Κείμενο\"</string>
+
 </resources>

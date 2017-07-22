@@ -8,9 +8,10 @@ import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -113,7 +114,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         SongMenuAdapter.MyInterface, BatteryMonitor.MyInterface, SalutDataCallback,
         PopUpMenuSettingsFragment.MyInterface, PopUpAlertFragment.MyInterface,
         PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface,
-        PopUpExportFragment.MyInterface {
+        PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface {
 
     DialogFragment newFragment;
 
@@ -234,7 +235,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     // Which Actions buttons are selected
     boolean projectButton_isSelected = false;
-    boolean logoButton_isSelected = false;
+    static boolean logoButton_isSelected = false;
     boolean blankButton_isSelected = false;
     boolean scriptureButton_isSelected = false;
     boolean slideButton_isSelected = false;
@@ -253,6 +254,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public static final String TAG = "StageMode";
     SalutMessage myMessage;
     SalutMessage mySongMessage;
+
+    // Battery
+    BroadcastReceiver br;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -303,6 +307,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 initialiseTheViews();
                 screenClickListeners();
 
+                // Battery monitor
+                IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+                br = new BatteryMonitor();
+                PresenterMode.this.registerReceiver(br, filter);
+
                 // Make the drawers match half the width of the screen
                 resizeDrawers();
 
@@ -317,7 +326,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 setupSongButtons();
 
                 // Redraw the menu
-                invalidateOptionsMenu();
+                //invalidateOptionsMenu();
 
                 // If we have started for the first time (not redrawn)
                 if (FullscreenActivity.firstload) {
@@ -328,6 +337,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // Set up the Salut service
                 getBluetoothName();
                 startRegistration();
+
+                // Initialise the ab info
+                adjustABInfo();
 
                 // Click on the first item in the set
                 if (presenter_set_buttonsListView.getChildCount() > 0) {
@@ -371,6 +383,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             mMediaRouter.removeCallback(mMediaRouterCallback);
         }
+        if (br!=null) {
+            try {
+                PresenterMode.this.unregisterReceiver(br);
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
     }
     @Override
     protected void onResume() {
@@ -387,18 +406,27 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        // Battery monitor
+        if (br!=null) {
+            try {
+                PresenterMode.this.unregisterReceiver(br);
+            } catch (Exception e) {
+                Log.d("d","Error closing battery monitor");
+            }
+        }
         tryCancelAsyncTasks();
-        if (FullscreenActivity.network.isRunningAsHost) {
+
+        if (FullscreenActivity.network!=null && FullscreenActivity.network.isRunningAsHost) {
             try {
                 FullscreenActivity.network.stopNetworkService(false);
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d("d","Error closing network service");
             }
-        } else {
+        } else if (FullscreenActivity.network!=null) {
             try {
                 FullscreenActivity.network.unregisterClient(false);
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d("d","Error closing network service");
             }
         }
     }
@@ -417,7 +445,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Get the current orientation
             FullscreenActivity.mScreenOrientation = getResources().getConfiguration().orientation;
 
-            invalidateOptionsMenu();
+            //invalidateOptionsMenu();
             closeMyDrawers("both");
             resizeDrawers();
         }
@@ -493,6 +521,43 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
+    @Override
+    public void adjustABInfo() {
+        // Change the visibilities
+        if (FullscreenActivity.batteryDialOn) {
+            batteryimage.setVisibility(View.VISIBLE);
+        } else {
+            batteryimage.setVisibility(View.INVISIBLE);
+        }
+        if (FullscreenActivity.batteryOn) {
+            batterycharge.setVisibility(View.VISIBLE);
+        } else {
+            batterycharge.setVisibility(View.GONE);
+        }
+        if (FullscreenActivity.timeOn) {
+            digitalclock.setVisibility(View.VISIBLE);
+        } else {
+            digitalclock.setVisibility(View.GONE);
+        }
+
+        // Set the text sizes
+        batterycharge.setTextSize(FullscreenActivity.batterySize);
+        digitalclock.setTextSize(FullscreenActivity.timeSize);
+        songtitle_ab.setTextSize(FullscreenActivity.ab_titleSize);
+        songauthor_ab.setTextSize(FullscreenActivity.ab_authorSize);
+        songkey_ab.setTextSize(FullscreenActivity.ab_titleSize);
+
+        // Set the time format
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df;
+        if (FullscreenActivity.timeFormat24h) {
+            df = new SimpleDateFormat("HH:mm", FullscreenActivity.locale);
+        } else {
+            df = new SimpleDateFormat("h:mm", FullscreenActivity.locale);
+        }
+        String formattedTime = df.format(c.getTime());
+        digitalclock.setText(formattedTime);
+    }
 
     @Override
     // The navigation drawers
@@ -840,30 +905,56 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     public void setUpBatteryMonitor() {
         // Get clock
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm", FullscreenActivity.locale);
-        String formattedTime = df.format(c.getTime());
-        digitalclock.setText(formattedTime);
-
-        // Get battery
-        int i = (int) (BatteryMonitor.getBatteryStatus(PresenterMode.this) * 100.0f);
-        String charge = i + "%";
-        batterycharge.setText(charge);
-        int abh = ab.getHeight();
-        FullscreenActivity.ab_height = abh;
-        if (ab != null && abh > 0) {
-            BitmapDrawable bmp = BatteryMonitor.batteryImage(i, abh, PresenterMode.this);
-            batteryimage.setImageDrawable(bmp);
-        }
-
-        // Ask the app to check again in 60s
-        Handler batterycheck = new Handler();
-        batterycheck.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setUpBatteryMonitor();
+        try {
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat df;
+            if (FullscreenActivity.timeFormat24h) {
+                df = new SimpleDateFormat("HH:mm", FullscreenActivity.locale);
+            } else {
+                df = new SimpleDateFormat("h:mm", FullscreenActivity.locale);
             }
-        }, 60000);
+            String formattedTime = df.format(c.getTime());
+            if (FullscreenActivity.timeOn) {
+                digitalclock.setVisibility(View.VISIBLE);
+            } else {
+                digitalclock.setVisibility(View.GONE);
+            }
+            digitalclock.setTextSize(FullscreenActivity.timeSize);
+            digitalclock.setText(formattedTime);
+
+            // Get battery
+            int i = (int) (BatteryMonitor.getBatteryStatus(PresenterMode.this) * 100.0f);
+            String charge = i + "%";
+            if (FullscreenActivity.batteryOn) {
+                batterycharge.setVisibility(View.VISIBLE);
+            } else {
+                batterycharge.setVisibility(View.GONE);
+            }
+            batterycharge.setTextSize(FullscreenActivity.batterySize);
+            batterycharge.setText(charge);
+            int abh = ab.getHeight();
+            FullscreenActivity.ab_height = abh;
+            if (FullscreenActivity.batteryDialOn) {
+                batteryimage.setVisibility(View.VISIBLE);
+            } else {
+                batteryimage.setVisibility(View.INVISIBLE);
+            }
+            if (ab != null && abh > 0) {
+                BitmapDrawable bmp = BatteryMonitor.batteryImage(i, abh, PresenterMode.this);
+                batteryimage.setImageDrawable(bmp);
+            }
+
+            // Ask the app to check again in 60s
+            Handler batterycheck = new Handler();
+            batterycheck.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setUpBatteryMonitor();
+                }
+            }, 60000);
+        } catch (Exception e) {
+            // Ooops
+        }
     }
     @Override
     public void refreshActionBar() {
@@ -1050,7 +1141,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_order_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "";
+                FullscreenActivity.whattodo = "editsong";
                 openFragment();
             }
         });
@@ -1628,7 +1719,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     SetActions.doMoveInSet(PresenterMode.this);
 
                     // Set indexSongInSet position has moved
-                    invalidateOptionsMenu();
+                    //invalidateOptionsMenu();
 
                     // Click the item in the set list
                     if (presenter_set_buttonsListView.getChildAt(FullscreenActivity.indexSongInSet) != null) {
@@ -1873,6 +1964,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     e.printStackTrace();
                 }
 
+                // Clear the old headings (presention order looks for these)
+                FullscreenActivity.foundSongSections_heading = new ArrayList<>();
+
                 // Don't process images or image slide details here.  No need.  Only do this for songs
                 if (FullscreenActivity.isPDF) {
                     LoadXML.getPDFPageCount();
@@ -1902,6 +1996,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     FullscreenActivity.songSectionsTypes = new String[FullscreenActivity.songSections.length];
                     for (int sl = 0; sl < FullscreenActivity.songSections.length; sl++) {
                         FullscreenActivity.songSectionsLabels[sl] = ProcessSong.getSectionHeadings(FullscreenActivity.songSections[sl]);
+                        if (!FullscreenActivity.foundSongSections_heading.contains(FullscreenActivity.songSectionsLabels[sl])) {
+                            FullscreenActivity.foundSongSections_heading.add(FullscreenActivity.songSectionsLabels[sl]);
+                        }
                     }
 
                     // 5. Get rid of the tag/heading lines
@@ -1912,6 +2009,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     FullscreenActivity.sectionContents = new String[FullscreenActivity.songSections.length][];
                     FullscreenActivity.projectedContents = new String[FullscreenActivity.songSections.length][];
                     for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
+
                         FullscreenActivity.sectionContents[x] = FullscreenActivity.songSections[x].split("\n");
                         FullscreenActivity.projectedContents[x] = FullscreenActivity.songSections[x].split("\n");
                     }
@@ -1920,8 +2018,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // Copy the array of sectionContents into sectionLineTypes
                     // Then we'll replace the content with the line type
                     // This keeps the array sizes the same simply
-                    FullscreenActivity.sectionLineTypes = new String[FullscreenActivity.sectionContents.length][];
-                    FullscreenActivity.projectedLineTypes = new String[FullscreenActivity.projectedContents.length][];
+                    //FullscreenActivity.sectionLineTypes = new String[FullscreenActivity.sectionContents.length][];
+                    //FullscreenActivity.projectedLineTypes = new String[FullscreenActivity.projectedContents.length][];
+                    FullscreenActivity.sectionLineTypes = new String[FullscreenActivity.songSections.length][];
+                    FullscreenActivity.projectedLineTypes = new String[FullscreenActivity.songSections.length][];
+
 
                     for (int x = 0; x < FullscreenActivity.sectionLineTypes.length; x++) {
                         FullscreenActivity.sectionLineTypes[x] = new String[FullscreenActivity.sectionContents[x].length];
@@ -1939,6 +2040,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         FullscreenActivity.projectedLineTypes[x] = new String[FullscreenActivity.projectedContents[x].length];
                         for (int y = 0; y < FullscreenActivity.projectedLineTypes[x].length; y++) {
                             FullscreenActivity.projectedLineTypes[x][y] = ProcessSong.determineLineTypes(FullscreenActivity.projectedContents[x][y], PresenterMode.this);
+                            /*if (FullscreenActivity.projectedContents[x][y] != null &&
+                                    FullscreenActivity.projectedContents[x][y].length() > 0 && (FullscreenActivity.projectedContents[x][y].indexOf(" ") == 0 ||
+                                    FullscreenActivity.projectedContents[x][y].indexOf(".") == 0 || FullscreenActivity.projectedContents[x][y].indexOf(";") == 0)) {
+                                FullscreenActivity.projectedContents[x][y] = FullscreenActivity.projectedContents[x][y].substring(1);
+                            }*/
                         }
                     }
 
@@ -1985,9 +2091,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     }
                     // If the user has shown the 'Welcome to OpenSongApp' file, and their song lists are empty,
                     // open the find new songs menu
-                    if (FullscreenActivity.mTitle.equals("Welcome to OpenSongApp") ||
-                            FullscreenActivity.mSongFileNames==null ||
-                            (FullscreenActivity.mSongFileNames!=null && FullscreenActivity.mSongFileNames.length==0)) {
+                    if (FullscreenActivity.mTitle.equals("Welcome to OpenSongApp") &&
+                            (FullscreenActivity.mSongFileNames==null ||
+                                    (FullscreenActivity.mSongFileNames!=null && FullscreenActivity.mSongFileNames.length==0))) {
                         FullscreenActivity.whichOptionMenu = "FIND";
                         prepareOptionMenu();
                         Handler find = new Handler();
@@ -2131,6 +2237,18 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/opensongapp")));
                 }
                 break;
+            case "forum":
+                String mailto = "mailto:opensongapp@googlegroups.com";
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse(mailto));
+                try {
+                    startActivity(emailIntent);
+                } catch (ActivityNotFoundException e) {
+                    FullscreenActivity.myToastMessage = getString(R.string.error);
+                    ShowToast.showToast(PresenterMode.this);
+                }
+                break;
+
             case "activity":
                 startActivity(i);
                 finish();
@@ -2172,7 +2290,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             case "deletesong":
                 // Delete current song
                 ListSongFiles.deleteSong(PresenterMode.this);
-                invalidateOptionsMenu();
+                //invalidateOptionsMenu();
                 Preferences.savePreferences();
                 refreshAll();
                 break;
@@ -2319,11 +2437,19 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void splashScreen() {
-        SharedPreferences settings = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
+        /*SharedPreferences settings = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("showSplashVersion", 0);
         editor.apply();
         Intent intent = new Intent();
+        intent.setClass(PresenterMode.this, SettingsActivity.class);
+        startActivity(intent);
+        finish();*/
+        FullscreenActivity.showSplashVersion = 0;
+        Preferences.savePreferences();
+        Log.d("d","PresenterMode showSplashVersion="+FullscreenActivity.showSplashVersion);
+        Intent intent = new Intent();
+        intent.putExtra("showsplash",true);
         intent.setClass(PresenterMode.this, SettingsActivity.class);
         startActivity(intent);
         finish();
@@ -2420,7 +2546,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // Vibrate to let the user know something happened
                     DoVibrate.vibrate(PresenterMode.this, 50);
 
-                    invalidateOptionsMenu();
+                    //invalidateOptionsMenu();
                     prepareOptionMenu();
                     fixSet();
                     closeMyDrawers("option_delayed");
@@ -2454,7 +2580,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         SetActions.prepareSetList();
         prepareOptionMenu();
         fixSet();
-        invalidateOptionsMenu();
+        //invalidateOptionsMenu();
 
         // Save set
         Preferences.savePreferences();
@@ -2623,10 +2749,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void updatePresentationOrder() {
-        presenter_order_text.setText(FullscreenActivity.mPresentation);
-        refreshAll();
+        Preferences.savePreferences();
+        doEdit();
     }
-
 
     // The stuff to deal with the slideshow
     public void prepareStopAutoSlideShow() {
@@ -3268,6 +3393,25 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void refreshSecondaryDisplay(String which) {
         try {
             switch (which) {
+                case "logo":
+                    if (FullscreenActivity.isPresenting && !FullscreenActivity.isHDMIConnected) {
+                        try {
+                            PresentationService.ExternalDisplay.setUpLogo();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (FullscreenActivity.isHDMIConnected) {
+                        try {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                                PresentationServiceHDMI.setUpLogo();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+
                 case "all":
                 case "chords":
                 case "autoscale":

@@ -167,7 +167,7 @@ public class PopUpLinks extends DialogFragment {
                 FullscreenActivity.filechosen!=null && !FullscreenActivity.filechosen.toString().equals("")) {
             // Get audio link
             String link = Uri.fromFile(FullscreenActivity.filechosen).toString();
-            if (link.contains("/OpenSong/")) {
+            if (link.contains("/OpenSong/") && !link.contains("../OpenSong/")) {
                 // Make this package local by removing everything before it
                 int pos = link.indexOf("/OpenSong/");
                 link = "../OpenSong/" + link.substring(pos+10);
@@ -202,7 +202,7 @@ public class PopUpLinks extends DialogFragment {
         } else if (FullscreenActivity.filetoselect.equals("otherlink") && FullscreenActivity.filechosen!=null) {
             // Get other link
             String link = Uri.fromFile(FullscreenActivity.filechosen).toString();
-            if (link.contains("/OpenSong/")) {
+            if (link.contains("/OpenSong/") && !link.contains("../OpenSong/")) {
                 // Make this package local by removing everything before it
                 int pos = link.indexOf("/OpenSong/");
                 link = "../OpenSong/" + link.substring(pos+10);

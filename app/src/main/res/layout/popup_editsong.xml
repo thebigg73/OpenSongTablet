@@ -34,7 +34,7 @@
                 android:visibility="visible">
 
                 <TextView
-                    android:id="@+id/myTitle"
+                    android:id="@+id/mySongTitle"
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -330,8 +330,9 @@
                     android:isScrollContainer="true"
                     android:minLines="10"
                     android:scrollbarStyle="insideOverlay"
-                    android:scrollbars="vertical"
-                    android:textSize="10sp"
+                    android:scrollbars="vertical|horizontal"
+                    android:fadeScrollbars="false"
+                    android:scrollHorizontally="true"
                     android:typeface="monospace"
                     tools:ignore="SmallSp" />
 
@@ -813,7 +814,8 @@
                     android:text="@string/theme_church_purity_holiness"
                     android:textColor="#000"
 
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:ignore="TooManyViews" />
 
                 <CheckBox
                     android:id="@+id/edit_song_theme_church_repentance_salvation"

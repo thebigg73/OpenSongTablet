@@ -76,6 +76,8 @@ public class PopUpLayoutFragment extends DialogFragment {
     SeekBar presoAuthorSizeSeekBar;
     SeekBar presoCopyrightSizeSeekBar;
     SeekBar presoAlertSizeSeekBar;
+    SeekBar presoTransitionTimeSeekBar;
+    TextView presoTransitionTimeTextView;
     LinearLayout group_backgrounds;
     SeekBar presoAlphaProgressBar;
     TextView presoAlphaText;
@@ -152,6 +154,8 @@ public class PopUpLayoutFragment extends DialogFragment {
         presoAuthorSizeSeekBar = (SeekBar) V.findViewById(R.id.presoAuthorSizeSeekBar);
         presoCopyrightSizeSeekBar = (SeekBar) V.findViewById(R.id.presoCopyrightSizeSeekBar);
         presoAlertSizeSeekBar = (SeekBar) V.findViewById(R.id.presoAlertSizeSeekBar);
+        presoTransitionTimeSeekBar = (SeekBar) V.findViewById(R.id.presoTransitionTimeSeekBar);
+        presoTransitionTimeTextView = (TextView) V.findViewById(R.id.presoTransitionTimeTextView);
         group_backgrounds = (LinearLayout) V.findViewById(R.id.group_backgrounds);
         presoAlphaProgressBar = (SeekBar) V.findViewById(R.id.presoAlphaProgressBar);
         presoAlphaText = (TextView) V.findViewById(R.id.presoAlphaText);
@@ -170,18 +174,6 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         SetTypeFace.setTypeface();
 
-        // Hide the appropriate views for Stage and Performance mode
-        switch (FullscreenActivity.whichMode) {
-            case "Presentation":
-                setUpPresentationMode();
-                break;
-
-            case "Stage":
-            case "Performance":
-            default:
-                setUpNormalMode();
-                break;
-        }
 
         // Set the stuff up to what it should be from preferences
         toggleChordsButton.setChecked(FullscreenActivity.presoShowChords);
@@ -204,6 +196,9 @@ public class PopUpLayoutFragment extends DialogFragment {
         presoAlphaProgressBar.setProgress((int)(FullscreenActivity.presoAlpha * 100.0f));
         newtext = (int) (FullscreenActivity.presoAlpha * 100.0f) + " %";
         presoAlphaText.setText(newtext);
+        presoTransitionTimeSeekBar.setMax(23);
+        presoTransitionTimeSeekBar.setProgress(timeToSeekBarProgress());
+        presoTransitionTimeTextView.setText(SeekBarProgressToText());
         setButtonBackground(chooseLogoButton,FullscreenActivity.customLogo);
         setButtonBackground(chooseImage1Button,FullscreenActivity.backgroundImage1);
         setButtonBackground(chooseImage2Button,FullscreenActivity.backgroundImage2);
@@ -214,6 +209,19 @@ public class PopUpLayoutFragment extends DialogFragment {
         setYMarginProgressBar.setMax(50);
         setXMarginProgressBar.setProgress(FullscreenActivity.xmargin_presentation);
         setYMarginProgressBar.setProgress(FullscreenActivity.ymargin_presentation);
+
+        // Hide the appropriate views for Stage and Performance mode
+        switch (FullscreenActivity.whichMode) {
+            case "Presentation":
+                setUpPresentationMode();
+                break;
+
+            case "Stage":
+            case "Performance":
+            default:
+                setUpNormalMode();
+                break;
+        }
 
         // Set listeners
         toggleChordsButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -293,6 +301,23 @@ public class PopUpLayoutFragment extends DialogFragment {
                 Preferences.savePreferences();
                 setUpAlignmentButtons();
                 sendUpdateToScreen("info");
+            }
+        });
+        presoTransitionTimeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                presoTransitionTimeTextView.setText(SeekBarProgressToText());
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                FullscreenActivity.presoTransitionTime = seekBarProgressToTime();
+                Preferences.savePreferences();
             }
         });
         presoTitleSizeSeekBar.setOnSeekBarChangeListener(new presoSectionSizeListener());
@@ -386,7 +411,24 @@ public class PopUpLayoutFragment extends DialogFragment {
                 }
             }
         });
+
+        // Make sure the logo we have is what is displayed (if we have set a new one)
+        sendUpdateToScreen("logo");
+
         return V;
+    }
+
+    public int timeToSeekBarProgress() {
+        // Min time is 200ms, max is 2000ms
+        return ((FullscreenActivity.presoTransitionTime * 10)/1000) - 2;
+    }
+
+    public int seekBarProgressToTime() {
+        return (presoTransitionTimeSeekBar.getProgress() + 2) * 100;
+    }
+
+    public String SeekBarProgressToText() {
+        return (((float)presoTransitionTimeSeekBar.getProgress() + 2.0f)/10.0f) + " s";
     }
 
     public void setUpAlignmentButtons() {
@@ -487,8 +529,13 @@ public class PopUpLayoutFragment extends DialogFragment {
         // Views we want...
         toggleChordsButton.setVisibility(View.VISIBLE);
         toggleAutoScaleButton.setVisibility(View.VISIBLE);
-        group_maxfontsize.setVisibility(View.VISIBLE);
-        group_manualfontsize.setVisibility(View.VISIBLE);
+        if (FullscreenActivity.presoAutoScale) {
+            group_maxfontsize.setVisibility(View.VISIBLE);
+            group_manualfontsize.setVisibility(View.GONE);
+        } else {
+            group_maxfontsize.setVisibility(View.GONE);
+            group_manualfontsize.setVisibility(View.VISIBLE);
+        }
         group_alignment.setVisibility(View.VISIBLE);
         group_songinfofontsizes.setVisibility(View.VISIBLE);
         group_backgrounds.setVisibility(View.VISIBLE);
@@ -521,7 +568,11 @@ public class PopUpLayoutFragment extends DialogFragment {
         } else {
             // We have just initialised the variables
             firsttime = false;
+            if (mListener != null) {
+                mListener.refreshSecondaryDisplay("logo");
+            }
         }
+
     }
 
     private class setMargin_Listener implements SeekBar.OnSeekBarChangeListener {

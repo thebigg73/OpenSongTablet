@@ -45,6 +45,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
     Button deleteSong_Button;
     Button renameSong_Button;
     Button shareSong_Button;
+    Button editSong_Button;
 
     @Override
     public void onStart() {
@@ -93,13 +94,16 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         deleteSong_Button = (Button) V.findViewById(R.id.deleteSong_Button);
         renameSong_Button = (Button) V.findViewById(R.id.renameSong_Button);
         shareSong_Button = (Button) V.findViewById(R.id.shareSong_Button);
+        editSong_Button = (Button) V.findViewById(R.id.editSong_Button);
 
         // Set up listeners for the buttons
         addSongToSet_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addtoSet();
-                mListener.songLongClick();
+                if (mListener!=null) {
+                    mListener.songLongClick();
+                }
                 dismiss();
             }
         });
@@ -107,24 +111,40 @@ public class PopUpLongSongPressFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whattodo = "deletesong";
+                if (mListener!=null) {
+                    mListener.openFragment();
+                }
                 dismiss();
-                mListener.openFragment();
             }
         });
         shareSong_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whattodo = "exportsong";
+                if (mListener!=null) {
+                    mListener.shareSong();
+                }
                 dismiss();
-                mListener.shareSong();
             }
         });
         renameSong_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whattodo = "renamesong";
+                if (mListener!=null) {
+                    mListener.openFragment();
+                }
                 dismiss();
-                mListener.openFragment();
+            }
+        });
+        editSong_Button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "editsong";
+                if (mListener!=null) {
+                    mListener.openFragment();
+                }
+                dismiss();
             }
         });
 

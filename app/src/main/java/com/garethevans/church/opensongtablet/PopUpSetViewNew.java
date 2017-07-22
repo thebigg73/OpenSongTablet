@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Interpolator;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -56,6 +55,7 @@ public class PopUpSetViewNew extends DialogFragment {
         void closePopUps();
         void pageButtonAlpha(String s);
         void windowFlags();
+        void openFragment();
     }
 
     private static MyInterface mListener;
@@ -169,7 +169,7 @@ public class PopUpSetViewNew extends DialogFragment {
         helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(mRecyclerView);
 
-        ImageButton listSetTweetButton = (ImageButton) V.findViewById(R.id.listSetTweetButton);
+        FloatingActionButton listSetTweetButton = (FloatingActionButton) V.findViewById(R.id.listSetTweetButton);
         // Set up the Tweet button
         listSetTweetButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,7 +177,6 @@ public class PopUpSetViewNew extends DialogFragment {
                 doExportSetTweet();
             }
         });
-
         FloatingActionButton info = (FloatingActionButton) V.findViewById(R.id.info);
         final LinearLayout helptext = (LinearLayout) V.findViewById(R.id.helptext);
         info.setOnClickListener(new View.OnClickListener() {
@@ -209,15 +208,27 @@ public class PopUpSetViewNew extends DialogFragment {
             }
         });
 
+        FloatingActionButton saveAsProperSet = (FloatingActionButton) V.findViewById(R.id.saveAsProperSet);
+        saveAsProperSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "saveset";
+                if (mListener!=null) {
+                    mListener.openFragment();
+                }
+            }
+        });
+
         if (FullscreenActivity.whattodo.equals("setitemvariation")) {
-            helpClickItem_TextView.setVisibility(View.VISIBLE);
+            helpVariationItem_TextView.setVisibility(View.VISIBLE);
             info.setVisibility(View.GONE);
+            helpClickItem_TextView.setVisibility(View.GONE);
             helpDragItem_TextView.setVisibility(View.GONE);
             helpSwipeItem_TextView.setVisibility(View.GONE);
             listSetTweetButton.setVisibility(View.GONE);
             //saveMe.setVisibility(View.GONE);
             set_shuffle.setVisibility(View.GONE);
-            helpVariationItem_TextView.setVisibility(View.VISIBLE);
+            helptext.setVisibility(View.VISIBLE);
         }
 
         Dialog dialog = getDialog();
@@ -241,6 +252,9 @@ public class PopUpSetViewNew extends DialogFragment {
     public void doSave() {
         String tempmySet = "";
         String tempItem;
+        if (FullscreenActivity.mTempSetList == null) {
+            FullscreenActivity.mTempSetList = new ArrayList<>();
+        }
         for (int z=0; z<FullscreenActivity.mTempSetList.size(); z++) {
             tempItem = FullscreenActivity.mTempSetList.get(z);
             tempmySet = tempmySet + "$**_"+ tempItem + "_**$";

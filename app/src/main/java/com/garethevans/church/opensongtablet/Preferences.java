@@ -92,6 +92,8 @@ public class Preferences extends Activity {
 
         Log.d("d","trying to load");
         try {
+            FullscreenActivity.ab_titleSize = myPreferences.getFloat("ab_titleSize", 13.0f);
+            FullscreenActivity.ab_authorSize = myPreferences.getFloat("ab_authorSize", 11.0f);
             FullscreenActivity.alwaysPreferredChordFormat = myPreferences.getString("alwaysPreferredChordFormat", "N");
             FullscreenActivity.autoProject = myPreferences.getBoolean("autoProject", false);
             FullscreenActivity.autoscroll_default_or_prompt = myPreferences.getString("autoscroll_default_or_prompt", "prompt");
@@ -103,6 +105,9 @@ public class Preferences extends Activity {
             FullscreenActivity.backgroundVideo2 = myPreferences.getString("backgroundVideo2", "");
             FullscreenActivity.backgroundToUse = myPreferences.getString("backgroundToUse", "img1");
             FullscreenActivity.backgroundTypeToUse = myPreferences.getString("backgroundTypeToUse", "image");
+            FullscreenActivity.batteryDialOn = myPreferences.getBoolean("batteryDialOn", true);
+            FullscreenActivity.batteryOn = myPreferences.getBoolean("batteryOn", true);
+            FullscreenActivity.batterySize = myPreferences.getFloat("batterySize", 9.0f);
             FullscreenActivity.bibleFile = myPreferences.getString("bibleFile", "");
             FullscreenActivity.capoDisplay = myPreferences.getString("capoDisplay", "both");
             FullscreenActivity.chordfontscalesize = myPreferences.getFloat("chordfontscalesize", 0.8f);
@@ -292,11 +297,14 @@ public class Preferences extends Activity {
             FullscreenActivity.presoLyricsAlign = myPreferences.getInt("presoLyricsAlign", Gravity.CENTER_HORIZONTAL);
             FullscreenActivity.presoMaxFontSize = myPreferences.getInt("presoMaxFontSize", 40);
             FullscreenActivity.presoShowChords = myPreferences.getBoolean("presoShowChords", false);
+            FullscreenActivity.presoTransitionTime = myPreferences.getInt("presoTransitionTime", 800);
             FullscreenActivity.profile = myPreferences.getString("profile", "");
             FullscreenActivity.quickLaunchButton_1 = myPreferences.getString("quickLaunchButton_1", "");
             FullscreenActivity.quickLaunchButton_2 = myPreferences.getString("quickLaunchButton_2", "");
             FullscreenActivity.quickLaunchButton_3 = myPreferences.getString("quickLaunchButton_3", "");
             FullscreenActivity.quickLaunchButton_4 = myPreferences.getString("quickLaunchButton_4", "");
+            FullscreenActivity.scrollDistance = myPreferences.getFloat("scrollDistance", 0.6f);
+            FullscreenActivity.scrollSpeed = myPreferences.getInt("scrollSpeed", 1500);
             FullscreenActivity.showCapoChords = myPreferences.getBoolean("showCapoChords", true);
             FullscreenActivity.showLyrics = myPreferences.getBoolean("showLyrics", true);
             FullscreenActivity.showNativeAndCapoChords = myPreferences.getBoolean("showNativeAndCapoChords", true);
@@ -308,12 +316,18 @@ public class Preferences extends Activity {
             FullscreenActivity.stickyWidth = myPreferences.getInt("stickyWidth",400);
             FullscreenActivity.stickyOpacity = myPreferences.getFloat("stickyOpacity", 0.8f);
             FullscreenActivity.stickyTextSize = myPreferences.getFloat("stickyTextSize", 14.0f);
+            FullscreenActivity.SWIPE_MAX_OFF_PATH = myPreferences.getInt("SWIPE_MAX_OFF_PATH", 200);
+            FullscreenActivity.SWIPE_MIN_DISTANCE = myPreferences.getInt("SWIPE_MIN_DISTANCE", 250);
+            FullscreenActivity.SWIPE_THRESHOLD_VELOCITY = myPreferences.getInt("SWIPE_THRESHOLD_VELOCITY", 600);
             FullscreenActivity.swipeDrawer = myPreferences.getString("swipeDrawer", "Y");
             FullscreenActivity.swipeForMenus = myPreferences.getBoolean("swipeForMenus", true);
             FullscreenActivity.swipeForSongs = myPreferences.getBoolean("swipeForSongs", true);
             FullscreenActivity.swipeSet = myPreferences.getString("swipeSet", "Y");
             FullscreenActivity.timerFontSizeAutoScroll = myPreferences.getFloat("timerFontSizeAutoScroll",14.0f);
             FullscreenActivity.timerFontSizePad = myPreferences.getFloat("timerFontSizePad",14.0f);
+            FullscreenActivity.timeFormat24h = myPreferences.getBoolean("timeFormat24h", true);
+            FullscreenActivity.timeOn = myPreferences.getBoolean("timeOn", true);
+            FullscreenActivity.timeSize = myPreferences.getFloat("timeSize", 9.0f);
             FullscreenActivity.toggleAutoSticky = myPreferences.getString("toggleAutoSticky", "N");
             FullscreenActivity.togglePageButtons = myPreferences.getString("togglePageButtons", "Y");
             FullscreenActivity.toggleScrollArrows = myPreferences.getString("toggleScrollArrows", "S");
@@ -377,6 +391,8 @@ public class Preferences extends Activity {
 
             SharedPreferences.Editor editor = myPreferences.edit();
 
+            editor.putFloat("ab_titleSize", FullscreenActivity.ab_titleSize);
+            editor.putFloat("ab_authorSize", FullscreenActivity.ab_authorSize);
             editor.putString("alwaysPreferredChordFormat", FullscreenActivity.alwaysPreferredChordFormat);
             editor.putBoolean("autoProject", FullscreenActivity.autoProject);
             editor.putString("autoscroll_default_or_prompt", FullscreenActivity.autoscroll_default_or_prompt);
@@ -388,6 +404,9 @@ public class Preferences extends Activity {
             editor.putString("backgroundTypeToUse", FullscreenActivity.backgroundTypeToUse);
             editor.putString("backgroundVideo1", FullscreenActivity.backgroundVideo1);
             editor.putString("backgroundVideo2", FullscreenActivity.backgroundVideo2);
+            editor.putBoolean("batteryDialOn", FullscreenActivity.batteryDialOn);
+            editor.putBoolean("batteryOn", FullscreenActivity.batteryDialOn);
+            editor.putFloat("batterySize", FullscreenActivity.batterySize);
             editor.putString("bibleFile", FullscreenActivity.bibleFile);
             editor.putString("capoDisplay", FullscreenActivity.capoDisplay);
             editor.putFloat("chordfontscalesize", FullscreenActivity.chordfontscalesize);
@@ -584,11 +603,14 @@ public class Preferences extends Activity {
             editor.putInt("presoMaxFontSize", FullscreenActivity.presoMaxFontSize);
             editor.putBoolean("presoShowChords", FullscreenActivity.presoShowChords);
             editor.putFloat("presoTitleSize", FullscreenActivity.presoTitleSize);
+            editor.putInt("presoTransitionTime", FullscreenActivity.presoTransitionTime);
             editor.putString("profile", FullscreenActivity.profile);
             editor.putString("quickLaunchButton_1", FullscreenActivity.quickLaunchButton_1);
             editor.putString("quickLaunchButton_2", FullscreenActivity.quickLaunchButton_2);
             editor.putString("quickLaunchButton_3", FullscreenActivity.quickLaunchButton_3);
             editor.putString("quickLaunchButton_4", FullscreenActivity.quickLaunchButton_4);
+            editor.putFloat("scrollDistance", FullscreenActivity.scrollDistance);
+            editor.putInt("scrollSpeed", FullscreenActivity.scrollSpeed);
             editor.putBoolean("showCapoChords", FullscreenActivity.showCapoChords);
             editor.putBoolean("showChords", FullscreenActivity.showChords);
             editor.putBoolean("showLyrics", FullscreenActivity.showLyrics);
@@ -601,12 +623,18 @@ public class Preferences extends Activity {
             editor.putFloat("stickyOpacity", FullscreenActivity.stickyOpacity);
             editor.putFloat("stickyTextSize", FullscreenActivity.stickyTextSize);
             editor.putInt("stickyWidth", FullscreenActivity.stickyWidth);
+            editor.putInt("SWIPE_MAX_OFF_PATH", FullscreenActivity.SWIPE_MAX_OFF_PATH);
+            editor.putInt("SWIPE_MIN_DISTANCE", FullscreenActivity.SWIPE_MIN_DISTANCE);
+            editor.putInt("SWIPE_THRESHOLD_VELOCITY", FullscreenActivity.SWIPE_THRESHOLD_VELOCITY);
             editor.putString("swipeDrawer", FullscreenActivity.swipeDrawer);
             editor.putBoolean("swipeForMenus", FullscreenActivity.swipeForMenus);
             editor.putBoolean("swipeForSongs", FullscreenActivity.swipeForSongs);
             editor.putString("swipeSet", FullscreenActivity.swipeSet);
             editor.putFloat("timerFontSizeAutoScroll", FullscreenActivity.timerFontSizeAutoScroll);
-            editor.putFloat("timerFontSizeAutoScroll", FullscreenActivity.timerFontSizePad);
+            editor.putFloat("timerFontSizePad", FullscreenActivity.timerFontSizePad);
+            editor.putBoolean("timeFormat24h", FullscreenActivity.timeFormat24h);
+            editor.putBoolean("timeOn", FullscreenActivity.timeOn);
+            editor.putFloat("timeSize", FullscreenActivity.timeSize);
             editor.putString("toggleAutoSticky", FullscreenActivity.toggleAutoSticky);
             editor.putString("togglePageButtons", FullscreenActivity.togglePageButtons);
             editor.putString("toggleScrollArrows", FullscreenActivity.toggleScrollArrows);
@@ -621,6 +649,7 @@ public class Preferences extends Activity {
             editor.putInt("xmargin_presentation", FullscreenActivity.xmargin_presentation);
             editor.putInt("ymargin_presentation", FullscreenActivity.ymargin_presentation);
 
+            //editor.apply();
             editor.apply();
         } catch (Exception e) {
             // Error saving.  Normally happens if app was closed before this happens

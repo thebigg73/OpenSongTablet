@@ -53,8 +53,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     String response;
     String filename;
     String author;
+    String authorname;
     String folder;
     String filecontents;
+    String newtext;
     AsyncTask<Object, Void, String> getfolders;
     ArrayList<String> newtempfolders;
     String whatfolderselected;
@@ -318,7 +320,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         Log.d("d", "resultposted=" + resultposted);
         String title_resultposted;
         String filenametosave = "UG Song";
-        String authorname = "";
+        authorname = "";
         String author_resultposted;
 
         int startpos = resultposted.indexOf("<title>");
@@ -470,7 +472,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         // Go through each line and look for chord lines
         // These have <span> in them
         int numlines = templines.length;
-        String newtext = "";
+        newtext = "";
         for (int q = 0; q < numlines; q++) {
             if (templines[q].contains("<span>") || templines[q].contains("<span class=\"text-chord js-tab-ch\">") ||
                     templines[q].contains("<span class=\"text-chord js-tab-ch js-tapped\">")) {
@@ -511,11 +513,13 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         newtext = TextUtils.htmlEncode(newtext);
 
 
+/*
         filecontents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<song>\n<title>" + filenametosave
                 + "</title>\n<author>"
                 + authorname + "</author>\n<copyright></copyright>\n<lyrics>[]\n"
                 + newtext
                 + "</lyrics>\n</song>";
+*/
         if (filenametosave != null && !filenametosave.equals("")) {
             filename = filenametosave.trim();
         } else {
@@ -541,6 +545,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     }
 
     public void doSaveSong() {
+        if (!songfilename_EditText.getText().toString().equals("")) {
+            filename = songfilename_EditText.getText().toString();
+        }
         FileOutputStream newFile;
         String filenameandlocation;
         String tempfile;
@@ -549,6 +556,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             tempfile = filename + ".chopro";
         } else {
             tempfile = filename;
+            filecontents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<song>\n<title>" + filename
+                    + "</title>\n<author>"
+                    + authorname + "</author>\n<copyright></copyright>\n<lyrics>[]\n"
+                    + newtext
+                    + "</lyrics>\n</song>";
         }
 
         try {
@@ -583,11 +595,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     }
 
     private class DownloadWebTextTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-
-        }
 
         @Override
         protected String doInBackground(String... addresses) {

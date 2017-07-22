@@ -197,13 +197,36 @@ public class SetActions extends Activity {
     }
 
     public static void indexSongInSet() {
+        // See if we are already there!
+        boolean alreadythere = false;
+        if (FullscreenActivity.indexSongInSet>-1 && FullscreenActivity.mSetList!=null &&
+                FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length) {
+            if (FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet].contains(FullscreenActivity.songfilename)) {
+                alreadythere = true;
+            }
+        }
+
         if (FullscreenActivity.mSetList!=null) {
             FullscreenActivity.setSize = FullscreenActivity.mSetList.length;
         } else {
             FullscreenActivity.setSize = 0;
         }
-        FullscreenActivity.previousSongInSet = "";
-        FullscreenActivity.nextSongInSet = "";
+
+        if (alreadythere) {
+            if (FullscreenActivity.indexSongInSet>0) {
+                FullscreenActivity.previousSongInSet = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet-1];
+            } else {
+                FullscreenActivity.previousSongInSet = "";
+            }
+            if (FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length-1) {
+                FullscreenActivity.nextSongInSet = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet+1];
+            } else {
+                FullscreenActivity.nextSongInSet = "";
+            }
+        } else {
+            FullscreenActivity.previousSongInSet = "";
+            FullscreenActivity.nextSongInSet = "";
+        }
 
         // Go backwards through the setlist - this finishes with the first occurrence
         // Useful for duplicate items, otherwise it returns the last occurrence
@@ -211,18 +234,20 @@ public class SetActions extends Activity {
 
         FullscreenActivity.mSet = FullscreenActivity.mSetList;
 
-        for (int x = 0; x < FullscreenActivity.setSize; x++) {
+        if (!alreadythere) {
+            for (int x = 0; x < FullscreenActivity.setSize; x++) {
 //		for (int x = FullscreenActivity.setSize-1; x<1; x--) {
 
-            if (FullscreenActivity.mSet[x].equals(FullscreenActivity.whatsongforsetwork) ||
-                    FullscreenActivity.mSet[x].equals("**"+FullscreenActivity.whatsongforsetwork)) {
-                FullscreenActivity.indexSongInSet = x;
-                if (x>0) {
-                    FullscreenActivity.previousSongInSet = FullscreenActivity.mSet[x - 1];
-                }
-                if (x != FullscreenActivity.setSize - 1) {
-                    FullscreenActivity.nextSongInSet = FullscreenActivity.mSet[x + 1];
-                    // Get the key of the next song in set
+                if (FullscreenActivity.mSet[x].equals(FullscreenActivity.whatsongforsetwork) ||
+                        FullscreenActivity.mSet[x].equals("**" + FullscreenActivity.whatsongforsetwork)) {
+
+                    FullscreenActivity.indexSongInSet = x;
+                    if (x > 0) {
+                        FullscreenActivity.previousSongInSet = FullscreenActivity.mSet[x - 1];
+                    }
+                    if (x != FullscreenActivity.setSize - 1) {
+                        FullscreenActivity.nextSongInSet = FullscreenActivity.mSet[x + 1];
+                    }
 
                 }
             }

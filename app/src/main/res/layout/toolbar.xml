@@ -35,9 +35,8 @@
                 android:layout_margin="0dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="This is the song title"
                 android:textColor="#fff"
-                android:textSize="10sp"
+                style="@style/MySongTitleText"
                 tools:ignore="SmallSp" />
 
             <TextView
@@ -48,9 +47,8 @@
                 android:layout_toRightOf="@+id/songtitle_ab"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="(Am)"
                 android:textColor="#fff"
-                android:textSize="10sp"
+                style="@style/MySongTitleText"
                 tools:ignore="SmallSp" />
 
             <TextView
@@ -62,9 +60,8 @@
                 android:layout_margin="0dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="This is the song author"
                 android:textColor="#fff"
-                android:textSize="8sp"
+                style="@style/MySongAuthorText"
                 tools:ignore="SmallSp" />
 
         </RelativeLayout>
@@ -105,7 +102,7 @@
                     android:maxWidth="50dp"
                     android:text="99%"
                     android:textColor="#fff"
-                    android:textSize="9sp"
+                    android:textSize="11sp"
                     tools:gravity="center"
                     tools:ignore="SmallSp" />
 
@@ -122,7 +119,7 @@
                     android:padding="0dp"
                     android:text="12:00"
                     android:textColor="#ffffff"
-                    android:textSize="9sp"
+                    android:textSize="11sp"
                     tools:ignore="SmallSp" />
 
             </LinearLayout>

@@ -180,6 +180,8 @@ public class ListSongFiles {
     private static String[] getSongDetailsXML(File f, String s, String utf) {
         String vals[] = new String[3];
         vals[0] = s;
+        vals[1] = "";
+        vals[2] = "";
 
         try {
             XmlPullParserFactory factory;

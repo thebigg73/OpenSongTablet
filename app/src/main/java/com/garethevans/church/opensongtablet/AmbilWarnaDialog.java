@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import br.com.sapereaude.maskedEditText.MaskedEditText;
-
 class AmbilWarnaDialog {
 	interface OnAmbilWarnaListener {
 		void onCancel(AmbilWarnaDialog dialog);
@@ -43,6 +42,7 @@ class AmbilWarnaDialog {
     private final float[] newColorHsv = new float[3];
 	private int alpha;
     private int mColor;
+    Context context;
 
 	AmbilWarnaDialog(final Context context, int color, OnAmbilWarnaListener listener) {
 		this(context, color, false, listener);

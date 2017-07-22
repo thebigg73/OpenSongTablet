@@ -595,4 +595,15 @@
 	<string name="floating_window">"Плавающее окно"</string>
 	<string name="timer_size">"Размер таймера"</string>
 
+	<string name="scrollbuttons">"Настройки прокрутки"</string>
+	<string name="scrollbuttons_distance">"Количество прокрутки"</string>
+	<string name="speed">"скорость"</string>
+	<string name="swipe">"Настройки прокрутки"</string>
+	<string name="swipe_allowance">"Разрешено вертикальное перемещение"</string>
+	<string name="swipe_distance">"Расстояние прохождения"</string>
+    <string name="actionbar">\"Строка меню Информация\"</string>
+	<string name="battery">\"аккумулятор\"</string>
+	<string name="timeformat">\"24 часа\"</string>
+	<string name="text">\"Текст\"</string>
+
 </resources>

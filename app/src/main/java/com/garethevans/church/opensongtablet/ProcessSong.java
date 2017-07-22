@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,7 +32,7 @@ import java.util.Collections;
 public class ProcessSong extends Activity {
 
     public static String parseLyrics(String myLyrics, Context c) {
-        myLyrics = myLyrics.replace("\n \n","\n\n");
+        //myLyrics = myLyrics.replace("\n \n","\n\n");
         myLyrics = myLyrics.replace("]\n\n","]\n");
         //myLyrics = myLyrics.replace("\n\n","\n");
         myLyrics = myLyrics.replaceAll("\r\n", "\n");
@@ -113,6 +114,19 @@ public class ProcessSong extends Activity {
         myLyrics = myLyrics.replace("\\xFF","");
 
         return myLyrics;
+    }
+
+    public static String fixStartOfLines(String lyrics) {
+        String fixedlyrics = "";
+        String[] lines = lyrics.split("\n");
+
+        for (String line:lines) {
+            if (!line.startsWith("[") && !line.startsWith(";") && !line.startsWith(".") && !line.startsWith(" ")) {
+                line = " " + line;
+            }
+            fixedlyrics += line + "\n";
+        }
+        return fixedlyrics;
     }
 
     public static String removeUnderScores(String myLyrics, Context c) {
@@ -884,11 +898,25 @@ public class ProcessSong extends Activity {
             if (FullscreenActivity.whichMode.equals("Presentation")) {
                 capobit.setTextColor(FullscreenActivity.lyricsCapoColor);
                 capobit.setTypeface(FullscreenActivity.chordsfont);
-                capobit.setShadowLayer(fontsize / 2.0f, 4, 4, FullscreenActivity.presoShadowColor);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    capobit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                }
+                float shadow = fontsize/2.0f;
+                if (shadow>24.0f) {
+                    shadow = 24.0f;
+                }
+                capobit.setShadowLayer(shadow, 4, 4, FullscreenActivity.presoShadowColor);
             } else {
                 capobit.setTextColor(FullscreenActivity.lyricsCapoColor);
                 capobit.setTypeface(FullscreenActivity.chordsfont);
-                capobit.setShadowLayer(fontsize / 2.0f, 4, 4, FullscreenActivity.lyricsBackgroundColor);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    capobit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                }
+                float shadow = fontsize/2.0f;
+                if (shadow>24.0f) {
+                    shadow = 24.0f;
+                }
+                capobit.setShadowLayer(shadow, 4, 4, FullscreenActivity.lyricsBackgroundColor);
             }
             caporow.addView(capobit);
         }
@@ -915,12 +943,26 @@ public class ProcessSong extends Activity {
             if (FullscreenActivity.whichMode.equals("Presentation")) {
                 chordbit.setTextColor(FullscreenActivity.lyricsChordsColor);
                 chordbit.setTypeface(FullscreenActivity.chordsfont);
-                chordbit.setShadowLayer(fontsize / 2.0f, 4, 4, FullscreenActivity.presoShadowColor);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    chordbit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                }
+                float shadow = fontsize/2.0f;
+                if (shadow>24.0f) {
+                    shadow = 24.0f;
+                }
+                chordbit.setShadowLayer(shadow, 4, 4, FullscreenActivity.presoShadowColor);
 
             } else {
                 chordbit.setTextColor(FullscreenActivity.lyricsChordsColor);
                 chordbit.setTypeface(FullscreenActivity.chordsfont);
-                chordbit.setShadowLayer(fontsize / 2.0f, 4, 4, FullscreenActivity.lyricsBackgroundColor);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    chordbit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                }
+                float shadow = fontsize/2.0f;
+                if (shadow>24.0f) {
+                    shadow = 24.0f;
+                }
+                chordbit.setShadowLayer(shadow, 4, 4, FullscreenActivity.lyricsBackgroundColor);
             }
             chordrow.addView(chordbit);
         }
@@ -980,16 +1022,21 @@ public class ProcessSong extends Activity {
 
                 lyricbit.setTextColor(FullscreenActivity.presoFontColor);
                 lyricbit.setTypeface(FullscreenActivity.presofont);
-                lyricbit.setShadowLayer(fontsize / 2.0f, 4, 4, FullscreenActivity.presoShadowColor);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    lyricbit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                }
+                float shadow = fontsize/2.0f;
+                if (shadow>24.0f) {
+                    shadow = 24.0f;
+                }
+                lyricbit.setShadowLayer(shadow, 4, 4, FullscreenActivity.presoShadowColor);
 
                 int w = PresentationService.ExternalDisplay.availableWidth_1col;
                 // If we have turned off autoscale and aren't showing the chords, allow wrapping
                 if (!FullscreenActivity.presoAutoScale && !FullscreenActivity.presoShowChords && w>0) {
-                    Log.d("d","trying to wrap the text");
                     TableRow.LayoutParams tllp = new TableRow.LayoutParams(w,TableRow.LayoutParams.WRAP_CONTENT);
                     lyricbit.setLayoutParams(tllp);
                     lyricbit.setSingleLine(false);
-                    Log.d("d","fontsize"+FullscreenActivity.presoFontSize);
                     lyricbit.setTextSize(FullscreenActivity.presoFontSize);
                 } else {
                     lyricbit.setSingleLine(true);
@@ -997,7 +1044,14 @@ public class ProcessSong extends Activity {
             } else {
                 lyricbit.setTextColor(FullscreenActivity.lyricsTextColor);
                 lyricbit.setTypeface(FullscreenActivity.lyricsfont);
-                lyricbit.setShadowLayer(fontsize / 2.0f, 4, 4, FullscreenActivity.lyricsBackgroundColor);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    lyricbit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                }
+                float shadow = fontsize/2.0f;
+                if (shadow>24.0f) {
+                    shadow = 24.0f;
+                }
+                lyricbit.setShadowLayer(shadow, 4, 4, FullscreenActivity.lyricsBackgroundColor);
             }
 
             if (FullscreenActivity.isImageSection) {
@@ -1080,11 +1134,25 @@ public class ProcessSong extends Activity {
             if (FullscreenActivity.whichMode.equals("Presentation")) {
                 lyricbit.setTextColor(FullscreenActivity.presoFontColor);
                 lyricbit.setTypeface(FullscreenActivity.presofont);
-                lyricbit.setShadowLayer(fontsize / 2.0f, 4, 4, FullscreenActivity.presoShadowColor);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    lyricbit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                }
+                float shadow = fontsize/2.0f;
+                if (shadow>24.0f) {
+                    shadow = 24.0f;
+                }
+                lyricbit.setShadowLayer(shadow, 4, 4, FullscreenActivity.presoShadowColor);
             } else {
                 lyricbit.setTextColor(FullscreenActivity.lyricsTextColor);
                 lyricbit.setTypeface(FullscreenActivity.lyricsfont);
-                lyricbit.setShadowLayer(fontsize / 2.0f, 4, 4, FullscreenActivity.lyricsBackgroundColor);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    lyricbit.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                }
+                float shadow = fontsize/2.0f;
+                if (shadow>24.0f) {
+                    shadow = 24.0f;
+                }
+                lyricbit.setShadowLayer(shadow, 4, 4, FullscreenActivity.lyricsBackgroundColor);
             }
             if (tab) {
                 // Set the comment text as monospaced to make it fit
@@ -2042,8 +2110,6 @@ public class ProcessSong extends Activity {
             linenums = whattoprocess.length;
         }
 
-
-
         String mCapo = FullscreenActivity.mCapo;
         if (mCapo==null || mCapo.isEmpty() || mCapo.equals("")) {
             mCapo = "0";
@@ -2086,8 +2152,10 @@ public class ProcessSong extends Activity {
             }
 
 
-            switch (ProcessSong.howToProcessLines(y, linenums, linetypes[y], nextlinetype, previouslinetype)) {
+            String what = ProcessSong.howToProcessLines(y, linenums, linetypes[y], nextlinetype, previouslinetype);
+            switch (what) {
                 // If this is a chord line followed by a lyric line.
+
                 case "chord_then_lyric":
                     if (whattoprocess[y].length() > whattoprocess[y + 1].length()) {
                         whattoprocess[y + 1] = ProcessSong.fixLineLength(whattoprocess[y + 1], whattoprocess[y].length());
@@ -2122,6 +2190,7 @@ public class ProcessSong extends Activity {
                     break;
 
                 case "lyric_no_chord":
+                case "lyric":
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = whattoprocess[y];
                     if (FullscreenActivity.showLyrics) {
@@ -2262,7 +2331,13 @@ public class ProcessSong extends Activity {
 
             // Pdf page is rendered on Bitmap
             if (mCurrentPage != null) {
-                mCurrentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+                try {
+                    if (PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY>-1) {
+                        mCurrentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             if (mCurrentPage != null) {
@@ -2352,7 +2427,9 @@ public class ProcessSong extends Activity {
         LinearLayout.LayoutParams llp = linearlayout_params();
         llp.setMargins(0,0,m,0);
         boxbit.setLayoutParams(llp);
-        boxbit.setGravity(Gravity.CENTER_VERTICAL);
+        if (FullscreenActivity.whichMode.equals("Presentation") || FullscreenActivity.whichMode.equals("Stage")) {
+            boxbit.setGravity(Gravity.CENTER_VERTICAL);
+        }
         if (FullscreenActivity.whichMode.equals("Presentation")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 boxbit.setBackground(null);
@@ -2499,7 +2576,6 @@ public class ProcessSong extends Activity {
         }
 
     }
-
 
     // The stuff for PresenterMode
     public static Button makePresenterSetButton(int x, Context c) {

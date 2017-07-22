@@ -92,6 +92,16 @@
             app:backgroundTint="@color/grey"/>
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/listSetTweetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            app:borderWidth="0dp"
+            android:src="@drawable/ic_twitter_white_36dp"
+            android:layout_margin="8dp"
+            app:backgroundTint="@color/purple"/>
+
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/shuffle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -101,16 +111,15 @@
             android:layout_margin="8dp"
             app:backgroundTint="@color/purple"/>
 
-        <ImageButton
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/saveAsProperSet"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/listSetTweetButton"
-            android:layout_margin="4dp"
-            android:src="@drawable/ic_twitter_white_36dp"
-            android:background="@drawable/blue_button"
-            android:cropToPadding="false"
-            android:contentDescription="@string/exportsavedset"
-            android:visibility="gone"/>
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            app:borderWidth="0dp"
+            android:src="@drawable/ic_content_save_white_36dp"
+            android:layout_margin="8dp"
+            app:backgroundTint="@color/purple"/>
 
     </LinearLayout>
     </HorizontalScrollView>

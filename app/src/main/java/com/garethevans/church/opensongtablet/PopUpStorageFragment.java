@@ -327,11 +327,13 @@ public class PopUpStorageFragment extends DialogFragment {
             intStorageButton.setClickable(false);
             intStorageButton.setChecked(false);
             if (FullscreenActivity.prefStorage.equals("ext")) {
-                extStorageButton.setChecked(true);
-                otherStorageButton.setChecked(false);
+                //extStorageButton.setChecked(true);
+                //otherStorageButton.setChecked(false);
+                extStorageButton.performClick();
             } else {
-                extStorageButton.setChecked(false);
-                otherStorageButton.setChecked(true);
+                //extStorageButton.setChecked(false);
+                //otherStorageButton.setChecked(true);
+                otherStorageButton.performClick();
             }
             intStorageButton.setAlpha(0.4f);
             String radiotext = getResources().getString(R.string.storage_int) + " - " + getResources().getString(R.string.storage_notavailable);
@@ -353,11 +355,13 @@ public class PopUpStorageFragment extends DialogFragment {
             extStorageButton.setClickable(false);
             extStorageButton.setAlpha(0.4f);
             if (FullscreenActivity.prefStorage.equals("int")) {
-                intStorageButton.setChecked(true);
-                otherStorageButton.setChecked(false);
+                //intStorageButton.setChecked(true);
+                //otherStorageButton.setChecked(false);
+                intStorageButton.performClick();
             } else {
-                intStorageButton.setChecked(false);
-                otherStorageButton.setChecked(true);
+                //intStorageButton.setChecked(false);
+                //otherStorageButton.setChecked(true);
+                otherStorageButton.performClick();
             }
             String exttext = getResources().getString(R.string.storage_ext) + "\n" + getResources().getString(R.string.storage_notavailable);
             extStorageButton.setText(exttext);
@@ -454,6 +458,7 @@ public class PopUpStorageFragment extends DialogFragment {
         FullscreenActivity.dirsets = new File(myroot.getAbsolutePath() + "/OpenSong/Sets");
         FullscreenActivity.direxport = new File(myroot.getAbsolutePath() + "/OpenSong/Export");
         FullscreenActivity.dirPads = new File(myroot.getAbsolutePath() + "/OpenSong/Pads");
+        FullscreenActivity.dirMedia = new File(myroot.getAbsolutePath() + "/OpenSong/Media");
         FullscreenActivity.dirbackgrounds = new File(myroot.getAbsolutePath() + "/OpenSong/Backgrounds");
         FullscreenActivity.dirbibles = new File(myroot.getAbsolutePath() + "/OpenSong/OpenSong Scripture");
         FullscreenActivity.dirbibleverses = new File(myroot.getAbsolutePath() + "/OpenSong/OpenSong Scripture/_cache");
@@ -476,7 +481,13 @@ public class PopUpStorageFragment extends DialogFragment {
                 break;
 
             case "ext":
-                FullscreenActivity.root = new File(System.getenv("SECONDARY_STORAGE"));
+                if (System.getenv("SECONDARY_STORAGE") != null) {
+                    FullscreenActivity.root = new File(System.getenv("SECONDARY_STORAGE"));
+                } else {
+                    FullscreenActivity.prefStorage = "int";
+                    Preferences.savePreferences();
+                    FullscreenActivity.root = new File(Environment.getExternalStorageDirectory() + "/documents/");
+                }
                 getOtherFolders(FullscreenActivity.root);
                 break;
 
@@ -495,6 +506,7 @@ public class PopUpStorageFragment extends DialogFragment {
         boolean dirsets_success = createDirectory(FullscreenActivity.dirsets);
         boolean direxport_success = createDirectory(FullscreenActivity.direxport);
         boolean dirPads_success = createDirectory(FullscreenActivity.dirPads);
+        boolean dirMedia_success = createDirectory(FullscreenActivity.dirMedia);
         boolean dirbackgrounds_success = createDirectory(FullscreenActivity.dirbackgrounds);
         boolean dirbibles_success = createDirectory(FullscreenActivity.dirbibles);
         boolean dirverses_success = createDirectory(FullscreenActivity.dirbibleverses);
@@ -509,7 +521,7 @@ public class PopUpStorageFragment extends DialogFragment {
         boolean success;
         success = homedir_success && dirsettings_success && dir_success && dirsets_success && dirPads_success && dirbackgrounds_success &&
                 dirbibles_success && dirverses_success && dirscripture_success && dirscriptureverses_success &&
-                dircustomimages_success && dircustomnotes_success && dircustomslides_success &&
+                dircustomimages_success && dircustomnotes_success && dircustomslides_success && dirMedia_success &&
                 dirvariations_success && dirprofiles_success && direxport_success && dirreceived_success;
         return success;
     }
@@ -535,6 +547,7 @@ public class PopUpStorageFragment extends DialogFragment {
         boolean dirsets_success = checkDirectory(FullscreenActivity.dirsets);
         boolean direxport_success = checkDirectory(FullscreenActivity.direxport);
         boolean dirPads_success = checkDirectory(FullscreenActivity.dirPads);
+        boolean dirMedia_success = checkDirectory(FullscreenActivity.dirMedia);
         boolean dirbackgrounds_success = checkDirectory(FullscreenActivity.dirbackgrounds);
         boolean dirbibles_success = checkDirectory(FullscreenActivity.dirbibles);
         boolean dirverses_success = checkDirectory(FullscreenActivity.dirbibleverses);
@@ -549,7 +562,7 @@ public class PopUpStorageFragment extends DialogFragment {
         boolean success;
         success = homedir_success && dirsettings_success && dir_success && dirsets_success && dirPads_success && dirbackgrounds_success &&
                 dirbibles_success && dirverses_success && dirscripture_success && dirscriptureverses_success &&
-                dircustomimages_success && dircustomnotes_success && dircustomslides_success &&
+                dircustomimages_success && dircustomnotes_success && dircustomslides_success && dirMedia_success &&
                 dirvariations_success && dirprofiles_success && direxport_success && dirreceived_success;
         return success;
     }

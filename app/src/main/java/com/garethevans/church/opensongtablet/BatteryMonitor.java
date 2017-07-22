@@ -52,7 +52,6 @@ public class BatteryMonitor extends BroadcastReceiver {
                     mListener.setUpBatteryMonitor();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
             }
         }
     }

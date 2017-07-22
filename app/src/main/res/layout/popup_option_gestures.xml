@@ -88,6 +88,20 @@
                 android:textSize="12sp" />
 
             <Button
+                android:id="@+id/gesturesScrollButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_arrow_down_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_arrow_down_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/scrollbuttons"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
                 android:id="@+id/gesturesMenuOptions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,6 +112,20 @@
                 android:drawableStart="@drawable/ic_menuswipe_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/menu_settings"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/gesturesSongSwipeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_swipe_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_swipe_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/swipe"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
@@ -112,21 +140,6 @@
                 android:drawableStart="@drawable/ic_menu_white_36dp"
                 android:text="@string/options_options_hidebar"
                 android:theme="@style/SwitchStyle"
-                android:textColor="#fff"
-                android:textSize="12sp"
-                app:showText="false" />
-
-            <android.support.v7.widget.SwitchCompat
-                android:id="@+id/gesturesSongSwipeButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/menu_button"
-                android:drawableLeft="@drawable/ic_swipe_white_36dp"
-                android:drawablePadding="4dp"
-                android:drawableStart="@drawable/ic_swipe_white_36dp"
-                android:theme="@style/SwitchStyle"
-                android:text="@string/options_options_songswipe"
                 android:textColor="#fff"
                 android:textSize="12sp"
                 app:showText="false" />

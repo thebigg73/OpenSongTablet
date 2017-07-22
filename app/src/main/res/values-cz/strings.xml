@@ -596,4 +596,15 @@
 	<string name="floating_window">"Plovoucí okno"</string>
 	<string name="timer_size">"Velikost časovače"</string>
 
+	<string name="scrollbuttons">"Nastavení posunu"</string>
+	<string name="scrollbuttons_distance">"Množství posunu"</string>
+	<string name="speed">"Rychlost"</string>
+	<string name="swipe">"Přesuňte nastavení"</string>
+	<string name="swipe_allowance">"Vertikální pohyb povolen"</string>
+	<string name="swipe_distance">"Přesuňte vzdálenost"</string>
+    <string name="actionbar">\"Menu bar info\"</string>
+	<string name="battery">\"Baterie\"</string>
+	<string name="timeformat">\"24 hodin\"</string>
+	<string name="text">\"Text\"</string>
+
 </resources>

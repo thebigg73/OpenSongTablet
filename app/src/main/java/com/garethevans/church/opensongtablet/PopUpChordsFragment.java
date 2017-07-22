@@ -222,7 +222,7 @@ public class PopUpChordsFragment extends DialogFragment {
                         FullscreenActivity.chordInstrument = "m";
                         break;
                     case 3:
-                        FullscreenActivity.chordInstrument = "g";
+                        FullscreenActivity.chordInstrument = "c";
                         break;
                     case 4:
                         FullscreenActivity.chordInstrument = "b";

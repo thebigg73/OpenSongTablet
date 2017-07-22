@@ -10,6 +10,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.widget.ImageView;
 
 class CustomAnimations {
 
@@ -64,6 +66,26 @@ class CustomAnimations {
                 }
             }
         },100);
+    }
+
+    static void animateSwipe(final ImageView img, final Context c) {
+        Handler h1 = new Handler();
+        h1.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ScaleAnimation grow = new ScaleAnimation(0.0f, 1.0f, 1, 1, 0.0f, 0.0f);
+                    int duration = (int) (((float)FullscreenActivity.SWIPE_MIN_DISTANCE / (float)FullscreenActivity.SWIPE_THRESHOLD_VELOCITY) *1000);
+                    grow.setDuration(duration);
+                    grow.setRepeatMode(2);
+                    //grow.setRepeatCount(Animation.INFINITE);
+                    grow.setRepeatCount(1);
+                    img.startAnimation(grow);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private static class MyAnimationListener implements Animation.AnimationListener {

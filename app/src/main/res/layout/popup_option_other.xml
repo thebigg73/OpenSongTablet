@@ -74,6 +74,20 @@
                 android:textSize="12sp" />
 
             <Button
+                android:id="@+id/otherEmailButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_email_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_email_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/email"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
                 android:id="@+id/otherLanguageButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,6 +126,20 @@
                 android:drawableStart="@drawable/ic_thumbs_up_down_white_36dp"
                 android:gravity="center_vertical"
                 android:text="@string/rate"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/otherPayPalButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_papypal_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_papypal_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/paypal"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 

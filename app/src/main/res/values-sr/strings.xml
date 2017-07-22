@@ -646,4 +646,15 @@
     <string name="floating_window">"Floating window"</string>
     <string name="timer_size">"Timer size"</string>
 
+    <string name="scrollbuttons">"Pomicanje postavki"</string>
+    <string name="scrollbuttons_distance">"Pomični iznos"</string>
+    <string name="speed">"Ubrzati"</string>
+    <string name="swipe">"Presavijte postavke"</string>
+    <string name="swipe_allowance">"Dopušteno je vertikalno kretanje"</string>
+    <string name="swipe_distance">"Prijeđite prstom udaljenost"</string>
+    <string name="actionbar">\"Traka izbornika info\"</string>
+    <string name="battery">\"Baterija\"</string>
+    <string name="timeformat">\"24-satna\"</string>
+    <string name="text">\"Tekst\"</string>
+
 </resources>

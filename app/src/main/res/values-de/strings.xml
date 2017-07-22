@@ -590,12 +590,23 @@
 	<string name="export_chordpro">"ChordPro Song (.cho)"</string>
 	<string name="export_desktop">"Desktop-Datei (keine Dateierweiterung)"</string>
 	<string name="export_onsong">"OnSong Lied (.onsong)"</string>
-	<string name="export_ost">"OpenSongApp Song (OST)"</string>
+	<string name="export_ost">"OpenSongApp Song (.ost)"</string>
 	<string name="export_pdf">"Screenshot PDF (.pdf)"</string>
 	<string name="export_png">"Screenshot Bild (.png)"</string>
-	<string name="export_set">"OpenSongApp gesetzt (.osts)"</string>
+	<string name="export_set">"OpenSongApp Set (.osts)"</string>
 	<string name="export_text">"Text (.txt)"</string>
-	<string name="floating_window">"Schwimmendes Fenster"</string>
+	<string name="floating_window">"Schwebendes Fenster"</string>
 	<string name="timer_size">"Timergröße"</string>
+
+	<string name="scrollbuttons">"Scrollen Sie die Einstellungen"</string>
+	<string name="scrollbuttons_distance">"Scrollmenge"</string>
+	<string name="speed">"Geschwindigkeit"</string>
+	<string name="swipe">"Einstellungen durchführen"</string>
+	<string name="swipe_allowance">"Vertikale Bewegung erlaubt"</string>
+	<string name="swipe_distance">"Wischen Sie Abstand"</string>
+    <string name="actionbar">\"Menüleiste Info\"</string>
+	<string name="battery">\"Batterie\"</string>
+	<string name="timeformat">\"24hr\"</string>
+	<string name="text">\"Text\"</string>
 
 </resources>

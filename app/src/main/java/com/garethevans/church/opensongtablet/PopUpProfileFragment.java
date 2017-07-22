@@ -318,7 +318,13 @@ public class PopUpProfileFragment extends DialogFragment {
 
         while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG) {
-                if (xpp.getName().equals("alwaysPreferredChordFormat")) {
+                if (xpp.getName().equals("ab_titleSize")) {
+                    FullscreenActivity.ab_titleSize = getFloatValue(xpp.nextText(), 13.0f);
+
+                } else if (xpp.getName().equals("ab_authorSize")) {
+                    FullscreenActivity.ab_authorSize = getFloatValue(xpp.nextText(), 11.0f);
+
+                } else if (xpp.getName().equals("alwaysPreferredChordFormat")) {
                     FullscreenActivity.alwaysPreferredChordFormat = getTextValue(xpp.nextText(), "N");
 
                 } else if (xpp.getName().equals("autoProject")) {
@@ -350,6 +356,15 @@ public class PopUpProfileFragment extends DialogFragment {
 
                 } else if (xpp.getName().equals("backgroundTypeToUse")) {
                     FullscreenActivity.backgroundTypeToUse = getTextValue(xpp.nextText(),"image");
+
+                } else if (xpp.getName().equals("batteryDialOn")) {
+                    FullscreenActivity.batteryDialOn = getBooleanValue(xpp.nextText(), true);
+
+                } else if (xpp.getName().equals("batteryOn")) {
+                    FullscreenActivity.batteryOn = getBooleanValue(xpp.nextText(), true);
+
+                } else if (xpp.getName().equals("batterySize")) {
+                    FullscreenActivity.batterySize = getFloatValue(xpp.nextText(), 9.0f);
 
                 } else if (xpp.getName().equals("bibleFile")) {
                     FullscreenActivity.bibleFile = getTextValue(xpp.nextText(),"");
@@ -826,6 +841,9 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("presoTitleSize")) {
                     FullscreenActivity.presoTitleSize = getFloatValue(xpp.nextText(),10.0f);
 
+                } else if (xpp.getName().equals("presoTransitionTime")) {
+                    FullscreenActivity.presoTransitionTime = getIntegerValue(xpp.nextText(), 800);
+
                 } else if (xpp.getName().equals("profile")) {
                     FullscreenActivity.profile = getTextValue(xpp.nextText(),"");
 
@@ -840,6 +858,12 @@ public class PopUpProfileFragment extends DialogFragment {
 
                 } else if (xpp.getName().equals("quickLaunchButton_4")) {
                     FullscreenActivity.quickLaunchButton_4 = getTextValue(xpp.nextText(),"");
+
+                } else if (xpp.getName().equals("scrollDistance")) {
+                    FullscreenActivity.scrollDistance = getFloatValue(xpp.nextText(),0.6f);
+
+                } else if (xpp.getName().equals("scrollSpeed")) {
+                    FullscreenActivity.scrollSpeed = getIntegerValue(xpp.nextText(),1500);
 
                 } else if (xpp.getName().equals("showCapoChords")) {
                     FullscreenActivity.showCapoChords = getBooleanValue(xpp.nextText(),true);
@@ -874,6 +898,17 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("stickyWidth")) {
                     FullscreenActivity.stickyWidth = getIntegerValue(xpp.nextText(), 400);
 
+
+                } else if (xpp.getName().equals("SWIPE_MAX_OFF_PATH")) {
+                    FullscreenActivity.SWIPE_MAX_OFF_PATH = getIntegerValue(xpp.nextText(), 200);
+
+                } else if (xpp.getName().equals("SWIPE_MIN_DISTANCE")) {
+                    FullscreenActivity.SWIPE_MIN_DISTANCE = getIntegerValue(xpp.nextText(), 250);
+
+                } else if (xpp.getName().equals("SWIPE_THRESHOLD_VELOCITY")) {
+                    FullscreenActivity.SWIPE_THRESHOLD_VELOCITY = getIntegerValue(xpp.nextText(), 600);
+
+
                 } else if (xpp.getName().equals("swipeDrawer")) {
                     FullscreenActivity.swipeDrawer = getTextValue(xpp.nextText(),"Y");
 
@@ -890,7 +925,16 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.timerFontSizeAutoScroll = getFloatValue(xpp.nextText(),14.0f);
 
                 } else if (xpp.getName().equals("timerFontSizePad")) {
-                    FullscreenActivity.timerFontSizePad = getFloatValue(xpp.nextText(),14.0f);
+                    FullscreenActivity.timerFontSizePad = getFloatValue(xpp.nextText(), 14.0f);
+
+                } else if (xpp.getName().equals("timeFormat24h")) {
+                    FullscreenActivity.timeFormat24h = getBooleanValue(xpp.nextText(), true);
+
+                } else if (xpp.getName().equals("timeOn")) {
+                        FullscreenActivity.timeOn = getBooleanValue(xpp.nextText(), true);
+
+                } else if (xpp.getName().equals("timeSize")) {
+                    FullscreenActivity.timeSize = getFloatValue(xpp.nextText(), 9.0f);
 
                 } else if (xpp.getName().equals("toggleAutoSticky")) {
                     FullscreenActivity.toggleAutoSticky = getTextValue(xpp.nextText(),"N");
@@ -997,6 +1041,8 @@ public class PopUpProfileFragment extends DialogFragment {
 
         String text = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         text += "<myprofile>\n";
+        text += "  <ab_titleSize>" + FullscreenActivity.ab_titleSize + "</ab_titleSize>\n";
+        text += "  <ab_authorSize>" + FullscreenActivity.ab_authorSize + "</ab_authorSize>\n";
         text += "  <alwaysPreferredChordFormat>" + FullscreenActivity.alwaysPreferredChordFormat + "</alwaysPreferredChordFormat>\n";
         text += "  <autoProject>" + FullscreenActivity.autoProject + "</autoProject>\n";
         text += "  <autoscroll_default_or_prompt>" + FullscreenActivity.autoscroll_default_or_prompt + "</autoscroll_default_or_prompt>\n";
@@ -1008,6 +1054,9 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <backgroundVideo2>" + FullscreenActivity.backgroundVideo2 + "</backgroundVideo2>\n";
         text += "  <backgroundToUse>" + FullscreenActivity.backgroundToUse + "</backgroundToUse>\n";
         text += "  <backgroundTypeToUse>" + FullscreenActivity.backgroundTypeToUse + "</backgroundTypeToUse>\n";
+        text += "  <batteryDialOn>" + FullscreenActivity.batteryDialOn + "</batteryDialOn>\n";
+        text += "  <batteryOn>" + FullscreenActivity.batteryOn + "</batteryOn>\n";
+        text += "  <batterySize>" + FullscreenActivity.batterySize + "</batterySize>\n";
         text += "  <bibleFile>" + FullscreenActivity.bibleFile + "</bibleFile>\n";
         text += "  <capoDisplay>" + FullscreenActivity.capoDisplay + "</capoDisplay>\n";
         text += "  <chordfontscalesize>" + FullscreenActivity.chordfontscalesize + "</chordfontscalesize>\n";
@@ -1192,11 +1241,14 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <presoMaxFontSize>" + FullscreenActivity.presoMaxFontSize + "</presoMaxFontSize>\n";
         text += "  <presoShowChords>" + FullscreenActivity.presoShowChords + "</presoShowChords>\n";
         text += "  <presoTitleSize>" + FullscreenActivity.presoTitleSize + "</presoTitleSize>\n";
+        text += "  <presoTransitionTime>" + FullscreenActivity.presoTransitionTime + "</presoTransitionTime>\n";
         text += "  <profile>" + FullscreenActivity.profile + "</profile>\n";
         text += "  <quickLaunchButton_1>" + FullscreenActivity.quickLaunchButton_1 + "</quickLaunchButton_1>\n";
         text += "  <quickLaunchButton_2>" + FullscreenActivity.quickLaunchButton_2 + "</quickLaunchButton_2>\n";
         text += "  <quickLaunchButton_3>" + FullscreenActivity.quickLaunchButton_3 + "</quickLaunchButton_3>\n";
         text += "  <quickLaunchButton_4>" + FullscreenActivity.quickLaunchButton_4 + "</quickLaunchButton_4>\n";
+        text += "  <scrollDistance>" + FullscreenActivity.scrollDistance + "</scrollDistance>\n";
+        text += "  <scrollSpeed>" + FullscreenActivity.scrollSpeed + "</scrollSpeed>\n";
         text += "  <showCapoChords>" + FullscreenActivity.showCapoChords + "</showCapoChords>\n";
         text += "  <showChords>" + FullscreenActivity.showChords + "</showChords>\n";
         text += "  <showNativeAndCapoChords>" + FullscreenActivity.showNativeAndCapoChords + "</showNativeAndCapoChords>\n";
@@ -1208,12 +1260,18 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <stickyOpacity>" + FullscreenActivity.stickyOpacity + "</stickyOpacity>\n";
         text += "  <stickyTextSize>" + FullscreenActivity.stickyTextSize + "</stickyTextSize>\n";
         text += "  <stickyWidth>" + FullscreenActivity.stickyWidth + "</stickyWidth>\n";
+        text += "  <SWIPE_MAX_OFF_PATH>" + FullscreenActivity.SWIPE_MAX_OFF_PATH + "</SWIPE_MAX_OFF_PATH>\n";
+        text += "  <SWIPE_MIN_DISTANCE>" + FullscreenActivity.SWIPE_MIN_DISTANCE + "</SWIPE_MIN_DISTANCE>\n";
+        text += "  <SWIPE_THRESHOLD_VELOCITY>" + FullscreenActivity.SWIPE_THRESHOLD_VELOCITY + "</SWIPE_THRESHOLD_VELOCITY>\n";
         text += "  <swipeDrawer>" + FullscreenActivity.swipeDrawer + "</swipeDrawer>\n";
         text += "  <swipeForMenus>" + FullscreenActivity.swipeForSongs + "</swipeForMenus>\n";
         text += "  <swipeForSongs>" + FullscreenActivity.swipeForSongs + "</swipeForSongs>\n";
         text += "  <swipeSet>" + FullscreenActivity.swipeSet + "</swipeSet>\n";
         text += "  <timerFontSizeAutoScroll>" + FullscreenActivity.timerFontSizeAutoScroll + "</timerFontSizeAutoScroll>\n";
         text += "  <timerFontSizePad>" + FullscreenActivity.timerFontSizePad + "</timerFontSizePad>\n";
+        text += "  <timeFormat24h>" + FullscreenActivity.timeFormat24h + "</timeFormat24h>\n";
+        text += "  <timeOn>" + FullscreenActivity.timeOn + "</timeOn>\n";
+        text += "  <timeSize>" + FullscreenActivity.timeSize + "</timeSize>\n";
         text += "  <toggleAutoSticky>" + FullscreenActivity.toggleAutoSticky + "</toggleAutoSticky>\n";
         text += "  <togglePageButtons>" + FullscreenActivity.togglePageButtons + "</togglePageButtons>\n";
         text += "  <toggleScrollArrows>" + FullscreenActivity.toggleScrollArrows + "</toggleScrollArrows>\n";

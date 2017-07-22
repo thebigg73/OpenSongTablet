@@ -230,9 +230,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     //private String backupchosen = "";
 
     // Stuff to deal with the splash screen/version
-    public static int version = 0;
+    public static int version;
     public static int showSplashVersion;
-
 
     @SuppressLint("StaticFieldLeak")
     public static Context mContext;
@@ -253,6 +252,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static String popupAutoscroll_stoporstart = "stop";
     public static int scrollpageHeight;
     public static boolean autostartautoscroll;
+    public static boolean clickedOnAutoScrollStart = false;
 
     public DialogFragment newFragment;
 
@@ -474,6 +474,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static String togglePageButtons = "";
 
     // Set variables
+    public static int scrollSpeed;
+    public static float scrollDistance;
     public static int autoScrollDelay;
     public static int autoScrollDuration;
     public static String prefStorage = "";
@@ -572,6 +574,16 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static int ymargin_presentation;
     public static boolean usePresentationOrder = false;
     public static int presoTransitionTime = 800;
+
+    // Clock and battery and titles
+    public static boolean timeFormat24h;
+    public static float timeSize;
+    public static float batterySize;
+    public static boolean timeOn;
+    public static boolean batteryOn;
+    public static boolean batteryDialOn;
+    public static float ab_titleSize;
+    public static float ab_authorSize;
 
     // Song xml data
     public static ArrayList<String> foundSongSections_heading = new ArrayList<>();
@@ -703,6 +715,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static File dirsets = new File(root.getAbsolutePath() + "/documents/OpenSong/Sets");
     public static File direxport = new File(root.getAbsolutePath() + "/documents/OpenSong/Export");
     public static File dirPads = new File(root.getAbsolutePath() + "/documents/OpenSong/Pads");
+    public static File dirMedia = new File(root.getAbsolutePath() + "/documents/OpenSong/Media");
     public static File dirbackgrounds = new File(root.getAbsolutePath() + "/documents/OpenSong/Backgrounds");
     public static File dirbibles = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture");
     public static File dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
@@ -801,7 +814,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        myPreferences = getPreferences(MODE_PRIVATE);
+        myPreferences = getSharedPreferences("OpenSongApp", Context.MODE_PRIVATE);
         Preferences.loadPreferences();
 
         if (resetSomePreferences) {

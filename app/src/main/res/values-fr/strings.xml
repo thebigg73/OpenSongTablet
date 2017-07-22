@@ -595,4 +595,15 @@
 	<string name="floating_window">"Fenêtre flottante"</string>
 	<string name="timer_size">"Taille de la minuterie"</string>
 
+	<string name="scrollbuttons">"Paramètres de défilement"</string>
+	<string name="scrollbuttons_distance">"Montant de défilement"</string>
+	<string name="speed">"La vitesse"</string>
+	<string name="swipe">"Paramètres de défilement"</string>
+	<string name="swipe_allowance">"Mouvement vertical autorisé"</string>
+	<string name="swipe_distance">"Balayez la distance"</string>
+    <string name="actionbar">\"Info menu bar\"</string>
+	<string name="battery">\"Batterie\"</string>
+	<string name="timeformat">\"24h\"</string>
+	<string name="text">\"Texte\"</string>
+
 </resources>

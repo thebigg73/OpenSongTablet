@@ -273,7 +273,12 @@ public class LoadXML extends Activity {
             initialiseSongTags();
         }
 
-        String loc = FullscreenActivity.file.toString();
+        String loc;
+        if (FullscreenActivity.file!=null) {
+            loc = FullscreenActivity.file.toString();
+        } else {
+            loc = "";
+        }
 
         if (loc.contains("../Images")) {
             FullscreenActivity.isImageSlide = true;
@@ -454,11 +459,6 @@ public class LoadXML extends Activity {
 
         // Just in case use the Welcome to OpenSongApp file
         initialiseSongTags();
-        FullscreenActivity.mTitle  = "Welcome to OpenSongApp";
-        FullscreenActivity.mAuthor = "Gareth Evans";
-        FullscreenActivity.mLinkWeb = "http://www.opensongapp.com";
-        FullscreenActivity.mLyrics = templyrics;
-        FullscreenActivity.myLyrics = templyrics;
 
         //FullscreenActivity.myLyrics = FullscreenActivity.songdoesntexist + "\n\n";
         //FullscreenActivity.mLyrics = FullscreenActivity.songdoesntexist + "\n\n";
@@ -482,7 +482,7 @@ public class LoadXML extends Activity {
                         FullscreenActivity.mTitle = FullscreenActivity.songfilename;
                     }
                 } else if (xpp.getName().equals("lyrics")) {
-                    FullscreenActivity.mLyrics = parseFromHTMLEntities(xpp.nextText());
+                    FullscreenActivity.mLyrics = ProcessSong.fixStartOfLines(parseFromHTMLEntities(xpp.nextText()));
                 } else if (xpp.getName().equals("ccli")) {
                     FullscreenActivity.mCCLI = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("theme")) {
@@ -557,10 +557,20 @@ public class LoadXML extends Activity {
             }
             try {
                 eventType = xpp.next();
+
             } catch (Exception e) {
                 //Ooops!
                 isxml = false;
+                e.printStackTrace();
             }
+        }
+
+        if (FullscreenActivity.mTitle.equals("") && FullscreenActivity.mLyrics.equals("")) {
+            FullscreenActivity.mTitle = "Welcome to OpenSongApp";
+            FullscreenActivity.mAuthor = "Gareth Evans";
+            FullscreenActivity.mLinkWeb = "http://www.opensongapp.com";
+            FullscreenActivity.mLyrics = templyrics;
+            FullscreenActivity.myLyrics = templyrics;
         }
 
         // If we really have to load extra stuff, lets do it as an asynctask

@@ -595,4 +595,15 @@
 	<string name="floating_window">"lebegő ablakban"</string>
 	<string name="timer_size">"Timer mérete"</string>
 
+	<string name="scrollbuttons">"Scroll beállítások"</string>
+	<string name="scrollbuttons_distance">"Scroll összeg"</string>
+	<string name="speed">"Sebesség"</string>
+	<string name="swipe">"Swipe beállítások"</string>
+	<string name="swipe_allowance">"Függőleges mozgás megengedett"</string>
+	<string name="swipe_distance">"Swipe távolság"</string>
+    <string name="actionbar">\"Menüsor info\"</string>
+	<string name="battery">\"Akkumulátor\"</string>
+	<string name="timeformat">\"24 órás\"</string>
+	<string name="text">\"Szöveg\"</string>
+
 </resources>

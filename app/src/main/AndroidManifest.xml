@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
     xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="121"
-    android:versionName="4.0.1"
+    android:versionCode="125"
+    android:versionName="4.0.5"
     android:installLocation="auto">
 
     <!--Overrides are for Sdk=12/13 but library specifies Sdk=14+-->
@@ -41,6 +41,7 @@
         android:label="@string/app_name"
         android:theme="@style/MyTheme"
         android:name="android.support.multidex.MultiDexApplication"
+        android:vmSafeMode="true"
         android:launchMode="singleTask">
 
         <!--android:name="android.support.multidex.MultiDexApplication"-->
@@ -56,12 +57,12 @@
         </provider>
 
 
-        <receiver android:name=".BatteryMonitor">
+        <!--<receiver android:name=".BatteryMonitor">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
             </intent-filter>
-        </receiver>
+        </receiver>-->
         <service android:name=".PresentationService" android:exported="false" />
         <meta-data
             android:name="android.app.default_searchable"

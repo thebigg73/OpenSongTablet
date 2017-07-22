@@ -118,7 +118,11 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
             public void onClick(View view) {
                 CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
-                dismiss();
+                try {
+                    dismiss();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
         selectButton = (FloatingActionButton) V.findViewById(R.id.saveMe);
@@ -232,7 +236,11 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
                         mListener.openFragment();
 
                     }
-                    dismiss();
+                    try {
+                        dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -252,7 +260,11 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
             mListener.updateCustomStorage();
         }
 
-        dismiss();
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void checkCanWrite() {
@@ -435,7 +447,11 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        this.dismiss();
+        try {
+            this.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

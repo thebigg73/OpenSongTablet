@@ -595,4 +595,15 @@
 	<string name="floating_window">"Vloeiende venster"</string>
 	<string name="timer_size">"Timer grootte"</string>
 
+	<string name="scrollbuttons">"Scroll instellings"</string>
+	<string name="scrollbuttons_distance">"Scroll bedrag"</string>
+	<string name="speed">"spoed"</string>
+	<string name="swipe">"Swiep instellings"</string>
+	<string name="swipe_allowance">"Vertikale beweging toegelaat"</string>
+	<string name="swipe_distance">"Swipe afstand"</string>
+    <string name="actionbar">\"Menubalk info\"</string>
+	<string name="battery">\"Battery\"</string>
+	<string name="timeformat">\"24 uur\"</string>
+	<string name="text">\"Teks\"</string>
+
 </resources>

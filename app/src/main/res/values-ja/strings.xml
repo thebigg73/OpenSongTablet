@@ -594,4 +594,15 @@
 	<string name="floating_window">"フローティングウィンドウ"</string>
 	<string name="timer_size">"タイマーサイズ"</string>
 
+	<string name="scrollbuttons">"スクロール設定"</string>
+	<string name="scrollbuttons_distance">"スクロール量"</string>
+	<string name="speed">"速度"</string>
+	<string name="swipe">"スワイプ設定"</string>
+	<string name="swipe_allowance">"垂直移動が許可されている"</string>
+	<string name="swipe_distance">"スワイプ距離"</string>
+    <string name="actionbar">\"メニューバー情報\"</string>
+	<string name="battery">\"バッテリー\"</string>
+	<string name="timeformat">\"24時間\"</string>
+	<string name="text">\"テキスト\"</string>
+
 </resources>

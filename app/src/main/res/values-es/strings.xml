@@ -595,4 +595,15 @@
 	<string name="floating_window">"Ventana flotante"</string>
 	<string name="timer_size">"Tamaño del temporizador"</string>
 
+	<string name="scrollbuttons">"Ajustes de desplazamiento"</string>
+	<string name="scrollbuttons_distance">"Cantidad de desplazamiento"</string>
+	<string name="speed">"Velocidad"</string>
+	<string name="swipe">"Ajustes de deslizar"</string>
+	<string name="swipe_allowance">"Movimiento vertical permitido"</string>
+	<string name="swipe_distance">"Distancia de desplazamiento"</string>
+    <string name="actionbar">\"Información barra de menú\"</string>
+	<string name="battery">\"Batería\"</string>
+	<string name="timeformat">\"24 horas\"</string>
+	<string name="text">\"Texto\"</string>
+
 </resources>

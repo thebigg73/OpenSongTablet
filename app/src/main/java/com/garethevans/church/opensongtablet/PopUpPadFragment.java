@@ -227,14 +227,21 @@ public class PopUpPadFragment extends DialogFragment {
                                    int position, long id) {
             if (position == 1) {
                 if (FullscreenActivity.mLinkAudio != null &&
-                        FullscreenActivity.mLinkAudio.isEmpty() || FullscreenActivity.mLinkAudio.equals("")) {
+                        (FullscreenActivity.mLinkAudio.isEmpty() || FullscreenActivity.mLinkAudio.equals(""))) {
                     FullscreenActivity.mPadFile = getResources().getString(R.string.pad_auto);
                     popupPad_file.setSelection(0);
                     FullscreenActivity.myToastMessage = getResources().getString(R.string.notset);
                     ShowToast.showToast(getActivity());
+                } else {
+                    FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
                 }
             }
-            FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
+            PopUpEditSongFragment.prepareSongXML();
+            try {
+                PopUpEditSongFragment.justSaveSongXML();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override

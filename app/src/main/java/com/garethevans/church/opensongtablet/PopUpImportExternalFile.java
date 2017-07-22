@@ -511,8 +511,10 @@ public class PopUpImportExternalFile extends DialogFragment {
         if (cursor != null) {
             cursor.moveToFirst();
             int nameIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
-            if (nameIndex >= 0) {
+            if (nameIndex >= 0 && cursor.getCount()>nameIndex) {
                 FullscreenActivity.file_name = cursor.getString(nameIndex);
+            } else {
+                FullscreenActivity.file_name = "";
             }
             cursor.close();
         }
@@ -845,9 +847,14 @@ public class PopUpImportExternalFile extends DialogFragment {
 
     public void importOSB() {
         // Hide the cancel button
-        closeMe.setVisibility(View.GONE);
+        if (closeMe!=null) {
+            closeMe.setVisibility(View.GONE);
+        }
         //Change the text of the save button
-        progressbar.setVisibility(View.VISIBLE);
+        if (progressbar!=null) {
+            progressbar.setVisibility(View.VISIBLE);
+        }
+
         if (saveMe!=null) {
             saveMe.setClickable(false);
         }
@@ -857,7 +864,9 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         // The new fancy one!
         FullscreenActivity.whattodo = "processimportosb";
-        mListener.openFragment();
+        if (mListener!=null) {
+            mListener.openFragment();
+        }
     }
     private class Backup_Install extends AsyncTask<String, Void, String> {
 

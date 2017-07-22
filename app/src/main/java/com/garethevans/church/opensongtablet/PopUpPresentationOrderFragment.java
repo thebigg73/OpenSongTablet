@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -155,24 +154,17 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
 
     public void doSave() {
         FullscreenActivity.mPresentation = m_mPresentation.getText().toString().trim();
-        // If we are in presentation mode, update the page directly
-        if (FullscreenActivity.whichMode.equals("Presentation")) {
-            CheckBox presorder = (CheckBox) getActivity().findViewById(R.id.presenter_order_text);
-            presorder.setText(m_mPresentation.getText().toString().trim());
-            presorder.setChecked(false);
-            presorder.setChecked(true);
-        }
         PopUpEditSongFragment.prepareSongXML();
         try {
             PopUpEditSongFragment.justSaveSongXML();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try {
-            LoadXML.loadXML(getActivity());
-        } catch (XmlPullParserException | IOException e) {
-            e.printStackTrace();
-        }
+       try {
+           LoadXML.loadXML(getActivity());
+       } catch (XmlPullParserException | IOException e) {
+           e.printStackTrace();
+       }
         if (mListener!=null) {
             mListener.updatePresentationOrder();
         }

@@ -76,7 +76,12 @@ class AutoScrollFunctions {
             }
 
             // Ok figure out the size of amount of scrolling needed
-            int height = (scrollpage.getChildAt(0).getMeasuredHeight() - (main_page.getHeight() - toolbar.getHeight()));
+            int height;
+            try {
+                height = (scrollpage.getChildAt(0).getMeasuredHeight() - (main_page.getHeight() - toolbar.getHeight()));
+            } catch (Exception e) {
+                height = 0;
+            }
             if (height >= scrollpage.getScrollY()) {
                 FullscreenActivity.total_pixels_to_scroll = height;
             } else {
@@ -122,14 +127,18 @@ class AutoScrollFunctions {
 
         @Override
         public void run() {
-            ObjectAnimator animator;
-
-            animator = ObjectAnimator.ofInt(sv, "scrollY", sv.getScrollY(), (int) FullscreenActivity.newPosFloat);
+            final ObjectAnimator animator;
+            animator = ObjectAnimator.ofInt(sv, "scrollY", (int) FullscreenActivity.newPosFloat);
             Interpolator linearInterpolator = new LinearInterpolator();
             animator.setInterpolator(linearInterpolator);
             animator.setDuration(FullscreenActivity.autoscroll_pause_time);
             if (!FullscreenActivity.isManualDragging) {
-                animator.start();
+                sv.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        animator.start();
+                    }
+                });
             }
         }
     }
@@ -137,26 +146,34 @@ class AutoScrollFunctions {
     static Handler doProgressTime = new Handler();
     static class ProgressTimeRunnable implements Runnable {
         TextView tv;
-        ProgressTimeRunnable(TextView t) {
+        TextView tvt;
+        TextView tvs;
+        ProgressTimeRunnable(TextView t, TextView tt, TextView ts) {
             tv = t;
+            tvt = tt;
+            tvs = ts;
         }
 
         @Override
         public void run() {
-            FullscreenActivity.time_passed = System.currentTimeMillis();
-            int currtimesecs = (int) ((FullscreenActivity.time_passed - FullscreenActivity.time_start)/1000);
-            String text;
-            tv.setTextSize(FullscreenActivity.timerFontSizeAutoScroll);
-            if (currtimesecs<FullscreenActivity.autoScrollDelay) {
-                // Set the time as a backwards count down
-                currtimesecs = FullscreenActivity.autoScrollDelay - currtimesecs;
-                text = TimeTools.timeFormatFixer(currtimesecs);
-                tv.setTextColor(0xffff0000);
-                tv.setText(text);
-            } else {
-                text = TimeTools.timeFormatFixer(currtimesecs);
-                tv.setTextColor(0xffffffff);
-                tv.setText(text);
+            if (FullscreenActivity.isautoscrolling) {
+                FullscreenActivity.time_passed = System.currentTimeMillis();
+                int currtimesecs = (int) ((FullscreenActivity.time_passed - FullscreenActivity.time_start) / 1000);
+                String text;
+                tv.setTextSize(FullscreenActivity.timerFontSizeAutoScroll);
+                tvt.setTextSize(FullscreenActivity.timerFontSizeAutoScroll);
+                tvs.setTextSize(FullscreenActivity.timerFontSizeAutoScroll);
+                if (currtimesecs < FullscreenActivity.autoScrollDelay) {
+                    // Set the time as a backwards count down
+                    currtimesecs = FullscreenActivity.autoScrollDelay - currtimesecs;
+                    text = TimeTools.timeFormatFixer(currtimesecs);
+                    tv.setTextColor(0xffff0000);
+                    tv.setText(text);
+                } else {
+                    text = TimeTools.timeFormatFixer(currtimesecs);
+                    tv.setTextColor(0xffffffff);
+                    tv.setText(text);
+                }
             }
         }
     }

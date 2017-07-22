@@ -36,24 +36,24 @@ class PadFunctions {
     }
 
     static boolean getPad1Status() {
-        boolean result = false;
+        boolean result;
         try {
-            FullscreenActivity.pad1Playing = FullscreenActivity.mPlayer1 != null && FullscreenActivity.mPlayer1.isPlaying();
-            result = true;
+            result = FullscreenActivity.mPlayer1 != null && FullscreenActivity.mPlayer1.isPlaying();
         } catch (Exception e) {
-            FullscreenActivity.pad1Playing = false;
+            result = false;
         }
+        FullscreenActivity.pad1Playing = result;
         return result;
     }
 
     static boolean getPad2Status() {
-        boolean result = false;
+        boolean result;
         try {
-            FullscreenActivity.pad2Playing = FullscreenActivity.mPlayer2 != null && FullscreenActivity.mPlayer2.isPlaying();
-            result = true;
+            result = FullscreenActivity.mPlayer2 != null && FullscreenActivity.mPlayer2.isPlaying();
         } catch (Exception e) {
-            FullscreenActivity.pad2Playing = false;
+            result = false;
         }
+        FullscreenActivity.pad2Playing = result;
         return result;
     }
 
@@ -69,6 +69,8 @@ class PadFunctions {
         } else if (FullscreenActivity.mPadFile.equals(c.getResources().getString(R.string.link_audio)) &&
                 !FullscreenActivity.mLinkAudio.isEmpty() && !FullscreenActivity.mLinkAudio.equals("")) {
             String filetext = FullscreenActivity.mLinkAudio;
+            filetext = filetext.replace("file://","");
+
             // If this is a localised file, we need to unlocalise it to enable it to be read
             if (filetext.startsWith("../OpenSong/")) {
                 filetext = "file://" + filetext.replace("../OpenSong/",FullscreenActivity.homedir+"/");
@@ -78,7 +80,7 @@ class PadFunctions {
         } else if (!FullscreenActivity.mKey.isEmpty()){
             isvalid = true;
         }
-         return isvalid;
+        return isvalid;
     }
 
 }

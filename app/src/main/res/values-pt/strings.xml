@@ -595,4 +595,15 @@
 	<string name="floating_window">"Janela flutuante"</string>
 	<string name="timer_size">"Tamanho do temporizador"</string>
 
+	<string name="scrollbuttons">"Configurações de rolagem"</string>
+	<string name="scrollbuttons_distance">"Quantidade de rolagem"</string>
+	<string name="speed">"Rapidez"</string>
+	<string name="swipe">"Deslize as configurações"</string>
+	<string name="swipe_allowance">"Movimento vertical permitido"</string>
+	<string name="swipe_distance">"Deslizar a distância"</string>
+    <string name="actionbar">\"Informações barra de menu\"</string>
+	<string name="battery">\"Bateria\"</string>
+	<string name="timeformat">\"24 horas\"</string>
+	<string name="text">\"Texto\"</string>
+
 </resources>

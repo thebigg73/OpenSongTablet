@@ -349,10 +349,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             float xscale;
             float yscale;
             boolean usingcustom = false;
-            File customLogo = new File(FullscreenActivity.customLogo);
+            File customLogo = new File(FullscreenActivity.dirbackgrounds,FullscreenActivity.customLogo);
             if (customLogo.exists()) {
                 // Get the sizes of the custom logo
-                BitmapFactory.decodeFile(FullscreenActivity.customLogo, options);
+                BitmapFactory.decodeFile(customLogo.toString(), options);
                 imgwidth = options.outWidth;
                 imgheight = options.outHeight;
                 if (imgwidth>0 && imgheight>0) {
@@ -384,7 +384,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo));
                 }
             }
-            projected_Logo.startAnimation(logo_fadein);
+            if (PresenterMode.logoButton_isSelected) {
+                projected_Logo.startAnimation(logo_fadein);
+            }
         }
         static void showLogo() {
             // Animate out the lyrics if they were visible and animate in the logo
@@ -888,6 +890,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         projectedPresenterView1Col();
                     } catch (Exception e) {
                         // Ooops
+                        e.printStackTrace();
                     }
                 }
 

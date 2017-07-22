@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -98,8 +99,8 @@ public class PopUpThemeChooserFragment extends DialogFragment {
     TextView custom2_theme_heading;
     TextView stickynote_text;
     TextView stickynote_bg;
-    int initialcolor;
-    int newcolor;
+    int initialcolor = 0xff000000;
+    int newcolor = 0xff000000;
     String buttonClicked = "";
 
     static PopUpThemeChooserFragment newInstance() {
@@ -635,6 +636,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
                     initialcolor = FullscreenActivity.dark_lyricsBackgroundColor;
                     break;
                 case "dark_lyricsTextColor":
+                    default:
                     initialcolor = FullscreenActivity.dark_lyricsTextColor;
                     break;
                 case "dark_lyricsVerseColor":
@@ -869,244 +871,255 @@ public class PopUpThemeChooserFragment extends DialogFragment {
     }
 
     public void doDisplay() {
-        AmbilWarnaDialog dialog = new AmbilWarnaDialog(getActivity(), initialcolor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
-            @Override
-            public void onOk(AmbilWarnaDialog dialog, int color) {
+        Context c;
+        try {
+            if (getActivity()==null) {
+                c = FullscreenActivity.mContext;
+            } else {
+                c = getActivity();
+            }
+            AmbilWarnaDialog dialog = new AmbilWarnaDialog(c, initialcolor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                @Override
+                public void onOk(AmbilWarnaDialog dialog, int color) {
 
-                // Decide which one we're changing
-                switch (buttonClicked) {
-                    case "dark_lyricsTextColor":
-                        FullscreenActivity.dark_lyricsTextColor = color;
-                        break;
-                    case "dark_lyricsBackgroundColor":
-                        FullscreenActivity.dark_lyricsBackgroundColor = color;
-                        break;
-                    case "dark_lyricsVerseColor":
-                        FullscreenActivity.dark_lyricsVerseColor = color;
-                        break;
-                    case "dark_lyricsChorusColor":
-                        FullscreenActivity.dark_lyricsChorusColor = color;
-                        break;
-                    case "dark_lyricsBridgeColor":
-                        FullscreenActivity.dark_lyricsBridgeColor = color;
-                        break;
-                    case "dark_lyricsCommentColor":
-                        FullscreenActivity.dark_lyricsCommentColor = color;
-                        break;
-                    case "dark_lyricsPreChorusColor":
-                        FullscreenActivity.dark_lyricsPreChorusColor = color;
-                        break;
-                    case "dark_lyricsTagColor":
-                        FullscreenActivity.dark_lyricsTagColor = color;
-                        break;
-                    case "dark_lyricsChordsColor":
-                        FullscreenActivity.dark_lyricsChordsColor = color;
-                        break;
-                    case "dark_lyricsCustomColor":
-                        FullscreenActivity.dark_lyricsCustomColor = color;
-                        break;
-                    case "dark_lyricsCapoColor":
-                        FullscreenActivity.dark_lyricsCapoColor = color;
-                        break;
-                    case "dark_presoFontColor":
-                        FullscreenActivity.dark_presoFont = color;
-                        break;
-                    case "dark_presoInfoFontColor":
-                        FullscreenActivity.dark_presoInfoFont = color;
-                        break;
-                    case "dark_presoAlertFontColor":
-                        FullscreenActivity.dark_presoAlertFont = color;
-                        break;
-                    case "dark_metronome":
-                        FullscreenActivity.dark_metronome = color;
-                        break;
-                    case "dark_pagebuttons":
-                        FullscreenActivity.dark_pagebuttons = color;
-                        break;
-                    case "dark_stickytext":
-                        FullscreenActivity.dark_stickytext = color;
-                        break;
-                    case "dark_stickybg":
-                        FullscreenActivity.dark_stickybg = color;
-                        break;
+                    // Decide which one we're changing
+                    switch (buttonClicked) {
+                        case "dark_lyricsTextColor":
+                            FullscreenActivity.dark_lyricsTextColor = color;
+                            break;
+                        case "dark_lyricsBackgroundColor":
+                            FullscreenActivity.dark_lyricsBackgroundColor = color;
+                            break;
+                        case "dark_lyricsVerseColor":
+                            FullscreenActivity.dark_lyricsVerseColor = color;
+                            break;
+                        case "dark_lyricsChorusColor":
+                            FullscreenActivity.dark_lyricsChorusColor = color;
+                            break;
+                        case "dark_lyricsBridgeColor":
+                            FullscreenActivity.dark_lyricsBridgeColor = color;
+                            break;
+                        case "dark_lyricsCommentColor":
+                            FullscreenActivity.dark_lyricsCommentColor = color;
+                            break;
+                        case "dark_lyricsPreChorusColor":
+                            FullscreenActivity.dark_lyricsPreChorusColor = color;
+                            break;
+                        case "dark_lyricsTagColor":
+                            FullscreenActivity.dark_lyricsTagColor = color;
+                            break;
+                        case "dark_lyricsChordsColor":
+                            FullscreenActivity.dark_lyricsChordsColor = color;
+                            break;
+                        case "dark_lyricsCustomColor":
+                            FullscreenActivity.dark_lyricsCustomColor = color;
+                            break;
+                        case "dark_lyricsCapoColor":
+                            FullscreenActivity.dark_lyricsCapoColor = color;
+                            break;
+                        case "dark_presoFontColor":
+                            FullscreenActivity.dark_presoFont = color;
+                            break;
+                        case "dark_presoInfoFontColor":
+                            FullscreenActivity.dark_presoInfoFont = color;
+                            break;
+                        case "dark_presoAlertFontColor":
+                            FullscreenActivity.dark_presoAlertFont = color;
+                            break;
+                        case "dark_metronome":
+                            FullscreenActivity.dark_metronome = color;
+                            break;
+                        case "dark_pagebuttons":
+                            FullscreenActivity.dark_pagebuttons = color;
+                            break;
+                        case "dark_stickytext":
+                            FullscreenActivity.dark_stickytext = color;
+                            break;
+                        case "dark_stickybg":
+                            FullscreenActivity.dark_stickybg = color;
+                            break;
 
-                    case "light_lyricsTextColor":
-                        FullscreenActivity.light_lyricsTextColor = color;
-                        break;
-                    case "light_lyricsBackgroundColor":
-                        FullscreenActivity.light_lyricsBackgroundColor = color;
-                        break;
-                    case "light_lyricsVerseColor":
-                        FullscreenActivity.light_lyricsVerseColor = color;
-                        break;
-                    case "light_lyricsChorusColor":
-                        FullscreenActivity.light_lyricsChorusColor = color;
-                        break;
-                    case "light_lyricsBridgeColor":
-                        FullscreenActivity.light_lyricsBridgeColor = color;
-                        break;
-                    case "light_lyricsCommentColor":
-                        FullscreenActivity.light_lyricsCommentColor = color;
-                        break;
-                    case "light_lyricsPreChorusColor":
-                        FullscreenActivity.light_lyricsPreChorusColor = color;
-                        break;
-                    case "light_lyricsTagColor":
-                        FullscreenActivity.light_lyricsTagColor = color;
-                        break;
-                    case "light_lyricsChordsColor":
-                        FullscreenActivity.light_lyricsChordsColor = color;
-                        break;
-                    case "light_lyricsCustomColor":
-                        FullscreenActivity.light_lyricsCustomColor = color;
-                        break;
-                    case "light_lyricsCapoColor":
-                        FullscreenActivity.light_lyricsCapoColor = color;
-                        break;
-                    case "light_presoFontColor":
-                        FullscreenActivity.dark_presoFont = color;
-                        break;
-                    case "light_presoInfoFontColor":
-                        FullscreenActivity.dark_presoInfoFont = color;
-                        break;
-                    case "light_presoAlertFontColor":
-                        FullscreenActivity.dark_presoAlertFont = color;
-                        break;
-                    case "light_metronome":
-                        FullscreenActivity.light_metronome = color;
-                        break;
-                    case "light_pagebuttons":
-                        FullscreenActivity.light_pagebuttons = color;
-                        break;
-                    case "light_stickytext":
-                        FullscreenActivity.light_stickytext = color;
-                        break;
-                    case "light_stickybg":
-                        FullscreenActivity.light_stickybg = color;
-                        break;
+                        case "light_lyricsTextColor":
+                            FullscreenActivity.light_lyricsTextColor = color;
+                            break;
+                        case "light_lyricsBackgroundColor":
+                            FullscreenActivity.light_lyricsBackgroundColor = color;
+                            break;
+                        case "light_lyricsVerseColor":
+                            FullscreenActivity.light_lyricsVerseColor = color;
+                            break;
+                        case "light_lyricsChorusColor":
+                            FullscreenActivity.light_lyricsChorusColor = color;
+                            break;
+                        case "light_lyricsBridgeColor":
+                            FullscreenActivity.light_lyricsBridgeColor = color;
+                            break;
+                        case "light_lyricsCommentColor":
+                            FullscreenActivity.light_lyricsCommentColor = color;
+                            break;
+                        case "light_lyricsPreChorusColor":
+                            FullscreenActivity.light_lyricsPreChorusColor = color;
+                            break;
+                        case "light_lyricsTagColor":
+                            FullscreenActivity.light_lyricsTagColor = color;
+                            break;
+                        case "light_lyricsChordsColor":
+                            FullscreenActivity.light_lyricsChordsColor = color;
+                            break;
+                        case "light_lyricsCustomColor":
+                            FullscreenActivity.light_lyricsCustomColor = color;
+                            break;
+                        case "light_lyricsCapoColor":
+                            FullscreenActivity.light_lyricsCapoColor = color;
+                            break;
+                        case "light_presoFontColor":
+                            FullscreenActivity.dark_presoFont = color;
+                            break;
+                        case "light_presoInfoFontColor":
+                            FullscreenActivity.dark_presoInfoFont = color;
+                            break;
+                        case "light_presoAlertFontColor":
+                            FullscreenActivity.dark_presoAlertFont = color;
+                            break;
+                        case "light_metronome":
+                            FullscreenActivity.light_metronome = color;
+                            break;
+                        case "light_pagebuttons":
+                            FullscreenActivity.light_pagebuttons = color;
+                            break;
+                        case "light_stickytext":
+                            FullscreenActivity.light_stickytext = color;
+                            break;
+                        case "light_stickybg":
+                            FullscreenActivity.light_stickybg = color;
+                            break;
 
-                    case "custom1_lyricsTextColor":
-                        FullscreenActivity.custom1_lyricsTextColor = color;
-                        break;
-                    case "custom1_lyricsBackgroundColor":
-                        FullscreenActivity.custom1_lyricsBackgroundColor = color;
-                        break;
-                    case "custom1_lyricsVerseColor":
-                        FullscreenActivity.custom1_lyricsVerseColor = color;
-                        break;
-                    case "custom1_lyricsChorusColor":
-                        FullscreenActivity.custom1_lyricsChorusColor = color;
-                        break;
-                    case "custom1_lyricsBridgeColor":
-                        FullscreenActivity.custom1_lyricsBridgeColor = color;
-                        break;
-                    case "custom1_lyricsCommentColor":
-                        FullscreenActivity.custom1_lyricsCommentColor = color;
-                        break;
-                    case "custom1_lyricsPreChorusColor":
-                        FullscreenActivity.custom1_lyricsPreChorusColor = color;
-                        break;
-                    case "custom1_lyricsTagColor":
-                        FullscreenActivity.custom1_lyricsTagColor = color;
-                        break;
-                    case "custom1_lyricsChordsColor":
-                        FullscreenActivity.custom1_lyricsChordsColor = color;
-                        break;
-                    case "custom1_lyricsCustomColor":
-                        FullscreenActivity.custom1_lyricsCustomColor = color;
-                        break;
-                    case "custom1_lyricsCapoColor":
-                        FullscreenActivity.custom1_lyricsCapoColor = color;
-                        break;
-                    case "custom1_presoFontColor":
-                        FullscreenActivity.dark_presoFont = color;
-                        break;
-                    case "custom1_presoInfoFontColor":
-                        FullscreenActivity.dark_presoInfoFont = color;
-                        break;
-                    case "custom1_presoAlertFontColor":
-                        FullscreenActivity.dark_presoAlertFont = color;
-                        break;
-                    case "custom1_metronome":
-                        FullscreenActivity.custom1_metronome = color;
-                        break;
-                    case "custom1_pagebuttons":
-                        FullscreenActivity.custom1_pagebuttons = color;
-                        break;
-                    case "custom1_stickytext":
-                        FullscreenActivity.custom1_stickytext = color;
-                        break;
-                    case "custom1_stickybg":
-                        FullscreenActivity.custom1_stickybg = color;
-                        break;
+                        case "custom1_lyricsTextColor":
+                            FullscreenActivity.custom1_lyricsTextColor = color;
+                            break;
+                        case "custom1_lyricsBackgroundColor":
+                            FullscreenActivity.custom1_lyricsBackgroundColor = color;
+                            break;
+                        case "custom1_lyricsVerseColor":
+                            FullscreenActivity.custom1_lyricsVerseColor = color;
+                            break;
+                        case "custom1_lyricsChorusColor":
+                            FullscreenActivity.custom1_lyricsChorusColor = color;
+                            break;
+                        case "custom1_lyricsBridgeColor":
+                            FullscreenActivity.custom1_lyricsBridgeColor = color;
+                            break;
+                        case "custom1_lyricsCommentColor":
+                            FullscreenActivity.custom1_lyricsCommentColor = color;
+                            break;
+                        case "custom1_lyricsPreChorusColor":
+                            FullscreenActivity.custom1_lyricsPreChorusColor = color;
+                            break;
+                        case "custom1_lyricsTagColor":
+                            FullscreenActivity.custom1_lyricsTagColor = color;
+                            break;
+                        case "custom1_lyricsChordsColor":
+                            FullscreenActivity.custom1_lyricsChordsColor = color;
+                            break;
+                        case "custom1_lyricsCustomColor":
+                            FullscreenActivity.custom1_lyricsCustomColor = color;
+                            break;
+                        case "custom1_lyricsCapoColor":
+                            FullscreenActivity.custom1_lyricsCapoColor = color;
+                            break;
+                        case "custom1_presoFontColor":
+                            FullscreenActivity.dark_presoFont = color;
+                            break;
+                        case "custom1_presoInfoFontColor":
+                            FullscreenActivity.dark_presoInfoFont = color;
+                            break;
+                        case "custom1_presoAlertFontColor":
+                            FullscreenActivity.dark_presoAlertFont = color;
+                            break;
+                        case "custom1_metronome":
+                            FullscreenActivity.custom1_metronome = color;
+                            break;
+                        case "custom1_pagebuttons":
+                            FullscreenActivity.custom1_pagebuttons = color;
+                            break;
+                        case "custom1_stickytext":
+                            FullscreenActivity.custom1_stickytext = color;
+                            break;
+                        case "custom1_stickybg":
+                            FullscreenActivity.custom1_stickybg = color;
+                            break;
 
-                    case "custom2_lyricsTextColor":
-                        FullscreenActivity.custom2_lyricsTextColor = color;
-                        break;
-                    case "custom2_lyricsBackgroundColor":
-                        FullscreenActivity.custom2_lyricsBackgroundColor = color;
-                        break;
-                    case "custom2_lyricsVerseColor":
-                        FullscreenActivity.custom2_lyricsVerseColor = color;
-                        break;
-                    case "custom2_lyricsChorusColor":
-                        FullscreenActivity.custom2_lyricsChorusColor = color;
-                        break;
-                    case "custom2_lyricsBridgeColor":
-                        FullscreenActivity.custom2_lyricsBridgeColor = color;
-                        break;
-                    case "custom2_lyricsCommentColor":
-                        FullscreenActivity.custom2_lyricsCommentColor = color;
-                        break;
-                    case "custom2_lyricsPreChorusColor":
-                        FullscreenActivity.custom2_lyricsPreChorusColor = color;
-                        break;
-                    case "custom2_lyricsTagColor":
-                        FullscreenActivity.custom2_lyricsTagColor = color;
-                        break;
-                    case "custom2_lyricsChordsColor":
-                        FullscreenActivity.custom2_lyricsChordsColor = color;
-                        break;
-                    case "custom2_lyricsCustomColor":
-                        FullscreenActivity.custom2_lyricsCustomColor = color;
-                        break;
-                    case "custom2_lyricsCapoColor":
-                        FullscreenActivity.custom2_lyricsCapoColor = color;
-                        break;
-                    case "custom2_presoFontColor":
-                        FullscreenActivity.dark_presoFont = color;
-                        break;
-                    case "custom2_presoInfoFontColor":
-                        FullscreenActivity.dark_presoInfoFont = color;
-                        break;
-                    case "custom2_presoAlertFontColor":
-                        FullscreenActivity.dark_presoAlertFont = color;
-                        break;
-                    case "custom2_metronome":
-                        FullscreenActivity.custom2_metronome = color;
-                        break;
-                    case "custom2_pagebuttons":
-                        FullscreenActivity.custom2_pagebuttons = color;
-                        break;
-                    case "custom2_stickytext":
-                        FullscreenActivity.custom2_stickytext = color;
-                        break;
-                    case "custom2_stickybg":
-                        FullscreenActivity.custom2_stickybg = color;
-                        break;
+                        case "custom2_lyricsTextColor":
+                            FullscreenActivity.custom2_lyricsTextColor = color;
+                            break;
+                        case "custom2_lyricsBackgroundColor":
+                            FullscreenActivity.custom2_lyricsBackgroundColor = color;
+                            break;
+                        case "custom2_lyricsVerseColor":
+                            FullscreenActivity.custom2_lyricsVerseColor = color;
+                            break;
+                        case "custom2_lyricsChorusColor":
+                            FullscreenActivity.custom2_lyricsChorusColor = color;
+                            break;
+                        case "custom2_lyricsBridgeColor":
+                            FullscreenActivity.custom2_lyricsBridgeColor = color;
+                            break;
+                        case "custom2_lyricsCommentColor":
+                            FullscreenActivity.custom2_lyricsCommentColor = color;
+                            break;
+                        case "custom2_lyricsPreChorusColor":
+                            FullscreenActivity.custom2_lyricsPreChorusColor = color;
+                            break;
+                        case "custom2_lyricsTagColor":
+                            FullscreenActivity.custom2_lyricsTagColor = color;
+                            break;
+                        case "custom2_lyricsChordsColor":
+                            FullscreenActivity.custom2_lyricsChordsColor = color;
+                            break;
+                        case "custom2_lyricsCustomColor":
+                            FullscreenActivity.custom2_lyricsCustomColor = color;
+                            break;
+                        case "custom2_lyricsCapoColor":
+                            FullscreenActivity.custom2_lyricsCapoColor = color;
+                            break;
+                        case "custom2_presoFontColor":
+                            FullscreenActivity.dark_presoFont = color;
+                            break;
+                        case "custom2_presoInfoFontColor":
+                            FullscreenActivity.dark_presoInfoFont = color;
+                            break;
+                        case "custom2_presoAlertFontColor":
+                            FullscreenActivity.dark_presoAlertFont = color;
+                            break;
+                        case "custom2_metronome":
+                            FullscreenActivity.custom2_metronome = color;
+                            break;
+                        case "custom2_pagebuttons":
+                            FullscreenActivity.custom2_pagebuttons = color;
+                            break;
+                        case "custom2_stickytext":
+                            FullscreenActivity.custom2_stickytext = color;
+                            break;
+                        case "custom2_stickybg":
+                            FullscreenActivity.custom2_stickybg = color;
+                            break;
 
+                    }
+                    // Save the preferences and set the button colour
+                    Preferences.savePreferences();
+                    setButtonColors();
                 }
-                // Save the preferences and set the button colour
-                Preferences.savePreferences();
-                setButtonColors();
-            }
-            @Override
-            public void onCancel(AmbilWarnaDialog dialog) {
-                // User cancelled, do nothing
-                newcolor = initialcolor;
-            }
-        });
-        dialog.show();
+
+                @Override
+                public void onCancel(AmbilWarnaDialog dialog) {
+                    // User cancelled, do nothing
+                    newcolor = initialcolor;
+                }
+            });
+            dialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void getDefaultColours() {

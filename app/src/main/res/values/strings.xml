@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="actionbar">Menu bar info</string>
+    <string name="battery">Battery</string>
+    <string name="text">Text</string>
+    <string name="timeformat">24hr</string>
+
+    <string name="email" translatable="false">opensongapp@googlegroups.com</string>
+    <string name="paypal" translatable="false">paypal.me/opensongapp</string>
+    <string name="scrollbuttons">Scroll settings</string>
+    <string name="scrollbuttons_distance">Scroll amount</string>
+    <string name="speed">Speed</string>
+    <string name="swipe">Swipe settings</string>
+    <string name="swipe_allowance">Vertical movement allowed</string>
+    <string name="swipe_distance">Swipe distance</string>
+    <string name="zerotime" translatable="false">0:00</string>
+
     <string name="export_chordpro">ChordPro song (.cho)</string>
     <string name="export_desktop">Desktop file (no file extension)</string>
     <string name="export_onsong">OnSong song (.onsong)</string>

@@ -27,7 +27,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.Arrays;
 
-import static com.garethevans.church.opensongtablet.FullscreenActivity.myPreferences;
+//import static com.garethevans.church.opensongtablet.FullscreenActivity.myPreferences;
 
 public class SettingsActivity extends AppCompatActivity implements PopUpStorageFragment.SettingsInterface,
 PopUpDirectoryChooserFragment.SettingsInterface {
@@ -44,6 +44,7 @@ PopUpDirectoryChooserFragment.SettingsInterface {
     Button goToSongs;
     Button user_guide;
     File myroot;
+    boolean showsplash;
 
     private static boolean storageGranted = false;
     private static final int requestStorage = 0;
@@ -56,24 +57,36 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         super.onCreate(savedInstanceState);
 
         setupMyShortCuts();
-        FullscreenActivity.version = 0;
 
-        myPreferences = getPreferences(MODE_PRIVATE);
-        Preferences.loadPreferences();
-
-        // If version is pre v4 reset the gesture choices
-        if (FullscreenActivity.showSplashVersion<120) {
-            FullscreenActivity.resetSomePreferences = true;
-        }
-
-        // Decide if user has already seen the splash screen
         PackageInfo pInfo;
         try {
             pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             FullscreenActivity.version = pInfo.versionCode;
         } catch (NameNotFoundException e1) {
             e1.printStackTrace();
+            FullscreenActivity.version = 0;
         }
+
+
+        FullscreenActivity.myPreferences = getPreferences(MODE_PRIVATE);
+        Log.d("d","SettingsActivity preload showSplashVersion="+FullscreenActivity.showSplashVersion);
+        Preferences.loadPreferences();
+        Log.d("d","SettingsActivity postload showSplashVersion="+FullscreenActivity.showSplashVersion);
+        showsplash = getIntent().getBooleanExtra("showsplash",false);
+        if (showsplash) {
+            Log.d("d","intent to showsplash");
+            FullscreenActivity.showSplashVersion = 0;
+        }
+        if (FullscreenActivity.showSplashVersion>FullscreenActivity.version) {
+            showsplash=false;
+        }
+        // If version is pre v4 reset the gesture choices
+        if (FullscreenActivity.showSplashVersion>0 && FullscreenActivity.showSplashVersion<120) {
+            FullscreenActivity.resetSomePreferences = true;
+        }
+
+        // Decide if user has already seen the splash screenLog.d("d","SettingsActivity showSplashVersion="+FullscreenActivity.showSplashVersion);
+        Log.d("d","SettingsActivity version="+FullscreenActivity.version);
 
         //myPreferences = getSharedPreferences("mysettings", MODE_PRIVATE);
         //showSplashVersion = myPreferences.getInt("showSplashVersion", version);
@@ -146,13 +159,21 @@ PopUpDirectoryChooserFragment.SettingsInterface {
 
         // Wait 1000ms before either showing the introduction page or the main app
         // This only happens if the storage exists
+
+        Log.d("d","final check FullscreenActivity.showSplashVersion="+FullscreenActivity.showSplashVersion);
+        //Log.d("d","final check sv="+sv);
+        Log.d("d","final check FullscreenActivity.version="+FullscreenActivity.version);
+        Log.d("d","final check test="+test);
+        Log.d("d","final check want="+want);
+        Log.d("d","final check storageexists="+storageexists);
+
         delayfadeinredraw = new Handler();
         delayfadeinredraw.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // This bit then redirects the user to the main app if they've got the newest version
 
-                if (FullscreenActivity.showSplashVersion > FullscreenActivity.version && test == want && storageexists) {
+                if (!showsplash && test == want && storageexists) {
                     //User version is bigger than current - this means they've seen the splash
                     FullscreenActivity.showSplashVersion = FullscreenActivity.version + 1;
                     Preferences.savePreferences();
@@ -162,7 +183,6 @@ PopUpDirectoryChooserFragment.SettingsInterface {
                     //Set the showSplashVersion to the next level - it will only show on next update
                     FullscreenActivity.showSplashVersion = FullscreenActivity.version + 1;
                     Preferences.savePreferences();
-
                 }
 
                 setContentView(R.layout.activity_splashscreen);

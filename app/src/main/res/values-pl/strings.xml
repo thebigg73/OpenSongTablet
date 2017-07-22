@@ -595,4 +595,15 @@
 	<string name="floating_window">"Okno pływające"</string>
 	<string name="timer_size">"Rozmiar licznika"</string>
 
+	<string name="scrollbuttons">"Przewiń ustawienia"</string>
+	<string name="scrollbuttons_distance">"Kwota przewijania"</string>
+	<string name="speed">"Prędkość"</string>
+	<string name="swipe">"Przesuń ustawienia"</string>
+	<string name="swipe_allowance">"Dopuszczalny ruch pionowy"</string>
+	<string name="swipe_distance">"Odchyl odległość"</string>
+    <string name="actionbar">\"Informacje Pasek menu\"</string>
+	<string name="battery">\"Bateria\"</string>
+	<string name="timeformat">\"24 godziny\"</string>
+	<string name="text">\"Tekst\"</string>
+
 </resources>

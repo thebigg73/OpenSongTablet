@@ -29,7 +29,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clipChildren="false"
-                android:clipToPadding="false" />
+                android:clipToPadding="false"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
 
         </HorizontalScrollView>
 
@@ -177,89 +179,6 @@
             layout="@layout/pageicons_right_material" />
 
     </RelativeLayout>
-
-<!--    <LinearLayout
-        android:id="@+id/songmenu"
-        android:layout_width="220dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start|left"
-        android:background="@drawable/drawer_bg"
-        android:clickable="true"
-        android:orientation="vertical"
-        android:padding="4dp">
-
-        <LinearLayout
-            android:id="@+id/changefolder_LinearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="8dp"
-                android:contentDescription="@string/choosefolder"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_folder_upload_white_36dp"></ImageView>
-
-            <TextView
-                android:id="@+id/menuFolder_TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="8dp"
-                android:textColor="#ffff00"
-                android:textSize="16sp"></TextView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
-
-            <ScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/side_index"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical" />
-            </ScrollView>
-
-            <ListView
-                android:id="@+id/song_list_view"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                android:choiceMode="singleChoice"
-                android:divider="#aaa"
-                android:dividerHeight="1dp"
-                android:fastScrollEnabled="true" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/optionmenu"
-        android:layout_width="220dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="end|right"
-        android:background="@drawable/drawer_bg"
-        android:clickable="true"
-        android:orientation="vertical"
-        android:padding="4dp">
-
-        <include
-            android:id="@+id/myoptionmenucontents"
-            layout="@layout/popup_option" />
-
-    </LinearLayout>-->
 
     <include layout="@layout/songmenu"/>
 

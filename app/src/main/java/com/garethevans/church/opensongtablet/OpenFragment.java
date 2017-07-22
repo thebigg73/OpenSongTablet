@@ -45,6 +45,14 @@ class OpenFragment {
                 newFragment = PopUpCustomSlideFragment.newInstance();
                 break;
 
+            case "scrollsettings":
+                newFragment = PopUpScrollSettingsFragment.newInstance();
+                break;
+
+            case "swipesettings":
+                newFragment = PopUpSwipeSettingsFragment.newInstance();
+                break;
+
             case "customreusable_scripture":
                 newFragment = PopUpCustomSlideFragment.newInstance();
                 break;
@@ -63,6 +71,10 @@ class OpenFragment {
 
             case "presenter_audio":
                 newFragment = PopUpMediaStoreFragment.newInstance();
+                break;
+
+            case "presentationorder":
+                newFragment = PopUpPresentationOrderFragment.newInstance();
                 break;
 
             case "presenter_db":
@@ -134,6 +146,10 @@ class OpenFragment {
 
             case "extra":
                 newFragment = PopUpExtraInfoFragment.newInstance();
+                break;
+
+            case "actionbarinfo":
+                newFragment = PopUpActionBarInfoFragment.newInstance();
                 break;
 
             case "profiles":

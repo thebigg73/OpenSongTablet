@@ -595,4 +595,15 @@
 	<string name="floating_window">"Finestra galleggiante"</string>
 	<string name="timer_size">"Dimensione timer"</string>
 
+	<string name="scrollbuttons">"Impostazioni di scorrimento"</string>
+	<string name="scrollbuttons_distance">"Quantità di scorrimento"</string>
+	<string name="speed">"Velocità"</string>
+	<string name="swipe">"Scorrimento delle impostazioni"</string>
+	<string name="swipe_allowance">"Permesso il movimento verticale"</string>
+	<string name="swipe_distance">"Spostare la distanza"</string>
+    <string name="actionbar">\"Informazioni Barra dei menu\"</string>
+	<string name="battery">\"Batteria\"</string>
+	<string name="timeformat">\"24\"</string>
+	<string name="text">\"Testo\"</string>
+
 </resources>
