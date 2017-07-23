@@ -135,6 +135,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public TextView songauthor_ab;
     public TextView batterycharge;
     public ImageView batteryimage;
+    RelativeLayout batteryholder;
     Menu menu;
 
     // AsyncTasks
@@ -1036,6 +1037,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         songauthor_ab.setText("");
         batterycharge = (TextView) findViewById(R.id.batterycharge);
         batteryimage = (ImageView) findViewById(R.id.batteryimage);
+        batteryholder = (RelativeLayout) findViewById(R.id.batteryholder);
 
         // The song menu
         songmenu = (LinearLayout) findViewById(R.id.songmenu);
@@ -1120,6 +1122,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whattodo = "songdetails";
+                openFragment();
+            }
+        });
+        batteryholder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "actionbarinfo";
                 openFragment();
             }
         });

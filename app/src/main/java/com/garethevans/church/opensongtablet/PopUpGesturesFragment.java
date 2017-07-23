@@ -110,6 +110,7 @@ public class PopUpGesturesFragment extends DialogFragment {
         vals.add(getString(R.string.autoscrollPedalText)+" + "+getString(R.string.metronomePedalText));
         vals.add(getString(R.string.padPedalText)+" + "+getString(R.string.metronomePedalText));
         vals.add(getString(R.string.autoscrollPedalText)+" + "+getString(R.string.padPedalText) + " + " + getString(R.string.metronomePedalText));
+        vals.add(getActivity().getString(R.string.currentset));
 
         // Set up the spinners
         ArrayAdapter<String> gestures = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, vals);

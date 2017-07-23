@@ -292,6 +292,10 @@ public class PopUpSongCreateFragment extends DialogFragment {
                     newtempfolders.add(FullscreenActivity.mSongFolderNames[e]);
                 }
             }
+            if (newtempfolders==null) {
+                newtempfolders = new ArrayList<>();
+                newtempfolders.add("");
+            }
             ArrayAdapter<String> folders = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, newtempfolders);
             folders.setDropDownViewResource(R.layout.my_spinner);
             newFolderSpinner.setAdapter(folders);

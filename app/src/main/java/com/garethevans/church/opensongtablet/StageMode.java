@@ -136,6 +136,7 @@ public class StageMode extends AppCompatActivity implements
     public TextView songauthor_ab;
     public TextView batterycharge;
     public ImageView batteryimage;
+    RelativeLayout batteryholder;
     Menu menu;
 
     // The popup window (sticky)
@@ -385,6 +386,7 @@ public class StageMode extends AppCompatActivity implements
                 songauthor_ab = (TextView) findViewById(R.id.songauthor_ab);
                 batterycharge = (TextView) findViewById(R.id.batterycharge);
                 batteryimage = (ImageView) findViewById(R.id.batteryimage);
+                batteryholder = (RelativeLayout) findViewById(R.id.batteryholder);
                 mypage = (RelativeLayout) findViewById(R.id.mypage);
                 mypage.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
 
@@ -422,7 +424,14 @@ public class StageMode extends AppCompatActivity implements
                         openFragment();
                     }
                 });
-
+                batteryholder.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        FullscreenActivity.whattodo = "actionbarinfo";
+                        openFragment();
+                    }
+                });
+                
                 // Set up the navigation drawer
                 mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
                 songmenu = (LinearLayout) findViewById(R.id.songmenu);
@@ -2664,7 +2673,11 @@ public class StageMode extends AppCompatActivity implements
             SetActions.getSongForSetWork(StageMode.this);
             SetActions.indexSongInSet();
 
-            FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+            if (FullscreenActivity.mLyrics!=null) {
+                FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+            } else {
+                FullscreenActivity.myLyrics = "";
+            }
 
             // Clear the old headings (presention order looks for these)
             FullscreenActivity.foundSongSections_heading = new ArrayList<>();
@@ -5625,6 +5638,9 @@ public class StageMode extends AppCompatActivity implements
                 gesture6();  // Stop/start pad
                 gesture7();  // Stop/start metronome
                 break;
+            case "12":
+                FullscreenActivity.whattodo = "editset"; // Show the set
+                openFragment();
             default:
                 // Do nothing
                 break;

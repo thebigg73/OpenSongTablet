@@ -123,7 +123,11 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
     public void doSave(){
         FullscreenActivity.default_autoscroll_predelay = default_delaytime_SeekBar.getProgress();
         String length = default_duration_EditText.getText().toString();
-        FullscreenActivity.default_autoscroll_songlength = Integer.parseInt(length);
+        try {
+            FullscreenActivity.default_autoscroll_songlength = Integer.parseInt(length);
+        } catch (Exception e) {
+            FullscreenActivity.default_autoscroll_predelay = 0;
+        }
         if (autoscroll_prompt_RadioButton.isChecked()) {
             FullscreenActivity.autoscroll_default_or_prompt = "prompt";
         } else {

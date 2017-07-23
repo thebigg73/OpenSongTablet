@@ -635,16 +635,16 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             //Now look to see if the webcontent has the ChordPro text in it
             // Check we aren't trying to use the tab-pro page!
             String address = webresults_WebView.getUrl();
-            if (address.contains("/tab-pro/") || address.contains("/chords-pro/")) {
+            if (address!=null && (address.contains("/tab-pro/") || address.contains("/chords-pro/"))) {
                 FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.not_allowed).toString();
                 ShowToast.showToast(getActivity());
                 grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
-            } else if (result.contains("<textarea id=\"chordproContent\"")) {
+            } else if (result!=null && result.contains("<textarea id=\"chordproContent\"")) {
                 // Using Chordie
                 fixChordieContent(result);
                 setFileNameAndFolder();
 
-            } else if (result.contains("<div class=\"tb_ct\">") || result.contains("ultimate-guitar")) {
+            } else if (result!=null && (result.contains("<div class=\"tb_ct\">") || result.contains("ultimate-guitar"))) {
                 // Using UG
                 fixUGContent(result);
                 setFileNameAndFolder();

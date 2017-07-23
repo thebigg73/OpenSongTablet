@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     public interface MyInterface {
         void pageButtonAlpha(String s);
         void setupPageButtons(String s);
+        void openFragment();
     }
 
     private MyInterface mListener;
@@ -60,6 +62,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     SwitchCompat custom2Visible_Switch;
     SwitchCompat custom3Visible_Switch;
     SwitchCompat custom4Visible_Switch;
+    Button showPageButtons;
 
     @Override
     public void onStart() {
@@ -119,6 +122,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         custom2Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom2Visible_Switch);
         custom3Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom3Visible_Switch);
         custom4Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom4Visible_Switch);
+        showPageButtons = (Button) V.findViewById(R.id.showPageButtons);
 
         // Set the default values
         if (FullscreenActivity.fabSize == FloatingActionButton.SIZE_NORMAL) {
@@ -291,6 +295,16 @@ public class PopUpPageButtonsFragment extends DialogFragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.page_custom4_visible = b;
                 quickSave();
+            }
+        });
+        showPageButtons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "groupedpagebuttons";
+                dismiss();
+                if (mListener!=null) {
+                    mListener.openFragment();
+                }
             }
         });
         return V;

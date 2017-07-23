@@ -42,6 +42,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         super.onDetach();
     }
 
+    FloatingActionButton group_set;
     FloatingActionButton group_pad;
     FloatingActionButton group_autoscroll;
     FloatingActionButton group_metronome;
@@ -94,6 +95,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
+        group_set = (FloatingActionButton) V.findViewById(R.id.group_set);
         group_pad = (FloatingActionButton) V.findViewById(R.id.group_pad);
         group_autoscroll = (FloatingActionButton) V.findViewById(R.id.group_autoscroll);
         group_metronome = (FloatingActionButton) V.findViewById(R.id.group_metronome);
@@ -110,6 +112,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         setupQuickLaunchButtons();
 
         // Set the colors
+        group_set.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_pad.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_autoscroll.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_metronome.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
@@ -123,6 +126,12 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         group_custom4.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
 
         // Set shortclick listeners
+        group_set.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openAction("editset");
+            }
+        }));
         group_pad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -268,6 +277,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
             case "footpedal":
             case "transpose":
             case "fullsearch":
+            case "editset":
                 openAction(s);
                 break;
 
