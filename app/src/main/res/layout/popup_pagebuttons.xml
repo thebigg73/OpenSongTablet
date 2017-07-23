@@ -126,6 +126,20 @@
                     android:textColor="#ff0"
                     android:theme="@style/SwitchStyle" />
 
+                <Button
+                    android:id="@+id/showPageButtons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/green_button"
+                    android:drawableLeft="@drawable/ic_bullseye_white_36dp"
+                    android:drawablePadding="4dp"
+                    android:drawableStart="@drawable/ic_bullseye_white_36dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/pagebuttons"
+                    style="@style/MyHeadingText" />
+
+
             </LinearLayout>
 
             <LinearLayout

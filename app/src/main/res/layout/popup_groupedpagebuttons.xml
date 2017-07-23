@@ -25,6 +25,58 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/sect0_heading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/MyHeadingText"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="2dp"
+            android:text="@string/currentset"/>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/section_box">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp">
+
+                <LinearLayout
+                    android:id="@+id/sect0_icon1"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/group_set"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_format_list_numbers_white_36dp"
+                        app:backgroundTint="@color/purple"
+                        app:useCompatPadding="true"
+                        app:fabSize="mini" />
+
+                    <TextView
+                        style="@style/MyInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/currentset" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </HorizontalScrollView>
+
+        <TextView
             android:id="@+id/sect1_heading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

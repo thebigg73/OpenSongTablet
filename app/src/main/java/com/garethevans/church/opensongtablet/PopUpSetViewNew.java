@@ -454,18 +454,18 @@ public class PopUpSetViewNew extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener()
-        {
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event){
-
-                if ((keyCode == FullscreenActivity.pageturner_PREVIOUS && FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) ||
-                        keyCode == FullscreenActivity.pageturner_UP) {
-                    doScroll("up");
-                    return true;
-                } else if ((keyCode == FullscreenActivity.pageturner_NEXT && FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) ||
-                        keyCode == FullscreenActivity.pageturner_DOWN){
-                    doScroll("down");
-                    return true;
+        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP) {
+                    if ((keyCode == FullscreenActivity.pageturner_PREVIOUS && FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) ||
+                            keyCode == FullscreenActivity.pageturner_UP) {
+                        doScroll("up");
+                        return true;
+                    } else if ((keyCode == FullscreenActivity.pageturner_NEXT && FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) ||
+                            keyCode == FullscreenActivity.pageturner_DOWN) {
+                        doScroll("down");
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -475,12 +475,11 @@ public class PopUpSetViewNew extends DialogFragment {
     public void doScroll(String direction) {
         Interpolator customInterpolator = PathInterpolatorCompat.create(0.445f, 0.050f, 0.550f, 0.950f);
         if (direction.equals("up")) {
-            mRecyclerView.smoothScrollBy(0,(int) (-0.5f * mRecyclerView.getHeight()),customInterpolator);
+            mRecyclerView.smoothScrollBy(0,(int) (-FullscreenActivity.scrollDistance * mRecyclerView.getHeight()),customInterpolator);
         } else {
-            mRecyclerView.smoothScrollBy(0,(int) (+0.5f * mRecyclerView.getHeight()),customInterpolator);
+            mRecyclerView.smoothScrollBy(0,(int) (+FullscreenActivity.scrollDistance * mRecyclerView.getHeight()),customInterpolator);
         }
     }
-
 
     @Override
     public void onCancel(DialogInterface dialog) {
