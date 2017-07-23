@@ -2,37 +2,37 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.MimeTypeMap;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.io.File;
 
-public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserFragment.MyInterface {
+public class PopUpLinks extends DialogFragment {
 
-    ImageButton linkYouTube_ImageButton;
-    ImageButton linkWeb_ImageButton;
-    ImageButton linkAudio_ImageButton;
-    ImageButton linkOther_ImageButton;
-    Button linkClose;
-    Button linkSave;
+    FloatingActionButton linkYouTube_ImageButton;
+    FloatingActionButton linkWeb_ImageButton;
+    FloatingActionButton linkAudio_ImageButton;
+    FloatingActionButton linkOther_ImageButton;
     EditText linkYouTube_EditText;
     EditText linkWeb_EditText;
     EditText linkAudio_EditText;
     EditText linkOther_EditText;
-    ImageButton linkYouTubeClear_ImageButton;
-    ImageButton linkWebClear_ImageButton;
-    ImageButton linkAudioClear_ImageButton;
-    ImageButton linkOtherClear_ImageButton;
+    FloatingActionButton linkYouTubeClear_ImageButton;
+    FloatingActionButton linkWebClear_ImageButton;
+    FloatingActionButton linkAudioClear_ImageButton;
+    FloatingActionButton linkOtherClear_ImageButton;
 
     static PopUpLinks newInstance() {
         PopUpLinks frag;
@@ -40,19 +40,10 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
         return frag;
     }
 
-    @Override
-    public void updateCustomStorage() {
-        Log.d("d","File chosen = "+ FullscreenActivity.filechosen);
-    }
-
-    @Override
-    public void updateLinksPopUp() {
-        // Nothing here
-        Log.d("d","Nothing here");
-    }
-
     public interface MyInterface {
         void refreshAll();
+        void pageButtonAlpha(String s);
+        void openFragment();
     }
 
     private MyInterface mListener;
@@ -70,26 +61,63 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.link));
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+        if (getDialog()==null) {
+            dismiss();
+        }
+        getDialog().setCanceledOnTouchOutside(true);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (mListener!=null) {
+            mListener.pageButtonAlpha("links");
+        }
 
         final View V = inflater.inflate(R.layout.popup_links, container, false);
 
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.link));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(saveMe,getActivity());
+                saveMe.setEnabled(false);
+                doSave();
+            }
+        });
+
         // Initialise the views
-        linkYouTube_ImageButton = (ImageButton) V.findViewById(R.id.linkYouTube_ImageButton);
-        linkWeb_ImageButton = (ImageButton) V.findViewById(R.id.linkWeb_ImageButton);
-        linkAudio_ImageButton = (ImageButton) V.findViewById(R.id.linkAudio_ImageButton);
-        linkOther_ImageButton = (ImageButton) V.findViewById(R.id.linkOther_ImageButton);
+        linkYouTube_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkYouTube_ImageButton);
+        linkWeb_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkWeb_ImageButton);
+        linkAudio_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkAudio_ImageButton);
+        linkOther_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkOther_ImageButton);
         linkYouTube_EditText = (EditText) V.findViewById(R.id.linkYouTube_EditText);
         linkWeb_EditText = (EditText) V.findViewById(R.id.linkWeb_EditText);
         linkAudio_EditText = (EditText) V.findViewById(R.id.linkAudio_EditText);
         linkOther_EditText = (EditText) V.findViewById(R.id.linkOther_EditText);
-        linkYouTubeClear_ImageButton = (ImageButton) V.findViewById(R.id.linkYouTubeClear_ImageButton);
-        linkWebClear_ImageButton = (ImageButton) V.findViewById(R.id.linkWebClear_ImageButton);
-        linkAudioClear_ImageButton = (ImageButton) V.findViewById(R.id.linkAudioClear_ImageButton);
-        linkOtherClear_ImageButton = (ImageButton) V.findViewById(R.id.linkOtherClear_ImageButton);
-        linkClose = (Button) V.findViewById(R.id.linkClose);
-        linkSave = (Button) V.findViewById(R.id.linkSave);
+        linkYouTubeClear_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkYouTubeClear_ImageButton);
+        linkWebClear_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkWebClear_ImageButton);
+        linkAudioClear_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkAudioClear_ImageButton);
+        linkOtherClear_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkOtherClear_ImageButton);
 
         // Put any links in to the text fields
         linkYouTube_EditText.setText(FullscreenActivity.mLinkYouTube);
@@ -135,12 +163,26 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
             Log.d("d", "filechosen=" + FullscreenActivity.filechosen);
         }
         // If a filetoselect has been set, add this to the view
-        if (FullscreenActivity.filetoselect.equals("audiolink") && FullscreenActivity.filechosen!=null) {
-            linkAudio_EditText.setText(Uri.fromFile(FullscreenActivity.filechosen).toString());
+        if (FullscreenActivity.filetoselect.equals("audiolink") &&
+                FullscreenActivity.filechosen!=null && !FullscreenActivity.filechosen.toString().equals("")) {
+            // Get audio link
+            String link = Uri.fromFile(FullscreenActivity.filechosen).toString();
+            if (link.contains("/OpenSong/") && !link.contains("../OpenSong/")) {
+                // Make this package local by removing everything before it
+                int pos = link.indexOf("/OpenSong/");
+                link = "../OpenSong/" + link.substring(pos+10);
+                Log.d("d","localised link="+link);
+            }
+            linkAudio_EditText.setText(link);
+            FullscreenActivity.mLinkAudio = link;
             // If this is a genuine audio file, give the user the option of setting the song duration to match this file
             MediaPlayer mediafile = new MediaPlayer();
             try {
-                mediafile.setDataSource(getActivity(),Uri.parse(FullscreenActivity.filechosen.toString()));
+                // Parse for package local audio
+                if (link.startsWith("../OpenSong/")) {
+                    link = link.replace("../OpenSong/",FullscreenActivity.homedir + "/");
+                }
+                mediafile.setDataSource(getActivity(),Uri.parse(link));
                 mediafile.prepareAsync();
                 mediafile.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
@@ -158,7 +200,16 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
             }
 
         } else if (FullscreenActivity.filetoselect.equals("otherlink") && FullscreenActivity.filechosen!=null) {
-            linkOther_EditText.setText(FullscreenActivity.filechosen.toString());
+            // Get other link
+            String link = Uri.fromFile(FullscreenActivity.filechosen).toString();
+            if (link.contains("/OpenSong/") && !link.contains("../OpenSong/")) {
+                // Make this package local by removing everything before it
+                int pos = link.indexOf("/OpenSong/");
+                link = "../OpenSong/" + link.substring(pos+10);
+                Log.d("d","localised link="+link);
+            }
+            linkOther_EditText.setText(link);
+            FullscreenActivity.mLinkOther = link;
         }
         FullscreenActivity.filechosen = null;
         FullscreenActivity.filetoselect = "";
@@ -168,11 +219,8 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
             @Override
             public void onClick(View v) {
                 FullscreenActivity.filetoselect = "audiolink";
-                DialogFragment newFragment = PopUpDirectoryChooserFragment.newInstance();
-                Bundle args = new Bundle();
-                args.putString("type", "file");
-                newFragment.setArguments(args);
-                newFragment.show(getFragmentManager(), "dialog");
+                FullscreenActivity.whattodo = "filechooser";
+                mListener.openFragment();
                 dismiss();
             }
         });
@@ -180,42 +228,13 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
             @Override
             public void onClick(View v) {
                 FullscreenActivity.filetoselect = "otherlink";
-                DialogFragment newFragment = PopUpDirectoryChooserFragment.newInstance();
-                Bundle args = new Bundle();
-                args.putString("type", "file");
-                newFragment.setArguments(args);
-                newFragment.show(getFragmentManager(), "dialog");
+                FullscreenActivity.whattodo = "filechooser";
+                mListener.openFragment();
                 dismiss();
             }
         });
 
         // Set up button actions
-        linkClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-        linkSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Get the values from the page
-                FullscreenActivity.mLinkYouTube = linkYouTube_EditText.getText().toString();
-                FullscreenActivity.mLinkWeb = linkWeb_EditText.getText().toString();
-                FullscreenActivity.mLinkAudio = linkAudio_EditText.getText().toString();
-                FullscreenActivity.mLinkOther = linkOther_EditText.getText().toString();
-
-                // Now resave the song with these new links
-                PopUpEditSongFragment.prepareSongXML();
-                try {
-                    PopUpEditSongFragment.justSaveSongXML();
-                    mListener.refreshAll();
-                    dismiss();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
         linkYouTube_ImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -245,56 +264,73 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
         linkAudio_ImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MimeTypeMap myMime = MimeTypeMap.getSingleton();
-                Intent newIntent = new Intent(Intent.ACTION_VIEW);
-                Uri uri2 = Uri.parse(linkAudio_EditText.getText().toString());
-                File getfile = new File(linkAudio_EditText.getText().toString());
+                String mytext = linkAudio_EditText.getText().toString();
+                if (!mytext.equals("")) {
+                    MimeTypeMap myMime = MimeTypeMap.getSingleton();
+                    Intent newIntent = new Intent(Intent.ACTION_VIEW);
+                    String grabbedaudiofile = linkAudio_EditText.getText().toString();
+                    if (grabbedaudiofile.startsWith("../OpenSong/")) {
+                        // This is local to the packge, so fix it
+                        grabbedaudiofile = "file://" + grabbedaudiofile.replace("../OpenSong/", FullscreenActivity.homedir + "/");
+                    }
+                    Uri uri2 = Uri.parse(grabbedaudiofile);
+                    File getfile = new File(grabbedaudiofile);
 
-                String ext = MimeTypeMap.getFileExtensionFromUrl(getfile.getName()).toLowerCase();
-                if (ext.isEmpty()) {
-                    ext = "";
-                }
-                String mimeType;
-                 try {
-                     mimeType = myMime.getMimeTypeFromExtension(ext);
-                 } catch (Exception e ) {
-                     mimeType = "*/*";
-                 }
+                    String ext = MimeTypeMap.getFileExtensionFromUrl(getfile.getName()).toLowerCase();
+                    if (ext.isEmpty()) {
+                        ext = "";
+                    }
+                    String mimeType;
+                    try {
+                        mimeType = myMime.getMimeTypeFromExtension(ext);
+                    } catch (Exception e) {
+                        mimeType = "*/*";
+                    }
 
-                if (mimeType == null) {
-                    mimeType = "*/*";
-                }
+                    if (mimeType == null) {
+                        mimeType = "*/*";
+                    }
 
-                newIntent.setDataAndType(uri2,mimeType);
-                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
-                    startActivity(newIntent);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    newIntent.setDataAndType(uri2, mimeType);
+                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        startActivity(newIntent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    FullscreenActivity.myToastMessage = getResources().getString(R.string.error_notset);
+                    ShowToast.showToast(getActivity());
                 }
             }
         });
         linkOther_ImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MimeTypeMap myMime = MimeTypeMap.getSingleton();
-                Intent newIntent = new Intent(Intent.ACTION_VIEW);
-                Uri uri2 = Uri.parse(linkOther_EditText.getText().toString());
-                File getfile = new File(linkOther_EditText.getText().toString());
-                String ext = MimeTypeMap.getFileExtensionFromUrl(getfile.getName()).toLowerCase();
-                String mimeType = myMime.getMimeTypeFromExtension(ext);
+                String mytext = linkOther_EditText.getText().toString();
+                if (!mytext.equals("")) {
+                    MimeTypeMap myMime = MimeTypeMap.getSingleton();
+                    Intent newIntent = new Intent(Intent.ACTION_VIEW);
+                    Uri uri2 = Uri.parse(linkOther_EditText.getText().toString());
+                    File getfile = new File(linkOther_EditText.getText().toString());
+                    String ext = MimeTypeMap.getFileExtensionFromUrl(getfile.getName()).toLowerCase();
+                    String mimeType = myMime.getMimeTypeFromExtension(ext);
 
-                if (mimeType == null) {
-                    mimeType = "*/*";
-                }
+                    if (mimeType == null) {
+                        mimeType = "*/*";
+                    }
 
-                Log.d("d","mimeType="+mimeType);
-                newIntent.setDataAndType(uri2,mimeType);
-                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
-                    startActivity(newIntent);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.d("d", "mimeType=" + mimeType);
+                    newIntent.setDataAndType(uri2, mimeType);
+                    newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        startActivity(newIntent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    FullscreenActivity.myToastMessage = getResources().getString(R.string.error_notset);
+                    ShowToast.showToast(getActivity());
                 }
             }
         });
@@ -302,8 +338,29 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
         return V;
     }
 
+    public void doSave() {
+        // Get the values from the page
+        FullscreenActivity.mLinkYouTube = linkYouTube_EditText.getText().toString();
+        FullscreenActivity.mLinkWeb = linkWeb_EditText.getText().toString();
+        FullscreenActivity.mLinkAudio = linkAudio_EditText.getText().toString();
+        FullscreenActivity.mLinkOther = linkOther_EditText.getText().toString();
+
+        // Now resave the song with these new links
+        PopUpEditSongFragment.prepareSongXML();
+        try {
+            PopUpEditSongFragment.justSaveSongXML();
+            mListener.refreshAll();
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
+        Log.d("d","requestCode="+requestCode);
+        Log.d("d","resultCode="+resultCode);
+        Log.d("d","intent="+intent);
         if (intent!=null) {
             Uri uri = intent.getData();
             if (requestCode==0) {
@@ -320,22 +377,16 @@ public class PopUpLinks extends DialogFragment implements PopUpDirectoryChooserF
         }
     }
 
- /*   private String fileExt(String url) {
-        if (url.contains("?")) {
-            url = url.substring(0, url.indexOf("?"));
+    @Override
+    public void onDismiss(final DialogInterface dialog) {
+        if (mListener!=null) {
+            mListener.pageButtonAlpha("");
         }
-        if (url.lastIndexOf(".") == -1) {
-            return null;
-        } else {
-            String ext = url.substring(url.lastIndexOf(".") + 1);
-            if (ext.contains("%")) {
-                ext = ext.substring(0, ext.indexOf("%"));
-            }
-            if (ext.contains("/")) {
-                ext = ext.substring(0, ext.indexOf("/"));
-            }
-            return ext.toLowerCase();
+    }
 
-        }
-    }*/
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
 }

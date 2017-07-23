@@ -5,16 +5,16 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.util.Log;
 
-public class AudioGenerator {
+class AudioGenerator {
 
 	private int sampleRate;
-	public AudioTrack audioTrack;
+	private AudioTrack audioTrack;
 
-	public AudioGenerator(int sampleRate) {
+	AudioGenerator(int sampleRate) {
 		this.sampleRate = sampleRate;
 	}
 
-	public double[] getSineWave(int samples,int sampleRate,double frequencyOfTone) {
+	double[] getSineWave(int samples, int sampleRate, double frequencyOfTone) {
 		double[] sample = new double[samples];
 		for (int i = 0; i < samples; i++) {
 			sample[i] = Math.sin(2 * Math.PI * i / (sampleRate/frequencyOfTone));
@@ -22,7 +22,7 @@ public class AudioGenerator {
 		return sample;
 	}
 
-	public byte[] get16BitPcm(double[] samples) {
+	private byte[] get16BitPcm(double[] samples) {
 		byte[] generatedSound = new byte[2 * samples.length];
 		int index = 0;
 		for (double sample : samples) {
@@ -36,7 +36,7 @@ public class AudioGenerator {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void createPlayer(){
+	void createPlayer(){
 		//boolean isready = false;
 
         try {
@@ -69,7 +69,7 @@ public class AudioGenerator {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void writeSound(double[] samples) {
+	void writeSound(double[] samples) {
 		byte[] generatedSnd = get16BitPcm(samples);
 		if (FullscreenActivity.metronomeonoff.equals("on") && audioTrack.getState()==AudioTrack.STATE_INITIALIZED && audioTrack.getPlayState()==AudioTrack.PLAYSTATE_PLAYING) {
 			try {
@@ -108,7 +108,7 @@ public class AudioGenerator {
 		}
 	}
 
-	public void destroyAudioTrack() {
+	void destroyAudioTrack() {
         if (audioTrack!=null && audioTrack.getPlayState()==AudioTrack.PLAYSTATE_PLAYING) {
             audioTrack.stop();
             audioTrack.release();

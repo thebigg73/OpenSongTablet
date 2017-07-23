@@ -8,9 +8,11 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -41,7 +43,6 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
     ImageView level_10;
     SeekBar maxvolrange;
     TextView volval;
-    Button dBClose;
     TextView averagevol;
     Button resetaverage;
     int totalvols = 0;
@@ -56,9 +57,43 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
     };
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.volume));
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_soundlevelmeter, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.volume));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setVisibility(View.GONE);
+
         dBTextView = (TextView) V.findViewById(R.id.dBTextView);
 
         level_1 = (ImageView) V.findViewById(R.id.level_1);
@@ -71,14 +106,6 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         level_8 = (ImageView) V.findViewById(R.id.level_8);
         level_9 = (ImageView) V.findViewById(R.id.level_9);
         level_10 = (ImageView) V.findViewById(R.id.level_10);
-
-        dBClose = (Button) V.findViewById(R.id.dBClose);
-        dBClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
 
         averagevol = (TextView) V.findViewById(R.id.averagevol);
         resetaverage = (Button) V.findViewById(R.id.resetaverage);
@@ -402,4 +429,10 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
             //mHandlerStart.postDelayed(r,50);
         }
     }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
 }

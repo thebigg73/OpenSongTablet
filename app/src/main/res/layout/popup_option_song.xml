@@ -1,24 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/songMenuTitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="4dp"
-        android:gravity="center"
-        android:text="@string/options_song"
-        android:textSize="14sp"
-        android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
-        android:drawablePadding="4dp"
-        android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
-        android:textColor="#ff0" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/songMenuTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+            android:drawablePadding="4dp"
+            android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+            android:gravity="center"
+            android:text="@string/options_song"
+            style="@style/MyMenuHeadingText" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/closeOptionsFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:fabSize="mini"
+            android:src="@drawable/ic_close_white_36dp"/>
+
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/optionschordsscrollview"
@@ -37,13 +52,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_table_edit_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_table_edit_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_edit" />
+                android:text="@string/options_song_edit"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/songStickyButton"
@@ -51,13 +66,41 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_comment_text_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_comment_text_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_stickynotes" />
+                android:text="@string/options_song_stickynotes"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/songOnYouTubeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_youtube_play_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_youtube_play_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/youtube"
+                android:textColor="#fff"
+                android:textSize="12sp"/>
+
+            <Button
+                android:id="@+id/songOnWebButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_web_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_web_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/websearch"
+                android:textColor="#fff"
+                android:textSize="12sp"/>
 
             <Button
                 android:id="@+id/songRenameButton"
@@ -65,13 +108,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_rename_box_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_rename_box_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_rename" />
+                android:text="@string/options_song_rename"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/songNewButton"
@@ -79,13 +122,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_plus_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_plus_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_new" />
+                android:text="@string/options_song_new"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/songDeleteButton"
@@ -93,13 +136,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_delete_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_delete_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_delete" />
+                android:text="@string/options_song_delete"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/songExportButton"
@@ -107,13 +150,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_share_variant_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_share_variant_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_song_export" />
+                android:text="@string/options_song_export"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/songPresentationOrderButton"
@@ -121,13 +164,14 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_format_list_numbers_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_format_list_numbers_white_36dp"
                 android:text="@string/edit_song_presentation"
-                app:showText="false"/>
+                android:theme="@style/SwitchStyle"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                app:showText="false" />
 
         </LinearLayout>
     </ScrollView>

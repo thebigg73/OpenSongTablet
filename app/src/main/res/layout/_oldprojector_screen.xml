@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    android:padding="0dp"
+    android:id="@+id/bgImageRelativeLayout">
+
+    <FrameLayout
+        android:id="@+id/preso"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000"
+        android:visibility="visible">
+
+        <TextureView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/presoBGVideo"
+            tools:ignore="NewApi" />
+
+        <ImageView
+            android:id="@+id/presoBGImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/presoBackground"
+            android:scaleType="fitXY"
+            android:src="@drawable/preso_default_bg"
+            android:visibility="gone" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/slideImage1"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/slide" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/slideImage2"
+            android:contentDescription="@string/slide"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter" />
+
+        <ImageView
+            android:id="@+id/presoLogo"
+            android:layout_width="400dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/presoBackground"
+            android:src="@drawable/ost_logo"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/bottomBit"
+                android:layout_alignParentTop="true"
+                android:id="@+id/lyricsHolder"
+                android:layout_margin="8dp"
+                android:layout_centerInParent="true">
+
+                <ScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/scrollView9"
+                    android:layout_gravity="center">
+
+                    <HorizontalScrollView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/horizontalScrollView1"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:fillViewport="false">
+
+                        <TextView
+                            android:id="@+id/presoLyrics1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:textColor="#fff"
+                            android:textSize="40sp"
+                            android:visibility="visible" />
+                    </HorizontalScrollView>
+                </ScrollView>
+
+                <ScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/scrollView10"
+                    android:layout_gravity="center">
+
+                    <HorizontalScrollView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/horizontalScrollView2"
+                        android:layout_gravity="center_vertical|center_horizontal">
+
+                        <TextView
+                            android:id="@+id/presoLyrics2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:textColor="#fff"
+                            android:textSize="40sp"
+                            android:visibility="visible" />
+                    </HorizontalScrollView>
+                </ScrollView>
+
+            </FrameLayout>
+
+            <RelativeLayout
+                android:id="@+id/bottomBit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="6dp">
+
+                <TextView
+                    android:id="@+id/presoTitle1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentStart="false"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="0dp"
+                    android:gravity="end"
+                    android:padding="0dp"
+                    android:textColor="#fff"
+                    android:textSize="14sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/presoTitle2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="0dp"
+                    android:gravity="end"
+                    android:padding="0dp"
+                    android:textColor="#fff"
+                    android:textSize="14sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/presoAuthor1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/presoTitle1"
+                    android:layout_margin="0dp"
+                    android:gravity="end"
+                    android:padding="0dp"
+                    android:textColor="#fff"
+                    android:textSize="14sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/presoAuthor2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/presoTitle2"
+                    android:layout_margin="0dp"
+                    android:gravity="end"
+                    android:padding="0dp"
+                    android:textColor="#fff"
+                    android:textSize="14sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/presoCopyright1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/presoAuthor1"
+                    android:layout_margin="0dp"
+                    android:gravity="end"
+                    android:padding="0dp"
+                    android:textColor="#fff"
+                    android:textSize="14sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/presoCopyright2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/presoAuthor2"
+                    android:layout_margin="0dp"
+                    android:gravity="end"
+                    android:padding="0dp"
+                    android:textColor="#fff"
+                    android:textSize="14sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/presoAlert"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/presoCopyright1"
+                    android:layout_margin="0dp"
+                    android:gravity="end"
+                    android:padding="0dp"
+                    android:textColor="#fff"
+                    android:textSize="12sp"
+                    android:visibility="invisible"
+                    android:background="#300" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+</RelativeLayout>

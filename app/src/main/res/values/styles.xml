@@ -1,51 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="CustomDialog" parent="@style/Theme.AppCompat.NoActionBar">
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:colorBackground">@color/toolbar</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+
+    <style name="MyDialogHeadingText" parent="MyTheme.Base">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="MyHeadingText" parent="MyTheme.Base">
+        <item name="android:textColor">#ff0</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="MyMenuHeadingText" parent="MyTheme.Base">
+        <item name="android:textColor">#ff0</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="MyWhiteHeadingText" parent="MyTheme.Base">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="MyInfoText" parent="MyTheme.Base">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="MySongTitleText" parent="MyTheme.Base">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="MySongAuthorText" parent="MyTheme.Base">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="MyEditText">
+        <item name="android:textColor">#000</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:background">#fff</item>
+        <item name="android:textColorHint">#555</item>
+        <item name="android:textCursorDrawable">@null</item>
+    </style>
+
+    <style name="MyTextSwitch">
+        <item name="android:textSize">14sp</item>
+        <item name="android:thumb">@drawable/switch_button</item>
+    </style>
+
+    <style name="MySwitch">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="MySpinner">
+        <item name="android:textColor">#000</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:background">#fff</item>
+    </style>
+
     <style name="MyTheme" parent="MyTheme.Base">
-    </style>
-    <!-- Base theme applied no matter what API -->
-    <style name="MyTheme.Base" parent="Theme.AppCompat.NoActionBar">
-        <!-- colorPrimary is used for the default action bar background -->
         <item name="colorPrimary">@color/toolbar</item>
-        <!-- colorPrimaryDark is used for the status bar -->
         <item name="colorPrimaryDark">@color/toolbar</item>
-        <!-- colorAccent is used as the default value for colorControlActivated
-             which is used to tint widgets -->
         <item name="colorAccent">@color/accent</item>
-        <!-- You can also set colorControlNormal, colorControlActivated
-            colorControlHighlight and colorSwitchThumbNormal. -->
+        <item name="android:dialogTheme">@style/CustomDialog</item>
+        <item name="colorControlActivated">@color/accent</item>
+
     </style>
-    <!--    <style name="AppBaseTheme" parent="android:Theme.Holo">
-        </style>
 
-        <style name="AltAppBaseTheme" parent="android:Theme.Holo">
-        </style>
+    <style name="MyTheme.Base" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/toolbar</item>
+        <item name="colorPrimaryDark">@color/toolbar</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:dialogTheme">@style/CustomDialog</item>
+        <item name="colorControlActivated">@color/accent</item>
+    </style>
 
-        <style name="AppTheme" parent="AppBaseTheme">
-        </style>
+    <style name="SwitchStyle">
+        <item name="colorControlActivated">@color/accent</item>
+    </style>
 
-        <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
-            <item name="android:windowContentOverlay">@null</item>
-            <item name="android:windowBackground">@null</item>
-            <item name="buttonBarStyle">@style/ButtonBar</item>
-            <item name="buttonBarButtonStyle">@style/ButtonBarButton</item>
-        </style>
-
-        <style name="ButtonBar">
-            <item name="android:paddingLeft">2dp</item>
-            <item name="android:paddingTop">5dp</item>
-            <item name="android:paddingRight">2dp</item>
-            <item name="android:paddingBottom">0dp</item>
-            <item name="android:background">@android:drawable/bottom_bar</item>
-        </style>
-
-        <style name="ButtonBarButton" />
-
-        <style name="MyTheme" parent="@android:style/Theme.Holo">
-            <item name="android:actionBarStyle">@style/MyActionBar</item>
-        </style>
-
-        <style name="MyActionBar" parent="@android:style/Widget.Holo.ActionBar">
-            <item name="android:background">#121222</item>
-        </style>-->
+    <style name="ThemeOverlay.OpenSongApp" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:colorBackground">@color/toolbar</item>
+        <item name="android:textColor">@color/text</item>
+    </style>
 </resources>

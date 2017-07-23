@@ -27,23 +27,10 @@ public class IndexSongs extends Activity {
         FullscreenActivity.safetosearch = false;
         FullscreenActivity.search_database = null;
         FullscreenActivity.search_database = new ArrayList<>();
-        System.gc();
-
-        // Prepare a blank log file to show the search index progress
-/*
-        searchindexlog = new File(FullscreenActivity.homedir+"/searchindexlog.txt");
-*/
 
         FullscreenActivity.indexlog = "Search index progress.\n\n" +
                 "If the last song shown in this list is not the last song in your directory, there was an error indexing it.\n" +
                 "Please manually check that the file is a correctly formatted OpenSong file.\n\n\n";
-
-/*
-        FileOutputStream overWrite = new FileOutputStream(searchindexlog, false);
-        overWrite.write(defaultlogtext.getBytes());
-        overWrite.flush();
-        overWrite.close();
-*/
 
         // Get all the folders that are available
         File songfolder = new File(FullscreenActivity.dir.getAbsolutePath());
@@ -59,7 +46,7 @@ public class IndexSongs extends Activity {
         //Now read the folder names for the first level directories
         if (tempmyitems!=null) {
             for (File tempmyitem : tempmyitems) {
-                if (tempmyitem != null && tempmyitem.isDirectory()) {
+                if (tempmyitem != null && tempmyitem.isDirectory() && tempmyitem.getName() != null) {
                     firstleveldirectories.add(tempmyitem.getName());
                 }
             }
@@ -71,7 +58,7 @@ public class IndexSongs extends Activity {
             File[] subfoldersearch = foldtosearch.listFiles();
             if (subfoldersearch!=null) {
                 for (File aSubfoldersearch : subfoldersearch) {
-                    if (aSubfoldersearch != null && aSubfoldersearch.isDirectory()) {
+                    if (firstleveldirectories.get(x) != null && aSubfoldersearch != null && aSubfoldersearch.isDirectory()) {
                         secondleveldirectories.add(firstleveldirectories.get(x)+"/"+aSubfoldersearch.getName());
                     }
                 }
@@ -79,56 +66,14 @@ public class IndexSongs extends Activity {
         }
 
         // Now combine the two arrays and save them as a string array
-
         fixedfolders.add("");
-        fixedfolders.addAll(firstleveldirectories);
-        fixedfolders.addAll(secondleveldirectories);
+        if (firstleveldirectories!=null) {
+            fixedfolders.addAll(firstleveldirectories);
 
-        /*File songfolder = new File(FullscreenActivity.dir.getAbsolutePath());
-        File[] tempmyitems = null;
-        if (songfolder.isDirectory()) {
-            tempmyitems = songfolder.listFiles();
         }
-
-        // Go through each folder and add subfolders
-        ArrayList<String> firstleveldirectories = new ArrayList<>();
-        ArrayList<String> secondleveldirectories = new ArrayList<>();
-        //Now read the folder names for the first level directories
-        if (tempmyitems!=null) {
-            for (File tempmyitem : tempmyitems) {
-                if (tempmyitem != null && tempmyitem.isDirectory()) {
-                    firstleveldirectories.add(tempmyitem.getName());
-                }
-            }
+        if (secondleveldirectories!=null) {
+            fixedfolders.addAll(secondleveldirectories);
         }
-
-        //Now go through the firstlevedirectories and look for subfolders
-        for (int x = 0; x < firstleveldirectories.size(); x++) {
-            File folder = new File(FullscreenActivity.dir.getAbsolutePath() + "/" + firstlevedirectories.get(x));
-            File[] subfoldersearch = folder.listFiles();
-            if (subfoldersearch!=null) {
-                for (File aSubfoldersearch : subfoldersearch) {
-                    if (aSubfoldersearch != null && aSubfoldersearch.isDirectory()) {
-                        secondlevedirectories.add(firstlevedirectories.get(x) + "/" + aSubfoldersearch.getName());
-                    }
-                }
-            }
-        }*/
-
-
-        /*// Need to add MAIN folder still......
-        ArrayList<File> fixedfolders = new ArrayList<>();
-        fixedfolders.add(FullscreenActivity.dir);
-        fixedfolders.addAll(firstleveldirectories);
-        tempProperDirectories.addAll(secondleveldirectories);*/
-
-        /*if (tempmyitems!=null) {
-            for (File temp : tempmyitems) {
-                if (temp.isDirectory()) {
-                    fixedfolders.add(temp);
-                }
-            }
-        }*/
 
         // Prepare the xml pull parser
         XmlPullParserFactory xppf = XmlPullParserFactory.newInstance();
@@ -312,81 +257,28 @@ public class IndexSongs extends Activity {
                     String item_to_add = filename + " _%%%_ " + folder + " _%%%_ " + title + " _%%%_ " + author + " _%%%_ " + shortlyrics + " _%%%_ " +
                             theme + " _%%%_ " + key + " _%%%_ " + hymnnumber;
 
-                    FullscreenActivity.search_database.add(item_to_add);
+                    if (item_to_add!=null) {
+                        FullscreenActivity.search_database.add(item_to_add);
+                    }
 
                     String line_to_add = folder + "/" + filename+"\n";
 
                     FullscreenActivity.indexlog += line_to_add;
-                    /*FileOutputStream logoutput = new FileOutputStream (new File(searchindexlog.getAbsolutePath()), true); // true will be same as Context.MODE_APPEND
-                    logoutput.write(line_to_add.getBytes());
-                    logoutput.flush();
-                    logoutput.close();*/
                 }
             }
         }
-        //FileOutputStream logoutput = new FileOutputStream (new File(searchindexlog.getAbsolutePath()), true); // true will be same as Context.MODE_APPEND
         int totalsongsindexed = FullscreenActivity.search_database.size();
-        //int totalsongsfound = FullscreenActivity.mSongFileNames.length;
-/*
-        String status;
-        if (totalsongsfound==totalsongsindexed) {
-            status = "No errors found";
-        } else {
-            status = "Something is wrong with the last file listed";
-        }
-*/
 
         FullscreenActivity.indexlog += "\n\nTotal songs indexed="+totalsongsindexed+"\n\n";
-/*
-        logoutput.write(extra.getBytes());
-        logoutput.flush();
-        logoutput.close();
-*/
 
-        System.gc();
         FullscreenActivity.safetosearch = true;
     }
 
-    public static void ListAllSongs() {
-        // get a list of all song subfolders
-        ArrayList<String> allsongfolders = new ArrayList<>();
-        ArrayList<String> allsongsinfolders = new ArrayList<>();
-
-        // Add the MAIN folder
-        allsongfolders.add(FullscreenActivity.dir.toString());
-
-        File[] songsubfolders = FullscreenActivity.dir.listFiles();
-        for (File isfolder:songsubfolders) {
-            if (isfolder.isDirectory()) {
-                allsongfolders.add(isfolder.toString());
-            }
-        }
-
-        // Now we have all the directories, iterate through them adding each song
-        for (String thisfolder:allsongfolders) {
-            File currentfolder = new File(thisfolder);
-            File[] thesesongs = currentfolder.listFiles();
-            for (File thissong:thesesongs) {
-                if (thissong.isFile()) {
-                    String simplesong = thissong.toString().replace(FullscreenActivity.dir.toString()+"/","");
-                    simplesong = simplesong.replace(FullscreenActivity.dir.toString(),"");
-                    if (!simplesong.contains("/")) {
-                        simplesong = "/" + simplesong;
-                    }
-                    allsongsinfolders.add(simplesong);
-                }
-            }
-        }
-
-        // Add this list to the main array
-        FullscreenActivity.allfilesforsearch = allsongsinfolders;
-    }
-
-    public static class IndexMySongs extends AsyncTask<Object,Void,String> {
+    static class IndexMySongs extends AsyncTask<Object,Void,String> {
 
         Context context;
 
-        public IndexMySongs(Context c) {
+        IndexMySongs(Context c) {
             context = c;
             mListener = (MyInterface) c;
         }
@@ -399,6 +291,7 @@ public class IndexSongs extends Activity {
 
         @Override
         protected String doInBackground(Object... params) {
+            Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
             String val;
             try {
                 doIndex(context);

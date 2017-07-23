@@ -1,13 +1,14 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.TextView;
 
 public class PopUpWebViewFragment extends DialogFragment {
@@ -20,24 +21,55 @@ public class PopUpWebViewFragment extends DialogFragment {
 
     WebView webview;
     TextView textview;
-    Button closebutton;
+    String mTitle = "";
+
+    public void onStart() {
+        super.onStart();
+
+        // safety check
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View V = inflater.inflate(R.layout.popup_webview, container, false);
-        webview = (WebView) V.findViewById(R.id.webview);
-        textview = (TextView) V.findViewById(R.id.textview);
-        closebutton = (Button) V.findViewById(R.id.closebutton);
+        if (FullscreenActivity.whattodo.equals("errorlog")) {
+            mTitle = getActivity().getResources().getString(R.string.search_log);
+        }
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
 
-        closebutton.setOnClickListener(new View.OnClickListener() {
+        View V = inflater.inflate(R.layout.popup_webview, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(mTitle);
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
                 dismiss();
             }
         });
+        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setVisibility(View.GONE);
+
+        webview = (WebView) V.findViewById(R.id.webview);
+        textview = (TextView) V.findViewById(R.id.textview);
 
         if (FullscreenActivity.whattodo.equals("errorlog")) {
-            getDialog().setTitle(getActivity().getResources().getString(R.string.search_log));
             webview.setVisibility(View.GONE);
             textview.setVisibility(View.VISIBLE);
             textview.setText(FullscreenActivity.indexlog);
@@ -46,11 +78,9 @@ public class PopUpWebViewFragment extends DialogFragment {
     }
 
     @Override
-    public void onResume() {
-        Dialog dialog = getDialog();
-        if (dialog != null) {
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        }
-        super.onResume();
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
     }
+
+
 }

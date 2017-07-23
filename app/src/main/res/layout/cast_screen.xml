@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/projectedPage_RelativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000">
+
+    <RelativeLayout
+        android:id="@+id/pageHolder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        tools:ignore="UselessParent">
+
+    <ImageView
+        android:id="@+id/projected_BackgroundImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/app_name"
+        android:visibility="invisible"/>
+
+    <TextureView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/projected_TextureView"
+        tools:ignore="NewApi"
+        android:visibility="invisible"/>
+
+    <ImageView
+        android:id="@+id/projected_ImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/app_name"
+        android:visibility="invisible"/>
+
+    <LinearLayout
+        android:id="@+id/projected_LinearLayout"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical"
+        android:layout_above="@+id/bottom_infobar"
+        android:visibility="visible"/>
+
+    <LinearLayout
+        android:id="@+id/bottom_infobar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/songinfo_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:drawableLeft="@mipmap/ic_round_launcher"
+            android:drawablePadding="12dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_margin="0dp"
+            style="@style/MyWhiteHeadingText"
+            android:visibility="visible"/>
+
+        <LinearLayout
+            android:id="@+id/presentermode_bottombit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+            <TextView
+                android:id="@+id/presentermode_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/presentermode_author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/presentermode_copyright"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/presentermode_alert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/col1_1"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/col1_2"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/col2_2"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/col1_3"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/col2_3"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/col3_3"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/projected_Logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ost_logo"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/app_name" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

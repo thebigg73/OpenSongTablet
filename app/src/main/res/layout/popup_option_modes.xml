@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/modeMenuTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+            android:drawablePadding="4dp"
+            android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+            android:gravity="center"
+            android:text="@string/options_modes"
+            style="@style/MyMenuHeadingText" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/closeOptionsFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:fabSize="mini"
+            android:src="@drawable/ic_close_white_36dp"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/optionsmodesscrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/modePerformanceButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_microphone_variant_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_microphone_variant_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/performancemode"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/modeStageButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_lan_connect_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_lan_connect_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/stagemode"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/modePresentationButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_projector_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_projector_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/presentermode"
+                android:textColor="#fff"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

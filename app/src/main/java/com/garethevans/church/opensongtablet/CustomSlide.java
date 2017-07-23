@@ -1,11 +1,13 @@
 package com.garethevans.church.opensongtablet;
 
+import android.content.Context;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class CustomSlide {
+class CustomSlide {
 
-    public static void addCustomSlide() {
+    static void addCustomSlide(Context c) {
         String filename;
         String reusablefilename;
         String templocator;
@@ -17,26 +19,26 @@ public class CustomSlide {
             case "note":
                 filename = FullscreenActivity.dircustomnotes + "/" + filetitle;
                 reusablefilename = FullscreenActivity.homedir + "/Notes/" + filetitle;
-                templocator = FullscreenActivity.note;
+                templocator = c.getResources().getString(R.string.note);
                 FullscreenActivity.customimage_list = "";
                 break;
             case "slide":
                 filename = FullscreenActivity.dircustomslides + "/" + filetitle;
                 reusablefilename = FullscreenActivity.homedir + "/Slides/" + filetitle;
-                templocator = FullscreenActivity.slide;
+                templocator = c.getResources().getString(R.string.slide);
                 FullscreenActivity.customimage_list = "";
                 break;
             case "scripture":
                 filename = FullscreenActivity.dirscriptureverses + "/" + filetitle;
                 reusablefilename = FullscreenActivity.dirscripture + "/" + filetitle;
-                templocator = FullscreenActivity.text_scripture;
+                templocator = c.getResources().getString(R.string.scripture);
                 FullscreenActivity.customreusable = false;
                 FullscreenActivity.customimage_list = "";
                 break;
             default:
                 filename = FullscreenActivity.dircustomimages + "/" + filetitle;
                 reusablefilename = FullscreenActivity.homedir + "/Images/" + filetitle;
-                templocator = FullscreenActivity.image;
+                templocator = c.getResources().getString(R.string.image);
                 break;
         }
 

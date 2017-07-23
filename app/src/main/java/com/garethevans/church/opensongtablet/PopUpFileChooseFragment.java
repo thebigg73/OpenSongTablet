@@ -2,13 +2,15 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,6 +34,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
 
     public interface MyInterface {
         void loadCustomReusable();
+        void openFragment();
     }
 
     private MyInterface mListener;
@@ -49,86 +52,122 @@ public class PopUpFileChooseFragment extends DialogFragment {
         super.onDetach();
     }
 
+    TextView location;
     ListView fileListView;
     static String[] imagefiletypes = {".jpg",".jpeg",".JPG","JPEG",".png",".PNG",".gif",".GIF"};
     static String[] videofiletypes = {".mp4",".MP4",".mpg","MPG",".mpeg",".MPEG",".mov",".MOV",".m4v","M4V"};
     static String[] filechecks;
+    String myTitle = "";
 
     static String myswitch;
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        getDialog().setTitle(getActivity().getResources().getString(R.string.file_chooser));
-        View V = inflater.inflate(R.layout.popup_file_chooser, container, false);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
 
+        View V = inflater.inflate(R.layout.popup_file_chooser, container, false);
         fileListView = (ListView) V.findViewById(R.id.fileListView);
+        location = (TextView) V.findViewById(R.id.location);
 
         // Decide on the title of the file chooser
-        String myTitle = "";
-
         if (PresenterMode.whatBackgroundLoaded!=null) {
             myswitch = PresenterMode.whatBackgroundLoaded;
         } else {
             myswitch = FullscreenActivity.whattodo;
         }
         switch (myswitch) {
+            case "logo":
+                myTitle = getActivity().getResources().getString(R.string.logo);
+                filechecks = imagefiletypes;
+                location.setText(FullscreenActivity.dirbackgrounds.toString());
+                listvidsandimages();
+                break;
+
             case "image1":
                 myTitle = getActivity().getResources().getString(R.string.choose_image1);
                 filechecks = imagefiletypes;
+                location.setText(FullscreenActivity.dirbackgrounds.toString());
                 listvidsandimages();
                 break;
 
             case "image2":
                 myTitle = getActivity().getResources().getString(R.string.choose_image2);
                 filechecks = imagefiletypes;
+                location.setText(FullscreenActivity.dirbackgrounds.toString());
                 listvidsandimages();
                 break;
 
             case "video1":
                 myTitle = getActivity().getResources().getString(R.string.choose_video1);
                 filechecks = videofiletypes;
+                location.setText(FullscreenActivity.dirbackgrounds.toString());
                 listvidsandimages();
                 break;
 
             case "video2":
                 myTitle = getActivity().getResources().getString(R.string.choose_video2);
                 filechecks = videofiletypes;
+                location.setText(FullscreenActivity.dirbackgrounds.toString());
                 listvidsandimages();
                 break;
 
             case "customnote":
                 myTitle = getResources().getString(R.string.options_set_load) + " - " + getResources().getString(R.string.note);
                 filechecks = null;
+                location.setText(FullscreenActivity.dircustomnotes.toString());
                 listnotes();
                 break;
 
             case "customslide":
                 myTitle = getResources().getString(R.string.options_set_load) + " - " + getResources().getString(R.string.slide);
                 filechecks = null;
+                location.setText(FullscreenActivity.dircustomslides.toString());
                 listslides();
                 break;
 
             case "customimage":
                 myTitle = getResources().getString(R.string.options_set_load) + " - " + getResources().getString(R.string.image_slide);
                 filechecks = null;
+                location.setText(FullscreenActivity.dircustomimages.toString());
                 listimageslides();
                 break;
 
             case "customscripture":
                 myTitle = getResources().getString(R.string.options_set_load) + " - " + getResources().getString(R.string.scripture);
                 filechecks = null;
+                location.setVisibility(View.GONE);
                 listscriptures();
                 break;
         }
 
-        TextView mTitle = (TextView) V.findViewById(R.id.fileChooserTitle);
-        mTitle.setText(myTitle);
-
-        Button cancelFileChoose = (Button) V.findViewById(R.id.cancelFileButton);
-        cancelFileChoose.setOnClickListener(new View.OnClickListener() {
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(myTitle);
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
                 if (FullscreenActivity.whattodo.equals("customnote") ||
                         FullscreenActivity.whattodo.equals("customslide") ||
                         FullscreenActivity.whattodo.equals("customimage") ||
@@ -141,6 +180,9 @@ public class PopUpFileChooseFragment extends DialogFragment {
                 }
             }
         });
+        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setVisibility(View.GONE);
+
 
         // Populate the file list view
         fileListView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_single_choice, foundFiles));
@@ -151,6 +193,11 @@ public class PopUpFileChooseFragment extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Get the appropriate file
                 switch (myswitch) {
+                    case "logo":
+                        FullscreenActivity.customLogo = foundFiles[position];
+                        reOpenBackgrounds();
+                        break;
+
                     case "image1":
                         FullscreenActivity.backgroundImage1 = foundFiles[position];
                         reOpenBackgrounds();
@@ -172,22 +219,22 @@ public class PopUpFileChooseFragment extends DialogFragment {
                         break;
 
                     case "customnote":
-                        FullscreenActivity.customreusabletoload = FullscreenActivity.text_note  + "/" + foundFiles[position];
+                        FullscreenActivity.customreusabletoload = getActivity().getResources().getString(R.string.note)  + "/" + foundFiles[position];
                         mListener.loadCustomReusable();
                         break;
 
                     case "customslide":
-                        FullscreenActivity.customreusabletoload = FullscreenActivity.text_slide  + "/" + foundFiles[position];
+                        FullscreenActivity.customreusabletoload = getActivity().getResources().getString(R.string.slide)  + "/" + foundFiles[position];
                         mListener.loadCustomReusable();
                         break;
 
                     case "customimage":
-                        FullscreenActivity.customreusabletoload = FullscreenActivity.image  + "/" + foundFiles[position];
+                        FullscreenActivity.customreusabletoload = getActivity().getResources().getString(R.string.image)  + "/" + foundFiles[position];
                         mListener.loadCustomReusable();
                         break;
 
                     case "customscripture":
-                        FullscreenActivity.customreusabletoload = FullscreenActivity.text_scripture  + "/" + foundFiles[position];
+                        FullscreenActivity.customreusabletoload = getActivity().getResources().getString(R.string.scripture)  + "/" + foundFiles[position];
                         mListener.loadCustomReusable();
                         break;
 
@@ -202,8 +249,11 @@ public class PopUpFileChooseFragment extends DialogFragment {
 
     public void reOpenBackgrounds() {
         // This reopens the choose backgrounds popupFragment
-        DialogFragment newFragment = PopUpBackgroundsFragment.newInstance();
-        newFragment.show(getFragmentManager(), "dialog");
+        if (mListener!=null) {
+            if (FullscreenActivity.whichMode.equals("Presentation"))
+            FullscreenActivity.whattodo = "connecteddisplay";
+            mListener.openFragment();
+        }
     }
 
     public void listimageslides() {
@@ -245,14 +295,14 @@ public class PopUpFileChooseFragment extends DialogFragment {
             // If we need to check the filetype and it is ok, add it to the array
             if (filechecks != null && filechecks.length > 0) {
                 for (String filecheck : filechecks) {
-                    if (tempmyFile.getName().contains(filecheck) && !tempmyFile.isDirectory()) {
+                    if (tempmyFile!=null && tempmyFile.getName().contains(filecheck) && !tempmyFile.isDirectory()) {
                         tempFoundFiles.add(tempmyFile.getName());
                     }
                 }
 
                 // Otherwise, no check needed, add to the array (if it isn't a directory)
             } else {
-                if (!tempmyFile.isDirectory()) {
+                if (tempmyFile!=null && !tempmyFile.isDirectory()) {
                     tempFoundFiles.add(tempmyFile.getName());
                 }
             }
@@ -268,4 +318,10 @@ public class PopUpFileChooseFragment extends DialogFragment {
         foundFiles = new String[tempFoundFiles.size()];
         foundFiles = tempFoundFiles.toArray(foundFiles);
     }
- }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+    }
+
+}

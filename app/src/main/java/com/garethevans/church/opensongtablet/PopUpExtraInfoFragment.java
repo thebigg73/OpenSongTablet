@@ -1,14 +1,18 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.Window;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class PopUpExtraInfoFragment extends DialogFragment {
 
@@ -37,115 +41,250 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         super.onDetach();
     }
 
-    SeekBar nextSong_seekBar;
-    SeekBar stickyNotes_seekBar;
-    Button closebutton;
+    SwitchCompat nextSongOnOff_Switch;
+    SwitchCompat nextSongTopBottom_Switch;
+    SwitchCompat stickyNotesOnOff_Switch;
+    SwitchCompat stickyNotesFloat_Switch;
+    SeekBar stickyNotesTime_SeekBar;
+    TextView stickyNotesTime_TextView;
+    TextView stickNotesTimeInfo_TextView;
+    SwitchCompat stickyNotesTopBottom_Switch;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.extra));
-        View V = inflater.inflate(R.layout.popup_extrainfo, container, false);
-
-        // Initialise the views
-        nextSong_seekBar = (SeekBar) V.findViewById(R.id.nextSong_seekBar);
-        stickyNotes_seekBar = (SeekBar) V.findViewById(R.id.stickyNotes_seekBar);
-        closebutton = (Button) V.findViewById(R.id.closebutton);
-
-        // Set the listeners
-        nextSong_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                switch (progress) {
-                    case 0:
-                        FullscreenActivity.showNextInSet = "off";
-                        break;
-                    case 1:
-                        FullscreenActivity.showNextInSet = "bottom";
-                        break;
-                    case 2:
-                        FullscreenActivity.showNextInSet = "top";
-                        break;
-                }
-                Preferences.savePreferences();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
-        stickyNotes_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                switch (progress) {
-                    case 0:
-                        FullscreenActivity.toggleAutoSticky = "N";
-                        break;
-                    case 1:
-                        FullscreenActivity.toggleAutoSticky = "Y";
-                        break;
-                    case 2:
-                        FullscreenActivity.toggleAutoSticky = "T";
-                        break;
-                    case 3:
-                        FullscreenActivity.toggleAutoSticky = "B";
-                        break;
-                }
-                Preferences.savePreferences();
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
-        });
-        closebutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-                mListener.refreshAll();
-            }
-        });
-
-        // Set the intial positions of the seekbars
-        switch (FullscreenActivity.showNextInSet) {
-            case "off":
-                nextSong_seekBar.setProgress(0);
-                break;
-            case "bottom":
-                nextSong_seekBar.setProgress(1);
-                break;
-            case "top":
-                nextSong_seekBar.setProgress(2);
-                break;
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         }
-
-        switch (FullscreenActivity.toggleAutoSticky) {
-            case "N":
-                stickyNotes_seekBar.setProgress(0);
-                break;
-            case "Y":
-                stickyNotes_seekBar.setProgress(1);
-                break;
-            case "T":
-                stickyNotes_seekBar.setProgress(2);
-                break;
-            case "B":
-                stickyNotes_seekBar.setProgress(3);
-                break;
-        }
-        return V;
     }
 
     @Override
-    public void onResume() {
-        Dialog dialog = getDialog();
-        if (dialog != null) {
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
         }
-        super.onResume();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
+        View V = inflater.inflate(R.layout.popup_extrainfo, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.extra));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                mListener.refreshAll();
+                dismiss();
+            }
+        });
+        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setVisibility(View.GONE);
+
+        // Initialise the views
+        nextSongOnOff_Switch = (SwitchCompat) V.findViewById(R.id.nextSongOnOff_Switch);
+        nextSongTopBottom_Switch = (SwitchCompat) V.findViewById(R.id.nextSongTopBottom_Switch);
+        stickyNotesOnOff_Switch = (SwitchCompat) V.findViewById(R.id.stickyNotesOnOff_Switch);
+        stickyNotesTopBottom_Switch = (SwitchCompat) V.findViewById(R.id.stickyNotesTopBottom_Switch);
+        stickyNotesFloat_Switch = (SwitchCompat) V.findViewById(R.id.stickyNotesFloat_Switch);
+        stickyNotesTime_SeekBar = (SeekBar) V.findViewById(R.id.stickyNotesTime_SeekBar);
+        stickyNotesTime_TextView = (TextView) V.findViewById(R.id.stickyNotesTime_TextView);
+        stickNotesTimeInfo_TextView = (TextView) V.findViewById(R.id.stickNotesTimeInfo_TextView);
+
+        // Set the default values
+        showNextButtons();
+        showStickyButtons();
+
+        // Set the listeners
+        nextSongOnOff_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    //nextSongTopBottom_Switch.setVisibility((View.VISIBLE));
+                    if (nextSongTopBottom_Switch.isChecked()) {
+                        FullscreenActivity.showNextInSet = "bottom";
+                    } else {
+                        FullscreenActivity.showNextInSet = "top";
+                    }
+                } else {
+                    //nextSongTopBottom_Switch.setVisibility((View.GONE));
+                    FullscreenActivity.showNextInSet = "off";
+                }
+                Preferences.savePreferences();
+                showNextButtons();
+            }
+        });
+        nextSongTopBottom_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    FullscreenActivity.showNextInSet = "bottom";
+                } else {
+                    FullscreenActivity.showNextInSet = "top";
+                }
+                Preferences.savePreferences();
+            }
+        });
+        stickyNotesOnOff_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    //stickyNotesTopBottom_Switch.setVisibility((View.VISIBLE));
+                    if (stickyNotesFloat_Switch.isChecked()) {
+                        FullscreenActivity.toggleAutoSticky = "F";
+                    } else if (stickyNotesTopBottom_Switch.isChecked()) {
+                        FullscreenActivity.toggleAutoSticky = "B";
+                    } else {
+                        FullscreenActivity.toggleAutoSticky = "T";
+                    }
+                } else {
+                    //stickyNotesTopBottom_Switch.setVisibility((View.GONE));
+                    FullscreenActivity.toggleAutoSticky = "N";
+                }
+                Preferences.savePreferences();
+                showStickyButtons();
+            }
+        });
+        stickyNotesFloat_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    FullscreenActivity.toggleAutoSticky = "F";
+                } else if (stickyNotesOnOff_Switch.isChecked()) {
+                    if (stickyNotesTopBottom_Switch.isChecked()) {
+                        FullscreenActivity.toggleAutoSticky = "B";
+                    } else {
+                        FullscreenActivity.toggleAutoSticky = "T";
+                    }
+                } else {
+                    FullscreenActivity.toggleAutoSticky = "N";
+                }
+                Preferences.savePreferences();
+                showStickyButtons();
+            }
+        });
+
+        stickyNotesTopBottom_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    FullscreenActivity.toggleAutoSticky = "B";
+                } else {
+                    FullscreenActivity.toggleAutoSticky = "T";
+                }
+                Preferences.savePreferences();
+            }
+        });
+        stickyNotesTime_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                FullscreenActivity.stickyNotesShowSecs = i;
+                String s;
+                if (i==0) {
+                    s = getActivity().getResources().getString(R.string.on);
+                } else {
+                    s = i + " s";
+                }
+                stickyNotesTime_TextView.setText(s);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Preferences.savePreferences();
+            }
+        });
+
+        return V;
+    }
+
+    public void showNextButtons() {
+        switch (FullscreenActivity.showNextInSet) {
+            case "off":
+                nextSongOnOff_Switch.setChecked(false);
+                nextSongTopBottom_Switch.setVisibility(View.GONE);
+                break;
+
+            case "bottom":
+            default:
+                nextSongOnOff_Switch.setChecked(true);
+                nextSongTopBottom_Switch.setChecked(true);
+                nextSongTopBottom_Switch.setVisibility(View.VISIBLE);
+                break;
+
+            case "top":
+                nextSongOnOff_Switch.setChecked(true);
+                nextSongTopBottom_Switch.setChecked(false);
+                nextSongTopBottom_Switch.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
+    public void showStickyButtons() {
+
+        switch (FullscreenActivity.toggleAutoSticky) {
+
+            case "N":
+                stickyNotesOnOff_Switch.setChecked(false);
+                stickyNotesFloat_Switch.setVisibility(View.GONE);
+                stickyNotesTime_SeekBar.setVisibility(View.GONE);
+                stickyNotesTime_TextView.setVisibility(View.GONE);
+                stickNotesTimeInfo_TextView.setVisibility(View.GONE);
+                stickyNotesTopBottom_Switch.setVisibility(View.GONE);
+                break;
+
+            case "B":
+            default:
+                stickyNotesOnOff_Switch.setChecked(true);
+                stickyNotesTopBottom_Switch.setChecked(true);
+                stickyNotesFloat_Switch.setVisibility(View.VISIBLE);
+                stickyNotesFloat_Switch.setChecked(false);
+                stickyNotesTime_SeekBar.setVisibility(View.GONE);
+                stickyNotesTime_TextView.setVisibility(View.GONE);
+                stickNotesTimeInfo_TextView.setVisibility(View.GONE);
+                stickyNotesTopBottom_Switch.setVisibility(View.VISIBLE);
+                break;
+
+            case "T":
+                stickyNotesOnOff_Switch.setChecked(true);
+                stickyNotesTopBottom_Switch.setChecked(false);
+                stickyNotesFloat_Switch.setVisibility(View.VISIBLE);
+                stickyNotesFloat_Switch.setChecked(false);
+                stickyNotesTime_SeekBar.setVisibility(View.GONE);
+                stickyNotesTime_TextView.setVisibility(View.GONE);
+                stickNotesTimeInfo_TextView.setVisibility(View.GONE);
+                stickyNotesTopBottom_Switch.setVisibility(View.VISIBLE);
+                break;
+
+            case "F":
+                stickyNotesOnOff_Switch.setChecked(true);
+                stickyNotesFloat_Switch.setChecked(true);
+                stickyNotesFloat_Switch.setVisibility(View.VISIBLE);
+                stickyNotesTime_SeekBar.setVisibility(View.VISIBLE);
+                stickyNotesTime_SeekBar.setProgress(FullscreenActivity.stickyNotesShowSecs);
+                String s = FullscreenActivity.stickyNotesShowSecs + " s";
+                stickyNotesTime_TextView.setText(s);
+                stickyNotesTime_TextView.setVisibility(View.VISIBLE);
+                stickNotesTimeInfo_TextView.setVisibility(View.VISIBLE);
+                stickyNotesTopBottom_Switch.setVisibility(View.GONE);
+                break;
+        }
+
+    }
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
+        mListener.refreshAll();
     }
 
 }

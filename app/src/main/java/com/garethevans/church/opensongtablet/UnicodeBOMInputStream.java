@@ -1,35 +1,38 @@
 package com.garethevans.church.opensongtablet;
 
+import android.support.annotation.NonNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
 
-public class UnicodeBOMInputStream extends InputStream {
+class UnicodeBOMInputStream extends InputStream {
 
+    @SuppressWarnings("WeakerAccess")
     public static final class BOM {
 
-        public static final BOM NONE = new BOM(new byte[]{}, "UTF-8");
+        static final BOM NONE = new BOM(new byte[]{}, "UTF-8");
 
-        public static final BOM UTF_8 = new BOM(new byte[]{(byte) 0xEF,
+        static final BOM UTF_8 = new BOM(new byte[]{(byte) 0xEF,
                 (byte) 0xBB,
                 (byte) 0xBF},
                 "UTF-8");
 
-        public static final BOM UTF_16_LE = new BOM(new byte[]{(byte) 0xFF,
+        static final BOM UTF_16_LE = new BOM(new byte[]{(byte) 0xFF,
                 (byte) 0xFE},
                 "UTF-16LE");
 
-        public static final BOM UTF_16_BE = new BOM(new byte[]{(byte) 0xFE,
+        static final BOM UTF_16_BE = new BOM(new byte[]{(byte) 0xFE,
                 (byte) 0xFF},
                 "UTF-16BE");
 
-        public static final BOM UTF_32_LE = new BOM(new byte[]{(byte) 0xFF,
+        static final BOM UTF_32_LE = new BOM(new byte[]{(byte) 0xFF,
                 (byte) 0xFE,
                 (byte) 0x00,
                 (byte) 0x00},
                 "UTF-32LE");
 
-        public static final BOM UTF_32_BE = new BOM(new byte[]{(byte) 0x00,
+        static final BOM UTF_32_BE = new BOM(new byte[]{(byte) 0x00,
                 (byte) 0x00,
                 (byte) 0xFE,
                 (byte) 0xFF},
@@ -70,7 +73,7 @@ public class UnicodeBOMInputStream extends InputStream {
 
     } // BOM
 
-    public UnicodeBOMInputStream(final InputStream inputStream) throws NullPointerException,
+    UnicodeBOMInputStream(final InputStream inputStream) throws NullPointerException,
             IOException {
         if (inputStream == null)
             throw new NullPointerException("invalid input stream: null is not allowed");
@@ -130,7 +133,7 @@ public class UnicodeBOMInputStream extends InputStream {
      *
      * @return a <code>BOM</code> value.
      */
-    public final BOM getBOM() {
+    final BOM getBOM() {
         // BOM type is immutable.
         return bom;
     }
@@ -161,7 +164,7 @@ public class UnicodeBOMInputStream extends InputStream {
     /**
      * {@inheritDoc}
      */
-    public int read(final byte b[]) throws IOException,
+    public int read(@NonNull final byte b[]) throws IOException,
             NullPointerException {
         return in.read(b, 0, b.length);
     }
@@ -169,7 +172,7 @@ public class UnicodeBOMInputStream extends InputStream {
     /**
      * {@inheritDoc}
      */
-    public int read(final byte b[],
+    public int read(@NonNull final byte b[],
                     final int off,
                     final int len) throws IOException,
             NullPointerException {

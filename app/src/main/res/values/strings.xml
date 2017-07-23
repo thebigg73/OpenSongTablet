@@ -1,6 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="actionbar">Menu bar info</string>
+    <string name="battery">Battery</string>
+    <string name="text">Text</string>
+    <string name="timeformat">24hr</string>
+
+    <string name="email" translatable="false">opensongapp@googlegroups.com</string>
+    <string name="paypal" translatable="false">paypal.me/opensongapp</string>
+    <string name="scrollbuttons">Scroll settings</string>
+    <string name="scrollbuttons_distance">Scroll amount</string>
+    <string name="speed">Speed</string>
+    <string name="swipe">Swipe settings</string>
+    <string name="swipe_allowance">Vertical movement allowed</string>
+    <string name="swipe_distance">Swipe distance</string>
+    <string name="zerotime" translatable="false">0:00</string>
+
+    <string name="export_chordpro">ChordPro song (.cho)</string>
+    <string name="export_desktop">Desktop file (no file extension)</string>
+    <string name="export_onsong">OnSong song (.onsong)</string>
+    <string name="export_ost">OpenSongApp song (.ost)</string>
+    <string name="export_pdf">Screenshot PDF (.pdf)</string>
+    <string name="export_png">Screenshot image (.png)</string>
+    <string name="export_set">OpenSongApp set (.osts)</string>
+    <string name="export_text">Text (.txt)</string>
+    <string name="floating_window">Floating window</string>
+    <string name="hdmi" translatable="false">HDMI</string>
+    <string name="timer_size">Timer size</string>
+
+    <string name="app_id" translatable="false">4E2B0891</string>
+    <string name="autoscale">Autoscale</string>
+    <string name="camera">Camera</string>
+    <string name="cast_namespace" translatable="false">urn:x-cast:com.garethevans.church.opensongtablet</string>
+    <string name="category">Category</string>
+    <string name="choosefolders">Choose folders</string>
+    <string name="chordline_scale">Scale chords</string>
+    <string name="connected_display">Connected display</string>
+    <string name="current_category">Current category</string>
+    <string name="device_list">Available devices</string>
+    <string name="dim">Background darken</string>
+    <string name="exportsongdirectory">Export list of songs</string>
+    <string name="fab_mini">Mini page buttons</string>
+    <string name="findnewsongs">Find new songs</string>
+    <string name="full">Full</string>
+    <string name="logo">Logo</string>
+    <string name="managesets">Rename sets</string>
+    <string name="menu_settings">Menu settings</string>
+    <string name="menu_width">Menu width (percentage of screen width)</string>
+    <string name="my_band">Import Band sample songs</string>
+    <string name="my_church">Import Church sample songs</string>
+    <string name="navigate">Quick navigate</string>
+    <string name="new_category">New category</string>
+    <string name="nowifidirect">Sorry, this device does not support WiFi direct</string>
+    <string name="options_connections">Connect devices</string>
+    <string name="options_connections_broadcast">Broadcasting device:</string>
+    <string name="options_connections_connected">Connected to</string>
+    <string name="options_connections_host">Found host:</string>
+    <string name="options_connections_log">Connection log (click to clear).  If you have any issues, reset your WiFi and restart the app.</string>
+    <string name="options_connections_disconnect">Disconnect from</string>
+    <string name="options_connections_discover_start">Discover services</string>
+    <string name="options_connections_discover_stop">Stop discovery</string>
+    <string name="options_connections_failure">Connection failure</string>
+    <string name="options_connections_receive_host">Receive host songs</string>
+    <string name="options_connections_searching">Searching…</string>
+    <string name="options_connections_service_start">Start service</string>
+    <string name="options_connections_service_stop">Stop service</string>
+    <string name="options_connections_success">Connection success</string>
+    <string name="options_display_popups">Customise popup windows</string>
+    <string name="options_modes">Choose app mode</string>
+    <string name="pagebutton_custom_group">Group custom buttons</string>
+    <string name="pagebutton_extrainfo_group">Group extra information buttons</string>
+    <string name="pagebutton_group">Group all page buttons</string>
+    <string name="pagebutton_visibility">Show/hide page buttons</string>
+    <string name="perform">Perform</string>
+    <string name="performancemode">Performance mode</string>
+    <string name="present">Present</string>
+    <string name="presoFont">Presentation font</string>
+    <string name="presoInfoFont">Presentation information font</string>
+    <string name="presoFontShadow">Presentation font shadow</string>
+    <string name="quicklaunch_button1">Button 1</string>
+    <string name="quicklaunch_button2">Button 2</string>
+    <string name="quicklaunch_button3">Button 3</string>
+    <string name="quicklaunch_button4">Button 4</string>
+    <string name="quicklaunch_currentaction">Current action</string>
+    <string name="quicklaunch_title">Customise quick launch buttons</string>
+    <string name="scale_style">Scale style</string>
+    <string name="service_id" translatable="false">com.garethevans.church.opensongtablet</string>
+    <string name="setquickcheck">Show set checkboxes in song menu</string>
+    <string name="size_mini">Mini</string>
+    <string name="size_normal">Normal</string>
+    <string name="songsinfolder">Song folder</string>
+    <string name="stage">Stage</string>
+    <string name="storage_notwritable">Unable to use</string>
+    <string name="subscription">(Subscription required)</string>
+    <string name="transparency">Transparency</string>
+    <string name="width">Width</string>
+    <string name="worshipready" translatable="false">WorshipReady.com</string>
+
     <string name="longPressUp">Long press up pedal</string>
     <string name="longPressDown">Long press down pedal</string>
     <string name="longPressNext">Long press next pedal</string>
@@ -9,7 +105,7 @@
     <string name="songfolder">Select song folder</string>
     <string name="stagemode">Stage Mode</string>
     <string name="switchtostagemode">Switch to Stage Mode</string>
-    <string name="toobig">Please switch autoscale on for pdf export</string>
+    <string name="toobig">Please switch autoscale on for png/pdf export</string>
     <string name="showcapo">Show capo chords</string>
     <string name="showchords">Show chords</string>
     <string name="showlyrics">Show lyrics</string>
@@ -364,8 +460,8 @@
     <string name="checkchordformat">Are you sure that this song is in your preferred chord format?</string>
 	<string name="oldchordformat">Detected current chord format</string>
 	
-    <string name="firstsong">Displaying first song</string>
-    <string name="lastsong">Displaying last item in set</string>
+    <string name="firstsong">Displaying first item</string>
+    <string name="lastsong">Displaying last item</string>
         
     <string name="set_edit">EDIT</string>
     <string name="set_edit_title">Edit your current set</string>
@@ -596,7 +692,7 @@
 	<string name="page_background">Page background</string>
 	<string name="lyrics_color">Lyrics font</string>
 	<string name="chord_color">Chords font</string>
-	<string name="capo_color">Capo font</string>
+    <string name="capo_color">Capo font</string>
 	<string name="verse_background">Verse background</string>
 	<string name="chorus_background">Chorus background</string>
 	<string name="prechorus_background">Prechorus background</string>

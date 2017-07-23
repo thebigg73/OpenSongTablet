@@ -3,372 +3,338 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
 
-    <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:orientation="vertical"
+    <FrameLayout
+        android:id="@+id/myTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
 
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="12dp"
-            android:id="@+id/customRadioGroup"
-            android:background="@drawable/presenter_box_red">
-
-            <RadioButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/simple_note"
-                android:id="@+id/noteRadioButton"
-                android:textSize="18sp" />
-
-            <RadioButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/custom_slide"
-                android:id="@+id/slideRadioButton"
-                android:textSize="18sp" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/image_slide"
-                android:id="@+id/imageRadioButton"
-                android:textSize="18sp" />
-
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/scripture"
-                android:id="@+id/scriptureRadioButton"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/warning"
-                android:id="@+id/warningTextView" />
-
-        </RadioGroup>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/myTitle">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/presenter_box_blue"
-            android:layout_margin="8dp"
-            android:id="@+id/reusable_LinearLayout">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_reusable"
-                android:id="@+id/saveReusableCheckBox"
-                android:textSize="18sp"
-                android:layout_gravity="center_horizontal" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/load_reusable"
-                android:id="@+id/loadReusableButton"
-                android:layout_gravity="center"
-                android:background="@drawable/grey_button"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:textColor="#fff" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/presenter_box_blue"
-            android:layout_margin="8dp"
-            android:id="@+id/searchBible_LinearLayout">
-
-            <TableLayout
+            <RadioGroup
+                android:id="@+id/customRadioGroup"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_margin="12dp"
+                android:background="@drawable/presenter_box_red">
 
-                <TableRow
+                <RadioButton
+                    android:id="@+id/noteRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/simple_note"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/slideRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/custom_slide"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/imageRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/image_slide"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/scriptureRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/scripture"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/warningTextView"
+                    style="@style/MyInfoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/warning" />
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:id="@+id/reusable_LinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:background="@drawable/presenter_box_blue"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/saveReusableCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/add_reusable"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/loadReusableButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/grey_button"
+                    android:text="@string/load_reusable"
+                    android:textColor="#fff" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/searchBible_LinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:background="@drawable/presenter_box_blue"
+                android:orientation="vertical">
+
+                <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/bible_search"
-                        android:id="@+id/textView48"
-                        android:layout_margin="8dp" />
-
-                    <EditText
+                    <TableRow
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/bibleSearch"
-                        android:layout_margin="8dp"
-                        android:layout_weight="1"
-                        android:background="#fff"
-                        android:inputType="text"
-                        android:textColorHint="#555"
-                        android:textColor="#000"
-                        android:hint="@string/bible_search" />
-                </TableRow>
+                        android:layout_height="match_parent">
 
-                <TableRow
+                        <TextView
+                            android:id="@+id/textView48"
+                            style="@style/MyHeadingText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:text="@string/bible_search" />
+
+                        <EditText
+                            android:id="@+id/bibleSearch"
+                            style="@style/MyEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_weight="1"
+                            android:hint="@string/bible_search"
+                            android:inputType="text" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/textView49"
+                            style="@style/MyHeadingText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:text="@string/bible_translation" />
+
+                        <EditText
+                            android:id="@+id/bibleVersion"
+                            style="@style/MyEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_weight="1"
+                            android:hint="@string/bible_translation"
+                            android:inputType="text" />
+                    </TableRow>
+                </TableLayout>
+
+                <Button
+                    android:id="@+id/searchBibleGateway_Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/grey_button"
+                    android:text="@string/search_biblegateway"
+                    android:textColor="#fff" />
+
+                <ProgressBar
+                    android:id="@+id/searchBible_progressBar"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:indeterminate="true" />
+
+                <WebView
+                    android:id="@+id/bibleGateway_WebView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:minHeight="100dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/bible_translation"
-                        android:id="@+id/textView49"
-                        android:layout_margin="8dp" />
+            </LinearLayout>
 
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/bibleVersion"
-                        android:layout_margin="8dp"
-                        android:layout_weight="1"
-                        android:background="#fff"
-                        android:inputType="text"
-                        android:textColorHint="#555"
-                        android:textColor="#000"
-                        android:hint="@string/bible_translation" />
-                </TableRow>
-            </TableLayout>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/search_biblegateway"
-                android:id="@+id/searchBibleGateway_Button"
-                android:layout_gravity="center"
-                android:background="@drawable/grey_button"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:textColor="#fff" />
-
-            <ProgressBar
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/searchBible_progressBar"
-                android:layout_gravity="center_horizontal"
-                android:indeterminate="true" />
-
-            <WebView
+            <RelativeLayout
+                android:id="@+id/slideDetails_RelativeLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/bibleGateway_WebView"
+                android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:minHeight="100dp" />
+                android:background="@drawable/presenter_box_black">
+
+                <TextView
+                    android:id="@+id/slideTitleTextView"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/title" />
+
+                <EditText
+                    android:id="@+id/slideTitleEditText"
+                    style="@style/MyEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/slideTitleTextView"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="0dp"
+                    android:hint="@string/title"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+                <TextView
+                    android:id="@+id/timeTextView"
+                    style="@style/MyHeadingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/slideTitleEditText"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/time_slide_pages" />
+
+                <EditText
+                    android:id="@+id/timeEditText"
+                    style="@style/MyEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/timeTextView"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="0dp"
+                    android:hint="@string/time_slide_pages_help"
+                    android:inputType="number"
+                    android:maxLines="1" />
+
+                <CheckBox
+                    android:id="@+id/loopCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/timeEditText"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/loop_slide_pages"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/slideContentTextView"
+                    style="@style/MyHeadingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/loopCheckBox"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/content" />
+
+                <Button
+                    android:id="@+id/addPageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentRight="false"
+                    android:layout_below="@+id/slideContentTextView"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/yellow_button"
+                    android:text="@string/slide_add_page"
+                    android:textColor="#fff" />
+
+                <TableLayout
+                    android:id="@+id/slideImageTable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentRight="false"
+                    android:layout_below="@+id/addPageButton"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="16sp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp" />
+
+                <EditText
+                    android:id="@+id/slideContentEditText"
+                    style="@style/MyEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/addPageButton"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="top|start"
+                    android:hint="@string/content"
+                    android:inputType="textMultiLine"
+                    android:minLines="8" />
+
+            </RelativeLayout>
+
 
         </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/presenter_box_black"
-            android:layout_margin="8dp"
-            android:id="@+id/slideDetails_RelativeLayout">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/title"
-                android:id="@+id/slideTitleTextView"
-                android:textColor="#ff0"
-                android:textSize="18sp"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="4dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/slideTitleEditText"
-                android:hint="@string/title"
-                android:layout_marginBottom="16dp"
-                android:textColor="#000"
-                android:textCursorDrawable="@null"
-                android:singleLine="true"
-                android:inputType="text"
-                android:background="#fff"
-                android:textColorHint="#888"
-                android:textSize="14sp"
-                android:layout_below="@+id/slideTitleTextView"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="0dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/timeTextView"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:textColor="#ff0"
-                android:text="@string/time_slide_pages"
-                android:textSize="18sp"
-                android:layout_below="@+id/slideTitleEditText" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/timeEditText"
-                android:layout_below="@+id/timeTextView"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:inputType="number"
-                android:singleLine="true"
-                android:textSize="18sp"
-                android:textCursorDrawable="@null"
-                android:hint="@string/time_slide_pages_help"
-                android:textColor="#000"
-                android:textColorHint="#888"
-                android:background="#fff" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/loop_slide_pages"
-                android:id="@+id/loopCheckBox"
-                android:textSize="18sp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_below="@+id/timeEditText" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/content"
-                android:id="@+id/slideContentTextView"
-                android:textColor="#ff0"
-                android:textSize="18sp"
-                android:layout_below="@+id/loopCheckBox"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="4dp" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/slide_add_page"
-                android:id="@+id/addPageButton"
-                android:background="@drawable/yellow_button"
-                android:layout_gravity="center_horizontal"
-                android:layout_below="@+id/slideContentTextView"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_alignParentEnd="false"
-                android:layout_alignParentRight="false"
-                android:layout_centerHorizontal="true"
-                android:textColor="#fff" />
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/slideImageTable"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="16sp"
-                android:layout_below="@+id/addPageButton"
-                android:layout_alignParentEnd="false"
-                android:layout_alignParentRight="false"
-                android:layout_centerHorizontal="true" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/slideContentEditText"
-                android:hint="@string/content"
-                android:layout_marginBottom="16dp"
-                android:textColor="#000"
-                android:textCursorDrawable="@null"
-                android:minLines="8"
-                android:inputType="textMultiLine"
-                android:gravity="top|start"
-                android:background="#fff"
-                android:textColorHint="#888"
-                android:textSize="14sp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_below="@+id/addPageButton" />
-
-        </RelativeLayout>
-
-        <LinearLayout
-            style="?android:attr/buttonBarButtonStyle"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end">
-
-            <Button
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cancel"
-                android:id="@+id/customSlideCancel"
-                android:background="@drawable/blue_button"
-                android:layout_margin="8dp"
-                android:textColor="#fff" />
-
-            <Button
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_custom_slide"
-                android:id="@+id/customSlideAdd"
-                android:background="@drawable/green_button"
-                android:layout_margin="8dp"
-                android:textColor="#fff" />
-        </LinearLayout>
-
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
 
     <Button
+        android:id="@+id/grabVerse_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/extract"
-        android:id="@+id/grabVerse_Button"
-        android:background="@drawable/red_button"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="false"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="24dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="8dp"
-        android:layout_centerVertical="true"
+        android:background="@drawable/red_button"
+        android:text="@string/extract"
         android:textColor="#fff"
         tools:ignore="RelativeOverlap" />
 

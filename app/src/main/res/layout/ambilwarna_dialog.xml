@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mask="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ambilwarna_dialogView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center" >
+    android:layout_gravity="center"
+    android:background="@drawable/popup_bg">
 
     <RelativeLayout
         android:id="@+id/ambilwarna_viewContainer"
@@ -121,8 +124,25 @@
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:background="#aaf" />
+
             </FrameLayout>
+
         </LinearLayout>
+
+        <br.com.sapereaude.maskedEditText.MaskedEditText
+            android:id="@+id/colorhex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ambilwarna_state"
+            android:layout_centerHorizontal="true"
+            android:inputType="text"
+            android:typeface="monospace"
+            mask:allowed_chars="ABCDEF0123456789abcdef"
+            mask:mask="######"
+            app:keep_hint="true"
+            android:textColorHint="#aaa"
+            style="@style/MyEditText" />
+
     </RelativeLayout>
 
 </FrameLayout>

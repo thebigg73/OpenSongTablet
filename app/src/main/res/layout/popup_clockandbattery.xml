@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_bg"
+    android:padding="8dp">
+
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/myTitle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/section_box">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title"
+                    style="@style/MyHeadingText"/>
+
+                <TextView
+                    android:id="@+id/titleTextSizeLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_song_title"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="0dp"
+                    style="@style/MyWhiteHeadingText"/>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/titleTextSize"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:max="8"/>
+
+                <TextView
+                    android:id="@+id/authorTextSizeLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/edit_song_author"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="0dp"
+                    style="@style/MyWhiteHeadingText"/>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/authorTextSize"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:max="8"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/section_box">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/battery"
+                    style="@style/MyHeadingText"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/batteryDialOnOff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/image"
+                    style="@style/MyWhiteHeadingText"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/batteryTextOnOff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/text"
+                    style="@style/MyWhiteHeadingText"/>
+
+                <TextView
+                    android:id="@+id/batteryTextSizeLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="0dp"
+                    android:text="@string/size"
+                    style="@style/MyWhiteHeadingText"/>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/batteryTextSize"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:max="8"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/section_box">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time"
+                    style="@style/MyHeadingText"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/clock24hrOnOff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/timeformat"
+                    style="@style/MyWhiteHeadingText"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/clockTextOnOff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/text"
+                    style="@style/MyWhiteHeadingText"/>
+
+                <TextView
+                    android:id="@+id/clockTextSizeLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="0dp"
+                    android:text="@string/size"
+                    style="@style/MyWhiteHeadingText"/>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/clockTextSize"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:max="8"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

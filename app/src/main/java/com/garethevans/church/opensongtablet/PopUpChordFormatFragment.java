@@ -1,14 +1,17 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 public class PopUpChordFormatFragment extends DialogFragment {
 
@@ -19,8 +22,8 @@ public class PopUpChordFormatFragment extends DialogFragment {
     }
 
     //Variables
-    static RadioGroup radioGroup;
-    static RadioGroup radioGroup2;
+    RadioGroup radioGroup;
+    RadioGroup radioGroup2;
     static String numeral;
     static String numeral2;
 
@@ -35,12 +38,44 @@ public class PopUpChordFormatFragment extends DialogFragment {
     SwitchCompat switchEbm;
     SwitchCompat switchGbm;
 
-    Button exitChordFormat;
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.choosechordformat));
-        View V = inflater.inflate(R.layout.choose_chordformat, container, false);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
+
+        View V = inflater.inflate(R.layout.popup_chordformat, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.choosechordformat));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                exitChordFormat();
+            }
+        });
+        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setVisibility(View.GONE);
 
         // Load the user preferences
         Preferences.loadPreferences();
@@ -147,15 +182,6 @@ public class PopUpChordFormatFragment extends DialogFragment {
             radioButton7.setChecked(true);
         }
 
-        exitChordFormat = (Button) V.findViewById(R.id.exitChordFormat);
-        exitChordFormat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                exitChordFormat();
-            }
-        });
-
-
         return V;
     }
 
@@ -165,17 +191,6 @@ public class PopUpChordFormatFragment extends DialogFragment {
         } else {
             myswitch.setChecked(true);
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // safety check
-        if (getDialog() == null) {
-            return;
-        }
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
     public void exitChordFormat() {
@@ -234,6 +249,11 @@ public class PopUpChordFormatFragment extends DialogFragment {
         FullscreenActivity.alwaysPreferredChordFormat = numeral2;
         Preferences.savePreferences();
         dismiss();
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
     }
 
 }

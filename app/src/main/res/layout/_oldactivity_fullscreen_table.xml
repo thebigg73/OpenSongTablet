@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/entire_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:id="@+id/main_page"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:background="#000"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_horizontal">
+
+        <ProgressBar
+            android:id="@+id/songLoadingProgressBar"
+            style="?android:progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/songTitleHolder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/songLoadingProgressBar"
+            android:gravity="center_horizontal"
+            android:textSize="28sp"
+            android:visibility="visible" />
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/scrollpage_pdf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView_pdf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout_pdfview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/pdfView"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/white"
+                        android:contentDescription="@string/app_name"
+                        android:scaleType="fitCenter" />
+                </LinearLayout>
+            </HorizontalScrollView>
+        </ScrollView>
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/scrollpage_onecol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <LinearLayout
+                android:id="@+id/linearLayout_onecolview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalScrollView1_onecolview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout2_onecolview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal"
+                        android:gravity="left|center_horizontal">
+
+                        <!-- The main content view -->
+
+                        <TableLayout
+                            android:id="@+id/LyricDisplay_onecoldisplay"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/lyrics_box"
+                            android:padding="4dp"
+                            tools:context=".FullscreenActivity" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+        </ScrollView>
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/scrollpage_twocol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <LinearLayout
+                android:id="@+id/linearLayout_twocolview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalScrollView1_twocolview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout2_twocolview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:baselineAligned="false"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <!-- The main content view -->
+
+                        <TableLayout
+                            android:id="@+id/LyricDisplay_twocoldisplay"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/lyrics_box"
+                            android:padding="4dp"
+                            tools:context=".FullscreenActivity" />
+
+                        <TableLayout
+                            android:id="@+id/LyricDisplayCol2_twocoldisplay"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/lyrics_box"
+                            android:padding="4dp"
+                            tools:context=".FullscreenActivity" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+        </ScrollView>
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/scrollpage_threecol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <LinearLayout
+                android:id="@+id/linearLayout_threecolview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontalScrollView1_threecolview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout2_threecolview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:baselineAligned="false"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <!-- The main content view -->
+
+                        <TableLayout
+                            android:id="@+id/LyricDisplay_threecoldisplay"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/lyrics_box"
+                            android:padding="4dp"
+                            tools:context=".FullscreenActivity"/>
+
+                        <TableLayout
+                            android:id="@+id/LyricDisplayCol2_threecoldisplay"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/lyrics_box"
+                            android:padding="4dp"
+                            tools:context=".FullscreenActivity"/>
+
+                        <TableLayout
+                            android:id="@+id/LyricDisplayCol3_threecoldisplay"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/lyrics_box"
+                            android:padding="4dp"
+                            tools:context=".FullscreenActivity"/>
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+        </ScrollView>
+
+        <include layout="@layout/_oldpageicons_bottom"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true" />
+
+        <include layout="@layout/_oldpageicons_top"
+            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_height="wrap_content" />
+
+        <include layout="@layout/playback_progress"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true" />
+
+        <include layout="@layout/_oldpageicons_right"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/playbackProgress"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/setButton_normal"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/options_set"
+            android:src="@drawable/ic_format_list_numbers_white_36dp"
+            android:alpha="0.4"
+            android:onClick="popUpSetList"/>
+
+        <include layout="@layout/_oldpopup_stickynote" />
+
+        <include layout="@layout/_oldpopup_pad" />
+
+        <include layout="@layout/_oldpopup_autoscroll" />
+
+        <include layout="@layout/_oldpopup_metronome" />
+
+        <include layout="@layout/_oldpopup_chords" />
+
+        <ProgressBar
+            android:id="@+id/mainProgressBar"
+            style="?android:progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/songmenu"
+        android:orientation="vertical"
+        android:layout_width="220dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start|left"
+        android:background="@drawable/drawer_bg"
+        android:padding="4dp">
+        <LinearLayout
+            android:id="@+id/changefolder_LinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_gravity="center_vertical"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_folder_upload_white_36dp"
+                android:contentDescription="@string/choosefolder">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/menuFolder_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textColor="#ffff00"
+                android:textSize="16sp"
+                android:layout_gravity="center_vertical">
+            </TextView>
+        </LinearLayout>
+        <ListView
+            android:id="@+id/song_list_view"
+            android:layout_width="match_parent"
+            android:choiceMode="singleChoice"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:divider="#aaa"
+            android:dividerHeight="1dp"
+            android:fastScrollEnabled="true"/>
+
+    </LinearLayout>
+
+ <!--   <ExpandableListView
+        android:id="@+id/song_list_ex"
+        android:layout_width="220dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:background="@drawable/drawer_bg"
+        android:choiceMode="singleChoice"
+        android:divider="#aaa"
+        android:dividerHeight="1dp"
+        android:padding="4dp"
+        android:fastScrollEnabled="false"
+        android:fastScrollAlwaysVisible="false"
+        android:headerDividersEnabled="false" />-->
+
+    <ExpandableListView
+        android:id="@+id/option_list_ex"
+        android:layout_width="220dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:background="@drawable/drawer_bg"
+        android:choiceMode="singleChoice"
+        android:divider="#aaa"
+        android:dividerHeight="1dp"
+        android:padding="4dp"
+        android:fastScrollEnabled="false"
+        android:fastScrollAlwaysVisible="false" />
+
+</android.support.v4.widget.DrawerLayout>

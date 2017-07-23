@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/popup_bg">
+
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
 
     <android.support.v7.widget.SwitchCompat
         android:layout_width="match_parent"
@@ -10,9 +20,10 @@
         android:id="@+id/externalSwitch"
         android:checked="false"
         android:padding="8dp"
-        android:textColor="#ff0"
-        android:textSize="16sp"
-        android:layout_margin="8dp" />
+        android:theme="@style/MySwitch"
+        style="@style/MyHeadingText"
+        android:layout_margin="8dp"
+        android:layout_below="@+id/myTitle"/>
 
     <ListView
         android:layout_width="match_parent"
@@ -37,25 +48,44 @@
             android:layout_height="wrap_content"
             android:text="@string/media_selected"
             android:id="@+id/textView28"
-            android:textSize="14sp"
-            android:textColor="#ff0"
+            style="@style/MyHeadingText"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="8dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            style="@style/MyWhiteHeadingText"
             android:id="@+id/mediaSelected" />
     </LinearLayout>
 
-    <ImageButton
+    <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:fabSize="mini"
+        app:backgroundTint="@color/purple"
         android:id="@+id/startPlay"
-        android:src="@drawable/ic_action_play"
-        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_play_white_36dp"
+        android:layout_above="@+id/scrubbar_SeekBar"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/media_play" />
+
+    <SeekBar
+        android:id="@+id/scrubbar_SeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/scrubbar_TextView"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/apptheme_scrubber_primary_holo"
+        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+    <TextView
+        android:id="@+id/scrubbar_TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        style="@style/MyInfoText"/>
 
 </RelativeLayout>

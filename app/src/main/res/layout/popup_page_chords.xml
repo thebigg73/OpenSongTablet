@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_bg"
+    android:padding="8dp">
+
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
+
+    <ScrollView
+        android:id="@+id/popupchords"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle"
+        android:fadeScrollbars="false"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:minWidth="250dp"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/instrument" />
+
+            <Spinner
+                android:id="@+id/popupchord_instrument"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TableLayout
+                android:id="@+id/chordimageshere"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:padding="16dp" />
+
+            <Button
+                android:id="@+id/customchordedit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:background="@drawable/grey_button"
+                android:text="@string/customchords"
+                android:textColor="#fff" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

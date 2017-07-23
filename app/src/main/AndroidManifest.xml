@@ -1,29 +1,69 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
-    android:versionCode="105"
-    android:versionName="3.9.4"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:versionCode="125"
+    android:versionName="4.0.5"
     android:installLocation="auto">
 
-    <uses-sdk android:minSdkVersion="12" android:targetSdkVersion="23" />
+    <!--Overrides are for Sdk=12/13 but library specifies Sdk=14+-->
+    <uses-sdk
+        android:minSdkVersion="12" android:targetSdkVersion="25"
+        tools:overrideLibrary="
+        com.google.android.gms,
+        com.google.android.gms.nearby,
+        com.google.android.gms.cast.framework,
+        com.google.android.gms.cast,
+        com.google.android.gms.base,
+        com.google.android.gms.tasks,
+        com.peak.salut"/>
 
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
-
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.nfc" android:required="false" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.NFC" />
 
     <application
+        android:fullBackupContent="true"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_round_launcher"
         android:label="@string/app_name"
-        android:theme="@style/MyTheme">
-        //android:theme="@style/AppTheme"
+        android:theme="@style/MyTheme"
+        android:name="android.support.multidex.MultiDexApplication"
+        android:vmSafeMode="true"
+        android:launchMode="singleTask">
 
+        <!--android:name="android.support.multidex.MultiDexApplication"-->
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.garethevans.church.opensongtablet.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
+
+        <!--<receiver android:name=".BatteryMonitor">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+            </intent-filter>
+        </receiver>-->
+        <service android:name=".PresentationService" android:exported="false" />
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".SearchSongs" />
@@ -32,18 +72,20 @@
             android:name="com.garethevans.church.opensongtablet.SoftKeyboardForce">
         </service>
 
-        <receiver android:name="com.garethevans.church.opensongtablet.MyReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED">
-                </action>
-            </intent-filter>
-        </receiver>
+        <!-- Required for Nearby Connections API -->
+        <meta-data android:name="com.google.android.gms.nearby.connection.SERVICE_ID"
+            android:value="@string/service_id" />
 
+        <meta-data
+                android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+                android:value="com.garethevans.church.opensongtablet.CastOptionsProvider" />
         <activity
             android:name="com.garethevans.church.opensongtablet.SettingsActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:label="@string/app_name" >
-            <intent-filter>
+            <intent-filter
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -54,7 +96,8 @@
             android:label="@string/app_name">
 
             <intent-filter android:label="@string/app_name"
-                android:icon="@drawable/ic_launcher">
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="file" />
@@ -62,7 +105,8 @@
                 <data android:mimeType="application/xml" />
             </intent-filter>
             <intent-filter android:label="@string/app_name"
-                android:icon="@drawable/ic_launcher">
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="file" />
@@ -70,14 +114,26 @@
                 <data android:mimeType="application/txt" />
             </intent-filter>
             <intent-filter android:label="@string/app_name"
-                android:icon="@drawable/ic_launcher">
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="application/xhtml+xml" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_name"
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher"
+                tools:ignore="GoogleAppIndexingWarning">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:mimeType="application/octet-stream" />
             </intent-filter>
             <intent-filter android:label="@string/app_name"
-                android:icon="@drawable/ic_launcher">
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -91,7 +147,8 @@
             </intent-filter>
 
             <intent-filter android:label="@string/app_name"
-                android:icon="@drawable/ic_launcher">
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -104,7 +161,8 @@
                 <data android:host="*" />
             </intent-filter>
             <intent-filter android:label="@string/app_name"
-                android:icon="@drawable/ic_launcher">
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -117,7 +175,8 @@
                 <data android:host="*" />
             </intent-filter>
             <intent-filter android:label="@string/app_name"
-                android:icon="@drawable/ic_launcher">
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -130,7 +189,8 @@
                 <data android:host="*" />
             </intent-filter>
             <intent-filter android:label="@string/app_name"
-                android:icon="@drawable/ic_launcher">
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -143,7 +203,8 @@
                 <data android:host="*" />
             </intent-filter>
             <intent-filter android:label="@string/app_name"
-                android:icon="@drawable/ic_launcher">
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -176,7 +237,8 @@
                 <data android:host="*" />
             </intent-filter>
             <intent-filter android:label="@string/app_name"
-                android:icon="@drawable/ic_launcher">
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -193,7 +255,8 @@
                 <data android:host="*" />
             </intent-filter>
             <intent-filter android:label="@string/app_name"
-                android:icon="@drawable/ic_launcher">
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -211,32 +274,7 @@
             </intent-filter>
 
         </activity>
-        <activity
-            android:name="com.garethevans.church.opensongtablet.ChangeDisplayPreferences"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.garethevans.church.opensongtablet.CustomChord"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.garethevans.church.opensongtablet.ListSongFiles"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.garethevans.church.opensongtablet.SearchViewFilterModeNew"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.garethevans.church.opensongtablet.ChordProConvert"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.garethevans.church.opensongtablet.Chordie"
-            android:label="@string/app_name" >
-        </activity>
+
         <activity
             android:name="com.garethevans.church.opensongtablet.PresenterMode"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
@@ -245,23 +283,8 @@
         </activity>
         <activity
             android:name="com.garethevans.church.opensongtablet.StageMode"
+            android:configChanges="orientation|screenSize"
             android:label="@string/app_name">
-        </activity>
-        <activity
-            android:name="com.garethevans.church.opensongtablet.ChordFormat"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.garethevans.church.opensongtablet.BibleSelect"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.garethevans.church.opensongtablet.GestureOptions"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="com.garethevans.church.opensongtablet.StorageChooser"
-            android:label="@string/app_name" >
         </activity>
 
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for

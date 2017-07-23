@@ -1,10 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion '24.0.2'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
     buildTypes {
         release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        beta {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -17,19 +21,53 @@ android {
     }
     defaultConfig {
         applicationId "com.garethevans.church.opensongtablet"
+        multiDexEnabled true
+    }
+    dexOptions {
+        jumboMode = true
     }
 
     productFlavors {
     }
 }
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
+apply plugin: 'com.neenbedankt.android-apt'
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.google.android.gms:play-services-appindexing:9.6.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.android.support:cardview-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:mediarouter-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:cardview-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
     compile 'org.apache.commons:commons-compress:1.11'
-    compile 'com.itextpdf:itextpdf:5.5.9'
+    //compile 'com.itextpdf:itextpdf:5.5.11'
+    //compile 'org.apache.commons:commons-io:1.3.2'
+    compile 'com.google.android.gms:play-services-nearby:11.0.2'
+    compile 'com.google.android.gms:play-services-cast-framework:11.0.2'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.github.markrjr:Salut:v0.5.0'
+    apt 'com.bluelinelabs:logansquare-compiler:1.3.4'
+    compile 'com.bluelinelabs:logansquare:1.3.6'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.itextpdf:itextg:5.5.9'
+    compile 'ru.egslava:MaskedEditText:1.0.5'
+
 }

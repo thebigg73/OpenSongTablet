@@ -3,10 +3,10 @@ package com.garethevans.church.opensongtablet;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-public class SetListItemTouchHelper extends ItemTouchHelper.SimpleCallback {
+class SetListItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     private MyAdapter mAdapter;
 
-    public SetListItemTouchHelper(MyAdapter mAdapter){
+    SetListItemTouchHelper(MyAdapter mAdapter){
             super(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
             this.mAdapter = mAdapter;
     }

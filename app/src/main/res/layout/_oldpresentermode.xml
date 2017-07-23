@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000"
+    android:id="@+id/pagepresentermode">
+
+    <include layout="@layout/toolbar" />
+
+    <RelativeLayout
+        android:id="@+id/presenter_window"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ff000000"
+        android:baselineAligned="true"
+        android:orientation="horizontal">
+
+        <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+                <LinearLayout
+                    android:id="@+id/pres_col1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/pres_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/presenter_box_blue"
+                        android:orientation="vertical"
+                        android:onClick="songDetailsButtonClick">
+
+                        <TextView
+                            android:id="@+id/presenter_songtitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/edit_song_title"
+                            android:textColor="#ff0"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/presenter_author"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/edit_song_author"
+                            android:textColor="#fff"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/presenter_copyright"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/edit_song_copyright"
+                            android:textColor="#fff"
+                            android:textSize="10sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/pres_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/presenter_box_green"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/presenter_order_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/edit_song_presentation"
+                            android:textColor="#ff0"
+                            android:textSize="14sp" />
+
+                        <CheckBox
+                            android:id="@+id/presenter_order_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minLines="2"
+                            android:text="@string/edit_song_presentation"
+                            android:textColor="#fff"
+                            android:textSize="12sp" />
+
+                        <Button
+                            android:id="@+id/button"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/presenter_green_button"
+                            android:minHeight="0dp"
+                            android:text="@string/options_set_edit"
+                            android:textSize="12sp"
+                            android:onClick="popupPresentationOrder" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/preso_set_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/presenter_box_red"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/presenter_set_title">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/setlisticon_ImageView"
+                                android:src="@drawable/ic_format_list_numbers_white_36dp"
+                                android:contentDescription="@string/currentset" />
+
+                            <TextView
+                                android:id="@+id/presenter_set"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/currentset"
+                                android:textColor="#ff0"
+                                android:textSize="14sp"
+                                android:layout_gravity="center_vertical" />
+                        </LinearLayout>
+
+                        <ScrollView
+                            android:id="@+id/presenter_setbuttons"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:id="@+id/presenter_set_buttonsListView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical" />
+                        </ScrollView>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/pres_col2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.45"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:id="@+id/pres_slide"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/presenter_box_black"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/preso_slide_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/slide"
+                            android:textColor="#ff0"
+                            android:textSize="14sp" />
+
+                        <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center_horizontal"
+                                android:gravity="center_horizontal">
+
+
+                                <EditText
+                                    android:id="@+id/presenter_lyrics"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:editable="false"
+                                    android:gravity="top"
+                                    android:hint="@string/edit_song_lyrics"
+                                    android:inputType="textAutoCorrect|text|textMultiLine"
+                                    android:minLines="4"
+                                    android:textColor="#fff"
+                                    android:textSize="16sp"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_marginStart="4dp"
+                                    android:layout_marginRight="4dp"
+                                    android:layout_marginEnd="4dp" />
+
+                                <ImageView
+                                    android:id="@+id/presenter_lyrics_image"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/page_background"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_marginStart="4dp"
+                                    android:layout_marginRight="4dp"
+                                    android:layout_marginEnd="4dp" />
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:id="@+id/loopandtimeLinearLayout"
+                                    android:layout_margin="4dp">
+
+                                    <CheckBox
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/loop"
+                                        android:id="@+id/loopCheckBox"
+                                        android:textSize="12sp"
+                                        android:textColor="#ff0" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/timeTextView"
+                                        android:textSize="12sp"
+                                        android:textColor="#ff0"
+                                        android:text="@string/time"
+                                        android:layout_marginLeft="16dp"
+                                        android:layout_marginStart="16dp" />
+
+                                    <EditText
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/timeEditText"
+                                        android:inputType="number"
+                                        android:textSize="12sp"
+                                        android:textColor="#000"
+                                        android:background="#fff"
+                                        android:minWidth="16dp"
+                                        android:layout_marginLeft="8dp"
+                                        android:layout_marginStart="8dp" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:orientation="horizontal"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:id="@+id/loopcontrolsLinearLayout"
+                                    android:gravity="center_horizontal"
+                                    android:layout_margin="4dp">
+
+                                    <ImageButton
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/stopSlideShow"
+                                        android:layout_margin="8dp"
+                                        android:src="@drawable/ic_stop_white_36dp"
+                                        android:contentDescription="@string/media_stop" />
+
+                                    <ImageButton
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/playSlideShow"
+                                        android:layout_margin="8dp"
+                                        android:src="@android:drawable/ic_media_play"
+                                        android:contentDescription="@string/media_play" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/preso_sections"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="0.5"
+                        android:background="@drawable/presenter_box_magenta"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/preso_sections_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/song_sections"
+                            android:textColor="#ff0"
+                            android:textSize="14sp" />
+
+                        <ScrollView
+                            android:id="@+id/presenter_songbuttons"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:id="@+id/presenter_song_buttonsListView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                            </LinearLayout>
+                        </ScrollView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/pres_col3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/pres_actions"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="0.6"
+                        android:background="@drawable/presenter_box_blue"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/preso_actions_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/actions"
+                            android:textColor="#ff0"
+                            android:textSize="14sp" />
+
+                        <ScrollView
+                            android:id="@+id/preso_action_buttons_scroll"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:id="@+id/preso_Action_buttons"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:id="@+id/presenter_project_group"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_marginLeft="0dp"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginEnd="0dp"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:onClick="projectButtonClick"
+                                    android:nestedScrollingEnabled="false">
+
+                                    <ImageView
+                                        android:id="@+id/presenter_project_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:contentDescription="@string/sendtoprojector"
+                                        android:src="@drawable/ic_projector_white_36dp" />
+
+                                    <TextView
+                                        android:id="@+id/presenter_project_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/sendtoprojector"
+                                        android:textColor="#fff" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/presenter_logo_group"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_marginLeft="0dp"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginEnd="0dp"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:onClick="logoButtonClick"
+                                    android:nestedScrollingEnabled="false">
+
+                                    <ImageView
+                                        android:id="@+id/presenter_logo_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:contentDescription="@string/presoShowLogo"
+                                        android:src="@drawable/ic_projector_logo_white_36dp" />
+
+                                    <TextView
+                                        android:id="@+id/presenter_logo_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/presoShowLogo"
+                                        android:textColor="#fff"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/presenter_blank_group"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_marginLeft="0dp"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginEnd="0dp"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:onClick="blankButtonClick">
+
+                                    <ImageView
+                                        android:id="@+id/presenter_blank_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:contentDescription="@string/black_screen"
+                                        android:src="@drawable/ic_projector_screen_white_36dp" />
+
+                                    <TextView
+                                        android:id="@+id/presenter_blank_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/black_screen"
+                                        android:textColor="#fff"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/presenter_alert_group"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_marginLeft="0dp"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginEnd="0dp"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:onClick="alertButtonClick">
+
+                                    <ImageView
+                                        android:id="@+id/presenter_alert_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:contentDescription="@string/alert"
+                                        android:src="@drawable/ic_message_alert_white_36dp" />
+
+                                    <TextView
+                                        android:id="@+id/presenter_alert_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:text="@string/alert"
+                                        android:textColor="#fff"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/presenter_audio_group"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_marginLeft="0dp"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginEnd="0dp"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:onClick="audioButtonClick">
+
+                                    <ImageView
+                                        android:id="@+id/presenter_audio_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:contentDescription="@string/media"
+                                        android:src="@drawable/ic_amplifier_white_36dp" />
+
+                                    <TextView
+                                        android:id="@+id/presenter_audio_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:text="@string/media"
+                                        android:textColor="#fff"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/presenter_dB_group"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_marginLeft="0dp"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginEnd="0dp"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:onClick="dBButtonClick">
+
+                                    <ImageView
+                                        android:id="@+id/presenter_dB_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:contentDescription="@string/alert"
+                                        android:src="@drawable/ic_volume_high_white_36dp" />
+
+                                    <TextView
+                                        android:id="@+id/presenter_dB_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:text="@string/volume"
+                                        android:textColor="#fff"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/presenter_slide_group"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_marginLeft="0dp"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginEnd="0dp"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:onClick="slideButtonClick">
+
+                                    <ImageView
+                                        android:id="@+id/presenter_slide_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:contentDescription="@string/alert"
+                                        android:src="@drawable/ic_message_alert_white_36dp" />
+
+                                    <TextView
+                                        android:id="@+id/presenter_slide_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:text="@string/slide"
+                                        android:textColor="#fff"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/presenter_scripture_group"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_marginLeft="0dp"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginEnd="0dp"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:onClick="scriptureButtonClick">
+
+                                    <ImageView
+                                        android:id="@+id/presenter_scripture_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:contentDescription="@string/scripture"
+                                        android:src="@drawable/ic_book_white_36dp" />
+
+                                    <TextView
+                                        android:id="@+id/presenter_scripture_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:text="@string/scripture"
+                                        android:textColor="#fff"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                        </ScrollView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/pres_settings"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="0.4"
+                        android:background="@drawable/presenter_box_red"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/preso_settings_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/settings"
+                            android:textColor="#ff0"
+                            android:textSize="14sp" />
+
+                        <ScrollView
+                            android:id="@+id/preso_settings_scroll"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:id="@+id/pres_settings_buttons"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:id="@+id/presenter_backgrounds_group"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_marginLeft="0dp"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginEnd="0dp"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:onClick="backgroundButtonClick">
+
+                                    <ImageView
+                                        android:id="@+id/presenter_backgrounds_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:contentDescription="@string/presoBackground"
+                                        android:src="@drawable/ic_image_white_36dp" />
+
+                                    <TextView
+                                        android:id="@+id/presenter_backgrounds_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/presoBackground"
+                                        android:textColor="#fff"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/presenter_layout_group"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_marginLeft="0dp"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginEnd="0dp"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:onClick="layoutButtonClick">
+
+                                    <ImageView
+                                        android:id="@+id/presenter_layout_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:contentDescription="@string/layout"
+                                        android:src="@drawable/ic_code_array_white_36dp" />
+
+                                    <TextView
+                                        android:id="@+id/presenter_layout_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/layout"
+                                        android:textColor="#fff"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
+<!--
+                                <LinearLayout
+                                    android:id="@+id/presenter_display_group"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="4dp"
+                                    android:layout_marginLeft="0dp"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_marginRight="0dp"
+                                    android:layout_marginEnd="0dp"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal"
+                                    android:onClick="checkDisplays">
+
+                                    <ImageView
+                                        android:id="@+id/presenter_display_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:contentDescription="@string/display_manager"
+                                        android:src="@android:drawable/cas" />
+
+                                    <TextView
+                                        android:id="@+id/presenter_display_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/display_manager"
+                                        android:textColor="#fff"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+-->
+
+                            </LinearLayout>
+                        </ScrollView>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <ExpandableListView
+                android:id="@+id/song_list_ex"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:background="@drawable/drawer_bg"
+                android:choiceMode="singleChoice"
+                android:overScrollMode="never"
+                android:divider="#aaa"
+                android:dividerHeight="1dp" />
+
+            <ExpandableListView
+                android:id="@+id/option_list_ex"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:background="@drawable/drawer_bg"
+                android:choiceMode="singleChoice"
+                android:divider="#aaa"
+                android:dividerHeight="1dp" />
+
+        </android.support.v4.widget.DrawerLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

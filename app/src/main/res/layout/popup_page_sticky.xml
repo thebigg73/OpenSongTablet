@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_bg"
+    android:padding="8dp">
+
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
+<ScrollView
+    android:id="@+id/scrollstickyholder"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="visible"
+    android:layout_below="@+id/myTitle">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/mySticky"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/stickynotes"
+            android:text="@string/stickynotes"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            style="@style/MyWhiteHeadingText" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editsticky"
+            android:layout_margin="8dp"
+            android:text="@string/set_edit"
+            android:background="@drawable/grey_button"/>
+
+    </LinearLayout>
+</ScrollView>
+
+    </RelativeLayout>

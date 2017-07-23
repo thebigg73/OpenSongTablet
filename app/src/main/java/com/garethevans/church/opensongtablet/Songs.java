@@ -30,14 +30,6 @@ public class Songs {
         return id;
     }
 
-    public String getFileId() {
-        return fileid;
-    }
-
-    public void setFileId(String fileid) {
-        this.fileid = fileid;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }

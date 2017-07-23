@@ -1,70 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/presenter_box_black"
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
+
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView6"
-        android:layout_above="@+id/newFolderCancelButton"
-        android:layout_alignParentTop="true">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <Spinner
+                android:id="@+id/oldFolderNameSpinner"
+                style="@style/MySpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/oldFolderNameSpinner"
                 android:layout_margin="8dp" />
 
             <TextView
+                android:id="@+id/textView13"
+                style="@style/MyHeadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/newfoldername"
-                android:id="@+id/textView13"
-                android:textColor="#ff0"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:text="@string/newfoldername" />
 
             <EditText
+                android:id="@+id/newFolderNameEditText"
+                style="@style/MyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/newFolderNameEditText"
+                android:layout_margin="8dp"
                 android:inputType="text"
-                android:singleLine="true"
-                android:layout_margin="8dp" />
+                android:maxLines="1" />
         </LinearLayout>
+
     </ScrollView>
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cancel"
-        android:id="@+id/newFolderCancelButton"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/newFolderOkButton"
-        android:layout_toStartOf="@+id/newFolderOkButton"
-        android:background="@drawable/blue_button"
-        android:layout_margin="8dp"
-        android:textColor="#fff" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ok"
-        android:id="@+id/newFolderOkButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/green_button"
-        android:layout_margin="8dp"
-        android:textColor="#fff" />
 </RelativeLayout>

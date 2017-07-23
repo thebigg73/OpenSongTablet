@@ -1,126 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <FrameLayout
+        android:id="@+id/myTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <SeekBar
+                android:id="@+id/transposeSeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/transposeSeekBar"
                 android:layout_margin="8dp"
-                android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                 android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
+                android:id="@+id/transposeValTextView"
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/transposeValTextView"
+                android:layout_margin="16dp"
                 android:gravity="center_horizontal"
-                android:textColor="#ff0"
-                android:textSize="28sp"
-                android:layout_margin="8dp"
-                android:textIsSelectable="true" />
+                android:textIsSelectable="true"
+                android:textSize="32sp" />
 
             <TextView
+                android:id="@+id/keyChange_TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/edit_song_key"
-                android:id="@+id/keyChange_TextView"
                 android:layout_margin="8dp"
                 android:gravity="center_horizontal"
+                android:text="@string/edit_song_key"
                 android:textSize="28sp" />
 
             <TextView
                 android:id="@+id/detectedChordFormatText"
+                style="@style/MyHeadingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/oldchordformat"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#ff0"
-                android:textSize="14sp"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:text="@string/oldchordformat" />
 
             <RadioGroup
+                android:id="@+id/detectedChordFormat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/detectedChordFormat">
+                android:layout_height="wrap_content">
 
                 <RadioButton
+                    android:id="@+id/chordFormat1Radio"
+                    style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat1"
-                    android:id="@+id/chordFormat1Radio"
-                    android:textSize="12sp" />
+                    android:text="@string/chordFormat1" />
+
                 <RadioButton
+                    android:id="@+id/chordFormat2Radio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/chordFormat2"
-                    android:id="@+id/chordFormat2Radio"
-                    android:textSize="12sp" />
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chordFormat3"
-                    android:id="@+id/chordFormat3Radio"
-                    android:textSize="12sp" />
-                <RadioButton
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/chordFormat4"
-                    android:id="@+id/chordFormat4Radio"
                     android:textSize="12sp" />
 
                 <RadioButton
+                    android:id="@+id/chordFormat3Radio"
+                    style="@style/MyInfoText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/chordFormat5"
+                    android:text="@string/chordFormat3" />
+
+                <RadioButton
+                    android:id="@+id/chordFormat4Radio"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chordFormat4" />
+
+                <RadioButton
                     android:id="@+id/chordFormat5Radio"
-                    android:textSize="12sp" />
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chordFormat5" />
 
             </RadioGroup>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:id="@+id/transposeCancelButton"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/blue_button"
-                    android:text="@string/cancel"
-                    android:layout_alignParentBottom="false"
-                    android:layout_toLeftOf="@+id/transposeOkButton"
-                    android:layout_toStartOf="@+id/transposeOkButton"
-                    android:layout_margin="8dp"
-                    android:textColor="#fff" />
-
-                <Button
-                    android:id="@+id/transposeOkButton"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/green_button"
-                    android:text="@string/ok"
-                    android:layout_alignParentBottom="false"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_margin="8dp"
-                    android:textColor="#fff" />
-            </RelativeLayout>
 
         </LinearLayout>
 

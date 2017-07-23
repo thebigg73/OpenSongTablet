@@ -2,24 +2,24 @@ package com.garethevans.church.opensongtablet;
 
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ExpandableListView;
+import android.view.View;
 import android.widget.LinearLayout;
 
-public class DrawerTweaks {
+class DrawerTweaks {
 
-    static Handler songMenuFlickClosed = new Handler();
-    static Handler optionMenuFlickClosed = new Handler();
+    private static Handler songMenuFlickClosed = new Handler();
+    private static Handler optionMenuFlickClosed = new Handler();
 
-    public static DrawerLayout.LayoutParams resizeMenu (LinearLayout thismenu, int width) {
+    static DrawerLayout.LayoutParams resizeMenu(View thismenu, int width) {
         DrawerLayout.LayoutParams lp = (DrawerLayout.LayoutParams) thismenu.getLayoutParams();
         lp.width = width;
         return lp;
     }
 
-    public static void openMyDrawers(DrawerLayout drawer,
-                                     LinearLayout song,
-                                     LinearLayout option,
-                                     String which) {
+    static void openMyDrawers(DrawerLayout drawer,
+                              LinearLayout song,
+                              LinearLayout option,
+                              String which) {
         switch (which) {
             case "both":
                 drawer.openDrawer(song);
@@ -55,10 +55,11 @@ public class DrawerTweaks {
         }
     }
 
-    public static void openMyDrawersFS(DrawerLayout drawer,
-                                     LinearLayout song,
-                                     ExpandableListView option,
-                                     String which) {
+/*
+    static void openMyDrawersFS(DrawerLayout drawer,
+                                LinearLayout song,
+                                ExpandableListView option,
+                                String which) {
         switch (which) {
             case "both":
                 drawer.openDrawer(song);
@@ -93,11 +94,51 @@ public class DrawerTweaks {
                 break;
         }
     }
+*/
 
-    public static void closeMyDrawers(final DrawerLayout drawer,
-                                      final LinearLayout song,
-                                      final LinearLayout option,
-                                      String which) {
+    static void closeMyDrawers(final DrawerLayout drawer,
+                               final LinearLayout song,
+                               final LinearLayout option,
+                               String which) {
+        switch (which) {
+            case "both":
+                drawer.closeDrawer(song);
+                drawer.closeDrawer(option);
+                break;
+            case "song":
+                drawer.closeDrawer(song);
+                break;
+            case "option":
+                drawer.closeDrawer(option);
+                break;
+            case "option_delayed":
+                optionMenuFlickClosed.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        drawer.closeDrawer(option);
+                    }
+                }, 1000);
+                break;
+            case "song_delayed":
+                songMenuFlickClosed.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        drawer.closeDrawer(song);
+                    }
+                }, 1000);
+                break;
+            case "locked":
+                drawer.closeDrawer(song);
+                drawer.closeDrawer(option);
+                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }
+    }
+
+/*
+    static void closeMyDrawersFS(final DrawerLayout drawer,
+                                 final LinearLayout song,
+                                 final ExpandableListView option,
+                                 String which) {
         switch (which) {
             case "both":
                 drawer.closeDrawer(song);
@@ -132,43 +173,5 @@ public class DrawerTweaks {
                 drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
     }
-
-    public static void closeMyDrawersFS(final DrawerLayout drawer,
-                                      final LinearLayout song,
-                                      final ExpandableListView option,
-                                      String which) {
-        switch (which) {
-            case "both":
-                drawer.closeDrawer(song);
-                drawer.closeDrawer(option);
-                break;
-            case "song":
-                drawer.closeDrawer(song);
-                break;
-            case "option":
-                drawer.closeDrawer(option);
-                break;
-            case "option_delayed":
-
-                optionMenuFlickClosed.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        drawer.closeDrawer(option);
-                    }
-                }, 1000);
-                break;
-            case "song_delayed":
-                songMenuFlickClosed.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        drawer.closeDrawer(song);
-                    }
-                }, 1000);
-                break;
-            case "locked":
-                drawer.closeDrawer(song);
-                drawer.closeDrawer(option);
-                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        }
-    }
+*/
 }

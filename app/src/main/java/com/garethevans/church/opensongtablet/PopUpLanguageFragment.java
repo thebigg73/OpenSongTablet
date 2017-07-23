@@ -2,16 +2,21 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class PopUpLanguageFragment extends DialogFragment {
+
+    String tempLanguage;
 
     static PopUpLanguageFragment newInstance() {
         PopUpLanguageFragment frag;
@@ -19,45 +24,66 @@ public class PopUpLanguageFragment extends DialogFragment {
         return frag;
     }
 
-    public interface MyInterface {
-
-    }
-
-    private MyInterface mListener;
-
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
         super.onAttach(activity);
     }
 
     @Override
     public void onDetach() {
-        mListener = null;
         super.onDetach();
     }
 
-    @Override
     public void onStart() {
         super.onStart();
 
         // safety check
-        if (getDialog() == null) {
-            return;
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
 
-    String tempLanguage;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().setTitle(getActivity().getResources().getString(R.string.language));
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_language, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.language));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(saveMe,getActivity());
+                saveMe.setEnabled(false);
+                doSave();
+            }
+        });
 
         // Initialise the views
         ListView languagescroll = (ListView) V.findViewById(R.id.languagescroll);
-        Button savelanguage = (Button) V.findViewById(R.id.savelanguage);
 
         // Go through the language array and create radio buttons for each
         int positionselected = -1;
@@ -75,6 +101,7 @@ public class PopUpLanguageFragment extends DialogFragment {
                 case "el":
                     positionselected = 3;
                     break;
+                default:
                 case "en":
                     positionselected = 4;
                     break;
@@ -117,7 +144,7 @@ public class PopUpLanguageFragment extends DialogFragment {
                 getActivity().getResources().getStringArray(R.array.languagelist));
         languagescroll.setAdapter(la);
 
-        languagescroll.setSelection(positionselected);
+        languagescroll.setItemChecked(positionselected, true);
 
         languagescroll.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -173,19 +200,21 @@ public class PopUpLanguageFragment extends DialogFragment {
             }
         });
 
-        savelanguage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Preferences.savePreferences();
-                FullscreenActivity.languageToLoad = tempLanguage;
-                Preferences.savePreferences();
-                // Unfortunately this means the MAIN folder name isn't right!
-                dismiss();
-                getActivity().recreate();
-            }
-        });
-
         return V;
+    }
+
+    public void doSave() {
+        Preferences.savePreferences();
+        FullscreenActivity.languageToLoad = tempLanguage;
+        Preferences.savePreferences();
+        // Unfortunately this means the MAIN folder name isn't right!
+        dismiss();
+        getActivity().recreate();
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
     }
 
 }

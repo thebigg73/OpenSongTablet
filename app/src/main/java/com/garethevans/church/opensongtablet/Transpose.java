@@ -2,9 +2,8 @@ package com.garethevans.church.opensongtablet;
 
 import java.io.IOException;
 import java.util.Arrays;
-import android.app.Activity;
 
-public class Transpose extends Activity {
+class Transpose {
 	
 	public static String oldchordformat;
     //  A  A#/Bb  B/Cb  C/B#  C#/Db    D    D#/Eb   E/Fb   E#/F   F#/Gb   G     G#/Ab
@@ -12,241 +11,186 @@ public class Transpose extends Activity {
     //  1    2     3     4      5      6      7      8      9      10     11     12
     
     // Sharp chords first
-    public static String[] chordsharpsnumsa   = {"$.2.$",   "$.4.$",   "$.5.$",   "$.7.$",   "$.9.$",   "$.10.$",  "$.12.$"};
-    public static String[] chordsharpsnumsb   = {"$.32.$",  "$.34.$",  "$.35.$",  "$.37.$",  "$.39.$",  "$.40.$",  "$.42.$"};
-    public static String[] chordsharpsnumsc   = {"$.52.$",  "$.54.$",  "$.55.$",  "$.57.$",  "$.59.$",  "$.60.$",  "$.62.$"};
-    public static String[] sharpchords1a      = {"A#",      "B#",      "C#",      "D#",      "E#",      "F#",      "G#"};
-    public static String[] sharpchords1b      = {"A#m",     "B#m",     "C#m",     "D#m",     "E#m",     "F#m",     "G#m"};      // For key only
-    public static String[] sharpchords2       = {"A#",      "H#",      "C#",      "D#",      "E#",      "F#",      "G#"};
-    public static String[] sharpchords3a      = {"Ais",     "His",     "Cis",     "Dis",     "Eis",     "Fis",     "Gis"};
-    public static String[] sharpchords3b      = {" ais",    " his",    " cis",    " dis",    " eis",    " fis",    " gis"};
-    public static String[] sharpchords3c      = {".ais",    ".his",    ".cis",    ".dis",    ".eis",    ".fis",    ".gis"};
-    public static String[] sharpchords4       = {"La#",     "Si#",     "Do#",     "Ré#",     "Mi#",     "Fa#",     "Sol#"};
+    private static String[] chordsharpsnumsa   = {"$.2.$",   "$.4.$",   "$.5.$",   "$.7.$",   "$.9.$",   "$.10.$",  "$.12.$"};
+    private static String[] chordsharpsnumsb   = {"$.32.$",  "$.34.$",  "$.35.$",  "$.37.$",  "$.39.$",  "$.40.$",  "$.42.$"};
+    private static String[] chordsharpsnumsc   = {"$.52.$",  "$.54.$",  "$.55.$",  "$.57.$",  "$.59.$",  "$.60.$",  "$.62.$"};
+    private static String[] sharpchords1a      = {"A#",      "B#",      "C#",      "D#",      "E#",      "F#",      "G#"};
+    private static String[] sharpchords1b      = {"A#m",     "B#m",     "C#m",     "D#m",     "E#m",     "F#m",     "G#m"};      // For key only
+    private static String[] sharpchords2       = {"A#",      "H#",      "C#",      "D#",      "E#",      "F#",      "G#"};
+    private static String[] sharpchords3a      = {"Ais",     "His",     "Cis",     "Dis",     "Eis",     "Fis",     "Gis"};
+    private static String[] sharpchords3b      = {" ais",    " his",    " cis",    " dis",    " eis",    " fis",    " gis"};
+    private static String[] sharpchords3c      = {".ais",    ".his",    ".cis",    ".dis",    ".eis",    ".fis",    ".gis"};
+    private static String[] sharpchords4       = {"La#",     "Si#",     "Do#",     "Ré#",     "Mi#",     "Fa#",     "Sol#"};
 
-    public static String[] properchordsharpsnumsa   = {"$.2.$",   "$.5.$",   "$.7.$",   "$.10.$",  "$.12.$"};  // For number to chord
-    public static String[] properchordsharpsnumsb   = {"$.32.$",  "$.35.$",  "$.37.$",  "$.40.$",  "$.42.$"};  // For number to chord
-    public static String[] properchordsharpsnumsc   = {"$.52.$",  "$.55.$",  "$.57.$",  "$.60.$",  "$.62.$"};  // For number to chord
-    public static String[] propersharpchords1a      = {"A#",      "C#",      "D#",      "F#",      "G#"};      // For number to chord
-    public static String[] propersharpchords1b      = {"A#m",     "C#m",     "D#m",     "F#m",     "G#m"};     // For number to chord
-    public static String[] propersharpchords2       = {"A#",      "C#",      "D#",      "F#",      "G#"};      // For number to chord
-    public static String[] propersharpchords3a      = {"Ais",     "Cis",     "Dis",     "Fis",     "Gis"};     // For number to chord
-    public static String[] propersharpchords3b      = {" ais",    " cis",    " dis",    " fis",    " gis"};    // For number to chord
-    public static String[] propersharpchords3c      = {".ais",    ".cis",    ".dis",    ".fis",    ".gis"};    // For number to chord
-    public static String[] propersharpchords4       = {"La#",     "Do#",     "Ré#",     "Fa#",     "Sol#"};    // For number to chord
+    private static String[] properchordsharpsnumsa   = {"$.2.$",   "$.5.$",   "$.7.$",   "$.10.$",  "$.12.$"};  // For number to chord
+    private static String[] properchordsharpsnumsb   = {"$.32.$",  "$.35.$",  "$.37.$",  "$.40.$",  "$.42.$"};  // For number to chord
+    private static String[] properchordsharpsnumsc   = {"$.52.$",  "$.55.$",  "$.57.$",  "$.60.$",  "$.62.$"};  // For number to chord
+    private static String[] propersharpchords1a      = {"A#",      "C#",      "D#",      "F#",      "G#"};      // For number to chord
+    private static String[] propersharpchords1b      = {"A#m",     "C#m",     "D#m",     "F#m",     "G#m"};     // For number to chord
+    private static String[] propersharpchords2       = {"A#",      "C#",      "D#",      "F#",      "G#"};      // For number to chord
+    private static String[] propersharpchords3a      = {"Ais",     "Cis",     "Dis",     "Fis",     "Gis"};     // For number to chord
+    private static String[] propersharpchords3b      = {" ais",    " cis",    " dis",    " fis",    " gis"};    // For number to chord
+    private static String[] propersharpchords3c      = {".ais",    ".cis",    ".dis",    ".fis",    ".gis"};    // For number to chord
+    private static String[] propersharpchords4       = {"La#",     "Do#",     "Ré#",     "Fa#",     "Sol#"};    // For number to chord
 
     // Flat chords next
-    public static String[] chordflatsnumsa    = {"$.12.$",  "$.2.$",   "$.3.$",   "$.5.$",   "$.7.$",   "$.8.$",   "$.10.$"};
-    public static String[] chordflatsnumsb    = {"$.42.$",  "$.32.$",  "$.33.$",  "$.35.$",  "$.37.$",  "$.38.$",  "$.40.$"};
-    public static String[] chordflatsnumsc    = {"$.62.$",  "$.52.$",  "$.53.$",  "$.55.$",  "$.57.$",  "$.58.$",  "$.60.$"};
-    public static String[] flatchords1a       = {"Ab",      "Bb",      "Cb",      "Db",      "Eb",      "Fb",      "Gb"};
-    public static String[] flatchords1b       = {"Abm",     "Bbm",     "Cbm",     "Dbm",     "Ebm",     "Fbm",     "Gbm"};      // For key only
-    public static String[] flatchords2        = {"Ab",      "B",       "Cb",      "Db",      "Eb",      "Fb",      "Gb"};
-    public static String[] flatchords3a       = {"As",      "B",       "Ces",     "Des",     "Es",      "Fes",     "Ges"};
-    public static String[] flatchords3b       = {" as",     " b",      " ces",    " des",    " es",     " fes",    " ges"};
-    public static String[] flatchords3c       = {".as",     ".b",      ".ces",    ".des",    ".es",     ".fes",    ".ges"};
-    public static String[] flatchords4        = {"Lab",     "Sib",     "Dob",     "Réb",     "Mib",     "Fab",     "Solb"};
+    private static String[] chordflatsnumsa    = {"$.12.$",  "$.2.$",   "$.3.$",   "$.5.$",   "$.7.$",   "$.8.$",   "$.10.$"};
+    private static String[] chordflatsnumsb    = {"$.42.$",  "$.32.$",  "$.33.$",  "$.35.$",  "$.37.$",  "$.38.$",  "$.40.$"};
+    private static String[] chordflatsnumsc    = {"$.62.$",  "$.52.$",  "$.53.$",  "$.55.$",  "$.57.$",  "$.58.$",  "$.60.$"};
+    private static String[] flatchords1a       = {"Ab",      "Bb",      "Cb",      "Db",      "Eb",      "Fb",      "Gb"};
+    private static String[] flatchords1b       = {"Abm",     "Bbm",     "Cbm",     "Dbm",     "Ebm",     "Fbm",     "Gbm"};      // For key only
+    private static String[] flatchords2        = {"Ab",      "B",       "Cb",      "Db",      "Eb",      "Fb",      "Gb"};
+    private static String[] flatchords3a       = {"As",      "B",       "Ces",     "Des",     "Es",      "Fes",     "Ges"};
+    private static String[] flatchords3b       = {" as",     " b",      " ces",    " des",    " es",     " fes",    " ges"};
+    private static String[] flatchords3c       = {".as",     ".b",      ".ces",    ".des",    ".es",     ".fes",    ".ges"};
+    private static String[] flatchords4        = {"Lab",     "Sib",     "Dob",     "Réb",     "Mib",     "Fab",     "Solb"};
 
-    public static String[] properchordflatsnumsa    = {"$.12.$",  "$.2.$",   "$.5.$",   "$.7.$",   "$.10.$"};// For number to chord
-    public static String[] properchordflatsnumsb    = {"$.42.$",  "$.32.$",  "$.35.$",  "$.37.$",  "$.40.$"};// For number to chord
-    public static String[] properchordflatsnumsc    = {"$.62.$",  "$.52.$",  "$.55.$",  "$.57.$",  "$.60.$"};// For number to chord
-    public static String[] properflatchords1a       = {"Ab",      "Bb",      "Db",      "Eb",      "Gb"};    // For number to chord
-    public static String[] properflatchords2        = {"Ab",      "B",       "Db",      "Eb",      "Gb"};    // For number to chord
-    public static String[] properflatchords3a       = {"As",      "B",       "Des",     "Es",      "Ges"};   // For number to chord
-    public static String[] properflatchords3b       = {" as",     " b",      " des",    " es",     " ges"};  // For number to chord
-    public static String[] properflatchords3c       = {".as",     ".b",      ".des",    ".es",     ".ges"};  // For number to chord
-    public static String[] properflatchords4        = {"Lab",     "Sib",     "Réb",     "Mib",     "Solb"};  // For number to chord
+    private static String[] properchordflatsnumsa    = {"$.12.$",  "$.2.$",   "$.5.$",   "$.7.$",   "$.10.$"};// For number to chord
+    private static String[] properchordflatsnumsb    = {"$.42.$",  "$.32.$",  "$.35.$",  "$.37.$",  "$.40.$"};// For number to chord
+    private static String[] properchordflatsnumsc    = {"$.62.$",  "$.52.$",  "$.55.$",  "$.57.$",  "$.60.$"};// For number to chord
+    private static String[] properflatchords1a       = {"Ab",      "Bb",      "Db",      "Eb",      "Gb"};    // For number to chord
+    private static String[] properflatchords2        = {"Ab",      "B",       "Db",      "Eb",      "Gb"};    // For number to chord
+    private static String[] properflatchords3a       = {"As",      "B",       "Des",     "Es",      "Ges"};   // For number to chord
+    private static String[] properflatchords3b       = {" as",     " b",      " des",    " es",     " ges"};  // For number to chord
+    private static String[] properflatchords3c       = {".as",     ".b",      ".des",    ".es",     ".ges"};  // For number to chord
+    private static String[] properflatchords4        = {"Lab",     "Sib",     "Réb",     "Mib",     "Solb"};  // For number to chord
 
     // Finally the natural chords
-    public static String[] chordnaturalnumsa  = {"$.1.$",   "$.3.$",   "$.4.$",   "$.6.$",   "$.8.$",   "$.9.$",   "$.11.$"};
-    public static String[] chordnaturalnumsb  = {"$.31.$",  "$.33.$",  "$.34.$",  "$.36.$",  "$.38.$",  "$.39.$",  "$.41.$"};
-    public static String[] chordnaturalnumsc  = {"$.51.$",  "$.53.$",  "$.54.$",  "$.56.$",  "$.58.$",  "$.59.$",  "$.61.$"};
-    public static String[] naturalchords1a    = {"A",       "B",       "C",       "D",       "E",       "F",       "G"};
-    public static String[] naturalchords1b    = {"Am",      "Bm",      "Cm",      "Dm",      "Em",      "Fm",      "Gm"};       // For key only
-    public static String[] naturalchords2     = {"A",       "H",       "C",       "D",       "E",       "F",       "G"};
-    public static String[] naturalchords3a    = {"A",       "H",       "C",       "D",       "E",       "F",       "G"};
-    public static String[] naturalchords3b    = {" a",      " h",      " c",      " d",      " e",      " f",      " g"};
-    public static String[] naturalchords3c    = {".a",      ".h",      ".c",      ".d",      ".e",      ".f",      ".g"};
-    public static String[] naturalchords4     = {"La",      "Si",      "Do",      "Ré",      "Mi",      "Fa",      "Sol"};
+    private static String[] chordnaturalnumsa  = {"$.1.$",   "$.3.$",   "$.4.$",   "$.6.$",   "$.8.$",   "$.9.$",   "$.11.$"};
+    private static String[] chordnaturalnumsb  = {"$.31.$",  "$.33.$",  "$.34.$",  "$.36.$",  "$.38.$",  "$.39.$",  "$.41.$"};
+    private static String[] chordnaturalnumsc  = {"$.51.$",  "$.53.$",  "$.54.$",  "$.56.$",  "$.58.$",  "$.59.$",  "$.61.$"};
+    private static String[] naturalchords1a    = {"A",       "B",       "C",       "D",       "E",       "F",       "G"};
+    private static String[] naturalchords1b    = {"Am",      "Bm",      "Cm",      "Dm",      "Em",      "Fm",      "Gm"};       // For key only
+    private static String[] naturalchords2     = {"A",       "H",       "C",       "D",       "E",       "F",       "G"};
+    private static String[] naturalchords3a    = {"A",       "H",       "C",       "D",       "E",       "F",       "G"};
+    private static String[] naturalchords3b    = {" a",      " h",      " c",      " d",      " e",      " f",      " g"};
+    private static String[] naturalchords3c    = {".a",      ".h",      ".c",      ".d",      ".e",      ".f",      ".g"};
+    private static String[] naturalchords4     = {"La",      "Si",      "Do",      "Ré",      "Mi",      "Fa",      "Sol"};
 
-    public static String originalkey = FullscreenActivity.mKey;
-    public static String newkey = FullscreenActivity.mKey;
+    private static String originalkey = FullscreenActivity.mKey;
+    private static String newkey = FullscreenActivity.mKey;
 
-    public static boolean usesflats;
-    public static boolean capousesflats;
+    private static boolean usesflats;
+    private static boolean capousesflats;
 
-    public static void doTranspose() throws IOException {
-        // Go through each line and change each chord to $..$
-        // This marks the bit to be changed
+    static void doTranspose() throws IOException {
 
-        FullscreenActivity.transposedLyrics = null;
-        FullscreenActivity.transposedLyrics = "";
-        FullscreenActivity.myTransposedLyrics = null;
-        FullscreenActivity.myTransposedLyrics = FullscreenActivity.mLyrics.split("\n");
+        try {
+            // Go through each line and change each chord to $..$
+            // This marks the bit to be changed
 
-        oldchordformat = FullscreenActivity.oldchordformat;
+            FullscreenActivity.transposedLyrics = null;
+            FullscreenActivity.transposedLyrics = "";
+            FullscreenActivity.myTransposedLyrics = null;
+            FullscreenActivity.myTransposedLyrics = FullscreenActivity.mLyrics.split("\n");
 
-        // Change the saved key to a number
-        if (originalkey != null && !FullscreenActivity.mKey.equals("")) {
-            newkey = keyToNumber(FullscreenActivity.mKey);
-        }
-        // Transpose the key
-        newkey = transposeKey(newkey, FullscreenActivity.transposeDirection, FullscreenActivity.transposeTimes);
+            oldchordformat = FullscreenActivity.oldchordformat;
 
-        // Convert the keynumber to a key
-        newkey = numberToKey(newkey);
-
-        // Decide if flats should be used
-        usesflats = keyUsesFlats(newkey);
-
-        if (!FullscreenActivity.mKey.equals("")) {
-            FullscreenActivity.mKey = newkey;
-        }
-
-        // Now we change the chords into numbers
-        for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
-            if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
-                // Since this line has chords, do the changing!
-                // Decide on the chord format to use
-                switch (oldchordformat) {
-                    default:
-                        FullscreenActivity.myTransposedLyrics[x] = chordToNumber1(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
-
-                    case "2":
-                        FullscreenActivity.myTransposedLyrics[x] = chordToNumber2(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
-
-                    case "3":
-                        FullscreenActivity.myTransposedLyrics[x] = chordToNumber3(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
-
-                    case "4":
-                        FullscreenActivity.myTransposedLyrics[x] = chordToNumber4(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
-
-                }
+            // Change the saved key to a number
+            if (originalkey != null && !FullscreenActivity.mKey.equals("")) {
+                newkey = keyToNumber(FullscreenActivity.mKey);
             }
-        }
+            // Transpose the key
+            newkey = transposeKey(newkey, FullscreenActivity.transposeDirection, FullscreenActivity.transposeTimes);
 
-        // Next up we do the transposing
+            // Convert the keynumber to a key
+            newkey = numberToKey(newkey);
 
-        transposeChords();
+            // Decide if flats should be used
+            usesflats = keyUsesFlats(newkey);
 
-        // Now we put the numbers back into chords in the correct format and using either the key preference or the forced sharps or flats
-        for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
-            if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
-                // Since this line has chords, do the changing!
-                // Decide on the chord format to use
-                switch (oldchordformat) {
-                    default:
-                        FullscreenActivity.myTransposedLyrics[x] = numberToChord1(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
+            if (!FullscreenActivity.mKey.equals("")) {
+                FullscreenActivity.mKey = newkey;
+            }
 
-                    case "2":
-                        FullscreenActivity.myTransposedLyrics[x] = numberToChord2(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
+            // Now we change the chords into numbers
+            for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
+                if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
+                    // Since this line has chords, do the changing!
+                    // Decide on the chord format to use
+                    switch (oldchordformat) {
+                        default:
+                            FullscreenActivity.myTransposedLyrics[x] = chordToNumber1(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
 
-                    case "3":
-                        FullscreenActivity.myTransposedLyrics[x] = numberToChord3(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
+                        case "2":
+                            FullscreenActivity.myTransposedLyrics[x] = chordToNumber2(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
 
-                    case "4":
-                        FullscreenActivity.myTransposedLyrics[x] = numberToChord4(FullscreenActivity.myTransposedLyrics[x]);
-                        break;
+                        case "3":
+                            FullscreenActivity.myTransposedLyrics[x] = chordToNumber3(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                        case "4":
+                            FullscreenActivity.myTransposedLyrics[x] = chordToNumber4(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                    }
                 }
             }
 
-        // Add all the lines back up as a string
-        FullscreenActivity.transposedLyrics += FullscreenActivity.myTransposedLyrics[x] + "\n";
+            // Next up we do the transposing
+
+            transposeChords();
+
+            // Now we put the numbers back into chords in the correct format and using either the key preference or the forced sharps or flats
+            for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
+                if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
+                    // Since this line has chords, do the changing!
+                    // Decide on the chord format to use
+                    switch (oldchordformat) {
+                        default:
+                            FullscreenActivity.myTransposedLyrics[x] = numberToChord1(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                        case "2":
+                            FullscreenActivity.myTransposedLyrics[x] = numberToChord2(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                        case "3":
+                            FullscreenActivity.myTransposedLyrics[x] = numberToChord3(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+
+                        case "4":
+                            FullscreenActivity.myTransposedLyrics[x] = numberToChord4(FullscreenActivity.myTransposedLyrics[x]);
+                            break;
+                    }
+                }
+
+                // Add all the lines back up as a string
+                FullscreenActivity.transposedLyrics += FullscreenActivity.myTransposedLyrics[x] + "\n";
+            }
+
+
+            // Now that the chords have been changed, replace the myTransposedLyrics
+            // into the file
+            FullscreenActivity.mynewXML = null;
+            FullscreenActivity.mynewXML = "";
+
+            // Write the new improved XML file
+            FullscreenActivity.mLyrics = FullscreenActivity.transposedLyrics;
+
+            PopUpEditSongFragment.prepareSongXML();
+            PopUpEditSongFragment.justSaveSongXML();
+
+            FullscreenActivity.transposedLyrics = null;
+            FullscreenActivity.transposedLyrics = "";
+            Arrays.fill(FullscreenActivity.myTransposedLyrics, null);
+            Arrays.fill(FullscreenActivity.myParsedLyrics, null);
+            FullscreenActivity.myLyrics = null;
+            FullscreenActivity.myLyrics = "";
+            FullscreenActivity.mynewXML = null;
+            FullscreenActivity.mynewXML = "";
+            FullscreenActivity.myXML = null;
+            FullscreenActivity.myXML = "";
+
+            Preferences.savePreferences();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-
-        // Now that the chords have been changed, replace the myTransposedLyrics
-        // into the file
-        FullscreenActivity.mynewXML = null;
-        FullscreenActivity.mynewXML = "";
-
-        // Write the new improved XML file
-        FullscreenActivity.mLyrics = FullscreenActivity.transposedLyrics;
-
-        PopUpEditSongFragment.prepareSongXML();
-        PopUpEditSongFragment.justSaveSongXML();
-
- /*       String myNEWXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-        myNEWXML += "<song>\n";
-        myNEWXML += "  <title>" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mTitle.toString() + "</title>\n";
-        myNEWXML += "  <author>" + FullscreenActivity.mAuthor + "</author>\n";
-        myNEWXML += "  <copyright>" + FullscreenActivity.mCopyright + "</copyright>\n";
-        myNEWXML += "  <presentation>" + FullscreenActivity.mPresentation + "</presentation>\n";
-        myNEWXML += "  <hymn_number>" + FullscreenActivity.mHymnNumber + "</hymn_number>\n";
-        myNEWXML += "  <capo print=\"" + FullscreenActivity.mCapoPrint + "\">" + FullscreenActivity.mCapo + "</capo>\n";
-        myNEWXML += "  <tempo>" + FullscreenActivity.mTempo + "</tempo>\n";
-        myNEWXML += "  <time_sig>" + FullscreenActivity.mTimeSig + "</time_sig>\n";
-        myNEWXML += "  <duration>" + FullscreenActivity.mDuration + "</duration>\n";
-        myNEWXML += "  <ccli>" + FullscreenActivity.mCCLI + "</ccli>\n";
-        myNEWXML += "  <theme>" + FullscreenActivity.mTheme + "</theme>\n";
-        myNEWXML += "  <alttheme>" + FullscreenActivity.mAltTheme + "</alttheme>\n";
-        myNEWXML += "  <user1>" + FullscreenActivity.mUser1 + "</user1>\n";
-        myNEWXML += "  <user2>" + FullscreenActivity.mUser2 + "</user2>\n";
-        myNEWXML += "  <user3>" + FullscreenActivity.mUser3 + "</user3>\n";
-        myNEWXML += "  <key>" + FullscreenActivity.mKey + "</key>\n";
-        myNEWXML += "  <aka>" + FullscreenActivity.mAka + "</aka>\n";
-        myNEWXML += "  <key_line>" + FullscreenActivity.mKeyLine + "</key_line>\n";
-        myNEWXML += "  <books>" + FullscreenActivity.mBooks + "</books>\n";
-        myNEWXML += "  <midi>" + FullscreenActivity.mMidi + "</midi>\n";
-        myNEWXML += "  <midi_index>" + FullscreenActivity.mMidiIndex + "</midi_index>\n";
-        myNEWXML += "  <pitch>" + FullscreenActivity.mPitch + "</pitch>\n";
-        myNEWXML += "  <restrictions>" + FullscreenActivity.mRestrictions + "</restrictions>\n";
-        myNEWXML += "  <notes>" + FullscreenActivity.mNotes + "</notes>\n";
-        myNEWXML += "  <linked_songs>" + FullscreenActivity.mLinkedSongs + "</linked_songs>\n";
-        myNEWXML += "  <pad_file>" + FullscreenActivity.mPadFile + "</pad_file>\n";
-        myNEWXML += "  <custom_chords>" + FullscreenActivity.mCustomChords + "</custom_chords>\n";
-        myNEWXML += "  <lyrics>" + FullscreenActivity.transposedLyrics + "</lyrics>\n";
-        if (!FullscreenActivity.mExtraStuff1.isEmpty()) {
-            myNEWXML += "  " + FullscreenActivity.mExtraStuff1 + "\n";
-        }
-        if (!FullscreenActivity.mExtraStuff2.isEmpty()) {
-            myNEWXML += "  " + FullscreenActivity.mExtraStuff2 + "\n";
-        }
-        myNEWXML += "</song>";
-
-        FullscreenActivity.mynewXML = myNEWXML;
-
-        // Makes sure all & are replaced with &amp;
-        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&amp;","&");
-        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&","&amp;");
-
-        // Now write the modified song
-        FileOutputStream overWrite;
-
-        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-            overWrite = new FileOutputStream(
-                    FullscreenActivity.dir + "/" + FullscreenActivity.songfilename,
-                    false);
-        } else {
-            overWrite = new FileOutputStream(
-                    FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
-                    false);
-        }
-        overWrite.write(FullscreenActivity.mynewXML.getBytes());
-        overWrite.flush();
-        overWrite.close();
-*/
-        FullscreenActivity.transposedLyrics = null;
-        FullscreenActivity.transposedLyrics = "";
-        Arrays.fill(FullscreenActivity.myTransposedLyrics, null);
-        Arrays.fill(FullscreenActivity.myParsedLyrics, null);
-        FullscreenActivity.myLyrics = null;
-        FullscreenActivity.myLyrics = "";
-        FullscreenActivity.mynewXML = null;
-        FullscreenActivity.mynewXML = "";
-        FullscreenActivity.myXML = null;
-        FullscreenActivity.myXML = "";
-
-        Preferences.savePreferences();
     }
 
-    public static String keyToNumber(String key) {
+    static String keyToNumber(String key) {
         // Swap the key with the correct number
 
         // Look for minor keys first
@@ -274,7 +218,7 @@ public class Transpose extends Activity {
         return key;
     }
 
-    public static String chordToNumber1(String line) {
+    private static String chordToNumber1(String line) {
         // Look for sharps first
         for (int z=0;z<sharpchords1a.length;z++) {
             line = line.replace(sharpchords1a[z],chordsharpsnumsa[z]);
@@ -292,7 +236,7 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static String chordToNumber2(String line) {
+    private static String chordToNumber2(String line) {
         // Look for sharps first
         for (int z=0;z<sharpchords2.length;z++) {
             line = line.replace(sharpchords2[z],chordsharpsnumsa[z]);
@@ -310,7 +254,7 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static String chordToNumber3(String line) {
+    private static String chordToNumber3(String line) {
         // Look for sharps first
         for (int z=0;z<sharpchords3c.length;z++) {
             line = line.replace(sharpchords3c[z],chordsharpsnumsc[z]);
@@ -346,7 +290,7 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static String chordToNumber4(String line) {
+    private static String chordToNumber4(String line) {
 
         // Change any Re into Ré and Ti into Si
         line = line.replace("Re","Ré");
@@ -379,7 +323,7 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static String transposeKey(String getkeynum, String direction, int transposetimes) {
+    static String transposeKey(String getkeynum, String direction, int transposetimes) {
         if (direction.equals("+1")) {
             // Put the numbers up by one.
             // Last step then fixes 13 to be 1
@@ -482,7 +426,7 @@ public class Transpose extends Activity {
         return getkeynum;
     }
 
-    public static void transposeChords() {
+    private static void transposeChords() {
         // Go through each line in turn
         for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
 
@@ -593,7 +537,7 @@ public class Transpose extends Activity {
         }
     }
 
-    public static String numberToKey(String key) {
+    static String numberToKey(String key) {
         // We need to decide which key the user likes the best for each one
         // Convert the key number into either a sharp or natural first
         // Then we swap sharps to flats if the user prefers these
@@ -636,7 +580,7 @@ public class Transpose extends Activity {
         return key;
     }
 
-    public static String numberToChord1(String line) {
+    private static String numberToChord1(String line) {
         // If we are forcing sharps or flats do that, otherwise use our key preferences
         if (FullscreenActivity.switchsharpsflats) {
             if (FullscreenActivity.transposeStyle.equals("flats")) {
@@ -659,7 +603,7 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static String capoNumberToChord1(String line) {
+    private static String capoNumberToChord1(String line) {
         if (capousesflats) {
             line = useFlats1(line);
         } else {
@@ -672,7 +616,7 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static String numberToChord2(String line) {
+    private static String numberToChord2(String line) {
         // If we are forcing sharps or flats do that, otherwise use our key preferences
         if (FullscreenActivity.switchsharpsflats) {
             if (FullscreenActivity.transposeStyle.equals("flats")) {
@@ -695,7 +639,7 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static String capoNumberToChord2(String line) {
+    private static String capoNumberToChord2(String line) {
         if (capousesflats) {
             line = useFlats2(line);
         } else {
@@ -708,7 +652,7 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static String numberToChord3(String line) {
+    private static String numberToChord3(String line) {
         // If we are forcing sharps or flats do that, otherwise use our key preferences
         if (FullscreenActivity.switchsharpsflats) {
             if (FullscreenActivity.transposeStyle.equals("flats")) {
@@ -731,7 +675,7 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static String capoNumberToChord3(String line) {
+    private static String capoNumberToChord3(String line) {
         if (capousesflats) {
             line = useFlats3(line);
         } else {
@@ -744,7 +688,7 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static String numberToChord4(String line) {
+    private static String numberToChord4(String line) {
         // If we are forcing sharps or flats do that, otherwise use our key preferences
         if (FullscreenActivity.switchsharpsflats) {
             if (FullscreenActivity.transposeStyle.equals("flats")) {
@@ -767,7 +711,7 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static String capoNumberToChord4(String line) {
+    private static String capoNumberToChord4(String line) {
         if (capousesflats) {
             line = useFlats4(line);
         } else {
@@ -780,7 +724,7 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static boolean keyUsesFlats(String testkey) {
+    private static boolean keyUsesFlats(String testkey) {
 
         boolean result;
         result = (testkey.equals("Ab") && FullscreenActivity.prefChord_Aflat_Gsharp.equals("b")) ||
@@ -800,21 +744,21 @@ public class Transpose extends Activity {
         return result;
     }
 
-    public static String useFlats1(String line) {
+    private static String useFlats1(String line) {
         for (int z=0; z<properchordflatsnumsa.length; z++) {
             line = line.replace(properchordflatsnumsa[z],properflatchords1a[z]);
         }
         return line;
     }
 
-    public static String useFlats2(String line) {
+    private static String useFlats2(String line) {
         for (int z=0; z<properchordflatsnumsa.length; z++) {
             line = line.replace(properchordflatsnumsa[z],properflatchords2[z]);
         }
         return line;
     }
 
-    public static String useFlats3(String line) {
+    private static String useFlats3(String line) {
         for (int z=0; z<properchordflatsnumsc.length; z++) {
             line = line.replace(properchordflatsnumsc[z],properflatchords3c[z]);
         }
@@ -827,28 +771,28 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static String useFlats4(String line) {
+    private static String useFlats4(String line) {
         for (int z=0; z<properchordflatsnumsa.length; z++) {
             line = line.replace(properchordflatsnumsa[z],properflatchords4[z]);
         }
         return line;
     }
 
-    public static String useSharps1(String line) {
+    private static String useSharps1(String line) {
         for (int z=0; z<properchordsharpsnumsa.length; z++) {
             line = line.replace(properchordsharpsnumsa[z],propersharpchords1a[z]);
         }
         return line;
     }
 
-    public static String useSharps2(String line) {
+    private static String useSharps2(String line) {
         for (int z=0; z<properchordsharpsnumsa.length; z++) {
             line = line.replace(properchordsharpsnumsa[z],propersharpchords2[z]);
         }
         return line;
     }
 
-    public static String useSharps3(String line) {
+    private static String useSharps3(String line) {
         for (int z=0; z<properchordsharpsnumsc.length; z++) {
             line = line.replace(properchordsharpsnumsc[z],propersharpchords3c[z]);
         }
@@ -861,28 +805,28 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static String useSharps4(String line) {
+    private static String useSharps4(String line) {
         for (int z=0; z<properchordsharpsnumsa.length; z++) {
             line = line.replace(properchordsharpsnumsa[z],propersharpchords4[z]);
         }
         return line;
     }
 
-    public static String useNaturals1(String line) {
+    private static String useNaturals1(String line) {
         for (int z=0; z<chordnaturalnumsa.length; z++) {
             line = line.replace(chordnaturalnumsa[z],naturalchords1a[z]);
         }
         return line;
     }
 
-    public static String useNaturals2(String line) {
+    private static String useNaturals2(String line) {
         for (int z=0; z<chordnaturalnumsa.length; z++) {
             line = line.replace(chordnaturalnumsa[z],naturalchords2[z]);
         }
         return line;
     }
 
-    public static String useNaturals3(String line) {
+    private static String useNaturals3(String line) {
         for (int z=0; z<chordnaturalnumsc.length; z++) {
             line = line.replace(chordnaturalnumsc[z],naturalchords3c[z]);
         }
@@ -895,14 +839,14 @@ public class Transpose extends Activity {
         return line;
     }
 
-    public static String useNaturals4(String line) {
+    private static String useNaturals4(String line) {
         for (int z=0; z<chordnaturalnumsa.length; z++) {
             line = line.replace(chordnaturalnumsa[z],naturalchords4[z]);
         }
         return line;
     }
 
-    public static String capoTranspose() {
+    static String capoTranspose() {
 
         int numtimes = Integer.parseInt(FullscreenActivity.mCapo);
 
@@ -1002,7 +946,7 @@ public class Transpose extends Activity {
         return FullscreenActivity.temptranspChords;
     }
 
-	public static void checkChordFormat() {
+	static void checkChordFormat() {
 		FullscreenActivity.transposedLyrics = null;
 		FullscreenActivity.transposedLyrics = "";
 		FullscreenActivity.myTransposedLyrics = null;
@@ -1017,36 +961,38 @@ public class Transpose extends Activity {
 
 		// Check if the user is using the same chord format as the song
 		// Go through the chord lines and look for clues
-		for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
-			if (FullscreenActivity.myTransposedLyrics[x].indexOf(".")==0) {
-				// Chord line
-				if (FullscreenActivity.myTransposedLyrics[x].contains("es") || FullscreenActivity.myTransposedLyrics[x].contains("is") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" a") || FullscreenActivity.myTransposedLyrics[x].contains(".a") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" b") || FullscreenActivity.myTransposedLyrics[x].contains(".b") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" h") || FullscreenActivity.myTransposedLyrics[x].contains(".h") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" c") || FullscreenActivity.myTransposedLyrics[x].contains(".c") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" d") || FullscreenActivity.myTransposedLyrics[x].contains(".d") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" e") || FullscreenActivity.myTransposedLyrics[x].contains(".e") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" f") || FullscreenActivity.myTransposedLyrics[x].contains(".f") ||
-						FullscreenActivity.myTransposedLyrics[x].contains(" g") || FullscreenActivity.myTransposedLyrics[x].contains(".g"))	{
-					contains_es_is = true;
-				} else if (FullscreenActivity.myTransposedLyrics[x].contains("H")) {
-					contains_H = true;
-				} else if (FullscreenActivity.myTransposedLyrics[x].contains("Do") || FullscreenActivity.myTransposedLyrics[x].contains("Re") || FullscreenActivity.myTransposedLyrics[x].contains("Ré") ||
-						FullscreenActivity.myTransposedLyrics[x].contains("Me") || FullscreenActivity.myTransposedLyrics[x].contains("Fa") ||
-						FullscreenActivity.myTransposedLyrics[x].contains("Sol") || FullscreenActivity.myTransposedLyrics[x].contains("La") ||
-						FullscreenActivity.myTransposedLyrics[x].contains("Si")) {
-					contains_do = true;
-				} else if (FullscreenActivity.myTransposedLyrics[x].contains(".2") || FullscreenActivity.myTransposedLyrics[x].contains(" 2") ||
-                        FullscreenActivity.myTransposedLyrics[x].contains(".3") || FullscreenActivity.myTransposedLyrics[x].contains(" 3") ||
-                        FullscreenActivity.myTransposedLyrics[x].contains(".4") || FullscreenActivity.myTransposedLyrics[x].contains(" 4") ||
-                        FullscreenActivity.myTransposedLyrics[x].contains(".5") || FullscreenActivity.myTransposedLyrics[x].contains(" 5") ||
-                        FullscreenActivity.myTransposedLyrics[x].contains(".6") || FullscreenActivity.myTransposedLyrics[x].contains(" 6") ||
-                        FullscreenActivity.myTransposedLyrics[x].contains(".7") || FullscreenActivity.myTransposedLyrics[x].contains(" 7")) {
-                    contains_nash = true;
+        if (FullscreenActivity.myTransposedLyrics!=null) {
+            for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
+                if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
+                    // Chord line
+                    if (FullscreenActivity.myTransposedLyrics[x].contains("es") || FullscreenActivity.myTransposedLyrics[x].contains("is") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" a") || FullscreenActivity.myTransposedLyrics[x].contains(".a") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" b") || FullscreenActivity.myTransposedLyrics[x].contains(".b") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" h") || FullscreenActivity.myTransposedLyrics[x].contains(".h") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" c") || FullscreenActivity.myTransposedLyrics[x].contains(".c") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" d") || FullscreenActivity.myTransposedLyrics[x].contains(".d") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" e") || FullscreenActivity.myTransposedLyrics[x].contains(".e") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" f") || FullscreenActivity.myTransposedLyrics[x].contains(".f") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(" g") || FullscreenActivity.myTransposedLyrics[x].contains(".g")) {
+                        contains_es_is = true;
+                    } else if (FullscreenActivity.myTransposedLyrics[x].contains("H")) {
+                        contains_H = true;
+                    } else if (FullscreenActivity.myTransposedLyrics[x].contains("Do") || FullscreenActivity.myTransposedLyrics[x].contains("Re") || FullscreenActivity.myTransposedLyrics[x].contains("Ré") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains("Me") || FullscreenActivity.myTransposedLyrics[x].contains("Fa") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains("Sol") || FullscreenActivity.myTransposedLyrics[x].contains("La") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains("Si")) {
+                        contains_do = true;
+                    } else if (FullscreenActivity.myTransposedLyrics[x].contains(".2") || FullscreenActivity.myTransposedLyrics[x].contains(" 2") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(".3") || FullscreenActivity.myTransposedLyrics[x].contains(" 3") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(".4") || FullscreenActivity.myTransposedLyrics[x].contains(" 4") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(".5") || FullscreenActivity.myTransposedLyrics[x].contains(" 5") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(".6") || FullscreenActivity.myTransposedLyrics[x].contains(" 6") ||
+                            FullscreenActivity.myTransposedLyrics[x].contains(".7") || FullscreenActivity.myTransposedLyrics[x].contains(" 7")) {
+                        contains_nash = true;
+                    }
                 }
-			}
-		}
+            }
+        }
 
 		//int detected = 0;
 		// Set the chord style detected

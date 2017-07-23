@@ -3,21 +3,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/setMenuTitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="4dp"
-        android:gravity="center"
-        android:text="@string/options_set"
-        android:textSize="14sp"
-        android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
-        android:drawablePadding="4dp"
-        android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
-        android:textColor="#ff0" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/setMenuTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_margin="4dp"
+            android:drawableLeft="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+            android:drawablePadding="4dp"
+            android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
+            android:gravity="center"
+            android:text="@string/options_set"
+            style="@style/MyMenuHeadingText" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/closeOptionsFAB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:fabSize="mini"
+            android:src="@drawable/ic_close_white_36dp"/>
+
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/optionschordsscrollview"
@@ -36,13 +52,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_upload_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_upload_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set_load" />
+                android:text="@string/options_set_load"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/setSaveButton"
@@ -50,13 +66,27 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_download_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_download_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set_save" />
+                android:text="@string/options_set_save"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/setOrganiseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_sort_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_sort_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/managesets"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/setNewButton"
@@ -64,13 +94,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_plus_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_plus_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set_clear" />
+                android:text="@string/options_set_clear"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/setDeleteButton"
@@ -78,13 +108,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_delete_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_delete_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set_delete" />
+                android:text="@string/options_set_delete"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/setExportButton"
@@ -92,13 +122,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_share_variant_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_share_variant_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set_export" />
+                android:text="@string/options_set_export"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/setCustomButton"
@@ -106,13 +136,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_code_braces_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_code_braces_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/add_custom_slide" />
+                android:text="@string/add_custom_slide"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/setVariationButton"
@@ -120,13 +150,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_code_brackets_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_code_brackets_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/customise_set_item" />
+                android:text="@string/customise_set_item"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/setEditButton"
@@ -134,24 +164,40 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:background="@drawable/menu_button"
-                android:textColor="#fff"
-                android:textSize="12sp"
                 android:drawableLeft="@drawable/ic_table_edit_white_36dp"
                 android:drawablePadding="4dp"
                 android:drawableStart="@drawable/ic_table_edit_white_36dp"
                 android:gravity="center_vertical"
-                android:text="@string/options_set_edit" />
+                android:text="@string/options_set_edit"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/showSetTickBoxInSongMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_check_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_check_white_36dp"
+                android:gravity="center_vertical"
+                android:layout_margin="4dp"
+                android:theme="@style/SwitchStyle"
+                android:text="@string/setquickcheck"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:background="@drawable/menu_button"
+                app:showText="false" />
 
             <LinearLayout
                 android:id="@+id/setLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/menu_button"
-                android:layout_marginTop="20dp"
                 android:layout_marginBottom="4dp"
                 android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp" />
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/menu_button"
+                android:orientation="vertical" />
 
         </LinearLayout>
     </ScrollView>

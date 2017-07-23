@@ -2,17 +2,17 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import java.io.IOException;
 
 public class PopUpTransposeFragment extends DialogFragment {
 
@@ -50,23 +50,60 @@ public class PopUpTransposeFragment extends DialogFragment {
     RadioButton chordFormat3Radio;
     RadioButton chordFormat4Radio;
     RadioButton chordFormat5Radio;
-    Button transposeCancelButton;
-    Button transposeOkButton;
     boolean updatekey = false;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
+
         final View V = inflater.inflate(R.layout.popup_transpose, container, false);
-        getDialog().setTitle(getActivity().getResources().getString(R.string.transpose));
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.transpose));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                dismiss();
+            }
+        });
+        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(saveMe,getActivity());
+                saveMe.setEnabled(false);
+                doTranspose();
+            }
+        });
 
         // Initialise views
         transposeSeekBar = (SeekBar) V.findViewById(R.id.transposeSeekBar);
         transposeValTextView = (TextView) V.findViewById(R.id.transposeValTextView);
         keyChange_TextView = (TextView) V.findViewById(R.id.keyChange_TextView);
         detectedChordFormat = (RadioGroup) V.findViewById(R.id.detectedChordFormat);
-        transposeCancelButton = (Button) V.findViewById(R.id.transposeCancelButton);
-        transposeOkButton = (Button) V.findViewById(R.id.transposeOkButton);
         chordFormat1Radio = (RadioButton) V.findViewById(R.id.chordFormat1Radio);
         chordFormat2Radio = (RadioButton) V.findViewById(R.id.chordFormat2Radio);
         chordFormat3Radio = (RadioButton) V.findViewById(R.id.chordFormat3Radio);
@@ -185,59 +222,41 @@ public class PopUpTransposeFragment extends DialogFragment {
             chordFormat5Radio.setVisibility(View.GONE);
         }
 
-        // Listen for Cancel and OK button
-        transposeCancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-        transposeOkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Extract the transpose value and the chord format
-
-                if (chordFormat1Radio.isChecked()) {
-                    FullscreenActivity.oldchordformat = "1";
-                }
-                if (chordFormat2Radio.isChecked()) {
-                    FullscreenActivity.oldchordformat = "2";
-                }
-                if (chordFormat3Radio.isChecked()) {
-                    FullscreenActivity.oldchordformat = "3";
-                }
-                if (chordFormat4Radio.isChecked()) {
-                    FullscreenActivity.oldchordformat = "4";
-                }
-                if (chordFormat5Radio.isChecked()) {
-                    FullscreenActivity.oldchordformat = "5";
-                }
-
-                // Do the transpose
-                try {
-                    Transpose.doTranspose();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                mListener.refreshAll();
-                dismiss();
-            }
-        });
-
         return V;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    public void doTranspose() {
+        // Extract the transpose value and the chord format
 
-        // safety check
-        if (getDialog() == null) {
-            return;
+        if (chordFormat1Radio.isChecked()) {
+            FullscreenActivity.oldchordformat = "1";
+        }
+        if (chordFormat2Radio.isChecked()) {
+            FullscreenActivity.oldchordformat = "2";
+        }
+        if (chordFormat3Radio.isChecked()) {
+            FullscreenActivity.oldchordformat = "3";
+        }
+        if (chordFormat4Radio.isChecked()) {
+            FullscreenActivity.oldchordformat = "4";
+        }
+        if (chordFormat5Radio.isChecked()) {
+            FullscreenActivity.oldchordformat = "5";
         }
 
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        // Do the transpose
+        try {
+            Transpose.doTranspose();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mListener.refreshAll();
+        dismiss();
+    }
 
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
     }
 
 }

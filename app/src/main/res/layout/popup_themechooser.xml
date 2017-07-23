@@ -1,0 +1,1171 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp"
+    android:background="@drawable/popup_bg"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:visibility="visible">
+
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/coloursTable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <TableRow
+                android:id="@+id/tableRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center_vertical"
+                tools:ignore="UselessParent">
+
+                <TextView
+                    android:id="@+id/textView41"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_margin="4dp"
+                    android:layout_weight="0.28"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp"
+                    android:text="@string/item"
+                    style="@style/MyHeadingText" />
+
+                <TextView
+                    android:id="@+id/dark_theme_heading"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="0.18"
+                    android:background="#222"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:minHeight="48dp"
+                    android:text="@string/dark_theme"
+                    android:textColor="#ff0"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/light_theme_heading"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="0.18"
+                    android:background="#222"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:minHeight="48dp"
+                    android:text="@string/light_theme"
+                    style="@style/MyHeadingText" />
+
+                <TextView
+                    android:id="@+id/custom1_theme_heading"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="0.18"
+                    android:background="#222"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:minHeight="48dp"
+                    android:text="@string/custom1_theme"
+                    style="@style/MyHeadingText" />
+
+                <TextView
+                    android:id="@+id/custom2_theme_heading"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="0.18"
+                    android:background="#222"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:minHeight="48dp"
+                    android:text="@string/custom2_theme"
+                    style="@style/MyHeadingText" />
+            </TableRow>
+        </TableLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <TableRow
+                    android:id="@+id/tableRow14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/textView53"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/page_background"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/page_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/page_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/page_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/page_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/textView54"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/lyrics_color"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/lyrics_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/lyrics_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/lyrics_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/lyrics_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/textView55"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/chord_color"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/chords_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/chords_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/chords_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/chords_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow17"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/textView56"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/capo_color"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/capo_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/capo_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/capo_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/capo_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow18"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/textView57"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/verse_background"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/verse_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/verse_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/verse_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/verse_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow19"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/textView58"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/chorus_background"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/chorus_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/chorus_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/chorus_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/chorus_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/textView59"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/prechorus_background"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/prechorus_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/prechorus_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/prechorus_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/prechorus_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow21"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/textView60"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/bridge_background"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/bridge_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/bridge_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/bridge_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/bridge_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow22"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/textView61"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/tag_background"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/tag_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/tag_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/tag_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/tag_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow23"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/textView62"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/custom_background"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/custom_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/custom_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/custom_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/custom_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/textView63"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/comment_background"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/comment_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/comment_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/comment_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/comment_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow24b"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/presoFont"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/presofont_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser"
+                        tools:ignore="TooManyViews" />
+
+                    <ImageView
+                        android:id="@+id/presofont_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presofont_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presofont_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow24c"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/presoInfoFont"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/presoinfofont_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presoinfofont_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presoinfofont_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presoinfofont_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow24d"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/alert"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/presoalertfont_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presoalertfont_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presoalertfont_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presoalertfont_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow24e"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/presoFontShadow"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/presofontshadow_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presofontshadow_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presofontshadow_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/presofontshadow_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/textView64"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/metronome"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/metronome_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser"
+                        tools:ignore="TooManyViews" />
+
+                    <ImageView
+                        android:id="@+id/metronome_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/metronome_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/metronome_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow26"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/textView669"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/pagebuttons"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/pagebuttons_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser"
+                        tools:ignore="TooManyViews" />
+
+                    <ImageView
+                        android:id="@+id/pagebuttons_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/pagebuttons_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/pagebuttons_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow27"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/stickynote_text"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/stickynotes"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/stickytext_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser"
+                        tools:ignore="TooManyViews" />
+
+                    <ImageView
+                        android:id="@+id/stickytext_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/stickytext_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/stickytext_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow28"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/stickynote_bg"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/stickynotes"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/stickybg_dark"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser"
+                        tools:ignore="TooManyViews" />
+
+                    <ImageView
+                        android:id="@+id/stickybg_light"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/stickybg_custom1"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/stickybg_custom2"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+            </TableLayout>
+
+
+            <Button
+                android:id="@+id/resetcolours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="false"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:layout_margin="32dp"
+                android:background="@drawable/red_button"
+                android:text="@string/reset_colours"
+                android:textColor="#fff" />
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</RelativeLayout>

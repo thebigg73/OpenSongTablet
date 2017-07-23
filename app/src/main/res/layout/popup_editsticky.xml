@@ -2,45 +2,120 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/presenter_box_black"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
 
-    <EditText
+    <FrameLayout
+        android:id="@+id/myTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/myTitle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/editStickyText"
-        android:inputType="textAutoCorrect"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/editStickySave"
+        android:inputType="textAutoCorrect|textMultiLine"
+        android:ellipsize="none"
+        android:scrollHorizontally="false"
+        android:minLines="5"
         android:layout_margin="8dp"
         android:hint="@string/stickynotes"
         android:gravity="top|left"
-        android:background="#FCF0AD"
-        android:textColor="#000"
-        android:textColorHint="#555" />
+        style="@style/MyEditText" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/ok"
-        android:id="@+id/editStickySave"
-        android:layout_gravity="right"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/green_button"
-        android:layout_margin="8dp"
-        android:textColor="#fff" />
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/stickyTextSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:drawableLeft="@drawable/ic_format_text_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_format_text_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/size"
+                android:textColor="#ff0"
+                android:textSize="12sp"
+                app:showText="true"
+                app:textAllCaps="false"
+                android:textOff="@string/size_mini"
+                android:textOn="@string/size_normal"
+                app:splitTrack="false"
+                android:thumb="@drawable/switch_button"
+                app:thumbTextPadding="4dp"
+                app:thumbTint="#444488" />
 
-    <Button
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/stickNotesTimeInfo_TextView"
+        style="@style/MyHeadingText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/cancel"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/editStickySave"
-        android:layout_toStartOf="@+id/editStickySave"
-        android:background="@drawable/blue_button"
         android:layout_margin="8dp"
-        android:id="@+id/editStickyCancel"
-        android:textColor="#fff" />
+        android:text="@string/width" />
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/stickyNotesWidth_SeekBar"
+        android:background="@drawable/apptheme_scrubber_primary_holo"
+        android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+        android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="16dp"
+        android:max="800"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/stickyNotesWidth_TextView"
+        android:layout_margin="8dp"
+        android:gravity="center_horizontal"
+        style="@style/MyInfoText" />
+
+            <TextView
+                android:id="@+id/stickyOpacityInfo_TextView"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/preso_alpha" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/stickyNotesOpacity_SeekBar"
+                android:background="@drawable/apptheme_scrubber_primary_holo"
+                android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="16dp"
+                android:max="8"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/stickyNotesOpacity_TextView"
+                android:layout_margin="8dp"
+                android:gravity="center_horizontal"
+                style="@style/MyInfoText" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </RelativeLayout>

@@ -1,45 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:padding="12dp"
-    android:background="@drawable/presenter_box_black">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_bg"
+    android:padding="8dp">
 
-    <TextView
+    <FrameLayout
+        android:id="@+id/myTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/areyousurePrompt"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="#ff0"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_above="@+id/areyousureNoButton" />
+        android:layout_alignParentTop="true">
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/no"
-        android:id="@+id/areyousureNoButton"
-        android:background="@drawable/blue_button"
-        android:layout_toLeftOf="@+id/renameSongOkButton"
-        android:layout_toStartOf="@+id/renameSongOkButton"
-        android:layout_margin="12dp"
-        android:layout_alignParentBottom="true"
-        android:textColor="#fff" />
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/yes"
-        android:id="@+id/renameSongOkButton"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/red_button"
-        android:layout_margin="12dp"
-        android:layout_alignParentBottom="true"
-        android:textColor="#fff" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/areyousurePrompt"
+            style="@style/MyHeadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="12dp" />
+
+    </ScrollView>
+
 </RelativeLayout>

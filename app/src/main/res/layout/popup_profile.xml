@@ -1,209 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="0dp"
+    android:background="@drawable/popup_bg"
     android:orientation="vertical"
-    android:background="@drawable/presenter_box_black"
     android:padding="8dp"
     android:visibility="visible">
 
-
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/myTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
+
+    <ScrollView
         android:id="@+id/profile_overview"
-        android:visibility="visible">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_below="@+id/myTitle">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:visibility="visible">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/profile"
-                android:id="@+id/textView22"
-                android:textSize="18sp"
-                android:textColor="#ff0" />
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/options_song_new"
-                android:id="@+id/profileName_TextView"
-                android:textSize="18sp"
-                android:layout_marginLeft="24dp"
-                android:textColor="#fff" />
-        </LinearLayout>
+                android:layout_margin="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profile"
+                    style="@style/MyHeadingText" />
+
+                <TextView
+                    android:id="@+id/profileName_TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24dp"
+                    android:text="@string/options_song_new"
+                    style="@style/MyWhiteHeadingText" />
+            </LinearLayout>
 
             <TextView
+                android:id="@+id/textView50"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="@string/profile_description"
-                android:id="@+id/textView50"
-                android:layout_margin="8dp" />
+                style="@style/MyInfoText"/>
 
             <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_margin="8dp">
-
-            <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/options_set_load"
-                android:id="@+id/loadProfile_Button"
-                android:background="@drawable/green_button"
-                android:textColor="#fff"
-                android:layout_margin="8dp" />
+                android:gravity="right"
+                android:orientation="horizontal">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/savesong"
-                android:id="@+id/saveProfile_Button"
-                android:background="@drawable/red_button"
-                android:textColor="#fff"
-                android:layout_margin="8dp" />
+                <Button
+                    android:id="@+id/loadProfile_Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/green_button"
+                    android:text="@string/options_set_load"
+                    android:textColor="#fff" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/drawer_close"
-                android:id="@+id/closeProfile_Button"
-                android:layout_margin="8dp"
-                android:background="@drawable/blue_button"
-                android:textColor="#fff" />
+                <Button
+                    android:id="@+id/saveProfile_Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/red_button"
+                    android:text="@string/savesong"
+                    android:textColor="#fff" />
 
-        </LinearLayout>
+
 
             </LinearLayout>
+
+        </LinearLayout>
     </ScrollView>
 
     <RelativeLayout
+        android:id="@+id/profile_save"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/profile_save"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_below="@+id/profile_overview">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/profileName_EditText"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textView51"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="@string/profile_name"
-                android:id="@+id/textView51"
-                android:textColor="#ff0"
-                android:textSize="18sp"
-                android:layout_margin="8dp" />
+                style="@style/MyHeadingText" />
 
             <ListView
+                android:id="@+id/profileFilesSave_ListView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/profileFilesSave_ListView" />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
         <EditText
+            android:id="@+id/profileName_EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/profileName_EditText"
-            android:textColor="#fff"
-            android:textColorHint="#aaa"
+            android:layout_above="@+id/saveButtons"
+            android:layout_margin="8dp"
             android:hint="@string/profile_name"
             android:text="@string/options_song_new"
-            android:layout_margin="8dp"
-            android:layout_above="@+id/saveButtons" />
+            style="@style/MyEditText" />
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:id="@+id/saveButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_margin="8dp"
-            android:id="@+id/saveButtons"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true">
+            android:layout_alignParentRight="true"
+            android:layout_margin="8dp"
+            android:gravity="right"
+            android:orientation="horizontal">
 
             <Button
+                android:id="@+id/cancelSave_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/cancel"
-                android:id="@+id/cancelSave_Button"
                 android:layout_margin="8dp"
                 android:background="@drawable/blue_button"
+                android:text="@string/cancel"
                 android:textColor="#fff" />
 
             <Button
+                android:id="@+id/okSave_Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/ok"
-                android:id="@+id/okSave_Button"
+                android:layout_margin="8dp"
                 android:background="@drawable/green_button"
-                android:textColor="#fff"
-                android:layout_margin="8dp" />
+                android:text="@string/ok"
+                android:textColor="#fff" />
 
         </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/profile_load"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/profile_load"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_below="@+id/profile_save">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/cancelLoad_Button"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textView66"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/profile_choose"
-                android:id="@+id/textView66"
                 android:layout_margin="8dp"
-                android:textColor="#ff0"
-                android:textSize="18sp" />
+                android:text="@string/profile_choose"
+                style="@style/MyHeadingText" />
 
             <ListView
+                android:id="@+id/profileFilesLoad_ListView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/profileFilesLoad_ListView" />
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
         <Button
+            android:id="@+id/cancelLoad_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:id="@+id/cancelLoad_Button"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
             android:layout_margin="8dp"
             android:background="@drawable/blue_button"
-            android:textColor="#fff"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="right"
-            android:layout_alignParentRight="true" />
+            android:text="@string/cancel"
+            android:textColor="#fff" />
 
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

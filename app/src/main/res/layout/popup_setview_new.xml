@@ -2,32 +2,42 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/setlistpage"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
+
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+    <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
+        android:padding="2dp"
         android:scrollbars="vertical"
-        android:layout_above="@+id/helptext"/>
+        android:layout_above="@+id/helptext"
+        android:layout_below="@+id/myTitle"/>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/icons"
-        android:id="@+id/helptext">
+        android:id="@+id/helptext"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/set_manage_click"
             android:id="@+id/helpClickItem_TextView"
-            android:textSize="14sp"
-            android:textColor="#fff"
+            style="@style/MyInfoText"
             android:gravity="center_horizontal" />
 
         <TextView
@@ -35,8 +45,7 @@
             android:layout_height="wrap_content"
             android:text="@string/set_help"
             android:id="@+id/helpDragItem_TextView"
-            android:textSize="14sp"
-            android:textColor="#fff"
+            style="@style/MyInfoText"
             android:gravity="center_horizontal" />
 
         <TextView
@@ -44,7 +53,7 @@
             android:layout_height="wrap_content"
             android:text="@string/set_manage_swipe"
             android:id="@+id/helpSwipeItem_TextView"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="#fff"
             android:gravity="center_horizontal" />
 
@@ -53,8 +62,7 @@
             android:layout_height="wrap_content"
             android:text="@string/select_item_variation"
             android:id="@+id/helpVariationItem_TextView"
-            android:textSize="14sp"
-            android:textColor="#fff"
+            style="@style/MyInfoText"
             android:gravity="center_horizontal" />
     </LinearLayout>
 
@@ -73,43 +81,46 @@
         android:orientation="horizontal"
         android:gravity="right">
 
-
-        <ImageButton
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/info"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/listSetTweetButton"
-            android:layout_margin="4dp"
-            android:src="@drawable/tweet"
-            android:background="@drawable/blue_button"
-            android:cropToPadding="false"
-            android:contentDescription="@string/exportsavedset" />
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            android:src="@drawable/ic_information_outline_white_36dp"
+            app:borderWidth="0dp"
+            android:layout_margin="8dp"
+            app:backgroundTint="@color/grey"/>
 
-        <ImageButton
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/listSetTweetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            app:borderWidth="0dp"
+            android:src="@drawable/ic_twitter_white_36dp"
+            android:layout_margin="8dp"
+            app:backgroundTint="@color/purple"/>
+
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/shuffle"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:background="@drawable/grey_button"
-            android:contentDescription="@string/set_manage_shuffle"
-            android:src="@drawable/ic_action_shuffle" />
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            app:borderWidth="0dp"
+            android:src="@drawable/ic_shuffle_white_36dp"
+            android:layout_margin="8dp"
+            app:backgroundTint="@color/purple"/>
 
-        <Button
-            android:id="@+id/setview_cancel"
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/saveAsProperSet"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:background="@drawable/yellow_button"
-            android:text="@string/cancel"
-            android:textColor="#fff" />
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            app:borderWidth="0dp"
+            android:src="@drawable/ic_content_save_white_36dp"
+            android:layout_margin="8dp"
+            app:backgroundTint="@color/purple"/>
 
-        <Button
-            android:id="@+id/setview_save"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:background="@drawable/green_button"
-            android:text="@string/ok"
-            android:textColor="#fff" />
     </LinearLayout>
     </HorizontalScrollView>
 

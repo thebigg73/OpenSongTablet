@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
+
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_below="@+id/myTitle"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -15,268 +28,249 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:background="@drawable/lyrics_box"
-                android:layout_margin="8dp">
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <ImageButton
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/linkYouTube_ImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/linkYouTube_ImageButton"
-                        android:background="@drawable/grey_button"
-                        android:src="@drawable/action_youtube"
-                        android:padding="5dp"
-                        android:contentDescription="@string/link_youtube" />
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_youtube_play_white_36dp"
+                        app:borderWidth="0dp"
+                        app:backgroundTint="@color/green"
+                        app:fabSize="mini" />
 
                     <TextView
                         android:id="@+id/linkYouTube_Text"
+                        style="@style/MyHeadingText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/link_youtube"
-                        android:textColor="#ff0"
                         android:layout_margin="8dp"
-                        android:gravity="left" />
+                        android:gravity="left"
+                        android:text="@string/link_youtube" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:id="@+id/linkYouTube_EditText"
-                        android:layout_margin="8dp"
-                        android:inputType="text"
-                        android:textSize="14sp"
-                        android:hint="@string/link_choose"
-                        android:layout_weight="1" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
+                        style="@style/MyEditText"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:hint="@string/link_choose"
+                        android:inputType="text" />
+
+                    <android.support.design.widget.FloatingActionButton
                         android:id="@+id/linkYouTubeClear_ImageButton"
-                        android:layout_weight="0"
-                        android:padding="0dp"
-                        android:src="@drawable/ic_action_cancel_white"
-                        android:contentDescription="@string/options_set_clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:onClick="clearYouTube_ImageButton" />
+                        android:src="@drawable/ic_delete_white_36dp"
+                        app:borderWidth="0dp"
+                        app:backgroundTint="@color/grey"
+                        app:fabSize="mini" />
+
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:background="@drawable/lyrics_box">
+                android:background="@drawable/lyrics_box"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <android.support.design.widget.FloatingActionButton
                         android:id="@+id/linkWeb_ImageButton"
-                        android:background="@drawable/grey_button"
-                        android:src="@drawable/ic_action_cloud"
-                        android:padding="5dp"
-                        android:contentDescription="@string/link_web" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_cloud_white_36dp"
+                        app:borderWidth="0dp"
+                        app:backgroundTint="@color/green"
+                        app:fabSize="mini" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/link_web"
                         android:id="@+id/linkWeb"
-                        android:textColor="#ff0"
-                        android:layout_margin="8dp" />
+                        style="@style/MyHeadingText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="@string/link_web" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:id="@+id/linkWeb_EditText"
-                        android:layout_margin="8dp"
-                        android:inputType="text"
-                        android:textSize="14sp"
-                        android:hint="@string/link_choose"
-                        android:layout_weight="1" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
+                        style="@style/MyEditText"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:hint="@string/link_choose"
+                        android:inputType="text" />
+
+                    <android.support.design.widget.FloatingActionButton
                         android:id="@+id/linkWebClear_ImageButton"
-                        android:layout_weight="0"
-                        android:padding="0dp"
-                        android:src="@drawable/ic_action_cancel_white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:contentDescription="@string/options_set_clear"
-                        android:onClick="clearWeb_ImageButton" />
+                        android:src="@drawable/ic_delete_white_36dp"
+                        app:borderWidth="0dp"
+                        app:backgroundTint="@color/grey"
+                        app:fabSize="mini" />
+
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:background="@drawable/lyrics_box">
+                android:background="@drawable/lyrics_box"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <android.support.design.widget.FloatingActionButton
                         android:id="@+id/linkAudio_ImageButton"
-                        android:background="@drawable/grey_button"
-                        android:padding="5dp"
-                        android:src="@drawable/action_song"
-                        android:contentDescription="@string/link_audio" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_music_note_white_36dp"
+                        app:borderWidth="0dp"
+                        app:backgroundTint="@color/green"
+                        app:fabSize="mini" />
 
                     <TextView
+                        android:id="@+id/textView33"
+                        style="@style/MyHeadingText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/link_audio"
-                        android:id="@+id/textView33"
-                        android:textColor="#ff0"
-                        android:layout_margin="8dp" />
+                        android:layout_margin="8dp"
+                        android:text="@string/link_audio" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:id="@+id/linkAudio_EditText"
+                        style="@style/MyEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:inputType="text"
+                        android:layout_weight="1"
                         android:hint="@string/link_choose"
-                        android:textSize="14sp"
-                        android:layout_weight="1" />
+                        android:inputType="text" />
 
-                    <ImageButton
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/linkAudioClear_ImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/linkAudioClear_ImageButton"
-                        android:layout_weight="0"
-                        android:padding="0dp"
-                        android:src="@drawable/ic_action_cancel_white"
                         android:layout_gravity="center_vertical"
-                        android:contentDescription="@string/options_set_clear"
-                        android:onClick="clearAudio_ImageButton" />
+                        android:src="@drawable/ic_delete_white_36dp"
+                        app:borderWidth="0dp"
+                        app:backgroundTint="@color/grey"
+                        app:fabSize="mini" />
+
                 </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:background="@drawable/lyrics_box">
+                android:background="@drawable/lyrics_box"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <ImageButton
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/linkOther_ImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/linkOther_ImageButton"
-                        android:background="@drawable/grey_button"
-                        android:padding="5dp"
-                        android:src="@drawable/ic_action_view_as_list"
-                        android:contentDescription="@string/link_file" />
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_file_xml_white_36dp"
+                        app:borderWidth="0dp"
+                        app:backgroundTint="@color/green"
+                        app:fabSize="mini" />
 
                     <TextView
+                        android:id="@+id/textView35"
+                        style="@style/MyHeadingText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/link_file"
-                        android:id="@+id/textView35"
-                        android:textColor="#ff0"
-                        android:layout_margin="8dp" />
+                        android:layout_margin="8dp"
+                        android:text="@string/link_file" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:id="@+id/linkOther_EditText"
+                        style="@style/MyEditText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:inputType="text"
-                        android:textSize="14sp"
+                        android:layout_weight="1"
                         android:hint="@string/link_choose"
-                        android:layout_weight="1" />
+                        android:inputType="text" />
 
-                    <ImageButton
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/linkOtherClear_ImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/linkOtherClear_ImageButton"
-                        android:layout_weight="0"
-                        android:src="@drawable/ic_action_cancel_white"
-                        android:padding="0dp"
                         android:layout_gravity="center_vertical"
-                        android:contentDescription="@string/options_set_clear"
-                        android:onClick="clearOther_ImageButton" />
+                        android:src="@drawable/ic_delete_white_36dp"
+                        app:borderWidth="0dp"
+                        app:backgroundTint="@color/grey"
+                        app:fabSize="mini" />
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:gravity="right">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/drawer_close"
-                    android:id="@+id/linkClose"
-                    android:background="@drawable/blue_button"
-                    android:layout_margin="8dp"
-                    android:textColor="#fff" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/linkSave"
-                    android:background="@drawable/red_button"
-                    android:layout_margin="8dp"
-                    android:text="@string/savesong"
-                    android:textColor="#fff" />
             </LinearLayout>
 
         </LinearLayout>

@@ -1,15 +1,14 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -19,14 +18,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
-public class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexer {
+class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexer {
 
     Context context;
-    ArrayList<SearchViewItems> searchlist;
-    ArrayList<SearchViewItems> mStringFilterList;
-    ValueFilter valueFilter;
+    private ArrayList<SearchViewItems> searchlist;
+    private ArrayList<SearchViewItems> mStringFilterList;
+    private ValueFilter valueFilter;
     String what;
-    HashMap<String, Integer> mapIndex;
+    private HashMap<String, Integer> mapIndex;
     String[] sections;
 
 
@@ -69,91 +68,89 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable, Sectio
         return searchlist.get(position);
     }
 
+    @SuppressWarnings("SuspiciousMethodCalls")
     @Override
     public long getItemId(int position) {
         return searchlist.indexOf(getItem(position));
     }
 
+    @SuppressLint({"ViewHolder", "InflateParams"})
     @Override
     public View getView(int position , View convertView , ViewGroup parent ) {
 
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
-        convertView = null;
-        if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.searchrow, null);
-            RelativeLayout card_view = (RelativeLayout) convertView.findViewById(R.id.card_view);
-            TextView file_tv = (TextView) convertView.findViewById(R.id.cardview_filename);
-            TextView name_tv = (TextView) convertView.findViewById(R.id.cardview_songtitle);
-            TextView folder_tv = (TextView) convertView.findViewById(R.id.cardview_folder);
-            TextView text_key = (TextView) convertView.findViewById(R.id.text_key);
-            TextView author_tv = (TextView) convertView.findViewById(R.id.cardview_author);
-            TextView key_tv = (TextView) convertView.findViewById(R.id.cardview_key);
-            TextView text_author = (TextView) convertView.findViewById(R.id.text_author);
-            TextView theme_tv = (TextView) convertView.findViewById(R.id.cardview_theme);
-            TextView lyrics_tv = (TextView) convertView.findViewById(R.id.cardview_lyrics);
-            TextView hymnnum_tv = (TextView) convertView.findViewById(R.id.cardview_hymn);
+        convertView = mInflater.inflate(R.layout.searchrow, null);
+        TextView file_tv = (TextView) convertView.findViewById(R.id.cardview_filename);
+        TextView name_tv = (TextView) convertView.findViewById(R.id.cardview_songtitle);
+        TextView folder_tv = (TextView) convertView.findViewById(R.id.cardview_folder);
+        TextView text_key = (TextView) convertView.findViewById(R.id.text_key);
+        TextView author_tv = (TextView) convertView.findViewById(R.id.cardview_author);
+        TextView key_tv = (TextView) convertView.findViewById(R.id.cardview_key);
+        TextView text_author = (TextView) convertView.findViewById(R.id.text_author);
+        TextView theme_tv = (TextView) convertView.findViewById(R.id.cardview_theme);
+        TextView lyrics_tv = (TextView) convertView.findViewById(R.id.cardview_lyrics);
+        TextView hymnnum_tv = (TextView) convertView.findViewById(R.id.cardview_hymn);
 
-            SearchViewItems song = searchlist.get(position);
+        SearchViewItems song = searchlist.get(position);
 
-            if (what.equals("songmenu")) {
-                card_view.setBackgroundColor(0x00000000);
-                name_tv.setTextSize(16.0f);
-                name_tv.setTextColor(0xffffffff);
-                name_tv.setText(song.getTitle());
+        if (what.equals("songmenu")) {
+            //card_view.setBackgroundColor(0x00000000);
+            name_tv.setTextSize(16.0f);
+            //name_tv.setTextColor(0xffffffff);
+            name_tv.setText(song.getTitle());
 
-                author_tv.setText(song.getAuthor());
-                author_tv.setTextSize(10.0f);
-                author_tv.setTextColor(0xffaaaaaa);
+            author_tv.setText(song.getAuthor());
+            author_tv.setTextSize(10.0f);
+            //author_tv.setTextColor(0xffaaaaaa);
 
-                folder_tv.setVisibility(View.GONE);
+            folder_tv.setVisibility(View.GONE);
+            text_author.setVisibility(View.GONE);
+            key_tv.setVisibility(View.GONE);
+            text_key.setVisibility(View.GONE);
+
+        } else {
+
+            // Set the text colours
+            //name_tv.setTextColor(FullscreenActivity.lyricsTextColor);
+            //folder_tv.setTextColor(FullscreenActivity.lyricsChordsColor);
+            //author_tv.setTextColor(FullscreenActivity.lyricsTextColor);
+            //text_author.setTextColor(FullscreenActivity.lyricsTextColor);
+            //key_tv.setTextColor(FullscreenActivity.lyricsTextColor);
+            //text_key.setTextColor(FullscreenActivity.lyricsTextColor);
+
+            // Set the background colour
+            //card_view.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
+            //card_view.setBackgroundResource(R.drawable.section_box);
+            //GradientDrawable drawable = (GradientDrawable) card_view.getBackground();
+            //drawable.setColor(FullscreenActivity.lyricsBackgroundColor);
+
+            file_tv.setText(song.getFilename());
+            name_tv.setText(song.getTitle());
+            folder_tv.setText(song.getFolder());
+            author_tv.setText(song.getAuthor());
+            key_tv.setText(song.getKey());
+            theme_tv.setText(song.getTheme());
+            lyrics_tv.setText(song.getLyrics());
+            hymnnum_tv.setText(song.getHymnnum());
+
+            // Hide the empty stuff
+            if (song.getAuthor().equals("")) {
                 text_author.setVisibility(View.GONE);
-                key_tv.setVisibility(View.GONE);
-                text_key.setVisibility(View.GONE);
-
+                author_tv.setVisibility(View.GONE);
             } else {
-
-                // Set the text colours
-                name_tv.setTextColor(FullscreenActivity.lyricsTextColor);
-                folder_tv.setTextColor(FullscreenActivity.lyricsChordsColor);
-                author_tv.setTextColor(FullscreenActivity.lyricsTextColor);
-                text_author.setTextColor(FullscreenActivity.lyricsTextColor);
-                key_tv.setTextColor(FullscreenActivity.lyricsTextColor);
-                text_key.setTextColor(FullscreenActivity.lyricsTextColor);
-
-                // Set the background colour
-                card_view.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
-                card_view.setBackgroundResource(R.drawable.section_box);
-                GradientDrawable drawable = (GradientDrawable) card_view.getBackground();
-                drawable.setColor(FullscreenActivity.lyricsBackgroundColor);
-
-                file_tv.setText(song.getFilename());
-                name_tv.setText(song.getTitle());
-                folder_tv.setText(song.getFolder());
-                author_tv.setText(song.getAuthor());
-                key_tv.setText(song.getKey());
-                theme_tv.setText(song.getTheme());
-                lyrics_tv.setText(song.getLyrics());
-                hymnnum_tv.setText(song.getHymnnum());
-
-                // Hide the empty stuff
-                if (song.getAuthor().equals("")) {
-                    text_author.setVisibility(View.GONE);
-                    author_tv.setVisibility(View.GONE);
-                } else {
-                    text_author.setVisibility(View.VISIBLE);
-                    author_tv.setVisibility(View.VISIBLE);
-                }
-                if (song.getKey().equals("")) {
-                    text_key.setVisibility(View.GONE);
-                    key_tv.setVisibility(View.GONE);
-                } else {
-                    text_key.setVisibility(View.VISIBLE);
-                    key_tv.setVisibility(View.VISIBLE);
-                }
-
+                text_author.setVisibility(View.VISIBLE);
+                author_tv.setVisibility(View.VISIBLE);
             }
+            if (song.getKey().equals("")) {
+                text_key.setVisibility(View.GONE);
+                key_tv.setVisibility(View.GONE);
+            } else {
+                text_key.setVisibility(View.VISIBLE);
+                key_tv.setVisibility(View.VISIBLE);
+            }
+
         }
         return convertView;
     }
@@ -181,8 +178,29 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable, Sectio
     }
 
     @Override
+    public void notifyDataSetInvalidated() {
+        super.notifyDataSetInvalidated();
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
+
+    @SuppressWarnings("SuspiciousMethodCalls")
+    @Override
     public int getSectionForPosition(int i) {
-        return 0;
+        try {
+            if (mapIndex!=null && i>-1 && mapIndex.size()>i) {
+                return mapIndex.get(i);
+            } else {
+                return 0;
+            }
+        } catch (Exception e) {
+            return 0;
+        }
+
+        //return i;
     }
 
     private class ValueFilter extends Filter {
@@ -219,11 +237,45 @@ public class SearchViewAdapter extends BaseAdapter implements Filterable, Sectio
 
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint,
                                       FilterResults results) {
             searchlist = (ArrayList<SearchViewItems>) results.values;
-            notifyDataSetChanged();
+            updateListIndex(searchlist);
+            // Let the adapter know about the updated list
+            if (results.count > 0) {
+                notifyDataSetChanged();
+            } else {
+                notifyDataSetInvalidated();
+            }
         }
+
+    }
+
+    private void updateListIndex(ArrayList<SearchViewItems> results) {
+
+        mapIndex = new LinkedHashMap<>();
+
+        for (int x = 0; x < results.size(); x++) {
+            String title = results.get(x).getTitle();
+            String ch = title.substring(0, 1);
+            ch = ch.toUpperCase(FullscreenActivity.locale);
+
+            // HashMap will prevent duplicates
+            mapIndex.put(ch, x);
+        }
+
+        Set<String> sectionLetters = mapIndex.keySet();
+
+        // create a list from the set to sort
+        ArrayList<String> sectionList = new ArrayList<>(sectionLetters);
+
+        Collections.sort(sectionList);
+
+        sections = new String[sectionList.size()];
+
+        sectionList.toArray(sections);
+
     }
 }

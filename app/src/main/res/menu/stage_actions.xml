@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <item android:id="@+id/set_back"
-        android:icon="@drawable/ic_chevron_left_white_36dp"
-        android:title="@string/set_back"
-        app:showAsAction="always"/>
-
-    <item android:id="@+id/set_forward"
-        android:icon="@drawable/ic_chevron_right_white_36dp"
-        android:title="@string/set_forward"
-        app:showAsAction="always"/>
 
     <item android:id="@+id/action_search"
         android:icon="@drawable/ic_music_note_white_36dp"
         android:title="@string/action_search"
-        app:showAsAction="always"/>
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
 
     <!-- Show Options -->
     <item android:id="@+id/action_settings"
@@ -35,48 +27,46 @@
         android:title="@string/add_song_to_set"
         app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/song_share"
+    <item android:id="@+id/media_route_menu_item"
+        android:title="Chromecast"
+        app:actionProviderClass="android.support.v7.app.MediaRouteActionProvider"
+        app:showAsAction="always" />
+
+<!--    <item android:id="@+id/song_share"
         android:icon="@drawable/ic_share_variant_white_36dp"
         android:title="@string/options_song_export"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"/>-->
 
-    <item android:id="@+id/youtube_websearch"
+<!--    <item android:id="@+id/youtube_websearch"
         android:title="@string/youtube"
         android:icon="@drawable/ic_youtube_play_white_36dp"
         android:label="@string/youtube"
         android:hint="@string/youtube"
-        app:showAsAction="never"/>
+        app:showAsAction="never"/>-->
 
+<!--
     <item android:id="@+id/web_search"
         android:title="@string/websearch"
         android:icon="@drawable/ic_cloud_white_36dp"
         android:label="@string/websearch"
         android:hint="@string/websearch"
         app:showAsAction="never"/>
-
-    <item android:id="@+id/chordie_websearch"
-        android:title="@string/chordiesearch"
-        android:icon="@drawable/ic_cloud_white_36dp"
-        android:label="@string/chordiesearch"
-        android:hint="@string/chordiesearch"
-        app:showAsAction="never"/>
-
-    <item android:id="@+id/ultimateguitar_websearch"
-        android:title="@string/ultimateguitarsearch"
-        android:icon="@drawable/ic_cloud_white_36dp"
-        android:label="@string/ultimateguitarsearch"
-        android:hint="@string/ultimateguitarsearch"
-        app:showAsAction="never"/>
+    
 
     <item android:id="@+id/perform_mode"
         android:icon="@drawable/ic_microphone_variant_white_36dp"
         android:title="@string/switchtoperformmode"
         app:showAsAction="ifRoom"/>
 
+    <item android:id="@+id/stage_mode"
+        android:icon="@drawable/ic_lan_connect_white_36dp"
+        android:title="@string/switchtostagemode"
+        app:showAsAction="ifRoom"/>
+
     <item android:id="@+id/present_mode"
         android:icon="@drawable/ic_projector_white_36dp"
         android:title="@string/switchtopresentmode"
         app:showAsAction="ifRoom"/>
-
+-->
 
 </menu>

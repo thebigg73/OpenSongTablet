@@ -1,15 +1,15 @@
 package com.garethevans.church.opensongtablet;
 
+import android.content.Context;
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import android.app.Activity;
-import android.util.Log;
+class UsrConvert {
 
-public class UsrConvert extends Activity {
-
-    public static boolean doExtract() throws IOException {
+    static boolean doExtract(Context c) throws IOException {
 
         // This is called when a usr format song has been loaded.
         // This tries to extract the relevant stuff and reformat the
@@ -88,16 +88,16 @@ public class UsrConvert extends Activity {
             if (line[x].contains("Fields=")) {
                 tempfields = line[x].replace("Fields=","");
                 // Replace known fields
-                tempfields = tempfields.replace(FullscreenActivity.tag_bridge+" ","B");
-                tempfields = tempfields.replace(FullscreenActivity.tag_bridge,"B");
-                tempfields = tempfields.replace(FullscreenActivity.tag_prechorus+" ","P");
-                tempfields = tempfields.replace(FullscreenActivity.tag_prechorus,"B");
-                tempfields = tempfields.replace(FullscreenActivity.tag_chorus+" ","C");
-                tempfields = tempfields.replace(FullscreenActivity.tag_chorus,"C");
-                tempfields = tempfields.replace(FullscreenActivity.tag_verse+" ","V");
-                tempfields = tempfields.replace(FullscreenActivity.tag_verse,"V");
-                tempfields = tempfields.replace(FullscreenActivity.tag_tag+" ","T");
-                tempfields = tempfields.replace(FullscreenActivity.tag_tag,"T");
+                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_bridge)+" ","B");
+                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_bridge),"B");
+                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_prechorus)+" ","P");
+                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_prechorus),"B");
+                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_chorus)+" ","C");
+                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_chorus),"C");
+                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_verse)+" ","V");
+                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_verse),"V");
+                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_tag)+" ","T");
+                tempfields = tempfields.replace(c.getResources().getString(R.string.tag_tag),"T");
             }
 
             // If line has words, grab it
@@ -133,16 +133,16 @@ public class UsrConvert extends Activity {
                 }
                 String newtag = customtag;
                 // Replace any know custom tags
-                newtag = newtag.replace(FullscreenActivity.tag_bridge+" ","B");
-                newtag = newtag.replace(FullscreenActivity.tag_bridge,"B");
-                newtag = newtag.replace(FullscreenActivity.tag_prechorus+" ","P");
-                newtag = newtag.replace(FullscreenActivity.tag_prechorus,"B");
-                newtag = newtag.replace(FullscreenActivity.tag_chorus+" ","C");
-                newtag = newtag.replace(FullscreenActivity.tag_chorus,"C");
-                newtag = newtag.replace(FullscreenActivity.tag_verse+" ","V");
-                newtag = newtag.replace(FullscreenActivity.tag_verse,"V");
-                newtag = newtag.replace(FullscreenActivity.tag_tag+" ","T");
-                newtag = newtag.replace(FullscreenActivity.tag_tag,"T");
+                newtag = newtag.replace(c.getResources().getString(R.string.tag_bridge)+" ","B");
+                newtag = newtag.replace(c.getResources().getString(R.string.tag_bridge),"B");
+                newtag = newtag.replace(c.getResources().getString(R.string.tag_prechorus)+" ","P");
+                newtag = newtag.replace(c.getResources().getString(R.string.tag_prechorus),"B");
+                newtag = newtag.replace(c.getResources().getString(R.string.tag_chorus)+" ","C");
+                newtag = newtag.replace(c.getResources().getString(R.string.tag_chorus),"C");
+                newtag = newtag.replace(c.getResources().getString(R.string.tag_verse)+" ","V");
+                newtag = newtag.replace(c.getResources().getString(R.string.tag_verse),"V");
+                newtag = newtag.replace(c.getResources().getString(R.string.tag_tag)+" ","T");
+                newtag = newtag.replace(c.getResources().getString(R.string.tag_tag),"T");
                 sections[s] = sections[s].replace(customtag, newtag);
 
             } else {
@@ -272,7 +272,7 @@ public class UsrConvert extends Activity {
         FullscreenActivity.songfilename = newSongTitle;
 
         // Load the songs
-        ListSongFiles.listSongs();
+        ListSongFiles.getAllSongFiles();
 
         // Get the song indexes
         ListSongFiles.getCurrentSongIndex();

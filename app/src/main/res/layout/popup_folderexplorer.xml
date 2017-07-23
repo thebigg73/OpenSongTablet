@@ -1,62 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <FrameLayout
+        android:id="@+id/myTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:id="@+id/upFolderButton"
-            android:src="@android:drawable/ic_menu_upload"
-            android:contentDescription="@string/abc_action_bar_up_description" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/storage_int"
-            android:id="@+id/currentFolderText"
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:singleLine="false"
-            android:gravity="center_vertical|right" />
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/ll"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_margin="8dp"
-        android:gravity="right">
+        android:layout_below="@+id/myTitle">
 
-        <Button
+        <android.support.design.widget.FloatingActionButton
+            app:fabSize="mini"
+            app:backgroundTint="@color/blue"
+            app:borderWidth="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"
-            android:id="@+id/folderChooseCancel"
-            android:layout_margin="8dp"
-            android:background="@drawable/blue_button"
-            android:textColor="#fff" />
+            android:id="@+id/upFolderButton"
+            android:src="@drawable/ic_upload_white_36dp" />
 
-        <Button
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/folderChooseOk"
-            android:background="@drawable/green_button"
-            android:layout_margin="8dp"
-            android:text="@string/ok"
-            android:textColor="#fff" />
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/storage_int"
+                android:id="@+id/currentFolderText"
+                style="@style/MyWhiteHeadingText"
+                android:gravity="center_vertical|right" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/storage_notwritable"
+                android:id="@+id/isWritableText"
+                style="@style/MyInfoText"
+                android:gravity="center_vertical|right"
+                android:visibility="invisible"/>
+
+        </LinearLayout>
     </LinearLayout>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/folderListView" />
+        android:id="@+id/folderListView"
+        android:layout_below="@+id/ll"/>
 
-</LinearLayout>
+</RelativeLayout>

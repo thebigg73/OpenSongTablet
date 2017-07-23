@@ -1,167 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/presenter_box_black"
+    android:layout_height="match_parent"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
 
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/myTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView8"
-        android:layout_above="@+id/savePopupFont">
+        android:layout_alignParentTop="true">
+
+        <include layout="@layout/popup_dialogtitle" />
+    </FrameLayout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/chooselyricfont"
                 android:id="@+id/textView19"
-                android:layout_margin="8dp"
-                android:textColor="#ff0" />
-
-            <Spinner
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/chooselyricfont" />
+
+            <Spinner
                 android:id="@+id/lyricsFontSpinner"
+                style="@style/MySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="8dp" />
 
             <TextView
+                android:id="@+id/textView20"
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/choosechordfont"
-                android:id="@+id/textView20"
                 android:layout_margin="8dp"
-                android:textColor="#ff0" />
+                android:text="@string/choosechordfont" />
 
             <Spinner
+                android:id="@+id/chordsFontSpinner"
+                style="@style/MySpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/chordsFontSpinner"
                 android:layout_margin="8dp" />
 
             <TextView
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/textView47"
                 android:layout_margin="8dp"
-                android:textColor="#ff0"
+                android:text="@string/presoFont" />
+
+            <Spinner
+                android:id="@+id/presoFontSpinner"
+                style="@style/MySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp" />
+
+            <TextView
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/presoInfoFont" />
+
+            <Spinner
+                android:id="@+id/presoInfoFontSpinner"
+                style="@style/MySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp" />
+
+            <TextView
+                android:id="@+id/textView47"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="@string/headingline_scale" />
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <SeekBar
+                    android:id="@+id/scaleHeading_SeekBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/scaleHeading_SeekBar"
-                    android:layout_weight="0.7"
                     android:layout_margin="8dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                    android:layout_weight="1"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                     android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                 <TextView
+                    android:id="@+id/scaleHeading_TextView"
+                    style="@style/MyInfoText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/scaleHeading_TextView"
-                    android:layout_weight="0.3"
                     android:layout_margin="8dp" />
             </LinearLayout>
 
             <TextView
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/textView45"
                 android:layout_margin="8dp"
-                android:textColor="#ff0"
+                android:text="@string/chordline_scale" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <SeekBar
+                    android:id="@+id/scaleChords_SeekBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                <TextView
+                    android:id="@+id/scaleChords_TextView"
+                    style="@style/MyInfoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView45"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="@string/commentline_scale" />
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <SeekBar
+                    android:id="@+id/scaleComment_SeekBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/scaleComment_SeekBar"
-                    android:layout_weight="0.7"
                     android:layout_margin="8dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                    android:layout_weight="1"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                     android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                 <TextView
+                    android:id="@+id/scaleComment_TextView"
+                    style="@style/MyInfoText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/scaleComment_TextView"
-                    android:layout_weight="0.3"
                     android:layout_margin="8dp" />
 
             </LinearLayout>
 
             <TextView
+                android:id="@+id/textView21"
+                style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/textView21"
-                android:text="@string/linespacing"
                 android:layout_margin="8dp"
-                android:textColor="#ff0" />
+                android:text="@string/linespacing" />
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <SeekBar
+                    android:id="@+id/lineSpacingSeekBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/lineSpacingSeekBar"
-                    android:layout_weight="0.7"
                     android:layout_margin="8dp"
-                    android:background="@drawable/apptheme_scrubber_primary_holo_bright"
-                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo_bright"
+                    android:layout_weight="1"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
                     android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
                 <TextView
+                    android:id="@+id/lineSpacingText"
+                    style="@style/MyInfoText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:id="@+id/lineSpacingText"
-                    android:layout_weight="0.3"
                     android:layout_margin="8dp" />
             </LinearLayout>
 
             <TableLayout
+                android:id="@+id/songPreview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:id="@+id/songPreview">
+                android:layout_margin="8dp">
 
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tag_verse"
                         android:id="@+id/headingPreview"
-                        android:textColor="#000" />
+                        style="@style/MyInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tag_verse" />
                 </TableRow>
 
                 <TableRow
@@ -169,20 +229,18 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/font_chords_line1"
                         android:id="@+id/chordPreview1"
-                        android:textColor="#00f" />
-
-                    <TextView
+                        style="@style/MyHeadingText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/font_chords_line2"
+                        android:text="@string/font_chords_line1" />
+
+                    <TextView
                         android:id="@+id/chordPreview2"
-                        android:textColor="#00f" />
+                        style="@style/MyHeadingText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/font_chords_line2" />
                 </TableRow>
 
                 <TableRow
@@ -190,20 +248,18 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/font_lyrics_line1"
                         android:id="@+id/lyricsPreview1"
-                        android:textColor="#000" />
-
-                    <TextView
+                        style="@style/MyWhiteHeadingText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/font_lyrics_line2"
+                        android:text="@string/font_lyrics_line1" />
+
+                    <TextView
                         android:id="@+id/lyricsPreview2"
-                        android:textColor="#000" />
+                        style="@style/MyWhiteHeadingText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/font_lyrics_line2" />
                 </TableRow>
 
                 <TableRow
@@ -211,28 +267,17 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/commentPreview"
+                        style="@style/MyWhiteHeadingText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Repeat x2"
-                        android:id="@+id/commentPreview"
-                        android:textColor="#000" />
+                        android:text="Repeat x2" />
                 </TableRow>
 
             </TableLayout>
 
         </LinearLayout>
+
     </ScrollView>
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_save"
-        android:id="@+id/savePopupFont"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="8dp"
-        android:background="@drawable/green_button"
-        android:textColor="#fff" />
 </RelativeLayout>

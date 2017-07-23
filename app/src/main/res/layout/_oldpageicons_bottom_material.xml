@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView android:id="@+id/bottombar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/padbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            app:useCompatPadding="true"
+            app:fabSize="mini"
+            android:src="@drawable/ic_amplifier_white_36dp"
+            android:alpha="0.4"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/autoscroll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_toRightOf="@id/padbutton"
+            android:layout_toEndOf="@id/padbutton"
+            android:layout_margin="4dp"
+            app:fabSize="mini"
+            android:src="@drawable/ic_rotate_right_white_36dp"
+            android:alpha="0.4"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/metronomebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_toRightOf="@id/autoscroll"
+            android:layout_toEndOf="@id/autoscroll"
+            android:layout_margin="4dp"
+            app:fabSize="mini"
+            android:src="@drawable/ic_pulse_white_36dp"
+            android:alpha="0.4"/>
+
+
+<!--
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/uparrow_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_toRightOf="@id/metronomebutton"
+            android:layout_toEndOf="@id/metronomebutton"
+            android:layout_margin="4dp"
+            app:fabSize="mini"
+            android:src="@drawable/ic_arrow_up_white_48dp"
+            android:onClick="doScrollUp"
+            android:alpha="0.4"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/downarrow_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_toRightOf="@id/uparrow_bottom"
+            android:layout_toEndOf="@id/uparrow_bottom"
+            android:layout_margin="4dp"
+            app:fabSize="mini"
+            android:src="@drawable/ic_arrow_down_white_48dp"
+            android:onClick="doScrollDown"
+            android:alpha="0.4"/>
+
+-->
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/pageselect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_toRightOf="@id/metronomebutton"
+            android:layout_toEndOf="@id/metronomebutton"
+            android:layout_margin="4dp"
+            app:fabSize="mini"
+            android:src="@drawable/ic_book_white_36dp"
+            android:onClick="pdfSelectPage"
+            android:alpha="0.4"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/stickynotes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_toRightOf="@id/metronomebutton"
+            android:layout_toEndOf="@id/metronomebutton"
+            android:layout_margin="4dp"
+            app:fabSize="mini"
+            android:src="@drawable/ic_comment_text_white_36dp"
+            android:onClick="stickyNotes"
+            android:alpha="0.4"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/chordbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_toRightOf="@id/stickynotes"
+            android:layout_toEndOf="@id/stickynotes"
+            android:layout_margin="4dp"
+            app:fabSize="mini"
+            android:src="@drawable/ic_guitar_electric_white_36dp"
+            android:onClick="popupChords_toggle"
+            android:alpha="0.4"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/linkbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_toRightOf="@id/chordbutton"
+            android:layout_toEndOf="@id/chordbutton"
+            android:layout_margin="4dp"
+            app:fabSize="mini"
+            android:src="@drawable/ic_link_white_36dp"
+            android:onClick="popupLink"
+            android:alpha="0.4"/>
+
+    </RelativeLayout>
+</HorizontalScrollView>

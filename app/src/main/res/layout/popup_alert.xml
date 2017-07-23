@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/presenter_box_black"
+    android:background="@drawable/popup_bg"
     android:padding="8dp">
+
+    <FrameLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        <include layout="@layout/popup_dialogtitle"/>
+    </FrameLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView3"
         android:layout_above="@+id/alertToggleButton"
-        android:layout_alignParentTop="true">
+        android:layout_below="@+id/myTitle">
 
         <LinearLayout
             android:orientation="vertical"
@@ -20,10 +29,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                style="@style/MyHeadingText"
                 android:text="@string/alert_text"
-                android:id="@+id/alert_title"
-                android:textColor="#ff0" />
+                android:id="@+id/alert_title" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -31,27 +39,22 @@
                 android:id="@+id/alertMessage"
                 android:hint="@string/alert_text"
                 android:inputType="textAutoComplete|textAutoCorrect"
-                android:singleLine="true" />
+                android:maxLines="1"
+                style="@style/MyEditText" />
         </LinearLayout>
     </ScrollView>
 
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <android.support.v7.widget.SwitchCompat
         android:id="@+id/alertToggleButton"
-        android:layout_above="@+id/alertClose"
-        android:layout_centerHorizontal="true"
-        android:textColor="#fff" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+        android:text="@string/options_display"
+        android:padding="8dp"
+        style="@style/MyHeadingText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/drawer_close"
-        android:id="@+id/alertClose"
+        android:layout_margin="8dp"
+        android:theme="@style/SwitchStyle"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/blue_button"
         android:textColor="#fff" />
 
 </RelativeLayout>

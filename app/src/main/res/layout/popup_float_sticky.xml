@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/stickyfloat"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/popup_sticky">
+
+    <LinearLayout
+        android:id="@+id/myTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:gravity="right">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/closeMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:useCompatPadding="true"
+            android:padding="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="4dp"
+            app:elevation="0dp"
+            app:fabSize="mini"
+            app:backgroundTint="@color/red"
+            app:borderWidth="0dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_close_white_36dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/mySticky"
+        style="@style/MyInfoText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/myTitle"
+        android:contentDescription="@string/stickynotes"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="8dp"
+        android:minLines="5"
+        android:ellipsize="none"
+        android:scrollHorizontally="false"
+        android:text="@string/pageturn_instructions"
+        android:textColor="#000" />
+
+</RelativeLayout>

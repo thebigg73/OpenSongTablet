@@ -6,37 +6,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    card_view:cardCornerRadius="4dp"
-    android:layout_margin="4dp">
+    card_view:contentPadding="2dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardBackgroundColor="@color/dark"
+    android:layout_margin="2dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
         android:id="@+id/cardview_layout">
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/cardview_icon"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="2dp"
+            android:layout_width="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             app:fabSize="mini"
-            android:src="@drawable/ic_amplifier_white_24dp"
+            app:borderWidth="0dp"
+            app:backgroundTint="@color/grey"
+            android:src="@drawable/ic_amplifier_white_36dp"
             android:alpha="0.8"
             android:layout_alignParentStart="true"
-            />
-        <!--<ImageView-->
-            <!--android:id="@+id/cardview_icon"-->
-            <!--android:layout_margin="4dp"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentTop="true"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:contentDescription="@string/title" />-->
+            android:id="@+id/cardview_icon" />
 
         <TextView
             android:id="@+id/cardview_item"
@@ -46,12 +37,10 @@
             android:layout_toRightOf="@id/cardview_icon"
             android:layout_toEndOf="@id/cardview_icon"
             android:text="@string/title"
-            android:textColor="#006"
-            android:textSize="18sp"
+            style="@style/MyWhiteHeadingText"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="0dp"
             android:layout_marginRight="8dp"/>
-
 
         <TextView
             android:id="@+id/cardview_songtitle"
@@ -62,8 +51,7 @@
             android:layout_toEndOf="@id/cardview_item"
             android:gravity="center_vertical"
             android:text="@string/title"
-            android:textColor="#000"
-            android:textSize="18sp"
+            style="@style/MyWhiteHeadingText"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="0dp"
             android:layout_marginRight="8dp"
@@ -79,8 +67,7 @@
             android:layout_toEndOf="@id/cardview_item"
             android:gravity="center_vertical"
             android:text="@string/mainfoldername"
-            android:textColor="#006"
-            android:textSize="16sp"
+            style="@style/MyInfoText"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="0dp"
             android:layout_marginRight="8dp"

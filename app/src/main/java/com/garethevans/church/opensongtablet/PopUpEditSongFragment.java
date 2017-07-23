@@ -2,13 +2,15 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,8 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFolderCreateFragment.MyInterface,
-    PopUpPresentationOrderFragment.MyInterface {
+public class PopUpEditSongFragment extends DialogFragment implements PopUpPresentationOrderFragment.MyInterface {
 
     static PopUpEditSongFragment newInstance() {
         PopUpEditSongFragment frag;
@@ -113,22 +114,15 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
     CheckBox edit_song_theme_worship_prayer_devotion;
     CheckBox edit_song_theme_worship_provision_deliverance;
     CheckBox edit_song_theme_worship_thankfulness;
-    static LinearLayout generalSettings;
-    static LinearLayout advancedSettings;
+    LinearLayout generalSettings;
+    LinearLayout advancedSettings;
 
     // Buttons
-    static Button cancelEdit;
-    static Button saveEdit;
-    static Button toggleGeneralAdvanced;
+    Button toggleGeneralAdvanced;
 
     static int temposlider;
-    static View V;
-
-    @Override
-    public void refreshAll() {
-        // Called when the user creates a new folder
-        // Refresh the folder spinner and select the new one by default
-    }
+    View V;
+    String title;
 
     @Override
     public void updatePresentationOrder() {
@@ -155,9 +149,50 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getDialog().getWindow() != null) {
+            getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().setTitle(getActivity().getResources().getString(R.string.options_song_edit));
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setCanceledOnTouchOutside(true);
+
         V = inflater.inflate(R.layout.popup_editsong, container, false);
+
+        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        title.setText(getActivity().getResources().getString(R.string.options_song_edit));
+        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(closeMe,getActivity());
+                closeMe.setEnabled(false);
+                cancelEdit();
+            }
+        });
+        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(saveMe,getActivity());
+                saveMe.setEnabled(false);
+                saveEdit();
+            }
+        });
 
         // Initialise the basic views
         edit_song_title = (EditText) V.findViewById(R.id.edit_song_title);
@@ -185,8 +220,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         edit_song_notes = (EditText) V.findViewById(R.id.edit_song_notes);
         edit_song_lyrics = (EditText) V.findViewById(R.id.edit_song_lyrics);
         edit_song_lyrics.setHorizontallyScrolling(true);
-        cancelEdit = (Button) V.findViewById(R.id.cancel_edit);
-        saveEdit = (Button) V.findViewById(R.id.save_edit);
         toggleGeneralAdvanced = (Button) V.findViewById(R.id.show_general_advanced);
         generalSettings = (LinearLayout) V.findViewById(R.id.general_settings);
 
@@ -252,23 +285,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         edit_song_theme_worship_thankfulness = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_thankfulness);
         advancedSettings = (LinearLayout) V.findViewById(R.id.advanced_settings);
 
-        edit_song_title.requestFocus();
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-
         // Listeners for the buttons
-        cancelEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Load the song back up with the default values
-                try {
-                    LoadXML.loadXML();
-                } catch (XmlPullParserException | IOException e) {
-                    e.printStackTrace();
-                }
-                dismiss();
-            }
-        });
-
         toggleGeneralAdvanced.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -326,249 +343,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
             }
         });
 
-        saveEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // Go through the fields and save them
-                // Get the variables
-                // Set the newtext to the FullscreenActivity variables
-                FullscreenActivity.mTitle = edit_song_title.getText().toString();
-                FullscreenActivity.mAuthor = edit_song_author.getText().toString();
-                FullscreenActivity.mCopyright = edit_song_copyright.getText().toString();
-                FullscreenActivity.mLyrics = edit_song_lyrics.getText().toString();
-                FullscreenActivity.mPresentation = edit_song_presentation.getText().toString();
-                FullscreenActivity.mHymnNumber = edit_song_hymn.getText().toString();
-                FullscreenActivity.mCCLI = edit_song_CCLI.getText().toString();
-                FullscreenActivity.mUser1 = edit_song_user1.getText().toString();
-                FullscreenActivity.mUser2 = edit_song_user2.getText().toString();
-                FullscreenActivity.mUser3 = edit_song_user3.getText().toString();
-                FullscreenActivity.mAka = edit_song_aka.getText().toString();
-                FullscreenActivity.mKeyLine = edit_song_key_line.getText().toString();
-                FullscreenActivity.mKey = edit_song_key.getItemAtPosition(edit_song_key.getSelectedItemPosition()).toString();
-                FullscreenActivity.mDuration = edit_song_duration.getText().toString();
-                int predelayval = predelay_SeekBar.getProgress();
-                if (predelayval==0) {
-                    FullscreenActivity.mPreDelay = "";
-                } else {
-                    FullscreenActivity.mPreDelay = ""+(predelayval-1);
-                }
-                FullscreenActivity.mBooks = edit_song_books.getText().toString();
-                FullscreenActivity.mMidi = edit_song_midi.getText().toString();
-                FullscreenActivity.mMidiIndex = edit_song_midi_index.getText().toString();
-                FullscreenActivity.mPitch = edit_song_pitch.getText().toString();
-                FullscreenActivity.mRestrictions = edit_song_restrictions.getText().toString();
-                FullscreenActivity.mNotes = edit_song_notes.getText().toString();
-                FullscreenActivity.mPadFile = edit_song_pad_file.getItemAtPosition(edit_song_pad_file.getSelectedItemPosition()).toString();
-
-                FullscreenActivity.mCapo = edit_song_capo.getItemAtPosition(edit_song_capo.getSelectedItemPosition()).toString();
-                int tempmCapoPrint = edit_song_capo_print.getSelectedItemPosition();
-                if (tempmCapoPrint==1) {
-                    FullscreenActivity.mCapoPrint="true";
-                } else if (tempmCapoPrint==2) {
-                    FullscreenActivity.mCapoPrint="false";
-                } else {
-                    FullscreenActivity.mCapoPrint="";
-                }
-                int valoftempobar = edit_song_tempo.getProgress() + 39;
-                if (valoftempobar>39) {
-                    FullscreenActivity.mTempo = ""+valoftempobar;
-                } else {
-                    FullscreenActivity.mTempo = "";
-                }
-                FullscreenActivity.mTimeSig = edit_song_timesig.getItemAtPosition(edit_song_timesig.getSelectedItemPosition()).toString();
-
-                FullscreenActivity.mTheme = "";
-
-                if (edit_song_theme_christ_attributes.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_christ_attributes.getText().toString() + "; ";
-                }
-                if (edit_song_theme_christ_birth.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_christ_birth.getText().toString() + "; ";
-                }
-                if (edit_song_theme_christ_death_atonement.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_christ_death_atonement.getText().toString() + "; ";
-                }
-                if (edit_song_theme_christ_love_mercy.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_christ_love_mercy.getText().toString() + "; ";
-                }
-                if (edit_song_theme_christ_power_majesty.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_christ_power_majesty.getText().toString() + "; ";
-                }
-                if (edit_song_theme_christ_resurrection.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_christ_resurrection.getText().toString() + "; ";
-                }
-                if (edit_song_theme_christ_second_coming.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_christ_second_coming.getText().toString() + "; ";
-                }
-                if (edit_song_theme_christ_victory.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_christ_victory.getText().toString() + "; ";
-                }
-
-                if (edit_song_theme_church_commitment_obedience.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_church_commitment_obedience.getText().toString() + "; ";
-                }
-                if (edit_song_theme_church_country.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_church_country.getText().toString() + "; ";
-                }
-                if (edit_song_theme_church_eternal_life_heaven.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_church_eternal_life_heaven.getText().toString() + "; ";
-                }
-                if (edit_song_theme_church_evangelism.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_church_evangelism.getText().toString() + "; ";
-                }
-                if (edit_song_theme_church_family_fellowship.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_church_family_fellowship.getText().toString() + "; ";
-                }
-                if (edit_song_theme_church_fellowship_w_god.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_church_fellowship_w_god.getText().toString() + "; ";
-                }
-                if (edit_song_theme_church_purity_holiness.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_church_purity_holiness.getText().toString() + "; ";
-                }
-                if (edit_song_theme_church_renewal.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_church_renewal.getText().toString() + "; ";
-                }
-                if (edit_song_theme_church_repentance_salvation.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_church_repentance_salvation.getText().toString() + "; ";
-                }
-                if (edit_song_theme_church_service_ministry.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_church_service_ministry.getText().toString() + "; ";
-                }
-                if (edit_song_theme_church_spiritual_hunger.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_church_spiritual_hunger.getText().toString() + "; ";
-                }
-
-                if (edit_song_theme_fruit_faith_hope.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_fruit_faith_hope.getText().toString() + "; ";
-                }
-                if (edit_song_theme_fruit_humility_meekness.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_fruit_humility_meekness.getText().toString() + "; ";
-                }
-                if (edit_song_theme_fruit_joy.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_fruit_joy.getText().toString() + "; ";
-                }
-                if (edit_song_theme_fruit_love.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_fruit_love.getText().toString() + "; ";
-                }
-                if (edit_song_theme_fruit_patience_kindness.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_fruit_patience_kindness.getText().toString() + "; ";
-                }
-                if (edit_song_theme_fruit_peace_comfort.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_fruit_peace_comfort.getText().toString() + "; ";
-                }
-
-                if (edit_song_theme_god_attributes.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_god_attributes.getText().toString() + "; ";
-                }
-                if (edit_song_theme_god_creator_creation.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_god_creator_creation.getText().toString() + "; ";
-                }
-                if (edit_song_theme_god_father.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_god_father.getText().toString() + "; ";
-                }
-                if (edit_song_theme_god_guidance_care.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_god_guidance_care.getText().toString() + "; ";
-                }
-                if (edit_song_theme_god_holiness.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_god_holiness.getText().toString() + "; ";
-                }
-                if (edit_song_theme_god_holy_spirit.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_god_holy_spirit.getText().toString() + "; ";
-                }
-                if (edit_song_theme_god_love_mercy.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_god_love_mercy.getText().toString() + "; ";
-                }
-                if (edit_song_theme_god_power_majesty.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_god_power_majesty.getText().toString() + "; ";
-                }
-                if (edit_song_theme_god_promises.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_god_promises.getText().toString() + "; ";
-                }
-                if (edit_song_theme_god_victory.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_god_victory.getText().toString() + "; ";
-                }
-                if (edit_song_theme_god_word.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_god_word.getText().toString() + "; ";
-                }
-
-                if (edit_song_theme_worship_assurance_trust.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_worship_assurance_trust.getText().toString() + "; ";
-                }
-                if (edit_song_theme_worship_call_opening.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_worship_call_opening.getText().toString() + "; ";
-                }
-                if (edit_song_theme_worship_celebration.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_worship_celebration.getText().toString() + "; ";
-                }
-                if (edit_song_theme_worship_declaration.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_worship_declaration.getText().toString() + "; ";
-                }
-                if (edit_song_theme_worship_intimacy.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_worship_intimacy.getText().toString() + "; ";
-                }
-                if (edit_song_theme_worship_invitation.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_worship_invitation.getText().toString() + "; ";
-                }
-                if (edit_song_theme_worship_praise_adoration.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_worship_praise_adoration.getText().toString() + "; ";
-                }
-                if (edit_song_theme_worship_prayer_devotion.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_worship_prayer_devotion.getText().toString() + "; ";
-                }
-                if (edit_song_theme_worship_provision_deliverance.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_worship_provision_deliverance.getText().toString() + "; ";
-                }
-                if (edit_song_theme_worship_thankfulness.isChecked()) {
-                    FullscreenActivity.mTheme += edit_song_theme_worship_thankfulness.getText().toString() + "; ";
-                }
-
-                // Set the AltTheme to the same as the Theme?
-                FullscreenActivity.mAltTheme = FullscreenActivity.mTheme;
-
-                // Prepare the new XML file
-                prepareSongXML();
-
-                // Makes sure all & are replaced with &amp;
-                FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&amp;","&");
-                FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&","&amp;");
-
-                // Now write the modified song
-                try {
-                    FileOutputStream overWrite;
-                    if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                        overWrite = new FileOutputStream(
-                                FullscreenActivity.dir + "/" + FullscreenActivity.songfilename,
-                                false);
-                    } else {
-                        overWrite = new FileOutputStream(
-                                FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
-                                false);
-                    }
-                    overWrite.write(FullscreenActivity.mynewXML.getBytes());
-                    overWrite.flush();
-                    overWrite.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                FullscreenActivity.mynewXML = "";
-
-                // Save the preferences
-                Preferences.savePreferences();
-
-                // Prepare the message
-                FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
-                        getResources().getString(R.string.ok);
-
-                // Now tell the main page to refresh itself with this new song
-                // Don't need to reload the XML as we already have all its values
-                mListener.refreshAll();
-
-                // Now dismiss this popup
-                dismiss();
-            }
-        });
-
         // Fill in the current values
         // Start with the simple EditTexts
         edit_song_title.setText(FullscreenActivity.mTitle);
@@ -596,7 +370,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         editBoxLyrics = editBoxLyrics.replaceAll("\r\n", "\n");
         editBoxLyrics = editBoxLyrics.replaceAll("\n\r", "\n");
         editBoxLyrics = editBoxLyrics.replaceAll("\t", "    ");
-        editBoxLyrics = editBoxLyrics.replaceAll("\b", "    ");
+        //editBoxLyrics = editBoxLyrics.replaceAll("\b", "    ");
+        editBoxLyrics = editBoxLyrics.replace("\b", "    ");
         editBoxLyrics = editBoxLyrics.replaceAll("\f", "    ");
         edit_song_lyrics.setText(editBoxLyrics);
         edit_song_CCLI.setText(FullscreenActivity.mCCLI);
@@ -807,7 +582,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         ArrayAdapter<CharSequence> song_key = ArrayAdapter.createFromResource(getActivity(),
                 R.array.key_choice,
                 R.layout.my_spinner);
-        song_key.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        song_key.setDropDownViewResource(R.layout.my_spinner);
         edit_song_key.setAdapter(song_key);
         // Where is the key in the available array
         int index = -1;
@@ -823,7 +598,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         ArrayAdapter<CharSequence> time_sigs = ArrayAdapter.createFromResource(getActivity(),
                 R.array.timesig,
                 R.layout.my_spinner);
-        time_sigs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        time_sigs.setDropDownViewResource(R.layout.my_spinner);
         edit_song_timesig.setAdapter(time_sigs);
         // Where is the key in the available array
         index = -1;
@@ -839,7 +614,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         ArrayAdapter<CharSequence> capo_fret = ArrayAdapter.createFromResource(getActivity(),
                 R.array.capo,
                 R.layout.my_spinner);
-        capo_fret.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        capo_fret.setDropDownViewResource(R.layout.my_spinner);
         edit_song_capo.setAdapter(capo_fret);
         // Where is the key in the available array
         index = -1;
@@ -855,7 +630,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         ArrayAdapter<CharSequence> capo_print = ArrayAdapter.createFromResource(getActivity(),
                 R.array.capoprint,
                 R.layout.my_spinner);
-        capo_print.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        capo_print.setDropDownViewResource(R.layout.my_spinner);
         edit_song_capo_print.setAdapter(capo_print);
         // Where is the key in the available array
         // List<String> capoprint_choice = Arrays.asList(getResources().getStringArray(R.array.capoprint));
@@ -879,7 +654,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
         pad_option.add(getResources().getString(R.string.off));
         ArrayAdapter<String> pad_file;
         pad_file = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, pad_option);
-        pad_file.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        pad_file.setDropDownViewResource(R.layout.my_spinner);
         edit_song_pad_file.setAdapter(pad_file);
         // Only allow auto for now (first index)
         edit_song_pad_file.setSelection(0);
@@ -929,6 +704,256 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
         return V;
+    }
+
+    public void cancelEdit() {
+        // Load the song back up with the default values
+        try {
+            LoadXML.loadXML(getActivity());
+        } catch (XmlPullParserException | IOException e) {
+            e.printStackTrace();
+        }
+        dismiss();
+    }
+
+    public void saveEdit() {
+
+        // Go through the fields and save them
+        // Get the variables
+        // Set the newtext to the FullscreenActivity variables
+        FullscreenActivity.mTitle = edit_song_title.getText().toString();
+        FullscreenActivity.mAuthor = edit_song_author.getText().toString();
+        FullscreenActivity.mCopyright = edit_song_copyright.getText().toString();
+        FullscreenActivity.mLyrics = ProcessSong.fixStartOfLines(edit_song_lyrics.getText().toString());
+        FullscreenActivity.mPresentation = edit_song_presentation.getText().toString();
+        FullscreenActivity.mHymnNumber = edit_song_hymn.getText().toString();
+        FullscreenActivity.mCCLI = edit_song_CCLI.getText().toString();
+        FullscreenActivity.mUser1 = edit_song_user1.getText().toString();
+        FullscreenActivity.mUser2 = edit_song_user2.getText().toString();
+        FullscreenActivity.mUser3 = edit_song_user3.getText().toString();
+        FullscreenActivity.mAka = edit_song_aka.getText().toString();
+        FullscreenActivity.mKeyLine = edit_song_key_line.getText().toString();
+        FullscreenActivity.mKey = edit_song_key.getItemAtPosition(edit_song_key.getSelectedItemPosition()).toString();
+        FullscreenActivity.mDuration = edit_song_duration.getText().toString();
+        int predelayval = predelay_SeekBar.getProgress();
+        if (predelayval==0) {
+            FullscreenActivity.mPreDelay = "";
+        } else {
+            FullscreenActivity.mPreDelay = ""+(predelayval-1);
+        }
+        FullscreenActivity.mBooks = edit_song_books.getText().toString();
+        FullscreenActivity.mMidi = edit_song_midi.getText().toString();
+        FullscreenActivity.mMidiIndex = edit_song_midi_index.getText().toString();
+        FullscreenActivity.mPitch = edit_song_pitch.getText().toString();
+        FullscreenActivity.mRestrictions = edit_song_restrictions.getText().toString();
+        FullscreenActivity.mNotes = edit_song_notes.getText().toString();
+        FullscreenActivity.mPadFile = edit_song_pad_file.getItemAtPosition(edit_song_pad_file.getSelectedItemPosition()).toString();
+
+        FullscreenActivity.mCapo = edit_song_capo.getItemAtPosition(edit_song_capo.getSelectedItemPosition()).toString();
+        int tempmCapoPrint = edit_song_capo_print.getSelectedItemPosition();
+        if (tempmCapoPrint==1) {
+            FullscreenActivity.mCapoPrint="true";
+        } else if (tempmCapoPrint==2) {
+            FullscreenActivity.mCapoPrint="false";
+        } else {
+            FullscreenActivity.mCapoPrint="";
+        }
+        int valoftempobar = edit_song_tempo.getProgress() + 39;
+        if (valoftempobar>39) {
+            FullscreenActivity.mTempo = ""+valoftempobar;
+        } else {
+            FullscreenActivity.mTempo = "";
+        }
+        FullscreenActivity.mTimeSig = edit_song_timesig.getItemAtPosition(edit_song_timesig.getSelectedItemPosition()).toString();
+
+        FullscreenActivity.mTheme = "";
+
+        if (edit_song_theme_christ_attributes.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_christ_attributes.getText().toString() + "; ";
+        }
+        if (edit_song_theme_christ_birth.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_christ_birth.getText().toString() + "; ";
+        }
+        if (edit_song_theme_christ_death_atonement.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_christ_death_atonement.getText().toString() + "; ";
+        }
+        if (edit_song_theme_christ_love_mercy.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_christ_love_mercy.getText().toString() + "; ";
+        }
+        if (edit_song_theme_christ_power_majesty.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_christ_power_majesty.getText().toString() + "; ";
+        }
+        if (edit_song_theme_christ_resurrection.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_christ_resurrection.getText().toString() + "; ";
+        }
+        if (edit_song_theme_christ_second_coming.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_christ_second_coming.getText().toString() + "; ";
+        }
+        if (edit_song_theme_christ_victory.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_christ_victory.getText().toString() + "; ";
+        }
+
+        if (edit_song_theme_church_commitment_obedience.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_church_commitment_obedience.getText().toString() + "; ";
+        }
+        if (edit_song_theme_church_country.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_church_country.getText().toString() + "; ";
+        }
+        if (edit_song_theme_church_eternal_life_heaven.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_church_eternal_life_heaven.getText().toString() + "; ";
+        }
+        if (edit_song_theme_church_evangelism.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_church_evangelism.getText().toString() + "; ";
+        }
+        if (edit_song_theme_church_family_fellowship.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_church_family_fellowship.getText().toString() + "; ";
+        }
+        if (edit_song_theme_church_fellowship_w_god.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_church_fellowship_w_god.getText().toString() + "; ";
+        }
+        if (edit_song_theme_church_purity_holiness.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_church_purity_holiness.getText().toString() + "; ";
+        }
+        if (edit_song_theme_church_renewal.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_church_renewal.getText().toString() + "; ";
+        }
+        if (edit_song_theme_church_repentance_salvation.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_church_repentance_salvation.getText().toString() + "; ";
+        }
+        if (edit_song_theme_church_service_ministry.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_church_service_ministry.getText().toString() + "; ";
+        }
+        if (edit_song_theme_church_spiritual_hunger.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_church_spiritual_hunger.getText().toString() + "; ";
+        }
+
+        if (edit_song_theme_fruit_faith_hope.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_fruit_faith_hope.getText().toString() + "; ";
+        }
+        if (edit_song_theme_fruit_humility_meekness.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_fruit_humility_meekness.getText().toString() + "; ";
+        }
+        if (edit_song_theme_fruit_joy.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_fruit_joy.getText().toString() + "; ";
+        }
+        if (edit_song_theme_fruit_love.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_fruit_love.getText().toString() + "; ";
+        }
+        if (edit_song_theme_fruit_patience_kindness.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_fruit_patience_kindness.getText().toString() + "; ";
+        }
+        if (edit_song_theme_fruit_peace_comfort.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_fruit_peace_comfort.getText().toString() + "; ";
+        }
+
+        if (edit_song_theme_god_attributes.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_god_attributes.getText().toString() + "; ";
+        }
+        if (edit_song_theme_god_creator_creation.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_god_creator_creation.getText().toString() + "; ";
+        }
+        if (edit_song_theme_god_father.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_god_father.getText().toString() + "; ";
+        }
+        if (edit_song_theme_god_guidance_care.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_god_guidance_care.getText().toString() + "; ";
+        }
+        if (edit_song_theme_god_holiness.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_god_holiness.getText().toString() + "; ";
+        }
+        if (edit_song_theme_god_holy_spirit.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_god_holy_spirit.getText().toString() + "; ";
+        }
+        if (edit_song_theme_god_love_mercy.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_god_love_mercy.getText().toString() + "; ";
+        }
+        if (edit_song_theme_god_power_majesty.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_god_power_majesty.getText().toString() + "; ";
+        }
+        if (edit_song_theme_god_promises.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_god_promises.getText().toString() + "; ";
+        }
+        if (edit_song_theme_god_victory.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_god_victory.getText().toString() + "; ";
+        }
+        if (edit_song_theme_god_word.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_god_word.getText().toString() + "; ";
+        }
+
+        if (edit_song_theme_worship_assurance_trust.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_worship_assurance_trust.getText().toString() + "; ";
+        }
+        if (edit_song_theme_worship_call_opening.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_worship_call_opening.getText().toString() + "; ";
+        }
+        if (edit_song_theme_worship_celebration.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_worship_celebration.getText().toString() + "; ";
+        }
+        if (edit_song_theme_worship_declaration.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_worship_declaration.getText().toString() + "; ";
+        }
+        if (edit_song_theme_worship_intimacy.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_worship_intimacy.getText().toString() + "; ";
+        }
+        if (edit_song_theme_worship_invitation.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_worship_invitation.getText().toString() + "; ";
+        }
+        if (edit_song_theme_worship_praise_adoration.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_worship_praise_adoration.getText().toString() + "; ";
+        }
+        if (edit_song_theme_worship_prayer_devotion.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_worship_prayer_devotion.getText().toString() + "; ";
+        }
+        if (edit_song_theme_worship_provision_deliverance.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_worship_provision_deliverance.getText().toString() + "; ";
+        }
+        if (edit_song_theme_worship_thankfulness.isChecked()) {
+            FullscreenActivity.mTheme += edit_song_theme_worship_thankfulness.getText().toString() + "; ";
+        }
+
+        // Set the AltTheme to the same as the Theme?
+        FullscreenActivity.mAltTheme = FullscreenActivity.mTheme;
+
+        // Prepare the new XML file
+        prepareSongXML();
+
+        // Makes sure all & are replaced with &amp;
+        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&amp;","&");
+        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&","&amp;");
+
+        // Now write the modified song
+        try {
+            FileOutputStream overWrite;
+            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+                overWrite = new FileOutputStream(
+                        FullscreenActivity.dir + "/" + FullscreenActivity.songfilename,
+                        false);
+            } else {
+                overWrite = new FileOutputStream(
+                        FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
+                        false);
+            }
+            overWrite.write(FullscreenActivity.mynewXML.getBytes());
+            overWrite.flush();
+            overWrite.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        FullscreenActivity.mynewXML = "";
+
+        // Save the preferences
+        Preferences.savePreferences();
+
+        // Prepare the message
+        FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
+                getResources().getString(R.string.ok);
+
+        // Now tell the main page to refresh itself with this new song
+        // Don't need to reload the XML as we already have all its values
+        mListener.refreshAll();
+
+        // Now dismiss this popup
+        dismiss();
     }
 
     private class seekBarListener implements SeekBar.OnSeekBarChangeListener {
@@ -991,6 +1016,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
 
     public static void prepareSongXML() {
         // Prepare the new XML file
+
         String myNEWXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
         myNEWXML += "<song>\n";
         myNEWXML += "  <title>" + parseToHTMLEntities(FullscreenActivity.mTitle.toString()) + "</title>\n";
@@ -1040,49 +1066,39 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpSongFo
     }
 
     public static void justSaveSongXML() throws IOException {
-/*
-        // NOW DONE SEPARATELY FOR EACH FIELD TO COPE WITH ALL HTML ENTITIES
-        // Makes sure all & are replaced with &amp;
-        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&amp;","&");
-        FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&","&amp;");
-*/
+        // Only do this if the title isn't welcome to opensongapp!
+        if (!FullscreenActivity.mTitle.equals("Welcome to OpenSongApp")) {
+            // Now write the modified song
+            String filename;
+            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) || FullscreenActivity.whichSongFolder.isEmpty()) {
+                filename = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
+            } else {
+                filename = FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename;
+            }
 
-        // Now write the modified song
-        String filename;
-        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) || FullscreenActivity.whichSongFolder.isEmpty()) {
-            filename = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
-        } else {
-            filename = FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename;
+            FileOutputStream overWrite = new FileOutputStream(filename, false);
+            overWrite.write(FullscreenActivity.mynewXML.getBytes());
+            overWrite.flush();
+            overWrite.close();
         }
-
-        FileOutputStream overWrite = new FileOutputStream(filename,	false);
-        overWrite.write(FullscreenActivity.mynewXML.getBytes());
-        overWrite.flush();
-        overWrite.close();
     }
 
     public static String parseToHTMLEntities(String val) {
+        if (val==null) {
+            val = "";
+        }
         // Make sure all vals are unencoded to start with
-        //val = val.replace("&amp;","&");
         // Now HTML encode everything
         val = val.replace("<","&lt;");
         val = val.replace(">","&gt;");
-        //val = val.replace("'","&apos;");
-        //val = val.replace("\"","&quote;");
         val = val.replace("&","&amp;");
-
 
         return val;
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-        // safety check
-        if (getDialog() == null) {
-            return;
-        }
-        getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    public void onCancel(DialogInterface dialog) {
+        this.dismiss();
     }
+
 }
