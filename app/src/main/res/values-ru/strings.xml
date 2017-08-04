@@ -112,7 +112,7 @@
     <string name="customgestures">"Присвоение специальных жестов"</string>
     <string name="doubleTap">"Выберите двойного действия крана"</string>
     <string name="longPress">"Выберите Длительное нажатие действия"</string>
-    <string name="gesture1">\"Открыть меню песню\"</string>
+    <string name="gesture1">"Открыть меню песню"</string>
     <string name="gesture2">"Редактировать песня"</string>
     <string name="gesture3">"Добавить песню для установки"</string>
 
@@ -501,7 +501,7 @@
 	<string name="songfolder">"Выберите папку песню"</string>
 	<string name="stagemode">"Режим Стадия"</string>
 	<string name="switchtostagemode">"Переключение в режим Stage"</string>
-	<string name="toobig">\"Пожалуйста, включите автомасштаба на экспорт в формате PNG/PDF\"</string>
+	<string name="toobig">"Пожалуйста, включите автомасштаба на экспорт в формате PNG/PDF"</string>
 	<string name="showcapo">"Показать капо аккорды"</string>
 	<string name="showchords">"Показать аккорды"</string>
 	<string name="showlyrics">"Показать текст"</string>
@@ -514,10 +514,10 @@
 	<string name="success">"успех"</string>
 	<string name="error">"ошибка"</string>
 	<string name="takeawhile">"Это может занять некоторое время!"</string>
-	<string name="longPressDown">\"Длительное нажатие на педаль\"</string>
-	<string name="longPressUp">\"Длительное нажатие на педаль\"</string>
-	<string name="longPressPrevious">\"Длительное нажатие педали предыдущая\"</string>
-	<string name="longPressNext">\"Длительное нажатие педали следующая\"</string>
+	<string name="longPressDown">"Длительное нажатие на педаль"</string>
+	<string name="longPressUp">"Длительное нажатие на педаль"</string>
+	<string name="longPressPrevious">"Длительное нажатие педали предыдущая"</string>
+	<string name="longPressNext">"Длительное нажатие педали следующая"</string>
 
 	<string name="autoscale">"Autoscale"</string>
 	<string name="camera">"камера"</string>
@@ -601,9 +601,15 @@
 	<string name="swipe">"Настройки прокрутки"</string>
 	<string name="swipe_allowance">"Разрешено вертикальное перемещение"</string>
 	<string name="swipe_distance">"Расстояние прохождения"</string>
-    <string name="actionbar">\"Строка меню Информация\"</string>
-	<string name="battery">\"аккумулятор\"</string>
-	<string name="timeformat">\"24 часа\"</string>
-	<string name="text">\"Текст\"</string>
+    <string name="actionbar">"Строка меню Информация"</string>
+	<string name="battery">"аккумулятор"</string>
+	<string name="timeformat">"24 часа"</string>
+	<string name="text">"Текст"</string>
+
+	<string name="autoshow_highlight">"Заметки автозапуска"</string>
+	<string name="highlight">"Highlighter"</string>
+	<string name="highlight_notallowed">"Для этой функции необходимо установить полную автомасштабирование"</string>
+	<string name="stage_section_max">"Максимальная высота сечения (режим сцены)"</string>
+	<string name="trim_sections">"Секции обрезки"</string>
 
 </resources>

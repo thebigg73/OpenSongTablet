@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="storage_alt" translatable="false">Alternative storage</string>
+
+    <string name="autoshow_highlight">Autoshow highlighter notes</string>
+    <string name="highlight">Highlighter</string>
+    <string name="highlight_notallowed">Autoscale needs to be set to full for this feature</string>
+    <string name="stage_section_max">Max section height (Stage Mode)</string>
+    <string name="trim_sections">Trim sections</string>
+
     <string name="actionbar">Menu bar info</string>
     <string name="battery">Battery</string>
     <string name="text">Text</string>
@@ -202,7 +210,7 @@
     <string name="link_file">Other file</string>
 	<string name="overwrite">Overwrite existing item</string>
 	<string name="storage_issues">If you experience any problems running the app, please switch to internal storage</string>
-	<string name="toggle_autoshow_stickynotes">Toggle autoshow sticky notes</string>
+	<string name="toggle_autoshow_stickynotes">Autoshow sticky notes</string>
 	<string name="file_type">File type</string>
     <string name="file_type_unknown">Unknown</string>
     <string name="file_exists">File already exists.  Please rename it.</string>
@@ -301,6 +309,7 @@
         <item>(pt) português</item>
         <item>(ru) Русский</item>
 		<item>(sr) Srpski</item>
+        <item>(sv) Sweeds</item>
         <item>(zh) 中文</item>
     </array>
     
@@ -668,7 +677,7 @@
 	<string name="addedtoset">has been added to the end of your current set.</string>
 	<string name="removedfromset">has been removed from your set.</string>
 		
-	<string name="webLink" translatable="false">http://www.opensong.org</string>
+	<string name="webLink" translatable="false">http://www.opensongapp.com</string>
 	<string name="soundLink">Listen to \'Love everlasting\'</string>
 	<string name="stop">Stop</string>
 	<string name="start">Start</string>

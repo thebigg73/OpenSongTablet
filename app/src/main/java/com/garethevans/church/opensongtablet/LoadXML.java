@@ -433,7 +433,8 @@ public class LoadXML extends Activity {
         FullscreenActivity.mMidiIndex = "";
         FullscreenActivity.mPitch = "";
         FullscreenActivity.mRestrictions = "";
-        FullscreenActivity.mLyrics = "";
+        //FullscreenActivity.mLyrics = "";
+        FullscreenActivity.mLyrics = templyrics;
         FullscreenActivity.mNotes = "";
         FullscreenActivity.mStyle = "";
         FullscreenActivity.mLinkedSongs = "";
@@ -459,9 +460,6 @@ public class LoadXML extends Activity {
 
         // Just in case use the Welcome to OpenSongApp file
         initialiseSongTags();
-
-        //FullscreenActivity.myLyrics = FullscreenActivity.songdoesntexist + "\n\n";
-        //FullscreenActivity.mLyrics = FullscreenActivity.songdoesntexist + "\n\n";
 
         InputStream inputStream = new FileInputStream(FullscreenActivity.file);
         xpp.setInput(inputStream, utf);
@@ -565,7 +563,7 @@ public class LoadXML extends Activity {
             }
         }
 
-        if (FullscreenActivity.mTitle.equals("") && FullscreenActivity.mLyrics.equals("")) {
+        if (FullscreenActivity.mLyrics.equals("")) {
             FullscreenActivity.mTitle = "Welcome to OpenSongApp";
             FullscreenActivity.mAuthor = "Gareth Evans";
             FullscreenActivity.mLinkWeb = "http://www.opensongapp.com";

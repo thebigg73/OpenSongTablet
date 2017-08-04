@@ -976,7 +976,12 @@ public class PopUpChordsFragment extends DialogFragment {
 
                 if (FullscreenActivity.chordnotes != null && !FullscreenActivity.chordnotes.contains("xxxx_") && !FullscreenActivity.chordnotes.contains("xxxxxx_")) {
                     chordimageshere.addView(chordview);
-                    String text = unique_chords.get(l) + iscustom;
+                    String text;
+                    if (unique_chords.get(l)==null) {
+                        text = "" + iscustom;
+                    } else {
+                        text = unique_chords.get(l) + iscustom;
+                    }
                     chordname.setText(text);
                     chordname.setTextColor(0xffffffff);
                     chordname.setTextSize(20);

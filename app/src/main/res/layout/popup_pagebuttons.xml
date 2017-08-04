@@ -229,6 +229,16 @@
                     android:theme="@style/SwitchStyle" />
 
                 <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/highlightVisible_Switch"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:text="@string/highlight"
+                    android:theme="@style/SwitchStyle" />
+
+                <android.support.v7.widget.SwitchCompat
                     android:id="@+id/pageselectVisible_Switch"
                     style="@style/MyWhiteHeadingText"
                     android:layout_width="match_parent"

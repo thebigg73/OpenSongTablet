@@ -22,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.File;
@@ -40,8 +41,9 @@ PopUpDirectoryChooserFragment.SettingsInterface {
 
     static int test;
     static int want;
-    Button latest_updates;
+    LinearLayout readUpdate;
     Button goToSongs;
+    Button manageStorage;
     Button user_guide;
     File myroot;
     boolean showsplash;
@@ -154,18 +156,8 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         }
 
         PopUpStorageFragment.getOtherFolders(myroot);
-        final boolean storageexists = PopUpStorageFragment.checkDirectoriesExistOnly();
+        final boolean storageexists = PopUpStorageFragment.checkBasicDirectoriesExistOnly();
         PopUpStorageFragment.wipeExportFolder();
-
-        // Wait 1000ms before either showing the introduction page or the main app
-        // This only happens if the storage exists
-
-        Log.d("d","final check FullscreenActivity.showSplashVersion="+FullscreenActivity.showSplashVersion);
-        //Log.d("d","final check sv="+sv);
-        Log.d("d","final check FullscreenActivity.version="+FullscreenActivity.version);
-        Log.d("d","final check test="+test);
-        Log.d("d","final check want="+want);
-        Log.d("d","final check storageexists="+storageexists);
 
         delayfadeinredraw = new Handler();
         delayfadeinredraw.postDelayed(new Runnable() {
@@ -206,8 +198,8 @@ PopUpDirectoryChooserFragment.SettingsInterface {
                     showVersion.setText(temptext);
                 }
 
-                latest_updates = (Button) findViewById(R.id.latest_updates);
-                latest_updates.setOnClickListener(new View.OnClickListener() {
+                readUpdate = (LinearLayout) findViewById(R.id.readUpdate);
+                readUpdate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         latestUpdates();
@@ -215,6 +207,13 @@ PopUpDirectoryChooserFragment.SettingsInterface {
                 });
 
                 goToSongs = (Button) findViewById(R.id.goToSongs);
+                manageStorage = (Button) findViewById(R.id.manageStorage);
+                manageStorage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        openStorageFragment();
+                    }
+                });
                 recheckStorage();
 
                 user_guide = (Button) findViewById(R.id.user_guide);
@@ -315,7 +314,7 @@ PopUpDirectoryChooserFragment.SettingsInterface {
     }
 
     public void webLink() {
-        String url = "http://www.opensong.org";
+        String url = "http://www.opensongapp.com";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
@@ -329,7 +328,7 @@ PopUpDirectoryChooserFragment.SettingsInterface {
     }
 
     public void userGuide() {
-        String url = "http://www.opensongapp.com/";
+        String url = "http://www.opensongapp.com/user-guide";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);

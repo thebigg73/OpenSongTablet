@@ -112,7 +112,7 @@
     <string name="customgestures">"Przypisywanie własnych gestów"</string>
     <string name="doubleTap">"Wybierz podwójne działanie kranu"</string>
     <string name="longPress">"Wybierz długie naciśnij działania"</string>
-    <string name="gesture1">\"Otwórz menu piosenka\"</string>
+    <string name="gesture1">"Otwórz menu piosenka"</string>
     <string name="gesture2">"Edycja piosenki"</string>
     <string name="gesture3">"Dodaj piosenkę ustawić"</string>
 
@@ -501,7 +501,7 @@
 	<string name="songfolder">"Wybierz folder piosenki"</string>
 	<string name="stagemode">"Tryb Stage"</string>
 	<string name="switchtostagemode">"Przełącz na tryb Stage"</string>
-	<string name="toobig">\"Proszę włączyć autoscale on na eksport png/pdf\"</string>
+	<string name="toobig">"Proszę włączyć autoscale on na eksport png/pdf"</string>
 	<string name="showcapo">"akordy Pokaż capo"</string>
 	<string name="showchords">"Pokaż akordy"</string>
 	<string name="showlyrics">"Pokaż teksty"</string>
@@ -514,10 +514,10 @@
 	<string name="success">"Powodzenie"</string>
 	<string name="error">"Błąd"</string>
 	<string name="takeawhile">"To może zająć trochę czasu!"</string>
-	<string name="longPressDown">\"Długie naciśnięcie pedału dół\"</string>
-	<string name="longPressUp">\"Długie naciśnięcie pedału górę\"</string>
-	<string name="longPressPrevious">\"Długie naciśnięcie pedału poprzednia\"</string>
-	<string name="longPressNext">\"Długie naciśnięcie pedału następna\"</string>
+	<string name="longPressDown">"Długie naciśnięcie pedału dół"</string>
+	<string name="longPressUp">"Długie naciśnięcie pedału górę"</string>
+	<string name="longPressPrevious">"Długie naciśnięcie pedału poprzednia"</string>
+	<string name="longPressNext">"Długie naciśnięcie pedału następna"</string>
 
 	<string name="autoscale">"Autoscale"</string>
 	<string name="camera">"Aparat fotograficzny"</string>
@@ -601,9 +601,15 @@
 	<string name="swipe">"Przesuń ustawienia"</string>
 	<string name="swipe_allowance">"Dopuszczalny ruch pionowy"</string>
 	<string name="swipe_distance">"Odchyl odległość"</string>
-    <string name="actionbar">\"Informacje Pasek menu\"</string>
-	<string name="battery">\"Bateria\"</string>
-	<string name="timeformat">\"24 godziny\"</string>
-	<string name="text">\"Tekst\"</string>
+    <string name="actionbar">"Informacje Pasek menu"</string>
+	<string name="battery">"Bateria"</string>
+	<string name="timeformat">"24 godziny"</string>
+	<string name="text">"Tekst"</string>
+
+	<string name="autoshow_highlight">"Autoshow notatki podkreślające"</string>
+	<string name="highlight">"Zakreślacz"</string>
+	<string name="highlight_notallowed">"Autoskaleria musi być ustawiona na pełną dla tej funkcji"</string>
+	<string name="stage_section_max">"Maksymalna wysokość sekcji (tryb sceniczny)"</string>
+	<string name="trim_sections">"Sekcje cięcia"</string>
 
 </resources>

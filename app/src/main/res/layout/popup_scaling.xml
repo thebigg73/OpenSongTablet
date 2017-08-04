@@ -215,6 +215,40 @@
                     android:gravity="center_horizontal" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/stagemode_scale"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/MyHeadingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/stage_section_max" />
+
+                <SeekBar
+                    android:id="@+id/stagemode_scale_SeekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:max="80"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
+
+                <TextView
+                    android:id="@+id/stagemode_scale_TextView"
+                    style="@style/MyInfoText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>

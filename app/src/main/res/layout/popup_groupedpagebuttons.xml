@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
@@ -51,7 +52,8 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    tools:ignore="UselessParent">
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/group_set"
@@ -262,7 +264,7 @@
                     android:id="@+id/sect2_icon3"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/sect2_icon1"
+                    android:layout_toRightOf="@+id/sect2_icon2"
                     android:layout_margin="8dp"
                     android:orientation="vertical">
 
@@ -286,12 +288,39 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/sect2_icon3b"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/sect2_icon1"
+                    android:layout_margin="8dp"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/group_highlight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_highlighter_white_36dp"
+                        app:backgroundTint="@color/purple"
+                        app:useCompatPadding="true"
+                        app:fabSize="mini" />
+
+                    <TextView
+                        style="@style/MyInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/highlight" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/sect2_icon4"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/sect2_icon2"
                     android:layout_margin="8dp"
-                    android:layout_toRightOf="@+id/sect2_icon3"
+                    android:layout_toRightOf="@+id/sect2_icon3b"
                     android:orientation="vertical">
 
                     <android.support.design.widget.FloatingActionButton

@@ -163,6 +163,64 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/section_box"
+                android:color="@android:color/transparent"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/highlightNotesOnOff_Switch"
+                    style="@style/MyTextSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="8dp"
+                    android:checked="false"
+                    android:text="@string/autoshow_highlight"
+                    android:textColor="#ff0"
+                    android:textOff="@string/off"
+                    android:textOn="@string/on"
+                    app:showText="true"
+                    app:switchTextAppearance="@style/MyInfoText"
+                    app:thumbTextPadding="4dp"
+                    app:thumbTint="#444488" />
+
+                <TextView
+                    android:id="@+id/highlightTimeInfo_TextView"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/time" />
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/highlightTime_SeekBar"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:max="20"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/highlightTime_TextView"
+                    android:layout_margin="8dp"
+                    android:gravity="center_horizontal"
+                    style="@style/MyInfoText" />
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
     </ScrollView>

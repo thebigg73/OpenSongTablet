@@ -285,7 +285,7 @@
     <string name="customgestures">"Assign custom gestures"</string>   
     <string name="doubleTap">"Select double tap action"</string>
     <string name="longPress">"Select long press action"</string>
-    <string name="gesture1">\"Ανοίξτε το μενού του τραγουδιού\"</string>
+    <string name="gesture1">"Ανοίξτε το μενού του τραγουδιού"</string>
     <string name="gesture2">"Edit song"</string>
     <string name="gesture3">"Add song to set"</string>
     <string name="gesture4">"Refresh current song"</string>
@@ -576,7 +576,7 @@
     <string name="songfolder">"Επιλέξτε το φάκελο τραγούδι"</string>
     <string name="stagemode">"Λειτουργία στάδιο"</string>
     <string name="switchtostagemode">"Εναλλαγή σε στάδιο λειτουργίας"</string>
-    <string name="toobig">\"Παρακαλώ ενεργοποιήσετε autoscale επάνω για png/pdf εξαγωγή\"</string>
+    <string name="toobig">"Παρακαλώ ενεργοποιήσετε autoscale επάνω για png/pdf εξαγωγή"</string>
     <string name="showcapo">"συγχορδίες Εμφάνιση capo"</string>
     <string name="showchords">"Εμφάνιση χορδές"</string>
     <string name="showlyrics">"Εμφάνιση στίχων"</string>
@@ -589,10 +589,10 @@
     <string name="success">"Επιτυχία"</string>
     <string name="error">"Λάθος"</string>
     <string name="takeawhile">"Αυτό μπορεί να πάρει κάποιο χρόνο!"</string>
-    <string name="longPressDown">\"Παρατεταμένο πάτημα πεντάλ\"</string>
-    <string name="longPressUp">\"Παρατεταμένο πάτημα μέχρι πεντάλ\"</string>
-    <string name="longPressPrevious">\"Παρατεταμένο πάτημα του πεντάλ προηγούμενο\"</string>
-    <string name="longPressNext">\"Παρατεταμένο πάτημα επόμενη πεντάλ\"</string>
+    <string name="longPressDown">"Παρατεταμένο πάτημα πεντάλ"</string>
+    <string name="longPressUp">"Παρατεταμένο πάτημα μέχρι πεντάλ"</string>
+    <string name="longPressPrevious">"Παρατεταμένο πάτημα του πεντάλ προηγούμενο"</string>
+    <string name="longPressNext">"Παρατεταμένο πάτημα επόμενη πεντάλ"</string>
 
     <string name="autoscale">"Αυτόματη κλίμακα"</string>
     <string name="camera">"ΦΩΤΟΓΡΑΦΙΚΗ ΜΗΧΑΝΗ"</string>
@@ -676,9 +676,15 @@
     <string name="swipe">"Ρυθμίστε τις ρυθμίσεις"</string>
     <string name="swipe_allowance">"Η κάθετη κίνηση επιτρέπεται"</string>
     <string name="swipe_distance">"Σύρετε την απόσταση"</string>
-    <string name="actionbar">\"Πληροφορίες Γραμμή μενού\"</string>
-    <string name="battery">\"μπαταρία\"</string>
-    <string name="timeformat">\"24 ώρες\"</string>
-    <string name="text">\"Κείμενο\"</string>
+    <string name="actionbar">"Πληροφορίες Γραμμή μενού"</string>
+    <string name="battery">"μπαταρία"</string>
+    <string name="timeformat">"24 ώρες"</string>
+    <string name="text">"Κείμενο"</string>
+
+    <string name="autoshow_highlight">"Αυτόματη εμφάνιση σημειώσεων σήμανσης"</string>
+    <string name="highlight">"Υψηλός φωτισμός"</string>
+    <string name="highlight_notallowed">"Η αυτόματη κλίμακα πρέπει να ρυθμιστεί σε πλήρη για αυτή τη λειτουργία"</string>
+    <string name="stage_section_max">"Μέγιστο ύψος διατομής (Λειτουργία σκηνής)"</string>
+    <string name="trim_sections">"Περιορίστε τις ενότητες"</string>
 
 </resources>

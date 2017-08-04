@@ -244,7 +244,7 @@
     <string name="customgestures">"Dodeliti prilagođene gestove"</string>"   
     <string name="doubleTap">"Odaberi akciju za dupli tap"</string>
     <string name="longPress">"Odaberi akciju za dugi pritisak"</string>
-    <string name="gesture1">\"Otvoriti pesma meni\"</string>
+    <string name="gesture1">"Otvoriti pesma meni"</string>
     <string name="gesture2">"Izmena pesme"</string>
     <string name="gesture3">"Dodati pesmu na set listu"</string>
     <string name="gesture4">"Osvežiti trenutnu pesmu"</string>
@@ -552,7 +552,7 @@
     <string name="songfolder">"Odaberite fasciklu pesama"</string>
     <string name="stagemode">"Mod na bini"</string>
     <string name="switchtostagemode">"Prebacivanje u mod na bini"</string>
-    <string name="toobig">\"Potrebno je uključiti automatsko podešavanje veličine za png/pdf izvoz\"</string>
+    <string name="toobig">"Potrebno je uključiti automatsko podešavanje veličine za png/pdf izvoz"</string>
     <string name="showcapo">"Prikazivanje kapo akorda"</string>
     <string name="showchords">"Prikazivanje akorda"</string>
     <string name="showlyrics">"Prikazivanje teksta"</string>
@@ -565,10 +565,10 @@
     <string name="success">"Uspešno"</string>
     <string name="error">"Greška"</string>
     <string name="takeawhile">"Ovo može potrajati neko vreme!   "</string>
-    <string name="longPressDown">\"Dug pritisak dole pedale\"</string>
-    <string name="longPressNext">\"Dugo pritisnite sledeći pedala\"</string>
-    <string name="longPressPrevious">\"Dugo pritisnite prethodna pedala\"</string>
-    <string name="longPressUp">\"Dug pritisak gore pedale\"</string>
+    <string name="longPressDown">"Dug pritisak dole pedale"</string>
+    <string name="longPressNext">"Dugo pritisnite sledeći pedala"</string>
+    <string name="longPressPrevious">"Dugo pritisnite prethodna pedala"</string>
+    <string name="longPressUp">"Dug pritisak gore pedale"</string>
 
     <string name="autoscale">"Autoskaliranje"</string>
     <string name="camera">"Kamera"</string>
@@ -652,9 +652,15 @@
     <string name="swipe">"Presavijte postavke"</string>
     <string name="swipe_allowance">"Dopušteno je vertikalno kretanje"</string>
     <string name="swipe_distance">"Prijeđite prstom udaljenost"</string>
-    <string name="actionbar">\"Traka izbornika info\"</string>
-    <string name="battery">\"Baterija\"</string>
-    <string name="timeformat">\"24-satna\"</string>
-    <string name="text">\"Tekst\"</string>
+    <string name="actionbar">"Traka izbornika info"</string>
+    <string name="battery">"Baterija"</string>
+    <string name="timeformat">"24-satna"</string>
+    <string name="text">"Tekst"</string>
+
+    <string name="autoshow_highlight">"Napomene za automatsko izoštravanje"</string>
+    <string name="highlight">"Alat za isticanje"</string>
+    <string name="highlight_notallowed">"Automatska skala mora biti postavljena na punu za ovu značajku"</string>
+    <string name="stage_section_max">"Maksimalna visina sekcije (Stage Mode)"</string>
+    <string name="trim_sections">"Trim dijelove"</string>
 
 </resources>

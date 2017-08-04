@@ -34,6 +34,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class PopUpFindNewSongsFragment extends DialogFragment {
 
@@ -479,7 +480,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 // Identify chord lines
                 templines[q] = "." + templines[q];
             }
-            if (!templines[q].startsWith(".") &&
+            if (FullscreenActivity.locale==null) {
+                FullscreenActivity.locale = Locale.getDefault();
+            }
+            if (templines[q]!=null && !templines[q].startsWith(".") &&
                     ((templines[q].toLowerCase(FullscreenActivity.locale).contains(getActivity().getResources().getString(R.string.tag_verse).toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12) ||
                             (templines[q].toLowerCase(FullscreenActivity.locale).contains(getActivity().getResources().getString(R.string.tag_chorus).toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12) ||
                             (templines[q].toLowerCase(FullscreenActivity.locale).contains(getActivity().getResources().getString(R.string.tag_bridge).toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12))) {

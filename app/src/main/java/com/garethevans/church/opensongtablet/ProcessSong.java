@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -166,9 +167,9 @@ public class ProcessSong extends Activity {
 
     public static void rebuildParsedLyrics(int length) {
         String tempLyrics = "";
-        for (int x=0; x<length; x++) {
+        for (int x = 0; x < length; x++) {
             // First line of section should be the label, so replace it with label.
-            if (FullscreenActivity.songSections[x].startsWith("["+FullscreenActivity.songSectionsLabels[x]+"]")) {
+            if (FullscreenActivity.songSections[x].startsWith("[" + FullscreenActivity.songSectionsLabels[x] + "]")) {
                 tempLyrics += FullscreenActivity.songSections[x] + "\n";
             } else {
                 tempLyrics += FullscreenActivity.songSections[x] + "\n";
@@ -1693,6 +1694,13 @@ public class ProcessSong extends Activity {
         String[] updatedSections = new String[newbits.size()];
         for (int y=0;y<newbits.size();y++) {
             updatedSections[y] = newbits.get(y);
+            if (FullscreenActivity.trimSections) {
+                if (updatedSections[y].endsWith("\n ") && updatedSections[y].length()>0) {
+                    updatedSections[y] = updatedSections[y].substring(0,updatedSections[y].length()-1);
+                }
+                updatedSections[y] = updatedSections[y].trim();
+            }
+
         }
         return updatedSections;
     }
@@ -1925,6 +1933,10 @@ public class ProcessSong extends Activity {
 
         }
         text += "\n";
+
+        if (FullscreenActivity.trimSections) {
+            text = text.trim();
+        }
         return text;
     }
     public static LinearLayout songSectionView(Context c, int x, float fontsize, boolean projected) {
@@ -2660,6 +2672,37 @@ public class ProcessSong extends Activity {
         b.setPadding(10, 10, 10, 10);
         b.setMinimumHeight(0);
         b.setMinHeight(0);
+    }
+
+    // The stuff for the highlighter notes
+    public static File getHighlightFile(Context c) {
+        String layout;
+        String highlighterfile;
+        if (c.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            layout = "_p";
+        } else {
+            layout = "_l";
+        }
+        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
+            // Because images/pdf aren't shuffled around on orientation change, don't need this.
+            layout = "";
+        }
+        if (FullscreenActivity.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
+                FullscreenActivity.whichSongFolder.equals("")) {
+            highlighterfile = FullscreenActivity.mainfoldername + "_" + FullscreenActivity.songfilename;
+        } else {
+            highlighterfile = FullscreenActivity.whichSongFolder + "_" + FullscreenActivity.songfilename;
+        }
+        String page = "";
+        if (FullscreenActivity.isPDF) {
+            // Because pdf files can have multiple pages, this allows different notes.
+            page = "_" + FullscreenActivity.pdfPageCurrent;
+        }
+        highlighterfile =  highlighterfile + layout + page + ".png";
+
+        // This file may or may not exist
+        File test = new File (FullscreenActivity.dirhighlighter,highlighterfile);
+        return test;
     }
 
 }

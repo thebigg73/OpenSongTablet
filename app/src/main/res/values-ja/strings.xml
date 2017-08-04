@@ -112,7 +112,7 @@
     <string name="customgestures">"カスタムジェスチャを割り当て"</string>
     <string name="doubleTap">"ダブルタップアクションを選択します"</string>
     <string name="longPress">"長押しアクションを選択"</string>
-    <string name="gesture1">\"オープンソングメニュー\"</string>
+    <string name="gesture1">"オープンソングメニュー"</string>
     <string name="gesture2">"編集歌"</string>
     <string name="gesture3">"設定するために曲を追加"</string>
 
@@ -177,7 +177,7 @@
 	<string name="createfoldererror">"新しいフォルダの作成中にエラーが発生しました！"</string>
 	<string name="createfoldersuccess">"新規フォルダ作成！"</string>
     
-	<string name="welcome">"Nギャレス·エヴァンスによって書かれたOpenSongミュージックビューア\"</string>
+	<string name="welcome">"Nギャレス·エヴァンスによって書かれたOpenSongミュージックビューア"</string>
 		
 	<string name="intro">"OpenSongApp で作成した曲を使用しており、タブレット画面上に表示します。それは礼拝のミュージシャンを目指した、とても進行中の作業です。これは、ポートレートモードで最適に動作しますが、私は（念のため）利用可能なランドスケープモードを残してきた。"</string>
 		
@@ -500,7 +500,7 @@
 	<string name="songfolder">"選択曲フォルダ"</string>
 	<string name="stagemode">"ステージモード"</string>
 	<string name="switchtostagemode">"ステージモードに切り替え"</string>
-	<string name="toobig">\"PNG/PDFエクスポート用に自動縮尺切り替えてください\"</string>
+	<string name="toobig">"PNG/PDFエクスポート用に自動縮尺切り替えてください"</string>
 	<string name="showcapo">"表示カポ和音"</string>
 	<string name="showchords">"ショー和音"</string>
 	<string name="showlyrics">"表示する歌詞"</string>
@@ -513,10 +513,10 @@
 	<string name="success">"成功"</string>
 	<string name="error">"エラー"</string>
 	<string name="takeawhile">"これにはしばらく時間がかかることがあります！"</string>
-	<string name="longPressDown">\"ペダルダウンロングプレス\"</string>
-	<string name="longPressNext">\"長押し、次のペダル\"</string>
-	<string name="longPressPrevious">\"長押し前のペダル\"</string>
-	<string name="longPressUp">\"ペダルアップを長押し\"</string>
+	<string name="longPressDown">"ペダルダウンロングプレス"</string>
+	<string name="longPressNext">"長押し、次のペダル"</string>
+	<string name="longPressPrevious">"長押し前のペダル"</string>
+	<string name="longPressUp">"ペダルアップを長押し"</string>
 
 	<string name="autoscale">"オートスケール"</string>
 	<string name="camera">"カメラ"</string>
@@ -600,9 +600,15 @@
 	<string name="swipe">"スワイプ設定"</string>
 	<string name="swipe_allowance">"垂直移動が許可されている"</string>
 	<string name="swipe_distance">"スワイプ距離"</string>
-    <string name="actionbar">\"メニューバー情報\"</string>
-	<string name="battery">\"バッテリー\"</string>
-	<string name="timeformat">\"24時間\"</string>
-	<string name="text">\"テキスト\"</string>
+    <string name="actionbar">"メニューバー情報"</string>
+	<string name="battery">"バッテリー"</string>
+	<string name="timeformat">"24時間"</string>
+	<string name="text">"テキスト"</string>
+
+	<string name="autoshow_highlight">"オートショーハイライターノート"</string>
+	<string name="highlight">"蛍光ペン"</string>
+	<string name="highlight_notallowed">"この機能のオートスケールをフルに設定する必要があります"</string>
+	<string name="stage_section_max">"セクションの最大高さ（ステージモード）"</string>
+	<string name="trim_sections">"セクションを切り取る"</string>
 
 </resources>

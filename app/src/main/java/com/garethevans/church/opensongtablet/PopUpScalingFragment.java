@@ -54,6 +54,9 @@ public class PopUpScalingFragment extends DialogFragment {
     SwitchCompat switchAutoScaleWidthFull_SwitchCompat;
     SwitchCompat overrideFull_Switch;
     SwitchCompat overrideWidth_Switch;
+    LinearLayout stagemode_scale;
+    SeekBar stagemode_scale_SeekBar;
+    TextView stagemode_scale_TextView;
 
     @Override
     public void onStart() {
@@ -105,6 +108,15 @@ public class PopUpScalingFragment extends DialogFragment {
         switchAutoScaleWidthFull_SwitchCompat = (SwitchCompat) V.findViewById(R.id.switchAutoScaleWidthFull_SwitchCompat);
         overrideFull_Switch = (SwitchCompat) V.findViewById(R.id.overrideFull_Switch);
         overrideWidth_Switch = (SwitchCompat) V.findViewById(R.id.overrideWidth_Switch);
+        stagemode_scale = (LinearLayout) V.findViewById(R.id.stagemode_scale);
+        stagemode_scale_SeekBar = (SeekBar) V.findViewById(R.id.stagemode_scale_SeekBar);
+        stagemode_scale_TextView = (TextView) V.findViewById(R.id.stagemode_scale_TextView);
+
+        if (!FullscreenActivity.whichMode.equals("Stage")) {
+            stagemode_scale.setVisibility(View.GONE);
+        } else {
+            stagemode_scale.setVisibility(View.VISIBLE);
+        }
 
         // Set the seekbars to the currently chosen values;
         switch (FullscreenActivity.toggleYScale) {
@@ -136,6 +148,7 @@ public class PopUpScalingFragment extends DialogFragment {
         setupfontsizeseekbar();
         setupmaxfontsizeseekbar();
         setupminfontsizeseekbar();
+        setupstagemodescaleseekbar();
 
         fontsize_change_group.setVisibility(View.VISIBLE);
 
@@ -233,6 +246,23 @@ public class PopUpScalingFragment extends DialogFragment {
             }
         });
 
+        stagemode_scale_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                updatestagemodescale(i);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Preferences.savePreferences();
+                if (mListener!=null) {
+                    mListener.refreshAll();
+                }
+            }
+        });
         return V;
     }
 
@@ -300,6 +330,19 @@ public class PopUpScalingFragment extends DialogFragment {
         minAutoScale_seekBar.setProgress(progressbar);
         minAutoScale_TextView.setText(text);
         minAutoScale_TextView.setTextSize(FullscreenActivity.mMinFontSize);
+    }
+
+    public void setupstagemodescaleseekbar() {
+        int val = (int) (FullscreenActivity.stagemodeScale * 100) - 20;
+        stagemode_scale_SeekBar.setProgress(val);
+        String valtext = (val + 20) + "%";
+        stagemode_scale_TextView.setText(valtext);
+    }
+
+    public void updatestagemodescale(int i) {
+        String valtext = (i+20) + "%";
+        stagemode_scale_TextView.setText(valtext);
+        FullscreenActivity.stagemodeScale = (i+20) / 100.0f;
     }
 
     public void updatemaxfontsize() {

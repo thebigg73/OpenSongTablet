@@ -1,13 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
     xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="125"
-    android:versionName="4.0.5"
+    android:versionCode="126"
+    android:versionName="4.0.6"
     android:installLocation="auto">
 
     <!--Overrides are for Sdk=12/13 but library specifies Sdk=14+-->
     <uses-sdk
-        android:minSdkVersion="12" android:targetSdkVersion="25"
+        android:minSdkVersion="12" android:targetSdkVersion="26"
         tools:overrideLibrary="
         com.google.android.gms,
         com.google.android.gms.nearby,
@@ -29,7 +29,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.NFC" />
 
@@ -42,9 +42,8 @@
         android:theme="@style/MyTheme"
         android:name="android.support.multidex.MultiDexApplication"
         android:vmSafeMode="true"
+        android:largeHeap="false"
         android:launchMode="singleTask">
-
-        <!--android:name="android.support.multidex.MultiDexApplication"-->
 
         <provider
             android:name="android.support.v4.content.FileProvider"

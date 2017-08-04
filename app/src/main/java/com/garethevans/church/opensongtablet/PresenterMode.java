@@ -32,11 +32,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.MediaRouteActionProvider;
 import android.support.v7.media.MediaControlIntent;
 import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
@@ -67,6 +65,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
+import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.common.api.Status;
 import com.peak.salut.Callbacks.SalutCallback;
 import com.peak.salut.Callbacks.SalutDataCallback;
@@ -114,7 +113,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         SongMenuAdapter.MyInterface, BatteryMonitor.MyInterface, SalutDataCallback,
         PopUpMenuSettingsFragment.MyInterface, PopUpAlertFragment.MyInterface,
         PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface,
-        PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface {
+        PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
+        PopUpCreateDrawingFragment.MyInterface {
 
     DialogFragment newFragment;
 
@@ -129,93 +129,51 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public Toolbar ab_toolbar;
     public static ActionBar ab;
     public RelativeLayout songandauthor;
-    public TextView digitalclock;
-    public TextView songtitle_ab;
-    public TextView songkey_ab;
-    public TextView songauthor_ab;
-    public TextView batterycharge;
+    public TextView digitalclock, songtitle_ab, songkey_ab, songauthor_ab, batterycharge;
     public ImageView batteryimage;
     RelativeLayout batteryholder;
     Menu menu;
 
     // AsyncTasks
-    AsyncTask<Object, Void, String> preparesongmenu_async;
-    AsyncTask<Object, Void, String> prepareoptionmenu_async;
-    LoadSong loadsong_async;
-    AsyncTask<Object, Void, String> autoslideshowtask;
-    AsyncTask<Object, Void, String> sharesong_async;
-    AsyncTask<Object, Void, String> shareset_async;
-    AsyncTask<Object, Void, String> load_customreusable;
-    AsyncTask<Object, Void, String> add_slidetoset;
-    IndexSongs.IndexMySongs indexsongs_task;
-    AsyncTask<Object, Void, String> indexing_done;
-    AsyncTask<Object, Void, String> open_drawers;
-    AsyncTask<Object, Void, String> close_drawers;
-    AsyncTask<Object, Void, String> resize_drawers;
-    AsyncTask<Object, Void, String> do_moveinset;
+    AsyncTask<Object, Void, String> preparesongmenu_async, prepareoptionmenu_async, autoslideshowtask,
+            sharesong_async, shareset_async, load_customreusable, add_slidetoset, indexing_done,
+            open_drawers, close_drawers, resize_drawers, do_moveinset;
     AsyncTask<String, Integer, String> do_download;
+    LoadSong loadsong_async;
+    IndexSongs.IndexMySongs indexsongs_task;
 
     // The views
-    LinearLayout mLayout;
-    LinearLayout pres_details;
-    TextView presenter_songtitle;
-    TextView presenter_author;
-    TextView presenter_copyright;
-    CheckBox presenter_order_text;
+    LinearLayout mLayout, pres_details, presenter_song_buttonsListView, preso_Action_buttons,
+            presenter_set_buttonsListView, loopandtimeLinearLayout;
+    TextView presenter_songtitle, presenter_author, presenter_copyright, presenter_set;
+    CheckBox presenter_order_text, loopCheckBox;
     Button presenter_order_button;
-    TextView presenter_set;
-    FloatingActionButton set_view_fab;
-    LinearLayout presenter_set_buttonsListView;
-    EditText presenter_lyrics;
+    FloatingActionButton set_view_fab, startstopSlideShow;
+    EditText presenter_lyrics, timeEditText;
     ImageView presenter_lyrics_image;
-    LinearLayout loopandtimeLinearLayout;
-    CheckBox loopCheckBox;
-    EditText timeEditText;
-    FloatingActionButton startstopSlideShow;
-    ScrollView presenter_songbuttons;
-    ScrollView preso_action_buttons_scroll;
-    ScrollView presenter_setbuttons;
-    ScrollView preso_settings_scroll;
-    LinearLayout presenter_song_buttonsListView;
-    LinearLayout preso_Action_buttons;
-    RelativeLayout col1_layout;
-    RelativeLayout col2_layout;
-    RelativeLayout col3_layout;
+    ScrollView presenter_songbuttons, preso_action_buttons_scroll, presenter_setbuttons;
+    RelativeLayout col1_layout, col2_layout, col3_layout;
 
     // Quick nav buttons
-    FloatingActionButton nav_prevsong;
-    FloatingActionButton nav_nextsong;
-    FloatingActionButton nav_prevsection;
-    FloatingActionButton nav_nextsection;
-    boolean autoproject = false;
-    boolean pedalsenabled = true;
+    FloatingActionButton nav_prevsong, nav_nextsong, nav_prevsection, nav_nextsection;
+    boolean autoproject = false, pedalsenabled = true;
 
     // Button for the song and set
     Button newSetButton;
 
     // The buttons
-    TextView presenter_project_group;
-    TextView presenter_logo_group;
-    TextView presenter_blank_group;
-    TextView presenter_alert_group;
-    TextView presenter_audio_group;
-    TextView presenter_dB_group;
-    TextView presenter_slide_group;
-    TextView presenter_scripture_group;
-    TextView presenter_display_group;
+    TextView presenter_project_group, presenter_logo_group, presenter_blank_group,
+            presenter_alert_group, presenter_audio_group, presenter_dB_group, presenter_slide_group,
+            presenter_scripture_group, presenter_display_group;
 
     // The song and option menu stuff
     DrawerLayout mDrawerLayout;
-    LinearLayout songmenu;
+    LinearLayout songmenu, side_index, optionmenu, changefolder_LinearLayout;
     TextView menuFolder_TextView;
     FloatingActionButton closeSongsFAB;
-    LinearLayout side_index;
     ListView song_list_view;
-    LinearLayout optionmenu;
     ScrollView optionsdisplayscrollview;
-    LinearLayout changefolder_LinearLayout;
-    boolean firstrun_option = true;
-    boolean firstrun_song = true;
+    boolean firstrun_option = true, firstrun_song = true;
     SwitchCompat autoProject;
 
     // The media player
@@ -235,26 +193,21 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     String[] imagelocs;
 
     // Which Actions buttons are selected
-    boolean projectButton_isSelected = false;
+    boolean projectButton_isSelected = false, blankButton_isSelected = false,
+            scriptureButton_isSelected = false, slideButton_isSelected = false,
+            alertButton_isSelected = false, displayButton_isSelected = false,
+            audioButton_isSelected = false, dBButton_isSelected = false;
+
     static boolean logoButton_isSelected = false;
-    boolean blankButton_isSelected = false;
-    boolean scriptureButton_isSelected = false;
-    boolean slideButton_isSelected = false;
-    boolean alertButton_isSelected = false;
-    boolean displayButton_isSelected = false;
     static String alert_on = "N";
-    boolean audioButton_isSelected = false;
-    boolean dBButton_isSelected = false;
 
     // Auto slideshow
-    boolean isplayingautoslideshow = false;
+    boolean isplayingautoslideshow = false, autoslideloop = false;
     int autoslidetime = 0;
-    boolean autoslideloop = false;
 
     // Network discovery / connections
     public static final String TAG = "StageMode";
-    SalutMessage myMessage;
-    SalutMessage mySongMessage;
+    SalutMessage myMessage, mySongMessage;
 
     // Battery
     BroadcastReceiver br;
@@ -366,7 +319,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-
     // Handlers for main page on/off/etc. and window flags
     @Override
     public void onStart() {
@@ -382,7 +334,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     protected void onStop() {
         super.onStop();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mMediaRouter.removeCallback(mMediaRouterCallback);
+            try {
+                mMediaRouter.removeCallback(mMediaRouterCallback);
+            } catch (Exception e) {
+                Log.d("d","Problem removing mediaroutercallback");
+            }
         }
         if (br!=null) {
             try {
@@ -872,7 +828,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-
     // The overflow menu and actionbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -882,14 +837,18 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         getMenuInflater().inflate(R.menu.presenter_actions, menu);
 
         // Setup the menu item for connecting to cast devices
-        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
-        MediaRouteActionProvider mediaRouteActionProvider =
+        //MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(),
+                menu,
+                R.id.media_route_menu_item);
+
+        /*MediaRouteActionProvider mediaRouteActionProvider =
                 (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
         try {
             mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
         // Force overflow icon to show, even if hardware key is present
         MenuHandlers.forceOverFlow(PresenterMode.this, ab, menu);
@@ -970,7 +929,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // Do nothing as we don't allow this in Presentation Mode
     }
 
-
     // Prepare the stuff we need
     public void initialiseTheViews() {
 
@@ -996,7 +954,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         preso_Action_buttons = (LinearLayout) findViewById(R.id.preso_Action_buttons);
         preso_action_buttons_scroll = (ScrollView) findViewById(R.id.preso_action_buttons_scroll);
         presenter_setbuttons = (ScrollView) findViewById(R.id.presenter_setbuttons);
-        preso_settings_scroll = (ScrollView) findViewById(R.id.preso_settings_scroll);
         presenter_song_buttonsListView = (LinearLayout) findViewById(R.id.presenter_song_buttonsListView);
         autoProject = (SwitchCompat) findViewById(R.id.autoProject);
 
@@ -1741,7 +1698,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-
     // Salut stuff
     @Override
     public void onDataReceived(Object data) {
@@ -1916,7 +1872,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
-
 
     // Loading the song
     @Override
@@ -2193,7 +2148,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // Prepare the text to go in the view
         String s = "";
         try {
-            if (FullscreenActivity.projectedContents[FullscreenActivity.currentSection]!=null) {
+            if (FullscreenActivity.projectedContents!=null && FullscreenActivity.projectedContents[FullscreenActivity.currentSection]!=null) {
                 for (int w = 0; w < FullscreenActivity.projectedContents[FullscreenActivity.currentSection].length; w++) {
                     if (FullscreenActivity.presoShowChords) {
                         s += FullscreenActivity.projectedContents[FullscreenActivity.currentSection][w] + "\n";
@@ -2215,7 +2170,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             presenter_project_group.performClick();
         }
     }
-
 
     // Interface listeners for PopUpPages
     @Override
@@ -2446,17 +2400,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void splashScreen() {
-        /*SharedPreferences settings = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putInt("showSplashVersion", 0);
-        editor.apply();
-        Intent intent = new Intent();
-        intent.setClass(PresenterMode.this, SettingsActivity.class);
-        startActivity(intent);
-        finish();*/
         FullscreenActivity.showSplashVersion = 0;
         Preferences.savePreferences();
-        Log.d("d","PresenterMode showSplashVersion="+FullscreenActivity.showSplashVersion);
         Intent intent = new Intent();
         intent.putExtra("showsplash",true);
         intent.setClass(PresenterMode.this, SettingsActivity.class);
@@ -2619,7 +2564,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-
     // The song index
     public void displayIndex() {
         LinearLayout indexLayout = (LinearLayout) findViewById(R.id.side_index);
@@ -2732,7 +2676,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
         return false;
     }
-
 
     // The stuff to deal with the overall views
     @Override
@@ -2857,7 +2800,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             return null;
         }
     }
-
 
     // The right hand column buttons
     public void projectButtonClick() {
@@ -3105,43 +3047,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }, 500);
         }
     }
-    public void slideButtonClick() {
-        slideButton_isSelected = true;
-        highlightButtonClicked(presenter_slide_group);
-
-        FullscreenActivity.whattodo = "customreusable_slide";
-        openFragment();
-
-        // After a short time, turn off the button
-        Handler delay = new Handler();
-        delay.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                slideButton_isSelected = false;
-                unhighlightButtonClicked(presenter_slide_group);
-            }
-        }, 500);
-    }
-    public void scriptureButtonClick() {
-
-        scriptureButton_isSelected = true;
-        highlightButtonClicked(presenter_scripture_group);
-
-        FullscreenActivity.whattodo = "customreusable_scripture";
-        openFragment();
-
-        // After a short time, turn off the button
-        Handler delay = new Handler();
-        delay.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                scriptureButton_isSelected = false;
-                unhighlightButtonClicked(presenter_scripture_group);
-            }
-        }, 500);
-
-    }
-
 
     // Highlight or unhighlight the presenter (col 3) buttons
     @SuppressWarnings("deprecation")
@@ -3160,7 +3065,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             v.setBackground(null);
         }
     }
-
 
     // Enable or disable the buttons in the final column
     public void noSecondScreen() {
@@ -3212,7 +3116,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         scriptureButton_isSelected = false;
         displayButton_isSelected = false;
     }
-
 
     // The camera permissions and stuff
     @Override
@@ -3288,7 +3191,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-
     // The stuff to deal with the second screen
     @Override
     public void connectHDMI() {
@@ -3298,6 +3200,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
         updateDisplays();
     }
+
     @SuppressLint("NewApi")
     private class MyMediaRouterCallback extends MediaRouter.Callback {
 
@@ -3527,7 +3430,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
-
     // Listeners for key or pedal presses
     @Override
     public void onBackPressed() {
@@ -3615,5 +3517,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void stopAutoScroll() {}
     @Override
     public void startAutoScroll() {}
+
+    @Override
+    public void takeScreenShot() {
+        // Do nothing - this is only for Performance mode
+    }
+    @Override
+    public void displayHighlight(boolean fromautoshow) {
+        // Do nothing - this is only for Performance mode
+    }
 
 }

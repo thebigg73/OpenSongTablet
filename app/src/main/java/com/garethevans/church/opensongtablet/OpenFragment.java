@@ -304,6 +304,10 @@ class OpenFragment {
                 }
                 break;
 
+            case "drawnotes":
+                newFragment = PopUpCreateDrawingFragment.newInstance();
+                break;
+
             case "page_pageselect":
                 newFragment = PopUpPagesFragment.newInstance();
                 break;

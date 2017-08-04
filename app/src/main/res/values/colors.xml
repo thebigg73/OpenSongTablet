@@ -15,6 +15,9 @@
     <color name="green">#00aa00</color>
     <color name="grey">#555555</color>
     <color name="dark">#221233</color>
+    <color name="white">#FFFFFF</color>
+    <color name="yellow">#FFFF00</color>
     <color name="tranparent">#00ffffff</color>
+    <color name="popupcolor">#232333</color>
 
 </resources>

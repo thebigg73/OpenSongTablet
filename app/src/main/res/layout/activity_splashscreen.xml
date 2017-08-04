@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
+    android:background="@drawable/popup_bg"
     android:id="@+id/page">
 
     <android.support.v7.widget.Toolbar
@@ -16,7 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:background="#000"
         android:layout_below="@id/toolbar">
 
         <LinearLayout
@@ -28,31 +27,42 @@
                 android:id="@+id/Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="24dp"
+                android:layout_margin="12dp"
                 android:gravity="center_horizontal"
                 android:text="@string/welcome"
                 android:textColor="#fff"
                 android:textSize="24sp" />
 
+            <LinearLayout
+                android:id="@+id/readUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_margin="12dp"
+                android:background="@drawable/section_box">
             <TextView
                 android:id="@+id/version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_margin="8dp"
-                android:gravity="center_horizontal"
+                android:text="@string/app_name"
                 style="@style/MyHeadingText" />
 
-            <Button
+            <TextView
                 android:id="@+id/latest_updates"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="8dp"
-                android:background="#000"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:text="@string/latest_updates"
-                android:textColor="#ff0"
-                android:textSize="18sp" />
+                android:layout_margin="8dp"
+                style="@style/MyHeadingText"  />
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/goToSongs"
@@ -63,6 +73,17 @@
                 android:layout_margin="8dp"
                 android:padding="4dp"
                 android:text="@string/storage_help"
+                android:textColor="#fff" />
+
+            <Button
+                android:id="@+id/manageStorage"
+                android:background="@drawable/green_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:padding="4dp"
+                android:text="@string/storage_choose"
                 android:textColor="#fff" />
 
             <TextView
@@ -138,7 +159,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="8dp"
                 android:text="@string/webLink"
-                style="@style/MyHeadingText" />
+                style="@style/MyHeadingText"/>
 
 
         </LinearLayout>

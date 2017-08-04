@@ -123,20 +123,16 @@ public class StageMode extends AppCompatActivity implements
         PopUpImportExportOSBFragment.MyInterface, SalutDataCallback, SongMenuAdapter.MyInterface,
         BatteryMonitor.MyInterface, PopUpMenuSettingsFragment.MyInterface,
         PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface,
-        PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface {
+        PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
+        PopUpCreateDrawingFragment.MyInterface {
 
     // The toolbar and menu
     public Toolbar ab_toolbar;
     public static ActionBar ab;
     public ActionBarDrawerToggle actionBarDrawerToggle;
-    public RelativeLayout songandauthor;
-    public TextView digitalclock;
-    public TextView songtitle_ab;
-    public TextView songkey_ab;
-    public TextView songauthor_ab;
-    public TextView batterycharge;
+    public RelativeLayout songandauthor, batteryholder;
+    public TextView digitalclock, songtitle_ab, songkey_ab, songauthor_ab, batterycharge;
     public ImageView batteryimage;
-    RelativeLayout batteryholder;
     Menu menu;
 
     // The popup window (sticky)
@@ -146,77 +142,34 @@ public class StageMode extends AppCompatActivity implements
     DrawerLayout mDrawerLayout;
     TextView menuFolder_TextView;
     FloatingActionButton closeSongFAB;
-    LinearLayout songmenu;
-    LinearLayout optionmenu;
+    LinearLayout songmenu, optionmenu, changefolder_LinearLayout;
     ScrollView optionsdisplayscrollview;
-    LinearLayout changefolder_LinearLayout;
     ListView song_list_view;
 
     // Song sections view
     RelativeLayout mypage;
     ScrollView songscrollview;
-    RelativeLayout testpane;
-    RelativeLayout testpane1_2;
-    RelativeLayout testpane2_2;
-    RelativeLayout testpane1_3;
-    RelativeLayout testpane2_3;
-    RelativeLayout testpane3_3;
-    LinearLayout column1_1;
-    LinearLayout column1_2;
-    LinearLayout column2_2;
-    LinearLayout column1_3;
-    LinearLayout column2_3;
-    LinearLayout column3_3;
+    RelativeLayout testpane, testpane1_2, testpane2_2, testpane1_3, testpane2_3, testpane3_3;
+    LinearLayout column1_1, column1_2, column2_2, column1_3, column2_3, column3_3;
     ScrollView glideimage_ScrollView;
-    ImageView glideimage;
-    LinearLayout backingtrackProgress;
-    TextView padcurrentTime_TextView;
-    TextView padTimeSeparator_TextView;
-    TextView padtotalTime_TextView;
-    LinearLayout playbackProgress;
-    TextView currentTime_TextView;
-    TextView timeSeparator_TextView;
-    TextView totalTime_TextView;
-    float width_scale = 0f;
-    float biggestscale_1col = 0.0f;
-    float biggestscale_2col = 0.0f;
-    float biggestscale_3col = 0.0f;
-    boolean overridingfull;
-    boolean overridingwidth;
-    boolean rendercalled = false;
-    boolean sectionpresented = false;
+    ImageView glideimage, highlightNotes;
+    LinearLayout backingtrackProgress, playbackProgress;
+    TextView padcurrentTime_TextView, padTimeSeparator_TextView, padtotalTime_TextView,
+            currentTime_TextView, timeSeparator_TextView, totalTime_TextView;
+    float width_scale = 0f, biggestscale_1col = 0.0f, biggestscale_2col = 0.0f, biggestscale_3col = 0.0f;
+    boolean overridingfull, overridingwidth, rendercalled = false, sectionpresented = false;
 
     int coltouse = 1;
 
     // Page buttons
-    FloatingActionButton setButton;
-    FloatingActionButton padButton;
-    FloatingActionButton autoscrollButton;
-    FloatingActionButton metronomeButton;
-    FloatingActionButton extraButton;
-    FloatingActionButton chordButton;
-    FloatingActionButton stickyButton;
-    FloatingActionButton pageselectButton;
-    FloatingActionButton linkButton;
-    FloatingActionButton chordButton_ungrouped;
-    FloatingActionButton stickyButton_ungrouped;
-    FloatingActionButton pageselectButton_ungrouped;
-    FloatingActionButton linkButton_ungrouped;
-    FloatingActionButton customButton;
-    FloatingActionButton custom1Button;
-    FloatingActionButton custom2Button;
-    FloatingActionButton custom3Button;
-    FloatingActionButton custom4Button;
-    FloatingActionButton custom1Button_ungrouped;
-    FloatingActionButton custom2Button_ungrouped;
-    FloatingActionButton custom3Button_ungrouped;
-    FloatingActionButton custom4Button_ungrouped;
-    FloatingActionButton scrollDownButton;
-    FloatingActionButton scrollUpButton;
-    FloatingActionButton setBackButton;
-    FloatingActionButton setForwardButton;
-    LinearLayout extrabuttons;
-    LinearLayout extrabuttons2;
+    FloatingActionButton setButton, padButton, autoscrollButton, metronomeButton, extraButton,
+            chordButton, stickyButton, highlightButton, pageselectButton, linkButton,
+            chordButton_ungrouped, stickyButton_ungrouped, highlightButton_ungrouped,
+            pageselectButton_ungrouped, linkButton_ungrouped, customButton, custom1Button,
+            custom2Button, custom3Button, custom4Button, custom1Button_ungrouped,
+            custom2Button_ungrouped, custom3Button_ungrouped, custom4Button_ungrouped,
+            scrollDownButton, scrollUpButton, setBackButton, setForwardButton;
+    LinearLayout extrabuttons, extrabuttons2;
 
     // Casting
     MediaRouter mMediaRouter;
@@ -233,40 +186,22 @@ public class StageMode extends AppCompatActivity implements
     GestureDetector gestureDetector;
 
     // ASyncTask stuff
-    AsyncTask<Object, Void, String> loadsong_async;
-    AsyncTask<Object, Void, String> preparesongview_async;
-    AsyncTask<Object, Void, String> createperformanceview1col_async;
-    AsyncTask<Object, Void, String> createperformanceview2col_async;
-    AsyncTask<Object, Void, String> createperformanceview3col_async;
-    AsyncTask<Object, Void, String> preparesongmenu_async;
-    AsyncTask<Object, Void, String> prepareoptionmenu_async;
-    AsyncTask<Void, Void, String> resizeperformance_async;
-    AsyncTask<Void, Void, String> resizestage_async;
-    AsyncTask<Object, Void, String> createstageview1col_async;
-    AsyncTask<Object, Void, String> fadeout_media1;
-    AsyncTask<Object, Void, String> fadeout_media2;
+    AsyncTask<Object, Void, String> loadsong_async, preparesongview_async,
+            createperformanceview1col_async, createperformanceview2col_async,
+            createperformanceview3col_async, preparesongmenu_async, prepareoptionmenu_async,
+            createstageview1col_async, fadeout_media1, fadeout_media2, check_storage,
+            sharesong_async, shareset_async, load_customreusable, open_drawers, close_drawers,
+            resize_drawers, do_moveinset, indexing_done, add_slidetoset, dualscreenwork_async,
+            show_sticky,show_highlight;
+    AsyncTask<Void, Void, String> resizeperformance_async, resizestage_async;
     AsyncTask<String, Integer, String> mtask_autoscroll_music;
-    AsyncTask<Object, Void, String> check_storage;
-    AsyncTask<Object, Void, String> sharesong_async;
-    AsyncTask<Object, Void, String> shareset_async;
-    AsyncTask<Object, Void, String> load_customreusable;
-    AsyncTask<Object, Void, String> open_drawers;
-    AsyncTask<Object, Void, String> close_drawers;
-    AsyncTask<Object, Void, String> resize_drawers;
-    AsyncTask<Object, Void, String> do_moveinset;
-    AsyncTask<Object, Void, String> indexing_done;
-    AsyncTask<Object, Void, String> add_slidetoset;
-    AsyncTask<Object, Void, String> dualscreenwork_async;
     IndexSongs.IndexMySongs indexsongs_task;
-    AsyncTask<Void, Void, Integer> prepare_pad;
-    AsyncTask<Void, Void, Integer> play_pads;
+    AsyncTask<Void, Void, Integer> prepare_pad, play_pads;
     AsyncTask<String, Integer, String> do_download;
-    AsyncTask<Object, Void, String> show_sticky;
     AsyncTask<Object, Integer, String> get_scrollheight;
 
     // Allow the menus to flash open to show where they are on first run
-    boolean firstrun_option = true;
-    boolean firstrun_song = true;
+    boolean firstrun_option = true, firstrun_song = true;
 
     // Handlers and Runnables
     Runnable padoncheck = new Runnable() {
@@ -310,8 +245,7 @@ public class StageMode extends AppCompatActivity implements
 
     // Network discovery / connections
     public static final String TAG = "StageMode";
-    SalutMessage myMessage;
-    SalutMessage mySongMessage;
+    SalutMessage myMessage, mySongMessage;
 
     // NFC
     FileUriCallback mFileUriCallback;
@@ -358,7 +292,6 @@ public class StageMode extends AppCompatActivity implements
                 .addControlCategory(CastMediaControlIntent.categoryForCast("4E2B0891"))
                 .addControlCategory(MediaControlIntent.CATEGORY_LIVE_VIDEO)
                 .build();
-
 
 
         // Set up the gesture detector
@@ -413,6 +346,7 @@ public class StageMode extends AppCompatActivity implements
                 testpane1_3 = (RelativeLayout) findViewById(R.id.testpane1_3);
                 testpane2_3 = (RelativeLayout) findViewById(R.id.testpane2_3);
                 testpane3_3 = (RelativeLayout) findViewById(R.id.testpane3_3);
+                highlightNotes = (ImageView) findViewById(R.id.highlightNotes);
 
                 songscrollview.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
 
@@ -701,8 +635,10 @@ public class StageMode extends AppCompatActivity implements
                 // Hide them
                 setWindowFlags();
                 setWindowFlagsAdvanced();
-                Log.d("d","restoreTransparentBars");
-                //mypage.requestFocus();
+                View rf = getCurrentFocus();
+                if (rf!=null) {
+                    rf.clearFocus();
+                }
             }
         };
 
@@ -900,6 +836,11 @@ public class StageMode extends AppCompatActivity implements
 
         // Setup the menu item for connecting to cast devices
         MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+        View mr = menu.findItem(R.id.media_route_menu_item).getActionView();
+        if (mr!=null) {
+            mr.setFocusable(false);
+            mr.setFocusableInTouchMode(false);
+        }
         MediaRouteActionProvider mediaRouteActionProvider =
                 (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
         if (mMediaRouteSelector != null) {
@@ -982,7 +923,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 StageMode.this.unregisterReceiver(br);
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d("d","Battery monitor not registered anymore");
             }
         }
         tryCancelAsyncTasks();
@@ -1035,6 +976,7 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(play_pads);
         doCancelAsyncTask(do_download);
         doCancelAsyncTask(show_sticky);
+        doCancelAsyncTask(show_highlight);
         doCancelAsyncTask(get_scrollheight);
     }
     public void doCancelAsyncTask(AsyncTask ast) {
@@ -1103,8 +1045,9 @@ public class StageMode extends AppCompatActivity implements
         protected void onPreExecute() {
             songscrollview.destroyDrawingCache();
             songscrollview.setDrawingCacheEnabled(true);
+            songscrollview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_AUTO);
             FullscreenActivity.bmScreen = null;
-            FullscreenActivity.bmScreen = songscrollview.getDrawingCache();
+            FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
         }
 
         @Override
@@ -1267,10 +1210,12 @@ public class StageMode extends AppCompatActivity implements
                 extraButton = (FloatingActionButton) findViewById(R.id.extraButton);
                 chordButton = (FloatingActionButton) findViewById(R.id.chordButton);
                 stickyButton = (FloatingActionButton) findViewById(R.id.stickyButton);
+                highlightButton = (FloatingActionButton) findViewById(R.id.highlightButton);
                 pageselectButton = (FloatingActionButton) findViewById(R.id.pageselectButton);
                 linkButton = (FloatingActionButton) findViewById(R.id.linkButton);
                 chordButton_ungrouped = (FloatingActionButton) findViewById(R.id.chordButton_ungrouped);
                 stickyButton_ungrouped = (FloatingActionButton) findViewById(R.id.stickyButton_ungrouped);
+                highlightButton_ungrouped = (FloatingActionButton) findViewById(R.id.highlightButton_ungrouped);
                 pageselectButton_ungrouped = (FloatingActionButton) findViewById(R.id.pageselectButton_ungrouped);
                 linkButton_ungrouped = (FloatingActionButton) findViewById(R.id.linkButton_ungrouped);
                 customButton = (FloatingActionButton) findViewById(R.id.customButton);
@@ -1361,6 +1306,22 @@ public class StageMode extends AppCompatActivity implements
                 return true;
             }
         });
+        highlightButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                CustomAnimations.animateFABLong(highlightButton,StageMode.this);
+                // Vibrate to let the user know something happened
+                DoVibrate.vibrate(StageMode.this, 50);
+                takeScreenShot();
+                if (FullscreenActivity.bmScreen!=null) {
+                    FullscreenActivity.whattodo = "drawnotes";
+                    openFragment();
+                } else {
+                    Log.d("d","screenshot is null");
+                }
+                return true;
+            }
+        });
         extraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1394,6 +1355,15 @@ public class StageMode extends AppCompatActivity implements
                 CustomAnimations.animateFAB(stickyButton,StageMode.this);
                 FullscreenActivity.whattodo = "page_sticky";
                 displaySticky();
+            }
+        });
+        highlightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(highlightButton,StageMode.this);
+                FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
+                FullscreenActivity.whattodo = "page_highlight";
+                displayHighlight(false);
             }
         });
         pageselectButton.setOnClickListener(new View.OnClickListener() {
@@ -1431,6 +1401,15 @@ public class StageMode extends AppCompatActivity implements
                 CustomAnimations.animateFAB(stickyButton_ungrouped,StageMode.this);
                 FullscreenActivity.whattodo = "page_sticky";
                 openFragment();
+            }
+        });
+        highlightButton_ungrouped.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomAnimations.animateFAB(highlightButton,StageMode.this);
+                FullscreenActivity.whattodo = "page_highlight";
+                FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
+                displayHighlight(false);
             }
         });
         pageselectButton_ungrouped.setOnClickListener(new View.OnClickListener() {
@@ -1638,9 +1617,11 @@ public class StageMode extends AppCompatActivity implements
             chordButton.setVisibility(View.GONE);
             linkButton.setVisibility(View.GONE);
             stickyButton.setVisibility(View.GONE);
+            highlightButton.setVisibility(View.GONE);
             pageselectButton.setVisibility(View.GONE);
             chordButton_ungrouped.setVisibility(View.GONE);
             stickyButton_ungrouped.setVisibility(View.GONE);
+            highlightButton_ungrouped.setVisibility(View.GONE);
             pageselectButton_ungrouped.setVisibility(View.GONE);
             linkButton_ungrouped.setVisibility(View.GONE);
             customButton.setVisibility(View.VISIBLE);
@@ -1661,12 +1642,11 @@ public class StageMode extends AppCompatActivity implements
             chordButton.setVisibility(View.VISIBLE);
             linkButton.setVisibility(View.VISIBLE);
             stickyButton.setVisibility(View.VISIBLE);
-            pageselectButton.setVisibility(View.VISIBLE);
-            linkButton.setVisibility(View.VISIBLE);
-            stickyButton.setVisibility(View.VISIBLE);
+            highlightButton.setVisibility(View.VISIBLE);
             pageselectButton.setVisibility(View.VISIBLE);
             chordButton_ungrouped.setVisibility(View.VISIBLE);
             stickyButton_ungrouped.setVisibility(View.VISIBLE);
+            highlightButton_ungrouped.setVisibility(View.VISIBLE);
             pageselectButton_ungrouped.setVisibility(View.VISIBLE);
             linkButton_ungrouped.setVisibility(View.VISIBLE);
             customButton.setVisibility(View.VISIBLE);
@@ -1686,12 +1666,14 @@ public class StageMode extends AppCompatActivity implements
             chordButton_ungrouped.setVisibility(View.GONE);
             linkButton_ungrouped.setVisibility(View.GONE);
             stickyButton_ungrouped.setVisibility(View.GONE);
+            highlightButton_ungrouped.setVisibility(View.GONE);
             pageselectButton_ungrouped.setVisibility(View.GONE);
         } else if (!FullscreenActivity.grouppagebuttons && !FullscreenActivity.page_extra_grouped) {
             extraButton.setVisibility(View.GONE);
             chordButton_ungrouped.setVisibility(View.VISIBLE);
             linkButton_ungrouped.setVisibility(View.VISIBLE);
             stickyButton_ungrouped.setVisibility(View.VISIBLE);
+            highlightButton_ungrouped.setVisibility(View.VISIBLE);
             pageselectButton_ungrouped.setVisibility(View.VISIBLE);
         }
         if (!FullscreenActivity.grouppagebuttons && FullscreenActivity.page_custom_grouped) {
@@ -1716,10 +1698,12 @@ public class StageMode extends AppCompatActivity implements
         hideViewIfNeeded(chordButton,FullscreenActivity.page_chord_visible);
         hideViewIfNeeded(linkButton,FullscreenActivity.page_links_visible);
         hideViewIfNeeded(stickyButton,FullscreenActivity.page_sticky_visible);
+        hideViewIfNeeded(highlightButton,FullscreenActivity.page_highlight_visible);
         hideViewIfNeeded(pageselectButton,FullscreenActivity.page_pages_visible);
         hideViewIfNeeded(chordButton_ungrouped,FullscreenActivity.page_chord_visible);
         hideViewIfNeeded(linkButton_ungrouped,FullscreenActivity.page_links_visible);
         hideViewIfNeeded(stickyButton_ungrouped,FullscreenActivity.page_sticky_visible);
+        hideViewIfNeeded(highlightButton_ungrouped,FullscreenActivity.page_highlight_visible);
         hideViewIfNeeded(pageselectButton_ungrouped,FullscreenActivity.page_pages_visible);
         hideViewIfNeeded(custom1Button,FullscreenActivity.page_custom1_visible);
         hideViewIfNeeded(custom2Button,FullscreenActivity.page_custom2_visible);
@@ -1773,6 +1757,7 @@ public class StageMode extends AppCompatActivity implements
                 float extraAlpha = FullscreenActivity.pageButtonAlpha;
                 float chordsAlpha = FullscreenActivity.pageButtonAlpha;
                 float stickyAlpha = FullscreenActivity.pageButtonAlpha;
+                float highlightAlpha = FullscreenActivity.pageButtonAlpha;
                 float pageselectAlpha = FullscreenActivity.pageButtonAlpha;
                 float linkAlpha = FullscreenActivity.pageButtonAlpha;
                 float customAlpha = FullscreenActivity.pageButtonAlpha;
@@ -1820,6 +1805,11 @@ public class StageMode extends AppCompatActivity implements
                             extrabuttons.setVisibility(View.VISIBLE);
                             stickyAlpha = onval;
                             break;
+                        case "highlight":
+                            extraAlpha = onval;
+                            extrabuttons.setVisibility(View.VISIBLE);
+                            highlightAlpha = onval;
+                            break;
                         case "pageselect":
                             extraAlpha = onval;
                             extrabuttons.setVisibility(View.VISIBLE);
@@ -1864,10 +1854,12 @@ public class StageMode extends AppCompatActivity implements
                 extraButton.setAlpha(extraAlpha);
                 chordButton.setAlpha(chordsAlpha);
                 stickyButton.setAlpha(stickyAlpha);
+                highlightButton.setAlpha(highlightAlpha);
                 pageselectButton.setAlpha(pageselectAlpha);
                 linkButton.setAlpha(linkAlpha);
                 chordButton_ungrouped.setAlpha(chordsAlpha);
                 stickyButton_ungrouped.setAlpha(stickyAlpha);
+                highlightButton_ungrouped.setAlpha(highlightAlpha);
                 pageselectButton_ungrouped.setAlpha(pageselectAlpha);
                 linkButton_ungrouped.setAlpha(linkAlpha);
                 customButton.setAlpha(customAlpha);
@@ -1891,10 +1883,12 @@ public class StageMode extends AppCompatActivity implements
                 extraButton.setSize(FullscreenActivity.fabSize);
                 chordButton.setSize(FullscreenActivity.fabSize);
                 stickyButton.setSize(FullscreenActivity.fabSize);
+                highlightButton.setSize(FullscreenActivity.fabSize);
                 pageselectButton.setSize(FullscreenActivity.fabSize);
                 linkButton.setSize(FullscreenActivity.fabSize);
                 chordButton_ungrouped.setSize(FullscreenActivity.fabSize);
                 stickyButton_ungrouped.setSize(FullscreenActivity.fabSize);
+                highlightButton_ungrouped.setSize(FullscreenActivity.fabSize);
                 pageselectButton_ungrouped.setSize(FullscreenActivity.fabSize);
                 linkButton_ungrouped.setSize(FullscreenActivity.fabSize);
                 customButton.setSize(FullscreenActivity.fabSize);
@@ -2243,8 +2237,6 @@ public class StageMode extends AppCompatActivity implements
                 // Get the next set positions and song
                 if (!cancelled) {
                     SetActions.doMoveInSet(StageMode.this);
-                    // Set indexSongInSet position has moved
-                    //invalidateOptionsMenu();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2385,7 +2377,6 @@ public class StageMode extends AppCompatActivity implements
                     // Vibrate to let the user know something happened
                     DoVibrate.vibrate(StageMode.this, 50);
 
-                    invalidateOptionsMenu();
                     prepareOptionMenu();
                     closeMyDrawers("option_delayed");
                 }
@@ -2614,6 +2605,14 @@ public class StageMode extends AppCompatActivity implements
                     songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
                 }
             }
+            // If there were highlight notes showing, move them away
+            if (FullscreenActivity.whichMode.equals("Performance") && highlightNotes.getVisibility() == View.VISIBLE) {
+                if (FullscreenActivity.whichDirection.equals("L2R")) {
+                    highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
+                } else {
+                    highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
+                }
+            }
 
             // End any current autscrolling
             stopAutoScroll();
@@ -2627,6 +2626,8 @@ public class StageMode extends AppCompatActivity implements
                 public void run() {
                     glideimage_ScrollView.setVisibility(View.GONE);
                     songscrollview.setVisibility(View.GONE);
+                    highlightNotes.setVisibility(View.GONE);
+                    FullscreenActivity.highlightOn = false;
                     glideimage_ScrollView.scrollTo(0, 0);
                     songscrollview.scrollTo(0, 0);
 
@@ -2822,19 +2823,6 @@ public class StageMode extends AppCompatActivity implements
                         prepareView();
                     }
 
-                    /*// Automatically start the pad if we were playing
-                    if (FullscreenActivity.padson && PadFunctions.isPadValid(StageMode.this)) {
-                        Log.d("d","Trying to start the pad");
-                        Handler hpa = new Handler();
-                        hpa.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                preparePad();
-                            }
-                        },1000);
-                    }*/
-
-
 
                     // Automatically start the metronome if we wanted it to
                     if (FullscreenActivity.metronomeonoff.equals("on")) {
@@ -2844,7 +2832,7 @@ public class StageMode extends AppCompatActivity implements
                         gesture7();
                     }
 
-                    // Decide if we have loaded a song in the current set
+                    // Decide if we have loaded a song in Fthe current set
                     fixSetActionButtons();
 
                     // If the user has shown the 'Welcome to OpenSongApp' file, and their song lists are empty,
@@ -2880,6 +2868,8 @@ public class StageMode extends AppCompatActivity implements
             if (FullscreenActivity.toggleAutoSticky.equals("F") && !FullscreenActivity.mNotes.equals("")) {
                 showSticky();
             }
+
+
         }
     }
 
@@ -3019,7 +3009,6 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-
 
 
     public void createPerformanceView1col() {
@@ -3266,6 +3255,10 @@ public class StageMode extends AppCompatActivity implements
     }
 
     public void animateInSong() {
+        // If autoshowing highlighter notes
+        if (FullscreenActivity.toggleAutoHighlight) {
+            showHighlight(true);
+        }
         // Now scroll in the song via an animation
         if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
             songscrollview.setVisibility(View.GONE);
@@ -3391,13 +3384,6 @@ public class StageMode extends AppCompatActivity implements
             biggestscale_3col = 0f;
 
             width_scale = 0f;
-
-            /*// Make sure the view is animated out
-            if (FullscreenActivity.whichDirection.equals("L2R")) {
-                songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_right));
-            } else {
-                songscrollview.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
-            }*/
 
             FullscreenActivity.currentSection = 0;
 
@@ -3589,7 +3575,7 @@ public class StageMode extends AppCompatActivity implements
             // Decide on the best scaling
             FullscreenActivity.padding = getPixelsFromDpi(16);
             int availablewidth_1col = getAvailableWidth() - getPixelsFromDpi(16);
-            int availableheight = (int) (0.7f * getAvailableHeight()) - getPixelsFromDpi(16);
+            int availableheight = (int) (FullscreenActivity.stagemodeScale * getAvailableHeight()) - getPixelsFromDpi(16);
 
             for (int f = 0; f < FullscreenActivity.sectionviews.length; f++) {
                 float myscale_1_1_col_x = availablewidth_1col / (float) FullscreenActivity.viewwidth[f];
@@ -4124,6 +4110,198 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @Override
+    public void takeScreenShot() {
+        // This option is hidden (Song Menu/Highlight) unless we are in Performance Mode
+        if (!FullscreenActivity.whichMode.equals("Performance")) {
+            FullscreenActivity.highlightOn = false;
+            highlightNotes.setVisibility(View.GONE);
+            FullscreenActivity.myToastMessage = getString(R.string.switchtoperformmode);
+            ShowToast.showToast(StageMode.this);
+        } else {
+            if (!FullscreenActivity.thissong_scale.equals("Y")) {
+                FullscreenActivity.myToastMessage = getString(R.string.highlight_notallowed);
+                ShowToast.showToast(StageMode.this);
+                FullscreenActivity.bmScreen = null;
+            } else {
+                // Hide any current notes
+                boolean vis = highlightNotes.getVisibility() == View.VISIBLE;
+                if (vis) {
+                    highlightNotes.setVisibility(View.GONE);
+                }
+                if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
+                    glideimage_ScrollView.destroyDrawingCache();
+                    glideimage_ScrollView.setDrawingCacheEnabled(true);
+                    glideimage_ScrollView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+                    FullscreenActivity.bmScreen = null;
+                    try {
+                        FullscreenActivity.bmScreen = glideimage_ScrollView.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
+                    } catch (Exception e) {
+                        Log.d("d", "error getting the screenshot!");
+                    }
+                } else {
+                    songscrollview.destroyDrawingCache();
+                    songscrollview.setDrawingCacheEnabled(true);
+                    songscrollview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+                    FullscreenActivity.bmScreen = null;
+                    try {
+                        FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
+                    } catch (Exception e) {
+                        Log.d("d", "error getting the screenshot!");
+                    }
+                }
+                if (vis) {
+                    highlightNotes.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
+    public boolean shouldHighlightsBeShown() {
+        // This is the check before animating in the highlight notes.
+        File f = ProcessSong.getHighlightFile(StageMode.this);
+        return (FullscreenActivity.highlightOn || FullscreenActivity.toggleAutoHighlight) &&
+                f.exists() && FullscreenActivity.whichMode.equals("Performance");
+    }
+    public void showHighlight(boolean fromautoshow) {
+        doCancelAsyncTask(show_highlight);
+        show_highlight = new ShowHighlight(fromautoshow);
+        try {
+            show_highlight.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private class ShowHighlight extends AsyncTask<Object, Void, String> {
+
+        long highlightcurrtime;
+        long highlighttimetohide;
+        boolean highlightdonthide;
+        boolean fromautoshow;
+
+        ShowHighlight(boolean fa) {
+            fromautoshow = fa;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            if (shouldHighlightsBeShown()) {
+                try {
+                    // Open the highlight note window up again
+                    displayHighlight(fromautoshow);
+
+                    // Get the current time
+                    highlightcurrtime = System.currentTimeMillis();
+
+                    // Set the time to close the sticky note
+                    highlighttimetohide = highlightcurrtime + (FullscreenActivity.highlightShowSecs * 1000);
+
+                    if (FullscreenActivity.highlightShowSecs == 0) {
+                        highlightdonthide = true;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        @SuppressWarnings("StatementWithEmptyBody")
+        @Override
+        protected String doInBackground(Object... objects) {
+            if (shouldHighlightsBeShown() && !highlightdonthide) {
+                try {
+                    while (System.currentTimeMillis() < highlighttimetohide) {
+                        // Do nothing
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        boolean cancelled = false;
+        @Override
+        protected void onCancelled() {
+            cancelled = true;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (!cancelled) {
+                if (!highlightdonthide && highlightNotes.getVisibility()==View.VISIBLE) {
+                    // If there is a highlight note showing, remove it
+                    highlightNotes.setVisibility(View.GONE);
+                }
+            }
+        }
+
+    }
+    @Override
+    public void displayHighlight(boolean fromautoshow) {
+        if (!FullscreenActivity.whichMode.equals("Performance")) {
+            FullscreenActivity.highlightOn = false;
+            highlightNotes.setVisibility(View.GONE);
+            if (!fromautoshow) {
+                // Don't show the warning just because the app tries to autoshow it
+                FullscreenActivity.myToastMessage = getString(R.string.switchtoperformmode);
+                ShowToast.showToast(StageMode.this);
+            }
+        } else {
+            // If we are trying to show notes, but they are already open, close them
+            // This is only if a manual click on the hightlight button happened
+            if (highlightNotes.getVisibility() == View.VISIBLE && !fromautoshow) {
+                // Hide it
+                FullscreenActivity.highlightOn = false;
+                highlightNotes.setVisibility(View.GONE);
+            } else if (FullscreenActivity.thissong_scale.equals("Y")) {
+                File file = ProcessSong.getHighlightFile(StageMode.this);
+                if (file != null && file.exists()) {
+                    // Load the image in if it exists and then show it
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    Log.d("d","file="+file);
+                    Log.d("d","pdfPageCurrent="+FullscreenActivity.pdfPageCurrent);
+                    Bitmap bitmap = BitmapFactory.decodeFile(file.toString(), options);
+                    Bitmap canvasBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                    bitmap.recycle();
+                    highlightNotes.setImageBitmap(canvasBitmap);
+                    highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    if (!fromautoshow) {
+                        // If user manually wanted to show, otherwise song load animates it in
+                        highlightNotes.setVisibility(View.VISIBLE);
+                    } else {
+                        highlightNotes.setVisibility(View.VISIBLE);
+                        if (FullscreenActivity.whichDirection.equals("L2R")) {
+                            highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
+                        } else {
+                            highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
+                        }
+                    }
+                    FullscreenActivity.highlightOn = true;
+                } else {
+                    if (!fromautoshow) {
+                        // If the user has clicked the icon and no drawing exists, create one
+                        takeScreenShot();
+                        if (FullscreenActivity.bmScreen != null) {
+                            FullscreenActivity.whattodo = "drawnotes";
+                            openFragment();
+                        } else {
+                            Log.d("d", "screenshot is null");
+                        }
+                    }
+                    FullscreenActivity.highlightOn = false;
+                }
+            } else {
+                if (!fromautoshow) {
+                    // Don't show the warning just because the app tries to autoshow it
+                    FullscreenActivity.myToastMessage = getString(R.string.highlight_notallowed);
+                    ShowToast.showToast(StageMode.this);
+                }
+                FullscreenActivity.highlightOn = false;
+            }
+        }
+    }
+
+    @Override
     public void prepareSongMenu() {
         doCancelAsyncTask(preparesongmenu_async);
         song_list_view.setFastScrollEnabled(false);
@@ -4345,7 +4523,6 @@ public class StageMode extends AppCompatActivity implements
         //Check to see if our set list is still valid
         SetActions.prepareSetList();
         prepareOptionMenu();
-        //invalidateOptionsMenu();
 
         // Save set
         Preferences.savePreferences();
@@ -4559,7 +4736,6 @@ public class StageMode extends AppCompatActivity implements
         }
         FullscreenActivity.tempswipeSet = "enable";
         FullscreenActivity.setMoveDirection = "";
-        //invalidateOptionsMenu();
 
         dualScreenWork();
     }
@@ -4573,7 +4749,6 @@ public class StageMode extends AppCompatActivity implements
         */
         FullscreenActivity.showSplashVersion = 0;
         Preferences.savePreferences();
-        Log.d("d","StageMode showSplashVersion="+FullscreenActivity.showSplashVersion);
         Intent intent = new Intent();
         intent.putExtra("showsplash",true);
         intent.setClass(StageMode.this, SettingsActivity.class);
@@ -4603,7 +4778,6 @@ public class StageMode extends AppCompatActivity implements
             case "deletesong":
                 // Delete current song
                 ListSongFiles.deleteSong(StageMode.this);
-                //invalidateOptionsMenu();
                 Preferences.savePreferences();
                 refreshAll();
                 break;
@@ -4792,17 +4966,6 @@ public class StageMode extends AppCompatActivity implements
 
         PlayPads(Integer w) {
             which = w;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            /*if (which == 1 && FullscreenActivity.mPlayer1 != null) {
-                FullscreenActivity.mPlayer1.setOnPreparedListener(new Player1Prepared());
-            } else if (which == 2 && FullscreenActivity.mPlayer1 != null) {
-                FullscreenActivity.mPlayer2.setOnPreparedListener(new Player2Prepared());
-            } else {
-                Log.d("d","onpreparedlistener isn't called");
-            }*/
         }
 
         @Override
@@ -5170,7 +5333,6 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected void onPreExecute() {
-            Log.d("d","Starting autoscroll");
             FullscreenActivity.time_start = System.currentTimeMillis();
             songscrollview.scrollTo(0,0);
         }
@@ -5439,7 +5601,8 @@ public class StageMode extends AppCompatActivity implements
         if (!FullscreenActivity.pressing_button  // Button pressing
                 && !setButton.isPressed() && !padButton.isPressed() && !autoscrollButton.isPressed()
                 && !metronomeButton.isPressed() && !extraButton.isPressed() && !chordButton.isPressed()
-                && !linkButton.isPressed() && !stickyButton.isPressed() && !pageselectButton.isPressed()
+                && !linkButton.isPressed() && !stickyButton.isPressed()
+                && !highlightButton.isPressed() && !pageselectButton.isPressed()
                 && !customButton.isPressed() && !custom1Button.isPressed() && !custom2Button.isPressed()
                 && !custom3Button.isPressed() && !custom4Button.isPressed()
                 && !custom1Button_ungrouped.isPressed() && !custom2Button_ungrouped.isPressed()
@@ -5488,6 +5651,10 @@ public class StageMode extends AppCompatActivity implements
     public boolean onKeyUp(int keyCode, KeyEvent event) {
 
         event.startTracking();
+        View rf = getCurrentFocus();
+        if (rf!=null) {
+            rf.clearFocus();
+        }
         if (FullscreenActivity.shortKeyPress) {
             FullscreenActivity.pressing_button = false;
 
@@ -5524,8 +5691,12 @@ public class StageMode extends AppCompatActivity implements
                         scrollMenu("down");
                     } else {
                         if (checkCanScrollDown()) {
+                            CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
                             doScrollDown();
                         } else {
+                            if (setForwardButton.getVisibility() == View.VISIBLE) {
+                                CustomAnimations.animateFAB(setForwardButton,StageMode.this);
+                            }
                             goToNextItem();
                         }
                     }
@@ -5540,8 +5711,12 @@ public class StageMode extends AppCompatActivity implements
                         scrollMenu("up");
                     } else {
                         if (checkCanScrollUp()) {
+                            CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
                             doScrollUp();
                         } else {
+                            if (setBackButton.getVisibility() == View.VISIBLE) {
+                                CustomAnimations.animateFAB(setBackButton,StageMode.this);
+                            }
                             goToPreviousItem();
                         }
                     }
@@ -5555,6 +5730,7 @@ public class StageMode extends AppCompatActivity implements
                     scrollMenu("up");
                 } else {
                     if (checkCanScrollUp()) {
+                        CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
                         doScrollUp();
                     }
                 }
@@ -5565,6 +5741,7 @@ public class StageMode extends AppCompatActivity implements
                     scrollMenu("down");
                 } else {
                     if (checkCanScrollDown()) {
+                        CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
                         doScrollDown();
                     }
                 }
@@ -5942,7 +6119,6 @@ public class StageMode extends AppCompatActivity implements
         Preferences.savePreferences();
 
         SetActions.prepareSetList();
-        //invalidateOptionsMenu();
         prepareOptionMenu();
 
         // Show the current set
