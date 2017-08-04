@@ -6,20 +6,25 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -27,6 +32,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import static android.app.Activity.RESULT_OK;
 
 public class PopUpStorageFragment extends DialogFragment {
 
@@ -53,9 +60,13 @@ public class PopUpStorageFragment extends DialogFragment {
     RadioButton intStorageButton;
     RadioButton extStorageButton;
     RadioButton otherStorageButton;
+    RadioButton altStorageButton;
     Button changeCustom;
+    Button grantPermission;
+    Button changeAlt;
     Button wipeSongs;
     String numeral = "1";
+    LinearLayout altStorageGroup;
 
     File intStorCheck;
     File extStorCheck;
@@ -168,13 +179,35 @@ public class PopUpStorageFragment extends DialogFragment {
             saveMe.setVisibility(View.GONE);
         }
 
+        FullscreenActivity.searchUsingSAF = false;
+
         // Initialise the views
         mLayout = V.findViewById(R.id.page);
         intStorageButton = (RadioButton) V.findViewById(R.id.intStorage);
         extStorageButton = (RadioButton) V.findViewById(R.id.extStorage);
         otherStorageButton = (RadioButton) V.findViewById(R.id.otherStorage);
+        altStorageButton = (RadioButton) V.findViewById(R.id.altStorage);
         changeCustom = (Button) V.findViewById(R.id.editCustomStorage);
+        grantPermission = (Button) V.findViewById(R.id.grantPermission);
+        changeAlt = (Button) V.findViewById(R.id.changeAlt);
         wipeSongs = (Button) V.findViewById(R.id.wipeSongs);
+        altStorageGroup = (LinearLayout) V.findViewById(R.id.altStorageGroup);
+
+        // Check alt storage permission
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (checkAltStoragePermission()) {
+                Log.d("d", "Alt permission is set!");
+            }
+        } else {
+            FullscreenActivity.searchUsingSAF = false;
+            FullscreenActivity.uriTree = null;
+            altStorageGroup.setVisibility(View.GONE);
+        }*/
+        // Storage Access Framework is a piece of CRAP - tried to get it working, but not
+        // The lines below are to force the app not to use it (for now at least)
+        FullscreenActivity.searchUsingSAF = false;
+        FullscreenActivity.uriTree = null;
+        altStorageGroup.setVisibility(View.GONE);
 
         // If the storage hasn't been set, don't allow users to try to wipe it!
         if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
@@ -205,8 +238,64 @@ public class PopUpStorageFragment extends DialogFragment {
             }
         });
 
+        altStorageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkAltStoragePermission()) {
+                    if (altStorageButton.isChecked()) {
+                        FullscreenActivity.useStorageAcessFramework = true;
+                        intStorageButton.setChecked(false);
+                        extStorageButton.setChecked(false);
+                        otherStorageButton.setChecked(false);
+                    }
+                }
+            }
+        });
+
+        changeAlt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkAltStoragePermission()) {
+                    if (FullscreenActivity.uriTree != null) {
+                        FullscreenActivity.searchUsingSAF = true;
+                        if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
+                            sListener.selectStorage();
+                            dismiss();
+
+                        } else {
+                            FullscreenActivity.whattodo = "customstoragefind";
+                            mListener.openFragment();
+                            dismiss();
+                        }
+                    }
+                }
+            }
+        });
         String text = getResources().getString(R.string.custom) + "\n(" + defStorage + ")";
         otherStorageButton.setText(text);
+
+        // If user has set their storage preference, set the appropriate radio button
+        switch (FullscreenActivity.prefStorage) {
+            default:
+            case "int":
+                intStorageButton.setChecked(true);
+                extStorageButton.setChecked(false);
+                otherStorageButton.setChecked(false);
+                numeral = "1";
+                break;
+            case "ext":
+                intStorageButton.setChecked(false);
+                extStorageButton.setChecked(true);
+                otherStorageButton.setChecked(false);
+                numeral = "2";
+                break;
+            case "other":
+                intStorageButton.setChecked(false);
+                extStorageButton.setChecked(false);
+                otherStorageButton.setChecked(true);
+                numeral = "3";
+                break;
+        }
 
         intStorageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -241,6 +330,7 @@ public class PopUpStorageFragment extends DialogFragment {
         changeCustom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FullscreenActivity.searchUsingSAF = false;
                 if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
                     sListener.selectStorage();
                     dismiss();
@@ -253,28 +343,13 @@ public class PopUpStorageFragment extends DialogFragment {
             }
         });
 
-        // If user has set their storage preference, set the appropriate radio button
-        switch (FullscreenActivity.prefStorage) {
-            default:
-            case "int":
-                intStorageButton.setChecked(true);
-                extStorageButton.setChecked(false);
-                otherStorageButton.setChecked(false);
-                numeral = "1";
-                break;
-            case "ext":
-                intStorageButton.setChecked(false);
-                extStorageButton.setChecked(true);
-                otherStorageButton.setChecked(false);
-                numeral = "2";
-                break;
-            case "other":
-                intStorageButton.setChecked(false);
-                extStorageButton.setChecked(false);
-                otherStorageButton.setChecked(true);
-                numeral = "3";
-                break;
-        }
+        grantPermission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                triggerStorageAccessFramework();
+            }
+        });
+
 
         // Set the text for the various storage locations
         checkStorageLocations();
@@ -397,6 +472,76 @@ public class PopUpStorageFragment extends DialogFragment {
         }
     }
 
+    private void triggerStorageAccessFramework() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Intent sdAccessIntent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            sdAccessIntent.addFlags(
+                    Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+                            | Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            );
+            startActivityForResult(sdAccessIntent, 42);
+        } else {
+            Log.d("d","old version of Android");
+        }
+    }
+
+    public boolean checkAltStoragePermission() {
+        boolean isok = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
+            if (FullscreenActivity.uriTree!=null) {
+                try {
+                    getActivity().getContentResolver().takePersistableUriPermission(FullscreenActivity.uriTree, takeFlags);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (FullscreenActivity.uriTree!=null) {
+            Log.d("d","uriTree="+FullscreenActivity.uriTree);
+            Log.d("d","uriTree.getPath()="+FullscreenActivity.uriTree.getPath());
+            Log.d("d","uriTree.getEncodedPath()="+FullscreenActivity.uriTree.getEncodedPath());
+            DocumentFile df;
+            try {
+                df = DocumentFile.fromTreeUri(getActivity(), FullscreenActivity.uriTree);
+            } catch (Exception e) {
+                df = null;
+            }
+            if (df!=null && df.canWrite()) {
+                isok = true;
+                Log.d("d","df="+df+"\ncanWrite()=true");
+            } else {
+                Log.d("d","df="+df+"\ncanWrite()=false");
+            }
+        } else {
+            Log.d("d","uriTree not set");
+        }
+        altStorageButton.setEnabled(isok);
+        changeAlt.setEnabled(isok);
+
+        return isok;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        if (resultCode == RESULT_OK) {
+            Uri treeUri = resultData.getData();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getActivity().grantUriPermission(getActivity().getPackageName(), treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                // Persist access permissions.
+                final int takeFlags = (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                getActivity().getContentResolver().takePersistableUriPermission(treeUri, takeFlags);
+                FullscreenActivity.uriTree = treeUri;
+                Preferences.savePreferences();
+                altStorageButton.setEnabled(true);
+            }
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == requestStorage) {
@@ -423,6 +568,7 @@ public class PopUpStorageFragment extends DialogFragment {
                 FullscreenActivity.root = customStorageLoc;
                 getOtherFolders(FullscreenActivity.root);
                 break;
+
             default:
                 FullscreenActivity.prefStorage = "int";
                 FullscreenActivity.root = new File(Environment.getExternalStorageDirectory()+"/documents/");
@@ -470,6 +616,7 @@ public class PopUpStorageFragment extends DialogFragment {
         FullscreenActivity.dirvariations = new File(myroot.getAbsolutePath() + "/OpenSong/Variations");
         FullscreenActivity.dirprofiles = new File(myroot.getAbsolutePath() + "/OpenSong/Profiles");
         FullscreenActivity.dirreceived = new File(myroot.getAbsolutePath() + "/OpenSong/Received");
+        FullscreenActivity.dirhighlighter = new File(myroot.getAbsolutePath() + "/OpenSong/Highlighter");
     }
 
     public static void setUpStoragePreferences() {
@@ -518,12 +665,12 @@ public class PopUpStorageFragment extends DialogFragment {
         boolean dirvariations_success = createDirectory(FullscreenActivity.dirvariations);
         boolean dirprofiles_success = createDirectory(FullscreenActivity.dirprofiles);
         boolean dirreceived_success = createDirectory(FullscreenActivity.dirreceived);
-        boolean success;
-        success = homedir_success && dirsettings_success && dir_success && dirsets_success && dirPads_success && dirbackgrounds_success &&
+        boolean dirhighlighter_success =  createDirectory(FullscreenActivity.dirhighlighter);
+        return homedir_success && dirsettings_success && dir_success && dirsets_success && dirPads_success && dirbackgrounds_success &&
                 dirbibles_success && dirverses_success && dirscripture_success && dirscriptureverses_success &&
                 dircustomimages_success && dircustomnotes_success && dircustomslides_success && dirMedia_success &&
-                dirvariations_success && dirprofiles_success && direxport_success && dirreceived_success;
-        return success;
+                dirvariations_success && dirprofiles_success && direxport_success && dirreceived_success &&
+                dirhighlighter_success;
     }
 
     public static boolean createDirectory(File folder){
@@ -559,12 +706,20 @@ public class PopUpStorageFragment extends DialogFragment {
         boolean dirvariations_success = checkDirectory(FullscreenActivity.dirvariations);
         boolean dirprofiles_success = checkDirectory(FullscreenActivity.dirprofiles);
         boolean dirreceived_success = checkDirectory(FullscreenActivity.dirreceived);
-        boolean success;
-        success = homedir_success && dirsettings_success && dir_success && dirsets_success && dirPads_success && dirbackgrounds_success &&
-                dirbibles_success && dirverses_success && dirscripture_success && dirscriptureverses_success &&
-                dircustomimages_success && dircustomnotes_success && dircustomslides_success && dirMedia_success &&
-                dirvariations_success && dirprofiles_success && direxport_success && dirreceived_success;
-        return success;
+        boolean dirhighlighter_success = checkDirectory(FullscreenActivity.dirhighlighter);
+        return homedir_success && dirsettings_success && dir_success && dirsets_success &&
+                dirPads_success && dirbackgrounds_success && dirbibles_success &&
+                dirverses_success && dirscripture_success && dirscriptureverses_success &&
+                dircustomimages_success && dircustomnotes_success && dircustomslides_success &&
+                dirMedia_success && dirvariations_success && dirprofiles_success &&
+                direxport_success && dirreceived_success && dirhighlighter_success;
+    }
+
+    public static boolean checkBasicDirectoriesExistOnly(){
+        boolean homedir_success = checkDirectory(FullscreenActivity.homedir);
+        boolean dir_success = checkDirectory(FullscreenActivity.dir);
+        boolean dirsets_success = checkDirectory(FullscreenActivity.dirsets);
+        return homedir_success&& dir_success && dirsets_success;
     }
 
     public static boolean checkDirectory(File folder){

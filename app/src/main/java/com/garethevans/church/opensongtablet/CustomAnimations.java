@@ -140,4 +140,8 @@ class CustomAnimations {
         aa.setAnimationListener(new CustomAnimations.MyAnimationListener(v,start,end));
         return aa;
     }
+
+    static void animateOutViewL2R(View v) {
+
+    }
 }

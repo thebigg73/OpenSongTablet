@@ -263,6 +263,8 @@ public class PopUpSetViewNew extends DialogFragment {
         FullscreenActivity.mySet = tempmySet;
         FullscreenActivity.mTempSetList = null;
         SetActions.prepareSetList();
+        FullscreenActivity.myToastMessage = getActivity().getString(R.string.currentset) +
+                " - " + getActivity().getString(R.string.ok);
         Preferences.savePreferences();
         // Tell the listener to do something
         if (mListener!=null) {

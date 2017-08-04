@@ -41,14 +41,11 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         super.onDetach();
     }
 
-    SwitchCompat nextSongOnOff_Switch;
-    SwitchCompat nextSongTopBottom_Switch;
-    SwitchCompat stickyNotesOnOff_Switch;
-    SwitchCompat stickyNotesFloat_Switch;
-    SeekBar stickyNotesTime_SeekBar;
-    TextView stickyNotesTime_TextView;
-    TextView stickNotesTimeInfo_TextView;
-    SwitchCompat stickyNotesTopBottom_Switch;
+    SwitchCompat nextSongOnOff_Switch, nextSongTopBottom_Switch,stickyNotesOnOff_Switch,
+            stickyNotesFloat_Switch,stickyNotesTopBottom_Switch, highlightNotesOnOff_Switch;
+    SeekBar stickyNotesTime_SeekBar, highlightTime_SeekBar;
+    TextView stickyNotesTime_TextView, stickNotesTimeInfo_TextView, highlightTime_TextView,
+            highlightTimeInfo_TextView;
 
     @Override
     public void onStart() {
@@ -98,10 +95,15 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         stickyNotesTime_SeekBar = (SeekBar) V.findViewById(R.id.stickyNotesTime_SeekBar);
         stickyNotesTime_TextView = (TextView) V.findViewById(R.id.stickyNotesTime_TextView);
         stickNotesTimeInfo_TextView = (TextView) V.findViewById(R.id.stickNotesTimeInfo_TextView);
+        highlightNotesOnOff_Switch = (SwitchCompat) V.findViewById(R.id.highlightNotesOnOff_Switch);
+        highlightTime_TextView = (TextView) V.findViewById(R.id.highlightTime_TextView);
+        highlightTime_SeekBar = (SeekBar) V.findViewById(R.id.highlightTime_SeekBar);
+        highlightTimeInfo_TextView = (TextView) V.findViewById(R.id.highlightTimeInfo_TextView);
 
         // Set the default values
         showNextButtons();
         showStickyButtons();
+        showHighlightButtons();
 
         // Set the listeners
         nextSongOnOff_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -204,6 +206,35 @@ public class PopUpExtraInfoFragment extends DialogFragment {
                 Preferences.savePreferences();
             }
         });
+        highlightNotesOnOff_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.toggleAutoHighlight = b;
+                Preferences.savePreferences();
+                showHighlightButtons();
+            }
+        });
+        highlightTime_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                FullscreenActivity.highlightShowSecs = i;
+                String s;
+                if (i==0) {
+                    s = getActivity().getResources().getString(R.string.on);
+                } else {
+                    s = i + " s";
+                }
+                highlightTime_TextView.setText(s);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Preferences.savePreferences();
+            }
+        });
 
         return V;
     }
@@ -272,7 +303,12 @@ public class PopUpExtraInfoFragment extends DialogFragment {
                 stickyNotesFloat_Switch.setVisibility(View.VISIBLE);
                 stickyNotesTime_SeekBar.setVisibility(View.VISIBLE);
                 stickyNotesTime_SeekBar.setProgress(FullscreenActivity.stickyNotesShowSecs);
-                String s = FullscreenActivity.stickyNotesShowSecs + " s";
+                String s;
+                if (FullscreenActivity.stickyNotesShowSecs==0) {
+                    s = getActivity().getResources().getString(R.string.on);
+                } else {
+                    s = FullscreenActivity.stickyNotesShowSecs + " s";
+                }
                 stickyNotesTime_TextView.setText(s);
                 stickyNotesTime_TextView.setVisibility(View.VISIBLE);
                 stickNotesTimeInfo_TextView.setVisibility(View.VISIBLE);
@@ -281,6 +317,28 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         }
 
     }
+
+    public void showHighlightButtons() {
+        highlightNotesOnOff_Switch.setChecked(FullscreenActivity.toggleAutoHighlight);
+        if (!FullscreenActivity.toggleAutoHighlight) {
+            highlightTime_TextView.setVisibility(View.GONE);
+            highlightTimeInfo_TextView.setVisibility(View.GONE);
+            highlightTime_SeekBar.setVisibility(View.GONE);
+        } else {
+            highlightTime_TextView.setVisibility(View.VISIBLE);
+            highlightTimeInfo_TextView.setVisibility(View.VISIBLE);
+            highlightTime_SeekBar.setVisibility(View.VISIBLE);
+        }
+        highlightTime_SeekBar.setProgress(FullscreenActivity.highlightShowSecs);
+        String s;
+        if (FullscreenActivity.highlightShowSecs==0) {
+            s = getActivity().getResources().getString(R.string.on);
+        } else {
+            s = FullscreenActivity.highlightShowSecs + " s";
+        }
+        highlightTime_TextView.setText(s);
+    }
+
     @Override
     public void onCancel(DialogInterface dialog) {
         this.dismiss();

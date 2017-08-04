@@ -25,6 +25,8 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         void gesture5();
         void gesture6();
         void gesture7();
+        void displayHighlight(boolean fromautoshow);
+        void takeScreenShot();
     }
 
     private PopUpGroupedPageButtonsFragment.MyInterface mListener;
@@ -49,6 +51,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
     FloatingActionButton group_chords;
     FloatingActionButton group_links;
     FloatingActionButton group_sticky;
+    FloatingActionButton group_highlight;
     FloatingActionButton group_pages;
     FloatingActionButton group_custom1;
     FloatingActionButton group_custom2;
@@ -102,6 +105,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         group_chords = (FloatingActionButton) V.findViewById(R.id.group_chords);
         group_links = (FloatingActionButton) V.findViewById(R.id.group_links);
         group_sticky = (FloatingActionButton) V.findViewById(R.id.group_sticky);
+        group_highlight = (FloatingActionButton) V.findViewById(R.id.group_highlight);
         group_pages = (FloatingActionButton) V.findViewById(R.id.group_pages);
         group_custom1 = (FloatingActionButton) V.findViewById(R.id.group_custom1);
         group_custom2 = (FloatingActionButton) V.findViewById(R.id.group_custom2);
@@ -119,6 +123,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         group_chords.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_links.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_sticky.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
+        group_highlight.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_pages.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_custom1.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_custom2.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
@@ -163,6 +168,17 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 openAction("page_sticky");
+            }
+        });
+        group_highlight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.highlightOn = !FullscreenActivity.highlightOn;
+                FullscreenActivity.whattodo = "page_highlight";
+                if (mListener!=null) {
+                    mListener.displayHighlight(false);
+                }
+                dismiss();
             }
         });
         group_pages.setOnClickListener(new View.OnClickListener() {

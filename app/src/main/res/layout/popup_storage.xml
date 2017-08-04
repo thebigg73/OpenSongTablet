@@ -30,15 +30,16 @@
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="8dp"
                 android:text="@string/storage_help" />
 
             <TextView
-                android:id="@+id/textView30"
                 style="@style/MyInfoText"
+                android:background="@color/red"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_margin="8dp"
+                android:padding="8dp"
                 android:text="@string/storage_issues" />
 
             <RelativeLayout
@@ -80,6 +81,7 @@
                 android:background="@drawable/section_box"
                 android:orientation="vertical">
 
+
                 <RadioButton
                     android:id="@+id/otherStorage"
                     style="@style/MyWhiteHeadingText"
@@ -90,7 +92,7 @@
 
                 <Button
                     android:id="@+id/editCustomStorage"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
@@ -102,9 +104,51 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/altStorageGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/section_box"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/altStorage"
+                    style="@style/MyWhiteHeadingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:text="Alternative" />
+
+                <Button
+                    android:id="@+id/grantPermission"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/grey_button"
+                    android:text="Fix permision by locating the SD card root"
+                    android:textColor="#fff" />
+
+                <Button
+                    android:id="@+id/changeAlt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/grey_button"
+                    android:text="Edit"
+                    android:textColor="#fff" />
+
+            </LinearLayout>
+
             <Button
                 android:id="@+id/wipeSongs"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="8dp"

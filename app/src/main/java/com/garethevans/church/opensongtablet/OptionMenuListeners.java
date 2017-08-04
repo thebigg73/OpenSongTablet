@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +42,7 @@ public class OptionMenuListeners extends Activity {
         void useCamera();
         void doDownload(String file);
         void connectHDMI();
+        void takeScreenShot();
     }
 
     public static MyInterface mListener;
@@ -633,6 +635,7 @@ public class OptionMenuListeners extends Activity {
         TextView menuup = (TextView) v.findViewById(R.id.songMenuTitle);
         Button songEditButton = (Button) v.findViewById(R.id.songEditButton);
         Button songStickyButton = (Button) v.findViewById(R.id.songStickyButton);
+        Button songDrawingButton = (Button) v.findViewById(R.id.songDrawingButton);
         Button songOnYouTubeButton = (Button) v.findViewById(R.id.songOnYouTubeButton);
         Button songOnWebButton = (Button) v.findViewById(R.id.songOnWebButton);
         Button songRenameButton = (Button) v.findViewById(R.id.songRenameButton);
@@ -646,6 +649,7 @@ public class OptionMenuListeners extends Activity {
         menuup.setText(c.getString(R.string.options_song).toUpperCase(FullscreenActivity.locale));
         songEditButton.setText(c.getString(R.string.options_song_edit).toUpperCase(FullscreenActivity.locale));
         songStickyButton.setText(c.getString(R.string.options_song_stickynotes).toUpperCase(FullscreenActivity.locale));
+        songDrawingButton.setText(c.getString(R.string.highlight).toUpperCase(FullscreenActivity.locale));
         songOnYouTubeButton.setText(c.getString(R.string.youtube).toUpperCase(FullscreenActivity.locale));
         songOnWebButton.setText(c.getString(R.string.websearch).toUpperCase(FullscreenActivity.locale));
         songRenameButton.setText(c.getString(R.string.options_song_rename).toUpperCase(FullscreenActivity.locale));
@@ -653,6 +657,13 @@ public class OptionMenuListeners extends Activity {
         songDeleteButton.setText(c.getString(R.string.options_song_delete).toUpperCase(FullscreenActivity.locale));
         songExportButton.setText(c.getString(R.string.options_song_export).toUpperCase(FullscreenActivity.locale));
         songPresentationOrderButton.setText(c.getString(R.string.edit_song_presentation).toUpperCase(FullscreenActivity.locale));
+
+        // Hide the drawing option unless we are in performance mode
+        if (FullscreenActivity.whichMode.equals("Performance")) {
+            songDrawingButton.setVisibility(View.VISIBLE);
+        } else {
+            songDrawingButton.setVisibility(View.GONE);
+        }
 
         // Set the switches up based on preferences
         songPresentationOrderButton.setChecked(FullscreenActivity.usePresentationOrder);
@@ -686,6 +697,23 @@ public class OptionMenuListeners extends Activity {
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
+                }
+            }
+        });
+
+        songDrawingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "drawnotes";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    // Take a snapshot of the songwindow
+                    mListener.takeScreenShot();
+                    if (FullscreenActivity.bmScreen!=null) {
+                        mListener.openFragment();
+                    } else {
+                        Log.d("d","screenshot is null");
+                    }
                 }
             }
         });

@@ -502,7 +502,20 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.default_autoscroll_predelay = getIntegerValue(xpp.nextText(),10);
 
                 } else if (xpp.getName().equals("default_autoscroll_songlength")) {
-                    FullscreenActivity.default_autoscroll_songlength = getIntegerValue(xpp.nextText(),180);
+                    FullscreenActivity.default_autoscroll_songlength = getIntegerValue(xpp.nextText(), 180);
+
+                } else if (xpp.getName().equals("drawingEraserSize")) {
+                    FullscreenActivity.drawingEraserSize = getIntegerValue(xpp.nextText(), 20);
+                } else if (xpp.getName().equals("drawingHighlightColor")) {
+                    FullscreenActivity.drawingHighlightColor = getTextValue(xpp.nextText(), "yellow");
+                } else if (xpp.getName().equals("drawingHighlightSize")) {
+                    FullscreenActivity.drawingHighlightSize = getIntegerValue(xpp.nextText(), 20);
+                } else if (xpp.getName().equals("drawingPenColor")) {
+                    FullscreenActivity.drawingPenColor = getTextValue(xpp.nextText(), "yellow");
+                } else if (xpp.getName().equals("drawingPenSize")) {
+                    FullscreenActivity.drawingPenSize = getIntegerValue(xpp.nextText(), 20);
+                } else if (xpp.getName().equals("drawingTool")) {
+                    FullscreenActivity.drawingTool = getTextValue(xpp.nextText(), "highlighter");
 
                 } else if (xpp.getName().equals("exportOpenSongAppSet")) {
                     FullscreenActivity.exportOpenSongAppSet = getBooleanValue(xpp.nextText(),false);
@@ -537,7 +550,10 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.headingfontscalesize = getFloatValue(xpp.nextText(),0.6f);
 
                 } else if (xpp.getName().equals("hideActionBar")) {
-                    FullscreenActivity.hideActionBar = getBooleanValue(xpp.nextText(),false);
+                    FullscreenActivity.hideActionBar = getBooleanValue(xpp.nextText(), false);
+
+                } else if (xpp.getName().equals("highlightShowSecs")) {
+                    FullscreenActivity.highlightShowSecs = getIntegerValue(xpp.nextText(), 0);
 
                 } else if (xpp.getName().equals("languageToLoad")) {
                     FullscreenActivity.languageToLoad = getTextValue(xpp.nextText(), "");
@@ -696,6 +712,9 @@ public class PopUpProfileFragment extends DialogFragment {
 
                 } else if (xpp.getName().equals("page_extra_visible")) {
                     FullscreenActivity.page_extra_visible = getBooleanValue(xpp.nextText(),true);
+
+                } else if (xpp.getName().equals("page_highlight_visible")) {
+                    FullscreenActivity.page_highlight_visible = getBooleanValue(xpp.nextText(),true);
 
                 } else if (xpp.getName().equals("page_links_visible")) {
                     FullscreenActivity.page_links_visible = getBooleanValue(xpp.nextText(),true);
@@ -886,6 +905,9 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("songfilename")) {
                     FullscreenActivity.songfilename = getTextValue(xpp.nextText(), "");
 
+                } else if (xpp.getName().equals("stagemodeScale")) {
+                    FullscreenActivity.stagemodeScale = getFloatValue(xpp.nextText(), 0.7f);
+
                 } else if (xpp.getName().equals("stickyNotesShowSecs")) {
                     FullscreenActivity.stickyNotesShowSecs = getIntegerValue(xpp.nextText(), 8);
 
@@ -936,6 +958,9 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("timeSize")) {
                     FullscreenActivity.timeSize = getFloatValue(xpp.nextText(), 9.0f);
 
+                } else if (xpp.getName().equals("toggleAutoHighlight")) {
+                    FullscreenActivity.toggleAutoHighlight = getBooleanValue(xpp.nextText(), true);
+
                 } else if (xpp.getName().equals("toggleAutoSticky")) {
                     FullscreenActivity.toggleAutoSticky = getTextValue(xpp.nextText(),"N");
 
@@ -952,7 +977,10 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.toggleYScale = getTextValue(xpp.nextText(),"W");
 
                 } else if (xpp.getName().equals("transposeStyle")) {
-                    FullscreenActivity.transposeStyle = getTextValue(xpp.nextText(),"sharps");
+                    FullscreenActivity.transposeStyle = getTextValue(xpp.nextText(), "sharps");
+
+                } else if (xpp.getName().equals("trimSections")) {
+                    FullscreenActivity.trimSections = getBooleanValue(xpp.nextText(), false);
 
                 } else if (xpp.getName().equals("usePresentationOrder")) {
                     FullscreenActivity.usePresentationOrder = getBooleanValue(xpp.nextText(),false);
@@ -1119,6 +1147,12 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <dark_presoShadow>" + FullscreenActivity.dark_presoShadow + "</dark_presoShadow>\n";
         text += "  <default_autoscroll_predelay>" + FullscreenActivity.default_autoscroll_predelay + "</default_autoscroll_predelay>\n";
         text += "  <default_autoscroll_songlength>" + FullscreenActivity.default_autoscroll_songlength + "</default_autoscroll_songlength>\n";
+        text += "  <drawingEraserSize>" + FullscreenActivity.drawingEraserSize + "</drawingEraserSize>\n";
+        text += "  <drawingHighlightColor>" + FullscreenActivity.drawingHighlightColor + "</drawingHighlightColor>\n";
+        text += "  <drawingHighlightSize>" + FullscreenActivity.drawingHighlightSize + "</drawingHighlightSize>\n";
+        text += "  <drawingPenColor>" + FullscreenActivity.drawingPenColor + "</drawingPenColor>\n";
+        text += "  <drawingPenSize>" + FullscreenActivity.drawingPenSize + "</drawingPenSize>\n";
+        text += "  <drawingTool>" + FullscreenActivity.drawingTool + "</drawingTool>\n";
         text += "  <exportOpenSongAppSet>" + FullscreenActivity.exportOpenSongAppSet + "</exportOpenSongAppSet>\n";
         text += "  <exportOpenSongApp>" + FullscreenActivity.exportOpenSongApp + "</exportOpenSongApp>\n";
         text += "  <exportDesktop>" + FullscreenActivity.exportDesktop + "</exportDesktop>\n";
@@ -1132,6 +1166,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <gesture_longpress>" + FullscreenActivity.gesture_longpress + "</gesture_longpress>\n";
         text += "  <grouppagebuttons>" + FullscreenActivity.grouppagebuttons + "</grouppagebuttons>\n";
         text += "  <headingfontscalesize>" + FullscreenActivity.headingfontscalesize + "</headingfontscalesize>\n";
+        text += "  <highlightShowSecs>" + FullscreenActivity.highlightShowSecs + "</highlightShowSecs>\n";
         text += "  <hideActionBar>" + FullscreenActivity.hideActionBar + "</hideActionBar>\n";
         text += "  <languageToLoad>" + FullscreenActivity.languageToLoad + "</languageToLoad>\n";
         text += "  <lastSetName>" + FullscreenActivity.lastSetName + "</lastSetName>\n";
@@ -1191,6 +1226,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <page_custom4_visible>" + FullscreenActivity.page_custom4_visible + "</page_custom4_visible>\n";
         text += "  <page_extra_grouped>" + FullscreenActivity.page_extra_grouped + "</page_extra_grouped>\n";
         text += "  <page_extra_visible>" + FullscreenActivity.page_extra_visible + "</page_extra_visible>\n";
+        text += "  <page_highlight_visible>" + FullscreenActivity.page_highlight_visible + "</page_highlight_visible>\n";
         text += "  <page_links_visible>" + FullscreenActivity.page_links_visible + "</page_links_visible>\n";
         text += "  <page_metronome_visible>" + FullscreenActivity.page_metronome_visible + "</page_metronome_visible>\n";
         text += "  <page_pad_visible>" + FullscreenActivity.page_pad_visible + "</page_pad_visible>\n";
@@ -1256,6 +1292,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <showLyrics>" + FullscreenActivity.showLyrics + "</showLyrics>\n";
         text += "  <showSetTickBoxInSongMenu>" + FullscreenActivity.showSetTickBoxInSongMenu + "</showSetTickBoxInSongMenu>\n";
         text += "  <songfilename>" + FullscreenActivity.songfilename + "</songfilename>\n";
+        text += "  <stagemodeScale>" + FullscreenActivity.stagemodeScale + "</stagemodeScale>\n";
         text += "  <stickyNotesShowSecs>" + FullscreenActivity.stickyNotesShowSecs + "</stickyNotesShowSecs>\n";
         text += "  <stickyOpacity>" + FullscreenActivity.stickyOpacity + "</stickyOpacity>\n";
         text += "  <stickyTextSize>" + FullscreenActivity.stickyTextSize + "</stickyTextSize>\n";
@@ -1272,12 +1309,14 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <timeFormat24h>" + FullscreenActivity.timeFormat24h + "</timeFormat24h>\n";
         text += "  <timeOn>" + FullscreenActivity.timeOn + "</timeOn>\n";
         text += "  <timeSize>" + FullscreenActivity.timeSize + "</timeSize>\n";
+        text += "  <toggleAutoHighlight>" + FullscreenActivity.toggleAutoHighlight + "</toggleAutoHighlight>\n";
         text += "  <toggleAutoSticky>" + FullscreenActivity.toggleAutoSticky + "</toggleAutoSticky>\n";
         text += "  <togglePageButtons>" + FullscreenActivity.togglePageButtons + "</togglePageButtons>\n";
         text += "  <toggleScrollArrows>" + FullscreenActivity.toggleScrollArrows + "</toggleScrollArrows>\n";
         text += "  <toggleScrollBeforeSwipe>" + FullscreenActivity.toggleScrollBeforeSwipe + "</toggleScrollBeforeSwipe>\n";
         text += "  <toggleYScale>" + FullscreenActivity.toggleYScale + "</toggleYScale>\n";
         text += "  <transposeStyle>" + FullscreenActivity.transposeStyle + "</transposeStyle>\n";
+        text += "  <trimSections>" + FullscreenActivity.trimSections + "</trimSections>\n";
         text += "  <usePresentationOrder>" + FullscreenActivity.usePresentationOrder + "</usePresentationOrder>\n";
         text += "  <visualmetronome>" + FullscreenActivity.visualmetronome + "</visualmetronome>\n";
         //text += "  <whichMode>" + FullscreenActivity.whichMode + "</whichMode>\n";

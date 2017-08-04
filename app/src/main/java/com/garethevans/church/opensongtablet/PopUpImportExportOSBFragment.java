@@ -121,8 +121,8 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             saveMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CustomAnimations.animateFAB(closeMe,getActivity());
-                    closeMe.setEnabled(false);
+                    CustomAnimations.animateFAB(saveMe,getActivity());
+                    saveMe.setEnabled(false);
                     doTheImporting();
                 }
             });

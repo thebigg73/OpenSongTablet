@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
@@ -42,204 +41,198 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
     //First up, declare all of the variables needed by this application
 
-    public static boolean sortAlphabetically = true;
+    // The important starting up ones
+    public static Locale locale;
+    public static boolean resetSomePreferences, firstload = true;
+    public static int currentapiVersion;
 
-    // PopUp window size and alpha
-    public static float popupAlpha_Set = 0.6f;
-    public static float popupDim_Set = 0.7f;
-    public static float popupScale_Set = 0.8f;
-    public static String popupPosition_Set = "c";
-    public static float popupAlpha_All = 0.6f;
-    public static float popupDim_All = 0.7f;
-    public static float popupScale_All = 0.8f;
-    public static String popupPosition_All = "c";
-    public static float pageButtonAlpha = 0.4f;
+    // Storage variables
+    public static String mediaStore = "", prefStorage, customStorage, mStorage = "";
+    public static Uri uriTree;
+    public static boolean useStorageAcessFramework, searchUsingSAF=false;
+    public static File root = Environment.getExternalStorageDirectory(),
+            homedir = new File(root.getAbsolutePath() + "/documents/OpenSong"),
+            dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs"),
+            dirsettings = new File(root.getAbsolutePath() + "/documents/OpenSong/Settings"),
+            dironsong = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong"),
+            dirsets = new File(root.getAbsolutePath() + "/documents/OpenSong/Sets"),
+            direxport = new File(root.getAbsolutePath() + "/documents/OpenSong/Export"),
+            dirPads = new File(root.getAbsolutePath() + "/documents/OpenSong/Pads"),
+            dirMedia = new File(root.getAbsolutePath() + "/documents/OpenSong/Media"),
+            dirbackgrounds = new File(root.getAbsolutePath() + "/documents/OpenSong/Backgrounds"),
+            dirbibles = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture"),
+            dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache"),
+            dirscripture = new File(root.getAbsolutePath() + "/documents/OpenSong/Scripture/"),
+            dirscriptureverses = new File(root.getAbsolutePath() + "/documents/OpenSong/Scripture/_cache"),
+            dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache"),
+            dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache"),
+            dircustomimages = new File(root.getAbsolutePath() + "/documents/OpenSong/Images/_cache"),
+            dirvariations = new File(root.getAbsolutePath() + "/documents/OpenSong/Variations"),
+            dirprofiles = new File(root.getAbsolutePath() + "/documents/OpenSong/Profiles"),
+            dirreceived = new File(root.getAbsolutePath() + "/documents/OpenSong/Received"),
+            dirhighlighter = new File(root.getAbsolutePath() + "/documents/OpenSong/Highlighter");
+
+    // The song fields
+    public static CharSequence mTitle = "", mAuthor = "Gareth Evans", mCopyright = "";
+    public static String mLyrics = "", mCCLI = "", mAltTheme = "", mPresentation = "",
+            mHymnNumber = "", mUser1 = "", mUser2 = "", mUser3 = "", mKey = "", mAka = "",
+            mKeyLine = "", mStyle = "", mCapo = "", mCapoPrint = "", mTempo = "", mTimeSig = "",
+            mDuration = "", mPreDelay = "", mBooks = "", mMidi = "", mMidiIndex = "", mPitch = "",
+            mRestrictions = "", mNotes = "", temptranspChords = "", mLinkedSongs = "",
+            mExtraStuff1 = "", mExtraStuff2 = "", mPadFile = "", mCustomChords = "",
+            mLinkYouTube = "", mLinkWeb = "", mLinkAudio = "", mLoopAudio = "false", mLinkOther = "";
 
     // Song menu
-    public static String indexlog = "";
-    public static ArrayList<String> searchFileName = new ArrayList<>();
-    public static ArrayList<String> searchFolder = new ArrayList<>();
-    public static ArrayList<String> searchTitle = new ArrayList<>();
-    public static ArrayList<String> searchAuthor = new ArrayList<>();
-    public static ArrayList<String> searchShortLyrics = new ArrayList<>();
-    public static ArrayList<String> searchTheme = new ArrayList<>();
-    public static ArrayList<String> searchKey = new ArrayList<>();
-    public static ArrayList<String> searchHymnNumber = new ArrayList<>();
-    //public static ArrayList<SearchViewItems> searchlist = new ArrayList<>();
+    public static boolean needtorefreshsongmenu = false, safetosearch = false,
+            showSetTickBoxInSongMenu;
+    public static String indexlog = "", currentFolder = "", newFolder = "", whichSongFolder = "";
+    public static ArrayList<String> searchFileName = new ArrayList<>(), searchFolder = new ArrayList<>(),
+            searchTitle = new ArrayList<>(), searchAuthor = new ArrayList<>(),
+            searchShortLyrics = new ArrayList<>(), searchTheme = new ArrayList<>(),
+            searchKey = new ArrayList<>(), searchHymnNumber = new ArrayList<>(),
+            allfilesforsearch = new ArrayList<>(), search_database = new ArrayList<>();
+    public static float menuSize;
+    public static File filechosen, file;
+    public static String[] mSongFileNames, mSongFolderNames;
+    public static String[][] songDetails;
+    public static Map<String, Integer> mapIndex;
+    public static int currentSongIndex, previousSongIndex, nextSongIndex;
     @SuppressLint("StaticFieldLeak")
     public static SearchViewAdapter sva;
-    //ArrayAdapter<String> lva;
-    //public static boolean menuscroll = true;
-
-    // Custom QuickLaunch buttons
-    public static String quickLaunchButton_1 = "";
-    public static String quickLaunchButton_2 = "";
-    public static String quickLaunchButton_3 = "";
-    public static String quickLaunchButton_4 = "";
-    public static int fabSize = FloatingActionButton.SIZE_MINI;
-    public static boolean page_set_visible;
-    public static boolean page_pad_visible;
-    public static boolean page_metronome_visible;
-    public static boolean page_autoscroll_visible;
-    public static boolean page_extra_visible;
-    public static boolean page_custom_visible;
-    public static boolean page_chord_visible;
-    public static boolean page_links_visible;
-    public static boolean page_sticky_visible;
-    public static boolean page_pages_visible;
-    public static boolean page_custom1_visible;
-    public static boolean page_custom2_visible;
-    public static boolean page_custom3_visible;
-    public static boolean page_custom4_visible;
-    public static boolean page_extra_grouped;
-    public static boolean page_custom_grouped;
-
-    // Long and short key presses
-    public static boolean longKeyPress = false;
-    public static boolean shortKeyPress = false;
 
     // Option menu
     public static String whichOptionMenu = "MAIN";
 
-    // Checks for metronome, pad, autoscroll
-    public static boolean metronomeok;
-    public static boolean padok;
-    public static boolean autoscrollok;
-    public static float timerFontSizePad;
-    public static float timerFontSizeAutoScroll;
+    // Metronome, pad and autoscroll stuff
+    public static boolean metronomeok, padok, autoscrollok, pad1Playing, pad2Playing, pad1Fading,
+            pad2Fading, padson = false, autostartautoscroll, clickedOnAutoScrollStart = false,
+            pauseautoscroll = true, autoscrollispaused = false, isautoscrolling = false,
+            visualmetronome = false, mTimeSigValid = false, usingdefaults = false;
+    public static int beatoffcolour = 0xff232333, scrollpageHeight, currentBeat = 1,
+            total_pixels_to_scroll = 0, timesigindex, default_autoscroll_songlength,
+            default_autoscroll_predelay, keyindex, scrollSpeed, autoScrollDelay, autoScrollDuration,
+            audiolength = -1, fadeWhichPad, padtime_length = 0;
+    public static final int autoscroll_pause_time = 500; // specified in ms
+    public static String popupAutoscroll_stoporstart = "stop", whichbeat = "a",
+            metronomeonoff = "off", metronomepan = "both", padpan = "both",
+            autoscroll_default_or_prompt = "", autoscrollonoff = "false", pad_filename = "null";
+    public static float timerFontSizePad, timerFontSizeAutoScroll, metrovol, metronomevol = 1.0f,
+            padvol = 1.0f, autoscroll_pixels = 0.0f, newPosFloat = 0.0f, scrollDistance;
+    public static long time_start, time_passed = 0;
+    public static String[] timesigs;
+    public static final short minBpm = 40, maxBpm = 199;
+    public static short noteValue = 4, beats = 4;
+    public static double beatSound = 1200, sound = 1600;
+    public static MediaPlayer mPlayer1 = new MediaPlayer(), mPlayer2 = new MediaPlayer();
+    //public static boolean fadeout1 = false, fadeout2 = false;
+    //public short initialVolume;
+
+    // The toolbar, clock battery and titles
+    public Toolbar toolbar;
+    public ActionBar ab;
+    public static int ab_height;
+    public static boolean timeFormat24h, timeOn, batteryOn, batteryDialOn;
+    public static float timeSize, batterySize, ab_titleSize, ab_authorSize;
+
+    // Drawing stuff
+    public static String drawingPenColor, drawingHighlightColor, drawingTool;
+    public static int drawingPenSize, drawingEraserSize, drawingHighlightSize, highlightShowSecs;
+    public static boolean highlightOn, toggleAutoHighlight, saveHighlight = false;
+
+    // Set stuff
+    public static String previousSongInSet = "", nextSongInSet = "", nextSongKeyInSet = "",
+            whichSetCategory, whatsongforsetwork = "", mySet = "", newSetContents = "",
+            settoload = "", setMoveDirection = "", mySetXML = "", setnamechosen = "";
+    public static String[] mySetsFileNames, mySetsFolderNames, mSet, mSetList, myParsedSet;
+    public static File[] mySetsFiles, mySetsDirectories;
+    public static boolean setView, showingSetsToLoad = false, doneshuffle = false,
+            addingtoset = false;
+    public static int setSize, indexSongInSet;
+    public static ArrayList<String> mTempSetList;
+    public static File setfile;
+
+    // Chords, capo and transpose stuff
+    public static String prefChord_Aflat_Gsharp = "", prefChord_Bflat_Asharp = "",
+            prefChord_Dflat_Csharp = "", prefChord_Eflat_Dsharp = "", prefChord_Gflat_Fsharp = "",
+            prefChord_Aflatm_Gsharpm = "", prefChord_Bflatm_Asharpm = "",
+            prefChord_Dflatm_Csharpm = "", prefChord_Eflatm_Dsharpm = "",
+            prefChord_Gflatm_Fsharpm = "", alwaysPreferredChordFormat = "", chordFormat = "",
+            oldchordformat = "", presenterChords = "", capokey = null, transposeDirection = "0",
+            transposeStyle = "sharps", transposedLyrics = "";
+    public static int transposeTimes = 1;
+    public static boolean showChords, showLyrics, showCapo, showCapoChords, showNativeAndCapoChords,
+            switchsharpsflats = false;
+
+    // PopUp window size and alpha
+    public static float popupAlpha_Set = 0.6f, popupDim_Set = 0.7f, popupScale_Set = 0.8f,
+            popupAlpha_All = 0.6f, popupDim_All = 0.7f, popupScale_All = 0.8f, pageButtonAlpha = 0.4f;
+    public static String popupPosition_Set = "c", popupPosition_All = "c";
+
+    // Custom QuickLaunch buttons
+    public static String quickLaunchButton_1 = "", quickLaunchButton_2 = "",
+            quickLaunchButton_3 = "", quickLaunchButton_4 = "";
+    public static int fabSize = FloatingActionButton.SIZE_MINI;
+    public static boolean page_set_visible, page_pad_visible, page_metronome_visible,
+            page_autoscroll_visible, page_extra_visible, page_custom_visible, page_chord_visible,
+            page_links_visible, page_sticky_visible, page_highlight_visible, page_pages_visible,
+            page_custom1_visible, page_custom2_visible, page_custom3_visible, page_custom4_visible,
+            page_extra_grouped, page_custom_grouped;
+
+    public static boolean orientationchanged = false;
+    public static boolean sortAlphabetically = true;
+
+    // Long and short key presses
+    public static boolean longKeyPress = false, shortKeyPress = false;
 
     // Updated scaled view stuff
-    public static int[] viewwidth;
-    public static int[] viewheight;
+    public static int[] viewwidth, viewheight;
     public static int padding = 18;
     // Song sections
     public static LinearLayout[] sectionviews;
     public static boolean[] sectionrendered;
     public static Bitmap[] sectionbitmaps;
 
-    // Playback progress
-    static long time_start;
-    public static int audiolength = -1;
-    public static boolean pad1Playing;
-    public static boolean pad2Playing;
-    public static boolean pad1Fading;
-    public static boolean pad2Fading;
-    public static int fadeWhichPad;
+    public static float stagemodeScale;
+    public static boolean trimSections;
 
-    //LinearLayout playbackProgress;
-    //TextView padcurrentTime_TextView;
-    //TextView padtotalTime_TextView;
-    //long padtime_start;
-    //public static int padaudiolength = -1;
-
-    public static String filetoselect = "";
-    public static String pagebutton_scale;
-    public static String profile;
-
-    // Transpose preferences
-    public static String prefChord_Aflat_Gsharp = "";
-    public static String prefChord_Bflat_Asharp = "";
-    public static String prefChord_Dflat_Csharp = "";
-    public static String prefChord_Eflat_Dsharp = "";
-    public static String prefChord_Gflat_Fsharp = "";
-    public static String prefChord_Aflatm_Gsharpm = "";
-    public static String prefChord_Bflatm_Asharpm = "";
-    public static String prefChord_Dflatm_Csharpm = "";
-    public static String prefChord_Eflatm_Dsharpm = "";
-    public static String prefChord_Gflatm_Fsharpm = "";
-    public static boolean switchsharpsflats = false;
-
-    // The toolbar
-    public Toolbar toolbar;
-    public ActionBar ab;
-    public static int ab_height;
-    //public RelativeLayout songandauthor;
-    //public TextView songtitle_ab;
-    //public TextView songkey_ab;
-    //public TextView songauthor_ab;
-
-    // Immersive mode stuff
+    public static String filetoselect = "", pagebutton_scale, profile;
 
     // This is for trying to automatically open songs via intent
     public static Intent incomingfile;
-    public static String file_name = "";
-    public static String file_location = "";
-    public static String file_type = "";
+    public static String file_name = "", file_location = "", file_type = "", file_contents = "";
     public static Uri file_uri;
-    public static String file_contents = "";
 
     // Screencapure variables
     public static Bitmap bmScreen;
     public static boolean abort = false;
 
     // Custom note/slide variables
-    public static String noteorslide = "";
-    public static String customslide_title = "";
-    public static String customslide_content = "";
-    public static String customimage_list = "";
-    public static String customimage_loop = "";
-    public static String customimage_time = "";
-    public static boolean customreusable = false;
-    public static String customreusabletoload = "";
-    public static boolean isImageSection = false;
-    public static String imagetext="";
-    public static int checkscroll_time = 1600;
-    public static int delayswipe_time = 800;
-    public static int crossFadeTime = 8000;
-    public static String toggleScrollArrows = "";
+    public static String noteorslide = "", customslide_title = "", customslide_content = "",
+            customimage_list = "", customimage_loop = "", customimage_time = "",
+            customreusabletoload = "", imagetext="", toggleScrollArrows = "";
+    public static boolean customreusable = false, isImageSection = false;
+    public static int checkscroll_time = 1600, delayswipe_time = 800, crossFadeTime = 8000;
 
     public static boolean converting = false;
     public static String phrasetosearchfor;
 
-    public static int myWidthAvail;
-    public static int myHeightAvail;
+    public static int myWidthAvail, myHeightAvail;
 
-    public static Typeface typeface0;
-    public static Typeface typeface1;
-    public static Typeface typeface2;
-    public static Typeface typeface3;
-    public static Typeface typeface4;
-    public static Typeface typeface4i;
-    public static Typeface typeface5;
-    public static Typeface typeface5i;
-    public static Typeface typeface6;
-    public static Typeface typeface7;
-    public static Typeface typeface7i;
-    public static Typeface typeface8;
-    public static Typeface typeface8i;
-    public static Typeface typeface9;
-    public static Typeface typeface9i;
-    public static Typeface typeface10;
-    public static Typeface typeface10i;
-    public static Typeface typeface11;
-    public static Typeface typeface11i;
-    public static Typeface typeface12;
-    public static Typeface typeface12i;
+    // Fonts
+    public static Typeface typeface0, typeface1, typeface2, typeface3, typeface4, typeface4i,
+            typeface5, typeface5i, typeface6, typeface7, typeface7i, typeface8, typeface8i, typeface9,
+            typeface9i, typeface10, typeface10i, typeface11, typeface11i, typeface12, typeface12i;
 
-    public static ArrayList<String> exportsetfilenames = new ArrayList<>();
-    public static ArrayList<String> exportsetfilenames_ost = new ArrayList<>();
-    public static String lastSetName = "";
-    public static String chordInstrument = "g";
-    public static String showNextInSet = "top";
-    public static String allchords = "";
-    public static String chordnotes = "";
-    public static String capoDisplay = "";
-    public static String languageToLoad = "";
-    //private static String tempLanguage = "";
-    //private String[] backUpFiles;
-    //private String backupchosen = "";
+    public static ArrayList<String> exportsetfilenames = new ArrayList<>(), exportsetfilenames_ost = new ArrayList<>();
+    public static String lastSetName = "", chordInstrument = "g", showNextInSet = "top",
+            allchords = "", chordnotes = "", capoDisplay = "", languageToLoad = "";
 
     // Stuff to deal with the splash screen/version
-    public static int version;
-    public static int showSplashVersion;
+    public static int version, showSplashVersion;
 
     @SuppressLint("StaticFieldLeak")
     public static Context mContext;
     public static boolean receiveHostFiles;
-
-    public static int currentapiVersion;
-
-    public static String mediaStore = "";
 
     public static String emailtext = "";
 
@@ -249,314 +242,87 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
     public static boolean pressing_button = false;
 
-    public static String popupAutoscroll_stoporstart = "stop";
-    public static int scrollpageHeight;
-    public static boolean autostartautoscroll;
-    public static boolean clickedOnAutoScrollStart = false;
-
-    public DialogFragment newFragment;
-
-    public static long time_passed = 0;
-    public static int padtime_length = 0;
-    public static int beatoffcolour = 0xff232333;
-    public static String whichbeat = "a";
-    public static boolean visualmetronome = false;
-
-    @SuppressWarnings("unused")
-    public static boolean fadeout1 = false;
-    @SuppressWarnings("unused")
-    public static boolean fadeout2 = false;
-    public static final short minBpm = 40;
-    public static final short maxBpm = 199;
-    //private short bpm = 100;
-    public static short noteValue = 4;
-    public static short beats = 4;
-    public static int currentBeat = 1;
-    @SuppressWarnings("unused")
-    public static float metrovol;
-    @SuppressWarnings("unused")
-    public short initialVolume;
-    public static double beatSound = 1200;
-    public static double sound = 1600;
-
-
-    public static String metronomeonoff = "off";
-    public static String metronomepan = "both";
-    public static float metronomevol = 1.0f;
-    public static float padvol = 1.0f;
-    public static String padpan = "both";
-    public static int timesigindex;
-    public static boolean mTimeSigValid = false;
-    public static String[] timesigs;
-    //public static int temposlider;
-    static boolean usingdefaults = false;
-    public static final int autoscroll_pause_time = 500; // specified in ms
-    public static int default_autoscroll_songlength;
-    public static int default_autoscroll_predelay;
-    public static String autoscroll_default_or_prompt = "";
-    public static boolean pauseautoscroll = true;
-    public static boolean autoscrollispaused = false;
-    public static boolean isautoscrolling = false;
-    public static float autoscroll_pixels = 0.0f;
-    public static float newPosFloat = 0.0f;
-    public static int total_pixels_to_scroll = 0;
-    public static String autoscrollonoff = "false";
-    public static String pad_filename = "null";
-    //public static boolean isfading1 = false;
-    //public static boolean isfading2 = false;
-    public static boolean padson = false;
-    public static boolean needtorefreshsongmenu = false;
-    public static MediaPlayer mPlayer1 = new MediaPlayer();
-    public static MediaPlayer mPlayer2 = new MediaPlayer();
-    public static boolean orientationchanged = false;
-    //private static ImageButton uselinkaudiolength_ImageButton;
-    //private static int alreadyshowingpage;
-    public static int keyindex;
-
     public static final int REQUEST_CAMERA_CODE = 1973;
     public static String mCurrentPhotoPath;
     public static final int REQUEST_MICROPHONE_CODE = 1974;
 
-    public static int pdfPageCurrent = 0;
-    public static int pdfPageCount = 0;
-    public static boolean isPDF = false;
-    public static boolean isImage = false;
-    public static boolean isSong = false;
-    public static boolean isSlide = false;
-    public static boolean isScripture = false;
-    public static boolean isImageSlide = false;
-    public static boolean isVideo = false;
+    public static int pdfPageCurrent = 0, pdfPageCount = 0;
+    public static boolean isPDF = false, isImage = false, isSong = false, isSlide = false,
+            isScripture = false, isImageSlide = false, isVideo = false;
 
     public static String toggleAutoSticky = "";
-    public static int stickyNotesShowSecs;
-    public static int stickyWidth;
+    public static int stickyNotesShowSecs, stickyWidth;
     public static boolean hideActionBar;
-    public static String setnamechosen = "";
-    public static boolean addingtoset = false;
+
 
     // Swipe
-    public static int SWIPE_MIN_DISTANCE = 250;
-    public static int SWIPE_MAX_OFF_PATH = 200;
-    public static int SWIPE_THRESHOLD_VELOCITY = 600;
-    public static boolean swipeForMenus;
-    public static boolean swipeForSongs;
+    public static int SWIPE_MIN_DISTANCE = 250, SWIPE_MAX_OFF_PATH = 200, SWIPE_THRESHOLD_VELOCITY = 600;
+    public static boolean swipeForMenus, swipeForSongs;
 
     public static String whichMode = "";
 
     // Views and bits on the pages
     public static int mScreenOrientation;
-    public static boolean scrollbutton = false;
-    public static boolean actionbarbutton = false;
+    public static boolean scrollbutton = false, actionbarbutton = false;
 
     // Font sizes (relative)
     public static int linespacing;
 
     // Colours
-    public static int dark_lyricsTextColor;
-    public static int dark_lyricsBackgroundColor;
-    public static int dark_lyricsVerseColor;
-    public static int dark_lyricsChorusColor;
-    public static int dark_lyricsBridgeColor;
-    public static int dark_lyricsCommentColor;
-    public static int dark_lyricsPreChorusColor;
-    public static int dark_lyricsTagColor;
-    public static int dark_lyricsChordsColor;
-    public static int dark_lyricsCustomColor;
-    public static int dark_lyricsCapoColor;
-    public static int dark_presoFont;
-    public static int dark_presoInfoFont;
-    public static int dark_presoAlertFont;
-    public static int dark_presoShadow;
-    public static int dark_metronome;
-    public static int dark_pagebuttons;
-    public static int dark_stickytext;
-    public static int dark_stickybg;
-
-    public static int light_lyricsTextColor;
-    public static int light_lyricsBackgroundColor;
-    public static int light_lyricsVerseColor;
-    public static int light_lyricsChorusColor;
-    public static int light_lyricsBridgeColor;
-    public static int light_lyricsCommentColor;
-    public static int light_lyricsPreChorusColor;
-    public static int light_lyricsTagColor;
-    public static int light_lyricsChordsColor;
-    public static int light_lyricsCustomColor;
-    public static int light_lyricsCapoColor;
-    public static int light_presoFont;
-    public static int light_presoInfoFont;
-    public static int light_presoAlertFont;
-    public static int light_presoShadow;
-    public static int light_metronome;
-    public static int light_pagebuttons;
-    public static int light_stickytext;
-    public static int light_stickybg;
-
-    public static int custom1_lyricsTextColor;
-    public static int custom1_lyricsBackgroundColor;
-    public static int custom1_lyricsVerseColor;
-    public static int custom1_lyricsChorusColor;
-    public static int custom1_lyricsBridgeColor;
-    public static int custom1_lyricsCommentColor;
-    public static int custom1_lyricsPreChorusColor;
-    public static int custom1_lyricsTagColor;
-    public static int custom1_lyricsChordsColor;
-    public static int custom1_lyricsCustomColor;
-    public static int custom1_lyricsCapoColor;
-    public static int custom1_presoFont;
-    public static int custom1_presoInfoFont;
-    public static int custom1_presoAlertFont;
-    public static int custom1_presoShadow;
-    public static int custom1_metronome;
-    public static int custom1_pagebuttons;
-    public static int custom1_stickytext;
-    public static int custom1_stickybg;
-
-    public static int custom2_lyricsTextColor;
-    public static int custom2_lyricsBackgroundColor;
-    public static int custom2_lyricsVerseColor;
-    public static int custom2_lyricsChorusColor;
-    public static int custom2_lyricsBridgeColor;
-    public static int custom2_lyricsCommentColor;
-    public static int custom2_lyricsPreChorusColor;
-    public static int custom2_lyricsTagColor;
-    public static int custom2_lyricsChordsColor;
-    public static int custom2_lyricsCustomColor;
-    public static int custom2_lyricsCapoColor;
-    public static int custom2_presoFont;
-    public static int custom2_presoInfoFont;
-    public static int custom2_presoAlertFont;
-    public static int custom2_presoShadow;
-    public static int custom2_metronome;
-    public static int custom2_pagebuttons;
-    public static int custom2_stickytext;
-    public static int custom2_stickybg;
-
-    public static int lyricsBoxColor;
-    public static int lyricsTextColor;
-    public static int lyricsBackgroundColor;
-    public static int lyricsChorusColor;
-    public static int lyricsVerseColor;
-    public static int lyricsBridgeColor;
-    public static int lyricsCommentColor;
-    public static int lyricsPreChorusColor;
-    public static int lyricsTagColor;
-    public static int lyricsChordsColor;
-    public static int lyricsCustomColor;
-    public static int lyricsCapoColor;
-    public static int metronomeColor;
-    public static int pagebuttonsColor;
-    public static int presoAlertFontColor;
-    public static int presoFontColor;
-    public static int presoInfoFontColor;
-    public static int presoShadowColor;
-    public static float commentfontscalesize;
-    public static float headingfontscalesize;
-    public static float chordfontscalesize;
-    public static int stickytextColor;
-    public static int stickybgColor;
-    public static float stickyOpacity;
-    public static float stickyTextSize;
+    public static int dark_lyricsTextColor, dark_lyricsBackgroundColor, dark_lyricsVerseColor,
+            dark_lyricsChorusColor, dark_lyricsBridgeColor, dark_lyricsCommentColor,
+            dark_lyricsPreChorusColor, dark_lyricsTagColor, dark_lyricsChordsColor,
+            dark_lyricsCustomColor, dark_lyricsCapoColor, dark_presoFont, dark_presoInfoFont,
+            dark_presoAlertFont, dark_presoShadow, dark_metronome, dark_pagebuttons,
+            dark_stickytext, dark_stickybg, light_lyricsTextColor, light_lyricsBackgroundColor,
+            light_lyricsVerseColor, light_lyricsChorusColor, light_lyricsBridgeColor,
+            light_lyricsCommentColor, light_lyricsPreChorusColor, light_lyricsTagColor,
+            light_lyricsChordsColor, light_lyricsCustomColor, light_lyricsCapoColor,
+            light_presoFont, light_presoInfoFont, light_presoAlertFont, light_presoShadow,
+            light_metronome, light_pagebuttons, light_stickytext, light_stickybg,
+            custom1_lyricsTextColor, custom1_lyricsBackgroundColor, custom1_lyricsVerseColor,
+            custom1_lyricsChorusColor, custom1_lyricsBridgeColor, custom1_lyricsCommentColor,
+            custom1_lyricsPreChorusColor, custom1_lyricsTagColor, custom1_lyricsChordsColor,
+            custom1_lyricsCustomColor, custom1_lyricsCapoColor, custom1_presoFont,
+            custom1_presoInfoFont, custom1_presoAlertFont, custom1_presoShadow, custom1_metronome,
+            custom1_pagebuttons, custom1_stickytext, custom1_stickybg, custom2_lyricsTextColor,
+            custom2_lyricsBackgroundColor, custom2_lyricsVerseColor, custom2_lyricsChorusColor,
+            custom2_lyricsBridgeColor, custom2_lyricsCommentColor, custom2_lyricsPreChorusColor,
+            custom2_lyricsTagColor, custom2_lyricsChordsColor, custom2_lyricsCustomColor,
+            custom2_lyricsCapoColor, custom2_presoFont, custom2_presoInfoFont,
+            custom2_presoAlertFont, custom2_presoShadow, custom2_metronome, custom2_pagebuttons,
+            custom2_stickytext, custom2_stickybg, lyricsBoxColor, lyricsTextColor,
+            lyricsBackgroundColor, lyricsChorusColor, lyricsVerseColor, lyricsBridgeColor,
+            lyricsCommentColor, lyricsPreChorusColor, lyricsTagColor, lyricsChordsColor,
+            lyricsCustomColor, lyricsCapoColor, metronomeColor, pagebuttonsColor,
+            presoAlertFontColor, presoFontColor, presoInfoFontColor, presoShadowColor,
+            stickytextColor, stickybgColor;
+    public static float commentfontscalesize, headingfontscalesize, chordfontscalesize,
+            stickyOpacity, stickyTextSize;
 
     // Page turner
-    public static int pageturner_NEXT;
-    public static int pageturner_PREVIOUS;
-    public static int pageturner_UP;
-    public static int pageturner_DOWN;
-    public static int pageturner_PAD;
-    public static int pageturner_AUTOSCROLL;
-    public static int pageturner_METRONOME;
-    public static int pageturner_AUTOSCROLLPAD;
-    public static int pageturner_AUTOSCROLLMETRONOME;
-    public static int pageturner_PADMETRONOME;
-    public static int pageturner_AUTOSCROLLPADMETRONOME;
-    public static String toggleScrollBeforeSwipe = "";
-    public static String togglePageButtons = "";
+    public static int pageturner_NEXT, pageturner_PREVIOUS, pageturner_UP, pageturner_DOWN,
+            pageturner_PAD, pageturner_AUTOSCROLL, pageturner_METRONOME, pageturner_AUTOSCROLLPAD,
+            pageturner_AUTOSCROLLMETRONOME, pageturner_PADMETRONOME, pageturner_AUTOSCROLLPADMETRONOME;
+    public static String toggleScrollBeforeSwipe = "", togglePageButtons = "";
 
     // Set variables
-    public static int scrollSpeed;
-    public static float scrollDistance;
-    public static int autoScrollDelay;
-    public static int autoScrollDuration;
-    public static String prefStorage = "";
-    public static String customStorage = "";
     public static boolean wasscrolling = false;
     public static boolean isManualDragging = false;
-    public static String alwaysPreferredChordFormat = "";
-    public static String gesture_doubletap = "";
-    public static String gesture_longpress = "";
-    public static String longpressdownpedalgesture = "";
-    public static String longpressuppedalgesture = "";
-    public static String longpresspreviouspedalgesture = "";
-    public static String longpressnextpedalgesture = "";
+    public static String gesture_doubletap = "", gesture_longpress = "",
+            longpressdownpedalgesture = "", longpressuppedalgesture = "",
+            longpresspreviouspedalgesture = "", longpressnextpedalgesture = "";
     public static String bibleFile = "";
-    public static String chordFormat = "";
-    public static String oldchordformat = "";
-    public static String presenterChords = "";
-    public static String swipeDrawer = "";
-    public static String swipeSet = "";
-    public static String tempswipeSet = "enable";
-    public static String whichDirection = "R2L";
-    public static int indexSongInSet;
-    public static String previousSongInSet = "";
-    public static String nextSongInSet = "";
-    public static String nextSongKeyInSet = "";
+    public static String swipeDrawer = "", swipeSet = "", tempswipeSet = "enable", whichDirection = "R2L";
     public static String mTheme = "";
     public static String mDisplayTheme = "Theme.Holo";
-    public static boolean setView;
-    public static int setSize;
-    public static boolean showingSetsToLoad = false;
-    public static String whatsongforsetwork = "";
-    public static String mySet = "";
-    public static String newSetContents = "";
-    public static String[] mSet;
-    public static String[] mSetList;
-    public static ArrayList<String> mTempSetList;
-    public static boolean doneshuffle = false;
 
-    public static float menuSize;
-    public static boolean showSetTickBoxInSongMenu;
-
-    // Song filenames, folders, set filenames, folders
-    public static String currentFolder = "";
-    public static String newFolder = "";
-    public static String whichSongFolder = "";
-    public static String[] mySetsFileNames;
-    public static File[] mySetsFiles;
-    public static String whichSetCategory;
-    public static String[] mySetsFolderNames;
-    public static File[] mySetsDirectories;
-    public static File filechosen;
-    public static File file;
-    public static File setfile;
-    public static String settoload = "";
-    public static String[] mSongFileNames;
-    public static String[] mSongFolderNames;
-    public static String[][] songDetails;
-    public static Map<String, Integer> mapIndex;
-
-    public static String setMoveDirection = "";
-    public static ArrayList<String> allfilesforsearch = new ArrayList<>();
-    //public static ArrayList<String> allfilesforsearch_folder = new ArrayList<>();
-    //public static ArrayList<String> allfilesforsearch_song = new ArrayList<>();
-    public static ArrayList<String> search_database = new ArrayList<>();
-    public static boolean safetosearch = false;
-
-    public static int currentSongIndex;
-    public static int previousSongIndex;
-    public static int nextSongIndex;
 
     // Presentation mode variables
-    public static boolean presoAutoScale;
-    public static boolean presoShowChords;
-    public static int presoFontSize;
-    public static int presoMaxFontSize;
-    public static float presoTitleSize;
-    public static float presoAuthorSize;
-    public static float presoCopyrightSize;
-    public static float presoAlertSize;
-    public static int presoLyricsAlign;
-    public static int presoInfoAlign;
+    public static boolean presoAutoScale, presoShowChords;
+    public static int presoFontSize, presoMaxFontSize;
+    public static float presoTitleSize, presoAuthorSize, presoCopyrightSize, presoAlertSize;
+    public static int presoLyricsAlign, presoInfoAlign;
     public static Typeface presoInfoFont;
 
     public static String customLogo = "";
@@ -564,229 +330,87 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static float presoAlpha;
     public static String myAlert = "";
     public static boolean dualDisplayCapable;
-    public static String backgroundImage1 = "";
-    public static String backgroundImage2 = "";
-    public static String backgroundVideo1 = "";
-    public static String backgroundVideo2 = "";
-    public static String backgroundToUse = "";
-    public static String backgroundTypeToUse = "";
-    public static int xmargin_presentation;
-    public static int ymargin_presentation;
+    public static String backgroundImage1 = "", backgroundImage2 = "", backgroundVideo1 = "", backgroundVideo2 = "",
+            backgroundToUse = "", backgroundTypeToUse = "";
+    public static int xmargin_presentation, ymargin_presentation;
     public static boolean usePresentationOrder = false;
     public static int presoTransitionTime = 800;
 
-    // Clock and battery and titles
-    public static boolean timeFormat24h;
-    public static float timeSize;
-    public static float batterySize;
-    public static boolean timeOn;
-    public static boolean batteryOn;
-    public static boolean batteryDialOn;
-    public static float ab_titleSize;
-    public static float ab_authorSize;
 
     // Song xml data
     public static ArrayList<String> foundSongSections_heading = new ArrayList<>();
     //public static ArrayList<String> foundSongSections_content = new ArrayList<>();
 
-    public static CharSequence mTitle = "";
-    public static CharSequence mAuthor = "Gareth Evans";
-    //private static String mTempAuthor = "";
-    public static CharSequence mCopyright = "";
-    public static String mLyrics = "";
-    public static String mCCLI = "";
-    public static String mAltTheme = "";
-    public static String mPresentation = "";
-    public static String mHymnNumber = "";
-    public static String mUser1 = "";
-    public static String mUser2 = "";
-    public static String mUser3 = "";
-    public static String mKey = "";
-    public static String mAka = "";
-    public static String mKeyLine = "";
-    public static String mStyle = "";
-    public static String mCapo = "";
-    public static String mCapoPrint = "";
-    public static String mTempo = "";
-    public static String mTimeSig = "";
-    public static String mDuration = "";
-    public static String mPreDelay = "";
-    public static String mBooks = "";
-    public static String mMidi = "";
-    public static String mMidiIndex = "";
-    public static String mPitch = "";
-    public static String mRestrictions = "";
-    public static String mNotes = "";
-    public static String temptranspChords = "";
-    public static String mLinkedSongs = "";
-    public static String mExtraStuff1 = "";
-    public static String mExtraStuff2 = "";
-    public static String mPadFile = "";
-    public static String mCustomChords = "";
-    public static String mLinkYouTube = "";
-    public static String mLinkWeb = "";
-    public static String mLinkAudio = "";
-    public static String mLoopAudio = "false";
-    public static String mLinkOther = "";
 
-    public static String capokey = null;
 
-    public static boolean isPresenting;
-    public static boolean isHDMIConnected = false;
+    public static boolean isPresenting, isHDMIConnected = false, autoProject;
     public static int scalingDensity = 240;
-    public static boolean autoProject;
 
     // Info for the lyrics table
-    public static boolean scalingfiguredout = false;
-    public static boolean botherwithcolumns;
-    public static int splitpoint;
-    public static int thirdsplitpoint;
-    public static int twothirdsplitpoint;
-    public static int halfsplit_section;
-    public static int thirdsplit_section;
-    public static int twothirdsplit_section;
-    public static String mStorage = "";
+    public static boolean scalingfiguredout = false, botherwithcolumns;
+    public static int splitpoint, thirdsplitpoint, twothirdsplitpoint, halfsplit_section,
+            thirdsplit_section, twothirdsplit_section;
     public static String myLyrics = "";
     public static float mFontSize;
-    public static int mMaxFontSize;
-    public static int mMinFontSize;
-    public static boolean override_fullscale;
-    public static boolean override_widthscale;
-    public static String toggleYScale = "";
-    public static String thissong_scale;
-    public static String mySetXML = "";
-    public static String[] myParsedSet;
-    public static String myXML = "";
-    public static String mynewXML = "";
-    public static String[] myParsedLyrics;
-    public static String[] myTransposedLyrics;
-    public static String songfilename = "";
-    public static String linkclicked = "";
+    public static int mMaxFontSize, mMinFontSize;
+    public static boolean override_fullscale, override_widthscale;
+    public static String toggleYScale = "", thissong_scale;
+    public static String myXML = "", mynewXML = "";
+    public static String songfilename = "", linkclicked = "";
     public static SharedPreferences myPreferences;
     public static int numrowstowrite;
-    public static String transposeDirection = "0";
-    public static int transposeTimes = 1;
-    public static String transposeStyle = "sharps";
-    public static String transposedLyrics = "";
-    public static boolean showChords;
-    public static boolean showLyrics;
+    public static String[] myParsedLyrics, myTransposedLyrics;
 
     public static String myToastMessage = "";
-    public static boolean showCapo;
-    public static boolean showCapoChords;
-    public static boolean showNativeAndCapoChords;
 
-    public static String mScripture = "";
-    public static String incoming_text = "";
-    public static String scripture_title = "";
-    public static String scripture_verse = "";
-    public static String mainfoldername = "";
-    public static int mylyricsfontnum;
-    public static int mychordsfontnum;
-    public static int mypresofontnum;
-    public static int mypresoinfofontnum;
-    public static Typeface lyricsfont;
-    public static Typeface commentfont;
-    public static Typeface chordsfont;
-    public static Typeface presofont;
+    public static String mScripture = "", incoming_text = "", scripture_title = "",
+            scripture_verse = "", mainfoldername = "";
+    public static int mylyricsfontnum, mychordsfontnum, mypresofontnum, mypresoinfofontnum;
+    public static Typeface lyricsfont, commentfont, chordsfont, presofont;
 
     public static int whichPad = 0;
 
-    public static String[] songSections;
-    public static String[] songSectionsLabels;
-    public static String[][] sectionContents;
-    public static String[][] sectionLineTypes;
-    public static String[] songSectionsTypes;
+    public static String[] songSections, songSectionsLabels, songSectionsTypes;
+    public static String[][] sectionContents, sectionLineTypes, projectedContents, projectedLineTypes;
     public static String songSection_holder; // This carries on section types after line breaks
     public static float[] sectionScaleValue;
     public static int currentSection;
-    public static String[][] projectedContents;
-    public static String[][] projectedLineTypes;
 
 
     public static String pagebutton_position = "right";
     public static boolean grouppagebuttons = false;
 
-    public static File root = Environment.getExternalStorageDirectory();
-    public static File homedir = new File(root.getAbsolutePath() + "/documents/OpenSong");
-    public static File dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs");
-    public static File dirsettings = new File(root.getAbsolutePath() + "/documents/OpenSong/Settings");
-    public static File dironsong = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong");
-    public static File dirsets = new File(root.getAbsolutePath() + "/documents/OpenSong/Sets");
-    public static File direxport = new File(root.getAbsolutePath() + "/documents/OpenSong/Export");
-    public static File dirPads = new File(root.getAbsolutePath() + "/documents/OpenSong/Pads");
-    public static File dirMedia = new File(root.getAbsolutePath() + "/documents/OpenSong/Media");
-    public static File dirbackgrounds = new File(root.getAbsolutePath() + "/documents/OpenSong/Backgrounds");
-    public static File dirbibles = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture");
-    public static File dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache");
-    public static File dirscripture = new File(root.getAbsolutePath() + "/documents/OpenSong/Scripture/");
-    public static File dirscriptureverses = new File(root.getAbsolutePath() + "/documents/OpenSong/Scripture/_cache");
-    public static File dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache");
-    public static File dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache");
-    public static File dircustomimages = new File(root.getAbsolutePath() + "/documents/OpenSong/Images/_cache");
-    public static File dirvariations = new File(root.getAbsolutePath() + "/documents/OpenSong/Variations");
-    public static File dirprofiles = new File(root.getAbsolutePath() + "/documents/OpenSong/Profiles");
-    public static File dirreceived = new File(root.getAbsolutePath() + "/documents/OpenSong/Received");
-
-    public static Locale locale;
-
-    public static boolean firstload = true;
 
     // Stuff for customising the export feature
-    public static boolean exportOpenSongAppSet;
-    public static boolean exportOpenSongApp;
-    public static boolean exportDesktop;
-    public static boolean exportText;
-    public static boolean exportChordPro;
-    public static boolean exportOnSong;
-    public static boolean exportImage;
-    public static boolean exportPDF;
-    public static String exportOpenSongAppSet_String = "";
-    public static String exportOpenSongApp_String = "";
-    public static String exportDesktop_String = "";
-    public static String exportText_String = "";
-    public static String exportChordPro_String = "";
-    public static String exportOnSong_String = "";
+    public static boolean exportOpenSongAppSet, exportOpenSongApp, exportDesktop, exportText,
+            exportChordPro, exportOnSong, exportImage, exportPDF;
+    public static String exportOpenSongAppSet_String = "", exportOpenSongApp_String = "",
+            exportDesktop_String = "", exportText_String = "", exportChordPro_String = "",
+            exportOnSong_String = "";
 
-    //public static String[][][] bibleVerse; // bibleVerse[book][chapter#][verse#]
 
-    //public static ArrayList<String> deviceList;
-    //public static WifiP2pDeviceList wifiP2PDeviceList;
-    //public static boolean isHost = true;
-    //public static WifiP2pManager mManager;
-    //public static WifiP2pManager.Channel mChannel;
-    //public static BroadcastReceiver mReceiver;
-    //public static IntentFilter mIntentFilter;
-    //public static WifiP2pManager.PeerListListener mWifiP2PListener;
-    //public static NsdServiceInfo serviceInfo;
-    //public static String deviceConnectedTo = "";
 
+    // Salut / connect devices
     @SuppressLint("StaticFieldLeak")
-    public static Button hostButton;
-    public static String hostButtonText="";
-    @SuppressLint("StaticFieldLeak")
-    public static Button clientButton;
-    public static String clientButtonText="";
+    public static Button hostButton, clientButton;
     @SuppressLint("StaticFieldLeak")
     public static TextView connectionsLog;
-    public static String salutLog="";
     @SuppressLint("StaticFieldLeak")
     public static SalutDataReceiver dataReceiver;
     public static SalutServiceData serviceData;
     public static Salut network;
     public static BluetoothAdapter mBluetoothAdapter;
-    public static String mBluetoothName;
-    public static boolean firstSendingOfSalut = true;
-    public static boolean firstSendingOfSalutXML = true;
-    public static boolean firstReceivingOfSalut = true;
-    public static boolean firstReceivingOfSalutXML = true;
-    public static String mySalutXML = "";
-
-    public static boolean resetSomePreferences;
-
+    public static String hostButtonText="", clientButtonText="", salutLog="",
+            mBluetoothName, mySalutXML = "";
+    public static boolean firstSendingOfSalut = true, firstSendingOfSalutXML = true,
+            firstReceivingOfSalut = true, firstReceivingOfSalutXML = true;
     static NfcAdapter mNfcAdapter;
     // Flag to indicate that Android Beam is available
     public static boolean mAndroidBeamAvailable  = false;
+
+
+
+
 
     // Just for the popups - let StageMode or PresenterMode try to deal with them
     // @Override
@@ -809,13 +433,18 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
         Log.d("d","openFragment() called from FullscreenActivity");
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         myPreferences = getSharedPreferences("OpenSongApp", Context.MODE_PRIVATE);
         Preferences.loadPreferences();
+
+        // To get here from the SettingsActivity, we only needed to check for basic folders existing
+        // Now lets check properly for all of the stuff we need, and if it is missing, create them
+        if (!PopUpStorageFragment.checkDirectoriesExistOnly()) {
+            PopUpStorageFragment.createDirectories();
+        }
 
         if (resetSomePreferences) {
             Log.d("d","Doing the resetting!");

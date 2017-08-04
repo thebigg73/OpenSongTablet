@@ -112,7 +112,7 @@
     <string name="customgestures">"Ken persoonlike gebare"</string>    
     <string name="doubleTap">"Kies dubbel tap aksie"</string>
     <string name="longPress">"Kies 'n lang pers aksie"</string>
-    <string name="gesture1">\"Oop lied spyskaart\"</string>
+    <string name="gesture1">"Oop lied spyskaart"</string>
     <string name="gesture2">"Wysig lied"</string>
     <string name="gesture3">"Voeg liedjie te stel"</string>
 
@@ -501,7 +501,7 @@
 	<string name="songfolder">"Kies gids lied"</string>
 	<string name="stagemode">"stadium af"</string>
 	<string name="switchtostagemode">"Skakel oor na Stage af"</string>
-	<string name="toobig">\"Přepněte prosím Autoscale na pro export do PNG/PDF\"</string>
+	<string name="toobig">"Přepněte prosím Autoscale na pro export do PNG/PDF"</string>
 	<string name="showcapo">"Wys Capo akkoorde"</string>
 	<string name="showchords">"Wys akkoorde"</string>
 	<string name="showlyrics">"Wys lyrics"</string>
@@ -514,10 +514,10 @@
 	<string name="success">"sukses"</string>
 	<string name="error">"fout"</string>
 	<string name="takeawhile">"Dit kan enige tyd neem!"</string>
-	<string name="longPressDown">\"Lang pers af pedaal\"</string>
-	<string name="longPressNext">\"Lang pers volgende pedaal\"</string>
-	<string name="longPressPrevious">\"Lang pers vorige pedaal\"</string>
-	<string name="longPressUp">\"Lang druk op die pedaal\"</string>
+	<string name="longPressDown">"Lang pers af pedaal"</string>
+	<string name="longPressNext">"Lang pers volgende pedaal"</string>
+	<string name="longPressPrevious">"Lang pers vorige pedaal"</string>
+	<string name="longPressUp">"Lang druk op die pedaal"</string>
 
 	<string name="autoscale">"Autoscale"</string>
 	<string name="camera">"kamera"</string>
@@ -601,9 +601,15 @@
 	<string name="swipe">"Swiep instellings"</string>
 	<string name="swipe_allowance">"Vertikale beweging toegelaat"</string>
 	<string name="swipe_distance">"Swipe afstand"</string>
-    <string name="actionbar">\"Menubalk info\"</string>
-	<string name="battery">\"Battery\"</string>
-	<string name="timeformat">\"24 uur\"</string>
-	<string name="text">\"Teks\"</string>
+    <string name="actionbar">"Menubalk info"</string>
+	<string name="battery">"Battery"</string>
+	<string name="timeformat">"24 uur"</string>
+	<string name="text">"Teks"</string>
+
+	<string name="autoshow_highlight">"Outo-skerm-aantekeninge"</string>
+	<string name="highlight">"highlighter"</string>
+	<string name="highlight_notallowed">"Outoscale moet ingestel word vir hierdie funksie"</string>
+	<string name="stage_section_max">"Maksimum gedeelte hoogte (stadium modus)"</string>
+	<string name="trim_sections">"Sny afdelings"</string>
 
 </resources>

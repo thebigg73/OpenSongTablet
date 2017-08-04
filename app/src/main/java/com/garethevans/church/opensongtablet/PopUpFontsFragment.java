@@ -5,12 +5,14 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -70,6 +72,7 @@ public class PopUpFontsFragment extends DialogFragment {
     SeekBar lineSpacingSeekBar;
     TextView lineSpacingText;
     TableLayout songPreview;
+    SwitchCompat trimlines_SwitchCompat;
 
     @Override
     public void onStart() {
@@ -136,10 +139,10 @@ public class PopUpFontsFragment extends DialogFragment {
         lineSpacingSeekBar = (SeekBar) V.findViewById(R.id.lineSpacingSeekBar);
         lineSpacingText = (TextView) V.findViewById(R.id.lineSpacingText);
         songPreview = (TableLayout) V.findViewById(R.id.songPreview);
+        trimlines_SwitchCompat = (SwitchCompat) V.findViewById(R.id.trimlines_SwitchCompat);
 
         // Set up the typefaces
         SetTypeFace.setTypeface();
-
 
         // Set the lyrics and chord font preview to what they should look like
         headingPreview.setTextSize(12*FullscreenActivity.headingfontscalesize);
@@ -152,6 +155,7 @@ public class PopUpFontsFragment extends DialogFragment {
         lyricsPreview2.setPadding(0, -(int) ((float) temp_linespacing / 3.0f), 0, 0);
         chordPreview1.setPadding(0, -(int) ((float) temp_linespacing / 3.0f), 0, 0);
         chordPreview2.setPadding(0, -(int) ((float) temp_linespacing / 3.0f), 0, 0);
+        trimlines_SwitchCompat.setChecked(FullscreenActivity.trimSections);
 
         ArrayList<String> font_choices = new ArrayList<>();
         font_choices.add(getResources().getString(R.string.font_default));
@@ -327,6 +331,17 @@ public class PopUpFontsFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        trimlines_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.trimSections = b;
+                Preferences.savePreferences();
+                if (mListener!=null) {
+                    mListener.refreshAll();
+                }
+            }
         });
 
         return V;
