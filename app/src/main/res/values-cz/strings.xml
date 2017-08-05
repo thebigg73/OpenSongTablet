@@ -613,4 +613,6 @@
 	<string name="stage_section_max">"Maximální výška sekce (Režim fáze)"</string>
 	<string name="trim_sections">"Oříznutí sekcí"</string>
 
+	<string name="section_space">"Přidejte prostor oddílu"</string>
+
 </resources>

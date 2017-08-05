@@ -32,9 +32,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.MediaRouteActionProvider;
 import android.support.v7.media.MediaControlIntent;
 import android.support.v7.media.MediaRouteSelector;
 import android.support.v7.media.MediaRouter;
@@ -65,7 +67,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
-import com.google.android.gms.cast.framework.CastButtonFactory;
 import com.google.android.gms.common.api.Status;
 import com.peak.salut.Callbacks.SalutCallback;
 import com.peak.salut.Callbacks.SalutDataCallback;
@@ -243,6 +244,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         });
 
+        // Setup the CastContext
+        mMediaRouter = MediaRouter.getInstance(getApplicationContext());
+        mMediaRouteSelector = new MediaRouteSelector.Builder()
+                .addControlCategory(CastMediaControlIntent.categoryForCast("4E2B0891"))
+                .addControlCategory(MediaControlIntent.CATEGORY_LIVE_VIDEO)
+                .build();
+
+        // Since this mode has just been opened, force an update to the cast screen
+        FullscreenActivity.forcecastupdate = true;
+
         // Set up the toolbar and views
         runOnUiThread(new Runnable() {
             @Override
@@ -306,12 +317,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         });
 
-        // Setup the CastContext
-        mMediaRouter = MediaRouter.getInstance(getApplicationContext());
-        mMediaRouteSelector = new MediaRouteSelector.Builder()
-                .addControlCategory(CastMediaControlIntent.categoryForCast("4E2B0891"))
-                .addControlCategory(MediaControlIntent.CATEGORY_LIVE_VIDEO)
-                .build();
+
 
         // If we had an import to do, do it
         if (FullscreenActivity.whattodo.equals("doimport")) {
@@ -837,18 +843,18 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         getMenuInflater().inflate(R.menu.presenter_actions, menu);
 
         // Setup the menu item for connecting to cast devices
-        //MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
-        CastButtonFactory.setUpMediaRouteButton(getApplicationContext(),
-                menu,
-                R.id.media_route_menu_item);
-
-        /*MediaRouteActionProvider mediaRouteActionProvider =
+        // Setup the menu item for connecting to cast devices
+        MenuItem mediaRouteMenuItem = menu.findItem(R.id.media_route_menu_item);
+        View mr = menu.findItem(R.id.media_route_menu_item).getActionView();
+        if (mr!=null) {
+            mr.setFocusable(false);
+            mr.setFocusableInTouchMode(false);
+        }
+        MediaRouteActionProvider mediaRouteActionProvider =
                 (MediaRouteActionProvider) MenuItemCompat.getActionProvider(mediaRouteMenuItem);
-        try {
+        if (mMediaRouteSelector != null) {
             mediaRouteActionProvider.setRouteSelector(mMediaRouteSelector);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+        }
 
         // Force overflow icon to show, even if hardware key is present
         MenuHandlers.forceOverFlow(PresenterMode.this, ab, menu);
@@ -3077,7 +3083,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         unhighlightButtonClicked(presenter_slide_group);
         unhighlightButtonClicked(presenter_scripture_group);
         unhighlightButtonClicked(presenter_display_group);
-        presenter_project_group.setEnabled(false);
+        /*presenter_project_group.setEnabled(false);
         presenter_logo_group.setEnabled(false);
         presenter_blank_group.setEnabled(false);
         presenter_alert_group.setEnabled(false);
@@ -3085,7 +3091,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_dB_group.setEnabled(false);
         presenter_slide_group.setEnabled(false);
         presenter_scripture_group.setEnabled(false);
-        presenter_display_group.setEnabled((false));
+        presenter_display_group.setEnabled((false));*/
+        presenter_project_group.setEnabled(true);
+        presenter_logo_group.setEnabled(true);
+        presenter_blank_group.setEnabled(true);
+        presenter_alert_group.setEnabled(true);
+        presenter_audio_group.setEnabled(true);
+        presenter_dB_group.setEnabled(true);
+        presenter_slide_group.setEnabled(true);
+        presenter_scripture_group.setEnabled(true);
+        presenter_display_group.setEnabled((true));
         projectButton_isSelected = false;
         logoButton_isSelected = false;
         blankButton_isSelected = false;

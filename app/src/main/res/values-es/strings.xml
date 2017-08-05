@@ -612,4 +612,6 @@
 	<string name="stage_section_max">"Altura máxima de la sección (modo de escenario)"</string>
 	<string name="trim_sections">"Recortar secciones"</string>
 
+	<string name="section_space">"Añadir espacio de sección"</string>
+
 </resources>

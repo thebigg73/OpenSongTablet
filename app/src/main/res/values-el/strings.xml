@@ -687,4 +687,6 @@
     <string name="stage_section_max">"Μέγιστο ύψος διατομής (Λειτουργία σκηνής)"</string>
     <string name="trim_sections">"Περιορίστε τις ενότητες"</string>
 
+    <string name="section_space">"Προσθήκη χώρου ενότητας"</string>
+
 </resources>

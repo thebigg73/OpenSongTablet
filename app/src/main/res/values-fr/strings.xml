@@ -612,4 +612,6 @@
     <string name="stage_section_max">"Hauteur maximale de la section (mode scène)"</string>
     <string name="trim_sections">"Couper les sections"</string>
 
+	<string name="section_space">"Ajouter un espace de section"</string>
+
 </resources>

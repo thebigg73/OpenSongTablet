@@ -713,18 +713,18 @@ public final class R {
         public static final int abc_activitychooserview_choose_application = 0x7f0a0007;
         public static final int abc_capital_off = 0x7f0a0008;
         public static final int abc_capital_on = 0x7f0a0009;
-        public static final int abc_font_family_body_1_material = 0x7f0a0289;
-        public static final int abc_font_family_body_2_material = 0x7f0a028a;
-        public static final int abc_font_family_button_material = 0x7f0a028b;
-        public static final int abc_font_family_caption_material = 0x7f0a028c;
-        public static final int abc_font_family_display_1_material = 0x7f0a028d;
-        public static final int abc_font_family_display_2_material = 0x7f0a028e;
-        public static final int abc_font_family_display_3_material = 0x7f0a028f;
-        public static final int abc_font_family_display_4_material = 0x7f0a0290;
-        public static final int abc_font_family_headline_material = 0x7f0a0291;
-        public static final int abc_font_family_menu_material = 0x7f0a0292;
-        public static final int abc_font_family_subhead_material = 0x7f0a0293;
-        public static final int abc_font_family_title_material = 0x7f0a0294;
+        public static final int abc_font_family_body_1_material = 0x7f0a028a;
+        public static final int abc_font_family_body_2_material = 0x7f0a028b;
+        public static final int abc_font_family_button_material = 0x7f0a028c;
+        public static final int abc_font_family_caption_material = 0x7f0a028d;
+        public static final int abc_font_family_display_1_material = 0x7f0a028e;
+        public static final int abc_font_family_display_2_material = 0x7f0a028f;
+        public static final int abc_font_family_display_3_material = 0x7f0a0290;
+        public static final int abc_font_family_display_4_material = 0x7f0a0291;
+        public static final int abc_font_family_headline_material = 0x7f0a0292;
+        public static final int abc_font_family_menu_material = 0x7f0a0293;
+        public static final int abc_font_family_subhead_material = 0x7f0a0294;
+        public static final int abc_font_family_title_material = 0x7f0a0295;
         public static final int abc_search_hint = 0x7f0a000a;
         public static final int abc_searchview_description_clear = 0x7f0a000b;
         public static final int abc_searchview_description_query = 0x7f0a000c;
@@ -735,7 +735,7 @@ public final class R {
         public static final int abc_shareactionprovider_share_with_application = 0x7f0a0011;
         public static final int abc_toolbar_collapse_description = 0x7f0a0012;
         public static final int search_menu_title = 0x7f0a020f;
-        public static final int status_bar_notification_info_overflow = 0x7f0a0244;
+        public static final int status_bar_notification_info_overflow = 0x7f0a0245;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat = 0x7f0d00a2;

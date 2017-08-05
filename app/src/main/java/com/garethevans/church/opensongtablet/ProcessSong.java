@@ -2082,7 +2082,9 @@ public class ProcessSong extends Activity {
         emptyline.setLayoutParams(linearlayout_params());
         emptyline.setText(" ");
         emptyline.setTextSize(fontsize*0.5f);
-        ll.addView(emptyline);
+        if (!FullscreenActivity.trimSectionSpace) {
+            ll.addView(emptyline);
+        }
         return ll;
     }
 

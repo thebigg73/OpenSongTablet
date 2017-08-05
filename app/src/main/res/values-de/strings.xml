@@ -615,4 +615,6 @@
 	<string name="stage_section_max">"Maximale Schnitthöhe (Stage Mode)"</string>
 	<string name="trim_sections">"Trimmschnitte"</string>
 
+	<string name="section_space">"Bereich hinzufügen"</string>
+
 </resources>

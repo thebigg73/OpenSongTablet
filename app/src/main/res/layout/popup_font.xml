@@ -183,6 +183,14 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/trimlines_SwitchCompat"/>
 
+            <android.support.v7.widget.SwitchCompat
+                android:text="@string/section_space"
+                android:layout_width="match_parent"
+                style="@style/MyHeadingText"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/trimsections_SwitchCompat"/>
+
             <TextView
                 android:id="@+id/textView21"
                 style="@style/MyHeadingText"

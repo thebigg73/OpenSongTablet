@@ -193,7 +193,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static Bitmap[] sectionbitmaps;
 
     public static float stagemodeScale;
-    public static boolean trimSections;
+    public static boolean trimSections,trimSectionSpace;
 
     public static String filetoselect = "", pagebutton_scale, profile;
 
@@ -407,7 +407,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     static NfcAdapter mNfcAdapter;
     // Flag to indicate that Android Beam is available
     public static boolean mAndroidBeamAvailable  = false;
-
+    public static boolean forcecastupdate;
 
 
 

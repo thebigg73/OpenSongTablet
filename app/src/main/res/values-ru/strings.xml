@@ -612,4 +612,6 @@
 	<string name="stage_section_max">"Максимальная высота сечения (режим сцены)"</string>
 	<string name="trim_sections">"Секции обрезки"</string>
 
+	<string name="section_space">"Добавить пространство раздела"</string>
+
 </resources>

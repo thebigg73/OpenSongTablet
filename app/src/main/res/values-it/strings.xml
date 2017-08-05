@@ -612,4 +612,6 @@
 	<string name="stage_section_max">"Altezza massima della sezione (modalità Stage)"</string>
 	<string name="trim_sections">"Sezioni di taglio"</string>
 
+	<string name="section_space">"Aggiungi spazio sezione"</string>
+
 </resources>

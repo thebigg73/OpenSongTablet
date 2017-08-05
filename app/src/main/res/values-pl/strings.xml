@@ -612,4 +612,6 @@
 	<string name="stage_section_max">"Maksymalna wysokość sekcji (tryb sceniczny)"</string>
 	<string name="trim_sections">"Sekcje cięcia"</string>
 
+	<string name="section_space">"Dodaj przestrzeń sekcji"</string>
+
 </resources>

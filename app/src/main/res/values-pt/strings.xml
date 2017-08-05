@@ -612,4 +612,6 @@
 	<string name="stage_section_max">"Altura máxima da seção (Modo Estágio)"</string>
 	<string name="trim_sections">"Cortar seções"</string>
 
+	<string name="section_space">"Adicionar espaço de seção"</string>
+
 </resources>
