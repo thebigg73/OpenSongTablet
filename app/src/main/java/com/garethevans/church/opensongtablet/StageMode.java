@@ -293,6 +293,8 @@ public class StageMode extends AppCompatActivity implements
                 .addControlCategory(MediaControlIntent.CATEGORY_LIVE_VIDEO)
                 .build();
 
+        // Since this mode has just been opened, force an update to the cast screen
+        FullscreenActivity.forcecastupdate = true;
 
         // Set up the gesture detector
         scaleGestureDetector = new ScaleGestureDetector(this, new simpleOnScaleGestureListener());
@@ -886,7 +888,11 @@ public class StageMode extends AppCompatActivity implements
     public void onStop() {
         super.onStop();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mMediaRouter.removeCallback(mMediaRouterCallback);
+            try {
+                mMediaRouter.removeCallback(mMediaRouterCallback);
+            } catch (Exception e) {
+                Log.d("d","Problem removing mediaroutercallback");
+            }
         }
         if (br!=null) {
             try {

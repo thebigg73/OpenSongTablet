@@ -612,4 +612,6 @@
 	<string name="stage_section_max">"Maximális magasság (Stage Mode)"</string>
 	<string name="trim_sections">"Vágás szakaszok"</string>
 
+	<string name="section_space">"Adjon hozzá részterületet"</string>
+
 </resources>

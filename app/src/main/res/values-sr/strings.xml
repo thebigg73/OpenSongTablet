@@ -663,4 +663,6 @@
     <string name="stage_section_max">"Maksimalna visina sekcije (Stage Mode)"</string>
     <string name="trim_sections">"Trim dijelove"</string>
 
+    <string name="section_space">"Dodajte prostor odjeljka"</string>
+
 </resources>

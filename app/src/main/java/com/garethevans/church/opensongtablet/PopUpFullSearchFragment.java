@@ -295,8 +295,13 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
     @Override
     public boolean onQueryTextChange(String newText) {
         // Replace unwanted symbols
+        if (newText==null) {
+            newText="";
+        }
         newText = ProcessSong.removeUnwantedSymbolsAndSpaces(newText);
-        adapter.getFilter().filter(newText);
+        if (adapter!=null) {
+            adapter.getFilter().filter(newText);
+        }
         return false;
     }
 

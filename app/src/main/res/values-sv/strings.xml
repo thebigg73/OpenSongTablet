@@ -667,4 +667,6 @@
     <string name="stage_section_max">"Max sektionshöjd (scenläge)"</string>
     <string name="trim_sections">"Trim sektioner"</string>
 
+    <string name="section_space">"Lägg till sektionsutrymme"</string>
+
 </resources>

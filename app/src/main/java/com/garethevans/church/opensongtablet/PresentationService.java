@@ -254,7 +254,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         }
 
         // Setup some default stuff
-        void matchPresentationToMode() {
+        static void matchPresentationToMode() {
             switch (FullscreenActivity.whichMode) {
                 case "Stage":
                 case "Performance":
@@ -262,13 +262,18 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     songinfo_TextView.setAlpha(0.0f);
                     songinfo_TextView.setVisibility(View.VISIBLE);
                     presentermode_bottombit.setVisibility(View.GONE);
+                    projected_TextureView.setVisibility(View.GONE);
+                    projected_BackgroundImage.setImageDrawable(null);
+                    projected_BackgroundImage.setVisibility(View.GONE);
                     break;
 
                 case "Presentation":
                     songinfo_TextView.setVisibility(View.GONE);
                     presentermode_bottombit.setVisibility(View.VISIBLE);
+                    fixBackground();
                     break;
             }
+            FullscreenActivity.forcecastupdate = false;
         }
         void prepareBackgroundAnimations() {
             mypage_fadein = CustomAnimations.setUpAnimation(pageHolder,0.0f,1.0f);
@@ -503,6 +508,11 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         static void doUpdate() {
             // First up, animate everything away
             animateOut();
+
+            // If we have forced an update due to switching modes, set that up
+            if (FullscreenActivity.forcecastupdate) {
+                matchPresentationToMode();
+            }
 
             // If we had a black screen, fade that in
             if (pageHolder.getVisibility()==View.INVISIBLE) {

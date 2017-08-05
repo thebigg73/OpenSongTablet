@@ -73,6 +73,7 @@ public class PopUpFontsFragment extends DialogFragment {
     TextView lineSpacingText;
     TableLayout songPreview;
     SwitchCompat trimlines_SwitchCompat;
+    SwitchCompat trimsections_SwitchCompat;
 
     @Override
     public void onStart() {
@@ -140,6 +141,7 @@ public class PopUpFontsFragment extends DialogFragment {
         lineSpacingText = (TextView) V.findViewById(R.id.lineSpacingText);
         songPreview = (TableLayout) V.findViewById(R.id.songPreview);
         trimlines_SwitchCompat = (SwitchCompat) V.findViewById(R.id.trimlines_SwitchCompat);
+        trimsections_SwitchCompat = (SwitchCompat) V.findViewById(R.id.trimsections_SwitchCompat);
 
         // Set up the typefaces
         SetTypeFace.setTypeface();
@@ -156,6 +158,7 @@ public class PopUpFontsFragment extends DialogFragment {
         chordPreview1.setPadding(0, -(int) ((float) temp_linespacing / 3.0f), 0, 0);
         chordPreview2.setPadding(0, -(int) ((float) temp_linespacing / 3.0f), 0, 0);
         trimlines_SwitchCompat.setChecked(FullscreenActivity.trimSections);
+        trimsections_SwitchCompat.setChecked(!FullscreenActivity.trimSectionSpace);
 
         ArrayList<String> font_choices = new ArrayList<>();
         font_choices.add(getResources().getString(R.string.font_default));
@@ -337,6 +340,17 @@ public class PopUpFontsFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.trimSections = b;
+                Preferences.savePreferences();
+                if (mListener!=null) {
+                    mListener.refreshAll();
+                }
+            }
+        });
+        trimsections_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                // Since this asks the user if they want the space, the trim value is the opposite!
+                FullscreenActivity.trimSectionSpace = !b;
                 Preferences.savePreferences();
                 if (mListener!=null) {
                     mListener.refreshAll();

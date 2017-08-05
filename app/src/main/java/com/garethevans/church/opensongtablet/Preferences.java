@@ -341,6 +341,7 @@ public class Preferences extends Activity {
             FullscreenActivity.toggleYScale = myPreferences.getString("toggleYScale", "W");
             FullscreenActivity.transposeStyle = myPreferences.getString("transposeStyle", "sharps");
             FullscreenActivity.trimSections = myPreferences.getBoolean("trimSections", false);
+            FullscreenActivity.trimSectionSpace = myPreferences.getBoolean("trimSectionSpace", false);
             String uriTreeTemp = myPreferences.getString("uriTree", "");
             if (uriTreeTemp.equals("") || uriTreeTemp.isEmpty()) {
                 FullscreenActivity.uriTree = null;
@@ -661,6 +662,7 @@ public class Preferences extends Activity {
             editor.putString("toggleYScale", FullscreenActivity.toggleYScale);
             editor.putString("transposeStyle", FullscreenActivity.transposeStyle);
             editor.putBoolean("trimSections", FullscreenActivity.trimSections);
+            editor.putBoolean("trimSectionSpace", FullscreenActivity.trimSectionSpace);
             if (FullscreenActivity.uriTree!=null) {
                 editor.putString("uriTree", FullscreenActivity.uriTree.toString());
             }

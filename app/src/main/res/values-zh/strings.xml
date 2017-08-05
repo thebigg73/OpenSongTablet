@@ -616,4 +616,6 @@
 	<string name="stage_section_max">"最大截面高度（舞台模式）"</string>
 	<string name="trim_sections">"修剪部分"</string>
 
+	<string name="section_space">"添加部分空间"</string>
+
 </resources>

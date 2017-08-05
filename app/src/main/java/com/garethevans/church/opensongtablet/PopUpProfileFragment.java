@@ -982,6 +982,9 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("trimSections")) {
                     FullscreenActivity.trimSections = getBooleanValue(xpp.nextText(), false);
 
+                } else if (xpp.getName().equals("trimSectionSpace")) {
+                    FullscreenActivity.trimSectionSpace = getBooleanValue(xpp.nextText(), false);
+
                 } else if (xpp.getName().equals("usePresentationOrder")) {
                     FullscreenActivity.usePresentationOrder = getBooleanValue(xpp.nextText(),false);
 
@@ -1317,6 +1320,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <toggleYScale>" + FullscreenActivity.toggleYScale + "</toggleYScale>\n";
         text += "  <transposeStyle>" + FullscreenActivity.transposeStyle + "</transposeStyle>\n";
         text += "  <trimSections>" + FullscreenActivity.trimSections + "</trimSections>\n";
+        text += "  <trimSectionSpace>" + FullscreenActivity.trimSectionSpace + "</trimSectionSpace>\n";
         text += "  <usePresentationOrder>" + FullscreenActivity.usePresentationOrder + "</usePresentationOrder>\n";
         text += "  <visualmetronome>" + FullscreenActivity.visualmetronome + "</visualmetronome>\n";
         //text += "  <whichMode>" + FullscreenActivity.whichMode + "</whichMode>\n";

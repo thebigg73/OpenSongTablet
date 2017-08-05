@@ -611,5 +611,6 @@
 	<string name="highlight_notallowed">"Outoscale moet ingestel word vir hierdie funksie"</string>
 	<string name="stage_section_max">"Maksimum gedeelte hoogte (stadium modus)"</string>
 	<string name="trim_sections">"Sny afdelings"</string>
+    <string name="section_space">"Voeg seksie spasie by"</string>
 
 </resources>

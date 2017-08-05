@@ -3,6 +3,7 @@
 
     <string name="storage_alt" translatable="false">Alternative storage</string>
 
+    <string name="section_space">Add section space</string>
     <string name="autoshow_highlight">Autoshow highlighter notes</string>
     <string name="highlight">Highlighter</string>
     <string name="highlight_notallowed">Autoscale needs to be set to full for this feature</string>

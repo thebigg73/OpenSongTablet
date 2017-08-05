@@ -611,4 +611,6 @@
 	<string name="stage_section_max">"セクションの最大高さ（ステージモード）"</string>
 	<string name="trim_sections">"セクションを切り取る"</string>
 
+	<string name="section_space">"セクションスペースを追加する"</string>
+
 </resources>
