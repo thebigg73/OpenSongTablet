@@ -84,14 +84,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
     // Song menu
     public static boolean needtorefreshsongmenu = false, safetosearch = false,
-            showSetTickBoxInSongMenu;
+            showSetTickBoxInSongMenu, showAlphabeticalIndexInSongMenu;
     public static String indexlog = "", currentFolder = "", newFolder = "", whichSongFolder = "";
     public static ArrayList<String> searchFileName = new ArrayList<>(), searchFolder = new ArrayList<>(),
             searchTitle = new ArrayList<>(), searchAuthor = new ArrayList<>(),
             searchShortLyrics = new ArrayList<>(), searchTheme = new ArrayList<>(),
             searchKey = new ArrayList<>(), searchHymnNumber = new ArrayList<>(),
             allfilesforsearch = new ArrayList<>(), search_database = new ArrayList<>();
-    public static float menuSize;
+    public static float menuSize, alphabeticalSize;
     public static File filechosen, file;
     public static String[] mSongFileNames, mSongFolderNames;
     public static String[][] songDetails;

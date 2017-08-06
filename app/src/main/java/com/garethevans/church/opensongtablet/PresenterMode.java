@@ -539,21 +539,29 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         @Override
         protected void onPreExecute() {
-            closeSongsFAB = (FloatingActionButton) findViewById(R.id.closeSongsFAB);
-            closeSongsFAB.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    closeMyDrawers("song");
-                }
-            });
+            try {
+                closeSongsFAB = (FloatingActionButton) findViewById(R.id.closeSongsFAB);
+                closeSongsFAB.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        closeMyDrawers("song");
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         protected String doInBackground(Object... params) {
-            // List all of the songs in the current folder
-            ListSongFiles.getAllSongFolders();
-            ListSongFiles.getAllSongFiles();
-            ListSongFiles.getSongDetails(PresenterMode.this);
+            try {
+                // List all of the songs in the current folder
+                ListSongFiles.getAllSongFolders();
+                ListSongFiles.getAllSongFiles();
+                ListSongFiles.getSongDetails(PresenterMode.this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -673,18 +681,26 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     private class PrepareOptionMenu extends AsyncTask<Object, Void, String> {
 
         public void onPreExecute() {
-            optionmenu = (LinearLayout) findViewById(R.id.optionmenu);
-            optionmenu.removeAllViews();
-            optionmenu.addView(OptionMenuListeners.prepareOptionMenu(PresenterMode.this));
-            if (optionmenu != null) {
-                OptionMenuListeners.optionListeners(optionmenu, PresenterMode.this);
+            try {
+                optionmenu = (LinearLayout) findViewById(R.id.optionmenu);
+                optionmenu.removeAllViews();
+                optionmenu.addView(OptionMenuListeners.prepareOptionMenu(PresenterMode.this));
+                if (optionmenu != null) {
+                    OptionMenuListeners.optionListeners(optionmenu, PresenterMode.this);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
         @Override
         protected String doInBackground(Object... objects) {
             // Get the current set list
-            SetActions.prepareSetList();
+            try {
+                SetActions.prepareSetList();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -725,9 +741,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         @Override
         protected String doInBackground(Object... o) {
-            DisplayMetrics metrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            width = (int) ((float) metrics.widthPixels * FullscreenActivity.menuSize);
+            try {
+                DisplayMetrics metrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                width = (int) ((float) metrics.widthPixels * FullscreenActivity.menuSize);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -737,7 +757,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         protected void onCancelled() {
             cancelled = true;
         }
-
 
         @Override
         protected void onPostExecute(String s) {
@@ -1669,7 +1688,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         @Override
         protected String doInBackground(Object... objects) {
             // Get the appropriate song
-            FullscreenActivity.linkclicked = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet];
+            try {
+                FullscreenActivity.linkclicked = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet];
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -2346,8 +2369,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         @Override
         protected String doInBackground(Object... objects) {
             // Send this off to be processed and sent via an intent
-            Intent emailIntent = ExportPreparer.exportSong(PresenterMode.this, FullscreenActivity.bmScreen);
-            startActivityForResult(Intent.createChooser(emailIntent, getResources().getString(R.string.exportcurrentsong)), 12345);
+            try {
+                Intent emailIntent = ExportPreparer.exportSong(PresenterMode.this, FullscreenActivity.bmScreen);
+                startActivityForResult(Intent.createChooser(emailIntent, getResources().getString(R.string.exportcurrentsong)), 12345);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -2370,8 +2397,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         @Override
         protected String doInBackground(Object... objects) {
             // Send this off to be processed and sent via an intent
-            Intent emailIntent = ExportPreparer.exportSet(PresenterMode.this);
-            startActivityForResult(Intent.createChooser(emailIntent, getResources().getString(R.string.exportsavedset)), 12345);
+            try {
+                Intent emailIntent = ExportPreparer.exportSet(PresenterMode.this);
+                startActivityForResult(Intent.createChooser(emailIntent, getResources().getString(R.string.exportsavedset)), 12345);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -2446,7 +2477,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         @Override
         protected String doInBackground(Object... obj) {
-            LoadXML.prepareLoadCustomReusable(FullscreenActivity.customreusabletoload, PresenterMode.this);
+            try {
+                LoadXML.prepareLoadCustomReusable(FullscreenActivity.customreusabletoload, PresenterMode.this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -2485,7 +2520,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         @Override
         protected String doInBackground(Object... objects) {
             // Add the slide
-            CustomSlide.addCustomSlide(PresenterMode.this);
+            try {
+                CustomSlide.addCustomSlide(PresenterMode.this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -2573,12 +2612,20 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // The song index
     public void displayIndex() {
         LinearLayout indexLayout = (LinearLayout) findViewById(R.id.side_index);
+        if (FullscreenActivity.showAlphabeticalIndexInSongMenu) {
+            indexLayout.setVisibility(View.VISIBLE);
+        } else {
+            indexLayout.setVisibility(View.GONE);
+        }
         indexLayout.removeAllViews();
         TextView textView;
         List<String> indexList = new ArrayList<>(FullscreenActivity.mapIndex.keySet());
         for (String index : indexList) {
             textView = (TextView) View.inflate(PresenterMode.this,
                     R.layout.leftmenu, null);
+            textView.setTextSize(FullscreenActivity.alphabeticalSize);
+            int i = (int) FullscreenActivity.alphabeticalSize *2;
+            textView.setPadding(i,i,i,i);
             textView.setText(index);
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -2609,36 +2656,40 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         @Override
         protected String doInBackground(Object... objects) {
-            Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
+            try {
+                Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
 
-            // Add locale sort
-            Collator coll = Collator.getInstance(FullscreenActivity.locale);
-            coll.setStrength(Collator.SECONDARY);
-            Collections.sort(FullscreenActivity.search_database, coll);
+                // Add locale sort
+                Collator coll = Collator.getInstance(FullscreenActivity.locale);
+                coll.setStrength(Collator.SECONDARY);
+                Collections.sort(FullscreenActivity.search_database, coll);
 
-            // Copy the full search string, now it is sorted, into a song and folder array
-            FullscreenActivity.searchFileName.clear();
-            FullscreenActivity.searchFolder.clear();
-            FullscreenActivity.searchTitle.clear();
-            FullscreenActivity.searchAuthor.clear();
-            FullscreenActivity.searchShortLyrics.clear();
-            FullscreenActivity.searchTheme.clear();
-            FullscreenActivity.searchKey.clear();
-            FullscreenActivity.searchHymnNumber.clear();
+                // Copy the full search string, now it is sorted, into a song and folder array
+                FullscreenActivity.searchFileName.clear();
+                FullscreenActivity.searchFolder.clear();
+                FullscreenActivity.searchTitle.clear();
+                FullscreenActivity.searchAuthor.clear();
+                FullscreenActivity.searchShortLyrics.clear();
+                FullscreenActivity.searchTheme.clear();
+                FullscreenActivity.searchKey.clear();
+                FullscreenActivity.searchHymnNumber.clear();
 
-            for (int d = 0; d < FullscreenActivity.search_database.size(); d++) {
-                String[] songbits = FullscreenActivity.search_database.get(d).split("_%%%_");
-                if (songbits[0] != null && songbits[1] != null && songbits[2] != null && songbits[3] != null &&
-                        songbits[4] != null && songbits[5] != null && songbits[6] != null && songbits[7] != null) {
-                    FullscreenActivity.searchFileName.add(d, songbits[0].trim());
-                    FullscreenActivity.searchFolder.add(d, songbits[1].trim());
-                    FullscreenActivity.searchTitle.add(d, songbits[2].trim());
-                    FullscreenActivity.searchAuthor.add(d, songbits[3].trim());
-                    FullscreenActivity.searchShortLyrics.add(d, songbits[4].trim());
-                    FullscreenActivity.searchTheme.add(d, songbits[5].trim());
-                    FullscreenActivity.searchKey.add(d, songbits[6].trim());
-                    FullscreenActivity.searchHymnNumber.add(d, songbits[7].trim());
+                for (int d = 0; d < FullscreenActivity.search_database.size(); d++) {
+                    String[] songbits = FullscreenActivity.search_database.get(d).split("_%%%_");
+                    if (songbits[0] != null && songbits[1] != null && songbits[2] != null && songbits[3] != null &&
+                            songbits[4] != null && songbits[5] != null && songbits[6] != null && songbits[7] != null) {
+                        FullscreenActivity.searchFileName.add(d, songbits[0].trim());
+                        FullscreenActivity.searchFolder.add(d, songbits[1].trim());
+                        FullscreenActivity.searchTitle.add(d, songbits[2].trim());
+                        FullscreenActivity.searchAuthor.add(d, songbits[3].trim());
+                        FullscreenActivity.searchShortLyrics.add(d, songbits[4].trim());
+                        FullscreenActivity.searchTheme.add(d, songbits[5].trim());
+                        FullscreenActivity.searchKey.add(d, songbits[6].trim());
+                        FullscreenActivity.searchHymnNumber.add(d, songbits[7].trim());
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             return null;
         }
@@ -2792,16 +2843,20 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         @Override
         protected String doInBackground(Object... objects) {
-            // Get clock time
-            long start = System.currentTimeMillis();
-            long end = start;
-            while (end < (start + (autoslidetime * 1000)) && isplayingautoslideshow) {
-                try {
-                    Thread.sleep(1000);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            try {
+                // Get clock time
+                long start = System.currentTimeMillis();
+                long end = start;
+                while (end < (start + (autoslidetime * 1000)) && isplayingautoslideshow) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    end = System.currentTimeMillis();
                 }
-                end = System.currentTimeMillis();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             return null;
         }

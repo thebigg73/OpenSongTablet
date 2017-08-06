@@ -942,63 +942,75 @@ class OnSongConvert {
 
         @Override
         public void onPreExecute() {
-            if (mListener!=null) {
-               String mText = context.getResources().getString(R.string.processing) + " - " + context.getResources().getString(R.string.takeawhile);
-                       mListener.showToastMessage(mText);
-            }
+			try {
+				if (mListener != null) {
+					String mText = context.getResources().getString(R.string.processing) + " - " + context.getResources().getString(R.string.takeawhile);
+					mListener.showToastMessage(mText);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
             isbatch = true;
         }
 
 		@Override
 		protected String doInBackground(String... strings) {
-			// Go through each file in the OnSong folder that ends with .onsong and convert it
-			FullscreenActivity.whichSongFolder = "OnSong";
-			if (FullscreenActivity.dironsong.exists()) {
-				File[] allfiles = FullscreenActivity.dironsong.listFiles();
-				for (File thisfile:allfiles) {
-					if (thisfile.getName().endsWith(".onsong")) {
-						FullscreenActivity.songfilename = thisfile.getName();
-						try {
-                            InputStream inputStream = new FileInputStream(FullscreenActivity.dironsong+"/"+thisfile.getName());
-                            InputStreamReader streamReader = new InputStreamReader(inputStream);
-                            BufferedReader bufferedReader = new BufferedReader(streamReader);
-                            FullscreenActivity.myXML = LoadXML.readTextFile(inputStream);
-                            FullscreenActivity.mLyrics = FullscreenActivity.myXML;
-                            inputStream.close();
-                            bufferedReader.close();
+			try {
+				// Go through each file in the OnSong folder that ends with .onsong and convert it
+				FullscreenActivity.whichSongFolder = "OnSong";
+				if (FullscreenActivity.dironsong.exists()) {
+					File[] allfiles = FullscreenActivity.dironsong.listFiles();
+					for (File thisfile : allfiles) {
+						if (thisfile.getName().endsWith(".onsong")) {
+							FullscreenActivity.songfilename = thisfile.getName();
+							try {
+								InputStream inputStream = new FileInputStream(FullscreenActivity.dironsong + "/" + thisfile.getName());
+								InputStreamReader streamReader = new InputStreamReader(inputStream);
+								BufferedReader bufferedReader = new BufferedReader(streamReader);
+								FullscreenActivity.myXML = LoadXML.readTextFile(inputStream);
+								FullscreenActivity.mLyrics = FullscreenActivity.myXML;
+								inputStream.close();
+								bufferedReader.close();
 
-                            doExtract();
-                        } catch (Exception e) {
-                            // file doesn't exist
-                            FullscreenActivity.myXML = "<title>ERROR</title>\n<author></author>\n<lyrics>"
-                                    + context.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
-                            FullscreenActivity.myLyrics = "ERROR!";
-							e.printStackTrace();
-							message += thisfile.getName() + " - " + context.getResources().getString(R.string.error);
+								doExtract();
+							} catch (Exception e) {
+								// file doesn't exist
+								FullscreenActivity.myXML = "<title>ERROR</title>\n<author></author>\n<lyrics>"
+										+ context.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
+								FullscreenActivity.myLyrics = "ERROR!";
+								e.printStackTrace();
+								message += thisfile.getName() + " - " + context.getResources().getString(R.string.error);
+							}
+						} else if (thisfile.getName().endsWith(".sqlite3") || thisfile.getName().endsWith(".preferences") ||
+								thisfile.getName().endsWith(".doc") || thisfile.getName().endsWith(".docx")) {
+							if (!thisfile.delete()) {
+								message += thisfile.getName() + " - " + context.getResources().getString(R.string.deleteerror_start);
+							}
 						}
-					} else if (thisfile.getName().endsWith(".sqlite3")||thisfile.getName().endsWith(".preferences")||
-                            thisfile.getName().endsWith(".doc")||thisfile.getName().endsWith(".docx")) {
-                        if (!thisfile.delete()) {
-                            message += thisfile.getName() + " - " +context.getResources().getString(R.string.deleteerror_start);
-                        }
-                    }
+					}
+					if (message.equals("")) {
+						message = "OK";
+					}
 				}
-				if (message.equals("")) {
-					message = "OK";
-				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			return message;
 		}
 
 		@Override
 		public void onPostExecute(String s) {
-			Log.d("d",s);
-            if (mListener!=null) {
-                String mText = context.getResources().getString(R.string.processing) + " - " + context.getResources().getString(R.string.success);
-                mListener.showToastMessage(mText);
-                mListener.prepareSongMenu();
-            }
-            Preferences.savePreferences();
+			try {
+				Log.d("d", s);
+				if (mListener != null) {
+					String mText = context.getResources().getString(R.string.processing) + " - " + context.getResources().getString(R.string.success);
+					mListener.showToastMessage(mText);
+					mListener.prepareSongMenu();
+				}
+				Preferences.savePreferences();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

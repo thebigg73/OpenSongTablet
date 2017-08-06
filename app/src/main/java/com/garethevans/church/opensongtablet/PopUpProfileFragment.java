@@ -324,6 +324,9 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("ab_authorSize")) {
                     FullscreenActivity.ab_authorSize = getFloatValue(xpp.nextText(), 11.0f);
 
+                } else if (xpp.getName().equals("alphabeticalSize")) {
+                    FullscreenActivity.alphabeticalSize = getFloatValue(xpp.nextText(), 14.0f);
+
                 } else if (xpp.getName().equals("alwaysPreferredChordFormat")) {
                     FullscreenActivity.alwaysPreferredChordFormat = getTextValue(xpp.nextText(), "N");
 
@@ -884,6 +887,9 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("scrollSpeed")) {
                     FullscreenActivity.scrollSpeed = getIntegerValue(xpp.nextText(),1500);
 
+                } else if (xpp.getName().equals("showAlphabeticalIndexInSongMenu")) {
+                    FullscreenActivity.showAlphabeticalIndexInSongMenu = getBooleanValue(xpp.nextText(),true);
+
                 } else if (xpp.getName().equals("showCapoChords")) {
                     FullscreenActivity.showCapoChords = getBooleanValue(xpp.nextText(),true);
 
@@ -1074,6 +1080,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "<myprofile>\n";
         text += "  <ab_titleSize>" + FullscreenActivity.ab_titleSize + "</ab_titleSize>\n";
         text += "  <ab_authorSize>" + FullscreenActivity.ab_authorSize + "</ab_authorSize>\n";
+        text += "  <alphabeticalSize>" + FullscreenActivity.alphabeticalSize + "</alphabeticalSize>\n";
         text += "  <alwaysPreferredChordFormat>" + FullscreenActivity.alwaysPreferredChordFormat + "</alwaysPreferredChordFormat>\n";
         text += "  <autoProject>" + FullscreenActivity.autoProject + "</autoProject>\n";
         text += "  <autoscroll_default_or_prompt>" + FullscreenActivity.autoscroll_default_or_prompt + "</autoscroll_default_or_prompt>\n";
@@ -1288,6 +1295,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <quickLaunchButton_4>" + FullscreenActivity.quickLaunchButton_4 + "</quickLaunchButton_4>\n";
         text += "  <scrollDistance>" + FullscreenActivity.scrollDistance + "</scrollDistance>\n";
         text += "  <scrollSpeed>" + FullscreenActivity.scrollSpeed + "</scrollSpeed>\n";
+        text += "  <showAlphabeticalIndexInSongMenu>" + FullscreenActivity.showAlphabeticalIndexInSongMenu + "</showAlphabeticalIndexInSongMenu>\n";
         text += "  <showCapoChords>" + FullscreenActivity.showCapoChords + "</showCapoChords>\n";
         text += "  <showChords>" + FullscreenActivity.showChords + "</showChords>\n";
         text += "  <showNativeAndCapoChords>" + FullscreenActivity.showNativeAndCapoChords + "</showNativeAndCapoChords>\n";

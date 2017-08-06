@@ -613,8 +613,8 @@
 	<string name="highlight">"Textmarker"</string>
 	<string name="highlight_notallowed">"Autoscale muss für diese Funktion voll eingestellt sein"</string>
 	<string name="stage_section_max">"Maximale Schnitthöhe (Stage Mode)"</string>
-	<string name="trim_sections">"Trimmschnitte"</string>
+	<string name="trim_sections">"Leerzeilen in Abschnitten kürzen"</string>
 
-	<string name="section_space">"Bereich hinzufügen"</string>
+	<string name="section_space">"Leerzeile zwischen Abschnitten einfügen"</string>
 
 </resources>

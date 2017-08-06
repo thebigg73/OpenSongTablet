@@ -90,6 +90,7 @@ public class Preferences extends Activity {
         try {
             FullscreenActivity.ab_titleSize = myPreferences.getFloat("ab_titleSize", 13.0f);
             FullscreenActivity.ab_authorSize = myPreferences.getFloat("ab_authorSize", 11.0f);
+            FullscreenActivity.alphabeticalSize = myPreferences.getFloat("alphabeticalSize", 14.0f);
             FullscreenActivity.alwaysPreferredChordFormat = myPreferences.getString("alwaysPreferredChordFormat", "N");
             FullscreenActivity.autoProject = myPreferences.getBoolean("autoProject", false);
             FullscreenActivity.autoscroll_default_or_prompt = myPreferences.getString("autoscroll_default_or_prompt", "prompt");
@@ -309,6 +310,7 @@ public class Preferences extends Activity {
             FullscreenActivity.quickLaunchButton_4 = myPreferences.getString("quickLaunchButton_4", "");
             FullscreenActivity.scrollDistance = myPreferences.getFloat("scrollDistance", 0.6f);
             FullscreenActivity.scrollSpeed = myPreferences.getInt("scrollSpeed", 1500);
+            FullscreenActivity.showAlphabeticalIndexInSongMenu = myPreferences.getBoolean("showAlphabeticalIndexInSongMenu", true);
             FullscreenActivity.showCapoChords = myPreferences.getBoolean("showCapoChords", true);
             FullscreenActivity.showLyrics = myPreferences.getBoolean("showLyrics", true);
             FullscreenActivity.showNativeAndCapoChords = myPreferences.getBoolean("showNativeAndCapoChords", true);
@@ -386,7 +388,6 @@ public class Preferences extends Activity {
                 FullscreenActivity.showChords = true;
             }
 
-
         } catch (Exception e) {
             // Error loading the preferences
             e.printStackTrace();
@@ -403,6 +404,7 @@ public class Preferences extends Activity {
 
             editor.putFloat("ab_titleSize", FullscreenActivity.ab_titleSize);
             editor.putFloat("ab_authorSize", FullscreenActivity.ab_authorSize);
+            editor.putFloat("alphabeticalSize", FullscreenActivity.alphabeticalSize);
             editor.putString("alwaysPreferredChordFormat", FullscreenActivity.alwaysPreferredChordFormat);
             editor.putBoolean("autoProject", FullscreenActivity.autoProject);
             editor.putString("autoscroll_default_or_prompt", FullscreenActivity.autoscroll_default_or_prompt);
@@ -629,6 +631,7 @@ public class Preferences extends Activity {
             editor.putString("quickLaunchButton_4", FullscreenActivity.quickLaunchButton_4);
             editor.putFloat("scrollDistance", FullscreenActivity.scrollDistance);
             editor.putInt("scrollSpeed", FullscreenActivity.scrollSpeed);
+            editor.putBoolean("showAlphabeticalIndexInSongMenu",FullscreenActivity.showAlphabeticalIndexInSongMenu);
             editor.putBoolean("showCapoChords", FullscreenActivity.showCapoChords);
             editor.putBoolean("showChords", FullscreenActivity.showChords);
             editor.putBoolean("showLyrics", FullscreenActivity.showLyrics);

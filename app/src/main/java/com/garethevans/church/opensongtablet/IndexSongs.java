@@ -285,8 +285,12 @@ public class IndexSongs extends Activity {
 
         @Override
         protected void onPreExecute() {
-            FullscreenActivity.myToastMessage = context.getString(R.string.search_index_start);
-            ShowToast.showToast(context);
+            try {
+                FullscreenActivity.myToastMessage = context.getString(R.string.search_index_start);
+                ShowToast.showToast(context);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -305,19 +309,23 @@ public class IndexSongs extends Activity {
 
         @Override
         protected void onPostExecute(String result) {
-            if (result.equals("error")) {
-                FullscreenActivity.myToastMessage = context.getString(R.string.search_index_error)+"\n"+
-                        context.getString(R.string.search_log);
-                ShowToast.showToast(context);
-                FullscreenActivity.safetosearch = true;
-                SharedPreferences indexSongPreferences = context.getSharedPreferences("indexsongs",MODE_PRIVATE);
-                SharedPreferences.Editor editor_index = indexSongPreferences.edit();
-                editor_index.putBoolean("buildSearchIndex", true);
-                editor_index.apply();
-            } else {
-                FullscreenActivity.myToastMessage = context.getString(R.string.search_index_end);
-                ShowToast.showToast(context);
-                mListener.indexingDone();
+            try {
+                if (result.equals("error")) {
+                    FullscreenActivity.myToastMessage = context.getString(R.string.search_index_error)+"\n"+
+                            context.getString(R.string.search_log);
+                    ShowToast.showToast(context);
+                    FullscreenActivity.safetosearch = true;
+                    SharedPreferences indexSongPreferences = context.getSharedPreferences("indexsongs",MODE_PRIVATE);
+                    SharedPreferences.Editor editor_index = indexSongPreferences.edit();
+                    editor_index.putBoolean("buildSearchIndex", true);
+                    editor_index.apply();
+                } else {
+                    FullscreenActivity.myToastMessage = context.getString(R.string.search_index_end);
+                    ShowToast.showToast(context);
+                    mListener.indexingDone();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

@@ -615,20 +615,24 @@ public class LoadXML extends Activity {
 
         @Override
         protected void onPostExecute(String result) {
-            int style_start = result.indexOf("<style");
-            int style_end   = result.indexOf("</style>");
-            if (style_end>style_start && style_start>-1 && style_end>-1) {
-                FullscreenActivity.mExtraStuff1 = result.substring(style_start,style_end+8);
-            }
-            int backgrounds_start = result.indexOf("<backgrounds");
-            int backgrounds_end   = result.indexOf("</backgrounds>");
-            if (backgrounds_end<0) {
-                backgrounds_end = result.indexOf("/>",backgrounds_start)+2;
-            } else {
-                backgrounds_end += 14;
-            }
-            if (backgrounds_end>backgrounds_start && backgrounds_start>-1 && backgrounds_end>-1) {
-                FullscreenActivity.mExtraStuff2 = result.substring(backgrounds_start,backgrounds_end);
+            try {
+                int style_start = result.indexOf("<style");
+                int style_end = result.indexOf("</style>");
+                if (style_end > style_start && style_start > -1 && style_end > -1) {
+                    FullscreenActivity.mExtraStuff1 = result.substring(style_start, style_end + 8);
+                }
+                int backgrounds_start = result.indexOf("<backgrounds");
+                int backgrounds_end = result.indexOf("</backgrounds>");
+                if (backgrounds_end < 0) {
+                    backgrounds_end = result.indexOf("/>", backgrounds_start) + 2;
+                } else {
+                    backgrounds_end += 14;
+                }
+                if (backgrounds_end > backgrounds_start && backgrounds_start > -1 && backgrounds_end > -1) {
+                    FullscreenActivity.mExtraStuff2 = result.substring(backgrounds_start, backgrounds_end);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
