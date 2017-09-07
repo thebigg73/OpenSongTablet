@@ -115,7 +115,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpMenuSettingsFragment.MyInterface, PopUpAlertFragment.MyInterface,
         PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface,
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
-        PopUpCreateDrawingFragment.MyInterface {
+        PopUpCreateDrawingFragment.MyInterface, PopUpABCNotationFragment.MyInterface {
 
     DialogFragment newFragment;
 
@@ -208,7 +208,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     // Network discovery / connections
     public static final String TAG = "StageMode";
-    SalutMessage myMessage, mySongMessage;
+    SalutMessage myMessage, mySongMessage, mySectionMessage;
 
     // Battery
     BroadcastReceiver br;
@@ -596,9 +596,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         // Detect if the song is in the set
                         String whattolookfor;
                         if (FullscreenActivity.whichSongFolder.equals("") || FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                            whattolookfor = FullscreenActivity.mSongFileNames[i];
+                            whattolookfor = "$**_" + FullscreenActivity.mSongFileNames[i] + "_**$";
                         } else {
-                            whattolookfor = FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.mSongFileNames[i];
+                            whattolookfor = "$**_" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.mSongFileNames[i] +"_**$";
                         }
                         boolean isinset = false;
                         if (FullscreenActivity.mySet.contains(whattolookfor)) {
@@ -1429,7 +1429,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     }
 
                     // Get the button information (type of section)
-                    String sectionText = FullscreenActivity.songSectionsLabels[x];
+                    String sectionText;
+                    try {
+                        sectionText = FullscreenActivity.songSectionsLabels[x];
+                    } catch (Exception e) {
+                        sectionText = "";
+                    }
 
                     newSongSectionGroup = ProcessSong.makePresenterSongButtonLayout(PresenterMode.this);
                     newSongSectionText = ProcessSong.makePresenterSongButtonSection(PresenterMode.this, sectionText.replace("_", " "));
@@ -1480,6 +1485,15 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
             // We will use this section for the song
             FullscreenActivity.currentSection = which;
+
+            // Send section to other devices (checks we are in stage or presentation mode in called method
+            if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
+                try {
+                    sendSongSectionToConnected();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
             // Scroll this section to the top of the list
             // Have to do this manually - add the height of the buttons before the one wanted + margin
@@ -1733,11 +1747,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // Attempt to extract the song details
         if (data != null && (data.toString().contains("_____") || data.toString().contains("<lyrics>"))) {
             String action = ProcessSong.getSalutReceivedLocation(data.toString(), PresenterMode.this);
-
-            if (action.equals("Location")) {
-                holdBeforeLoading();
-            } else if (action.equals("HostFile")) {
-                holdBeforeLoadingXML();
+            switch (action) {
+                case "Location":
+                    holdBeforeLoading();
+                    break;
+                case "HostFile":
+                    holdBeforeLoadingXML();
+                    break;
+                case "SongSection":
+                    holdBeforeLoadingSection(ProcessSong.getSalutReceivedSection(data.toString()));
+                    break;
             }
         }
     }
@@ -1802,6 +1821,38 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         }
     }
+    public void holdBeforeSendingSection() {
+        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
+        // As soon as we send it, check this is the first time
+        if (FullscreenActivity.firstSendingOfSalutSection) {
+            // Now turn it off
+            FullscreenActivity.firstSendingOfSalutSection = false;
+            if (FullscreenActivity.network != null) {
+                if (FullscreenActivity.network.isRunningAsHost) {
+                    try {
+                        FullscreenActivity.network.sendToAllDevices(mySongMessage, new SalutCallback() {
+                            @Override
+                            public void call() {
+                                Log.e(TAG, "Oh no! The data failed to send.");
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                // After a delay of 2 seconds, reset the firstSendingOfSalutSection;
+                Handler h = new Handler();
+                h.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        FullscreenActivity.firstSendingOfSalutSection = true;
+                    }
+                }, 2000);
+            }
+        }
+    }
+
     public void holdBeforeLoading() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we receive if, check this is the first time
@@ -1850,6 +1901,24 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }, 2000);
         }
     }
+    public void holdBeforeLoadingSection(int s) {
+        if (FullscreenActivity.firstReceivingOfSalutSection) {
+            // Now turn it off
+            FullscreenActivity.firstReceivingOfSalutSection = false;
+            FullscreenActivity.currentSection = s;
+            selectSectionButtonInSong(FullscreenActivity.currentSection);
+
+            // After a delay of 2 seconds, reset the firstReceivingOfSalutSection;
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    FullscreenActivity.firstReceivingOfSalutSection = true;
+                }
+            }, 2000);
+        }
+    }
+
     public void sendSongLocationToConnected() {
         String messageString = FullscreenActivity.whichSongFolder + "_____" +
                 FullscreenActivity.songfilename + "_____" +
@@ -1869,6 +1938,15 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         mySongMessage = new SalutMessage();
         mySongMessage.description = myXML;
         holdBeforeSendingXML();
+    }
+    public void sendSongSectionToConnected() {
+        int sectionval;
+        if (FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Presentation")) {
+            sectionval = FullscreenActivity.currentSection;
+            mySectionMessage = new SalutMessage();
+            mySectionMessage.description = "___section___" + sectionval;
+            holdBeforeSendingSection();
+        }
     }
     public void getBluetoothName() {
         try {

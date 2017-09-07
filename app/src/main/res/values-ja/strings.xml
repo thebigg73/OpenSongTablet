@@ -612,5 +612,6 @@
 	<string name="trim_sections">"セクションを切り取る"</string>
 
 	<string name="section_space">"セクションスペースを追加する"</string>
+    <string name="alphabetical">アルファベット順の曲インデックス</string>
 
 </resources>

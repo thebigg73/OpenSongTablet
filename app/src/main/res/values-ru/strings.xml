@@ -613,5 +613,6 @@
 	<string name="trim_sections">"Секции обрезки"</string>
 
 	<string name="section_space">"Добавить пространство раздела"</string>
+    <string name="alphabetical">Алфавитный указатель песни</string>
 
 </resources>

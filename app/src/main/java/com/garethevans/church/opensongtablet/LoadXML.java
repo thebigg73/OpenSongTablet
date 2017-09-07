@@ -544,6 +544,8 @@ public class LoadXML extends Activity {
                     FullscreenActivity.mLoopAudio = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("link_other")) {
                     FullscreenActivity.mLinkOther = parseFromHTMLEntities(xpp.nextText());
+                } else if (xpp.getName().equals("abcnotation")) {
+                    FullscreenActivity.mNotation = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("style")) {
                     // Simplest way to get this is to load the file in line by line as asynctask
                     needtoloadextra = true;

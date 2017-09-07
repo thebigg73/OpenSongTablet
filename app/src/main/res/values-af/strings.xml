@@ -612,5 +612,7 @@
 	<string name="stage_section_max">"Maksimum gedeelte hoogte (stadium modus)"</string>
 	<string name="trim_sections">"Sny afdelings"</string>
     <string name="section_space">"Voeg seksie spasie by"</string>
+    <string name="alphabetical">Alfabetiese liedjie indeks</string>
+
 
 </resources>

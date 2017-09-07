@@ -129,12 +129,27 @@
             android:visibility="visible"/>
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/highlightButton_ungrouped"
+            android:id="@+id/notationButton_ungrouped"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             app:useCompatPadding="true"
             android:layout_below="@id/stickyButton_ungrouped"
+            android:layout_toRightOf="@+id/extrabuttons"
+            app:backgroundTint="@color/purple"
+            app:borderWidth="0dp"
+            app:fabSize="mini"
+            android:src="@drawable/ic_clef_white_36dp"
+            android:alpha="0.4"
+            android:visibility="visible"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/highlightButton_ungrouped"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            app:useCompatPadding="true"
+            android:layout_below="@id/notationButton_ungrouped"
             android:layout_toRightOf="@+id/extrabuttons"
             app:backgroundTint="@color/purple"
             app:borderWidth="0dp"
@@ -291,6 +306,18 @@
                 app:backgroundTint="@color/purple"
                 app:borderWidth="0dp"
                 android:src="@drawable/ic_comment_text_white_36dp"
+                android:alpha="0.4"
+                android:visibility="visible"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/notationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:useCompatPadding="true"
+                app:fabSize="mini"
+                app:backgroundTint="@color/purple"
+                app:borderWidth="0dp"
+                android:src="@drawable/ic_clef_white_36dp"
                 android:alpha="0.4"
                 android:visibility="visible"/>
 

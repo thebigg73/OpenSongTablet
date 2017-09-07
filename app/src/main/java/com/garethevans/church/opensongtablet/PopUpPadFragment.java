@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 
 public class PopUpPadFragment extends DialogFragment {
@@ -60,8 +61,6 @@ public class PopUpPadFragment extends DialogFragment {
     public void onStart() {
         super.onStart();
         if (getActivity() != null && getDialog() != null) {
-            int myor = getActivity().getResources().getConfiguration().orientation;
-            Log.d("d","orientation="+myor);
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
     }
@@ -137,8 +136,6 @@ public class PopUpPadFragment extends DialogFragment {
         });
 
         if (getActivity() != null && getDialog() != null) {
-            int myor = getActivity().getResources().getConfiguration().orientation;
-            Log.d("d","orientation="+myor);
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
 
@@ -235,6 +232,8 @@ public class PopUpPadFragment extends DialogFragment {
                 } else {
                     FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
                 }
+            } else {
+                FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
             }
             PopUpEditSongFragment.prepareSongXML();
             try {
@@ -370,12 +369,15 @@ public class PopUpPadFragment extends DialogFragment {
     private void startenabled() {
         validpad = false;
         String filetext = FullscreenActivity.mLinkAudio;
+        filetext = filetext.replace("file://","");
         // If this is a localised file, we need to unlocalise it to enable it to be read
         if (filetext.startsWith("../OpenSong/")) {
             filetext = filetext.replace("../OpenSong/",FullscreenActivity.homedir+"/");
         }
-        filetext = filetext.replace("file://","");
-        File file = new File(filetext);
+        filetext = "file://" + filetext;
+
+        // Try to fix the start of the file
+        File file = new File(URI.create(filetext).getPath());
 
         if (popupPad_file.getSelectedItemPosition() == 0 && popupPad_key.getSelectedItemPosition() > 0) {
             validpad = true;

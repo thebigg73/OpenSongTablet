@@ -613,5 +613,6 @@
 	<string name="trim_sections">"Vágás szakaszok"</string>
 
 	<string name="section_space">"Adjon hozzá részterületet"</string>
+    <string name="alphabetical">Betűrendes dalok indexe</string>
 
 </resources>

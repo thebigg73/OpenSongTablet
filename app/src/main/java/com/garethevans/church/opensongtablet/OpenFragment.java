@@ -98,6 +98,14 @@ class OpenFragment {
                 }
                 break;
 
+            case "abcnotation":
+            case "abcnotation_edit":
+            case "abcnotation_editsong":
+                if (justSong(c)) {
+                    newFragment = PopUpABCNotationFragment.newInstance();
+                }
+                break;
+
             case "renamesong":
                 newFragment = PopUpSongRenameFragment.newInstance();
                 break;

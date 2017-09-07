@@ -616,5 +616,6 @@
 	<string name="trim_sections">"Leerzeilen in Abschnitten kürzen"</string>
 
 	<string name="section_space">"Leerzeile zwischen Abschnitten einfügen"</string>
+    <string name="alphabetical">Alphabetische Song Index</string>
 
 </resources>

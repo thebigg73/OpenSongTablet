@@ -613,5 +613,6 @@
     <string name="trim_sections">"Couper les sections"</string>
 
 	<string name="section_space">"Ajouter un espace de section"</string>
+    <string name="alphabetical">Index de chanson alphabétique</string>
 
 </resources>

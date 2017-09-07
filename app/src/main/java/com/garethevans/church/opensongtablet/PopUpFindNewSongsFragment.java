@@ -470,6 +470,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         // Split into lines
         String[] templines = resultposted.split("\n");
+        if (templines==null) {
+            templines = new String[1];
+            templines[0] = resultposted;
+        }
         // Go through each line and look for chord lines
         // These have <span> in them
         int numlines = templines.length;
@@ -483,7 +487,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             if (FullscreenActivity.locale==null) {
                 FullscreenActivity.locale = Locale.getDefault();
             }
-            if (templines[q]!=null && !templines[q].startsWith(".") &&
+            if (FullscreenActivity.locale!=null && templines[q]!=null && !templines[q].startsWith(".") &&
                     ((templines[q].toLowerCase(FullscreenActivity.locale).contains(getActivity().getResources().getString(R.string.tag_verse).toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12) ||
                             (templines[q].toLowerCase(FullscreenActivity.locale).contains(getActivity().getResources().getString(R.string.tag_chorus).toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12) ||
                             (templines[q].toLowerCase(FullscreenActivity.locale).contains(getActivity().getResources().getString(R.string.tag_bridge).toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12))) {
@@ -517,13 +521,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         newtext = TextUtils.htmlEncode(newtext);
 
 
-/*
-        filecontents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<song>\n<title>" + filenametosave
-                + "</title>\n<author>"
-                + authorname + "</author>\n<copyright></copyright>\n<lyrics>[]\n"
-                + newtext
-                + "</lyrics>\n</song>";
-*/
         if (filenametosave != null && !filenametosave.equals("")) {
             filename = filenametosave.trim();
         } else {
@@ -584,6 +581,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             e.printStackTrace();
         }
 
+        // Set the folder and song to the one we've set here
+        FullscreenActivity.whichSongFolder = whatfolderselected;
         FullscreenActivity.songfilename = tempfile;
         Preferences.savePreferences();
         if (mListener != null) {
@@ -623,7 +622,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                             break;
                         }
                     }
-                } catch (Exception e) {
+                } catch (Exception | OutOfMemoryError e) {
                     e.printStackTrace();
                 } finally {
                     if (urlConnection != null) {
@@ -638,22 +637,29 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         protected void onPostExecute(String result) {
             //Now look to see if the webcontent has the ChordPro text in it
             // Check we aren't trying to use the tab-pro page!
-            String address = webresults_WebView.getUrl();
-            if (address!=null && (address.contains("/tab-pro/") || address.contains("/chords-pro/"))) {
-                FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.not_allowed).toString();
-                ShowToast.showToast(getActivity());
-                grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
-            } else if (result!=null && result.contains("<textarea id=\"chordproContent\"")) {
-                // Using Chordie
-                fixChordieContent(result);
-                setFileNameAndFolder();
+            try {
+                String address = webresults_WebView.getUrl();
+                if (address != null && (address.contains("/tab-pro/") || address.contains("/chords-pro/"))) {
+                    FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.not_allowed).toString();
+                    ShowToast.showToast(getActivity());
+                    grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
+                } else if (result != null && result.contains("<textarea id=\"chordproContent\"")) {
+                    // Using Chordie
+                    fixChordieContent(result);
+                    setFileNameAndFolder();
 
-            } else if (result!=null && (result.contains("<div class=\"tb_ct\">") || result.contains("ultimate-guitar"))) {
-                // Using UG
-                fixUGContent(result);
-                setFileNameAndFolder();
+                } else if (result != null && (result.contains("<div class=\"tb_ct\">") || result.contains("ultimate-guitar"))) {
+                    // Using UG
+                    fixUGContent(result);
+                    setFileNameAndFolder();
 
-            } else {
+                } else {
+                    FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
+                    ShowToast.showToast(getActivity());
+                    grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
+                }
+            } catch (Exception | OutOfMemoryError e) {
+                e.printStackTrace();
                 FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
                 ShowToast.showToast(getActivity());
                 grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
@@ -664,7 +670,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     private class GetFolders extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
-            ListSongFiles.getAllSongFolders();
+            try {
+                ListSongFiles.getAllSongFolders();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 

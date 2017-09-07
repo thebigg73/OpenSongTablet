@@ -614,5 +614,6 @@
 	<string name="trim_sections">"Oříznutí sekcí"</string>
 
 	<string name="section_space">"Přidejte prostor oddílu"</string>
+    <string name="alphabetical">Abecední index písní</string>
 
 </resources>

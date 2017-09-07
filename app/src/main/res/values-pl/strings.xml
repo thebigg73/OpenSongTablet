@@ -613,5 +613,6 @@
 	<string name="trim_sections">"Sekcje cięcia"</string>
 
 	<string name="section_space">"Dodaj przestrzeń sekcji"</string>
+    <string name="alphabetical">Alfabetyczny indeks utworu</string>
 
 </resources>

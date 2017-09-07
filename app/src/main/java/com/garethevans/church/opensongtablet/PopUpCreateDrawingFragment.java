@@ -81,6 +81,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
     FloatingActionButton pencil_FAB;
     FloatingActionButton highlighter_FAB;
     FloatingActionButton eraser_FAB;
+    FloatingActionButton undo_FAB;
     FloatingActionButton delete_FAB;
     FloatingActionButton color_black;
     FloatingActionButton color_white;
@@ -145,7 +146,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         color_blue = (FloatingActionButton) V.findViewById(R.id.color_blue);
         size_SeekBar = (SeekBar) V.findViewById(R.id.size_SeekBar);
         size_TextView = (TextView) V.findViewById(R.id.size_TextView);
-
+        undo_FAB = (FloatingActionButton) V.findViewById(R.id.undo_FAB);
 
         // Get the screenshot size and ajust the drawing to match
         getSizes();
@@ -246,6 +247,12 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 drawView.startNew(hf);
+            }
+        });
+        undo_FAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawView.undo();
             }
         });
         showorhideToolOptions(isgone);
@@ -472,7 +479,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
         RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(screenshot_width,screenshot_height);
         screenShot.setLayoutParams(rlp);
-        //drawView.setLayoutParams(rlp);
+        drawView.setLayoutParams(rlp);
     }
 
     public void doSave() {

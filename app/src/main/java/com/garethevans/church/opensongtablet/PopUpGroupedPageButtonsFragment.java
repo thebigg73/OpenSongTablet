@@ -51,6 +51,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
     FloatingActionButton group_chords;
     FloatingActionButton group_links;
     FloatingActionButton group_sticky;
+    FloatingActionButton group_notation;
     FloatingActionButton group_highlight;
     FloatingActionButton group_pages;
     FloatingActionButton group_custom1;
@@ -105,6 +106,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         group_chords = (FloatingActionButton) V.findViewById(R.id.group_chords);
         group_links = (FloatingActionButton) V.findViewById(R.id.group_links);
         group_sticky = (FloatingActionButton) V.findViewById(R.id.group_sticky);
+        group_notation = (FloatingActionButton) V.findViewById(R.id.group_notation);
         group_highlight = (FloatingActionButton) V.findViewById(R.id.group_highlight);
         group_pages = (FloatingActionButton) V.findViewById(R.id.group_pages);
         group_custom1 = (FloatingActionButton) V.findViewById(R.id.group_custom1);
@@ -123,6 +125,7 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
         group_chords.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_links.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_sticky.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
+        group_notation.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_highlight.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_pages.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
         group_custom1.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));
@@ -170,6 +173,16 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
                 openAction("page_sticky");
             }
         });
+        group_notation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (FullscreenActivity.mNotation.equals("")) {
+                    openAction("abcnotation_edit");
+                } else {
+                    openAction("abcnotation");
+                }
+            }
+        });
         group_highlight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -211,6 +224,13 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
                     mListener.gesture6();
                 }
                 dismiss();
+                return true;
+            }
+        });
+        group_notation.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                openAction("abcnotation_edit");
                 return true;
             }
         });

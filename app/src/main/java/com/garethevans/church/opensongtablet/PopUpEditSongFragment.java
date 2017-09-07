@@ -53,6 +53,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     EditText edit_song_presentation;
     EditText edit_song_notes;
     EditText edit_song_lyrics;
+    TextView abcnotation;
 
     // Advanced
     EditText edit_song_CCLI;
@@ -222,6 +223,16 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_lyrics.setHorizontallyScrolling(true);
         toggleGeneralAdvanced = (Button) V.findViewById(R.id.show_general_advanced);
         generalSettings = (LinearLayout) V.findViewById(R.id.general_settings);
+        abcnotation = (TextView) V.findViewById(R.id.abcnotation);
+        abcnotation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "abcnotation_edit";
+                DialogFragment newFragment = PopUpABCNotationFragment.newInstance();
+                newFragment.show(getFragmentManager(), "dialog");
+                dismiss();
+            }
+        });
 
         // Initialise the advanced views
         edit_song_CCLI = (EditText) V.findViewById(R.id.edit_song_ccli);
@@ -386,6 +397,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_restrictions.setText(FullscreenActivity.mRestrictions);
         edit_song_books.setText(FullscreenActivity.mBooks);
         edit_song_pitch.setText(FullscreenActivity.mPitch);
+        abcnotation.setText(FullscreenActivity.mNotation);
 
         // Now the checkboxes
         if (FullscreenActivity.mTheme.contains(getResources().getString(
@@ -1010,6 +1022,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         myNEWXML += "  <link_audio></link_audio>\n";
         myNEWXML += "  <loop_audio>false</loop_audio>\n";
         myNEWXML += "  <link_other></link_other>\n";
+        myNEWXML += "  <abcnotation></abcnotation>\n";
         myNEWXML += "</song>";
         FullscreenActivity.mynewXML = myNEWXML;
     }
@@ -1053,6 +1066,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         myNEWXML += "  <link_audio>" + parseToHTMLEntities(FullscreenActivity.mLinkAudio) + "</link_audio>\n";
         myNEWXML += "  <loop_audio>" + parseToHTMLEntities(FullscreenActivity.mLoopAudio) + "</loop_audio>\n";
         myNEWXML += "  <link_other>" + parseToHTMLEntities(FullscreenActivity.mLinkOther) + "</link_other>\n";
+        myNEWXML += "  <abcnotation>" + parseToHTMLEntities(FullscreenActivity.mNotation) + "</abcnotation>\n";
 
         if (!FullscreenActivity.mExtraStuff1.isEmpty()) {
             myNEWXML += "  " + FullscreenActivity.mExtraStuff1 + "\n";

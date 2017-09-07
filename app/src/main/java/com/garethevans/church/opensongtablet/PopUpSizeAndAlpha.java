@@ -44,9 +44,11 @@ class PopUpSizeAndAlpha {
                     break;
 
                 case "drawnotes":
+                case "abcnotation":
+                case "abcnotation_edit":
                     myscale = 1.0f;
-                    myalpha = 1.0f;
-                    mydim = 1.0f;
+                    myalpha = FullscreenActivity.popupAlpha_All;
+                    mydim = FullscreenActivity.popupDim_All;
                     position = "C";
                     break;
 

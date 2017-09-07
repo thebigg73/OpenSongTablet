@@ -80,7 +80,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             mDuration = "", mPreDelay = "", mBooks = "", mMidi = "", mMidiIndex = "", mPitch = "",
             mRestrictions = "", mNotes = "", temptranspChords = "", mLinkedSongs = "",
             mExtraStuff1 = "", mExtraStuff2 = "", mPadFile = "", mCustomChords = "",
-            mLinkYouTube = "", mLinkWeb = "", mLinkAudio = "", mLoopAudio = "false", mLinkOther = "";
+            mLinkYouTube = "", mLinkWeb = "", mLinkAudio = "", mLoopAudio = "false", mLinkOther = "",
+            mNotation = "";
 
     // Song menu
     public static boolean needtorefreshsongmenu = false, safetosearch = false,
@@ -176,7 +177,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             page_autoscroll_visible, page_extra_visible, page_custom_visible, page_chord_visible,
             page_links_visible, page_sticky_visible, page_highlight_visible, page_pages_visible,
             page_custom1_visible, page_custom2_visible, page_custom3_visible, page_custom4_visible,
-            page_extra_grouped, page_custom_grouped;
+            page_extra_grouped, page_custom_grouped, page_notation_visible;
 
     public static boolean orientationchanged = false;
     public static boolean sortAlphabetically = true;
@@ -403,7 +404,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static String hostButtonText="", clientButtonText="", salutLog="",
             mBluetoothName, mySalutXML = "";
     public static boolean firstSendingOfSalut = true, firstSendingOfSalutXML = true,
-            firstReceivingOfSalut = true, firstReceivingOfSalutXML = true;
+            firstSendingOfSalutSection = true, firstReceivingOfSalut = true,
+            firstReceivingOfSalutXML = true, firstReceivingOfSalutSection = true;
     static NfcAdapter mNfcAdapter;
     // Flag to indicate that Android Beam is available
     public static boolean mAndroidBeamAvailable  = false;

@@ -458,14 +458,18 @@ public class PopUpStorageFragment extends DialogFragment {
     // The permission requests
     private void requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            Snackbar.make(mLayout, R.string.storage_rationale,
-                    Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestStorage);
-                }
-            }).show();
+            try {
+                Snackbar.make(mLayout, R.string.storage_rationale,
+                        Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ActivityCompat.requestPermissions(getActivity(),
+                                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestStorage);
+                    }
+                }).show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             // Storage permission has not been granted yet. Request it directly.
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestStorage);

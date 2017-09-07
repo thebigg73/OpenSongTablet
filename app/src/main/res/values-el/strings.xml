@@ -688,5 +688,6 @@
     <string name="trim_sections">"Περιορίστε τις ενότητες"</string>
 
     <string name="section_space">"Προσθήκη χώρου ενότητας"</string>
+    <string name="alphabetical">Αλφαβητικό ευρετήριο τραγουδιών</string>
 
 </resources>

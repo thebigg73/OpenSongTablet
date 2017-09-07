@@ -3,6 +3,8 @@
 
     <string name="storage_alt" translatable="false">Alternative storage</string>
 
+    <string name="music_score" translatable="false">Music score</string>
+
     <string name="alphabetical">Alphabetical song index</string>
 
     <string name="section_space">Add section space</string>

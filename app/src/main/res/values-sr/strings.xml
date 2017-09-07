@@ -664,5 +664,6 @@
     <string name="trim_sections">"Trim dijelove"</string>
 
     <string name="section_space">"Dodajte prostor odjeljka"</string>
+    <string name="alphabetical">Indeks abecedijske glazbe</string>
 
 </resources>

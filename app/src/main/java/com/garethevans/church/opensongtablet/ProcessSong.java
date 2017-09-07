@@ -578,6 +578,25 @@ public class ProcessSong extends Activity {
         }
     }
 
+    public static int getSalutReceivedSection(String string) {
+        int section = 0;
+        string = string.replace("{\"description\":\"","");
+        string = string.replace("\"}","");
+        if (string.length()>0 && string.contains("___section___")) {
+            // We have a section!
+            string = string.replace("___section___","");
+            try {
+                section = Integer.parseInt(string);
+            } catch (Exception e) {
+                section = 0;
+            }
+            if (section<0) {
+                section = 0;
+            }
+        }
+        return section;
+    }
+
     public static String getSalutReceivedLocation(String string, Context c) {
         String[] s;
         string = string.replace("{\"description\":\"","");
@@ -610,6 +629,8 @@ public class ProcessSong extends Activity {
         } else if (string.length()>0 && string.contains("<lyrics>") && FullscreenActivity.receiveHostFiles) {
             FullscreenActivity.mySalutXML = string;
             return "HostFile";
+        } else if (string.length()>0 && string.contains("___section___") && FullscreenActivity.receiveHostFiles) {
+            return "SongSection";
         }
 
         return "";
@@ -684,6 +705,8 @@ public class ProcessSong extends Activity {
             type = "capoinfo";
         } else if (string.indexOf(";__")==0) {
             type = "extra";
+        //} else if (string.startsWith(";"+c.getString(R.string.music_score))) {
+        //    type = "abcnotation";
         } else if (string.startsWith(";E |") || string.startsWith(";A |") ||
                 string.startsWith(";D |") || string.startsWith(";G |") ||
                 string.startsWith(";B |") || string.startsWith(";e |") ||
@@ -693,7 +716,7 @@ public class ProcessSong extends Activity {
                 string.startsWith(";Ab|") || string.startsWith(";A#|") ||
                 string.startsWith(";Bb|") || string.startsWith(";Cb|") ||
                 string.startsWith(";C#|") || string.startsWith(";Db|") ||
-                string.startsWith(";D#|") || string.startsWith(";Eb|") ||
+                string.startsWith(";D#|") || string.startsWith(";Eb|") || string.startsWith(";eb|") ||
                 string.startsWith(";Fb|") || string.startsWith(";F#|") ||
                 string.startsWith(";Gb|") || string.startsWith(";G#|") ||
                 string.startsWith("; ||")) {
@@ -1164,6 +1187,43 @@ public class ProcessSong extends Activity {
         return commentrow;
     }
 
+/*    @SuppressLint("SetJavaScriptEnabled")
+    public static WebView abcnotationtoWebView(Context c, final String s) {
+        final WebView wv = new WebView(c);
+        boolean oktouse = false;
+        if (!s.equals("")) {
+            TableLayout.LayoutParams lp = new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            wv.setLayoutParams(lp);
+            wv.getSettings().setJavaScriptEnabled(true);
+            wv.loadUrl("file:///android_asset/ABC/abc.html");
+            wv.setWebViewClient(new WebViewClient() {
+
+                public void onPageFinished(WebView view, String url) {
+                    String webstring = "";
+                    try {
+                        webstring = Uri.encode(s, "UTF-8");
+                    } catch  (Exception e) {
+                        Log.d("d","Error encoding");
+                    }
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                        wv.evaluateJavascript("javascript:displayOnly();", null);
+                        wv.evaluateJavascript("javascript:updateABC('"+webstring+"');", null);
+                    } else {
+                        wv.loadUrl("javascript:displayOnly();");
+                        wv.loadUrl("javascript:updateABC('"+webstring+"');");
+                    }
+                }
+            });
+            oktouse = true;
+        }
+
+        if (oktouse) {
+            return wv;
+        } else {
+            return null;
+        }
+    }*/
+
     public static TextView titletoTextView (Context c, String title, float fontsize) {
         TextView titleview = new TextView(c);
         titleview.setLayoutParams(linearlayout_params());
@@ -1194,6 +1254,8 @@ public class ProcessSong extends Activity {
             what = "extra_info";
         } else if (thislinetype.equals("tab")) {
             what = "guitar_tab";
+        //} else if (thislinetype.equals("abcnotation")) {
+        //    what = "abc_notation";
         } else {
             what = "null"; // Probably a lyric line with a chord above it - already dealt with
         }
@@ -2069,12 +2131,18 @@ public class ProcessSong extends Activity {
                     break;
 
                 case "guitar_tab":
-                        lyrics_returned = new String[1];
-                        lyrics_returned[0] = FullscreenActivity.sectionContents[x][y];
-                        tl.addView(ProcessSong.commentlinetoTableRow(c, lyrics_returned, fontsize, true));
-                        tl.setBackgroundColor(FullscreenActivity.lyricsCommentColor);
-                        break;
+                    lyrics_returned = new String[1];
+                    lyrics_returned[0] = FullscreenActivity.sectionContents[x][y];
+                    tl.addView(ProcessSong.commentlinetoTableRow(c, lyrics_returned, fontsize, true));
+                    tl.setBackgroundColor(FullscreenActivity.lyricsCommentColor);
+                    break;
 
+                /*case "abc_notation":
+                    WebView wv = ProcessSong.abcnotationtoWebView(c, FullscreenActivity.mNotation);
+                    if (wv!=null) {
+                        tl.addView(wv);
+                    }
+                    break;*/
                 }
                 ll.addView(tl);
             }
@@ -2693,7 +2761,7 @@ public class ProcessSong extends Activity {
                 FullscreenActivity.whichSongFolder.equals("")) {
             highlighterfile = FullscreenActivity.mainfoldername + "_" + FullscreenActivity.songfilename;
         } else {
-            highlighterfile = FullscreenActivity.whichSongFolder + "_" + FullscreenActivity.songfilename;
+            highlighterfile = FullscreenActivity.whichSongFolder.replace("/","_") + "_" + FullscreenActivity.songfilename;
         }
         String page = "";
         if (FullscreenActivity.isPDF) {
@@ -2703,8 +2771,7 @@ public class ProcessSong extends Activity {
         highlighterfile =  highlighterfile + layout + page + ".png";
 
         // This file may or may not exist
-        File test = new File (FullscreenActivity.dirhighlighter,highlighterfile);
-        return test;
+        return new File (FullscreenActivity.dirhighlighter,highlighterfile);
     }
 
 }

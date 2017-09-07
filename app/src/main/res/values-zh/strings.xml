@@ -617,5 +617,6 @@
 	<string name="trim_sections">"修剪部分"</string>
 
 	<string name="section_space">"添加部分空间"</string>
+    <string name="alphabetical">按字母排序的歌曲索引</string>
 
 </resources>

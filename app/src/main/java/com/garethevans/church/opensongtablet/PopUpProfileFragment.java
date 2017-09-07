@@ -725,6 +725,9 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("page_metronome_visible")) {
                     FullscreenActivity.page_metronome_visible = getBooleanValue(xpp.nextText(),true);
 
+                } else if (xpp.getName().equals("page_notation_visible")) {
+                    FullscreenActivity.page_notation_visible = getBooleanValue(xpp.nextText(),true);
+
                 } else if (xpp.getName().equals("page_pad_visible")) {
                     FullscreenActivity.page_pad_visible = getBooleanValue(xpp.nextText(),true);
 
@@ -1239,6 +1242,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <page_highlight_visible>" + FullscreenActivity.page_highlight_visible + "</page_highlight_visible>\n";
         text += "  <page_links_visible>" + FullscreenActivity.page_links_visible + "</page_links_visible>\n";
         text += "  <page_metronome_visible>" + FullscreenActivity.page_metronome_visible + "</page_metronome_visible>\n";
+        text += "  <page_notation_visible>" + FullscreenActivity.page_notation_visible + "</page_notation_visible>\n";
         text += "  <page_pad_visible>" + FullscreenActivity.page_pad_visible + "</page_pad_visible>\n";
         text += "  <page_pages_visible>" + FullscreenActivity.page_pages_visible + "</page_pages_visible>\n";
         text += "  <page_set_visible>" + FullscreenActivity.page_set_visible + "</page_set_visible>\n";

@@ -257,6 +257,7 @@ public class Preferences extends Activity {
             FullscreenActivity.page_highlight_visible = myPreferences.getBoolean("page_highlight_visible",true);
             FullscreenActivity.page_links_visible = myPreferences.getBoolean("page_links_visible",true);
             FullscreenActivity.page_metronome_visible = myPreferences.getBoolean("page_metronome_visible",true);
+            FullscreenActivity.page_notation_visible = myPreferences.getBoolean("page_notation_visible",true);
             FullscreenActivity.page_pad_visible = myPreferences.getBoolean("page_pad_visible",true);
             FullscreenActivity.page_pages_visible = myPreferences.getBoolean("page_pages_visible",true);
             FullscreenActivity.page_set_visible = myPreferences.getBoolean("page_set_visible",true);
@@ -574,6 +575,7 @@ public class Preferences extends Activity {
             editor.putBoolean("page_highlight_visible", FullscreenActivity.page_highlight_visible);
             editor.putBoolean("page_links_visible", FullscreenActivity.page_links_visible);
             editor.putBoolean("page_metronome_visible", FullscreenActivity.page_metronome_visible);
+            editor.putBoolean("page_notation_visible", FullscreenActivity.page_notation_visible);
             editor.putBoolean("page_pad_visible", FullscreenActivity.page_pad_visible);
             editor.putBoolean("page_pages_visible", FullscreenActivity.page_pages_visible);
             editor.putBoolean("page_set_visible", FullscreenActivity.page_set_visible);
