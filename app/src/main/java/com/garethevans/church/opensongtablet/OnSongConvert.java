@@ -97,12 +97,10 @@ class OnSongConvert {
 				break;
 			}
 		}
-		
-		// Go through the metadata lines and try to extract any stuff we can
-		for (int x = metadatastart; x < metadataend; x++) {
-			// Homogenise all tags!
-			// Make tag lines common
-			
+
+		// Go through all lines and homogenise all tags - Make tag lines common
+		for (int x = 0; x < numlines; x++) {
+
 			// Meta data tags at the top
 			line[x] = line[x].replace("{ns", "{new_song");
 			line[x] = line[x].replace("{title :", "{title:");
@@ -119,29 +117,29 @@ class OnSongConvert {
 			line[x] = line[x].replace("{su :", "{artist:");
 			line[x] = line[x].replace("{artist :", "{artist:");
 			line[x] = line[x].replace("{a:", "{artist:");
-			line[x] = line[x].replace("{author :", "{author:");			
-			line[x] = line[x].replace("{copyright :","{copyright:");
-			line[x] = line[x].replace("{footer:","{copyright:");
-			line[x] = line[x].replace("{footer :","{copyright:");
-			line[x] = line[x].replace("{key :","{key:");
-			line[x] = line[x].replace("{k:","{key:");
-			line[x] = line[x].replace("{k :","{key:");
-			line[x] = line[x].replace("{capo :","{capo:");
-			line[x] = line[x].replace("{time :","{time:");
-			line[x] = line[x].replace("{tempo :","{tempo:");
-			line[x] = line[x].replace("{duration :","{duration:");
-			line[x] = line[x].replace("{number :","{number:");
-			line[x] = line[x].replace("{flow :","{flow:");
-			line[x] = line[x].replace("{ccli :","{ccli:");
-			line[x] = line[x].replace("{keywords :","{keywords:");
-			line[x] = line[x].replace("{topic:","{keywords:");
-			line[x] = line[x].replace("{topic :","{keywords:");
-			line[x] = line[x].replace("{book :","{book:");
-			line[x] = line[x].replace("{midi :","{midi:");
-			line[x] = line[x].replace("{midi-index :","{midi-index:");
-			line[x] = line[x].replace("{pitch :","{pitch:");
-			line[x] = line[x].replace("{restrictions :","{restrictions:");
-			
+			line[x] = line[x].replace("{author :", "{author:");
+			line[x] = line[x].replace("{copyright :", "{copyright:");
+			line[x] = line[x].replace("{footer:", "{copyright:");
+			line[x] = line[x].replace("{footer :", "{copyright:");
+			line[x] = line[x].replace("{key :", "{key:");
+			line[x] = line[x].replace("{k:", "{key:");
+			line[x] = line[x].replace("{k :", "{key:");
+			line[x] = line[x].replace("{capo :", "{capo:");
+			line[x] = line[x].replace("{time :", "{time:");
+			line[x] = line[x].replace("{tempo :", "{tempo:");
+			line[x] = line[x].replace("{duration :", "{duration:");
+			line[x] = line[x].replace("{number :", "{number:");
+			line[x] = line[x].replace("{flow :", "{flow:");
+			line[x] = line[x].replace("{ccli :", "{ccli:");
+			line[x] = line[x].replace("{keywords :", "{keywords:");
+			line[x] = line[x].replace("{topic:", "{keywords:");
+			line[x] = line[x].replace("{topic :", "{keywords:");
+			line[x] = line[x].replace("{book :", "{book:");
+			line[x] = line[x].replace("{midi :", "{midi:");
+			line[x] = line[x].replace("{midi-index :", "{midi-index:");
+			line[x] = line[x].replace("{pitch :", "{pitch:");
+			line[x] = line[x].replace("{restrictions :", "{restrictions:");
+
 			// In line
 			line[x] = line[x].replace("{comments :", "{comments:");
 			line[x] = line[x].replace("{c:", "{comments:");
@@ -174,7 +172,11 @@ class OnSongConvert {
 			line[x] = line[x].replace("{column_break :", "{column_break:");
 			line[x] = line[x].replace("{colb:", "{column_break:");
 			line[x] = line[x].replace("{colb :", "{column_break:");
-			line[x] = line[x].replace("{pagetype :", "{pagetype:");	
+			line[x] = line[x].replace("{pagetype :", "{pagetype:");
+		}
+
+		// Go through the metadata lines and try to extract any stuff we can
+		for (int x = metadatastart; x < metadataend; x++) {
 
 			if (line[x].indexOf("{title:")==0) {
 				// extract the title
@@ -505,6 +507,20 @@ class OnSongConvert {
 			line[x] = line[x].replaceFirst("}", "");
 			// Get rid of any extra whitespace
 			line[x] = line[x].trim();			
+		}
+
+		// Change musical instructions into comments
+		String line_t = line[x].trim();
+		if (line_t.startsWith("(") && line_t.endsWith(")")) {
+			line[x] = ";" + line_t.substring(1,line_t.length()-1 );
+		}
+
+		// Change comment lines
+		if (line[x].contains("{comments:")) {
+			line[x] = line[x].replace("{comments:","");
+			line[x] = line[x].replace("}", "");
+			line[x] = line[x].trim();
+			line[x] = ";" + line[x].trim();
 		}
 
 		// Get rid of formatting tags we won't use
@@ -890,6 +906,7 @@ class OnSongConvert {
 
         // IF THE FILENAME ALREADY EXISTS, REALLY SHOULD ASK THE USER FOR A NEW FILENAME
 		// OR append _ to the end - STILL TO DO!!!!!
+		//TODO ask the user for a new filename, if file exists
 		while(to.exists()) {
 			newSongTitle = newSongTitle+"_";
             if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
