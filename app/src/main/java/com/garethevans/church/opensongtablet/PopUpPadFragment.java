@@ -326,43 +326,47 @@ public class PopUpPadFragment extends DialogFragment {
 
         protected void onPostExecute(String s) {
             // Set the pad / backing track
-            if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.off))) {
-                popupPad_file.setSelection(2);
-            } else if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.link_audio)) &&
-                    !FullscreenActivity.mLinkAudio.isEmpty() && !FullscreenActivity.mLinkAudio.equals("")) {
-                popupPad_file.setSelection(1);
-            } else {
-                popupPad_file.setSelection(0);
-            }
+            try {
+                if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.off))) {
+                    popupPad_file.setSelection(2);
+                } else if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.link_audio)) &&
+                        !FullscreenActivity.mLinkAudio.isEmpty() && !FullscreenActivity.mLinkAudio.equals("")) {
+                    popupPad_file.setSelection(1);
+                } else {
+                    popupPad_file.setSelection(0);
+                }
 
-            // Set the loop on or off
-            if (FullscreenActivity.mLoopAudio.equals("true")) {
-                popupPad_loopaudio.setChecked(true);
-            } else {
-                FullscreenActivity.mLoopAudio = "false";
-                popupPad_loopaudio.setChecked(false);
-            }
+                // Set the loop on or off
+                if (FullscreenActivity.mLoopAudio.equals("true")) {
+                    popupPad_loopaudio.setChecked(true);
+                } else {
+                    FullscreenActivity.mLoopAudio = "false";
+                    popupPad_loopaudio.setChecked(false);
+                }
 
-            // Set the pad volume and pan
-            int temp_padvol = (int) (100 * FullscreenActivity.padvol);
-            popupPad_volume.setProgress(temp_padvol);
-            String text = temp_padvol + " %";
-            popupPad_volume_text.setText(text);
-            switch (FullscreenActivity.padpan) {
-                case "left":
-                    popupPad_pan_text.setText("L");
-                    popupPad_pan.setProgress(0);
-                    break;
-                case "right":
-                    popupPad_pan_text.setText("R");
-                    popupPad_pan.setProgress(2);
-                    break;
-                default:
-                    popupPad_pan_text.setText("C");
-                    popupPad_pan.setProgress(1);
-                    break;
-            }
+                // Set the pad volume and pan
+                int temp_padvol = (int) (100 * FullscreenActivity.padvol);
+                popupPad_volume.setProgress(temp_padvol);
+                String text = temp_padvol + " %";
+                popupPad_volume_text.setText(text);
+                switch (FullscreenActivity.padpan) {
+                    case "left":
+                        popupPad_pan_text.setText("L");
+                        popupPad_pan.setProgress(0);
+                        break;
+                    case "right":
+                        popupPad_pan_text.setText("R");
+                        popupPad_pan.setProgress(2);
+                        break;
+                    default:
+                        popupPad_pan_text.setText("C");
+                        popupPad_pan.setProgress(1);
+                        break;
+                }
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

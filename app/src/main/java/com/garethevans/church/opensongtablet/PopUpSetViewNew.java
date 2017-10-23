@@ -404,6 +404,8 @@ public class PopUpSetViewNew extends DialogFragment {
         }
         FullscreenActivity.mySet = new_mySet;
 
+        Preferences.savePreferences();
+
         FullscreenActivity.myToastMessage = c.getResources().getString(R.string.variation_edit);
         ShowToast.showToast(c);
         // Now load the new variation item up

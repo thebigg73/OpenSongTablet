@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<title>OpenSongApp ABC Notation</title>
+<link href="abcjs-midi.css" media="all" rel="stylesheet" type="text/css" />
+<script src="font.js" type="text/javascript"></script>
+<script src="abcjs_editor_3.1.2-min.js" type="text/javascript"></script>
+<style>
+#top,
+#abc {
+position: fixed;
+width: 100%;
+left: 0px;
+right: 0px;
+height: 48%;
+margin: 5px,0px;
+background-color: #ffffff;
+color: #000000;
+}
+
+#top {
+top: 0;
+overflow: scroll;
+}
+
+#abc {
+bottom: 0;
+font-size:large;
+border: 5px solid transparent;
+outline: none;
+}
+</style>
+</head>
+<body style="background-color:#232333">
+<div id="notation" hidden></div>
+<div id="music"></div>
+<div id="top">
+<div id="paper0" style="background-color:#ffffff; color:#000000"></div>
+<div id="warnings" style="color:#ffffff; background-color:#ff0000; width:100%"></div>
+</div>
+<p>
+<div id="paper1" hidden></div>
+<div id="paper2" hidden></div>
+<div id="paper3" hidden></div>
+<div id="selection" hidden></div>
+<div id="bottom">
+<textarea name="abc" id="abc" style="display:none"></textarea>
+</div> 
+<script type="text/javascript">
+var s = "";
+function updateABC(s) {
+var unencoded = decodeURIComponent(s);
+document.getElementById("abc").innerHTML = unencoded;
+initEditor();
+}
+updateABC(s);
+
+function selectionCallback(abcelem) {
+var note = {};
+for (var key in abcelem) {
+if (abcelem.hasOwnProperty(key) && key !== "abselem")
+note[key] = abcelem[key];
+}
+console.log(abcelem);
+var el = document.getElementById("selection");
+el.innerHTML = "<b>selectionCallback parameter:</b><br>" + JSON.stringify(note);
+}
+function getTextVal() {
+var myJsString = document.getElementById("abc").value;
+//window.AndroidApp.receiveString(myJsString);
+AndroidApp.receiveString(myJsString);
+}
+function initEditor() {
+new ABCJS.Editor("abc", { paper_id: "paper0",
+generate_midi: false,
+midi_id:"midi",
+midi_download_id: "midi-download",
+generate_warnings: true,
+warnings_id:"warnings",
+midi_options: {
+generateDownload: false
+},
+render_options: {
+listener: { highlight: selectionCallback }
+}
+});
+}
+function displayOnly() {
+document.getElementById("abc").style.display = "none";
+}
+function displayAndEdit() {
+document.getElementById("abc").style.display = "block";
+}
+window.addEventListener("load", initEditor, false);
+
+</script>
+</body>
+</html>";

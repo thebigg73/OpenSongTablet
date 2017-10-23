@@ -115,7 +115,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpMenuSettingsFragment.MyInterface, PopUpAlertFragment.MyInterface,
         PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface,
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
-        PopUpCreateDrawingFragment.MyInterface, PopUpABCNotationFragment.MyInterface {
+        PopUpCreateDrawingFragment.MyInterface, PopUpABCNotationFragment.MyInterface,
+        PopUpPDFToTextFragment.MyInterface, PopUpRandomSongFragment.MyInterface {
 
     DialogFragment newFragment;
 
@@ -1132,8 +1133,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_order_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "editsong";
-                openFragment();
+                if (FullscreenActivity.isPDF) {
+                    FullscreenActivity.whattodo = "extractPDF";
+                    openFragment();
+                } else if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "editsong";
+                    openFragment();
+                }
             }
         });
         nav_prevsong.setOnClickListener(new View.OnClickListener() {
@@ -1830,7 +1836,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             if (FullscreenActivity.network != null) {
                 if (FullscreenActivity.network.isRunningAsHost) {
                     try {
-                        FullscreenActivity.network.sendToAllDevices(mySongMessage, new SalutCallback() {
+                        FullscreenActivity.network.sendToAllDevices(mySectionMessage, new SalutCallback() {
                             @Override
                             public void call() {
                                 Log.e(TAG, "Oh no! The data failed to send.");
@@ -1931,7 +1937,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void sendSongXMLToConnected() {
         String myXML;
         if (FullscreenActivity.isSong && FullscreenActivity.myXML != null) {
-            myXML = FullscreenActivity.myXML;
+            //myXML = FullscreenActivity.myXML;
+            Log.d("d","presenterSendSong="+FullscreenActivity.presenterSendSong);
+            myXML = FullscreenActivity.presenterSendSong;
         } else {
             myXML = "";
         }
@@ -2083,6 +2091,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                         FullscreenActivity.sectionContents[x] = FullscreenActivity.songSections[x].split("\n");
                         FullscreenActivity.projectedContents[x] = FullscreenActivity.songSections[x].split("\n");
+                    }
+
+                    // If we are a host then rebuild
+                    if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
+                        PopUpEditSongFragment.prepareSongXML();
+                        // Replace the lyrics
+                        FullscreenActivity.presenterSendSong = FullscreenActivity.myXML.replace(FullscreenActivity.mLyrics,
+                                ProcessSong.rebuildParsedLyrics(FullscreenActivity.songSections.length));
+                    } else {
+                        FullscreenActivity.presenterSendSong = FullscreenActivity.myXML;
                     }
 
                     // Determine what each line type is
@@ -2389,8 +2407,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     }
     @Override
     public void doEdit() {
-        FullscreenActivity.whattodo = "editsong";
-        openFragment();
+        if (FullscreenActivity.isPDF) {
+            FullscreenActivity.whattodo = "extractPDF";
+            openFragment();
+        } else if (FullscreenActivity.isSong) {
+            FullscreenActivity.whattodo = "editsong";
+            openFragment();
+        }
     }
     public boolean justSong(Context c) {
         boolean isallowed = true;
@@ -2412,14 +2435,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         if (newFragment != null) {
             newFragment.show(getFragmentManager(), message);
         }
-    }
-    @Override
-    public void openSongEdit() {
-        // Not required really - just a legacy for FullscreenActivity.
-        // When FullscreenActivity is emptied, change mListener in PopUpSongCreateFragment openSongEdit()
-        // to openFragment() with FullscreenActivity.whattodo="editsong"
-        FullscreenActivity.whattodo = "editsong";
-        openFragment();
     }
     @Override
     public void onSongImportDone(String message) {

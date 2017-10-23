@@ -86,7 +86,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     // Song menu
     public static boolean needtorefreshsongmenu = false, safetosearch = false,
             showSetTickBoxInSongMenu, showAlphabeticalIndexInSongMenu;
-    public static String indexlog = "", currentFolder = "", newFolder = "", whichSongFolder = "";
+    public static String indexlog = "", currentFolder = "", newFolder = "", whichSongFolder = "", randomFolders = "";
     public static ArrayList<String> searchFileName = new ArrayList<>(), searchFolder = new ArrayList<>(),
             searchTitle = new ArrayList<>(), searchAuthor = new ArrayList<>(),
             searchShortLyrics = new ArrayList<>(), searchTheme = new ArrayList<>(),
@@ -402,7 +402,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static Salut network;
     public static BluetoothAdapter mBluetoothAdapter;
     public static String hostButtonText="", clientButtonText="", salutLog="",
-            mBluetoothName, mySalutXML = "";
+            mBluetoothName, mySalutXML = "", presenterSendSong="";
     public static boolean firstSendingOfSalut = true, firstSendingOfSalutXML = true,
             firstSendingOfSalutSection = true, firstReceivingOfSalut = true,
             firstReceivingOfSalutXML = true, firstReceivingOfSalutSection = true;

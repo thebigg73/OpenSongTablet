@@ -193,18 +193,6 @@ public class PopUpStorageFragment extends DialogFragment {
         wipeSongs = (Button) V.findViewById(R.id.wipeSongs);
         altStorageGroup = (LinearLayout) V.findViewById(R.id.altStorageGroup);
 
-        // Check alt storage permission
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (checkAltStoragePermission()) {
-                Log.d("d", "Alt permission is set!");
-            }
-        } else {
-            FullscreenActivity.searchUsingSAF = false;
-            FullscreenActivity.uriTree = null;
-            altStorageGroup.setVisibility(View.GONE);
-        }*/
-        // Storage Access Framework is a piece of CRAP - tried to get it working, but not
-        // The lines below are to force the app not to use it (for now at least)
         FullscreenActivity.searchUsingSAF = false;
         FullscreenActivity.uriTree = null;
         altStorageGroup.setVisibility(View.GONE);
@@ -471,8 +459,12 @@ public class PopUpStorageFragment extends DialogFragment {
                 e.printStackTrace();
             }
         } else {
-            // Storage permission has not been granted yet. Request it directly.
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestStorage);
+            try {
+                // Storage permission has not been granted yet. Request it directly.
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestStorage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -165,7 +165,7 @@ public class ProcessSong extends Activity {
         return myLyrics;
     }
 
-    public static void rebuildParsedLyrics(int length) {
+    public static String rebuildParsedLyrics(int length) {
         String tempLyrics = "";
         for (int x = 0; x < length; x++) {
             // First line of section should be the label, so replace it with label.
@@ -176,6 +176,8 @@ public class ProcessSong extends Activity {
             }
         }
         FullscreenActivity.myParsedLyrics = tempLyrics.split("\n");
+
+        return tempLyrics;
     }
 
     public static void lookForSplitPoints() {
@@ -569,6 +571,12 @@ public class ProcessSong extends Activity {
                 FullscreenActivity.noteValue = 8;
                 FullscreenActivity.mTimeSigValid = true;
                 break;
+            case "1/4":
+                FullscreenActivity.timesigindex = 13;
+                FullscreenActivity.beats = 4;
+                FullscreenActivity.noteValue = 4;
+                FullscreenActivity.mTimeSigValid = true;
+                break;
             default:
                 FullscreenActivity.timesigindex = 0;
                 FullscreenActivity.beats = 4;
@@ -578,25 +586,23 @@ public class ProcessSong extends Activity {
         }
     }
 
-    public static int getSalutReceivedSection(String string) {
-        int section = 0;
-        string = string.replace("{\"description\":\"","");
-        string = string.replace("\"}","");
-        if (string.length()>0 && string.contains("___section___")) {
-            // We have a section!
-            string = string.replace("___section___","");
+    public static int getSalutReceivedSection(String s) {
+        int i=-1;
+        Log.d("d","s="+s);
+        if (s!=null && s.length()>0 && s.contains("___section___")) {
+            s = s.replace("{\"description\":\"","");
+            s = s.replace("\"}","");
+            s = s.replace("___section___","");
+            Log.d("d","s="+s);
             try {
-                section = Integer.parseInt(string);
+                i = Integer.parseInt(s);
             } catch (Exception e) {
-                section = 0;
-            }
-            if (section<0) {
-                section = 0;
+                i = -1;
             }
         }
-        return section;
+        Log.d("d","i="+i);
+        return i;
     }
-
     public static String getSalutReceivedLocation(String string, Context c) {
         String[] s;
         string = string.replace("{\"description\":\"","");
@@ -628,9 +634,8 @@ public class ProcessSong extends Activity {
             }
         } else if (string.length()>0 && string.contains("<lyrics>") && FullscreenActivity.receiveHostFiles) {
             FullscreenActivity.mySalutXML = string;
+            Log.d("d","HostFile");
             return "HostFile";
-        } else if (string.length()>0 && string.contains("___section___") && FullscreenActivity.receiveHostFiles) {
-            return "SongSection";
         }
 
         return "";
@@ -1480,19 +1485,19 @@ public class ProcessSong extends Activity {
                 boolean gettingchorus = false;
                 for (int z = 0; z < lines.length; z++) {
                     if ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[v]") == 0 &&
-                            ((z < lines.length - 1 && lines[z + 1].startsWith("1")) || (z < lines.length - 2 && lines[z + 2].startsWith("1")))) ||
+                            ((z < lines.length - 1 && lines[z + 1].startsWith(" 1")) || (z < lines.length - 2 && lines[z + 2].startsWith(" 1")))) ||
 
                             ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[" + c.getResources().getString(R.string.tag_verse).toLowerCase(FullscreenActivity.locale) + "]") == 0) &&
-                                    ((z < lines.length - 1 && lines[z + 1].startsWith("1")) || (z < lines.length - 2 && lines[z + 2].startsWith("1"))))) {
+                                    ((z < lines.length - 1 && lines[z + 1].startsWith(" 1")) || (z < lines.length - 2 && lines[z + 2].startsWith(" 1"))))) {
                         lines[z] = "__VERSEMULTILINE__";
                         gettingverse = true;
                         gettingchorus = false;
                     }
                     if ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[c]") == 0 &&
-                            ((z < lines.length - 1 && lines[z + 1].startsWith("1")) || (z < lines.length - 2 && lines[z + 2].startsWith("1")))) ||
+                            ((z < lines.length - 1 && lines[z + 1].startsWith(" 1")) || (z < lines.length - 2 && lines[z + 2].startsWith(" 1")))) ||
 
                             ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[" + c.getResources().getString(R.string.tag_chorus).toLowerCase(FullscreenActivity.locale) + "]") == 0) &&
-                                    ((z < lines.length - 1 && lines[z + 1].startsWith("1")) || (z < lines.length - 2 && lines[z + 2].startsWith("1"))))) {
+                                    ((z < lines.length - 1 && lines[z + 1].startsWith(" 1")) || (z < lines.length - 2 && lines[z + 2].startsWith(" 1"))))) {
                         lines[z] = "__CHORUSMULTILINE__";
                         gettingchorus = true;
                         gettingverse = false;
@@ -1637,7 +1642,7 @@ public class ProcessSong extends Activity {
 
         song = song.replace("-!!", "");
 
-        if (FullscreenActivity.whichMode.equals("Stage")) {
+        if (FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Presentation")) {
             song = song.replace("||", "%%LATERSPLITHERE%%");
         } else {
             song = song.replace("||", "");
@@ -2341,6 +2346,7 @@ public class ProcessSong extends Activity {
             // FileDescriptor for file, it allows you to close file when you are done with it
             ParcelFileDescriptor mFileDescriptor = null;
             PdfRenderer mPdfRenderer = null;
+
             try {
                 mFileDescriptor = ParcelFileDescriptor.open(FullscreenActivity.file, ParcelFileDescriptor.MODE_READ_ONLY);
                 if (mFileDescriptor != null) {
@@ -2752,10 +2758,6 @@ public class ProcessSong extends Activity {
             layout = "_p";
         } else {
             layout = "_l";
-        }
-        if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
-            // Because images/pdf aren't shuffled around on orientation change, don't need this.
-            layout = "";
         }
         if (FullscreenActivity.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
                 FullscreenActivity.whichSongFolder.equals("")) {

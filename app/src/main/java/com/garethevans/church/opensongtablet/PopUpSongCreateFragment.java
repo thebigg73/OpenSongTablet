@@ -43,7 +43,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
     }
 
     public interface MyInterface {
-        void openSongEdit();
+        void doEdit();
         void loadSong();
     }
 
@@ -261,7 +261,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
                 // Tell the main page to now edit the song
                 if (mListener != null) {
-                    mListener.openSongEdit();
+                    mListener.doEdit();
                 }
 
                 // Close the popup

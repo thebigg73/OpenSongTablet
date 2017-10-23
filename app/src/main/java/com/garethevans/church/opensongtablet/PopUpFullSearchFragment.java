@@ -124,7 +124,6 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
         return V;
     }
 
-
     public void Simplesearch() {
         try {
             // This gets called if the database wasn't built properly

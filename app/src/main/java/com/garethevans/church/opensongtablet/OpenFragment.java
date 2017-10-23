@@ -41,6 +41,10 @@ class OpenFragment {
                 newFragment = PopUpAreYouSureFragment.newInstance(message);
                 break;
 
+            case "randomsong":
+                newFragment = PopUpRandomSongFragment.newInstance();
+                break;
+
             case "customcreate":
                 newFragment = PopUpCustomSlideFragment.newInstance();
                 break;
@@ -63,6 +67,10 @@ class OpenFragment {
 
             case "songdetails":
                 newFragment = PopUpSongDetailsFragment.newInstance();
+                break;
+
+            case "extractPDF":
+                newFragment = PopUpPDFToTextFragment.newInstance();
                 break;
 
             case "alert":
@@ -327,6 +335,7 @@ class OpenFragment {
             case "chordie":
             case "ultimate-guitar":
             case "worshipready":
+            case "songselect":
                 newFragment = PopUpFindNewSongsFragment.newInstance();
                 break;
 

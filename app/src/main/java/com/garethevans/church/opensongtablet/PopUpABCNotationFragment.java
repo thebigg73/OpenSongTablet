@@ -120,6 +120,19 @@ public class PopUpABCNotationFragment extends DialogFragment {
                 } else {
                     updateContent(FullscreenActivity.mNotation);
                 }
+                if (!FullscreenActivity.whattodo.equals("abcnotation")) {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                        abcWebView.evaluateJavascript("javascript:displayAndEdit();", null);
+                    } else {
+                        abcWebView.loadUrl("javascript:displayAndEdit();");
+                    }
+                } else {
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                        abcWebView.evaluateJavascript("javascript:displayOnly();", null);
+                    } else {
+                        abcWebView.loadUrl("javascript:displayOnly();");
+                    }
+                }
             }
         });
         return V;
@@ -151,6 +164,12 @@ public class PopUpABCNotationFragment extends DialogFragment {
                 abcWebView.evaluateJavascript("javascript:displayOnly();", null);
             } else {
                 abcWebView.loadUrl("javascript:displayOnly();");
+            }
+        } else {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                abcWebView.evaluateJavascript("javascript:displayAndEdit();", null);
+            } else {
+                abcWebView.loadUrl("javascript:displayAndEdit();");
             }
         }
     }

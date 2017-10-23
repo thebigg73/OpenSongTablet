@@ -393,7 +393,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         // Set the defaut value:
         int defpos = 0;
 
-        for (int i=0;i<timesigvals.length-1;i++) {
+        for (int i=0;i<timesigvals.length;i++) {
             if (FullscreenActivity.mTimeSig.equals(timesigvals[i])) {
                 defpos = i;
             }
@@ -414,6 +414,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
                     Metronome.setNoteValues();
                 }
                 FullscreenActivity.metronomeok = Metronome.isMetronomeValid();
+                Log.d("d","metronomeok="+FullscreenActivity.metronomeok);
                 Preferences.savePreferences();
             }
         });

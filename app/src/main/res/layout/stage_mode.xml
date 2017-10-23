@@ -43,9 +43,10 @@
 
             <ImageView
                 android:id="@+id/glideimage"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/image"
+                android:layout_gravity="center_horizontal"
                 android:isScrollContainer="true"
                 android:visibility="visible" />
 
@@ -182,7 +183,7 @@
 
         <include
             android:id="@+id/pagebuttons"
-            layout="@layout/pageicons_right_material" />
+            layout="@layout/page_buttons" />
 
         <TextView
             android:id="@+id/top_of_page"

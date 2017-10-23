@@ -139,6 +139,9 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
         //12
         actionOptions.add(getActivity().getResources().getString(R.string.action_search));
 
+        //13
+        actionOptions.add(getActivity().getString(R.string.random_song));
+
         ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
         ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
         ArrayAdapter<String> adapter_3 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
@@ -271,6 +274,10 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
             case 12:
                 t = "fullsearch";
                 break;
+
+            case 13:
+                t = "randomsong";
+                break;
         }
 
         return t;
@@ -332,6 +339,9 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
                 i = 12;
                 break;
 
+            case "randomsong":
+                i = 13;
+                break;
         }
 
         return i;
@@ -395,6 +405,9 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
                 d = c.getResources().getDrawable(R.drawable.ic_magnify_white_36dp);
                 break;
 
+            case "randomsong":
+                d = c.getResources().getDrawable(R.drawable.ic_shuffle_white_36dp);
+                break;
         }
         return d;
     }

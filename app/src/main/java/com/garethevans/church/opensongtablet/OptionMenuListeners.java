@@ -628,7 +628,7 @@ public class OptionMenuListeners extends Activity {
 
     }
 
-    public static void songOptionListener(View v, Context c) {
+    public static void songOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -682,10 +682,15 @@ public class OptionMenuListeners extends Activity {
         songEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "editsong";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
+                if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "editsong";
+                    if (mListener != null) {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                    }
+                } else {
+                    FullscreenActivity.myToastMessage = c.getString(R.string.not_allowed);
+                    ShowToast.showToast(c);
                 }
             }
         });
@@ -693,10 +698,15 @@ public class OptionMenuListeners extends Activity {
         songStickyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "editnotes";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
+                if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "editnotes";
+                    if (mListener != null) {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                    }
+                } else {
+                    FullscreenActivity.myToastMessage = c.getString(R.string.not_allowed);
+                    ShowToast.showToast(c);
                 }
             }
         });
@@ -722,7 +732,7 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whattodo = "youtube";
-                if (mListener!=null) {
+                if (mListener != null) {
                     Intent youtube = new Intent(Intent.ACTION_VIEW,
                             Uri.parse("https://www.youtube.com/results?search_query=" + FullscreenActivity.mTitle + "+" + FullscreenActivity.mAuthor));
                     mListener.callIntent("web", youtube);
@@ -780,11 +790,15 @@ public class OptionMenuListeners extends Activity {
         songExportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "customise_exportsong";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
-                    //mListener.shareSong();
+                if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "customise_exportsong";
+                    if (mListener != null) {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                    }
+                } else {
+                    FullscreenActivity.myToastMessage = c.getString(R.string.not_allowed);
+                    ShowToast.showToast(c);
                 }
             }
         });
@@ -795,9 +809,11 @@ public class OptionMenuListeners extends Activity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.usePresentationOrder = b;
                 Preferences.savePreferences();
-                if (mListener!=null) {
-                    Preferences.savePreferences();
-                    mListener.loadSong();
+                if (FullscreenActivity.isSong) {
+                    if (mListener != null) {
+                        Preferences.savePreferences();
+                        mListener.loadSong();
+                    }
                 }
             }
         });
@@ -886,10 +902,15 @@ public class OptionMenuListeners extends Activity {
         chordsTransposeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "transpose";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
+                if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "transpose";
+                    if (mListener != null) {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                    }
+                } else {
+                    FullscreenActivity.myToastMessage = c.getString(R.string.not_allowed);
+                    ShowToast.showToast(c);
                 }
             }
         });
@@ -1241,6 +1262,7 @@ public class OptionMenuListeners extends Activity {
         TextView menuup = (TextView) v.findViewById(R.id.findSongMenuTitle);
         Button ugSearchButton = (Button) v.findViewById(R.id.ugSearchButton);
         Button chordieSearchButton = (Button) v.findViewById(R.id.chordieSearchButton);
+        Button songselectSearchButton = (Button) v.findViewById(R.id.songselectSearchButton);
         Button worshipreadySearchButton = (Button) v.findViewById(R.id.worshipreadySearchButton);
         Button bandDownloadButton = (Button) v.findViewById(R.id.bandDownloadButton);
         Button churchDownloadButton = (Button) v.findViewById(R.id.churchDownloadButton);
@@ -1253,6 +1275,8 @@ public class OptionMenuListeners extends Activity {
         menuup.setText(c.getString(R.string.findnewsongs).toUpperCase(FullscreenActivity.locale));
         ugSearchButton.setText(c.getString(R.string.ultimateguitarsearch).toUpperCase(FullscreenActivity.locale));
         chordieSearchButton.setText(c.getString(R.string.chordiesearch).toUpperCase(FullscreenActivity.locale));
+        String ss = c.getString(R.string.songselect) + " " + c.getString(R.string.subscription);
+        songselectSearchButton.setText(ss.toUpperCase(FullscreenActivity.locale));
         String wr = c.getString(R.string.worshipready) + " " + c.getString(R.string.subscription);
         bandDownloadButton.setText(c.getString(R.string.my_band).toUpperCase(FullscreenActivity.locale));
         churchDownloadButton.setText(c.getString(R.string.my_church).toUpperCase(FullscreenActivity.locale));
@@ -1294,6 +1318,16 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whattodo = "worshipready";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+        songselectSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "songselect";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
