@@ -1,9 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.UnaryOperator;
 
 /**
@@ -50,39 +52,70 @@ import java.util.function.UnaryOperator;
 
 public final class SongFileList
 {
-
     private ArrayList<String> folderList;
+    private ArrayList<String> currentFileList;
 
+    // constructor
+    public SongFileList()
+    {
+        folderList = new ArrayList<String>();
+        currentFileList = new ArrayList<String>();
+    }
+
+    /*getters and setters*/
+    /*getFolderList - package private, returns Array of String
+    * creates list of folders and caches it in private class variable
+    * which it then returns*/
     @NonNull
-    public String[] getFolderList()
+    String[] getFolderList()
     {
         if (folderList != null)
         {
             // initialize toArray[T] with empty array vs size -> https://shipilev.net/blog/2016/arrays-wisdom-ancients/
-            return folderList.toArray(new String[0]);
+            return folderList.toArray(new String[folderList.size()].clone());
         }
         else
         {
             String topLevelFilePath = FullscreenActivity.dir.getAbsolutePath();
             folderList = new ArrayList<String>();
             initialiseFolderList(new File(topLevelFilePath));
-            postprocessFolderList(topLevelFilePath);
-            return folderList.toArray(new String[0]);
+            postprocessListPath(topLevelFilePath);
+            return folderList.toArray(new String[folderList.size()]).clone();
         }
     }
 
-    public void SongFileList()
+    /*getSongFileList() - package private, returns array of String
+    * returns an array of the file names of the currently chosen folder
+    * */
+    String[] getSongFileListasArray()
     {
+        fileList();
+        return currentFileList.toArray(new String[currentFileList.size()]).clone();
     }
 
-
-    private void postprocessFolderList(final String topLevelFilePath)
+    List<String> getSongFileListasList()
     {
-        UnaryOperator<String> unaryComp = i->i.substring(0,topLevelFilePath.length());
-        for(String bob : folderList)
-        {
+        fileList();
+        return currentFileList;
+    }
 
+    private void fileList()
+    {
+        File foldertoindex;
+        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            foldertoindex = FullscreenActivity.dir;
+        } else {
+            foldertoindex = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder);
         }
+        // TODO: 10/23/17 add filter to cut out directories before add to file list 
+        com.annimon.stream.Stream.of(foldertoindex.list()).filterforEach(s->{currentFileList.add(s);});
+    }
+
+    private void postprocessListPath(final String topLevelFilePath)
+    {
+        //lambda function used by adding retrolambda dependency
+        UnaryOperator<String> unaryComp = i->i.substring(topLevelFilePath.length());
+        folderList.replaceAll(unaryComp);
     }
 
     private void initialiseFolderList(File rfile)

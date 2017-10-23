@@ -37,11 +37,18 @@ public class ListSongFiles {
     public static void getAllSongFolders() {
         FullscreenActivity.allfilesforsearch.clear();
 
-        File songfolder = new File(FullscreenActivity.dir.getAbsolutePath());
 
         SongFileList songfilelist = new SongFileList();
-        songfilelist.getFolderList();
+        FullscreenActivity.mSongFolderNames = songfilelist.getFolderList();
+        try {
+            String[] bob = songfilelist.getSongFileListasArray();
+            int j = 0;
+        }catch (Exception e){
+            Log.d(e.getMessage(), "James Error");
+        }
 
+        /*
+        File songfolder = new File(FullscreenActivity.dir.getAbsolutePath());
         File[] tempmyitems = null;
         if (songfolder.isDirectory())
         {
@@ -96,6 +103,7 @@ public class ListSongFiles {
         for (int z=0; z<tempProperDirectories.size(); z++) {
             FullscreenActivity.mSongFolderNames[z+1] = tempProperDirectories.get(z);
         }
+        */
     }
 
     static void getAllSongFiles() {
