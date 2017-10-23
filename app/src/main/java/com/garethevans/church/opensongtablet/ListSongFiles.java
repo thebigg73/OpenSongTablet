@@ -18,15 +18,40 @@ import java.util.Collections;
 public class ListSongFiles {
 
     static Collator coll;
+    private static ArrayList<String> filelist;
+
+    /*private static void getlist(File rfile)
+    {
+        filelist.add(rfile.list()[0]);
+
+        if((rfile.list()!= null) && (rfile.list().length>0))
+        {
+            for (File file : rfile.listFiles())
+            {
+                getlist(file);
+            }
+        }
+
+    }*/
 
     public static void getAllSongFolders() {
         FullscreenActivity.allfilesforsearch.clear();
 
         File songfolder = new File(FullscreenActivity.dir.getAbsolutePath());
+
+        SongFileList songfilelist = new SongFileList();
+        songfilelist.getFolderList();
+
         File[] tempmyitems = null;
-        if (songfolder.isDirectory()) {
+        if (songfolder.isDirectory())
+        {
             tempmyitems = songfolder.listFiles();
         }
+        //todo
+        // what happens if songfolder is not a directory?  better perhaps to have an
+        // exception handler do this.  Need to change fullscreenactivity class to have enums
+        // and preferences - https://developer.android.com/training/basics/data-storage/shared-preferences.html
+
         //Now set the size of the temp arrays
         ArrayList<String> firstleveldirectories = new ArrayList<>();
         ArrayList<String> secondleveldirectories = new ArrayList<>();
@@ -64,7 +89,7 @@ public class ListSongFiles {
         } catch (Exception e) {
             // Error sorting
         }
-
+        //mSongFolderNames is a string array
         // Add the main directory - +1 to add the MAIN folder as position 0
         FullscreenActivity.mSongFolderNames = new String[tempProperDirectories.size()+1];
         FullscreenActivity.mSongFolderNames[0] = FullscreenActivity.mainfoldername;
