@@ -57,6 +57,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
     SwitchCompat chordsVisible_Switch;
     SwitchCompat linksVisible_Switch;
     SwitchCompat stickyVisible_Switch;
+    SwitchCompat notationVisible_Switch;
     SwitchCompat highlightVisible_Switch;
     SwitchCompat pageselectVisible_Switch;
     SwitchCompat custom1Visible_Switch;
@@ -118,6 +119,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         chordsVisible_Switch = (SwitchCompat) V.findViewById(R.id.chordsVisible_Switch);
         linksVisible_Switch = (SwitchCompat) V.findViewById(R.id.linksVisible_Switch);
         stickyVisible_Switch = (SwitchCompat) V.findViewById(R.id.stickyVisible_Switch);
+        notationVisible_Switch = (SwitchCompat) V.findViewById(R.id.notationVisible_Switch);
         highlightVisible_Switch = (SwitchCompat) V.findViewById(R.id.highlightVisible_Switch);
         pageselectVisible_Switch = (SwitchCompat) V.findViewById(R.id.pageselectVisible_Switch);
         custom1Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom1Visible_Switch);
@@ -147,6 +149,7 @@ public class PopUpPageButtonsFragment extends DialogFragment {
         chordsVisible_Switch.setChecked(FullscreenActivity.page_chord_visible);
         linksVisible_Switch.setChecked(FullscreenActivity.page_links_visible);
         stickyVisible_Switch.setChecked(FullscreenActivity.page_sticky_visible);
+        notationVisible_Switch.setChecked(FullscreenActivity.page_notation_visible);
         highlightVisible_Switch.setChecked(FullscreenActivity.page_highlight_visible);
         pageselectVisible_Switch.setChecked(FullscreenActivity.page_pages_visible);
         custom1Visible_Switch.setChecked(FullscreenActivity.page_custom1_visible);
@@ -262,6 +265,13 @@ public class PopUpPageButtonsFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.page_sticky_visible = b;
+                quickSave();
+            }
+        });
+        notationVisible_Switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.page_notation_visible = b;
                 quickSave();
             }
         });

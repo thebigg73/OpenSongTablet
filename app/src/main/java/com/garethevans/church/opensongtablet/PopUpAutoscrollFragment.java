@@ -180,6 +180,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
                 @Override
                 public void onClick(View view) {
                     if (FullscreenActivity.autoscrollok) {
+                        doSave();
                         mListener.startAutoScroll();
                         dismiss();
                     }

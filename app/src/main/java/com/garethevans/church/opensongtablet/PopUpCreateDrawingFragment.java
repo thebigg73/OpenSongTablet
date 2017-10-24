@@ -81,6 +81,8 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
     FloatingActionButton pencil_FAB;
     FloatingActionButton highlighter_FAB;
     FloatingActionButton eraser_FAB;
+    FloatingActionButton undo_FAB;
+    FloatingActionButton redo_FAB;
     FloatingActionButton delete_FAB;
     FloatingActionButton color_black;
     FloatingActionButton color_white;
@@ -145,13 +147,14 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         color_blue = (FloatingActionButton) V.findViewById(R.id.color_blue);
         size_SeekBar = (SeekBar) V.findViewById(R.id.size_SeekBar);
         size_TextView = (TextView) V.findViewById(R.id.size_TextView);
-
+        undo_FAB = (FloatingActionButton) V.findViewById(R.id.undo_FAB);
+        redo_FAB = (FloatingActionButton) V.findViewById(R.id.redo_FAB);
 
         // Get the screenshot size and ajust the drawing to match
         getSizes();
         screenShot.setImageBitmap(FullscreenActivity.bmScreen);
         //screenShot.setScaleType(ImageView.ScaleType.FIT_XY);
-        screenShot.setPadding(2,2,2,2);
+        //screenShot.setPadding(2,2,2,2);
 
         // Set the current tool image
         setCurrentTool();
@@ -246,6 +249,21 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 drawView.startNew(hf);
+            }
+        });
+        // Hide the undo/redo buttons for now
+        //undo_FAB.setVisibility(View.GONE);
+        undo_FAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawView.undo();
+            }
+        });
+        //redo_FAB.setVisibility(View.GONE);
+        redo_FAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawView.redo();
             }
         });
         showorhideToolOptions(isgone);
@@ -390,21 +408,21 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         int size = 0;
         switch (FullscreenActivity.drawingTool) {
             case "pen":
-                size = (FullscreenActivity.drawingPenSize / 10) - 1;
+                size = (FullscreenActivity.drawingPenSize / 5) - 1;
                 break;
             case "highlighter":
-                size = (FullscreenActivity.drawingHighlightSize / 10) - 1;
+                size = (FullscreenActivity.drawingHighlightSize / 5) - 1;
                 break;
             case "eraser":
-                size = (FullscreenActivity.drawingEraserSize / 10) - 1;
+                size = (FullscreenActivity.drawingEraserSize / 5) - 1;
         }
         size_SeekBar.setProgress(size);
-        String t = ((size+1)*10) + " px";
+        String t = ((size+1)*5) + " px";
         size_TextView.setText(t);
     }
 
     public void getCurrentSize() {
-        int size = (size_SeekBar.getProgress() + 1) * 10;
+        int size = (size_SeekBar.getProgress() + 1) * 5;
         String t = size + " px";
         switch (FullscreenActivity.drawingTool) {
             case "pen":
@@ -471,8 +489,9 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         screenshot_height = (int) (h*scale);
 
         RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(screenshot_width,screenshot_height);
+        RelativeLayout.LayoutParams rlp2 = new RelativeLayout.LayoutParams(screenshot_width,screenshot_height);
         screenShot.setLayoutParams(rlp);
-        //drawView.setLayoutParams(rlp);
+        drawView.setLayoutParams(rlp2);
     }
 
     public void doSave() {

@@ -308,6 +308,30 @@
                     android:scrollbars="vertical" />
 
                 <TextView
+                    android:id="@+id/myScore"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/music_score" />
+
+                <TextView
+                    android:id="@+id/abcnotation"
+                    style="@style/MyEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:gravity="start|top|left"
+                    android:hint="@string/music_score"
+                    android:isScrollContainer="true"
+                    android:minLines="1"
+                    android:scrollbarStyle="insideOverlay"
+                    android:scrollbars="vertical" />
+
+                <TextView
                     android:id="@+id/myLyrics"
                     style="@style/MyHeadingText"
                     android:layout_width="match_parent"

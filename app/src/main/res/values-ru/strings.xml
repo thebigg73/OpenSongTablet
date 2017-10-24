@@ -613,5 +613,20 @@
 	<string name="trim_sections">"Секции обрезки"</string>
 
 	<string name="section_space">"Добавить пространство раздела"</string>
+    <string name="alphabetical">Алфавитный указатель песни</string>
+
+	<string name="pdfonly">"Нет ChordPro, просто PDF"</string>
+	<string name="random_song">"Найти случайную песню"</string>
+	<string name="tag_ending">"окончание"</string>
+	<string name="tag_instrumental">"инструментальный"</string>
+	<string name="tag_interlude">"интерлюдия"</string>
+	<string name="tag_intro">"вступление"</string>
+	<string name="tag_introduction">"Введение"</string>
+	<string name="tag_refrain">"рефрен"</string>
+	<string name="tag_reprise">"реприз"</string>
+
+    <string name="music_score">"Уровень оценки музыки"</string>
+    <string name="pdftotext_extract">"Извлечение текста из PDF"</string>
+    <string name="pdftotext_found">"Текст найден:"</string>
 
 </resources>

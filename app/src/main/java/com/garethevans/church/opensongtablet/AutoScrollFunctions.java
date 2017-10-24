@@ -99,9 +99,24 @@ class AutoScrollFunctions {
 
     static void getAudioLength(Context c) {
         MediaPlayer mediafile = new MediaPlayer();
+
+        // Try to fix the mLinkAudio file to get the metadata.
+        // **RAGE** android security permissions messing with file access......
+        String audiofile = FullscreenActivity.mLinkAudio;
+        // Strip out the file locator
+        if (audiofile.startsWith("file://")) {
+            audiofile = audiofile.replace("file://","");
+        }
+        // If this is a localised file, we need to unlocalise it to enable it to be read
+        if (audiofile.startsWith("../OpenSong/")) {
+            audiofile = audiofile.replace("../OpenSong/",FullscreenActivity.homedir+"/");
+        }
+        // Add the file locator back in
+        audiofile = "file://" + audiofile;
+
         if (FullscreenActivity.mLinkAudio!=null && !FullscreenActivity.mLinkAudio.equals("")) {
             try {
-                mediafile.setDataSource(c, Uri.parse(FullscreenActivity.mLinkAudio));
+                mediafile.setDataSource(c, Uri.parse(audiofile));
                 mediafile.prepare();
                 FullscreenActivity.audiolength = (int) (mediafile.getDuration() / 1000.0f);
                 mediafile.reset();

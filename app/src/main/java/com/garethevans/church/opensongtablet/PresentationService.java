@@ -722,7 +722,11 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         // Async stuff to prepare and write the page
         static void cancelAsyncTask(AsyncTask ast) {
             if (ast!=null) {
-                ast.cancel(true);
+                try {
+                    ast.cancel(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         static void prepareStageProjected() {
@@ -741,14 +745,22 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             @Override
             protected void onPreExecute() {
                 // Remove all views from the test pane
-                col1_1.removeAllViews();
+                try {
+                    col1_1.removeAllViews();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             protected String doInBackground(Object... objects) {
-                projectedSectionScaleValue = new float[1];
-                projectedviewwidth = new int[1];
-                projectedviewheight = new int[1];
+                try {
+                    projectedSectionScaleValue = new float[1];
+                    projectedviewwidth = new int[1];
+                    projectedviewheight = new int[1];
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return null;
             }
 
@@ -760,8 +772,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
             @Override
             protected void onPostExecute(String s) {
-                if (!cancelled) {
-                    try {
+                try {
+                    if (!cancelled) {
                         test1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, 12.0f);
                         col1_1.addView(test1_1);
 
@@ -774,9 +786,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         // Now display the song!
                         //FullscreenActivity.scalingfiguredout = true;
                         projectedStageView1Col();
-                    } catch (Exception e) {
-                        // Ooops
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -796,22 +808,26 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
             @Override
             protected void onPreExecute() {
-                projected_LinearLayout.removeAllViews();
-                float max_width_scale  = (float) availableWidth_1col   / (float) projectedviewwidth[0];
-                float max_height_scale = (float) availableScreenHeight / (float) projectedviewheight[0];
-                if (max_height_scale>max_width_scale) {
-                    scale = max_width_scale;
-                } else {
-                    scale = max_height_scale;
-                }
+                try {
+                    projected_LinearLayout.removeAllViews();
+                    float max_width_scale = (float) availableWidth_1col / (float) projectedviewwidth[0];
+                    float max_height_scale = (float) availableScreenHeight / (float) projectedviewheight[0];
+                    if (max_height_scale > max_width_scale) {
+                        scale = max_width_scale;
+                    } else {
+                        scale = max_height_scale;
+                    }
 
-                float maxscale = FullscreenActivity.presoMaxFontSize / 12.0f;
-                if (scale>maxscale) {
-                    scale = maxscale;
-                }
+                    float maxscale = FullscreenActivity.presoMaxFontSize / 12.0f;
+                    if (scale > maxscale) {
+                        scale = maxscale;
+                    }
 
-                projected_LinearLayout.removeAllViews();
-                lyrics1_1.setPadding(0,0,0,0);
+                    projected_LinearLayout.removeAllViews();
+                    lyrics1_1.setPadding(0, 0, 0, 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -827,8 +843,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
             @Override
             protected void onPostExecute(String s) {
-                if (!cancelled) {
-                    try {
+                try {
+                    if (!cancelled) {
                         lyrics1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, ProcessSong.getProjectedFontSize(scale));
                         LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(availableWidth_1col, LinearLayout.LayoutParams.WRAP_CONTENT);
                         llp1_1.setMargins(0, 0, 0, 0);
@@ -843,9 +859,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         box1_1.setLayoutParams(llp);
                         projected_LinearLayout.addView(box1_1);
                         animateIn();
-                    } catch (Exception e) {
-                        // Ooops
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -865,14 +881,22 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             @Override
             protected void onPreExecute() {
                 // Remove all views from the test pane
-                col1_1.removeAllViews();
+                try {
+                    col1_1.removeAllViews();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             protected String doInBackground(Object... objects) {
-                projectedSectionScaleValue = new float[1];
-                projectedviewwidth = new int[1];
-                projectedviewheight = new int[1];
+                try {
+                    projectedSectionScaleValue = new float[1];
+                    projectedviewwidth = new int[1];
+                    projectedviewheight = new int[1];
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return null;
             }
 
@@ -884,8 +908,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
             @Override
             protected void onPostExecute(String s) {
-                if (!cancelled) {
-                    try {
+                try {
+                    if (!cancelled) {
                         test1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, 12.0f);
                         col1_1.addView(test1_1);
 
@@ -898,12 +922,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         // Now display the song!
                         //FullscreenActivity.scalingfiguredout = true;
                         projectedPresenterView1Col();
-                    } catch (Exception e) {
-                        // Ooops
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-
             }
         }
         static void projectedPresenterView1Col() {
@@ -922,22 +944,26 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
             @Override
             protected void onPreExecute() {
-                projected_LinearLayout.removeAllViews();
-                float max_width_scale  = (float) availableWidth_1col   / (float) projectedviewwidth[0];
-                float max_height_scale = (float) availableScreenHeight / (float) projectedviewheight[0];
-                if (max_height_scale>max_width_scale) {
-                    scale = max_width_scale;
-                } else {
-                    scale = max_height_scale;
-                }
+                try {
+                    projected_LinearLayout.removeAllViews();
+                    float max_width_scale = (float) availableWidth_1col / (float) projectedviewwidth[0];
+                    float max_height_scale = (float) availableScreenHeight / (float) projectedviewheight[0];
+                    if (max_height_scale > max_width_scale) {
+                        scale = max_width_scale;
+                    } else {
+                        scale = max_height_scale;
+                    }
 
-                float maxscale = FullscreenActivity.presoMaxFontSize / 12.0f;
-                if (scale>maxscale) {
-                    scale = maxscale;
-                }
+                    float maxscale = FullscreenActivity.presoMaxFontSize / 12.0f;
+                    if (scale > maxscale) {
+                        scale = maxscale;
+                    }
 
-                projected_LinearLayout.removeAllViews();
-                lyrics1_1.setPadding(0,0,0,0);
+                    projected_LinearLayout.removeAllViews();
+                    lyrics1_1.setPadding(0, 0, 0, 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -953,8 +979,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
             @Override
             protected void onPostExecute(String s) {
-                if (!cancelled) {
-                    try {
+                try {
+                    if (!cancelled) {
                         lyrics1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, ProcessSong.getProjectedFontSize(scale));
                         LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(availableWidth_1col, LinearLayout.LayoutParams.WRAP_CONTENT);
                         llp1_1.setMargins(0, 0, 0, 0);
@@ -968,9 +994,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         box1_1.setLayoutParams(llp);
                         projected_LinearLayout.addView(box1_1);
                         animateIn();
-                    } catch (Exception e) {
-                        // Ooops
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
              }
         }
@@ -1099,20 +1125,28 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
             @Override
             protected void onPreExecute() {
-                // Remove all views from the test panes
-                col1_1.removeAllViews();
-                col1_2.removeAllViews();
-                col2_2.removeAllViews();
-                col1_3.removeAllViews();
-                col2_3.removeAllViews();
-                col3_3.removeAllViews();
+                try {
+                    // Remove all views from the test panes
+                    col1_1.removeAllViews();
+                    col1_2.removeAllViews();
+                    col2_2.removeAllViews();
+                    col1_3.removeAllViews();
+                    col2_3.removeAllViews();
+                    col3_3.removeAllViews();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             protected String doInBackground(Object... objects) {
-                projectedSectionScaleValue = new float[6];
-                projectedviewwidth = new int[6];
-                projectedviewheight = new int[6];
+                try {
+                    projectedSectionScaleValue = new float[6];
+                    projectedviewwidth = new int[6];
+                    projectedviewheight = new int[6];
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 return null;
             }
 
@@ -1124,9 +1158,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
             @Override
             protected void onPostExecute(String s) {
-
-                if (!cancelled) {
-                    try {
+                try {
+                    if (!cancelled) {
                         // Prepare the new views to add to 1,2 and 3 colums ready for measuring
                         // Go through each section
                         for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
@@ -1178,9 +1211,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         // Now display the song!
                         //FullscreenActivity.scalingfiguredout = true;
                         displayFullSong();
-                    } catch (Exception e) {
-                        // Ooops
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -1207,8 +1240,12 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             @Override
             protected void onPreExecute() {
                 // Remove all views from the projector
+                try {
                 projected_LinearLayout.removeAllViews();
                 lyrics1_1.setPadding(0,0,0,0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -1224,8 +1261,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
             @Override
             protected void onPostExecute(String s) {
-                if (!cancelled) {
-                    try {
+                try {
+                    if (!cancelled) {
                         // Prepare the new views to add to 1,2 and 3 colums ready for measuring
                         // Go through each section
                         for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
@@ -1244,9 +1281,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         box1_1.setLayoutParams(llp);
                         projected_LinearLayout.addView(box1_1);
                         animateIn();
-                    } catch (Exception e) {
-                        // Ooops
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -1279,9 +1316,13 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             @Override
             protected void onPreExecute() {
                 // Remove all views from the projector
-                projected_LinearLayout.removeAllViews();
-                lyrics1_2.setPadding(0,0,0,0);
-                lyrics2_2.setPadding(0,0,0,0);
+                try {
+                    projected_LinearLayout.removeAllViews();
+                    lyrics1_2.setPadding(0, 0, 0, 0);
+                    lyrics2_2.setPadding(0, 0, 0, 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -1297,8 +1338,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
             @Override
             protected void onPostExecute(String s) {
-                if (!cancelled) {
-                    try {
+                try {
+                    if (!cancelled) {
                         // Add the song sections...
                         for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
 
@@ -1329,9 +1370,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         projected_LinearLayout.addView(box1_2);
                         projected_LinearLayout.addView(box2_2);
                         animateIn();
-                    } catch (Exception e) {
-                        // Ooops
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -1369,11 +1410,15 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
             @Override
             protected void onPreExecute() {
-                // Remove all views from the projector
-                projected_LinearLayout.removeAllViews();
-                lyrics1_3.setPadding(0,0,0,0);
-                lyrics2_3.setPadding(0,0,0,0);
-                lyrics3_3.setPadding(0,0,0,0);
+                try {
+                    // Remove all views from the projector
+                    projected_LinearLayout.removeAllViews();
+                    lyrics1_3.setPadding(0, 0, 0, 0);
+                    lyrics2_3.setPadding(0, 0, 0, 0);
+                    lyrics3_3.setPadding(0, 0, 0, 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -1389,8 +1434,8 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
             @Override
             protected void onPostExecute(String s) {
-                if (!cancelled) {
-                    try {
+                try {
+                    if (!cancelled) {
                         // Add the song sections...
                         for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
                             if (x < FullscreenActivity.thirdsplit_section) {
@@ -1430,9 +1475,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         projected_LinearLayout.addView(box2_3);
                         projected_LinearLayout.addView(box3_3);
                         animateIn();
-                    } catch (Exception e) {
-                        // Ooops
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

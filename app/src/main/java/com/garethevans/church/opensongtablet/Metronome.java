@@ -51,7 +51,7 @@ class Metronome {
         // 3/8 3 beats per bar, each eigth notes = tempo is twice as fast
 
         // Tempos that I have
-        // 2/2   2/4   3/2    3/4   3/8   4/4   5/4   5/8   6/4   6/8   7/4   7/8
+        // 2/2   2/4   3/2    3/4   3/8   4/4   5/4   5/8   6/4   6/8   7/4   7/8   1/4
         // First number is the number of beats and is the easiest bit
         // The second number is the length of each beat
         // 2 = half notes, 4 = quarter notes, 8 = eigth notes
@@ -77,10 +77,16 @@ class Metronome {
             silence = 10000;
         }
 		silenceSoundArray = new double[this.silence];
-		//msg = new Message();
-		//msg.obj = ""+currentBeat;
-		double[] tick = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
-		double[] tock = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, sound/ resolutionmeter);
+        double[] tick;
+        double[] tock;
+		if (FullscreenActivity.mTimeSig.equals("1/4")) {
+            tick = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
+            tock = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
+
+        } else {
+            tick = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, beatSound/ resolutionmeter);
+            tock = audioGenerator.getSineWave(tick1, 8000/ resolutionmeter, sound/ resolutionmeter);
+        }
 		for(int i = 0; i< tick1; i++) {
 			soundTickArray[i] = tick[i];
 			soundTockArray[i] = tock[i];
@@ -187,7 +193,9 @@ class Metronome {
 
     static void setBeatValues() {
         short r = 0;
-        if (FullscreenActivity.mTimeSig.startsWith("2/")) {
+        if (FullscreenActivity.mTimeSig.startsWith("1/")) {
+            r = 4;
+        } else if (FullscreenActivity.mTimeSig.startsWith("2/")) {
             r = 2;
         } else if (FullscreenActivity.mTimeSig.startsWith("3/")) {
             r = 3;
@@ -259,7 +267,7 @@ class Metronome {
             validBPM = false;
         }
 
-        for (int i=0; i<FullscreenActivity.timesigs.length-1; i++) {
+        for (int i=0; i<FullscreenActivity.timesigs.length; i++) {
             if (FullscreenActivity.mTimeSig.equals(FullscreenActivity.timesigs[i])) {
                 validTimeSig = true;
             }

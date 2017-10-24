@@ -69,11 +69,8 @@ PopUpDirectoryChooserFragment.SettingsInterface {
             FullscreenActivity.version = 0;
         }
 
-
         FullscreenActivity.myPreferences = getPreferences(MODE_PRIVATE);
-        Log.d("d","SettingsActivity preload showSplashVersion="+FullscreenActivity.showSplashVersion);
         Preferences.loadPreferences();
-        Log.d("d","SettingsActivity postload showSplashVersion="+FullscreenActivity.showSplashVersion);
         showsplash = getIntent().getBooleanExtra("showsplash",false);
         if (showsplash) {
             Log.d("d","intent to showsplash");
@@ -179,6 +176,8 @@ PopUpDirectoryChooserFragment.SettingsInterface {
 
                 setContentView(R.layout.activity_splashscreen);
 
+                mLayout = findViewById(R.id.page);
+
                 setupToolbar();
 
                 PackageInfo pinfo;
@@ -231,7 +230,6 @@ PopUpDirectoryChooserFragment.SettingsInterface {
                         webLink();
                     }
                 });
-                mLayout = findViewById(R.id.page);
 
                 if (test != want) {
                     requestStoragePermission();
