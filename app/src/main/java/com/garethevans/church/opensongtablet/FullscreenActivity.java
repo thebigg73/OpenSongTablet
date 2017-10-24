@@ -94,7 +94,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static float menuSize;
     public static File filechosen, file;
     public static String[] mSongFileNames, mSongFolderNames;
-    //public static SongFileList songfilelist = new SongFileList();
+    public static SongFileList songfilelist = new SongFileList();
     public static String[][] songDetails;
     public static Map<String, Integer> mapIndex;
     public static int currentSongIndex, previousSongIndex, nextSongIndex;

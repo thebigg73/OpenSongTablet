@@ -36,16 +36,8 @@ public class ListSongFiles {
 
     public static void getAllSongFolders() {
         FullscreenActivity.allfilesforsearch.clear();
+        FullscreenActivity.mSongFolderNames = FullscreenActivity.songfilelist.getFolderList();
 
-
-        SongFileList songfilelist = new SongFileList();
-        FullscreenActivity.mSongFolderNames = songfilelist.getFolderList();
-        try {
-            String[] bob = songfilelist.getSongFileListasArray();
-            int j = 0;
-        }catch (Exception e){
-            Log.d(e.getMessage(), "James Error");
-        }
 
         /*
         File songfolder = new File(FullscreenActivity.dir.getAbsolutePath());
@@ -107,6 +99,21 @@ public class ListSongFiles {
     }
 
     static void getAllSongFiles() {
+        //I used an exception handler below to debug.  One of the great thing about using
+        //an instantiated class with exception handlers, is that as an error is thrown
+        //the stack unwinds, popping off the activities in reverse order, one by one, until
+        //the exception handler is arrived at.  All of the objects that are popped off the
+        //stack that are within the scope of that exception are disposed of, so the
+        //app doesn't experience any memory leaks, or sudden shutdowns, and degrades
+        //gracefully.  The Exception class contains differently formatted messages that
+        //should be logged and perhaps passed onto the client of the app.
+        try {
+            FullscreenActivity.mSongFileNames = FullscreenActivity.songfilelist.getSongFileListasArray();
+            int j = 0;
+        }catch (Exception e){
+            Log.d(e.getMessage(), "James Error - this can be seen in Android Monitor");
+        }
+        /*
         try {
             File foldertoindex;
             if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
@@ -139,9 +146,25 @@ public class ListSongFiles {
             FullscreenActivity.mSongFileNames = tempProperSongFiles.toArray(FullscreenActivity.mSongFileNames);
         } catch (Exception e) {
             // Some error occured
-        }
+        }*/
     }
 
+    /*TODO why use a multidimensional array, when you could use an xml object?
+    * just one xmlobject would be fine to store the current song.  I mentioned
+    * elsewhere that a database would be ideal, but you'd want to read the xmlobject
+    * in directly and maintain the format that you've got.  This allows the keeping
+    * of the existing codebase with regards to importing from ultimate guitar tabs etc
+    * as well as the configuration interface etc, and then one can simply serialise the
+    * xmlobject to the database, adding a field for tags etc.   One of the reasons that I'm
+    * doing this is because the time that the song runs for/ keeps disappearing, and a
+    * database will force a more robust contract which will minimise those sorts of
+    * errors
+    * Alternatively, one could keep an object that represents the app, that has an object
+    * inside it that maintains an abstract representation of all the songs, so, a list of
+    * xmlobjects.  The songfilelist object that I've created then stores with the filename
+    * an index into that list of xmlobjects.  Whilst the way that you are doing it works,
+    * and that's the general aim, the use of arrays like below is a bit flaky, ie in the long run
+    * it is more difficult to maintain and can lead to errors more regularly.*/
     static void getSongDetails(Context c) {
         // Go through each song in the current folder and extract the title, key and author
         // If not a valid song, just return the file name
@@ -408,7 +431,7 @@ public class ListSongFiles {
                 }
             }
         } catch (Exception e) {
-            Log.d("d","Some error with the song list");
+            Log.d(e.getMessage(),"Some error with the song list");
         }
     }
 

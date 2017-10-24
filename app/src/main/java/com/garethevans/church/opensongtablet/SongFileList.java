@@ -3,8 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
@@ -52,9 +50,9 @@ import java.util.function.UnaryOperator;
 
 public final class SongFileList
 {
-    private ArrayList<String> folderList;
-    private ArrayList<String> currentFileList;
-
+    private ArrayList<String>   folderList;
+    private ArrayList<String>   currentFileList;
+    private String              topLevelFilePath;
     // constructor
     public SongFileList()
     {
@@ -69,19 +67,28 @@ public final class SongFileList
     @NonNull
     String[] getFolderList()
     {
-        if (folderList != null)
+        if (!folderList.isEmpty())
         {
             // initialize toArray[T] with empty array vs size -> https://shipilev.net/blog/2016/arrays-wisdom-ancients/
             return folderList.toArray(new String[folderList.size()].clone());
         }
         else
         {
-            String topLevelFilePath = FullscreenActivity.dir.getAbsolutePath();
-            folderList = new ArrayList<String>();
+            topLevelFilePath = FullscreenActivity.dir.getAbsolutePath();
             initialiseFolderList(new File(topLevelFilePath));
-            postprocessListPath(topLevelFilePath);
+            postprocessListPath();
             return folderList.toArray(new String[folderList.size()]).clone();
         }
+    }
+
+    /*this function simply strips the leading prefix from the file path
+    * you might want to add +1 to the substring index to remove the trailing
+    * slash, but I kind of like it in the menu*/
+    private void postprocessListPath()
+    {
+        UnaryOperator<String> unaryComp = i->i.substring(topLevelFilePath.length());
+        folderList.replaceAll(unaryComp);
+        folderList.add(0, FullscreenActivity.mainfoldername);
     }
 
     /*getSongFileList() - package private, returns array of String
@@ -89,33 +96,51 @@ public final class SongFileList
     * */
     String[] getSongFileListasArray()
     {
+        //todo place check here to see if new file has been added since the last file list was
+        //constructed.  This saves memory.
         fileList();
         return currentFileList.toArray(new String[currentFileList.size()]).clone();
     }
 
+    /* a getter to return a list, should it be required. */
     List<String> getSongFileListasList()
     {
+        //todo place check here to see if new file has been added since the last file list was
+        //constructed.  This saves memory.  Since we are doing it in two places
+        //we might want to construct a class or consider using semaphores or some other
+        //existing structure.  I haven't done much multithreaded stuff, but it always
+        //sounds like a sensible idea!  One might at the least, consider using a folderwatcher
+        //to examine the folder perhaps this:
+        //https://developer.android.com/reference/android/os/FileObserver.html
+        //the fileobserver class, once instantiated and for its lifecycle, watches a folder
+        //it is an abstract class, so one might make a class to represent the folders in which
+        //the songs are stored, that implements the FileObserver method.  Then one creates an
+        //array or list of folders as a member of another class and whenever files are added to any
+        //folder, the event is fired, and the folder class can rescan and reconstruct its filelist.
+        //the superclass that contains the folders can recursively scan through its list of folders
+        //when the app closes the superclass can be responsible for deleting it object references.
+        //good memory management.  Also, if there is a folderwatcher, then I don't need to check
+        //to see if the folder has changed, or like I do here, clear the currentFileList structure
+        //each time I call the getter.
         fileList();
         return currentFileList;
     }
 
     private void fileList()
     {
+        currentFileList.clear();
         File foldertoindex;
         if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
             foldertoindex = FullscreenActivity.dir;
         } else {
             foldertoindex = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder);
         }
-        // TODO: 10/23/17 add filter to cut out directories before add to file list 
-        com.annimon.stream.Stream.of(foldertoindex.list()).filterforEach(s->{currentFileList.add(s);});
-    }
-
-    private void postprocessListPath(final String topLevelFilePath)
-    {
-        //lambda function used by adding retrolambda dependency
-        UnaryOperator<String> unaryComp = i->i.substring(topLevelFilePath.length());
-        folderList.replaceAll(unaryComp);
+        // I added the stream and lambda java8 functions as good practice is developing
+        // to use the latest functions. Its more about staying current than anything else,
+        // as when the functions are adopted in to mainstream, you understand them.
+        // Not that I develop for a living so don't take my word for it, but I think that
+        // that is the way it is currently.
+        com.annimon.stream.Stream.of(foldertoindex.listFiles()).filter(file -> !file.isDirectory()).forEach(file -> currentFileList.add(file.getName()));
     }
 
     private void initialiseFolderList(File rfile)
