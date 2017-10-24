@@ -615,4 +615,18 @@
 	<string name="section_space">"Ajouter un espace de section"</string>
     <string name="alphabetical">Index de chanson alphabétique</string>
 
+	<string name="pdfonly">"Pas de ChordPro, juste le PDF"</string>
+	<string name="random_song">"Trouver une chanson aléatoire"</string>
+	<string name="tag_ending">"Fin"</string>
+	<string name="tag_instrumental">"Instrumental"</string>
+	<string name="tag_interlude">"Interlude"</string>
+	<string name="tag_intro">"Intro"</string>
+	<string name="tag_introduction">"introduction"</string>
+	<string name="tag_refrain">"Refrain"</string>
+	<string name="tag_reprise">"Reprise"</string>
+
+    <string name="music_score">"Score de musique"</string>
+    <string name="pdftotext_extract">"Extrait du texte de PDF"</string>
+    <string name="pdftotext_found">"Texte trouvé:"</string>
+
 </resources>

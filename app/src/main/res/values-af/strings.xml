@@ -614,5 +614,19 @@
     <string name="section_space">"Voeg seksie spasie by"</string>
     <string name="alphabetical">Alfabetiese liedjie indeks</string>
 
+	<string name="pdfonly">"Geen ChordPro, net die PDF"</string>
+	<string name="random_song">"Vind 'n ewekansige liedjie"</string>
+	<string name="tag_ending">"eindig"</string>
+	<string name="tag_instrumental">"instrumentele"</string>
+	<string name="tag_interlude">"Interlude"</string>
+	<string name="tag_intro">"Intro"</string>
+	<string name="tag_introduction">"inleiding"</string>
+	<string name="tag_refrain">"weerhou"</string>
+	<string name="tag_reprise">"Reprise"</string>
+
+    <string name="music_score">"Musiek telling"</string>
+    <string name="pdftotext_extract">"Onttrek teks uit PDF"</string>
+    <string name="pdftotext_found">"Teks gevind:"</string>
+
 
 </resources>

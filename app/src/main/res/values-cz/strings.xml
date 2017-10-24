@@ -616,4 +616,18 @@
 	<string name="section_space">"Přidejte prostor oddílu"</string>
     <string name="alphabetical">Abecední index písní</string>
 
+	<string name="pdfonly">"Žádný ChordPro, jen PDF"</string>
+	<string name="random_song">"Najděte náhodnou skladbu"</string>
+	<string name="tag_ending">"Konec"</string>
+	<string name="tag_instrumental">"Instrumentální"</string>
+	<string name="tag_interlude">"Mezihra"</string>
+	<string name="tag_intro">"Intro"</string>
+	<string name="tag_introduction">"Úvod"</string>
+	<string name="tag_refrain">"Refrén"</string>
+	<string name="tag_reprise">"Reprise"</string>
+
+    <string name="music_score">"Hudební skóre"</string>
+    <string name="pdftotext_extract">"Extrahujte text z PDF"</string>
+    <string name="pdftotext_found">"Nalezeno:"</string>
+
 </resources>

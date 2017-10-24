@@ -690,4 +690,18 @@
     <string name="section_space">"Προσθήκη χώρου ενότητας"</string>
     <string name="alphabetical">Αλφαβητικό ευρετήριο τραγουδιών</string>
 
+    <string name="pdfonly">"Δεν ChordPro, απλά το PDF"</string>
+    <string name="random_song">"Βρείτε ένα τυχαίο τραγούδι"</string>
+    <string name="tag_ending">"Κατάληξη"</string>
+    <string name="tag_instrumental">"Ενόργανος"</string>
+    <string name="tag_interlude">"Διάλειμμα"</string>
+    <string name="tag_intro">"Εισαγωγή"</string>
+    <string name="tag_introduction">"Εισαγωγή"</string>
+    <string name="tag_refrain">"Επωδός"</string>
+    <string name="tag_reprise">"Επαναλάβετε"</string>
+
+    <string name="music_score">"Μουσικό σκορ"</string>
+    <string name="pdftotext_extract">"Εξαγωγή κειμένου από PDF"</string>
+    <string name="pdftotext_found">"Βρέθηκε κείμενο:"</string>
+
 </resources>

@@ -11,10 +11,9 @@
     <string name="tag_refrain">Refrain</string>
     <string name="tag_reprise">Reprise</string>
 
-    <string name="pdftotext_found">Text found:</string>
-    <string name="pdftotext_extract">Extract text from PDF</string>
     <string name="music_score">Music score</string>
-
+    <string name="pdftotext_extract">Extract text from PDF</string>
+    <string name="pdftotext_found">Text found:</string>
 
     <string name="songselect" translatable="false">SongSelect</string>
     <string name="alphabetical">Alphabetical song index</string>

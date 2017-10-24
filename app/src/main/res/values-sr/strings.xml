@@ -666,4 +666,18 @@
     <string name="section_space">"Dodajte prostor odjeljka"</string>
     <string name="alphabetical">Indeks abecedijske glazbe</string>
 
+    <string name="pdfonly">"Nema ChordPro, samo PDF"</string>
+    <string name="random_song">"Pronađite slučajnu pjesmu"</string>
+    <string name="tag_ending">"završni"</string>
+    <string name="tag_instrumental">"instrumental"</string>
+    <string name="tag_interlude">"međuigra"</string>
+    <string name="tag_intro">"Uvod"</string>
+    <string name="tag_introduction">"Uvod"</string>
+    <string name="tag_refrain">"Refren"</string>
+    <string name="tag_reprise">"Repriza"</string>
+
+    <string name="music_score">"Ocjena glazbe"</string>
+    <string name="pdftotext_extract">"Ekstrakt teksta iz PDF-a"</string>
+    <string name="pdftotext_found">"Pronađeno je tekst:"</string>
+
 </resources>
