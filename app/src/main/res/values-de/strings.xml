@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <string name="capo_toggle">"Kapo-Akkorde anzeigen ein/aus"</string>
+    <string name="capo_toggle">"Capo-Akkorde anzeigen ein/aus"</string>
     <string name="capo_toggle_onlycapo">Nur Capo-Akkorde zeigen (wenn verfügbar)"</string>
     <string name="capo_toggle_bothcapo">"Zeige sowohl Capo- als auch ursprüngliche Akkorde (wenn verfügbar)"</string>
     <string name="language">"Sprache"</string>
@@ -17,7 +17,7 @@
 	<string name="savesong">"Speichern"</string>
     <string name="metronomepadsettings">"Metronom und Hintergrundmusik-Einstellungen"</string>
     <string name="metronome">"Metronom"</string>
-    <string name="temponotset">"Tempo für diesen noch nicht Song eingestellt"</string>
+    <string name="temponotset">"Tempo für diesen Song noch nicht eingestellt"</string>
 	<string name="timesignotset">"Taktart für diesen Song noch nicht eingestellt"</string>
 	<string name="pad">"Hintergrundmusik"</string>
 	<string name="wait">"Warten...."</string>
@@ -27,7 +27,7 @@
 	<string name="currently">"zur Zeit"</string>
 	<string name="currentkeycode">"Aktueller Tastencode"</string>
 	<string name="notset">"Nicht gesetzt"</string>
-	<string name="songactionsbuttons">"Tasten zum Starten / Stoppen von Song Aktionen"</string>
+	<string name="songactionsbuttons">"Tasten zum Starten / Stoppen von Song-Aktionen"</string>
 	<string name="padPedalText">"Hintergrundmusik start/stop"</string>
 	<string name="autoscrollPedalText">"Autoscroll start/stop"</string>
 	<string name="metronomePedalText">"Metronom start/stop"</string>
@@ -35,7 +35,7 @@
     <string name="autoscroll_time">"Autoscroll Verzögerungszeit"</string>
     
     <string name="songbuttons_toggle">"Seitenverknüpfungen ein / aus"</string>
-    <string name="song_functionnotavailable">"Diese Funktion ist bei Songs nicht vergügbar"</string>
+    <string name="song_functionnotavailable">"Diese Funktion ist bei Songs nicht verfügbar"</string>
     
     <string name="latest_updates">"Neueste Updates"</string>
     
@@ -96,13 +96,13 @@
 	<string name="options_options">"OPTIONEN"</string>
 	<string name="options_options_theme">"Design umschalten"</string>
 	<string name="options_options_scale">"Autoskalierung für Songs ein / aus"</string>
-	<string name="options_options_fontsize">"Wählen sie schriftgröße"</string>
+	<string name="options_options_fontsize">"Wählen sie Schriftgröße"</string>
 	<string name="options_options_showchords">"Akkorde anzeigen / ausblenden"</string>
 	<string name="options_options_chordformat">"Akkord-Format wählen"</string>
 	<string name="options_options_gestures">"Benutzerdefinierte Gesten zuweisen"</string>
 	<string name="options_options_songswipe">"Wischen zwischen Songs ein / aus"</string>
 	<string name="options_options_menuswipe">"Wischen um seitliche Menüs anzuzeigen ein / aus"</string>
-	<string name="options_options_hidebar">"Menüleiste anzeigen/ausblenden"</string>
+	<string name="options_options_hidebar">"Menüleiste anzeigen / ausblenden"</string>
 	<string name="options_options_colors">"Farben ändern"</string>
 	<string name="options_options_fonts">"Schriftarten ändern"</string>
 	<string name="options_options_pedal">"Fußpedal zuweisen"</string>
@@ -129,8 +129,8 @@
     <string name="checkchordformat">"Sind Sie sicher, dass dieses Lied im gewünschten Akkord-Format vorliegt?"</string>
 	<string name="oldchordformat">"Aktuelles Akkord-Format ermitteln"</string>
 	
-    <string name="firstsong">"Erster Song wird angezeigt"</string>
-    <string name="lastsong">"Angezeigte letzte Element im Set"</string>
+    <string name="firstsong">"Erster Song im Set wird angezeigt"</string>
+    <string name="lastsong">"Letzter Song im Set wird angezeigt"</string>
     
     <string name="set_edit">"BEARBEITEN"</string>
     <string name="set_edit_title">"Aktuelles Set bearbeiten"</string>
@@ -138,7 +138,7 @@
     
     <string name="currentset">"Aktuelles Set"</string>
     <string name="setmargins">"Ränder\nanpassen"</string>
-    <string name="setxmargins">"Horizontal Randgröße"</string>
+    <string name="setxmargins">"Horizontale Randgröße"</string>
     <string name="setymargins">"Vertikale Randgröße"</string>
     <string name="update_projector">"Projektor\naktualisieren"</string>
     <string name="black_screen">"Schwarzer Bildschirm"</string>
@@ -160,9 +160,9 @@
     <string name="extradisplay">"Sekundäre Anzeige erkannt.  Songs werden auf der zweiten Bildschirm angezeigt."</string>
 	<string name="beta">"Beta-Funktion - hat immer noch Bugs und Bild-/Displaykonfiguration ist noch nicht verfügbar."</string>
     
-    <string name="songnamealreadytaken">"Leider wurde dieser Songtitel / Dateiname bereits verwendet ( ein Vorschlag könnte sein, eine Versionsnummer an das Ende hinzufügen)."</string>
+    <string name="songnamealreadytaken">"Leider wurde dieser Songtitel / Dateiname bereits verwendet (ein Vorschlag könnte sein, eine Versionsnummer an das Ende hinzufügen)."</string>
     <string name="chordiesearch">"Online-Suche bei www.chordie.com"</string>
-    <string name="phrasesearch">"Geben Sie einen Suchbegriff ein( Titel, Autor, Texte, etc.)"</string>
+    <string name="phrasesearch">"Geben Sie einen Suchbegriff ein (Titel, Autor, Texte, etc.)"</string>
     <string name="grabchordpro">"Auszug ChordPro Daten"</string>
     <string name="chordproprogress">"Auf der Suche nach ChordPro Song-Daten auf Seite&#8230;"</string>
     <string name="closesearch">"Suche schließen"</string>
@@ -180,14 +180,13 @@
 		
 	<string name="intro">"OpenSongApp verwendet Songs die in OpenSong erstellt wurden und zeigt diese auf dem Tablet-Bildschirm an."</string>
 		
-	<string name="intro_songsfolder">"Die Anwendung sucht in Ihren Dokumenten nach einem Ordner namens \'Opensong/Songs\'. Kann Sie ihn nicht finden, wird er neu angelegt. Es speichert dann ein Lied namens \'Love everlasting\', einen meiner eigenen Songs, in den Ordner (andernfalls würden Sie nicht in der Lage sein, irgendetwas mit der App zu tun!). Um Ihre eigenen OpenSong Songs zu verwenden, kopieren Sie diese nach Dokumente/OpenSong/Songs. Sie können eine Ebene von Unterordnern in diesem Ordner vorhalten.\n\n Die App kommt auch mit mehr als 700 Songs klar, aber bedenken Sie, dass Sie für die Einhaltung möglicher Urheberrechte alleine verantwortlich sind!"</string>
+	<string name="intro_songsfolder">"Die Anwendung sucht in Ihren Dokumenten nach einem Ordner namens \'Opensong/Songs\'. Kann Sie ihn nicht finden, wird er neu angelegt. Es speichert dann ein Lied namens \'Love everlasting\', einen meiner eigenen Songs, in den Ordner (andernfalls wäre Sie nicht in der Lage, irgendetwas mit der App zu tun!). Um Ihre eigenen OpenSong Songs zu verwenden, kopieren Sie diese nach Dokumente/OpenSong/Songs. Sie können eine Ebene von Unterordnern in diesem Ordner vorhalten.\n\n Die App kommt auch mit mehr als 700 Songs klar, aber bedenken Sie, dass Sie für die Einhaltung möglicher Urheberrechte alleine verantwortlich sind!"</string>
 		
-	<string name="intro_dropbox">"Wenn Sie Songs / Sets über ein Dropbox-Konto benutzen verwenden möchten (dies ermöglicht Gruppen, auf die gleichen Informationen zugreifen zu können), müssen Sie eine App installieren, die Synchronisierung von Dropbox-Dateien mit Ihrem Tablet ermöglicht. Leider stellt die offizielle Dropbox-App keinen lokalen Ordner zur Verfügung, wie die Desktop-Version.\n\n Eine (kostenlose) App, die ich empfehle, ist DropSync, die dies für Sie erledigt. Möchten Sie diese Funktionalität nutzen, empfehle ich den Songs-Ordner auf Ihrem Tablet zunächst zurückzusetzen (Schaltfläche oben), sodass Sie keine Songs auf dem Dropbox-Account mit meiner Version überschreiben!\n\n Bei der Einrichtung von DropSync, synchronisieren Sie Ihren Ordner mit dem Dokumente/OpenSong/ Pfad und aktivieren Sie 2-Wege-Synchronisation (die Auswahl des Opensong-Hauptordners ermöglicht den Abgleich von sowohl Songs als auch Sets)\n Dieser Vorgang kann bei der ersten Ausführung einige Minuten dauern (abhängig von der Anzahl der Lieder). Standard-Disclaimer - Ich bin nicht für den Verlust von Songs auf Ihrem Dropbox-Ordner verantwortlich! Sie tun dies auf eigenes Risiko. \n\n Allerdings habe ich diese auf meinem Gerät getestet an und es scheint alles ohne Probleme zu funktionieren (der Standard-Synchronisations-Zeitplan ist 1 Stunde)."</string>
+	<string name="intro_dropbox">"Wenn Sie Songs / Sets über ein Dropbox-Konto benutzen verwenden möchten (dies ermöglicht Gruppen, auf die gleichen Informationen zugreifen zu können), müssen Sie eine App installieren, die Synchronisierung von Dropbox-Dateien mit Ihrem Tablet ermöglicht. Leider stellt die offizielle Dropbox-App keinen lokalen Ordner zur Verfügung, wie die Desktop-Version.\n\n Eine (kostenlose) App, die ich empfehle, ist DropSync, die dies für Sie erledigt. Möchten Sie diese Funktionalität nutzen, empfehle ich den Songs-Ordner auf Ihrem Tablet zunächst zurückzusetzen (Schaltfläche oben), sodass Sie keine Songs auf dem Dropbox-Account mit meiner Version überschreiben!\n\n Bei der Einrichtung von DropSync, synchronisieren Sie Ihren Ordner mit dem Dokumente/OpenSong/ Pfad und aktivieren Sie 2-Wege-Synchronisation (die Auswahl des Opensong-Hauptordners ermöglicht den Abgleich von sowohl Songs als auch Sets)\n Dieser Vorgang kann bei der ersten Ausführung einige Minuten dauern (abhängig von der Anzahl der Lieder). Standard-Disclaimer - Ich bin nicht für den Verlust von Songs in Ihrem Dropbox-Ordner verantwortlich! Sie tun dies auf eigenes Risiko. \n\n Allerdings habe ich dies auf meinem Gerät getestet und es scheint alles ohne Probleme zu funktionieren (der Standard-Synchronisations-Zeitplan ist 1 Stunde)."</string>
 	    
-	<string name="intro_future">"Leider bin ich nicht im Besitz eines iPad / Mac, so dass es mir nicht möglich ist, eine App auf dieser Plattform zu entwickeln (Spenden willkommen &#8230;..). Allerdings beabsichtige ich diese Anwendung weiter zu verbessern. Eigentlich wollte ich nur teilen, was ich bereits entwickelt hatte, in der Hoffnung, dass es jemand anderes nützlich findet."</string>
+	<string name="intro_future">"Leider bin ich nicht im Besitz eines iPad / Mac, so dass es mir nicht möglich ist, eine App auf dieser Plattform zu entwickeln (Spenden willkommen &#8230;..). Allerdings beabsichtige ich, diese Anwendung weiter zu verbessern. Eigentlich wollte ich nur teilen, was ich bereits entwickelt hatte, in der Hoffnung, dass es jemand anderes nützlich findet."</string>
 		
-	<string name="intro_help">"Um die App zu benutzen \"wischen\" Sie auf der linken Seite nach rechts, um im Menü einen Song zu wählen oder \"wischen\" sie auf der rechten Seite nach links um ein Menü für verschiedene weitere Optionen zu erhalten.\n\n Langes Drücken auf einen Song im linken Menü fügt den Song in das aktuelle Set ein. Langes Drücken auf einen Song in einem Set entfernt den Song aus diesem. \n\n Sets können von Ihrem \'Opensong/Sets\' Ordner geladen oder in diesen gespeichert werden. Langes Drücken auf ein gespeichertes Set entfernt dieses von Ihrem Gerät. \n\n Sie können gespeicherte Sets, sowie Songs via E-Mail, Dropbox, usw. teilen.
-	"</string>
+	<string name="intro_help">"Um die App zu benutzen \"wischen\" Sie auf der linken Seite nach rechts, um im Menü einen Song zu wählen oder \"wischen\" sie auf der rechten Seite nach links um ein Menü für verschiedene weitere Optionen zu erhalten.\n\n Langes Drücken auf einen Song im linken Menü fügt den Song in das aktuelle Set ein. Langes Drücken auf einen Song in einem Set entfernt den Song aus diesem. \n\n Sets können von Ihrem \'Opensong/Sets\' Ordner geladen oder in diesen gespeichert werden. Langes Drücken auf ein gespeichertes Set entfernt dieses von Ihrem Gerät. \n\n Sie können gespeicherte Sets, sowie Songs via E-Mail, Dropbox, usw. teilen."</string>
 
 	<string name="rename">"Geben Sie einen neuen Dateinamen für dieses Lied ein (das Lied wird später so im Song-Menü angezeigt)"</string>
 	<string name="renametitle">"Umbenennen"</string>
@@ -195,7 +194,7 @@
 	<string name="copyresources">"Klicken Sie hier, um mehrere Lieder zu installieren / aktualisieren \n Sie sind verantwortlich für das Urheberrecht"</string>
 	<string name="gotosong">"HIER ZUM STARTEN KLICKEN \n OPENSONG&#8230;STARTEN"</string>
 	<string name="wipesongs">"Zurücksetzen des lokalen Songs-Ordners"</string>
-	<string name="dropsync">"Laden Sie DropSync App herunter (kostenlos)"</string>
+	<string name="dropsync">"Laden Sie die DropSync App herunter (kostenlos)"</string>
 	<string name="app_name">"OpenSongApp"</string>
 	<string name="drawer_open">"Öffnen"</string>
 	<string name="drawer_close">"Schließen"</string>
@@ -222,7 +221,7 @@
 	<string name="importnewset">"Set importieren"</string>
 	<string name="hasbeenexported">"wurde exportiert"</string>
 	<string name="hasbeenimported">"wurde importiert"</string>
-	<string name="hasnotbeenexported">" wurde nicht exportiert - es gab ein Problem!"</string>			
+	<string name="hasnotbeenexported">"wurde nicht exportiert - es gab ein Problem!"</string>			
 	<string name="hasnotbeenimported">"wurde nicht importiert - es gab ein Problem!"</string>			
 		
 	<string name="add_song_to_set">"Song zum aktuellen Set zufügen"</string>
@@ -288,8 +287,8 @@
 	<string name="newsongtitleprompt">"Bitte geben Sie einen Titel für den neuen Song ein"</string>
 	<string name="newsettitleprompt">"Bitte geben Sie einen Titel für das neue Set ein"</string>
 	<string name="shouldnotbedeleted">"sollten nicht von Ihrem Ordner 'Songs' gelöscht werden!"</string>
-	<string name="songhasbeendeleted">"hat sich von Ihrem Ordner 'Songs' gelöscht."</string>
-	<string name="sethasbeendeleted">"hat sich von Ihrem Ordner \"Sets\" gestrichen."</string>
+	<string name="songhasbeendeleted">"wurde aus Ihrem Ordner 'Songs' gelöscht."</string>
+	<string name="sethasbeendeleted">"wurde aus Ihrem Ordner 'Sets' gelöscht."</string>
 	<string name="deleteerror_start">"Es gab ein Problem beim Löschen"</string>
 	<string name="deleteerror_end_song">"aus Ihrem Ordner \'Songs\'."</string>
 	<string name="deleteerror_end_sets">"aus Ihrem Ordner \'Sets\'."</string>
@@ -297,7 +296,7 @@
 	<string name="addedtoset">"wurde an das aktuelle Set angefügt."</string>
 	<string name="removedfromset">"wurde aus dem Set entfernt."</string>
 		
-	<string name="soundLink">"Hören Sie \'Liove everlasting'"</string>
+	<string name="soundLink">"Hören Sie \'Love everlasting'"</string>
 	<string name="stop">"Stop"</string>
 	<string name="start">"Start"</string>
 	<string name="action_search">"Songs suchen"</string>
@@ -339,7 +338,7 @@
 	<string name="pageturn_down">"\'Herunter scrollen\' Taste zuweisen"</string>
 	<string name="pageturn_waiting">"Warten auf Taste &#8230;."</string>
 	<string name="pageturn_needset">"Sie müssen einen im aktuellen Set enthaltenen Song anzeigen, um die Scrollen-Tasten zu benutzen."</string>
-	<string name="pageturn_attempt">"Offne ersten Song in aktuellen Set&#8230;."</string>
+	<string name="pageturn_attempt">"Öffne ersten Song in aktuellen Set&#8230;."</string>
 		
 	<string name="changefonts">"Schriftarten ändern"</string>
 	<string name="chooselyricfont">"Schriftart Text wählen"</string>
@@ -357,7 +356,7 @@
 	<string name="font_lyrics_line2">love without measure</string>
 	<string name="font_chords_line1">"G"</string>
 	<string name="font_chords_line2">"D/F#"</string>
-    <string name="gesture4">Aktualisieren aktuellen Song</string>
+    <string name="gesture4">Aktuellen Song aktualisieren</string>
     <string name="guitar">Gitarre</string>
     <string name="ukulele">Ukulele</string>
     <string name="ultimateguitarsearch">Online-Suche in Ultimate-Guitar.com</string>
@@ -365,7 +364,7 @@
     <string name="mandolin">Mandoline</string>
     <string name="chords">Akkorde</string>
     <string name="instrument">Instrument</string>
-    <string name="next">nächstes Lied</string>
+    <string name="next">nächster Song</string>
     <string name="shownextinset">Nächsten Song im Set anzeigen</string>
     <string name="top">Anfang</string>
     <string name="bottom">Ende</string>
@@ -429,7 +428,7 @@
 	<string name="convert_song">"Bitte konvertieren Sie das Lied ins Opensong Format (indem Sie es anzeigen), bevor Sie es zum Set zufügen"</string>
 	<string name="link_audio">"Audiodatei Link"</string>
 	<string name="link_file">"andere Datei"</string>
-	<string name="link_web">"Online link"</string>
+	<string name="link_web">"Online Link"</string>
 	<string name="link_youtube">"YouTube-Link"</string>
 	<string name="no_audioplayer">"Kein Audio-Player installiert"</string>
 	<string name="no_filemanager">"Kein Dateimanager installiert"</string>
@@ -491,7 +490,7 @@
 	<string name="minfontsize">"Minimale Schriftgröße für automatische Skalierung"</string>
 	<string name="override_fullautoscale">"Automatische Skalierung ignorieren und nur auf Breite anwenden"</string>
 	<string name="override_scale_explanation">Wenn die Schriftgröße bei automatischer Skalierung kleiner ist als die gewünschte Mindestschriftgröße, möchten Sie, dass die App dann auf eine andere Skalierungsmethode umschaltet? Diese Option kann dazu führen, dass Sie horizontal und vertikal in einem Song scrollen müssen."</string>
-	<string name="override_widthautoscale">"Automatische skalierung auf Breite ignorieren und nicht automatisch skalieren"</string>
+	<string name="override_widthautoscale">"Automatische Skalierung auf Breite ignorieren und nicht automatisch skalieren"</string>
 	<string name="pagebuttons">"Schaltflächen konfigurieren"</string>
 	<string name="position">"Position"</string>
 	<string name="profile">"Profil"</string>
@@ -499,7 +498,7 @@
 	<string name="profile_description">"Die Profile werden verwendet, um Ihre Anzeigeeinstellungen zu speichern."</string>
 	<string name="profile_name">"Wählen Sie einen Profilnamen"</string>
 	<string name="size">"Größe"</string>
-	<string name="websearch">"Aktuellen Song auf Internet suchen"</string>
+	<string name="websearch">"Aktuellen Song im Internet suchen"</string>
 
 	<string name="songfolder">"Wählen Sie einen Song-Ordner"</string>
 	<string name="stagemode">"Bühnenmodus"</string>
@@ -517,10 +516,10 @@
 	<string name="success">"Aktion erfolgreich abgeschlossen"</string>
 	<string name="error">"Fehler"</string>
 	<string name="takeawhile">"Dies kann einige Zeit in Anspruch nehmen!"</string>
-	<string name="longPressDown">"Lange nach unten drücken Pedal"</string>
-	<string name="longPressNext">"Langes Drücken nächste Pedal"</string>
-	<string name="longPressPrevious">"Langes Drücken vorherigen Pedal"</string>
-	<string name="longPressUp">"Langes Drücken auf Pedal"</string>
+	<string name="longPressDown">"Langes Drücken \'Herunter scrollen\'"</string>
+	<string name="longPressNext">"Langes Drücken 'Weiter'"</string>
+	<string name="longPressPrevious">"Langes Drücken 'Zurück'"</string>
+	<string name="longPressUp">"Langes Drücken \'Hoch scrollen\'"</string>
 
 	<string name="autoscale">"Autoskalierung"</string>
 	<string name="camera">"Kamera"</string>
@@ -576,7 +575,7 @@
 	<string name="quicklaunch_currentaction">"Derzeitige Aktion"</string>
 	<string name="quicklaunch_title">"Anpassen der Schnellstarttasten"</string>
 	<string name="scale_style">"Skalierung"</string>
-    <string name="setquickcheck">"Set Kontrollkästchen im Liedmenü anzeigen"</string>
+    <string name="setquickcheck">"Set-Kontrollkästchen im Liedmenü anzeigen"</string>
 	<string name="size_mini">"Mini"</string>
 	<string name="size_normal">"Normal"</string>
 	<string name="songsinfolder">"Song Ordner"</string>
@@ -598,12 +597,12 @@
 	<string name="floating_window">"Schwebendes Fenster"</string>
 	<string name="timer_size">"Timergröße"</string>
 
-	<string name="scrollbuttons">"Scrollen Sie die Einstellungen"</string>
-	<string name="scrollbuttons_distance">"Scrollmenge"</string>
+	<string name="scrollbuttons">"Scroll-Einstellungen"</string>
+	<string name="scrollbuttons_distance">"Scrollweite"</string>
 	<string name="speed">"Geschwindigkeit"</string>
-	<string name="swipe">"Einstellungen durchführen"</string>
+	<string name="swipe">"Wisch-Einstellungen"</string>
 	<string name="swipe_allowance">"Vertikale Bewegung erlaubt"</string>
-	<string name="swipe_distance">"Wischen Sie Abstand"</string>
+	<string name="swipe_distance">"Wisch-Weite"</string>
     <string name="actionbar">"Menüleiste Info"</string>
 	<string name="battery">"Batterie"</string>
 	<string name="timeformat">"24hr"</string>
