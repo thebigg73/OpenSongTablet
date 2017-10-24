@@ -163,10 +163,8 @@ public class LoadXML extends Activity {
                     } catch (Exception e) {
                         Log.d("d","Error performing grabOpenSongXML()");
                     }
-                }
-
-                // If the song is usr format - try to import it
-                if (FullscreenActivity.songfilename.contains(".usr")
+                  // If the song is usr format - try to import it
+                } else if (FullscreenActivity.songfilename.contains(".usr")
                         || FullscreenActivity.myXML.contains("[File]")
                         || FullscreenActivity.myXML.contains("Type=")
                         || FullscreenActivity.myXML.contains("Words=")) {
@@ -181,10 +179,8 @@ public class LoadXML extends Activity {
                     } catch (Exception e) {
                         Log.d("d","Error performing grabOpenSongXML()");
                     }
-                }
-
-                // If the song is in ChordPro format - try to import it
-                if (FullscreenActivity.myXML.contains("{title") ||
+                  // If the song is in ChordPro format - try to import it
+                } else if (FullscreenActivity.myXML.contains("{title") ||
                         FullscreenActivity.myXML.contains("{t:") ||
                         FullscreenActivity.myXML.contains("{t :") ||
                         FullscreenActivity.myXML.contains("{subtitle") ||
