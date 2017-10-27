@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -23,6 +24,7 @@ public class BibleGateway extends Activity{
     }
 
     private static class DownloadWebTextTask extends AsyncTask<String, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         Context c;
 
         DownloadWebTextTask (Context context) {
@@ -34,8 +36,6 @@ public class BibleGateway extends Activity{
             for (String address:addresses) {
                 URL url;
                 HttpURLConnection urlConnection = null;
-                //boolean gottitle = false;
-                //boolean gotscripture = false;
                 try {
                     url = new URL(address);
                     urlConnection = (HttpURLConnection) url.openConnection();

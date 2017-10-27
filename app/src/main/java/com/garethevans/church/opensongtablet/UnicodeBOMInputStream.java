@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import java.io.IOException;
@@ -59,6 +60,7 @@ class UnicodeBOMInputStream extends InputStream {
             return result;
         }
 
+        @SuppressLint("Assert")
         private BOM(final byte bom[], final String description) {
             assert (bom != null) : "invalid BOM: null is not allowed";
             assert (description != null) : "invalid description: null is not allowed";

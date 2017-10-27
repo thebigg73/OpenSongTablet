@@ -24,12 +24,16 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
         DownloadTask(Context context, String address) {
             this.address = address;
             mListener = (MyInterface) context;
-            if (FullscreenActivity.whattodo.equals("download_band")) {
-                filename = "Band.osb";
-            } else if (FullscreenActivity.whattodo.equals("download_church")) {
-                filename = "Church.osb";
-            } else {
-                filename = "Download.osb";
+            switch (FullscreenActivity.whattodo) {
+                case "download_band":
+                    filename = "Band.osb";
+                    break;
+                case "download_church":
+                    filename = "Church.osb";
+                    break;
+                default:
+                    filename = "Download.osb";
+                    break;
             }
         }
 

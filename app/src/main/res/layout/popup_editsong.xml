@@ -101,6 +101,8 @@
 
                 <Spinner
                     android:id="@+id/edit_song_key"
+                    android:spinnerMode="dialog"
+                    style="@style/MySpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -213,6 +215,8 @@
 
                 <Spinner
                     android:id="@+id/edit_song_timesig"
+                    android:spinnerMode="dialog"
+                    style="@style/MySpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -231,6 +235,8 @@
 
                 <Spinner
                     android:id="@+id/edit_song_capo"
+                    android:spinnerMode="dialog"
+                    style="@style/MySpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -250,6 +256,8 @@
 
                 <Spinner
                     android:id="@+id/edit_song_capo_print"
+                    android:spinnerMode="dialog"
+                    style="@style/MySpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -523,6 +531,8 @@
 
                 <Spinner
                     android:id="@+id/edit_pad_file"
+                    android:spinnerMode="dialog"
+                    style="@style/MySpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"

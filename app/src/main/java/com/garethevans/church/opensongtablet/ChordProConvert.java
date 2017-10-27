@@ -36,7 +36,7 @@ class ChordProConvert {
 		}
 
 		String temptitle = "";
-		String tempsubtitle = "";
+		String tempsubtitle;
         String tempccli = "";
         String tempauthor = "";
         String tempcopyright = "";

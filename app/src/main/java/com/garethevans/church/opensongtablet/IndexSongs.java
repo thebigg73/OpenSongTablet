@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -290,6 +291,7 @@ public class IndexSongs extends Activity {
 
     static class IndexMySongs extends AsyncTask<Object,Void,String> {
 
+        @SuppressLint("StaticFieldLeak")
         Context context;
 
         IndexMySongs(Context c) {

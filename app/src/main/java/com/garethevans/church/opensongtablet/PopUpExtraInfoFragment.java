@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -242,20 +243,30 @@ public class PopUpExtraInfoFragment extends DialogFragment {
     public void showNextButtons() {
         switch (FullscreenActivity.showNextInSet) {
             case "off":
-                nextSongOnOff_Switch.setChecked(false);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    nextSongOnOff_Switch.setChecked(false);
+                }
                 nextSongTopBottom_Switch.setVisibility(View.GONE);
                 break;
 
             case "bottom":
             default:
-                nextSongOnOff_Switch.setChecked(true);
-                nextSongTopBottom_Switch.setChecked(true);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    nextSongOnOff_Switch.setChecked(true);
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    nextSongTopBottom_Switch.setChecked(true);
+                }
                 nextSongTopBottom_Switch.setVisibility(View.VISIBLE);
                 break;
 
             case "top":
-                nextSongOnOff_Switch.setChecked(true);
-                nextSongTopBottom_Switch.setChecked(false);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    nextSongOnOff_Switch.setChecked(true);
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    nextSongTopBottom_Switch.setChecked(false);
+                }
                 nextSongTopBottom_Switch.setVisibility(View.VISIBLE);
                 break;
         }
@@ -266,7 +277,9 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         switch (FullscreenActivity.toggleAutoSticky) {
 
             case "N":
-                stickyNotesOnOff_Switch.setChecked(false);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    stickyNotesOnOff_Switch.setChecked(false);
+                }
                 stickyNotesFloat_Switch.setVisibility(View.GONE);
                 stickyNotesTime_SeekBar.setVisibility(View.GONE);
                 stickyNotesTime_TextView.setVisibility(View.GONE);
@@ -276,10 +289,16 @@ public class PopUpExtraInfoFragment extends DialogFragment {
 
             case "B":
             default:
-                stickyNotesOnOff_Switch.setChecked(true);
-                stickyNotesTopBottom_Switch.setChecked(true);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    stickyNotesOnOff_Switch.setChecked(true);
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    stickyNotesTopBottom_Switch.setChecked(true);
+                }
                 stickyNotesFloat_Switch.setVisibility(View.VISIBLE);
-                stickyNotesFloat_Switch.setChecked(false);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    stickyNotesFloat_Switch.setChecked(false);
+                }
                 stickyNotesTime_SeekBar.setVisibility(View.GONE);
                 stickyNotesTime_TextView.setVisibility(View.GONE);
                 stickNotesTimeInfo_TextView.setVisibility(View.GONE);
@@ -287,10 +306,16 @@ public class PopUpExtraInfoFragment extends DialogFragment {
                 break;
 
             case "T":
-                stickyNotesOnOff_Switch.setChecked(true);
-                stickyNotesTopBottom_Switch.setChecked(false);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    stickyNotesOnOff_Switch.setChecked(true);
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    stickyNotesTopBottom_Switch.setChecked(false);
+                }
                 stickyNotesFloat_Switch.setVisibility(View.VISIBLE);
-                stickyNotesFloat_Switch.setChecked(false);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    stickyNotesFloat_Switch.setChecked(false);
+                }
                 stickyNotesTime_SeekBar.setVisibility(View.GONE);
                 stickyNotesTime_TextView.setVisibility(View.GONE);
                 stickNotesTimeInfo_TextView.setVisibility(View.GONE);
@@ -298,8 +323,12 @@ public class PopUpExtraInfoFragment extends DialogFragment {
                 break;
 
             case "F":
-                stickyNotesOnOff_Switch.setChecked(true);
-                stickyNotesFloat_Switch.setChecked(true);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    stickyNotesOnOff_Switch.setChecked(true);
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    stickyNotesFloat_Switch.setChecked(true);
+                }
                 stickyNotesFloat_Switch.setVisibility(View.VISIBLE);
                 stickyNotesTime_SeekBar.setVisibility(View.VISIBLE);
                 stickyNotesTime_SeekBar.setProgress(FullscreenActivity.stickyNotesShowSecs);
@@ -319,7 +348,9 @@ public class PopUpExtraInfoFragment extends DialogFragment {
     }
 
     public void showHighlightButtons() {
-        highlightNotesOnOff_Switch.setChecked(FullscreenActivity.toggleAutoHighlight);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            highlightNotesOnOff_Switch.setChecked(FullscreenActivity.toggleAutoHighlight);
+        }
         if (!FullscreenActivity.toggleAutoHighlight) {
             highlightTime_TextView.setVisibility(View.GONE);
             highlightTimeInfo_TextView.setVisibility(View.GONE);

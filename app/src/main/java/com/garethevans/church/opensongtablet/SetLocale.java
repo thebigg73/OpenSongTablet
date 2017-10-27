@@ -1,13 +1,12 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 
 import java.util.Locale;
 
-public class SetLocale extends Activity {
+public class SetLocale {
 
     @SuppressWarnings("deprecation")
     public static void setLocale(Context c) {

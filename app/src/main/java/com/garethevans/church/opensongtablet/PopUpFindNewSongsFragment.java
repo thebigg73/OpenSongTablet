@@ -331,7 +331,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     @JavascriptInterface
     public void processHTML(String html) {
         if (html == null) {
-            return;
+            Log.d("d","html is null");
         }
     }
 
@@ -943,7 +943,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                         out.close();
 
                         // delete the original file
-                        f.delete();
+                        if(!f.delete()) {
+                            Log.d("d","Problem deleting the original");
+                        }
                     }
                 }
 
@@ -975,6 +977,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         void loadSong();
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class DownloadWebTextTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -1053,6 +1056,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class GetFolders extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -1105,6 +1109,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class GetSourceCode extends AsyncTask<Object, String, String> {
 
         String html = "";

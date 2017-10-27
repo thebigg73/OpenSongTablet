@@ -536,6 +536,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class PrepareSongMenu extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -679,6 +680,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class PrepareOptionMenu extends AsyncTask<Object, Void, String> {
 
         public void onPreExecute() {
@@ -737,6 +739,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class ResizeDrawers extends AsyncTask<Object, Void, String> {
         int width;
 
@@ -782,6 +785,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class OpenMyDrawers extends AsyncTask<Object, Void, String> {
 
         String which;
@@ -822,6 +826,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class CloseMyDrawers extends AsyncTask<Object, Void, String> {
 
         String which;
@@ -1703,6 +1708,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class DoMoveInSet extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2030,6 +2036,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class LoadSong extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2391,7 +2398,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
             case "wipeallsongs":
                 // Wipe all songs
-                ListSongFiles.clearAllSongs();
+                if (!ListSongFiles.clearAllSongs()) {
+                    Log.d("d","Problem clearing all songs");
+                }
                 refreshAll();
                 break;
 
@@ -2458,6 +2467,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class ShareSong extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -2486,6 +2496,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class ShareSet extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -2566,6 +2577,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class LoadCustomReusable extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2608,6 +2620,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class AddSlideToSet extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2745,6 +2758,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class IndexingDone extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2897,6 +2911,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         enabledisableButton(startstopSlideShow, true);
 
     }
+    @SuppressLint("StaticFieldLeak")
     private class AutoSlideShow extends AsyncTask<Object, Void, String> {
 
         boolean cancelled = false;

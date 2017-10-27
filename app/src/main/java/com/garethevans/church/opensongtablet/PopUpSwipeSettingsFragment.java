@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -193,7 +194,9 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
                 swipeAnimate();
             }
         });
-        gesturesSongSwipeButton.setChecked(FullscreenActivity.swipeForSongs);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            gesturesSongSwipeButton.setChecked(FullscreenActivity.swipeForSongs);
+        }
         hideorunhideSettings();
 
         gesturesSongSwipeButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -269,7 +272,7 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
     public void swipeAnimate() {
         llp = new LinearLayout.LayoutParams(FullscreenActivity.SWIPE_MIN_DISTANCE,FullscreenActivity.SWIPE_MAX_OFF_PATH);
         swipesimulateion_ImageView.setLayoutParams(llp);
-        CustomAnimations.animateSwipe(swipesimulateion_ImageView,getActivity());
+        CustomAnimations.animateSwipe(swipesimulateion_ImageView);
     }
 
     public void hideorunhideSettings() {

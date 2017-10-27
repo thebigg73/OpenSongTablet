@@ -162,8 +162,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     @Override
     public void onStart() {
         super.onStart();
-        if (getDialog().getWindow() != null) {
-            getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
     }
 

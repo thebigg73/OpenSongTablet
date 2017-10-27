@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -29,18 +30,18 @@ public class PopUpABCNotationFragment extends DialogFragment {
         void refreshAll();
     }
 
-    private MyInterface mListener;
+    //private MyInterface mListener;
 
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
-        mListener = (MyInterface) activity;
+        //mListener = (MyInterface) activity;
         super.onAttach(activity);
     }
 
     @Override
     public void onDetach() {
-        mListener = null;
+        //mListener = null;
         super.onDetach();
     }
 
@@ -82,6 +83,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(false);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         View V = inflater.inflate(R.layout.popup_abcnotation, container, false);
 
         TextView title = (TextView) V.findViewById(R.id.dialogtitle);
@@ -203,10 +205,11 @@ public class PopUpABCNotationFragment extends DialogFragment {
             if (!value.equals(getSongInfo())) {
                 // Something has changed
                 FullscreenActivity.mNotation = value;
-                String ABCPlaceHolder = ";"+getActivity().getString(R.string.music_score);
-                if (!FullscreenActivity.mLyrics.contains(ABCPlaceHolder)) {
+                //String ABCPlaceHolder = ";"+getActivity().getString(R.string.music_score);
+                // I could add a line at the start to let the user know there is score, but decided not to
+                /*if (!FullscreenActivity.mLyrics.contains(ABCPlaceHolder)) {
                     FullscreenActivity.mLyrics = ABCPlaceHolder + "\n\n" + FullscreenActivity.mLyrics;
-                }
+                }*/
                 PopUpEditSongFragment.prepareSongXML();
                 try {
                     PopUpEditSongFragment.justSaveSongXML();

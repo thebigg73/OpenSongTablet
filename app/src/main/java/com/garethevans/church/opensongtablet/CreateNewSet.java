@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Base64;
 
@@ -10,16 +9,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class CreateNewSet extends Activity {
+class CreateNewSet {
 
-    public static String tempsongfilename;
-    public static String tempdir;
-
-    public static boolean doCreation(Context c) {
+    static boolean doCreation(Context c) {
 
         // Keep the current song and directory aside for now
-        tempsongfilename = FullscreenActivity.songfilename;
-        tempdir = FullscreenActivity.whichSongFolder;
+        String tempsongfilename = FullscreenActivity.songfilename;
+        String tempdir = FullscreenActivity.whichSongFolder;
 
         // Only do this is the mSetList isn't empty
         if (FullscreenActivity.mSetList!=null && FullscreenActivity.mSetList.length>0) {

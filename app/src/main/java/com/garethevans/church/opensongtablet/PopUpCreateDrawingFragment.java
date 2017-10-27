@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -502,6 +503,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
             Log.d("d","Error saving");
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class DoSave extends AsyncTask<Object, Void, Void> {
 
         File f;

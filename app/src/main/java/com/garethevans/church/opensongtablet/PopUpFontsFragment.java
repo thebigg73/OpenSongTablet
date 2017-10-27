@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -157,8 +158,12 @@ public class PopUpFontsFragment extends DialogFragment {
         lyricsPreview2.setPadding(0, -(int) ((float) temp_linespacing / 3.0f), 0, 0);
         chordPreview1.setPadding(0, -(int) ((float) temp_linespacing / 3.0f), 0, 0);
         chordPreview2.setPadding(0, -(int) ((float) temp_linespacing / 3.0f), 0, 0);
-        trimlines_SwitchCompat.setChecked(FullscreenActivity.trimSections);
-        trimsections_SwitchCompat.setChecked(!FullscreenActivity.trimSectionSpace);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            trimlines_SwitchCompat.setChecked(FullscreenActivity.trimSections);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            trimsections_SwitchCompat.setChecked(!FullscreenActivity.trimSectionSpace);
+        }
 
         ArrayList<String> font_choices = new ArrayList<>();
         font_choices.add(getResources().getString(R.string.font_default));

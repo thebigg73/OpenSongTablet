@@ -7,7 +7,7 @@ class SongMenuViewItems {
     String title;
     String author;
     String key;
-    boolean inset;
+    private boolean inset;
 
     SongMenuViewItems(String filename, String title, String author, String key, boolean inset) {
         this.filename = filename;
@@ -29,7 +29,7 @@ class SongMenuViewItems {
         return title;
     }
 
-    public boolean getInset() {
+    boolean getInset() {
         return inset;
     }
 

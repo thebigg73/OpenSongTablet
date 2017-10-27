@@ -38,6 +38,8 @@
 
                 <Spinner
                     android:id="@+id/customchords_instrument"
+                    android:spinnerMode="dialog"
+                    style="@style/MySpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -50,6 +52,8 @@
 
                 <Spinner
                     android:id="@+id/customchords_fret"
+                    android:spinnerMode="dialog"
+                    style="@style/MySpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

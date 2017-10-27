@@ -15,7 +15,13 @@
         com.google.android.gms.cast,
         com.google.android.gms.base,
         com.google.android.gms.tasks,
-        com.peak.salut"/>
+        com.peak.salut,
+        com.google.android.gms.nearby.license,
+        com.google.android.gms.cast.framework.license,
+        com.google.android.gms.base.license,
+        com.google.android.gms.common.license,
+        com.google.android.gms.cast.license,
+        com.google.android.gms.tasks.license"/>
 
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
@@ -285,6 +291,8 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name">
         </activity>
+        <activity android:name=".IndexSongs" />
+        <activity android:name=".Preferences" />
 
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->

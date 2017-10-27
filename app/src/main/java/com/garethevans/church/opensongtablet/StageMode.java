@@ -65,6 +65,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -438,9 +439,15 @@ public class StageMode extends AppCompatActivity implements
                     //FullscreenActivity.incomingfile = getIntent();
                     if (FullscreenActivity.incomingfile != null) {
                         Log.d("d","this is in oncreate and intent has been found");
-                        FullscreenActivity.file_location = FullscreenActivity.incomingfile.getData().getPath();
-                        FullscreenActivity.file_name = FullscreenActivity.incomingfile.getData().getLastPathSegment();
-                        FullscreenActivity.file_uri = FullscreenActivity.incomingfile.getData();
+                        if (FullscreenActivity.incomingfile!=null && FullscreenActivity.incomingfile.getData()!=null) {
+                            FullscreenActivity.file_location = FullscreenActivity.incomingfile.getData().getPath();
+                            FullscreenActivity.file_name = FullscreenActivity.incomingfile.getData().getLastPathSegment();
+                            FullscreenActivity.file_uri = FullscreenActivity.incomingfile.getData();
+                        } else {
+                            FullscreenActivity.file_location = "";
+                            FullscreenActivity.file_name = "";
+                            FullscreenActivity.file_uri = null;
+                        }
                         if (FullscreenActivity.file_name.endsWith(".osb")) {
                             FullscreenActivity.whattodo = "processimportosb";
                         } else {
@@ -826,6 +833,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class CheckStorage extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -1078,6 +1086,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class ShareSong extends AsyncTask<Object, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -1119,6 +1128,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class ShareSet extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -1161,6 +1171,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class LoadCustomReusable extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2169,6 +2180,9 @@ public class StageMode extends AppCompatActivity implements
             case "transpose":
             case "fullsearch":
             case "randomsong":
+            case "abcnotation_edit":
+            case "abcnotation":
+            case "abcnotation_editsong":
                 if (s.equals("editsong") && !justSong(StageMode.this) && !FullscreenActivity.isPDF) {
                     ShowToast.showToast(StageMode.this);
                 } else {
@@ -2248,6 +2262,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class OpenMyDrawers extends AsyncTask<Object, Void, String> {
 
         String which;
@@ -2289,6 +2304,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class CloseMyDrawers extends AsyncTask<Object, Void, String> {
 
         String which;
@@ -2340,6 +2356,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class ResizeDrawers extends AsyncTask<Object, Void, String> {
         int width;
 
@@ -2398,6 +2415,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class DoMoveInSet extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2452,6 +2470,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class IndexingDone extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2545,6 +2564,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class AddSlideToSet extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2888,6 +2908,7 @@ public class StageMode extends AppCompatActivity implements
             }, 300);
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class LoadSongAsync extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... params) {
@@ -2897,7 +2918,6 @@ public class StageMode extends AppCompatActivity implements
                 sectionpresented = false;
 
                 try {
-                    Log.d("d","Loading song\nFolder="+FullscreenActivity.whichSongFolder+"\nSong="+FullscreenActivity.songfilename);
                     LoadXML.loadXML(StageMode.this);
                 } catch (XmlPullParserException | IOException e) {
                     e.printStackTrace();
@@ -3268,6 +3288,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class CreatePerformanceView1Col extends AsyncTask<Object, Void, String> {
 
         LinearLayout songbit = new LinearLayout(StageMode.this);
@@ -3339,6 +3360,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class CreatePerformanceView2Col extends AsyncTask<Object, Void, String> {
 
         LinearLayout songbit = new LinearLayout(StageMode.this);
@@ -3424,6 +3446,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class CreatePerformanceView3Col extends AsyncTask<Object, Void, String> {
 
         LinearLayout songbit = new LinearLayout(StageMode.this);
@@ -3516,7 +3539,6 @@ public class StageMode extends AppCompatActivity implements
 
     public void animateInSong() {
         // If autoshowing highlighter notes
-        Log.d("d","toggleAutoHighlight="+FullscreenActivity.toggleAutoHighlight);
         if (FullscreenActivity.toggleAutoHighlight) {
             showHighlight(true);
         }
@@ -3583,6 +3605,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class DualScreenWork extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -3631,6 +3654,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     @SuppressWarnings("deprecation")
     private class PrepareSongView extends AsyncTask<Object, Void, String> {
 
@@ -3820,6 +3844,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class ResizeStageView extends AsyncTask<Void, Void, String> {
 
         @Override
@@ -3891,6 +3916,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class CreateStageView1Col extends AsyncTask<Object, Void, String> {
 
         LinearLayout songbit = new LinearLayout(StageMode.this);
@@ -3972,6 +3998,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class ResizePerformanceView extends AsyncTask<Void, Void, String> {
 
         @Override
@@ -4252,6 +4279,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class ShowSticky extends AsyncTask<Object, Void, String> {
 
         long stickycurrtime;
@@ -4330,6 +4358,7 @@ public class StageMode extends AppCompatActivity implements
     public void displaySticky() {
         if (FullscreenActivity.mNotes!=null && !FullscreenActivity.mNotes.isEmpty() && !FullscreenActivity.mNotes.equals("")) {
             LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+            assert layoutInflater != null;
             @SuppressLint("InflateParams")
             final View popupView = layoutInflater.inflate(R.layout.popup_float_sticky, null);
             // Decide on the popup position
@@ -4446,6 +4475,8 @@ public class StageMode extends AppCompatActivity implements
                         FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
                     } catch (Exception e) {
                         Log.d("d", "error getting the screenshot!");
+                    } catch (OutOfMemoryError o) {
+                        Log.d("d","Out of memory");
                     }
 
                 }
@@ -4458,8 +4489,6 @@ public class StageMode extends AppCompatActivity implements
     public boolean shouldHighlightsBeShown() {
         // This is the check before animating in the highlight notes.
         File f = ProcessSong.getHighlightFile(StageMode.this);
-        boolean b = (FullscreenActivity.highlightOn || FullscreenActivity.toggleAutoHighlight) &&
-                f.exists() && FullscreenActivity.whichMode.equals("Performance");
         return (FullscreenActivity.highlightOn || FullscreenActivity.toggleAutoHighlight) &&
                 f.exists() && FullscreenActivity.whichMode.equals("Performance");
     }
@@ -4472,6 +4501,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class ShowHighlight extends AsyncTask<Object, Void, String> {
 
         long highlightcurrtime;
@@ -4556,13 +4586,10 @@ public class StageMode extends AppCompatActivity implements
             // This is only if a manual click on the hightlight button happened
             // Are the notes visible?
             Boolean v = highlightNotes.getVisibility()==View.VISIBLE;
-            Log.d("d","highlightNotes visible = "+v);
-            Log.d("d","thissong_scale="+FullscreenActivity.thissong_scale);
             if (highlightNotes.getVisibility() == View.VISIBLE && !fromautoshow) {
                 // Hide it
                 FullscreenActivity.highlightOn = false;
                 highlightNotes.setVisibility(View.GONE);
-                Log.d("d","Hiding the highlight notes");
             } else if (FullscreenActivity.thissong_scale.equals("Y")) {
                 File file = ProcessSong.getHighlightFile(StageMode.this);
                 if (file != null && file.exists()) {
@@ -4595,8 +4622,6 @@ public class StageMode extends AppCompatActivity implements
                         //highlightNotes.setScaleType(ImageView.ScaleType.FIT_START);
                         //highlightNotes.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                         //highlightNotes.setScaleType(ImageView.ScaleType.FIT_END);
-                        Log.d("d","Showing the highlight notes");
-                        Log.d("d","fromautoshow="+fromautoshow);
                         if (!fromautoshow) {
                             // If user manually wanted to show, otherwise song load animates it in
                             highlightNotes.setVisibility(View.VISIBLE);
@@ -4649,6 +4674,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class PrepareSongMenu extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -4782,7 +4808,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-
+    @SuppressLint("StaticFieldLeak")
     private class PrepareOptionMenu extends AsyncTask<Object, Void, String> {
 
         public void onPreExecute() {
@@ -4891,17 +4917,18 @@ public class StageMode extends AppCompatActivity implements
         closeMyDrawers("option");
     }
 
+    @SuppressWarnings("all")
     @Override
     public void showActionBar() {
         if (FullscreenActivity.hideActionBar) {
             // Make the songscrollview not sit below toolbar
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) findViewById(R.id.horizontalscrollview).getLayoutParams();
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ((HorizontalScrollView)findViewById(R.id.horizontalscrollview)).getLayoutParams();
             lp.addRule(RelativeLayout.BELOW, 0);
             findViewById(R.id.horizontalscrollview).setLayoutParams(lp);
-            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) findViewById(R.id.glideimage_ScrollView).getLayoutParams();
+            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) ((ScrollView)findViewById(R.id.glideimage_ScrollView)).getLayoutParams();
             lp2.addRule(RelativeLayout.BELOW, 0);
             findViewById(R.id.glideimage_ScrollView).setLayoutParams(lp2);
-            RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) findViewById(R.id.highlightNotes).getLayoutParams();
+            RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) ((ImageView)findViewById(R.id.highlightNotes)).getLayoutParams();
             lp3.addRule(RelativeLayout.BELOW, 0);
             findViewById(R.id.highlightNotes).setLayoutParams(lp3);
             RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.pagebuttons).getLayoutParams();
@@ -4909,13 +4936,13 @@ public class StageMode extends AppCompatActivity implements
             findViewById(R.id.pagebuttons).setLayoutParams(lp4);
         } else {
             // Make the songscrollview sit below toolbar
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) findViewById(R.id.horizontalscrollview).getLayoutParams();
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ((HorizontalScrollView)findViewById(R.id.horizontalscrollview)).getLayoutParams();
             lp.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
             findViewById(R.id.horizontalscrollview).setLayoutParams(lp);
-            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) findViewById(R.id.glideimage_ScrollView).getLayoutParams();
+            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) ((ScrollView)findViewById(R.id.glideimage_ScrollView)).getLayoutParams();
             lp2.addRule(RelativeLayout.BELOW,  ab_toolbar.getId());
             findViewById(R.id.glideimage_ScrollView).setLayoutParams(lp2);
-            RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) findViewById(R.id.highlightNotes).getLayoutParams();
+            RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) ((ImageView)findViewById(R.id.highlightNotes)).getLayoutParams();
             lp3.addRule(RelativeLayout.BELOW,  ab_toolbar.getId());
             findViewById(R.id.highlightNotes).setLayoutParams(lp3);
             RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.pagebuttons).getLayoutParams();
@@ -4925,17 +4952,18 @@ public class StageMode extends AppCompatActivity implements
         toggleActionBar();
     }
 
+    @SuppressWarnings("all")
     @Override
     public void hideActionBar() {
         if (FullscreenActivity.hideActionBar) {
             // Make the songscrollview not sit below toolbar
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) findViewById(R.id.horizontalscrollview).getLayoutParams();
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ((HorizontalScrollView)findViewById(R.id.horizontalscrollview)).getLayoutParams();
             lp.addRule(RelativeLayout.BELOW, 0);
             findViewById(R.id.horizontalscrollview).setLayoutParams(lp);
-            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) findViewById(R.id.glideimage_ScrollView).getLayoutParams();
+            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) ((ScrollView)findViewById(R.id.glideimage_ScrollView)).getLayoutParams();
             lp2.addRule(RelativeLayout.BELOW, 0);
             findViewById(R.id.glideimage_ScrollView).setLayoutParams(lp2);
-            RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) findViewById(R.id.highlightNotes).getLayoutParams();
+            RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) ((ImageView)findViewById(R.id.highlightNotes)).getLayoutParams();
             lp3.addRule(RelativeLayout.BELOW, 0);
             findViewById(R.id.highlightNotes).setLayoutParams(lp3);
             RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.pagebuttons).getLayoutParams();
@@ -4943,13 +4971,13 @@ public class StageMode extends AppCompatActivity implements
             findViewById(R.id.pagebuttons).setLayoutParams(lp4);
         } else {
             // Make the songscrollview sit below toolbar
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) findViewById(R.id.horizontalscrollview).getLayoutParams();
+            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ((HorizontalScrollView)findViewById(R.id.horizontalscrollview)).getLayoutParams();
             lp.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
             findViewById(R.id.horizontalscrollview).setLayoutParams(lp);
-            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) findViewById(R.id.glideimage_ScrollView).getLayoutParams();
+            RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) ((ScrollView)findViewById(R.id.glideimage_ScrollView)).getLayoutParams();
             lp2.addRule(RelativeLayout.BELOW,  ab_toolbar.getId());
             findViewById(R.id.glideimage_ScrollView).setLayoutParams(lp2);
-            RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) findViewById(R.id.highlightNotes).getLayoutParams();
+            RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) ((ImageView)findViewById(R.id.highlightNotes)).getLayoutParams();
             lp3.addRule(RelativeLayout.BELOW,  ab_toolbar.getId());
             findViewById(R.id.highlightNotes).setLayoutParams(lp3);
             RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.pagebuttons).getLayoutParams();
@@ -5196,7 +5224,9 @@ public class StageMode extends AppCompatActivity implements
 
             case "wipeallsongs":
                 // Wipe all songs
-                ListSongFiles.clearAllSongs();
+                if (!ListSongFiles.clearAllSongs()) {
+                    Log.d("d","Problem clearing songs");
+                }
                 refreshAll();
                 break;
 
@@ -5223,6 +5253,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class PreparePad extends AsyncTask<Void, Void, Integer> {
 
         @Override
@@ -5368,6 +5399,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class PlayPads extends AsyncTask<Void, Void, Integer> {
         int which;
         int path;
@@ -5689,6 +5721,7 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class GetScrollHeight extends AsyncTask<Object, Integer, String> {
         boolean viewdrawn = false;
         boolean ready = false;
@@ -5757,6 +5790,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class AutoScrollMusic extends AsyncTask<String, Integer, String> {
 
         @Override

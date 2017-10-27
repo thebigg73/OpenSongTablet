@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -176,8 +177,12 @@ public class PopUpLayoutFragment extends DialogFragment {
 
 
         // Set the stuff up to what it should be from preferences
-        toggleChordsButton.setChecked(FullscreenActivity.presoShowChords);
-        toggleAutoScaleButton.setChecked(FullscreenActivity.presoAutoScale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            toggleChordsButton.setChecked(FullscreenActivity.presoShowChords);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            toggleAutoScaleButton.setChecked(FullscreenActivity.presoAutoScale);
+        }
         setMaxFontSizeProgressBar.setMax(70);
         setMaxFontSizeProgressBar.setProgress(FullscreenActivity.presoMaxFontSize - 4);
         maxfontSizePreview.setTypeface(FullscreenActivity.presofont);

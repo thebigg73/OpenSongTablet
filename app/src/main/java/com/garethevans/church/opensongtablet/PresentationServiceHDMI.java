@@ -120,24 +120,13 @@ class PresentationServiceHDMI extends Presentation
     private static String vid1File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
     private static String vid2File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
     private static String vidFile;
-    private static File imgFile;
     private static Drawable defimage;
-    @SuppressWarnings("unused")
-    private static Bitmap myBitmap;
-    @SuppressWarnings("unused")
-    private static Drawable dr;
     static Surface s;
     private static Animation mypage_fadein;
     private static Animation mypage_fadeout;
     private static Animation background_fadein;
-    @SuppressWarnings("unused")
-    private static Animation background_fadeout;
     private static Animation image_fadein;
     private static Animation image_fadeout;
-    @SuppressWarnings("unused")
-    private static Animation video_fadein;
-    @SuppressWarnings("unused")
-    private static Animation video_fadeout;
     private static Animation logo_fadein;
     private static Animation logo_fadeout;
     private static Animation lyrics_fadein;
@@ -219,7 +208,7 @@ class PresentationServiceHDMI extends Presentation
     }
 
     // Setup some default stuff
-    static void matchPresentationToMode() {
+    private static void matchPresentationToMode() {
         switch (FullscreenActivity.whichMode) {
             case "Stage":
             case "Performance":
@@ -245,13 +234,13 @@ class PresentationServiceHDMI extends Presentation
         mypage_fadein = CustomAnimations.setUpAnimation(pageHolder, 0.0f, 1.0f);
         mypage_fadeout = CustomAnimations.setUpAnimation(pageHolder, 1.0f, 0.0f);
         background_fadein = CustomAnimations.setUpAnimation(projected_BackgroundImage, 0.0f, 1.0f);
-        background_fadeout = CustomAnimations.setUpAnimation(projected_BackgroundImage, 1.0f, 0.0f);
+        //Animation background_fadeout = CustomAnimations.setUpAnimation(projected_BackgroundImage, 1.0f, 0.0f);
         logo_fadein = CustomAnimations.setUpAnimation(projected_Logo, 0.0f, 1.0f);
         logo_fadeout = CustomAnimations.setUpAnimation(projected_Logo, 1.0f, 0.0f);
         image_fadein = CustomAnimations.setUpAnimation(projected_ImageView, 0.0f, 1.0f);
         image_fadeout = CustomAnimations.setUpAnimation(projected_ImageView, 1.0f, 0.0f);
-        video_fadein = CustomAnimations.setUpAnimation(projected_TextureView, 0.0f, 1.0f);
-        video_fadeout = CustomAnimations.setUpAnimation(projected_TextureView, 1.0f, 0.0f);
+        //Animation video_fadein = CustomAnimations.setUpAnimation(projected_TextureView, 0.0f, 1.0f);
+        //Animation video_fadeout = CustomAnimations.setUpAnimation(projected_TextureView, 1.0f, 0.0f);
         lyrics_fadein = CustomAnimations.setUpAnimation(projected_LinearLayout, 0.0f, 1.0f);
         lyrics_fadeout = CustomAnimations.setUpAnimation(projected_LinearLayout, 1.0f, 0.0f);
         songinfo_fadein = CustomAnimations.setUpAnimation(songinfo_TextView, 0.0f, 1.0f);
@@ -293,7 +282,7 @@ class PresentationServiceHDMI extends Presentation
             bottombarheight = icon.getIntrinsicHeight();
         }
 
-        int density = metrics.densityDpi;
+        //int density = metrics.densityDpi;
 
         padding = 8;
 
@@ -557,6 +546,7 @@ class PresentationServiceHDMI extends Presentation
                 if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
                     mMediaPlayer.pause();
                 }
+                File imgFile;
                 if (FullscreenActivity.backgroundToUse.equals("img1")) {
                     imgFile = img1File;
                 } else {
@@ -586,14 +576,14 @@ class PresentationServiceHDMI extends Presentation
                 if (mMediaPlayer != null) {
                     mMediaPlayer.start();
                 }
-                myBitmap = null;
-                dr = null;
+                //Bitmap myBitmap = null;
+                // dr = null;
                 projected_BackgroundImage.setImageDrawable(null);
                 projected_BackgroundImage.setVisibility(View.GONE);
                 break;
             default:
-                myBitmap = null;
-                dr = null;
+                //myBitmap = null;
+                //dr = null;
                 projected_BackgroundImage.setImageDrawable(null);
                 projected_BackgroundImage.setVisibility(View.GONE);
                 break;
@@ -719,6 +709,7 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class PrepareStageProjected extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test1_1 = ProcessSong.createLinearLayout(context);
 
         @Override
@@ -784,7 +775,9 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class ProjectedStageView1Col extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_1 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
         float scale;
 
@@ -860,6 +853,7 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class PreparePresenterProjected extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test1_1 = ProcessSong.createLinearLayout(context);
 
         @Override
@@ -925,7 +919,9 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class ProjectedPresenterView1Col extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_1 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
         float scale;
 
@@ -1106,11 +1102,17 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class PrepareFullProjected extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test1_1 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test1_2 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test2_2 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test1_3 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test2_3 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test3_3 = ProcessSong.createLinearLayout(context);
 
         @Override
@@ -1220,7 +1222,9 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class ProjectedPerformanceView1Col extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_1 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
         float scale1_1;
         float fontsize1_1;
@@ -1297,9 +1301,13 @@ class PresentationServiceHDMI extends Presentation
         float scale2_2;
         float fontsize1_2;
         float fontsize2_2;
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_2 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics2_2 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_2 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box2_2 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
 
         ProjectedPerformanceView2Col(float s1_2, float s2_2) {
@@ -1391,11 +1399,17 @@ class PresentationServiceHDMI extends Presentation
         float fontsize1_3;
         float fontsize2_3;
         float fontsize3_3;
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_3 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics2_3 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics3_3 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_3 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box2_3 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box3_3 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
 
         ProjectedPerformanceView3Col(float s1_3, float s2_3, float s3_3) {
@@ -1519,20 +1533,23 @@ class PresentationServiceHDMI extends Presentation
 
     @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private static void reloadVideo() throws IOException {
-        if (mMediaPlayer == null) {
-            mMediaPlayer = new MediaPlayer();
-            mMediaPlayer.setSurface(s);
-        }
-        mMediaPlayer.reset();
-        try {
-            mMediaPlayer.setDataSource(vidFile);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        try {
-            mMediaPlayer.prepareAsync();
-        } catch (Exception e) {
-            Log.e("Presentation window", "media player error");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            if (mMediaPlayer == null) {
+                mMediaPlayer = new MediaPlayer();
+                mMediaPlayer.setSurface(s);
+            }
+                mMediaPlayer.reset();
+
+            try {
+                mMediaPlayer.setDataSource(vidFile);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                mMediaPlayer.prepareAsync();
+            } catch (Exception e) {
+                Log.e("Presentation window", "media player error");
+            }
         }
     }
 
@@ -1578,18 +1595,20 @@ class PresentationServiceHDMI extends Presentation
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        s = new Surface(surface);
-        mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setSurface(s);
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mMediaPlayer.setOnPreparedListener(this);
-        mMediaPlayer.setOnCompletionListener(this);
-        if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
-            try {
-                mMediaPlayer.setDataSource(vidFile);
-                mMediaPlayer.prepareAsync();
-            } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
-                e.printStackTrace();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            s = new Surface(surface);
+            mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setSurface(s);
+            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mMediaPlayer.setOnPreparedListener(this);
+            mMediaPlayer.setOnCompletionListener(this);
+            if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
+                try {
+                    mMediaPlayer.setDataSource(vidFile);
+                    mMediaPlayer.prepareAsync();
+                } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

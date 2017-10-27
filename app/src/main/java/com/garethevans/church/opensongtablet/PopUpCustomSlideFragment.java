@@ -340,6 +340,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             Log.d("d","Error updating fields");
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class UpdateFields extends AsyncTask<Object, Void, String> {
 
         @Override

@@ -1,9 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -318,6 +320,7 @@ public class PopUpPadFragment extends DialogFragment {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class SetPad extends AsyncTask<Object,Void,String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -338,10 +341,14 @@ public class PopUpPadFragment extends DialogFragment {
 
                 // Set the loop on or off
                 if (FullscreenActivity.mLoopAudio.equals("true")) {
-                    popupPad_loopaudio.setChecked(true);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                        popupPad_loopaudio.setChecked(true);
+                    }
                 } else {
                     FullscreenActivity.mLoopAudio = "false";
-                    popupPad_loopaudio.setChecked(false);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                        popupPad_loopaudio.setChecked(false);
+                    }
                 }
 
                 // Set the pad volume and pan
