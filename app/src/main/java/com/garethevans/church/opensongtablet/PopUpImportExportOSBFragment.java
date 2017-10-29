@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -222,6 +223,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         waiting.setVisibility(View.VISIBLE);
         prepare_folder_list_import.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
+    @SuppressLint("StaticFieldLeak")
     private class PrepareFolderListImport extends AsyncTask<String, Void, String> {
 
         @Override
@@ -325,6 +327,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         selected_folder_import.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class SelectedFolderImport extends AsyncTask<String, Void, String> {
 
         boolean canoverwrite;

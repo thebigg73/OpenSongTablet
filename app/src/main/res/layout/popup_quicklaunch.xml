@@ -64,6 +64,7 @@
 
                 <Spinner
                     android:id="@+id/button1_spinner"
+                    android:spinnerMode="dialog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/button1_currently"
@@ -109,6 +110,7 @@
 
                 <Spinner
                     android:id="@+id/button2_spinner"
+                    android:spinnerMode="dialog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/button2_currently"
@@ -154,6 +156,7 @@
 
                 <Spinner
                     android:id="@+id/button3_spinner"
+                    android:spinnerMode="dialog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/button3_currently"
@@ -199,6 +202,7 @@
 
                 <Spinner
                     android:id="@+id/button4_spinner"
+                    android:spinnerMode="dialog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/button4_currently"

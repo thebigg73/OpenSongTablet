@@ -29,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 import java.io.IOException;
@@ -120,24 +121,13 @@ class PresentationServiceHDMI extends Presentation
     private static String vid1File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
     private static String vid2File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
     private static String vidFile;
-    private static File imgFile;
     private static Drawable defimage;
-    @SuppressWarnings("unused")
-    private static Bitmap myBitmap;
-    @SuppressWarnings("unused")
-    private static Drawable dr;
     static Surface s;
     private static Animation mypage_fadein;
     private static Animation mypage_fadeout;
     private static Animation background_fadein;
-    @SuppressWarnings("unused")
-    private static Animation background_fadeout;
     private static Animation image_fadein;
     private static Animation image_fadeout;
-    @SuppressWarnings("unused")
-    private static Animation video_fadein;
-    @SuppressWarnings("unused")
-    private static Animation video_fadeout;
     private static Animation logo_fadein;
     private static Animation logo_fadeout;
     private static Animation lyrics_fadein;
@@ -162,26 +152,26 @@ class PresentationServiceHDMI extends Presentation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cast_screen);
 
-        pageHolder = (RelativeLayout) findViewById(R.id.pageHolder);
-        projectedPage_RelativeLayout = (RelativeLayout) findViewById(R.id.projectedPage_RelativeLayout);
-        projected_LinearLayout = (LinearLayout) findViewById(R.id.projected_LinearLayout);
-        projected_ImageView = (ImageView) findViewById(R.id.projected_ImageView);
-        projected_BackgroundImage = (ImageView) findViewById(R.id.projected_BackgroundImage);
-        projected_TextureView = (TextureView) findViewById(R.id.projected_TextureView);
-        projected_Logo = (ImageView) findViewById(R.id.projected_Logo);
-        songinfo_TextView = (TextView) findViewById(R.id.songinfo_TextView);
-        presentermode_bottombit = (LinearLayout) findViewById(R.id.presentermode_bottombit);
-        presentermode_title = (TextView) findViewById(R.id.presentermode_title);
-        presentermode_author = (TextView) findViewById(R.id.presentermode_author);
-        presentermode_copyright = (TextView) findViewById(R.id.presentermode_copyright);
-        presentermode_alert = (TextView) findViewById(R.id.presentermode_alert);
-        bottom_infobar = (LinearLayout) findViewById(R.id.bottom_infobar);
-        col1_1 = (LinearLayout) findViewById(R.id.col1_1);
-        col1_2 = (LinearLayout) findViewById(R.id.col1_2);
-        col2_2 = (LinearLayout) findViewById(R.id.col2_2);
-        col1_3 = (LinearLayout) findViewById(R.id.col1_3);
-        col2_3 = (LinearLayout) findViewById(R.id.col2_3);
-        col3_3 = (LinearLayout) findViewById(R.id.col3_3);
+        pageHolder = findViewById(R.id.pageHolder);
+        projectedPage_RelativeLayout = findViewById(R.id.projectedPage_RelativeLayout);
+        projected_LinearLayout = findViewById(R.id.projected_LinearLayout);
+        projected_ImageView = findViewById(R.id.projected_ImageView);
+        projected_BackgroundImage = findViewById(R.id.projected_BackgroundImage);
+        projected_TextureView = findViewById(R.id.projected_TextureView);
+        projected_Logo = findViewById(R.id.projected_Logo);
+        songinfo_TextView = findViewById(R.id.songinfo_TextView);
+        presentermode_bottombit = findViewById(R.id.presentermode_bottombit);
+        presentermode_title = findViewById(R.id.presentermode_title);
+        presentermode_author = findViewById(R.id.presentermode_author);
+        presentermode_copyright = findViewById(R.id.presentermode_copyright);
+        presentermode_alert = findViewById(R.id.presentermode_alert);
+        bottom_infobar = findViewById(R.id.bottom_infobar);
+        col1_1 = findViewById(R.id.col1_1);
+        col1_2 = findViewById(R.id.col1_2);
+        col2_2 = findViewById(R.id.col2_2);
+        col1_3 = findViewById(R.id.col1_3);
+        col2_3 = findViewById(R.id.col2_3);
+        col3_3 = findViewById(R.id.col3_3);
 
         c = projectedPage_RelativeLayout.getContext();
 
@@ -219,7 +209,7 @@ class PresentationServiceHDMI extends Presentation
     }
 
     // Setup some default stuff
-    static void matchPresentationToMode() {
+    private static void matchPresentationToMode() {
         switch (FullscreenActivity.whichMode) {
             case "Stage":
             case "Performance":
@@ -245,13 +235,13 @@ class PresentationServiceHDMI extends Presentation
         mypage_fadein = CustomAnimations.setUpAnimation(pageHolder, 0.0f, 1.0f);
         mypage_fadeout = CustomAnimations.setUpAnimation(pageHolder, 1.0f, 0.0f);
         background_fadein = CustomAnimations.setUpAnimation(projected_BackgroundImage, 0.0f, 1.0f);
-        background_fadeout = CustomAnimations.setUpAnimation(projected_BackgroundImage, 1.0f, 0.0f);
+        //Animation background_fadeout = CustomAnimations.setUpAnimation(projected_BackgroundImage, 1.0f, 0.0f);
         logo_fadein = CustomAnimations.setUpAnimation(projected_Logo, 0.0f, 1.0f);
         logo_fadeout = CustomAnimations.setUpAnimation(projected_Logo, 1.0f, 0.0f);
         image_fadein = CustomAnimations.setUpAnimation(projected_ImageView, 0.0f, 1.0f);
         image_fadeout = CustomAnimations.setUpAnimation(projected_ImageView, 1.0f, 0.0f);
-        video_fadein = CustomAnimations.setUpAnimation(projected_TextureView, 0.0f, 1.0f);
-        video_fadeout = CustomAnimations.setUpAnimation(projected_TextureView, 1.0f, 0.0f);
+        //Animation video_fadein = CustomAnimations.setUpAnimation(projected_TextureView, 0.0f, 1.0f);
+        //Animation video_fadeout = CustomAnimations.setUpAnimation(projected_TextureView, 1.0f, 0.0f);
         lyrics_fadein = CustomAnimations.setUpAnimation(projected_LinearLayout, 0.0f, 1.0f);
         lyrics_fadeout = CustomAnimations.setUpAnimation(projected_LinearLayout, 1.0f, 0.0f);
         songinfo_fadein = CustomAnimations.setUpAnimation(songinfo_TextView, 0.0f, 1.0f);
@@ -293,7 +283,7 @@ class PresentationServiceHDMI extends Presentation
             bottombarheight = icon.getIntrinsicHeight();
         }
 
-        int density = metrics.densityDpi;
+        //int density = metrics.densityDpi;
 
         padding = 8;
 
@@ -349,7 +339,9 @@ class PresentationServiceHDMI extends Presentation
 
         if (usingcustom) {
             Uri logoUri = Uri.fromFile(customLogo);
-            Glide.with(c).load(logoUri).override(logowidth, logoheight).into(projected_Logo);
+            RequestOptions myOptions = new RequestOptions()
+                    .override(logowidth,logoheight);
+            Glide.with(c).load(logoUri).apply(myOptions).into(projected_Logo);
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo, c.getTheme()));
@@ -557,6 +549,7 @@ class PresentationServiceHDMI extends Presentation
                 if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
                     mMediaPlayer.pause();
                 }
+                File imgFile;
                 if (FullscreenActivity.backgroundToUse.equals("img1")) {
                     imgFile = img1File;
                 } else {
@@ -569,7 +562,9 @@ class PresentationServiceHDMI extends Presentation
                     } else {
                         // Process the image location into an URI
                         Uri imageUri = Uri.fromFile(imgFile);
-                        Glide.with(c).load(imageUri).centerCrop().into(projected_BackgroundImage);
+                        RequestOptions myOptions = new RequestOptions()
+                                .centerCrop();
+                        Glide.with(c).load(imageUri).apply(myOptions).into(projected_BackgroundImage);
                     }
                     projected_BackgroundImage.setVisibility(View.VISIBLE);
                 }
@@ -586,14 +581,14 @@ class PresentationServiceHDMI extends Presentation
                 if (mMediaPlayer != null) {
                     mMediaPlayer.start();
                 }
-                myBitmap = null;
-                dr = null;
+                //Bitmap myBitmap = null;
+                // dr = null;
                 projected_BackgroundImage.setImageDrawable(null);
                 projected_BackgroundImage.setVisibility(View.GONE);
                 break;
             default:
-                myBitmap = null;
-                dr = null;
+                //myBitmap = null;
+                //dr = null;
                 projected_BackgroundImage.setImageDrawable(null);
                 projected_BackgroundImage.setVisibility(View.GONE);
                 break;
@@ -690,7 +685,9 @@ class PresentationServiceHDMI extends Presentation
         projected_ImageView.setBackgroundColor(0x00000000);
         // Process the image location into an URI
         Uri imageUri = Uri.fromFile(FullscreenActivity.file);
-        Glide.with(c).load(imageUri).fitCenter().into(projected_ImageView);
+        RequestOptions myOptions = new RequestOptions()
+                .fitCenter();
+        Glide.with(c).load(imageUri).apply(myOptions).into(projected_ImageView);
         projected_ImageView.setVisibility(View.VISIBLE);
         animateIn();
     }
@@ -699,7 +696,11 @@ class PresentationServiceHDMI extends Presentation
     // Async stuff to prepare and write the page
     private static void cancelAsyncTask(AsyncTask ast) {
         if (ast != null) {
-            ast.cancel(true);
+            try {
+                ast.cancel(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -715,19 +716,28 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class PrepareStageProjected extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test1_1 = ProcessSong.createLinearLayout(context);
 
         @Override
         protected void onPreExecute() {
             // Remove all views from the test pane
-            col1_1.removeAllViews();
+            try {
+                col1_1.removeAllViews();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         protected String doInBackground(Object... objects) {
-            projectedSectionScaleValue = new float[1];
-            projectedviewwidth = new int[1];
-            projectedviewheight = new int[1];
+            try {
+                projectedSectionScaleValue = new float[1];
+                projectedviewwidth = new int[1];
+                projectedviewheight = new int[1];
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -740,8 +750,8 @@ class PresentationServiceHDMI extends Presentation
 
         @Override
         protected void onPostExecute(String s) {
-            if (!cancelled) {
-                try {
+            try {
+                if (!cancelled) {
                     test1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, 12.0f);
                     col1_1.addView(test1_1);
 
@@ -754,9 +764,9 @@ class PresentationServiceHDMI extends Presentation
                     // Now display the song!
                     //FullscreenActivity.scalingfiguredout = true;
                     projectedStageView1Col();
-                } catch (Exception e) {
-                    // Ooops
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -772,28 +782,34 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class ProjectedStageView1Col extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_1 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
         float scale;
 
         @Override
         protected void onPreExecute() {
-            projected_LinearLayout.removeAllViews();
-            float max_width_scale = (float) availableWidth_1col / (float) projectedviewwidth[0];
-            float max_height_scale = (float) availableScreenHeight / (float) projectedviewheight[0];
-            if (max_height_scale > max_width_scale) {
-                scale = max_width_scale;
-            } else {
-                scale = max_height_scale;
-            }
+            try {
+                projected_LinearLayout.removeAllViews();
+                float max_width_scale = (float) availableWidth_1col / (float) projectedviewwidth[0];
+                float max_height_scale = (float) availableScreenHeight / (float) projectedviewheight[0];
+                if (max_height_scale > max_width_scale) {
+                    scale = max_width_scale;
+                } else {
+                    scale = max_height_scale;
+                }
 
-            float maxscale = FullscreenActivity.presoMaxFontSize / 12.0f;
-            if (scale > maxscale) {
-                scale = maxscale;
-            }
+                float maxscale = FullscreenActivity.presoMaxFontSize / 12.0f;
+                if (scale > maxscale) {
+                    scale = maxscale;
+                }
 
-            projected_LinearLayout.removeAllViews();
-            lyrics1_1.setPadding(0, 0, 0, 0);
+                projected_LinearLayout.removeAllViews();
+                lyrics1_1.setPadding(0, 0, 0, 0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -810,8 +826,8 @@ class PresentationServiceHDMI extends Presentation
 
         @Override
         protected void onPostExecute(String s) {
-            if (!cancelled) {
-                try {
+            try {
+                if (!cancelled) {
                     lyrics1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, ProcessSong.getProjectedFontSize(scale));
                     LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(availableWidth_1col, LinearLayout.LayoutParams.WRAP_CONTENT);
                     llp1_1.setMargins(0, 0, 0, 0);
@@ -826,9 +842,9 @@ class PresentationServiceHDMI extends Presentation
                     box1_1.setLayoutParams(llp);
                     projected_LinearLayout.addView(box1_1);
                     animateIn();
-                } catch (Exception e) {
-                    // Ooops
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -844,19 +860,28 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class PreparePresenterProjected extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test1_1 = ProcessSong.createLinearLayout(context);
 
         @Override
         protected void onPreExecute() {
             // Remove all views from the test pane
-            col1_1.removeAllViews();
+            try {
+                col1_1.removeAllViews();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         protected String doInBackground(Object... objects) {
-            projectedSectionScaleValue = new float[1];
-            projectedviewwidth = new int[1];
-            projectedviewheight = new int[1];
+            try {
+                projectedSectionScaleValue = new float[1];
+                projectedviewwidth = new int[1];
+                projectedviewheight = new int[1];
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -869,8 +894,8 @@ class PresentationServiceHDMI extends Presentation
 
         @Override
         protected void onPostExecute(String s) {
-            if (!cancelled) {
-                try {
+            try {
+                if (!cancelled) {
                     test1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, 12.0f);
                     col1_1.addView(test1_1);
 
@@ -883,11 +908,10 @@ class PresentationServiceHDMI extends Presentation
                     // Now display the song!
                     //FullscreenActivity.scalingfiguredout = true;
                     projectedPresenterView1Col();
-                } catch (Exception e) {
-                    // Ooops
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
         }
     }
 
@@ -902,28 +926,34 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class ProjectedPresenterView1Col extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_1 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
         float scale;
 
         @Override
         protected void onPreExecute() {
-            projected_LinearLayout.removeAllViews();
-            float max_width_scale = (float) availableWidth_1col / (float) projectedviewwidth[0];
-            float max_height_scale = (float) availableScreenHeight / (float) projectedviewheight[0];
-            if (max_height_scale > max_width_scale) {
-                scale = max_width_scale;
-            } else {
-                scale = max_height_scale;
-            }
+            try {
+                projected_LinearLayout.removeAllViews();
+                float max_width_scale = (float) availableWidth_1col / (float) projectedviewwidth[0];
+                float max_height_scale = (float) availableScreenHeight / (float) projectedviewheight[0];
+                if (max_height_scale > max_width_scale) {
+                    scale = max_width_scale;
+                } else {
+                    scale = max_height_scale;
+                }
 
-            float maxscale = FullscreenActivity.presoMaxFontSize / 12.0f;
-            if (scale > maxscale) {
-                scale = maxscale;
-            }
+                float maxscale = FullscreenActivity.presoMaxFontSize / 12.0f;
+                if (scale > maxscale) {
+                    scale = maxscale;
+                }
 
-            projected_LinearLayout.removeAllViews();
-            lyrics1_1.setPadding(0, 0, 0, 0);
+                projected_LinearLayout.removeAllViews();
+                lyrics1_1.setPadding(0, 0, 0, 0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -940,8 +970,8 @@ class PresentationServiceHDMI extends Presentation
 
         @Override
         protected void onPostExecute(String s) {
-            if (!cancelled) {
-                try {
+            try {
+                if (!cancelled) {
                     lyrics1_1 = ProcessSong.projectedSectionView(context, FullscreenActivity.currentSection, ProcessSong.getProjectedFontSize(scale));
                     LinearLayout.LayoutParams llp1_1 = new LinearLayout.LayoutParams(availableWidth_1col, LinearLayout.LayoutParams.WRAP_CONTENT);
                     llp1_1.setMargins(0, 0, 0, 0);
@@ -955,9 +985,9 @@ class PresentationServiceHDMI extends Presentation
                     box1_1.setLayoutParams(llp);
                     projected_LinearLayout.addView(box1_1);
                     animateIn();
-                } catch (Exception e) {
-                    // Ooops
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -1079,29 +1109,43 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class PrepareFullProjected extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test1_1 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test1_2 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test2_2 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test1_3 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test2_3 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test3_3 = ProcessSong.createLinearLayout(context);
 
         @Override
         protected void onPreExecute() {
             // Remove all views from the test panes
-            col1_1.removeAllViews();
-            col1_2.removeAllViews();
-            col2_2.removeAllViews();
-            col1_3.removeAllViews();
-            col2_3.removeAllViews();
-            col3_3.removeAllViews();
+            try {
+                col1_1.removeAllViews();
+                col1_2.removeAllViews();
+                col2_2.removeAllViews();
+                col1_3.removeAllViews();
+                col2_3.removeAllViews();
+                col3_3.removeAllViews();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         protected String doInBackground(Object... objects) {
-            projectedSectionScaleValue = new float[6];
-            projectedviewwidth = new int[6];
-            projectedviewheight = new int[6];
+            try {
+                projectedSectionScaleValue = new float[6];
+                projectedviewwidth = new int[6];
+                projectedviewheight = new int[6];
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -1114,9 +1158,8 @@ class PresentationServiceHDMI extends Presentation
 
         @Override
         protected void onPostExecute(String s) {
-
-            if (!cancelled) {
-                try {
+            try {
+                if (!cancelled) {
                     // Prepare the new views to add to 1,2 and 3 colums ready for measuring
                     // Go through each section
                     for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
@@ -1168,9 +1211,9 @@ class PresentationServiceHDMI extends Presentation
                     // Now display the song!
                     //FullscreenActivity.scalingfiguredout = true;
                     displayFullSong();
-                } catch (Exception e) {
-                    // Ooops
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -1186,7 +1229,9 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class ProjectedPerformanceView1Col extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_1 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
         float scale1_1;
         float fontsize1_1;
@@ -1199,8 +1244,12 @@ class PresentationServiceHDMI extends Presentation
         @Override
         protected void onPreExecute() {
             // Remove all views from the projector
-            projected_LinearLayout.removeAllViews();
-            lyrics1_1.setPadding(0, 0, 0, 0);
+            try {
+                projected_LinearLayout.removeAllViews();
+                lyrics1_1.setPadding(0, 0, 0, 0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -1217,8 +1266,8 @@ class PresentationServiceHDMI extends Presentation
 
         @Override
         protected void onPostExecute(String s) {
-            if (!cancelled) {
-                try {
+            try {
+                if (!cancelled) {
                     // Prepare the new views to add to 1,2 and 3 colums ready for measuring
                     // Go through each section
                     for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
@@ -1237,9 +1286,9 @@ class PresentationServiceHDMI extends Presentation
                     box1_1.setLayoutParams(llp);
                     projected_LinearLayout.addView(box1_1);
                     animateIn();
-                } catch (Exception e) {
-                    // Ooops
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -1259,9 +1308,13 @@ class PresentationServiceHDMI extends Presentation
         float scale2_2;
         float fontsize1_2;
         float fontsize2_2;
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_2 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics2_2 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_2 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box2_2 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
 
         ProjectedPerformanceView2Col(float s1_2, float s2_2) {
@@ -1273,10 +1326,14 @@ class PresentationServiceHDMI extends Presentation
 
         @Override
         protected void onPreExecute() {
-            // Remove all views from the projector
-            projected_LinearLayout.removeAllViews();
-            lyrics1_2.setPadding(0, 0, 0, 0);
-            lyrics2_2.setPadding(0, 0, 0, 0);
+            try {
+                // Remove all views from the projector
+                projected_LinearLayout.removeAllViews();
+                lyrics1_2.setPadding(0, 0, 0, 0);
+                lyrics2_2.setPadding(0, 0, 0, 0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -1293,8 +1350,8 @@ class PresentationServiceHDMI extends Presentation
 
         @Override
         protected void onPostExecute(String s) {
-            if (!cancelled) {
-                try {
+            try {
+                if (!cancelled) {
                     // Add the song sections...
                     for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
 
@@ -1325,9 +1382,9 @@ class PresentationServiceHDMI extends Presentation
                     projected_LinearLayout.addView(box1_2);
                     projected_LinearLayout.addView(box2_2);
                     animateIn();
-                } catch (Exception e) {
-                    // Ooops
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -1349,11 +1406,17 @@ class PresentationServiceHDMI extends Presentation
         float fontsize1_3;
         float fontsize2_3;
         float fontsize3_3;
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_3 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics2_3 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics3_3 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_3 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box2_3 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box3_3 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
 
         ProjectedPerformanceView3Col(float s1_3, float s2_3, float s3_3) {
@@ -1368,10 +1431,14 @@ class PresentationServiceHDMI extends Presentation
         @Override
         protected void onPreExecute() {
             // Remove all views from the projector
-            projected_LinearLayout.removeAllViews();
-            lyrics1_3.setPadding(0, 0, 0, 0);
-            lyrics2_3.setPadding(0, 0, 0, 0);
-            lyrics3_3.setPadding(0, 0, 0, 0);
+            try {
+                projected_LinearLayout.removeAllViews();
+                lyrics1_3.setPadding(0, 0, 0, 0);
+                lyrics2_3.setPadding(0, 0, 0, 0);
+                lyrics3_3.setPadding(0, 0, 0, 0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -1388,8 +1455,8 @@ class PresentationServiceHDMI extends Presentation
 
         @Override
         protected void onPostExecute(String s) {
-            if (!cancelled) {
-                try {
+            try {
+                if (!cancelled) {
                     // Add the song sections...
                     for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
                         if (x < FullscreenActivity.thirdsplit_section) {
@@ -1429,9 +1496,9 @@ class PresentationServiceHDMI extends Presentation
                     projected_LinearLayout.addView(box2_3);
                     projected_LinearLayout.addView(box3_3);
                     animateIn();
-                } catch (Exception e) {
-                    // Ooops
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -1473,20 +1540,23 @@ class PresentationServiceHDMI extends Presentation
 
     @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private static void reloadVideo() throws IOException {
-        if (mMediaPlayer == null) {
-            mMediaPlayer = new MediaPlayer();
-            mMediaPlayer.setSurface(s);
-        }
-        mMediaPlayer.reset();
-        try {
-            mMediaPlayer.setDataSource(vidFile);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        try {
-            mMediaPlayer.prepareAsync();
-        } catch (Exception e) {
-            Log.e("Presentation window", "media player error");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            if (mMediaPlayer == null) {
+                mMediaPlayer = new MediaPlayer();
+                mMediaPlayer.setSurface(s);
+            }
+                mMediaPlayer.reset();
+
+            try {
+                mMediaPlayer.setDataSource(vidFile);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            try {
+                mMediaPlayer.prepareAsync();
+            } catch (Exception e) {
+                Log.e("Presentation window", "media player error");
+            }
         }
     }
 
@@ -1532,18 +1602,20 @@ class PresentationServiceHDMI extends Presentation
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        s = new Surface(surface);
-        mMediaPlayer = new MediaPlayer();
-        mMediaPlayer.setSurface(s);
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mMediaPlayer.setOnPreparedListener(this);
-        mMediaPlayer.setOnCompletionListener(this);
-        if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
-            try {
-                mMediaPlayer.setDataSource(vidFile);
-                mMediaPlayer.prepareAsync();
-            } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
-                e.printStackTrace();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            s = new Surface(surface);
+            mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setSurface(s);
+            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mMediaPlayer.setOnPreparedListener(this);
+            mMediaPlayer.setOnCompletionListener(this);
+            if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
+                try {
+                    mMediaPlayer.setDataSource(vidFile);
+                    mMediaPlayer.prepareAsync();
+                } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

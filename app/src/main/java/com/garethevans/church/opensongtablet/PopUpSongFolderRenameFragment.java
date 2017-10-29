@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -235,6 +236,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class GetFoldersAsync extends AsyncTask<Object, Void, String> {
 
         @Override

@@ -41,6 +41,10 @@ class OpenFragment {
                 newFragment = PopUpAreYouSureFragment.newInstance(message);
                 break;
 
+            case "randomsong":
+                newFragment = PopUpRandomSongFragment.newInstance();
+                break;
+
             case "customcreate":
                 newFragment = PopUpCustomSlideFragment.newInstance();
                 break;
@@ -63,6 +67,10 @@ class OpenFragment {
 
             case "songdetails":
                 newFragment = PopUpSongDetailsFragment.newInstance();
+                break;
+
+            case "extractPDF":
+                newFragment = PopUpPDFToTextFragment.newInstance();
                 break;
 
             case "alert":
@@ -95,6 +103,14 @@ class OpenFragment {
             case "editnotes":
                 if (justSong(c)) {
                     newFragment = PopUpEditStickyFragment.newInstance();
+                }
+                break;
+
+            case "abcnotation":
+            case "abcnotation_edit":
+            case "abcnotation_editsong":
+                if (justSong(c)) {
+                    newFragment = PopUpABCNotationFragment.newInstance();
                 }
                 break;
 
@@ -319,6 +335,8 @@ class OpenFragment {
             case "chordie":
             case "ultimate-guitar":
             case "worshipready":
+            case "songselect":
+            case "worshiptogether":
                 newFragment = PopUpFindNewSongsFragment.newInstance();
                 break;
 

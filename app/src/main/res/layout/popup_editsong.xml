@@ -101,6 +101,8 @@
 
                 <Spinner
                     android:id="@+id/edit_song_key"
+                    android:spinnerMode="dialog"
+                    style="@style/MySpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -213,6 +215,8 @@
 
                 <Spinner
                     android:id="@+id/edit_song_timesig"
+                    android:spinnerMode="dialog"
+                    style="@style/MySpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -231,6 +235,8 @@
 
                 <Spinner
                     android:id="@+id/edit_song_capo"
+                    android:spinnerMode="dialog"
+                    style="@style/MySpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -250,6 +256,8 @@
 
                 <Spinner
                     android:id="@+id/edit_song_capo_print"
+                    android:spinnerMode="dialog"
+                    style="@style/MySpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -304,6 +312,30 @@
                     android:inputType="textMultiLine"
                     android:isScrollContainer="true"
                     android:minLines="10"
+                    android:scrollbarStyle="insideOverlay"
+                    android:scrollbars="vertical" />
+
+                <TextView
+                    android:id="@+id/myScore"
+                    style="@style/MyHeadingText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/music_score" />
+
+                <TextView
+                    android:id="@+id/abcnotation"
+                    style="@style/MyEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:gravity="start|top|left"
+                    android:hint="@string/music_score"
+                    android:isScrollContainer="true"
+                    android:minLines="1"
                     android:scrollbarStyle="insideOverlay"
                     android:scrollbars="vertical" />
 
@@ -499,6 +531,8 @@
 
                 <Spinner
                     android:id="@+id/edit_pad_file"
+                    android:spinnerMode="dialog"
+                    style="@style/MySpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"

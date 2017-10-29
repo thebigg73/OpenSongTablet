@@ -40,31 +40,27 @@ import java.util.zip.ZipOutputStream;
 
 public class ExportPreparer extends Activity {
 
-	static String setxml = "";
+	private static String setxml = "";
 	static String settext = "";
-	static String song_title = "";
-	static String song_author = "";
-	static String song_copyright = "";
-	static String song_hymnnumber = "";
-	static String song_key = "";
-	static String song_lyrics_withchords = "";
-	static String song_lyrics_withoutchords = "";
-	static File songfile = null;
-    static ArrayList<String> filesinset = new ArrayList<>();
-	static ArrayList<String> filesinset_ost = new ArrayList<>();
+	private static String song_title = "";
+	private static String song_author = "";
+    private static String song_hymnnumber = "";
+	private static String song_key = "";
+    private static File songfile = null;
+    private static ArrayList<String> filesinset = new ArrayList<>();
+	private static ArrayList<String> filesinset_ost = new ArrayList<>();
     static Image image;
-    static byte[] bArray;
     //static Backup_Create backup_create;
     @SuppressLint("StaticFieldLeak")
-    static Backup_Create_Selected backup_create_selected;
+    private static Backup_Create_Selected backup_create_selected;
     Context context;
     @SuppressLint("StaticFieldLeak")
     static Activity activity;
     static Intent emailIntent;
     static String folderstoexport = "";
-    static ZipOutputStream outSelected;
+    private static ZipOutputStream outSelected;
 
-	public static boolean setParser(Context c) throws IOException, XmlPullParserException {
+	private static boolean setParser(Context c) throws IOException, XmlPullParserException {
 
         settext = "";
         FullscreenActivity.exportsetfilenames.clear();
@@ -191,7 +187,7 @@ public class ExportPreparer extends Activity {
         return true;
 	}
 
-	public static void getSongData() throws XmlPullParserException, IOException {
+	private static void getSongData() throws XmlPullParserException, IOException {
 		// Parse the song xml.
 		// Grab the title, author, lyrics_withchords, lyrics_withoutchords, copyright, hymnnumber, key
 
@@ -199,9 +195,9 @@ public class ExportPreparer extends Activity {
 		String songxml = "";
 		song_title = "";
 		song_author = "";
-		song_lyrics_withchords = "";
-		song_lyrics_withoutchords = "";
-		song_copyright = "";
+        String song_lyrics_withchords = "";
+        String song_lyrics_withoutchords = "";
+        //String song_copyright = "";
 		song_hymnnumber = "";
 		song_key = "";
 
@@ -248,8 +244,8 @@ public class ExportPreparer extends Activity {
 			if (eventType == XmlPullParser.START_TAG) {
 				if (xppSong.getName().equals("author")) {
 					song_author = LoadXML.parseFromHTMLEntities(xppSong.nextText());
-				} else if (xppSong.getName().equals("copyright")) {
-					song_copyright = LoadXML.parseFromHTMLEntities(xppSong.nextText());
+				/*} else if (xppSong.getName().equals("copyright")) {
+					song_copyright = LoadXML.parseFromHTMLEntities(xppSong.nextText());*/
 				} else if (xppSong.getName().equals("title")) {
 					song_title = LoadXML.parseFromHTMLEntities(xppSong.nextText());
 				} else if (xppSong.getName().equals("lyrics")) {
@@ -292,7 +288,7 @@ public class ExportPreparer extends Activity {
 		return outputStream.toString();
 	}
 
-	public static Intent exportSet(Context c) {
+	static Intent exportSet(Context c) {
         String nicename = FullscreenActivity.settoload;
         Uri text = null;
         Uri desktop = null;
@@ -301,7 +297,9 @@ public class ExportPreparer extends Activity {
 
         // Prepare a txt version of the set.
         try {
-            setParser(c);
+            if (!setParser(c)) {
+                Log.d("d","Problem parsing the set");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -441,7 +439,7 @@ public class ExportPreparer extends Activity {
         return emailIntent;
     }
 
-	public static Intent exportSong(Context c, Bitmap bmp) {
+	static Intent exportSong(Context c, Bitmap bmp) {
         // Prepare the appropriate attachments
         String emailcontent = "";
         Uri text = null;
@@ -561,7 +559,7 @@ public class ExportPreparer extends Activity {
         return emailIntent;
     }
 
-    public static Intent exportBackup(Context c, File f) {
+    static Intent exportBackup(Context c, File f) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
         emailIntent.setType("text/plain");
         emailIntent.putExtra(Intent.EXTRA_TITLE, c.getString(R.string.backup_info));
@@ -577,7 +575,7 @@ public class ExportPreparer extends Activity {
         return emailIntent;
     }
 
-    public static void makePDF (Bitmap bmp, File file) {
+    private static void makePDF(Bitmap bmp, File file) {
         Document document = new Document();
         try {
             PdfWriter.getInstance(document, new FileOutputStream(file));
@@ -603,11 +601,11 @@ public class ExportPreparer extends Activity {
         }
     }
 
-    public static void addImage(Document document, Bitmap bmp) {
+    private static void addImage(Document document, Bitmap bmp) {
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            bArray = stream.toByteArray();
+            byte[] bArray = stream.toByteArray();
             image = Image.getInstance(bArray);
         } catch (Exception e) {
             e.printStackTrace();
@@ -642,7 +640,7 @@ public class ExportPreparer extends Activity {
         }
     }
 
-    public static void createSelectedOSB(Context c) {
+    static void createSelectedOSB(Context c) {
         activity = (Activity) c;
         if (backup_create_selected!=null) {
             backup_create_selected.cancel(true);
@@ -651,6 +649,7 @@ public class ExportPreparer extends Activity {
         backup_create_selected.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
     private static class Backup_Create_Selected extends AsyncTask<String, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         Context c;
         Backup_Create_Selected(Context context) {
             c = context;
@@ -681,7 +680,7 @@ public class ExportPreparer extends Activity {
             }
         }
     }
-    public static String makeBackupZipSelected() {
+    static String makeBackupZipSelected() {
         // Get the date for the file
         Calendar c = Calendar.getInstance();
         System.out.println("Current time => " + c.getTime());
@@ -714,7 +713,7 @@ public class ExportPreparer extends Activity {
         }
         outSelected.close();
     }
-    static void addDirSelected(File dirObj) throws IOException {
+    private static void addDirSelected(File dirObj) throws IOException {
         Log.d("d","dirObj="+dirObj.toString());
         if (dirObj.toString().contains("/"+FullscreenActivity.mainfoldername)) {
             dirObj = new File(FullscreenActivity.dir.toString());
@@ -737,7 +736,7 @@ public class ExportPreparer extends Activity {
         }
     }
 
-    public static void prepareChordProFile(Context c) {
+    private static void prepareChordProFile(Context c) {
         // This converts an OpenSong file into a ChordPro file
         FullscreenActivity.exportChordPro_String = "";
         String s = "{ns}\n";
@@ -753,7 +752,7 @@ public class ExportPreparer extends Activity {
         Log.d("d","ChordProSong = "+s);
         FullscreenActivity.exportChordPro_String = s;
     }
-    public static void prepareOnSongFile(Context c) {
+    private static void prepareOnSongFile(Context c) {
         // This converts an OpenSong file into a OnSong file
         FullscreenActivity.exportOnSong_String = "";
         String s = FullscreenActivity.mTitle+"\n";
@@ -776,7 +775,7 @@ public class ExportPreparer extends Activity {
         Log.d("d","OnSong = "+s);
         FullscreenActivity.exportOnSong_String = s;
     }
-    public static void prepareTextFile(Context c) {
+    private static void prepareTextFile(Context c) {
         // This converts an OpenSong file into a text file
         FullscreenActivity.exportText_String = "";
         String s = FullscreenActivity.mTitle+"\n";
@@ -798,7 +797,7 @@ public class ExportPreparer extends Activity {
         s = s.replace("\n\n\n","\n\n");
         FullscreenActivity.exportText_String = s;
     }
-    public static void writeFile(String s, File f, String what, Bitmap bmp) {
+    private static void writeFile(String s, File f, String what, Bitmap bmp) {
         if (what.equals("png")) {
             try {
                 FileOutputStream out = new FileOutputStream(f);
@@ -820,7 +819,7 @@ public class ExportPreparer extends Activity {
             }
         }
     }
-    public static void copyFile(File from, File to) {
+    private static void copyFile(File from, File to) {
         try {
             InputStream is=new FileInputStream(from);
             OutputStream os=new FileOutputStream(to);

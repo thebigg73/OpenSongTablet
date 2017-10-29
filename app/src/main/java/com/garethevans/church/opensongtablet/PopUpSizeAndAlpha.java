@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -37,6 +40,7 @@ class PopUpSizeAndAlpha {
                 case "chordie":
                 case "ultimate-guitar":
                 case "worshipready":
+                case "editsong":
                     myscale = 1.0f;
                     myalpha = FullscreenActivity.popupAlpha_All;
                     mydim = FullscreenActivity.popupDim_All;
@@ -47,6 +51,14 @@ class PopUpSizeAndAlpha {
                     myscale = 1.0f;
                     myalpha = 1.0f;
                     mydim = 1.0f;
+                    position = "C";
+                    break;
+
+                case "abcnotation":
+                case "abcnotation_edit":
+                    myscale = 1.0f;
+                    myalpha = FullscreenActivity.popupAlpha_All;
+                    mydim = FullscreenActivity.popupDim_All;
                     position = "C";
                     break;
 
@@ -109,9 +121,84 @@ class PopUpSizeAndAlpha {
                         dw.setGravity(Gravity.BOTTOM|Gravity.RIGHT);
                         break;
                 }
+                setWindowFlags(dw, dw.getDecorView());
+                setWindowFlagsAdvanced(dw, dw.getDecorView());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private static void setWindowFlags(Window w, View v) {
+        v.setOnSystemUiVisibilityChangeListener(null);
+        v.setOnFocusChangeListener(null);
+        w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+        w.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        w.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    private static void setWindowFlagsAdvanced(final Window w, final View v) {
+        v.setOnSystemUiVisibilityChangeListener(null);
+        v.setOnFocusChangeListener(null);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LOW_PROFILE);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+
+        Runnable testnavbar = new Runnable() {
+            @Override
+            public void run() {
+                v.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+                    @Override
+                    public void onSystemUiVisibilityChange(int visibility) {
+                        restoreTransparentBars(w, v);
+                    }
+                });
+
+                v.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        restoreTransparentBars(w, v);
+                    }
+                });
+            }
+        };
+
+        Handler waitandtest = new Handler();
+        waitandtest.postDelayed(testnavbar, 1000);
+    }
+
+    private static void restoreTransparentBars(final Window w, final View v) {
+        // Set runnable
+        Runnable delhide = new Runnable() {
+            @Override
+            public void run() {
+                // Hide them
+                setWindowFlags(w,v);
+                setWindowFlagsAdvanced(w,v);
+                View rf = w.getCurrentFocus();
+                if (rf!=null) {
+                    rf.clearFocus();
+                }
+            }
+        };
+
+        // Wait for 1000ms then check for Navigation bar visibility
+        // If it is there, hide it
+        Handler delayhidehandler = new Handler();
+        delayhidehandler.postDelayed(delhide, 1000);
+    }
+
 }

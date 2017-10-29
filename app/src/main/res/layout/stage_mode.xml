@@ -43,19 +43,15 @@
 
             <ImageView
                 android:id="@+id/glideimage"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/image"
+                android:layout_gravity="center_horizontal"
                 android:isScrollContainer="true"
                 android:visibility="visible" />
 
         </ScrollView>
 
-        <include
-            android:id="@+id/mytoolbar"
-            layout="@layout/toolbar"
-            android:clipChildren="false"
-            android:clipToPadding="false" />
 
         <RelativeLayout
             android:id="@+id/testpane"
@@ -187,7 +183,20 @@
 
         <include
             android:id="@+id/pagebuttons"
-            layout="@layout/pageicons_right_material" />
+            layout="@layout/page_buttons" />
+
+        <TextView
+            android:id="@+id/top_of_page"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"/>
+
+        <include
+            android:id="@+id/mytoolbar"
+            layout="@layout/toolbar"
+            android:clipChildren="false"
+            android:clipToPadding="false" />
 
     </RelativeLayout>
 

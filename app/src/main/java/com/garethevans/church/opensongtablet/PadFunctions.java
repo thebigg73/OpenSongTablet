@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.content.Context;
 
 import java.io.File;
+import java.net.URI;
 
 class PadFunctions {
 
@@ -70,12 +71,12 @@ class PadFunctions {
                 !FullscreenActivity.mLinkAudio.isEmpty() && !FullscreenActivity.mLinkAudio.equals("")) {
             String filetext = FullscreenActivity.mLinkAudio;
             filetext = filetext.replace("file://","");
-
             // If this is a localised file, we need to unlocalise it to enable it to be read
             if (filetext.startsWith("../OpenSong/")) {
-                filetext = "file://" + filetext.replace("../OpenSong/",FullscreenActivity.homedir+"/");
+                filetext = filetext.replace("../OpenSong/",FullscreenActivity.homedir+"/");
             }
-            File file = new File (filetext);
+            filetext = "file://" + filetext;
+            File file = new File(URI.create(filetext).getPath());
             isvalid = file.exists() && file.isFile();
         } else if (!FullscreenActivity.mKey.isEmpty()){
             isvalid = true;

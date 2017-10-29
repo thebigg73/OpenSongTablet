@@ -42,19 +42,20 @@
 
         <ImageView
             android:id="@+id/screenshot"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
-            android:scaleType="centerInside"
             android:contentDescription="@string/options_song" />
 
         <com.garethevans.church.opensongtablet.DrawNotes
             android:id="@+id/drawView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"/>
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="0dp"
+            android:padding="0dp"/>
 
     </RelativeLayout>
 
@@ -116,6 +117,40 @@
                 android:layout_marginTop="0dp"
                 android:padding="0dp"
                 android:src="@drawable/ic_eraser_white_36dp"
+                app:backgroundTint="@color/purple"
+                app:borderWidth="0dp"
+                app:elevation="0dp"
+                app:fabSize="mini"
+                app:useCompatPadding="true" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/undo_FAB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="0dp"
+                android:padding="0dp"
+                android:src="@drawable/ic_undo_white_36dp"
+                app:backgroundTint="@color/purple"
+                app:borderWidth="0dp"
+                app:elevation="0dp"
+                app:fabSize="mini"
+                app:useCompatPadding="true" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/redo_FAB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="0dp"
+                android:padding="0dp"
+                android:src="@drawable/ic_redo_white_36dp"
                 app:backgroundTint="@color/purple"
                 app:borderWidth="0dp"
                 app:elevation="0dp"
@@ -270,7 +305,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/size_TextView"
-            android:max="9"
+            android:max="19"
             android:progress="1"
             android:layout_margin="4dp"
             android:background="@drawable/apptheme_scrubber_primary_holo"

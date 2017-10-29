@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -55,6 +57,10 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
     TextView scalemenu_TextView;
     SwitchCompat gesturesMenuSwipeButton;
     SwitchCompat showSetTickBoxInSongMenu;
+    SwitchCompat showAlphabetInSongMenu;
+    SeekBar alphabeticalSize_SeekBar;
+    TextView alphabeticalSize_TextView;
+    LinearLayout alphabeticalSizeGroup;
     int pos;
     String scale;
 
@@ -91,13 +97,24 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         scalemenu_TextView = (TextView) V.findViewById(R.id.scalemenu_TextView);
         gesturesMenuSwipeButton = (SwitchCompat) V.findViewById(R.id.gesturesMenuSwipeButton);
         showSetTickBoxInSongMenu = (SwitchCompat) V.findViewById(R.id.showSetTickBoxInSongMenu);
+        showAlphabetInSongMenu = (SwitchCompat) V.findViewById(R.id.showAlphabetInSongMenu);
+        alphabeticalSize_SeekBar = (SeekBar) V.findViewById(R.id.alphabeticalSize_SeekBar);
+        alphabeticalSize_TextView = (TextView) V.findViewById(R.id.alphabeticalSize_TextView);
+        alphabeticalSizeGroup = (LinearLayout) V.findViewById(R.id.alphabeticalSizeGroup);
 
         pos = (int) (FullscreenActivity.menuSize * 10.0f) - 2;
         scale = (int) ((FullscreenActivity.menuSize * 100.0f)) + "%";
         scalemenu_SeekBar.setProgress(pos);
         scalemenu_TextView.setText(scale);
-        gesturesMenuSwipeButton.setChecked(FullscreenActivity.swipeForMenus);
-        showSetTickBoxInSongMenu.setChecked(FullscreenActivity.showSetTickBoxInSongMenu);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            gesturesMenuSwipeButton.setChecked(FullscreenActivity.swipeForMenus);
+            showSetTickBoxInSongMenu.setChecked(FullscreenActivity.showSetTickBoxInSongMenu);
+            showAlphabetInSongMenu.setChecked(FullscreenActivity.showAlphabeticalIndexInSongMenu);
+        }
+        assignVisibility(alphabeticalSizeGroup, FullscreenActivity.showAlphabeticalIndexInSongMenu);
+        alphabeticalSize_SeekBar.setProgress(textSizeFloatToInt(FullscreenActivity.alphabeticalSize));
+        String s = ((int) FullscreenActivity.alphabeticalSize) + "sp";
+        alphabeticalSize_TextView.setText(s);
 
         // Set up the listeners
         scalemenu_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -140,19 +157,72 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
                 }
             }
         });
+        showAlphabetInSongMenu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.showAlphabeticalIndexInSongMenu = b;
+                assignVisibility(alphabeticalSizeGroup,b);
+                Preferences.savePreferences();
+                if (mListener!=null) {
+                    mListener.prepareSongMenu();
+                }
+            }
+        });
+        alphabeticalSize_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                // Text size is a float that adds 8 on to this
+                i = i + 8;
+                String s = i + "sp";
+                alphabeticalSize_TextView.setText(s);
+                FullscreenActivity.alphabeticalSize = (float) i;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Preferences.savePreferences();
+                mListener.prepareSongMenu();
+            }
+        });
+
         return V;
     }
 
-    public void doSave() {
+    public int textSizeFloatToInt(float f) {
+        // Minimum text size is 8sp (float).  This should match 0 on the Seekbar
+        int size = (int) f;
+        if (size>=8) {
+            size = size - 8;
+        } else {
+            size = 0;
+        }
+        return size;
+    }
+
+    public void assignVisibility(View v, boolean b) {
+        if (b) {
+            v.setVisibility(View.VISIBLE);
+        } else {
+            v.setVisibility(View.GONE);
+        }
+    }
+
+/*    public void doSave() {
         FullscreenActivity.menuSize = (scalemenu_SeekBar.getProgress()+2)/10.0f;
         FullscreenActivity.swipeForMenus = gesturesMenuSwipeButton.isChecked();
         Preferences.savePreferences();
         if (mListener!=null) {
             mListener.resizeDrawers();
             mListener.toggleDrawerSwipe();
+            mListener.prepareSongMenu();
         }
         dismiss();
-    }
+    }*/
 
     @Override
     public void onCancel(DialogInterface dialog) {

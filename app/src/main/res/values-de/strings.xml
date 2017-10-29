@@ -612,8 +612,23 @@
 	<string name="highlight">"Textmarker"</string>
 	<string name="highlight_notallowed">"Autoscale muss für diese Funktion voll eingestellt sein"</string>
 	<string name="stage_section_max">"Maximale Schnitthöhe (Stage Mode)"</string>
-	<string name="trim_sections">"Trimmschnitte"</string>
+	<string name="trim_sections">"Leerzeilen in Abschnitten kürzen"</string>
 
-	<string name="section_space">"Bereich hinzufügen"</string>
+	<string name="section_space">"Leerzeile zwischen Abschnitten einfügen"</string>
+    <string name="alphabetical">Alphabetische Song Index</string>
+
+	<string name="pdfonly">"Kein ChordPro, nur das PDF"</string>
+	<string name="random_song">"Finde einen zufälligen Song"</string>
+	<string name="tag_ending">"Schluss"</string>
+	<string name="tag_instrumental">"Instrumental"</string>
+	<string name="tag_interlude">"Interlude"</string>
+	<string name="tag_intro">"Intro"</string>
+	<string name="tag_introduction">"Einleitung"</string>
+	<string name="tag_refrain">"Refrain"</string>
+	<string name="tag_reprise">"Reprise"</string>
+
+    <string name="music_score">"Musikpartitur"</string>
+    <string name="pdftotext_extract">"Text aus PDF extrahieren"</string>
+    <string name="pdftotext_found">"Text gefunden:"</string>
 
 </resources>

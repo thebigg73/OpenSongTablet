@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -21,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 
@@ -119,9 +121,9 @@ public class PopUpLayoutFragment extends DialogFragment {
 
         final View V = inflater.inflate(R.layout.popup_layout, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.connected_display));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,54 +132,58 @@ public class PopUpLayoutFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
-        toggleChordsButton = (SwitchCompat) V.findViewById(R.id.toggleChordsButton);
-        toggleAutoScaleButton = (SwitchCompat) V.findViewById(R.id.toggleAutoScaleButton);
-        group_maxfontsize = (LinearLayout) V.findViewById(R.id.group_maxfontsize);
-        setMaxFontSizeProgressBar = (SeekBar) V.findViewById(R.id.setMaxFontSizeProgressBar);
-        maxfontSizePreview = (TextView) V.findViewById(R.id.maxfontSizePreview);
-        group_manualfontsize = (LinearLayout) V.findViewById(R.id.group_manualfontsize);
-        setFontSizeProgressBar = (SeekBar) V.findViewById(R.id.setFontSizeProgressBar);
-        fontSizePreview = (TextView) V.findViewById(R.id.fontSizePreview);
-        group_alignment = (LinearLayout) V.findViewById(R.id.group_alignment);
-        lyrics_title_align = (TextView) V.findViewById(R.id.lyrics_title_align);
-        lyrics_left_align = (FloatingActionButton) V.findViewById(R.id.lyrics_left_align);
-        lyrics_center_align = (FloatingActionButton) V.findViewById(R.id.lyrics_center_align);
-        lyrics_right_align = (FloatingActionButton) V.findViewById(R.id.lyrics_right_align);
-        info_left_align = (FloatingActionButton) V.findViewById(R.id.info_left_align);
-        info_center_align = (FloatingActionButton) V.findViewById(R.id.info_center_align);
-        info_right_align = (FloatingActionButton) V.findViewById(R.id.info_right_align);
-        group_songinfofontsizes = (LinearLayout) V.findViewById(R.id.group_songinfofontsizes);
-        presoTitleSizeSeekBar = (SeekBar) V.findViewById(R.id.presoTitleSizeSeekBar);
-        presoAuthorSizeSeekBar = (SeekBar) V.findViewById(R.id.presoAuthorSizeSeekBar);
-        presoCopyrightSizeSeekBar = (SeekBar) V.findViewById(R.id.presoCopyrightSizeSeekBar);
-        presoAlertSizeSeekBar = (SeekBar) V.findViewById(R.id.presoAlertSizeSeekBar);
-        presoTransitionTimeSeekBar = (SeekBar) V.findViewById(R.id.presoTransitionTimeSeekBar);
-        presoTransitionTimeTextView = (TextView) V.findViewById(R.id.presoTransitionTimeTextView);
-        group_backgrounds = (LinearLayout) V.findViewById(R.id.group_backgrounds);
-        presoAlphaProgressBar = (SeekBar) V.findViewById(R.id.presoAlphaProgressBar);
-        presoAlphaText = (TextView) V.findViewById(R.id.presoAlphaText);
-        chooseLogoButton = (ImageView) V.findViewById(R.id.chooseLogoButton);
-        chooseImage1Button = (ImageView) V.findViewById(R.id.chooseImage1Button);
-        chooseImage2Button = (ImageView) V.findViewById(R.id.chooseImage2Button);
-        chooseVideo1Button = (ImageView) V.findViewById(R.id.chooseVideo1Button);
-        chooseVideo2Button = (ImageView) V.findViewById(R.id.chooseVideo2Button);
-        image1CheckBox = (CheckBox) V.findViewById(R.id.image1CheckBox);
-        image2CheckBox = (CheckBox) V.findViewById(R.id.image2CheckBox);
-        video1CheckBox = (CheckBox) V.findViewById(R.id.video1CheckBox);
-        video2CheckBox = (CheckBox) V.findViewById(R.id.video2CheckBox);
-        group_margins = (LinearLayout) V.findViewById(R.id.group_margins);
-        setXMarginProgressBar = (SeekBar) V.findViewById(R.id.setXMarginProgressBar);
-        setYMarginProgressBar = (SeekBar) V.findViewById(R.id.setYMarginProgressBar);
+        toggleChordsButton = V.findViewById(R.id.toggleChordsButton);
+        toggleAutoScaleButton = V.findViewById(R.id.toggleAutoScaleButton);
+        group_maxfontsize = V.findViewById(R.id.group_maxfontsize);
+        setMaxFontSizeProgressBar = V.findViewById(R.id.setMaxFontSizeProgressBar);
+        maxfontSizePreview = V.findViewById(R.id.maxfontSizePreview);
+        group_manualfontsize = V.findViewById(R.id.group_manualfontsize);
+        setFontSizeProgressBar = V.findViewById(R.id.setFontSizeProgressBar);
+        fontSizePreview = V.findViewById(R.id.fontSizePreview);
+        group_alignment = V.findViewById(R.id.group_alignment);
+        lyrics_title_align = V.findViewById(R.id.lyrics_title_align);
+        lyrics_left_align = V.findViewById(R.id.lyrics_left_align);
+        lyrics_center_align = V.findViewById(R.id.lyrics_center_align);
+        lyrics_right_align = V.findViewById(R.id.lyrics_right_align);
+        info_left_align = V.findViewById(R.id.info_left_align);
+        info_center_align = V.findViewById(R.id.info_center_align);
+        info_right_align = V.findViewById(R.id.info_right_align);
+        group_songinfofontsizes = V.findViewById(R.id.group_songinfofontsizes);
+        presoTitleSizeSeekBar = V.findViewById(R.id.presoTitleSizeSeekBar);
+        presoAuthorSizeSeekBar = V.findViewById(R.id.presoAuthorSizeSeekBar);
+        presoCopyrightSizeSeekBar = V.findViewById(R.id.presoCopyrightSizeSeekBar);
+        presoAlertSizeSeekBar = V.findViewById(R.id.presoAlertSizeSeekBar);
+        presoTransitionTimeSeekBar = V.findViewById(R.id.presoTransitionTimeSeekBar);
+        presoTransitionTimeTextView = V.findViewById(R.id.presoTransitionTimeTextView);
+        group_backgrounds = V.findViewById(R.id.group_backgrounds);
+        presoAlphaProgressBar = V.findViewById(R.id.presoAlphaProgressBar);
+        presoAlphaText = V.findViewById(R.id.presoAlphaText);
+        chooseLogoButton = V.findViewById(R.id.chooseLogoButton);
+        chooseImage1Button = V.findViewById(R.id.chooseImage1Button);
+        chooseImage2Button = V.findViewById(R.id.chooseImage2Button);
+        chooseVideo1Button = V.findViewById(R.id.chooseVideo1Button);
+        chooseVideo2Button = V.findViewById(R.id.chooseVideo2Button);
+        image1CheckBox = V.findViewById(R.id.image1CheckBox);
+        image2CheckBox = V.findViewById(R.id.image2CheckBox);
+        video1CheckBox = V.findViewById(R.id.video1CheckBox);
+        video2CheckBox = V.findViewById(R.id.video2CheckBox);
+        group_margins = V.findViewById(R.id.group_margins);
+        setXMarginProgressBar = V.findViewById(R.id.setXMarginProgressBar);
+        setYMarginProgressBar = V.findViewById(R.id.setYMarginProgressBar);
 
         SetTypeFace.setTypeface();
 
 
         // Set the stuff up to what it should be from preferences
-        toggleChordsButton.setChecked(FullscreenActivity.presoShowChords);
-        toggleAutoScaleButton.setChecked(FullscreenActivity.presoAutoScale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            toggleChordsButton.setChecked(FullscreenActivity.presoShowChords);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            toggleAutoScaleButton.setChecked(FullscreenActivity.presoAutoScale);
+        }
         setMaxFontSizeProgressBar.setMax(70);
         setMaxFontSizeProgressBar.setProgress(FullscreenActivity.presoMaxFontSize - 4);
         maxfontSizePreview.setTypeface(FullscreenActivity.presofont);
@@ -547,7 +553,9 @@ public class PopUpLayoutFragment extends DialogFragment {
         if (imgfile.exists()) {
             Uri imageUri = Uri.fromFile(imgfile);
             v.setBackgroundColor(0x00000000);
-            Glide.with(getActivity()).load(imageUri).override(120,90).into(v);
+            RequestOptions myOptions = new RequestOptions()
+                    .override(120,90);
+            Glide.with(getActivity()).load(imageUri).apply(myOptions).into(v);
         }
     }
 

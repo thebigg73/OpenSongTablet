@@ -3,16 +3,29 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.CookieManager;
+import android.webkit.DownloadListener;
+import android.webkit.JavascriptInterface;
+import android.webkit.URLUtil;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -27,14 +40,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import static android.content.Context.DOWNLOAD_SERVICE;
 
 public class PopUpFindNewSongsFragment extends DialogFragment {
 
@@ -63,6 +80,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     String whatfolderselected;
     String mTitle = "";
     private MyInterface mListener;
+    String originaltemppdffile;
+    boolean downloadcomplete = false;
 
     static PopUpFindNewSongsFragment newInstance() {
         PopUpFindNewSongsFragment frag;
@@ -103,10 +122,19 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (FullscreenActivity.whattodo.equals("chordie")) {
-            mTitle = getActivity().getResources().getString(R.string.chordiesearch);
-        } else {
-            mTitle = getActivity().getResources().getString(R.string.ultimateguitarsearch);
+        switch (FullscreenActivity.whattodo) {
+            case "chordie":
+                mTitle = getActivity().getResources().getString(R.string.chordiesearch);
+                break;
+            case "songselect":
+                mTitle = getActivity().getResources().getString(R.string.songselect);
+                break;
+            case "worshiptogether":
+                mTitle = getActivity().getResources().getString(R.string.worshiptogether);
+                break;
+            default:
+                mTitle = getActivity().getResources().getString(R.string.ultimateguitarsearch);
+                break;
         }
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
@@ -211,7 +239,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         return V;
     }
 
-    @SuppressLint({"SetJavaScriptEnabled", "deprecation"})
+    @SuppressLint({"SetJavaScriptEnabled", "deprecation", "AddJavascriptInterface"})
     public void doSearch(String searchtext) {
 
         searchresults_RelativeLayout.setVisibility(View.VISIBLE);
@@ -225,8 +253,14 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 weblink = "http://www.ultimate-guitar.com/search.php?page=1&tab_type_group=text&app_name=ugt&order=myweight&type=300&title=" + searchtext;
                 //weblink = "https://www.ultimate-guitar.com/search.php?search_type=title&order=&value=" + searchtext;
                 break;
+            case "worshiptogether":
+                weblink = "http://worship-songs-resources.worshiptogether.com/search?w=" + searchtext;
+                break;
             case "worshipready":
                 weblink = "http://www.worshipready.com/chord-charts";
+                break;
+            case "songselect":
+                weblink = "https://songselect.ccli.com/Search/Results?SearchText=" + searchtext;
                 break;
         }
 
@@ -250,6 +284,68 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         webresults_WebView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
         webresults_WebView.setScrollbarFadingEnabled(false);
         webresults_WebView.loadUrl(weblink);
+        webresults_WebView.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
+        try {
+            getActivity().registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        } catch (Exception e) {
+            Log.d("d","Error registering download complete listener");
+        }
+        webresults_WebView.setDownloadListener(new DownloadListener() {
+
+            @Override
+            public void onDownloadStart(String url, String userAgent,
+                                        String contentDisposition, String mimetype,
+                                        long contentLength) {
+                final String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
+                if (FullscreenActivity.whattodo.equals("songselect") && (filename.endsWith(".pdf")||filename.endsWith(".PDF"))) {
+                    // Hide the WebView
+                    searchresults_RelativeLayout.setVisibility(View.GONE);
+                    FullscreenActivity.myToastMessage = "Downloading...";
+                    saveSong_Button.setEnabled(false);
+                    ShowToast.showToast(getActivity());
+
+                    String cookie = CookieManager.getInstance().getCookie(url);
+
+                    DownloadManager.Request request = new DownloadManager.Request(
+                            Uri.parse(url));
+
+                    request.allowScanningByMediaScanner();
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,filename);
+                    File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
+                    originaltemppdffile = file.toString();
+                    DownloadManager dm = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
+                    request.addRequestHeader("Cookie", cookie);
+                    dm.enqueue(request);
+                }
+
+            }
+        });
+    }
+
+    BroadcastReceiver onComplete=new BroadcastReceiver() {
+        public void onReceive(Context ctxt, Intent intent) {
+            downloadcomplete = true;
+            saveSong_Button.setEnabled(true);
+            Log.d("d","Download complete");
+            // If the song save section isn't visible, make it so
+            // This is because there was no chordpro, but pdf is here
+            if (newfileinfo_LinearLayout.getVisibility()!=View.VISIBLE) {
+                setFileNameAndFolder();
+            }
+            try {
+                getActivity().unregisterReceiver(onComplete);
+            } catch (Exception e) {
+                Log.d("d","Error unregistering receiver");
+            }
+        }
+    };
+
+    @JavascriptInterface
+    public void processHTML(String html) {
+        if (html == null) {
+            Log.d("d","html is null");
+        }
     }
 
     @Override
@@ -272,6 +368,16 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         ShowToast.showToast(getActivity());
         DownloadWebTextTask task = new DownloadWebTextTask();
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, weblink);
+
+        // If we are in songselect, trigger the download to keep the stats live
+        if (FullscreenActivity.whattodo.equals("songselect")) {
+            try {
+                // Trigger the download of the pdf
+                webresults_WebView.loadUrl("javascript:document.getElementById('chordSheetDownloadButton').click()");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void fixChordieContent(String resultposted) {
@@ -308,6 +414,223 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
         filename = temptitle.trim();
         filecontents = resultposted;
+    }
+
+    public void fixWTContent(String resultposted) {
+        // From Worship Together
+
+        grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
+
+        // Try to find the title
+        // By default use the title of the page as a default
+
+        String title_resultposted;
+        String filenametosave = "WT Song";
+        authorname = "";
+        String copyright = "";
+        String bpm = "";
+        String ccli = "";
+        String lyrics = "";
+        String key = "";
+
+        // Get the song title
+        int startpos = resultposted.indexOf("<title>");
+        int endpos = resultposted.indexOf("</title>");
+        if (startpos > -1 && endpos > -1 && startpos < endpos) {
+            title_resultposted = resultposted.substring(startpos + 7, endpos);
+            title_resultposted = title_resultposted.trim();
+            int pos_of_extra = title_resultposted.indexOf(" - ");
+            if (pos_of_extra>-1) {
+                title_resultposted = title_resultposted.substring(0,pos_of_extra);
+            }
+            pos_of_extra = title_resultposted.indexOf("Lyrics and Chords");
+            if (pos_of_extra>-1) {
+                title_resultposted = title_resultposted.substring(0,pos_of_extra);
+            }
+            title_resultposted = title_resultposted.replace("|","");
+
+            pos_of_extra = title_resultposted.indexOf("Worship Together");
+            if (pos_of_extra>-1) {
+                title_resultposted = title_resultposted.substring(0,pos_of_extra);
+            }
+            filenametosave = title_resultposted.trim();
+            filename = filenametosave;
+        }
+
+        String song_taxonomy;
+        startpos = resultposted.indexOf("<div class=\"song_taxonomy\">");
+        endpos = resultposted.indexOf("<div id=\"song_taxonomy_nav\">");
+        if (startpos > -1 && endpos > -1 && startpos < endpos) {
+            // Extract the song taxonomy so we can edit this bit quickly
+            song_taxonomy = resultposted.substring(startpos,endpos);
+
+            // Try to get the author data
+            startpos = song_taxonomy.indexOf("Writer(s):");
+            endpos = song_taxonomy.indexOf("</div>",startpos);
+            if (startpos > -1 && endpos > -1 && startpos < endpos) {
+                authorname = song_taxonomy.substring(startpos+10,endpos);
+                authorname = authorname.replace("<strong>","");
+                authorname = authorname.replace("</strong>","");
+                authorname = authorname.replace("</p>","");
+                authorname = authorname.trim();
+            }
+
+            // Try to get the copyright data
+            startpos = song_taxonomy.indexOf("Ministry(s):");
+            endpos = song_taxonomy.indexOf("</div>",startpos);
+            if (startpos > -1 && endpos > -1 && startpos < endpos) {
+                copyright = song_taxonomy.substring(startpos+12,endpos);
+                copyright = copyright.replace("<strong>","");
+                copyright = copyright.replace("</strong>","");
+                copyright = copyright.replace("</p>","");
+                copyright = copyright.replace("</a>","");
+                while (copyright.contains("<a href") && copyright.contains("'>")) {
+                    // Remove the hypertext references
+                    startpos = copyright.indexOf("<a href");
+                    endpos = copyright.indexOf("'>");
+                    if (startpos > -1 && endpos > -1 && startpos < endpos) {
+                        String bittoremove = copyright.substring(startpos,endpos+2);
+                        copyright = copyright.replace(bittoremove,"");
+                    } else {
+                        // Problem, so just get rid of it all
+                        copyright = "";
+                    }
+                }
+                copyright = copyright.trim();
+            }
+
+            // Try to get the bpm data
+            startpos = song_taxonomy.indexOf("BPM:");
+            endpos = song_taxonomy.indexOf("</div>",startpos);
+            if (startpos > -1 && endpos > -1 && startpos < endpos) {
+                bpm = song_taxonomy.substring(startpos+4,endpos);
+                bpm = bpm.replace("<strong>","");
+                bpm = bpm.replace("</strong>","");
+                bpm = bpm.replace("</p>","");
+                bpm = bpm.replace("</a>","");
+                bpm = bpm.trim();
+            }
+
+            // Try to get the ccli data
+            startpos = song_taxonomy.indexOf("CCLI #:");
+            endpos = song_taxonomy.indexOf("</div>",startpos);
+            if (startpos > -1 && endpos > -1 && startpos < endpos) {
+                ccli = song_taxonomy.substring(startpos+7,endpos);
+                ccli = ccli.replace("<strong>","");
+                ccli = ccli.replace("</strong>","");
+                ccli = ccli.replace("</p>","");
+                ccli = ccli.replace("</a>","");
+                while (copyright.contains("<a href") && copyright.contains("'>")) {
+                    // Remove the hypertext references
+                    startpos = copyright.indexOf("<a href");
+                    endpos = copyright.indexOf("'>");
+                    if (startpos > -1 && endpos > -1 && startpos < endpos) {
+                        String bittoremove = copyright.substring(startpos,endpos+2);
+                        copyright = copyright.replace(bittoremove,"");
+                    } else {
+                        // Problem, so just get rid of it all
+                        copyright = "";
+                    }
+                }
+                ccli = ccli.trim();
+            }
+
+            // Try to get the key data
+            startpos = song_taxonomy.indexOf("Original Key(s):");
+            endpos = song_taxonomy.indexOf("</div>",startpos);
+            if (startpos > -1 && endpos > -1 && startpos < endpos) {
+                key = song_taxonomy.substring(startpos+16,endpos);
+                key = key.replace("<strong>","");
+                key = key.replace("</strong>","");
+                key = key.replace("</p>","");
+                key = key.replace("</a>","");
+                while (key.contains("<a href") && key.contains("'>")) {
+                    // Remove the hypertext references
+                    startpos = key.indexOf("<a href");
+                    endpos = key.indexOf("'>");
+                    if (startpos > -1 && endpos > -1 && startpos < endpos) {
+                        String bittoremove = key.substring(startpos,endpos+2);
+                        key = key.replace(bittoremove,"");
+                    } else {
+                        // Problem, so just get rid of it all
+                        key = "";
+                    }
+                }
+                key = key.trim();
+            }
+
+        }
+
+        // Now try to get the chordpro file contents
+        startpos = resultposted.indexOf("<div class=\"chord-pro-disp\"");
+        endpos = resultposted.indexOf("<h5>",startpos);
+        if (startpos > -1 && endpos > -1 && startpos < endpos) {
+            lyrics = resultposted.substring(startpos,endpos);
+
+            // Split the lines up
+            String[] lines = lyrics.split("\n");
+            String newline = "";
+            lyrics = "";
+            // Go through each line and do what we need
+            for (String l : lines) {
+                l = l.trim();
+
+                boolean emptystuff = false;
+                if (l.equals("</div") || l.contains("<div class='chord-pro-br'>") ||
+                        l.contains("<div class='chord-pro-segment'>") || l.contains("<div class=\"inner_col")) {
+                    emptystuff = true;
+                }
+
+                if (!emptystuff && l.contains("<div class=\"chord-pro-disp\"")) {
+                    // Start section, so initialise the newline and lyrics
+                    lyrics = "";
+                    newline = "";
+
+                } else if (!emptystuff && l.contains("<div class='chord-pro-line'>")) {
+                    // Starting a new line, so add the previous newline to the lyrics text
+                    lyrics += "\n" + newline;
+                    newline ="";
+
+                } else if (!emptystuff && l.contains("<div class='chord-pro-note'>")) {
+                    // This is a chord
+                    startpos = l.indexOf("<div class='chord-pro-note'>");
+                    startpos = l.indexOf("'>",startpos);
+                    endpos = l.indexOf("</div>",startpos);
+                    if (startpos > -1 && endpos > -1 && startpos < endpos) {
+                        String chordbit = l.substring(startpos+2,endpos);
+                        if (!chordbit.isEmpty() && !chordbit.equals("")) {
+                            newline += "[" + l.substring(startpos + 2, endpos) + "]";
+                        }
+                    }
+
+
+                } else if (!emptystuff && l.contains("<div class='chord-pro-lyric'>")) {
+                    // This is lyrics
+                    startpos = l.indexOf("<div class='chord-pro-lyric'>");
+                    startpos = l.indexOf("'>",startpos);
+                    endpos = l.indexOf("</div>",startpos);
+                    if (startpos > -1 && endpos > -1 && startpos < endpos) {
+                        newline += l.substring(startpos+2,endpos);
+                    }
+                }
+
+            }
+
+        }
+
+        // Build the chordpro file contents:
+        filecontents  = "{title:"+filenametosave+"}\n";
+        filecontents += "{artist:"+authorname+"}\n";
+        filecontents += "{copyright:"+copyright+"}\n";
+        filecontents += "{ccli:"+ccli+"}\n";
+        filecontents += "{key:"+key+"}\n";
+        filecontents += "{tempo:"+bpm+"}\n\n";
+        filecontents += lyrics.trim();
+
+        if (lyrics.trim().isEmpty() || lyrics.trim().equals("")) {
+            filecontents = null;
+        }
+        Log.d("d","filecontents="+filecontents);
     }
 
     public void fixUGContent(String resultposted) {
@@ -470,6 +793,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         // Split into lines
         String[] templines = resultposted.split("\n");
+        if (templines==null) {
+            templines = new String[1];
+            templines[0] = resultposted;
+        }
         // Go through each line and look for chord lines
         // These have <span> in them
         int numlines = templines.length;
@@ -483,7 +810,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             if (FullscreenActivity.locale==null) {
                 FullscreenActivity.locale = Locale.getDefault();
             }
-            if (templines[q]!=null && !templines[q].startsWith(".") &&
+            if (FullscreenActivity.locale!=null && templines[q]!=null && !templines[q].startsWith(".") &&
                     ((templines[q].toLowerCase(FullscreenActivity.locale).contains(getActivity().getResources().getString(R.string.tag_verse).toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12) ||
                             (templines[q].toLowerCase(FullscreenActivity.locale).contains(getActivity().getResources().getString(R.string.tag_chorus).toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12) ||
                             (templines[q].toLowerCase(FullscreenActivity.locale).contains(getActivity().getResources().getString(R.string.tag_bridge).toLowerCase(FullscreenActivity.locale)) && templines[q].length() < 12))) {
@@ -517,33 +844,264 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         newtext = TextUtils.htmlEncode(newtext);
 
 
-/*
-        filecontents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<song>\n<title>" + filenametosave
-                + "</title>\n<author>"
-                + authorname + "</author>\n<copyright></copyright>\n<lyrics>[]\n"
-                + newtext
-                + "</lyrics>\n</song>";
-*/
         if (filenametosave != null && !filenametosave.equals("")) {
             filename = filenametosave.trim();
         } else {
             filename = FullscreenActivity.phrasetosearchfor;
         }
 
-        Log.d("d", "filecontents=" + filecontents);
+    }
 
+    @SuppressWarnings("deprecation")
+    public String extractSongSelectChordPro(String s, String temptitle) {
+
+        int start;
+        int end;
+        String title = temptitle;
+        String key = "";
+        String author = "";
+        String tempo = "";
+        String timesig = "";
+        String ccli = "";
+        String copyright = "";
+        String lyrics = "";
+
+        // Extract the title
+        start = s.indexOf("<span class=\"cproTitle\">");
+        end = s.indexOf("</span>",start);
+        if (start>-1 && end>-1 && end>start) {
+            String t = s.substring(start+24,end);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                t = Html.fromHtml(t, 0).toString();
+            } else {
+                t = Html.fromHtml(t).toString();
+            }
+            title = "{title:" + t + "}\n";
+            Log.d("SongSelect", "title="+title);
+            filename = t;
+        }
+
+        // Extract the key
+        start = s.indexOf("<code class=\"cproSongKey\"");
+        end = s.indexOf("</code></span>",start);
+        if (start>-1 && end>-1 && end>start) {
+            // Fine tine the start
+            int newstart = s.indexOf(">",start);
+            if (newstart<0) {
+                newstart = start;
+            }
+            key = "{key:" + s.substring(newstart+1,end).trim() + "}\n";
+            Log.d("SongSelect", "key="+key);
+        }
+
+        // Extract the author
+        start = s.indexOf("<span class=\"cproAuthors\">");
+        end = s.indexOf("</span>",start);
+        if (start>-1 && end>-1 && end>start) {
+            String a = s.substring(start+26,end);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                a = Html.fromHtml(a, 0).toString();
+            } else {
+                a = Html.fromHtml(a).toString();
+            }
+            author = "{artist:" + a + "}\n";
+            Log.d("SongSelect", "author="+author);
+        }
+
+        // Extract the tempo and time signature
+        start = s.indexOf("<span class=\"cproTempoTimeWrapper\">");
+        end = s.indexOf("</span>",start);
+        if (start>-1 && end>-1 && end>start) {
+            String both = s.substring(start+35,end);
+            String[] bits = both.split("\\|");
+            if (bits.length>0) {
+                String t = bits[0].replace("Tempo", "");
+                t = t.replace("-", "");
+                t = t.replace("bpm", "");
+                t = t.replace("BPM", "");
+                t = t.replace("Bpm", "");
+                t = t.trim();
+                tempo = "{tempo:" + t + "}\n";
+                Log.d("SongSelect", "tempo=" + tempo);
+            }
+            if (bits.length>1) {
+                String t = bits[1].replace("Time","");
+                t = t.replace("-","");
+                t = t.trim();
+                timesig = "{time:" + t + "}\n";
+                Log.d("SongSelect", "timesig="+timesig);
+            }
+        }
+
+        // Extract the CCLI song number
+        start = s.indexOf("CCLI Song #");
+        end = s.indexOf("</p>",start);
+        if (start>-1 && end>-1 && end>start) {
+            ccli = "{ccli:" + s.substring(start+11,end).trim() + "}\n";
+            Log.d("SongSelect", "ccli="+ccli);
+        }
+
+        // Extract the Copyright info
+        start = s.indexOf("<ul class=\"copyright\">");
+        start = s.indexOf("<li>",start);
+        end = s.indexOf("</li>",start);
+        if (start>-1 && end>-1 && end>start) {
+            copyright = "{copyright:" + s.substring(start+4,end).trim() + "}\n";
+            Log.d("SongSelect", "copyright="+copyright);
+        }
+
+        // Extract the lyrics
+        start = s.indexOf("<pre class=\"cproSongBody\">");
+        end = s.indexOf("</pre>",start);
+        if (start>-1 && end>-1 && end>start) {
+            lyrics = s.substring(start+26,end);
+
+            // Fix the song section headers
+            while (lyrics.contains("<span class=\"cproSongSection\"><span class=\"cproComment\">")) {
+                start = lyrics.indexOf("<span class=\"cproSongSection\"><span class=\"cproComment\">");
+                end = lyrics.indexOf("</span>",start);
+                String sectiontext;
+                if (start>-1 && end>-1 && end>start) {
+                    sectiontext = lyrics.substring(start+56,end);
+                    lyrics = lyrics.replace("<span class=\"cproSongSection\"><span class=\"cproComment\">"+sectiontext+"</span>",sectiontext.trim()+":");
+                }
+            }
+
+            // Fix the chords
+            while (lyrics.contains("<span class=\"chordWrapper\"><code ")) {
+                start = lyrics.indexOf("<span class=\"chordWrapper\"><code ");
+                int newstart = lyrics.indexOf(">",start);
+                newstart = lyrics.indexOf(">",newstart+1);
+                end = lyrics.indexOf("</code>",start);
+                if (start>-1 && newstart>-1 && end>-1 && end>newstart) {
+                    String chordfound = lyrics.substring(newstart+1,end);
+                    String bittoremove = lyrics.substring(start,end+7);
+                    lyrics = lyrics.replace(bittoremove,"["+chordfound+"]");
+                }
+            }
+
+            // Get rid of lyric indications
+            lyrics = lyrics.replace("<span class=\"chordLyrics\">","");
+
+            // Get rid of the new line indications
+            lyrics = lyrics.replace("<span class=\"cproSongLine\">","");
+
+            // Get rid of the chord line only indications
+            lyrics = lyrics.replace("<span class=\"cproSongLine chordsOnly\">","");
+
+            // Get rid of directions indicators
+            lyrics = lyrics.replace("<span class=\"cproDirectionWrapper\">","");
+            lyrics = lyrics.replace("<span class=\"cproDirection\">","");
+
+            // Get rid of any remaining close spans
+            lyrics = lyrics.replace("</span>","");
+
+            // Finally, trim the lyrics
+            lyrics = lyrics.trim();
+        }
+
+        // Return the ChordPro version of the song
+        Log.d("d","lyrics="+lyrics);
+        if (lyrics.equals("")) {
+            return null;
+        } else {
+            return title + author + copyright + ccli + key + tempo + timesig + "\n" + lyrics;
+        }
+    }
+
+    public String extractSongSelectUsr(String s, String temptitle) {
+        String title = temptitle;
+        String author = "";
+        String copyright = "";
+        String ccli = "";
+        String lyrics = "";
+
+        int start;
+        int end;
+
+        start = s.indexOf("<div id=\"LyricsText\" style=\"display: none;\">");
+        end = s.indexOf("</div>", start);
+        if (start > -1 && end > -1 && end > start) {
+            int newstart = s.indexOf(">", start);
+            if (newstart < 0) {
+                newstart = start;
+            }
+            String text = s.substring(newstart + 1, end).trim();
+
+            // The first line is the title normally
+            end = text.indexOf("\n");
+            if (end > -1) {
+                title = "{title:" + text.substring(0, end).trim() + "}\n";
+                filename = text.substring(0, end).trim();
+                text = text.substring(end).trim();
+                Log.d("d","title="+title);
+            }
+
+            // Get the bottom bit
+            String bottombit;
+            start = text.indexOf("CCLI Song");
+            if (start>-1) {
+                bottombit = text.substring(start);
+                // Remove this from the text (leaving the lyrics)
+                text = text.replace(bottombit,"");
+
+                // Now look for the stuff we want
+                // Break it into lines
+                String[] bottomlines = bottombit.split("\n");
+                for (String line:bottomlines) {
+                    Log.d("d","line="+line);
+                    // Is this the CCLI line?
+                    if (line.contains("CCLI Song #")) {
+                        line = line.replace("CCLI Song #","");
+                        line = line.trim();
+                        ccli = "{ccli:" + line + "}\n";
+                        Log.d("d","ccli="+ccli);
+
+                    // Is this the copyright line?
+                    } else if (line.contains("opyright") || line.contains("&#169;") || line.contains("©")) {
+                        copyright = "{copyright:" + line.trim() + "}\n";
+                        Log.d("d","copyright="+copyright);
+
+                    // Is this the author line?
+                    } else if (!line.contains("For use solely") && !line.contains("Note:") && !line.contains("Licence No")) {
+                        author = "{artist:" + line.trim() + "}\n";
+                        Log.d("d","author="+author);
+                    }
+                }
+
+            }
+
+            lyrics = text;
+        }
+        if (lyrics.equals("")) {
+            return null;
+        } else {
+            return title + author + copyright + ccli + "\n" + lyrics;
+        }
     }
 
     public void setFileNameAndFolder() {
 
         // Hide the searchresults_RelativeLayout
-        searchresults_RelativeLayout.setVisibility(View.GONE);
-        newfileinfo_LinearLayout.setVisibility(View.VISIBLE);
+        try {
+            searchresults_RelativeLayout.setVisibility(View.GONE);
+        } catch (Exception e){
+            Log.d("d","Error hiding the search results");
+        }
+        try {
+            newfileinfo_LinearLayout.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            Log.d("d","Error showing the new file info");
+        }
 
         // Set the file name if we know it
         if (filename == null || !filename.equals("")) {
             songfilename_EditText.setText(filename);
         } else {
+            songfilename_EditText.setText(FullscreenActivity.phrasetosearchfor);
+        }
+
+        if (filecontents==null) {
             songfilename_EditText.setText(FullscreenActivity.phrasetosearchfor);
         }
     }
@@ -555,8 +1113,12 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         FileOutputStream newFile;
         String filenameandlocation;
         String tempfile;
+        String temppdffile;
+        temppdffile = filename.replace(".pdf","") + ".pdf";
+        String pdffilenameandlocation;
 
-        if (FullscreenActivity.whattodo.equals("chordie")) {
+        if (FullscreenActivity.whattodo.equals("chordie") || FullscreenActivity.whattodo.equals("songselect") ||
+                FullscreenActivity.whattodo.equals("worshiptogether")) {
             tempfile = filename + ".chopro";
         } else {
             tempfile = filename;
@@ -571,20 +1133,66 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             if (whatfolderselected.equals(FullscreenActivity.mainfoldername)) {
                 filenameandlocation = FullscreenActivity.dir + "/"
                         + tempfile;
+                pdffilenameandlocation = FullscreenActivity.dir + "/"
+                        + temppdffile;
             } else {
                 filenameandlocation = FullscreenActivity.dir + "/"
                         + whatfolderselected + "/" + tempfile;
+                pdffilenameandlocation = FullscreenActivity.dir + "/"
+                        + whatfolderselected + "/" + temppdffile;
                 FullscreenActivity.whichSongFolder = whatfolderselected;
             }
-            newFile = new FileOutputStream(filenameandlocation, false);
-            newFile.write(filecontents.getBytes());
-            newFile.flush();
-            newFile.close();
-        } catch (IOException e) {
+            Log.d("d","filecontents check = "+filecontents);
+            if (filecontents!=null && !filecontents.equals("")) {
+                newFile = new FileOutputStream(filenameandlocation, false);
+                newFile.write(filecontents.getBytes());
+                newFile.flush();
+                newFile.close();
+                Log.d("d","tried to write chopro");
+            }
+
+            if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete) {
+                InputStream in;
+                OutputStream out;
+                try {
+                    in = new FileInputStream(originaltemppdffile);
+                    out = new FileOutputStream(pdffilenameandlocation);
+
+                    File f = new File(originaltemppdffile);
+                    if (f.exists()) {
+                        byte[] buffer = new byte[1024];
+                        int read;
+                        while ((read = in.read(buffer)) != -1) {
+                            out.write(buffer, 0, read);
+                        }
+                        in.close();
+
+                        // write the output file
+                        out.flush();
+                        out.close();
+
+                        // delete the original file
+                        if(!f.delete()) {
+                            Log.d("d","Problem deleting the original");
+                        }
+                    }
+                }
+
+                catch (Exception e) {
+                    Log.e("tag", e.getMessage());
+                }
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        FullscreenActivity.songfilename = tempfile;
+        // Set the folder and song to the one we've set here
+        FullscreenActivity.whichSongFolder = whatfolderselected;
+        if (filecontents!=null) {
+            FullscreenActivity.songfilename = tempfile;
+        } else if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete) {
+            FullscreenActivity.songfilename = temppdffile;
+        }
         Preferences.savePreferences();
         if (mListener != null) {
             mListener.loadSong();
@@ -598,6 +1206,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         void loadSong();
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class DownloadWebTextTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -623,7 +1232,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                             break;
                         }
                     }
-                } catch (Exception e) {
+                } catch (Exception | OutOfMemoryError e) {
                     e.printStackTrace();
                 } finally {
                     if (urlConnection != null) {
@@ -638,33 +1247,60 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         protected void onPostExecute(String result) {
             //Now look to see if the webcontent has the ChordPro text in it
             // Check we aren't trying to use the tab-pro page!
-            String address = webresults_WebView.getUrl();
-            if (address!=null && (address.contains("/tab-pro/") || address.contains("/chords-pro/"))) {
-                FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.not_allowed).toString();
-                ShowToast.showToast(getActivity());
-                grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
-            } else if (result!=null && result.contains("<textarea id=\"chordproContent\"")) {
-                // Using Chordie
-                fixChordieContent(result);
-                setFileNameAndFolder();
+            try {
+                String address = webresults_WebView.getUrl();
+                if (address != null && (address.contains("/tab-pro/") || address.contains("/chords-pro/"))) {
+                    FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.not_allowed).toString();
+                    ShowToast.showToast(getActivity());
+                    grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
+                } else if (result != null && result.contains("<textarea id=\"chordproContent\"")) {
+                    // Using Chordie
+                    fixChordieContent(result);
+                    setFileNameAndFolder();
 
-            } else if (result!=null && (result.contains("<div class=\"tb_ct\">") || result.contains("ultimate-guitar"))) {
-                // Using UG
-                fixUGContent(result);
-                setFileNameAndFolder();
+                } else if (result != null && (result.contains("<div class=\"tb_ct\">") || result.contains("ultimate-guitar"))) {
+                    // Using UG
+                    fixUGContent(result);
+                    setFileNameAndFolder();
 
-            } else {
-                FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
-                ShowToast.showToast(getActivity());
-                grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
+                } else if (result !=null && result.contains("http://worship-songs-resources.worshiptogether.com/")) {
+                    // Using WorshipTogether
+                    fixWTContent(result);
+                    setFileNameAndFolder();
+
+                } else if (result!=null && result.contains("CCLI")) {
+                    // Using SongSelect chord page
+                    webresults_WebView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+
+                } else if (result!=null && result.contains("<div id=\"LyricsText\"")) {
+                    // Using SongSelect USR page
+                    webresults_WebView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+
+                } else {
+                    FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
+                    ShowToast.showToast(getActivity());
+                    grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
+                }
+            } catch (Exception | OutOfMemoryError e) {
+                e.printStackTrace();
+                if (getActivity()!=null) {
+                    FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
+                    ShowToast.showToast(getActivity());
+                    grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
+                }
             }
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class GetFolders extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
-            ListSongFiles.getAllSongFolders();
+            try {
+                ListSongFiles.getAllSongFolders();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -700,4 +1336,48 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
     }
 
+    private class MyJavaScriptInterface {
+        @SuppressWarnings("unused")
+        @JavascriptInterface
+        public void processHTML(final String html) {
+            GetSourceCode getsource = new GetSourceCode(html);
+            getsource.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class GetSourceCode extends AsyncTask<Object, String, String> {
+
+        String html = "";
+        GetSourceCode(String s) {
+            html = s;
+        }
+
+        @Override
+        protected String doInBackground(Object... objects) {
+            if (html.contains("<div id=\"LyricsText\"")) {
+                filecontents = extractSongSelectUsr(html, FullscreenActivity.phrasetosearchfor);
+            } else {
+                filecontents = extractSongSelectChordPro(html, FullscreenActivity.phrasetosearchfor);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Log.d("d","filecontents="+filecontents);
+            if (filecontents!=null && !filecontents.equals("")) {
+                setFileNameAndFolder();
+            } else {
+                if (downloadcomplete) {
+                    FullscreenActivity.myToastMessage = getActivity().getString(R.string.pdfonly);
+                } else {
+                    FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
+                }
+
+                ShowToast.showToast(getActivity());
+                grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
+            }
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -43,7 +44,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
     }
 
     public interface MyInterface {
-        void openSongEdit();
+        void doEdit();
         void loadSong();
     }
 
@@ -261,7 +262,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
                 // Tell the main page to now edit the song
                 if (mListener != null) {
-                    mListener.openSongEdit();
+                    mListener.doEdit();
                 }
 
                 // Close the popup
@@ -273,6 +274,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class GetFolders extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {

@@ -342,6 +342,34 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/sect2_icon5"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/sect2_icon3"
+                    android:layout_margin="8dp"
+                    android:layout_toRightOf="@+id/sect2_icon4"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/group_notation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ic_clef_white_36dp"
+                        app:backgroundTint="@color/purple"
+                        app:useCompatPadding="true"
+                        app:fabSize="mini" />
+
+                    <TextView
+                        style="@style/MyInfoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/music_score" />
+
+                </LinearLayout>
+
             </RelativeLayout>
 
         </HorizontalScrollView>

@@ -617,5 +617,20 @@
 	<string name="trim_sections">"修剪部分"</string>
 
 	<string name="section_space">"添加部分空间"</string>
+    <string name="alphabetical">按字母排序的歌曲索引</string>
+
+	<string name="pdfonly">"没有ChordPro，只是PDF"</string>
+	<string name="random_song">"找一首随机歌曲"</string>
+	<string name="tag_ending">"结尾"</string>
+	<string name="tag_instrumental">"仪器的"</string>
+	<string name="tag_interlude">"插曲"</string>
+	<string name="tag_intro">"介绍"</string>
+	<string name="tag_introduction">"介绍"</string>
+	<string name="tag_refrain">"副歌"</string>
+	<string name="tag_reprise">"重奏"</string>
+
+    <string name="music_score">"谱子"</string>
+    <string name="pdftotext_extract">"从PDF提取文本"</string>
+    <string name="pdftotext_found">"发现文字："</string>
 
 </resources>

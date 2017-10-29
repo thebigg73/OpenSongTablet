@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Vibrator;
 
 class DoVibrate {
-    public static void vibrate(Context c, int i) {
+    static void vibrate(Context c, int i) {
         Vibrator vb = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
         vb.vibrate(i);
     }

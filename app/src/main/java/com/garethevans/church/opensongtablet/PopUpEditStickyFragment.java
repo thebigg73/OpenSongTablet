@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -117,9 +118,13 @@ public class PopUpEditStickyFragment extends DialogFragment {
         stickyNotesOpacity_TextView.setText(s);
         // Set the switch up based on preferences
         if (FullscreenActivity.stickyTextSize==18.0f) {
-            stickyTextSize.setChecked(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                stickyTextSize.setChecked(true);
+            }
         } else {
-            stickyTextSize.setChecked(false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                stickyTextSize.setChecked(false);
+            }
         }
 
         stickyTextSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

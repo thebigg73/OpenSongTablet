@@ -612,5 +612,20 @@
 	<string name="trim_sections">"セクションを切り取る"</string>
 
 	<string name="section_space">"セクションスペースを追加する"</string>
+    <string name="alphabetical">アルファベット順の曲インデックス</string>
+
+	<string name="pdfonly">"ChordProなし、PDFのみ"</string>
+	<string name="random_song">"ランダムな曲を探す"</string>
+	<string name="tag_ending">"エンディング"</string>
+	<string name="tag_instrumental">"インストゥルメンタル"</string>
+	<string name="tag_interlude">"間奏"</string>
+	<string name="tag_intro">"イントロ"</string>
+	<string name="tag_introduction">"前書き"</string>
+	<string name="tag_refrain">"控える"</string>
+	<string name="tag_reprise">"Reprise"</string>
+
+    <string name="music_score">"楽譜"</string>
+    <string name="pdftotext_extract">"PDFからテキストを抽出する"</string>
+    <string name="pdftotext_found">"見つかったテキスト："</string>
 
 </resources>

@@ -846,7 +846,7 @@ class Transpose {
         return line;
     }
 
-    static String capoTranspose() {
+    static void capoTranspose() {
 
         int numtimes = Integer.parseInt(FullscreenActivity.mCapo);
 
@@ -942,8 +942,6 @@ class Transpose {
                 FullscreenActivity.temptranspChords = capoNumberToChord4(FullscreenActivity.temptranspChords);
                 break;
         }
-
-        return FullscreenActivity.temptranspChords;
     }
 
 	static void checkChordFormat() {

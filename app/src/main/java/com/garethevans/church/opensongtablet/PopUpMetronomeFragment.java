@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -137,7 +138,9 @@ public class PopUpMetronomeFragment extends DialogFragment {
         tempo = Metronome.getTempo(FullscreenActivity.mTempo);
         setPan();
         popupmetronome_volume.setProgress(getVolume(FullscreenActivity.metronomevol));
-        visualmetronome.setChecked(FullscreenActivity.visualmetronome);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            visualmetronome.setChecked(FullscreenActivity.visualmetronome);
+        }
         getTimeSigValues();
         getBPMValues();
 
@@ -393,7 +396,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         // Set the defaut value:
         int defpos = 0;
 
-        for (int i=0;i<timesigvals.length-1;i++) {
+        for (int i=0;i<timesigvals.length;i++) {
             if (FullscreenActivity.mTimeSig.equals(timesigvals[i])) {
                 defpos = i;
             }
@@ -414,6 +417,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
                     Metronome.setNoteValues();
                 }
                 FullscreenActivity.metronomeok = Metronome.isMetronomeValid();
+                Log.d("d","metronomeok="+FullscreenActivity.metronomeok);
                 Preferences.savePreferences();
             }
         });

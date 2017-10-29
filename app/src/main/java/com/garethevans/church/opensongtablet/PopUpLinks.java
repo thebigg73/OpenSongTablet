@@ -182,6 +182,9 @@ public class PopUpLinks extends DialogFragment {
                 if (link.startsWith("../OpenSong/")) {
                     link = link.replace("../OpenSong/",FullscreenActivity.homedir + "/");
                 }
+                if (!link.startsWith("file://")) {
+                    link = "file://" + link;
+                }
                 mediafile.setDataSource(getActivity(),Uri.parse(link));
                 mediafile.prepareAsync();
                 mediafile.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {

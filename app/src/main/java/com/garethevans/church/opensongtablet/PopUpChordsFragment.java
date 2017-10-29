@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -253,6 +254,7 @@ public class PopUpChordsFragment extends DialogFragment {
             Log.d("d","Error preparing chords");
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class PrepareChords extends AsyncTask<Object,Void,String> {
 
         @Override

@@ -1,9 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -22,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 
 public class PopUpPadFragment extends DialogFragment {
@@ -60,8 +63,6 @@ public class PopUpPadFragment extends DialogFragment {
     public void onStart() {
         super.onStart();
         if (getActivity() != null && getDialog() != null) {
-            int myor = getActivity().getResources().getConfiguration().orientation;
-            Log.d("d","orientation="+myor);
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
     }
@@ -137,8 +138,6 @@ public class PopUpPadFragment extends DialogFragment {
         });
 
         if (getActivity() != null && getDialog() != null) {
-            int myor = getActivity().getResources().getConfiguration().orientation;
-            Log.d("d","orientation="+myor);
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
 
@@ -235,6 +234,8 @@ public class PopUpPadFragment extends DialogFragment {
                 } else {
                     FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
                 }
+            } else {
+                FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
             }
             PopUpEditSongFragment.prepareSongXML();
             try {
@@ -319,6 +320,7 @@ public class PopUpPadFragment extends DialogFragment {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class SetPad extends AsyncTask<Object,Void,String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -327,55 +329,66 @@ public class PopUpPadFragment extends DialogFragment {
 
         protected void onPostExecute(String s) {
             // Set the pad / backing track
-            if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.off))) {
-                popupPad_file.setSelection(2);
-            } else if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.link_audio)) &&
-                    !FullscreenActivity.mLinkAudio.isEmpty() && !FullscreenActivity.mLinkAudio.equals("")) {
-                popupPad_file.setSelection(1);
-            } else {
-                popupPad_file.setSelection(0);
-            }
+            try {
+                if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.off))) {
+                    popupPad_file.setSelection(2);
+                } else if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.link_audio)) &&
+                        !FullscreenActivity.mLinkAudio.isEmpty() && !FullscreenActivity.mLinkAudio.equals("")) {
+                    popupPad_file.setSelection(1);
+                } else {
+                    popupPad_file.setSelection(0);
+                }
 
-            // Set the loop on or off
-            if (FullscreenActivity.mLoopAudio.equals("true")) {
-                popupPad_loopaudio.setChecked(true);
-            } else {
-                FullscreenActivity.mLoopAudio = "false";
-                popupPad_loopaudio.setChecked(false);
-            }
+                // Set the loop on or off
+                if (FullscreenActivity.mLoopAudio.equals("true")) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                        popupPad_loopaudio.setChecked(true);
+                    }
+                } else {
+                    FullscreenActivity.mLoopAudio = "false";
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                        popupPad_loopaudio.setChecked(false);
+                    }
+                }
 
-            // Set the pad volume and pan
-            int temp_padvol = (int) (100 * FullscreenActivity.padvol);
-            popupPad_volume.setProgress(temp_padvol);
-            String text = temp_padvol + " %";
-            popupPad_volume_text.setText(text);
-            switch (FullscreenActivity.padpan) {
-                case "left":
-                    popupPad_pan_text.setText("L");
-                    popupPad_pan.setProgress(0);
-                    break;
-                case "right":
-                    popupPad_pan_text.setText("R");
-                    popupPad_pan.setProgress(2);
-                    break;
-                default:
-                    popupPad_pan_text.setText("C");
-                    popupPad_pan.setProgress(1);
-                    break;
-            }
+                // Set the pad volume and pan
+                int temp_padvol = (int) (100 * FullscreenActivity.padvol);
+                popupPad_volume.setProgress(temp_padvol);
+                String text = temp_padvol + " %";
+                popupPad_volume_text.setText(text);
+                switch (FullscreenActivity.padpan) {
+                    case "left":
+                        popupPad_pan_text.setText("L");
+                        popupPad_pan.setProgress(0);
+                        break;
+                    case "right":
+                        popupPad_pan_text.setText("R");
+                        popupPad_pan.setProgress(2);
+                        break;
+                    default:
+                        popupPad_pan_text.setText("C");
+                        popupPad_pan.setProgress(1);
+                        break;
+                }
 
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void startenabled() {
         validpad = false;
         String filetext = FullscreenActivity.mLinkAudio;
+        filetext = filetext.replace("file://","");
         // If this is a localised file, we need to unlocalise it to enable it to be read
         if (filetext.startsWith("../OpenSong/")) {
             filetext = filetext.replace("../OpenSong/",FullscreenActivity.homedir+"/");
         }
-        filetext = filetext.replace("file://","");
-        File file = new File(filetext);
+        filetext = "file://" + filetext;
+
+        // Try to fix the start of the file
+        File file = new File(URI.create(filetext).getPath());
 
         if (popupPad_file.getSelectedItemPosition() == 0 && popupPad_key.getSelectedItemPosition() > 0) {
             validpad = true;
