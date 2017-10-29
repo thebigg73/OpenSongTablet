@@ -36,7 +36,7 @@ class ChordProConvert {
 		}
 
 		String temptitle = "";
-		String tempsubtitle = "";
+		String tempsubtitle;
         String tempccli = "";
         String tempauthor = "";
         String tempcopyright = "";
@@ -157,7 +157,7 @@ class ChordProConvert {
 				line[x] = ";" + line[x];
 			}
 
-			// Extract the ccli (not really a chordpro tag, but works for songselect
+			// Extract the ccli (not really a chordpro tag, but works for songselect and worship together
 			if (line[x].contains("{ccli:")) {
 				line[x] = line[x].replace("{ccli:","");
 				line[x] = line[x].replace("}","");
@@ -166,16 +166,6 @@ class ChordProConvert {
 				Log.d("d","tempccli="+tempccli);
 				line[x] = "";
 			}
-
-            // Extract the key
-            if (line[x].contains("{key:")) {
-                line[x] = line[x].replace("{key:", "");
-                line[x] = line[x].replace("}", "");
-                line[x] = line[x].trim();
-                tempkey = line[x];
-                Log.d("d","tempkey="+tempkey);
-                line[x] = "";
-            }
 
             // Extract the key
             if (line[x].contains("{key:")) {
@@ -234,6 +224,8 @@ class ChordProConvert {
 			line[x] = line[x].replace("<", "(");
 			line[x] = line[x].replace(">", ")");
 
+			line[x] = line[x].replace("&#39;", "'");
+
 		}	
 		
 		Log.d("d","FullscreenActivity.myXML="+FullscreenActivity.myXML);
@@ -290,7 +282,9 @@ class ChordProConvert {
 			// Try to guess tags used
 			if (line[x].indexOf(";")!=0) {
 				line[x] = line[x].replace("Intro:", "[Intro]");
+				line[x] = line[x].replace("Intro", "[Intro]");
 				line[x] = line[x].replace("Outro:", "[Outro]");
+				line[x] = line[x].replace("Outro", "[Outro]");
 				line[x] = line[x].replace("Verse:", "[V]");
 				line[x] = line[x].replace("VERSE:", "[V]");
 				line[x] = line[x].replace("Verse 1:", "[V1]");
@@ -304,7 +298,31 @@ class ChordProConvert {
 				line[x] = line[x].replace("(VERSE)", "[V]");
 				line[x] = line[x].replace("(Verse 1)", "[V1]");
 				line[x] = line[x].replace("(Verse 2)", "[V2]");
-				line[x] = line[x].replace("(Verse 3)", "[V3]");				
+				line[x] = line[x].replace("(Verse 3)", "[V3]");
+				line[x] = line[x].replace("Verse 1", "[V1]");
+				line[x] = line[x].replace("Verse 2", "[V2]");
+				line[x] = line[x].replace("Verse 3", "[V3]");
+				line[x] = line[x].replace("Verse 4", "[V4]");
+				line[x] = line[x].replace("VERSE 1", "[V1]");
+				line[x] = line[x].replace("VERSE 2", "[V2]");
+				line[x] = line[x].replace("VERSE 3", "[V3]");
+				line[x] = line[x].replace("VERSE 4", "[V4]");
+				line[x] = line[x].replace("Verse", "[V]");
+				line[x] = line[x].replace("VERSE", "[V]");
+				line[x] = line[x].replace("Prechorus:", "[P]");
+				line[x] = line[x].replace("Pre-chorus:", "[P]");
+				line[x] = line[x].replace("PreChorus:", "[P]");
+				line[x] = line[x].replace("Pre-Chorus:", "[P]");
+				line[x] = line[x].replace("PRECHORUS:", "[P]");
+				line[x] = line[x].replace("Prechorus 1:", "[P1]");
+				line[x] = line[x].replace("Prechorus 2:", "[P2]");
+				line[x] = line[x].replace("Prechorus 3:", "[P3]");
+				line[x] = line[x].replace("PreChorus 1:", "[P1]");
+				line[x] = line[x].replace("PreChorus 2:", "[P2]");
+				line[x] = line[x].replace("PreChorus 3:", "[P3]");
+				line[x] = line[x].replace("Pre-Chorus 1:", "[P1]");
+				line[x] = line[x].replace("Pre-Chorus 2:", "[P2]");
+				line[x] = line[x].replace("Pre-Chorus 3:", "[P3]");
 				line[x] = line[x].replace("(Chorus)", "[C]");
 				line[x] = line[x].replace("Chorus:", "[C]");
 				line[x] = line[x].replace("CHORUS:", "[C]");
@@ -314,13 +332,14 @@ class ChordProConvert {
 				line[x] = line[x].replace("CHORUS 1:", "[C1]");
 				line[x] = line[x].replace("CHORUS 2:", "[C2]");
 				line[x] = line[x].replace("CHORUS 3:", "[C3]");
-				line[x] = line[x].replace("Prechorus:", "[P]");
-				line[x] = line[x].replace("Pre-chorus:", "[P]");
-				line[x] = line[x].replace("Prechorus:", "[P]");
-				line[x] = line[x].replace("Pre-Chorus 1:", "[P1]");
-				line[x] = line[x].replace("PRECHORUS:", "[P]");
-				line[x] = line[x].replace("Prechorus 2:", "[P2]");
-				line[x] = line[x].replace("Prechorus 3:", "[P3]");
+				line[x] = line[x].replace("Chorus 1", "[C1]");
+				line[x] = line[x].replace("Chorus 2", "[C2]");
+				line[x] = line[x].replace("Chorus 3", "[C3]");
+				line[x] = line[x].replace("CHORUS 1", "[C1]");
+				line[x] = line[x].replace("CHORUS 2", "[C2]");
+				line[x] = line[x].replace("CHORUS 3", "[C3]");
+				line[x] = line[x].replace("Chorus", "[C]");
+				line[x] = line[x].replace("CHORUS", "[C]");
 				line[x] = line[x].replace("Bridge:", "[B]");
 				line[x] = line[x].replace("BRIDGE:", "[B]");
 				line[x] = line[x].replace("Bridge 1:", "[B1]");

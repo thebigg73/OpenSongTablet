@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.os.AsyncTask;
@@ -188,6 +189,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class BuildSongsToChooseFrom extends AsyncTask<Void, Void, String> {
 
         @Override

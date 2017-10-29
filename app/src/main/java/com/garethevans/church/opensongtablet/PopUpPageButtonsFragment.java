@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -130,32 +131,37 @@ public class PopUpPageButtonsFragment extends DialogFragment {
 
         // Set the default values
         if (FullscreenActivity.fabSize == FloatingActionButton.SIZE_NORMAL) {
-            pageButtonSize_Switch.setChecked(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                pageButtonSize_Switch.setChecked(true);
+            }
         } else {
-            pageButtonSize_Switch.setChecked(false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                pageButtonSize_Switch.setChecked(false);
+            }
         }
         int gettransp = (int) (FullscreenActivity.pageButtonAlpha * 100);
         String text = gettransp + "%";
         pageButtonTransparency_seekBar.setProgress(gettransp);
         transparency_TextView.setText(text);
-        pageButtonGroup_Switch.setChecked(FullscreenActivity.grouppagebuttons);
-
-        extraButtonGroup_Switch.setChecked(FullscreenActivity.page_extra_grouped);
-        customButtonGroup_Switch.setChecked(FullscreenActivity.page_custom_grouped);
-        setVisible_Switch.setChecked(FullscreenActivity.page_set_visible);
-        padVisible_Switch.setChecked(FullscreenActivity.page_pad_visible);
-        autoscrollVisible_Switch.setChecked(FullscreenActivity.page_autoscroll_visible);
-        metronomeVisible_Switch.setChecked(FullscreenActivity.page_metronome_visible);
-        chordsVisible_Switch.setChecked(FullscreenActivity.page_chord_visible);
-        linksVisible_Switch.setChecked(FullscreenActivity.page_links_visible);
-        stickyVisible_Switch.setChecked(FullscreenActivity.page_sticky_visible);
-        notationVisible_Switch.setChecked(FullscreenActivity.page_notation_visible);
-        highlightVisible_Switch.setChecked(FullscreenActivity.page_highlight_visible);
-        pageselectVisible_Switch.setChecked(FullscreenActivity.page_pages_visible);
-        custom1Visible_Switch.setChecked(FullscreenActivity.page_custom1_visible);
-        custom2Visible_Switch.setChecked(FullscreenActivity.page_custom2_visible);
-        custom3Visible_Switch.setChecked(FullscreenActivity.page_custom3_visible);
-        custom4Visible_Switch.setChecked(FullscreenActivity.page_custom4_visible);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            pageButtonGroup_Switch.setChecked(FullscreenActivity.grouppagebuttons);
+            extraButtonGroup_Switch.setChecked(FullscreenActivity.page_extra_grouped);
+            customButtonGroup_Switch.setChecked(FullscreenActivity.page_custom_grouped);
+            setVisible_Switch.setChecked(FullscreenActivity.page_set_visible);
+            padVisible_Switch.setChecked(FullscreenActivity.page_pad_visible);
+            autoscrollVisible_Switch.setChecked(FullscreenActivity.page_autoscroll_visible);
+            metronomeVisible_Switch.setChecked(FullscreenActivity.page_metronome_visible);
+            chordsVisible_Switch.setChecked(FullscreenActivity.page_chord_visible);
+            linksVisible_Switch.setChecked(FullscreenActivity.page_links_visible);
+            stickyVisible_Switch.setChecked(FullscreenActivity.page_sticky_visible);
+            notationVisible_Switch.setChecked(FullscreenActivity.page_notation_visible);
+            highlightVisible_Switch.setChecked(FullscreenActivity.page_highlight_visible);
+            pageselectVisible_Switch.setChecked(FullscreenActivity.page_pages_visible);
+            custom1Visible_Switch.setChecked(FullscreenActivity.page_custom1_visible);
+            custom2Visible_Switch.setChecked(FullscreenActivity.page_custom2_visible);
+            custom3Visible_Switch.setChecked(FullscreenActivity.page_custom3_visible);
+            custom4Visible_Switch.setChecked(FullscreenActivity.page_custom4_visible);
+        }
         String c1 = getActivity().getString(R.string.custom) + " (1)";
         String c2 = getActivity().getString(R.string.custom) + " (2)";
         String c3 = getActivity().getString(R.string.custom) + " (3)";

@@ -22,24 +22,12 @@ import java.io.InputStreamReader;
 
 public class LoadXML extends Activity {
 
-    static boolean isxml = true;
-    static String temp_myXML;
-    static String temp_songfilename;
-    static String temp_whichSongFolder;
-    static CharSequence temp_mTitle;
-    static CharSequence temp_mAuthor;
-    static String temp_mUser1;
-    static String temp_mUser2;
-    static String temp_mUser3;
-    static String temp_mAka;
-    static String temp_mKeyLine;
-    static String temp_mHymnNumber;
-    static String temp_mLyrics;
+    private static boolean isxml = true;
     static String utf = "UTF-8";
-    static boolean needtoloadextra = false;
+    private static boolean needtoloadextra = false;
 
     // This bit loads the lyrics from the required file
-    public static void loadXML(Context c) throws XmlPullParserException, IOException {
+    static void loadXML(Context c) throws XmlPullParserException, IOException {
 
         FullscreenActivity.isPDF = false;
         FullscreenActivity.isSong = true;
@@ -153,7 +141,9 @@ public class LoadXML extends Activity {
                 // If the song is OnSong format - try to import it
                 if (FullscreenActivity.songfilename.contains(".onsong")) {
                     // Run the ChordProConvert script
-                    OnSongConvert.doExtract();
+                    if (!OnSongConvert.doExtract()) {
+                        Log.d("d","Problem converting OnSong");
+                    }
                     ListSongFiles.getAllSongFiles();
                     getFileLocation();
 
@@ -169,7 +159,9 @@ public class LoadXML extends Activity {
                         || FullscreenActivity.myXML.contains("Type=")
                         || FullscreenActivity.myXML.contains("Words=")) {
                     // Run the UsrConvert script
-                    UsrConvert.doExtract(c);
+                    if (!UsrConvert.doExtract(c)) {
+                        Log.d("d","Problem extracting usr file");
+                    }
                     ListSongFiles.getAllSongFiles();
                     getFileLocation();
 
@@ -194,7 +186,9 @@ public class LoadXML extends Activity {
                         FullscreenActivity.songfilename.toLowerCase().contains(".chopro") ||
                         FullscreenActivity.songfilename.toLowerCase().contains(".chordpro")) {
                     // Run the ChordProConvert script
-                    ChordProConvert.doExtract();
+                    if (!ChordProConvert.doExtract()) {
+                        Log.d("d","Problem extracting chordpro");
+                    }
                     ListSongFiles.getAllSongFiles();
                     getFileLocation();
                     // Now read in the proper OpenSong xml file
@@ -289,7 +283,7 @@ public class LoadXML extends Activity {
         FullscreenActivity.thissong_scale = FullscreenActivity.toggleYScale;
     }
 
-    public static String getUTFEncoding(File filetoload, Context c) {
+    static String getUTFEncoding(File filetoload, Context c) {
         // Try to determine the BOM for UTF encoding
         FileInputStream fis = null;
         UnicodeBOMInputStream ubis = null;
@@ -317,7 +311,7 @@ public class LoadXML extends Activity {
         return utf;
     }
 
-    public static String readTextFile(InputStream inputStream) {
+    static String readTextFile(InputStream inputStream) {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte buf[] = new byte[1024];
@@ -336,20 +330,20 @@ public class LoadXML extends Activity {
         return outputStream.toString();
     }
 
-    public static void prepareLoadCustomReusable(String what, Context c) {
+    static void prepareLoadCustomReusable(String what, Context c) {
 
-        temp_myXML = FullscreenActivity.myXML;
-        temp_songfilename = FullscreenActivity.songfilename;
-        temp_whichSongFolder = FullscreenActivity.whichSongFolder;
-        temp_mTitle = FullscreenActivity.mTitle;
-        temp_mAuthor = FullscreenActivity.mAuthor;
-        temp_mUser1 = FullscreenActivity.mUser1;
-        temp_mUser2 = FullscreenActivity.mUser2;
-        temp_mUser3 = FullscreenActivity.mUser3;
-        temp_mAka = FullscreenActivity.mAka;
-        temp_mKeyLine = FullscreenActivity.mKeyLine;
-        temp_mHymnNumber = FullscreenActivity.mHymnNumber;
-        temp_mLyrics = FullscreenActivity.mLyrics;
+        String temp_myXML = FullscreenActivity.myXML;
+        String temp_songfilename = FullscreenActivity.songfilename;
+        String temp_whichSongFolder = FullscreenActivity.whichSongFolder;
+        CharSequence temp_mTitle = FullscreenActivity.mTitle;
+        CharSequence temp_mAuthor = FullscreenActivity.mAuthor;
+        String temp_mUser1 = FullscreenActivity.mUser1;
+        String temp_mUser2 = FullscreenActivity.mUser2;
+        String temp_mUser3 = FullscreenActivity.mUser3;
+        String temp_mAka = FullscreenActivity.mAka;
+        String temp_mKeyLine = FullscreenActivity.mKeyLine;
+        String temp_mHymnNumber = FullscreenActivity.mHymnNumber;
+        String temp_mLyrics = FullscreenActivity.mLyrics;
 
         String[] tempfile = what.split("/");
         if (tempfile.length>0) {
@@ -403,7 +397,7 @@ public class LoadXML extends Activity {
         //Preferences.savePreferences();
     }
 
-    public static void initialiseSongTags() {
+    static void initialiseSongTags() {
         FullscreenActivity.mTitle = FullscreenActivity.songfilename;
         FullscreenActivity.mAuthor = "";
         FullscreenActivity.mCopyright = "";
@@ -445,7 +439,7 @@ public class LoadXML extends Activity {
         FullscreenActivity.mExtraStuff2 = "";
     }
 
-    public static void grabOpenSongXML() throws Exception {
+    private static void grabOpenSongXML() throws Exception {
         // Extract all of the key bits of the song
         XmlPullParserFactory factory;
         factory = XmlPullParserFactory.newInstance();
@@ -577,7 +571,7 @@ public class LoadXML extends Activity {
         FullscreenActivity.myXML = FullscreenActivity.mLyrics;
     }
 
-    public static String parseFromHTMLEntities(String val) {
+    static String parseFromHTMLEntities(String val) {
         //Fix broken stuff
         val = val.replace("&amp;apos;","'");
         val = val.replace("&amp;quote;","\"");
@@ -635,7 +629,7 @@ public class LoadXML extends Activity {
         }
     }
 
-    public static boolean validReadableFile() {
+    static boolean validReadableFile() {
         boolean isvalid = false;
         // Get length of file in bytes
         long filesize = FullscreenActivity.file.length();
@@ -659,7 +653,7 @@ public class LoadXML extends Activity {
         return isvalid;
     }
 
-    public static void getPDFPageCount() {
+    static void getPDFPageCount() {
         // This only works for post Lollipop devices
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             LoadXML.getFileLocation();
@@ -680,7 +674,7 @@ public class LoadXML extends Activity {
         }
     }
 
-    public static void getFileLocation() {
+    static void getFileLocation() {
         if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
             FullscreenActivity.file = new File(FullscreenActivity.dir + "/"
                     + FullscreenActivity.songfilename);
@@ -690,7 +684,7 @@ public class LoadXML extends Activity {
         }
     }
 
-    public static String getTempFileLocation(Context c, String folder, String file) {
+    static String getTempFileLocation(Context c, String folder, String file) {
         String where = folder + "/" + file;
         if (folder.equals(FullscreenActivity.mainfoldername)) {
             where = file;
@@ -708,7 +702,7 @@ public class LoadXML extends Activity {
         return where;
     }
 
-    public static String templyrics = "[Intro]\n" +
+    private static String templyrics = "[Intro]\n" +
             " Welcome to OpenSongApp!\n" +
             " This is a test page to show you some of the features of the app.\n" +
             " The app contains 2 modes -\n" +
@@ -813,7 +807,7 @@ public class LoadXML extends Activity {
             " Sharing my Saviour's love, showing my Father's heart.";
 
 
-    public static String grabNextSongInSetKey(Context c, String nextsong) {
+    static String grabNextSongInSetKey(Context c, String nextsong) {
         String nextkey = "";
         File nextfile = new File(FullscreenActivity.dir,nextsong);
         // Get the android version

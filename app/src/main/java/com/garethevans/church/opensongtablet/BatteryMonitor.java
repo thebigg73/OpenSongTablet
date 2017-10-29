@@ -11,6 +11,7 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.BatteryManager;
+import android.util.Log;
 
 public class BatteryMonitor extends BroadcastReceiver {
 
@@ -52,6 +53,7 @@ public class BatteryMonitor extends BroadcastReceiver {
                     mListener.setUpBatteryMonitor();
                 }
             } catch (Exception e) {
+                Log.d("d","Problem setting up the battery monitor");
             }
         }
     }

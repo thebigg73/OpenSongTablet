@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -96,9 +97,13 @@ public class PopUpAlertFragment extends DialogFragment {
 
         // If an alert is currently being shown, make sure the toggle button is on.  If not, off!
         if (PresenterMode.alert_on.equals("Y")) {
-            alertToggle.setChecked(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                alertToggle.setChecked(true);
+            }
         } else {
-            alertToggle.setChecked(false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                alertToggle.setChecked(false);
+            }
         }
 
         // Now set a listener for the toggle changing.

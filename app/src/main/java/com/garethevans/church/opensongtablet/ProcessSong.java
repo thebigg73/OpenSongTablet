@@ -32,7 +32,7 @@ import java.util.Collections;
 
 public class ProcessSong extends Activity {
 
-    public static String parseLyrics(String myLyrics, Context c) {
+    static String parseLyrics(String myLyrics, Context c) {
         //myLyrics = myLyrics.replace("\n \n","\n\n");
         myLyrics = myLyrics.replace("]\n\n","]\n");
         //myLyrics = myLyrics.replace("\n\n","\n");
@@ -117,7 +117,7 @@ public class ProcessSong extends Activity {
         return myLyrics;
     }
 
-    public static String fixStartOfLines(String lyrics) {
+    static String fixStartOfLines(String lyrics) {
         String fixedlyrics = "";
         String[] lines = lyrics.split("\n");
 
@@ -130,7 +130,7 @@ public class ProcessSong extends Activity {
         return fixedlyrics;
     }
 
-    public static String removeUnderScores(String myLyrics, Context c) {
+    static String removeUnderScores(String myLyrics, Context c) {
         // Go through the lines and remove underscores if the line isn't an image location
         // Split the lyrics into a line by line array so we can fix individual lines
         String[] lineLyrics = myLyrics.split("\n");
@@ -165,7 +165,7 @@ public class ProcessSong extends Activity {
         return myLyrics;
     }
 
-    public static String rebuildParsedLyrics(int length) {
+    static String rebuildParsedLyrics(int length) {
         String tempLyrics = "";
         for (int x = 0; x < length; x++) {
             // First line of section should be the label, so replace it with label.
@@ -180,7 +180,7 @@ public class ProcessSong extends Activity {
         return tempLyrics;
     }
 
-    public static void lookForSplitPoints() {
+    static void lookForSplitPoints() {
         // Script to determine 2 column split details
         int halfwaypoint = Math.round(FullscreenActivity.numrowstowrite / 2);
 
@@ -353,7 +353,7 @@ public class ProcessSong extends Activity {
         FullscreenActivity.twothirdsplit_section = twothirdsplit_section;
     }
 
-    public static void processKey() {
+    static void processKey() {
         switch (FullscreenActivity.mKey) {
             case "A":
                 FullscreenActivity.pad_filename = "a";
@@ -497,7 +497,7 @@ public class ProcessSong extends Activity {
 
     }
 
-    public static void processTimeSig() {
+    static void processTimeSig() {
         switch (FullscreenActivity.mTimeSig) {
             case "2/2":
                 FullscreenActivity.timesigindex = 1;
@@ -586,7 +586,7 @@ public class ProcessSong extends Activity {
         }
     }
 
-    public static int getSalutReceivedSection(String s) {
+    static int getSalutReceivedSection(String s) {
         int i=-1;
         Log.d("d","s="+s);
         if (s!=null && s.length()>0 && s.contains("___section___")) {
@@ -603,7 +603,7 @@ public class ProcessSong extends Activity {
         Log.d("d","i="+i);
         return i;
     }
-    public static String getSalutReceivedLocation(String string, Context c) {
+    static String getSalutReceivedLocation(String string, Context c) {
         String[] s;
         string = string.replace("{\"description\":\"","");
         string = string.replace("\"}","");
@@ -641,7 +641,7 @@ public class ProcessSong extends Activity {
         return "";
     }
 
-    public static boolean isAutoScrollValid() {
+    static boolean isAutoScrollValid() {
         // Get the autoScrollDuration;
         if (FullscreenActivity.mDuration.isEmpty() && FullscreenActivity.autoscroll_default_or_prompt.equals("default")) {
             FullscreenActivity.autoScrollDuration = FullscreenActivity.default_autoscroll_songlength;
@@ -672,7 +672,7 @@ public class ProcessSong extends Activity {
                 FullscreenActivity.usingdefaults;
     }
 
-    public static String removeUnwantedSymbolsAndSpaces(String string) {
+    static String removeUnwantedSymbolsAndSpaces(String string) {
         // Replace unwanted symbols
         // Split into lines
         //string = string.replace("|", "\n");
@@ -702,7 +702,7 @@ public class ProcessSong extends Activity {
         return string;
     }
 
-    public static String determineLineTypes(String string, Context c) {
+    static String determineLineTypes(String string, Context c) {
         String type;
         if (string.indexOf(".")==0) {
             type = "chord";
@@ -736,7 +736,7 @@ public class ProcessSong extends Activity {
         return type;
     }
 
-    public static String[] getChordPositions(String string) {
+    private static String[] getChordPositions(String string) {
         // Given a chord line, get the character positions that each chord starts at
         // Go through the line character by character
         // If the character isn't a " " and the character before is " " or "|" it's a new chord
@@ -782,7 +782,7 @@ public class ProcessSong extends Activity {
         return chordpos;
     }
 
-    public static String[] getChordSections(String string, String[] pos_string) {
+    private static String[] getChordSections(String string, String[] pos_string) {
         // Go through the chord positions and extract the substrings
         ArrayList<String> chordsections = new ArrayList<>();
         int startpos = 0;
@@ -834,7 +834,7 @@ public class ProcessSong extends Activity {
         return sections;
     }
 
-    public static String[] getLyricSections(String string, String[] pos_string) {
+    private static String[] getLyricSections(String string, String[] pos_string) {
         // Go through the chord positions and extract the substrings
         ArrayList<String> lyricsections = new ArrayList<>();
         int startpos = 0;
@@ -888,15 +888,15 @@ public class ProcessSong extends Activity {
         return sections;
     }
 
-    public static TableLayout.LayoutParams tablelayout_params() {
+    private static TableLayout.LayoutParams tablelayout_params() {
         return new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.WRAP_CONTENT);
     }
 
-    public static TableRow.LayoutParams tablerow_params() {
+    private static TableRow.LayoutParams tablerow_params() {
         return new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,TableRow.LayoutParams.WRAP_CONTENT);
     }
 
-    public static LinearLayout.LayoutParams linearlayout_params() {
+    private static LinearLayout.LayoutParams linearlayout_params() {
         if (FullscreenActivity.scalingfiguredout) {
             return new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         } else {
@@ -904,7 +904,7 @@ public class ProcessSong extends Activity {
         }
     }
 
-    public static TableRow capolinetoTableRow(Context c, String[] chords, float fontsize) {
+    private static TableRow capolinetoTableRow(Context c, String[] chords, float fontsize) {
         TableRow caporow  = new TableRow(c);
         caporow.setClipChildren(false);
         caporow.setClipToPadding(false);
@@ -952,7 +952,7 @@ public class ProcessSong extends Activity {
         return caporow;
     }
 
-    public static TableRow chordlinetoTableRow(Context c, String[] chords, float fontsize) {
+    private static TableRow chordlinetoTableRow(Context c, String[] chords, float fontsize) {
         TableRow chordrow = new TableRow(c);
         chordrow.setLayoutParams(tablelayout_params());
         chordrow.setPadding(0, -(int) ((float) FullscreenActivity.linespacing / fontsize), 0, 0);
@@ -999,7 +999,7 @@ public class ProcessSong extends Activity {
     }
 
     @SuppressWarnings("deprecation")
-    public static TableRow lyriclinetoTableRow(Context c, String[] lyrics, float fontsize) {
+    private static TableRow lyriclinetoTableRow(Context c, String[] lyrics, float fontsize) {
         TableRow lyricrow = new TableRow(c);
         if (FullscreenActivity.whichMode.equals("Presentation") && FullscreenActivity.scalingfiguredout &&
                 !FullscreenActivity.presoShowChords) {
@@ -1124,7 +1124,7 @@ public class ProcessSong extends Activity {
                         img.setImageDrawable(drw);
                     } catch (OutOfMemoryError e2) {
                             e2.printStackTrace();
-                        }
+                    }
                 } else {
                     img.setImageDrawable(drw);
                 }
@@ -1136,7 +1136,7 @@ public class ProcessSong extends Activity {
         return lyricrow;
     }
 
-    public static TableRow commentlinetoTableRow(Context c, String[] comment, float fontsize, boolean tab) {
+    private static TableRow commentlinetoTableRow(Context c, String[] comment, float fontsize, boolean tab) {
         TableRow commentrow = new TableRow(c);
         commentrow.setLayoutParams(tablelayout_params());
         commentrow.setClipChildren(false);
@@ -1229,7 +1229,7 @@ public class ProcessSong extends Activity {
         }
     }*/
 
-    public static TextView titletoTextView (Context c, String title, float fontsize) {
+    private static TextView titletoTextView(Context c, String title, float fontsize) {
         TextView titleview = new TextView(c);
         titleview.setLayoutParams(linearlayout_params());
         titleview.setText(title);
@@ -1241,7 +1241,7 @@ public class ProcessSong extends Activity {
         return titleview;
     }
 
-    public static String howToProcessLines(int linenum, int totallines, String thislinetype, String nextlinetype, String previouslinetype) {
+    private static String howToProcessLines(int linenum, int totallines, String thislinetype, String nextlinetype, String previouslinetype) {
         String what;
         // If this is a chord line followed by a lyric line.
         if (linenum < totallines - 1 && thislinetype.equals("chord") &&
@@ -1276,7 +1276,7 @@ public class ProcessSong extends Activity {
         return lyrichtml;
     }
 
-    public static String[] beautifyHeadings(String string, Context c) {
+    private static String[] beautifyHeadings(String string, Context c) {
 
         if (string==null) {
             string = "";
@@ -1389,7 +1389,7 @@ public class ProcessSong extends Activity {
         return vals;
     }
 
-    public static String fixLineLength(String string,int newlength) {
+    private static String fixLineLength(String string, int newlength) {
         int extraspacesrequired = newlength - string.length();
         for (int x=0; x<extraspacesrequired; x++) {
             string += " ";
@@ -1424,7 +1424,7 @@ public class ProcessSong extends Activity {
                 "</html>";
     }
 
-    public static int getSectionColors(String type) {
+    static int getSectionColors(String type) {
         int colortouse;
         switch (type) {
             case "verse":
@@ -1452,7 +1452,7 @@ public class ProcessSong extends Activity {
         return colortouse;
     }
 
-    public static String fixMultiLineFormat(String string, Context c) {
+    static String fixMultiLineFormat(String string, Context c) {
         // Best way to determine if the song is in multiline format is
         // Look for [v] or [c] case insensitive
         // And it needs to be followed by a line starting with 1 and 2
@@ -1562,7 +1562,7 @@ public class ProcessSong extends Activity {
         }
     }
 
-    public static String[] removeTagLines(String[] sections) {
+    static String[] removeTagLines(String[] sections) {
         for (int x=0; x<sections.length; x++) {
             int start = sections[x].indexOf("[");
             int end = sections[x].indexOf("]");
@@ -1576,7 +1576,7 @@ public class ProcessSong extends Activity {
         return sections;
     }
 
-    public static String removeChordLines(String song) {
+    static String removeChordLines(String song) {
         // Split the song into separate lines
         String[] lines = song.split("\n");
         String newsong = "";
@@ -1589,7 +1589,7 @@ public class ProcessSong extends Activity {
         return newsong;
     }
 
-    public static String getAllChords(String song) {
+    static String getAllChords(String song) {
         // Split the song into separate lines
         String[] lines = song.split("\n");
         String chordsonly = "";
@@ -1602,7 +1602,7 @@ public class ProcessSong extends Activity {
         return chordsonly.replace("."," ");
     }
 
-    public static String removeCommentLines (String song) {
+    static String removeCommentLines(String song) {
         // Split the song into separate lines
         String[] lines = song.split("\n");
         String newsong = "";
@@ -1616,7 +1616,7 @@ public class ProcessSong extends Activity {
 
     }
 
-    public static String addchordstomultiline(String[] multiline, String chords) {
+    private static String addchordstomultiline(String[] multiline, String chords) {
         String[] chordlines = chords.split("\n");
         String replacementtext = "";
 
@@ -1638,7 +1638,7 @@ public class ProcessSong extends Activity {
         return replacementtext;
     }
 
-    public static String[] splitSongIntoSections(String song, Context c) {
+    static String[] splitSongIntoSections(String song, Context c) {
 
         song = song.replace("-!!", "");
 
@@ -1720,7 +1720,7 @@ public class ProcessSong extends Activity {
         //return song.split("%%__SPLITHERE__%%");
     }
 
-    public static String[] splitLaterSplits(String[] currsections) {
+    static String[] splitLaterSplits(String[] currsections) {
         ArrayList<String> newbits = new ArrayList<>();
         for (int z=0; z<currsections.length; z++) {
             // If currsection doesn't have extra split points, add this section to the array
@@ -1772,7 +1772,7 @@ public class ProcessSong extends Activity {
         return updatedSections;
     }
 
-    public static String getSectionHeadings(String songsection) {
+    static String getSectionHeadings(String songsection) {
         String label = "";
         //songsection = songsection.trim();
         if (songsection.indexOf("[")==0) {
@@ -1801,7 +1801,7 @@ public class ProcessSong extends Activity {
         return label;
     }
 
-    public static String[] matchPresentationOrder(String[] currentSections, Context c) {
+    static String[] matchPresentationOrder(String[] currentSections, Context c) {
 
         // Get the currentSectionLabels - these will change after we reorder the song
         String[] currentSectionLabels = new String[currentSections.length];
@@ -1873,15 +1873,15 @@ public class ProcessSong extends Activity {
 
     }
 
-    public static String getSongTitle() {
+    static String getSongTitle() {
         return FullscreenActivity.mTitle.toString();
     }
 
-    public static String getSongAuthor() {
+    static String getSongAuthor() {
         return FullscreenActivity.mAuthor.toString();
     }
 
-    public static String getSongKey() {
+    static String getSongKey() {
         // If key is set
         String keytext = "";
         if (!FullscreenActivity.mKey.isEmpty() && !FullscreenActivity.mKey.equals("")) {
@@ -1890,7 +1890,7 @@ public class ProcessSong extends Activity {
         return keytext;
     }
 
-    public static String songSectionChordPro(Context c, int x, boolean onsong) {
+    static String songSectionChordPro(Context c, int x, boolean onsong) {
         String chopro = "";
         String[] heading = beautifyHeadings(FullscreenActivity.songSectionsLabels[x],c);
         if (onsong) {
@@ -1976,7 +1976,7 @@ public class ProcessSong extends Activity {
         return chopro;
     }
 
-    public static String songSectionText(Context c, int x) {
+    static String songSectionText(Context c, int x) {
         String text = "";
         String[] heading = beautifyHeadings(FullscreenActivity.songSectionsLabels[x],c);
         text += heading[0].trim() + ":";
@@ -2006,6 +2006,7 @@ public class ProcessSong extends Activity {
         }
         return text;
     }
+    @SuppressWarnings("all")
     public static LinearLayout songSectionView(Context c, int x, float fontsize, boolean projected) {
 
         final LinearLayout ll = new LinearLayout(c);
@@ -2161,7 +2162,7 @@ public class ProcessSong extends Activity {
         return ll;
     }
 
-    public static LinearLayout projectedSectionView(Context c, int x, float fontsize) {
+    static LinearLayout projectedSectionView(Context c, int x, float fontsize) {
         final LinearLayout ll = new LinearLayout(c);
 
         if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
@@ -2317,7 +2318,7 @@ public class ProcessSong extends Activity {
         return ll;
     }
 
-    public static LinearLayout createLinearLayout(Context c) {
+    static LinearLayout createLinearLayout(Context c) {
         final LinearLayout ll = new LinearLayout(c);
         ll.setLayoutParams(linearlayout_params());
         ll.setOrientation(LinearLayout.VERTICAL);
@@ -2326,7 +2327,7 @@ public class ProcessSong extends Activity {
         return ll;
     }
 
-    public static TableLayout createTableLayout(Context c) {
+    private static TableLayout createTableLayout(Context c) {
         TableLayout tl = new TableLayout(c);
         tl.setLayoutParams(linearlayout_params());
         tl.setClipChildren(false);
@@ -2334,7 +2335,7 @@ public class ProcessSong extends Activity {
         return tl;
     }
 
-    public static Bitmap createPDFPage(Context c, int pagewidth, int pageheight, String scale) {
+    static Bitmap createPDFPage(Context c, int pagewidth, int pageheight, String scale) {
         String tempsongtitle = FullscreenActivity.songfilename.replace(".pdf", "");
         tempsongtitle = tempsongtitle.replace(".PDF", "");
         FullscreenActivity.mTitle = tempsongtitle;
@@ -2454,6 +2455,7 @@ public class ProcessSong extends Activity {
         }
     }
 
+    @SuppressWarnings("all")
     public static float getScaleValue(float x, float y, float fontsize) {
         float scale = 1.0f;
         if (FullscreenActivity.thissong_scale==null) {
@@ -2484,7 +2486,7 @@ public class ProcessSong extends Activity {
         return scale;
     }
 
-    public static float getStageScaleValue(float x, float y) {
+    static float getStageScaleValue(float x, float y) {
         float scale;
         if (x>y) {
             scale = y;
@@ -2494,7 +2496,7 @@ public class ProcessSong extends Activity {
         return scale;
     }
 
-    public static RelativeLayout preparePerformanceBoxView(Context c, int m, int padding) {
+    static RelativeLayout preparePerformanceBoxView(Context c, int m, int padding) {
         RelativeLayout boxbit  = new RelativeLayout(c);
         LinearLayout.LayoutParams llp = linearlayout_params();
         llp.setMargins(0,0,m,0);
@@ -2509,8 +2511,8 @@ public class ProcessSong extends Activity {
         return boxbit;
     }
 
-    @SuppressWarnings("deprecation")
-    public static LinearLayout prepareProjectedBoxView(Context c, int m, int padding) {
+    @SuppressWarnings("all")
+    static LinearLayout prepareProjectedBoxView(Context c, int m, int padding) {
         LinearLayout boxbit  = createLinearLayout(c);
         LinearLayout.LayoutParams llp = linearlayout_params();
         llp.setMargins(0,0,m,0);
@@ -2537,7 +2539,8 @@ public class ProcessSong extends Activity {
         return boxbit;
     }
 
-    public static LinearLayout prepareStageBoxView(Context c, int m, int padding) {
+    @SuppressWarnings("all")
+    static LinearLayout prepareStageBoxView(Context c, int m, int padding) {
         LinearLayout boxbit  = new LinearLayout(c);
         LinearLayout.LayoutParams llp = linearlayout_params();
         llp.setMargins(m,m,m,padding);
@@ -2552,7 +2555,7 @@ public class ProcessSong extends Activity {
         return boxbit;
     }
 
-    public static LinearLayout preparePerformanceColumnView(Context c) {
+    static LinearLayout preparePerformanceColumnView(Context c) {
         LinearLayout column = new LinearLayout(c);
         column.setLayoutParams(linearlayout_params());
         column.setOrientation(LinearLayout.VERTICAL);
@@ -2561,6 +2564,7 @@ public class ProcessSong extends Activity {
         return column;
     }
 
+    @SuppressWarnings("all")
     public static LinearLayout preparePerformanceSongBitView(Context c,boolean horizontal) {
         LinearLayout songbit = new LinearLayout(c);
         if (horizontal) {
@@ -2574,7 +2578,7 @@ public class ProcessSong extends Activity {
         return songbit;
     }
 
-    public static LinearLayout prepareStageSongBitView(Context c) {
+    static LinearLayout prepareStageSongBitView(Context c) {
         LinearLayout songbit = new LinearLayout(c);
         songbit.setOrientation(LinearLayout.VERTICAL);
         songbit.setLayoutParams(linearlayout_params());
@@ -2583,7 +2587,7 @@ public class ProcessSong extends Activity {
         return songbit;
     }
 
-    public static float setScaledFontSize(int s) {
+    static float setScaledFontSize(int s) {
         float tempfontsize = 12.0f * FullscreenActivity.sectionScaleValue[s];
 
         int start = (int) tempfontsize;
@@ -2595,7 +2599,7 @@ public class ProcessSong extends Activity {
         }
     }
 
-    public static float getProjectedFontSize(float scale) {
+    static float getProjectedFontSize(float scale) {
         float tempfontsize = 12.0f * scale;
         int start = (int) tempfontsize;
         float end = tempfontsize - start;
@@ -2606,7 +2610,7 @@ public class ProcessSong extends Activity {
         }
     }
 
-    public static void addExtraInfo(Context c) {
+    static void addExtraInfo(Context c) {
         String nextinset = "";
         if (FullscreenActivity.setView) {
             // Get the index in the set
@@ -2666,7 +2670,7 @@ public class ProcessSong extends Activity {
     }
 
     // The stuff for PresenterMode
-    public static Button makePresenterSetButton(int x, Context c) {
+    static Button makePresenterSetButton(int x, Context c) {
         Button newButton = new Button(c);
         String buttonText = FullscreenActivity.mSetList[x];
         newButton.setText(buttonText);
@@ -2684,7 +2688,7 @@ public class ProcessSong extends Activity {
         newButton.setLayoutParams(params);
         return newButton;
     }
-    public static void highlightPresenterSetButton(Button b) {
+    static void highlightPresenterSetButton(Button b) {
         b.setBackgroundResource(R.drawable.present_section_setbutton_active);
         b.setTextSize(10.0f);
         b.setTextColor(0xff000000);
@@ -2692,7 +2696,7 @@ public class ProcessSong extends Activity {
         b.setMinimumHeight(0);
         b.setMinHeight(0);
     }
-    public static void unhighlightPresenterSetButton(Button b) {
+    static void unhighlightPresenterSetButton(Button b) {
         b.setBackgroundResource(R.drawable.present_section_setbutton);
         b.setTextSize(10.0f);
         b.setTextColor(0xffffffff);
@@ -2700,7 +2704,7 @@ public class ProcessSong extends Activity {
         b.setMinimumHeight(0);
         b.setMinHeight(0);
     }
-    public static LinearLayout makePresenterSongButtonLayout(Context c) {
+    static LinearLayout makePresenterSongButtonLayout(Context c) {
         LinearLayout ll = new LinearLayout(c);
         ll.setOrientation(LinearLayout.HORIZONTAL);
         ll.setGravity(Gravity.CENTER);
@@ -2712,7 +2716,7 @@ public class ProcessSong extends Activity {
 
         return ll;
     }
-    public static TextView makePresenterSongButtonSection(Context c, String s) {
+    static TextView makePresenterSongButtonSection(Context c, String s) {
         TextView tv = new TextView(c);
         tv.setText(s);
         tv.setTextColor(0xffffffff);
@@ -2720,7 +2724,7 @@ public class ProcessSong extends Activity {
         tv.setPadding(5, 5, 10, 5);
         return tv;
     }
-    public static Button makePresenterSongButtonContent(Context c, String s) {
+    static Button makePresenterSongButtonContent(Context c, String s) {
         Button b = new Button(c);
         b.setText(s.trim());
         b.setTransformationMethod(null);
@@ -2732,7 +2736,7 @@ public class ProcessSong extends Activity {
         b.setMinHeight(0);
         return b;
     }
-    public static void highlightPresenterSongButton(Button b) {
+    static void highlightPresenterSongButton(Button b) {
         b.setBackgroundResource(R.drawable.present_section_button_active);
         b.setTextSize(10.0f);
         b.setTextColor(0xff000000);
@@ -2740,7 +2744,7 @@ public class ProcessSong extends Activity {
         b.setMinimumHeight(0);
         b.setMinHeight(0);
     }
-    public static void unhighlightPresenterSongButton(Button b) {
+    static void unhighlightPresenterSongButton(Button b) {
 
         b.setBackgroundResource(R.drawable.present_section_button);
         b.setTextSize(10.0f);
@@ -2751,7 +2755,7 @@ public class ProcessSong extends Activity {
     }
 
     // The stuff for the highlighter notes
-    public static File getHighlightFile(Context c) {
+    static File getHighlightFile(Context c) {
         String layout;
         String highlighterfile;
         if (c.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {

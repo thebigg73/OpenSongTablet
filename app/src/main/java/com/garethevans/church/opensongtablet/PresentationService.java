@@ -29,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 
@@ -197,26 +198,26 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.cast_screen);
 
-            pageHolder                   = (RelativeLayout) findViewById(R.id.pageHolder);
-            projectedPage_RelativeLayout = (RelativeLayout) findViewById(R.id.projectedPage_RelativeLayout);
-            projected_LinearLayout       = (LinearLayout)   findViewById(R.id.projected_LinearLayout);
-            projected_ImageView          = (ImageView)      findViewById(R.id.projected_ImageView);
-            projected_BackgroundImage    = (ImageView)      findViewById(R.id.projected_BackgroundImage);
-            projected_TextureView        = (TextureView)    findViewById(R.id.projected_TextureView);
-            projected_Logo               = (ImageView)      findViewById(R.id.projected_Logo);
-            songinfo_TextView            = (TextView)       findViewById(R.id.songinfo_TextView);
-            presentermode_bottombit      = (LinearLayout)   findViewById(R.id.presentermode_bottombit);
-            presentermode_title          = (TextView)       findViewById(R.id.presentermode_title);
-            presentermode_author         = (TextView)       findViewById(R.id.presentermode_author);
-            presentermode_copyright      = (TextView)       findViewById(R.id.presentermode_copyright);
-            presentermode_alert          = (TextView)       findViewById(R.id.presentermode_alert);
-            bottom_infobar               = (LinearLayout)   findViewById(R.id.bottom_infobar);
-            col1_1                       = (LinearLayout)   findViewById(R.id.col1_1);
-            col1_2                       = (LinearLayout)   findViewById(R.id.col1_2);
-            col2_2                       = (LinearLayout)   findViewById(R.id.col2_2);
-            col1_3                       = (LinearLayout)   findViewById(R.id.col1_3);
-            col2_3                       = (LinearLayout)   findViewById(R.id.col2_3);
-            col3_3                       = (LinearLayout)   findViewById(R.id.col3_3);
+            pageHolder                   = findViewById(R.id.pageHolder);
+            projectedPage_RelativeLayout = findViewById(R.id.projectedPage_RelativeLayout);
+            projected_LinearLayout       = findViewById(R.id.projected_LinearLayout);
+            projected_ImageView          = findViewById(R.id.projected_ImageView);
+            projected_BackgroundImage    = findViewById(R.id.projected_BackgroundImage);
+            projected_TextureView        = findViewById(R.id.projected_TextureView);
+            projected_Logo               = findViewById(R.id.projected_Logo);
+            songinfo_TextView            = findViewById(R.id.songinfo_TextView);
+            presentermode_bottombit      = findViewById(R.id.presentermode_bottombit);
+            presentermode_title          = findViewById(R.id.presentermode_title);
+            presentermode_author         = findViewById(R.id.presentermode_author);
+            presentermode_copyright      = findViewById(R.id.presentermode_copyright);
+            presentermode_alert          = findViewById(R.id.presentermode_alert);
+            bottom_infobar               = findViewById(R.id.bottom_infobar);
+            col1_1                       = findViewById(R.id.col1_1);
+            col1_2                       = findViewById(R.id.col1_2);
+            col2_2                       = findViewById(R.id.col2_2);
+            col1_3                       = findViewById(R.id.col1_3);
+            col2_3                       = findViewById(R.id.col2_3);
+            col3_3                       = findViewById(R.id.col3_3);
 
             c = projectedPage_RelativeLayout.getContext();
 
@@ -381,7 +382,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
             if (usingcustom) {
                 Uri logoUri = Uri.fromFile(customLogo);
-                Glide.with(c).load(logoUri).override(logowidth,logoheight).into(projected_Logo);
+                RequestOptions myOptions = new RequestOptions()
+                        .fitCenter()
+                        .override(logowidth,logoheight);
+                Glide.with(c).load(logoUri).apply(myOptions).into(projected_Logo);
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo,c.getTheme()));
@@ -594,7 +598,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         } else {
                             // Process the image location into an URI
                             Uri imageUri = Uri.fromFile(imgFile);
-                            Glide.with(c).load(imageUri).centerCrop().into(projected_BackgroundImage);
+                            RequestOptions myOptions = new RequestOptions()
+                                    .centerCrop();
+                            Glide.with(c).load(imageUri).apply(myOptions).into(projected_BackgroundImage);
                         }
                         projected_BackgroundImage.setVisibility(View.VISIBLE);
                     }
@@ -713,7 +719,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             projected_ImageView.setBackgroundColor(0x00000000);
             // Process the image location into an URI
             Uri imageUri = Uri.fromFile(FullscreenActivity.file);
-            Glide.with(c).load(imageUri).fitCenter().into(projected_ImageView);
+            RequestOptions myOptions = new RequestOptions()
+                    .fitCenter();
+            Glide.with(c).load(imageUri).apply(myOptions).into(projected_ImageView);
             projected_ImageView.setVisibility(View.VISIBLE);
             animateIn();
         }
@@ -740,6 +748,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             }
         }
         private static class PrepareStageProjected extends AsyncTask<Object, Void, String> {
+            @SuppressLint("StaticFieldLeak")
             LinearLayout test1_1 = ProcessSong.createLinearLayout(context);
 
             @Override
@@ -802,7 +811,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             }
         }
         static class ProjectedStageView1Col extends AsyncTask<Object, Void, String> {
+            @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout box1_1    = ProcessSong.prepareProjectedBoxView(context,0,padding);
             float scale;
 
@@ -876,6 +887,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             }
         }
         private static class PreparePresenterProjected extends AsyncTask<Object, Void, String> {
+            @SuppressLint("StaticFieldLeak")
             LinearLayout test1_1 = ProcessSong.createLinearLayout(context);
 
             @Override
@@ -938,7 +950,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             }
         }
         static class ProjectedPresenterView1Col extends AsyncTask<Object, Void, String> {
+            @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout box1_1    = ProcessSong.prepareProjectedBoxView(context,0,padding);
             float scale;
 
@@ -1116,11 +1130,17 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             }
         }
         private static class PrepareFullProjected extends AsyncTask<Object, Void, String> {
+            @SuppressLint("StaticFieldLeak")
             LinearLayout test1_1 = ProcessSong.createLinearLayout(context);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout test1_2 = ProcessSong.createLinearLayout(context);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout test2_2 = ProcessSong.createLinearLayout(context);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout test1_3 = ProcessSong.createLinearLayout(context);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout test2_3 = ProcessSong.createLinearLayout(context);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout test3_3 = ProcessSong.createLinearLayout(context);
 
             @Override
@@ -1227,7 +1247,9 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             }
         }
         private static class ProjectedPerformanceView1Col extends AsyncTask<Object, Void, String> {
+            @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout box1_1    = ProcessSong.prepareProjectedBoxView(context,0,padding);
             float scale1_1;
             float fontsize1_1;
@@ -1301,9 +1323,13 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             float scale2_2;
             float fontsize1_2;
             float fontsize2_2;
+            @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics1_2 = ProcessSong.createLinearLayout(context);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics2_2 = ProcessSong.createLinearLayout(context);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout box1_2    = ProcessSong.prepareProjectedBoxView(context,0,padding);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout box2_2    = ProcessSong.prepareProjectedBoxView(context,0,padding);
 
             ProjectedPerformanceView2Col(float s1_2, float s2_2) {
@@ -1392,11 +1418,17 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             float fontsize1_3;
             float fontsize2_3;
             float fontsize3_3;
+            @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics1_3 = ProcessSong.createLinearLayout(context);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics2_3 = ProcessSong.createLinearLayout(context);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout lyrics3_3 = ProcessSong.createLinearLayout(context);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout box1_3    = ProcessSong.prepareProjectedBoxView(context,0,padding);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout box2_3    = ProcessSong.prepareProjectedBoxView(context,0,padding);
+            @SuppressLint("StaticFieldLeak")
             LinearLayout box3_3    = ProcessSong.prepareProjectedBoxView(context,0,padding);
 
             ProjectedPerformanceView3Col(float s1_3, float s2_3, float s3_3) {

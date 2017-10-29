@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -108,10 +109,16 @@ public class PopUpImportExternalFile extends DialogFragment {
     }
 
     public void setTitle(String s) {
-        if (title!=null) {
-            title.setText(s);
-        } else {
-            getDialog().setTitle(s);
+        try {
+            if (title != null) {
+                title.setText(s);
+            } else {
+                if (getDialog() != null) {
+                    getDialog().setTitle(s);
+                }
+            }
+        } catch (Exception e) {
+            Log.d("d","Problem with title");
         }
     }
 
@@ -711,6 +718,7 @@ public class PopUpImportExternalFile extends DialogFragment {
             Log.d("d","Error importing");
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class ImportOnSongBackup extends AsyncTask<String, Void, String> {
 
         @Override
@@ -868,6 +876,7 @@ public class PopUpImportExternalFile extends DialogFragment {
             mListener.openFragment();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class Backup_Install extends AsyncTask<String, Void, String> {
 
         @Override

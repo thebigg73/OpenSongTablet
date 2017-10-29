@@ -191,13 +191,13 @@ PopUpDirectoryChooserFragment.SettingsInterface {
                     e1.printStackTrace();
                 }
 
-                TextView showVersion = (TextView) findViewById(R.id.version);
+                TextView showVersion = findViewById(R.id.version);
                 String temptext = "V" + versionName + " (" + versionNumber + ")";
                 if (showVersion != null) {
                     showVersion.setText(temptext);
                 }
 
-                readUpdate = (LinearLayout) findViewById(R.id.readUpdate);
+                readUpdate = findViewById(R.id.readUpdate);
                 readUpdate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -205,8 +205,8 @@ PopUpDirectoryChooserFragment.SettingsInterface {
                     }
                 });
 
-                goToSongs = (Button) findViewById(R.id.goToSongs);
-                manageStorage = (Button) findViewById(R.id.manageStorage);
+                goToSongs = findViewById(R.id.goToSongs);
+                manageStorage = findViewById(R.id.manageStorage);
                 manageStorage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -215,7 +215,7 @@ PopUpDirectoryChooserFragment.SettingsInterface {
                 });
                 recheckStorage();
 
-                user_guide = (Button) findViewById(R.id.user_guide);
+                user_guide = findViewById(R.id.user_guide);
                 user_guide.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -223,7 +223,7 @@ PopUpDirectoryChooserFragment.SettingsInterface {
                     }
                 });
 
-                TextView weblink = (TextView) findViewById(R.id.webLink);
+                TextView weblink = findViewById(R.id.webLink);
                 weblink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -295,7 +295,7 @@ PopUpDirectoryChooserFragment.SettingsInterface {
     }
 
     private void setupToolbar(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
@@ -322,7 +322,11 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         String url = "http://www.opensongapp.com/latest-updates";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
-        startActivity(i);
+        try {
+            startActivity(i);
+        } catch (Exception e) {
+            Log.d("d", "Error showing activity");
+        }
     }
 
     public void userGuide() {
@@ -367,7 +371,11 @@ PopUpDirectoryChooserFragment.SettingsInterface {
     public void openStorageFragment() {
         FullscreenActivity.whattodo = "splashpagestorage";
         DialogFragment newFragment = PopUpStorageFragment.newInstance();
-        newFragment.show(getFragmentManager(), "splashpagestorage");
+        try {
+            newFragment.show(getFragmentManager(), "splashpagestorage");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -408,6 +416,10 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         Bundle args = new Bundle();
         args.putString("type", "folder");
         newFragment.setArguments(args);
-        newFragment.show(getFragmentManager(), "splashpagestorage");
+        try {
+            newFragment.show(getFragmentManager(), "splashpagestorage");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

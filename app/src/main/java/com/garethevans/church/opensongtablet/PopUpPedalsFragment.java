@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
@@ -349,10 +350,14 @@ public class PopUpPedalsFragment extends DialogFragment {
 
 
         if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
-            pedalToggleScrollBeforeSwipeButton.setChecked(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                pedalToggleScrollBeforeSwipeButton.setChecked(true);
+            }
 
         } else {
-            pedalToggleScrollBeforeSwipeButton.setChecked(false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                pedalToggleScrollBeforeSwipeButton.setChecked(false);
+            }
         }
     }
 

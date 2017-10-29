@@ -1,13 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
     xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="129"
-    android:versionName="4.0.9"
+    android:versionCode="133"
+    android:versionName="4.1.1"
     android:installLocation="auto">
 
     <!--Overrides are for Sdk=12/13 but library specifies Sdk=14+-->
     <uses-sdk
-        android:minSdkVersion="12" android:targetSdkVersion="23"
+        android:minSdkVersion="14" android:targetSdkVersion="26"
         tools:overrideLibrary="
         com.google.android.gms,
         com.google.android.gms.nearby,
@@ -15,7 +15,13 @@
         com.google.android.gms.cast,
         com.google.android.gms.base,
         com.google.android.gms.tasks,
-        com.peak.salut"/>
+        com.peak.salut,
+        com.google.android.gms.nearby.license,
+        com.google.android.gms.cast.framework.license,
+        com.google.android.gms.base.license,
+        com.google.android.gms.common.license,
+        com.google.android.gms.cast.license,
+        com.google.android.gms.tasks.license"/>
 
     <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
@@ -124,7 +130,7 @@
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
                 android:roundIcon="@mipmap/ic_round_launcher"
-                tools:ignore="GoogleAppIndexingWarning">
+                tools:ignore="AppLinkUrlError,GoogleAppIndexingWarning">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -285,6 +291,15 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name">
         </activity>
+        <activity android:name=".IndexSongs" />
+        <activity android:name=".Preferences" />
+        <activity android:name=".LoadXML" />
+        <activity android:name=".CreateNewSet" />
+        <activity android:name=".ExportPreparer" />
+        <activity android:name=".OptionMenuListeners" />
+        <activity android:name=".ProcessSong" />
+        <activity android:name=".SetActions" />
+        <activity android:name=".SetLocale" />
 
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->

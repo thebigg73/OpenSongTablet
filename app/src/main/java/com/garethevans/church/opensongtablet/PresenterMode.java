@@ -64,6 +64,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
@@ -259,7 +260,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ab_toolbar = (Toolbar) findViewById(R.id.mytoolbar); // Attaching the layout to the toolbar object
+                ab_toolbar = findViewById(R.id.mytoolbar); // Attaching the layout to the toolbar object
                 setSupportActionBar(ab_toolbar);                     // Setting toolbar as the ActionBar with setSupportActionBar() call
                 ab = getSupportActionBar();
                 if (ab != null) {
@@ -322,7 +323,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         // If we had an import to do, do it
         if (FullscreenActivity.whattodo.equals("doimport")) {
-            openFragment();
+            //openFragment();
+            //TODO
+            Log.d("d","This was causing crashing");
         }
     }
 
@@ -536,12 +539,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class PrepareSongMenu extends AsyncTask<Object, Void, String> {
 
         @Override
         protected void onPreExecute() {
             try {
-                closeSongsFAB = (FloatingActionButton) findViewById(R.id.closeSongsFAB);
+                closeSongsFAB = findViewById(R.id.closeSongsFAB);
                 closeSongsFAB.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -679,11 +683,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class PrepareOptionMenu extends AsyncTask<Object, Void, String> {
 
         public void onPreExecute() {
             try {
-                optionmenu = (LinearLayout) findViewById(R.id.optionmenu);
+                optionmenu = findViewById(R.id.optionmenu);
                 optionmenu.removeAllViews();
                 optionmenu.addView(OptionMenuListeners.prepareOptionMenu(PresenterMode.this));
                 if (optionmenu != null) {
@@ -737,6 +742,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class ResizeDrawers extends AsyncTask<Object, Void, String> {
         int width;
 
@@ -782,6 +788,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class OpenMyDrawers extends AsyncTask<Object, Void, String> {
 
         String which;
@@ -822,6 +829,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class CloseMyDrawers extends AsyncTask<Object, Void, String> {
 
         String which;
@@ -959,82 +967,82 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void initialiseTheViews() {
 
         // The main views
-        mLayout = (LinearLayout) findViewById(R.id.pagepresentermode);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        pres_details = (LinearLayout) findViewById(R.id.pres_details);
-        presenter_songtitle = (TextView) findViewById(R.id.presenter_songtitle);
-        presenter_author = (TextView) findViewById(R.id.presenter_author);
-        presenter_copyright = (TextView) findViewById(R.id.presenter_copyright);
-        presenter_order_text = (CheckBox) findViewById(R.id.presenter_order_text);
-        presenter_order_button = (Button) findViewById(R.id.presenter_order_button);
-        set_view_fab = (FloatingActionButton) findViewById(R.id.set_view_fab);
-        presenter_set = (TextView) findViewById(R.id.presenter_set);
-        presenter_set_buttonsListView = (LinearLayout) findViewById(R.id.presenter_set_buttonsListView);
-        presenter_lyrics = (EditText) findViewById(R.id.presenter_lyrics);
-        presenter_lyrics_image = (ImageView) findViewById(R.id.presenter_lyrics_image);
-        loopandtimeLinearLayout = (LinearLayout) findViewById(R.id.loopandtimeLinearLayout);
-        loopCheckBox = (CheckBox) findViewById(R.id.loopCheckBox);
-        timeEditText = (EditText) findViewById(R.id.timeEditText);
-        startstopSlideShow = (FloatingActionButton) findViewById(R.id.startstopSlideShow);
-        presenter_songbuttons = (ScrollView) findViewById(R.id.presenter_songbuttons);
-        preso_Action_buttons = (LinearLayout) findViewById(R.id.preso_Action_buttons);
-        preso_action_buttons_scroll = (ScrollView) findViewById(R.id.preso_action_buttons_scroll);
-        presenter_setbuttons = (ScrollView) findViewById(R.id.presenter_setbuttons);
-        presenter_song_buttonsListView = (LinearLayout) findViewById(R.id.presenter_song_buttonsListView);
-        autoProject = (SwitchCompat) findViewById(R.id.autoProject);
+        mLayout = findViewById(R.id.pagepresentermode);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        pres_details = findViewById(R.id.pres_details);
+        presenter_songtitle = findViewById(R.id.presenter_songtitle);
+        presenter_author = findViewById(R.id.presenter_author);
+        presenter_copyright = findViewById(R.id.presenter_copyright);
+        presenter_order_text = findViewById(R.id.presenter_order_text);
+        presenter_order_button = findViewById(R.id.presenter_order_button);
+        set_view_fab = findViewById(R.id.set_view_fab);
+        presenter_set = findViewById(R.id.presenter_set);
+        presenter_set_buttonsListView = findViewById(R.id.presenter_set_buttonsListView);
+        presenter_lyrics = findViewById(R.id.presenter_lyrics);
+        presenter_lyrics_image = findViewById(R.id.presenter_lyrics_image);
+        loopandtimeLinearLayout = findViewById(R.id.loopandtimeLinearLayout);
+        loopCheckBox = findViewById(R.id.loopCheckBox);
+        timeEditText = findViewById(R.id.timeEditText);
+        startstopSlideShow = findViewById(R.id.startstopSlideShow);
+        presenter_songbuttons = findViewById(R.id.presenter_songbuttons);
+        preso_Action_buttons = findViewById(R.id.preso_Action_buttons);
+        preso_action_buttons_scroll = findViewById(R.id.preso_action_buttons_scroll);
+        presenter_setbuttons = findViewById(R.id.presenter_setbuttons);
+        presenter_song_buttonsListView = findViewById(R.id.presenter_song_buttonsListView);
+        autoProject = findViewById(R.id.autoProject);
 
         // The page columns
-        col1_layout = (RelativeLayout) findViewById(R.id.col1_layout);
-        col2_layout = (RelativeLayout) findViewById(R.id.col2_layout);
-        col3_layout = (RelativeLayout) findViewById(R.id.col3_layout);
+        col1_layout = findViewById(R.id.col1_layout);
+        col2_layout = findViewById(R.id.col2_layout);
+        col3_layout = findViewById(R.id.col3_layout);
 
         // Quick nav buttons
-        nav_prevsong = (FloatingActionButton) findViewById(R.id.nav_prevsong);
-        nav_nextsong = (FloatingActionButton) findViewById(R.id.nav_nextsong);
-        nav_prevsection = (FloatingActionButton) findViewById(R.id.nav_prevsection);
-        nav_nextsection = (FloatingActionButton) findViewById(R.id.nav_nextsection);
+        nav_prevsong = findViewById(R.id.nav_prevsong);
+        nav_nextsong = findViewById(R.id.nav_nextsong);
+        nav_prevsection = findViewById(R.id.nav_prevsection);
+        nav_nextsection = findViewById(R.id.nav_nextsection);
         enabledisableButton(nav_prevsong, false);
         enabledisableButton(nav_nextsong, false);
         enabledisableButton(nav_prevsection, false);
         enabledisableButton(nav_nextsection, false);
 
         // The buttons
-        presenter_project_group = (TextView) findViewById(R.id.presenter_project_group);
-        presenter_logo_group = (TextView) findViewById(R.id.presenter_logo_group);
-        presenter_blank_group = (TextView) findViewById(R.id.presenter_blank_group);
-        presenter_alert_group = (TextView) findViewById(R.id.presenter_alert_group);
-        presenter_audio_group = (TextView) findViewById(R.id.presenter_audio_group);
-        presenter_dB_group = (TextView) findViewById(R.id.presenter_dB_group);
-        presenter_slide_group = (TextView) findViewById(R.id.presenter_slide_group);
-        presenter_scripture_group = (TextView) findViewById(R.id.presenter_scripture_group);
-        presenter_display_group = (TextView) findViewById(R.id.presenter_display_group);
+        presenter_project_group = findViewById(R.id.presenter_project_group);
+        presenter_logo_group = findViewById(R.id.presenter_logo_group);
+        presenter_blank_group = findViewById(R.id.presenter_blank_group);
+        presenter_alert_group = findViewById(R.id.presenter_alert_group);
+        presenter_audio_group = findViewById(R.id.presenter_audio_group);
+        presenter_dB_group = findViewById(R.id.presenter_dB_group);
+        presenter_slide_group = findViewById(R.id.presenter_slide_group);
+        presenter_scripture_group = findViewById(R.id.presenter_scripture_group);
+        presenter_display_group = findViewById(R.id.presenter_display_group);
 
         // The toolbar
-        songandauthor = (RelativeLayout) findViewById(R.id.songandauthor);
-        digitalclock = (TextView) findViewById(R.id.digitalclock);
-        songtitle_ab = (TextView) findViewById(R.id.songtitle_ab);
-        songkey_ab = (TextView) findViewById(R.id.songkey_ab);
-        songauthor_ab = (TextView) findViewById(R.id.songauthor_ab);
+        songandauthor = findViewById(R.id.songandauthor);
+        digitalclock = findViewById(R.id.digitalclock);
+        songtitle_ab = findViewById(R.id.songtitle_ab);
+        songkey_ab = findViewById(R.id.songkey_ab);
+        songauthor_ab = findViewById(R.id.songauthor_ab);
         songtitle_ab.setText(getResources().getString(R.string.presentermode));
         songkey_ab.setText("");
         songauthor_ab.setText("");
-        batterycharge = (TextView) findViewById(R.id.batterycharge);
-        batteryimage = (ImageView) findViewById(R.id.batteryimage);
-        batteryholder = (RelativeLayout) findViewById(R.id.batteryholder);
+        batterycharge = findViewById(R.id.batterycharge);
+        batteryimage = findViewById(R.id.batteryimage);
+        batteryholder = findViewById(R.id.batteryholder);
 
         // The song menu
-        songmenu = (LinearLayout) findViewById(R.id.songmenu);
-        menuFolder_TextView = (TextView) findViewById(R.id.menuFolder_TextView);
-        closeSongsFAB = (FloatingActionButton) findViewById(R.id.closeSongsFAB);
-        side_index = (LinearLayout) findViewById(R.id.side_index);
-        song_list_view = (ListView) findViewById(R.id.song_list_view);
+        songmenu = findViewById(R.id.songmenu);
+        menuFolder_TextView = findViewById(R.id.menuFolder_TextView);
+        closeSongsFAB = findViewById(R.id.closeSongsFAB);
+        side_index = findViewById(R.id.side_index);
+        song_list_view = findViewById(R.id.song_list_view);
 
         // The option menu
-        optionmenu = (LinearLayout) findViewById(R.id.optionmenu);
-        optionsdisplayscrollview = (ScrollView) findViewById(R.id.optionsdisplayscrollview);
-        menuFolder_TextView = (TextView) findViewById(R.id.menuFolder_TextView);
+        optionmenu = findViewById(R.id.optionmenu);
+        optionsdisplayscrollview = findViewById(R.id.optionsdisplayscrollview);
+        menuFolder_TextView = findViewById(R.id.menuFolder_TextView);
         menuFolder_TextView.setText(getString(R.string.wait));
-        changefolder_LinearLayout = (LinearLayout) findViewById(R.id.changefolder_LinearLayout);
+        changefolder_LinearLayout = findViewById(R.id.changefolder_LinearLayout);
         changefolder_LinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1703,6 +1711,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class DoMoveInSet extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2030,6 +2039,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class LoadSong extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2258,7 +2268,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         // Draw the image to the preview window
         presenter_lyrics_image.setBackgroundColor(0x00000000);
-        Glide.with(PresenterMode.this).load(imageUri).override(glidewidth, glideheight).into(presenter_lyrics_image);
+        RequestOptions myOptions = new RequestOptions()
+                .override(glidewidth,glideheight);
+        Glide.with(PresenterMode.this).load(imageUri).apply(myOptions).into(presenter_lyrics_image);
 
         if (autoproject || FullscreenActivity.autoProject) {
             autoproject = false;
@@ -2391,7 +2403,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
             case "wipeallsongs":
                 // Wipe all songs
-                ListSongFiles.clearAllSongs();
+                if (!ListSongFiles.clearAllSongs()) {
+                    Log.d("d","Problem clearing all songs");
+                }
                 refreshAll();
                 break;
 
@@ -2458,6 +2472,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             }
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class ShareSong extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -2486,6 +2501,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class ShareSet extends AsyncTask<Object, Void, String> {
         @Override
         protected String doInBackground(Object... objects) {
@@ -2566,6 +2582,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class LoadCustomReusable extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2608,6 +2625,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class AddSlideToSet extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2704,7 +2722,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     // The song index
     public void displayIndex() {
-        LinearLayout indexLayout = (LinearLayout) findViewById(R.id.side_index);
+        LinearLayout indexLayout = findViewById(R.id.side_index);
         if (FullscreenActivity.showAlphabeticalIndexInSongMenu) {
             indexLayout.setVisibility(View.VISIBLE);
         } else {
@@ -2745,6 +2763,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             e.printStackTrace();
         }
     }
+    @SuppressLint("StaticFieldLeak")
     private class IndexingDone extends AsyncTask<Object, Void, String> {
 
         @Override
@@ -2897,6 +2916,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         enabledisableButton(startstopSlideShow, true);
 
     }
+    @SuppressLint("StaticFieldLeak")
     private class AutoSlideShow extends AsyncTask<Object, Void, String> {
 
         boolean cancelled = false;

@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
@@ -667,6 +668,7 @@ public class PopUpListSetsFragment extends DialogFragment {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class FetchDataTask extends AsyncTask<String,Integer,String> {
 
         @Override

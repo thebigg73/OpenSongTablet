@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -950,6 +951,7 @@ class OnSongConvert {
 	}
 	private static class DoBatchConvert extends AsyncTask<String, Void, String> {
 
+        @SuppressLint("StaticFieldLeak")
         Context context;
 
         DoBatchConvert(Context c) {
@@ -989,7 +991,9 @@ class OnSongConvert {
 								inputStream.close();
 								bufferedReader.close();
 
-								doExtract();
+								if (!doExtract()) {
+									Log.d("d","Problem extracting OnSong");
+								}
 							} catch (Exception e) {
 								// file doesn't exist
 								FullscreenActivity.myXML = "<title>ERROR</title>\n<author></author>\n<lyrics>"

@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -47,8 +48,7 @@ public class OptionMenuListeners extends Activity {
 
     public static MyInterface mListener;
 
-    @SuppressWarnings("all")
-    public static LinearLayout prepareOptionMenu(Context c) {
+    static LinearLayout prepareOptionMenu(Context c) {
         mListener = (MyInterface) c;
         LinearLayout menu;
         switch (FullscreenActivity.whichOptionMenu) {
@@ -112,98 +112,98 @@ public class OptionMenuListeners extends Activity {
         return menu;
     }
 
-    @SuppressWarnings("all")
-    public static LinearLayout createMainMenu(Context c) {
+    @SuppressLint("InflateParams")
+    private static LinearLayout createMainMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return (LinearLayout) inflater.inflate(R.layout.popup_option,null);
     }
 
-    @SuppressWarnings("all")
-    public static LinearLayout createSetMenu(Context c) {
+    @SuppressLint("InflateParams")
+    private static LinearLayout createSetMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return (LinearLayout) inflater.inflate(R.layout.popup_option_set,null);
     }
 
-    @SuppressWarnings("all")
-    public static LinearLayout createSongMenu(Context c) {
+    @SuppressLint("InflateParams")
+    private static LinearLayout createSongMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return (LinearLayout) inflater.inflate(R.layout.popup_option_song,null);
     }
 
-    @SuppressWarnings("all")
-    public static LinearLayout createChordsMenu(Context c) {
+    @SuppressLint("InflateParams")
+    private static LinearLayout createChordsMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return (LinearLayout) inflater.inflate(R.layout.popup_option_chords,null);
     }
 
-    @SuppressWarnings("all")
-    public static LinearLayout createDisplayMenu(Context c) {
+    @SuppressLint("InflateParams")
+    private static LinearLayout createDisplayMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return (LinearLayout) inflater.inflate(R.layout.popup_option_display,null);
     }
 
-    @SuppressWarnings("all")
-    public static LinearLayout createStorageMenu(Context c) {
+    @SuppressLint("InflateParams")
+    private static LinearLayout createStorageMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return (LinearLayout) inflater.inflate(R.layout.popup_option_storage,null);
     }
 
-    @SuppressWarnings("all")
-    public static LinearLayout createFindSongsMenu(Context c) {
+    @SuppressLint("InflateParams")
+    private static LinearLayout createFindSongsMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return (LinearLayout) inflater.inflate(R.layout.popup_option_findsongs,null);
     }
 
-    @SuppressWarnings("all")
-    public static LinearLayout createConnectMenu(Context c) {
+    @SuppressLint("InflateParams")
+    private static LinearLayout createConnectMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return (LinearLayout) inflater.inflate(R.layout.popup_option_connections,null);
     }
 
-    @SuppressWarnings("all")
-    public static LinearLayout createModeMenu(Context c) {
+    @SuppressLint("InflateParams")
+    private static LinearLayout createModeMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return (LinearLayout) inflater.inflate(R.layout.popup_option_modes,null);
     }
 
-    @SuppressWarnings("all")
-    public static LinearLayout createGesturesMenu(Context c) {
+    @SuppressLint("InflateParams")
+    private static LinearLayout createGesturesMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return (LinearLayout) inflater.inflate(R.layout.popup_option_gestures,null);
     }
 
-    @SuppressWarnings("all")
-    public static LinearLayout createAutoscrollMenu(Context c) {
+    @SuppressLint("InflateParams")
+    private static LinearLayout createAutoscrollMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return (LinearLayout) inflater.inflate(R.layout.popup_option_autoscroll,null);
     }
 
-    @SuppressWarnings("all")
-    public static LinearLayout createPadMenu(Context c) {
+    @SuppressLint("InflateParams")
+    private static LinearLayout createPadMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return (LinearLayout) inflater.inflate(R.layout.popup_option_pad,null);
     }
 
-    @SuppressWarnings("all")
-    public static LinearLayout createOtherMenu(Context c) {
+    @SuppressLint("InflateParams")
+    private static LinearLayout createOtherMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return (LinearLayout) inflater.inflate(R.layout.popup_option_other,null);
     }
 
-    public static void optionListeners(View v, Context c) {
+    static void optionListeners(View v, Context c) {
 
         // Decide which listeners we need based on the menu
         switch (FullscreenActivity.whichOptionMenu) {
@@ -262,7 +262,7 @@ public class OptionMenuListeners extends Activity {
         }
     }
 
-    public static void mainOptionListener(View v, Context c) {
+    private static void mainOptionListener(View v, Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -421,7 +421,7 @@ public class OptionMenuListeners extends Activity {
 
     }
 
-    public static void setOptionListener(View v, final Context c) {
+    private static void setOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -452,7 +452,9 @@ public class OptionMenuListeners extends Activity {
         setEditButton.setText(c.getString(R.string.options_set_edit).toUpperCase(FullscreenActivity.locale));
         showSetTickBoxInSongMenu.setText(c.getString(R.string.setquickcheck).toUpperCase(FullscreenActivity.locale));
 
-        showSetTickBoxInSongMenu.setChecked(FullscreenActivity.showSetTickBoxInSongMenu);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            showSetTickBoxInSongMenu.setChecked(FullscreenActivity.showSetTickBoxInSongMenu);
+        }
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -628,7 +630,7 @@ public class OptionMenuListeners extends Activity {
 
     }
 
-    public static void songOptionListener(View v, final Context c) {
+    private static void songOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -636,6 +638,7 @@ public class OptionMenuListeners extends Activity {
         Button songEditButton = (Button) v.findViewById(R.id.songEditButton);
         Button songStickyButton = (Button) v.findViewById(R.id.songStickyButton);
         Button songDrawingButton = (Button) v.findViewById(R.id.songDrawingButton);
+        Button songScoreButton = (Button) v.findViewById(R.id.songScoreButton);
         Button songOnYouTubeButton = (Button) v.findViewById(R.id.songOnYouTubeButton);
         Button songOnWebButton = (Button) v.findViewById(R.id.songOnWebButton);
         Button songRenameButton = (Button) v.findViewById(R.id.songRenameButton);
@@ -650,6 +653,7 @@ public class OptionMenuListeners extends Activity {
         songEditButton.setText(c.getString(R.string.options_song_edit).toUpperCase(FullscreenActivity.locale));
         songStickyButton.setText(c.getString(R.string.options_song_stickynotes).toUpperCase(FullscreenActivity.locale));
         songDrawingButton.setText(c.getString(R.string.highlight).toUpperCase(FullscreenActivity.locale));
+        songScoreButton.setText(c.getString(R.string.music_score).toUpperCase(FullscreenActivity.locale));
         songOnYouTubeButton.setText(c.getString(R.string.youtube).toUpperCase(FullscreenActivity.locale));
         songOnWebButton.setText(c.getString(R.string.websearch).toUpperCase(FullscreenActivity.locale));
         songRenameButton.setText(c.getString(R.string.options_song_rename).toUpperCase(FullscreenActivity.locale));
@@ -666,7 +670,9 @@ public class OptionMenuListeners extends Activity {
         }
 
         // Set the switches up based on preferences
-        songPresentationOrderButton.setChecked(FullscreenActivity.usePresentationOrder);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            songPresentationOrderButton.setChecked(FullscreenActivity.usePresentationOrder);
+        }
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -724,6 +730,17 @@ public class OptionMenuListeners extends Activity {
                     } else {
                         Log.d("d","screenshot is null");
                     }
+                }
+            }
+        });
+
+        songScoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "abcnotation_edit";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
                 }
             }
         });
@@ -803,7 +820,9 @@ public class OptionMenuListeners extends Activity {
             }
         });
 
-        songPresentationOrderButton.setChecked(FullscreenActivity.usePresentationOrder);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            songPresentationOrderButton.setChecked(FullscreenActivity.usePresentationOrder);
+        }
         songPresentationOrderButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -829,7 +848,7 @@ public class OptionMenuListeners extends Activity {
 
     }
 
-    public static void chordOptionListener(View v, final Context c) {
+    private static void chordOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -863,26 +882,38 @@ public class OptionMenuListeners extends Activity {
 
         // Set the switches up based on preferences
         if (FullscreenActivity.showChords) {
-            chordsToggleSwitch.setChecked(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                chordsToggleSwitch.setChecked(true);
+            }
         } else {
-            chordsToggleSwitch.setChecked(false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                chordsToggleSwitch.setChecked(false);
+            }
             chordsCapoToggleSwitch.setEnabled(false);
             chordsNativeAndCapoToggleSwitch.setEnabled(false);
         }
         if (FullscreenActivity.showLyrics) {
-            chordsLyricsToggleSwitch.setChecked(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                chordsLyricsToggleSwitch.setChecked(true);
+            }
         } else {
-            chordsLyricsToggleSwitch.setChecked(false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                chordsLyricsToggleSwitch.setChecked(false);
+            }
         }
         boolean capochordsbuttonenabled = FullscreenActivity.showChords;
-        chordsCapoToggleSwitch.setChecked(FullscreenActivity.showCapoChords);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            chordsCapoToggleSwitch.setChecked(FullscreenActivity.showCapoChords);
+        }
         chordsCapoToggleSwitch.setEnabled(capochordsbuttonenabled);
         if (!capochordsbuttonenabled) {
             chordsCapoToggleSwitch.setAlpha(0.4f);
         }
 
         boolean nativeandcapobuttonenabled = FullscreenActivity.showChords && capochordsbuttonenabled;
-        chordsNativeAndCapoToggleSwitch.setChecked(FullscreenActivity.showNativeAndCapoChords);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            chordsNativeAndCapoToggleSwitch.setChecked(FullscreenActivity.showNativeAndCapoChords);
+        }
         chordsNativeAndCapoToggleSwitch.setEnabled(nativeandcapobuttonenabled);
         if (!nativeandcapobuttonenabled) {
             chordsNativeAndCapoToggleSwitch.setAlpha(0.4f);
@@ -1089,7 +1120,7 @@ public class OptionMenuListeners extends Activity {
         });
     }
 
-    public static void displayOptionListener(View v, final Context c) {
+    private static void displayOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -1255,7 +1286,7 @@ public class OptionMenuListeners extends Activity {
 
     }
 
-    public static void findSongsOptionListener(View v, final Context c) {
+    private static void findSongsOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -1263,6 +1294,7 @@ public class OptionMenuListeners extends Activity {
         Button ugSearchButton = (Button) v.findViewById(R.id.ugSearchButton);
         Button chordieSearchButton = (Button) v.findViewById(R.id.chordieSearchButton);
         Button songselectSearchButton = (Button) v.findViewById(R.id.songselectSearchButton);
+        Button worshiptogetherSearchButton = (Button) v.findViewById(R.id.worshiptogetherSearchButton);
         Button worshipreadySearchButton = (Button) v.findViewById(R.id.worshipreadySearchButton);
         Button bandDownloadButton = (Button) v.findViewById(R.id.bandDownloadButton);
         Button churchDownloadButton = (Button) v.findViewById(R.id.churchDownloadButton);
@@ -1277,10 +1309,12 @@ public class OptionMenuListeners extends Activity {
         chordieSearchButton.setText(c.getString(R.string.chordiesearch).toUpperCase(FullscreenActivity.locale));
         String ss = c.getString(R.string.songselect) + " " + c.getString(R.string.subscription);
         songselectSearchButton.setText(ss.toUpperCase(FullscreenActivity.locale));
+        String wt = c.getString(R.string.worshiptogether) + " " + c.getString(R.string.subscription);
+        worshiptogetherSearchButton.setText(wt.toUpperCase(FullscreenActivity.locale));
         String wr = c.getString(R.string.worshipready) + " " + c.getString(R.string.subscription);
+        worshipreadySearchButton.setText(wr.toUpperCase(FullscreenActivity.locale));
         bandDownloadButton.setText(c.getString(R.string.my_band).toUpperCase(FullscreenActivity.locale));
         churchDownloadButton.setText(c.getString(R.string.my_church).toUpperCase(FullscreenActivity.locale));
-        worshipreadySearchButton.setText(wr.toUpperCase(FullscreenActivity.locale));
         cameraButton.setText(c.getString(R.string.camera).toUpperCase(FullscreenActivity.locale));
 
         // Set the button listeners
@@ -1309,6 +1343,16 @@ public class OptionMenuListeners extends Activity {
             public void onClick(View view) {
                 FullscreenActivity.whattodo = "chordie";
                 if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+        worshiptogetherSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "worshiptogether";
+                if (mListener != null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }
@@ -1379,7 +1423,7 @@ public class OptionMenuListeners extends Activity {
 
     }
 
-    public static void storageOptionListener(View v, final Context c) {
+    private static void storageOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -1545,7 +1589,7 @@ public class OptionMenuListeners extends Activity {
         });
     }
 
-    public static void connectOptionListener(View v, final Context c) {
+    private static void connectOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -1576,8 +1620,10 @@ public class OptionMenuListeners extends Activity {
         }
         FullscreenActivity.clientButton.setText(FullscreenActivity.clientButtonText);
 
-        connectionsReceiveHostFile.setChecked(FullscreenActivity.receiveHostFiles);
-        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            connectionsReceiveHostFile.setChecked(FullscreenActivity.receiveHostFiles);
+        }
+
         // Set the button listeners
         menuUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1624,7 +1670,7 @@ public class OptionMenuListeners extends Activity {
 
     }
 
-    public static void setupNetwork(final Context c) {
+    private static void setupNetwork(final Context c) {
         if(!FullscreenActivity.network.isRunningAsHost) {
             try {
                 FullscreenActivity.network.startNetworkService(new SalutDeviceCallback() {
@@ -1665,7 +1711,7 @@ public class OptionMenuListeners extends Activity {
         }
     }
 
-    public static void discoverServices(final Context c) {
+    private static void discoverServices(final Context c) {
         if(!FullscreenActivity.network.isRunningAsHost && !FullscreenActivity.network.isDiscovering) {
             try {
                 FullscreenActivity.network.discoverNetworkServices(new SalutCallback() {
@@ -1705,7 +1751,7 @@ public class OptionMenuListeners extends Activity {
 
     }
 
-    public static void registerWithHost(final Context c, final SalutDevice possibleHost) {
+    private static void registerWithHost(final Context c, final SalutDevice possibleHost) {
         try {
             FullscreenActivity.network.registerWithHost(possibleHost, new SalutCallback() {
                 @Override
@@ -1744,7 +1790,7 @@ public class OptionMenuListeners extends Activity {
         }
     }
 
-    public static void modeOptionListener(View v, final Context c) {
+    private static void modeOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -1852,7 +1898,7 @@ public class OptionMenuListeners extends Activity {
 
     }
 
-    public static void gestureOptionListener(View v, Context c) {
+    private static void gestureOptionListener(View v, Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -1877,7 +1923,9 @@ public class OptionMenuListeners extends Activity {
         gesturesSongSwipeButton.setText(c.getString(R.string.swipe).toUpperCase(FullscreenActivity.locale));
 
         // Set the switches up based on preferences
-        displayMenuToggleSwitch.setChecked(FullscreenActivity.hideActionBar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            displayMenuToggleSwitch.setChecked(FullscreenActivity.hideActionBar);
+        }
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -1982,7 +2030,7 @@ public class OptionMenuListeners extends Activity {
 
     }
 
-    public static void autoscrollOptionListener(View v, Context c) {
+    private static void autoscrollOptionListener(View v, Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -2002,11 +2050,17 @@ public class OptionMenuListeners extends Activity {
         //autoScrollStartButton.setEnabled(false);
 
         // Set the switches up based on preferences
-        autoScrollStartButton.setChecked(FullscreenActivity.autostartautoscroll);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            autoScrollStartButton.setChecked(FullscreenActivity.autostartautoscroll);
+        }
         if (FullscreenActivity.timerFontSizeAutoScroll==20.0f) {
-            switchTimerSize.setChecked(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                switchTimerSize.setChecked(true);
+            }
         } else {
-            switchTimerSize.setChecked(false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                switchTimerSize.setChecked(false);
+            }
         }
 
         // Set the button listeners
@@ -2061,7 +2115,7 @@ public class OptionMenuListeners extends Activity {
         });
     }
 
-    public static void padOptionListener(View v, Context c) {
+    private static void padOptionListener(View v, Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons
@@ -2077,9 +2131,13 @@ public class OptionMenuListeners extends Activity {
 
         // Set the switch
         if (FullscreenActivity.timerFontSizePad==20.0f) {
-            switchTimerSize.setChecked(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                switchTimerSize.setChecked(true);
+            }
         } else {
-            switchTimerSize.setChecked(false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                switchTimerSize.setChecked(false);
+            }
         }
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -2124,7 +2182,7 @@ public class OptionMenuListeners extends Activity {
         });
     }
 
-    public static void otherOptionListener(View v, final Context c) {
+    private static void otherOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
 
         // Identify the buttons

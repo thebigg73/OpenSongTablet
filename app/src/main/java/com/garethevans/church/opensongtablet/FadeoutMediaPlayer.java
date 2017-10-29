@@ -1,10 +1,12 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 
 class FadeoutMediaPlayer extends AsyncTask<Object,Void,String> {
 
+    @SuppressLint("StaticFieldLeak")
     Context c;
     int which;
     FadeoutMediaPlayer(Context context, int player) {

@@ -12,14 +12,11 @@ import java.util.ArrayList;
 
 public class CreateNewSet extends Activity {
 
-    public static String tempsongfilename;
-    public static String tempdir;
-
-    public static boolean doCreation(Context c) {
+    static boolean doCreation(Context c) {
 
         // Keep the current song and directory aside for now
-        tempsongfilename = FullscreenActivity.songfilename;
-        tempdir = FullscreenActivity.whichSongFolder;
+        String tempsongfilename = FullscreenActivity.songfilename;
+        String tempdir = FullscreenActivity.whichSongFolder;
 
         // Only do this is the mSetList isn't empty
         if (FullscreenActivity.mSetList!=null && FullscreenActivity.mSetList.length>0) {
