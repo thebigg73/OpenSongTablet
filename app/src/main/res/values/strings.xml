@@ -16,6 +16,7 @@
     <string name="pdftotext_found">Text found:</string>
 
     <string name="songselect" translatable="false">SongSelect</string>
+    <string name="worshiptogether" translatable="false">WorshipTogether</string>
     <string name="alphabetical">Alphabetical song index</string>
 
     <string name="section_space">Add section space</string>

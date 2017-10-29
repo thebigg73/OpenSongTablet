@@ -14,7 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class BibleGateway extends Activity{
+public class BibleGateway extends Activity {
 
     public static String response = "";
 

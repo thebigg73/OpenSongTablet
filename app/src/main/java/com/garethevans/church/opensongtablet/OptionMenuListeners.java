@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,7 +22,7 @@ import com.peak.salut.SalutDevice;
 
 import java.io.IOException;
 
-public class OptionMenuListeners {
+public class OptionMenuListeners extends Activity {
 
     public interface MyInterface {
         void openFragment();
@@ -1293,6 +1294,7 @@ public class OptionMenuListeners {
         Button ugSearchButton = (Button) v.findViewById(R.id.ugSearchButton);
         Button chordieSearchButton = (Button) v.findViewById(R.id.chordieSearchButton);
         Button songselectSearchButton = (Button) v.findViewById(R.id.songselectSearchButton);
+        Button worshiptogetherSearchButton = (Button) v.findViewById(R.id.worshiptogetherSearchButton);
         Button worshipreadySearchButton = (Button) v.findViewById(R.id.worshipreadySearchButton);
         Button bandDownloadButton = (Button) v.findViewById(R.id.bandDownloadButton);
         Button churchDownloadButton = (Button) v.findViewById(R.id.churchDownloadButton);
@@ -1307,10 +1309,12 @@ public class OptionMenuListeners {
         chordieSearchButton.setText(c.getString(R.string.chordiesearch).toUpperCase(FullscreenActivity.locale));
         String ss = c.getString(R.string.songselect) + " " + c.getString(R.string.subscription);
         songselectSearchButton.setText(ss.toUpperCase(FullscreenActivity.locale));
+        String wt = c.getString(R.string.worshiptogether) + " " + c.getString(R.string.subscription);
+        worshiptogetherSearchButton.setText(wt.toUpperCase(FullscreenActivity.locale));
         String wr = c.getString(R.string.worshipready) + " " + c.getString(R.string.subscription);
+        worshipreadySearchButton.setText(wr.toUpperCase(FullscreenActivity.locale));
         bandDownloadButton.setText(c.getString(R.string.my_band).toUpperCase(FullscreenActivity.locale));
         churchDownloadButton.setText(c.getString(R.string.my_church).toUpperCase(FullscreenActivity.locale));
-        worshipreadySearchButton.setText(wr.toUpperCase(FullscreenActivity.locale));
         cameraButton.setText(c.getString(R.string.camera).toUpperCase(FullscreenActivity.locale));
 
         // Set the button listeners
@@ -1339,6 +1343,16 @@ public class OptionMenuListeners {
             public void onClick(View view) {
                 FullscreenActivity.whattodo = "chordie";
                 if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+        worshiptogetherSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "worshiptogether";
+                if (mListener != null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
                 }

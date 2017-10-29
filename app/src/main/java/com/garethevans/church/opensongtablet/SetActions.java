@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
@@ -14,7 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class SetActions {
+public class SetActions extends Activity {
 
     public interface MyInterface {
         void doMoveSection();

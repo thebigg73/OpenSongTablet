@@ -37,7 +37,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.animation.PathInterpolatorCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -76,6 +75,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.gms.cast.CastMediaControlIntent;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
@@ -305,7 +305,7 @@ public class StageMode extends AppCompatActivity implements
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ab_toolbar = (Toolbar) findViewById(R.id.mytoolbar); // Attaching the layout to the toolbar object
+                ab_toolbar = findViewById(R.id.mytoolbar); // Attaching the layout to the toolbar object
                 setSupportActionBar(ab_toolbar);                     // Setting toolbar as the ActionBar with setSupportActionBar() call
                 ab = getSupportActionBar();
                 if (ab != null) {
@@ -315,41 +315,41 @@ public class StageMode extends AppCompatActivity implements
                     ab.setDisplayShowTitleEnabled(false);
                 }
 
-                songandauthor = (RelativeLayout) findViewById(R.id.songandauthor);
-                digitalclock = (TextView) findViewById(R.id.digitalclock);
-                songtitle_ab = (TextView) findViewById(R.id.songtitle_ab);
-                songkey_ab = (TextView) findViewById(R.id.songkey_ab);
-                songauthor_ab = (TextView) findViewById(R.id.songauthor_ab);
-                batterycharge = (TextView) findViewById(R.id.batterycharge);
-                batteryimage = (ImageView) findViewById(R.id.batteryimage);
-                batteryholder = (RelativeLayout) findViewById(R.id.batteryholder);
-                mypage = (RelativeLayout) findViewById(R.id.mypage);
+                songandauthor = findViewById(R.id.songandauthor);
+                digitalclock = findViewById(R.id.digitalclock);
+                songtitle_ab = findViewById(R.id.songtitle_ab);
+                songkey_ab = findViewById(R.id.songkey_ab);
+                songauthor_ab = findViewById(R.id.songauthor_ab);
+                batterycharge = findViewById(R.id.batterycharge);
+                batteryimage = findViewById(R.id.batteryimage);
+                batteryholder = findViewById(R.id.batteryholder);
+                mypage = findViewById(R.id.mypage);
                 mypage.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
 
                 // Set up the pad and autoscroll timing display
-                backingtrackProgress = (LinearLayout) findViewById(R.id.backingtrackProgress);
+                backingtrackProgress = findViewById(R.id.backingtrackProgress);
                 backingtrackProgress.setVisibility(View.GONE);
-                padcurrentTime_TextView = (TextView) findViewById(R.id.padcurrentTime_TextView);
-                padTimeSeparator_TextView = (TextView) findViewById(R.id.padTimeSeparator_TextView);
-                padtotalTime_TextView = (TextView) findViewById(R.id.padtotalTime_TextView);
-                playbackProgress = (LinearLayout) findViewById(R.id.playbackProgress);
+                padcurrentTime_TextView = findViewById(R.id.padcurrentTime_TextView);
+                padTimeSeparator_TextView = findViewById(R.id.padTimeSeparator_TextView);
+                padtotalTime_TextView = findViewById(R.id.padtotalTime_TextView);
+                playbackProgress = findViewById(R.id.playbackProgress);
                 playbackProgress.setVisibility(View.GONE);
-                currentTime_TextView = (TextView) findViewById(R.id.currentTime_TextView);
-                timeSeparator_TextView = (TextView) findViewById(R.id.timeSeparator_TextView);
-                totalTime_TextView = (TextView) findViewById(R.id.totalTime_TextView);
+                currentTime_TextView = findViewById(R.id.currentTime_TextView);
+                timeSeparator_TextView = findViewById(R.id.timeSeparator_TextView);
+                totalTime_TextView = findViewById(R.id.totalTime_TextView);
 
                 // Identify the views being used
-                songscrollview = (ScrollView) findViewById(R.id.songscrollview);
+                songscrollview = findViewById(R.id.songscrollview);
 
-                glideimage_ScrollView = (ScrollView) findViewById(R.id.glideimage_ScrollView);
-                glideimage = (ImageView) findViewById(R.id.glideimage);
-                testpane = (RelativeLayout) findViewById(R.id.testpane);
-                testpane1_2 = (RelativeLayout) findViewById(R.id.testpane1_2);
-                testpane2_2 = (RelativeLayout) findViewById(R.id.testpane2_2);
-                testpane1_3 = (RelativeLayout) findViewById(R.id.testpane1_3);
-                testpane2_3 = (RelativeLayout) findViewById(R.id.testpane2_3);
-                testpane3_3 = (RelativeLayout) findViewById(R.id.testpane3_3);
-                highlightNotes = (ImageView) findViewById(R.id.highlightNotes);
+                glideimage_ScrollView = findViewById(R.id.glideimage_ScrollView);
+                glideimage = findViewById(R.id.glideimage);
+                testpane = findViewById(R.id.testpane);
+                testpane1_2 = findViewById(R.id.testpane1_2);
+                testpane2_2 = findViewById(R.id.testpane2_2);
+                testpane1_3 = findViewById(R.id.testpane1_3);
+                testpane2_3 = findViewById(R.id.testpane2_3);
+                testpane3_3 = findViewById(R.id.testpane3_3);
+                highlightNotes = findViewById(R.id.highlightNotes);
 
                 songscrollview.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
 
@@ -375,15 +375,15 @@ public class StageMode extends AppCompatActivity implements
                 });
                 
                 // Set up the navigation drawer
-                mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-                songmenu = (LinearLayout) findViewById(R.id.songmenu);
-                optionmenu = (LinearLayout) findViewById(R.id.optionmenu);
-                song_list_view = (ListView) findViewById(R.id.song_list_view);
-                closeSongFAB = (FloatingActionButton) findViewById(R.id.closeSongsFAB);
-                optionsdisplayscrollview = (ScrollView) findViewById(R.id.optionsdisplayscrollview);
-                menuFolder_TextView = (TextView) findViewById(R.id.menuFolder_TextView);
+                mDrawerLayout = findViewById(R.id.drawer_layout);
+                songmenu = findViewById(R.id.songmenu);
+                optionmenu = findViewById(R.id.optionmenu);
+                song_list_view = findViewById(R.id.song_list_view);
+                closeSongFAB = findViewById(R.id.closeSongsFAB);
+                optionsdisplayscrollview = findViewById(R.id.optionsdisplayscrollview);
+                menuFolder_TextView = findViewById(R.id.menuFolder_TextView);
                 menuFolder_TextView.setText(getString(R.string.wait));
-                changefolder_LinearLayout = (LinearLayout) findViewById(R.id.changefolder_LinearLayout);
+                changefolder_LinearLayout = findViewById(R.id.changefolder_LinearLayout);
                 changefolder_LinearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -453,7 +453,7 @@ public class StageMode extends AppCompatActivity implements
                         } else {
                             FullscreenActivity.whattodo = "doimport";
                         }
-                        openFragment();
+                        //openFragment();
                     }
                 } catch (Exception e) {
                     // No file
@@ -1267,40 +1267,40 @@ public class StageMode extends AppCompatActivity implements
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                setButton = (FloatingActionButton) findViewById(R.id.setButton);
-                padButton = (FloatingActionButton) findViewById(R.id.padButton);
-                autoscrollButton = (FloatingActionButton) findViewById(R.id.autoscrollButton);
-                metronomeButton = (FloatingActionButton) findViewById(R.id.metronomeButton);
-                extraButton = (FloatingActionButton) findViewById(R.id.extraButton);
-                chordButton = (FloatingActionButton) findViewById(R.id.chordButton);
-                stickyButton = (FloatingActionButton) findViewById(R.id.stickyButton);
-                notationButton = (FloatingActionButton) findViewById(R.id.notationButton);
-                highlightButton = (FloatingActionButton) findViewById(R.id.highlightButton);
-                pageselectButton = (FloatingActionButton) findViewById(R.id.pageselectButton);
-                linkButton = (FloatingActionButton) findViewById(R.id.linkButton);
-                chordButton_ungrouped = (FloatingActionButton) findViewById(R.id.chordButton_ungrouped);
-                stickyButton_ungrouped = (FloatingActionButton) findViewById(R.id.stickyButton_ungrouped);
-                notationButton_ungrouped = (FloatingActionButton) findViewById(R.id.notationButton_ungrouped);
-                highlightButton_ungrouped = (FloatingActionButton) findViewById(R.id.highlightButton_ungrouped);
-                pageselectButton_ungrouped = (FloatingActionButton) findViewById(R.id.pageselectButton_ungrouped);
-                linkButton_ungrouped = (FloatingActionButton) findViewById(R.id.linkButton_ungrouped);
-                customButton = (FloatingActionButton) findViewById(R.id.customButton);
-                custom1Button = (FloatingActionButton) findViewById(R.id.custom1Button);
-                custom2Button = (FloatingActionButton) findViewById(R.id.custom2Button);
-                custom3Button = (FloatingActionButton) findViewById(R.id.custom3Button);
-                custom4Button = (FloatingActionButton) findViewById(R.id.custom4Button);
-                custom1Button_ungrouped = (FloatingActionButton) findViewById(R.id.custom1Button_ungrouped);
-                custom2Button_ungrouped = (FloatingActionButton) findViewById(R.id.custom2Button_ungrouped);
-                custom3Button_ungrouped = (FloatingActionButton) findViewById(R.id.custom3Button_ungrouped);
-                custom4Button_ungrouped = (FloatingActionButton) findViewById(R.id.custom4Button_ungrouped);
-                extrabuttons = (ScrollView) findViewById(R.id.extrabuttons);
+                setButton = findViewById(R.id.setButton);
+                padButton = findViewById(R.id.padButton);
+                autoscrollButton = findViewById(R.id.autoscrollButton);
+                metronomeButton = findViewById(R.id.metronomeButton);
+                extraButton = findViewById(R.id.extraButton);
+                chordButton = findViewById(R.id.chordButton);
+                stickyButton = findViewById(R.id.stickyButton);
+                notationButton = findViewById(R.id.notationButton);
+                highlightButton = findViewById(R.id.highlightButton);
+                pageselectButton = findViewById(R.id.pageselectButton);
+                linkButton = findViewById(R.id.linkButton);
+                chordButton_ungrouped = findViewById(R.id.chordButton_ungrouped);
+                stickyButton_ungrouped = findViewById(R.id.stickyButton_ungrouped);
+                notationButton_ungrouped = findViewById(R.id.notationButton_ungrouped);
+                highlightButton_ungrouped = findViewById(R.id.highlightButton_ungrouped);
+                pageselectButton_ungrouped = findViewById(R.id.pageselectButton_ungrouped);
+                linkButton_ungrouped = findViewById(R.id.linkButton_ungrouped);
+                customButton = findViewById(R.id.customButton);
+                custom1Button = findViewById(R.id.custom1Button);
+                custom2Button = findViewById(R.id.custom2Button);
+                custom3Button = findViewById(R.id.custom3Button);
+                custom4Button = findViewById(R.id.custom4Button);
+                custom1Button_ungrouped = findViewById(R.id.custom1Button_ungrouped);
+                custom2Button_ungrouped = findViewById(R.id.custom2Button_ungrouped);
+                custom3Button_ungrouped = findViewById(R.id.custom3Button_ungrouped);
+                custom4Button_ungrouped = findViewById(R.id.custom4Button_ungrouped);
+                extrabuttons = findViewById(R.id.extrabuttons);
                 extrabuttons.setVisibility(View.GONE);
-                extrabuttons2 = (ScrollView) findViewById(R.id.extrabuttons2);
+                extrabuttons2 = findViewById(R.id.extrabuttons2);
                 extrabuttons2.setVisibility(View.GONE);
-                scrollDownButton = (FloatingActionButton) findViewById(R.id.scrollDownButton);
-                scrollUpButton = (FloatingActionButton) findViewById(R.id.scrollUpButton);
-                setBackButton = (FloatingActionButton) findViewById(R.id.setBackButton);
-                setForwardButton = (FloatingActionButton) findViewById(R.id.setForwardButton);
+                scrollDownButton = findViewById(R.id.scrollDownButton);
+                scrollUpButton = findViewById(R.id.scrollUpButton);
+                setBackButton = findViewById(R.id.setBackButton);
+                setForwardButton = findViewById(R.id.setForwardButton);
                 setUpPageButtonsColors();
                 setupQuickLaunchButtons();
             }
@@ -3188,24 +3188,25 @@ public class StageMode extends AppCompatActivity implements
         int imgheight = options.outHeight;
         int widthavail = getAvailableWidth();
         int heightavail = getAvailableHeight();
-        float xscale = (float) widthavail / (float) imgwidth;
-        float yscale = (float) heightavail / (float) imgheight;
 
         // Decide on the image size to use
         if (FullscreenActivity.toggleYScale.equals("Y")) {
-            // Now decide on the scaling required....
-            if (xscale>yscale) {
-                xscale = yscale;
-            }
-            int glidewidth = (int) ((float)imgwidth * xscale);
-            int glideheight = (int) ((float)imgheight * xscale);
+            // Glide sorts the width vs height (keeps the image in the space available using fitCenter
             glideimage.setBackgroundColor(0x00000000);
-            Glide.with(StageMode.this).load(imageUri).override(glidewidth,glideheight).into(glideimage);
+            RequestOptions myOptions = new RequestOptions()
+                    .fitCenter()
+                    .override(widthavail, heightavail);
+            Glide.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
         } else {
             // Now decide on the scaling required....
+            float xscale = (float) widthavail / (float) imgwidth;
+            float yscale = (float) heightavail / (float) imgheight;
             int glideheight = (int) ((float)imgheight * xscale);
+            Log.d("d","glideheight="+glideheight);
             glideimage.setBackgroundColor(0x00000000);
-            Glide.with(StageMode.this).load(imageUri).override(widthavail,glideheight).centerCrop().into(glideimage);
+            RequestOptions myOptions = new RequestOptions()
+                    .override(widthavail,glideheight);
+            Glide.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
         }
 
         songscrollview.removeAllViews();
@@ -3540,7 +3541,7 @@ public class StageMode extends AppCompatActivity implements
     public void animateInSong() {
         // If autoshowing highlighter notes
         if (FullscreenActivity.toggleAutoHighlight) {
-            showHighlight(true);
+            showHighlight();
         }
         // Now scroll in the song via an animation
         if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
@@ -4355,6 +4356,8 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
+    @SuppressLint("ClickableViewAccessibility")
+
     public void displaySticky() {
         if (FullscreenActivity.mNotes!=null && !FullscreenActivity.mNotes.isEmpty() && !FullscreenActivity.mNotes.equals("")) {
             LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -4372,9 +4375,9 @@ public class StageMode extends AppCompatActivity implements
             stickyPopUpWindow.setWidth(FullscreenActivity.stickyWidth);
             stickyPopUpWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
             stickyPopUpWindow.setContentView(popupView);
-            FloatingActionButton closeStickyFloat = (FloatingActionButton) popupView.findViewById(R.id.closeMe);
-            LinearLayout myTitle = (LinearLayout) popupView.findViewById(R.id.myTitle);
-            TextView mySticky = (TextView) popupView.findViewById(R.id.mySticky);
+            FloatingActionButton closeStickyFloat = popupView.findViewById(R.id.closeMe);
+            LinearLayout myTitle = popupView.findViewById(R.id.myTitle);
+            TextView mySticky = popupView.findViewById(R.id.mySticky);
             mySticky.setTextColor(FullscreenActivity.stickytextColor);
             mySticky.setTextSize(FullscreenActivity.stickyTextSize);
             mySticky.setText(FullscreenActivity.mNotes);
@@ -4383,7 +4386,7 @@ public class StageMode extends AppCompatActivity implements
             drawable.setColor(FullscreenActivity.stickybgColor);
             popupView.setPadding(10,10,10,10);
             stickyPopUpWindow.showAtLocation(mypage, Gravity.TOP | Gravity.LEFT, hp, vp);
-            RelativeLayout stickyfloat = (RelativeLayout) popupView.findViewById(R.id.stickyfloat);
+            RelativeLayout stickyfloat = popupView.findViewById(R.id.stickyfloat);
             stickyfloat.setAlpha(FullscreenActivity.stickyOpacity);
             closeStickyFloat.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -4471,7 +4474,6 @@ public class StageMode extends AppCompatActivity implements
                     songscrollview.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
                     FullscreenActivity.bmScreen = null;
                     try {
-                        //FullscreenActivity.bmScreen = mypage.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
                         FullscreenActivity.bmScreen = songscrollview.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
                     } catch (Exception e) {
                         Log.d("d", "error getting the screenshot!");
@@ -4492,9 +4494,9 @@ public class StageMode extends AppCompatActivity implements
         return (FullscreenActivity.highlightOn || FullscreenActivity.toggleAutoHighlight) &&
                 f.exists() && FullscreenActivity.whichMode.equals("Performance");
     }
-    public void showHighlight(boolean fromautoshow) {
+    public void showHighlight() {
         doCancelAsyncTask(show_highlight);
-        show_highlight = new ShowHighlight(fromautoshow);
+        show_highlight = new ShowHighlight(true);
         try {
             show_highlight.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
@@ -4585,7 +4587,6 @@ public class StageMode extends AppCompatActivity implements
             // If we are trying to show notes, but they are already open, close them
             // This is only if a manual click on the hightlight button happened
             // Are the notes visible?
-            Boolean v = highlightNotes.getVisibility()==View.VISIBLE;
             if (highlightNotes.getVisibility() == View.VISIBLE && !fromautoshow) {
                 // Hide it
                 FullscreenActivity.highlightOn = false;
@@ -4770,7 +4771,7 @@ public class StageMode extends AppCompatActivity implements
     }
 
     public void displayIndex() {
-        LinearLayout indexLayout = (LinearLayout) findViewById(R.id.side_index);
+        LinearLayout indexLayout = findViewById(R.id.side_index);
         if (FullscreenActivity.showAlphabeticalIndexInSongMenu) {
             indexLayout.setVisibility(View.VISIBLE);
         } else {
@@ -4813,7 +4814,7 @@ public class StageMode extends AppCompatActivity implements
 
         public void onPreExecute() {
             try {
-                optionmenu = (LinearLayout) findViewById(R.id.optionmenu);
+                optionmenu = findViewById(R.id.optionmenu);
                 try {
                     optionmenu.removeAllViews();
                 } catch (Exception e) {
@@ -5154,15 +5155,23 @@ public class StageMode extends AppCompatActivity implements
         }
 
         // Set this sections alpha to 1.0f;
-        FullscreenActivity.sectionviews[whichone].setAlpha(1.0f);
+        try {
+            FullscreenActivity.sectionviews[whichone].setAlpha(1.0f);
+        } catch (Exception e) {
+            Log.d("d","Section not found");
+        }
 
         // Smooth scroll to show this view at the top of the page
         // Unless we are autoscrolling
-        if (!FullscreenActivity.isautoscrolling) {
-            songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop());
+        try {
+            if (!FullscreenActivity.isautoscrolling) {
+                songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop());
+            }
+        } catch (Exception e) {
+                Log.d("d","Section not found");
         }
 
-        // Go through each of the views and set the alpha of the others to 0.5f;
+            // Go through each of the views and set the alpha of the others to 0.5f;
         for (int x = 0; x < FullscreenActivity.sectionviews.length; x++) {
             if (x != whichone) {
                 FullscreenActivity.sectionviews[x].setAlpha(0.5f);
@@ -6320,7 +6329,8 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
-        int action = MotionEventCompat.getActionMasked(ev);
+        //int action = MotionEventCompat.getActionMasked(ev);
+        int action = ev.getAction();
         // WOULD BE BETTER IF THIS WAS CALLED ON SOME KIND OF ONSCROLL LISTENER
         scaleGestureDetector.onTouchEvent(ev);
         switch (action) {

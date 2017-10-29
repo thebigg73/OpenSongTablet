@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.pdf.PdfRenderer;
 import android.os.AsyncTask;
@@ -19,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class LoadXML {
+public class LoadXML extends Activity {
 
     private static boolean isxml = true;
     static String utf = "UTF-8";

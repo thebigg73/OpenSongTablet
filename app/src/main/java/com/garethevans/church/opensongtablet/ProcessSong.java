@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -29,7 +30,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ProcessSong {
+public class ProcessSong extends Activity {
 
     static String parseLyrics(String myLyrics, Context c) {
         //myLyrics = myLyrics.replace("\n \n","\n\n");
@@ -1123,7 +1124,7 @@ public class ProcessSong {
                         img.setImageDrawable(drw);
                     } catch (OutOfMemoryError e2) {
                             e2.printStackTrace();
-                        }
+                    }
                 } else {
                     img.setImageDrawable(drw);
                 }

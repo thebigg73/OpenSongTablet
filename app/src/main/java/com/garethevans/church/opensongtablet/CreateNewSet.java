@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Base64;
 
@@ -9,7 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-class CreateNewSet {
+public class CreateNewSet extends Activity {
 
     static boolean doCreation(Context c) {
 

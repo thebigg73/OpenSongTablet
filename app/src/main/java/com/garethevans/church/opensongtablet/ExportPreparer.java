@@ -38,7 +38,7 @@ import java.util.Calendar;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-class ExportPreparer {
+public class ExportPreparer extends Activity {
 
 	private static String setxml = "";
 	static String settext = "";
