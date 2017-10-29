@@ -14,10 +14,10 @@ android {
         }
     }
     compileOptions {
-        //sourceCompatibility JavaVersion.VERSION_1_8
-        //targetCompatibility JavaVersion.VERSION_1_8
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        //sourceCompatibility JavaVersion.VERSION_1_7
+        //targetCompatibility JavaVersion.VERSION_1_7
     }
     defaultConfig {
         applicationId "com.garethevans.church.opensongtablet"
@@ -38,10 +38,12 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
         //classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'me.tatarka:gradle-retrolambda:3.7.0'
     }
 }
 
 //apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'me.tatarka.retrolambda'
 
 repositories {
     jcenter()
@@ -71,4 +73,5 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.2'
     implementation 'com.itextpdf:itextg:5.5.9'
     implementation 'ru.egslava:MaskedEditText:1.0.5'
+    implementation 'com.annimon:stream:1.1.9'
 }
