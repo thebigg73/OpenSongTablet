@@ -3200,9 +3200,7 @@ public class StageMode extends AppCompatActivity implements
         } else {
             // Now decide on the scaling required....
             float xscale = (float) widthavail / (float) imgwidth;
-            float yscale = (float) heightavail / (float) imgheight;
             int glideheight = (int) ((float)imgheight * xscale);
-            Log.d("d","glideheight="+glideheight);
             glideimage.setBackgroundColor(0x00000000);
             RequestOptions myOptions = new RequestOptions()
                     .override(widthavail,glideheight);

@@ -1024,7 +1024,6 @@ public class ProcessSong extends Activity {
                 imagetext = "";
             }
 
-
             if (!FullscreenActivity.whichSongFolder.contains(c.getResources().getString(R.string.image))) {
                 if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
                     bit = bit.replace("_", "");
