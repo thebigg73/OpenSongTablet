@@ -140,9 +140,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_findnewsongs, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(mTitle);
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,22 +155,22 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 }
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        searchtext_LinearLayout = (LinearLayout) V.findViewById(R.id.searchtext_LinearLayout);
-        searchphrase_EditText = (EditText) V.findViewById(R.id.searchphrase_EditText);
-        searchresults_RelativeLayout = (RelativeLayout) V.findViewById(R.id.searchresults_RelativeLayout);
-        webresults_WebView = (WebView) V.findViewById(R.id.webresults_WebView);
-        webBack_ImageButton = (ImageButton) V.findViewById(R.id.webBack_ImageButton);
-        grabSongData_Button = (Button) V.findViewById(R.id.grabSongData_Button);
-        grabSongData_ProgressBar = (ProgressBar) V.findViewById(R.id.grabSongData_ProgressBar);
-        doSearch_Button = (Button) V.findViewById(R.id.doSearch_Button);
-        newfileinfo_LinearLayout = (LinearLayout) V.findViewById(R.id.newfileinfo_LinearLayout);
-        songfilename_EditText = (EditText) V.findViewById(R.id.songfilename_EditText);
-        choosefolder_Spinner = (Spinner) V.findViewById(R.id.choosefolder_Spinner);
-        saveSong_Button = (Button) V.findViewById(R.id.saveSong_Button);
+        searchtext_LinearLayout = V.findViewById(R.id.searchtext_LinearLayout);
+        searchphrase_EditText = V.findViewById(R.id.searchphrase_EditText);
+        searchresults_RelativeLayout = V.findViewById(R.id.searchresults_RelativeLayout);
+        webresults_WebView = V.findViewById(R.id.webresults_WebView);
+        webBack_ImageButton = V.findViewById(R.id.webBack_ImageButton);
+        grabSongData_Button = V.findViewById(R.id.grabSongData_Button);
+        grabSongData_ProgressBar = V.findViewById(R.id.grabSongData_ProgressBar);
+        doSearch_Button = V.findViewById(R.id.doSearch_Button);
+        newfileinfo_LinearLayout = V.findViewById(R.id.newfileinfo_LinearLayout);
+        songfilename_EditText = V.findViewById(R.id.songfilename_EditText);
+        choosefolder_Spinner = V.findViewById(R.id.choosefolder_Spinner);
+        saveSong_Button = V.findViewById(R.id.saveSong_Button);
 
         // Set the text if it exists
         searchphrase_EditText.setText(FullscreenActivity.phrasetosearchfor);

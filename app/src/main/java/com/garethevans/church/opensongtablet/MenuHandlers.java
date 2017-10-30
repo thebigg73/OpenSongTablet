@@ -58,6 +58,7 @@ class MenuHandlers {
                                 + FullscreenActivity.songfilename + "_**$";
                     }
                     // Allow the song to be added, even if it is already there
+                    Log.d("d","whatsongforsetwork="+FullscreenActivity.whatsongforsetwork);
                     FullscreenActivity.mySet = FullscreenActivity.mySet + FullscreenActivity.whatsongforsetwork;
                     // Tell the user that the song has been added.
                     FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.songfilename + "\" "

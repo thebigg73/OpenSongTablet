@@ -95,6 +95,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static float menuSize, alphabeticalSize;
     public static File filechosen, file;
     public static String[] mSongFileNames, mSongFolderNames;
+
+    //instantiated new class here.
+    public static SongFileList songfilelist = new SongFileList();
+    //this could be a ref to an xmlObject.
     public static String[][] songDetails;
     public static Map<String, Integer> mapIndex;
     public static int currentSongIndex, previousSongIndex, nextSongIndex;

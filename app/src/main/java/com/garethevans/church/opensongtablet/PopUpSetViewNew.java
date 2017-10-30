@@ -107,24 +107,16 @@ public class PopUpSetViewNew extends DialogFragment {
 
         final View V = inflater.inflate(R.layout.popup_setview_new, container, false);
         setfrag = getDialog();
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.options_set));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
-        saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                doSave();
-            }
-        });
+        saveMe = V.findViewById(R.id.saveMe);
+        saveMe.setOnClickListener(view -> doSave());
         if (FullscreenActivity.whattodo.equals("setitemvariation")) {
             CustomAnimations.animateFAB(saveMe,getActivity());
             saveMe.setEnabled(false);
@@ -139,12 +131,12 @@ public class PopUpSetViewNew extends DialogFragment {
             mListener.pageButtonAlpha("set");
         }
 
-        TextView helpClickItem_TextView = (TextView) V.findViewById(R.id.helpClickItem_TextView);
-        TextView helpDragItem_TextView = (TextView) V.findViewById(R.id.helpDragItem_TextView);
-        TextView helpSwipeItem_TextView = (TextView) V.findViewById(R.id.helpSwipeItem_TextView);
-        TextView helpVariationItem_TextView = (TextView) V.findViewById(R.id.helpVariationItem_TextView);
+        TextView helpClickItem_TextView = V.findViewById(R.id.helpClickItem_TextView);
+        TextView helpDragItem_TextView = V.findViewById(R.id.helpDragItem_TextView);
+        TextView helpSwipeItem_TextView = V.findViewById(R.id.helpSwipeItem_TextView);
+        TextView helpVariationItem_TextView = V.findViewById(R.id.helpVariationItem_TextView);
         helpVariationItem_TextView.setVisibility(View.GONE);
-        mRecyclerView = (RecyclerView) V.findViewById(R.id.my_recycler_view);
+        mRecyclerView = V.findViewById(R.id.my_recycler_view);
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 
@@ -169,53 +161,39 @@ public class PopUpSetViewNew extends DialogFragment {
         helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(mRecyclerView);
 
-        FloatingActionButton listSetTweetButton = (FloatingActionButton) V.findViewById(R.id.listSetTweetButton);
+        FloatingActionButton listSetTweetButton = V.findViewById(R.id.listSetTweetButton);
         // Set up the Tweet button
-        listSetTweetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doExportSetTweet();
-            }
-        });
-        FloatingActionButton info = (FloatingActionButton) V.findViewById(R.id.info);
-        final LinearLayout helptext = (LinearLayout) V.findViewById(R.id.helptext);
-        info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (helptext.getVisibility()==View.VISIBLE) {
-                    helptext.setVisibility(View.GONE);
-                } else {
-                    helptext.setVisibility(View.VISIBLE);
-                }
+        listSetTweetButton.setOnClickListener(v -> doExportSetTweet());
+        FloatingActionButton info = V.findViewById(R.id.info);
+        final LinearLayout helptext = V.findViewById(R.id.helptext);
+        info.setOnClickListener(view -> {
+            if (helptext.getVisibility()==View.VISIBLE) {
+                helptext.setVisibility(View.GONE);
+            } else {
+                helptext.setVisibility(View.VISIBLE);
             }
         });
 
-        FloatingActionButton set_shuffle = (FloatingActionButton) V.findViewById(R.id.shuffle);
-        set_shuffle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Redraw the lists
-                Collections.shuffle(FullscreenActivity.mTempSetList);
+        FloatingActionButton set_shuffle = V.findViewById(R.id.shuffle);
+        set_shuffle.setOnClickListener(v -> {
+            // Redraw the lists
+            Collections.shuffle(FullscreenActivity.mTempSetList);
 
-                // Prepare the page for redrawing....
-                FullscreenActivity.doneshuffle = true;
+            // Prepare the page for redrawing....
+            FullscreenActivity.doneshuffle = true;
 
-                // Run the listener
-                dismiss();
-                if (mListener!=null) {
-                    mListener.shuffleSongsInSet();
-                }
+            // Run the listener
+            dismiss();
+            if (mListener!=null) {
+                mListener.shuffleSongsInSet();
             }
         });
 
-        FloatingActionButton saveAsProperSet = (FloatingActionButton) V.findViewById(R.id.saveAsProperSet);
-        saveAsProperSet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "saveset";
-                if (mListener!=null) {
-                    mListener.openFragment();
-                }
+        FloatingActionButton saveAsProperSet = V.findViewById(R.id.saveAsProperSet);
+        saveAsProperSet.setOnClickListener(view -> {
+            FullscreenActivity.whattodo = "saveset";
+            if (mListener!=null) {
+                mListener.openFragment();
             }
         });
 
@@ -287,13 +265,17 @@ public class PopUpSetViewNew extends DialogFragment {
                 } else {
                     tempTitle = FullscreenActivity.mTempSetList.get(i);
                 }
-                String[] splitsongname = tempTitle.split("/");
-                String mysongtitle = "";
-                String mysongfolder = "";
-                if (splitsongname.length > 1) {
-                    // If works
-                    mysongtitle = splitsongname[1];
-                    mysongfolder = splitsongname[0];
+                // Replace the last instance of a / (as we may have subfolders)
+                String mysongfolder = tempTitle.substring(0,tempTitle.lastIndexOf("/"));
+                if (mysongfolder==null) {
+                    mysongfolder="";
+                }
+                String mysongtitle = tempTitle.substring(tempTitle.lastIndexOf("/"));
+                if (mysongtitle.startsWith("/")) {
+                    mysongtitle = mysongtitle.substring(1);
+                }
+                if (mysongtitle==null) {
+                    mysongtitle="";
                 }
 
                 if (mysongfolder.isEmpty() || mysongfolder.equals("")) {
@@ -458,21 +440,19 @@ public class PopUpSetViewNew extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_UP) {
-                    if ((keyCode == FullscreenActivity.pageturner_PREVIOUS && FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) ||
-                            keyCode == FullscreenActivity.pageturner_UP) {
-                        doScroll("up");
-                        return true;
-                    } else if ((keyCode == FullscreenActivity.pageturner_NEXT && FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) ||
-                            keyCode == FullscreenActivity.pageturner_DOWN) {
-                        doScroll("down");
-                        return true;
-                    }
+        getDialog().setOnKeyListener((dialog, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_UP) {
+                if ((keyCode == FullscreenActivity.pageturner_PREVIOUS && FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) ||
+                        keyCode == FullscreenActivity.pageturner_UP) {
+                    doScroll("up");
+                    return true;
+                } else if ((keyCode == FullscreenActivity.pageturner_NEXT && FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) ||
+                        keyCode == FullscreenActivity.pageturner_DOWN) {
+                    doScroll("down");
+                    return true;
                 }
-                return false;
             }
+            return false;
         });
     }
 

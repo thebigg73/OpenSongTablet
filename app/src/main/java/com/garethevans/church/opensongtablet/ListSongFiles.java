@@ -18,97 +18,36 @@ import java.util.Collections;
 public class ListSongFiles {
 
     static Collator coll;
+    private static ArrayList<String> filelist;
 
     public static void getAllSongFolders() {
         FullscreenActivity.allfilesforsearch.clear();
-
-        File songfolder = new File(FullscreenActivity.dir.getAbsolutePath());
-        File[] tempmyitems = null;
-        if (songfolder.isDirectory()) {
-            tempmyitems = songfolder.listFiles();
-        }
-        //Now set the size of the temp arrays
-        ArrayList<String> firstleveldirectories = new ArrayList<>();
-        ArrayList<String> secondleveldirectories = new ArrayList<>();
-        ArrayList<String> tempProperDirectories = new ArrayList<>();
-
-        //Now read the folder names for the first level directories
-        if (tempmyitems!=null) {
-            for (File tempmyitem : tempmyitems) {
-                if (tempmyitem != null && tempmyitem.isDirectory()) {
-                    firstleveldirectories.add(tempmyitem.getName());
-                }
-            }
-        }
-
-        //Now go through the firstlevedirectories and look for subfolders
-        for (int x = 0; x < firstleveldirectories.size(); x++) {
-            File folder = new File(FullscreenActivity.dir.getAbsolutePath() + "/" + firstleveldirectories.get(x));
-            File[] subfoldersearch = folder.listFiles();
-            if (subfoldersearch!=null) {
-                for (File aSubfoldersearch : subfoldersearch) {
-                    if (firstleveldirectories.get(x)!=null && aSubfoldersearch != null && aSubfoldersearch.isDirectory()) {
-                        secondleveldirectories.add(firstleveldirectories.get(x) + "/" + aSubfoldersearch.getName());
-                    }
-                }
-            }
-        }
-
-        // Now combine the two arrays and save them as a string array
-        tempProperDirectories.addAll(firstleveldirectories);
-        tempProperDirectories.addAll(secondleveldirectories);
-        try {
-            coll = Collator.getInstance(FullscreenActivity.locale);
-            coll.setStrength(Collator.SECONDARY);
-            Collections.sort(tempProperDirectories, coll);
-        } catch (Exception e) {
-            // Error sorting
-        }
-
-        // Add the main directory - +1 to add the MAIN folder as position 0
-        FullscreenActivity.mSongFolderNames = new String[tempProperDirectories.size()+1];
-        FullscreenActivity.mSongFolderNames[0] = FullscreenActivity.mainfoldername;
-        for (int z=0; z<tempProperDirectories.size(); z++) {
-            FullscreenActivity.mSongFolderNames[z+1] = tempProperDirectories.get(z);
-        }
+        FullscreenActivity.mSongFolderNames = FullscreenActivity.songfilelist.getFolderList();
     }
 
+    /*
+        incorporated new class here.
+     */
     static void getAllSongFiles() {
         try {
-            File foldertoindex;
-            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                foldertoindex = FullscreenActivity.dir;
-            } else {
-                foldertoindex = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder);
-            }
-            File[] tempmyFiles = foldertoindex.listFiles();
-
-            ArrayList<String> tempProperSongFiles = new ArrayList<>();
-            if (tempmyFiles != null) {
-                for (File tempmyFile : tempmyFiles) {
-                    if (tempmyFile != null && tempmyFile.isFile()) {
-                        tempProperSongFiles.add(tempmyFile.getName());
-                    }
-                }
-            }
-
-            // Sort the files alphabetically using locale
-            coll = Collator.getInstance(FullscreenActivity.locale);
-            coll.setStrength(Collator.SECONDARY);
-            try {
-                Collections.sort(tempProperSongFiles, coll);
-            } catch (Exception e) {
-                // Problem sorting
-            }
-
-            FullscreenActivity.mSongFileNames = new String[tempProperSongFiles.size()];
-
-            FullscreenActivity.mSongFileNames = tempProperSongFiles.toArray(FullscreenActivity.mSongFileNames);
-        } catch (Exception e) {
-            // Some error occured
+            FullscreenActivity.mSongFileNames = FullscreenActivity.songfilelist.getSongFileListasArray();
+            int j = 0;
+        }catch (Exception e){
+            Log.d(e.getMessage(), "Error caught in getAllSongFiles() in ListSongFiles.java");
         }
     }
 
+    /*TODO why use a multidimensional array, when you could use an xml object?
+    I've been reading about performance and I guess its because of performance
+    limitations?  Is maintaining an object in memory expensive
+    in terms of performance?  So, the class I created is essentially worse
+    than reading directly from the file system?  I don't think so personally,
+    as I don't think the garbage collector will be dereference either of the objects
+    internal to the songfilelist class, and the songfilelist class persists for the
+    lifetime of the app, so there shouldn't be any extra work, and the memory overhead
+    is low and speed of access of cached variable is faster than file access, at
+    least I guess.
+     */
     static void getSongDetails(Context c) {
         // Go through each song in the current folder and extract the title, key and author
         // If not a valid song, just return the file name
@@ -279,7 +218,7 @@ public class ListSongFiles {
                 }
             }
         } catch (Exception e) {
-            Log.d("d","Some error with the song list");
+            Log.d(e.getMessage(),"Some error with the song list");
         }
     }
 
