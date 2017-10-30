@@ -878,6 +878,7 @@ public class SetActions extends Activity {
         }
 
         // The song is the bit after the last /
+        Log.d("d","linkclicked="+FullscreenActivity.linkclicked);
         int songpos = FullscreenActivity.linkclicked.lastIndexOf("/");
         if (songpos==0) {
             // Empty folder
@@ -885,6 +886,8 @@ public class SetActions extends Activity {
         } else {
             FullscreenActivity.whichSongFolder = FullscreenActivity.linkclicked.substring(0,songpos);
         }
+        Log.d("d","whichSongFolder="+FullscreenActivity.whichSongFolder);
+
         if (songpos>=FullscreenActivity.linkclicked.length()) {
             // Empty song
             FullscreenActivity.songfilename = "";

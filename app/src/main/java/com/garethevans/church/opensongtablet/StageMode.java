@@ -6616,12 +6616,7 @@ public class StageMode extends AppCompatActivity implements
         // Hide the menus - 1 second after opening the Option menu,
         // close it (1000ms total)
         Handler optionMenuFlickClosed = new Handler();
-        optionMenuFlickClosed.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mDrawerLayout.closeDrawer(optionmenu);
-            }
-        }, 1000);
+        optionMenuFlickClosed.postDelayed(() -> mDrawerLayout.closeDrawer(optionmenu), 1000);
     }
 
     public void gesture4() {

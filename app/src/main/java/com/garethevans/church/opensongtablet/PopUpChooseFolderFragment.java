@@ -5,11 +5,11 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -69,36 +69,31 @@ public class PopUpChooseFolderFragment extends DialogFragment {
 
         final View V = inflater.inflate(R.layout.popup_choosefolder, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.songfolder));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
-        closeMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
-                closeMe.setEnabled(false);
-                dismiss();
-            }
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
+        closeMe.setOnClickListener(view -> {
+            CustomAnimations.animateFAB(closeMe,getActivity());
+            closeMe.setEnabled(false);
+            dismiss();
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
-        lv = (ListView) V.findViewById(R.id.songfolders_ListView);
+        lv = V.findViewById(R.id.songfolders_ListView);
 
         if (FullscreenActivity.mSongFolderNames!=null) {
             ArrayAdapter<String> lva = new ArrayAdapter<>(getActivity(),
                     R.layout.songlistitem, FullscreenActivity.mSongFolderNames);
             lv.setAdapter(lva);
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    FullscreenActivity.whichSongFolder = FullscreenActivity.mSongFolderNames[i];
-                    //Preferences.savePreferences();  // Remove this to avoid bugs if user is only browsing
-                    if (mListener!=null) {
-                        mListener.prepareSongMenu();
-                    }
-                    dismiss();
+            lv.setOnItemClickListener((adapterView, view, i, l) -> {
+                FullscreenActivity.whichSongFolder = FullscreenActivity.mSongFolderNames[i];
+                Log.d("d","ChooseFolderFragment whichSongFolder="+FullscreenActivity.whichSongFolder);
+                //Preferences.savePreferences();  // Remove this to avoid bugs if user is only browsing
+                if (mListener!=null) {
+                    mListener.prepareSongMenu();
                 }
+                dismiss();
             });
         }
 
