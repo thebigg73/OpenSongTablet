@@ -76,9 +76,9 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_quicklaunch, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.quicklaunch_title));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +87,7 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,14 +98,14 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
         });
 
         // Initialise the views
-        button1_image = (FloatingActionButton) V.findViewById(R.id.button1_image);
-        button2_image = (FloatingActionButton) V.findViewById(R.id.button2_image);
-        button3_image = (FloatingActionButton) V.findViewById(R.id.button3_image);
-        button4_image = (FloatingActionButton) V.findViewById(R.id.button4_image);
-        button1_spinner = (Spinner) V.findViewById(R.id.button1_spinner);
-        button2_spinner = (Spinner) V.findViewById(R.id.button2_spinner);
-        button3_spinner = (Spinner) V.findViewById(R.id.button3_spinner);
-        button4_spinner = (Spinner) V.findViewById(R.id.button4_spinner);
+        button1_image = V.findViewById(R.id.button1_image);
+        button2_image = V.findViewById(R.id.button2_image);
+        button3_image = V.findViewById(R.id.button3_image);
+        button4_image = V.findViewById(R.id.button4_image);
+        button1_spinner = V.findViewById(R.id.button1_spinner);
+        button2_spinner = V.findViewById(R.id.button2_spinner);
+        button3_spinner = V.findViewById(R.id.button3_spinner);
+        button4_spinner = V.findViewById(R.id.button4_spinner);
 
         // Set the floatingactionbuttons to the correct color
         button1_image.setBackgroundTintList(ColorStateList.valueOf(FullscreenActivity.pagebuttonsColor));

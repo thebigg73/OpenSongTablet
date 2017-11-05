@@ -82,16 +82,16 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
         convertView = mInflater.inflate(R.layout.searchrow, null);
-        TextView file_tv = (TextView) convertView.findViewById(R.id.cardview_filename);
-        TextView name_tv = (TextView) convertView.findViewById(R.id.cardview_songtitle);
-        TextView folder_tv = (TextView) convertView.findViewById(R.id.cardview_folder);
-        TextView text_key = (TextView) convertView.findViewById(R.id.text_key);
-        TextView author_tv = (TextView) convertView.findViewById(R.id.cardview_author);
-        TextView key_tv = (TextView) convertView.findViewById(R.id.cardview_key);
-        TextView text_author = (TextView) convertView.findViewById(R.id.text_author);
-        TextView theme_tv = (TextView) convertView.findViewById(R.id.cardview_theme);
-        TextView lyrics_tv = (TextView) convertView.findViewById(R.id.cardview_lyrics);
-        TextView hymnnum_tv = (TextView) convertView.findViewById(R.id.cardview_hymn);
+        TextView file_tv = convertView.findViewById(R.id.cardview_filename);
+        TextView name_tv = convertView.findViewById(R.id.cardview_songtitle);
+        TextView folder_tv = convertView.findViewById(R.id.cardview_folder);
+        TextView text_key = convertView.findViewById(R.id.text_key);
+        TextView author_tv = convertView.findViewById(R.id.cardview_author);
+        TextView key_tv = convertView.findViewById(R.id.cardview_key);
+        TextView text_author = convertView.findViewById(R.id.text_author);
+        TextView theme_tv = convertView.findViewById(R.id.cardview_theme);
+        TextView lyrics_tv = convertView.findViewById(R.id.cardview_lyrics);
+        TextView hymnnum_tv = convertView.findViewById(R.id.cardview_hymn);
 
         SearchViewItems song = searchlist.get(position);
 

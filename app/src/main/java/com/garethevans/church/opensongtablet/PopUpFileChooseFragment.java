@@ -86,8 +86,8 @@ public class PopUpFileChooseFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
 
         View V = inflater.inflate(R.layout.popup_file_chooser, container, false);
-        fileListView = (ListView) V.findViewById(R.id.fileListView);
-        location = (TextView) V.findViewById(R.id.location);
+        fileListView = V.findViewById(R.id.fileListView);
+        location = V.findViewById(R.id.location);
 
         // Decide on the title of the file chooser
         if (PresenterMode.whatBackgroundLoaded!=null) {
@@ -160,9 +160,9 @@ public class PopUpFileChooseFragment extends DialogFragment {
                 break;
         }
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(myTitle);
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,7 +180,7 @@ public class PopUpFileChooseFragment extends DialogFragment {
                 }
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
 

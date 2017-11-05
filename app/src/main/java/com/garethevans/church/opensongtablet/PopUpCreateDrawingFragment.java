@@ -108,9 +108,9 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(false);
         View V = inflater.inflate(R.layout.popup_createdrawing, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText("");
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,7 +119,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,28 +128,28 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
         });
 
         // Initialise the views
-        drawView = (DrawNotes) V.findViewById(R.id.drawView);
-        screenShot = (ImageView) V.findViewById(R.id.screenshot);
-        drawingArea = (RelativeLayout) V.findViewById(R.id.drawingArea);
+        drawView = V.findViewById(R.id.drawView);
+        screenShot = V.findViewById(R.id.screenshot);
+        drawingArea = V.findViewById(R.id.drawingArea);
         drawingArea.measure(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        myTools = (HorizontalScrollView) V.findViewById(R.id.myTools);
-        myColors = (HorizontalScrollView) V.findViewById(R.id.myColors);
-        mySizes = (RelativeLayout) V.findViewById(R.id.mySizes);
-        currentTool = (FloatingActionButton) V.findViewById(R.id.currentTool);
-        pencil_FAB = (FloatingActionButton) V.findViewById(R.id.pencil_FAB);
-        highlighter_FAB = (FloatingActionButton) V.findViewById(R.id.highlighter_FAB);
-        eraser_FAB = (FloatingActionButton) V.findViewById(R.id.eraser_FAB);
-        delete_FAB = (FloatingActionButton) V.findViewById(R.id.delete_FAB);
-        color_black = (FloatingActionButton) V.findViewById(R.id.color_black);
-        color_white = (FloatingActionButton) V.findViewById(R.id.color_white);
-        color_yellow = (FloatingActionButton) V.findViewById(R.id.color_yellow);
-        color_red = (FloatingActionButton) V.findViewById(R.id.color_red);
-        color_green = (FloatingActionButton) V.findViewById(R.id.color_green);
-        color_blue = (FloatingActionButton) V.findViewById(R.id.color_blue);
-        size_SeekBar = (SeekBar) V.findViewById(R.id.size_SeekBar);
-        size_TextView = (TextView) V.findViewById(R.id.size_TextView);
-        undo_FAB = (FloatingActionButton) V.findViewById(R.id.undo_FAB);
-        redo_FAB = (FloatingActionButton) V.findViewById(R.id.redo_FAB);
+        myTools = V.findViewById(R.id.myTools);
+        myColors = V.findViewById(R.id.myColors);
+        mySizes = V.findViewById(R.id.mySizes);
+        currentTool = V.findViewById(R.id.currentTool);
+        pencil_FAB = V.findViewById(R.id.pencil_FAB);
+        highlighter_FAB = V.findViewById(R.id.highlighter_FAB);
+        eraser_FAB = V.findViewById(R.id.eraser_FAB);
+        delete_FAB = V.findViewById(R.id.delete_FAB);
+        color_black = V.findViewById(R.id.color_black);
+        color_white = V.findViewById(R.id.color_white);
+        color_yellow = V.findViewById(R.id.color_yellow);
+        color_red = V.findViewById(R.id.color_red);
+        color_green = V.findViewById(R.id.color_green);
+        color_blue = V.findViewById(R.id.color_blue);
+        size_SeekBar = V.findViewById(R.id.size_SeekBar);
+        size_TextView = V.findViewById(R.id.size_TextView);
+        undo_FAB = V.findViewById(R.id.undo_FAB);
+        redo_FAB = V.findViewById(R.id.redo_FAB);
 
         // Get the screenshot size and ajust the drawing to match
         getSizes();

@@ -78,9 +78,9 @@ public class PopUpTransposeFragment extends DialogFragment {
 
         final View V = inflater.inflate(R.layout.popup_transpose, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.transpose));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +89,7 @@ public class PopUpTransposeFragment extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,15 +100,15 @@ public class PopUpTransposeFragment extends DialogFragment {
         });
 
         // Initialise views
-        transposeSeekBar = (SeekBar) V.findViewById(R.id.transposeSeekBar);
-        transposeValTextView = (TextView) V.findViewById(R.id.transposeValTextView);
-        keyChange_TextView = (TextView) V.findViewById(R.id.keyChange_TextView);
-        detectedChordFormat = (RadioGroup) V.findViewById(R.id.detectedChordFormat);
-        chordFormat1Radio = (RadioButton) V.findViewById(R.id.chordFormat1Radio);
-        chordFormat2Radio = (RadioButton) V.findViewById(R.id.chordFormat2Radio);
-        chordFormat3Radio = (RadioButton) V.findViewById(R.id.chordFormat3Radio);
-        chordFormat4Radio = (RadioButton) V.findViewById(R.id.chordFormat4Radio);
-        chordFormat5Radio = (RadioButton) V.findViewById(R.id.chordFormat5Radio);
+        transposeSeekBar = V.findViewById(R.id.transposeSeekBar);
+        transposeValTextView = V.findViewById(R.id.transposeValTextView);
+        keyChange_TextView = V.findViewById(R.id.keyChange_TextView);
+        detectedChordFormat = V.findViewById(R.id.detectedChordFormat);
+        chordFormat1Radio = V.findViewById(R.id.chordFormat1Radio);
+        chordFormat2Radio = V.findViewById(R.id.chordFormat2Radio);
+        chordFormat3Radio = V.findViewById(R.id.chordFormat3Radio);
+        chordFormat4Radio = V.findViewById(R.id.chordFormat4Radio);
+        chordFormat5Radio = V.findViewById(R.id.chordFormat5Radio);
 
         // If user has said to always used preferred chord format, hide the options
 

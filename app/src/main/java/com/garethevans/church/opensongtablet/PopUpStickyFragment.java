@@ -66,9 +66,9 @@ public class PopUpStickyFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_page_sticky, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.stickynotes));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,12 +77,12 @@ public class PopUpStickyFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        TextView mySticky = (TextView) V.findViewById(R.id.mySticky);
-        Button editsticky = (Button) V.findViewById(R.id.editsticky);
+        TextView mySticky = V.findViewById(R.id.mySticky);
+        Button editsticky = V.findViewById(R.id.editsticky);
 
         // Add the stickynotes
         mySticky.setText(FullscreenActivity.mNotes);

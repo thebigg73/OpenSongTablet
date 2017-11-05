@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
     xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="133"
-    android:versionName="4.1.1"
+    android:versionCode="134"
+    android:versionName="4.1.2"
     android:installLocation="auto">
 
     <!--Overrides are for Sdk=12/13 but library specifies Sdk=14+-->
@@ -300,6 +300,8 @@
         <activity android:name=".ProcessSong" />
         <activity android:name=".SetActions" />
         <activity android:name=".SetLocale" />
+        <activity android:name=".BibleGateway" />
+        <activity android:name=".SongMenuListeners" />
 
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->

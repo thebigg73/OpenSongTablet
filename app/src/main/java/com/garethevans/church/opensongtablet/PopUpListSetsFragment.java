@@ -157,9 +157,9 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         final View V = inflater.inflate(R.layout.popup_setlists, container, false);
 
-        title = (TextView) V.findViewById(R.id.dialogtitle);
+        title = V.findViewById(R.id.dialogtitle);
         title.setText(myTitle);
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,7 +169,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,22 +189,22 @@ public class PopUpListSetsFragment extends DialogFragment {
         // Get a note of the available sets
         SetActions.updateOptionListSets();
 
-        setListView1 = (ListView) V.findViewById(R.id.setListView1);
-        setListName = (EditText) V.findViewById(R.id.setListName);
-        newSetPromptTitle = (TextView) V.findViewById(R.id.newSetPromptTitle);
-        oldCategory_Spinner = (Spinner) V.findViewById(R.id.oldCategory_Spinner);
-        setCategory_Spinner = (Spinner) V.findViewById(R.id.setCategory_Spinner);
-        newCategory_ImageButton = (ImageButton) V.findViewById(R.id.newCategory_ImageButton);
-        newCategory_EditText = (EditText) V.findViewById(R.id.newCategory_EditText);
-        setCategory_TextView = (TextView) V.findViewById(R.id.setCategory_TextView);
-        setCategory = (RelativeLayout) V.findViewById(R.id.setCategory);
-        filelist_RelativeLayout = (RelativeLayout) V.findViewById(R.id.filelist_RelativeLayout);
-        oldCategory_LinearLayout = (LinearLayout) V.findViewById(R.id.oldCategory_LinearLayout);
-        newCategory_LinearLayout = (LinearLayout) V.findViewById(R.id.newCategory_LinearLayout);
-        newSetTitle_LinearLayout = (LinearLayout) V.findViewById(R.id.newSetTitle_LinearLayout);
-        overWrite_CheckBox = (CheckBox) V.findViewById(R.id.overWrite_CheckBox);
+        setListView1 = V.findViewById(R.id.setListView1);
+        setListName = V.findViewById(R.id.setListName);
+        newSetPromptTitle = V.findViewById(R.id.newSetPromptTitle);
+        oldCategory_Spinner = V.findViewById(R.id.oldCategory_Spinner);
+        setCategory_Spinner = V.findViewById(R.id.setCategory_Spinner);
+        newCategory_ImageButton = V.findViewById(R.id.newCategory_ImageButton);
+        newCategory_EditText = V.findViewById(R.id.newCategory_EditText);
+        setCategory_TextView = V.findViewById(R.id.setCategory_TextView);
+        setCategory = V.findViewById(R.id.setCategory);
+        filelist_RelativeLayout = V.findViewById(R.id.filelist_RelativeLayout);
+        oldCategory_LinearLayout = V.findViewById(R.id.oldCategory_LinearLayout);
+        newCategory_LinearLayout = V.findViewById(R.id.newCategory_LinearLayout);
+        newSetTitle_LinearLayout = V.findViewById(R.id.newSetTitle_LinearLayout);
+        overWrite_CheckBox = V.findViewById(R.id.overWrite_CheckBox);
         setListName.setText(FullscreenActivity.lastSetName);
-        sort_ImageButton = (ImageButton) V.findViewById(R.id.sort_ImageButton);
+        sort_ImageButton = V.findViewById(R.id.sort_ImageButton);
 
         // Sort the available set lists
         sortSetLists();

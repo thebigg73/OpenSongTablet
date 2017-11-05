@@ -75,9 +75,9 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_swipesettings, container, false);
         setfrag = getDialog();
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.swipe));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +86,7 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         if (getDialog().getWindow()!=null) {
@@ -94,15 +94,15 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
         }
 
         // Initialise the view
-        swipedistance_SeekBar = (SeekBar) V.findViewById(R.id.swipedistance_SeekBar);
-        swipespeed_SeekBar = (SeekBar) V.findViewById(R.id.swipespeed_SeekBar);
-        swipeerror_SeekBar = (SeekBar) V.findViewById(R.id.swipeerror_SeekBar);
-        swipedistance_TextView = (TextView) V.findViewById(R.id.swipedistance_TextView);
-        swipespeed_TextView = (TextView) V.findViewById(R.id.swipespeed_TextView);
-        swipeerror_TextView = (TextView) V.findViewById(R.id.swipeerror_TextView);
-        swipesimulateion_ImageView = (ImageView) V.findViewById(R.id.swipesimulateion_ImageView);
-        swipesettings = (LinearLayout) V.findViewById(R.id.swipesettings);
-        gesturesSongSwipeButton = (SwitchCompat) V.findViewById(R.id.gesturesSongSwipeButton);
+        swipedistance_SeekBar = V.findViewById(R.id.swipedistance_SeekBar);
+        swipespeed_SeekBar = V.findViewById(R.id.swipespeed_SeekBar);
+        swipeerror_SeekBar = V.findViewById(R.id.swipeerror_SeekBar);
+        swipedistance_TextView = V.findViewById(R.id.swipedistance_TextView);
+        swipespeed_TextView = V.findViewById(R.id.swipespeed_TextView);
+        swipeerror_TextView = V.findViewById(R.id.swipeerror_TextView);
+        swipesimulateion_ImageView = V.findViewById(R.id.swipesimulateion_ImageView);
+        swipesettings = V.findViewById(R.id.swipesettings);
+        gesturesSongSwipeButton = V.findViewById(R.id.gesturesSongSwipeButton);
 
         // Get the maximum values allowed for the seekbars
         // maxwidth is 80% of the screen width

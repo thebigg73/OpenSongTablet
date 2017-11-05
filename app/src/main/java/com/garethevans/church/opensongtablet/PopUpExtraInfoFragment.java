@@ -72,9 +72,9 @@ public class PopUpExtraInfoFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_extrainfo, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.extra));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,22 +84,22 @@ public class PopUpExtraInfoFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        nextSongOnOff_Switch = (SwitchCompat) V.findViewById(R.id.nextSongOnOff_Switch);
-        nextSongTopBottom_Switch = (SwitchCompat) V.findViewById(R.id.nextSongTopBottom_Switch);
-        stickyNotesOnOff_Switch = (SwitchCompat) V.findViewById(R.id.stickyNotesOnOff_Switch);
-        stickyNotesTopBottom_Switch = (SwitchCompat) V.findViewById(R.id.stickyNotesTopBottom_Switch);
-        stickyNotesFloat_Switch = (SwitchCompat) V.findViewById(R.id.stickyNotesFloat_Switch);
-        stickyNotesTime_SeekBar = (SeekBar) V.findViewById(R.id.stickyNotesTime_SeekBar);
-        stickyNotesTime_TextView = (TextView) V.findViewById(R.id.stickyNotesTime_TextView);
-        stickNotesTimeInfo_TextView = (TextView) V.findViewById(R.id.stickNotesTimeInfo_TextView);
-        highlightNotesOnOff_Switch = (SwitchCompat) V.findViewById(R.id.highlightNotesOnOff_Switch);
-        highlightTime_TextView = (TextView) V.findViewById(R.id.highlightTime_TextView);
-        highlightTime_SeekBar = (SeekBar) V.findViewById(R.id.highlightTime_SeekBar);
-        highlightTimeInfo_TextView = (TextView) V.findViewById(R.id.highlightTimeInfo_TextView);
+        nextSongOnOff_Switch = V.findViewById(R.id.nextSongOnOff_Switch);
+        nextSongTopBottom_Switch = V.findViewById(R.id.nextSongTopBottom_Switch);
+        stickyNotesOnOff_Switch = V.findViewById(R.id.stickyNotesOnOff_Switch);
+        stickyNotesTopBottom_Switch = V.findViewById(R.id.stickyNotesTopBottom_Switch);
+        stickyNotesFloat_Switch = V.findViewById(R.id.stickyNotesFloat_Switch);
+        stickyNotesTime_SeekBar = V.findViewById(R.id.stickyNotesTime_SeekBar);
+        stickyNotesTime_TextView = V.findViewById(R.id.stickyNotesTime_TextView);
+        stickNotesTimeInfo_TextView = V.findViewById(R.id.stickNotesTimeInfo_TextView);
+        highlightNotesOnOff_Switch = V.findViewById(R.id.highlightNotesOnOff_Switch);
+        highlightTime_TextView = V.findViewById(R.id.highlightTime_TextView);
+        highlightTime_SeekBar = V.findViewById(R.id.highlightTime_SeekBar);
+        highlightTimeInfo_TextView = V.findViewById(R.id.highlightTimeInfo_TextView);
 
         // Set the default values
         showNextButtons();

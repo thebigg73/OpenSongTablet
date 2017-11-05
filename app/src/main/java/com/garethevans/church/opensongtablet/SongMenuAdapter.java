@@ -97,9 +97,9 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                     .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
             convertView = mInflater.inflate(R.layout.list_item, null);
-            TextView lblListItem = (TextView) convertView.findViewById(R.id.lblListItem);
-            TextView lblListItemAuthor = (TextView) convertView.findViewById(R.id.lblListItemAuthor);
-            final CheckBox lblListCheck = (CheckBox) convertView.findViewById(R.id.lblListCheck);
+            TextView lblListItem = convertView.findViewById(R.id.lblListItem);
+            TextView lblListItemAuthor = convertView.findViewById(R.id.lblListItemAuthor);
+            final CheckBox lblListCheck = convertView.findViewById(R.id.lblListCheck);
 
             if (!FullscreenActivity.showSetTickBoxInSongMenu) {
                 lblListCheck.setVisibility(View.GONE);

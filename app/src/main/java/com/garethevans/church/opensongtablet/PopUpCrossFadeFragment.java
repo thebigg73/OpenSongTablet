@@ -44,9 +44,9 @@ public class PopUpCrossFadeFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_crossfadetime, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.crossfade_time));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,14 +55,14 @@ public class PopUpCrossFadeFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        final SeekBar crossFadeSeekBar = (SeekBar) V.findViewById(R.id.crossFadeSeekBar);
+        final SeekBar crossFadeSeekBar = V.findViewById(R.id.crossFadeSeekBar);
         crossFadeSeekBar.setMax(10);
         crossFadeSeekBar.setProgress((FullscreenActivity.crossFadeTime/1000)-2);
-        final TextView crossFadeText = (TextView) V.findViewById(R.id.crossFadeText);
+        final TextView crossFadeText = V.findViewById(R.id.crossFadeText);
         String newtext = (FullscreenActivity.crossFadeTime/1000)+ " s";
         crossFadeText.setText(newtext);
 

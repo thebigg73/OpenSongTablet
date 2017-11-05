@@ -52,9 +52,9 @@ public class PopUpWebViewFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_webview, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(mTitle);
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,11 +63,11 @@ public class PopUpWebViewFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
-        webview = (WebView) V.findViewById(R.id.webview);
-        textview = (TextView) V.findViewById(R.id.textview);
+        webview = V.findViewById(R.id.webview);
+        textview = V.findViewById(R.id.textview);
 
         if (FullscreenActivity.whattodo.equals("errorlog")) {
             webview.setVisibility(View.GONE);

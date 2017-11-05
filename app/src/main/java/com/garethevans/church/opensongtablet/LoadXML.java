@@ -213,7 +213,7 @@ public class LoadXML extends Activity {
                 String[] lines = FullscreenActivity.myXML.split("\n");
                 String text = "";
                 for (int z=0;z<lines.length;z++) {
-                    if (lines[z].indexOf("[")!=0 && lines[z].indexOf(".")!=0  && lines[z].indexOf(";")!=0 && lines[z].indexOf(" ")!=0) {
+                    if (lines[z].indexOf("[")!=0 && lines[z].indexOf(".")!=0 && lines[z].indexOf(";")!=0 && lines[z].indexOf("---")!=0 && lines[z].indexOf(" ")!=0) {
                         lines[z] = " " + lines[z];
                     }
                     text += lines[z] + "\n";

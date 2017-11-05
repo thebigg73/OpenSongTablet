@@ -33,14 +33,10 @@ import java.util.Collections;
 public class ProcessSong extends Activity {
 
     static String parseLyrics(String myLyrics, Context c) {
-        //myLyrics = myLyrics.replace("\n \n","\n\n");
         myLyrics = myLyrics.replace("]\n\n","]\n");
-        //myLyrics = myLyrics.replace("\n\n","\n");
         myLyrics = myLyrics.replaceAll("\r\n", "\n");
         myLyrics = myLyrics.replaceAll("\r", "\n");
-        myLyrics = myLyrics.replaceAll("\t", "    ");
         myLyrics = myLyrics.replaceAll("\\t", "    ");
-        //myLyrics = myLyrics.replaceAll("\\b", "    ");
         myLyrics = myLyrics.replaceAll("\f", "    ");
         myLyrics = myLyrics.replace("\r", "");
         myLyrics = myLyrics.replace("\t", "    ");
@@ -668,6 +664,10 @@ public class ProcessSong extends Activity {
             }
         }
 
+        Log.d("d","autoscroll_default_or_prompt="+FullscreenActivity.autoscroll_default_or_prompt);
+        Log.d("d","autoScrollDelay="+FullscreenActivity.autoScrollDelay);
+        Log.d("d","autoScrollDuration="+FullscreenActivity.autoScrollDuration);
+        Log.d("d","usingdefaults="+FullscreenActivity.usingdefaults);
         return (FullscreenActivity.autoScrollDuration > 0 && FullscreenActivity.autoScrollDelay >= 0) ||
                 FullscreenActivity.usingdefaults;
     }
@@ -1641,7 +1641,7 @@ public class ProcessSong extends Activity {
 
         song = song.replace("-!!", "");
 
-        if (FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Presentation")) {
+        if (FullscreenActivity.whichMode.equals("Presentation")) {
             song = song.replace("||", "%%LATERSPLITHERE%%");
         } else {
             song = song.replace("||", "");
@@ -1656,7 +1656,10 @@ public class ProcessSong extends Activity {
         song = "";
         for (String t:temp) {
             if (!t.startsWith(";") && !t.startsWith(".")) {
-                t = t.replace("---", "[]");
+                if (t.trim().startsWith("---")) {
+                    t = t.replace(" ---", "[]");
+                    t = t.replace("---", "[]");
+                }
             }
 
             if (t.startsWith(".")||t.startsWith(";")) {

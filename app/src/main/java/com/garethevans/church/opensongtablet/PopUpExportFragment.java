@@ -71,13 +71,13 @@ public class PopUpExportFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_exportselection, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         if (FullscreenActivity.whattodo.equals("customise_exportsong")) {
             title.setText(getActivity().getResources().getString(R.string.exportcurrentsong));
         } else {
             title.setText(getActivity().getResources().getString(R.string.exportsavedset));
         }
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,7 +86,7 @@ public class PopUpExportFragment extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,14 +97,14 @@ public class PopUpExportFragment extends DialogFragment {
         });
 
         // Initialise the views
-        exportOpenSongAppSetCheckBox = (CheckBox) V.findViewById(R.id.exportOpenSongAppSetCheckBox);
-        exportOpenSongAppCheckBox = (CheckBox) V.findViewById(R.id.exportOpenSongAppCheckBox);
-        exportDesktopCheckBox = (CheckBox) V.findViewById(R.id.exportDesktopCheckBox);
-        exportTextCheckBox = (CheckBox) V.findViewById(R.id.exportTextCheckBox);
-        exportChordProCheckBox = (CheckBox) V.findViewById(R.id.exportChordProCheckBox);
-        exportOnSongCheckBox = (CheckBox) V.findViewById(R.id.exportOnSongCheckBox);
-        exportImageCheckBox = (CheckBox) V.findViewById(R.id.exportImageCheckBox);
-        exportPDFCheckBox = (CheckBox) V.findViewById(R.id.exportPDFCheckBox);
+        exportOpenSongAppSetCheckBox = V.findViewById(R.id.exportOpenSongAppSetCheckBox);
+        exportOpenSongAppCheckBox = V.findViewById(R.id.exportOpenSongAppCheckBox);
+        exportDesktopCheckBox = V.findViewById(R.id.exportDesktopCheckBox);
+        exportTextCheckBox = V.findViewById(R.id.exportTextCheckBox);
+        exportChordProCheckBox = V.findViewById(R.id.exportChordProCheckBox);
+        exportOnSongCheckBox = V.findViewById(R.id.exportOnSongCheckBox);
+        exportImageCheckBox = V.findViewById(R.id.exportImageCheckBox);
+        exportPDFCheckBox = V.findViewById(R.id.exportPDFCheckBox);
 
         // Hide the ones we don't need
         if (FullscreenActivity.whattodo.equals("customise_exportsong")) {

@@ -86,9 +86,9 @@ public class PopUpABCNotationFragment extends DialogFragment {
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         View V = inflater.inflate(R.layout.popup_abcnotation, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getString(R.string.music_score));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,7 +97,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         if (FullscreenActivity.whattodo.equals("abcnotation")) {
             saveMe.setVisibility(View.GONE);
         }
@@ -109,7 +109,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
         });
 
         // Initialise the views
-        abcWebView = (WebView) V.findViewById(R.id.abcWebView);
+        abcWebView = V.findViewById(R.id.abcWebView);
 
         abcWebView.getSettings().setJavaScriptEnabled(true);
         abcWebView.addJavascriptInterface(new JsInterface(), "AndroidApp");

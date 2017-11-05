@@ -1,5 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -201,9 +202,9 @@ public class PopUpCustomChordsFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_customchords, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.customchords));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -212,7 +213,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
@@ -232,55 +233,55 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         string1 = getActivity().getResources().getDrawable(R.drawable.string_1);
         string1_on = getActivity().getResources().getDrawable(R.drawable.string_1_on);
 
-        guitar = (LinearLayout) V.findViewById(R.id.guitar);
-        fret0 = (LinearLayout) V.findViewById(R.id.fret0);
-        fret1 = (LinearLayout) V.findViewById(R.id.fret1);
-        fret2 = (LinearLayout) V.findViewById(R.id.fret2);
-        fret3 = (LinearLayout) V.findViewById(R.id.fret3);
-        fret4 = (LinearLayout) V.findViewById(R.id.fret4);
-        fret5 = (LinearLayout) V.findViewById(R.id.fret5);
-        customchords_instrument = (Spinner) V.findViewById(R.id.customchords_instrument);
-        customchords_fret = (Spinner) V.findViewById(R.id.customchords_fret);
-        customchord_name = (EditText) V.findViewById(R.id.customchord_name);
-        customchord_code = (TextView) V.findViewById(R.id.customchord_code);
-        customChordSave = (Button) V.findViewById(R.id.customChordSave);
-        savedcustomchords = (LinearLayout) V.findViewById(R.id.savedcustomchords);
-        string6_top = (ImageView) V.findViewById(R.id.string6_top);
-        string5_top = (ImageView) V.findViewById(R.id.string5_top);
-        string4_top = (ImageView) V.findViewById(R.id.string4_top);
-        string3_top = (ImageView) V.findViewById(R.id.string3_top);
-        string2_top = (ImageView) V.findViewById(R.id.string2_top);
-        string1_top = (ImageView) V.findViewById(R.id.string1_top);
-        string6_f1 = (ImageView) V.findViewById(R.id.string6_f1);
-        string5_f1 = (ImageView) V.findViewById(R.id.string5_f1);
-        string4_f1 = (ImageView) V.findViewById(R.id.string4_f1);
-        string3_f1 = (ImageView) V.findViewById(R.id.string3_f1);
-        string2_f1 = (ImageView) V.findViewById(R.id.string2_f1);
-        string1_f1 = (ImageView) V.findViewById(R.id.string1_f1);
-        string6_f2 = (ImageView) V.findViewById(R.id.string6_f2);
-        string5_f2 = (ImageView) V.findViewById(R.id.string5_f2);
-        string4_f2 = (ImageView) V.findViewById(R.id.string4_f2);
-        string3_f2 = (ImageView) V.findViewById(R.id.string3_f2);
-        string2_f2 = (ImageView) V.findViewById(R.id.string2_f2);
-        string1_f2 = (ImageView) V.findViewById(R.id.string1_f2);
-        string6_f3 = (ImageView) V.findViewById(R.id.string6_f3);
-        string5_f3 = (ImageView) V.findViewById(R.id.string5_f3);
-        string4_f3 = (ImageView) V.findViewById(R.id.string4_f3);
-        string3_f3 = (ImageView) V.findViewById(R.id.string3_f3);
-        string2_f3 = (ImageView) V.findViewById(R.id.string2_f3);
-        string1_f3 = (ImageView) V.findViewById(R.id.string1_f3);
-        string6_f4 = (ImageView) V.findViewById(R.id.string6_f4);
-        string5_f4 = (ImageView) V.findViewById(R.id.string5_f4);
-        string4_f4 = (ImageView) V.findViewById(R.id.string4_f4);
-        string3_f4 = (ImageView) V.findViewById(R.id.string3_f4);
-        string2_f4 = (ImageView) V.findViewById(R.id.string2_f4);
-        string1_f4 = (ImageView) V.findViewById(R.id.string1_f4);
-        string6_f5 = (ImageView) V.findViewById(R.id.string6_f5);
-        string5_f5 = (ImageView) V.findViewById(R.id.string5_f5);
-        string4_f5 = (ImageView) V.findViewById(R.id.string4_f5);
-        string3_f5 = (ImageView) V.findViewById(R.id.string3_f5);
-        string2_f5 = (ImageView) V.findViewById(R.id.string2_f5);
-        string1_f5 = (ImageView) V.findViewById(R.id.string1_f5);
+        guitar = V.findViewById(R.id.guitar);
+        fret0 = V.findViewById(R.id.fret0);
+        fret1 = V.findViewById(R.id.fret1);
+        fret2 = V.findViewById(R.id.fret2);
+        fret3 = V.findViewById(R.id.fret3);
+        fret4 = V.findViewById(R.id.fret4);
+        fret5 = V.findViewById(R.id.fret5);
+        customchords_instrument = V.findViewById(R.id.customchords_instrument);
+        customchords_fret = V.findViewById(R.id.customchords_fret);
+        customchord_name = V.findViewById(R.id.customchord_name);
+        customchord_code = V.findViewById(R.id.customchord_code);
+        customChordSave = V.findViewById(R.id.customChordSave);
+        savedcustomchords = V.findViewById(R.id.savedcustomchords);
+        string6_top = V.findViewById(R.id.string6_top);
+        string5_top = V.findViewById(R.id.string5_top);
+        string4_top = V.findViewById(R.id.string4_top);
+        string3_top = V.findViewById(R.id.string3_top);
+        string2_top = V.findViewById(R.id.string2_top);
+        string1_top = V.findViewById(R.id.string1_top);
+        string6_f1 = V.findViewById(R.id.string6_f1);
+        string5_f1 = V.findViewById(R.id.string5_f1);
+        string4_f1 = V.findViewById(R.id.string4_f1);
+        string3_f1 = V.findViewById(R.id.string3_f1);
+        string2_f1 = V.findViewById(R.id.string2_f1);
+        string1_f1 = V.findViewById(R.id.string1_f1);
+        string6_f2 = V.findViewById(R.id.string6_f2);
+        string5_f2 = V.findViewById(R.id.string5_f2);
+        string4_f2 = V.findViewById(R.id.string4_f2);
+        string3_f2 = V.findViewById(R.id.string3_f2);
+        string2_f2 = V.findViewById(R.id.string2_f2);
+        string1_f2 = V.findViewById(R.id.string1_f2);
+        string6_f3 = V.findViewById(R.id.string6_f3);
+        string5_f3 = V.findViewById(R.id.string5_f3);
+        string4_f3 = V.findViewById(R.id.string4_f3);
+        string3_f3 = V.findViewById(R.id.string3_f3);
+        string2_f3 = V.findViewById(R.id.string2_f3);
+        string1_f3 = V.findViewById(R.id.string1_f3);
+        string6_f4 = V.findViewById(R.id.string6_f4);
+        string5_f4 = V.findViewById(R.id.string5_f4);
+        string4_f4 = V.findViewById(R.id.string4_f4);
+        string3_f4 = V.findViewById(R.id.string3_f4);
+        string2_f4 = V.findViewById(R.id.string2_f4);
+        string1_f4 = V.findViewById(R.id.string1_f4);
+        string6_f5 = V.findViewById(R.id.string6_f5);
+        string5_f5 = V.findViewById(R.id.string5_f5);
+        string4_f5 = V.findViewById(R.id.string4_f5);
+        string3_f5 = V.findViewById(R.id.string3_f5);
+        string2_f5 = V.findViewById(R.id.string2_f5);
+        string1_f5 = V.findViewById(R.id.string1_f5);
 
         ArrayList<String> instrument_choice = new ArrayList<>();
         instrument_choice.add(getActivity().getResources().getString(R.string.guitar));
@@ -608,6 +609,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
             Log.d("d","Custom chord fragment error");
         }
     }
+    @SuppressLint("StaticFieldLeak")
     @SuppressWarnings("deprecation")
     private class PrepareCustom extends AsyncTask<Object,Void,String> {
 

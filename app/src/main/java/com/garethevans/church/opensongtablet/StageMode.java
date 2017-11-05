@@ -5201,7 +5201,12 @@ public class StageMode extends AppCompatActivity implements
     public void confirmedAction() {
         switch (FullscreenActivity.whattodo) {
             case "exit":
-                this.finish();
+                try {
+                    //this.finish();
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                } catch (Exception e) {
+                   Log.d("d","Couldn't close the application!") ;
+                }
                 break;
 
             case "saveset":
@@ -6563,8 +6568,8 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    // Open/close the drawers
     public void gesture1() {
-        // Open/close the drawers
         if (mDrawerLayout.isDrawerOpen(songmenu)) {
             closeMyDrawers("song");
         } else {
@@ -6576,6 +6581,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    // Edit song
     public void gesture2() {
         if (FullscreenActivity.isPDF) {
             FullscreenActivity.whattodo = "extractPDF";
@@ -6587,8 +6593,8 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    // Add to set
     public void gesture3() {
-        // Add to set
         if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
             FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.songfilename + "_**$";
         } else {
@@ -6616,17 +6622,22 @@ public class StageMode extends AppCompatActivity implements
         // Hide the menus - 1 second after opening the Option menu,
         // close it (1000ms total)
         Handler optionMenuFlickClosed = new Handler();
-        optionMenuFlickClosed.postDelayed(() -> mDrawerLayout.closeDrawer(optionmenu), 1000);
+        optionMenuFlickClosed.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerLayout.closeDrawer(optionmenu);
+            }
+        }, 1000);
     }
 
+    // Redraw the lyrics page
     public void gesture4() {
-        // Redraw the lyrics page
         loadSong();
     }
 
     @Override
+    // Stop or start autoscroll
     public void gesture5() {
-        // Stop or start autoscroll
         if (justSong(StageMode.this)) {
             DoVibrate.vibrate(StageMode.this, 50);
             if (FullscreenActivity.isautoscrolling) {

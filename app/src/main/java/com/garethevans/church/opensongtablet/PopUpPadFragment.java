@@ -116,9 +116,9 @@ public class PopUpPadFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_page_pad, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.pad));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,7 +127,7 @@ public class PopUpPadFragment extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,14 +142,14 @@ public class PopUpPadFragment extends DialogFragment {
         }
 
         // Initialise the views
-        popupPad_key = (Spinner) V.findViewById(R.id.popupPad_key);
-        popupPad_file = (Spinner) V.findViewById(R.id.popupPad_file);
-        popupPad_loopaudio = (SwitchCompat) V.findViewById(R.id.popupPad_loopaudio);
-        popupPad_volume = (SeekBar) V.findViewById(R.id.popupPad_volume);
-        popupPad_volume_text = (TextView) V.findViewById(R.id.popupPad_volume_text);
-        popupPad_pan = (SeekBar) V.findViewById(R.id.popupPad_pan);
-        popupPad_pan_text = (TextView) V.findViewById(R.id.popupPad_pan_text);
-        start_stop_padplay = (Button) V.findViewById(R.id.start_stop_padplay);
+        popupPad_key = V.findViewById(R.id.popupPad_key);
+        popupPad_file = V.findViewById(R.id.popupPad_file);
+        popupPad_loopaudio = V.findViewById(R.id.popupPad_loopaudio);
+        popupPad_volume = V.findViewById(R.id.popupPad_volume);
+        popupPad_volume_text = V.findViewById(R.id.popupPad_volume_text);
+        popupPad_pan = V.findViewById(R.id.popupPad_pan);
+        popupPad_pan_text = V.findViewById(R.id.popupPad_pan_text);
+        start_stop_padplay = V.findViewById(R.id.start_stop_padplay);
 
         //checkPadStatus();
 

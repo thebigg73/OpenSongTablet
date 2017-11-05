@@ -169,11 +169,11 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
 
         SetItemViewHolder(View v) {
             super(v);
-            vCard = (RelativeLayout) v.findViewById(R.id.cardview_layout);
-            vItem = (TextView) v.findViewById(R.id.cardview_item);
-            vSongTitle =  (TextView) v.findViewById(R.id.cardview_songtitle);
-            vSongFolder = (TextView)  v.findViewById(R.id.cardview_folder);
-            vIcon = (FloatingActionButton)  v.findViewById(R.id.cardview_icon);
+            vCard = v.findViewById(R.id.cardview_layout);
+            vItem = v.findViewById(R.id.cardview_item);
+            vSongTitle = v.findViewById(R.id.cardview_songtitle);
+            vSongFolder = v.findViewById(R.id.cardview_folder);
+            vIcon = v.findViewById(R.id.cardview_icon);
             //vIcon = (ImageView)  v.findViewById(R.id.cardview_icon);
         }
     }

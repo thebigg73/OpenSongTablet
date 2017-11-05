@@ -62,9 +62,9 @@ public class PopUpPedalsFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_pedals, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.options_options_pedal));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,22 +73,22 @@ public class PopUpPedalsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        pedalPreviousButton = (Button) V.findViewById(R.id.pedalPreviousButton);
-        pedalNextButton = (Button) V.findViewById(R.id.pedalNextButton);
-        pedalDownButton = (Button) V.findViewById(R.id.pedalDownButton);
-        pedalUpButton = (Button) V.findViewById(R.id.pedalUpButton);
-        pedalToggleScrollBeforeSwipeButton = (SwitchCompat) V.findViewById(R.id.pedalToggleScrollBeforeSwipeButton);
-        pedalPadButton = (Button) V.findViewById(R.id.pedalPadButton);
-        pedalAutoScrollButton = (Button) V.findViewById(R.id.pedalAutoScrollButton);
-        pedalMetronomeButton = (Button) V.findViewById(R.id.pedalMetronomeButton);
-        pedalAutoScrollPadButton = (Button) V.findViewById(R.id.pedalAutoScrollPadButton);
-        pedalAutoScrollMetronomeButton = (Button) V.findViewById(R.id.pedalAutoScrollMetronomeButton);
-        pedalPadMetronomeButton = (Button) V.findViewById(R.id.pedalPadMetronomeButton);
-        pedalAutoScrollPadMetronomeButton = (Button) V.findViewById(R.id.pedalAutoScrollPadMetronomeButton);
+        pedalPreviousButton = V.findViewById(R.id.pedalPreviousButton);
+        pedalNextButton = V.findViewById(R.id.pedalNextButton);
+        pedalDownButton = V.findViewById(R.id.pedalDownButton);
+        pedalUpButton = V.findViewById(R.id.pedalUpButton);
+        pedalToggleScrollBeforeSwipeButton = V.findViewById(R.id.pedalToggleScrollBeforeSwipeButton);
+        pedalPadButton = V.findViewById(R.id.pedalPadButton);
+        pedalAutoScrollButton = V.findViewById(R.id.pedalAutoScrollButton);
+        pedalMetronomeButton = V.findViewById(R.id.pedalMetronomeButton);
+        pedalAutoScrollPadButton = V.findViewById(R.id.pedalAutoScrollPadButton);
+        pedalAutoScrollMetronomeButton = V.findViewById(R.id.pedalAutoScrollMetronomeButton);
+        pedalPadMetronomeButton = V.findViewById(R.id.pedalPadMetronomeButton);
+        pedalAutoScrollPadMetronomeButton = V.findViewById(R.id.pedalAutoScrollPadMetronomeButton);
 
         resetButtons();
 

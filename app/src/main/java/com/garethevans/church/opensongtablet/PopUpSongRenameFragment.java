@@ -81,9 +81,9 @@ public class PopUpSongRenameFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_songrename, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.options_song_rename));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,7 +92,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,8 +103,8 @@ public class PopUpSongRenameFragment extends DialogFragment {
         });
 
         // Initialise the views
-        newFolderSpinner = (Spinner) V.findViewById(R.id.newFolderSpinner);
-        newSongNameEditText = (EditText) V.findViewById(R.id.newSongNameEditText);
+        newFolderSpinner = V.findViewById(R.id.newFolderSpinner);
+        newSongNameEditText = V.findViewById(R.id.newSongNameEditText);
 
         oldsongname = FullscreenActivity.songfilename;
         newSongNameEditText.setText(oldsongname);

@@ -266,19 +266,19 @@ public class OptionMenuListeners extends Activity {
         mListener = (MyInterface) c;
 
         // Identify the buttons
-        Button menuSetButton = (Button) v.findViewById(R.id.menuSetButton);
-        Button menuSongButton = (Button) v.findViewById(R.id.menuSongButton);
-        Button menuChordsButton = (Button) v.findViewById(R.id.menuChordsButton);
-        Button menuDisplayButton = (Button) v.findViewById(R.id.menuDisplayButton);
-        Button menuGesturesButton = (Button) v.findViewById(R.id.menuGesturesButton);
-        Button menuConnectButton = (Button) v.findViewById(R.id.menuConnectButton);
-        Button menuModeButton = (Button) v.findViewById(R.id.menuModeButton);
-        Button menuFindSongsButton = (Button) v.findViewById(R.id.menuFindSongsButton);
-        Button menuStorageButton = (Button) v.findViewById(R.id.menuStorageButton);
-        Button menuPadButton = (Button) v.findViewById(R.id.menuPadButton);
-        Button menuAutoScrollButton = (Button) v.findViewById(R.id.menuAutoScrollButton);
-        Button menuOtherButton = (Button) v.findViewById(R.id.menuOtherButton);
-        FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
+        Button menuSetButton = v.findViewById(R.id.menuSetButton);
+        Button menuSongButton = v.findViewById(R.id.menuSongButton);
+        Button menuChordsButton = v.findViewById(R.id.menuChordsButton);
+        Button menuDisplayButton = v.findViewById(R.id.menuDisplayButton);
+        Button menuGesturesButton = v.findViewById(R.id.menuGesturesButton);
+        Button menuConnectButton = v.findViewById(R.id.menuConnectButton);
+        Button menuModeButton = v.findViewById(R.id.menuModeButton);
+        Button menuFindSongsButton = v.findViewById(R.id.menuFindSongsButton);
+        Button menuStorageButton = v.findViewById(R.id.menuStorageButton);
+        Button menuPadButton = v.findViewById(R.id.menuPadButton);
+        Button menuAutoScrollButton = v.findViewById(R.id.menuAutoScrollButton);
+        Button menuOtherButton = v.findViewById(R.id.menuOtherButton);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
         menuSetButton.setText(c.getString(R.string.options_set).toUpperCase(FullscreenActivity.locale));
@@ -425,19 +425,19 @@ public class OptionMenuListeners extends Activity {
         mListener = (MyInterface) c;
 
         // Identify the buttons
-        TextView menuup = (TextView) v.findViewById(R.id.setMenuTitle);
-        Button setLoadButton = (Button) v.findViewById(R.id.setLoadButton);
-        Button setSaveButton = (Button) v.findViewById(R.id.setSaveButton);
-        Button setNewButton = (Button) v.findViewById(R.id.setNewButton);
-        Button setDeleteButton = (Button) v.findViewById(R.id.setDeleteButton);
-        Button setOrganiseButton = (Button) v.findViewById(R.id.setOrganiseButton);
-        Button setExportButton = (Button) v.findViewById(R.id.setExportButton);
-        Button setCustomButton = (Button) v.findViewById(R.id.setCustomButton);
-        Button setVariationButton = (Button) v.findViewById(R.id.setVariationButton);
-        Button setEditButton = (Button) v.findViewById(R.id.setEditButton);
-        SwitchCompat showSetTickBoxInSongMenu = (SwitchCompat) v.findViewById(R.id.showSetTickBoxInSongMenu);
-        LinearLayout setLinearLayout = (LinearLayout) v.findViewById(R.id.setLinearLayout);
-        FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
+        TextView menuup = v.findViewById(R.id.setMenuTitle);
+        Button setLoadButton = v.findViewById(R.id.setLoadButton);
+        Button setSaveButton = v.findViewById(R.id.setSaveButton);
+        Button setNewButton = v.findViewById(R.id.setNewButton);
+        Button setDeleteButton = v.findViewById(R.id.setDeleteButton);
+        Button setOrganiseButton = v.findViewById(R.id.setOrganiseButton);
+        Button setExportButton = v.findViewById(R.id.setExportButton);
+        Button setCustomButton = v.findViewById(R.id.setCustomButton);
+        Button setVariationButton = v.findViewById(R.id.setVariationButton);
+        Button setEditButton = v.findViewById(R.id.setEditButton);
+        SwitchCompat showSetTickBoxInSongMenu = v.findViewById(R.id.showSetTickBoxInSongMenu);
+        LinearLayout setLinearLayout = v.findViewById(R.id.setLinearLayout);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.options_set).toUpperCase(FullscreenActivity.locale));
@@ -634,19 +634,19 @@ public class OptionMenuListeners extends Activity {
         mListener = (MyInterface) c;
 
         // Identify the buttons
-        TextView menuup = (TextView) v.findViewById(R.id.songMenuTitle);
-        Button songEditButton = (Button) v.findViewById(R.id.songEditButton);
-        Button songStickyButton = (Button) v.findViewById(R.id.songStickyButton);
-        Button songDrawingButton = (Button) v.findViewById(R.id.songDrawingButton);
-        Button songScoreButton = (Button) v.findViewById(R.id.songScoreButton);
-        Button songOnYouTubeButton = (Button) v.findViewById(R.id.songOnYouTubeButton);
-        Button songOnWebButton = (Button) v.findViewById(R.id.songOnWebButton);
-        Button songRenameButton = (Button) v.findViewById(R.id.songRenameButton);
-        Button songNewButton = (Button) v.findViewById(R.id.songNewButton);
-        Button songDeleteButton = (Button) v.findViewById(R.id.songDeleteButton);
-        Button songExportButton = (Button) v.findViewById(R.id.songExportButton);
-        final SwitchCompat songPresentationOrderButton = (SwitchCompat) v.findViewById(R.id.songPresentationOrderButton);
-        FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
+        TextView menuup = v.findViewById(R.id.songMenuTitle);
+        Button songEditButton = v.findViewById(R.id.songEditButton);
+        Button songStickyButton = v.findViewById(R.id.songStickyButton);
+        Button songDrawingButton = v.findViewById(R.id.songDrawingButton);
+        Button songScoreButton = v.findViewById(R.id.songScoreButton);
+        Button songOnYouTubeButton = v.findViewById(R.id.songOnYouTubeButton);
+        Button songOnWebButton = v.findViewById(R.id.songOnWebButton);
+        Button songRenameButton = v.findViewById(R.id.songRenameButton);
+        Button songNewButton = v.findViewById(R.id.songNewButton);
+        Button songDeleteButton = v.findViewById(R.id.songDeleteButton);
+        Button songExportButton = v.findViewById(R.id.songExportButton);
+        final SwitchCompat songPresentationOrderButton = v.findViewById(R.id.songPresentationOrderButton);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.options_song).toUpperCase(FullscreenActivity.locale));
@@ -852,17 +852,17 @@ public class OptionMenuListeners extends Activity {
         mListener = (MyInterface) c;
 
         // Identify the buttons
-        TextView menuup = (TextView) v.findViewById(R.id.chordsMenuTitle);
-        Button chordsTransposeButton = (Button) v.findViewById(R.id.chordsTransposeButton);
-        Button chordsSharpButton = (Button) v.findViewById(R.id.chordsSharpButton);
-        Button chordsFlatButton = (Button) v.findViewById(R.id.chordsFlatButton);
-        SwitchCompat chordsToggleSwitch = (SwitchCompat) v.findViewById(R.id.chordsToggleSwitch);
-        SwitchCompat chordsLyricsToggleSwitch = (SwitchCompat) v.findViewById(R.id.chordsLyricsToggleSwitch);
-        final SwitchCompat chordsCapoToggleSwitch = (SwitchCompat) v.findViewById(R.id.chordsCapoToggleSwitch);
-        final SwitchCompat chordsNativeAndCapoToggleSwitch = (SwitchCompat) v.findViewById(R.id.chordsNativeAndCapoToggleSwitch);
-        Button chordsFormatButton = (Button) v.findViewById(R.id.chordsFormatButton);
-        Button chordsConvertButton = (Button) v.findViewById(R.id.chordsConvertButton);
-        FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
+        TextView menuup = v.findViewById(R.id.chordsMenuTitle);
+        Button chordsTransposeButton = v.findViewById(R.id.chordsTransposeButton);
+        Button chordsSharpButton = v.findViewById(R.id.chordsSharpButton);
+        Button chordsFlatButton = v.findViewById(R.id.chordsFlatButton);
+        SwitchCompat chordsToggleSwitch = v.findViewById(R.id.chordsToggleSwitch);
+        SwitchCompat chordsLyricsToggleSwitch = v.findViewById(R.id.chordsLyricsToggleSwitch);
+        final SwitchCompat chordsCapoToggleSwitch = v.findViewById(R.id.chordsCapoToggleSwitch);
+        final SwitchCompat chordsNativeAndCapoToggleSwitch = v.findViewById(R.id.chordsNativeAndCapoToggleSwitch);
+        Button chordsFormatButton = v.findViewById(R.id.chordsFormatButton);
+        Button chordsConvertButton = v.findViewById(R.id.chordsConvertButton);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.chords).toUpperCase(FullscreenActivity.locale));
@@ -1124,18 +1124,18 @@ public class OptionMenuListeners extends Activity {
         mListener = (MyInterface) c;
 
         // Identify the buttons
-        TextView menuup = (TextView) v.findViewById(R.id.optionDisplayTitle);
-        Button displayThemeButton = (Button) v.findViewById(R.id.displayThemeButton);
-        Button displayAutoScaleButton = (Button) v.findViewById(R.id.displayAutoScaleButton);
-        Button displayFontButton = (Button) v.findViewById(R.id.displayFontButton);
-        Button displayButtonsButton = (Button) v.findViewById(R.id.displayButtonsButton);
-        Button displayPopUpsButton = (Button) v.findViewById(R.id.displayPopUpsButton);
-        Button displayInfoButton = (Button) v.findViewById(R.id.displayInfoButton);
-        Button displayActionBarButton = (Button) v.findViewById(R.id.displayActionBarButton);
-        Button displayProfileButton = (Button) v.findViewById(R.id.displayProfileButton);
-        Button displayConnectedDisplayButton = (Button) v.findViewById(R.id.displayConnectedDisplayButton);
-        Button displayHDMIButton = (Button) v.findViewById(R.id.displayHDMIButton);
-        FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
+        TextView menuup = v.findViewById(R.id.optionDisplayTitle);
+        Button displayThemeButton = v.findViewById(R.id.displayThemeButton);
+        Button displayAutoScaleButton = v.findViewById(R.id.displayAutoScaleButton);
+        Button displayFontButton = v.findViewById(R.id.displayFontButton);
+        Button displayButtonsButton = v.findViewById(R.id.displayButtonsButton);
+        Button displayPopUpsButton = v.findViewById(R.id.displayPopUpsButton);
+        Button displayInfoButton = v.findViewById(R.id.displayInfoButton);
+        Button displayActionBarButton = v.findViewById(R.id.displayActionBarButton);
+        Button displayProfileButton = v.findViewById(R.id.displayProfileButton);
+        Button displayConnectedDisplayButton = v.findViewById(R.id.displayConnectedDisplayButton);
+        Button displayHDMIButton = v.findViewById(R.id.displayHDMIButton);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.options_display).toUpperCase(FullscreenActivity.locale));
@@ -1290,16 +1290,16 @@ public class OptionMenuListeners extends Activity {
         mListener = (MyInterface) c;
 
         // Identify the buttons
-        TextView menuup = (TextView) v.findViewById(R.id.findSongMenuTitle);
-        Button ugSearchButton = (Button) v.findViewById(R.id.ugSearchButton);
-        Button chordieSearchButton = (Button) v.findViewById(R.id.chordieSearchButton);
-        Button songselectSearchButton = (Button) v.findViewById(R.id.songselectSearchButton);
-        Button worshiptogetherSearchButton = (Button) v.findViewById(R.id.worshiptogetherSearchButton);
-        Button worshipreadySearchButton = (Button) v.findViewById(R.id.worshipreadySearchButton);
-        Button bandDownloadButton = (Button) v.findViewById(R.id.bandDownloadButton);
-        Button churchDownloadButton = (Button) v.findViewById(R.id.churchDownloadButton);
-        Button cameraButton = (Button) v.findViewById(R.id.cameraButton);
-        FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
+        TextView menuup = v.findViewById(R.id.findSongMenuTitle);
+        Button ugSearchButton = v.findViewById(R.id.ugSearchButton);
+        Button chordieSearchButton = v.findViewById(R.id.chordieSearchButton);
+        Button songselectSearchButton = v.findViewById(R.id.songselectSearchButton);
+        Button worshiptogetherSearchButton = v.findViewById(R.id.worshiptogetherSearchButton);
+        Button worshipreadySearchButton = v.findViewById(R.id.worshipreadySearchButton);
+        Button bandDownloadButton = v.findViewById(R.id.bandDownloadButton);
+        Button churchDownloadButton = v.findViewById(R.id.churchDownloadButton);
+        Button cameraButton = v.findViewById(R.id.cameraButton);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         worshipreadySearchButton.setVisibility(View.GONE);
 
@@ -1427,18 +1427,18 @@ public class OptionMenuListeners extends Activity {
         mListener = (MyInterface) c;
 
         // Identify the buttons
-        TextView menuup = (TextView) v.findViewById(R.id.optionStorageTitle);
-        Button storageNewFolderButton = (Button) v.findViewById(R.id.storageNewFolderButton);
-        Button storageEditButton = (Button) v.findViewById(R.id.storageEditButton);
-        Button storageManageButton = (Button) v.findViewById(R.id.storageManageButton);
-        Button exportSongListButton = (Button) v.findViewById(R.id.exportSongListButton);
-        Button storageImportOSBButton = (Button) v.findViewById(R.id.storageImportOSBButton);
-        Button storageExportOSBButton = (Button) v.findViewById(R.id.storageExportOSBButton);
-        Button storageImportOnSongButton = (Button) v.findViewById(R.id.storageImportOnSongButton);
-        Button storageSongMenuButton = (Button) v.findViewById(R.id.storageSongMenuButton);
-        Button storageDatabaseButton = (Button) v.findViewById(R.id.storageDatabaseButton);
-        Button storageLogButton = (Button) v.findViewById(R.id.storageLogButton);
-        FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
+        TextView menuup = v.findViewById(R.id.optionStorageTitle);
+        Button storageNewFolderButton = v.findViewById(R.id.storageNewFolderButton);
+        Button storageEditButton = v.findViewById(R.id.storageEditButton);
+        Button storageManageButton = v.findViewById(R.id.storageManageButton);
+        Button exportSongListButton = v.findViewById(R.id.exportSongListButton);
+        Button storageImportOSBButton = v.findViewById(R.id.storageImportOSBButton);
+        Button storageExportOSBButton = v.findViewById(R.id.storageExportOSBButton);
+        Button storageImportOnSongButton = v.findViewById(R.id.storageImportOnSongButton);
+        Button storageSongMenuButton = v.findViewById(R.id.storageSongMenuButton);
+        Button storageDatabaseButton = v.findViewById(R.id.storageDatabaseButton);
+        Button storageLogButton = v.findViewById(R.id.storageLogButton);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
@@ -1593,20 +1593,20 @@ public class OptionMenuListeners extends Activity {
         mListener = (MyInterface) c;
 
         // Identify the buttons
-        TextView menuUp = (TextView) v.findViewById(R.id.connectionsMenuTitle);
+        TextView menuUp = v.findViewById(R.id.connectionsMenuTitle);
 
         // We keep a static reference to these in the FullscreenActivity
-        FullscreenActivity.hostButton = (Button) v.findViewById(R.id.connectionsHostButton);
-        FullscreenActivity.clientButton = (Button) v.findViewById(R.id.connectionsGuestButton);
-        SwitchCompat connectionsReceiveHostFile = (SwitchCompat) v.findViewById(R.id.connectionsReceiveHostFile);
-        FullscreenActivity.connectionsLog = (TextView) v.findViewById(R.id.options_connections_log);
+        FullscreenActivity.hostButton = v.findViewById(R.id.connectionsHostButton);
+        FullscreenActivity.clientButton = v.findViewById(R.id.connectionsGuestButton);
+        SwitchCompat connectionsReceiveHostFile = v.findViewById(R.id.connectionsReceiveHostFile);
+        FullscreenActivity.connectionsLog = v.findViewById(R.id.options_connections_log);
 
         if (FullscreenActivity.salutLog==null || FullscreenActivity.salutLog.equals("")) {
             FullscreenActivity.salutLog = c.getResources().getString(R.string.options_connections_log) + "\n\n";
         }
         FullscreenActivity.connectionsLog.setText(FullscreenActivity.salutLog);
 
-        FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
         connectionsReceiveHostFile.setText(c.getResources().getString(R.string.options_connections_receive_host).toUpperCase(FullscreenActivity.locale));
@@ -1794,11 +1794,11 @@ public class OptionMenuListeners extends Activity {
         mListener = (MyInterface) c;
 
         // Identify the buttons
-        TextView menuUp = (TextView) v.findViewById(R.id.modeMenuTitle);
-        Button modePerformanceButton = (Button) v.findViewById(R.id.modePerformanceButton);
-        Button modeStageButton = (Button) v.findViewById(R.id.modeStageButton);
-        Button modePresentationButton = (Button) v.findViewById(R.id.modePresentationButton);
-        FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
+        TextView menuUp = v.findViewById(R.id.modeMenuTitle);
+        Button modePerformanceButton = v.findViewById(R.id.modePerformanceButton);
+        Button modeStageButton = v.findViewById(R.id.modeStageButton);
+        Button modePresentationButton = v.findViewById(R.id.modePresentationButton);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
         // ImageView connectionsStatusImage = (ImageView) v.findViewById(R.id.connectionsStatusImage);
 
         // Capitalise all the text by locale
@@ -1902,15 +1902,15 @@ public class OptionMenuListeners extends Activity {
         mListener = (MyInterface) c;
 
         // Identify the buttons
-        TextView menuup = (TextView) v.findViewById(R.id.optionGestureTitle);
-        Button gesturesPedalButton = (Button) v.findViewById(R.id.gesturesPedalButton);
-        Button gesturesPageButton = (Button) v.findViewById(R.id.gesturesPageButton);
-        Button gesturesCustomButton = (Button) v.findViewById(R.id.gesturesCustomButton);
-        Button gesturesMenuOptions = (Button) v.findViewById(R.id.gesturesMenuOptions);
-        Button gesturesScrollButton = (Button) v.findViewById(R.id.gesturesScrollButton);
-        SwitchCompat displayMenuToggleSwitch = (SwitchCompat) v.findViewById(R.id.displayMenuToggleSwitch);
-        Button gesturesSongSwipeButton = (Button) v.findViewById(R.id.gesturesSongSwipeButton);
-        FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
+        TextView menuup = v.findViewById(R.id.optionGestureTitle);
+        Button gesturesPedalButton = v.findViewById(R.id.gesturesPedalButton);
+        Button gesturesPageButton = v.findViewById(R.id.gesturesPageButton);
+        Button gesturesCustomButton = v.findViewById(R.id.gesturesCustomButton);
+        Button gesturesMenuOptions = v.findViewById(R.id.gesturesMenuOptions);
+        Button gesturesScrollButton = v.findViewById(R.id.gesturesScrollButton);
+        SwitchCompat displayMenuToggleSwitch = v.findViewById(R.id.displayMenuToggleSwitch);
+        Button gesturesSongSwipeButton = v.findViewById(R.id.gesturesSongSwipeButton);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.options_gesturesandmenus).toUpperCase(FullscreenActivity.locale));
@@ -2034,11 +2034,11 @@ public class OptionMenuListeners extends Activity {
         mListener = (MyInterface) c;
 
         // Identify the buttons
-        TextView menuup = (TextView) v.findViewById(R.id.optionAutoScrollTitle);
-        Button autoScrollTimeDefaultsButton = (Button) v.findViewById(R.id.autoScrollTimeDefaultsButton);
-        SwitchCompat autoScrollStartButton = (SwitchCompat) v.findViewById(R.id.autoScrollStartButton);
-        FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
-        SwitchCompat switchTimerSize = (SwitchCompat) v.findViewById(R.id.switchTimerSize);
+        TextView menuup = v.findViewById(R.id.optionAutoScrollTitle);
+        Button autoScrollTimeDefaultsButton = v.findViewById(R.id.autoScrollTimeDefaultsButton);
+        SwitchCompat autoScrollStartButton = v.findViewById(R.id.autoScrollStartButton);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
+        SwitchCompat switchTimerSize = v.findViewById(R.id.switchTimerSize);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.autoscroll).toUpperCase(FullscreenActivity.locale));
@@ -2119,10 +2119,10 @@ public class OptionMenuListeners extends Activity {
         mListener = (MyInterface) c;
 
         // Identify the buttons
-        TextView menuup = (TextView) v.findViewById(R.id.optionPadTitle);
-        Button padCrossFadeButton = (Button) v.findViewById(R.id.padCrossFadeButton);
-        FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
-        SwitchCompat switchTimerSize = (SwitchCompat) v.findViewById(R.id.switchTimerSize);
+        TextView menuup = v.findViewById(R.id.optionPadTitle);
+        Button padCrossFadeButton = v.findViewById(R.id.padCrossFadeButton);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
+        SwitchCompat switchTimerSize = v.findViewById(R.id.switchTimerSize);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.pad).toUpperCase(FullscreenActivity.locale));
@@ -2186,15 +2186,15 @@ public class OptionMenuListeners extends Activity {
         mListener = (MyInterface) c;
 
         // Identify the buttons
-        TextView menuup = (TextView) v.findViewById(R.id.optionOtherTitle);
-        Button otherHelpButton = (Button) v.findViewById(R.id.otherHelpButton);
-        Button otherTweetButton = (Button) v.findViewById(R.id.otherTweetButton);
-        Button otherLanguageButton = (Button) v.findViewById(R.id.otherLanguageButton);
-        Button otherStartButton = (Button) v.findViewById(R.id.otherStartButton);
-        Button otherRateButton = (Button) v.findViewById(R.id.otherRateButton);
-        Button otherPayPalButton = (Button) v.findViewById(R.id.otherPayPalButton);
-        Button otherEmailButton = (Button) v.findViewById(R.id.otherEmailButton);
-        FloatingActionButton closeOptionsFAB = (FloatingActionButton) v.findViewById(R.id.closeOptionsFAB);
+        TextView menuup = v.findViewById(R.id.optionOtherTitle);
+        Button otherHelpButton = v.findViewById(R.id.otherHelpButton);
+        Button otherTweetButton = v.findViewById(R.id.otherTweetButton);
+        Button otherLanguageButton = v.findViewById(R.id.otherLanguageButton);
+        Button otherStartButton = v.findViewById(R.id.otherStartButton);
+        Button otherRateButton = v.findViewById(R.id.otherRateButton);
+        Button otherPayPalButton = v.findViewById(R.id.otherPayPalButton);
+        Button otherEmailButton = v.findViewById(R.id.otherEmailButton);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.options_other).toUpperCase(FullscreenActivity.locale));

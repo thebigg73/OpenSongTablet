@@ -106,9 +106,9 @@ public class PopUpProfileFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_profile, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.profile));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,22 +117,22 @@ public class PopUpProfileFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        profile_overview = (ScrollView) V.findViewById(R.id.profile_overview);
-        profile_load = (RelativeLayout) V.findViewById(R.id.profile_load);
-        profile_save = (RelativeLayout) V.findViewById(R.id.profile_save);
-        profileName_TextView = (TextView) V.findViewById(R.id.profileName_TextView);
-        profileName_EditText = (EditText) V.findViewById(R.id.profileName_EditText);
-        profileFilesLoad_ListView = (ListView) V.findViewById(R.id.profileFilesLoad_ListView);
-        profileFilesSave_ListView = (ListView) V.findViewById(R.id.profileFilesSave_ListView);
-        loadProfile_Button = (Button) V.findViewById(R.id.loadProfile_Button);
-        saveProfile_Button = (Button) V.findViewById(R.id.saveProfile_Button);
-        cancelSave_Button = (Button) V.findViewById(R.id.cancelSave_Button);
-        okSave_Button = (Button) V.findViewById(R.id.okSave_Button);
-        cancelLoad_Button = (Button) V.findViewById(R.id.cancelLoad_Button);
+        profile_overview = V.findViewById(R.id.profile_overview);
+        profile_load = V.findViewById(R.id.profile_load);
+        profile_save = V.findViewById(R.id.profile_save);
+        profileName_TextView = V.findViewById(R.id.profileName_TextView);
+        profileName_EditText = V.findViewById(R.id.profileName_EditText);
+        profileFilesLoad_ListView = V.findViewById(R.id.profileFilesLoad_ListView);
+        profileFilesSave_ListView = V.findViewById(R.id.profileFilesSave_ListView);
+        loadProfile_Button = V.findViewById(R.id.loadProfile_Button);
+        saveProfile_Button = V.findViewById(R.id.saveProfile_Button);
+        cancelSave_Button = V.findViewById(R.id.cancelSave_Button);
+        okSave_Button = V.findViewById(R.id.okSave_Button);
+        cancelLoad_Button = V.findViewById(R.id.cancelLoad_Button);
 
         // Only show the first view with profile name and options to load or save or reset
         showOverView();

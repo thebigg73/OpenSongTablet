@@ -58,9 +58,9 @@ public class PopUpDefaultsFragment extends DialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.options_display_popups));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,22 +69,22 @@ public class PopUpDefaultsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        popupAlpha_seekBar = (SeekBar) V.findViewById(R.id.popupAlpha_seekBar);
-        popupScale_seekBar = (SeekBar) V.findViewById(R.id.popupScale_seekBar);
-        popupDim_seekBar   = (SeekBar) V.findViewById(R.id.popupDim_seekbar);
-        tl_button = (Button) V.findViewById(R.id.tl_button);
-        tc_button = (Button) V.findViewById(R.id.tc_button);
-        tr_button = (Button) V.findViewById(R.id.tr_button);
-        l_button = (Button) V.findViewById(R.id.l_button);
-        c_button = (Button) V.findViewById(R.id.c_button);
-        r_button = (Button) V.findViewById(R.id.r_button);
-        bl_button = (Button) V.findViewById(R.id.bl_button);
-        bc_button = (Button) V.findViewById(R.id.bc_button);
-        br_button = (Button) V.findViewById(R.id.br_button);
+        popupAlpha_seekBar = V.findViewById(R.id.popupAlpha_seekBar);
+        popupScale_seekBar = V.findViewById(R.id.popupScale_seekBar);
+        popupDim_seekBar   = V.findViewById(R.id.popupDim_seekbar);
+        tl_button = V.findViewById(R.id.tl_button);
+        tc_button = V.findViewById(R.id.tc_button);
+        tr_button = V.findViewById(R.id.tr_button);
+        l_button = V.findViewById(R.id.l_button);
+        c_button = V.findViewById(R.id.c_button);
+        r_button = V.findViewById(R.id.r_button);
+        bl_button = V.findViewById(R.id.bl_button);
+        bc_button = V.findViewById(R.id.bc_button);
+        br_button = V.findViewById(R.id.br_button);
 
         // Set the seekBars to their current positions
         if (FullscreenActivity.popupAlpha_All >= 0.6f && FullscreenActivity.popupAlpha_All <= 1.0f) {

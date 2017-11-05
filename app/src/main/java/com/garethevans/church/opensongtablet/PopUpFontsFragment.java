@@ -100,9 +100,9 @@ public class PopUpFontsFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_font, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.options_options_fonts));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,7 +111,7 @@ public class PopUpFontsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,27 +122,27 @@ public class PopUpFontsFragment extends DialogFragment {
         });
 
         // Initialise the views
-        lyricsFontSpinner = (Spinner) V.findViewById(R.id.lyricsFontSpinner);
-        chordsFontSpinner = (Spinner) V.findViewById(R.id.chordsFontSpinner);
-        presoFontSpinner = (Spinner) V.findViewById(R.id.presoFontSpinner);
-        presoInfoFontSpinner = (Spinner) V.findViewById(R.id.presoInfoFontSpinner);
-        headingPreview = (TextView) V.findViewById(R.id.headingPreview);
-        commentPreview = (TextView) V.findViewById(R.id.commentPreview);
-        lyricsPreview1 = (TextView) V.findViewById(R.id.lyricsPreview1);
-        lyricsPreview2 = (TextView) V.findViewById(R.id.lyricsPreview2);
-        chordPreview1 = (TextView) V.findViewById(R.id.chordPreview1);
-        chordPreview2 = (TextView) V.findViewById(R.id.chordPreview2);
-        scaleChords_TextView = (TextView) V.findViewById(R.id.scaleChords_TextView);
-        scaleChords_SeekBar = (SeekBar) V.findViewById(R.id.scaleChords_SeekBar);
-        scaleComment_TextView = (TextView) V.findViewById(R.id.scaleComment_TextView);
-        scaleComment_SeekBar = (SeekBar) V.findViewById(R.id.scaleComment_SeekBar);
-        scaleHeading_TextView = (TextView) V.findViewById(R.id.scaleHeading_TextView);
-        scaleHeading_SeekBar = (SeekBar) V.findViewById(R.id.scaleHeading_SeekBar);
-        lineSpacingSeekBar = (SeekBar) V.findViewById(R.id.lineSpacingSeekBar);
-        lineSpacingText = (TextView) V.findViewById(R.id.lineSpacingText);
-        songPreview = (TableLayout) V.findViewById(R.id.songPreview);
-        trimlines_SwitchCompat = (SwitchCompat) V.findViewById(R.id.trimlines_SwitchCompat);
-        trimsections_SwitchCompat = (SwitchCompat) V.findViewById(R.id.trimsections_SwitchCompat);
+        lyricsFontSpinner = V.findViewById(R.id.lyricsFontSpinner);
+        chordsFontSpinner = V.findViewById(R.id.chordsFontSpinner);
+        presoFontSpinner = V.findViewById(R.id.presoFontSpinner);
+        presoInfoFontSpinner = V.findViewById(R.id.presoInfoFontSpinner);
+        headingPreview = V.findViewById(R.id.headingPreview);
+        commentPreview = V.findViewById(R.id.commentPreview);
+        lyricsPreview1 = V.findViewById(R.id.lyricsPreview1);
+        lyricsPreview2 = V.findViewById(R.id.lyricsPreview2);
+        chordPreview1 = V.findViewById(R.id.chordPreview1);
+        chordPreview2 = V.findViewById(R.id.chordPreview2);
+        scaleChords_TextView = V.findViewById(R.id.scaleChords_TextView);
+        scaleChords_SeekBar = V.findViewById(R.id.scaleChords_SeekBar);
+        scaleComment_TextView = V.findViewById(R.id.scaleComment_TextView);
+        scaleComment_SeekBar = V.findViewById(R.id.scaleComment_SeekBar);
+        scaleHeading_TextView = V.findViewById(R.id.scaleHeading_TextView);
+        scaleHeading_SeekBar = V.findViewById(R.id.scaleHeading_SeekBar);
+        lineSpacingSeekBar = V.findViewById(R.id.lineSpacingSeekBar);
+        lineSpacingText = V.findViewById(R.id.lineSpacingText);
+        songPreview = V.findViewById(R.id.songPreview);
+        trimlines_SwitchCompat = V.findViewById(R.id.trimlines_SwitchCompat);
+        trimsections_SwitchCompat = V.findViewById(R.id.trimsections_SwitchCompat);
 
         // Set up the typefaces
         SetTypeFace.setTypeface();

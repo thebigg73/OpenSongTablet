@@ -103,9 +103,9 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         View V = inflater.inflate(R.layout.popup_songfolderrename, container, false);
 
-        title = (TextView) V.findViewById(R.id.dialogtitle);
+        title = V.findViewById(R.id.dialogtitle);
         doSetTitle();
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,7 +114,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,8 +125,8 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
         });
 
         // Initialise the views
-        oldFolderNameSpinner = (Spinner) V.findViewById(R.id.oldFolderNameSpinner);
-        newFolderNameEditText = (EditText) V.findViewById(R.id.newFolderNameEditText);
+        oldFolderNameSpinner = V.findViewById(R.id.oldFolderNameSpinner);
+        newFolderNameEditText = V.findViewById(R.id.newFolderNameEditText);
 
         // Set up the folderspinner
         // Set up the spinner

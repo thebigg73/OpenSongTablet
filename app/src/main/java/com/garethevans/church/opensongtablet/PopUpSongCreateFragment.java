@@ -86,9 +86,9 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_songcreate, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.createanewsong));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,7 +97,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,8 +108,8 @@ public class PopUpSongCreateFragment extends DialogFragment {
         });
 
         // Initialise the views
-        newFolderSpinner = (Spinner) V.findViewById(R.id.newFolderSpinner);
-        newSongNameEditText = (EditText) V.findViewById(R.id.newSongNameEditText);
+        newFolderSpinner = V.findViewById(R.id.newFolderSpinner);
+        newSongNameEditText = V.findViewById(R.id.newSongNameEditText);
 
         if (FullscreenActivity.whattodo.equals("savecameraimage")) {
             try {
