@@ -1641,7 +1641,7 @@ public class ProcessSong extends Activity {
 
         song = song.replace("-!!", "");
 
-        if (FullscreenActivity.whichMode.equals("Presentation")) {
+        if (FullscreenActivity.whichMode.equals("Presentation") || FullscreenActivity.whichMode.equals("Stage")) {
             song = song.replace("||", "%%LATERSPLITHERE%%");
         } else {
             song = song.replace("||", "");

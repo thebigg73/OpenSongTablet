@@ -135,7 +135,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     // The toolbar, clock battery and titles
     public Toolbar toolbar;
     public ActionBar ab;
-    public static int ab_height;
+    public static int ab_height, batteryLine;
     public static boolean timeFormat24h, timeOn, batteryOn, batteryDialOn;
     public static float timeSize, batterySize, ab_titleSize, ab_authorSize;
 

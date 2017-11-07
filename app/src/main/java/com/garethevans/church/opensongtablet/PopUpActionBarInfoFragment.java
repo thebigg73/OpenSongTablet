@@ -67,12 +67,14 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
     SeekBar titleTextSize;
     SeekBar authorTextSize;
     SeekBar batteryTextSize;
+    SeekBar batteryDialSize;
     SeekBar clockTextSize;
     SwitchCompat batteryDialOnOff;
     SwitchCompat batteryTextOnOff;
     SwitchCompat clock24hrOnOff;
     SwitchCompat clockTextOnOff;
     TextView batteryTextSizeLabel;
+    TextView batteryDialSizeLabel;
     TextView clockTextSizeLabel;
 
     @Override
@@ -99,18 +101,21 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         titleTextSize = V.findViewById(R.id.titleTextSize);
         authorTextSize = V.findViewById(R.id.authorTextSize);
         batteryTextSize = V.findViewById(R.id.batteryTextSize);
+        batteryDialSize = V.findViewById(R.id.batteryDialSize);
         clockTextSize = V.findViewById(R.id.clockTextSize);
         batteryDialOnOff = V.findViewById(R.id.batteryDialOnOff);
         batteryTextOnOff = V.findViewById(R.id.batteryTextOnOff);
         clock24hrOnOff = V.findViewById(R.id.clock24hrOnOff);
         clockTextOnOff = V.findViewById(R.id.clockTextOnOff);
         batteryTextSizeLabel = V.findViewById(R.id.batteryTextSizeLabel);
+        batteryDialSizeLabel = V.findViewById(R.id.batteryDialSizeLabel);
         clockTextSizeLabel = V.findViewById(R.id.clockTextSizeLabel);
 
         // Set initial values
         setTitleTextSize();
         setAuthorTextSize();
         setBatteryTextSize();
+        setBatteryDialSize();
         setClockTextSize();
         batteryDialOnOff.setChecked(FullscreenActivity.batteryDialOn);
         batteryTextOnOff.setChecked(FullscreenActivity.batteryOn);
@@ -118,6 +123,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         clock24hrOnOff.setChecked(FullscreenActivity.timeFormat24h);
         hideshowbatterytextsize(FullscreenActivity.batteryOn);
         hideshowclocktextsize(FullscreenActivity.timeOn);
+        hideshowbatterylinesize(FullscreenActivity.batteryOn);
 
         // Set listeners
         titleTextSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -171,6 +177,23 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
                 Preferences.savePreferences();
             }
         });
+        batteryDialSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                getBatteryDialSize();
+                if (mListener!=null) {
+                    mListener.adjustABInfo();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Preferences.savePreferences();
+            }
+        });
         clockTextSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -192,6 +215,7 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.batteryDialOn = b;
+                hideshowbatterylinesize(b);
                 Preferences.savePreferences();
                 if (mListener!=null) {
                     mListener.adjustABInfo();
@@ -267,6 +291,16 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         FullscreenActivity.batterySize = (float) s;
     }
 
+    public void setBatteryDialSize() {
+        // Min size is 1, this is 0 on the seekBar
+        int s = FullscreenActivity.batteryLine - 1;
+        batteryDialSize.setProgress(s);
+    }
+    public void getBatteryDialSize() {
+        // Min size is 1, this is 0 on the seekBar
+        FullscreenActivity.batteryLine = batteryDialSize.getProgress() + 1;
+    }
+
     public void setClockTextSize() {
         // Min size is 6, this is 0 on the seekBar
         int s = (int) FullscreenActivity.timeSize - 6;
@@ -282,9 +316,11 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         if (b) {
             clockTextSize.setVisibility(View.VISIBLE);
             clockTextSizeLabel.setVisibility(View.VISIBLE);
+            clock24hrOnOff.setVisibility(View.VISIBLE);
         } else {
             clockTextSize.setVisibility(View.GONE);
             clockTextSizeLabel.setVisibility(View.GONE);
+            clock24hrOnOff.setVisibility(View.GONE);
         }
     }
 
@@ -295,6 +331,16 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         } else {
             batteryTextSize.setVisibility(View.GONE);
             batteryTextSizeLabel.setVisibility(View.GONE);
+        }
+    }
+
+    public void hideshowbatterylinesize (Boolean b) {
+        if (b) {
+            batteryDialSize.setVisibility(View.VISIBLE);
+            batteryDialSizeLabel.setVisibility(View.VISIBLE);
+        } else {
+            batteryDialSize.setVisibility(View.GONE);
+            batteryDialSizeLabel.setVisibility(View.GONE);
         }
     }
 

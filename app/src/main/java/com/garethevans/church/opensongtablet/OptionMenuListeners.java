@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
@@ -116,7 +118,7 @@ public class OptionMenuListeners extends Activity {
     private static LinearLayout createMainMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option,null);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option, null);
     }
 
     @SuppressLint("InflateParams")
@@ -264,7 +266,6 @@ public class OptionMenuListeners extends Activity {
 
     private static void mainOptionListener(View v, Context c) {
         mListener = (MyInterface) c;
-
         // Identify the buttons
         Button menuSetButton = v.findViewById(R.id.menuSetButton);
         Button menuSongButton = v.findViewById(R.id.menuSongButton);
@@ -2304,4 +2305,32 @@ public class OptionMenuListeners extends Activity {
         });
     }
 
+    public static void updateMenuVersionNumber(Context c, TextView showVersion) {
+        // Update the app version in the menu
+        PackageInfo pinfo;
+        int versionNumber = 0;
+        String versionName = "?";
+        try {
+            pinfo = c.getPackageManager().getPackageInfo(c.getPackageName(), 0);
+            versionNumber = pinfo.versionCode;
+            versionName = pinfo.versionName;
+        } catch (PackageManager.NameNotFoundException e1) {
+            e1.printStackTrace();
+        }
+        Log.d("d","versionName="+versionName);
+        Log.d("d","versionNumber="+versionNumber);
+        Log.d("d","showVersion="+showVersion);
+
+        if (!versionName.equals("?") && versionNumber > 0) {
+            String temptext = "V" + versionName + " (" + versionNumber + ")";
+            if (showVersion != null) {
+                showVersion.setVisibility(View.VISIBLE);
+                showVersion.setText(temptext);
+            }
+        } else {
+            if (showVersion != null) {
+                showVersion.setVisibility(View.GONE);
+            }
+        }
+    }
 }

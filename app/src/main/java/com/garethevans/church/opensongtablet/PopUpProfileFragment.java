@@ -363,6 +363,9 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("batteryDialOn")) {
                     FullscreenActivity.batteryDialOn = getBooleanValue(xpp.nextText(), true);
 
+                } else if (xpp.getName().equals("batteryLine")) {
+                    FullscreenActivity.batteryLine = getIntegerValue(xpp.nextText(), 4);
+
                 } else if (xpp.getName().equals("batteryOn")) {
                     FullscreenActivity.batteryOn = getBooleanValue(xpp.nextText(), true);
 
@@ -1096,6 +1099,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <backgroundToUse>" + FullscreenActivity.backgroundToUse + "</backgroundToUse>\n";
         text += "  <backgroundTypeToUse>" + FullscreenActivity.backgroundTypeToUse + "</backgroundTypeToUse>\n";
         text += "  <batteryDialOn>" + FullscreenActivity.batteryDialOn + "</batteryDialOn>\n";
+        text += "  <batteryLine>" + FullscreenActivity.batteryLine + "</batteryLine>\n";
         text += "  <batteryOn>" + FullscreenActivity.batteryOn + "</batteryOn>\n";
         text += "  <batterySize>" + FullscreenActivity.batterySize + "</batterySize>\n";
         text += "  <bibleFile>" + FullscreenActivity.bibleFile + "</bibleFile>\n";

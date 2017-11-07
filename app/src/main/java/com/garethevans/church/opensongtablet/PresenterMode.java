@@ -171,7 +171,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
     // The song and option menu stuff
     DrawerLayout mDrawerLayout;
-    LinearLayout songmenu, side_index, optionmenu, changefolder_LinearLayout;
+    LinearLayout songmenu, optionmenu, side_index, changefolder_LinearLayout;
     TextView menuFolder_TextView;
     FloatingActionButton closeSongsFAB;
     ListView song_list_view;
@@ -730,6 +730,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            OptionMenuListeners.updateMenuVersionNumber(PresenterMode.this, (TextView) findViewById(R.id.menu_version_bottom));
         }
 
     }

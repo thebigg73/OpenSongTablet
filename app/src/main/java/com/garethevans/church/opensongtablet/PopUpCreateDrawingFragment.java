@@ -516,7 +516,18 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
                 drawView.setDrawingCacheEnabled(true);
                 f = ProcessSong.getHighlightFile(getActivity());
                 if (f!=null) {
-                    bmp = drawView.getDrawingCache();
+                    try {
+                        bmp = drawView.getDrawingCache();
+                    } catch (Exception e) {
+                        FullscreenActivity.myToastMessage = "Error extracting the drawing";
+                        ShowToast.showToast(getActivity());
+                    } catch (OutOfMemoryError e) {
+                        FullscreenActivity.myToastMessage = "Out of memory trying to get the drawing";
+                        ShowToast.showToast(getActivity());
+                    }
+                } else {
+                    FullscreenActivity.myToastMessage = "Can't decide on the appropriate file name";
+                    ShowToast.showToast(getActivity());
                 }
             }
         }
@@ -532,6 +543,8 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
                     bmp.recycle();
                 } catch (Exception e) {
                     Log.d("d","Error saving");
+                    FullscreenActivity.myToastMessage = "Error trying to save the drawing";
+                    ShowToast.showToast(getActivity());
                 }
             }
             return null;
@@ -542,7 +555,11 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
             if (mListener!=null) {
                 mListener.refreshAll();
             }
-            dismiss();
+            try {
+                dismiss();
+            } catch (Exception e) {
+                Log.d("d","Error dismissing dialog");
+            }
         }
     }
 }

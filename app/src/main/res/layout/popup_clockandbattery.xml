@@ -109,6 +109,31 @@
                     android:text="@string/image"
                     style="@style/MyWhiteHeadingText"/>
 
+                <TextView
+                    android:id="@+id/batteryDialSizeLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="0dp"
+                    android:text="@string/size"
+                    style="@style/MyWhiteHeadingText"/>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/batteryDialSize"
+                    android:background="@drawable/apptheme_scrubber_primary_holo"
+                    android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
+                    android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:max="16"/>
+
+
                 <android.support.v7.widget.SwitchCompat
                     android:id="@+id/batteryTextOnOff"
                     android:layout_width="match_parent"
@@ -158,21 +183,21 @@
                     style="@style/MyHeadingText"/>
 
                 <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/clock24hrOnOff"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/timeformat"
-                    style="@style/MyWhiteHeadingText"/>
-
-                <android.support.v7.widget.SwitchCompat
                     android:id="@+id/clockTextOnOff"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:gravity="center_vertical"
                     android:text="@string/text"
+                    style="@style/MyWhiteHeadingText"/>
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/clock24hrOnOff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/timeformat"
                     style="@style/MyWhiteHeadingText"/>
 
                 <TextView
