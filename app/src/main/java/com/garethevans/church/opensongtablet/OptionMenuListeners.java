@@ -2317,9 +2317,6 @@ public class OptionMenuListeners extends Activity {
         } catch (PackageManager.NameNotFoundException e1) {
             e1.printStackTrace();
         }
-        Log.d("d","versionName="+versionName);
-        Log.d("d","versionNumber="+versionNumber);
-        Log.d("d","showVersion="+showVersion);
 
         if (!versionName.equals("?") && versionNumber > 0) {
             String temptext = "V" + versionName + " (" + versionNumber + ")";

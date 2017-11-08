@@ -151,8 +151,6 @@ public class PopUpPadFragment extends DialogFragment {
         popupPad_pan_text = V.findViewById(R.id.popupPad_pan_text);
         start_stop_padplay = V.findViewById(R.id.start_stop_padplay);
 
-        //checkPadStatus();
-
         ArrayAdapter<CharSequence> adapter_key = ArrayAdapter.createFromResource(getActivity(),
                 R.array.key_choice,
                 R.layout.my_spinner);
@@ -324,6 +322,7 @@ public class PopUpPadFragment extends DialogFragment {
     private class SetPad extends AsyncTask<Object,Void,String> {
         @Override
         protected String doInBackground(Object... objects) {
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             return null;
         }
 
@@ -371,6 +370,8 @@ public class PopUpPadFragment extends DialogFragment {
                         break;
                 }
 
+                //checkPadStatus();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -385,7 +386,8 @@ public class PopUpPadFragment extends DialogFragment {
         if (filetext.startsWith("../OpenSong/")) {
             filetext = filetext.replace("../OpenSong/",FullscreenActivity.homedir+"/");
         }
-        filetext = "file://" + filetext;
+        //filetext = "file://" + filetext;
+        // The above line was causing errors (file was wrong location)
 
         // Try to fix the start of the file
         File file = new File(URI.create(filetext).getPath());

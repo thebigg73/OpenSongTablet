@@ -59,9 +59,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
         if (savedInstanceState != null) {
             this.dismiss();
         }
@@ -120,6 +118,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
             }
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
+        saveMe.setEnabled(true);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -519,15 +518,12 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
                     try {
                         bmp = drawView.getDrawingCache();
                     } catch (Exception e) {
-                        FullscreenActivity.myToastMessage = "Error extracting the drawing";
-                        ShowToast.showToast(getActivity());
+                        Log.d("d","Error extracting the drawing");
                     } catch (OutOfMemoryError e) {
-                        FullscreenActivity.myToastMessage = "Out of memory trying to get the drawing";
-                        ShowToast.showToast(getActivity());
+                        Log.d("d","Out of memory trying to get the drawing");
                     }
                 } else {
-                    FullscreenActivity.myToastMessage = "Can't decide on the appropriate file name";
-                    ShowToast.showToast(getActivity());
+                    Log.d("d","Can't decide on the appropriate file name");
                 }
             }
         }
@@ -543,8 +539,6 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
                     bmp.recycle();
                 } catch (Exception e) {
                     Log.d("d","Error saving");
-                    FullscreenActivity.myToastMessage = "Error trying to save the drawing";
-                    ShowToast.showToast(getActivity());
                 }
             }
             return null;

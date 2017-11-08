@@ -817,7 +817,6 @@ public class StageMode extends AppCompatActivity implements
                 data.toString().contains("___section___"))) {
             int mysection = ProcessSong.getSalutReceivedSection(data.toString());
             if (mysection>0) {
-                Log.d("d","SongSection");
                 holdBeforeLoadingSection(mysection);
             } else {
                 String action = ProcessSong.getSalutReceivedLocation(data.toString(), StageMode.this);
@@ -2769,7 +2768,6 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\n","$$__$$");
             FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\","");
             FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("$$__$$","\n");
-            //Log.d("d","myXML="+FullscreenActivity.mySalutXML);
 
             // Create the temp song file
             try {
@@ -3582,7 +3580,6 @@ public class StageMode extends AppCompatActivity implements
         // Automatically start the autoscroll
         if (FullscreenActivity.autostartautoscroll && FullscreenActivity.clickedOnAutoScrollStart) {
             if (justSong(StageMode.this) && FullscreenActivity.autoscrollok) {
-                Log.d("d","Trying to call startAutoScroll");
                 songscrollview.post(new Runnable() {
                     @Override
                     public void run() {
@@ -5271,6 +5268,7 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected Integer doInBackground(Void... voids) {
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             try {
                 FullscreenActivity.padson = true;
                 PadFunctions.getPad1Status();
@@ -5278,7 +5276,6 @@ public class StageMode extends AppCompatActivity implements
 
                 if (FullscreenActivity.pad1Playing) {
                     // If mPlayer1 is already playing, set this to fade out and start mPlayer2
-                    Log.d("d", "mPlayer1 is already playing, set this to fade out and start mPlayer2");
                     FullscreenActivity.pad1Fading = true;
                     FullscreenActivity.pad2Fading = false;
                     FullscreenActivity.whichPad = 2;
@@ -5286,7 +5283,6 @@ public class StageMode extends AppCompatActivity implements
 
                 } else if (FullscreenActivity.pad2Playing) {
                     // If mPlayer2 is already playing, set this to fade out and start mPlayer1
-                    Log.d("d", "mPlayer2 is already playing, set this to fade out and start mPlayer1");
                     FullscreenActivity.pad1Fading = false;
                     FullscreenActivity.pad2Fading = true;
                     FullscreenActivity.padson = true;
@@ -5294,7 +5290,6 @@ public class StageMode extends AppCompatActivity implements
 
                 } else {
                     // Else nothing, was playing, so start mPlayer1
-                    Log.d("d", "Nothing playing, start mPlayer1");
                     FullscreenActivity.pad1Fading = false;
                     FullscreenActivity.pad2Fading = false;
                     FullscreenActivity.whichPad = 1;
@@ -5339,7 +5334,6 @@ public class StageMode extends AppCompatActivity implements
     private class Player1Prepared implements MediaPlayer.OnPreparedListener {
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
-            Log.d("d", "mPlayer1 is prepared");
             FullscreenActivity.padtime_length = (int) (FullscreenActivity.mPlayer1.getDuration() / 1000.0f);
             FullscreenActivity.mPlayer1.setLooping(PadFunctions.getLoop(StageMode.this));
             FullscreenActivity.mPlayer1.setVolume(PadFunctions.getVol(0), PadFunctions.getVol(1));
@@ -5359,6 +5353,7 @@ public class StageMode extends AppCompatActivity implements
                 padtotalTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
                 padTimeSeparator_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
                 padcurrentTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
+                padcurrentTime_TextView.setText(getString(R.string.zerotime));
                 padtotalTime_TextView.setText(text);
             } catch (Exception e) {
                 e.printStackTrace(); // If called from doInBackground()
@@ -5392,6 +5387,7 @@ public class StageMode extends AppCompatActivity implements
                 padtotalTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
                 padTimeSeparator_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
                 padcurrentTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
+                padcurrentTime_TextView.setText(getString(R.string.zerotime));
                 padtotalTime_TextView.setText(text);
             } catch (Exception e) {
                 e.printStackTrace(); // If called from doInBackground()
@@ -5623,6 +5619,7 @@ public class StageMode extends AppCompatActivity implements
                 if (FullscreenActivity.pad1Playing) {
                     // mPlayer1 is playing, so fade it out.
                     doCancelAsyncTask(fadeout_media1);
+                    padcurrentTime_TextView.setText(getString(R.string.zerotime));
                     fadeout_media1 = new FadeoutMediaPlayer(StageMode.this, 1);
                     fadeout_media1.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
@@ -5632,6 +5629,7 @@ public class StageMode extends AppCompatActivity implements
                 if (FullscreenActivity.pad2Playing) {
                     // mPlayer2 is playing, so fade it out.
                     doCancelAsyncTask(fadeout_media2);
+                    padcurrentTime_TextView.setText(getString(R.string.zerotime));
                     fadeout_media2 = new FadeoutMediaPlayer(StageMode.this, 2);
                     fadeout_media2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
@@ -5642,12 +5640,14 @@ public class StageMode extends AppCompatActivity implements
                 if (FullscreenActivity.pad1Playing) {
                     // mPlayer1 is playing, so fade it out.
                     doCancelAsyncTask(fadeout_media1);
+                    padcurrentTime_TextView.setText(getString(R.string.zerotime));
                     fadeout_media1 = new FadeoutMediaPlayer(StageMode.this, 1);
                     fadeout_media1.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
                 if (FullscreenActivity.pad2Playing) {
                     // mPlayer2 is playing, so fade it out.
                     doCancelAsyncTask(fadeout_media2);
+                    padcurrentTime_TextView.setText(getString(R.string.zerotime));
                     fadeout_media2 = new FadeoutMediaPlayer(StageMode.this, 2);
                     fadeout_media2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
@@ -5710,6 +5710,7 @@ public class StageMode extends AppCompatActivity implements
         PadFunctions.getPad1Status();
         PadFunctions.getPad2Status();
         getPadsOnStatus();
+        padcurrentTime_TextView.setText(getString(R.string.zerotime));
     }
 
     @Override
