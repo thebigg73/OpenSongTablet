@@ -13,15 +13,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-        //sourceCompatibility JavaVersion.VERSION_1_7
-        //targetCompatibility JavaVersion.VERSION_1_7
+        //sourceCompatibility JavaVersion.VERSION_1_8
+        //targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
     defaultConfig {
         applicationId "com.garethevans.church.opensongtablet"
         multiDexEnabled true
+        //android.compileOptions.sourceCompatibility 1.8
+        //android.compileOptions.targetCompatibility 1.8
+
     }
     dexOptions {
         jumboMode = true
@@ -62,8 +66,8 @@ dependencies {
     implementation 'org.apache.commons:commons-compress:1.11'
     //compile 'com.itextpdf:itextpdf:5.5.11'
     //compile 'org.apache.commons:commons-io:1.3.2'
-    implementation 'com.google.android.gms:play-services-nearby:11.4.2'
-    implementation 'com.google.android.gms:play-services-cast-framework:11.4.2'
+    implementation 'com.google.android.gms:play-services-nearby:11.6.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:11.6.0'
     implementation 'com.github.bumptech.glide:glide:4.0.0'
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.github.markrjr:Salut:v0.5.0'

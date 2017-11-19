@@ -77,9 +77,9 @@ public class PopUpAlertFragment extends DialogFragment {
 
         final View V = inflater.inflate(R.layout.popup_alert, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.alert));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,12 +88,12 @@ public class PopUpAlertFragment extends DialogFragment {
                 doClose();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
-        alertMessage = (EditText) V.findViewById(R.id.alertMessage);
+        alertMessage = V.findViewById(R.id.alertMessage);
         alertMessage.setText(FullscreenActivity.myAlert);
-        alertToggle = (SwitchCompat) V.findViewById(R.id.alertToggleButton);
+        alertToggle = V.findViewById(R.id.alertToggleButton);
 
         // If an alert is currently being shown, make sure the toggle button is on.  If not, off!
         if (PresenterMode.alert_on.equals("Y")) {

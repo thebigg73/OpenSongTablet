@@ -78,9 +78,9 @@ public class PopUpEditStickyFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_editsticky, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.options_song_stickynotes));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +89,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,12 +100,12 @@ public class PopUpEditStickyFragment extends DialogFragment {
         });
 
         // Initialise the views
-        editStickyText = (EditText) V.findViewById(R.id.editStickyText);
-        stickyNotesWidth_SeekBar = (SeekBar) V.findViewById(R.id.stickyNotesWidth_SeekBar);
-        stickyNotesWidth_TextView = (TextView) V.findViewById(R.id.stickyNotesWidth_TextView);
-        stickyNotesOpacity_SeekBar = (SeekBar) V.findViewById(R.id.stickyNotesOpacity_SeekBar);
-        stickyNotesOpacity_TextView = (TextView) V.findViewById(R.id.stickyNotesOpacity_TextView);
-        stickyTextSize = (SwitchCompat) V.findViewById(R.id.stickyTextSize);
+        editStickyText = V.findViewById(R.id.editStickyText);
+        stickyNotesWidth_SeekBar = V.findViewById(R.id.stickyNotesWidth_SeekBar);
+        stickyNotesWidth_TextView = V.findViewById(R.id.stickyNotesWidth_TextView);
+        stickyNotesOpacity_SeekBar = V.findViewById(R.id.stickyNotesOpacity_SeekBar);
+        stickyNotesOpacity_TextView = V.findViewById(R.id.stickyNotesOpacity_TextView);
+        stickyTextSize = V.findViewById(R.id.stickyTextSize);
 
         // Set the text if it exists
         editStickyText.setText(FullscreenActivity.mNotes);

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
+    android:isScrollContainer="true"
     android:padding="8dp">
 
     <FrameLayout
@@ -359,7 +360,6 @@
                     android:gravity="left|top"
                     android:hint="@string/edit_song_lyrics"
                     android:inputType="textMultiLine"
-                    android:isScrollContainer="true"
                     android:minLines="10"
                     android:scrollbarStyle="insideOverlay"
                     android:scrollbars="vertical|horizontal"

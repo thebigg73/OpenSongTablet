@@ -81,9 +81,9 @@ public class PopUpScalingFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_scaling, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.options_options_scale));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,25 +93,25 @@ public class PopUpScalingFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        maxAutoScale_seekBar = (SeekBar) V.findViewById(R.id.maxAutoScale_seekBar);
-        minAutoScale_seekBar = (SeekBar) V.findViewById(R.id.minAutoScale_seekBar);
-        fontsize_change_group = (LinearLayout) V.findViewById(R.id.fontsize_change_group);
-        maxAutoScale_Group = (LinearLayout) V.findViewById(R.id.maxAutoScale_Group);
-        fontsize_seekbar = (SeekBar) V.findViewById(R.id.fontsize_seekbar);
-        maxAutoScale_TextView = (TextView) V.findViewById(R.id.maxAutoScale_TextView);
-        minAutoScale_TextView = (TextView) V.findViewById(R.id.minAutoScale_TextView);
-        fontsize_TextView = (TextView) V.findViewById(R.id.fontsize_TextView);
-        switchAutoScaleOnOff_SwitchCompat = (SwitchCompat) V.findViewById(R.id.switchAutoScaleOnOff_SwitchCompat);
-        switchAutoScaleWidthFull_SwitchCompat = (SwitchCompat) V.findViewById(R.id.switchAutoScaleWidthFull_SwitchCompat);
-        overrideFull_Switch = (SwitchCompat) V.findViewById(R.id.overrideFull_Switch);
-        overrideWidth_Switch = (SwitchCompat) V.findViewById(R.id.overrideWidth_Switch);
-        stagemode_scale = (LinearLayout) V.findViewById(R.id.stagemode_scale);
-        stagemode_scale_SeekBar = (SeekBar) V.findViewById(R.id.stagemode_scale_SeekBar);
-        stagemode_scale_TextView = (TextView) V.findViewById(R.id.stagemode_scale_TextView);
+        maxAutoScale_seekBar = V.findViewById(R.id.maxAutoScale_seekBar);
+        minAutoScale_seekBar = V.findViewById(R.id.minAutoScale_seekBar);
+        fontsize_change_group = V.findViewById(R.id.fontsize_change_group);
+        maxAutoScale_Group = V.findViewById(R.id.maxAutoScale_Group);
+        fontsize_seekbar = V.findViewById(R.id.fontsize_seekbar);
+        maxAutoScale_TextView = V.findViewById(R.id.maxAutoScale_TextView);
+        minAutoScale_TextView = V.findViewById(R.id.minAutoScale_TextView);
+        fontsize_TextView = V.findViewById(R.id.fontsize_TextView);
+        switchAutoScaleOnOff_SwitchCompat = V.findViewById(R.id.switchAutoScaleOnOff_SwitchCompat);
+        switchAutoScaleWidthFull_SwitchCompat = V.findViewById(R.id.switchAutoScaleWidthFull_SwitchCompat);
+        overrideFull_Switch = V.findViewById(R.id.overrideFull_Switch);
+        overrideWidth_Switch = V.findViewById(R.id.overrideWidth_Switch);
+        stagemode_scale = V.findViewById(R.id.stagemode_scale);
+        stagemode_scale_SeekBar = V.findViewById(R.id.stagemode_scale_SeekBar);
+        stagemode_scale_TextView = V.findViewById(R.id.stagemode_scale_TextView);
 
         if (!FullscreenActivity.whichMode.equals("Stage")) {
             stagemode_scale.setVisibility(View.GONE);

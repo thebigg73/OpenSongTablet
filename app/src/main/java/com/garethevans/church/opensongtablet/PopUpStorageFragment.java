@@ -153,10 +153,10 @@ public class PopUpStorageFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_storage, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.storage_choose));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
             closeMe.setVisibility(View.GONE);
             saveMe.setOnClickListener(new View.OnClickListener() {
@@ -183,15 +183,15 @@ public class PopUpStorageFragment extends DialogFragment {
 
         // Initialise the views
         mLayout = V.findViewById(R.id.page);
-        intStorageButton = (RadioButton) V.findViewById(R.id.intStorage);
-        extStorageButton = (RadioButton) V.findViewById(R.id.extStorage);
-        otherStorageButton = (RadioButton) V.findViewById(R.id.otherStorage);
-        altStorageButton = (RadioButton) V.findViewById(R.id.altStorage);
-        changeCustom = (Button) V.findViewById(R.id.editCustomStorage);
-        grantPermission = (Button) V.findViewById(R.id.grantPermission);
-        changeAlt = (Button) V.findViewById(R.id.changeAlt);
-        wipeSongs = (Button) V.findViewById(R.id.wipeSongs);
-        altStorageGroup = (LinearLayout) V.findViewById(R.id.altStorageGroup);
+        intStorageButton = V.findViewById(R.id.intStorage);
+        extStorageButton = V.findViewById(R.id.extStorage);
+        otherStorageButton = V.findViewById(R.id.otherStorage);
+        altStorageButton = V.findViewById(R.id.altStorage);
+        changeCustom = V.findViewById(R.id.editCustomStorage);
+        grantPermission = V.findViewById(R.id.grantPermission);
+        changeAlt = V.findViewById(R.id.changeAlt);
+        wipeSongs = V.findViewById(R.id.wipeSongs);
+        altStorageGroup = V.findViewById(R.id.altStorageGroup);
 
         FullscreenActivity.searchUsingSAF = false;
         FullscreenActivity.uriTree = null;

@@ -155,6 +155,12 @@ public class DrawNotes extends View {
         float touchX = event.getX();
         float touchY = event.getY();
 
+        if (event.getToolType(0)==MotionEvent.TOOL_TYPE_ERASER) {
+            setErase(true);
+        } else if (event.getToolType(0)==MotionEvent.TOOL_TYPE_STYLUS) {
+            setErase(false);
+        }
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 touchStart(touchX, touchY);
@@ -166,6 +172,10 @@ public class DrawNotes extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 touchUp();
+                invalidate();
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                touchCancel();
                 invalidate();
                 break;
             default:
@@ -200,6 +210,11 @@ public class DrawNotes extends View {
             mX = x;
             mY = y;
         }
+    }
+
+    private void touchCancel() {
+        drawPath = new Path();
+        drawingapath = false;
     }
 
     private void touchUp() {

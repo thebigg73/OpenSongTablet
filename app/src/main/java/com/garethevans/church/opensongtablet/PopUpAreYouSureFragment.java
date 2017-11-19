@@ -78,6 +78,12 @@ public class PopUpAreYouSureFragment extends DialogFragment {
                     }
                     break;
             }
+
+        }
+        if (FullscreenActivity.whattodo.equals("saveset")) {
+            if (mListener!=null) {
+                mListener.openFragment();
+            }
         }
         dismiss();
     }
@@ -100,9 +106,9 @@ public class PopUpAreYouSureFragment extends DialogFragment {
 
         final View V = inflater.inflate(R.layout.popup_areyousure, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.areyousure));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,7 +117,7 @@ public class PopUpAreYouSureFragment extends DialogFragment {
                 noAction();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,7 +127,7 @@ public class PopUpAreYouSureFragment extends DialogFragment {
             }
         });
 
-        TextView areyousurePrompt = (TextView) V.findViewById(R.id.areyousurePrompt);
+        TextView areyousurePrompt = V.findViewById(R.id.areyousurePrompt);
         areyousurePrompt.setText(dialog);
 
         return V;

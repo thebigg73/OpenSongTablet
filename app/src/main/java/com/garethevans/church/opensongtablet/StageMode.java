@@ -817,7 +817,6 @@ public class StageMode extends AppCompatActivity implements
                 data.toString().contains("___section___"))) {
             int mysection = ProcessSong.getSalutReceivedSection(data.toString());
             if (mysection>0) {
-                Log.d("d","SongSection");
                 holdBeforeLoadingSection(mysection);
             } else {
                 String action = ProcessSong.getSalutReceivedLocation(data.toString(), StageMode.this);
@@ -2769,7 +2768,6 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\n","$$__$$");
             FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\","");
             FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("$$__$$","\n");
-            //Log.d("d","myXML="+FullscreenActivity.mySalutXML);
 
             // Create the temp song file
             try {
@@ -3582,7 +3580,6 @@ public class StageMode extends AppCompatActivity implements
         // Automatically start the autoscroll
         if (FullscreenActivity.autostartautoscroll && FullscreenActivity.clickedOnAutoScrollStart) {
             if (justSong(StageMode.this) && FullscreenActivity.autoscrollok) {
-                Log.d("d","Trying to call startAutoScroll");
                 songscrollview.post(new Runnable() {
                     @Override
                     public void run() {
@@ -4857,6 +4854,7 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            OptionMenuListeners.updateMenuVersionNumber(StageMode.this, (TextView) findViewById(R.id.menu_version_bottom));
         }
 
     }
@@ -5201,7 +5199,12 @@ public class StageMode extends AppCompatActivity implements
     public void confirmedAction() {
         switch (FullscreenActivity.whattodo) {
             case "exit":
-                this.finish();
+                try {
+                    //this.finish();
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                } catch (Exception e) {
+                   Log.d("d","Couldn't close the application!") ;
+                }
                 break;
 
             case "saveset":
@@ -5265,6 +5268,7 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected Integer doInBackground(Void... voids) {
+            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             try {
                 FullscreenActivity.padson = true;
                 PadFunctions.getPad1Status();
@@ -5272,7 +5276,6 @@ public class StageMode extends AppCompatActivity implements
 
                 if (FullscreenActivity.pad1Playing) {
                     // If mPlayer1 is already playing, set this to fade out and start mPlayer2
-                    Log.d("d", "mPlayer1 is already playing, set this to fade out and start mPlayer2");
                     FullscreenActivity.pad1Fading = true;
                     FullscreenActivity.pad2Fading = false;
                     FullscreenActivity.whichPad = 2;
@@ -5280,7 +5283,6 @@ public class StageMode extends AppCompatActivity implements
 
                 } else if (FullscreenActivity.pad2Playing) {
                     // If mPlayer2 is already playing, set this to fade out and start mPlayer1
-                    Log.d("d", "mPlayer2 is already playing, set this to fade out and start mPlayer1");
                     FullscreenActivity.pad1Fading = false;
                     FullscreenActivity.pad2Fading = true;
                     FullscreenActivity.padson = true;
@@ -5288,7 +5290,6 @@ public class StageMode extends AppCompatActivity implements
 
                 } else {
                     // Else nothing, was playing, so start mPlayer1
-                    Log.d("d", "Nothing playing, start mPlayer1");
                     FullscreenActivity.pad1Fading = false;
                     FullscreenActivity.pad2Fading = false;
                     FullscreenActivity.whichPad = 1;
@@ -5333,7 +5334,6 @@ public class StageMode extends AppCompatActivity implements
     private class Player1Prepared implements MediaPlayer.OnPreparedListener {
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
-            Log.d("d", "mPlayer1 is prepared");
             FullscreenActivity.padtime_length = (int) (FullscreenActivity.mPlayer1.getDuration() / 1000.0f);
             FullscreenActivity.mPlayer1.setLooping(PadFunctions.getLoop(StageMode.this));
             FullscreenActivity.mPlayer1.setVolume(PadFunctions.getVol(0), PadFunctions.getVol(1));
@@ -5353,6 +5353,7 @@ public class StageMode extends AppCompatActivity implements
                 padtotalTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
                 padTimeSeparator_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
                 padcurrentTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
+                padcurrentTime_TextView.setText(getString(R.string.zerotime));
                 padtotalTime_TextView.setText(text);
             } catch (Exception e) {
                 e.printStackTrace(); // If called from doInBackground()
@@ -5386,6 +5387,7 @@ public class StageMode extends AppCompatActivity implements
                 padtotalTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
                 padTimeSeparator_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
                 padcurrentTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
+                padcurrentTime_TextView.setText(getString(R.string.zerotime));
                 padtotalTime_TextView.setText(text);
             } catch (Exception e) {
                 e.printStackTrace(); // If called from doInBackground()
@@ -5617,6 +5619,7 @@ public class StageMode extends AppCompatActivity implements
                 if (FullscreenActivity.pad1Playing) {
                     // mPlayer1 is playing, so fade it out.
                     doCancelAsyncTask(fadeout_media1);
+                    padcurrentTime_TextView.setText(getString(R.string.zerotime));
                     fadeout_media1 = new FadeoutMediaPlayer(StageMode.this, 1);
                     fadeout_media1.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
@@ -5626,6 +5629,7 @@ public class StageMode extends AppCompatActivity implements
                 if (FullscreenActivity.pad2Playing) {
                     // mPlayer2 is playing, so fade it out.
                     doCancelAsyncTask(fadeout_media2);
+                    padcurrentTime_TextView.setText(getString(R.string.zerotime));
                     fadeout_media2 = new FadeoutMediaPlayer(StageMode.this, 2);
                     fadeout_media2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
@@ -5636,12 +5640,14 @@ public class StageMode extends AppCompatActivity implements
                 if (FullscreenActivity.pad1Playing) {
                     // mPlayer1 is playing, so fade it out.
                     doCancelAsyncTask(fadeout_media1);
+                    padcurrentTime_TextView.setText(getString(R.string.zerotime));
                     fadeout_media1 = new FadeoutMediaPlayer(StageMode.this, 1);
                     fadeout_media1.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
                 if (FullscreenActivity.pad2Playing) {
                     // mPlayer2 is playing, so fade it out.
                     doCancelAsyncTask(fadeout_media2);
+                    padcurrentTime_TextView.setText(getString(R.string.zerotime));
                     fadeout_media2 = new FadeoutMediaPlayer(StageMode.this, 2);
                     fadeout_media2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 }
@@ -5704,6 +5710,7 @@ public class StageMode extends AppCompatActivity implements
         PadFunctions.getPad1Status();
         PadFunctions.getPad2Status();
         getPadsOnStatus();
+        padcurrentTime_TextView.setText(getString(R.string.zerotime));
     }
 
     @Override
@@ -6563,8 +6570,8 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    // Open/close the drawers
     public void gesture1() {
-        // Open/close the drawers
         if (mDrawerLayout.isDrawerOpen(songmenu)) {
             closeMyDrawers("song");
         } else {
@@ -6576,6 +6583,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    // Edit song
     public void gesture2() {
         if (FullscreenActivity.isPDF) {
             FullscreenActivity.whattodo = "extractPDF";
@@ -6587,8 +6595,8 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    // Add to set
     public void gesture3() {
-        // Add to set
         if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
             FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.songfilename + "_**$";
         } else {
@@ -6616,17 +6624,22 @@ public class StageMode extends AppCompatActivity implements
         // Hide the menus - 1 second after opening the Option menu,
         // close it (1000ms total)
         Handler optionMenuFlickClosed = new Handler();
-        optionMenuFlickClosed.postDelayed(() -> mDrawerLayout.closeDrawer(optionmenu), 1000);
+        optionMenuFlickClosed.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mDrawerLayout.closeDrawer(optionmenu);
+            }
+        }, 1000);
     }
 
+    // Redraw the lyrics page
     public void gesture4() {
-        // Redraw the lyrics page
         loadSong();
     }
 
     @Override
+    // Stop or start autoscroll
     public void gesture5() {
-        // Stop or start autoscroll
         if (justSong(StageMode.this)) {
             DoVibrate.vibrate(StageMode.this, 50);
             if (FullscreenActivity.isautoscrolling) {
@@ -6714,6 +6727,7 @@ public class StageMode extends AppCompatActivity implements
 
         void teardown() {
             try {
+                Log.d("d","Trying teardown");
                 CastRemoteDisplayLocalService.stopService();
                 if (hdmi!=null && hdmi.isShowing()) {
                     try {
@@ -6748,13 +6762,15 @@ public class StageMode extends AppCompatActivity implements
         PendingIntent notificationPendingIntent = PendingIntent.getActivity(
                 StageMode.this, 0, intent, 0);
 
+        Log.d("updateDislpays","Called");
         CastRemoteDisplayLocalService.NotificationSettings settings =
                 new CastRemoteDisplayLocalService.NotificationSettings.Builder()
                         .setNotificationPendingIntent(notificationPendingIntent).build();
 
         if (mSelectedDevice!=null) {
+            Log.d("updateDislpays","startService");
             CastRemoteDisplayLocalService.startService(
-                    getApplicationContext(),
+            getApplicationContext(),
                     PresentationService.class, getString(R.string.app_id),
                     mSelectedDevice, settings,
                     new CastRemoteDisplayLocalService.Callbacks() {
@@ -6777,6 +6793,7 @@ public class StageMode extends AppCompatActivity implements
         } else {
             // Might be a hdmi connection
             try {
+                Log.d("updateDislpays","hdmi");
                 Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
                 if (mDisplay!=null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -6792,6 +6809,7 @@ public class StageMode extends AppCompatActivity implements
     }
     @Override
     public void refreshSecondaryDisplay(String which) {
+        Log.d("refreshSecondaryDisplay","which="+which);
         try {
             switch (which) {
                 case "all":

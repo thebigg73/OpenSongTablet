@@ -171,12 +171,11 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
-
         V = inflater.inflate(R.layout.popup_editsong, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.options_song_edit));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,7 +184,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 cancelEdit();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,19 +195,19 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         });
 
         // Initialise the basic views
-        edit_song_title = (EditText) V.findViewById(R.id.edit_song_title);
-        edit_song_author = (EditText) V.findViewById(R.id.edit_song_author);
-        edit_song_copyright = (EditText) V.findViewById(R.id.edit_song_copyright);
-        edit_song_key = (Spinner) V.findViewById(R.id.edit_song_key);
-        edit_song_duration = (EditText) V.findViewById(R.id.edit_song_duration);
-        predelay_SeekBar = (SeekBar) V.findViewById(R.id.predelay_SeekBar);
-        predelay_TextView = (TextView) V.findViewById(R.id.predelay_TextView);
-        edit_song_tempo = (SeekBar) V.findViewById(R.id.edit_song_tempo);
-        tempo_text = (TextView) V.findViewById(R.id.tempo_text);
-        edit_song_timesig = (Spinner) V.findViewById(R.id.edit_song_timesig);
-        edit_song_capo = (Spinner) V.findViewById(R.id.edit_song_capo);
-        edit_song_capo_print = (Spinner) V.findViewById(R.id.edit_song_capo_print);
-        edit_song_presentation = (EditText) V.findViewById(R.id.edit_song_presentation);
+        edit_song_title = V.findViewById(R.id.edit_song_title);
+        edit_song_author = V.findViewById(R.id.edit_song_author);
+        edit_song_copyright = V.findViewById(R.id.edit_song_copyright);
+        edit_song_key = V.findViewById(R.id.edit_song_key);
+        edit_song_duration = V.findViewById(R.id.edit_song_duration);
+        predelay_SeekBar = V.findViewById(R.id.predelay_SeekBar);
+        predelay_TextView = V.findViewById(R.id.predelay_TextView);
+        edit_song_tempo = V.findViewById(R.id.edit_song_tempo);
+        tempo_text = V.findViewById(R.id.tempo_text);
+        edit_song_timesig = V.findViewById(R.id.edit_song_timesig);
+        edit_song_capo = V.findViewById(R.id.edit_song_capo);
+        edit_song_capo_print = V.findViewById(R.id.edit_song_capo_print);
+        edit_song_presentation = V.findViewById(R.id.edit_song_presentation);
         edit_song_presentation.setFocusable(false);
         edit_song_presentation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,12 +217,12 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 dismiss();
             }
         });
-        edit_song_notes = (EditText) V.findViewById(R.id.edit_song_notes);
-        edit_song_lyrics = (EditText) V.findViewById(R.id.edit_song_lyrics);
+        edit_song_notes = V.findViewById(R.id.edit_song_notes);
+        edit_song_lyrics = V.findViewById(R.id.edit_song_lyrics);
         edit_song_lyrics.setHorizontallyScrolling(true);
-        toggleGeneralAdvanced = (Button) V.findViewById(R.id.show_general_advanced);
-        generalSettings = (LinearLayout) V.findViewById(R.id.general_settings);
-        abcnotation = (TextView) V.findViewById(R.id.abcnotation);
+        toggleGeneralAdvanced = V.findViewById(R.id.show_general_advanced);
+        generalSettings = V.findViewById(R.id.general_settings);
+        abcnotation = V.findViewById(R.id.abcnotation);
         abcnotation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -235,66 +234,66 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         });
 
         // Initialise the advanced views
-        edit_song_CCLI = (EditText) V.findViewById(R.id.edit_song_ccli);
-        edit_song_aka = (EditText) V.findViewById(R.id.edit_song_aka);
-        edit_song_key_line = (EditText) V.findViewById(R.id.edit_song_keyline);
-        edit_song_hymn = (EditText) V.findViewById(R.id.edit_song_hymn);
-        edit_song_user1 = (EditText) V.findViewById(R.id.edit_song_user1);
-        edit_song_user2 = (EditText) V.findViewById(R.id.edit_song_user2);
-        edit_song_user3 = (EditText) V.findViewById(R.id.edit_song_user3);
-        edit_song_pad_file = (Spinner) V.findViewById(R.id.edit_pad_file);
-        edit_song_midi = (EditText) V.findViewById(R.id.edit_song_midi);
-        edit_song_midi_index = (EditText) V.findViewById(R.id.edit_song_midi_index);
-        edit_song_restrictions = (EditText) V.findViewById(R.id.edit_song_restrictions);
-        edit_song_books = (EditText) V.findViewById(R.id.edit_song_books);
-        edit_song_pitch = (EditText) V.findViewById(R.id.edit_song_pitch);
-        edit_song_theme_christ_attributes = (CheckBox) V.findViewById(R.id.edit_song_theme_christ_attributes);
-        edit_song_theme_christ_birth = (CheckBox) V.findViewById(R.id.edit_song_theme_christ_birth);
-        edit_song_theme_christ_death_atonement = (CheckBox) V.findViewById(R.id.edit_song_theme_christ_death_atonement);
-        edit_song_theme_christ_power_majesty = (CheckBox) V.findViewById(R.id.edit_song_theme_christ_power_majesty);
-        edit_song_theme_christ_love_mercy = (CheckBox) V.findViewById(R.id.edit_song_theme_christ_love_mercy);
-        edit_song_theme_christ_resurrection = (CheckBox) V.findViewById(R.id.edit_song_theme_christ_resurrection);
-        edit_song_theme_christ_second_coming = (CheckBox) V.findViewById(R.id.edit_song_theme_christ_second_coming);
-        edit_song_theme_christ_victory = (CheckBox) V.findViewById(R.id.edit_song_theme_christ_victory);
-        edit_song_theme_church_commitment_obedience = (CheckBox) V.findViewById(R.id.edit_song_theme_church_commitment_obedience);
-        edit_song_theme_church_country = (CheckBox) V.findViewById(R.id.edit_song_theme_church_country);
-        edit_song_theme_church_eternal_life_heaven = (CheckBox) V.findViewById(R.id.edit_song_theme_church_eternal_life_heaven);
-        edit_song_theme_church_evangelism = (CheckBox) V.findViewById(R.id.edit_song_theme_church_evangelism);
-        edit_song_theme_church_family_fellowship = (CheckBox) V.findViewById(R.id.edit_song_theme_church_family_fellowship);
-        edit_song_theme_church_fellowship_w_god = (CheckBox) V.findViewById(R.id.edit_song_theme_church_fellowship_w_god);
-        edit_song_theme_church_purity_holiness = (CheckBox) V.findViewById(R.id.edit_song_theme_church_purity_holiness);
-        edit_song_theme_church_renewal = (CheckBox) V.findViewById(R.id.edit_song_theme_church_renewal);
-        edit_song_theme_church_repentance_salvation = (CheckBox) V.findViewById(R.id.edit_song_theme_church_repentance_salvation);
-        edit_song_theme_church_service_ministry = (CheckBox) V.findViewById(R.id.edit_song_theme_church_service_ministry);
-        edit_song_theme_church_spiritual_hunger = (CheckBox) V.findViewById(R.id.edit_song_theme_church_spiritual_hunger);
-        edit_song_theme_fruit_faith_hope = (CheckBox) V.findViewById(R.id.edit_song_theme_fruit_faith_hope);
-        edit_song_theme_fruit_humility_meekness = (CheckBox) V.findViewById(R.id.edit_song_theme_fruit_humility_meekness);
-        edit_song_theme_fruit_joy = (CheckBox) V.findViewById(R.id.edit_song_theme_fruit_joy);
-        edit_song_theme_fruit_love = (CheckBox) V.findViewById(R.id.edit_song_theme_fruit_love);
-        edit_song_theme_fruit_patience_kindness = (CheckBox) V.findViewById(R.id.edit_song_theme_fruit_patience_kindness);
-        edit_song_theme_fruit_peace_comfort = (CheckBox) V.findViewById(R.id.edit_song_theme_fruit_peace_comfort);
-        edit_song_theme_god_attributes = (CheckBox) V.findViewById(R.id.edit_song_theme_god_attributes);
-        edit_song_theme_god_creator_creation = (CheckBox) V.findViewById(R.id.edit_song_theme_god_creator_creation);
-        edit_song_theme_god_father = (CheckBox) V.findViewById(R.id.edit_song_theme_god_father);
-        edit_song_theme_god_guidance_care = (CheckBox) V.findViewById(R.id.edit_song_theme_god_guidance_care);
-        edit_song_theme_god_holiness = (CheckBox) V.findViewById(R.id.edit_song_theme_god_holiness);
-        edit_song_theme_god_holy_spirit = (CheckBox) V.findViewById(R.id.edit_song_theme_god_holy_spirit);
-        edit_song_theme_god_love_mercy = (CheckBox) V.findViewById(R.id.edit_song_theme_god_love_mercy);
-        edit_song_theme_god_power_majesty = (CheckBox) V.findViewById(R.id.edit_song_theme_god_power_majesty);
-        edit_song_theme_god_promises = (CheckBox) V.findViewById(R.id.edit_song_theme_god_promises);
-        edit_song_theme_god_victory = (CheckBox) V.findViewById(R.id.edit_song_theme_god_victory);
-        edit_song_theme_god_word = (CheckBox) V.findViewById(R.id.edit_song_theme_god_word);
-        edit_song_theme_worship_assurance_trust = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_assurance_trust);
-        edit_song_theme_worship_call_opening = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_call_opening);
-        edit_song_theme_worship_celebration = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_celebration);
-        edit_song_theme_worship_declaration = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_declaration);
-        edit_song_theme_worship_intimacy = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_intimacy);
-        edit_song_theme_worship_invitation = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_invitation);
-        edit_song_theme_worship_praise_adoration = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_praise_adoration);
-        edit_song_theme_worship_prayer_devotion = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_prayer_devotion);
-        edit_song_theme_worship_provision_deliverance = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_provision_deliverance);
-        edit_song_theme_worship_thankfulness = (CheckBox) V.findViewById(R.id.edit_song_theme_worship_thankfulness);
-        advancedSettings = (LinearLayout) V.findViewById(R.id.advanced_settings);
+        edit_song_CCLI = V.findViewById(R.id.edit_song_ccli);
+        edit_song_aka = V.findViewById(R.id.edit_song_aka);
+        edit_song_key_line = V.findViewById(R.id.edit_song_keyline);
+        edit_song_hymn = V.findViewById(R.id.edit_song_hymn);
+        edit_song_user1 = V.findViewById(R.id.edit_song_user1);
+        edit_song_user2 = V.findViewById(R.id.edit_song_user2);
+        edit_song_user3 = V.findViewById(R.id.edit_song_user3);
+        edit_song_pad_file = V.findViewById(R.id.edit_pad_file);
+        edit_song_midi = V.findViewById(R.id.edit_song_midi);
+        edit_song_midi_index = V.findViewById(R.id.edit_song_midi_index);
+        edit_song_restrictions = V.findViewById(R.id.edit_song_restrictions);
+        edit_song_books = V.findViewById(R.id.edit_song_books);
+        edit_song_pitch = V.findViewById(R.id.edit_song_pitch);
+        edit_song_theme_christ_attributes = V.findViewById(R.id.edit_song_theme_christ_attributes);
+        edit_song_theme_christ_birth = V.findViewById(R.id.edit_song_theme_christ_birth);
+        edit_song_theme_christ_death_atonement = V.findViewById(R.id.edit_song_theme_christ_death_atonement);
+        edit_song_theme_christ_power_majesty = V.findViewById(R.id.edit_song_theme_christ_power_majesty);
+        edit_song_theme_christ_love_mercy = V.findViewById(R.id.edit_song_theme_christ_love_mercy);
+        edit_song_theme_christ_resurrection = V.findViewById(R.id.edit_song_theme_christ_resurrection);
+        edit_song_theme_christ_second_coming = V.findViewById(R.id.edit_song_theme_christ_second_coming);
+        edit_song_theme_christ_victory = V.findViewById(R.id.edit_song_theme_christ_victory);
+        edit_song_theme_church_commitment_obedience = V.findViewById(R.id.edit_song_theme_church_commitment_obedience);
+        edit_song_theme_church_country = V.findViewById(R.id.edit_song_theme_church_country);
+        edit_song_theme_church_eternal_life_heaven = V.findViewById(R.id.edit_song_theme_church_eternal_life_heaven);
+        edit_song_theme_church_evangelism = V.findViewById(R.id.edit_song_theme_church_evangelism);
+        edit_song_theme_church_family_fellowship = V.findViewById(R.id.edit_song_theme_church_family_fellowship);
+        edit_song_theme_church_fellowship_w_god = V.findViewById(R.id.edit_song_theme_church_fellowship_w_god);
+        edit_song_theme_church_purity_holiness = V.findViewById(R.id.edit_song_theme_church_purity_holiness);
+        edit_song_theme_church_renewal = V.findViewById(R.id.edit_song_theme_church_renewal);
+        edit_song_theme_church_repentance_salvation = V.findViewById(R.id.edit_song_theme_church_repentance_salvation);
+        edit_song_theme_church_service_ministry = V.findViewById(R.id.edit_song_theme_church_service_ministry);
+        edit_song_theme_church_spiritual_hunger = V.findViewById(R.id.edit_song_theme_church_spiritual_hunger);
+        edit_song_theme_fruit_faith_hope = V.findViewById(R.id.edit_song_theme_fruit_faith_hope);
+        edit_song_theme_fruit_humility_meekness = V.findViewById(R.id.edit_song_theme_fruit_humility_meekness);
+        edit_song_theme_fruit_joy = V.findViewById(R.id.edit_song_theme_fruit_joy);
+        edit_song_theme_fruit_love = V.findViewById(R.id.edit_song_theme_fruit_love);
+        edit_song_theme_fruit_patience_kindness = V.findViewById(R.id.edit_song_theme_fruit_patience_kindness);
+        edit_song_theme_fruit_peace_comfort = V.findViewById(R.id.edit_song_theme_fruit_peace_comfort);
+        edit_song_theme_god_attributes = V.findViewById(R.id.edit_song_theme_god_attributes);
+        edit_song_theme_god_creator_creation = V.findViewById(R.id.edit_song_theme_god_creator_creation);
+        edit_song_theme_god_father = V.findViewById(R.id.edit_song_theme_god_father);
+        edit_song_theme_god_guidance_care = V.findViewById(R.id.edit_song_theme_god_guidance_care);
+        edit_song_theme_god_holiness = V.findViewById(R.id.edit_song_theme_god_holiness);
+        edit_song_theme_god_holy_spirit = V.findViewById(R.id.edit_song_theme_god_holy_spirit);
+        edit_song_theme_god_love_mercy = V.findViewById(R.id.edit_song_theme_god_love_mercy);
+        edit_song_theme_god_power_majesty = V.findViewById(R.id.edit_song_theme_god_power_majesty);
+        edit_song_theme_god_promises = V.findViewById(R.id.edit_song_theme_god_promises);
+        edit_song_theme_god_victory = V.findViewById(R.id.edit_song_theme_god_victory);
+        edit_song_theme_god_word = V.findViewById(R.id.edit_song_theme_god_word);
+        edit_song_theme_worship_assurance_trust = V.findViewById(R.id.edit_song_theme_worship_assurance_trust);
+        edit_song_theme_worship_call_opening = V.findViewById(R.id.edit_song_theme_worship_call_opening);
+        edit_song_theme_worship_celebration = V.findViewById(R.id.edit_song_theme_worship_celebration);
+        edit_song_theme_worship_declaration = V.findViewById(R.id.edit_song_theme_worship_declaration);
+        edit_song_theme_worship_intimacy = V.findViewById(R.id.edit_song_theme_worship_intimacy);
+        edit_song_theme_worship_invitation = V.findViewById(R.id.edit_song_theme_worship_invitation);
+        edit_song_theme_worship_praise_adoration = V.findViewById(R.id.edit_song_theme_worship_praise_adoration);
+        edit_song_theme_worship_prayer_devotion = V.findViewById(R.id.edit_song_theme_worship_prayer_devotion);
+        edit_song_theme_worship_provision_deliverance = V.findViewById(R.id.edit_song_theme_worship_provision_deliverance);
+        edit_song_theme_worship_thankfulness = V.findViewById(R.id.edit_song_theme_worship_thankfulness);
+        advancedSettings = V.findViewById(R.id.advanced_settings);
 
         // Listeners for the buttons
         toggleGeneralAdvanced.setOnClickListener(new View.OnClickListener() {
@@ -1106,6 +1105,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         val = val.replace("<","&lt;");
         val = val.replace(">","&gt;");
         val = val.replace("&","&amp;");
+        val = val.replace("&#39;","'");
 
         return val;
     }

@@ -80,9 +80,9 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_soundlevelmeter, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.volume));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,24 +91,24 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
-        dBTextView = (TextView) V.findViewById(R.id.dBTextView);
+        dBTextView = V.findViewById(R.id.dBTextView);
 
-        level_1 = (ImageView) V.findViewById(R.id.level_1);
-        level_2 = (ImageView) V.findViewById(R.id.level_2);
-        level_3 = (ImageView) V.findViewById(R.id.level_3);
-        level_4 = (ImageView) V.findViewById(R.id.level_4);
-        level_5 = (ImageView) V.findViewById(R.id.level_5);
-        level_6 = (ImageView) V.findViewById(R.id.level_6);
-        level_7 = (ImageView) V.findViewById(R.id.level_7);
-        level_8 = (ImageView) V.findViewById(R.id.level_8);
-        level_9 = (ImageView) V.findViewById(R.id.level_9);
-        level_10 = (ImageView) V.findViewById(R.id.level_10);
+        level_1 = V.findViewById(R.id.level_1);
+        level_2 = V.findViewById(R.id.level_2);
+        level_3 = V.findViewById(R.id.level_3);
+        level_4 = V.findViewById(R.id.level_4);
+        level_5 = V.findViewById(R.id.level_5);
+        level_6 = V.findViewById(R.id.level_6);
+        level_7 = V.findViewById(R.id.level_7);
+        level_8 = V.findViewById(R.id.level_8);
+        level_9 = V.findViewById(R.id.level_9);
+        level_10 = V.findViewById(R.id.level_10);
 
-        averagevol = (TextView) V.findViewById(R.id.averagevol);
-        resetaverage = (Button) V.findViewById(R.id.resetaverage);
+        averagevol = V.findViewById(R.id.averagevol);
+        resetaverage = V.findViewById(R.id.resetaverage);
 
         resetaverage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,9 +119,9 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
             }
         });
 
-        volval = (TextView) V.findViewById(R.id.volval);
+        volval = V.findViewById(R.id.volval);
 
-        maxvolrange = (SeekBar) V.findViewById(R.id.maxvolrange);
+        maxvolrange = V.findViewById(R.id.maxvolrange);
         maxvolrange.setMax(7);
         int myprogress;
         String mytext;

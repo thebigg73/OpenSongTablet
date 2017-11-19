@@ -139,9 +139,9 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         V = inflater.inflate(R.layout.popup_importexternalfile, container, false);
 
-        title = (TextView) V.findViewById(R.id.dialogtitle);
+        title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.importnewsong));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,7 +150,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                 dismiss();
             }
         });
-        saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,16 +161,16 @@ public class PopUpImportExternalFile extends DialogFragment {
         });
 
         // Initialise the views
-        itemTitle_TextView = (TextView) V.findViewById(R.id.itemTitle_TextView);
-        fileTitle_EditText = (EditText) V.findViewById(R.id.fileTitle_EditText);
-        fileType_heading = (TextView) V.findViewById(R.id.fileType_heading);
-        fileType_TextView = (TextView) V.findViewById(R.id.fileType_TextView);
-        chooseFolder_TextView = (TextView) V.findViewById(R.id.chooseFolder_TextView);
-        messageOnSong_TextView = (TextView) V.findViewById(R.id.messageOnSong_TextView);
-        messageOpenSong_TextView = (TextView) V.findViewById(R.id.messageOpenSong_TextView);
-        chooseFolder_Spinner = (Spinner) V.findViewById(R.id.chooseFolder_Spinner);
-        overWrite_CheckBox = (CheckBox) V.findViewById(R.id.overWrite_CheckBox);
-        progressbar = (ProgressBar) V.findViewById(R.id.progressbar);
+        itemTitle_TextView = V.findViewById(R.id.itemTitle_TextView);
+        fileTitle_EditText = V.findViewById(R.id.fileTitle_EditText);
+        fileType_heading = V.findViewById(R.id.fileType_heading);
+        fileType_TextView = V.findViewById(R.id.fileType_TextView);
+        chooseFolder_TextView = V.findViewById(R.id.chooseFolder_TextView);
+        messageOnSong_TextView = V.findViewById(R.id.messageOnSong_TextView);
+        messageOpenSong_TextView = V.findViewById(R.id.messageOpenSong_TextView);
+        chooseFolder_Spinner = V.findViewById(R.id.chooseFolder_Spinner);
+        overWrite_CheckBox = V.findViewById(R.id.overWrite_CheckBox);
+        progressbar = V.findViewById(R.id.progressbar);
 
         // By default, we will assume this is a song
         FullscreenActivity.file_type = getResources().getString(R.string.options_song);

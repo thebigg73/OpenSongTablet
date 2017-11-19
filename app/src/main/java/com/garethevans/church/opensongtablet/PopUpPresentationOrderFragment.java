@@ -76,9 +76,9 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_presentation_order, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.edit_song_presentation));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +87,7 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,10 +98,10 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         });
 
         // Define the views
-        root_buttonshere = (LinearLayout) V.findViewById(R.id.songsectionstoadd);
-        m_mPresentation = (TextView) V.findViewById(R.id.popuppres_mPresentation);
-        popuppresorder_presorder_title = (TextView) V.findViewById(R.id.popuppresorder_presorder_title);
-        deletePresOrder = (Button) V.findViewById(R.id.deletePresOrder);
+        root_buttonshere = V.findViewById(R.id.songsectionstoadd);
+        m_mPresentation = V.findViewById(R.id.popuppres_mPresentation);
+        popuppresorder_presorder_title = V.findViewById(R.id.popuppresorder_presorder_title);
+        deletePresOrder = V.findViewById(R.id.deletePresOrder);
 
         // Set the values
         popuppresorder_presorder_title.setText(FullscreenActivity.mTitle);

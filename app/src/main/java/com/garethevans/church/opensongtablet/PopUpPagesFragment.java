@@ -74,9 +74,9 @@ public class PopUpPagesFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_pages, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.pdf_selectpage));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,16 +85,16 @@ public class PopUpPagesFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        pages_notavailable = (TextView) V.findViewById(R.id.pages_notavailable);
-        pages_available = (LinearLayout) V.findViewById(R.id.pages_available);
-        pageseekbar = (SeekBar) V.findViewById(R.id.pageseekbar);
-        previouspage = (FloatingActionButton) V.findViewById(R.id.previouspage);
-        nextpage = (FloatingActionButton) V.findViewById(R.id.nextpage);
-        pagetextView = (TextView) V.findViewById(R.id.pagetextView);
+        pages_notavailable = V.findViewById(R.id.pages_notavailable);
+        pages_available = V.findViewById(R.id.pages_available);
+        pageseekbar = V.findViewById(R.id.pageseekbar);
+        previouspage = V.findViewById(R.id.previouspage);
+        nextpage = V.findViewById(R.id.nextpage);
+        pagetextView = V.findViewById(R.id.pagetextView);
 
         // If this is an OpenSong song, then this isn't for you!
         if (FullscreenActivity.isPDF) {

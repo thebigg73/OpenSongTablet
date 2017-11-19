@@ -63,9 +63,9 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_song_details, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(FullscreenActivity.songfilename);
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,10 +74,10 @@ public class PopUpSongDetailsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
-        Button editSongDetails = (Button) V.findViewById(R.id.editSongDetails);
+        Button editSongDetails = V.findViewById(R.id.editSongDetails);
         editSongDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,14 +85,14 @@ public class PopUpSongDetailsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        TextView v_mTitle = (TextView) V.findViewById(R.id.v_mTitle);
-        TextView v_mAuthor = (TextView) V.findViewById(R.id.v_mAuthor);
-        TextView v_mCopyright = (TextView) V.findViewById(R.id.v_mCopyright);
-        TextView v_mPresentation = (TextView) V.findViewById(R.id.v_mPresentation);
-        TextView v_mHymnNumber = (TextView) V.findViewById(R.id.v_mHymnNumber);
-        TextView v_mCCLI = (TextView) V.findViewById(R.id.v_mCCLI);
-        TextView v_mNotes = (TextView) V.findViewById(R.id.v_mNotes);
-        TextView v_mLyrics = (TextView) V.findViewById(R.id.v_mLyrics);
+        TextView v_mTitle = V.findViewById(R.id.v_mTitle);
+        TextView v_mAuthor = V.findViewById(R.id.v_mAuthor);
+        TextView v_mCopyright = V.findViewById(R.id.v_mCopyright);
+        TextView v_mPresentation = V.findViewById(R.id.v_mPresentation);
+        TextView v_mHymnNumber = V.findViewById(R.id.v_mHymnNumber);
+        TextView v_mCCLI = V.findViewById(R.id.v_mCCLI);
+        TextView v_mNotes = V.findViewById(R.id.v_mNotes);
+        TextView v_mLyrics = V.findViewById(R.id.v_mLyrics);
 
         v_mTitle.setText(FullscreenActivity.mTitle);
         v_mAuthor.setText(FullscreenActivity.mAuthor);

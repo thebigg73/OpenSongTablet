@@ -84,9 +84,9 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_groupedpagebuttons, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.pagebuttons));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,24 +95,24 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        group_set = (FloatingActionButton) V.findViewById(R.id.group_set);
-        group_pad = (FloatingActionButton) V.findViewById(R.id.group_pad);
-        group_autoscroll = (FloatingActionButton) V.findViewById(R.id.group_autoscroll);
-        group_metronome = (FloatingActionButton) V.findViewById(R.id.group_metronome);
-        group_chords = (FloatingActionButton) V.findViewById(R.id.group_chords);
-        group_links = (FloatingActionButton) V.findViewById(R.id.group_links);
-        group_sticky = (FloatingActionButton) V.findViewById(R.id.group_sticky);
-        group_notation = (FloatingActionButton) V.findViewById(R.id.group_notation);
-        group_highlight = (FloatingActionButton) V.findViewById(R.id.group_highlight);
-        group_pages = (FloatingActionButton) V.findViewById(R.id.group_pages);
-        group_custom1 = (FloatingActionButton) V.findViewById(R.id.group_custom1);
-        group_custom2 = (FloatingActionButton) V.findViewById(R.id.group_custom2);
-        group_custom3 = (FloatingActionButton) V.findViewById(R.id.group_custom3);
-        group_custom4 = (FloatingActionButton) V.findViewById(R.id.group_custom4);
+        group_set = V.findViewById(R.id.group_set);
+        group_pad = V.findViewById(R.id.group_pad);
+        group_autoscroll = V.findViewById(R.id.group_autoscroll);
+        group_metronome = V.findViewById(R.id.group_metronome);
+        group_chords = V.findViewById(R.id.group_chords);
+        group_links = V.findViewById(R.id.group_links);
+        group_sticky = V.findViewById(R.id.group_sticky);
+        group_notation = V.findViewById(R.id.group_notation);
+        group_highlight = V.findViewById(R.id.group_highlight);
+        group_pages = V.findViewById(R.id.group_pages);
+        group_custom1 = V.findViewById(R.id.group_custom1);
+        group_custom2 = V.findViewById(R.id.group_custom2);
+        group_custom3 = V.findViewById(R.id.group_custom3);
+        group_custom4 = V.findViewById(R.id.group_custom4);
 
         // Set the quicklaunch icons
         setupQuickLaunchButtons();

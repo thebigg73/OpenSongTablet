@@ -103,6 +103,7 @@ public class Preferences extends Activity {
             FullscreenActivity.backgroundToUse = myPreferences.getString("backgroundToUse", "img1");
             FullscreenActivity.backgroundTypeToUse = myPreferences.getString("backgroundTypeToUse", "image");
             FullscreenActivity.batteryDialOn = myPreferences.getBoolean("batteryDialOn", true);
+            FullscreenActivity.batteryLine = myPreferences.getInt("batteryLine", 4);
             FullscreenActivity.batteryOn = myPreferences.getBoolean("batteryOn", true);
             FullscreenActivity.batterySize = myPreferences.getFloat("batterySize", 9.0f);
             FullscreenActivity.bibleFile = myPreferences.getString("bibleFile", "");
@@ -418,6 +419,7 @@ public class Preferences extends Activity {
             editor.putString("backgroundVideo1", FullscreenActivity.backgroundVideo1);
             editor.putString("backgroundVideo2", FullscreenActivity.backgroundVideo2);
             editor.putBoolean("batteryDialOn", FullscreenActivity.batteryDialOn);
+            editor.putInt("batteryLine", FullscreenActivity.batteryLine);
             editor.putBoolean("batteryOn", FullscreenActivity.batteryDialOn);
             editor.putFloat("batterySize", FullscreenActivity.batterySize);
             editor.putString("bibleFile", FullscreenActivity.bibleFile);

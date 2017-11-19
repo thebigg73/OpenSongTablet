@@ -67,9 +67,9 @@ public class PopUpGesturesFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_gestures, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.customgestures));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +78,7 @@ public class PopUpGesturesFragment extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,12 +89,12 @@ public class PopUpGesturesFragment extends DialogFragment {
         });
 
         // Initialise the views
-        screenDoubleTap = (Spinner) V.findViewById(R.id.screenDoubleTap);
-        screenLongPress = (Spinner) V.findViewById(R.id.screenLongPress);
-        previousPedalLongPress = (Spinner) V.findViewById(R.id.previousPedalLongPress);
-        nextPedalLongPress = (Spinner) V.findViewById(R.id.nextPedalLongPress);
-        upPedalLongPress = (Spinner) V.findViewById(R.id.upPedalLongPress);
-        downPedalLongPress = (Spinner) V.findViewById(R.id.downPedalLongPress);
+        screenDoubleTap = V.findViewById(R.id.screenDoubleTap);
+        screenLongPress = V.findViewById(R.id.screenLongPress);
+        previousPedalLongPress = V.findViewById(R.id.previousPedalLongPress);
+        nextPedalLongPress = V.findViewById(R.id.nextPedalLongPress);
+        upPedalLongPress = V.findViewById(R.id.upPedalLongPress);
+        downPedalLongPress = V.findViewById(R.id.downPedalLongPress);
 
         // Set up the spinner options
         ArrayList<String> vals = new ArrayList<>();

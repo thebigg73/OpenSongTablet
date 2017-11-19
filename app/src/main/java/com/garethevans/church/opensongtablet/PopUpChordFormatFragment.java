@@ -64,9 +64,9 @@ public class PopUpChordFormatFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_chordformat, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.choosechordformat));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +75,7 @@ public class PopUpChordFormatFragment extends DialogFragment {
                 exitChordFormat();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Load the user preferences
@@ -85,16 +85,16 @@ public class PopUpChordFormatFragment extends DialogFragment {
         numeral2 = FullscreenActivity.alwaysPreferredChordFormat;
 
         // Set up the preferred chord buttons
-        switchAb = (SwitchCompat) V.findViewById(R.id.switchAb);
-        switchBb = (SwitchCompat) V.findViewById(R.id.switchBb);
-        switchDb = (SwitchCompat) V.findViewById(R.id.switchDb);
-        switchEb = (SwitchCompat) V.findViewById(R.id.switchEb);
-        switchGb = (SwitchCompat) V.findViewById(R.id.switchGb);
-        switchAbm = (SwitchCompat) V.findViewById(R.id.switchAbm);
-        switchBbm = (SwitchCompat) V.findViewById(R.id.switchBbm);
-        switchDbm = (SwitchCompat) V.findViewById(R.id.switchDbm);
-        switchEbm = (SwitchCompat) V.findViewById(R.id.switchEbm);
-        switchGbm = (SwitchCompat) V.findViewById(R.id.switchGbm);
+        switchAb = V.findViewById(R.id.switchAb);
+        switchBb = V.findViewById(R.id.switchBb);
+        switchDb = V.findViewById(R.id.switchDb);
+        switchEb = V.findViewById(R.id.switchEb);
+        switchGb = V.findViewById(R.id.switchGb);
+        switchAbm = V.findViewById(R.id.switchAbm);
+        switchBbm = V.findViewById(R.id.switchBbm);
+        switchDbm = V.findViewById(R.id.switchDbm);
+        switchEbm = V.findViewById(R.id.switchEbm);
+        switchGbm = V.findViewById(R.id.switchGbm);
 
         setSwitches(FullscreenActivity.prefChord_Aflat_Gsharp, switchAb);
         setSwitches(FullscreenActivity.prefChord_Bflat_Asharp, switchBb);
@@ -107,8 +107,8 @@ public class PopUpChordFormatFragment extends DialogFragment {
         setSwitches(FullscreenActivity.prefChord_Eflatm_Dsharpm, switchEbm);
         setSwitches(FullscreenActivity.prefChord_Gflatm_Fsharpm, switchGbm);
 
-        radioGroup = (RadioGroup) V.findViewById(R.id.chordFormat);
-        radioGroup2 = (RadioGroup) V.findViewById(R.id.chordFormat_decideaction);
+        radioGroup = V.findViewById(R.id.chordFormat);
+        radioGroup2 = V.findViewById(R.id.chordFormat_decideaction);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
@@ -150,13 +150,13 @@ public class PopUpChordFormatFragment extends DialogFragment {
             }
         });
 
-        RadioButton radioButton1 = (RadioButton) V.findViewById(R.id.chordFormat1);
-        RadioButton radioButton2 = (RadioButton) V.findViewById(R.id.chordFormat2);
-        RadioButton radioButton3 = (RadioButton) V.findViewById(R.id.chordFormat3);
-        RadioButton radioButton4 = (RadioButton) V.findViewById(R.id.chordFormat4);
-        RadioButton radioButton5 = (RadioButton) V.findViewById(R.id.chordFormat5);
-        RadioButton radioButton6 = (RadioButton) V.findViewById(R.id.chordformat_check);
-        RadioButton radioButton7 = (RadioButton) V.findViewById(R.id.chordformat_default);
+        RadioButton radioButton1 = V.findViewById(R.id.chordFormat1);
+        RadioButton radioButton2 = V.findViewById(R.id.chordFormat2);
+        RadioButton radioButton3 = V.findViewById(R.id.chordFormat3);
+        RadioButton radioButton4 = V.findViewById(R.id.chordFormat4);
+        RadioButton radioButton5 = V.findViewById(R.id.chordFormat5);
+        RadioButton radioButton6 = V.findViewById(R.id.chordformat_check);
+        RadioButton radioButton7 = V.findViewById(R.id.chordformat_default);
 
         // Set the appropriate radiobutton
         switch (FullscreenActivity.chordFormat) {

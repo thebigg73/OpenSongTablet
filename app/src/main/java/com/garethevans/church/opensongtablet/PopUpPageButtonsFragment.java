@@ -92,9 +92,9 @@ public class PopUpPageButtonsFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_pagebuttons, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.pagebuttons));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,31 +103,31 @@ public class PopUpPageButtonsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        pageButtonSize_Switch = (SwitchCompat) V.findViewById(R.id.pageButtonSize_Switch);
-        pageButtonGroup_Switch = (SwitchCompat) V.findViewById(R.id.pageButtonGroup_Switch);
-        pageButtonTransparency_seekBar = (SeekBar) V.findViewById(R.id.pageButtonTransparency_seekBar);
-        transparency_TextView = (TextView) V.findViewById(R.id.transparency_TextView);
-        extraButtonGroup_Switch = (SwitchCompat) V.findViewById(R.id.extraButtonGroup_Switch);
-        customButtonGroup_Switch = (SwitchCompat) V.findViewById(R.id.customButtonGroup_Switch);
-        setVisible_Switch = (SwitchCompat) V.findViewById(R.id.setVisible_Switch);
-        padVisible_Switch = (SwitchCompat) V.findViewById(R.id.padVisible_Switch);
-        autoscrollVisible_Switch = (SwitchCompat) V.findViewById(R.id.autoscrollVisible_Switch);
-        metronomeVisible_Switch = (SwitchCompat) V.findViewById(R.id.metronomeVisible_Switch);
-        chordsVisible_Switch = (SwitchCompat) V.findViewById(R.id.chordsVisible_Switch);
-        linksVisible_Switch = (SwitchCompat) V.findViewById(R.id.linksVisible_Switch);
-        stickyVisible_Switch = (SwitchCompat) V.findViewById(R.id.stickyVisible_Switch);
-        notationVisible_Switch = (SwitchCompat) V.findViewById(R.id.notationVisible_Switch);
-        highlightVisible_Switch = (SwitchCompat) V.findViewById(R.id.highlightVisible_Switch);
-        pageselectVisible_Switch = (SwitchCompat) V.findViewById(R.id.pageselectVisible_Switch);
-        custom1Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom1Visible_Switch);
-        custom2Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom2Visible_Switch);
-        custom3Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom3Visible_Switch);
-        custom4Visible_Switch = (SwitchCompat) V.findViewById(R.id.custom4Visible_Switch);
-        showPageButtons = (Button) V.findViewById(R.id.showPageButtons);
+        pageButtonSize_Switch = V.findViewById(R.id.pageButtonSize_Switch);
+        pageButtonGroup_Switch = V.findViewById(R.id.pageButtonGroup_Switch);
+        pageButtonTransparency_seekBar = V.findViewById(R.id.pageButtonTransparency_seekBar);
+        transparency_TextView = V.findViewById(R.id.transparency_TextView);
+        extraButtonGroup_Switch = V.findViewById(R.id.extraButtonGroup_Switch);
+        customButtonGroup_Switch = V.findViewById(R.id.customButtonGroup_Switch);
+        setVisible_Switch = V.findViewById(R.id.setVisible_Switch);
+        padVisible_Switch = V.findViewById(R.id.padVisible_Switch);
+        autoscrollVisible_Switch = V.findViewById(R.id.autoscrollVisible_Switch);
+        metronomeVisible_Switch = V.findViewById(R.id.metronomeVisible_Switch);
+        chordsVisible_Switch = V.findViewById(R.id.chordsVisible_Switch);
+        linksVisible_Switch = V.findViewById(R.id.linksVisible_Switch);
+        stickyVisible_Switch = V.findViewById(R.id.stickyVisible_Switch);
+        notationVisible_Switch = V.findViewById(R.id.notationVisible_Switch);
+        highlightVisible_Switch = V.findViewById(R.id.highlightVisible_Switch);
+        pageselectVisible_Switch = V.findViewById(R.id.pageselectVisible_Switch);
+        custom1Visible_Switch = V.findViewById(R.id.custom1Visible_Switch);
+        custom2Visible_Switch = V.findViewById(R.id.custom2Visible_Switch);
+        custom3Visible_Switch = V.findViewById(R.id.custom3Visible_Switch);
+        custom4Visible_Switch = V.findViewById(R.id.custom4Visible_Switch);
+        showPageButtons = V.findViewById(R.id.showPageButtons);
 
         // Set the default values
         if (FullscreenActivity.fabSize == FloatingActionButton.SIZE_NORMAL) {

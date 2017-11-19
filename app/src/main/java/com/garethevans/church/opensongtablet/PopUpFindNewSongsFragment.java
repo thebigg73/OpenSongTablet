@@ -711,7 +711,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 if (endpos > 6) {
                     authorname = author_resultposted.substring(6, endpos);
                     authorname = authorname.replace("\"", "");
-                    authorname = authorname.trim();
+                    authorname = PopUpEditSongFragment.parseToHTMLEntities(authorname.trim());
                 } else {
                     authorname = "";
                 }
@@ -723,7 +723,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         endpos = resultposted.indexOf("',", startpos);
         if (startpos != 0 && endpos < (startpos + 80)) {
             author_resultposted = resultposted.substring(startpos, endpos);
-            authorname = author_resultposted;
+            authorname = PopUpEditSongFragment.parseToHTMLEntities(author_resultposted);
         }
 
 
@@ -1114,7 +1114,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         String filenameandlocation;
         String tempfile;
         String temppdffile;
-        temppdffile = filename.replace(".pdf","") + ".pdf";
+        temppdffile = filename.replace(".pdf","") + ".pdf";  // Gets rid of multiple .pdf extensions
         String pdffilenameandlocation;
 
         if (FullscreenActivity.whattodo.equals("chordie") || FullscreenActivity.whattodo.equals("songselect") ||
@@ -1125,7 +1125,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             filecontents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<song>\n<title>" + filename
                     + "</title>\n<author>"
                     + authorname + "</author>\n<copyright></copyright>\n<lyrics>[]\n"
-                    + newtext
+                    + PopUpEditSongFragment.parseToHTMLEntities(newtext) //Issues cause with &, so fix
                     + "</lyrics>\n</song>";
         }
 

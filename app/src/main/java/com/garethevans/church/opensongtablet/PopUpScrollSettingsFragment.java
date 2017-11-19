@@ -58,9 +58,9 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_scrollsettings, container, false);
         setfrag = getDialog();
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.scrollbuttons));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,7 +69,7 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         if (getDialog().getWindow()!=null) {
@@ -77,10 +77,10 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
         }
 
         // Initialise the view
-        scrollspeed_SeekBar = (SeekBar) V.findViewById(R.id.scrollspeed_SeekBar);
-        scrolldistance_SeekBar = (SeekBar) V.findViewById(R.id.scrolldistance_SeekBar);
-        scrollspeed_TextView = (TextView) V.findViewById(R.id.scrollspeed_TextView);
-        scrolldistance_TextView = (TextView) V.findViewById(R.id.scrolldistance_TextView);
+        scrollspeed_SeekBar = V.findViewById(R.id.scrollspeed_SeekBar);
+        scrolldistance_SeekBar = V.findViewById(R.id.scrolldistance_SeekBar);
+        scrollspeed_TextView = V.findViewById(R.id.scrollspeed_TextView);
+        scrolldistance_TextView = V.findViewById(R.id.scrolldistance_TextView);
 
         // Set the current values
         setSpeed();

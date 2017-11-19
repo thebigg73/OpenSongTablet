@@ -87,26 +87,26 @@ public class PopUpAutoscrollFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_page_autoscroll, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.autoscroll));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                CustomAnimations.animateFAB(closeMe, PopUpAutoscrollFragment.this.getActivity());
                 closeMe.setEnabled(false);
-                doSave();
+                PopUpAutoscrollFragment.this.doSave();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        popupautoscroll_startstopbutton = (Button) V.findViewById(R.id.popupautoscroll_startstopbutton);
-        popupautoscroll_delay = (SeekBar) V.findViewById(R.id.popupautoscroll_delay);
-        popupautoscroll_delay_text = (TextView) V.findViewById(R.id.popupautoscroll_delay_text);
-        popupautoscroll_duration = (EditText) V.findViewById(R.id.popupautoscroll_duration);
-        uselinkaudiolength_ImageButton = (FloatingActionButton) V.findViewById(R.id.uselinkaudiolength_ImageButton);
+        popupautoscroll_startstopbutton = V.findViewById(R.id.popupautoscroll_startstopbutton);
+        popupautoscroll_delay = V.findViewById(R.id.popupautoscroll_delay);
+        popupautoscroll_delay_text = V.findViewById(R.id.popupautoscroll_delay_text);
+        popupautoscroll_duration = V.findViewById(R.id.popupautoscroll_duration);
+        uselinkaudiolength_ImageButton = V.findViewById(R.id.uselinkaudiolength_ImageButton);
 
         // Set up current values
         AutoScrollFunctions.getAutoScrollTimes();
@@ -157,8 +157,8 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         uselinkaudiolength_ImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(uselinkaudiolength_ImageButton,getActivity());
-                grabLinkAudioTime();
+                CustomAnimations.animateFAB(uselinkaudiolength_ImageButton, PopUpAutoscrollFragment.this.getActivity());
+                PopUpAutoscrollFragment.this.grabLinkAudioTime();
                 FullscreenActivity.autoscrollok = ProcessSong.isAutoScrollValid();
                 Preferences.savePreferences();
             }
@@ -168,7 +168,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
                 @Override
                 public void onClick(View view) {
                     mListener.stopAutoScroll();
-                    dismiss();
+                    PopUpAutoscrollFragment.this.dismiss();
                 }
             });
             popupautoscroll_startstopbutton.setText(getActivity().getResources().getString(R.string.stop));
@@ -176,13 +176,12 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         } else {
             popupautoscroll_startstopbutton.setText(getActivity().getResources().getString(R.string.start));
             popupautoscroll_startstopbutton.setOnClickListener(new View.OnClickListener() {
-
                 @Override
                 public void onClick(View view) {
                     if (FullscreenActivity.autoscrollok) {
-                        doSave();
+                        PopUpAutoscrollFragment.this.doSave();
                         mListener.startAutoScroll();
-                        dismiss();
+                        PopUpAutoscrollFragment.this.dismiss();
                     }
                 }
             });
@@ -241,7 +240,8 @@ public class PopUpAutoscrollFragment extends DialogFragment {
     }
 
     public void checkAutoScrollStatus() {
-        if (popupautoscroll_duration.getText().toString().equals("") || popupautoscroll_duration.getText().toString().isEmpty()) {
+        if ((popupautoscroll_duration.getText().toString().equals("") || popupautoscroll_duration.getText().toString().isEmpty()) &&
+                !FullscreenActivity.autoscroll_default_or_prompt.equals("default")) {
             String text = getResources().getString(R.string.edit_song_duration) + " - " + getResources().getString(R.string.notset);
             popupautoscroll_startstopbutton.setText(text);
             popupautoscroll_startstopbutton.setEnabled(false);
@@ -249,22 +249,20 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             popupautoscroll_startstopbutton.setText(getResources().getString(R.string.stop));
             popupautoscroll_startstopbutton.setEnabled(true);
             popupautoscroll_startstopbutton.setOnClickListener(new View.OnClickListener() {
-
                 @Override
                 public void onClick(View view) {
                     mListener.stopAutoScroll();
-                    dismiss();
+                    PopUpAutoscrollFragment.this.dismiss();
                 }
             });
         } else {
             popupautoscroll_startstopbutton.setText(getResources().getString(R.string.start));
             popupautoscroll_startstopbutton.setEnabled(true);
             popupautoscroll_startstopbutton.setOnClickListener(new View.OnClickListener() {
-
                 @Override
                 public void onClick(View view) {
                     mListener.startAutoScroll();
-                    dismiss();
+                    PopUpAutoscrollFragment.this.dismiss();
                 }
             });
         }

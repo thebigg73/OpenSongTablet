@@ -117,9 +117,9 @@ public class PopUpChordsFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_page_chords, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.chords));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,12 +128,12 @@ public class PopUpChordsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        Spinner popupchord_instrument = (Spinner) V.findViewById(R.id.popupchord_instrument);
-        chordimageshere = (TableLayout) V.findViewById(R.id.chordimageshere);
+        Spinner popupchord_instrument = V.findViewById(R.id.popupchord_instrument);
+        chordimageshere = V.findViewById(R.id.chordimageshere);
         // Identify the chord images
         f1 = getActivity().getResources().getDrawable(R.drawable.chord_f1);
         f2 = getActivity().getResources().getDrawable(R.drawable.chord_f2);
@@ -165,7 +165,7 @@ public class PopUpChordsFragment extends DialogFragment {
         r3 = getActivity().getResources().getDrawable(R.drawable.chord_r_3);
         r4 = getActivity().getResources().getDrawable(R.drawable.chord_r_4);
         r5 = getActivity().getResources().getDrawable(R.drawable.chord_r_5);
-        Button customchordedit = (Button) V.findViewById(R.id.customchordedit);
+        Button customchordedit = V.findViewById(R.id.customchordedit);
         customchordedit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

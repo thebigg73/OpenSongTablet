@@ -72,9 +72,9 @@ public class PopUpLongSongPressFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_longsongpress, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(FullscreenActivity.songfilename);
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,18 +83,18 @@ public class PopUpLongSongPressFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Vibrate to let the user know something happened
         DoVibrate.vibrate(getActivity(),50);
 
         // Initialise the views
-        addSongToSet_Button = (Button) V.findViewById(R.id.addSongToSet_Button);
-        deleteSong_Button = (Button) V.findViewById(R.id.deleteSong_Button);
-        renameSong_Button = (Button) V.findViewById(R.id.renameSong_Button);
-        shareSong_Button = (Button) V.findViewById(R.id.shareSong_Button);
-        editSong_Button = (Button) V.findViewById(R.id.editSong_Button);
+        addSongToSet_Button = V.findViewById(R.id.addSongToSet_Button);
+        deleteSong_Button = V.findViewById(R.id.deleteSong_Button);
+        renameSong_Button = V.findViewById(R.id.renameSong_Button);
+        shareSong_Button = V.findViewById(R.id.shareSong_Button);
+        editSong_Button = V.findViewById(R.id.editSong_Button);
 
         // Set up listeners for the buttons
         addSongToSet_Button.setOnClickListener(new View.OnClickListener() {

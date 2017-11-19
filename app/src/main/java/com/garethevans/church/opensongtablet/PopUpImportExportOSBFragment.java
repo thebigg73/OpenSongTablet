@@ -107,54 +107,54 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_importexportosb, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(mTitle);
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dismiss();
+                PopUpImportExportOSBFragment.this.dismiss();
             }
         });
-        saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        saveMe = V.findViewById(R.id.saveMe);
         if (FullscreenActivity.whattodo.equals("processimportosb")) {
             saveMe.setVisibility(View.GONE);
             saveMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CustomAnimations.animateFAB(saveMe,getActivity());
+                    CustomAnimations.animateFAB(saveMe, PopUpImportExportOSBFragment.this.getActivity());
                     saveMe.setEnabled(false);
-                    doTheImporting();
+                    PopUpImportExportOSBFragment.this.doTheImporting();
                 }
             });
         } else {
             saveMe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CustomAnimations.animateFAB(saveMe,getActivity());
+                    CustomAnimations.animateFAB(saveMe, PopUpImportExportOSBFragment.this.getActivity());
                     saveMe.setEnabled(false);
-                    doTheExporting();
+                    PopUpImportExportOSBFragment.this.doTheExporting();
                 }
             });
         }
 
         // Initialise the views
-        importfilechooser = (LinearLayout) V.findViewById(R.id.importfilechooser);
-        zipcontents = (LinearLayout) V.findViewById(R.id.zipcontents);
-        chooseosbfile = (TextView) V.findViewById(R.id.chooseosbfile);
-        folderlist = (ListView) V.findViewById(R.id.folderlist);
-        waiting = (ProgressBar) V.findViewById(R.id.waiting);
-        overwrite = (SwitchCompat) V.findViewById(R.id.overwrite);
+        importfilechooser = V.findViewById(R.id.importfilechooser);
+        zipcontents = V.findViewById(R.id.zipcontents);
+        chooseosbfile = V.findViewById(R.id.chooseosbfile);
+        folderlist = V.findViewById(R.id.folderlist);
+        waiting = V.findViewById(R.id.waiting);
+        overwrite = V.findViewById(R.id.overwrite);
 
         // Listener for choose osb file
         chooseosbfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whattodo = "findosbfiles";
-                if (mListener!=null) {
+                if (mListener != null) {
                     mListener.openFragment();
                 }
-                dismiss();
+                PopUpImportExportOSBFragment.this.dismiss();
             }
         });
 
@@ -188,19 +188,18 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (folderlist.isItemChecked(i)) {
                     // Add the folder if it isn't there already
-                    if (!selectednote.contains("%__"+FullscreenActivity.mSongFolderNames[i]+"__%")) {
-                        selectednote = selectednote + "%__"+FullscreenActivity.mSongFolderNames[i]+"__%";
+                    if (!selectednote.contains("%__" + FullscreenActivity.mSongFolderNames[i] + "__%")) {
+                        selectednote = selectednote + "%__" + FullscreenActivity.mSongFolderNames[i] + "__%";
                     }
 
                 } else {
                     // Remove the folder if it is there already
-                    if (selectednote.contains("%__"+FullscreenActivity.mSongFolderNames[i]+"__%")) {
-                        selectednote = selectednote.replace("%__"+FullscreenActivity.mSongFolderNames[i]+"__%","");
+                    if (selectednote.contains("%__" + FullscreenActivity.mSongFolderNames[i] + "__%")) {
+                        selectednote = selectednote.replace("%__" + FullscreenActivity.mSongFolderNames[i] + "__%", "");
                     }
                 }
-                Log.d("d","selectednote="+selectednote);
+                Log.d("d", "selectednote=" + selectednote);
             }
-
         });
         return V;
     }
@@ -283,7 +282,7 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         // Check to see if we have selected any folders.  If not, hide the save button
                         boolean oktoproceed = false;
-                        for (int y=0;y<foldersfoundinzip.size();y++) {
+                        for (int y = 0; y < foldersfoundinzip.size(); y++) {
                             if (folderlist.isItemChecked(y)) {
                                 oktoproceed = true;
                             }

@@ -92,9 +92,9 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_searchview, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.action_search));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,13 +103,13 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         super.onCreate(savedInstanceState);
 
-        mSearchView = (SearchView) V.findViewById(R.id.search_view);
-        mListView = (ListView) V.findViewById(R.id.list_view);
+        mSearchView = V.findViewById(R.id.search_view);
+        mListView = V.findViewById(R.id.list_view);
         mSearchView.requestFocus();
         if (getDialog().getWindow()!=null) {
             getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -320,8 +320,8 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
             // Vibrate to indicate that something has happened.
             DoVibrate.vibrate(getActivity(),50);
 
-            TextView mFilename = (TextView) view.findViewById(R.id.cardview_filename);
-            TextView mFoldername = (TextView) view.findViewById(R.id.cardview_folder);
+            TextView mFilename = view.findViewById(R.id.cardview_filename);
+            TextView mFoldername = view.findViewById(R.id.cardview_folder);
             FullscreenActivity.songfilename = mFilename.getText().toString();
             FullscreenActivity.whichSongFolder = mFoldername.getText().toString();
             Preferences.savePreferences();
@@ -342,8 +342,8 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
             // Vibrate to indicate that something has happened.
             DoVibrate.vibrate(getActivity(),50);
 
-            TextView mFilename = (TextView) view.findViewById(R.id.cardview_filename);
-            TextView mFoldername = (TextView) view.findViewById(R.id.cardview_folder);
+            TextView mFilename = view.findViewById(R.id.cardview_filename);
+            TextView mFoldername = view.findViewById(R.id.cardview_folder);
             String tsong = mFilename.getText().toString();
             String tfolder = mFoldername.getText().toString();
 

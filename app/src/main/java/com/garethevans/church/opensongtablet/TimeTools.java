@@ -12,6 +12,9 @@ class TimeTools {
         } else {
             time = mins + ":" + secs;
         }
+        if (mins>20 || mins<0) {
+            time = "0:00";
+        }
         return time;
     }
 

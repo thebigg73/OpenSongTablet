@@ -54,35 +54,35 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_autoscrolldefaults, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.default_autoscroll));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                CustomAnimations.animateFAB(closeMe, PopUpAutoScrollDefaultsFragment.this.getActivity());
                 closeMe.setEnabled(false);
-                dismiss();
+                PopUpAutoScrollDefaultsFragment.this.dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                CustomAnimations.animateFAB(closeMe, PopUpAutoScrollDefaultsFragment.this.getActivity());
                 saveMe.setEnabled(false);
-                doSave();
+                PopUpAutoScrollDefaultsFragment.this.doSave();
             }
         });
 
 
         // Initialise the views
-        default_delaytime_TextView = (TextView) V.findViewById(R.id.default_delaytime_TextView);
-        default_delaytime_SeekBar = (SeekBar) V.findViewById(R.id.default_delaytime_SeekBar);
-        default_duration_EditText = (EditText) V.findViewById(R.id.default_duration_EditText);
-        autoscroll_defaults_RadioGroup = (RadioGroup) V.findViewById(R.id.autoscroll_defaults_RadioGroup);
-        autoscroll_default_RadioButton = (RadioButton) V.findViewById(R.id.autoscroll_default_RadioButton);
-        autoscroll_prompt_RadioButton = (RadioButton) V.findViewById(R.id.autoscroll_prompt_RadioButton);
+        default_delaytime_TextView = V.findViewById(R.id.default_delaytime_TextView);
+        default_delaytime_SeekBar = V.findViewById(R.id.default_delaytime_SeekBar);
+        default_duration_EditText = V.findViewById(R.id.default_duration_EditText);
+        autoscroll_defaults_RadioGroup = V.findViewById(R.id.autoscroll_defaults_RadioGroup);
+        autoscroll_default_RadioButton = V.findViewById(R.id.autoscroll_default_RadioButton);
+        autoscroll_prompt_RadioButton = V.findViewById(R.id.autoscroll_prompt_RadioButton);
 
         // Set them to the default values
         default_delaytime_SeekBar.setMax(30);

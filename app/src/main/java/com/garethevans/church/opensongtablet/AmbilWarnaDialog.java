@@ -48,6 +48,7 @@ class AmbilWarnaDialog {
 		this(context, color, false, listener);
 		}
 
+	@SuppressLint("ClickableViewAccessibility")
 	private AmbilWarnaDialog(final Context context, int color, boolean supportsAlpha, OnAmbilWarnaListener listener) {
 		this.supportsAlpha = supportsAlpha;
 		this.listener = listener;
@@ -64,16 +65,16 @@ class AmbilWarnaDialog {
 
         @SuppressLint("InflateParams") final View view = LayoutInflater.from(context).inflate(R.layout.ambilwarna_dialog, null);
 		viewHue = view.findViewById(R.id.ambilwarna_viewHue);
-		viewSatVal = (AmbilWarnaSquare) view.findViewById(R.id.ambilwarna_viewSatBri);
-		viewCursor = (ImageView) view.findViewById(R.id.ambilwarna_cursor);
+		viewSatVal = view.findViewById(R.id.ambilwarna_viewSatBri);
+		viewCursor = view.findViewById(R.id.ambilwarna_cursor);
 		View viewOldColor = view.findViewById(R.id.ambilwarna_oldColor);
 		viewNewColor = view.findViewById(R.id.ambilwarna_newColor);
-		viewTarget = (ImageView) view.findViewById(R.id.ambilwarna_target);
-		viewContainer = (ViewGroup) view.findViewById(R.id.ambilwarna_viewContainer);
+		viewTarget = view.findViewById(R.id.ambilwarna_target);
+		viewContainer = view.findViewById(R.id.ambilwarna_viewContainer);
 		viewAlphaOverlay = view.findViewById(R.id.ambilwarna_overlay);
-		viewAlphaCursor = (ImageView) view.findViewById(R.id.ambilwarna_alphaCursor);
-		viewAlphaCheckered = (ImageView) view.findViewById(R.id.ambilwarna_alphaCheckered);
-        colorhex = (MaskedEditText) view.findViewById(R.id.colorhex);
+		viewAlphaCursor = view.findViewById(R.id.ambilwarna_alphaCursor);
+		viewAlphaCheckered = view.findViewById(R.id.ambilwarna_alphaCheckered);
+        colorhex = view.findViewById(R.id.colorhex);
 
         colorhex.setText(hexColor);
         colorhex.setKeepHint(true);

@@ -335,6 +335,8 @@ public class CreateNewSet extends Activity {
                 e.printStackTrace();
             }
 
+            FullscreenActivity.lastSetName = FullscreenActivity.settoload;
+
             // Now we are finished, put the original songfilename back
             FullscreenActivity.songfilename = tempsongfilename;
             FullscreenActivity.whichSongFolder = tempdir;
@@ -346,6 +348,7 @@ public class CreateNewSet extends Activity {
 
             FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
         }
+        Preferences.savePreferences();
         return true;
     }
 }

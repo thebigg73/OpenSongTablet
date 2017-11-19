@@ -78,9 +78,9 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_menusettings, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.menu_settings));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,18 +89,18 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        scalemenu_SeekBar = (SeekBar) V.findViewById(R.id.scalemenu_SeekBar);
-        scalemenu_TextView = (TextView) V.findViewById(R.id.scalemenu_TextView);
-        gesturesMenuSwipeButton = (SwitchCompat) V.findViewById(R.id.gesturesMenuSwipeButton);
-        showSetTickBoxInSongMenu = (SwitchCompat) V.findViewById(R.id.showSetTickBoxInSongMenu);
-        showAlphabetInSongMenu = (SwitchCompat) V.findViewById(R.id.showAlphabetInSongMenu);
-        alphabeticalSize_SeekBar = (SeekBar) V.findViewById(R.id.alphabeticalSize_SeekBar);
-        alphabeticalSize_TextView = (TextView) V.findViewById(R.id.alphabeticalSize_TextView);
-        alphabeticalSizeGroup = (LinearLayout) V.findViewById(R.id.alphabeticalSizeGroup);
+        scalemenu_SeekBar = V.findViewById(R.id.scalemenu_SeekBar);
+        scalemenu_TextView = V.findViewById(R.id.scalemenu_TextView);
+        gesturesMenuSwipeButton = V.findViewById(R.id.gesturesMenuSwipeButton);
+        showSetTickBoxInSongMenu = V.findViewById(R.id.showSetTickBoxInSongMenu);
+        showAlphabetInSongMenu = V.findViewById(R.id.showAlphabetInSongMenu);
+        alphabeticalSize_SeekBar = V.findViewById(R.id.alphabeticalSize_SeekBar);
+        alphabeticalSize_TextView = V.findViewById(R.id.alphabeticalSize_TextView);
+        alphabeticalSizeGroup = V.findViewById(R.id.alphabeticalSizeGroup);
 
         pos = (int) (FullscreenActivity.menuSize * 10.0f) - 2;
         scale = (int) ((FullscreenActivity.menuSize * 100.0f)) + "%";

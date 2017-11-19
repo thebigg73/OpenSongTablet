@@ -33,6 +33,16 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="MyVersionText" parent="MyTheme.Base">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:gravity">right</item>
+    </style>
+
     <style name="MySongTitleText" parent="MyTheme.Base">
         <item name="android:textColor">#fff</item>
         <item name="android:textSize">13sp</item>

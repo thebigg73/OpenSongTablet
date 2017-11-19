@@ -84,9 +84,9 @@ public class PopUpLinks extends DialogFragment {
 
         final View V = inflater.inflate(R.layout.popup_links, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.link));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,7 +95,7 @@ public class PopUpLinks extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,18 +106,18 @@ public class PopUpLinks extends DialogFragment {
         });
 
         // Initialise the views
-        linkYouTube_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkYouTube_ImageButton);
-        linkWeb_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkWeb_ImageButton);
-        linkAudio_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkAudio_ImageButton);
-        linkOther_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkOther_ImageButton);
-        linkYouTube_EditText = (EditText) V.findViewById(R.id.linkYouTube_EditText);
-        linkWeb_EditText = (EditText) V.findViewById(R.id.linkWeb_EditText);
-        linkAudio_EditText = (EditText) V.findViewById(R.id.linkAudio_EditText);
-        linkOther_EditText = (EditText) V.findViewById(R.id.linkOther_EditText);
-        linkYouTubeClear_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkYouTubeClear_ImageButton);
-        linkWebClear_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkWebClear_ImageButton);
-        linkAudioClear_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkAudioClear_ImageButton);
-        linkOtherClear_ImageButton = (FloatingActionButton) V.findViewById(R.id.linkOtherClear_ImageButton);
+        linkYouTube_ImageButton = V.findViewById(R.id.linkYouTube_ImageButton);
+        linkWeb_ImageButton = V.findViewById(R.id.linkWeb_ImageButton);
+        linkAudio_ImageButton = V.findViewById(R.id.linkAudio_ImageButton);
+        linkOther_ImageButton = V.findViewById(R.id.linkOther_ImageButton);
+        linkYouTube_EditText = V.findViewById(R.id.linkYouTube_EditText);
+        linkWeb_EditText = V.findViewById(R.id.linkWeb_EditText);
+        linkAudio_EditText = V.findViewById(R.id.linkAudio_EditText);
+        linkOther_EditText = V.findViewById(R.id.linkOther_EditText);
+        linkYouTubeClear_ImageButton = V.findViewById(R.id.linkYouTubeClear_ImageButton);
+        linkWebClear_ImageButton = V.findViewById(R.id.linkWebClear_ImageButton);
+        linkAudioClear_ImageButton = V.findViewById(R.id.linkAudioClear_ImageButton);
+        linkOtherClear_ImageButton = V.findViewById(R.id.linkOtherClear_ImageButton);
 
         // Put any links in to the text fields
         linkYouTube_EditText.setText(FullscreenActivity.mLinkYouTube);

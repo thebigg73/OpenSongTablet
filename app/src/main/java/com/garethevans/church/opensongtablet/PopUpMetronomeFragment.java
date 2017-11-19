@@ -98,9 +98,9 @@ public class PopUpMetronomeFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_page_metronome, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.metronome));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,20 +109,20 @@ public class PopUpMetronomeFragment extends DialogFragment {
                 doSave();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        bpm_numberPicker = (NumberPicker) V.findViewById(R.id.bpm_numberPicker);
-        timesig_numberPicker = (NumberPicker) V.findViewById(R.id.timesig_numberPicker);
-        bpmtext = (TextView) V.findViewById(R.id.bpmtext);
-        taptempo_Button = (Button) V.findViewById(R.id.taptempo_Button);
-        popupmetronome_volume = (SeekBar) V.findViewById(R.id.popupmetronome_volume);
-        popupmetronome_volume_text = (TextView) V.findViewById(R.id.popupmetronome_volume_text);
-        popupmetronome_pan = (SeekBar) V.findViewById(R.id.popupmetronome_pan);
-        popupmetronome_pan_text = (TextView) V.findViewById(R.id.popupmetronome_pan_text);
-        visualmetronome = (SwitchCompat) V.findViewById(R.id.visualmetronome);
-        popupmetronome_startstopbutton = (Button) V.findViewById(R.id.popupmetronome_startstopbutton);
+        bpm_numberPicker = V.findViewById(R.id.bpm_numberPicker);
+        timesig_numberPicker = V.findViewById(R.id.timesig_numberPicker);
+        bpmtext = V.findViewById(R.id.bpmtext);
+        taptempo_Button = V.findViewById(R.id.taptempo_Button);
+        popupmetronome_volume = V.findViewById(R.id.popupmetronome_volume);
+        popupmetronome_volume_text = V.findViewById(R.id.popupmetronome_volume_text);
+        popupmetronome_pan = V.findViewById(R.id.popupmetronome_pan);
+        popupmetronome_pan_text = V.findViewById(R.id.popupmetronome_pan_text);
+        visualmetronome = V.findViewById(R.id.visualmetronome);
+        popupmetronome_startstopbutton = V.findViewById(R.id.popupmetronome_startstopbutton);
 
         // Set up the default values
         popupmetronome_pan_text.setText(FullscreenActivity.metronomepan);

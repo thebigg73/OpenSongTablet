@@ -33,20 +33,17 @@ import java.util.Collections;
 public class ProcessSong extends Activity {
 
     static String parseLyrics(String myLyrics, Context c) {
-        //myLyrics = myLyrics.replace("\n \n","\n\n");
         myLyrics = myLyrics.replace("]\n\n","]\n");
-        //myLyrics = myLyrics.replace("\n\n","\n");
         myLyrics = myLyrics.replaceAll("\r\n", "\n");
         myLyrics = myLyrics.replaceAll("\r", "\n");
-        myLyrics = myLyrics.replaceAll("\t", "    ");
         myLyrics = myLyrics.replaceAll("\\t", "    ");
-        //myLyrics = myLyrics.replaceAll("\\b", "    ");
         myLyrics = myLyrics.replaceAll("\f", "    ");
         myLyrics = myLyrics.replace("\r", "");
         myLyrics = myLyrics.replace("\t", "    ");
         myLyrics = myLyrics.replace("\b", "    ");
         myLyrics = myLyrics.replace("\f", "    ");
         myLyrics = myLyrics.replace("&#x27;", "'");
+        myLyrics = myLyrics.replace("&#39;","'");
         myLyrics = myLyrics.replaceAll("\u0092", "'");
         myLyrics = myLyrics.replaceAll("\u0093", "'");
         myLyrics = myLyrics.replaceAll("\u2018", "'");
@@ -1641,7 +1638,7 @@ public class ProcessSong extends Activity {
 
         song = song.replace("-!!", "");
 
-        if (FullscreenActivity.whichMode.equals("Stage") || FullscreenActivity.whichMode.equals("Presentation")) {
+        if (FullscreenActivity.whichMode.equals("Presentation") || FullscreenActivity.whichMode.equals("Stage")) {
             song = song.replace("||", "%%LATERSPLITHERE%%");
         } else {
             song = song.replace("||", "");
@@ -1656,7 +1653,10 @@ public class ProcessSong extends Activity {
         song = "";
         for (String t:temp) {
             if (!t.startsWith(";") && !t.startsWith(".")) {
-                t = t.replace("---", "[]");
+                if (t.trim().startsWith("---")) {
+                    t = t.replace(" ---", "[]");
+                    t = t.replace("---", "[]");
+                }
             }
 
             if (t.startsWith(".")||t.startsWith(";")) {

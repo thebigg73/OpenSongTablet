@@ -72,6 +72,7 @@ public class PopUpListSetsFragment extends DialogFragment {
     public interface MyInterface {
         void refreshAll();
         void openFragment();
+        void confirmedAction();
     }
 
     private MyInterface mListener;
@@ -157,9 +158,9 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         final View V = inflater.inflate(R.layout.popup_setlists, container, false);
 
-        title = (TextView) V.findViewById(R.id.dialogtitle);
+        title = V.findViewById(R.id.dialogtitle);
         title.setText(myTitle);
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,7 +170,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,22 +190,22 @@ public class PopUpListSetsFragment extends DialogFragment {
         // Get a note of the available sets
         SetActions.updateOptionListSets();
 
-        setListView1 = (ListView) V.findViewById(R.id.setListView1);
-        setListName = (EditText) V.findViewById(R.id.setListName);
-        newSetPromptTitle = (TextView) V.findViewById(R.id.newSetPromptTitle);
-        oldCategory_Spinner = (Spinner) V.findViewById(R.id.oldCategory_Spinner);
-        setCategory_Spinner = (Spinner) V.findViewById(R.id.setCategory_Spinner);
-        newCategory_ImageButton = (ImageButton) V.findViewById(R.id.newCategory_ImageButton);
-        newCategory_EditText = (EditText) V.findViewById(R.id.newCategory_EditText);
-        setCategory_TextView = (TextView) V.findViewById(R.id.setCategory_TextView);
-        setCategory = (RelativeLayout) V.findViewById(R.id.setCategory);
-        filelist_RelativeLayout = (RelativeLayout) V.findViewById(R.id.filelist_RelativeLayout);
-        oldCategory_LinearLayout = (LinearLayout) V.findViewById(R.id.oldCategory_LinearLayout);
-        newCategory_LinearLayout = (LinearLayout) V.findViewById(R.id.newCategory_LinearLayout);
-        newSetTitle_LinearLayout = (LinearLayout) V.findViewById(R.id.newSetTitle_LinearLayout);
-        overWrite_CheckBox = (CheckBox) V.findViewById(R.id.overWrite_CheckBox);
+        setListView1 = V.findViewById(R.id.setListView1);
+        setListName = V.findViewById(R.id.setListName);
+        newSetPromptTitle = V.findViewById(R.id.newSetPromptTitle);
+        oldCategory_Spinner = V.findViewById(R.id.oldCategory_Spinner);
+        setCategory_Spinner = V.findViewById(R.id.setCategory_Spinner);
+        newCategory_ImageButton = V.findViewById(R.id.newCategory_ImageButton);
+        newCategory_EditText = V.findViewById(R.id.newCategory_EditText);
+        setCategory_TextView = V.findViewById(R.id.setCategory_TextView);
+        setCategory = V.findViewById(R.id.setCategory);
+        filelist_RelativeLayout = V.findViewById(R.id.filelist_RelativeLayout);
+        oldCategory_LinearLayout = V.findViewById(R.id.oldCategory_LinearLayout);
+        newCategory_LinearLayout = V.findViewById(R.id.newCategory_LinearLayout);
+        newSetTitle_LinearLayout = V.findViewById(R.id.newSetTitle_LinearLayout);
+        overWrite_CheckBox = V.findViewById(R.id.overWrite_CheckBox);
         setListName.setText(FullscreenActivity.lastSetName);
-        sort_ImageButton = (ImageButton) V.findViewById(R.id.sort_ImageButton);
+        sort_ImageButton = V.findViewById(R.id.sort_ImageButton);
 
         // Sort the available set lists
         sortSetLists();
@@ -222,6 +223,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 newSetTitle_LinearLayout.setVisibility(View.GONE);
                 newCategory_ImageButton.setVisibility(View.GONE);
                 newCategory_EditText.setVisibility(View.GONE);
+                overWrite_CheckBox.setVisibility(View.VISIBLE);
                 break;
 
             case "saveset":
@@ -230,6 +232,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 newCategory_LinearLayout.setVisibility(View.VISIBLE);
                 newSetTitle_LinearLayout.setVisibility(View.VISIBLE);
                 newCategory_EditText.setVisibility(View.GONE);
+                overWrite_CheckBox.setVisibility(View.GONE);
                 break;
 
             case "deleteset":
@@ -241,6 +244,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 newSetPromptTitle.setVisibility(View.GONE);
                 newCategory_ImageButton.setVisibility(View.GONE);
                 newCategory_EditText.setVisibility(View.GONE);
+                overWrite_CheckBox.setVisibility(View.GONE);
                 break;
 
             case "exportset":
@@ -250,6 +254,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 newSetPromptTitle.setVisibility(View.GONE);
                 newCategory_ImageButton.setVisibility(View.GONE);
                 newCategory_EditText.setVisibility(View.GONE);
+                overWrite_CheckBox.setVisibility(View.GONE);
                 break;
 
             case "managesets":
@@ -261,6 +266,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 newCategory_LinearLayout.setVisibility(View.VISIBLE);
                 newSetTitle_LinearLayout.setVisibility(View.VISIBLE);
                 newCategory_EditText.setVisibility(View.GONE);
+                overWrite_CheckBox.setVisibility(View.VISIBLE);
                 break;
         }
 
@@ -321,8 +327,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                 if (FullscreenActivity.whattodo.equals("managesets") && oldCategory_Spinner.getSelectedItemPosition()>0) {
                     msetname = cats.get(oldCategory_Spinner.getSelectedItemPosition()) + "__" + msetname;
                 }
-
-                Log.d("d","msetname="+msetname);
 
                 if (FullscreenActivity.whattodo.equals("exportset")) {
                     FullscreenActivity.setnamechosen = msetname + "%_%";
@@ -623,7 +627,27 @@ public class PopUpListSetsFragment extends DialogFragment {
         File newsetname = new File(FullscreenActivity.dirsets + "/" +
                 FullscreenActivity.settoload);
 
-        if (newsetname.exists() && !overWrite_CheckBox.isChecked()) {
+        // New structure, only give the are you sure prompt if the set name already exists.
+        if (newsetname.exists()) {
+            String message = getResources().getString(R.string.options_set_save) + " \'" + setListName.getText().toString().trim() + "\"?";
+            FullscreenActivity.myToastMessage = message;
+            DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+            newFragment.show(getFragmentManager(), "dialog");
+            dismiss();
+        } else {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "saveset";
+                mListener.confirmedAction();
+            }
+            try {
+                dismiss();
+            } catch (Exception e) {
+                Log.d("d","Error closing");
+            }
+        }
+
+
+        /*if (newsetname.exists() && !overWrite_CheckBox.isChecked()) {
             FullscreenActivity.myToastMessage = getActivity().getString(R.string.renametitle) + " - " +
                     getActivity().getString(R.string.file_exists);
 
@@ -634,7 +658,7 @@ public class PopUpListSetsFragment extends DialogFragment {
             DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
             newFragment.show(getFragmentManager(), "dialog");
             dismiss();
-        }
+        }*/
         // If the user clicks on the areyousureYesButton, then action is confirmed as ConfirmedAction
     }
 

@@ -77,9 +77,9 @@ public class PopUpMediaStoreFragment extends DialogFragment {
 
         View V = inflater.inflate(R.layout.popup_mediastore, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.media_chooser));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,18 +88,18 @@ public class PopUpMediaStoreFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         from = new String[] {MediaStore.MediaColumns.TITLE};
         to = new int[] {android.R.id.text1};
 
-        scrubbar_SeekBar = (SeekBar) V.findViewById(R.id.scrubbar_SeekBar);
-        scrubbar_TextView = (TextView) V.findViewById(R.id.scrubbar_TextView);
-        mediaStore_ListView = (ListView) V.findViewById(R.id.mediaStore_ListView);
-        mediaSelected = (TextView) V.findViewById(R.id.mediaSelected);
+        scrubbar_SeekBar = V.findViewById(R.id.scrubbar_SeekBar);
+        scrubbar_TextView = V.findViewById(R.id.scrubbar_TextView);
+        mediaStore_ListView = V.findViewById(R.id.mediaStore_ListView);
+        mediaSelected = V.findViewById(R.id.mediaSelected);
         mediaSelected.setText(PresenterMode.mpTitle);
-        externalSwitch = (SwitchCompat) V.findViewById(R.id.externalSwitch);
+        externalSwitch = V.findViewById(R.id.externalSwitch);
         if (FullscreenActivity.mediaStore.equals("ext")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                 externalSwitch.setChecked(true);
@@ -121,7 +121,7 @@ public class PopUpMediaStoreFragment extends DialogFragment {
                 updateMedia();
             }
         });
-        startPlay = (FloatingActionButton) V.findViewById(R.id.startPlay);
+        startPlay = V.findViewById(R.id.startPlay);
         startPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

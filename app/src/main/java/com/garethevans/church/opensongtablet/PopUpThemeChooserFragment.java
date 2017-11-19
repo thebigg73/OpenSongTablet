@@ -154,9 +154,9 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_themechooser, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.options_options_theme));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,14 +165,14 @@ public class PopUpThemeChooserFragment extends DialogFragment {
                 doClose();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
         Preferences.loadPreferences();
 
-        stickynote_text = (TextView) V.findViewById(R.id.stickynote_text);
-        stickynote_bg = (TextView) V.findViewById(R.id.stickynote_bg);
+        stickynote_text = V.findViewById(R.id.stickynote_text);
+        stickynote_bg = V.findViewById(R.id.stickynote_bg);
         String s = getActivity().getResources().getString(R.string.stickynotes);
         stickynote_text.setText(s);
         s = s + "\n" + getActivity().getResources().getString(R.string.presoBackground);
@@ -259,12 +259,12 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom2_stickytext = V.findViewById(R.id.stickytext_custom2);
         custom2_stickybg = V.findViewById(R.id.stickybg_custom2);
 
-        dark_theme_heading = (TextView) V.findViewById(R.id.dark_theme_heading);
-        light_theme_heading = (TextView) V.findViewById(R.id.light_theme_heading);
-        custom1_theme_heading = (TextView) V.findViewById(R.id.custom1_theme_heading);
-        custom2_theme_heading = (TextView) V.findViewById(R.id.custom2_theme_heading);
+        dark_theme_heading = V.findViewById(R.id.dark_theme_heading);
+        light_theme_heading = V.findViewById(R.id.light_theme_heading);
+        custom1_theme_heading = V.findViewById(R.id.custom1_theme_heading);
+        custom2_theme_heading = V.findViewById(R.id.custom2_theme_heading);
 
-        resetcolours = (Button) V.findViewById(R.id.resetcolours);
+        resetcolours = V.findViewById(R.id.resetcolours);
         resetcolours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

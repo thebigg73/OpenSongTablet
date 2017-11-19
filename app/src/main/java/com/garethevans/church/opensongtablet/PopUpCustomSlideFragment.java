@@ -136,9 +136,9 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
         V = inflater.inflate(R.layout.popup_customslidecreator, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.add_custom_slide));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,7 +147,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 dismiss();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,33 +158,33 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         });
 
         // Initialise the basic views
-        customRadioGroup = (RadioGroup) V.findViewById(R.id.customRadioGroup);
-        noteRadioButton = (RadioButton) V.findViewById(R.id.noteRadioButton);
-        slideRadioButton = (RadioButton) V.findViewById(R.id.slideRadioButton);
-        imageRadioButton = (RadioButton) V.findViewById(R.id.imageRadioButton);
-        scriptureRadioButton = (RadioButton) V.findViewById(R.id.scriptureRadioButton);
-        slideTitleTextView = (TextView) V.findViewById(R.id.slideTitleTextView);
-        slideContentTextView = (TextView) V.findViewById(R.id.slideContentTextView);
-        slideTitleEditText = (EditText) V.findViewById(R.id.slideTitleEditText);
-        slideContentEditText = (EditText) V.findViewById(R.id.slideContentEditText);
-        addPageButton = (Button) V.findViewById(R.id.addPageButton);
-        loadReusableButton = (Button) V.findViewById(R.id.loadReusableButton);
-        saveReusableCheckBox = (CheckBox) V.findViewById(R.id.saveReusableCheckBox);
-        slideImageTable = (TableLayout) V.findViewById(R.id.slideImageTable);
-        loopCheckBox = (CheckBox) V.findViewById(R.id.loopCheckBox);
-        timeTextView = (TextView) V.findViewById(R.id.timeTextView);
-        timeEditText = (EditText) V.findViewById(R.id.timeEditText);
-        warningTextView = (TextView) V.findViewById(R.id.warningTextView);
-        reusable_LinearLayout = (LinearLayout) V.findViewById(R.id.reusable_LinearLayout);
-        searchBible_LinearLayout = (LinearLayout) V.findViewById(R.id.searchBible_LinearLayout);
-        slideDetails_RelativeLayout = (RelativeLayout) V.findViewById(R.id.slideDetails_RelativeLayout);
-        bibleSearch = (EditText) V.findViewById(R.id.bibleSearch);
-        bibleVersion = (EditText) V.findViewById(R.id.bibleVersion);
-        searchBibleGateway_Button = (Button) V.findViewById(R.id.searchBibleGateway_Button);
-        bibleGateway_WebView = (WebView) V.findViewById(R.id.bibleGateway_WebView);
-        grabVerse_Button = (Button) V.findViewById(R.id.grabVerse_Button);
+        customRadioGroup = V.findViewById(R.id.customRadioGroup);
+        noteRadioButton = V.findViewById(R.id.noteRadioButton);
+        slideRadioButton = V.findViewById(R.id.slideRadioButton);
+        imageRadioButton = V.findViewById(R.id.imageRadioButton);
+        scriptureRadioButton = V.findViewById(R.id.scriptureRadioButton);
+        slideTitleTextView = V.findViewById(R.id.slideTitleTextView);
+        slideContentTextView = V.findViewById(R.id.slideContentTextView);
+        slideTitleEditText = V.findViewById(R.id.slideTitleEditText);
+        slideContentEditText = V.findViewById(R.id.slideContentEditText);
+        addPageButton = V.findViewById(R.id.addPageButton);
+        loadReusableButton = V.findViewById(R.id.loadReusableButton);
+        saveReusableCheckBox = V.findViewById(R.id.saveReusableCheckBox);
+        slideImageTable = V.findViewById(R.id.slideImageTable);
+        loopCheckBox = V.findViewById(R.id.loopCheckBox);
+        timeTextView = V.findViewById(R.id.timeTextView);
+        timeEditText = V.findViewById(R.id.timeEditText);
+        warningTextView = V.findViewById(R.id.warningTextView);
+        reusable_LinearLayout = V.findViewById(R.id.reusable_LinearLayout);
+        searchBible_LinearLayout = V.findViewById(R.id.searchBible_LinearLayout);
+        slideDetails_RelativeLayout = V.findViewById(R.id.slideDetails_RelativeLayout);
+        bibleSearch = V.findViewById(R.id.bibleSearch);
+        bibleVersion = V.findViewById(R.id.bibleVersion);
+        searchBibleGateway_Button = V.findViewById(R.id.searchBibleGateway_Button);
+        bibleGateway_WebView = V.findViewById(R.id.bibleGateway_WebView);
+        grabVerse_Button = V.findViewById(R.id.grabVerse_Button);
         grabVerse_Button.setVisibility(View.GONE);
-        searchBible_progressBar = (ProgressBar) V.findViewById(R.id.searchBible_progressBar);
+        searchBible_progressBar = V.findViewById(R.id.searchBible_progressBar);
         searchBible_progressBar.setVisibility(View.GONE);
         bibleGateway_WebView.setVisibility(View.GONE);
         bibleGateway_WebView.getSettings().getJavaScriptEnabled();

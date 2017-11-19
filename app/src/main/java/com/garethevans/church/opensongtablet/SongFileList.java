@@ -4,6 +4,9 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.annimon.stream.function.Consumer;
+import com.annimon.stream.function.Predicate;
+
 import java.io.File;
 import java.text.Collator;
 import java.util.ArrayList;
@@ -67,11 +70,16 @@ final class SongFileList {
 
     /*this function simply strips the leading prefix from the file path*/
     private void postprocessListPath() {
-        UnaryOperator<String> unaryComp = i->i.substring(topLevelFilePath.length() + 1);
+
         //replaceAll(unaryComp) is only available for newer versions of Android.
         // Added a check and alternative for older versions
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            UnaryOperator<String> unaryComp = new UnaryOperator<String>() {
+                @Override
+                public String apply(String i) {
+                    return i.substring(topLevelFilePath.length() + 1);
+                }
+            };
             folderList.replaceAll(unaryComp);
 
         } else {
@@ -133,7 +141,17 @@ final class SongFileList {
         // my bad, I forgot that performance is an issue - so need to refactor this
         // https://stackoverflow.com/questions/22658322/java-8-performance-of-streams-vs-collections
         // I'm not even using java8, of course, so it may be even slower.
-        com.annimon.stream.Stream.of(foldertoindex.listFiles()).filter(file -> !file.isDirectory()).forEach(file -> currentFileList.add(file.getName()));
+        com.annimon.stream.Stream.of(foldertoindex.listFiles()).filter(new Predicate<File>() {
+            @Override
+            public boolean test(File file) {
+                return !file.isDirectory();
+            }
+        }).forEach(new Consumer<File>() {
+            @Override
+            public void accept(File file) {
+                currentFileList.add(file.getName());
+            }
+        });
     }
 
     /*intialises the folderList variable*/

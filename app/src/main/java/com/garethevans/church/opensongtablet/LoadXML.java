@@ -89,6 +89,7 @@ public class LoadXML extends Activity {
                 try {
                      grabOpenSongXML();
                 } catch (Exception e) {
+                    e.printStackTrace();
                     Log.d("d", "Error performing grabOpenSongXML()");
                     FullscreenActivity.thissong_scale = "W";
                 }
@@ -213,7 +214,7 @@ public class LoadXML extends Activity {
                 String[] lines = FullscreenActivity.myXML.split("\n");
                 String text = "";
                 for (int z=0;z<lines.length;z++) {
-                    if (lines[z].indexOf("[")!=0 && lines[z].indexOf(".")!=0  && lines[z].indexOf(";")!=0 && lines[z].indexOf(" ")!=0) {
+                    if (lines[z].indexOf("[")!=0 && lines[z].indexOf(".")!=0 && lines[z].indexOf(";")!=0 && lines[z].indexOf("---")!=0 && lines[z].indexOf(" ")!=0) {
                         lines[z] = " " + lines[z];
                     }
                     text += lines[z] + "\n";
@@ -470,7 +471,14 @@ public class LoadXML extends Activity {
                         FullscreenActivity.mTitle = FullscreenActivity.songfilename;
                     }
                 } else if (xpp.getName().equals("lyrics")) {
-                    FullscreenActivity.mLyrics = ProcessSong.fixStartOfLines(parseFromHTMLEntities(xpp.nextText()));
+                    String grabbedlyrics = xpp.nextText();
+                    try {
+                        String fixed = ProcessSong.fixStartOfLines(grabbedlyrics);
+                        FullscreenActivity.mLyrics = ProcessSong.fixStartOfLines(parseFromHTMLEntities(xpp.nextText()));
+                    } catch (Exception e) {
+                        FullscreenActivity.mLyrics = grabbedlyrics;
+                    }
+
                 } else if (xpp.getName().equals("ccli")) {
                     FullscreenActivity.mCCLI = parseFromHTMLEntities(xpp.nextText());
                 } else if (xpp.getName().equals("theme")) {

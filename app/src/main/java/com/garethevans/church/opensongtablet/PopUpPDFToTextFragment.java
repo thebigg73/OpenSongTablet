@@ -79,9 +79,9 @@ public class PopUpPDFToTextFragment extends DialogFragment {
 
         V = inflater.inflate(R.layout.popup_pdftotext, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.pdftotext_extract));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,13 +90,13 @@ public class PopUpPDFToTextFragment extends DialogFragment {
                 cancelEdit();
             }
         });
-        final FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the basic views
-        TextView pdftotext_found = (TextView) V.findViewById(R.id.pdftotext_found);
+        TextView pdftotext_found = V.findViewById(R.id.pdftotext_found);
         pdftotext_found.setTypeface(Typeface.MONOSPACE);
-        Button doextractbutton = (Button) V.findViewById(R.id.doextractbutton);
+        Button doextractbutton = V.findViewById(R.id.doextractbutton);
         doextractbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,7 +196,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         } catch (Exception e) {
             Log.d("d","Error extracting text");
         }
-        foundText = parsedText;
+        foundText = PopUpEditSongFragment.parseToHTMLEntities(parsedText);
     }
 
     public String detectAndImproveLine(String alltext) {

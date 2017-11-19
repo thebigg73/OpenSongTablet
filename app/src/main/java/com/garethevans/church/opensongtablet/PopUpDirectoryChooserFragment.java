@@ -113,13 +113,13 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_folderexplorer, container, false);
         context = getActivity().getBaseContext();
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         if (chooserAction!=null && chooserAction.equals("findosbfile")) {
             title.setText(getActivity().getResources().getString(R.string.backup_import));
         } else {
             title.setText(getActivity().getResources().getString(R.string.storage_choose));
         }
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,7 +132,7 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
                 }
             }
         });
-        selectButton = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        selectButton = V.findViewById(R.id.saveMe);
         selectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,12 +151,12 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
         if (!location.isDirectory() || !location.canWrite()) {
             location = FullscreenActivity.homedir;
         }
-        currentFolder = (TextView) V.findViewById(R.id.currentFolderText);
+        currentFolder = V.findViewById(R.id.currentFolderText);
         currentFolder.setText(location.toString());
-        isWritableText = (TextView) V.findViewById(R.id.isWritableText);
+        isWritableText = V.findViewById(R.id.isWritableText);
 
         // Identify the listview which will either just show folders, or folders and files
-        directoryList = (ListView) V.findViewById(R.id.folderListView);
+        directoryList = V.findViewById(R.id.folderListView);
 
         // Set up the navigate up arrow button
         navigateUp = (FloatingActionButton) V.findViewById(R.id.upFolderButton);

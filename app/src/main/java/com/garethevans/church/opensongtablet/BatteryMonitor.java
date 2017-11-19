@@ -88,7 +88,7 @@ public class BatteryMonitor extends BroadcastReceiver {
     public static BitmapDrawable batteryImage(int charge, int abheight, Context c) {
 
         int size = (int)(abheight*0.75f);
-        int thickness = 4;
+        int thickness = FullscreenActivity.batteryLine;
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
         Bitmap bmp = Bitmap.createBitmap(size,size, conf);
 

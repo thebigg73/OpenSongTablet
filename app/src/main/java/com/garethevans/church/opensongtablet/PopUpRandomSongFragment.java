@@ -78,9 +78,9 @@ public class PopUpRandomSongFragment extends DialogFragment {
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_randomsong, container, false);
 
-        TextView title = (TextView) V.findViewById(R.id.dialogtitle);
+        TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.profile));
-        final FloatingActionButton closeMe = (FloatingActionButton) V.findViewById(R.id.closeMe);
+        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,15 +89,15 @@ public class PopUpRandomSongFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = (FloatingActionButton) V.findViewById(R.id.saveMe);
+        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
         // Initialise the views
-        foundSong_Button = (LinearLayout) V.findViewById(R.id.foundSong_Button);
-        foundSongTitle_TextView = (TextView) V.findViewById(R.id.foundSongTitle_TextView);
-        foundSongFolder_TextView = (TextView) V.findViewById(R.id.foundSongFolder_TextView);
-        generateRandom_Button = (Button) V.findViewById(R.id.generateRandom_Button);
-        chooseFolders_ListView = (ListView) V.findViewById(R.id.chooseFolders_ListView);
+        foundSong_Button = V.findViewById(R.id.foundSong_Button);
+        foundSongTitle_TextView = V.findViewById(R.id.foundSongTitle_TextView);
+        foundSongFolder_TextView = V.findViewById(R.id.foundSongFolder_TextView);
+        generateRandom_Button = V.findViewById(R.id.generateRandom_Button);
+        chooseFolders_ListView = V.findViewById(R.id.chooseFolders_ListView);
 
         // Try to generate the file folders available to choose from and highlight the ones already specified
         generateFolderList();
