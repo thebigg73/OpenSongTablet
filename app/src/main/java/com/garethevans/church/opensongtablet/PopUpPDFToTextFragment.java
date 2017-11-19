@@ -196,7 +196,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         } catch (Exception e) {
             Log.d("d","Error extracting text");
         }
-        foundText = parsedText;
+        foundText = PopUpEditSongFragment.parseToHTMLEntities(parsedText);
     }
 
     public String detectAndImproveLine(String alltext) {

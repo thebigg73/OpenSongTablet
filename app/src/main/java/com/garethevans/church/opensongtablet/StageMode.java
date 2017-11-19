@@ -6727,6 +6727,7 @@ public class StageMode extends AppCompatActivity implements
 
         void teardown() {
             try {
+                Log.d("d","Trying teardown");
                 CastRemoteDisplayLocalService.stopService();
                 if (hdmi!=null && hdmi.isShowing()) {
                     try {
@@ -6761,13 +6762,15 @@ public class StageMode extends AppCompatActivity implements
         PendingIntent notificationPendingIntent = PendingIntent.getActivity(
                 StageMode.this, 0, intent, 0);
 
+        Log.d("updateDislpays","Called");
         CastRemoteDisplayLocalService.NotificationSettings settings =
                 new CastRemoteDisplayLocalService.NotificationSettings.Builder()
                         .setNotificationPendingIntent(notificationPendingIntent).build();
 
         if (mSelectedDevice!=null) {
+            Log.d("updateDislpays","startService");
             CastRemoteDisplayLocalService.startService(
-                    getApplicationContext(),
+            getApplicationContext(),
                     PresentationService.class, getString(R.string.app_id),
                     mSelectedDevice, settings,
                     new CastRemoteDisplayLocalService.Callbacks() {
@@ -6790,6 +6793,7 @@ public class StageMode extends AppCompatActivity implements
         } else {
             // Might be a hdmi connection
             try {
+                Log.d("updateDislpays","hdmi");
                 Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
                 if (mDisplay!=null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -6805,6 +6809,7 @@ public class StageMode extends AppCompatActivity implements
     }
     @Override
     public void refreshSecondaryDisplay(String which) {
+        Log.d("refreshSecondaryDisplay","which="+which);
         try {
             switch (which) {
                 case "all":

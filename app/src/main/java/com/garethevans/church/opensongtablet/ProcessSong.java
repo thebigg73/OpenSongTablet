@@ -43,6 +43,7 @@ public class ProcessSong extends Activity {
         myLyrics = myLyrics.replace("\b", "    ");
         myLyrics = myLyrics.replace("\f", "    ");
         myLyrics = myLyrics.replace("&#x27;", "'");
+        myLyrics = myLyrics.replace("&#39;","'");
         myLyrics = myLyrics.replaceAll("\u0092", "'");
         myLyrics = myLyrics.replaceAll("\u0093", "'");
         myLyrics = myLyrics.replaceAll("\u2018", "'");
@@ -664,10 +665,6 @@ public class ProcessSong extends Activity {
             }
         }
 
-        Log.d("d","autoscroll_default_or_prompt="+FullscreenActivity.autoscroll_default_or_prompt);
-        Log.d("d","autoScrollDelay="+FullscreenActivity.autoScrollDelay);
-        Log.d("d","autoScrollDuration="+FullscreenActivity.autoScrollDuration);
-        Log.d("d","usingdefaults="+FullscreenActivity.usingdefaults);
         return (FullscreenActivity.autoScrollDuration > 0 && FullscreenActivity.autoScrollDelay >= 0) ||
                 FullscreenActivity.usingdefaults;
     }

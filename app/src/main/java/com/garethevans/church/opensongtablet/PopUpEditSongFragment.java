@@ -1105,6 +1105,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         val = val.replace("<","&lt;");
         val = val.replace(">","&gt;");
         val = val.replace("&","&amp;");
+        val = val.replace("&#39;","'");
 
         return val;
     }

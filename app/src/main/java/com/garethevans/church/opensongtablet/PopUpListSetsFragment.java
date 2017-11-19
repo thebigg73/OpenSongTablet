@@ -72,6 +72,7 @@ public class PopUpListSetsFragment extends DialogFragment {
     public interface MyInterface {
         void refreshAll();
         void openFragment();
+        void confirmedAction();
     }
 
     private MyInterface mListener;
@@ -222,6 +223,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 newSetTitle_LinearLayout.setVisibility(View.GONE);
                 newCategory_ImageButton.setVisibility(View.GONE);
                 newCategory_EditText.setVisibility(View.GONE);
+                overWrite_CheckBox.setVisibility(View.VISIBLE);
                 break;
 
             case "saveset":
@@ -230,6 +232,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 newCategory_LinearLayout.setVisibility(View.VISIBLE);
                 newSetTitle_LinearLayout.setVisibility(View.VISIBLE);
                 newCategory_EditText.setVisibility(View.GONE);
+                overWrite_CheckBox.setVisibility(View.GONE);
                 break;
 
             case "deleteset":
@@ -241,6 +244,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 newSetPromptTitle.setVisibility(View.GONE);
                 newCategory_ImageButton.setVisibility(View.GONE);
                 newCategory_EditText.setVisibility(View.GONE);
+                overWrite_CheckBox.setVisibility(View.GONE);
                 break;
 
             case "exportset":
@@ -250,6 +254,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 newSetPromptTitle.setVisibility(View.GONE);
                 newCategory_ImageButton.setVisibility(View.GONE);
                 newCategory_EditText.setVisibility(View.GONE);
+                overWrite_CheckBox.setVisibility(View.GONE);
                 break;
 
             case "managesets":
@@ -261,6 +266,7 @@ public class PopUpListSetsFragment extends DialogFragment {
                 newCategory_LinearLayout.setVisibility(View.VISIBLE);
                 newSetTitle_LinearLayout.setVisibility(View.VISIBLE);
                 newCategory_EditText.setVisibility(View.GONE);
+                overWrite_CheckBox.setVisibility(View.VISIBLE);
                 break;
         }
 
@@ -321,8 +327,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                 if (FullscreenActivity.whattodo.equals("managesets") && oldCategory_Spinner.getSelectedItemPosition()>0) {
                     msetname = cats.get(oldCategory_Spinner.getSelectedItemPosition()) + "__" + msetname;
                 }
-
-                Log.d("d","msetname="+msetname);
 
                 if (FullscreenActivity.whattodo.equals("exportset")) {
                     FullscreenActivity.setnamechosen = msetname + "%_%";
@@ -623,7 +627,27 @@ public class PopUpListSetsFragment extends DialogFragment {
         File newsetname = new File(FullscreenActivity.dirsets + "/" +
                 FullscreenActivity.settoload);
 
-        if (newsetname.exists() && !overWrite_CheckBox.isChecked()) {
+        // New structure, only give the are you sure prompt if the set name already exists.
+        if (newsetname.exists()) {
+            String message = getResources().getString(R.string.options_set_save) + " \'" + setListName.getText().toString().trim() + "\"?";
+            FullscreenActivity.myToastMessage = message;
+            DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+            newFragment.show(getFragmentManager(), "dialog");
+            dismiss();
+        } else {
+            if (mListener!=null) {
+                FullscreenActivity.whattodo = "saveset";
+                mListener.confirmedAction();
+            }
+            try {
+                dismiss();
+            } catch (Exception e) {
+                Log.d("d","Error closing");
+            }
+        }
+
+
+        /*if (newsetname.exists() && !overWrite_CheckBox.isChecked()) {
             FullscreenActivity.myToastMessage = getActivity().getString(R.string.renametitle) + " - " +
                     getActivity().getString(R.string.file_exists);
 
@@ -634,7 +658,7 @@ public class PopUpListSetsFragment extends DialogFragment {
             DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
             newFragment.show(getFragmentManager(), "dialog");
             dismiss();
-        }
+        }*/
         // If the user clicks on the areyousureYesButton, then action is confirmed as ConfirmedAction
     }
 

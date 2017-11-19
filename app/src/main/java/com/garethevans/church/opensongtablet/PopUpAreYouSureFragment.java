@@ -78,6 +78,12 @@ public class PopUpAreYouSureFragment extends DialogFragment {
                     }
                     break;
             }
+
+        }
+        if (FullscreenActivity.whattodo.equals("saveset")) {
+            if (mListener!=null) {
+                mListener.openFragment();
+            }
         }
         dismiss();
     }

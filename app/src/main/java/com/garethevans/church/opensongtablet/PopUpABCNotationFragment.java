@@ -30,8 +30,6 @@ public class PopUpABCNotationFragment extends DialogFragment {
         void refreshAll();
     }
 
-    //private MyInterface mListener;
-
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
@@ -97,21 +95,32 @@ public class PopUpABCNotationFragment extends DialogFragment {
                 dismiss();
             }
         });
-        FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
+        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         if (FullscreenActivity.whattodo.equals("abcnotation")) {
             saveMe.setVisibility(View.GONE);
         }
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                CustomAnimations.animateFAB(saveMe, getActivity());
                 doSave();
             }
         });
 
         // Initialise the views
         abcWebView = V.findViewById(R.id.abcWebView);
-
+        String newUA = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0";
+        abcWebView.getSettings().setUserAgentString(newUA);
+        abcWebView.getSettings().getJavaScriptEnabled();
         abcWebView.getSettings().setJavaScriptEnabled(true);
+        abcWebView.getSettings().setDomStorageEnabled(true);
+        abcWebView.getSettings().setLoadWithOverviewMode(true);
+        abcWebView.getSettings().setUseWideViewPort(true);
+        abcWebView.getSettings().setSupportZoom(true);
+        abcWebView.getSettings().setBuiltInZoomControls(true);
+        abcWebView.getSettings().setDisplayZoomControls(false);
+        abcWebView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+        abcWebView.setScrollbarFadingEnabled(false);
         abcWebView.addJavascriptInterface(new JsInterface(), "AndroidApp");
         abcWebView.loadUrl("file:///android_asset/ABC/abc.html");
         abcWebView.setWebViewClient(new WebViewClient() {

@@ -132,7 +132,6 @@ public class PopUpSetViewNew extends DialogFragment {
         }
 
         if (getDialog().getWindow()!=null) {
-            Log.d("d","setting background");
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
         if (mListener!=null) {
@@ -212,9 +211,26 @@ public class PopUpSetViewNew extends DialogFragment {
         saveAsProperSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "saveset";
-                if (mListener != null) {
-                    mListener.openFragment();
+                File settosave = new File(FullscreenActivity.dirsets,FullscreenActivity.lastSetName);
+                if (FullscreenActivity.lastSetName==null || FullscreenActivity.lastSetName.equals("")) {
+                    FullscreenActivity.whattodo = "saveset";
+                    if (mListener != null) {
+                        mListener.openFragment();
+                    }
+                } else if (settosave.exists()) {
+                    // Load the are you sure prompt
+                    FullscreenActivity.whattodo = "saveset";
+                    String setnamenice = FullscreenActivity.lastSetName.replace("__"," / ");
+                    String message = getResources().getString(R.string.options_set_save) + " \'" + setnamenice + "\"?";
+                    FullscreenActivity.myToastMessage = message;
+                    DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+                    newFragment.show(getFragmentManager(), "dialog");
+                    dismiss();
+                } else {
+                    FullscreenActivity.whattodo = "saveset";
+                    if (mListener != null) {
+                        mListener.openFragment();
+                    }
                 }
             }
         });

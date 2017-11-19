@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -22,6 +23,7 @@ import com.peak.salut.Callbacks.SalutCallback;
 import com.peak.salut.Callbacks.SalutDeviceCallback;
 import com.peak.salut.SalutDevice;
 
+import java.io.File;
 import java.io.IOException;
 
 public class OptionMenuListeners extends Activity {
@@ -482,10 +484,32 @@ public class OptionMenuListeners extends Activity {
         setSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FullscreenActivity.whattodo = "saveset";
-                if (mListener!=null) {
-                    mListener.closeMyDrawers("option");
-                    mListener.openFragment();
+                File settosave = new File(FullscreenActivity.dirsets,FullscreenActivity.lastSetName);
+                if (FullscreenActivity.lastSetName==null || FullscreenActivity.lastSetName.equals("")) {
+                    FullscreenActivity.whattodo = "saveset";
+                    if (mListener != null) {
+                        mListener.closeMyDrawers("option");
+                        mListener.openFragment();
+                    }
+                } else if (settosave.exists()) {
+                    // Load the are you sure prompt
+                    FullscreenActivity.whattodo = "saveset";
+                    String setnamenice = FullscreenActivity.lastSetName.replace("__"," / ");
+                    String message = c.getResources().getString(R.string.options_set_save) + " \'" + setnamenice + "\"?";
+                    FullscreenActivity.myToastMessage = message;
+                    try {
+                        Activity ac = (Activity) c;
+                        DialogFragment newFragment = PopUpAreYouSureFragment.newInstance(message);
+                        newFragment.show(ac.getFragmentManager(),message);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    FullscreenActivity.whattodo = "saveset";
+                    if (mListener != null) {
+                        mListener.openFragment();
+                    }
                 }
             }
         });

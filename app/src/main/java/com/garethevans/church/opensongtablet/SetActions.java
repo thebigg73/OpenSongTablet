@@ -135,6 +135,8 @@ public class SetActions extends Activity {
             return;
         }
 
+        FullscreenActivity.lastSetName = FullscreenActivity.settoload;
+
         // Try the new, improved method of loading in a set
         // First up, try to get the encoding of the set file
         String utf = LoadXML.getUTFEncoding(FullscreenActivity.setfile, c);
@@ -172,6 +174,7 @@ public class SetActions extends Activity {
                 eventType = xpp.next();
             }
         }
+        Preferences.savePreferences();
     }
 
     static void indexSongInSet() {
@@ -269,6 +272,8 @@ public class SetActions extends Activity {
         FullscreenActivity.mySet = "";
         FullscreenActivity.mSetList = null;
         FullscreenActivity.setView = false;
+
+        FullscreenActivity.lastSetName = "";
 
         // Save the new, empty, set
         Preferences.savePreferences();
@@ -878,7 +883,6 @@ public class SetActions extends Activity {
         }
 
         // The song is the bit after the last /
-        Log.d("d","linkclicked="+FullscreenActivity.linkclicked);
         int songpos = FullscreenActivity.linkclicked.lastIndexOf("/");
         if (songpos==0) {
             // Empty folder
@@ -886,7 +890,6 @@ public class SetActions extends Activity {
         } else {
             FullscreenActivity.whichSongFolder = FullscreenActivity.linkclicked.substring(0,songpos);
         }
-        Log.d("d","whichSongFolder="+FullscreenActivity.whichSongFolder);
 
         if (songpos>=FullscreenActivity.linkclicked.length()) {
             // Empty song
