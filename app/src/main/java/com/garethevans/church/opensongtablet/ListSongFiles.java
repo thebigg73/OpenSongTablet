@@ -67,18 +67,26 @@ public class ListSongFiles {
                 }
                 File f = new File(s_f);
                 if (f.exists()) {
-                    fileextensionok = checkFileExtension(s);
-                    utf = checkUtfEncoding(s_f, c);
-                    if (fileextensionok) {
-                        vals = getSongDetailsXML(f, s, utf);
-                    } else {
-                        // Non OpenSong
+                    if (f.isDirectory()) {
                         vals[0] = s;
-                        vals[1] = "";
-                        vals[2] = "";
+                        vals[1] = s_f;
+                        vals[2] = "Directory";
                     }
-                    if (vals[2] == null || vals[2].equals("")) {
-                        vals[2] = "";
+                    else
+                    {
+                        fileextensionok = checkFileExtension(s);
+                        utf = checkUtfEncoding(s_f, c);
+                        if (fileextensionok) {
+                            vals = getSongDetailsXML(f, s, utf);
+                        } else {
+                            // Non OpenSong
+                            vals[0] = s;
+                            vals[1] = "";
+                            vals[2] = "";
+                        }
+                        if (vals[2] == null || vals[2].equals("")) {
+                            vals[2] = "";
+                        }
                     }
                     try {
                         FullscreenActivity.songDetails[r][0] = vals[0];

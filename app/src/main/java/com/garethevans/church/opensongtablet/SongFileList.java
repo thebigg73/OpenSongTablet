@@ -141,14 +141,14 @@ final class SongFileList {
         // my bad, I forgot that performance is an issue - so need to refactor this
         // https://stackoverflow.com/questions/22658322/java-8-performance-of-streams-vs-collections
         // I'm not even using java8, of course, so it may be even slower.
-        com.annimon.stream.Stream.of(foldertoindex.listFiles()).filter(new Predicate<File>() {
-            @Override
-            public boolean test(File file) {
-                return !file.isDirectory();
-            }
-        }).forEach(new Consumer<File>() {
+        com.annimon.stream.Stream.of(foldertoindex.listFiles()).forEach(new Consumer<File>() {
             @Override
             public void accept(File file) {
+                /*String tempfile = file.getName();
+                if(file.isDirectory())
+                {
+                    tempfile = "Dir... " + tempfile;
+                }*/
                 currentFileList.add(file.getName());
             }
         });
