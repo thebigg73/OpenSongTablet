@@ -145,6 +145,11 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
         //14
         actionOptions.add(getActivity().getString(R.string.music_score));
 
+        //15
+        actionOptions.add(getActivity().getString(R.string.inc_autoscroll_speed));
+        //16
+        actionOptions.add(getActivity().getString(R.string.dec_autoscroll_speed));
+
         ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
         ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
         ArrayAdapter<String> adapter_3 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
@@ -285,6 +290,14 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
             case 14:
                 t = "abcnotation_edit";
                 break;
+
+            case 15:
+                t = "inc_autoscroll_speed";
+                break;
+
+            case 16:
+                t = "dec_autoscroll_speed";
+                break;
         }
 
         return t;
@@ -350,8 +363,12 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
                 i = 13;
                 break;
 
-            case "abcnotation_edit":
-                i = 14;
+            case "inc_autoscroll_speed":
+                i = 15;
+                break;
+
+            case "dec_autoscroll_speed":
+                i = 16;
                 break;
         }
 
@@ -422,6 +439,14 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
 
             case "abcnotation_edit":
                 d = c.getResources().getDrawable(R.drawable.ic_clef_white_36dp);
+                break;
+
+            case "inc_autoscroll_speed":
+                d = c.getResources().getDrawable(R.drawable.ic_arrow_up_white_36dp);
+                break;
+
+            case "dec_autoscroll_speed":
+                d = c.getResources().getDrawable(R.drawable.ic_arrow_down_white_36dp);
                 break;
         }
         return d;

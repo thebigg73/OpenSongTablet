@@ -889,5 +889,8 @@
 			Sharing my Saviour\'s love, showing my Father\'s heart.
 		</lyrics>
 	</string>
+    <string name="inc_autoscroll_speed">Increase Autoscroll Speed</string>
+    <string name="dec_autoscroll_speed">Decrease Autoscroll Speed</string>
+    <string name="edit_default_delaymax">Max Delay (seconds)</string>
 
 </resources>

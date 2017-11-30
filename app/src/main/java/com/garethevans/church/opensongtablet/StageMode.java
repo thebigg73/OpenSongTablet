@@ -85,6 +85,7 @@ import com.peak.salut.Callbacks.SalutDataCallback;
 import com.peak.salut.Salut;
 import com.peak.salut.SalutDataReceiver;
 import com.peak.salut.SalutServiceData;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.apache.commons.io.FileUtils;
 import org.xmlpull.v1.XmlPullParserException;
@@ -2209,6 +2210,14 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.showLyrics = !FullscreenActivity.showLyrics;
                 Preferences.savePreferences();
                 loadSong();
+                break;
+
+            case "inc_autoscroll_speed":
+                FullscreenActivity.autoscroll_modifier = FullscreenActivity.autoscroll_modifier + 4;
+                break;
+
+            case "dec_autoscroll_speed":
+                FullscreenActivity.autoscroll_modifier = FullscreenActivity.autoscroll_modifier - 4;
                 break;
         }
     }
@@ -5729,6 +5738,7 @@ public class StageMode extends AppCompatActivity implements
         FullscreenActivity.isManualDragging = false;
         FullscreenActivity.wasscrolling = false;
         get_scrollheight = new GetScrollHeight();
+        FullscreenActivity.refWatcher.watch(get_scrollheight);
         try {
             get_scrollheight.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
@@ -5810,6 +5820,7 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPreExecute() {
             try {
+                FullscreenActivity.autoscroll_modifier = 0;
                 FullscreenActivity.time_start = System.currentTimeMillis();
                 songscrollview.scrollTo(0, 0);
             } catch (Exception e) {
@@ -5859,7 +5870,13 @@ public class StageMode extends AppCompatActivity implements
         protected void onProgressUpdate(Integer... intg) {
             try {
                 if (!FullscreenActivity.wasscrolling) {
-                    FullscreenActivity.newPosFloat = FullscreenActivity.newPosFloat + FullscreenActivity.autoscroll_pixels;
+                    if(FullscreenActivity.newPosFloat + FullscreenActivity.autoscroll_pixels + FullscreenActivity.autoscroll_modifier > 0) {
+                        FullscreenActivity.newPosFloat = FullscreenActivity.newPosFloat + FullscreenActivity.autoscroll_pixels + FullscreenActivity.autoscroll_modifier;
+                    }
+                    else
+                    {
+                        FullscreenActivity.newPosFloat = FullscreenActivity.newPosFloat + FullscreenActivity.autoscroll_pixels;
+                    }
                 } else {
                     FullscreenActivity.newPosFloat = songscrollview.getScrollY();
                 }

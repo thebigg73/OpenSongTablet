@@ -107,7 +107,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         popupautoscroll_delay_text = V.findViewById(R.id.popupautoscroll_delay_text);
         popupautoscroll_duration = V.findViewById(R.id.popupautoscroll_duration);
         uselinkaudiolength_ImageButton = V.findViewById(R.id.uselinkaudiolength_ImageButton);
-
+        popupautoscroll_delay.setMax(FullscreenActivity.default_autoscroll_predelay_max);
         // Set up current values
         AutoScrollFunctions.getAutoScrollTimes();
         String text;

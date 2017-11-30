@@ -60,13 +60,13 @@
                 android:id="@+id/custom4Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:useCompatPadding="true"
-                app:fabSize="mini"
-                app:borderWidth="0dp"
-                app:backgroundTint="@color/purple"
-                android:src="@drawable/ic_help_outline_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"/>
+                android:src="@drawable/ic_help_outline_white_36dp"
+                android:visibility="visible"
+                app:backgroundTint="@color/purple"
+                app:borderWidth="0dp"
+                app:fabSize="mini"
+                app:useCompatPadding="true" />
 
         </LinearLayout>
 
