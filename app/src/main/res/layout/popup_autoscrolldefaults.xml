@@ -33,25 +33,37 @@
                 android:text="@string/autoscroll_time"
                 style="@style/MyHeadingText"/>
 
-            <TextView
+            <EditText
+                android:id="@+id/default_delaymax_EditText"
+                style="@style/MyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:hint="@string/edit_default_delaymax"
+                android:inputType="number"
+                android:maxLines="1" />
+
+            <TextView
                 android:id="@+id/default_delaytime_TextView"
-                android:layout_margin="8dp"
-                style="@style/MyInfoText"
-                android:gravity="center_horizontal" />
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp" />
 
             <SeekBar
+                android:id="@+id/default_delaytime_SeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/default_delaytime_SeekBar"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/apptheme_scrubber_primary_holo"
                 android:progressDrawable="@drawable/apptheme_scrubber_secondary_holo"
-                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="16dp" />
+                android:thumb="@drawable/apptheme_scrubber_control_normal_holo_bright" />
 
             <TextView
                 android:layout_width="match_parent"

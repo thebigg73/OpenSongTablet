@@ -173,6 +173,7 @@ public class Preferences extends Activity {
             FullscreenActivity.dark_stickytext = myPreferences.getInt("dark_stickytext", default_stickyNotes);
             FullscreenActivity.dark_stickybg = myPreferences.getInt("dark_stickybg", default_stickyNotesBG);
             FullscreenActivity.default_autoscroll_predelay = myPreferences.getInt("default_autoscroll_predelay", 10);
+            FullscreenActivity.default_autoscroll_predelay_max = myPreferences.getInt("default_autoscroll_predelay_max", 30);
             FullscreenActivity.default_autoscroll_songlength = myPreferences.getInt("default_autoscroll_songlength", 180);
             FullscreenActivity.drawingEraserSize = myPreferences.getInt("drawingEraserSize",20);
             FullscreenActivity.drawingHighlightColor = myPreferences.getString("drawingHighlightColor", "yellow");

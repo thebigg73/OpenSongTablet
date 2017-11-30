@@ -57,7 +57,6 @@ PopUpDirectoryChooserFragment.SettingsInterface {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setupMyShortCuts();
 
         PackageInfo pInfo;
