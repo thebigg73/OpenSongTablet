@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.PendingIntent;
@@ -52,6 +53,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -85,7 +87,6 @@ import com.peak.salut.Callbacks.SalutDataCallback;
 import com.peak.salut.Salut;
 import com.peak.salut.SalutDataReceiver;
 import com.peak.salut.SalutServiceData;
-import com.squareup.leakcanary.RefWatcher;
 
 import org.apache.commons.io.FileUtils;
 import org.xmlpull.v1.XmlPullParserException;
@@ -959,7 +960,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
         tryCancelAsyncTasks();
-        if (songscrollview!=null) {
+        if (songscrollview !=null) {
             songscrollview.removeAllViews();
         }
 
@@ -2213,11 +2214,24 @@ public class StageMode extends AppCompatActivity implements
                 break;
 
             case "inc_autoscroll_speed":
-                FullscreenActivity.autoscroll_modifier = FullscreenActivity.autoscroll_modifier + 4;
+                if(FullscreenActivity.autoscrollispaused) {
+                    FullscreenActivity.autoscrollispaused = false;
+                    FullscreenActivity.autoscroll_modifier = 0;
+                }
+                else {
+                    FullscreenActivity.autoscroll_modifier = FullscreenActivity.autoscroll_modifier + 4;
+                }
                 break;
 
             case "dec_autoscroll_speed":
-                FullscreenActivity.autoscroll_modifier = FullscreenActivity.autoscroll_modifier - 4;
+                if(FullscreenActivity.autoscroll_pixels + FullscreenActivity.autoscroll_modifier >= 4)
+                    FullscreenActivity.autoscroll_modifier = FullscreenActivity.autoscroll_modifier - 4;
+                if(FullscreenActivity.autoscroll_pixels + FullscreenActivity.autoscroll_modifier <= 4)
+                    FullscreenActivity.autoscrollispaused = true;
+                break;
+
+            case "toggle_autoscroll_pause":
+                FullscreenActivity.autoscrollispaused = !FullscreenActivity.autoscrollispaused;
                 break;
         }
     }
@@ -2878,7 +2892,7 @@ public class StageMode extends AppCompatActivity implements
                 }
             }
 
-            // End any current autscrolling
+            // End any current autoscrolling
             stopAutoScroll();
             padcurrentTime_TextView.setText(getString(R.string.zerotime));
             backingtrackProgress.setVisibility(View.GONE);
@@ -5738,7 +5752,7 @@ public class StageMode extends AppCompatActivity implements
         FullscreenActivity.isManualDragging = false;
         FullscreenActivity.wasscrolling = false;
         get_scrollheight = new GetScrollHeight();
-        FullscreenActivity.refWatcher.watch(get_scrollheight);
+        //FullscreenActivity.refWatcher.watch(get_scrollheight);
         try {
             get_scrollheight.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
@@ -5821,6 +5835,7 @@ public class StageMode extends AppCompatActivity implements
         protected void onPreExecute() {
             try {
                 FullscreenActivity.autoscroll_modifier = 0;
+                FullscreenActivity.autoscrollispaused = false;
                 FullscreenActivity.time_start = System.currentTimeMillis();
                 songscrollview.scrollTo(0, 0);
             } catch (Exception e) {
@@ -5869,7 +5884,7 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onProgressUpdate(Integer... intg) {
             try {
-                if (!FullscreenActivity.wasscrolling) {
+                if (!FullscreenActivity.wasscrolling && !FullscreenActivity.autoscrollispaused) {
                     if(FullscreenActivity.newPosFloat + FullscreenActivity.autoscroll_pixels + FullscreenActivity.autoscroll_modifier > 0) {
                         FullscreenActivity.newPosFloat = FullscreenActivity.newPosFloat + FullscreenActivity.autoscroll_pixels + FullscreenActivity.autoscroll_modifier;
                     }
@@ -6342,6 +6357,19 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         scaleGestureDetector.onTouchEvent(event);
+        if (event.getSource() == InputDevice.SOURCE_TOUCHSCREEN) {
+            if (event.getAction() == MotionEvent.ACTION_SCROLL) {
+                FullscreenActivity.autoscrollispaused = true;
+                new Handler().postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                FullscreenActivity.autoscrollispaused = false;
+                            }
+                        },
+                        300);
+                return true;
+            }
+        }
         return true;
     }
 

@@ -28,8 +28,8 @@ import android.widget.TextView;
 import com.peak.salut.Salut;
 import com.peak.salut.SalutDataReceiver;
 import com.peak.salut.SalutServiceData;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
+//import com.squareup.leakcanary.LeakCanary;
+//import com.squareup.leakcanary.RefWatcher;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -418,7 +418,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static boolean mAndroidBeamAvailable  = false;
     public static boolean forcecastupdate;
 
-    public static RefWatcher refWatcher;
+    //public static RefWatcher refWatcher;
 
 
     // Just for the popups - let StageMode or PresenterMode try to deal with them
@@ -445,12 +445,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (LeakCanary.isInAnalyzerProcess(this.getApplication())) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        refWatcher = LeakCanary.install(this.getApplication());
+//        if (LeakCanary.isInAnalyzerProcess(this.getApplication())) {
+//            // This process is dedicated to LeakCanary for heap analysis.
+//            // You should not init your app in this process.
+//            return;
+//        }
+//        refWatcher = LeakCanary.install(this.getApplication());
         myPreferences = getSharedPreferences("OpenSongApp", Context.MODE_PRIVATE);
         Preferences.loadPreferences();
 

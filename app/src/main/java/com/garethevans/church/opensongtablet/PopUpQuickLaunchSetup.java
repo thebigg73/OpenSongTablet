@@ -149,6 +149,8 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
         actionOptions.add(getActivity().getString(R.string.inc_autoscroll_speed));
         //16
         actionOptions.add(getActivity().getString(R.string.dec_autoscroll_speed));
+        //17
+        actionOptions.add(getActivity().getString(R.string.toggle_autoscroll_pause));
 
         ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
         ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
@@ -298,6 +300,10 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
             case 16:
                 t = "dec_autoscroll_speed";
                 break;
+
+            case 17:
+                t = "toggle_autoscroll_pause";
+                break;
         }
 
         return t;
@@ -369,6 +375,10 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
 
             case "dec_autoscroll_speed":
                 i = 16;
+                break;
+
+            case "toggle_autoscroll_pause":
+                i = 17;
                 break;
         }
 
@@ -447,6 +457,10 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
 
             case "dec_autoscroll_speed":
                 d = c.getResources().getDrawable(R.drawable.ic_arrow_down_white_36dp);
+                break;
+
+            case "toggle_autoscroll_pause":
+                d = c.getResources().getDrawable(R.drawable.ic_pause_white);
                 break;
         }
         return d;
