@@ -6357,19 +6357,19 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         scaleGestureDetector.onTouchEvent(event);
-        if (event.getSource() == InputDevice.SOURCE_TOUCHSCREEN) {
-            if (event.getAction() == MotionEvent.ACTION_SCROLL) {
-                FullscreenActivity.autoscrollispaused = true;
-                new Handler().postDelayed(
-                        new Runnable() {
-                            public void run() {
-                                FullscreenActivity.autoscrollispaused = false;
-                            }
-                        },
-                        300);
-                return true;
-            }
-        }
+//        if (event.getSource() == InputDevice.SOURCE_TOUCHSCREEN) {
+//            if (event.getAction() == MotionEvent.ACTION_SCROLL) {
+//                FullscreenActivity.autoscrollispaused = true;
+//                new Handler().postDelayed(
+//                        new Runnable() {
+//                            public void run() {
+//                                FullscreenActivity.autoscrollispaused = false;
+//                            }
+//                        },
+//                        300);
+//                return true;
+//            }
+//        }
         return true;
     }
 
