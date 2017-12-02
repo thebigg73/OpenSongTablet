@@ -85,8 +85,16 @@ public class PopUpSongDetailsFragment extends DialogFragment {
                 dismiss();
             }
         });
+        TextView t_mAuthor = V.findViewById(R.id.t_mAuthor);
+        TextView t_mKey = V.findViewById(R.id.t_mKey);
+        TextView t_mCopyright = V.findViewById(R.id.t_mCopyright);
+        TextView t_mPresentation = V.findViewById(R.id.t_mPresentation);
+        TextView t_mHymnNumber = V.findViewById(R.id.t_mHymnNumber);
+        TextView t_mCCLI = V.findViewById(R.id.t_mCCLI);
+        TextView t_mNotes = V.findViewById(R.id.t_mNotes);
         TextView v_mTitle = V.findViewById(R.id.v_mTitle);
         TextView v_mAuthor = V.findViewById(R.id.v_mAuthor);
+        TextView v_mKey = V.findViewById(R.id.v_mKey);
         TextView v_mCopyright = V.findViewById(R.id.v_mCopyright);
         TextView v_mPresentation = V.findViewById(R.id.v_mPresentation);
         TextView v_mHymnNumber = V.findViewById(R.id.v_mHymnNumber);
@@ -94,13 +102,23 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         TextView v_mNotes = V.findViewById(R.id.v_mNotes);
         TextView v_mLyrics = V.findViewById(R.id.v_mLyrics);
 
+        String k = ProcessSong.getSongKey();
+        // Fix the key text
+        k = k.replace("(","");
+        k = k.replace(")","");
+        k = k.replace("["," ("+getActivity().getString(R.string.edit_song_capo)+" ");
+        k = k.replace("]",": " + FullscreenActivity.capokey + ")");
+
+        // Decide what should or should be shown
         v_mTitle.setText(FullscreenActivity.mTitle);
-        v_mAuthor.setText(FullscreenActivity.mAuthor);
-        v_mCopyright.setText(FullscreenActivity.mCopyright);
-        v_mCCLI.setText(FullscreenActivity.mCCLI);
-        v_mPresentation.setText(FullscreenActivity.mPresentation);
-        v_mHymnNumber.setText(FullscreenActivity.mHymnNumber);
-        v_mNotes.setText(FullscreenActivity.mNotes);
+        setContentInfo(t_mAuthor,v_mAuthor, FullscreenActivity.mAuthor.toString());
+        setContentInfo(t_mKey,v_mKey, k);
+        setContentInfo(t_mCopyright,v_mCopyright, FullscreenActivity.mCopyright.toString());
+        setContentInfo(t_mCCLI,v_mCCLI, FullscreenActivity.mCCLI);
+        setContentInfo(t_mPresentation,v_mPresentation, FullscreenActivity.mPresentation);
+        setContentInfo(t_mHymnNumber,v_mHymnNumber, FullscreenActivity.mHymnNumber);
+        setContentInfo(t_mNotes,v_mNotes, FullscreenActivity.mNotes);
+
         v_mLyrics.setTypeface(FullscreenActivity.typeface1);
         v_mLyrics.setTextSize(8.0f);
         v_mLyrics.setText(FullscreenActivity.mLyrics);
@@ -108,6 +126,16 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         return V;
     }
 
+    public void setContentInfo(TextView tv_t, TextView tv_v, String s) {
+        if (s!=null && !s.equals("")) {
+            tv_t.setVisibility(View.VISIBLE);
+            tv_v.setVisibility(View.VISIBLE);
+            tv_v.setText(s);
+        } else {
+            tv_t.setVisibility(View.GONE);
+            tv_v.setVisibility(View.GONE);
+        }
+    }
     @Override
     public void onCancel(DialogInterface dialog) {
         this.dismiss();

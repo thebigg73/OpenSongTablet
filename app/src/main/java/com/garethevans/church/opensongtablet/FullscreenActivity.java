@@ -81,7 +81,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             mRestrictions = "", mNotes = "", temptranspChords = "", mLinkedSongs = "",
             mExtraStuff1 = "", mExtraStuff2 = "", mPadFile = "", mCustomChords = "",
             mLinkYouTube = "", mLinkWeb = "", mLinkAudio = "", mLoopAudio = "false", mLinkOther = "",
-            mNotation = "";
+            mNotation = "", mEncoding = "UTF-8";
 
     // Song menu
     public static boolean needtorefreshsongmenu = false, safetosearch = false,
@@ -166,7 +166,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             transposeStyle = "sharps", transposedLyrics = "";
     public static int transposeTimes = 1;
     public static boolean showChords, showLyrics, showCapo, showCapoChords, showNativeAndCapoChords,
-            switchsharpsflats = false;
+            switchsharpsflats = false, showCapoAsNumerals = false;
 
     // PopUp window size and alpha
     public static float popupAlpha_Set = 0.6f, popupDim_Set = 0.7f, popupScale_Set = 0.8f,
@@ -375,7 +375,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
     public static int whichPad = 0;
 
-    public static String[] songSections, songSectionsLabels, songSectionsTypes;
+    public static String[] songSections, songSectionsLabels, songSectionsTypes, songSectionsFull;
     public static String[][] sectionContents, sectionLineTypes, projectedContents, projectedLineTypes;
     public static String songSection_holder; // This carries on section types after line breaks
     public static float[] sectionScaleValue;
