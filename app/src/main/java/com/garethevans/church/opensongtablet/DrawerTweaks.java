@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.widget.LinearLayout;
