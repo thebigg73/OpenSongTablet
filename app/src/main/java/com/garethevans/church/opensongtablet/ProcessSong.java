@@ -1885,8 +1885,89 @@ public class ProcessSong extends Activity {
         String keytext = "";
         if (!FullscreenActivity.mKey.isEmpty() && !FullscreenActivity.mKey.equals("")) {
             keytext = " (" + FullscreenActivity.mKey + ")";
+
+
         }
         return keytext;
+    }
+
+    static String getCapoInfo(Context c) {
+        String s = "";
+        // If we are using a capo, add the capo display
+        if (!FullscreenActivity.mCapo.equals("")) {
+            int mcapo;
+            try {
+                mcapo = Integer.parseInt(FullscreenActivity.mCapo);
+            } catch (Exception e) {
+                mcapo = -1;
+            }
+            if (mcapo>0) {
+                if (FullscreenActivity.showCapoAsNumerals) {
+                    //s = c.getString(R.string.edit_song_capo) + ": " + numberToNumeral(mcapo);
+                    s = numberToNumeral(mcapo);
+                } else {
+                    //s = c.getString(R.string.edit_song_capo) + ": " + mcapo;
+                    s = "" + mcapo;
+                }
+            }
+        }
+        return s;
+    }
+
+    static String getCapoNewKey() {
+        String s = "";
+        // If we are using a capo, add the capo display
+        if (!FullscreenActivity.mCapo.equals("") && !FullscreenActivity.mKey.equals("") &&
+                !FullscreenActivity.capokey.equals("")) {
+            s = FullscreenActivity.capokey;
+        }
+        return s;
+    }
+
+    static String numberToNumeral(int num) {
+        String s;
+        switch (num) {
+            default:
+                s = "";
+                break;
+            case 1:
+                s = "I";
+                break;
+            case 2:
+                s = "II";
+                break;
+            case 3:
+                s = "III";
+                break;
+            case 4:
+                s = "IV";
+                break;
+            case 5:
+                s = "V";
+                break;
+            case 6:
+                s = "VI";
+                break;
+            case 7:
+                s = "VII";
+                break;
+            case 8:
+                s = "VIII";
+                break;
+            case 9:
+                s = "IX";
+                break;
+            case 10:
+                s = "X";
+                break;
+            case 11:
+                s = "XI";
+                break;
+            case 12:
+                s = "XII";
+                break;
+        }
+        return s;
     }
 
     static String songSectionChordPro(Context c, int x, boolean onsong) {
@@ -2124,6 +2205,7 @@ public class ProcessSong extends Activity {
                 case "capo_info":
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = FullscreenActivity.sectionContents[x][y];
+                    Log.d("d","Capo line detected = "+lyrics_returned[0]);
                     TableRow trc = commentlinetoTableRow(c, lyrics_returned, fontsize, false);
                     if (trc.getChildAt(0)!=null) {
                         TextView tvcapo = (TextView) trc.getChildAt(0);
@@ -2626,7 +2708,9 @@ public class ProcessSong extends Activity {
 
         String capoDetails = "";
         if (FullscreenActivity.showCapoChords && !FullscreenActivity.mCapo.equals("")) {
-            capoDetails = ";__" + c.getResources().getString(R.string.edit_song_capo) + " " + FullscreenActivity.mCapo + "\n\n";
+            //capoDetails = ";__" + c.getResources().getString(R.string.edit_song_capo) + " " + FullscreenActivity.mCapo + "\n\n";
+            //FullscreenActivity.myToastMessage = c.getResources().getString(R.string.edit_song_capo) + " " + FullscreenActivity.mCapo + "\n\n";
+            //ShowToast.showToast(c);
         }
 
         String stickyNotes = "";

@@ -57,6 +57,20 @@
                 android:layout_marginBottom="16dp" />
 
             <TextView
+                android:id="@+id/t_mKey"
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_song_key" />
+
+            <TextView
+                android:id="@+id/v_mKey"
+                style="@style/MyInfoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
                 android:id="@+id/t_mCopyright"
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"

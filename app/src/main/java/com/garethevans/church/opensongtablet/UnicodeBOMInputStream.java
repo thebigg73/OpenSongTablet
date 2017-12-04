@@ -14,6 +14,8 @@ class UnicodeBOMInputStream extends InputStream {
 
         static final BOM NONE = new BOM(new byte[]{}, "UTF-8");
 
+        static final BOM WINDOWS = new BOM(new byte[]{}, "WINDOWS-1252");
+
         static final BOM UTF_8 = new BOM(new byte[]{(byte) 0xEF,
                 (byte) 0xBB,
                 (byte) 0xBF},
@@ -39,17 +41,12 @@ class UnicodeBOMInputStream extends InputStream {
                 (byte) 0xFF},
                 "UTF-32BE");
 
-        /**
-         * Returns a <code>String</code> representation of this <code>BOM</code>
-         * value.
-         */
+        //Returns a <code>String</code> representation of this <code>BOM</code>
         public final String toString() {
             return description;
         }
 
-        /**
-         * Returns the bytes corresponding to this <code>BOM</code> value.
-         */
+        //Returns the bytes corresponding to this <code>BOM</code> value.
         public final byte[] getBytes() {
             final int length = bytes.length;
             final byte[] result = new byte[length];
@@ -81,7 +78,6 @@ class UnicodeBOMInputStream extends InputStream {
             throw new NullPointerException("invalid input stream: null is not allowed");
 
         in = new PushbackInputStream(inputStream, 4);
-
         final byte bom[] = new byte[4];
         final int read = in.read(bom);
 

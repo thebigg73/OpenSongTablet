@@ -26,6 +26,7 @@ import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.URLUtil;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -264,6 +265,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 break;
         }
 
+        webresults_WebView.setWebChromeClient(new WebChromeClient());
         webresults_WebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

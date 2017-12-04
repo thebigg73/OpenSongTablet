@@ -310,6 +310,8 @@ public class Preferences extends Activity {
             FullscreenActivity.quickLaunchButton_2 = myPreferences.getString("quickLaunchButton_2", "");
             FullscreenActivity.quickLaunchButton_3 = myPreferences.getString("quickLaunchButton_3", "");
             FullscreenActivity.quickLaunchButton_4 = myPreferences.getString("quickLaunchButton_4", "");
+            FullscreenActivity.randomFolders = myPreferences.getString("randomFolders", "");
+            FullscreenActivity.showCapoAsNumerals = myPreferences.getBoolean("showCapoAsNumerals", false);
             FullscreenActivity.scrollDistance = myPreferences.getFloat("scrollDistance", 0.6f);
             FullscreenActivity.scrollSpeed = myPreferences.getInt("scrollSpeed", 1500);
             FullscreenActivity.showAlphabeticalIndexInSongMenu = myPreferences.getBoolean("showAlphabeticalIndexInSongMenu", true);
@@ -633,9 +635,11 @@ public class Preferences extends Activity {
             editor.putString("quickLaunchButton_2", FullscreenActivity.quickLaunchButton_2);
             editor.putString("quickLaunchButton_3", FullscreenActivity.quickLaunchButton_3);
             editor.putString("quickLaunchButton_4", FullscreenActivity.quickLaunchButton_4);
+            editor.putString("randomFolders", FullscreenActivity.randomFolders);
             editor.putFloat("scrollDistance", FullscreenActivity.scrollDistance);
             editor.putInt("scrollSpeed", FullscreenActivity.scrollSpeed);
             editor.putBoolean("showAlphabeticalIndexInSongMenu",FullscreenActivity.showAlphabeticalIndexInSongMenu);
+            editor.putBoolean("showCapoAsNumerals",FullscreenActivity.showCapoAsNumerals);
             editor.putBoolean("showCapoChords", FullscreenActivity.showCapoChords);
             editor.putBoolean("showChords", FullscreenActivity.showChords);
             editor.putBoolean("showLyrics", FullscreenActivity.showLyrics);

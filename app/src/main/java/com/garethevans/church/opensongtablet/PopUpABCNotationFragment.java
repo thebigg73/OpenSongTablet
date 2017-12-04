@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -123,6 +124,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
         abcWebView.setScrollbarFadingEnabled(false);
         abcWebView.addJavascriptInterface(new JsInterface(), "AndroidApp");
         abcWebView.loadUrl("file:///android_asset/ABC/abc.html");
+        abcWebView.setWebChromeClient(new WebChromeClient());
         abcWebView.setWebViewClient(new WebViewClient() {
 
             public void onPageFinished(WebView view, String url) {

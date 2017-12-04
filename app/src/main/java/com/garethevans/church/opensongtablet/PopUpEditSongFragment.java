@@ -190,7 +190,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             public void onClick(View view) {
                 CustomAnimations.animateFAB(saveMe,getActivity());
                 saveMe.setEnabled(false);
-                saveEdit();
+                saveEdit(true);
             }
         });
 
@@ -212,6 +212,9 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_presentation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Save the song first - false to stop everything reloading
+                saveEdit(false);
+
                 DialogFragment newFragment = PopUpPresentationOrderFragment.newInstance();
                 newFragment.show(getFragmentManager(), "dialog");
                 dismiss();
@@ -226,6 +229,9 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         abcnotation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Save the song first - false to stop everything reloading
+                saveEdit(false);
+
                 FullscreenActivity.whattodo = "abcnotation_edit";
                 DialogFragment newFragment = PopUpABCNotationFragment.newInstance();
                 newFragment.show(getFragmentManager(), "dialog");
@@ -727,7 +733,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         dismiss();
     }
 
-    public void saveEdit() {
+    public void saveEdit(boolean ended) {
 
         // Go through the fields and save them
         // Get the variables
@@ -955,16 +961,18 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         // Save the preferences
         Preferences.savePreferences();
 
-        // Prepare the message
-        FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
-                getResources().getString(R.string.ok);
+        if (ended) {
+            // Prepare the message
+            FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
+                    getResources().getString(R.string.ok);
 
-        // Now tell the main page to refresh itself with this new song
-        // Don't need to reload the XML as we already have all its values
-        mListener.refreshAll();
+            // Now tell the main page to refresh itself with this new song
+            // Don't need to reload the XML as we already have all its values
+            mListener.refreshAll();
 
-        // Now dismiss this popup
-        dismiss();
+            // Now dismiss this popup
+            dismiss();
+        }
     }
 
     private class seekBarListener implements SeekBar.OnSeekBarChangeListener {
@@ -1029,7 +1037,10 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     public static void prepareSongXML() {
         // Prepare the new XML file
 
-        String myNEWXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        if (FullscreenActivity.mEncoding==null || FullscreenActivity.mEncoding.equals("")) {
+            FullscreenActivity.mEncoding = "UTF-8";
+        }
+        String myNEWXML = "<?xml version=\"1.0\" encoding=\""+FullscreenActivity.mEncoding+"\"?>\n";
         myNEWXML += "<song>\n";
         myNEWXML += "  <title>" + parseToHTMLEntities(FullscreenActivity.mTitle.toString()) + "</title>\n";
         myNEWXML += "  <author>" + parseToHTMLEntities(FullscreenActivity.mAuthor.toString()) + "</author>\n";

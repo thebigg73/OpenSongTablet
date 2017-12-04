@@ -32,6 +32,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -155,9 +156,9 @@ public class StageMode extends AppCompatActivity implements
     LinearLayout column1_1, column1_2, column2_2, column1_3, column2_3, column3_3;
     ScrollView glideimage_ScrollView;
     ImageView glideimage, highlightNotes;
-    LinearLayout backingtrackProgress, playbackProgress;
+    LinearLayout backingtrackProgress, playbackProgress, capoInfo;
     TextView padcurrentTime_TextView, padTimeSeparator_TextView, padtotalTime_TextView,
-            currentTime_TextView, timeSeparator_TextView, totalTime_TextView;
+            currentTime_TextView, timeSeparator_TextView, totalTime_TextView, capoinfo, capoinfonewkey;
     float width_scale = 0f, biggestscale_1col = 0.0f, biggestscale_2col = 0.0f, biggestscale_3col = 0.0f;
     boolean overridingfull, overridingwidth, rendercalled = false, sectionpresented = false;
 
@@ -172,6 +173,8 @@ public class StageMode extends AppCompatActivity implements
             custom2Button_ungrouped, custom3Button_ungrouped, custom4Button_ungrouped,
             scrollDownButton, scrollUpButton, setBackButton, setForwardButton;
     ScrollView extrabuttons, extrabuttons2;
+    @CoordinatorLayout.DefaultBehavior(FloatingActionButtonBehaviour.class)
+    CoordinatorLayout coordinator_layout;
 
     // Casting
     MediaRouter mMediaRouter;
@@ -327,6 +330,8 @@ public class StageMode extends AppCompatActivity implements
                 mypage.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
 
                 // Set up the pad and autoscroll timing display
+                capoinfo = findViewById(R.id.capoinfo);
+                capoinfonewkey = findViewById(R.id.capoinfonewkey);
                 backingtrackProgress = findViewById(R.id.backingtrackProgress);
                 backingtrackProgress.setVisibility(View.GONE);
                 padcurrentTime_TextView = findViewById(R.id.padcurrentTime_TextView);
@@ -334,6 +339,8 @@ public class StageMode extends AppCompatActivity implements
                 padtotalTime_TextView = findViewById(R.id.padtotalTime_TextView);
                 playbackProgress = findViewById(R.id.playbackProgress);
                 playbackProgress.setVisibility(View.GONE);
+                capoInfo = findViewById(R.id.capoInfo);
+                capoInfo.setVisibility(View.GONE);
                 currentTime_TextView = findViewById(R.id.currentTime_TextView);
                 timeSeparator_TextView = findViewById(R.id.timeSeparator_TextView);
                 totalTime_TextView = findViewById(R.id.totalTime_TextView);
@@ -1266,6 +1273,8 @@ public class StageMode extends AppCompatActivity implements
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                coordinator_layout = findViewById(R.id.coordinator_layout);
+
                 setButton = findViewById(R.id.setButton);
                 padButton = findViewById(R.id.padButton);
                 autoscrollButton = findViewById(R.id.autoscrollButton);
@@ -1302,6 +1311,7 @@ public class StageMode extends AppCompatActivity implements
                 setForwardButton = findViewById(R.id.setForwardButton);
                 setUpPageButtonsColors();
                 setupQuickLaunchButtons();
+
             }
         });
 
@@ -2769,6 +2779,7 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\","");
             FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("$$__$$","\n");
 
+            Log.d("d",""+FullscreenActivity.mySalutXML);
             // Create the temp song file
             try {
                 if (!FullscreenActivity.dirreceived.exists()) {
@@ -2868,6 +2879,9 @@ public class StageMode extends AppCompatActivity implements
                     highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_out_left));
                 }
             }
+
+            // Remove any capokey
+            FullscreenActivity.capokey = "";
 
             // End any current autscrolling
             stopAutoScroll();
@@ -3587,6 +3601,36 @@ public class StageMode extends AppCompatActivity implements
                     }
                 });
             }
+        }
+
+        setUpCapoInfo();
+    }
+
+    public void setUpCapoInfo() {
+        boolean bothempty = true;
+        // If we are showing capo chords, show this info
+        if (capoinfo!=null && !FullscreenActivity.mCapo.equals("") && !FullscreenActivity.mCapo.equals("0")) {
+            capoinfo.setText(ProcessSong.getCapoInfo(StageMode.this));
+            capoinfo.setVisibility(View.VISIBLE);
+            bothempty = false;
+        } else {
+            capoinfo.setVisibility(View.GONE);
+        }
+
+        String capokey = ProcessSong.getCapoNewKey();
+        if (!capokey.equals("")) {
+            String t = " (" + capokey + ")";
+            capoinfonewkey.setText(t);
+            capoinfonewkey.setVisibility(View.VISIBLE);
+            bothempty = false;
+        } else {
+            capoinfonewkey.setVisibility(View.GONE);
+        }
+
+        if (bothempty || !FullscreenActivity.showCapoChords || !FullscreenActivity.showChords) {
+            capoInfo.setVisibility(View.GONE);
+        } else {
+            capoInfo.setVisibility(View.VISIBLE);
         }
     }
 
@@ -4928,9 +4972,11 @@ public class StageMode extends AppCompatActivity implements
             RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) ((ImageView)findViewById(R.id.highlightNotes)).getLayoutParams();
             lp3.addRule(RelativeLayout.BELOW, 0);
             findViewById(R.id.highlightNotes).setLayoutParams(lp3);
-            RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.pagebuttons).getLayoutParams();
+            //RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.pagebuttons).getLayoutParams();
+            RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.capoInfo).getLayoutParams();
             lp4.addRule(RelativeLayout.BELOW, 0);
-            findViewById(R.id.pagebuttons).setLayoutParams(lp4);
+            //findViewById(R.id.pagebuttons).setLayoutParams(lp4);
+            findViewById(R.id.capoInfo).setLayoutParams(lp4);
         } else {
             // Make the songscrollview sit below toolbar
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ((HorizontalScrollView)findViewById(R.id.horizontalscrollview)).getLayoutParams();
@@ -4942,9 +4988,11 @@ public class StageMode extends AppCompatActivity implements
             RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) ((ImageView)findViewById(R.id.highlightNotes)).getLayoutParams();
             lp3.addRule(RelativeLayout.BELOW,  ab_toolbar.getId());
             findViewById(R.id.highlightNotes).setLayoutParams(lp3);
-            RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.pagebuttons).getLayoutParams();
-            lp4.addRule(RelativeLayout.BELOW,  ab_toolbar.getId());
-            findViewById(R.id.pagebuttons).setLayoutParams(lp4);
+            //RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.pagebuttons).getLayoutParams();
+            RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.capoInfo).getLayoutParams();
+            lp4.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
+            //findViewById(R.id.pagebuttons).setLayoutParams(lp4);
+            findViewById(R.id.capoInfo).setLayoutParams(lp4);
         }
         toggleActionBar();
     }
@@ -4963,9 +5011,11 @@ public class StageMode extends AppCompatActivity implements
             RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) ((ImageView)findViewById(R.id.highlightNotes)).getLayoutParams();
             lp3.addRule(RelativeLayout.BELOW, 0);
             findViewById(R.id.highlightNotes).setLayoutParams(lp3);
-            RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.pagebuttons).getLayoutParams();
+            //RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.pagebuttons).getLayoutParams();
+            RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.capoInfo).getLayoutParams();
             lp4.addRule(RelativeLayout.BELOW, 0);
-            findViewById(R.id.pagebuttons).setLayoutParams(lp4);
+            //findViewById(R.id.pagebuttons).setLayoutParams(lp4);
+            findViewById(R.id.capoInfo).setLayoutParams(lp4);
         } else {
             // Make the songscrollview sit below toolbar
             RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) ((HorizontalScrollView)findViewById(R.id.horizontalscrollview)).getLayoutParams();
@@ -4977,9 +5027,11 @@ public class StageMode extends AppCompatActivity implements
             RelativeLayout.LayoutParams lp3 = (RelativeLayout.LayoutParams) ((ImageView)findViewById(R.id.highlightNotes)).getLayoutParams();
             lp3.addRule(RelativeLayout.BELOW,  ab_toolbar.getId());
             findViewById(R.id.highlightNotes).setLayoutParams(lp3);
-            RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.pagebuttons).getLayoutParams();
-            lp4.addRule(RelativeLayout.BELOW,  ab_toolbar.getId());
-            findViewById(R.id.pagebuttons).setLayoutParams(lp4);
+            //RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.pagebuttons).getLayoutParams();
+            RelativeLayout.LayoutParams lp4 = (RelativeLayout.LayoutParams) findViewById(R.id.capoInfo).getLayoutParams();
+            lp4.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
+            //findViewById(R.id.pagebuttons).setLayoutParams(lp4);
+            findViewById(R.id.capoInfo).setLayoutParams(lp4);
         }
         toggleActionBar();
     }
@@ -6898,5 +6950,4 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-
 }
