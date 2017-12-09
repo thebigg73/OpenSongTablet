@@ -10,7 +10,9 @@ import com.annimon.stream.function.Predicate;
 import java.io.File;
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
@@ -97,16 +99,7 @@ final class SongFileList {
     String[] getSongFileListasArray() {
         //todo place check here to see if new file has been added since the last file list was
         //constructed.  This saves memory.
-        fileList();
-        // Sort the file list
-        try {
-            coll = Collator.getInstance(FullscreenActivity.locale);
-            coll.setStrength(Collator.SECONDARY);
-            Collections.sort(currentFileList, coll);
-        } catch (Exception e) {
-            // Error sorting
-            Log.d("d","Error sotrrting");
-        }
+        fileList();  //ie only call this if directory has changed or file has been added
         return currentFileList.toArray(new String[currentFileList.size()]).clone();
     }
 
@@ -122,7 +115,7 @@ final class SongFileList {
             Collections.sort(currentFileList, coll);
         } catch (Exception e) {
             // Error sorting
-            Log.d("d","Error sotrrting");
+            Log.d("d","Error sorting");
         }
         return currentFileList;
     }
@@ -137,21 +130,23 @@ final class SongFileList {
         } else {
             foldertoindex = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder);
         }
-
-        // my bad, I forgot that performance is an issue - so need to refactor this
-        // https://stackoverflow.com/questions/22658322/java-8-performance-of-streams-vs-collections
-        // I'm not even using java8, of course, so it may be even slower.
-        com.annimon.stream.Stream.of(foldertoindex.listFiles()).forEach(new Consumer<File>() {
+        File []flist = foldertoindex.listFiles();
+        Arrays.sort(flist, new Comparator<File>() {
             @Override
-            public void accept(File file) {
-                /*String tempfile = file.getName();
-                if(file.isDirectory())
-                {
-                    tempfile = "Dir... " + tempfile;
-                }*/
-                currentFileList.add(file.getName());
+            public int compare(final File entry1, final File entry2) {
+                if (entry1.isDirectory()) {
+                    return -1;
+                } else if (entry2.isDirectory()) {
+                    return 1;
+                } else {
+                    return entry1.getName().compareToIgnoreCase(entry2.getName());
+                }
             }
         });
+        for(File f:flist)
+        {
+            currentFileList.add(f.getName());
+        }
     }
 
     /*intialises the folderList variable*/

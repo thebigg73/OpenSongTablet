@@ -111,24 +111,31 @@ public class ListSongFiles {
                 } else if (entry2[2] == "Directory") {
                     return 1;
                 } else {
-                    return entry1[0].compareTo(entry2[0]);
+                    return entry1[0].compareToIgnoreCase(entry2[0]);
                 }
             }
         });
-        int numDirs = 0;
-        for(int i=0; i<FullscreenActivity.songDetails.length; i++)
+        FullscreenActivity.numDirs = 0;
+        while(FullscreenActivity.songDetails[FullscreenActivity.numDirs][2] == "Directory")
         {
-            if (FullscreenActivity.songDetails[i][2] == "Directory")
-            {
-                numDirs++;
-            }
+            FullscreenActivity.numDirs++;
         }
-        Arrays.sort(FullscreenActivity.songDetails,0,numDirs, new Comparator<String[]>() {
-            @Override
-            public int compare(final String[] entry1, final String[] entry2) {
-                return entry1[0].compareToIgnoreCase(entry2[0]);
-            }
-        });
+        //numDirs is zerobased index >> horrible hack.
+        if(FullscreenActivity.numDirs > 0)
+            FullscreenActivity.numDirs += 1;
+//        for(int i=0; i<FullscreenActivity.songDetails.length; i++)
+//        {
+//            if (FullscreenActivity.songDetails[i][2] == "Directory")
+//            {
+//                FullscreenActivity.numDirs++;
+//            }
+//        }
+//        Arrays.sort(FullscreenActivity.songDetails,0,FullscreenActivity.numDirs, new Comparator<String[]>() {
+//            @Override
+//            public int compare(final String[] entry1, final String[] entry2) {
+//                return entry1[0].compareToIgnoreCase(entry2[0]);
+//            }
+//        });
         int bob = 0;
     }
 

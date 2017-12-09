@@ -4898,6 +4898,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void songShortClick(int mychild) {
         // Scroll to this song in the song menu
+        mychild = mychild - FullscreenActivity.numDirs;
         song_list_view.smoothScrollToPosition(mychild);
 
         // Close both drawers
@@ -6354,11 +6355,11 @@ public class StageMode extends AppCompatActivity implements
         return super.onKeyLongPress(keyCode, event);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        scaleGestureDetector.onTouchEvent(event);
-        return true;
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        scaleGestureDetector.onTouchEvent(event);
+//        return true;
+//    }
 
     private class simpleOnScaleGestureListener extends
             ScaleGestureDetector.SimpleOnScaleGestureListener {
