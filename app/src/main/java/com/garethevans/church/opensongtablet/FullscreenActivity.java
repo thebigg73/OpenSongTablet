@@ -102,6 +102,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static SongFileList songfilelist = new SongFileList();
     //this could be a ref to an xmlObject.
     public static String[][] songDetails;
+    public static int numDirs;
     public static Map<String, Integer> mapIndex;
     public static int currentSongIndex, previousSongIndex, nextSongIndex;
     @SuppressLint("StaticFieldLeak")

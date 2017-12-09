@@ -56,6 +56,8 @@ public class IndexSongs extends Activity {
         String ccli;
         String key;
         String hymnnumber;
+        String errmsg;
+        errmsg = "";
 
         // Now go through each folder and load each song in turn and then add it to the array
         for (String currfolder : fixedfolders) {
@@ -98,7 +100,6 @@ public class IndexSongs extends Activity {
                         user2 = "";
                         user3 = "";
                         ccli = "";
-
                         // Set the title as the filename by default in case this isn't an OpenSong xml
                         title = filename;
 
@@ -191,7 +192,7 @@ public class IndexSongs extends Activity {
                                     eventType = xpp.next();
                                 } catch (Exception e) {
                                     eventType = XmlPullParser.END_DOCUMENT;
-                                    Log.d("d", "File with error = " + filename);
+                                    errmsg += "File with error = " + filename + "\n";
                                     // This wasn't an xml, so grab the file contents instead
                                     // By default, make the lyrics the content, unless it is a pdf, image, etc.
                                     if (filesize < 250 &&
@@ -244,10 +245,12 @@ public class IndexSongs extends Activity {
                 }
             }
         }
+
         int totalsongsindexed = FullscreenActivity.search_database.size();
 
         FullscreenActivity.indexlog += "\n\nTotal songs indexed="+totalsongsindexed+"\n\n";
-
+        Log.d("Errors in file imports", errmsg);
+        FullscreenActivity.indexlog += "\n\nErrors in importing files\n\nThese songs are either not XML or have invalid XML\n\n" + errmsg;
         FullscreenActivity.safetosearch = true;
     }
 
