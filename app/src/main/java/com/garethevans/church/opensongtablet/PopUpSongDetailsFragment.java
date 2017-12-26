@@ -106,8 +106,13 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         // Fix the key text
         k = k.replace("(","");
         k = k.replace(")","");
-        k = k.replace("["," ("+getActivity().getString(R.string.edit_song_capo)+" ");
-        k = k.replace("]",": " + FullscreenActivity.capokey + ")");
+
+        // Get the capo key if it exitst
+        String ck = ProcessSong.getCapoInfo();
+        if (!ck.equals("")) {
+            ck = " (" + getActivity().getString(R.string.edit_song_capo) + " " + ck + ")";
+            k += ck;
+        }
 
         // Decide what should or should be shown
         v_mTitle.setText(FullscreenActivity.mTitle);

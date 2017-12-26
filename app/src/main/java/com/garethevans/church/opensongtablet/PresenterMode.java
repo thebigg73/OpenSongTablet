@@ -3474,7 +3474,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                         @Override
                         public void onRemoteDisplaySessionError(Status status) {
+                            Log.d("d","onRemoteDisplaySessionError status="+status);
+                        }
 
+                        @Override
+                        public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                            Log.d("d","onRemoteDisplaySessionEnded");
                         }
 
                     });
@@ -3713,6 +3718,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void stopAutoScroll() {}
     @Override
     public void startAutoScroll() {}
+    @Override
+    public void prepareLearnAutoScroll() {}
 
     @Override
     public void takeScreenShot() {

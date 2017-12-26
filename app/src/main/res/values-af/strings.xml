@@ -628,5 +628,9 @@
     <string name="pdftotext_extract">"Onttrek teks uit PDF"</string>
     <string name="pdftotext_found">"Teks gevind:"</string>
 
+    <string name="capo_style">"Capo fret as syfer"</string>
+	<string name="fix">"Autofix"</string>
+	<string name="timer_learn">"Leer outoscroll tyd"</string>
+
 
 </resources>

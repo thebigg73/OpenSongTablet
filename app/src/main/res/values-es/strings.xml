@@ -629,4 +629,8 @@
     <string name="pdftotext_extract">"Extraer texto de PDF"</string>
     <string name="pdftotext_found">"Texto encontrado:"</string>
 
+	<string name="capo_style">"Capo traste como numeral"</string>
+	<string name="fix">"Autofix"</string>
+	<string name="timer_learn">"Aprende el tiempo de desplazamiento automático"</string>
+
 </resources>

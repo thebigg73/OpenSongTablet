@@ -150,6 +150,7 @@ public class Preferences extends Activity {
             FullscreenActivity.custom2_presoShadow = myPreferences.getInt("custom2_presoShadow", default_dark_presoShadowFontColor);
             FullscreenActivity.custom2_stickytext = myPreferences.getInt("custom2_stickytext", default_stickyNotes);
             FullscreenActivity.custom2_stickybg = myPreferences.getInt("custom2_stickybg", default_stickyNotesBG);
+            FullscreenActivity.customfontname = myPreferences.getString("customfontname", "");
             FullscreenActivity.customLogo = myPreferences.getString("customLogo","ost_logo.png");
             FullscreenActivity.customLogoSize = myPreferences.getFloat("customLogoSize", 0.5f);
             FullscreenActivity.customStorage = myPreferences.getString("customStorage", Environment.getExternalStorageDirectory().getAbsolutePath());
@@ -422,7 +423,7 @@ public class Preferences extends Activity {
             editor.putString("backgroundVideo2", FullscreenActivity.backgroundVideo2);
             editor.putBoolean("batteryDialOn", FullscreenActivity.batteryDialOn);
             editor.putInt("batteryLine", FullscreenActivity.batteryLine);
-            editor.putBoolean("batteryOn", FullscreenActivity.batteryDialOn);
+            editor.putBoolean("batteryOn", FullscreenActivity.batteryOn);
             editor.putFloat("batterySize", FullscreenActivity.batterySize);
             editor.putString("bibleFile", FullscreenActivity.bibleFile);
             editor.putString("capoDisplay", FullscreenActivity.capoDisplay);
@@ -468,6 +469,7 @@ public class Preferences extends Activity {
             editor.putInt("custom2_presoShadow", FullscreenActivity.custom2_presoShadow);
             editor.putInt("custom2_stickytext", FullscreenActivity.custom2_stickytext);
             editor.putInt("custom2_stickybg", FullscreenActivity.custom2_stickybg);
+            editor.putString("customfontname", FullscreenActivity.customfontname);
             editor.putString("customLogo", FullscreenActivity.customLogo);
             editor.putFloat("customLogoSize", FullscreenActivity.customLogoSize);
             editor.putString("customStorage", FullscreenActivity.customStorage);

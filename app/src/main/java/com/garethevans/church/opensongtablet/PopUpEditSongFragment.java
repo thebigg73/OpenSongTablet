@@ -54,6 +54,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     EditText edit_song_notes;
     EditText edit_song_lyrics;
     TextView abcnotation;
+    Button fix_lyrics;
 
     // Advanced
     EditText edit_song_CCLI;
@@ -236,6 +237,14 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 DialogFragment newFragment = PopUpABCNotationFragment.newInstance();
                 newFragment.show(getFragmentManager(), "dialog");
                 dismiss();
+            }
+        });
+        fix_lyrics = V.findViewById(R.id.fix_lyrics);
+        fix_lyrics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String s = TextSongConvert.convertText(getActivity(),edit_song_lyrics.getText().toString());
+                edit_song_lyrics.setText(s);
             }
         });
 

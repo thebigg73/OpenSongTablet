@@ -70,7 +70,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             dirvariations = new File(root.getAbsolutePath() + "/documents/OpenSong/Variations"),
             dirprofiles = new File(root.getAbsolutePath() + "/documents/OpenSong/Profiles"),
             dirreceived = new File(root.getAbsolutePath() + "/documents/OpenSong/Received"),
-            dirhighlighter = new File(root.getAbsolutePath() + "/documents/OpenSong/Highlighter");
+            dirhighlighter = new File(root.getAbsolutePath() + "/documents/OpenSong/Highlighter"),
+            dirfonts = new File(root.getAbsolutePath() + "/documents/OpenSong/Fonts");
 
     // The song fields
     public static CharSequence mTitle = "", mAuthor = "Gareth Evans", mCopyright = "";
@@ -112,7 +113,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static boolean metronomeok, padok, autoscrollok, pad1Playing, pad2Playing, pad1Fading,
             pad2Fading, padson = false, autostartautoscroll, clickedOnAutoScrollStart = false,
             pauseautoscroll = true, autoscrollispaused = false, isautoscrolling = false,
-            visualmetronome = false, mTimeSigValid = false, usingdefaults = false;
+            visualmetronome = false, mTimeSigValid = false, usingdefaults = false,
+            learnPreDelay = false, learnSongLength = false;
     public static int beatoffcolour = 0xff232333, scrollpageHeight, currentBeat = 1,
             total_pixels_to_scroll = 0, timesigindex, default_autoscroll_songlength,
             default_autoscroll_predelay, keyindex, scrollSpeed, autoScrollDelay, autoScrollDuration,
@@ -371,7 +373,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static String mScripture = "", incoming_text = "", scripture_title = "",
             scripture_verse = "", mainfoldername = "";
     public static int mylyricsfontnum, mychordsfontnum, mypresofontnum, mypresoinfofontnum;
-    public static Typeface lyricsfont, commentfont, chordsfont, presofont;
+    public static Typeface lyricsfont, commentfont, chordsfont, presofont, customfont;
+    public static String customfontname = "";
 
     public static int whichPad = 0;
 
@@ -504,56 +507,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
                     getBaseContext().getResources().getDisplayMetrics());
         }
 
-        //gestureDetector = new GestureDetector(new SwipeDetector());
-
-        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        // Load up the translations
-        //variation_edit = getResources().getString(R.string.variation_edit);
-        //set_loading = getResources().getString(R.string.set_loading);
-        //set_processing = getResources().getString(R.string.set_processing);
-        //set = getResources().getString(R.string.options_set);
-        //song = getResources().getString(R.string.options_song);
-        //slide = getResources().getString(R.string.slide);
-        //scripture = getResources().getString(R.string.scripture);
-        //note = getResources().getString(R.string.note);
-        //image = getResources().getString(R.string.image);
-        //variation = getResources().getString(R.string.variation);
-
         timesigs = getResources().getStringArray(R.array.timesig);
 
-        //tag_verse = getResources().getString(R.string.tag_verse);
-        //tag_chorus = getResources().getString(R.string.tag_chorus);
-        //tag_prechorus = getResources().getString(R.string.tag_prechorus);
-        //tag_bridge = getResources().getString(R.string.tag_bridge);
-        //tag_tag = getResources().getString(R.string.tag_tag);
-
-        //edit_song_presentation = getResources().getString(R.string.edit_song_presentation);
-        //error_notset = getResources().getString(R.string.error_notset);
-        //error_missingsection = getResources().getString(R.string.error_missingsection);
-
-        //toastmessage_maxfont = getResources().getString(R.string.toastmessage_maxfont);
-        //toastmessage_minfont = getResources().getString(R.string.toastmessage_minfont);
-        //backtooptions = getResources().getString(R.string.options_backtooptions);
-        //savethisset = getResources().getString(R.string.options_savethisset);
-        //clearthisset = getResources().getString(R.string.options_clearthisset);
-
-        //set_edit = getResources().getString(R.string.set_edit);
-        //set_save = getResources().getString(R.string.set_save);
-        //set_load = getResources().getString(R.string.set_load);
-        //set_clear = getResources().getString(R.string.set_clear);
-        //set_export = getResources().getString(R.string.set_export);
-
-        //sethasbeendeleted = getResources().getString(R.string.sethasbeendeleted);
-        //deleteerror_start = getResources().getString(R.string.deleteerror_start);
-        //deleteerror_end_song = getResources().getString(R.string.deleteerror_end_song);
-        //deleteerror_end_sets = getResources().getString(R.string.deleteerror_end_sets);
-        //songdoesntexist = getResources().getString(R.string.songdoesntexist);
-        //exportcurrentsong = getResources().getString(R.string.exportcurrentsong);
-        //importnewsong = getResources().getString(R.string.importnewsong);
-        //exportsavedset = getResources().getString(R.string.exportsavedset);
-        //importnewset = getResources().getString(R.string.importnewset);
         mainfoldername = getResources().getString(R.string.mainfoldername);
 
 

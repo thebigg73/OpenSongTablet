@@ -458,7 +458,10 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("custom2_presoInfoFont")) {
                     FullscreenActivity.custom2_presoInfoFont = getIntegerValue(xpp.nextText(),0xffffffff);
                 } else if (xpp.getName().equals("custom2_presoShadow")) {
-                    FullscreenActivity.custom2_presoShadow = getIntegerValue(xpp.nextText(),0xff000000);
+                    FullscreenActivity.custom2_presoShadow = getIntegerValue(xpp.nextText(), 0xff000000);
+
+                } else if (xpp.getName().equals("customfontname")) {
+                    FullscreenActivity.customfontname = getTextValue(xpp.nextText(), "");
 
                 } else if (xpp.getName().equals("customLogo")) {
                     FullscreenActivity.customLogo = getTextValue(xpp.nextText(),"");
@@ -1148,6 +1151,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <custom2_presoFont>" + FullscreenActivity.custom2_presoFont + "</custom2_presoFont>\n";
         text += "  <custom2_presoInfoFont>" + FullscreenActivity.custom2_presoInfoFont + "</custom2_presoInfoFont>\n";
         text += "  <custom2_presoShadow>" + FullscreenActivity.custom2_presoShadow + "</custom2_presoShadow>\n";
+        text += "  <customfontname>" + FullscreenActivity.customfontname + "</customfontname>\n";
         text += "  <customLogo>" + FullscreenActivity.customLogo + "</customLogo>\n";
         text += "  <customLogoSize>" + FullscreenActivity.customLogoSize + "</customLogoSize>\n";
         text += "  <customStorage>" + FullscreenActivity.customStorage + "</customStorage>\n";

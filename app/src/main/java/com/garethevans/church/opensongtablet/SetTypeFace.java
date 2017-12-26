@@ -1,8 +1,16 @@
 package com.garethevans.church.opensongtablet;
 
+import android.graphics.Typeface;
+import android.util.Log;
+
+import java.io.File;
+
 class SetTypeFace {
 
     public static void setTypeface() {
+        // Set up the custom font (if it has been set)
+        FullscreenActivity.customfont = setCustomFont(FullscreenActivity.customfontname);
+
         switch (FullscreenActivity.mylyricsfontnum) {
             case 1:
                 FullscreenActivity.lyricsfont = FullscreenActivity.typeface1;
@@ -52,6 +60,10 @@ class SetTypeFace {
                 FullscreenActivity.lyricsfont = FullscreenActivity.typeface12;
                 FullscreenActivity.commentfont = FullscreenActivity.typeface12i;
                 break;
+            case 13:
+                FullscreenActivity.lyricsfont = FullscreenActivity.customfont;
+                FullscreenActivity.commentfont = FullscreenActivity.customfont;
+                break;
             default:
                 FullscreenActivity.lyricsfont = FullscreenActivity.typeface0;
                 FullscreenActivity.commentfont = FullscreenActivity.typeface0;
@@ -95,6 +107,9 @@ class SetTypeFace {
             case 12:
                 FullscreenActivity.chordsfont = FullscreenActivity.typeface12;
                 break;
+            case 13:
+                FullscreenActivity.chordsfont = FullscreenActivity.customfont;
+                break;
             default:
                 FullscreenActivity.chordsfont = FullscreenActivity.typeface0;
                 break;
@@ -136,6 +151,9 @@ class SetTypeFace {
                 break;
             case 12:
                 FullscreenActivity.presofont = FullscreenActivity.typeface12;
+                break;
+            case 13:
+                FullscreenActivity.presofont = FullscreenActivity.customfont;
                 break;
             default:
                 FullscreenActivity.presofont = FullscreenActivity.typeface0;
@@ -179,11 +197,29 @@ class SetTypeFace {
             case 12:
                 FullscreenActivity.presoInfoFont = FullscreenActivity.typeface12;
                 break;
+            case 13:
+                FullscreenActivity.presoInfoFont = FullscreenActivity.customfont;
+                break;
             default:
                 FullscreenActivity.presoInfoFont = FullscreenActivity.typeface0;
                 break;
         }
 
+    }
+
+    static Typeface setCustomFont(String ff) {
+        Typeface tf = FullscreenActivity.typeface0;
+        String fl = FullscreenActivity.dirfonts + "/" + ff;
+        Log.d("d","ff="+ff);
+        Log.d("d","fl="+fl);
+        File cf = new File(fl);
+        if (cf.exists() && (ff.endsWith(".ttf") || ff.endsWith(".otf"))) {
+            tf = Typeface.createFromFile(cf);
+        } else {
+            FullscreenActivity.customfontname = "";
+            Preferences.savePreferences();
+        }
+        return tf;
     }
 
     static String setupWebViewLyricFont(int fontnum) {

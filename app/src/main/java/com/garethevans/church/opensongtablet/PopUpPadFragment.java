@@ -41,6 +41,7 @@ public class PopUpPadFragment extends DialogFragment {
         void preparePad();
         void killPad();
         void pageButtonAlpha(String s);
+        void openFragment();
     }
 
     private MyInterface mListener;
@@ -229,6 +230,12 @@ public class PopUpPadFragment extends DialogFragment {
                     popupPad_file.setSelection(0);
                     FullscreenActivity.myToastMessage = getResources().getString(R.string.notset);
                     ShowToast.showToast(getActivity());
+                    // Try opening the link file popup to get the user to set one
+                    if (mListener!=null) {
+                        FullscreenActivity.whattodo = "page_links";
+                        mListener.openFragment();
+                        //dismiss();
+                    }
                 } else {
                     FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
                 }

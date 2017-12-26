@@ -47,7 +47,7 @@
         android:layout_weight="1"
         android:layout_height="0dp">
 
-    <LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -102,6 +102,19 @@
                 android:thumb="@drawable/switch_button"
                 app:thumbTextPadding="4dp"
                 app:thumbTint="#444488" />
+
+            <Button
+                android:id="@+id/autoScrollLearnButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_rotate_right_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_rotate_right_white_36dp"
+                android:gravity="center_vertical"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
         </LinearLayout>
     </ScrollView>

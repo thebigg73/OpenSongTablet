@@ -684,4 +684,8 @@
     <string name="pdftotext_extract">"Extrahera text från PDF"</string>
     <string name="pdftotext_found">"Text hittades:"</string>
 
+    <string name="capo_style">"Capo fret som tal"</string>
+    <string name="fix">"Automatisk korrigering"</string>
+    <string name="timer_learn">"Lär dig autoscroll tid"</string>
+
 </resources>

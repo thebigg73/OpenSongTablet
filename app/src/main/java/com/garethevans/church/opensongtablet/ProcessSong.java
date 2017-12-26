@@ -1885,13 +1885,11 @@ public class ProcessSong extends Activity {
         String keytext = "";
         if (!FullscreenActivity.mKey.isEmpty() && !FullscreenActivity.mKey.equals("")) {
             keytext = " (" + FullscreenActivity.mKey + ")";
-
-
         }
         return keytext;
     }
 
-    static String getCapoInfo(Context c) {
+    static String getCapoInfo() {
         String s = "";
         // If we are using a capo, add the capo display
         if (!FullscreenActivity.mCapo.equals("")) {
@@ -2707,11 +2705,11 @@ public class ProcessSong extends Activity {
         }
 
         String capoDetails = "";
-        if (FullscreenActivity.showCapoChords && !FullscreenActivity.mCapo.equals("")) {
+        /*if (FullscreenActivity.showCapoChords && !FullscreenActivity.mCapo.equals("")) {
             //capoDetails = ";__" + c.getResources().getString(R.string.edit_song_capo) + " " + FullscreenActivity.mCapo + "\n\n";
             //FullscreenActivity.myToastMessage = c.getResources().getString(R.string.edit_song_capo) + " " + FullscreenActivity.mCapo + "\n\n";
             //ShowToast.showToast(c);
-        }
+        }*/
 
         String stickyNotes = "";
         if (FullscreenActivity.toggleAutoSticky.equals("T")||FullscreenActivity.toggleAutoSticky.equals("B")) {

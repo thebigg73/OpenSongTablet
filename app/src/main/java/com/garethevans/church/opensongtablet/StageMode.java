@@ -156,9 +156,10 @@ public class StageMode extends AppCompatActivity implements
     LinearLayout column1_1, column1_2, column2_2, column1_3, column2_3, column3_3;
     ScrollView glideimage_ScrollView;
     ImageView glideimage, highlightNotes;
-    LinearLayout backingtrackProgress, playbackProgress, capoInfo;
+    LinearLayout backingtrackProgress, playbackProgress, capoInfo, learnAutoScroll;
     TextView padcurrentTime_TextView, padTimeSeparator_TextView, padtotalTime_TextView,
-            currentTime_TextView, timeSeparator_TextView, totalTime_TextView, capoinfo, capoinfonewkey;
+            currentTime_TextView, timeSeparator_TextView, totalTime_TextView, capoinfo,
+            capoinfonewkey, learnAutoScroll_TextView, learnAutoScrollTime_TextView;
     float width_scale = 0f, biggestscale_1col = 0.0f, biggestscale_2col = 0.0f, biggestscale_3col = 0.0f;
     boolean overridingfull, overridingwidth, rendercalled = false, sectionpresented = false;
 
@@ -197,7 +198,7 @@ public class StageMode extends AppCompatActivity implements
             createstageview1col_async, fadeout_media1, fadeout_media2, check_storage,
             sharesong_async, shareset_async, load_customreusable, open_drawers, close_drawers,
             resize_drawers, do_moveinset, indexing_done, add_slidetoset, dualscreenwork_async,
-            show_sticky,show_highlight;
+            show_sticky,show_highlight, mtask_learnautoscroll;
     AsyncTask<Void, Void, String> resizeperformance_async, resizestage_async;
     AsyncTask<String, Integer, String> mtask_autoscroll_music;
     IndexSongs.IndexMySongs indexsongs_task;
@@ -332,6 +333,10 @@ public class StageMode extends AppCompatActivity implements
                 // Set up the pad and autoscroll timing display
                 capoinfo = findViewById(R.id.capoinfo);
                 capoinfonewkey = findViewById(R.id.capoinfonewkey);
+                learnAutoScroll = findViewById(R.id.learnAutoScroll);
+                learnAutoScroll.setVisibility(View.GONE);
+                learnAutoScroll_TextView = findViewById(R.id.learnAutoScroll_TextView);
+                learnAutoScrollTime_TextView = findViewById(R.id.learnAutoScrollTime_TextView);
                 backingtrackProgress = findViewById(R.id.backingtrackProgress);
                 backingtrackProgress.setVisibility(View.GONE);
                 padcurrentTime_TextView = findViewById(R.id.padcurrentTime_TextView);
@@ -443,24 +448,46 @@ public class StageMode extends AppCompatActivity implements
                 }
 
                 try {
-                    //FullscreenActivity.incomingfile = getIntent();
+                    FullscreenActivity.incomingfile = getIntent();
+                    Intent intent = getIntent();
+                    String action = intent.getAction();
+                    String type = intent.getType();
+
+                    Log.d("d","intent="+intent);
+                    Log.d("d","action="+action);
+                    Log.d("d","type="+type);
+
                     if (FullscreenActivity.incomingfile != null) {
                         Log.d("d","this is in oncreate and intent has been found");
+                        Log.d("d","incomingfile="+FullscreenActivity.incomingfile);
+                        Log.d("d","incomingfile.getData()="+FullscreenActivity.incomingfile.getData());
                         if (FullscreenActivity.incomingfile!=null && FullscreenActivity.incomingfile.getData()!=null) {
                             FullscreenActivity.file_location = FullscreenActivity.incomingfile.getData().getPath();
+                            Log.d("d","file_location="+FullscreenActivity.file_location);
                             FullscreenActivity.file_name = FullscreenActivity.incomingfile.getData().getLastPathSegment();
+                            Log.d("d","file_name="+FullscreenActivity.file_name);
                             FullscreenActivity.file_uri = FullscreenActivity.incomingfile.getData();
+                            Log.d("d","file_uri="+FullscreenActivity.file_uri);
+
                         } else {
                             FullscreenActivity.file_location = "";
                             FullscreenActivity.file_name = "";
                             FullscreenActivity.file_uri = null;
                         }
-                        if (FullscreenActivity.file_name.endsWith(".osb")) {
-                            FullscreenActivity.whattodo = "processimportosb";
-                        } else {
-                            FullscreenActivity.whattodo = "doimport";
+
+                        // Check if file_uri exists
+                        if (FullscreenActivity.file_location!=null) {
+                            File t = new File(FullscreenActivity.file_location);
+                            boolean uri_exists = t.exists();
+                            if (FullscreenActivity.file_name.endsWith(".osb") && uri_exists) {
+                                FullscreenActivity.whattodo = "processimportosb";
+                                openFragment();
+                            } else if (uri_exists){
+                                FullscreenActivity.whattodo = "doimport";
+                                openFragment();
+                            }
+
                         }
-                        //openFragment();
                     }
                 } catch (Exception e) {
                     // No file
@@ -997,6 +1024,7 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(createstageview1col_async);
         doCancelAsyncTask(fadeout_media1);
         doCancelAsyncTask(fadeout_media2);
+        doCancelAsyncTask(mtask_learnautoscroll);
         doCancelAsyncTask(mtask_autoscroll_music);
         doCancelAsyncTask(check_storage);
         doCancelAsyncTask(sharesong_async);
@@ -1230,6 +1258,7 @@ public class StageMode extends AppCompatActivity implements
         }
         mypage.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
         songscrollview.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
+        SetTypeFace.setTypeface();
         prepareSongMenu();
         prepareOptionMenu();
         loadSong();
@@ -3610,7 +3639,7 @@ public class StageMode extends AppCompatActivity implements
         boolean bothempty = true;
         // If we are showing capo chords, show this info
         if (capoinfo!=null && !FullscreenActivity.mCapo.equals("") && !FullscreenActivity.mCapo.equals("0")) {
-            capoinfo.setText(ProcessSong.getCapoInfo(StageMode.this));
+            capoinfo.setText(ProcessSong.getCapoInfo());
             capoinfo.setVisibility(View.VISIBLE);
             bothempty = false;
         } else {
@@ -4395,7 +4424,6 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-    @SuppressLint("ClickableViewAccessibility")
 
     public void displaySticky() {
         if (FullscreenActivity.mNotes!=null && !FullscreenActivity.mNotes.isEmpty() && !FullscreenActivity.mNotes.equals("")) {
@@ -4486,26 +4514,17 @@ public class StageMode extends AppCompatActivity implements
                     highlightNotes.setVisibility(View.GONE);
                 }
                 if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
-                    //mypage.destroyDrawingCache();
-                    //mypage.setDrawingCacheEnabled(true);
-                    //mypage.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
-                    //glideimage_ScrollView.destroyDrawingCache();
-                    //glideimage_ScrollView.setDrawingCacheEnabled(true);
-                    //glideimage_ScrollView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
                     glideimage_ScrollView.destroyDrawingCache();
                     glideimage_ScrollView.setDrawingCacheEnabled(true);
                     glideimage_ScrollView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
                     FullscreenActivity.bmScreen = null;
                     try {
-                        //FullscreenActivity.bmScreen = mypage.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
-                        //FullscreenActivity.bmScreen = glideimage_ScrollView.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
                         FullscreenActivity.bmScreen = glideimage_ScrollView.getDrawingCache().copy(Bitmap.Config.ARGB_8888, true);
                     } catch (Exception e) {
                         Log.d("d", "error getting the screenshot!");
                     } catch (OutOfMemoryError e) {
                         Log.d("d","not enough memory");
                     }
-
 
                 } else {
                     songscrollview.destroyDrawingCache();
@@ -5766,6 +5785,149 @@ public class StageMode extends AppCompatActivity implements
     }
 
     @Override
+    public void prepareLearnAutoScroll() {
+        FullscreenActivity.learnPreDelay = false;
+        FullscreenActivity.learnSongLength = false;
+        learnAutoScroll.setVisibility(View.VISIBLE);
+        learnAutoScroll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startLearnAutoScroll();
+            }
+        });
+        String s = getString(R.string.autoscroll_time) + "\n" + getString(R.string.start);
+        learnAutoScroll_TextView.setTextSize(10.0f);
+        learnAutoScroll_TextView.setText(s);
+        learnAutoScrollTime_TextView.setText(TimeTools.timeFormatFixer(0));
+    }
+
+    public void startLearnAutoScroll() {
+        FullscreenActivity.learnPreDelay = true;
+        FullscreenActivity.learnSongLength = false;
+        learnAutoScroll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getLearnedPreDelayValue();
+            }
+        });
+        String s = getString(R.string.autoscroll_time) + "\n" + getString(R.string.savesong);
+        learnAutoScroll_TextView.setText(s);
+        LearnAutoScroll mtask_learnautoscroll = new LearnAutoScroll();
+        mtask_learnautoscroll.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+    public void getLearnedPreDelayValue() {
+        int time = (int) (FullscreenActivity.time_passed - FullscreenActivity.time_start)/1000;
+        if (time<0) {
+            time = 0;
+        }
+        FullscreenActivity.learnSongLength = true;
+        FullscreenActivity.learnPreDelay = false;
+        FullscreenActivity.mPreDelay = time+"";
+        Log.d("d", time+"");
+        String s = getString(R.string.edit_song_duration) + "\n" + getString(R.string.savesong);
+        learnAutoScroll_TextView.setText(s);
+        learnAutoScroll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getLearnedSongLengthValue();
+            }
+        });
+    }
+    public void getLearnedSongLengthValue() {
+        int time = (int) (FullscreenActivity.time_passed - FullscreenActivity.time_start)/1000;
+        if (time<0) {
+            time = 0;
+        }
+        FullscreenActivity.mDuration = time+"";
+        FullscreenActivity.learnPreDelay = false;
+        FullscreenActivity.learnSongLength = false;
+
+        if (mtask_learnautoscroll!=null) {
+            try {
+                mtask_learnautoscroll.cancel(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        FullscreenActivity.whattodo = "page_autoscroll";
+        openFragment();
+    }
+    @SuppressLint("StaticFieldLeak")
+    private class LearnAutoScroll extends AsyncTask<String, Integer, String> {
+
+        int time;
+
+        @Override
+        protected void onPreExecute() {
+            try {
+                FullscreenActivity.time_start = System.currentTimeMillis();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... args) {
+            try {
+                while (FullscreenActivity.learnPreDelay || FullscreenActivity.learnSongLength) {
+                    FullscreenActivity.time_passed = System.currentTimeMillis();
+
+                    long starttime = System.currentTimeMillis();
+                    long currtime = System.currentTimeMillis();
+                    while ((currtime - starttime) < 1000) {
+                        currtime = System.currentTimeMillis();
+                    }
+                    time = (int) (FullscreenActivity.time_passed - FullscreenActivity.time_start)/1000;
+                    if (time>28 && FullscreenActivity.learnPreDelay) {
+                        publishProgress(-100);
+                    } else {
+                        publishProgress(time);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return "dummy";
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... intg) {
+            if (time==-100) {
+                // We've exceed the allowed predelay length, so save this value as it is max
+                getLearnedPreDelayValue();
+            } else {
+                // Update the timer
+                AutoScrollFunctions.LearnTimeRunnable runnable = new AutoScrollFunctions.LearnTimeRunnable(learnAutoScrollTime_TextView);
+                AutoScrollFunctions.doautoScrollLearn.post(runnable);
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String dummy) {
+            try {
+                if (!cancelled) {
+                    FullscreenActivity.learnPreDelay = false;
+                    FullscreenActivity.learnSongLength = false;
+                    doCancelAsyncTask(mtask_learnautoscroll);
+                    learnAutoScroll.setVisibility(View.GONE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        boolean cancelled = false;
+        @Override
+        public void onCancelled() {
+            FullscreenActivity.learnPreDelay = false;
+            FullscreenActivity.learnSongLength = false;
+            cancelled = true;
+            doCancelAsyncTask(mtask_learnautoscroll);
+        }
+    }
+
+    @Override
     public void startAutoScroll() {
         FullscreenActivity.clickedOnAutoScrollStart = true;
         totalTime_TextView.setTextSize(FullscreenActivity.timerFontSizeAutoScroll);
@@ -6838,7 +7000,12 @@ public class StageMode extends AppCompatActivity implements
 
                         @Override
                         public void onRemoteDisplaySessionError(Status status) {
+                            Log.d("d","onRemoteDisplaySessionError status="+status);
+                        }
 
+                        @Override
+                        public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                            Log.d("d","onRemoteDisplaySessionEnded");
                         }
 
                     });

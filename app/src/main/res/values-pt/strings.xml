@@ -629,4 +629,8 @@
     <string name="pdftotext_extract">"Extrair texto de PDF"</string>
     <string name="pdftotext_found">"Texto encontrado:"</string>
 
+	<string name="capo_style">"Capo fret como numeral"</string>
+	<string name="fix">"Autofix"</string>
+	<string name="timer_learn">"Aprenda o tempo de corte automático"</string>
+
 </resources>

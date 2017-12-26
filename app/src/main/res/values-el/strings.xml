@@ -704,4 +704,8 @@
     <string name="pdftotext_extract">"Εξαγωγή κειμένου από PDF"</string>
     <string name="pdftotext_found">"Βρέθηκε κείμενο:"</string>
 
+    <string name="capo_style">"Capo fret ως αριθμητικό"</string>
+    <string name="fix">"Αυτόματη επιδιόρθωση"</string>
+    <string name="timer_learn">"Μάθετε το χρόνο αυτόματης επιλογής"</string>
+
 </resources>
