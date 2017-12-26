@@ -28,6 +28,8 @@ import android.widget.TextView;
 import com.peak.salut.Salut;
 import com.peak.salut.SalutDataReceiver;
 import com.peak.salut.SalutServiceData;
+//import com.squareup.leakcanary.LeakCanary;
+//import com.squareup.leakcanary.RefWatcher;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -101,6 +103,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static SongFileList songfilelist = new SongFileList();
     //this could be a ref to an xmlObject.
     public static String[][] songDetails;
+    public static int numDirs;
     public static Map<String, Integer> mapIndex;
     public static int currentSongIndex, previousSongIndex, nextSongIndex;
     @SuppressLint("StaticFieldLeak")
@@ -117,9 +120,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             learnPreDelay = false, learnSongLength = false;
     public static int beatoffcolour = 0xff232333, scrollpageHeight, currentBeat = 1,
             total_pixels_to_scroll = 0, timesigindex, default_autoscroll_songlength,
-            default_autoscroll_predelay, keyindex, scrollSpeed, autoScrollDelay, autoScrollDuration,
+            default_autoscroll_predelay, default_autoscroll_predelay_max, keyindex, scrollSpeed, autoScrollDelay, autoScrollDuration,
             audiolength = -1, fadeWhichPad, padtime_length = 0;
     public static final int autoscroll_pause_time = 500; // specified in ms
+    public static int autoscroll_modifier = 0;
     public static String popupAutoscroll_stoporstart = "stop", whichbeat = "a",
             metronomeonoff = "off", metronomepan = "both", padpan = "both",
             autoscroll_default_or_prompt = "", autoscrollonoff = "false", pad_filename = "null";
@@ -418,7 +422,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static boolean mAndroidBeamAvailable  = false;
     public static boolean forcecastupdate;
 
-
+    //public static RefWatcher refWatcher;
 
 
     // Just for the popups - let StageMode or PresenterMode try to deal with them
@@ -445,7 +449,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        if (LeakCanary.isInAnalyzerProcess(this.getApplication())) {
+//            // This process is dedicated to LeakCanary for heap analysis.
+//            // You should not init your app in this process.
+//            return;
+//        }
+//        refWatcher = LeakCanary.install(this.getApplication());
         myPreferences = getSharedPreferences("OpenSongApp", Context.MODE_PRIVATE);
         Preferences.loadPreferences();
 

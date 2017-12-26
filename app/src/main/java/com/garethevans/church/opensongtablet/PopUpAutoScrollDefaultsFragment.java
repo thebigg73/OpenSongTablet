@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
 
     TextView default_delaytime_TextView;
     SeekBar default_delaytime_SeekBar;
+    EditText default_delaymax_EditText;
     EditText default_duration_EditText;
     RadioGroup autoscroll_defaults_RadioGroup;
     RadioButton autoscroll_default_RadioButton;
@@ -75,19 +77,20 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
             }
         });
 
-
         // Initialise the views
         default_delaytime_TextView = V.findViewById(R.id.default_delaytime_TextView);
         default_delaytime_SeekBar = V.findViewById(R.id.default_delaytime_SeekBar);
+        default_delaymax_EditText = V.findViewById(R.id.default_delaymax_EditText);
         default_duration_EditText = V.findViewById(R.id.default_duration_EditText);
         autoscroll_defaults_RadioGroup = V.findViewById(R.id.autoscroll_defaults_RadioGroup);
         autoscroll_default_RadioButton = V.findViewById(R.id.autoscroll_default_RadioButton);
         autoscroll_prompt_RadioButton = V.findViewById(R.id.autoscroll_prompt_RadioButton);
 
         // Set them to the default values
-        default_delaytime_SeekBar.setMax(30);
+        default_delaytime_SeekBar.setMax(FullscreenActivity.default_autoscroll_predelay_max);
         default_delaytime_SeekBar.setProgress(FullscreenActivity.default_autoscroll_predelay);
         String text = FullscreenActivity.default_autoscroll_predelay + " s";
+        default_delaymax_EditText.setText(Integer.toString(FullscreenActivity.default_autoscroll_predelay_max));
         default_delaytime_TextView.setText(text);
         if (FullscreenActivity.autoscroll_default_or_prompt.equals("prompt")) {
             autoscroll_prompt_RadioButton.setChecked(true);
@@ -104,6 +107,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
         default_delaytime_SeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                seekBar.setMax(Integer.parseInt(default_delaymax_EditText.getText().toString()));
                 String text = progress + " s";
                 default_delaytime_TextView.setText(text);
             }
@@ -121,6 +125,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
     }
 
     public void doSave(){
+        FullscreenActivity.default_autoscroll_predelay_max = Integer.parseInt(default_delaymax_EditText.getText().toString());
         FullscreenActivity.default_autoscroll_predelay = default_delaytime_SeekBar.getProgress();
         String length = default_duration_EditText.getText().toString();
         try {

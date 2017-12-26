@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.PendingIntent;
@@ -53,6 +54,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -992,7 +994,7 @@ public class StageMode extends AppCompatActivity implements
             }
         }
         tryCancelAsyncTasks();
-        if (songscrollview!=null) {
+        if (songscrollview !=null) {
             songscrollview.removeAllViews();
         }
 
@@ -2248,6 +2250,27 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.showLyrics = !FullscreenActivity.showLyrics;
                 Preferences.savePreferences();
                 loadSong();
+                break;
+
+            case "inc_autoscroll_speed":
+                if(FullscreenActivity.autoscrollispaused) {
+                    FullscreenActivity.autoscrollispaused = false;
+                    FullscreenActivity.autoscroll_modifier = 0;
+                }
+                else {
+                    FullscreenActivity.autoscroll_modifier = FullscreenActivity.autoscroll_modifier + 4;
+                }
+                break;
+
+            case "dec_autoscroll_speed":
+                if(FullscreenActivity.autoscroll_pixels + FullscreenActivity.autoscroll_modifier >= 4)
+                    FullscreenActivity.autoscroll_modifier = FullscreenActivity.autoscroll_modifier - 4;
+                if(FullscreenActivity.autoscroll_pixels + FullscreenActivity.autoscroll_modifier <= 4)
+                    FullscreenActivity.autoscrollispaused = true;
+                break;
+
+            case "toggle_autoscroll_pause":
+                FullscreenActivity.autoscrollispaused = !FullscreenActivity.autoscrollispaused;
                 break;
         }
     }
@@ -4938,6 +4961,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void songShortClick(int mychild) {
         // Scroll to this song in the song menu
+        mychild = mychild - FullscreenActivity.numDirs;
         song_list_view.smoothScrollToPosition(mychild);
 
         // Close both drawers
@@ -5943,6 +5967,7 @@ public class StageMode extends AppCompatActivity implements
         FullscreenActivity.isManualDragging = false;
         FullscreenActivity.wasscrolling = false;
         get_scrollheight = new GetScrollHeight();
+        //FullscreenActivity.refWatcher.watch(get_scrollheight);
         try {
             get_scrollheight.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
@@ -6024,6 +6049,8 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPreExecute() {
             try {
+                FullscreenActivity.autoscroll_modifier = 0;
+                FullscreenActivity.autoscrollispaused = false;
                 FullscreenActivity.time_start = System.currentTimeMillis();
                 songscrollview.scrollTo(0, 0);
             } catch (Exception e) {
@@ -6072,8 +6099,14 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onProgressUpdate(Integer... intg) {
             try {
-                if (!FullscreenActivity.wasscrolling) {
-                    FullscreenActivity.newPosFloat = FullscreenActivity.newPosFloat + FullscreenActivity.autoscroll_pixels;
+                if (!FullscreenActivity.wasscrolling && !FullscreenActivity.autoscrollispaused) {
+                    if(FullscreenActivity.newPosFloat + FullscreenActivity.autoscroll_pixels + FullscreenActivity.autoscroll_modifier > 0) {
+                        FullscreenActivity.newPosFloat = FullscreenActivity.newPosFloat + FullscreenActivity.autoscroll_pixels + FullscreenActivity.autoscroll_modifier;
+                    }
+                    else
+                    {
+                        FullscreenActivity.newPosFloat = FullscreenActivity.newPosFloat + FullscreenActivity.autoscroll_pixels;
+                    }
                 } else {
                     FullscreenActivity.newPosFloat = songscrollview.getScrollY();
                 }
@@ -6536,11 +6569,11 @@ public class StageMode extends AppCompatActivity implements
         return super.onKeyLongPress(keyCode, event);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        scaleGestureDetector.onTouchEvent(event);
-        return true;
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        scaleGestureDetector.onTouchEvent(event);
+//        return true;
+//    }
 
     private class simpleOnScaleGestureListener extends
             ScaleGestureDetector.SimpleOnScaleGestureListener {

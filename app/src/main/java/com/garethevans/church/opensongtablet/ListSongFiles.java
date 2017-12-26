@@ -15,6 +15,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+
 
 public class ListSongFiles {
 
@@ -68,18 +72,26 @@ public class ListSongFiles {
                 }
                 File f = new File(s_f);
                 if (f.exists()) {
-                    fileextensionok = checkFileExtension(s);
-                    utf = checkUtfEncoding(s_f, c);
-                    if (fileextensionok) {
-                        vals = getSongDetailsXML(f, s, utf);
-                    } else {
-                        // Non OpenSong
+                    if (f.isDirectory()) {
                         vals[0] = s;
-                        vals[1] = "";
-                        vals[2] = "";
+                        vals[1] = f.getPath().substring(FullscreenActivity.dir.getPath().length());
+                        vals[2] = "Directory";
                     }
-                    if (vals[2] == null || vals[2].equals("")) {
-                        vals[2] = "";
+                    else
+                    {
+                        fileextensionok = checkFileExtension(s);
+                        utf = checkUtfEncoding(s_f, c);
+                        if (fileextensionok) {
+                            vals = getSongDetailsXML(f, s, utf);
+                        } else {
+                            // Non OpenSong
+                            vals[0] = s;
+                            vals[1] = "";
+                            vals[2] = "";
+                        }
+                        if (vals[2] == null || vals[2].equals("")) {
+                            vals[2] = "";
+                        }
                     }
                     try {
                         FullscreenActivity.songDetails[r][0] = vals[0];
@@ -93,6 +105,41 @@ public class ListSongFiles {
         } catch (Exception e) {
             // Ooops, error
         }
+
+        Arrays.sort(FullscreenActivity.songDetails, new Comparator<String[]>() {
+            @Override
+            public int compare(final String[] entry1, final String[] entry2) {
+                if (entry1[2] == "Directory") {
+                    return -1;
+                } else if (entry2[2] == "Directory") {
+                    return 1;
+                } else {
+                    return entry1[0].compareToIgnoreCase(entry2[0]);
+                }
+            }
+        });
+        FullscreenActivity.numDirs = 0;
+        while(FullscreenActivity.songDetails[FullscreenActivity.numDirs][2] == "Directory")
+        {
+            FullscreenActivity.numDirs++;
+        }
+        //numDirs is zerobased index >> horrible hack.
+        if(FullscreenActivity.numDirs > 0)
+            FullscreenActivity.numDirs += 1;
+//        for(int i=0; i<FullscreenActivity.songDetails.length; i++)
+//        {
+//            if (FullscreenActivity.songDetails[i][2] == "Directory")
+//            {
+//                FullscreenActivity.numDirs++;
+//            }
+//        }
+//        Arrays.sort(FullscreenActivity.songDetails,0,FullscreenActivity.numDirs, new Comparator<String[]>() {
+//            @Override
+//            public int compare(final String[] entry1, final String[] entry2) {
+//                return entry1[0].compareToIgnoreCase(entry2[0]);
+//            }
+//        });
+        int bob = 0;
     }
 
     private static String[] getSongDetailsXML(File f, String s, String utf) {
