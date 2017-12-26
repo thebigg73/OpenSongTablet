@@ -613,6 +613,7 @@ public class PopUpStorageFragment extends DialogFragment {
         FullscreenActivity.dirprofiles = new File(myroot.getAbsolutePath() + "/OpenSong/Profiles");
         FullscreenActivity.dirreceived = new File(myroot.getAbsolutePath() + "/OpenSong/Received");
         FullscreenActivity.dirhighlighter = new File(myroot.getAbsolutePath() + "/OpenSong/Highlighter");
+        FullscreenActivity.dirfonts = new File(myroot.getAbsolutePath() + "/OpenSong/Fonts");
     }
 
     public static void setUpStoragePreferences() {
@@ -662,11 +663,12 @@ public class PopUpStorageFragment extends DialogFragment {
         boolean dirprofiles_success = createDirectory(FullscreenActivity.dirprofiles);
         boolean dirreceived_success = createDirectory(FullscreenActivity.dirreceived);
         boolean dirhighlighter_success =  createDirectory(FullscreenActivity.dirhighlighter);
+        boolean dirfonts_success =  createDirectory(FullscreenActivity.dirfonts);
         return homedir_success && dirsettings_success && dir_success && dirsets_success && dirPads_success && dirbackgrounds_success &&
                 dirbibles_success && dirverses_success && dirscripture_success && dirscriptureverses_success &&
                 dircustomimages_success && dircustomnotes_success && dircustomslides_success && dirMedia_success &&
                 dirvariations_success && dirprofiles_success && direxport_success && dirreceived_success &&
-                dirhighlighter_success;
+                dirhighlighter_success && dirfonts_success;
     }
 
     public static boolean createDirectory(File folder){
@@ -703,12 +705,13 @@ public class PopUpStorageFragment extends DialogFragment {
         boolean dirprofiles_success = checkDirectory(FullscreenActivity.dirprofiles);
         boolean dirreceived_success = checkDirectory(FullscreenActivity.dirreceived);
         boolean dirhighlighter_success = checkDirectory(FullscreenActivity.dirhighlighter);
+        boolean dirfonts_success = checkDirectory(FullscreenActivity.dirfonts);
         return homedir_success && dirsettings_success && dir_success && dirsets_success &&
                 dirPads_success && dirbackgrounds_success && dirbibles_success &&
                 dirverses_success && dirscripture_success && dirscriptureverses_success &&
                 dircustomimages_success && dircustomnotes_success && dircustomslides_success &&
                 dirMedia_success && dirvariations_success && dirprofiles_success &&
-                direxport_success && dirreceived_success && dirhighlighter_success;
+                direxport_success && dirreceived_success && dirhighlighter_success && dirfonts_success;
     }
 
     public static boolean checkBasicDirectoriesExistOnly(){

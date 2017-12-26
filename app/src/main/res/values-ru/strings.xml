@@ -629,4 +629,8 @@
     <string name="pdftotext_extract">"Извлечение текста из PDF"</string>
     <string name="pdftotext_found">"Текст найден:"</string>
 
+	<string name="capo_style">"Капо лад как цифра"</string>
+	<string name="fix">"Автоисправление"</string>
+	<string name="timer_learn">"Изучение времени автопрокрутки"</string>
+
 </resources>

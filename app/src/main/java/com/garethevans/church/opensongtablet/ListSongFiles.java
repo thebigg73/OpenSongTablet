@@ -8,14 +8,17 @@ import org.apache.commons.io.FileUtils;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+
 
 public class ListSongFiles {
 
@@ -154,6 +157,27 @@ public class ListSongFiles {
             xpp = factory.newPullParser();
 
             InputStream inputStream = new FileInputStream(f);
+            InputStreamReader lineReader = new InputStreamReader(inputStream);
+            BufferedReader buffreader = new BufferedReader(lineReader);
+
+            String line;
+            try {
+                line = buffreader.readLine();
+                if (line.contains("encoding=\"")) {
+                    int startpos = line.indexOf("encoding=\"")+10;
+                    int endpos = line.indexOf("\"",startpos);
+                    String enc = line.substring(startpos,endpos);
+                    if (enc!=null && enc.length()>0 && !enc.equals("")) {
+                        utf = enc.toUpperCase();
+                    }
+                }
+            } catch (Exception e) {
+                Log.d("d","No encoding included in line 1");
+            }
+
+            inputStream.close();
+
+            inputStream = new FileInputStream(f);
             xpp.setInput(inputStream, utf);
 
             if (f.length()>0 && f.length()<500000) {

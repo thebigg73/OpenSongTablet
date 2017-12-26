@@ -629,4 +629,8 @@
     <string name="pdftotext_extract">"Wyodrębnij tekst z pliku PDF"</string>
     <string name="pdftotext_found">"Tekst znaleziony:"</string>
 
+	<string name="capo_style">"Capo progu jako numer"</string>
+	<string name="fix">"Samonaprawa"</string>
+	<string name="timer_learn">"Dowiedz się czas automatycznego przewijania"</string>
+
 </resources>

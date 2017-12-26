@@ -52,6 +52,7 @@ final class SongFileList {
             } catch (Exception e) {
                 // Error sorting
                 Log.d("d","Error sorting");
+                e.printStackTrace();
             }
             return folderList.toArray(new String[folderList.size()].clone());
         } else {
@@ -65,6 +66,7 @@ final class SongFileList {
             } catch (Exception e) {
                 // Error sorting
                 Log.d("d","Error sorting");
+                e.printStackTrace();
             }
             return folderList.toArray(new String[folderList.size()]).clone();
         }
@@ -99,7 +101,17 @@ final class SongFileList {
     String[] getSongFileListasArray() {
         //todo place check here to see if new file has been added since the last file list was
         //constructed.  This saves memory.
-        fileList();  //ie only call this if directory has changed or file has been added
+        fileList();
+        // Sort the file list
+        try {
+            coll = Collator.getInstance(FullscreenActivity.locale);
+            coll.setStrength(Collator.SECONDARY);
+            Collections.sort(currentFileList, coll);
+        } catch (Exception e) {
+            // Error sorting
+            e.printStackTrace();
+            Log.d("d","Error sorting");
+        }
         return currentFileList.toArray(new String[currentFileList.size()]).clone();
     }
 

@@ -629,4 +629,8 @@
     <string name="pdftotext_extract">"Szöveg kivonatolása PDF-ből"</string>
     <string name="pdftotext_found">"Talált szöveg:"</string>
 
+	<string name="capo_style">"Capo megdöbbenés számmal"</string>
+	<string name="fix">"Automatikus javítás"</string>
+	<string name="timer_learn">"Ismerje meg az autoscroll idejét"</string>
+
 </resources>

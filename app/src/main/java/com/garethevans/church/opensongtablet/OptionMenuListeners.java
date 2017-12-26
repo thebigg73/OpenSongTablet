@@ -48,6 +48,7 @@ public class OptionMenuListeners extends Activity {
         void doDownload(String file);
         void connectHDMI();
         void takeScreenShot();
+        void prepareLearnAutoScroll();
     }
 
     public static MyInterface mListener;
@@ -885,6 +886,7 @@ public class OptionMenuListeners extends Activity {
         SwitchCompat chordsLyricsToggleSwitch = v.findViewById(R.id.chordsLyricsToggleSwitch);
         final SwitchCompat chordsCapoToggleSwitch = v.findViewById(R.id.chordsCapoToggleSwitch);
         final SwitchCompat chordsNativeAndCapoToggleSwitch = v.findViewById(R.id.chordsNativeAndCapoToggleSwitch);
+        final SwitchCompat capoAsNumeralsToggleSwitch = v.findViewById(R.id.capoAsNumeralsToggleSwitch);
         Button chordsFormatButton = v.findViewById(R.id.chordsFormatButton);
         Button chordsConvertButton = v.findViewById(R.id.chordsConvertButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
@@ -902,6 +904,7 @@ public class OptionMenuListeners extends Activity {
         chordsLyricsToggleSwitch.setText(c.getString(R.string.showlyrics).toUpperCase(FullscreenActivity.locale));
         chordsCapoToggleSwitch.setText(c.getString(R.string.showcapo).toUpperCase(FullscreenActivity.locale));
         chordsNativeAndCapoToggleSwitch.setText(c.getString(R.string.capo_toggle_bothcapo).toUpperCase(FullscreenActivity.locale));
+        capoAsNumeralsToggleSwitch.setText(c.getString(R.string.capo_style).toUpperCase(FullscreenActivity.locale));
         chordsFormatButton.setText(c.getString(R.string.options_options_chordformat).toUpperCase(FullscreenActivity.locale));
         chordsConvertButton.setText(c.getString(R.string.options_song_convert).toUpperCase(FullscreenActivity.locale));
 
@@ -943,6 +946,7 @@ public class OptionMenuListeners extends Activity {
         if (!nativeandcapobuttonenabled) {
             chordsNativeAndCapoToggleSwitch.setAlpha(0.4f);
         }
+        capoAsNumeralsToggleSwitch.setChecked(FullscreenActivity.showCapoAsNumerals);
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -1092,6 +1096,17 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.showNativeAndCapoChords = b;
+                Preferences.savePreferences();
+                if (mListener!=null) {
+                    mListener.loadSong();
+                }
+            }
+        });
+
+        capoAsNumeralsToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.showCapoAsNumerals = b;
                 Preferences.savePreferences();
                 if (mListener!=null) {
                     mListener.loadSong();
@@ -1321,6 +1336,7 @@ public class OptionMenuListeners extends Activity {
         Button songselectSearchButton = v.findViewById(R.id.songselectSearchButton);
         Button worshiptogetherSearchButton = v.findViewById(R.id.worshiptogetherSearchButton);
         Button worshipreadySearchButton = v.findViewById(R.id.worshipreadySearchButton);
+        Button ukutabsSearchButton = v.findViewById(R.id.ukutabsSearchButton);
         Button bandDownloadButton = v.findViewById(R.id.bandDownloadButton);
         Button churchDownloadButton = v.findViewById(R.id.churchDownloadButton);
         Button cameraButton = v.findViewById(R.id.cameraButton);
@@ -1338,6 +1354,7 @@ public class OptionMenuListeners extends Activity {
         worshiptogetherSearchButton.setText(wt.toUpperCase(FullscreenActivity.locale));
         String wr = c.getString(R.string.worshipready) + " " + c.getString(R.string.subscription);
         worshipreadySearchButton.setText(wr.toUpperCase(FullscreenActivity.locale));
+        ukutabsSearchButton.setText(c.getString(R.string.ukutabs).toUpperCase(FullscreenActivity.locale));
         bandDownloadButton.setText(c.getString(R.string.my_band).toUpperCase(FullscreenActivity.locale));
         churchDownloadButton.setText(c.getString(R.string.my_church).toUpperCase(FullscreenActivity.locale));
         cameraButton.setText(c.getString(R.string.camera).toUpperCase(FullscreenActivity.locale));
@@ -1397,6 +1414,16 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whattodo = "songselect";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+        ukutabsSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "ukutabs";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
@@ -2061,6 +2088,7 @@ public class OptionMenuListeners extends Activity {
         // Identify the buttons
         TextView menuup = v.findViewById(R.id.optionAutoScrollTitle);
         Button autoScrollTimeDefaultsButton = v.findViewById(R.id.autoScrollTimeDefaultsButton);
+        Button autoScrollLearnButton = v.findViewById(R.id.autoScrollLearnButton);
         SwitchCompat autoScrollStartButton = v.findViewById(R.id.autoScrollStartButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
         SwitchCompat switchTimerSize = v.findViewById(R.id.switchTimerSize);
@@ -2070,6 +2098,7 @@ public class OptionMenuListeners extends Activity {
         autoScrollTimeDefaultsButton.setText(c.getString(R.string.default_autoscroll).toUpperCase(FullscreenActivity.locale));
         autoScrollStartButton.setText(c.getString(R.string.options_options_autostartscroll).toUpperCase(FullscreenActivity.locale));
         switchTimerSize.setText(c.getString(R.string.timer_size).toUpperCase(FullscreenActivity.locale));
+        autoScrollLearnButton.setText(c.getString(R.string.timer_learn).toUpperCase(FullscreenActivity.locale));
 
         // Disable the autostart autoscroll for now
         //autoScrollStartButton.setEnabled(false);
@@ -2118,6 +2147,15 @@ public class OptionMenuListeners extends Activity {
             }
         });
 
+        autoScrollLearnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.prepareLearnAutoScroll();
+                }
+            }
+        });
         switchTimerSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

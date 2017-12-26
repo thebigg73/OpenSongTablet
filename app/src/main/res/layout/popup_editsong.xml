@@ -368,6 +368,14 @@
                     android:typeface="monospace"
                     tools:ignore="SmallSp" />
 
+                <Button
+                    android:id="@+id/fix_lyrics"
+                    android:layout_gravity="right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grey_button"
+                    android:text="@string/fix"/>
+
                 <TextView
                     android:id="@+id/availabletags"
                     style="@style/MyInfoText"

@@ -8,6 +8,44 @@
     android:layout_alignParentRight="true">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/learnAutoScroll"
+        android:background="#888888"
+        android:alpha="0.4"
+        android:padding="4dp"
+        android:layout_margin="4dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/learnAutoScroll_TextView"
+            android:drawableLeft="@drawable/ic_rotate_right_white_36dp"
+            android:drawablePadding="2dp"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_rotate_right_white_36dp"
+            android:textStyle="bold|italic"
+            android:textSize="12sp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="#fff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/learnAutoScrollTime_TextView"
+            android:textStyle="bold|italic"
+            android:textSize="14sp"
+            android:textColor="#fff"
+            android:singleLine="true"
+            android:layout_margin="4dp"
+            android:padding="4dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/backingtrackProgress"

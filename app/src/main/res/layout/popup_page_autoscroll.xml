@@ -96,6 +96,16 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/popupautoscroll_learnbutton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:background="@drawable/green_button"
+                android:text="@string/timer_learn"
+                android:textColor="#fff" />
+
+            <Button
                 android:id="@+id/popupautoscroll_startstopbutton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

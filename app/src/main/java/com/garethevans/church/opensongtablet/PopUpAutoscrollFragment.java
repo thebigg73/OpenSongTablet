@@ -29,6 +29,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         void loadSong();
         void startAutoScroll();
         void stopAutoScroll();
+        void prepareLearnAutoScroll();
     }
 
     private MyInterface mListener;
@@ -55,6 +56,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
     }
 
     Button popupautoscroll_startstopbutton;
+    Button popupautoscroll_learnbutton;
     SeekBar popupautoscroll_delay;
     TextView popupautoscroll_delay_text;
     EditText popupautoscroll_duration;
@@ -103,6 +105,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
 
         // Initialise the views
         popupautoscroll_startstopbutton = V.findViewById(R.id.popupautoscroll_startstopbutton);
+        popupautoscroll_learnbutton = V.findViewById(R.id.popupautoscroll_learnbutton);
         popupautoscroll_delay = V.findViewById(R.id.popupautoscroll_delay);
         popupautoscroll_delay_text = V.findViewById(R.id.popupautoscroll_delay_text);
         popupautoscroll_duration = V.findViewById(R.id.popupautoscroll_duration);
@@ -128,6 +131,19 @@ public class PopUpAutoscrollFragment extends DialogFragment {
         }
 
         // Set up the listeners
+        popupautoscroll_learnbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener!=null) {
+                    try {
+                        mListener.prepareLearnAutoScroll();
+                        dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
         popupautoscroll_duration.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {

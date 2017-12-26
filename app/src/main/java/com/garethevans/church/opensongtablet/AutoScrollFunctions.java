@@ -192,4 +192,25 @@ class AutoScrollFunctions {
             }
         }
     }
+    static Handler doautoScrollLearn = new Handler();
+    static class LearnTimeRunnable implements Runnable {
+        TextView tv;
+        LearnTimeRunnable(TextView t) {
+            tv = t;
+        }
+
+        @Override
+        public void run() {
+            if (FullscreenActivity.learnPreDelay || FullscreenActivity.learnSongLength) {
+                FullscreenActivity.time_passed = System.currentTimeMillis();
+                int currtimesecs = (int) ((FullscreenActivity.time_passed - FullscreenActivity.time_start) / 1000);
+                String text;
+                //tv.setTextSize(FullscreenActivity.timerFontSizeAutoScroll);
+                text = TimeTools.timeFormatFixer(currtimesecs);
+                tv.setTextColor(0xffffffff);
+                tv.setText(text);
+            }
+        }
+    }
+
 }

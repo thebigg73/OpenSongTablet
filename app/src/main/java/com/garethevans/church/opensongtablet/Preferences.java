@@ -150,6 +150,7 @@ public class Preferences extends Activity {
             FullscreenActivity.custom2_presoShadow = myPreferences.getInt("custom2_presoShadow", default_dark_presoShadowFontColor);
             FullscreenActivity.custom2_stickytext = myPreferences.getInt("custom2_stickytext", default_stickyNotes);
             FullscreenActivity.custom2_stickybg = myPreferences.getInt("custom2_stickybg", default_stickyNotesBG);
+            FullscreenActivity.customfontname = myPreferences.getString("customfontname", "");
             FullscreenActivity.customLogo = myPreferences.getString("customLogo","ost_logo.png");
             FullscreenActivity.customLogoSize = myPreferences.getFloat("customLogoSize", 0.5f);
             FullscreenActivity.customStorage = myPreferences.getString("customStorage", Environment.getExternalStorageDirectory().getAbsolutePath());
@@ -311,6 +312,8 @@ public class Preferences extends Activity {
             FullscreenActivity.quickLaunchButton_2 = myPreferences.getString("quickLaunchButton_2", "");
             FullscreenActivity.quickLaunchButton_3 = myPreferences.getString("quickLaunchButton_3", "");
             FullscreenActivity.quickLaunchButton_4 = myPreferences.getString("quickLaunchButton_4", "");
+            FullscreenActivity.randomFolders = myPreferences.getString("randomFolders", "");
+            FullscreenActivity.showCapoAsNumerals = myPreferences.getBoolean("showCapoAsNumerals", false);
             FullscreenActivity.scrollDistance = myPreferences.getFloat("scrollDistance", 0.6f);
             FullscreenActivity.scrollSpeed = myPreferences.getInt("scrollSpeed", 1500);
             FullscreenActivity.showAlphabeticalIndexInSongMenu = myPreferences.getBoolean("showAlphabeticalIndexInSongMenu", true);
@@ -421,7 +424,7 @@ public class Preferences extends Activity {
             editor.putString("backgroundVideo2", FullscreenActivity.backgroundVideo2);
             editor.putBoolean("batteryDialOn", FullscreenActivity.batteryDialOn);
             editor.putInt("batteryLine", FullscreenActivity.batteryLine);
-            editor.putBoolean("batteryOn", FullscreenActivity.batteryDialOn);
+            editor.putBoolean("batteryOn", FullscreenActivity.batteryOn);
             editor.putFloat("batterySize", FullscreenActivity.batterySize);
             editor.putString("bibleFile", FullscreenActivity.bibleFile);
             editor.putString("capoDisplay", FullscreenActivity.capoDisplay);
@@ -467,6 +470,7 @@ public class Preferences extends Activity {
             editor.putInt("custom2_presoShadow", FullscreenActivity.custom2_presoShadow);
             editor.putInt("custom2_stickytext", FullscreenActivity.custom2_stickytext);
             editor.putInt("custom2_stickybg", FullscreenActivity.custom2_stickybg);
+            editor.putString("customfontname", FullscreenActivity.customfontname);
             editor.putString("customLogo", FullscreenActivity.customLogo);
             editor.putFloat("customLogoSize", FullscreenActivity.customLogoSize);
             editor.putString("customStorage", FullscreenActivity.customStorage);
@@ -634,9 +638,11 @@ public class Preferences extends Activity {
             editor.putString("quickLaunchButton_2", FullscreenActivity.quickLaunchButton_2);
             editor.putString("quickLaunchButton_3", FullscreenActivity.quickLaunchButton_3);
             editor.putString("quickLaunchButton_4", FullscreenActivity.quickLaunchButton_4);
+            editor.putString("randomFolders", FullscreenActivity.randomFolders);
             editor.putFloat("scrollDistance", FullscreenActivity.scrollDistance);
             editor.putInt("scrollSpeed", FullscreenActivity.scrollSpeed);
             editor.putBoolean("showAlphabeticalIndexInSongMenu",FullscreenActivity.showAlphabeticalIndexInSongMenu);
+            editor.putBoolean("showCapoAsNumerals",FullscreenActivity.showCapoAsNumerals);
             editor.putBoolean("showCapoChords", FullscreenActivity.showCapoChords);
             editor.putBoolean("showChords", FullscreenActivity.showChords);
             editor.putBoolean("showLyrics", FullscreenActivity.showLyrics);

@@ -6,9 +6,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/rightbar"
     android:layout_alignParentRight="true"
-    android:layout_alignParentEnd="true"
-    android:layout_below="@+id/padProgress"
-    android:layout_above="@+id/setForwardButton">
+    android:layout_alignParentEnd="true">
 
     <ScrollView
         android:id="@+id/extrabuttons2"
@@ -189,7 +187,7 @@
                 android:tag="togglePlayPads"
                 android:src="@drawable/ic_format_list_numbers_white_36dp"
                 android:alpha="0.4"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/padButton"

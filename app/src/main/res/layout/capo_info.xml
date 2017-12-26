@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="right|center_vertical"
+    android:layout_alignParentRight="true"
+    android:background="#888888"
+    android:alpha="0.5"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+    android:paddingBottom="0dp"
+    android:paddingTop="0dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/capoinfo"
+        style="@style/MyInfoText"
+        android:drawableLeft="@drawable/ic_capo_white_36dp"
+        android:gravity="center_vertical|center_horizontal"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/capoinfonewkey"
+        style="@style/MyInfoText"
+        android:gravity="center_vertical|center_horizontal"/>
+
+</LinearLayout>

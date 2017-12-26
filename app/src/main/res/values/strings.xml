@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="capo_style">Capo fret as numeral</string>
+    <string name="fix">Autofix</string>
+    <string name="timer_learn">Learn autoscroll time</string>
+    <string name="ukutabs" translatable="false">UkuTabs.com</string>
+
     <string name="pdfonly">No ChordPro, just the PDF</string>
     <string name="random_song">Find a random song</string>
     <string name="tag_ending">Ending</string>
