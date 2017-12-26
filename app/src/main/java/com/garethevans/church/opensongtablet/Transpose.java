@@ -851,7 +851,7 @@ class Transpose {
         int numtimes = Integer.parseInt(FullscreenActivity.mCapo);
 
         // Get the capokey if it hasn't been set
-        if (FullscreenActivity.capokey==null && FullscreenActivity.mKey!=null) {
+        if (FullscreenActivity.mKey!=null) {
             FullscreenActivity.capokey = keyToNumber(FullscreenActivity.mKey);
             FullscreenActivity.capokey = transposeKey(FullscreenActivity.capokey,"-1",numtimes);
             FullscreenActivity.capokey = numberToKey(FullscreenActivity.capokey);

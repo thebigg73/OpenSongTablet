@@ -680,4 +680,8 @@
     <string name="pdftotext_extract">"Ekstrakt teksta iz PDF-a"</string>
     <string name="pdftotext_found">"Pronađeno je tekst:"</string>
 
+    <string name="capo_style">"Capo se smije kao brojčanik"</string>
+    <string name="fix">"Automatski popravak"</string>
+    <string name="timer_learn">"Saznajte vrijeme automatskog pregleda"</string>
+
 </resources>

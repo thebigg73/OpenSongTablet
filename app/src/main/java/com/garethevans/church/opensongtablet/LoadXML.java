@@ -453,6 +453,31 @@ public class LoadXML extends Activity {
         initialiseSongTags();
 
         InputStream inputStream = new FileInputStream(FullscreenActivity.file);
+        InputStreamReader lineReader = new InputStreamReader(inputStream);
+        BufferedReader buffreader = new BufferedReader(lineReader);
+
+        String line;
+        try {
+            line = buffreader.readLine();
+            if (line.contains("encoding=\"")) {
+                int startpos = line.indexOf("encoding=\"")+10;
+                int endpos = line.indexOf("\"",startpos);
+                String enc = line.substring(startpos,endpos);
+                if (enc!=null && enc.length()>0 && !enc.equals("")) {
+                    utf = enc.toUpperCase();
+                }
+            }
+        } catch (Exception e) {
+            Log.d("d","No encoding included in line 1");
+        }
+
+        // Keep a note of this encoding incase we resave the song!
+        FullscreenActivity.mEncoding = utf;
+
+        // read every line of the file into the line-variable, on line at the time
+        inputStream.close();
+        inputStream = new FileInputStream(FullscreenActivity.file);
+
         xpp.setInput(inputStream, utf);
 
         int eventType;
@@ -473,7 +498,6 @@ public class LoadXML extends Activity {
                 } else if (xpp.getName().equals("lyrics")) {
                     String grabbedlyrics = xpp.nextText();
                     try {
-                        String fixed = ProcessSong.fixStartOfLines(grabbedlyrics);
                         FullscreenActivity.mLyrics = ProcessSong.fixStartOfLines(parseFromHTMLEntities(xpp.nextText()));
                     } catch (Exception e) {
                         FullscreenActivity.mLyrics = grabbedlyrics;

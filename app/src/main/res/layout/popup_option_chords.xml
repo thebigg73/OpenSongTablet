@@ -157,7 +157,22 @@
                 android:textSize="12sp"
                 app:showText="false" />
 
-            <Button
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/capoAsNumeralsToggleSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableLeft="@drawable/ic_capo_white_36dp"
+            android:drawablePadding="4dp"
+            android:drawableStart="@drawable/ic_capo_white_36dp"
+            android:text="@string/capo_style"
+            android:theme="@style/SwitchStyle"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            app:showText="false" />
+
+        <Button
                 android:id="@+id/chordsFormatButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

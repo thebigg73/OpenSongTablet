@@ -40,7 +40,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         //classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.7.0'
     }
@@ -66,8 +66,8 @@ dependencies {
     implementation 'org.apache.commons:commons-compress:1.11'
     //compile 'com.itextpdf:itextpdf:5.5.11'
     //compile 'org.apache.commons:commons-io:1.3.2'
-    implementation 'com.google.android.gms:play-services-nearby:11.6.0'
-    implementation 'com.google.android.gms:play-services-cast-framework:11.6.0'
+    implementation 'com.google.android.gms:play-services-nearby:11.8.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:11.8.0'
     implementation 'com.github.bumptech.glide:glide:4.0.0'
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.github.markrjr:Salut:v0.5.0'

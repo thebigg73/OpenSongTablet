@@ -458,7 +458,10 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("custom2_presoInfoFont")) {
                     FullscreenActivity.custom2_presoInfoFont = getIntegerValue(xpp.nextText(),0xffffffff);
                 } else if (xpp.getName().equals("custom2_presoShadow")) {
-                    FullscreenActivity.custom2_presoShadow = getIntegerValue(xpp.nextText(),0xff000000);
+                    FullscreenActivity.custom2_presoShadow = getIntegerValue(xpp.nextText(), 0xff000000);
+
+                } else if (xpp.getName().equals("customfontname")) {
+                    FullscreenActivity.customfontname = getTextValue(xpp.nextText(), "");
 
                 } else if (xpp.getName().equals("customLogo")) {
                     FullscreenActivity.customLogo = getTextValue(xpp.nextText(),"");
@@ -887,6 +890,9 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("quickLaunchButton_4")) {
                     FullscreenActivity.quickLaunchButton_4 = getTextValue(xpp.nextText(),"");
 
+                } else if (xpp.getName().equals("randomFolders")) {
+                    FullscreenActivity.randomFolders = getTextValue(xpp.nextText(),"");
+
                 } else if (xpp.getName().equals("scrollDistance")) {
                     FullscreenActivity.scrollDistance = getFloatValue(xpp.nextText(),0.6f);
 
@@ -894,8 +900,11 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.scrollSpeed = getIntegerValue(xpp.nextText(),1500);
 
                 } else if (xpp.getName().equals("showAlphabeticalIndexInSongMenu")) {
-                    FullscreenActivity.showAlphabeticalIndexInSongMenu = getBooleanValue(xpp.nextText(),true);
+                    FullscreenActivity.showAlphabeticalIndexInSongMenu = getBooleanValue(xpp.nextText(), true);
 
+                } else if (xpp.getName().equals("showCapoAsNumerals")) {
+                    FullscreenActivity.showCapoAsNumerals = getBooleanValue(xpp.nextText(), false);
+                    
                 } else if (xpp.getName().equals("showCapoChords")) {
                     FullscreenActivity.showCapoChords = getBooleanValue(xpp.nextText(),true);
 
@@ -1142,6 +1151,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <custom2_presoFont>" + FullscreenActivity.custom2_presoFont + "</custom2_presoFont>\n";
         text += "  <custom2_presoInfoFont>" + FullscreenActivity.custom2_presoInfoFont + "</custom2_presoInfoFont>\n";
         text += "  <custom2_presoShadow>" + FullscreenActivity.custom2_presoShadow + "</custom2_presoShadow>\n";
+        text += "  <customfontname>" + FullscreenActivity.customfontname + "</customfontname>\n";
         text += "  <customLogo>" + FullscreenActivity.customLogo + "</customLogo>\n";
         text += "  <customLogoSize>" + FullscreenActivity.customLogoSize + "</customLogoSize>\n";
         text += "  <customStorage>" + FullscreenActivity.customStorage + "</customStorage>\n";
@@ -1301,9 +1311,11 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <quickLaunchButton_2>" + FullscreenActivity.quickLaunchButton_2 + "</quickLaunchButton_2>\n";
         text += "  <quickLaunchButton_3>" + FullscreenActivity.quickLaunchButton_3 + "</quickLaunchButton_3>\n";
         text += "  <quickLaunchButton_4>" + FullscreenActivity.quickLaunchButton_4 + "</quickLaunchButton_4>\n";
+        text += "  <randomFolders>" + FullscreenActivity.randomFolders + "</randomFolders>\n";
         text += "  <scrollDistance>" + FullscreenActivity.scrollDistance + "</scrollDistance>\n";
         text += "  <scrollSpeed>" + FullscreenActivity.scrollSpeed + "</scrollSpeed>\n";
         text += "  <showAlphabeticalIndexInSongMenu>" + FullscreenActivity.showAlphabeticalIndexInSongMenu + "</showAlphabeticalIndexInSongMenu>\n";
+        text += "  <showCapoAsNumerals>" + FullscreenActivity.showCapoAsNumerals + "</showCapoAsNumerals>\n";
         text += "  <showCapoChords>" + FullscreenActivity.showCapoChords + "</showCapoChords>\n";
         text += "  <showChords>" + FullscreenActivity.showChords + "</showChords>\n";
         text += "  <showNativeAndCapoChords>" + FullscreenActivity.showNativeAndCapoChords + "</showNativeAndCapoChords>\n";

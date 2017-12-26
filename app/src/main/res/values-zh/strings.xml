@@ -633,4 +633,8 @@
     <string name="pdftotext_extract">"从PDF提取文本"</string>
     <string name="pdftotext_found">"发现文字："</string>
 
+	<string name="capo_style">"投诉警察课担心数字"</string>
+    <string name="fix">"自动修复"</string>
+    <string name="timer_learn">"学习自动滚动时间"</string>
+
 </resources>

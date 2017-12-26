@@ -630,4 +630,8 @@
     <string name="pdftotext_extract">"Extrahujte text z PDF"</string>
     <string name="pdftotext_found">"Nalezeno:"</string>
 
+	<string name="capo_style">"Capo se chvěje jako číslice"</string>
+	<string name="fix">"Automatická oprava"</string>
+	<string name="timer_learn">"Zjistěte čas autoskládání"</string>
+
 </resources>

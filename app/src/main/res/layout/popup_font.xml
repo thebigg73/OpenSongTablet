@@ -83,6 +83,20 @@
                 android:layout_margin="8dp" />
 
             <TextView
+                style="@style/MyHeadingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/custom" />
+
+            <Spinner
+                android:id="@+id/customFontSpinner"
+                style="@style/MySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp" />
+
+            <TextView
                 android:id="@+id/textView47"
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"

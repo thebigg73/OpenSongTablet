@@ -2061,12 +2061,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 if (FullscreenActivity.isPDF) {
                     LoadXML.getPDFPageCount();
                 } else if (FullscreenActivity.isSong || FullscreenActivity.isSlide || FullscreenActivity.isScripture) {
-                    if (!FullscreenActivity.presoShowChords) {
+                    /*if (!FullscreenActivity.presoShowChords) {
                         FullscreenActivity.myLyrics = ProcessSong.removeChordLines(FullscreenActivity.mLyrics);
                     }
                     FullscreenActivity.myLyrics = ProcessSong.removeCommentLines(FullscreenActivity.myLyrics);
                     FullscreenActivity.myLyrics = ProcessSong.removeUnderScores(FullscreenActivity.myLyrics, PresenterMode.this);
-
+*/
                     // 1. Sort multiline verse/chord formats
                     FullscreenActivity.myLyrics = ProcessSong.fixMultiLineFormat(FullscreenActivity.myLyrics, PresenterMode.this);
 
@@ -2095,14 +2095,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     FullscreenActivity.songSections = ProcessSong.removeTagLines(FullscreenActivity.songSections);
 
 
-                    // We need to split each section into string arrays by line
-                    FullscreenActivity.sectionContents = new String[FullscreenActivity.songSections.length][];
-                    FullscreenActivity.projectedContents = new String[FullscreenActivity.songSections.length][];
-                    for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
-
-                        FullscreenActivity.sectionContents[x] = FullscreenActivity.songSections[x].split("\n");
-                        FullscreenActivity.projectedContents[x] = FullscreenActivity.songSections[x].split("\n");
-                    }
 
                     // If we are a host then rebuild
                     if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
@@ -2112,6 +2104,26 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                                 ProcessSong.rebuildParsedLyrics(FullscreenActivity.songSections.length));
                     } else {
                         FullscreenActivity.presenterSendSong = FullscreenActivity.myXML;
+                    }
+
+                    // Now that we have generated the song to send to a guest device, decide if we should remove chords, comments, etc.
+                    for (int i=0; i<FullscreenActivity.songSections.length; i++) {
+                        if (!FullscreenActivity.presoShowChords) {
+                            FullscreenActivity.songSections[i] = ProcessSong.removeChordLines(FullscreenActivity.songSections[i]);
+                        }
+                        if (FullscreenActivity.network == null || !FullscreenActivity.network.isRunningAsHost) {
+                            FullscreenActivity.songSections[i] = ProcessSong.removeCommentLines(FullscreenActivity.songSections[i]);
+                        }
+                        FullscreenActivity.songSections[i] = ProcessSong.removeUnderScores(FullscreenActivity.songSections[i], PresenterMode.this);
+                    }
+
+                    // We need to split each section into string arrays by line
+                    FullscreenActivity.sectionContents = new String[FullscreenActivity.songSections.length][];
+                    FullscreenActivity.projectedContents = new String[FullscreenActivity.songSections.length][];
+                    for (int x = 0; x < FullscreenActivity.songSections.length; x++) {
+
+                        FullscreenActivity.sectionContents[x] = FullscreenActivity.songSections[x].split("\n");
+                        FullscreenActivity.projectedContents[x] = FullscreenActivity.songSections[x].split("\n");
                     }
 
                     // Determine what each line type is
@@ -3462,7 +3474,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                         @Override
                         public void onRemoteDisplaySessionError(Status status) {
+                            Log.d("d","onRemoteDisplaySessionError status="+status);
+                        }
 
+                        @Override
+                        public void onRemoteDisplaySessionEnded(CastRemoteDisplayLocalService castRemoteDisplayLocalService) {
+                            Log.d("d","onRemoteDisplaySessionEnded");
                         }
 
                     });
@@ -3701,6 +3718,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void stopAutoScroll() {}
     @Override
     public void startAutoScroll() {}
+    @Override
+    public void prepareLearnAutoScroll() {}
 
     @Override
     public void takeScreenShot() {

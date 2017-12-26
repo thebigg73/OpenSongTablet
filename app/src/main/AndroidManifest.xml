@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
     xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="138"
-    android:versionName="4.1.6"
+    android:versionCode="140"
+    android:versionName="4.1.8"
     android:installLocation="auto">
 
     <!--Overrides are for Sdk=12/13 but library specifies Sdk=14+-->
@@ -95,6 +95,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.garethevans.church.opensongtablet.FullscreenActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
@@ -302,6 +303,7 @@
         <activity android:name=".SetLocale" />
         <activity android:name=".BibleGateway" />
         <activity android:name=".SongMenuListeners" />
+        <activity android:name=".ShowToast" />
 
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->

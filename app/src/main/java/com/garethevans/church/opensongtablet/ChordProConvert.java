@@ -95,6 +95,7 @@ class ChordProConvert {
 			
 			// Remove directive lines we don't need
 			if (line[x].contains("{new_song")
+					|| line[x].contains("{inline")
 					|| line[x].contains("{define")
 					|| line[x].contains("{textfont")
 					|| line[x].contains("{textsize")
@@ -495,7 +496,6 @@ class ChordProConvert {
 		if (temptitle.length() > 0) {
 			newSongTitle = temptitle;
 		}
-
 
 		newSongTitle = newSongTitle.replace(".pro", "");
         newSongTitle = newSongTitle.replace(".PRO", "");

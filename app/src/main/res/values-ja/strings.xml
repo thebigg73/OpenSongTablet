@@ -628,4 +628,8 @@
     <string name="pdftotext_extract">"PDFからテキストを抽出する"</string>
     <string name="pdftotext_found">"見つかったテキスト："</string>
 
+	<string name="capo_style">"カポは数字でフレットする"</string>
+	<string name="fix">"オートフィックス"</string>
+	<string name="timer_learn">"自動スクロールの時間を学ぶ"</string>
+
 </resources>

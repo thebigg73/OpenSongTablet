@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class PopUpFontsFragment extends DialogFragment {
@@ -58,6 +59,7 @@ public class PopUpFontsFragment extends DialogFragment {
     Spinner chordsFontSpinner;
     Spinner presoFontSpinner;
     Spinner presoInfoFontSpinner;
+    Spinner customFontSpinner;
     TextView headingPreview;
     TextView commentPreview;
     TextView lyricsPreview1;
@@ -126,6 +128,7 @@ public class PopUpFontsFragment extends DialogFragment {
         chordsFontSpinner = V.findViewById(R.id.chordsFontSpinner);
         presoFontSpinner = V.findViewById(R.id.presoFontSpinner);
         presoInfoFontSpinner = V.findViewById(R.id.presoInfoFontSpinner);
+        customFontSpinner = V.findViewById(R.id.customFontSpinner);
         headingPreview = V.findViewById(R.id.headingPreview);
         commentPreview = V.findViewById(R.id.commentPreview);
         lyricsPreview1 = V.findViewById(R.id.lyricsPreview1);
@@ -179,6 +182,7 @@ public class PopUpFontsFragment extends DialogFragment {
         font_choices.add(getResources().getString(R.string.font_roboto_light));
         font_choices.add(getResources().getString(R.string.font_roboto_thin));
         font_choices.add(getResources().getString(R.string.font_roboto_medium));
+        font_choices.add(getActivity().getString(R.string.custom));
 
         ArrayAdapter<String> choose_fonts = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, font_choices);
         choose_fonts.setDropDownViewResource(R.layout.my_spinner);
@@ -192,7 +196,37 @@ public class PopUpFontsFragment extends DialogFragment {
         presoInfoFontSpinner.setSelection(temp_mypresoinfofontnum);
         lyricnchordsPreviewUpdate();
 
+        // Set up the custom fonts
+        File[] customfontscontents = FullscreenActivity.dirfonts.listFiles();
+        ArrayList<String> customfontsavail = new ArrayList<>();
+        customfontsavail.add("");
+
+        for (File cf : customfontscontents) {
+            String fn = cf.getName();
+            if (fn.endsWith(".ttf") || fn.endsWith(".otf")) {
+                customfontsavail.add(fn);
+            }
+        }
+        final ArrayAdapter<String> choose_customfonts = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, customfontsavail);
+        choose_customfonts.setDropDownViewResource(R.layout.my_spinner);
+        customFontSpinner.setAdapter(choose_customfonts);
+        customFontSpinner.setSelection(customfontpos(FullscreenActivity.customfontname, customfontsavail));
+
         // Listen for font changes
+        customFontSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                FullscreenActivity.customfontname = choose_customfonts.getItem(i);
+                FullscreenActivity.customfont = SetTypeFace.setCustomFont(choose_customfonts.getItem(i));
+                SetTypeFace.setTypeface();
+                Preferences.savePreferences();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         lyricsFontSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -366,6 +400,16 @@ public class PopUpFontsFragment extends DialogFragment {
         return V;
     }
 
+    public int customfontpos(String s, ArrayList<String> ar) {
+        int i=0;
+        for (int z=0; z<ar.size(); z++) {
+            if (s.equals(ar.get(z))) {
+                i = z;
+            }
+        }
+        return i;
+    }
+
     public void doSave() {
         FullscreenActivity.mylyricsfontnum = lyricsFontSpinner.getSelectedItemPosition();
         FullscreenActivity.mychordsfontnum = chordsFontSpinner.getSelectedItemPosition();
@@ -464,6 +508,12 @@ public class PopUpFontsFragment extends DialogFragment {
                 headingPreview.setTypeface(FullscreenActivity.typeface12);
                 commentPreview.setTypeface(FullscreenActivity.typeface12);
                 break;
+            case 13:
+                lyricsPreview1.setTypeface(FullscreenActivity.customfont);
+                lyricsPreview2.setTypeface(FullscreenActivity.customfont);
+                headingPreview.setTypeface(FullscreenActivity.customfont);
+                commentPreview.setTypeface(FullscreenActivity.customfont);
+                break;
             default:
                 lyricsPreview1.setTypeface(FullscreenActivity.typeface0);
                 lyricsPreview2.setTypeface(FullscreenActivity.typeface0);
@@ -522,6 +572,10 @@ public class PopUpFontsFragment extends DialogFragment {
                 chordPreview1.setTypeface(FullscreenActivity.typeface12);
                 chordPreview2.setTypeface(FullscreenActivity.typeface12);
                 break;
+            case 13:
+                chordPreview1.setTypeface(FullscreenActivity.customfont);
+                chordPreview2.setTypeface(FullscreenActivity.customfont);
+               break;
             default:
                 chordPreview1.setTypeface(FullscreenActivity.typeface0);
                 chordPreview2.setTypeface(FullscreenActivity.typeface0);

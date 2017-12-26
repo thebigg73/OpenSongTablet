@@ -337,6 +337,7 @@ class OpenFragment {
             case "worshipready":
             case "songselect":
             case "worshiptogether":
+            case "ukutabs":
                 newFragment = PopUpFindNewSongsFragment.newInstance();
                 break;
 

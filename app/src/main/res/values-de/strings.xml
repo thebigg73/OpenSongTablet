@@ -631,4 +631,8 @@
     <string name="pdftotext_extract">"Text aus PDF extrahieren"</string>
     <string name="pdftotext_found">"Text gefunden:"</string>
 
+	<string name="capo_style">"Capo Büste als Ziffer"</string>
+	<string name="fix">"Automatische Reparatur"</string>
+	<string name="timer_learn">"AutoScroll-Zeit lernen"</string>
+
 </resources>
