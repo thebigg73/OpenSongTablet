@@ -506,10 +506,10 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.dark_presoInfoFont = getIntegerValue(xpp.nextText(),0xffffffff);
                 } else if (xpp.getName().equals("dark_presoShadow")) {
                     FullscreenActivity.dark_presoShadow = getIntegerValue(xpp.nextText(),0xff000000);
-
                 } else if (xpp.getName().equals("default_autoscroll_predelay")) {
-                    FullscreenActivity.default_autoscroll_predelay = getIntegerValue(xpp.nextText(),10);
-
+                    FullscreenActivity.default_autoscroll_predelay = getIntegerValue(xpp.nextText(), 10);
+                } else if (xpp.getName().equals("default_autoscroll_predelay_max")) {
+                    FullscreenActivity.default_autoscroll_predelay_max = getIntegerValue(xpp.nextText(), 30);
                 } else if (xpp.getName().equals("default_autoscroll_songlength")) {
                     FullscreenActivity.default_autoscroll_songlength = getIntegerValue(xpp.nextText(), 180);
 
@@ -1173,6 +1173,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <dark_presoInfoFont>" + FullscreenActivity.dark_presoInfoFont + "</dark_presoInfoFont>\n";
         text += "  <dark_presoShadow>" + FullscreenActivity.dark_presoShadow + "</dark_presoShadow>\n";
         text += "  <default_autoscroll_predelay>" + FullscreenActivity.default_autoscroll_predelay + "</default_autoscroll_predelay>\n";
+        text += "  <default_autoscroll_predelay_max>" + FullscreenActivity.default_autoscroll_predelay_max + "</default_autoscroll_predelay_max>\n";
         text += "  <default_autoscroll_songlength>" + FullscreenActivity.default_autoscroll_songlength + "</default_autoscroll_songlength>\n";
         text += "  <drawingEraserSize>" + FullscreenActivity.drawingEraserSize + "</drawingEraserSize>\n";
         text += "  <drawingHighlightColor>" + FullscreenActivity.drawingHighlightColor + "</drawingHighlightColor>\n";

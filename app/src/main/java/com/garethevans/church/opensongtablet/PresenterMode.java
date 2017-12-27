@@ -625,7 +625,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     lva.notifyDataSetChanged();
 
                     // Set the secondary alphabetical side bar
-                    SongMenuAdapter.getIndexList();
+                    SongMenuAdapter.getIndexList(PresenterMode.this);
                     displayIndex();
 
                     // Listen for long clicks in the song menu (songs only, not folders) - ADD TO SET!!!!

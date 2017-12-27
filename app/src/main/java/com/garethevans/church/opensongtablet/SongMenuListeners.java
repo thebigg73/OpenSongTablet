@@ -28,8 +28,12 @@ public class SongMenuListeners extends Activity {
             public void onClick(View v) {
                 FullscreenActivity.pdfPageCurrent = 0;
                 if (FullscreenActivity.mSongFileNames.length>i) {
-                    if (FullscreenActivity.songDetails[i][2] == "Directory") {
-                        FullscreenActivity.whichSongFolder = FullscreenActivity.songDetails[i][1];
+                    if (FullscreenActivity.songDetails[i][2].equals(c.getString(R.string.songsinfolder))) {
+                        String s = FullscreenActivity.songDetails[i][1];
+                        if (s.startsWith("/")) {
+                            s = s.replaceFirst("/","");
+                        }
+                        FullscreenActivity.whichSongFolder = s;
                         mListener.prepareSongMenu();
                     } else {
                         FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[i];

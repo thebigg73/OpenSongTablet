@@ -33,6 +33,15 @@
                 android:text="@string/autoscroll_time"
                 style="@style/MyHeadingText"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="0dp"
+                android:text="@string/edit_default_delaymax"
+                style="@style/MyInfoText"/>
             <EditText
                 android:id="@+id/default_delaymax_EditText"
                 style="@style/MyEditText"
@@ -45,6 +54,16 @@
                 android:hint="@string/edit_default_delaymax"
                 android:inputType="number"
                 android:maxLines="1" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="0dp"
+                android:text="@string/autoscroll_time"
+                style="@style/MyInfoText"/>
 
             <TextView
                 android:id="@+id/default_delaytime_TextView"

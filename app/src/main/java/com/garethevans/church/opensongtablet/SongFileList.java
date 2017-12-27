@@ -4,15 +4,10 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.annimon.stream.function.Consumer;
-import com.annimon.stream.function.Predicate;
-
 import java.io.File;
 import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
@@ -102,7 +97,7 @@ final class SongFileList {
         //todo place check here to see if new file has been added since the last file list was
         //constructed.  This saves memory.
         fileList();
-        // Sort the file list
+        /*// Sort the file list  // REMOVED THIS AS IT MESSES WITH THE CURRENT SORTING COMPARE IN FILELIST()
         try {
             coll = Collator.getInstance(FullscreenActivity.locale);
             coll.setStrength(Collator.SECONDARY);
@@ -111,7 +106,7 @@ final class SongFileList {
             // Error sorting
             e.printStackTrace();
             Log.d("d","Error sorting");
-        }
+        }*/
         return currentFileList.toArray(new String[currentFileList.size()]).clone();
     }
 
@@ -120,7 +115,7 @@ final class SongFileList {
         //todo datastructure to encapsulate currentFileList and include invalidate
         //code, perhaps event handling?
         fileList();
-        // Sort the file list
+        /*// Sort the file list
         try {
             coll = Collator.getInstance(FullscreenActivity.locale);
             coll.setStrength(Collator.SECONDARY);
@@ -128,7 +123,7 @@ final class SongFileList {
         } catch (Exception e) {
             // Error sorting
             Log.d("d","Error sorting");
-        }
+        }*/
         return currentFileList;
     }
     /*private function to modify currentFileList by scanning the currently selected
@@ -142,7 +137,64 @@ final class SongFileList {
         } else {
             foldertoindex = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder);
         }
-        File []flist = foldertoindex.listFiles();
+        File[] flist = foldertoindex.listFiles();
+
+        // Not liking the comparator sort.  Reverse folder sorting
+        // Create two arrays: one for folders, one for songs
+        Log.d("d","Trying to sort in fileList()");
+        ArrayList<String> folders_found = new ArrayList<>();
+        ArrayList<String> songs_found = new ArrayList<>();
+
+        for (File f:flist) {
+            if (f.isDirectory()) {
+                Log.d("d","isDirectory, f.getName()="+f.getName());
+                folders_found.add(f.getName());
+            } else {
+                Log.d("d","not Directory, f.getName()="+f.getName());
+                songs_found.add(f.getName());
+            }
+        }
+
+        // Show the folders unsorted
+        int l=0;
+        for (String uf:folders_found) {
+            Log.d("d","unsorted ["+l+"]="+uf);
+            l++;
+        }
+        // Now sort both individually
+        // Sort the folder list
+        try {
+            coll = Collator.getInstance(FullscreenActivity.locale);
+            coll.setStrength(Collator.SECONDARY);
+            Collections.sort(folders_found, coll);
+        } catch (Exception e) {
+            // Error sorting
+            Log.d("d","Error sorting");
+            e.printStackTrace();
+        }
+        // Show the folders sorted
+        l=0;
+        for (String uf:folders_found) {
+            Log.d("d","sorted ["+l+"]="+uf);
+            l++;
+        }
+
+        // Now sort the songs
+        try {
+            coll = Collator.getInstance(FullscreenActivity.locale);
+            coll.setStrength(Collator.SECONDARY);
+            Collections.sort(songs_found, coll);
+        } catch (Exception e) {
+            // Error sorting
+            Log.d("d","Error sorting");
+            e.printStackTrace();
+        }
+
+        // Now join the two arrays back together
+        currentFileList.addAll(folders_found);
+        currentFileList.addAll(songs_found);
+
+/*
         Arrays.sort(flist, new Comparator<File>() {
             @Override
             public int compare(final File entry1, final File entry2) {
@@ -155,10 +207,10 @@ final class SongFileList {
                 }
             }
         });
-        for(File f:flist)
-        {
+        for(File f:flist) {
             currentFileList.add(f.getName());
         }
+*/
     }
 
     /*intialises the folderList variable*/

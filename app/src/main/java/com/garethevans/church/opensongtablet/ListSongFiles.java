@@ -16,7 +16,6 @@ import java.io.InputStreamReader;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 
 
@@ -37,7 +36,7 @@ public class ListSongFiles {
         try {
             FullscreenActivity.mSongFileNames = FullscreenActivity.songfilelist.getSongFileListasArray();
             int j = 0;
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d(e.getMessage(), "Error caught in getAllSongFiles() in ListSongFiles.java");
         }
     }
@@ -53,7 +52,7 @@ public class ListSongFiles {
     is low and speed of access of cached variable is faster than file access, at
     least I guess.
      */
-    static void getSongDetails(Context c) {
+    static void getSongDetails(final Context c) {
         // Go through each song in the current folder and extract the title, key and author
         // If not a valid song, just return the file name
         try {
@@ -75,7 +74,7 @@ public class ListSongFiles {
                     if (f.isDirectory()) {
                         vals[0] = s;
                         vals[1] = f.getPath().substring(FullscreenActivity.dir.getPath().length());
-                        vals[2] = "Directory";
+                        vals[2] = c.getString(R.string.songsinfolder);
                     }
                     else
                     {
@@ -109,17 +108,21 @@ public class ListSongFiles {
         Arrays.sort(FullscreenActivity.songDetails, new Comparator<String[]>() {
             @Override
             public int compare(final String[] entry1, final String[] entry2) {
-                if (entry1[2] == "Directory") {
+                if (entry1[2]!=null && entry1[2].equals(c.getString(R.string.songsinfolder))) {
                     return -1;
-                } else if (entry2[2] == "Directory") {
+                } else if (entry2[2]!=null && entry2[2].equals(c.getString(R.string.songsinfolder))) {
                     return 1;
                 } else {
-                    return entry1[0].compareToIgnoreCase(entry2[0]);
+                    if (entry1[0]!=null && entry2[0]!=null) {
+                        return entry1[0].compareToIgnoreCase(entry2[0]);
+                    } else {
+                        return -1;
+                    }
                 }
             }
         });
         FullscreenActivity.numDirs = 0;
-        while(FullscreenActivity.songDetails[FullscreenActivity.numDirs][2] == "Directory")
+        while(FullscreenActivity.songDetails[FullscreenActivity.numDirs][2].equals(c.getString(R.string.songsinfolder)))
         {
             FullscreenActivity.numDirs++;
         }

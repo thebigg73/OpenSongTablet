@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.PendingIntent;
@@ -54,7 +53,6 @@ import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
-import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -4828,7 +4826,7 @@ public class StageMode extends AppCompatActivity implements
                     lva.notifyDataSetChanged();
 
                     // Set the secondary alphabetical side bar
-                    SongMenuAdapter.getIndexList();
+                    SongMenuAdapter.getIndexList(StageMode.this);
                     displayIndex();
 
                     // Listen for long clicks in the song menu (songs only, not folders) - ADD TO SET!!!!

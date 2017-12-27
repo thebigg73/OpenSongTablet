@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,10 +64,19 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
 
         for (int x = 0; x < songList.size(); x++) {
             String song = songList.get(x).getTitle();
+            String key = songList.get(x).getKey();
             if (song==null) {
                 song = " ";
             }
-            String ch = song.substring(0, 1);
+            if (key==null) {
+                key = " ";
+            }
+            String ch;
+            if (key.equals(context.getString(R.string.songsinfolder))) { // This is a directory
+                ch = "/";
+            } else {
+                ch = song.substring(0, 1);
+            }
             ch = ch.toUpperCase(FullscreenActivity.locale);
 
             // HashMap will prevent duplicates
@@ -110,6 +121,28 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
 
             final SongMenuViewItems song = songList.get(position);
             String key = song.getKey();
+
+            // Hide the empty stuff
+            if (song.getAuthor().equals("")) {
+                lblListItemAuthor.setVisibility(View.GONE);
+            } else {
+                lblListItemAuthor.setVisibility(View.VISIBLE);
+            }
+
+            boolean isdirectory = false;
+            // If this is a directory - hide and disable the checkbox
+            if (key.equals(c.getString(R.string.songsinfolder))) {
+                key = "";
+                isdirectory = true;
+                lblListCheck.setVisibility(View.GONE);
+                lblListCheck.setEnabled(false);
+                //lblListItem.setTextColor(0xAAFFFF00);
+                lblListItemAuthor.setVisibility(View.GONE);
+                Drawable d = c.getResources().getDrawable( R.drawable.ic_folder_edit_white_36dp );
+                lblListItem.setGravity(Gravity.CENTER_VERTICAL);
+                lblListItem.setCompoundDrawablesWithIntrinsicBounds(d,null,null,null);
+            }
+
             if (key != null && !key.equals("") && !key.equals(" ")) {
                 key = " (" + key + ")";
             } else {
@@ -121,14 +154,8 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
             // If this song is in the set, add an image to the right
             if (FullscreenActivity.showSetTickBoxInSongMenu) {
                 if (song.getInset()) {
-                    //Drawable img = lblListItem.getContext().getResources().getDrawable( R.drawable.greendot);
-                    //img.setBounds( 0, 0, 24, 24 );
-                    //lblListItem.setCompoundDrawables( null, null, img, null );
                     lblListCheck.setChecked(true);
                 } else {
-                    //Drawable img = lblListItem.getContext().getResources().getDrawable( R.drawable.greendotblank);
-                    //img.setBounds( 0, 0, 24, 24 );
-                    //lblListItem.setCompoundDrawables( null, null, img, null );
                     lblListCheck.setChecked(false);
                 }
 
@@ -209,18 +236,14 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
             }
             lblListItemAuthor.setText(song.getAuthor());
 
-            // Hide the empty stuff
-            if (song.getAuthor().equals("")) {
-                lblListItemAuthor.setVisibility(View.GONE);
-            } else {
-                lblListItemAuthor.setVisibility(View.VISIBLE);
-            }
-
             lblListItem.setOnClickListener(SongMenuListeners.itemShortClickListener(position));
             lblListItemAuthor.setOnClickListener(SongMenuListeners.itemShortClickListener(position));
 
-            lblListItem.setOnLongClickListener(SongMenuListeners.itemLongClickListener(position));
-            lblListItemAuthor.setOnLongClickListener(SongMenuListeners.itemLongClickListener(position));
+            // Don't do this for folders
+            if (!isdirectory) {
+                lblListItem.setOnLongClickListener(SongMenuListeners.itemLongClickListener(position));
+                lblListItemAuthor.setOnLongClickListener(SongMenuListeners.itemLongClickListener(position));
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -290,15 +313,21 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
         return i;
     }
 
-    static void getIndexList() {
+    static void getIndexList(Context c) {
         FullscreenActivity.mapIndex = new LinkedHashMap<>();
         if (FullscreenActivity.songDetails != null) {
             for (int i = 0; i < FullscreenActivity.songDetails.length; i++) {
                 String title;
                 String index = "";
+                if (FullscreenActivity.songDetails[i][2] != null &&
+                        FullscreenActivity.songDetails[i][2].equals(c.getString(R.string.songsinfolder))) {
+                    index = "/";
+                }
                 if (FullscreenActivity.songDetails[i][0] != null) {
                     title = FullscreenActivity.songDetails[i][0];
-                    index = title.substring(0, 1);
+                    if (!index.equals("/")) {
+                        index = title.substring(0, 1);
+                    }
                 }
 
                 if (FullscreenActivity.mapIndex.get(index) == null)
