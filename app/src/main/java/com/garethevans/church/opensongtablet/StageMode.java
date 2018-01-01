@@ -127,7 +127,8 @@ public class StageMode extends AppCompatActivity implements
         PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface,
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
         PopUpCreateDrawingFragment.MyInterface, PopUpABCNotationFragment.MyInterface,
-        PopUpPDFToTextFragment.MyInterface, PopUpRandomSongFragment.MyInterface {
+        PopUpPDFToTextFragment.MyInterface, PopUpRandomSongFragment.MyInterface,
+        PopUpFindStorageLocationFragment.MyInterface {
 
     // The toolbar and menu
     public Toolbar ab_toolbar;
@@ -2251,25 +2252,34 @@ public class StageMode extends AppCompatActivity implements
                 break;
 
             case "inc_autoscroll_speed":
-                if(FullscreenActivity.autoscrollispaused) {
-                    FullscreenActivity.autoscrollispaused = false;
-                    FullscreenActivity.autoscroll_modifier = 0;
-                }
-                else {
-                    FullscreenActivity.autoscroll_modifier = FullscreenActivity.autoscroll_modifier + 4;
-                }
+                increaseAutoScrollSpeed();
                 break;
 
             case "dec_autoscroll_speed":
-                if(FullscreenActivity.autoscroll_pixels + FullscreenActivity.autoscroll_modifier >= 4)
-                    FullscreenActivity.autoscroll_modifier = FullscreenActivity.autoscroll_modifier - 4;
-                if(FullscreenActivity.autoscroll_pixels + FullscreenActivity.autoscroll_modifier <= 4)
-                    FullscreenActivity.autoscrollispaused = true;
+                decreaseAutoScrollSpeed();
                 break;
 
             case "toggle_autoscroll_pause":
                 FullscreenActivity.autoscrollispaused = !FullscreenActivity.autoscrollispaused;
                 break;
+        }
+    }
+
+    public void increaseAutoScrollSpeed() {
+        if (FullscreenActivity.autoscrollispaused) {
+            FullscreenActivity.autoscrollispaused = false;
+            FullscreenActivity.autoscroll_modifier = 0;
+        } else {
+            FullscreenActivity.autoscroll_modifier = FullscreenActivity.autoscroll_modifier + 4;
+        }
+    }
+
+    public void decreaseAutoScrollSpeed() {
+        if (FullscreenActivity.autoscroll_pixels + FullscreenActivity.autoscroll_modifier >= 4) {
+            FullscreenActivity.autoscroll_modifier = FullscreenActivity.autoscroll_modifier - 4;
+        }
+        if (FullscreenActivity.autoscroll_pixels + FullscreenActivity.autoscroll_modifier <= 4) {
+            FullscreenActivity.autoscrollispaused = true;
         }
     }
 
@@ -6366,8 +6376,12 @@ public class StageMode extends AppCompatActivity implements
             return true;
         }
 
-        if (keyCode == FullscreenActivity.pageturner_DOWN || keyCode == FullscreenActivity.pageturner_UP ||
+        /*if (keyCode == FullscreenActivity.pageturner_DOWN || keyCode == FullscreenActivity.pageturner_UP ||
                 keyCode == FullscreenActivity.pageturner_PREVIOUS || keyCode == FullscreenActivity.pageturner_NEXT) {
+        */
+        if (keyCode == FullscreenActivity.pedal1 || keyCode == FullscreenActivity.pedal2 ||
+                keyCode == FullscreenActivity.pedal3 || keyCode == FullscreenActivity.pedal4 ||
+                keyCode == FullscreenActivity.pedal5 || keyCode == FullscreenActivity.pedal6) {
             event.startTracking();
             if (FullscreenActivity.longKeyPress) {
                 FullscreenActivity.shortKeyPress = false;
@@ -6420,7 +6434,26 @@ public class StageMode extends AppCompatActivity implements
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 onBackPressed();
 
-            } else if (keyCode == FullscreenActivity.pageturner_NEXT) {
+            } else if (keyCode == FullscreenActivity.pedal1) {
+                doPedalAction(FullscreenActivity.pedal1shortaction);
+
+            } else if (keyCode == FullscreenActivity.pedal2) {
+                doPedalAction(FullscreenActivity.pedal2shortaction);
+
+            } else if (keyCode == FullscreenActivity.pedal3) {
+                doPedalAction(FullscreenActivity.pedal3shortaction);
+
+            } else if (keyCode == FullscreenActivity.pedal4) {
+                doPedalAction(FullscreenActivity.pedal4shortaction);
+
+            } else if (keyCode == FullscreenActivity.pedal5) {
+                doPedalAction(FullscreenActivity.pedal5shortaction);
+
+            } else if (keyCode == FullscreenActivity.pedal6) {
+                doPedalAction(FullscreenActivity.pedal6shortaction);
+            }
+
+            /*} else if (keyCode == FullscreenActivity.pageturner_NEXT) {
                 if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
                     if (mDrawerLayout.isDrawerOpen(songmenu)) {
                         // Scroll the song menu down
@@ -6438,9 +6471,9 @@ public class StageMode extends AppCompatActivity implements
                     }
                 } else {
                     goToNextItem();
-                }
+                }*/
 
-            } else if (keyCode == FullscreenActivity.pageturner_PREVIOUS) {
+            /*} else if (keyCode == FullscreenActivity.pageturner_PREVIOUS) {
                 if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
                     if (mDrawerLayout.isDrawerOpen(songmenu)) {
                         // Scroll the song menu up
@@ -6458,9 +6491,9 @@ public class StageMode extends AppCompatActivity implements
                     }
                 } else {
                     goToPreviousItem();
-                }
+                }*/
 
-            } else if (keyCode == FullscreenActivity.pageturner_UP) {
+            /*} else if (keyCode == FullscreenActivity.pageturner_UP) {
                 if (mDrawerLayout.isDrawerOpen(songmenu)) {
                     // Scroll the song menu up
                     scrollMenu("up");
@@ -6469,9 +6502,9 @@ public class StageMode extends AppCompatActivity implements
                         CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
                         doScrollUp();
                     }
-                }
+                }*/
 
-            } else if (keyCode == FullscreenActivity.pageturner_DOWN) {
+            /*} else if (keyCode == FullscreenActivity.pageturner_DOWN) {
                 if (mDrawerLayout.isDrawerOpen(songmenu)) {
                     // Scroll the song menu down
                     scrollMenu("down");
@@ -6480,9 +6513,9 @@ public class StageMode extends AppCompatActivity implements
                         CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
                         doScrollDown();
                     }
-                }
+                }*/
 
-            } else if (keyCode == FullscreenActivity.pageturner_PAD) {
+            /*} else if (keyCode == FullscreenActivity.pageturner_PAD) {
                 gesture6();
 
             } else if (keyCode == FullscreenActivity.pageturner_AUTOSCROLL) {
@@ -6490,16 +6523,237 @@ public class StageMode extends AppCompatActivity implements
 
             } else if (keyCode == FullscreenActivity.pageturner_METRONOME) {
                 gesture7();
-            }
+            }*/
         }
         FullscreenActivity.shortKeyPress = true;
         FullscreenActivity.longKeyPress = false;
         return true;
     }
 
+    public void doPedalAction(String action) {
+        switch (action) {
+            default:
+                FullscreenActivity.myToastMessage = getString(R.string.pedal) + " - " + getString(R.string.notset);
+                ShowToast.showToast(StageMode.this);
+                break;
+
+            case "prev":
+                pedalPrevious();
+                break;
+
+            case "next":
+                pedalNext();
+                break;
+
+            case "up":
+                pedalUp();
+                break;
+
+            case "down":
+                pedalDown();
+                break;
+
+            case "autoscroll":
+                gesture5();
+                break;
+
+            case "pad":
+                gesture6();
+                break;
+
+            case "metronome":
+                gesture7();
+                break;
+
+            case "pad_autoscroll":
+                gesture6();
+                gesture5();
+                break;
+
+            case "pad_metronome":
+                gesture6();
+                gesture7();
+                break;
+
+            case "autoscroll_metronome":
+                gesture5();
+                gesture7();
+                break;
+
+            case "pad_autoscroll_metronome":
+                gesture5();
+                gesture6();
+                gesture7();
+                break;
+
+            case "editsong":
+            case "changetheme":
+            case "autoscale":
+            case "transpose":
+            case "fullsearch":
+            case "randomsong":
+            case "abcnotation":
+            case "editset":
+                FullscreenActivity.whattodo = action;
+                openFragment();
+                break;
+
+            case "showchords":
+                FullscreenActivity.showChords = !FullscreenActivity.showChords;
+                Preferences.savePreferences();
+                refreshAll();
+                break;
+
+            case "showcapo":
+                FullscreenActivity.showCapoChords = !FullscreenActivity.showCapoChords;
+                Preferences.savePreferences();
+                refreshAll();
+                break;
+
+            case "showlyrics":
+                FullscreenActivity.showLyrics = !FullscreenActivity.showLyrics;
+                Preferences.savePreferences();
+                refreshAll();
+                break;
+
+            case "highlight":
+                displayHighlight(false);
+                break;
+
+            case "sticky":
+                if (stickyPopUpWindow!=null & stickyPopUpWindow.isShowing()) {
+                    try {
+                        stickyPopUpWindow.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    displaySticky();
+                }
+                break;
+
+            case "speedup":
+                increaseAutoScrollSpeed();
+                break;
+
+            case "slowdown":
+                decreaseAutoScrollSpeed();
+                break;
+
+            case "pause":
+                FullscreenActivity.autoscrollispaused = !FullscreenActivity.autoscrollispaused;
+                break;
+
+            case "songmenu":
+                if (mDrawerLayout.isDrawerOpen(songmenu)) {
+                    closeMyDrawers("song");
+                } else {
+                    openMyDrawers("song");
+                }
+                break;
+
+            case "optionmenu":
+                if (mDrawerLayout.isDrawerOpen(optionmenu)) {
+                    closeMyDrawers("option");
+                } else {
+                    openMyDrawers("option");
+                }
+                break;
+        }
+    }
+    public void pedalPrevious() {
+        if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
+            if (mDrawerLayout.isDrawerOpen(songmenu)) {
+                // Scroll the song menu up
+                scrollMenu("up");
+            } else {
+                if (checkCanScrollUp()) {
+                    CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
+                    doScrollUp();
+                } else {
+                    if (setBackButton!=null && setBackButton.getVisibility() == View.VISIBLE) {
+                        CustomAnimations.animateFAB(setBackButton,StageMode.this);
+                    }
+                    goToPreviousItem();
+                }
+            }
+        } else {
+            goToPreviousItem();
+        }
+    }
+    public void pedalNext() {
+        if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
+            if (mDrawerLayout.isDrawerOpen(songmenu)) {
+                // Scroll the song menu down
+                scrollMenu("down");
+            } else {
+                if (checkCanScrollDown()) {
+                    CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
+                    doScrollDown();
+                } else {
+                    if (setForwardButton!=null && setForwardButton.getVisibility() == View.VISIBLE) {
+                        CustomAnimations.animateFAB(setForwardButton,StageMode.this);
+                    }
+                    goToNextItem();
+                }
+            }
+        } else {
+            goToNextItem();
+        }
+    }
+    public void pedalUp() {
+        if (mDrawerLayout.isDrawerOpen(songmenu)) {
+            // Scroll the song menu up
+            scrollMenu("up");
+        } else {
+            if (checkCanScrollUp()) {
+                CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
+                doScrollUp();
+            }
+        }
+    }
+    public void pedalDown() {
+        if (mDrawerLayout.isDrawerOpen(songmenu)) {
+            // Scroll the song menu down
+            scrollMenu("down");
+        } else {
+            if (checkCanScrollDown()) {
+                CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
+                doScrollDown();
+            }
+        }
+    }
+
     @Override
     public boolean onKeyLongPress(int keyCode, KeyEvent event) {
-        String action = "";
+
+        boolean actionrecognised = false;
+        if (keyCode == FullscreenActivity.pedal1) {
+            actionrecognised = true;
+            doPedalAction(FullscreenActivity.pedal1longaction);
+
+        } else if (keyCode == FullscreenActivity.pedal2) {
+            actionrecognised = true;
+            doPedalAction(FullscreenActivity.pedal2longaction);
+
+        } else if (keyCode == FullscreenActivity.pedal3) {
+            actionrecognised = true;
+            doPedalAction(FullscreenActivity.pedal3longaction);
+
+        } else if (keyCode == FullscreenActivity.pedal4) {
+            actionrecognised = true;
+            doPedalAction(FullscreenActivity.pedal4longaction);
+
+        } else if (keyCode == FullscreenActivity.pedal5) {
+            actionrecognised = true;
+            doPedalAction(FullscreenActivity.pedal5longaction);
+
+        } else if (keyCode == FullscreenActivity.pedal6) {
+            actionrecognised = true;
+            doPedalAction(FullscreenActivity.pedal6longaction);
+        }
+
+    /*    String action = "";
         if (keyCode == FullscreenActivity.pageturner_DOWN) {
             action = FullscreenActivity.longpressdownpedalgesture;
         } else if (keyCode == FullscreenActivity.pageturner_UP) {
@@ -6558,8 +6812,8 @@ public class StageMode extends AppCompatActivity implements
                 // Do nothing
                 break;
         }
-
-        if (action.length() > 0) {
+*/
+        if (actionrecognised) {
             FullscreenActivity.shortKeyPress = false;
             FullscreenActivity.longKeyPress = true;
             return true;

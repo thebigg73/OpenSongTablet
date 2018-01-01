@@ -202,6 +202,10 @@ class OpenFragment {
                 newFragment = PopUpStorageFragment.newInstance();
                 break;
 
+            case "findstoragelocation":
+                newFragment = PopUpFindStorageLocationFragment.newInstance();
+                break;
+
             case "exportsonglist":
                 newFragment = PopUpExportSongListFragment.newInstance();
                 break;

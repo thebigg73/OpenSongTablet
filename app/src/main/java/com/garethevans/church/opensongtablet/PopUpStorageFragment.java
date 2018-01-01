@@ -65,6 +65,7 @@ public class PopUpStorageFragment extends DialogFragment {
     Button grantPermission;
     Button changeAlt;
     Button wipeSongs;
+    Button findExisting;
     String numeral = "1";
     LinearLayout altStorageGroup;
 
@@ -192,6 +193,7 @@ public class PopUpStorageFragment extends DialogFragment {
         changeAlt = V.findViewById(R.id.changeAlt);
         wipeSongs = V.findViewById(R.id.wipeSongs);
         altStorageGroup = V.findViewById(R.id.altStorageGroup);
+        findExisting = V.findViewById(R.id.findExisting);
 
         FullscreenActivity.searchUsingSAF = false;
         FullscreenActivity.uriTree = null;
@@ -261,6 +263,21 @@ public class PopUpStorageFragment extends DialogFragment {
         });
         String text = getResources().getString(R.string.custom) + "\n(" + defStorage + ")";
         otherStorageButton.setText(text);
+
+        findExisting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "findstoragelocation";
+                if (mListener!=null) {
+                    mListener.openFragment();
+                    try {
+                        dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
         // If user has set their storage preference, set the appropriate radio button
         switch (FullscreenActivity.prefStorage) {

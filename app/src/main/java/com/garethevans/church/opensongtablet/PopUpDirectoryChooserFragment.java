@@ -84,6 +84,8 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
     public Context context;
     FloatingActionButton selectButton;
     TextView isWritableText;
+    TextView extraText;
+    boolean isinsideopensongfolder = false;
 
     public void onStart() {
         super.onStart();
@@ -154,6 +156,8 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
         currentFolder = V.findViewById(R.id.currentFolderText);
         currentFolder.setText(location.toString());
         isWritableText = V.findViewById(R.id.isWritableText);
+        extraText = V.findViewById(R.id.extraText);
+        extraText.setVisibility(View.GONE);
 
         // Identify the listview which will either just show folders, or folders and files
         directoryList = V.findViewById(R.id.folderListView);
@@ -231,8 +235,6 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
                     if (pickedDir.isDirectory()) {
                         listFolders();
                     }
-
-
 
                 } else {
                     //Use the standard file browsing features
@@ -498,6 +500,11 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
     public void listFolders() {
 
         tempProperDirectories = new ArrayList<>();
+        isinsideopensongfolder = false;
+
+        boolean foundSongsFolder = false;
+        boolean foundSetsFolder = false;
+        boolean foundOpenSongFolder = false;
 
         if (FullscreenActivity.searchUsingSAF) {
             // This is to allow users to access the SD card if Android says no using Storage Access Framework API!
@@ -507,6 +514,15 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
                     // List all existing folders inside picked directory
                     for (DocumentFile file : pickedDir.listFiles()) {
                         if (file.isDirectory()) {
+                            if (pickedDir.toString().endsWith("OpenSong")) {
+                                if (file.getName().equals("Sets")) {
+                                    foundSetsFolder = true;
+                                } else if (file.getName().equals("Songs")) {
+                                    foundSongsFolder = true;
+                                }
+                            } else if (file.getName().equals("OpenSong")) {
+                                foundOpenSongFolder = true;
+                            }
                             Log.d("d","file.getUri()="+file.getUri());
                             tempProperDirectories.add(file.getName());
                             Log.d("d","file.getName()="+file.getName());
@@ -543,6 +559,15 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
             //Now read the stuff into the temp array
             for (int x=0; x<numactualdirs; x++) {
                 if (tempmyitems[x] != null && tempmyitems[x].isDirectory()) {
+                    if (location.toString().endsWith("OpenSong")) {
+                        if (tempmyitems[x].getName().equals("Sets")) {
+                            foundSetsFolder = true;
+                        } else if (tempmyitems[x].getName().equals("Songs")) {
+                            foundSongsFolder = true;
+                        }
+                    } else if (tempmyitems[x].getName().equals("OpenSong")) {
+                        foundOpenSongFolder = true;
+                    }
                     tempProperDirectories.add(tempmyitems[x].getName());
                 }
             }
@@ -550,6 +575,19 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
             currentFolder.setText(location.toString());
         }
 
+        extraText.setVisibility(View.GONE);
+        isinsideopensongfolder = foundSetsFolder && foundSongsFolder;
+        if (isinsideopensongfolder) {
+            extraText.setVisibility(View.VISIBLE);
+            extraText.setBackgroundColor(0xFF880000);
+            extraText.setText(getString(R.string.nothere));
+        }
+
+        if (foundOpenSongFolder) {
+            extraText.setVisibility(View.VISIBLE);
+            extraText.setBackgroundColor(0xFF008800);
+            extraText.setText(getString(R.string.previouslyused));
+        }
 
         //Sort these arrays
         if (FullscreenActivity.locale!=null) {

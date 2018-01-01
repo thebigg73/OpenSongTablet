@@ -268,7 +268,7 @@ public class Preferences extends Activity {
             FullscreenActivity.pagebutton_position = myPreferences.getString("pagebutton_position", "right");
             FullscreenActivity.pagebutton_scale = myPreferences.getString("pagebutton_scale", "M");
             FullscreenActivity.pageButtonAlpha = myPreferences.getFloat("pageButtonAlpha", 0.3f);
-            FullscreenActivity.pageturner_AUTOSCROLL = myPreferences.getInt("pageturner_AUTOSCROLL", -1);
+            /*FullscreenActivity.pageturner_AUTOSCROLL = myPreferences.getInt("pageturner_AUTOSCROLL", -1);
             FullscreenActivity.pageturner_AUTOSCROLLPAD = myPreferences.getInt("pageturner_AUTOSCROLLPAD", -1);
             FullscreenActivity.pageturner_AUTOSCROLLMETRONOME = myPreferences.getInt("pageturner_AUTOSCROLLMETRONOME", -1);
             FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME = myPreferences.getInt("pageturner_AUTOSCROLLPADMETRONOME", -1);
@@ -278,7 +278,26 @@ public class Preferences extends Activity {
             FullscreenActivity.pageturner_PAD = myPreferences.getInt("pageturner_PAD", -1);
             FullscreenActivity.pageturner_PADMETRONOME = myPreferences.getInt("pageturner_PADMETRONOME", -1);
             FullscreenActivity.pageturner_PREVIOUS = myPreferences.getInt("pageturner_PREVIOUS", 21);
-            FullscreenActivity.pageturner_UP = myPreferences.getInt("pageturner_UP", 19);
+            FullscreenActivity.pageturner_UP = myPreferences.getInt("pageturner_UP", 19);*/
+
+            FullscreenActivity.pedal1 = myPreferences.getInt("pedal1", 21);
+            FullscreenActivity.pedal2 = myPreferences.getInt("pedal2", 22);
+            FullscreenActivity.pedal3 = myPreferences.getInt("pedal3", 19);
+            FullscreenActivity.pedal4 = myPreferences.getInt("pedal4", 20);
+            FullscreenActivity.pedal5 = myPreferences.getInt("pedal5", -1);
+            FullscreenActivity.pedal6 = myPreferences.getInt("pedal6", -1);
+            FullscreenActivity.pedal1longaction = myPreferences.getString("pedal1longaction", "songmenu");
+            FullscreenActivity.pedal2longaction = myPreferences.getString("pedal2longaction", "set");
+            FullscreenActivity.pedal3longaction = myPreferences.getString("pedal3longaction", "");
+            FullscreenActivity.pedal4longaction = myPreferences.getString("pedal4longaction", "");
+            FullscreenActivity.pedal5longaction = myPreferences.getString("pedal5longaction", "");
+            FullscreenActivity.pedal6longaction = myPreferences.getString("pedal6longaction", "");
+            FullscreenActivity.pedal1shortaction = myPreferences.getString("pedal1shortaction", "prev");
+            FullscreenActivity.pedal2shortaction = myPreferences.getString("pedal2shortaction", "next");
+            FullscreenActivity.pedal3shortaction = myPreferences.getString("pedal3shortaction", "up");
+            FullscreenActivity.pedal4shortaction = myPreferences.getString("pedal4shortaction", "down");
+            FullscreenActivity.pedal5shortaction = myPreferences.getString("pedal5shortaction", "");
+            FullscreenActivity.pedal6shortaction = myPreferences.getString("pedal6shortaction", "");
             FullscreenActivity.popupAlpha_All = myPreferences.getFloat("popupAlpha_All", 0.9f);
             FullscreenActivity.popupAlpha_Set = myPreferences.getFloat("popupAlpha_Set", 0.9f);
             FullscreenActivity.popupDim_All = myPreferences.getFloat("popupDim_All", 0.9f);
@@ -590,7 +609,7 @@ public class Preferences extends Activity {
             editor.putFloat("pageButtonAlpha", FullscreenActivity.pageButtonAlpha);
             editor.putString("pagebutton_position", FullscreenActivity.pagebutton_position);
             editor.putString("pagebutton_scale", FullscreenActivity.pagebutton_scale);
-            editor.putInt("pageturner_AUTOSCROLL", FullscreenActivity.pageturner_AUTOSCROLL);
+            /*editor.putInt("pageturner_AUTOSCROLL", FullscreenActivity.pageturner_AUTOSCROLL);
             editor.putInt("pageturner_AUTOSCROLLPAD", FullscreenActivity.pageturner_AUTOSCROLLPAD);
             editor.putInt("pageturner_AUTOSCROLLMETRONOME", FullscreenActivity.pageturner_AUTOSCROLLMETRONOME);
             editor.putInt("pageturner_AUTOSCROLLPADMETRONOME", FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME);
@@ -601,6 +620,25 @@ public class Preferences extends Activity {
             editor.putInt("pageturner_PADMETRONOME", FullscreenActivity.pageturner_PADMETRONOME);
             editor.putInt("pageturner_PREVIOUS", FullscreenActivity.pageturner_PREVIOUS);
             editor.putInt("pageturner_UP", FullscreenActivity.pageturner_UP);
+            */
+            editor.putInt("pedal1", FullscreenActivity.pedal1);
+            editor.putInt("pedal2", FullscreenActivity.pedal2);
+            editor.putInt("pedal3", FullscreenActivity.pedal3);
+            editor.putInt("pedal4", FullscreenActivity.pedal4);
+            editor.putInt("pedal5", FullscreenActivity.pedal5);
+            editor.putInt("pedal6", FullscreenActivity.pedal6);
+            editor.putString("pedal1longaction", FullscreenActivity.pedal1longaction);
+            editor.putString("pedal2longaction", FullscreenActivity.pedal2longaction);
+            editor.putString("pedal3longaction", FullscreenActivity.pedal3longaction);
+            editor.putString("pedal4longaction", FullscreenActivity.pedal4longaction);
+            editor.putString("pedal5longaction", FullscreenActivity.pedal5longaction);
+            editor.putString("pedal6longaction", FullscreenActivity.pedal6longaction);
+            editor.putString("pedal1shortaction", FullscreenActivity.pedal1shortaction);
+            editor.putString("pedal2shortaction", FullscreenActivity.pedal2shortaction);
+            editor.putString("pedal3shortaction", FullscreenActivity.pedal3shortaction);
+            editor.putString("pedal4shortaction", FullscreenActivity.pedal4shortaction);
+            editor.putString("pedal5shortaction", FullscreenActivity.pedal5shortaction);
+            editor.putString("pedal6shortaction", FullscreenActivity.pedal6shortaction);
             editor.putFloat("popupAlpha_All", FullscreenActivity.popupAlpha_All);
             editor.putFloat("popupAlpha_Set", FullscreenActivity.popupAlpha_Set);
             editor.putFloat("popupDim_All", FullscreenActivity.popupDim_All);

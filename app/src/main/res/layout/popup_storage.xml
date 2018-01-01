@@ -42,6 +42,18 @@
                 android:padding="8dp"
                 android:text="@string/storage_issues" />
 
+            <Button
+                android:id="@+id/findExisting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/blue_button"
+                android:text="@string/existing"
+                android:textColor="#fff" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,7 +116,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+        <LinearLayout
                 android:id="@+id/altStorageGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

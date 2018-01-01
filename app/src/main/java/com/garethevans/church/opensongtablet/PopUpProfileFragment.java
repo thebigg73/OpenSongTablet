@@ -755,7 +755,7 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("pageButtonAlpha")) {
                     FullscreenActivity.pageButtonAlpha = getFloatValue(xpp.nextText(),0.2f);
 
-                } else if (xpp.getName().equals("pageturner_AUTOSCROLL")) {
+                /*} else if (xpp.getName().equals("pageturner_AUTOSCROLL")) {
                     FullscreenActivity.pageturner_AUTOSCROLL = getIntegerValue(xpp.nextText(), -1);
 
                 } else if (xpp.getName().equals("pageturner_AUTOSCROLLPAD")) {
@@ -787,6 +787,62 @@ public class PopUpProfileFragment extends DialogFragment {
 
                 } else if (xpp.getName().equals("pageturner_UP")) {
                     FullscreenActivity.pageturner_UP = getIntegerValue(xpp.nextText(), 19);
+
+                */
+
+                } else if (xpp.getName().equals("pedal1")) {
+                    FullscreenActivity.pedal1 = getIntegerValue(xpp.nextText(), 21);
+
+                } else if (xpp.getName().equals("pedal2")) {
+                    FullscreenActivity.pedal2 = getIntegerValue(xpp.nextText(), 22);
+
+                } else if (xpp.getName().equals("pedal3")) {
+                    FullscreenActivity.pedal3 = getIntegerValue(xpp.nextText(), 19);
+
+                } else if (xpp.getName().equals("pedal4")) {
+                    FullscreenActivity.pedal4 = getIntegerValue(xpp.nextText(), 20);
+
+                } else if (xpp.getName().equals("pedal5")) {
+                    FullscreenActivity.pedal5 = getIntegerValue(xpp.nextText(), -1);
+
+                } else if (xpp.getName().equals("pedal6")) {
+                    FullscreenActivity.pedal6 = getIntegerValue(xpp.nextText(), -1);
+
+                } else if (xpp.getName().equals("pedal1shortaction")) {
+                    FullscreenActivity.pedal1shortaction = getTextValue(xpp.nextText(), "prev");
+
+                } else if (xpp.getName().equals("pedal2shortaction")) {
+                    FullscreenActivity.pedal2shortaction = getTextValue(xpp.nextText(), "next");
+
+                } else if (xpp.getName().equals("pedal3shortaction")) {
+                    FullscreenActivity.pedal3shortaction = getTextValue(xpp.nextText(), "up");
+
+                } else if (xpp.getName().equals("pedal4shortaction")) {
+                    FullscreenActivity.pedal4shortaction = getTextValue(xpp.nextText(), "down");
+
+                } else if (xpp.getName().equals("pedal5shortaction")) {
+                    FullscreenActivity.pedal5shortaction = getTextValue(xpp.nextText(), "");
+
+                } else if (xpp.getName().equals("pedal6shortaction")) {
+                    FullscreenActivity.pedal6shortaction = getTextValue(xpp.nextText(), "");
+
+                } else if (xpp.getName().equals("pedal1longaction")) {
+                    FullscreenActivity.pedal1longaction = getTextValue(xpp.nextText(), "songmenu");
+
+                } else if (xpp.getName().equals("pedal2longaction")) {
+                    FullscreenActivity.pedal2longaction = getTextValue(xpp.nextText(), "set");
+
+                } else if (xpp.getName().equals("pedal3longaction")) {
+                    FullscreenActivity.pedal3longaction = getTextValue(xpp.nextText(), "");
+
+                } else if (xpp.getName().equals("pedal4longaction")) {
+                    FullscreenActivity.pedal4longaction = getTextValue(xpp.nextText(), "");
+
+                } else if (xpp.getName().equals("pedal5longaction")) {
+                    FullscreenActivity.pedal5longaction = getTextValue(xpp.nextText(), "");
+
+                } else if (xpp.getName().equals("pedal6longaction")) {
+                    FullscreenActivity.pedal6longaction = getTextValue(xpp.nextText(), "");
 
                 } else if (xpp.getName().equals("popupAlpha_All")) {
                     FullscreenActivity.popupAlpha_All = getFloatValue(xpp.nextText(),0.7f);
@@ -1264,6 +1320,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <page_sticky_visible>" + FullscreenActivity.page_sticky_visible + "</page_sticky_visible>\n";
         text += "  <pagebutton_position>" + FullscreenActivity.pagebutton_position + "</pagebutton_position>\n";
         text += "  <pagebutton_scale>" + FullscreenActivity.pagebutton_scale + "</pagebutton_scale>\n";
+        /*
         text += "  <pageturner_AUTOSCROLL>" + FullscreenActivity.pageturner_AUTOSCROLL + "</pageturner_AUTOSCROLL>\n";
         text += "  <pageturner_AUTOSCROLLPAD>" + FullscreenActivity.pageturner_AUTOSCROLLPAD + "</pageturner_AUTOSCROLLPAD>\n";
         text += "  <pageturner_AUTOSCROLLMETRONOME>" + FullscreenActivity.pageturner_AUTOSCROLLMETRONOME + "</pageturner_AUTOSCROLLMETRONOME>\n";
@@ -1275,7 +1332,26 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <pageturner_PADMETRONOME>" + FullscreenActivity.pageturner_PADMETRONOME + "</pageturner_PADMETRONOME>\n";
         text += "  <pageturner_PREVIOUS>" + FullscreenActivity.pageturner_PREVIOUS + "</pageturner_PREVIOUS>\n";
         text += "  <pageturner_UP>" + FullscreenActivity.pageturner_UP + "</pageturner_UP>\n";
+        */
         text += "  <pageButtonAlpha>" + FullscreenActivity.pageButtonAlpha + "</pageButtonAlpha>\n";
+        text += "  <pedal1>" + FullscreenActivity.pedal1 + "</pedal1>\n";
+        text += "  <pedal2>" + FullscreenActivity.pedal2 + "</pedal2>\n";
+        text += "  <pedal3>" + FullscreenActivity.pedal3 + "</pedal3>\n";
+        text += "  <pedal4>" + FullscreenActivity.pedal4 + "</pedal4>\n";
+        text += "  <pedal5>" + FullscreenActivity.pedal5 + "</pedal5>\n";
+        text += "  <pedal6>" + FullscreenActivity.pedal6 + "</pedal6>\n";
+        text += "  <pedal1shortaction>" + FullscreenActivity.pedal1shortaction + "</pedal1shortaction>\n";
+        text += "  <pedal2shortaction>" + FullscreenActivity.pedal2shortaction + "</pedal2shortaction>\n";
+        text += "  <pedal3shortaction>" + FullscreenActivity.pedal3shortaction + "</pedal3shortaction>\n";
+        text += "  <pedal4shortaction>" + FullscreenActivity.pedal4shortaction + "</pedal4shortaction>\n";
+        text += "  <pedal5shortaction>" + FullscreenActivity.pedal5shortaction + "</pedal5shortaction>\n";
+        text += "  <pedal6shortaction>" + FullscreenActivity.pedal6shortaction + "</pedal6shortaction>\n";
+        text += "  <pedal1longaction>" + FullscreenActivity.pedal1longaction + "</pedal1longaction>\n";
+        text += "  <pedal2longaction>" + FullscreenActivity.pedal2longaction + "</pedal2longaction>\n";
+        text += "  <pedal3longaction>" + FullscreenActivity.pedal3longaction + "</pedal3longaction>\n";
+        text += "  <pedal4longaction>" + FullscreenActivity.pedal4longaction + "</pedal4longaction>\n";
+        text += "  <pedal5longaction>" + FullscreenActivity.pedal5longaction + "</pedal5longaction>\n";
+        text += "  <pedal6longaction>" + FullscreenActivity.pedal6longaction + "</pedal6longaction>\n";
         text += "  <popupAlpha_Set>" + FullscreenActivity.popupAlpha_Set + "</popupAlpha_Set>\n";
         text += "  <popupDim_All>" + FullscreenActivity.popupDim_All + "</popupDim_All>\n";
         text += "  <popupDim_Set>" + FullscreenActivity.popupDim_Set + "</popupDim_Set>\n";

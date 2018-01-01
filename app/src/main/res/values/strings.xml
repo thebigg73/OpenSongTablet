@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="pedal">Pedal</string>
+    <string name="tap">Short press/tap</string>
+    <string name="longpress">Long press/hold</string>
+    <string name="existing">Find previous installation locations for OpenSong files</string>
+    <string name="found">You have already used the following install locations.  Please select one to use it again.</string>
+    <string name="nofound">No previous installations found.</string>
+    <string name="nothere">You are inside an OpenSong folder, do not use this location.  Instead move up one level and specify the folder containing this folder</string>
+    <string name="previouslyused">Previous install location found.  Click on the green tick to use this</string>
+
     <string name="capo_style">Capo fret as numeral</string>
     <string name="fix">Autofix</string>
     <string name="timer_learn">Learn autoscroll time</string>

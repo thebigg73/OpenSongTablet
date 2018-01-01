@@ -26,7 +26,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView15"
                 style="@style/MyInfoText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,175 +33,473 @@
                 android:layout_margin="8dp"
                 android:text="@string/pageturn_instructions" />
 
-            <TextView
-                android:id="@+id/textView16"
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="24dp"
-                android:text="@string/pageturn_set" />
-
-            <Button
-                android:id="@+id/pedalPreviousButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:background="@drawable/green_button"
-                android:padding="4dp"
-                android:text="@string/pageturn_previous"
-                android:textColor="#fff" />
-
-            <Button
-                android:id="@+id/pedalNextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:background="@drawable/green_button"
-                android:padding="4dp"
-                android:text="@string/pageturn_next"
-                android:textColor="#fff" />
-
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/pedalToggleScrollBeforeSwipeButton"
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
                 android:text="@string/toggleScrollBeforeSwipe"
                 android:theme="@style/SwitchStyle"
+                android:background="@drawable/section_box"
+                android:layout_margin="4dp"
                 app:showText="false" />
 
-            <TextView
-                android:id="@+id/textView17"
-                style="@style/MyHeadingText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="24dp"
-                android:text="@string/pageturn_song" />
+                android:background="@drawable/section_box"
+                android:layout_margin="4dp"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/pedalDownButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:background="@drawable/blue_button"
-                android:padding="4dp"
-                android:text="@string/pageturn_down"
-                android:textColor="#fff" />
+                <TextView
+                    android:id="@+id/pedal1text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    style="@style/MyHeadingText"
+                    android:text="Pedal 1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MyInfoText"
+                    android:text="@string/tap"/>
+                <Spinner
+                    android:id="@+id/pedal1choice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MySpinner"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MyInfoText"
+                    android:text="@string/longpress"/>
+                <Spinner
+                    android:id="@+id/pedallong1choice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MySpinner"/>
+                <Button
+                    android:id="@+id/pedal1button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="@string/options_options_pedal"/>
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/pedalUpButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:background="@drawable/blue_button"
-                android:padding="4dp"
-                android:text="@string/pageturn_up"
-                android:textColor="#fff" />
-
-            <TextView
-                android:id="@+id/textView18"
-                style="@style/MyHeadingText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="24dp"
-                android:text="@string/songactionsbuttons" />
+                android:background="@drawable/section_box"
+                android:layout_margin="4dp"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/pedalPadButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:background="@drawable/green_button"
-                android:padding="4dp"
-                android:text="@string/padPedalText"
-                android:textColor="#fff" />
+                <TextView
+                    android:id="@+id/pedal2text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    style="@style/MyHeadingText"
+                    android:text="Pedal 2"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MyInfoText"
+                    android:text="@string/tap"/>
+                <Spinner
+                    android:id="@+id/pedal2choice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MySpinner"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MyInfoText"
+                    android:text="@string/longpress"/>
+                <Spinner
+                    android:id="@+id/pedallong2choice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MySpinner"/>
+                <Button
+                    android:id="@+id/pedal2button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="@string/options_options_pedal"/>
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/pedalAutoScrollButton"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:background="@drawable/green_button"
-                android:padding="4dp"
-                android:text="@string/autoscrollPedalText"
-                android:textColor="#fff" />
+                android:background="@drawable/section_box"
+                android:layout_margin="4dp"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/pedalMetronomeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:background="@drawable/green_button"
-                android:padding="4dp"
-                android:text="@string/metronomePedalText"
-                android:textColor="#fff" />
+                <TextView
+                    android:id="@+id/pedal3text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    style="@style/MyHeadingText"
+                    android:text="Pedal 3"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MyInfoText"
+                    android:text="@string/tap"/>
+                <Spinner
+                    android:id="@+id/pedal3choice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MySpinner"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MyInfoText"
+                    android:text="@string/longpress"/>
+                <Spinner
+                    android:id="@+id/pedallong3choice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MySpinner"/>
+                <Button
+                    android:id="@+id/pedal3button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="@string/options_options_pedal"/>
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/pedalAutoScrollPadButton"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:background="@drawable/green_button"
-                android:padding="4dp"
-                android:text="@string/autoscrollPedalText"
-                android:textColor="#fff" />
+                android:background="@drawable/section_box"
+                android:layout_margin="4dp"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/pedalAutoScrollMetronomeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:background="@drawable/green_button"
-                android:padding="4dp"
-                android:text="@string/autoscrollPedalText"
-                android:textColor="#fff" />
+                <TextView
+                    android:id="@+id/pedal4text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    style="@style/MyHeadingText"
+                    android:text="Pedal 4"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MyInfoText"
+                    android:text="@string/tap"/>
+                <Spinner
+                    android:id="@+id/pedal4choice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MySpinner"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MyInfoText"
+                    android:text="@string/longpress"/>
+                <Spinner
+                    android:id="@+id/pedallong4choice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MySpinner"/>
+                <Button
+                    android:id="@+id/pedal4button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="@string/options_options_pedal"/>
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/pedalPadMetronomeButton"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:background="@drawable/green_button"
-                android:padding="4dp"
-                android:text="@string/autoscrollPedalText"
-                android:textColor="#fff" />
+                android:background="@drawable/section_box"
+                android:layout_margin="4dp"
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/pedalAutoScrollPadMetronomeButton"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/pedal5text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    style="@style/MyHeadingText"
+                    android:text="Pedal 5"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MyInfoText"
+                    android:text="@string/tap"/>
+                <Spinner
+                    android:id="@+id/pedal5choice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MySpinner"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MyInfoText"
+                    android:text="@string/longpress"/>
+                <Spinner
+                    android:id="@+id/pedallong5choice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MySpinner"/>
+                <Button
+                    android:id="@+id/pedal5button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="@string/options_options_pedal"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:background="@drawable/green_button"
-                android:padding="4dp"
-                android:text="@string/autoscrollPedalText"
-                android:textColor="#fff" />
+                android:background="@drawable/section_box"
+                android:layout_margin="4dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/pedal6text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    style="@style/MyHeadingText"
+                    android:text="Pedal 6"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MyInfoText"
+                    android:text="@string/tap"/>
+                <Spinner
+                    android:id="@+id/pedal6choice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MySpinner"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MyInfoText"
+                    android:text="@string/longpress"/>
+                <Spinner
+                    android:id="@+id/pedallong6choice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    style="@style/MySpinner"/>
+                <Button
+                    android:id="@+id/pedal6button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="@string/options_options_pedal"/>
+            </LinearLayout>
+
+
+            <!--
+                        <TextView
+                            android:id="@+id/textView16"
+                            style="@style/MyHeadingText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginTop="24dp"
+                            android:text="@string/pageturn_set" />
+
+                        <Button
+                            android:id="@+id/pedalPreviousButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/green_button"
+                            android:padding="4dp"
+                            android:text="@string/pageturn_previous"
+                            android:textColor="#fff" />
+
+                        <Button
+                            android:id="@+id/pedalNextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/green_button"
+                            android:padding="4dp"
+                            android:text="@string/pageturn_next"
+                            android:textColor="#fff" />
+
+                        <TextView
+                            android:id="@+id/textView17"
+                            style="@style/MyHeadingText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginTop="24dp"
+                            android:text="@string/pageturn_song" />
+
+                        <Button
+                            android:id="@+id/pedalDownButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/blue_button"
+                            android:padding="4dp"
+                            android:text="@string/pageturn_down"
+                            android:textColor="#fff" />
+
+                        <Button
+                            android:id="@+id/pedalUpButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/blue_button"
+                            android:padding="4dp"
+                            android:text="@string/pageturn_up"
+                            android:textColor="#fff" />
+
+                        <TextView
+                            android:id="@+id/textView18"
+                            style="@style/MyHeadingText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginTop="24dp"
+                            android:text="@string/songactionsbuttons" />
+
+                        <Button
+                            android:id="@+id/pedalPadButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/green_button"
+                            android:padding="4dp"
+                            android:text="@string/padPedalText"
+                            android:textColor="#fff" />
+
+                        <Button
+                            android:id="@+id/pedalAutoScrollButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/green_button"
+                            android:padding="4dp"
+                            android:text="@string/autoscrollPedalText"
+                            android:textColor="#fff" />
+
+                        <Button
+                            android:id="@+id/pedalMetronomeButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/green_button"
+                            android:padding="4dp"
+                            android:text="@string/metronomePedalText"
+                            android:textColor="#fff" />
+
+                        <Button
+                            android:id="@+id/pedalAutoScrollPadButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/green_button"
+                            android:padding="4dp"
+                            android:text="@string/autoscrollPedalText"
+                            android:textColor="#fff" />
+
+                        <Button
+                            android:id="@+id/pedalAutoScrollMetronomeButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/green_button"
+                            android:padding="4dp"
+                            android:text="@string/autoscrollPedalText"
+                            android:textColor="#fff" />
+
+                        <Button
+                            android:id="@+id/pedalPadMetronomeButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/green_button"
+                            android:padding="4dp"
+                            android:text="@string/autoscrollPedalText"
+                            android:textColor="#fff" />
+
+                        <Button
+                            android:id="@+id/pedalAutoScrollPadMetronomeButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="8dp"
+                            android:background="@drawable/green_button"
+                            android:padding="4dp"
+                            android:text="@string/autoscrollPedalText"
+                            android:textColor="#fff" />
+            -->
 
         </LinearLayout>
 

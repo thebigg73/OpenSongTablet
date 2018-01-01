@@ -51,6 +51,13 @@
                 android:gravity="center_vertical|right"
                 android:visibility="invisible"/>
 
+            <TextView
+                android:id="@+id/extraText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/MyInfoText"
+                android:visibility="gone"/>
+
         </LinearLayout>
     </LinearLayout>
 

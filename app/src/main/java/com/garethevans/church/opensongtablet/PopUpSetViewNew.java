@@ -40,6 +40,7 @@ public class PopUpSetViewNew extends DialogFragment {
     public static Dialog setfrag;
     Context c;
     Activity a;
+    boolean islongpressing = false;
 
     static PopUpSetViewNew newInstance() {
         PopUpSetViewNew frag;
@@ -481,8 +482,53 @@ public class PopUpSetViewNew extends DialogFragment {
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                islongpressing = event.isLongPress();
                 if (event.getAction() == KeyEvent.ACTION_UP) {
-                    if ((keyCode == FullscreenActivity.pageturner_PREVIOUS && FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) ||
+                    if (keyCode == FullscreenActivity.pedal1) {
+                        if (islongpressing) {
+                            doPedalAction(FullscreenActivity.pedal1longaction);
+                        } else {
+                            doPedalAction(FullscreenActivity.pedal1shortaction);
+                        }
+                        return true;
+                    } else if (keyCode == FullscreenActivity.pedal2) {
+                        if (islongpressing) {
+                            doPedalAction(FullscreenActivity.pedal2longaction);
+                        } else {
+                            doPedalAction(FullscreenActivity.pedal2shortaction);
+                        }
+                        return true;
+                    } else if (keyCode == FullscreenActivity.pedal3) {
+                        if (islongpressing) {
+                            doPedalAction(FullscreenActivity.pedal3longaction);
+                        } else {
+                            doPedalAction(FullscreenActivity.pedal3shortaction);
+                        }
+                        return true;
+                    } else if (keyCode == FullscreenActivity.pedal4) {
+                        if (islongpressing) {
+                            doPedalAction(FullscreenActivity.pedal4longaction);
+                        } else {
+                            doPedalAction(FullscreenActivity.pedal4shortaction);
+                        }
+                        return true;
+                    } else if (keyCode == FullscreenActivity.pedal5) {
+                        if (islongpressing) {
+                            doPedalAction(FullscreenActivity.pedal5longaction);
+                        } else {
+                            doPedalAction(FullscreenActivity.pedal5shortaction);
+                        }
+                        return true;
+                    } else if (keyCode == FullscreenActivity.pedal6) {
+                        if (islongpressing) {
+                            doPedalAction(FullscreenActivity.pedal6longaction);
+                        } else {
+                            doPedalAction(FullscreenActivity.pedal6shortaction);
+                        }
+                        return true;
+                    }
+
+                    /*    if ((keyCode == FullscreenActivity.pageturner_PREVIOUS && FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) ||
                             keyCode == FullscreenActivity.pageturner_UP) {
                         PopUpSetViewNew.this.doScroll("up");
                         return true;
@@ -490,11 +536,35 @@ public class PopUpSetViewNew extends DialogFragment {
                             keyCode == FullscreenActivity.pageturner_DOWN) {
                         PopUpSetViewNew.this.doScroll("down");
                         return true;
-                    }
+                    }*/
                 }
                 return false;
             }
         });
+    }
+
+    public void doPedalAction(String action) {
+        switch (action) {
+            case "prev":
+                if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
+                    PopUpSetViewNew.this.doScroll("up");
+                }
+                break;
+
+            case "next":
+                if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
+                    PopUpSetViewNew.this.doScroll("down");
+                }
+                break;
+
+            case "up":
+                PopUpSetViewNew.this.doScroll("up");
+                break;
+
+            case "down":
+                PopUpSetViewNew.this.doScroll("down");
+                break;
+        }
     }
 
     public void doScroll(String direction) {

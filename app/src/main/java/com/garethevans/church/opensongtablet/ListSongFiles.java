@@ -14,15 +14,11 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-
 
 public class ListSongFiles {
 
     static Collator coll;
-    private static ArrayList<String> filelist;
+    //private static ArrayList<String> filelist;
 
     public static void getAllSongFolders() {
         FullscreenActivity.allfilesforsearch.clear();
@@ -35,7 +31,7 @@ public class ListSongFiles {
     static void getAllSongFiles() {
         try {
             FullscreenActivity.mSongFileNames = FullscreenActivity.songfilelist.getSongFileListasArray();
-            int j = 0;
+            //int j = 0;
         } catch (Exception e) {
             Log.d(e.getMessage(), "Error caught in getAllSongFiles() in ListSongFiles.java");
         }
@@ -105,7 +101,8 @@ public class ListSongFiles {
             // Ooops, error
         }
 
-        Arrays.sort(FullscreenActivity.songDetails, new Comparator<String[]>() {
+        // Removed this sort method as it messed up - Folders were getting put back in reverse alphabetical order
+        /*Arrays.sort(FullscreenActivity.songDetails, new Comparator<String[]>() {
             @Override
             public int compare(final String[] entry1, final String[] entry2) {
                 if (entry1[2]!=null && entry1[2].equals(c.getString(R.string.songsinfolder))) {
@@ -120,10 +117,10 @@ public class ListSongFiles {
                     }
                 }
             }
-        });
+        });*/
+
         FullscreenActivity.numDirs = 0;
-        while(FullscreenActivity.songDetails[FullscreenActivity.numDirs][2].equals(c.getString(R.string.songsinfolder)))
-        {
+        while (FullscreenActivity.songDetails[FullscreenActivity.numDirs][2].equals(c.getString(R.string.songsinfolder))) {
             FullscreenActivity.numDirs++;
         }
         //numDirs is zerobased index >> horrible hack.
@@ -142,7 +139,7 @@ public class ListSongFiles {
 //                return entry1[0].compareToIgnoreCase(entry2[0]);
 //            }
 //        });
-        int bob = 0;
+        //int bob = 0;
     }
 
     private static String[] getSongDetailsXML(File f, String s, String utf) {

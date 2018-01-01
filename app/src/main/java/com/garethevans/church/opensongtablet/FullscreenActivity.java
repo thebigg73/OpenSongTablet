@@ -28,13 +28,14 @@ import android.widget.TextView;
 import com.peak.salut.Salut;
 import com.peak.salut.SalutDataReceiver;
 import com.peak.salut.SalutServiceData;
-//import com.squareup.leakcanary.LeakCanary;
-//import com.squareup.leakcanary.RefWatcher;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
+
+//import com.squareup.leakcanary.LeakCanary;
+//import com.squareup.leakcanary.RefWatcher;
 
 @SuppressWarnings("deprecation")
 @SuppressLint({"DefaultLocale", "RtlHardcoded", "InflateParams", "SdCardPath"})
@@ -312,9 +313,16 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             stickyOpacity, stickyTextSize;
 
     // Page turner
-    public static int pageturner_NEXT, pageturner_PREVIOUS, pageturner_UP, pageturner_DOWN,
+   /* public static int pageturner_NEXT, pageturner_PREVIOUS, pageturner_UP, pageturner_DOWN,
             pageturner_PAD, pageturner_AUTOSCROLL, pageturner_METRONOME, pageturner_AUTOSCROLLPAD,
-            pageturner_AUTOSCROLLMETRONOME, pageturner_PADMETRONOME, pageturner_AUTOSCROLLPADMETRONOME;
+            pageturner_AUTOSCROLLMETRONOME, pageturner_PADMETRONOME, pageturner_AUTOSCROLLPADMETRONOME,
+            pageturner_;*/
+
+    public static int pedal1, pedal2, pedal3, pedal4, pedal5, pedal6;
+    public static String pedal1shortaction, pedal2shortaction, pedal3shortaction, pedal4shortaction,
+            pedal5shortaction, pedal6shortaction;
+    public static String pedal1longaction, pedal2longaction, pedal3longaction, pedal4longaction,
+            pedal5longaction, pedal6longaction;
     public static String toggleScrollBeforeSwipe = "", togglePageButtons = "";
 
     // Set variables

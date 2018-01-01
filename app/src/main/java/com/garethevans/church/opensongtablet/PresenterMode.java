@@ -117,7 +117,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpLayoutFragment.MyInterface, DownloadTask.MyInterface,
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
         PopUpCreateDrawingFragment.MyInterface, PopUpABCNotationFragment.MyInterface,
-        PopUpPDFToTextFragment.MyInterface, PopUpRandomSongFragment.MyInterface {
+        PopUpPDFToTextFragment.MyInterface, PopUpRandomSongFragment.MyInterface,
+        PopUpFindStorageLocationFragment.MyInterface {
 
     DialogFragment newFragment;
 
@@ -3650,15 +3651,37 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         // To stop repeated pressing too quickly, set a handler to wait for 500ms before reenabling
         if (event.getAction() == KeyEvent.ACTION_UP && pedalsenabled) {
-            if (keyCode == FullscreenActivity.pageturner_PREVIOUS || keyCode == FullscreenActivity.pageturner_DOWN) {
-                pausePedalUse();
-                tryClickPreviousSection();
-            } else if (keyCode == FullscreenActivity.pageturner_NEXT || keyCode == FullscreenActivity.pageturner_UP) {
-                pausePedalUse();
-                tryClickNextSection();
+            if (keyCode == FullscreenActivity.pedal1short) {
+                doPedalAction(FullscreenActivity.pedal1shortaction);
+            } else if (keyCode == FullscreenActivity.pedal2short) {
+                doPedalAction(FullscreenActivity.pedal2shortaction);
+            } else if (keyCode == FullscreenActivity.pedal3short) {
+                doPedalAction(FullscreenActivity.pedal3shortaction);
+            } else if (keyCode == FullscreenActivity.pedal4short) {
+                doPedalAction(FullscreenActivity.pedal4shortaction);
+            } else if (keyCode == FullscreenActivity.pedal5short) {
+                doPedalAction(FullscreenActivity.pedal5shortaction);
+            } else if (keyCode == FullscreenActivity.pedal6short) {
+                doPedalAction(FullscreenActivity.pedal6shortaction);
             }
         }
         return super.onKeyUp(keyCode, event);
+    }
+
+    public void doPedalAction(String action) {
+        switch (action) {
+            case "prev":
+            case "down":
+                pausePedalUse();
+                tryClickPreviousSection();
+                break;
+
+            case "next":
+            case "up":
+                pausePedalUse();
+                tryClickNextSection();
+                break;
+        }
     }
     void pausePedalUse() {
         pedalsenabled = false;

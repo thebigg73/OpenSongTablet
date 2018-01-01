@@ -452,15 +452,15 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
                 break;
 
             case "inc_autoscroll_speed":
-                d = c.getResources().getDrawable(R.drawable.ic_arrow_up_white_36dp);
+                d = c.getResources().getDrawable(R.drawable.ic_autoscroll_plus_white_36dp);
                 break;
 
             case "dec_autoscroll_speed":
-                d = c.getResources().getDrawable(R.drawable.ic_arrow_down_white_36dp);
+                d = c.getResources().getDrawable(R.drawable.ic_autoscroll_minus_white_36dp);
                 break;
 
             case "toggle_autoscroll_pause":
-                d = c.getResources().getDrawable(R.drawable.ic_pause_white);
+                d = c.getResources().getDrawable(R.drawable.ic_autoscroll_pause_white_36dp);
                 break;
         }
         return d;
