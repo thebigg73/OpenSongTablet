@@ -173,7 +173,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             transposeStyle = "sharps", transposedLyrics = "";
     public static int transposeTimes = 1;
     public static boolean showChords, showLyrics, showCapo, showCapoChords, showNativeAndCapoChords,
-            switchsharpsflats = false, showCapoAsNumerals = false;
+            switchsharpsflats = false, showCapoAsNumerals = false, convertchords = false;
 
     // PopUp window size and alpha
     public static float popupAlpha_Set = 0.6f, popupDim_Set = 0.7f, popupScale_Set = 0.8f,
@@ -250,7 +250,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
     public static int maxvolrange;
 
-    public static String whattodo = "";
+    public static String whattodo;
 
     public static boolean pressing_button = false;
 
@@ -313,6 +313,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             stickyOpacity, stickyTextSize;
 
     // Page turner
+    //This has now been superceded
    /* public static int pageturner_NEXT, pageturner_PREVIOUS, pageturner_UP, pageturner_DOWN,
             pageturner_PAD, pageturner_AUTOSCROLL, pageturner_METRONOME, pageturner_AUTOSCROLLPAD,
             pageturner_AUTOSCROLLMETRONOME, pageturner_PADMETRONOME, pageturner_AUTOSCROLLPADMETRONOME,
@@ -382,15 +383,15 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
     public static String myToastMessage = "";
 
-    public static String mScripture = "", incoming_text = "", scripture_title = "",
-            scripture_verse = "", mainfoldername = "";
+    public static String mScripture = "", incoming_text = "", scripture_title,
+            scripture_verse, mainfoldername = "";
     public static int mylyricsfontnum, mychordsfontnum, mypresofontnum, mypresoinfofontnum;
     public static Typeface lyricsfont, commentfont, chordsfont, presofont, customfont;
     public static String customfontname = "";
 
     public static int whichPad = 0;
 
-    public static String[] songSections, songSectionsLabels, songSectionsTypes, songSectionsFull;
+    public static String[] songSections, songSectionsLabels, songSectionsTypes;
     public static String[][] sectionContents, sectionLineTypes, projectedContents, projectedLineTypes;
     public static String songSection_holder; // This carries on section types after line breaks
     public static float[] sectionScaleValue;
@@ -464,6 +465,21 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 //        }
 //        refWatcher = LeakCanary.install(this.getApplication());
         myPreferences = getSharedPreferences("OpenSongApp", Context.MODE_PRIVATE);
+
+        // If we have an intent or a whattodo starting with importfile, retain this
+
+        Log.d("FullscreenActivity","getIntent()="+getIntent());
+
+        if (getIntent()!=null) {
+            dealWithIntent(getIntent());
+        }
+
+
+        if (whattodo==null) {
+            whattodo = "";
+        }
+
+        // Load up the preferences
         Preferences.loadPreferences();
 
         // To get here from the SettingsActivity, we only needed to check for basic folders existing
@@ -546,7 +562,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
         Log.d("d","NFC available="+mAndroidBeamAvailable);
         Log.d("d","NFC adapter="+mNfcAdapter);
 
-        whattodo = "";
+        /*whattodo = "";
         try {
             incomingfile = getIntent();
             if (incomingfile != null) {
@@ -563,7 +579,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
         } catch (Exception e) {
             // No file
             //needtoimport = false;
-        }
+        }*/
 
         // Initialise api
         currentapiVersion = Build.VERSION.SDK_INT;
@@ -633,6 +649,111 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
         finish();
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        dealWithIntent(intent);
+    }
+
+    public void dealWithIntent(Intent intent) {
+        try {
+            if (intent != null) {
+                if (intent.getData() != null && intent.getData().getPath() != null) {
+                    file_location = intent.getData().getPath();
+                    filechosen = new File(intent.getData().getPath());
+                    file_name = intent.getData().getLastPathSegment();
+                }
+                file_uri = intent.getData();
+                String action = intent.getAction();
+                String type = intent.getType();
+
+                if (Intent.ACTION_SEND.equals(action) && type != null) {
+                    if ("text/plain".equals(type)) {
+                        handleSendText(intent); // Handle text being sent
+                    } /*else if (type.startsWith("image/")) {
+                        handleSendImage(intent); // Handle single image being sent
+                    }*/
+                }
+
+                if (file_name != null && file_location != null) {
+                    // Check the file exists!
+                    File f = new File(file_location);
+                    if (f.exists() && f.canRead()) {
+                        FullscreenActivity.incomingfile = intent;
+                        if (file_name.endsWith(".osb")) {
+                            // This is an OpenSong backup file
+                            whattodo = "importfile_processimportosb";
+                        } else {
+                            // This is an file opensong can deal with (hopefully)
+                            whattodo = "importfile_doimport";
+                        }
+                    } else {
+                        // Cancel the intent
+                        FullscreenActivity.incomingfile = null;
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            // No file or intent data
+            e.printStackTrace();
+            // Just open the app
+            // Clear the current intent data as we've dealt with it
+            FullscreenActivity.incomingfile = null;
+            FullscreenActivity.myToastMessage = getString(R.string.error);
+
+        }
+    }
+
+    public void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        String title;
+        if (sharedText != null) {
+            // Fix line breaks (if they exist)
+            sharedText = ProcessSong.fixlinebreaks(sharedText);
+
+            // If this is imported from YouVersion bible app, it should contain https://bible
+            if (sharedText.contains("https://bible")) {
+
+                title = getString(R.string.scripture);
+                // Split the text into lines
+                String[] lines = sharedText.split("\n");
+                if (lines.length>0) {
+                    // Remove the last line (http reference)
+                    if (lines.length-1>0 && lines[lines.length-1]!=null &&
+                            lines[lines.length-1].contains("https://bible")) {
+                        lines[lines.length-1] = "";
+                    }
+
+                    // The 2nd last line is likely to be the verse title
+                    if (lines.length-2>0 && lines[lines.length-2]!=null) {
+                        title = lines[lines.length-2];
+                        lines[lines.length-2] = "";
+                    }
+
+                    // Now put the string back together.
+                    sharedText = "";
+                    for (String l:lines) {
+                        sharedText = sharedText + l + "\n";
+                    }
+                    sharedText = sharedText.trim();
+                }
+
+                // Now split it into smaller lines to better fit the screen size
+                sharedText = BibleGateway.shortenTheLines(sharedText, 40, 6);
+                Log.d("d","Bible title found!\n"+title);
+                Log.d("d","Bible text found!\n"+sharedText);
+
+                whattodo = "importfile_customreusable_scripture";
+                scripture_title = title;
+                scripture_verse = sharedText;
+                Log.d("d","scripture_title="+FullscreenActivity.scripture_title);
+                Log.d("d","scripture_verse="+FullscreenActivity.scripture_verse);
+            }
+        }
+    }
+
 
     public static void restart(Context context) {
         Intent mStartActivity = new Intent(context, SettingsActivity.class);

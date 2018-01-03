@@ -3651,17 +3651,17 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
         // To stop repeated pressing too quickly, set a handler to wait for 500ms before reenabling
         if (event.getAction() == KeyEvent.ACTION_UP && pedalsenabled) {
-            if (keyCode == FullscreenActivity.pedal1short) {
+            if (keyCode == FullscreenActivity.pedal1) {
                 doPedalAction(FullscreenActivity.pedal1shortaction);
-            } else if (keyCode == FullscreenActivity.pedal2short) {
+            } else if (keyCode == FullscreenActivity.pedal2) {
                 doPedalAction(FullscreenActivity.pedal2shortaction);
-            } else if (keyCode == FullscreenActivity.pedal3short) {
+            } else if (keyCode == FullscreenActivity.pedal3) {
                 doPedalAction(FullscreenActivity.pedal3shortaction);
-            } else if (keyCode == FullscreenActivity.pedal4short) {
+            } else if (keyCode == FullscreenActivity.pedal4) {
                 doPedalAction(FullscreenActivity.pedal4shortaction);
-            } else if (keyCode == FullscreenActivity.pedal5short) {
+            } else if (keyCode == FullscreenActivity.pedal5) {
                 doPedalAction(FullscreenActivity.pedal5shortaction);
-            } else if (keyCode == FullscreenActivity.pedal6short) {
+            } else if (keyCode == FullscreenActivity.pedal6) {
                 doPedalAction(FullscreenActivity.pedal6shortaction);
             }
         }

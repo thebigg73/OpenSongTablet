@@ -131,34 +131,8 @@ public class BibleGateway extends Activity {
                 // Make the scripture more readable by making a line break at the start of the word after 40 chars
                 // First split the scripture into an array of words
                 //String[] scripturewords = scripture.split(" ");
-                String[] scripturewords = newbit.split(" ");
 
-                String currentline="";
-                ArrayList<String> newimprovedscripture = new ArrayList<>();
-
-                for (String words:scripturewords) {
-                    if (currentline.length()<40) {
-                        currentline = currentline + " " + words;
-                    } else {
-                        newimprovedscripture.add(currentline.trim());
-                        currentline = words;
-                    }
-                }
-                newimprovedscripture.add(currentline);
-
-                scripture = "";
-                int newslideneeded = 0;
-                for (int z=0;z<newimprovedscripture.size();z++) {
-                    scripture = scripture + "\n" + newimprovedscripture.get(z);
-                    newslideneeded ++;
-                    // Every 6 lines, start a new slide
-                    if (newslideneeded > 5) {
-                        scripture = scripture + "\n---";
-                        newslideneeded = 0;
-                    }
-                }
-
-                scripture = scripture.trim();
+                scripture = shortenTheLines(newbit, 40, 6);
 
                 // Send these back to the popupcustomslide creator window
                 FullscreenActivity.scripture_title = scripture_title;
@@ -171,5 +145,35 @@ public class BibleGateway extends Activity {
                 ShowToast.showToast(c);
             }
         }
+    }
+
+    public static String shortenTheLines(String originaltext, int charsperline, int linesbeforenewslide) {
+        String scripture = "";
+        // Split the current string into a separate words array
+        String[] scripturewords = originaltext.split(" ");
+        String currentline="";
+        ArrayList<String> newimprovedscripture = new ArrayList<>();
+        for (String words:scripturewords) {
+            if (currentline.length()<charsperline) {
+                currentline = currentline + " " + words;
+            } else {
+                newimprovedscripture.add(currentline.trim());
+                currentline = words;
+            }
+        }
+        newimprovedscripture.add(currentline);
+
+        int newslideneeded = 0;
+        for (int z=0;z<newimprovedscripture.size();z++) {
+            scripture = scripture + "\n" + newimprovedscripture.get(z);
+            newslideneeded ++;
+            // Every linesbeforenewslide lines, start a new slide
+            if (newslideneeded >= linesbeforenewslide) {
+                scripture = scripture + "\n---";
+                newslideneeded = 0;
+            }
+        }
+
+        return scripture.trim();
     }
 }

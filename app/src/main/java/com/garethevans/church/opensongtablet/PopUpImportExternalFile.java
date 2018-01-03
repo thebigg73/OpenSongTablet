@@ -206,6 +206,14 @@ public class PopUpImportExternalFile extends DialogFragment {
                     // This is a song from SongSelect
                     setupUSRImport();
 
+                } else if (FullscreenActivity.file_name.endsWith(".pdf") || FullscreenActivity.file_name.endsWith(".PDF") ||
+                        FullscreenActivity.file_name.endsWith(".png") || FullscreenActivity.file_name.endsWith(".PNG") ||
+                        FullscreenActivity.file_name.endsWith(".jpg") || FullscreenActivity.file_name.endsWith(".JPG") ||
+                        FullscreenActivity.file_name.endsWith(".jpeg") || FullscreenActivity.file_name.endsWith(".JPG") ||
+                        FullscreenActivity.file_name.endsWith(".gif") || FullscreenActivity.file_name.endsWith(".gif")) {
+                    // This is an image or a pdf
+                    setupImageOrPDFImport();
+
                 } else if (FullscreenActivity.file_name.endsWith(".osts")) {
                     // This is definitely a set
                     setupOSTSImport();
@@ -277,8 +285,12 @@ public class PopUpImportExternalFile extends DialogFragment {
                 }
                 in.close();
                 out.close();
-                FullscreenActivity.songfilename = FullscreenActivity.file_name;
-                FullscreenActivity.whichSongFolder = moveToFolder;
+
+                if (!FullscreenActivity.file_type.equals(getResources().getString(R.string.options_set))) {
+                    FullscreenActivity.songfilename = FullscreenActivity.file_name;
+                    FullscreenActivity.whichSongFolder = moveToFolder;
+                }
+
                 mListener.refreshAll();
                 dismiss();
 
@@ -478,6 +490,16 @@ public class PopUpImportExternalFile extends DialogFragment {
         dismiss();
     }
 
+    public void setupImageOrPDFImport() {
+        // Image
+        String s = getActivity().getString(R.string.image) + " / PDF";
+        FullscreenActivity.file_type = getActivity().getString(R.string.image);
+        fileTitle_EditText.setText(FullscreenActivity.file_name);
+        fileType_TextView.setText(s);
+        messageOnSong_TextView.setVisibility(View.GONE);
+        messageOpenSong_TextView.setVisibility(View.GONE);
+        showSongFolders();
+    }
     public void setupUnknownImport() {
         // Not too sure what this file is!
         messageOnSong_TextView.setVisibility(View.GONE);

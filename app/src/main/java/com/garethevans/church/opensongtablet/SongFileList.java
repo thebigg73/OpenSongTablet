@@ -141,26 +141,23 @@ final class SongFileList {
 
         // Not liking the comparator sort.  Reverse folder sorting
         // Create two arrays: one for folders, one for songs
-        Log.d("d","Trying to sort in fileList()");
         ArrayList<String> folders_found = new ArrayList<>();
         ArrayList<String> songs_found = new ArrayList<>();
 
         for (File f:flist) {
             if (f.isDirectory()) {
-                Log.d("d","isDirectory, f.getName()="+f.getName());
                 folders_found.add(f.getName());
             } else {
-                Log.d("d","not Directory, f.getName()="+f.getName());
                 songs_found.add(f.getName());
             }
         }
 
         // Show the folders unsorted
-        int l=0;
-        for (String uf:folders_found) {
+        //int l=0;
+        /*for (String uf:folders_found) {
             Log.d("d","unsorted ["+l+"]="+uf);
             l++;
-        }
+        }*/
         // Now sort both individually
         // Sort the folder list
         try {
@@ -173,11 +170,11 @@ final class SongFileList {
             e.printStackTrace();
         }
         // Show the folders sorted
-        l=0;
+        /*l=0;
         for (String uf:folders_found) {
             Log.d("d","sorted ["+l+"]="+uf);
             l++;
-        }
+        }*/
 
         // Now sort the songs
         try {

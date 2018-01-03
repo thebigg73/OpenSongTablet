@@ -68,7 +68,6 @@ class Transpose {
     private static String[] naturalchords4     = {"La",      "Si",      "Do",      "Ré",      "Mi",      "Fa",      "Sol"};
 
     private static String originalkey = FullscreenActivity.mKey;
-    private static String newkey = FullscreenActivity.mKey;
 
     private static boolean usesflats;
     private static boolean capousesflats;
@@ -85,21 +84,19 @@ class Transpose {
             FullscreenActivity.myTransposedLyrics = FullscreenActivity.mLyrics.split("\n");
 
             oldchordformat = FullscreenActivity.oldchordformat;
-
             // Change the saved key to a number
             if (originalkey != null && !FullscreenActivity.mKey.equals("")) {
-                newkey = keyToNumber(FullscreenActivity.mKey);
-            }
-            // Transpose the key
-            newkey = transposeKey(newkey, FullscreenActivity.transposeDirection, FullscreenActivity.transposeTimes);
+                String newkey = keyToNumber(FullscreenActivity.mKey);
 
-            // Convert the keynumber to a key
-            newkey = numberToKey(newkey);
+                // Transpose the key
+                newkey = transposeKey(newkey, FullscreenActivity.transposeDirection, FullscreenActivity.transposeTimes);
 
-            // Decide if flats should be used
-            usesflats = keyUsesFlats(newkey);
+                // Convert the keynumber to a key
+                newkey = numberToKey(newkey);
 
-            if (!FullscreenActivity.mKey.equals("")) {
+                // Decide if flats should be used
+                usesflats = keyUsesFlats(newkey);
+
                 FullscreenActivity.mKey = newkey;
             }
 
@@ -138,6 +135,13 @@ class Transpose {
                 if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
                     // Since this line has chords, do the changing!
                     // Decide on the chord format to use
+                    if (FullscreenActivity.alwaysPreferredChordFormat.equals("Y") || FullscreenActivity.convertchords) {
+                        // User has specified using their preferred chord format every time
+                        oldchordformat = FullscreenActivity.chordFormat;
+                        // This is only true when the user clicks the option in the menu, so reset
+                        FullscreenActivity.convertchords = false;
+                    }
+
                     switch (oldchordformat) {
                         default:
                             FullscreenActivity.myTransposedLyrics[x] = numberToChord1(FullscreenActivity.myTransposedLyrics[x]);
@@ -175,8 +179,12 @@ class Transpose {
 
             FullscreenActivity.transposedLyrics = null;
             FullscreenActivity.transposedLyrics = "";
-            Arrays.fill(FullscreenActivity.myTransposedLyrics, null);
-            Arrays.fill(FullscreenActivity.myParsedLyrics, null);
+            if (FullscreenActivity.myTransposedLyrics!=null) {
+                Arrays.fill(FullscreenActivity.myTransposedLyrics, null);
+            }
+            if (FullscreenActivity.myParsedLyrics!=null) {
+                Arrays.fill(FullscreenActivity.myParsedLyrics, null);
+            }
             FullscreenActivity.myLyrics = null;
             FullscreenActivity.myLyrics = "";
             FullscreenActivity.mynewXML = null;
@@ -431,7 +439,7 @@ class Transpose {
         for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
 
             // Only do transposing if it is a chord line (starting with .)
-            if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
+            if (FullscreenActivity.myTransposedLyrics[x].startsWith(".")) {
                 if (FullscreenActivity.transposeDirection.equals("+1")) {
                     // Put the numbers up by one.
                     // Last step then fixes 12 to be 0
@@ -1010,7 +1018,8 @@ class Transpose {
 			FullscreenActivity.oldchordformat="1";
 			//detected = 0;
 		}
-		// Ok so the user chord format may not quite match the song - it might though!
+
+        // Ok so the user chord format may not quite match the song - it might though!
 	}
 
 }

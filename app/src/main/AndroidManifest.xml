@@ -48,8 +48,7 @@
         android:theme="@style/MyTheme"
         android:name="android.support.multidex.MultiDexApplication"
         android:vmSafeMode="true"
-        android:largeHeap="false"
-        android:launchMode="singleTask">
+        android:largeHeap="false">
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -61,13 +60,12 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
-
-        <!--<receiver android:name=".BatteryMonitor">
+        <receiver android:name=".BatteryMonitor">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
             </intent-filter>
-        </receiver>-->
+        </receiver>
         <service android:name=".PresentationService" android:exported="false" />
         <meta-data
             android:name="android.app.default_searchable"
@@ -100,7 +98,16 @@
             android:name="com.garethevans.church.opensongtablet.FullscreenActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:label="@string/app_name">
-
+            <!--plaintext filter-->
+            <intent-filter
+                android:label="@string/app_name"
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
+                    <action android:name="android.intent.action.SEND"/>
+                    <category android:name="android.intent.category.DEFAULT"/>
+                    <data android:mimeType="text/plain"/>
+            </intent-filter>
+            <!--xmlapplication filter-->
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
                 android:roundIcon="@mipmap/ic_round_launcher">
@@ -110,6 +117,7 @@
                 <data android:host="*" />
                 <data android:mimeType="application/xml" />
             </intent-filter>
+            <!--txtapplication filter-->
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
                 android:roundIcon="@mipmap/ic_round_launcher">
@@ -119,6 +127,7 @@
                 <data android:host="*" />
                 <data android:mimeType="application/txt" />
             </intent-filter>
+            <!--xml filter-->
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
                 android:roundIcon="@mipmap/ic_round_launcher">
@@ -128,6 +137,7 @@
                 <data android:host="*" />
                 <data android:mimeType="application/xhtml+xml" />
             </intent-filter>
+            <!--stream filter-->
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
                 android:roundIcon="@mipmap/ic_round_launcher"
@@ -137,6 +147,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:mimeType="application/octet-stream" />
             </intent-filter>
+            <!--osb filter-->
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
                 android:roundIcon="@mipmap/ic_round_launcher">
@@ -151,7 +162,7 @@
                 <data android:pathPattern="/.*\\..*\\..*\\..*\\.osb"/>
                 <data android:host="*" />
             </intent-filter>
-
+            <!--ost filter-->
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
                 android:roundIcon="@mipmap/ic_round_launcher">
@@ -166,6 +177,7 @@
                 <data android:pathPattern="/.*\\..*\\..*\\..*\\.ost"/>
                 <data android:host="*" />
             </intent-filter>
+            <!--onsong filter-->
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
                 android:roundIcon="@mipmap/ic_round_launcher">
@@ -180,6 +192,7 @@
                 <data android:pathPattern="/.*\\..*\\..*\\..*\\.onsong"/>
                 <data android:host="*" />
             </intent-filter>
+            <!--backup filter-->
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
                 android:roundIcon="@mipmap/ic_round_launcher">
@@ -194,6 +207,7 @@
                 <data android:pathPattern="/.*\\..*\\..*\\..*\\.backup"/>
                 <data android:host="*" />
             </intent-filter>
+            <!--osts filter-->
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
                 android:roundIcon="@mipmap/ic_round_launcher">
@@ -208,6 +222,7 @@
                 <data android:pathPattern="/.*\\..*\\..*\\..*\\.osts"/>
                 <data android:host="*" />
             </intent-filter>
+            <!--chordpro filter-->
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
                 android:roundIcon="@mipmap/ic_round_launcher">
@@ -224,6 +239,14 @@
                 <data android:pathPattern="/.*\\..*\\.PRO"/>
                 <data android:pathPattern="/.*\\..*\\..*\\.PRO"/>
                 <data android:pathPattern="/.*\\..*\\..*\\..*\\.PRO"/>
+                <data android:pathPattern="/.*\\.cho" />
+                <data android:pathPattern="/.*\\..*\\.cho"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.cho"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.cho"/>
+                <data android:pathPattern="/.*\\.CHO" />
+                <data android:pathPattern="/.*\\..*\\.CHO"/>
+                <data android:pathPattern="/.*\\..*\\..*\\.CHO"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.CHO"/>
                 <data android:pathPattern="/.*\\.chopro" />
                 <data android:pathPattern="/.*\\..*\\.chopro"/>
                 <data android:pathPattern="/.*\\..*\\..*\\.chopro"/>
@@ -242,6 +265,7 @@
                 <data android:pathPattern="/.*\\..*\\..*\\..*\\.CHORDPRO"/>
                 <data android:host="*" />
             </intent-filter>
+            <!--txt filter-->
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
                 android:roundIcon="@mipmap/ic_round_launcher">
@@ -260,6 +284,7 @@
                 <data android:pathPattern="/.*\\..*\\..*\\..*\\.TXT"/>
                 <data android:host="*" />
             </intent-filter>
+            <!--usr filter-->
             <intent-filter android:label="@string/app_name"
                 android:icon="@mipmap/ic_launcher"
                 android:roundIcon="@mipmap/ic_round_launcher">
@@ -271,26 +296,113 @@
                 <data android:pathPattern="/.*\\.usr" />
                 <data android:pathPattern="/.*\\..*\\.usr"/>
                 <data android:pathPattern="/.*\\..*\\..*\\.usr"/>
-                <data android:pathPattern="/.*\\..*\\..*\\..*\\.USR"/>
+                <data android:pathPattern="/.*\\..*\\..*\\..*\\.usr"/>
                 <data android:pathPattern="/.*\\.USR" />
                 <data android:pathPattern="/.*\\..*\\.USR"/>
                 <data android:pathPattern="/.*\\..*\\..*\\.USR"/>
                 <data android:pathPattern="/.*\\..*\\..*\\..*\\.USR"/>
                 <data android:host="*" />
             </intent-filter>
-
+            <!--pdf filter-->
+            <intent-filter
+                android:label="@string/app_name"
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern="/.*\\.pdf" />
+                <data android:pathPattern="/.*\\..*\\.pdf" />
+                <data android:pathPattern="/.*\\..*\\..*\\.pdf" />
+                <data android:pathPattern="/.*\\.PDF" />
+                <data android:pathPattern="/.*\\..*\\.PDF" />
+                <data android:pathPattern="/.*\\..*\\..*\\.PDF" />
+            </intent-filter>
+            <!--png filter-->
+            <intent-filter
+                android:label="@string/app_name"
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern="/.*\\.png" />
+                <data android:pathPattern="/.*\\..*\\.png" />
+                <data android:pathPattern="/.*\\..*\\..*\\.png" />
+                <data android:pathPattern="/.*\\.PNG" />
+                <data android:pathPattern="/.*\\..*\\.PNG" />
+                <data android:pathPattern="/.*\\..*\\..*\\.PNG" />
+            </intent-filter>
+            <!--jpg filter-->
+            <intent-filter
+                android:label="@string/app_name"
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern="/.*\\.jpg" />
+                <data android:pathPattern="/.*\\..*\\.jpg" />
+                <data android:pathPattern="/.*\\..*\\..*\\.jpg" />
+                <data android:pathPattern="/.*\\.JPG" />
+                <data android:pathPattern="/.*\\..*\\.JPG" />
+                <data android:pathPattern="/.*\\..*\\..*\\.JPG" />
+            </intent-filter>
+            <!--jpeg filter-->
+            <intent-filter
+                android:label="@string/app_name"
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern="/.*\\.jpeg" />
+                <data android:pathPattern="/.*\\..*\\.jpeg" />
+                <data android:pathPattern="/.*\\..*\\..*\\.jpeg" />
+                <data android:pathPattern="/.*\\.JPEG" />
+                <data android:pathPattern="/.*\\..*\\.JPEG" />
+                <data android:pathPattern="/.*\\..*\\..*\\.JPEG" />
+            </intent-filter>
+            <!--gif filter-->
+            <intent-filter
+                android:label="@string/app_name"
+                android:icon="@mipmap/ic_launcher"
+                android:roundIcon="@mipmap/ic_round_launcher">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:host="*" />
+                <data android:mimeType="*/*" />
+                <data android:pathPattern="/.*\\.gif" />
+                <data android:pathPattern="/.*\\..*\\.gif" />
+                <data android:pathPattern="/.*\\..*\\..*\\.gif" />
+                <data android:pathPattern="/.*\\.GIF" />
+                <data android:pathPattern="/.*\\..*\\.GIF" />
+                <data android:pathPattern="/.*\\..*\\..*\\.GIF" />
+            </intent-filter>
         </activity>
 
         <activity
             android:name="com.garethevans.church.opensongtablet.PresenterMode"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateUnchanged"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
         </activity>
+
         <activity
             android:name="com.garethevans.church.opensongtablet.StageMode"
             android:configChanges="orientation|screenSize"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode="singleTask">
         </activity>
         <activity android:name=".IndexSongs" />
         <activity android:name=".Preferences" />

@@ -448,52 +448,7 @@ public class StageMode extends AppCompatActivity implements
                     rebuildSearchIndex();
                 }
 
-                try {
-                    FullscreenActivity.incomingfile = getIntent();
-                    Intent intent = getIntent();
-                    String action = intent.getAction();
-                    String type = intent.getType();
-
-                    Log.d("d","intent="+intent);
-                    Log.d("d","action="+action);
-                    Log.d("d","type="+type);
-
-                    if (FullscreenActivity.incomingfile != null) {
-                        Log.d("d","this is in oncreate and intent has been found");
-                        Log.d("d","incomingfile="+FullscreenActivity.incomingfile);
-                        Log.d("d","incomingfile.getData()="+FullscreenActivity.incomingfile.getData());
-                        if (FullscreenActivity.incomingfile!=null && FullscreenActivity.incomingfile.getData()!=null) {
-                            FullscreenActivity.file_location = FullscreenActivity.incomingfile.getData().getPath();
-                            Log.d("d","file_location="+FullscreenActivity.file_location);
-                            FullscreenActivity.file_name = FullscreenActivity.incomingfile.getData().getLastPathSegment();
-                            Log.d("d","file_name="+FullscreenActivity.file_name);
-                            FullscreenActivity.file_uri = FullscreenActivity.incomingfile.getData();
-                            Log.d("d","file_uri="+FullscreenActivity.file_uri);
-
-                        } else {
-                            FullscreenActivity.file_location = "";
-                            FullscreenActivity.file_name = "";
-                            FullscreenActivity.file_uri = null;
-                        }
-
-                        // Check if file_uri exists
-                        if (FullscreenActivity.file_location!=null) {
-                            File t = new File(FullscreenActivity.file_location);
-                            boolean uri_exists = t.exists();
-                            if (FullscreenActivity.file_name.endsWith(".osb") && uri_exists) {
-                                FullscreenActivity.whattodo = "processimportosb";
-                                openFragment();
-                            } else if (uri_exists){
-                                FullscreenActivity.whattodo = "doimport";
-                                openFragment();
-                            }
-
-                        }
-                    }
-                } catch (Exception e) {
-                    // No file
-                    //needtoimport = false;
-                }
+                dealWithIntent();
 
                 // Set up stuff for NFC transfer (if allowed)
                 if (FullscreenActivity.mAndroidBeamAvailable) {
@@ -828,21 +783,32 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     protected void onNewIntent (Intent intent) {
-        // This is used to listen for stuff being imported if the app is already open
-        FullscreenActivity.whattodo = "";
+        Log.d("StageMode","onNewIntentCalled");
+        dealWithIntent();
+    }
+
+    public void dealWithIntent() {
+        Log.d("d","whattodo="+FullscreenActivity.whattodo);
         try {
-            FullscreenActivity.file_location = intent.getData().getPath();
-            FullscreenActivity.file_name = intent.getData().getLastPathSegment();
-            FullscreenActivity.file_uri = intent.getData();
-            if (FullscreenActivity.file_name.endsWith(".osb")) {
+            if (FullscreenActivity.whattodo.equals("importfile_customreusable_scripture")) {
+                // Receiving scripture text
+                Log.d("d","intent to create scripture slide from import");
+                FullscreenActivity.whattodo = "customreusable_scripture";
+                Log.d("d","scripture_title="+FullscreenActivity.scripture_title);
+                Log.d("d","scripture_verse="+FullscreenActivity.scripture_verse);
+
+                openFragment();
+            } else if (FullscreenActivity.whattodo.equals("importfile_processimportosb")) {
+                // Receiving an OpenSongApp backup file
                 FullscreenActivity.whattodo = "processimportosb";
-            } else {
+                openFragment();
+            } else if (FullscreenActivity.whattodo.equals("importfile_doimport")) {
+                // Receiving another file
                 FullscreenActivity.whattodo = "doimport";
+                openFragment();
             }
-            openFragment();
         } catch (Exception e) {
-            // No file
-            //needtoimport = false;
+            e.printStackTrace();
         }
     }
     @Override
@@ -958,7 +924,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 StageMode.this.unregisterReceiver(br);
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d("d","No need to close battery monitor");
             }
         }
         tryCancelAsyncTasks();
@@ -2577,7 +2543,7 @@ public class StageMode extends AppCompatActivity implements
                 }
 
             } catch (Exception e) {
-                // Oops
+                e.printStackTrace();
             }
             return null;
         }
@@ -5242,6 +5208,10 @@ public class StageMode extends AppCompatActivity implements
     }
 
     public void selectSection(int whichone) {
+        if (whichone<0) {
+            whichone = 0;
+        }
+
         FullscreenActivity.currentSection = whichone;
 
         // Send section to other devices (checks we are in stage or presentation mode in called method

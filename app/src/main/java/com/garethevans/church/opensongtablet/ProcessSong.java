@@ -44,6 +44,7 @@ public class ProcessSong extends Activity {
         myLyrics = myLyrics.replace("\f", "    ");
         myLyrics = myLyrics.replace("&#x27;", "'");
         myLyrics = myLyrics.replace("&#39;","'");
+        myLyrics = myLyrics.replace("&apos;","'");
         myLyrics = myLyrics.replaceAll("\u0092", "'");
         myLyrics = myLyrics.replaceAll("\u0093", "'");
         myLyrics = myLyrics.replaceAll("\u2018", "'");
@@ -125,6 +126,15 @@ public class ProcessSong extends Activity {
             fixedlyrics += line + "\n";
         }
         return fixedlyrics;
+    }
+
+    static String fixlinebreaks(String string) {
+        string = string.replace("\r\n","\n");
+        string = string.replace("\n\r", "\n");
+        string = string.replace("\r","\n");
+        string = string.replace("<br>","\n");
+        string = string.replace("<p>","\n\n");
+        return string;
     }
 
     static String removeUnderScores(String myLyrics, Context c) {
@@ -1135,6 +1145,7 @@ public class ProcessSong extends Activity {
     private static TableRow commentlinetoTableRow(Context c, String[] comment, float fontsize, boolean tab) {
         TableRow commentrow = new TableRow(c);
         commentrow.setLayoutParams(tablelayout_params());
+        commentrow.setPadding(0, -(int) ((float) FullscreenActivity.linespacing / fontsize), 0, 0);
         commentrow.setClipChildren(false);
         commentrow.setClipToPadding(false);
 
@@ -1774,7 +1785,7 @@ public class ProcessSong extends Activity {
     static String getSectionHeadings(String songsection) {
         String label = "";
         //songsection = songsection.trim();
-        if (songsection.indexOf("[")==0) {
+        if (songsection.trim().startsWith("[")) {
             int startoftag = songsection.indexOf("[");
             int endoftag = songsection.indexOf("]");
             if (endoftag < startoftag) {

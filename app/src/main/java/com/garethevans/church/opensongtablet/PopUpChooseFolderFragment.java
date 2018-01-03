@@ -86,6 +86,9 @@ public class PopUpChooseFolderFragment extends DialogFragment {
 
         lv = V.findViewById(R.id.songfolders_ListView);
 
+        // Update the song folders
+        ListSongFiles.getAllSongFolders();
+
         if (FullscreenActivity.mSongFolderNames!=null) {
             ArrayAdapter<String> lva = new ArrayAdapter<>(getActivity(),
                     R.layout.songlistitem, FullscreenActivity.mSongFolderNames);

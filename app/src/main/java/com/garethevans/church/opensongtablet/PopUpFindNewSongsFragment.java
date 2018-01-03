@@ -1252,6 +1252,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             Log.d("d","Error showing the new file info");
         }
 
+        if (FullscreenActivity.phrasetosearchfor==null) {
+            FullscreenActivity.phrasetosearchfor = "Untitled";
+        }
+
         // Set the file name if we know it
         if (filename != null && !filename.equals("")) {
             songfilename_EditText.setText(filename);
@@ -1526,17 +1530,19 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         @Override
         protected void onPostExecute(String s) {
-            if (filecontents!=null && !filecontents.equals("")) {
-                setFileNameAndFolder();
-            } else {
-                if (downloadcomplete) {
-                    FullscreenActivity.myToastMessage = getActivity().getString(R.string.pdfonly);
+            if (getActivity()!=null) {
+                if (filecontents != null && !filecontents.equals("")) {
+                    setFileNameAndFolder();
                 } else {
-                    FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
-                }
+                    if (downloadcomplete) {
+                        FullscreenActivity.myToastMessage = getActivity().getString(R.string.pdfonly);
+                    } else {
+                        FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();
+                    }
 
-                ShowToast.showToast(getActivity());
-                grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
+                    ShowToast.showToast(getActivity());
+                    grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
+                }
             }
         }
     }

@@ -371,6 +371,12 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                     switchViewToScripture();
                     slideTitleEditText.setText(FullscreenActivity.customslide_title);
                     slideContentEditText.setText(FullscreenActivity.customslide_content);
+                    if (FullscreenActivity.scripture_title!=null && FullscreenActivity.scripture_title!=null &&
+                            FullscreenActivity.scripture_verse!=null && FullscreenActivity.scripture_verse!=null) {
+                        slideTitleEditText.setText(FullscreenActivity.scripture_verse);
+                        slideContentEditText.setText(FullscreenActivity.scripture_verse);
+                        addScripture();
+                    }
                     break;
                 case "customreusable_slide":
                     // Fill in the details
@@ -608,7 +614,10 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     }
 
     public static void addScripture() {
-        if (!FullscreenActivity.scripture_title.equals("") && !FullscreenActivity.scripture_verse.equals("")) {
+        if (FullscreenActivity.scripture_title!=null &&
+                !FullscreenActivity.scripture_title.equals("") &&
+                FullscreenActivity.scripture_verse!=null &&
+                !FullscreenActivity.scripture_verse.equals("")) {
             searchBible_progressBar.setVisibility(View.GONE);
             grabVerse_Button.setVisibility(View.GONE);
             slideTitleEditText.setText(FullscreenActivity.scripture_title);

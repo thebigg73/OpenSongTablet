@@ -116,10 +116,19 @@ public class PopUpStorageFragment extends DialogFragment {
     @Override
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
-        if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
-            sListener = (SettingsInterface) activity;
-        } else {
-            mListener = (MyInterface) activity;
+        try {
+            if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
+                sListener = (SettingsInterface) activity;
+            } else {
+                mListener = (MyInterface) activity;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                dismiss();
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
         }
         super.onAttach(activity);
     }

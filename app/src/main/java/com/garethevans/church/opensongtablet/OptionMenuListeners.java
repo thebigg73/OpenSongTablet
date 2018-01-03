@@ -1136,6 +1136,7 @@ public class OptionMenuListeners extends Activity {
                     FullscreenActivity.myToastMessage = c.getResources().getString(R.string.not_allowed);
                     ShowToast.showToast(c);
                 } else {
+                    FullscreenActivity.convertchords = true;
                     FullscreenActivity.transposeDirection = "0";
                     Transpose.checkChordFormat();
                     try {
@@ -1145,6 +1146,7 @@ public class OptionMenuListeners extends Activity {
                     }
                 }
                 if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
                     mListener.loadSong();
                 }
             }
