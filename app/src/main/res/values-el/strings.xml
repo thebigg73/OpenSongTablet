@@ -708,4 +708,30 @@
     <string name="fix">"Αυτόματη επιδιόρθωση"</string>
     <string name="timer_learn">"Μάθετε το χρόνο αυτόματης επιλογής"</string>
 
+    <string name="action">"Δράση"</string>
+    <string name="activated">"Ενεργοποίηση / λειτουργία"</string>
+    <string name="autostartmetronome">"Autostart μετρονόμος"</string>
+    <string name="autostartpad">"Υποδοχή αυτόματης εκκίνησης"</string>
+    <string name="ccli_automatic">"Δημιουργήστε αυτόματα στατιστικά στοιχεία χρήσης"</string>
+    <string name="ccli_church">"Όνομα εκκλησίας"</string>
+    <string name="ccli_licence">"ΑΡΙΘΜΟΣ ΑΔΕΙΑΣ"</string>
+    <string name="ccli_view">"Δείτε το αρχείο καταγραφής CCLI"</string>
+    <string name="ccli_reset">"Επαναφορά του αρχείου καταγραφής CCLI"</string>
+    <string name="date">"Ημερομηνία"</string>
+    <string name="editpdf">"Επεξεργασία σε εξωτερικό πρόγραμμα PDF"</string>
+    <string name="existing">"Βρείτε προηγούμενες θέσεις εγκατάστασης για αρχεία OpenSong"</string>
+    <string name="found">"Έχετε ήδη χρησιμοποιήσει τις ακόλουθες τοποθεσίες εγκατάστασης. Επιλέξτε ένα για να το χρησιμοποιήσετε ξανά."</string>
+    <string name="longpress">"Πατήστε παρατεταμένα"</string>
+    <string name="nofound">"Δεν βρέθηκαν προηγούμενες εγκαταστάσεις."</string>
+    <string name="nothere">"Είστε μέσα σε ένα φάκελο OpenSong, μην χρησιμοποιείτε αυτήν την τοποθεσία. Αντ 'αυτού, ανεβάστε ένα επίπεδο και καθορίστε τον φάκελο που περιέχει αυτόν το φάκελο"</string>
+    <string name="pedal">"Πετάλι"</string>
+    <string name="previouslyused">"Η προηγούμενη τοποθεσία εγκατάστασης βρέθηκε. Κάντε κλικ στο πράσινο tick για να το χρησιμοποιήσετε"</string>
+    <string name="songsheet">"Τραγούδι"</string>
+    <string name="tap">"Πατήστε σύντομα / πατήστε"</string>
+
+    <string name="inc_autoscroll_speed">"Αυξήστε την ταχύτητα αυτόματης κύλισης"</string>
+    <string name="dec_autoscroll_speed">"Μειώστε την ταχύτητα αυτόματης κύλισης"</string>
+    <string name="edit_default_delaymax">"Max καθυστέρηση (δευτερόλεπτα)"</string>
+    <string name="toggle_autoscroll_pause">"Εναλλαγή της παύσης αυτόματης κύλισης"</string>
+
 </resources>

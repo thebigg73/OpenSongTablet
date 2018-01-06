@@ -28,6 +28,8 @@ class SetUpColours {
                 FullscreenActivity.presoShadowColor = FullscreenActivity.light_presoShadow;
                 FullscreenActivity.stickytextColor = FullscreenActivity.light_stickytext;
                 FullscreenActivity.stickybgColor = FullscreenActivity.light_stickybg;
+                FullscreenActivity.extrainfobgColor = FullscreenActivity.light_extrainfobg;
+                FullscreenActivity.extrainfoColor = FullscreenActivity.light_extrainfo;
                 break;
             case "Theme_Holo":
             case "Theme.Holo":
@@ -51,6 +53,8 @@ class SetUpColours {
                 FullscreenActivity.presoShadowColor = FullscreenActivity.dark_presoShadow;
                 FullscreenActivity.stickytextColor = FullscreenActivity.dark_stickytext;
                 FullscreenActivity.stickybgColor = FullscreenActivity.dark_stickybg;
+                FullscreenActivity.extrainfobgColor = FullscreenActivity.dark_extrainfobg;
+                FullscreenActivity.extrainfoColor = FullscreenActivity.dark_extrainfo;
                 break;
             case "custom1":
                 FullscreenActivity.lyricsTextColor = FullscreenActivity.custom1_lyricsTextColor;
@@ -73,6 +77,8 @@ class SetUpColours {
                 FullscreenActivity.presoShadowColor = FullscreenActivity.custom1_presoShadow;
                 FullscreenActivity.stickytextColor = FullscreenActivity.custom1_stickytext;
                 FullscreenActivity.stickybgColor = FullscreenActivity.custom1_stickybg;
+                FullscreenActivity.extrainfobgColor = FullscreenActivity.custom1_extrainfobg;
+                FullscreenActivity.extrainfoColor = FullscreenActivity.custom1_extrainfo;
                 break;
             case "custom2":
                 FullscreenActivity.lyricsTextColor = FullscreenActivity.custom2_lyricsTextColor;
@@ -95,6 +101,8 @@ class SetUpColours {
                 FullscreenActivity.presoShadowColor = FullscreenActivity.custom2_presoShadow;
                 FullscreenActivity.stickytextColor = FullscreenActivity.custom2_stickytext;
                 FullscreenActivity.stickybgColor = FullscreenActivity.custom2_stickybg;
+                FullscreenActivity.extrainfobgColor = FullscreenActivity.custom2_extrainfobg;
+                FullscreenActivity.extrainfoColor = FullscreenActivity.custom2_extrainfo;
                 break;
         }
     }

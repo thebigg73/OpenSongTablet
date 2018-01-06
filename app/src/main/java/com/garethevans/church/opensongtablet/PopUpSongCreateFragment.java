@@ -242,9 +242,19 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 // Prepare the XML
                 FullscreenActivity.songfilename = tempNewSong;
                 FullscreenActivity.mTitle = tempNewSong;
+
                 Preferences.savePreferences();
 
                 PopUpEditSongFragment.prepareBlankSongXML();
+
+                // If this is an import from text intent, add the text to the lyrics
+                if (FullscreenActivity.scripture_title!=null &&
+                        FullscreenActivity.scripture_title.equals("importedtext_in_scripture_verse") &&
+                        FullscreenActivity.scripture_verse!=null && !FullscreenActivity.scripture_verse.equals("")) {
+                    FullscreenActivity.mLyrics = FullscreenActivity.scripture_verse;
+                    FullscreenActivity.mynewXML =  FullscreenActivity.mynewXML.replace("<lyrics>[V]\n</lyrics>",
+                            "<lyrics>[V]\n"+FullscreenActivity.scripture_verse+"</lyrics>");
+                }
 
                 // Save the file
                 try {
@@ -263,6 +273,13 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 // Tell the main page to now edit the song
                 if (mListener != null) {
                     mListener.doEdit();
+                }
+
+                // If we are autologging CCLI information
+                if (FullscreenActivity.ccli_automatic) {
+                    PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
+                            FullscreenActivity.songfilename, "",
+                            "", "", "1"); // Created
                 }
 
                 // Close the popup

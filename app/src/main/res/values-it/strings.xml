@@ -633,4 +633,30 @@
 	<string name="fix">"Si auto ripara"</string>
 	<string name="timer_learn">"Impara il tempo di autoscatto"</string>
 
+	<string name="action">"Azione"</string>
+	<string name="activated">"Attivato / in esecuzione"</string>
+	<string name="autostartmetronome">"Avvio automatico del metronomo"</string>
+	<string name="autostartpad">"Pad di avvio automatico"</string>
+	<string name="ccli_automatic">"Registra automaticamente le statistiche di utilizzo"</string>
+	<string name="ccli_church">"Nome della Chiesa"</string>
+	<string name="ccli_licence">"Numero della licenza"</string>
+	<string name="ccli_view">"Visualizza il registro CCLI"</string>
+	<string name="ccli_reset">"Reimposta registro CCLI"</string>
+	<string name="date">"Data"</string>
+	<string name="editpdf">"Modifica nel programma PDF esterno"</string>
+	<string name="existing">"Trova le posizioni di installazione precedenti per i file OpenSong"</string>
+	<string name="found">"Hai già utilizzato le seguenti posizioni di installazione. Si prega di selezionarne uno per usarlo di nuovo."</string>
+	<string name="longpress">"Tenere premuto a lungo"</string>
+	<string name="nofound">"Nessuna installazione precedente trovata."</string>
+	<string name="nothere">"Sei all'interno di una cartella OpenSong, non usare questa posizione. Piuttosto vai su di un livello e specifica la cartella che contiene questa cartella"</string>
+	<string name="pedal">"Pedale"</string>
+	<string name="previouslyused">"Posizione di installazione precedente trovata. Clicca sul segno di spunta verde per usare questo"</string>
+	<string name="songsheet">"Songsheet"</string>
+	<string name="tap">"Pressione breve / tocco"</string>
+
+	<string name="inc_autoscroll_speed">"Aumenta la velocità di scorrimento automatico"</string>
+	<string name="dec_autoscroll_speed">"Diminuire la velocità di scorrimento automatico"</string>
+	<string name="edit_default_delaymax">"Ritardo massimo (secondi)"</string>
+	<string name="toggle_autoscroll_pause">"Attiva / disattiva pausa di scorrimento automatico"</string>
+
 </resources>

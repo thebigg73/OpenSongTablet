@@ -1257,14 +1257,16 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
 
         // Set the file name if we know it
-        if (filename != null && !filename.equals("")) {
-            songfilename_EditText.setText(filename);
-        } else {
-            songfilename_EditText.setText(FullscreenActivity.phrasetosearchfor);
-        }
+        if (songfilename_EditText!=null) {
+            if (filename != null && !filename.equals("")) {
+                songfilename_EditText.setText(filename);
+            } else {
+                songfilename_EditText.setText(FullscreenActivity.phrasetosearchfor);
+            }
 
-        if (filecontents==null && newtext.equals("")) {
-            songfilename_EditText.setText(FullscreenActivity.phrasetosearchfor);
+            if (filecontents == null && newtext.equals("")) {
+                songfilename_EditText.setText(FullscreenActivity.phrasetosearchfor);
+            }
         }
     }
 
@@ -1353,6 +1355,14 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         } else if (FullscreenActivity.whattodo.equals("songselect") && downloadcomplete) {
             FullscreenActivity.songfilename = temppdffile;
         }
+
+        // If we are autologging CCLI information
+        if (FullscreenActivity.ccli_automatic) {
+            PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
+                    FullscreenActivity.songfilename, "",
+                    "", "", "1"); // Created
+        }
+
         Preferences.savePreferences();
         if (mListener != null) {
             mListener.loadSong();

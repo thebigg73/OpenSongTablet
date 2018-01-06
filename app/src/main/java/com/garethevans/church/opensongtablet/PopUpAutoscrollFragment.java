@@ -183,6 +183,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             popupautoscroll_startstopbutton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    FullscreenActivity.clickedOnAutoScrollStart = false;
                     mListener.stopAutoScroll();
                     PopUpAutoscrollFragment.this.dismiss();
                 }
@@ -195,6 +196,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
                 @Override
                 public void onClick(View view) {
                     if (FullscreenActivity.autoscrollok) {
+                        FullscreenActivity.clickedOnAutoScrollStart = true;
                         PopUpAutoscrollFragment.this.doSave();
                         mListener.startAutoScroll();
                         PopUpAutoscrollFragment.this.dismiss();

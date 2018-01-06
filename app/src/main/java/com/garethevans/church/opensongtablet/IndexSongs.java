@@ -64,8 +64,13 @@ public class IndexSongs extends Activity {
             // Removes start bit for subfolders
             // String foldername = currfolder.replace(songfolder.toString()+"/", "");
             String foldername = currfolder;
-
-            File foldtosplit = new File(FullscreenActivity.dir.getAbsolutePath() + "/" + currfolder);
+            Log.d("d","currfolder="+currfolder);
+            File foldtosplit;
+            if (currfolder.equals(c.getString(R.string.mainfoldername))) {
+                foldtosplit = new File(FullscreenActivity.dir.getAbsolutePath());
+            } else {
+                foldtosplit = new File(FullscreenActivity.dir.getAbsolutePath() + "/" + currfolder);
+            }
             File files[] = foldtosplit.listFiles();
             // Go through each file
             if(files != null) {

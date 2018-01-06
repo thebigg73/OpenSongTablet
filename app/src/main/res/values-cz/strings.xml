@@ -634,4 +634,30 @@
 	<string name="fix">"Automatická oprava"</string>
 	<string name="timer_learn">"Zjistěte čas autoskládání"</string>
 
+	<string name="action">"Akce"</string>
+	<string name="activated">"Aktivováno / běží"</string>
+	<string name="autostartmetronome">"Autostart metronom"</string>
+	<string name="autostartpad">"Autostart pad"</string>
+	<string name="ccli_automatic">"Zaznamenávají statistiky využití automaticky"</string>
+	<string name="ccli_church">"Název církve"</string>
+	<string name="ccli_licence">"Číslo licence"</string>
+	<string name="ccli_view">"Zobrazit protokol CCLI"</string>
+	<string name="ccli_reset">"Obnovit protokol CCLI"</string>
+	<string name="date">"datum"</string>
+	<string name="editpdf">"Upravit v externím programu PDF"</string>
+	<string name="existing">"Najít předchozí umístění instalace pro soubory OpenSong"</string>
+	<string name="found">"Již jste použili následující umístění instalace. Vyberte jednu, kterou chcete znovu použít."</string>
+	<string name="longpress">"Dlouhým stisknutím / přidržením"</string>
+	<string name="nofound">"Nebyly nalezeny žádné předchozí instalace."</string>
+	<string name="nothere">"Jste ve složce OpenSong, nepoužívejte toto umístění. Místo toho přesuňte jednu úroveň nahoru a zadejte složku obsahující tuto složku"</string>
+	<string name="pedal">"Pedál"</string>
+	<string name="previouslyused">"Bylo nalezeno předchozí umístění instalace. Klepnutím na zelené zaškrtněte toto tlačítko"</string>
+	<string name="songsheet">"Songsheet"</string>
+	<string name="tap">"Krátkým stisknutím / klepnutím"</string>
+
+	<string name="inc_autoscroll_speed">"Zvyšte rychlost Autoscroll Speed"</string>
+	<string name="dec_autoscroll_speed">"Snížit rychlost Autoscroll Speed"</string>
+	<string name="edit_default_delaymax">"Max. Zpoždění (vteřin)"</string>
+	<string name="toggle_autoscroll_pause">"Přepnout automatické přerušení"</string>
+
 </resources>

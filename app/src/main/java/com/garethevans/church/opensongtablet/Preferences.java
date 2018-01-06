@@ -47,6 +47,10 @@ public class Preferences extends Activity {
     static int default_stickyNotes = 0xff000000;
     static int default_stickyNotesBG = 0xffddaa00;
 
+    static int default_extrainfoBG = 0xff666666;
+    static int default_extrainfo = 0xffffffff;
+
+
     public static void loadFolderName() {
         try {
             FullscreenActivity.whichSongFolder = myPreferences.getString("whichSongFolder", FullscreenActivity.mainfoldername);
@@ -96,6 +100,8 @@ public class Preferences extends Activity {
             FullscreenActivity.autoscroll_default_or_prompt = myPreferences.getString("autoscroll_default_or_prompt", "prompt");
             FullscreenActivity.autoScrollDelay = myPreferences.getInt("autoScrollDelay", 10);
             FullscreenActivity.autostartautoscroll = myPreferences.getBoolean("autostartautoscroll", false);
+            FullscreenActivity.autostartmetronome = myPreferences.getBoolean("autostartmetronome", false);
+            FullscreenActivity.autostartpad = myPreferences.getBoolean("autostartpad", false);
             FullscreenActivity.backgroundImage1 = myPreferences.getString("backgroundImage1", "ost_bg.png");
             FullscreenActivity.backgroundImage2 = myPreferences.getString("backgroundImage2", "ost_bg.png");
             FullscreenActivity.backgroundVideo1 = myPreferences.getString("backgroundVideo1", "");
@@ -108,6 +114,10 @@ public class Preferences extends Activity {
             FullscreenActivity.batterySize = myPreferences.getFloat("batterySize", 9.0f);
             FullscreenActivity.bibleFile = myPreferences.getString("bibleFile", "");
             FullscreenActivity.capoDisplay = myPreferences.getString("capoDisplay", "both");
+            FullscreenActivity.capoFontSizeInfoBar = myPreferences.getFloat("capoFontSizeInfoBar", 14.0f);
+            FullscreenActivity.ccli_automatic = myPreferences.getBoolean("ccli_automatic", false);
+            FullscreenActivity.ccli_church = myPreferences.getString("ccli_church", "");
+            FullscreenActivity.ccli_licence = myPreferences.getString("ccli_licence", "");
             FullscreenActivity.chordfontscalesize = myPreferences.getFloat("chordfontscalesize", 0.8f);
             FullscreenActivity.chordFormat = myPreferences.getString("chordFormat", "1");
             FullscreenActivity.chordInstrument = myPreferences.getString("chordInstrument", "g");
@@ -131,6 +141,8 @@ public class Preferences extends Activity {
             FullscreenActivity.custom1_presoShadow = myPreferences.getInt("custom1_presoShadow", default_dark_presoShadowFontColor);
             FullscreenActivity.custom1_stickytext = myPreferences.getInt("custom1_stickytext", default_stickyNotes);
             FullscreenActivity.custom1_stickybg = myPreferences.getInt("custom1_stickybg", default_stickyNotesBG);
+            FullscreenActivity.custom1_extrainfobg = myPreferences.getInt("custom1_extrainfobg", default_extrainfoBG);
+            FullscreenActivity.custom1_extrainfo = myPreferences.getInt("custom1_extrainfo", default_extrainfo);
             FullscreenActivity.custom2_lyricsBackgroundColor = myPreferences.getInt("custom2_lyricsBackgroundColor", default_light_lyricsBackgroundColor);
             FullscreenActivity.custom2_lyricsBridgeColor = myPreferences.getInt("custom2_lyricsBridgeColor", default_light_lyricsBackgroundColor);
             FullscreenActivity.custom2_lyricsCapoColor = myPreferences.getInt("custom2_lyricsCapoColor", default_light_lyricsCapoColor);
@@ -150,6 +162,8 @@ public class Preferences extends Activity {
             FullscreenActivity.custom2_presoShadow = myPreferences.getInt("custom2_presoShadow", default_dark_presoShadowFontColor);
             FullscreenActivity.custom2_stickytext = myPreferences.getInt("custom2_stickytext", default_stickyNotes);
             FullscreenActivity.custom2_stickybg = myPreferences.getInt("custom2_stickybg", default_stickyNotesBG);
+            FullscreenActivity.custom2_extrainfobg = myPreferences.getInt("custom2_extrainfobg", default_extrainfoBG);
+            FullscreenActivity.custom2_extrainfo = myPreferences.getInt("custom2_extrainfo", default_extrainfo);
             FullscreenActivity.customfontname = myPreferences.getString("customfontname", "");
             FullscreenActivity.customLogo = myPreferences.getString("customLogo","ost_logo.png");
             FullscreenActivity.customLogoSize = myPreferences.getFloat("customLogoSize", 0.5f);
@@ -173,6 +187,8 @@ public class Preferences extends Activity {
             FullscreenActivity.dark_presoShadow = myPreferences.getInt("dark_presoShadow", default_dark_presoShadowFontColor);
             FullscreenActivity.dark_stickytext = myPreferences.getInt("dark_stickytext", default_stickyNotes);
             FullscreenActivity.dark_stickybg = myPreferences.getInt("dark_stickybg", default_stickyNotesBG);
+            FullscreenActivity.dark_extrainfobg = myPreferences.getInt("dark_extrainfobg", default_extrainfoBG);
+            FullscreenActivity.dark_extrainfo = myPreferences.getInt("dark_extrainfo", default_extrainfo);
             FullscreenActivity.default_autoscroll_predelay = myPreferences.getInt("default_autoscroll_predelay", 10);
             FullscreenActivity.default_autoscroll_predelay_max = myPreferences.getInt("default_autoscroll_predelay_max", 30);
             FullscreenActivity.default_autoscroll_songlength = myPreferences.getInt("default_autoscroll_songlength", 180);
@@ -218,6 +234,8 @@ public class Preferences extends Activity {
             FullscreenActivity.light_presoShadow = myPreferences.getInt("light_presoShadow", default_dark_presoShadowFontColor);
             FullscreenActivity.light_stickytext = myPreferences.getInt("light_stickytext", default_stickyNotes);
             FullscreenActivity.light_stickybg = myPreferences.getInt("light_stickybg", default_stickyNotesBG);
+            FullscreenActivity.light_extrainfobg = myPreferences.getInt("light_extrainfobg", default_extrainfoBG);
+            FullscreenActivity.light_extrainfo = myPreferences.getInt("light_extrainfo", default_extrainfo);
             FullscreenActivity.linespacing = myPreferences.getInt("linespacing", 0);
             FullscreenActivity.locale = getStoredLocale();
             FullscreenActivity.longpressdownpedalgesture = myPreferences.getString("longpressdownpedalgesture", "0");
@@ -435,6 +453,8 @@ public class Preferences extends Activity {
             editor.putString("autoscroll_default_or_prompt", FullscreenActivity.autoscroll_default_or_prompt);
             editor.putInt("autoScrollDelay", FullscreenActivity.autoScrollDelay);
             editor.putBoolean("autostartautoscroll", FullscreenActivity.autostartautoscroll);
+            editor.putBoolean("autostartmetronome", FullscreenActivity.autostartmetronome);
+            editor.putBoolean("autostartpad", FullscreenActivity.autostartpad);
             editor.putString("backgroundImage1", FullscreenActivity.backgroundImage1);
             editor.putString("backgroundImage2", FullscreenActivity.backgroundImage2);
             editor.putString("backgroundToUse", FullscreenActivity.backgroundToUse);
@@ -447,6 +467,10 @@ public class Preferences extends Activity {
             editor.putFloat("batterySize", FullscreenActivity.batterySize);
             editor.putString("bibleFile", FullscreenActivity.bibleFile);
             editor.putString("capoDisplay", FullscreenActivity.capoDisplay);
+            editor.putFloat("capoFontSizeInfoBar", FullscreenActivity.capoFontSizeInfoBar);
+            editor.putBoolean("ccli_automatic", FullscreenActivity.ccli_automatic);
+            editor.putString("ccli_church", FullscreenActivity.ccli_church);
+            editor.putString("ccli_licence", FullscreenActivity.ccli_licence);
             editor.putFloat("chordfontscalesize", FullscreenActivity.chordfontscalesize);
             editor.putString("chordFormat", FullscreenActivity.chordFormat);
             editor.putString("chordInstrument", FullscreenActivity.chordInstrument);
@@ -470,6 +494,8 @@ public class Preferences extends Activity {
             editor.putInt("custom1_presoShadow", FullscreenActivity.custom1_presoShadow);
             editor.putInt("custom1_stickytext", FullscreenActivity.custom1_stickytext);
             editor.putInt("custom1_stickybg", FullscreenActivity.custom1_stickybg);
+            editor.putInt("custom1_extrainfobg", FullscreenActivity.custom1_extrainfobg);
+            editor.putInt("custom1_extrainfo", FullscreenActivity.custom1_extrainfo);
             editor.putInt("custom2_lyricsBackgroundColor", FullscreenActivity.custom2_lyricsBackgroundColor);
             editor.putInt("custom2_lyricsBridgeColor", FullscreenActivity.custom2_lyricsBridgeColor);
             editor.putInt("custom2_lyricsCapoColor", FullscreenActivity.custom2_lyricsCapoColor);
@@ -489,6 +515,8 @@ public class Preferences extends Activity {
             editor.putInt("custom2_presoShadow", FullscreenActivity.custom2_presoShadow);
             editor.putInt("custom2_stickytext", FullscreenActivity.custom2_stickytext);
             editor.putInt("custom2_stickybg", FullscreenActivity.custom2_stickybg);
+            editor.putInt("custom2_extrainfobg", FullscreenActivity.custom2_extrainfobg);
+            editor.putInt("custom2_extrainfo", FullscreenActivity.custom2_extrainfo);
             editor.putString("customfontname", FullscreenActivity.customfontname);
             editor.putString("customLogo", FullscreenActivity.customLogo);
             editor.putFloat("customLogoSize", FullscreenActivity.customLogoSize);
@@ -512,6 +540,8 @@ public class Preferences extends Activity {
             editor.putInt("dark_presoShadow", FullscreenActivity.dark_presoShadow);
             editor.putInt("dark_stickytext", FullscreenActivity.dark_stickytext);
             editor.putInt("dark_stickybg", FullscreenActivity.dark_stickybg);
+            editor.putInt("dark_extrainfobg", FullscreenActivity.dark_extrainfobg);
+            editor.putInt("dark_extrainfo", FullscreenActivity.dark_extrainfo);
             editor.putInt("default_autoscroll_predelay", FullscreenActivity.default_autoscroll_predelay);
             editor.putInt("default_autoscroll_songlength", FullscreenActivity.default_autoscroll_songlength);
             editor.putInt("drawingEraserSize", FullscreenActivity.drawingEraserSize);
@@ -556,6 +586,8 @@ public class Preferences extends Activity {
             editor.putInt("light_presoShadow", FullscreenActivity.light_presoShadow);
             editor.putInt("light_stickytext", FullscreenActivity.light_stickytext);
             editor.putInt("light_stickybg", FullscreenActivity.light_stickybg);
+            editor.putInt("light_extrainfobg", FullscreenActivity.light_extrainfobg);
+            editor.putInt("light_extrainfo", FullscreenActivity.light_extrainfo);
             editor.putInt("linespacing", FullscreenActivity.linespacing);
             editor.putString("locale", FullscreenActivity.locale.toString());
             editor.putString("longpressdownpedalgesture", FullscreenActivity.longpressdownpedalgesture);

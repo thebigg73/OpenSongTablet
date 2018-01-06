@@ -43,7 +43,6 @@ public class SongMenuListeners extends Activity {
 
                             if (FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
                                 // Song is in current set.  Find the song position in the current set and load it (and next/prev)
-                                // The first song has an index of 6 (the 7th item as the rest are menu items)
 
                                 FullscreenActivity.previousSongInSet = "";
                                 FullscreenActivity.nextSongInSet = "";

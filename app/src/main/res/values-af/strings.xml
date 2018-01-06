@@ -632,5 +632,30 @@
 	<string name="fix">"Autofix"</string>
 	<string name="timer_learn">"Leer outoscroll tyd"</string>
 
+	<string name="action">"Aksie"</string>
+	<string name="activated">"Aktiveer / hardloop"</string>
+	<string name="autostartmetronome">"Autostart metronoom"</string>
+	<string name="autostartpad">"Autostart pad"</string>
+	<string name="ccli_automatic">"Rekord gebruik statistieke outomaties"</string>
+	<string name="ccli_church">"Kerknaam"</string>
+	<string name="ccli_licence">"Lisensienommer"</string>
+	<string name="ccli_view">"Bekyk CCLI log"</string>
+	<string name="ccli_reset">"Herstel CCLI log"</string>
+	<string name="date">"datum"</string>
+	<string name="editpdf">"Wysig in eksterne PDF-program"</string>
+	<string name="existing">"Vind vorige installasie plekke vir OpenSong lêers"</string>
+	<string name="found">"Jy het al die volgende installeer plekke gebruik. Kies asseblief een om dit weer te gebruik."</string>
+	<string name="longpress">"Lang druk / hou"</string>
+	<string name="nofound">"Geen vorige installasies gevind nie."</string>
+	<string name="nothere">"Jy is in 'n OpenSong-gids, moenie hierdie plek gebruik nie. Plaas eerder een vlak op en spesifiseer die gids wat hierdie vouer bevat"</string>
+	<string name="pedal">"Pedal"</string>
+	<string name="previouslyused">"Vorige installeer ligging gevind. Klik op die groen blokkie om dit te gebruik"</string>
+	<string name="songsheet">"Songsheet"</string>
+	<string name="tap">"Kort druk / tik"</string>
+
+	<string name="inc_autoscroll_speed">"Verhoog Autoscroll Spoed"</string>
+	<string name="dec_autoscroll_speed">"Verminder Autoscroll Spoed"</string>
+	<string name="edit_default_delaymax">"Maksimum vertraging (sekondes)"</string>
+	<string name="toggle_autoscroll_pause">"Skakel Autoscroll Pause"</string>
 
 </resources>

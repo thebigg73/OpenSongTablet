@@ -684,4 +684,30 @@
     <string name="fix">"Automatski popravak"</string>
     <string name="timer_learn">"Saznajte vrijeme automatskog pregleda"</string>
 
+    <string name="action">"Akcija"</string>
+    <string name="activated">"Aktivirano / trčanje"</string>
+    <string name="autostartmetronome">"Autostart metronom"</string>
+    <string name="autostartpad">"Autostart pad"</string>
+    <string name="ccli_automatic">"Snimajte statistiku korištenja automatski"</string>
+    <string name="ccli_church">"Ime crkve"</string>
+    <string name="ccli_licence">"Broj licence"</string>
+    <string name="ccli_view">"Pogledajte CCLI dnevnik"</string>
+    <string name="ccli_reset">"Reset CCLI log"</string>
+    <string name="date">"Datum"</string>
+    <string name="editpdf">"Izmenite u spoljnom PDF programu"</string>
+    <string name="existing">"Pronađite prethodne lokacije za instalaciju OpenSong datoteka"</string>
+    <string name="found">"Već ste koristili sljedeće lokacije za instalaciju. Molimo vas da odaberete jednu za ponovno korištenje."</string>
+    <string name="longpress">"Dugo pritisnite / držite"</string>
+    <string name="nofound">"Nije pronađena prethodna instalacija."</string>
+    <string name="nothere">"U fascikli OpenSong, ne koristite ovu lokaciju. Umesto toga, pomjerite jedan nivo i navedite fasciklu koja sadrži ovaj folder"</string>
+    <string name="pedal">"Pedal"</string>
+    <string name="previouslyused">"Pronađena je prethodna instalirana lokacija. Kliknite na zeleni tik za korišćenje"</string>
+    <string name="songsheet">"Songsheet"</string>
+    <string name="tap">"Kratko pritisnite / dodirnite"</string>
+
+    <string name="inc_autoscroll_speed">"Povećajte brzinu automatskog kretanja"</string>
+    <string name="dec_autoscroll_speed">"Smanjite autoskolsku brzinu"</string>
+    <string name="edit_default_delaymax">"Maksimalno odlaganje (sekunde)"</string>
+    <string name="toggle_autoscroll_pause">"Prebacite Autoscroll pauzu"</string>
+
 </resources>

@@ -124,6 +124,8 @@ public class PopUpSetViewNew extends DialogFragment {
             @Override
             public void onClick(View view) {
                 PopUpSetViewNew.this.doSave();
+                refresh();
+                close();
             }
         });
         if (FullscreenActivity.whattodo.equals("setitemvariation")) {
@@ -194,6 +196,9 @@ public class PopUpSetViewNew extends DialogFragment {
         set_shuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Save any changes to current set first
+                doSave();
+
                 // Redraw the lists
                 Collections.shuffle(FullscreenActivity.mTempSetList);
 
@@ -212,6 +217,9 @@ public class PopUpSetViewNew extends DialogFragment {
         saveAsProperSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Save any changes to current set first
+                doSave();
+
                 File settosave = new File(FullscreenActivity.dirsets,FullscreenActivity.lastSetName);
                 if (FullscreenActivity.lastSetName==null || FullscreenActivity.lastSetName.equals("")) {
                     FullscreenActivity.whattodo = "saveset";
@@ -243,7 +251,6 @@ public class PopUpSetViewNew extends DialogFragment {
             helpDragItem_TextView.setVisibility(View.GONE);
             helpSwipeItem_TextView.setVisibility(View.GONE);
             listSetTweetButton.setVisibility(View.GONE);
-            //saveMe.setVisibility(View.GONE);
             set_shuffle.setVisibility(View.GONE);
             helptext.setVisibility(View.VISIBLE);
         }
@@ -284,12 +291,22 @@ public class PopUpSetViewNew extends DialogFragment {
                 " - " + getActivity().getString(R.string.ok);
         Preferences.savePreferences();
         // Tell the listener to do something
+
+    }
+
+    public void refresh() {
         if (mListener!=null) {
             mListener.refreshAll();
         }
-        dismiss();
     }
 
+    public void close() {
+        try {
+            dismiss();
+        } catch (Exception e) {
+            Log.d("d","Error closing fragment");
+        }
+    }
     public void extractSongsAndFolders() {
         // Populate the set list list view
         // Split the set items into song and folder

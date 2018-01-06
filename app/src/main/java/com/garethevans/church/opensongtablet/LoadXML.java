@@ -452,6 +452,7 @@ public class LoadXML extends Activity {
         // Just in case use the Welcome to OpenSongApp file
         initialiseSongTags();
 
+        FullscreenActivity.file = FullscreenActivity.file.getAbsoluteFile();
         InputStream inputStream = new FileInputStream(FullscreenActivity.file);
         InputStreamReader lineReader = new InputStreamReader(inputStream);
         BufferedReader buffreader = new BufferedReader(lineReader);
@@ -603,6 +604,84 @@ public class LoadXML extends Activity {
         FullscreenActivity.myXML = FullscreenActivity.mLyrics;
     }
 
+    static String[] getCCLILogInfo(Context c, String folder, String filename) {
+        String[] vals = new String[4];
+        vals[0] = ""; // Song title
+        vals[1] = ""; // Author
+        vals[2] = ""; // Copyright
+        vals[3] = ""; // CCLI
+
+        File filetocheck;
+        if (folder.equals(c.getString(R.string.mainfoldername))||folder.equals("")) {
+            filetocheck = new File(FullscreenActivity.dir, filename);
+        } else {
+            filetocheck = new File(FullscreenActivity.dir, folder + "/" + filename);
+        }
+
+        // Get the android version
+        boolean fileisxml = true;
+        if (filename.toLowerCase().endsWith(".pdf") ||
+                filename.toLowerCase().endsWith(".doc") ||
+                filename.toLowerCase().endsWith(".docx") ||
+                filename.toLowerCase().endsWith(".jpg") ||
+                filename.toLowerCase().endsWith(".jpeg") ||
+                filename.toLowerCase().endsWith(".png") ||
+                filename.toLowerCase().endsWith(".gif") ||
+                filename.toLowerCase().endsWith(".bmp")) {
+            fileisxml = false;
+        }
+
+        String fileutf = null;
+
+        if (filetocheck.exists() && fileisxml) {
+            fileutf = getUTFEncoding(filetocheck, c);
+        }
+
+        try {
+            if (fileisxml && fileutf!=null && !fileutf.equals("")) {
+                // Extract all of the ccli bits of the song
+                XmlPullParserFactory factory;
+                factory = XmlPullParserFactory.newInstance();
+
+                factory.setNamespaceAware(true);
+                XmlPullParser xpp;
+                xpp = factory.newPullParser();
+
+                vals[0] = ""; // Song title
+                vals[1] = ""; // Author
+                vals[2] = ""; // Copyright
+                vals[3] = ""; // CCLI
+
+                InputStream inputStream = new FileInputStream(filetocheck);
+                xpp.setInput(inputStream, fileutf);
+
+                int eventType;
+                eventType = xpp.getEventType();
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    if (eventType == XmlPullParser.START_TAG) {
+                        if (xpp.getName().equals("title")) {
+                            vals[0] = parseFromHTMLEntities(xpp.nextText());
+                        } else if (xpp.getName().equals("author")) {
+                            vals[1] = parseFromHTMLEntities(xpp.nextText());
+                        } else if (xpp.getName().equals("copyright")) {
+                            vals[2] = parseFromHTMLEntities(xpp.nextText());
+                        } else if (xpp.getName().equals("ccli")) {
+                            vals[3] = parseFromHTMLEntities(xpp.nextText());
+                        }
+                    }
+                    try {
+                        eventType = xpp.next();
+                    } catch (Exception e) {
+                        //Ooops!
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // Ooops
+        }
+        return vals;
+    }
+
     static String parseFromHTMLEntities(String val) {
         //Fix broken stuff
         val = val.replace("&amp;apos;","'");
@@ -714,6 +793,17 @@ public class LoadXML extends Activity {
             FullscreenActivity.file = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
                     + FullscreenActivity.songfilename);
         }
+    }
+
+    static File returnFileLocation(String filename) {
+        File myFile;
+        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
+            myFile = new File(FullscreenActivity.dir + "/" + filename);
+        } else {
+            myFile = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
+                    + filename);
+        }
+        return myFile;
     }
 
     static String getTempFileLocation(Context c, String folder, String file) {

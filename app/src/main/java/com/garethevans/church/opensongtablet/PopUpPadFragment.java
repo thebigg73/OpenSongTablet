@@ -311,7 +311,7 @@ public class PopUpPadFragment extends DialogFragment {
 
         public void onStopTrackingTouch(SeekBar seekBar) {
             int temp_padvol = popupPad_volume.getProgress();
-            FullscreenActivity.padvol = temp_padvol / 100;
+            FullscreenActivity.padvol = (float) temp_padvol / 100.0f;
             if (popupPad_pan.getProgress() == 0) {
                 FullscreenActivity.padpan = "left";
             } else if (popupPad_pan.getProgress() == 2) {
@@ -434,6 +434,7 @@ public class PopUpPadFragment extends DialogFragment {
 
         if (pad1playing && !pad2playing) {
             text = getResources().getString(R.string.stop);
+            FullscreenActivity.clickedOnPadStart = true;
             validpad = true;
             start_stop_padplay.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -441,11 +442,13 @@ public class PopUpPadFragment extends DialogFragment {
                     FullscreenActivity.whichPad = 1;
                     FullscreenActivity.pad1Fading = true;
                     mListener.fadeoutPad();
+                    FullscreenActivity.clickedOnPadStart = false;
                     dismiss();
                 }
             });
         } else if (pad2playing && !pad1playing) {
             text = getResources().getString(R.string.stop);
+            FullscreenActivity.clickedOnPadStart = true;
             validpad = true;
             //start_stop_padplay.setText(getResources().getString(R.string.stop));
             start_stop_padplay.setOnClickListener(new View.OnClickListener() {
@@ -453,6 +456,7 @@ public class PopUpPadFragment extends DialogFragment {
                 public void onClick(View view) {
                     FullscreenActivity.whichPad = 2;
                     FullscreenActivity.pad2Fading = true;
+                    FullscreenActivity.clickedOnPadStart = false;
                     mListener.fadeoutPad();
                     dismiss();
                 }
@@ -460,6 +464,7 @@ public class PopUpPadFragment extends DialogFragment {
 
         } else if (!pad1playing) {
             text = getResources().getString(R.string.start);
+            FullscreenActivity.clickedOnPadStart = false;
             // start_stop_padplay.setText(getResources().getString(R.string.start));
             // Decide if pad is valid
             startenabled();
@@ -476,12 +481,14 @@ public class PopUpPadFragment extends DialogFragment {
 
         } else {
             text = getResources().getString(R.string.stop);
+            FullscreenActivity.clickedOnPadStart = true;
             validpad = true;
             //start_stop_padplay.setText(getResources().getString(R.string.stop));
             start_stop_padplay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     FullscreenActivity.whichPad = 0;  // both
+                    FullscreenActivity.clickedOnPadStart = false;
                     mListener.killPad();
                     dismiss();
                 }

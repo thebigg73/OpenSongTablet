@@ -228,7 +228,6 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
             mKey.clear();
             mHymnNumber.clear();
 
-
             for (int d = 0; d < FullscreenActivity.search_database.size(); d++) {
                 String[] songbits = FullscreenActivity.search_database.get(d).split("_%%%_");
                 mFileName.add(d, songbits[0].trim());

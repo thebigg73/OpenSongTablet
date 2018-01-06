@@ -76,7 +76,6 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
-
         Button editSongDetails = V.findViewById(R.id.editSongDetails);
         editSongDetails.setOnClickListener(new View.OnClickListener() {
             @Override

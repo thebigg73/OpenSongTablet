@@ -688,4 +688,30 @@
     <string name="fix">"Automatisk korrigering"</string>
     <string name="timer_learn">"Lär dig autoscroll tid"</string>
 
+    <string name="action">"Handling"</string>
+    <string name="activated">"Aktiverad / körning"</string>
+    <string name="autostartmetronome">"Autostart-metronom"</string>
+    <string name="autostartpad">"Autostart pad"</string>
+    <string name="ccli_automatic">"Spela in användningsstatistik automatiskt"</string>
+    <string name="ccli_church">"Kyrkans namn"</string>
+    <string name="ccli_licence">"Licensnummer"</string>
+    <string name="ccli_view">"Visa CCLI-logg"</string>
+    <string name="ccli_reset">"Återställ CCLI-logg"</string>
+    <string name="date">"Datum"</string>
+    <string name="editpdf">"Redigera i externt PDF-program"</string>
+    <string name="existing">"Hitta tidigare installationsplatser för OpenSong-filer"</string>
+    <string name="found">"Du har redan använt följande installationsplatser. Vänligen välj en för att använda den igen."</string>
+    <string name="longpress">"Långt tryck / håll intryckt"</string>
+    <string name="nofound">"Inga tidigare installationer hittades."</string>
+    <string name="nothere">"Du är inne i en OpenSong-mapp, använd inte den här platsen. Flytta istället en nivå och ange mappen som innehåller den här mappen"</string>
+    <string name="pedal">"Trampa"</string>
+    <string name="previouslyused">"Tidigare installationsplats hittades. Klicka på den gröna fältet för att använda det här"</string>
+    <string name="songsheet">"Songsheet"</string>
+    <string name="tap">"Kort tryck / tryck"</string>
+
+    <string name="inc_autoscroll_speed">"Öka Autoscroll Speed"</string>
+    <string name="dec_autoscroll_speed">"Minska Autoscroll Speed"</string>
+    <string name="edit_default_delaymax">"Max fördröjning (sekunder)"</string>
+    <string name="toggle_autoscroll_pause">"Växla Autoscroll paus"</string>
+
 </resources>

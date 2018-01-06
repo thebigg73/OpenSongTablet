@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -100,7 +101,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         addSongToSet_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addtoSet();
+                addtoSet(getActivity());
                 if (mListener!=null) {
                     mListener.songLongClick();
                 }
@@ -156,7 +157,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
         this.dismiss();
     }
 
-    public void addtoSet() {
+    public static void addtoSet(Context c) {
         FullscreenActivity.addingtoset = true;
 
         // If the song is in .pro, .onsong, .txt format, tell the user to convert it first
@@ -171,16 +172,26 @@ public class PopUpLongSongPressFragment extends DialogFragment {
                 FullscreenActivity.songfilename.toLowerCase(FullscreenActivity.locale).endsWith(".txt")) {
 
             // Don't add song yet, but tell the user
-            FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.convert_song);
-            ShowToast.showToast(getActivity());
+            FullscreenActivity.myToastMessage = c.getResources().getString(R.string.convert_song);
+            ShowToast.showToast(c);
 
         } else if (FullscreenActivity.songfilename.toLowerCase(FullscreenActivity.locale).endsWith(".doc") ||
                 FullscreenActivity.songfilename.toLowerCase(FullscreenActivity.locale).endsWith(".docx")) {
             // Don't add song yet, but tell the user it is unsupported
-            FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.file_type_unknown);
-            ShowToast.showToast(getActivity());
+            FullscreenActivity.myToastMessage = c.getResources().getString(R.string.file_type_unknown);
+            ShowToast.showToast(c);
 
         } else {
+            if (FullscreenActivity.ccli_automatic) {
+                // Now we need to get the song info quickly to log it correctly
+                // as this might not be the song loaded
+                String[] vals = LoadXML.getCCLILogInfo(c, FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
+                if (vals.length==4 && vals[0]!=null && vals[1]!=null && vals[2]!=null && vals[3]!=null) {
+                    PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
+                            vals[0], vals[1], vals[2], vals[3], "6"); // Printed
+                }
+            }
+
             // Set the appropriate song filename
             if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
                 FullscreenActivity.whatsongforsetwork = "$**_" + FullscreenActivity.songfilename + "_**$";
@@ -192,8 +203,9 @@ public class PopUpLongSongPressFragment extends DialogFragment {
             FullscreenActivity.mySet = FullscreenActivity.mySet + FullscreenActivity.whatsongforsetwork;
 
             // Tell the user that the song has been added.
-            FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.songfilename + "\" " + getActivity().getResources().getString(R.string.addedtoset);
-            ShowToast.showToast(getActivity());
+            FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.songfilename + "\" " +
+                    c.getResources().getString(R.string.addedtoset);
+            ShowToast.showToast(c);
 
             // Save the set and other preferences
             Preferences.savePreferences();

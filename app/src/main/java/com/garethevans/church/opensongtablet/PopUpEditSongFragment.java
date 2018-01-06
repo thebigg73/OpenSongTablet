@@ -14,7 +14,6 @@ import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -70,6 +69,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     EditText edit_song_restrictions;
     EditText edit_song_books;
     EditText edit_song_pitch;
+    EditText customTheme;
+/*
     CheckBox edit_song_theme_christ_attributes;
     CheckBox edit_song_theme_christ_birth;
     CheckBox edit_song_theme_christ_death_atonement;
@@ -116,6 +117,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     CheckBox edit_song_theme_worship_prayer_devotion;
     CheckBox edit_song_theme_worship_provision_deliverance;
     CheckBox edit_song_theme_worship_thankfulness;
+*/
     LinearLayout generalSettings;
     LinearLayout advancedSettings;
 
@@ -262,6 +264,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_restrictions = V.findViewById(R.id.edit_song_restrictions);
         edit_song_books = V.findViewById(R.id.edit_song_books);
         edit_song_pitch = V.findViewById(R.id.edit_song_pitch);
+        customTheme = V.findViewById(R.id.customTheme);
+/*
         edit_song_theme_christ_attributes = V.findViewById(R.id.edit_song_theme_christ_attributes);
         edit_song_theme_christ_birth = V.findViewById(R.id.edit_song_theme_christ_birth);
         edit_song_theme_christ_death_atonement = V.findViewById(R.id.edit_song_theme_christ_death_atonement);
@@ -308,6 +312,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_theme_worship_prayer_devotion = V.findViewById(R.id.edit_song_theme_worship_prayer_devotion);
         edit_song_theme_worship_provision_deliverance = V.findViewById(R.id.edit_song_theme_worship_provision_deliverance);
         edit_song_theme_worship_thankfulness = V.findViewById(R.id.edit_song_theme_worship_thankfulness);
+*/
         advancedSettings = V.findViewById(R.id.advanced_settings);
 
         // Listeners for the buttons
@@ -413,6 +418,9 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_pitch.setText(FullscreenActivity.mPitch);
         abcnotation.setText(FullscreenActivity.mNotation);
 
+        customTheme.setText(FullscreenActivity.mTheme);
+
+/*
         // Now the checkboxes
         if (FullscreenActivity.mTheme.contains(getResources().getString(
                 R.string.theme_christ_attributes))) {
@@ -602,6 +610,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 R.string.theme_worship_thankfulness))) {
             edit_song_theme_worship_thankfulness.setChecked(true);
         }
+*/
 
         // Now the Spinners
         // The Key
@@ -792,9 +801,12 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         }
         FullscreenActivity.mTimeSig = edit_song_timesig.getItemAtPosition(edit_song_timesig.getSelectedItemPosition()).toString();
 
-        FullscreenActivity.mTheme = "";
+        FullscreenActivity.mTheme = customTheme.getText().toString();
+        if (!FullscreenActivity.mTheme.endsWith(";")) {
+            FullscreenActivity.mTheme += ";";
+        }
 
-        if (edit_song_theme_christ_attributes.isChecked()) {
+        /*if (edit_song_theme_christ_attributes.isChecked()) {
             FullscreenActivity.mTheme += edit_song_theme_christ_attributes.getText().toString() + "; ";
         }
         if (edit_song_theme_christ_birth.isChecked()) {
@@ -936,7 +948,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         if (edit_song_theme_worship_thankfulness.isChecked()) {
             FullscreenActivity.mTheme += edit_song_theme_worship_thankfulness.getText().toString() + "; ";
         }
-
+*/
         // Set the AltTheme to the same as the Theme?
         FullscreenActivity.mAltTheme = FullscreenActivity.mTheme;
 
@@ -962,6 +974,14 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             overWrite.write(FullscreenActivity.mynewXML.getBytes());
             overWrite.flush();
             overWrite.close();
+
+            // If we are autologging CCLI information
+            if (FullscreenActivity.ccli_automatic) {
+                PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
+                        FullscreenActivity.mTitle.toString(), FullscreenActivity.mAuthor.toString(),
+                        FullscreenActivity.mCopyright.toString(), FullscreenActivity.mCCLI, "3"); // Edited
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

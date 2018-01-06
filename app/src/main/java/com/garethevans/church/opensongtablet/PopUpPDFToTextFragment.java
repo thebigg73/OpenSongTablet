@@ -39,6 +39,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
     public interface MyInterface {
         void refreshAll();
         void openFragment();
+        void allowPDFEditViaExternal();
     }
 
     private MyInterface mListener;
@@ -96,11 +97,26 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         // Initialise the basic views
         TextView pdftotext_found = V.findViewById(R.id.pdftotext_found);
         pdftotext_found.setTypeface(Typeface.MONOSPACE);
+        Button externalPDF = V.findViewById(R.id.externalPDF);
         Button doextractbutton = V.findViewById(R.id.doextractbutton);
         doextractbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveEdit();
+            }
+        });
+
+        externalPDF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener!=null) {
+                    mListener.allowPDFEditViaExternal();
+                    try {
+                        dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 

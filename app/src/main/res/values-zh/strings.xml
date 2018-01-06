@@ -637,4 +637,30 @@
     <string name="fix">"自动修复"</string>
     <string name="timer_learn">"学习自动滚动时间"</string>
 
+	<string name="action">"行动"</string>
+	<string name="activated">"激活/运行"</string>
+	<string name="autostartmetronome">"自动启动节拍器"</string>
+	<string name="autostartpad">"自动启动板"</string>
+	<string name="ccli_automatic">"自动记录使用情况统计"</string>
+	<string name="ccli_church">"教堂名称"</string>
+	<string name="ccli_licence">"许可证号码"</string>
+	<string name="ccli_view">"查看CCLI日志"</string>
+	<string name="ccli_reset">"重置CCLI日志"</string>
+	<string name="date">"日期"</string>
+	<string name="editpdf">"在外部PDF程序中编辑"</string>
+	<string name="existing">"查找OpenSong文件的以前的安装位置"</string>
+	<string name="found">"您已经使用了以下安装位置。请选择一个再次使用它。"</string>
+	<string name="longpress">"长按/按住"</string>
+	<string name="nofound">"没有找到以前的安装。"</string>
+	<string name="nothere">"您位于OpenSong文件夹内，请勿使用此位置。而是向上移动一个级别并指定包含此文件夹的文件夹"</string>
+	<string name="pedal">"踏板"</string>
+	<string name="previouslyused">"找到以前的安装位置。点击绿色的勾号来使用这个"</string>
+	<string name="songsheet">"Songsheet"</string>
+	<string name="tap">"短按/轻按"</string>
+
+	<string name="inc_autoscroll_speed">"增加自动滚动速度"</string>
+	<string name="dec_autoscroll_speed">"降低自动滚动速度"</string>
+	<string name="edit_default_delaymax">"最大延迟（秒）"</string>
+	<string name="toggle_autoscroll_pause">"切换自动滚动暂停"</string>
+
 </resources>

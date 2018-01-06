@@ -49,6 +49,11 @@ public class OptionMenuListeners extends Activity {
         void connectHDMI();
         void takeScreenShot();
         void prepareLearnAutoScroll();
+        void stopAutoScroll();
+        void killPad();
+        void stopMetronome();
+        void doExport();
+        void updateExtraInfoColorsAndSizes(String s);
     }
 
     public static MyInterface mListener;
@@ -104,6 +109,14 @@ public class OptionMenuListeners extends Activity {
 
             case "PAD":
                 menu = createPadMenu(c);
+                break;
+
+            case "METRONOME":
+                menu = createMetronomeMenu(c);
+                break;
+
+            case "CCLI":
+                menu = createCCLIMenu(c);
                 break;
 
             case "OTHER":
@@ -202,6 +215,20 @@ public class OptionMenuListeners extends Activity {
     }
 
     @SuppressLint("InflateParams")
+    private static LinearLayout createMetronomeMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option_metronome,null);
+    }
+
+    @SuppressLint("InflateParams")
+    private static LinearLayout createCCLIMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option_ccli,null);
+    }
+
+    @SuppressLint("InflateParams")
     private static LinearLayout createOtherMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -261,6 +288,14 @@ public class OptionMenuListeners extends Activity {
                 padOptionListener(v,c);
                 break;
 
+            case "METRONOME":
+                metronomeOptionListener(v,c);
+                break;
+
+            case "CCLI":
+                ccliOptionListener(v,c);
+                break;
+
             case "OTHER":
                 otherOptionListener(v,c);
                 break;
@@ -281,6 +316,8 @@ public class OptionMenuListeners extends Activity {
         Button menuStorageButton = v.findViewById(R.id.menuStorageButton);
         Button menuPadButton = v.findViewById(R.id.menuPadButton);
         Button menuAutoScrollButton = v.findViewById(R.id.menuAutoScrollButton);
+        Button menuMetronomeButton = v.findViewById(R.id.menuMetronomeButton);
+        Button menuCCLIButton = v.findViewById(R.id.menuCCLIButton);
         Button menuOtherButton = v.findViewById(R.id.menuOtherButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
@@ -296,6 +333,8 @@ public class OptionMenuListeners extends Activity {
         menuStorageButton.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
         menuPadButton.setText(c.getString(R.string.pad).toUpperCase(FullscreenActivity.locale));
         menuAutoScrollButton.setText(c.getString(R.string.autoscroll).toUpperCase(FullscreenActivity.locale));
+        menuMetronomeButton.setText(c.getString(R.string.metronome).toUpperCase(FullscreenActivity.locale));
+        menuCCLIButton.setText(c.getString(R.string.edit_song_ccli).toUpperCase(FullscreenActivity.locale));
         menuOtherButton.setText(c.getString(R.string.options_other).toUpperCase(FullscreenActivity.locale));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -399,6 +438,24 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whichOptionMenu = "PAD";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        menuMetronomeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "METRONOME";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        menuCCLIButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "CCLI";
                 if (mListener!=null) {
                     mListener.prepareOptionMenu();
                 }
@@ -887,6 +944,7 @@ public class OptionMenuListeners extends Activity {
         final SwitchCompat chordsCapoToggleSwitch = v.findViewById(R.id.chordsCapoToggleSwitch);
         final SwitchCompat chordsNativeAndCapoToggleSwitch = v.findViewById(R.id.chordsNativeAndCapoToggleSwitch);
         final SwitchCompat capoAsNumeralsToggleSwitch = v.findViewById(R.id.capoAsNumeralsToggleSwitch);
+        SwitchCompat switchCapoTextSize = v.findViewById(R.id.switchCapoTextSize);
         Button chordsFormatButton = v.findViewById(R.id.chordsFormatButton);
         Button chordsConvertButton = v.findViewById(R.id.chordsConvertButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
@@ -905,6 +963,7 @@ public class OptionMenuListeners extends Activity {
         chordsCapoToggleSwitch.setText(c.getString(R.string.showcapo).toUpperCase(FullscreenActivity.locale));
         chordsNativeAndCapoToggleSwitch.setText(c.getString(R.string.capo_toggle_bothcapo).toUpperCase(FullscreenActivity.locale));
         capoAsNumeralsToggleSwitch.setText(c.getString(R.string.capo_style).toUpperCase(FullscreenActivity.locale));
+        switchCapoTextSize.setText(c.getString(R.string.size).toUpperCase(FullscreenActivity.locale));
         chordsFormatButton.setText(c.getString(R.string.options_options_chordformat).toUpperCase(FullscreenActivity.locale));
         chordsConvertButton.setText(c.getString(R.string.options_song_convert).toUpperCase(FullscreenActivity.locale));
 
@@ -920,6 +979,17 @@ public class OptionMenuListeners extends Activity {
             chordsCapoToggleSwitch.setEnabled(false);
             chordsNativeAndCapoToggleSwitch.setEnabled(false);
         }
+
+        if (FullscreenActivity.capoFontSizeInfoBar==20.0f) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                switchCapoTextSize.setChecked(true);
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                switchCapoTextSize.setChecked(false);
+            }
+        }
+
         if (FullscreenActivity.showLyrics) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                 chordsLyricsToggleSwitch.setChecked(true);
@@ -1123,7 +1193,20 @@ public class OptionMenuListeners extends Activity {
                 }
             }
         });
-
+        switchCapoTextSize.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    FullscreenActivity.capoFontSizeInfoBar = 20.0f;
+                } else {
+                    FullscreenActivity.capoFontSizeInfoBar = 14.0f;
+                }
+                Preferences.savePreferences();
+                if (mListener!=null) {
+                    mListener.updateExtraInfoColorsAndSizes("capo");
+                }
+            }
+        });
         chordsConvertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1916,7 +1999,7 @@ public class OptionMenuListeners extends Activity {
                     FullscreenActivity.whichMode = "Stage";
                     Preferences.savePreferences();
                     Intent stagemode = new Intent();
-                    stagemode.setClass(c, StageMode.class);
+                    stagemode.setClass(c, FullscreenActivity.class);
                     if (mListener!=null) {
                         mListener.closeMyDrawers("option");
                         mListener.callIntent("activity", stagemode);
@@ -1932,7 +2015,7 @@ public class OptionMenuListeners extends Activity {
                     FullscreenActivity.whichMode = "Presentation";
                     Preferences.savePreferences();
                     Intent presentmode = new Intent();
-                    presentmode.setClass(c, PresenterMode.class);
+                    presentmode.setClass(c, FullscreenActivity.class);
                     if (mListener!=null) {
                         mListener.closeMyDrawers("option");
                         mListener.callIntent("activity", presentmode);
@@ -2091,24 +2174,25 @@ public class OptionMenuListeners extends Activity {
         TextView menuup = v.findViewById(R.id.optionAutoScrollTitle);
         Button autoScrollTimeDefaultsButton = v.findViewById(R.id.autoScrollTimeDefaultsButton);
         Button autoScrollLearnButton = v.findViewById(R.id.autoScrollLearnButton);
-        SwitchCompat autoScrollStartButton = v.findViewById(R.id.autoScrollStartButton);
-        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
         SwitchCompat switchTimerSize = v.findViewById(R.id.switchTimerSize);
+        SwitchCompat autoScrollStartButton = v.findViewById(R.id.autoScrollStartButton);
+        SwitchCompat autoscrollActivatedSwitch = v.findViewById(R.id.autoscrollActivatedSwitch);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.autoscroll).toUpperCase(FullscreenActivity.locale));
         autoScrollTimeDefaultsButton.setText(c.getString(R.string.default_autoscroll).toUpperCase(FullscreenActivity.locale));
         autoScrollStartButton.setText(c.getString(R.string.options_options_autostartscroll).toUpperCase(FullscreenActivity.locale));
+        autoscrollActivatedSwitch.setText(c.getString(R.string.activated).toUpperCase(FullscreenActivity.locale));
         switchTimerSize.setText(c.getString(R.string.timer_size).toUpperCase(FullscreenActivity.locale));
         autoScrollLearnButton.setText(c.getString(R.string.timer_learn).toUpperCase(FullscreenActivity.locale));
-
-        // Disable the autostart autoscroll for now
-        //autoScrollStartButton.setEnabled(false);
 
         // Set the switches up based on preferences
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             autoScrollStartButton.setChecked(FullscreenActivity.autostartautoscroll);
+            autoscrollActivatedSwitch.setChecked(FullscreenActivity.clickedOnAutoScrollStart);
         }
+
         if (FullscreenActivity.timerFontSizeAutoScroll==20.0f) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                 switchTimerSize.setChecked(true);
@@ -2129,7 +2213,16 @@ public class OptionMenuListeners extends Activity {
                 }
             }
         });
-
+        autoscrollActivatedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.clickedOnAutoScrollStart = b;
+                Preferences.savePreferences();
+                if (!b && mListener!=null) {
+                    mListener.stopAutoScroll();
+                }
+            }
+        });
         autoScrollTimeDefaultsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -2167,6 +2260,9 @@ public class OptionMenuListeners extends Activity {
                     FullscreenActivity.timerFontSizeAutoScroll = 14.0f;
                 }
                 Preferences.savePreferences();
+                if (mListener!=null) {
+                    mListener.updateExtraInfoColorsAndSizes("autoscroll");
+                }
             }
         });
 
@@ -2188,10 +2284,15 @@ public class OptionMenuListeners extends Activity {
         Button padCrossFadeButton = v.findViewById(R.id.padCrossFadeButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
         SwitchCompat switchTimerSize = v.findViewById(R.id.switchTimerSize);
+        SwitchCompat padStartButton = v.findViewById(R.id.padStartButton);
+        SwitchCompat padActivatedSwitch = v.findViewById(R.id.padActivatedSwitch);
+
 
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.pad).toUpperCase(FullscreenActivity.locale));
+        padStartButton.setText(c.getString(R.string.autostartpad).toUpperCase(FullscreenActivity.locale));
         padCrossFadeButton.setText(c.getString(R.string.crossfade_time).toUpperCase(FullscreenActivity.locale));
+        padActivatedSwitch.setText(c.getString(R.string.activated).toUpperCase(FullscreenActivity.locale));
         switchTimerSize.setText(c.getString(R.string.timer_size).toUpperCase(FullscreenActivity.locale));
 
         // Set the switch
@@ -2204,6 +2305,10 @@ public class OptionMenuListeners extends Activity {
                 switchTimerSize.setChecked(false);
             }
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            padStartButton.setChecked(FullscreenActivity.autostartpad);
+            padActivatedSwitch.setChecked(FullscreenActivity.clickedOnPadStart);
+        }
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2214,7 +2319,13 @@ public class OptionMenuListeners extends Activity {
                 }
             }
         });
-
+        padStartButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.autostartpad = b;
+                Preferences.savePreferences();
+            }
+        });
         padCrossFadeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -2243,6 +2354,192 @@ public class OptionMenuListeners extends Activity {
                     FullscreenActivity.timerFontSizePad = 14.0f;
                 }
                 Preferences.savePreferences();
+                if (mListener!=null) {
+                    mListener.updateExtraInfoColorsAndSizes("pad");
+                }
+            }
+        });
+        padActivatedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.clickedOnPadStart = b;
+                Preferences.savePreferences();
+                if (!b && mListener!=null) {
+                    mListener.killPad();
+                }
+            }
+        });
+
+    }
+
+    private static void metronomeOptionListener(View v, Context c) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuup = v.findViewById(R.id.optionMetronomeTitle);
+        SwitchCompat metronomeStartButton = v.findViewById(R.id.metronomeStartButton);
+        SwitchCompat metronomeActivatedSwitch = v.findViewById(R.id.metronomeActivatedSwitch);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
+
+        // Capitalise all the text by locale
+        menuup.setText(c.getString(R.string.metronome).toUpperCase(FullscreenActivity.locale));
+        metronomeActivatedSwitch.setText(c.getString(R.string.activated).toUpperCase(FullscreenActivity.locale));
+        metronomeStartButton.setText(c.getString(R.string.autostartmetronome).toUpperCase(FullscreenActivity.locale));
+
+        // Set the switches up based on preferences
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            metronomeStartButton.setChecked(FullscreenActivity.autostartmetronome);
+            metronomeActivatedSwitch.setChecked(FullscreenActivity.clickedOnMetronomeStart);
+        }
+
+        // Set the button listeners
+        menuup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+        metronomeStartButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.autostartmetronome = b;
+                Preferences.savePreferences();
+            }
+        });
+
+        metronomeActivatedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.clickedOnMetronomeStart = b;
+                Preferences.savePreferences();
+                if (!b && mListener!=null) {
+                    if (FullscreenActivity.metronomeonoff.equals("on")) {
+                        mListener.stopMetronome();
+                    }
+                }
+            }
+        });
+
+        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                }
+            }
+        });
+    }
+
+    private static void ccliOptionListener(View v, Context c) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuup = v.findViewById(R.id.optionCCLITitle);
+        Button ccliChurchButton = v.findViewById(R.id.ccliChurchButton);
+        Button ccliLicenceButton = v.findViewById(R.id.ccliLicenceButton);
+        SwitchCompat ccliAutoButton = v.findViewById(R.id.ccliAutoButton);
+        Button ccliViewButton = v.findViewById(R.id.ccliViewButton);
+        Button ccliExportButton = v.findViewById(R.id.ccliExportButton);
+        Button ccliResetButton = v.findViewById(R.id.ccliResetButton);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
+
+        // Capitalise all the text by locale
+        String cname = "";
+        if (FullscreenActivity.ccli_church!=null && !FullscreenActivity.ccli_church.equals("")) {
+            cname = "\n"+FullscreenActivity.ccli_church;
+        }
+        cname = c.getString(R.string.ccli_church).toUpperCase(FullscreenActivity.locale) + cname;
+        String clice = "";
+        if (FullscreenActivity.ccli_licence!=null && !FullscreenActivity.ccli_licence.equals("")) {
+            clice = "\n"+FullscreenActivity.ccli_licence;
+        }
+        clice = c.getString(R.string.ccli_licence).toUpperCase(FullscreenActivity.locale) + clice;
+        menuup.setText(c.getString(R.string.edit_song_ccli).toUpperCase(FullscreenActivity.locale));
+        ccliChurchButton.setText(cname);
+        ccliLicenceButton.setText(clice);
+        ccliAutoButton.setText(c.getString(R.string.ccli_automatic).toUpperCase(FullscreenActivity.locale));
+        ccliViewButton.setText(c.getString(R.string.ccli_view).toUpperCase(FullscreenActivity.locale));
+        ccliExportButton.setText(c.getString(R.string.options_song_export).toUpperCase(FullscreenActivity.locale));
+        ccliResetButton.setText(c.getString(R.string.ccli_reset).toUpperCase(FullscreenActivity.locale));
+
+        // Set the switches up based on preferences
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            ccliAutoButton.setChecked(FullscreenActivity.ccli_automatic);
+        }
+
+        // Set the button listeners
+        menuup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+
+        ccliAutoButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.ccli_automatic = b;
+                Preferences.savePreferences();
+            }
+        });
+        ccliChurchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "ccli_church";
+                if (mListener!=null) {
+                    mListener.openFragment();
+                }
+            }
+        });
+        ccliLicenceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "ccli_licence";
+                if (mListener!=null) {
+                    mListener.openFragment();
+                }
+            }
+        });
+        ccliViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "ccli_view";
+                if (mListener!=null) {
+                    mListener.openFragment();
+                }
+            }
+        });
+        ccliExportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "ccli_export";
+                if (mListener!=null) {
+                    mListener.doExport();
+                }
+            }
+        });
+        ccliResetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "ccli_reset";
+                if (mListener!=null) {
+                    mListener.openFragment();
+                }
+            }
+        });
+        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                }
             }
         });
     }

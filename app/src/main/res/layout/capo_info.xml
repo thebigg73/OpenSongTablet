@@ -18,6 +18,7 @@
         android:id="@+id/capoinfo"
         style="@style/MyInfoText"
         android:drawableLeft="@drawable/ic_capo_white_36dp"
+        android:drawablePadding="8dp"
         android:gravity="center_vertical|center_horizontal"/>
 
     <TextView

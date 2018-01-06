@@ -128,7 +128,7 @@ public class StageMode extends AppCompatActivity implements
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
         PopUpCreateDrawingFragment.MyInterface, PopUpABCNotationFragment.MyInterface,
         PopUpPDFToTextFragment.MyInterface, PopUpRandomSongFragment.MyInterface,
-        PopUpFindStorageLocationFragment.MyInterface {
+        PopUpFindStorageLocationFragment.MyInterface, PopUpCCLIFragment.MyInterface {
 
     // The toolbar and menu
     public Toolbar ab_toolbar;
@@ -184,6 +184,7 @@ public class StageMode extends AppCompatActivity implements
     MyMediaRouterCallback mMediaRouterCallback = new MyMediaRouterCallback();
     CastDevice mSelectedDevice;
     PresentationServiceHDMI hdmi;
+    boolean newsongloaded = false;
 
     // Dialogue fragments and stuff
     DialogFragment newFragment;
@@ -199,7 +200,7 @@ public class StageMode extends AppCompatActivity implements
             createstageview1col_async, fadeout_media1, fadeout_media2, check_storage,
             sharesong_async, shareset_async, load_customreusable, open_drawers, close_drawers,
             resize_drawers, do_moveinset, indexing_done, add_slidetoset, dualscreenwork_async,
-            show_sticky,show_highlight, mtask_learnautoscroll;
+            show_sticky,show_highlight, mtask_learnautoscroll, shareactivitylog_async;
     AsyncTask<Void, Void, String> resizeperformance_async, resizestage_async;
     AsyncTask<String, Integer, String> mtask_autoscroll_music;
     IndexSongs.IndexMySongs indexsongs_task;
@@ -783,34 +784,40 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     protected void onNewIntent (Intent intent) {
-        Log.d("StageMode","onNewIntentCalled");
+        //super.onNewIntent(intent);
+        Log.d("d","onNewIntent");
+        Log.d("d","intent="+intent);
         dealWithIntent();
     }
-
     public void dealWithIntent() {
-        Log.d("d","whattodo="+FullscreenActivity.whattodo);
         try {
-            if (FullscreenActivity.whattodo.equals("importfile_customreusable_scripture")) {
-                // Receiving scripture text
-                Log.d("d","intent to create scripture slide from import");
-                FullscreenActivity.whattodo = "customreusable_scripture";
-                Log.d("d","scripture_title="+FullscreenActivity.scripture_title);
-                Log.d("d","scripture_verse="+FullscreenActivity.scripture_verse);
-
-                openFragment();
-            } else if (FullscreenActivity.whattodo.equals("importfile_processimportosb")) {
-                // Receiving an OpenSongApp backup file
-                FullscreenActivity.whattodo = "processimportosb";
-                openFragment();
-            } else if (FullscreenActivity.whattodo.equals("importfile_doimport")) {
-                // Receiving another file
-                FullscreenActivity.whattodo = "doimport";
-                openFragment();
+            switch (FullscreenActivity.whattodo) {
+                case "importfile_customreusable_scripture":
+                    // Receiving scripture text
+                    FullscreenActivity.whattodo = "customreusable_scripture";
+                    openFragment();
+                    break;
+                case "importfile_newsong_text":
+                    // Receiving song (maybe) text
+                    FullscreenActivity.whattodo = "createsong";
+                    openFragment();
+                    break;
+                case "importfile_processimportosb":
+                    // Receiving an OpenSongApp backup file
+                    FullscreenActivity.whattodo = "processimportosb";
+                    openFragment();
+                    break;
+                case "importfile_doimport":
+                    // Receiving another file
+                    FullscreenActivity.whattodo = "doimport";
+                    openFragment();
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     @Override
     public void onDataReceived(Object data) {
         // Attempt to extract the song details
@@ -996,6 +1003,7 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(check_storage);
         doCancelAsyncTask(sharesong_async);
         doCancelAsyncTask(shareset_async);
+        doCancelAsyncTask(shareactivitylog_async);
         doCancelAsyncTask(load_customreusable);
         doCancelAsyncTask(open_drawers);
         doCancelAsyncTask(close_drawers);
@@ -1120,6 +1128,35 @@ public class StageMode extends AppCompatActivity implements
             cancelled = true;
         }
     }
+    public void shareActivityLog() {
+        doCancelAsyncTask(shareactivitylog_async);
+        shareactivitylog_async = new ShareActivityLog();
+        try {
+            shareactivitylog_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @SuppressLint("StaticFieldLeak")
+    private class ShareActivityLog extends AsyncTask<Object, Void, String> {
+        @Override
+        protected String doInBackground(Object... objects) {
+            // Send this off to be processed and sent via an intent
+            try {
+                Intent emailIntent = ExportPreparer.exportActivityLog(StageMode.this);
+                startActivityForResult(Intent.createChooser(emailIntent, "ActivityLog.xml"), 2222);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        boolean cancelled = false;
+        @Override
+        protected void onCancelled() {
+            cancelled = true;
+        }
+    }
     public void shareSet() {
         doCancelAsyncTask(shareset_async);
         shareset_async = new ShareSet();
@@ -1152,10 +1189,16 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void doExport() {
         // This is called after the user has specified what should be exported.
-        if (FullscreenActivity.whattodo.equals("customise_exportsong")) {
-            shareSong();
-        } else {
-            shareSet();
+        switch (FullscreenActivity.whattodo) {
+            case "customise_exportsong":
+                shareSong();
+                break;
+            case "ccli_export":
+                shareActivityLog();
+                break;
+            default:
+                shareSet();
+                break;
         }
     }
 
@@ -1229,6 +1272,37 @@ public class StageMode extends AppCompatActivity implements
         prepareSongMenu();
         prepareOptionMenu();
         loadSong();
+    }
+
+    @Override
+    public void updateExtraInfoColorsAndSizes(String what) {
+        switch (what) {
+            case "capo":
+                capoInfo.setBackgroundColor(FullscreenActivity.extrainfobgColor);
+                capoinfo.setTextColor(FullscreenActivity.extrainfoColor);
+                capoinfonewkey.setTextColor(FullscreenActivity.extrainfoColor);
+                capoinfo.setTextSize(FullscreenActivity.capoFontSizeInfoBar);
+                capoinfonewkey.setTextSize(FullscreenActivity.capoFontSizeInfoBar);
+                break;
+            case "autoscroll":
+                playbackProgress.setBackgroundColor(FullscreenActivity.extrainfobgColor);
+                currentTime_TextView.setTextColor(FullscreenActivity.extrainfoColor);
+                timeSeparator_TextView.setTextColor(FullscreenActivity.extrainfoColor);
+                totalTime_TextView.setTextColor(FullscreenActivity.extrainfoColor);
+                currentTime_TextView.setTextSize(FullscreenActivity.timerFontSizeAutoScroll);
+                timeSeparator_TextView.setTextSize(FullscreenActivity.timerFontSizeAutoScroll);
+                totalTime_TextView.setTextSize(FullscreenActivity.timerFontSizeAutoScroll);
+                break;
+            case "pad":
+                backingtrackProgress.setBackgroundColor(FullscreenActivity.extrainfobgColor);
+                padcurrentTime_TextView.setTextColor(FullscreenActivity.extrainfoColor);
+                padTimeSeparator_TextView.setTextColor(FullscreenActivity.extrainfoColor);
+                padtotalTime_TextView.setTextColor(FullscreenActivity.extrainfoColor);
+                padcurrentTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
+                padTimeSeparator_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
+                padtotalTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
+                break;
+        }
     }
 
     @Override
@@ -2859,12 +2933,20 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void loadSong() {
+        // Sort the text size and colour of the info stuff
+        updateExtraInfoColorsAndSizes("capo");
+        updateExtraInfoColorsAndSizes("pad");
+        updateExtraInfoColorsAndSizes("metronome");
+
         // Set the focus
         // Don't do this for a blacklisted filetype (application, video, audio)
         if (ListSongFiles.blacklistFileType(FullscreenActivity.songfilename)) {
             FullscreenActivity.myToastMessage = getResources().getString(R.string.file_type_unknown);
             ShowToast.showToast(StageMode.this);
         } else {
+            // Declare this as a new song for CCLI autologging
+            newsongloaded = true;
+
             // Send WiFiP2P intent
             if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
                 try {
@@ -2911,6 +2993,12 @@ public class StageMode extends AppCompatActivity implements
 
             // End any current autscrolling
             stopAutoScroll();
+
+            if ((FullscreenActivity.pad1Playing || FullscreenActivity.pad2Playing)) {
+                FullscreenActivity.fadeWhichPad = 0; // Fade both pads if required
+                fadeoutPad();
+            }
+            updateExtraInfoColorsAndSizes("pad");
             padcurrentTime_TextView.setText(getString(R.string.zerotime));
             backingtrackProgress.setVisibility(View.GONE);
 
@@ -3097,11 +3185,13 @@ public class StageMode extends AppCompatActivity implements
                         ShowToast.showToast(StageMode.this);
                     }
 
-                    // If pads were already playing (previous song), start them up again
+                    // If pads were already playing (previous song), start them up again if wanted
                     // Don't redo this if the orientation has changed (causing a reload)
                     // Stop restarting the pads if changing portrait/landscape
                     // Only play if this isn't called by an orientation change
-                    if (!FullscreenActivity.orientationchanged && FullscreenActivity.padson) {
+                    if (!FullscreenActivity.orientationchanged && FullscreenActivity.isSong &&
+                            (FullscreenActivity.padson ||
+                                    (FullscreenActivity.autostartpad && FullscreenActivity.clickedOnPadStart))) {
                         preparePad();
                     }
 
@@ -3128,11 +3218,14 @@ public class StageMode extends AppCompatActivity implements
                     }
 
 
-                    // Automatically start the metronome if we wanted it to
+                    // Automatically stop the metronome if it is still on
                     if (FullscreenActivity.metronomeonoff.equals("on")) {
                         // Stop it
                         Metronome.startstopMetronome(StageMode.this);
-                        // Start it again with the new values
+                    }
+                    // Start it again with the new values if we chose to
+                    if (FullscreenActivity.autostartmetronome && FullscreenActivity.clickedOnMetronomeStart &&
+                            !FullscreenActivity.isPDF) {
                         gesture7();
                     }
 
@@ -3235,6 +3328,7 @@ public class StageMode extends AppCompatActivity implements
                     .fitCenter()
                     .override(widthavail, heightavail);
             Glide.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
+            Log.d("d","trying to set the image to fullscreen");
         } else {
             // Now decide on the scaling required....
             float xscale = (float) widthavail / (float) imgwidth;
@@ -3619,7 +3713,7 @@ public class StageMode extends AppCompatActivity implements
         FullscreenActivity.newPosFloat = 0.0f;
         // Automatically start the autoscroll
         if (FullscreenActivity.autostartautoscroll && FullscreenActivity.clickedOnAutoScrollStart) {
-            if (justSong(StageMode.this) && FullscreenActivity.autoscrollok) {
+            if (!FullscreenActivity.isPDF && FullscreenActivity.autoscrollok) {
                 songscrollview.post(new Runnable() {
                     @Override
                     public void run() {
@@ -3630,9 +3724,13 @@ public class StageMode extends AppCompatActivity implements
         }
 
         setUpCapoInfo();
+
+        // Could add CCLI autologging here, but excessive as may just be browsing.  So only log when
+        // a song is added to a set.
     }
 
     public void setUpCapoInfo() {
+        updateExtraInfoColorsAndSizes("capo");
         boolean bothempty = true;
         // If we are showing capo chords, show this info
         if (capoinfo!=null && !FullscreenActivity.mCapo.equals("") && !FullscreenActivity.mCapo.equals("0")) {
@@ -3657,11 +3755,20 @@ public class StageMode extends AppCompatActivity implements
             capoInfo.setVisibility(View.GONE);
         } else {
             capoInfo.setVisibility(View.VISIBLE);
+            // Highlight the capoInfo to draw attention to it
+            CustomAnimations.highlightAction(capoInfo,StageMode.this);
         }
     }
 
     public void dualScreenWork() {
         if (FullscreenActivity.isPresenting || FullscreenActivity.isHDMIConnected) {
+            // If we are autologging CCLI information
+            if (newsongloaded && FullscreenActivity.ccli_automatic) {
+                PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
+                        FullscreenActivity.mTitle.toString(), FullscreenActivity.mAuthor.toString(),
+                        FullscreenActivity.mCopyright.toString(), FullscreenActivity.mCCLI, "5"); // Presented
+                newsongloaded = false;
+            }
             try {
                 doCancelAsyncTask(dualscreenwork_async);
                 dualscreenwork_async = new DualScreenWork();
@@ -4422,6 +4529,7 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public void displaySticky() {
         if (FullscreenActivity.mNotes!=null && !FullscreenActivity.mNotes.isEmpty() && !FullscreenActivity.mNotes.equals("")) {
             LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -5072,6 +5180,10 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void callIntent(String what, Intent i) {
+        Log.d("d","Calling intent");
+        Log.d("d","i="+i);
+        Log.d("d","what="+what);
+
         switch (what) {
             case "web":
                 startActivity(i);
@@ -5113,6 +5225,28 @@ public class StageMode extends AppCompatActivity implements
                     }
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void allowPDFEditViaExternal() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        File f = LoadXML.returnFileLocation(FullscreenActivity.songfilename);
+        intent.setDataAndType(Uri.fromFile(f), "application/pdf");
+        // Always use string resources for UI text.
+        String title = getResources().getString(R.string.editpdf);
+        // Create intent to show chooser
+        Intent chooser = Intent.createChooser(intent, title);
+
+        // Verify the intent will resolve to at least one activity
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(chooser, FullscreenActivity.REQUEST_PDF_CODE);
+        } else {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.adobe.reader")));
+            } catch (Exception e) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.adobe.reader")));
+            }
         }
     }
 
@@ -5204,6 +5338,9 @@ public class StageMode extends AppCompatActivity implements
         if (requestCode == FullscreenActivity.REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
             FullscreenActivity.whattodo = "savecameraimage";
             openFragment();
+        } else if (requestCode == FullscreenActivity.REQUEST_PDF_CODE) {
+            // PDF sent back, so reload it
+            loadSong();
         }
     }
 
@@ -5327,6 +5464,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void preparePad() {
         backingtrackProgress.setVisibility(View.VISIBLE);
+        updateExtraInfoColorsAndSizes("pad");
         doCancelAsyncTask(prepare_pad);
         prepare_pad = new PreparePad();
         try {
@@ -5347,14 +5485,14 @@ public class StageMode extends AppCompatActivity implements
                 PadFunctions.getPad1Status();
                 PadFunctions.getPad2Status();
 
-                if (FullscreenActivity.pad1Playing) {
+                if (FullscreenActivity.pad1Playing && !FullscreenActivity.pad1Fading) {
                     // If mPlayer1 is already playing, set this to fade out and start mPlayer2
                     FullscreenActivity.pad1Fading = true;
                     FullscreenActivity.pad2Fading = false;
                     FullscreenActivity.whichPad = 2;
                     FullscreenActivity.padson = true;
 
-                } else if (FullscreenActivity.pad2Playing) {
+                } else if (FullscreenActivity.pad2Playing && !FullscreenActivity.pad2Fading) {
                     // If mPlayer2 is already playing, set this to fade out and start mPlayer1
                     FullscreenActivity.pad1Fading = false;
                     FullscreenActivity.pad2Fading = true;
@@ -5423,11 +5561,10 @@ public class StageMode extends AppCompatActivity implements
             });
             String text = TimeTools.timeFormatFixer(FullscreenActivity.padtime_length);
             try {
-                padtotalTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
-                padTimeSeparator_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
-                padcurrentTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
+                updateExtraInfoColorsAndSizes("pad");
                 padcurrentTime_TextView.setText(getString(R.string.zerotime));
                 padtotalTime_TextView.setText(text);
+
             } catch (Exception e) {
                 e.printStackTrace(); // If called from doInBackground()
             }
@@ -5457,9 +5594,7 @@ public class StageMode extends AppCompatActivity implements
             });
             String text = TimeTools.timeFormatFixer(FullscreenActivity.padtime_length);
             try {
-                padtotalTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
-                padTimeSeparator_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
-                padcurrentTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
+                updateExtraInfoColorsAndSizes("pad");
                 padcurrentTime_TextView.setText(getString(R.string.zerotime));
                 padtotalTime_TextView.setText(text);
             } catch (Exception e) {
@@ -5657,9 +5792,7 @@ public class StageMode extends AppCompatActivity implements
             pos = (int) (FullscreenActivity.mPlayer2.getCurrentPosition() / 1000.0f);
         }
         String text = TimeTools.timeFormatFixer(pos);
-        padcurrentTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
-        padTimeSeparator_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
-        padtotalTime_TextView.setTextSize(FullscreenActivity.timerFontSizePad);
+        updateExtraInfoColorsAndSizes("pad");
         padcurrentTime_TextView.setText(text);
 
     }
@@ -5676,6 +5809,7 @@ public class StageMode extends AppCompatActivity implements
         if (!FullscreenActivity.padson) {
             try {
                 backingtrackProgress.setVisibility(View.GONE);
+                updateExtraInfoColorsAndSizes("pad");
             } catch (Exception e) {
                 Log.d("d", "Can't touch the view - " + e);
                 // This will happen if killPads was called from an async task
@@ -5692,6 +5826,7 @@ public class StageMode extends AppCompatActivity implements
                 if (FullscreenActivity.pad1Playing) {
                     // mPlayer1 is playing, so fade it out.
                     doCancelAsyncTask(fadeout_media1);
+                    updateExtraInfoColorsAndSizes("pad");
                     padcurrentTime_TextView.setText(getString(R.string.zerotime));
                     fadeout_media1 = new FadeoutMediaPlayer(StageMode.this, 1);
                     fadeout_media1.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -5702,6 +5837,7 @@ public class StageMode extends AppCompatActivity implements
                 if (FullscreenActivity.pad2Playing) {
                     // mPlayer2 is playing, so fade it out.
                     doCancelAsyncTask(fadeout_media2);
+                    updateExtraInfoColorsAndSizes("pad");
                     padcurrentTime_TextView.setText(getString(R.string.zerotime));
                     fadeout_media2 = new FadeoutMediaPlayer(StageMode.this, 2);
                     fadeout_media2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -5713,6 +5849,7 @@ public class StageMode extends AppCompatActivity implements
                 if (FullscreenActivity.pad1Playing) {
                     // mPlayer1 is playing, so fade it out.
                     doCancelAsyncTask(fadeout_media1);
+                    updateExtraInfoColorsAndSizes("pad");
                     padcurrentTime_TextView.setText(getString(R.string.zerotime));
                     fadeout_media1 = new FadeoutMediaPlayer(StageMode.this, 1);
                     fadeout_media1.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -5720,6 +5857,7 @@ public class StageMode extends AppCompatActivity implements
                 if (FullscreenActivity.pad2Playing) {
                     // mPlayer2 is playing, so fade it out.
                     doCancelAsyncTask(fadeout_media2);
+                    updateExtraInfoColorsAndSizes("pad");
                     padcurrentTime_TextView.setText(getString(R.string.zerotime));
                     fadeout_media2 = new FadeoutMediaPlayer(StageMode.this, 2);
                     fadeout_media2.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -5783,6 +5921,7 @@ public class StageMode extends AppCompatActivity implements
         PadFunctions.getPad1Status();
         PadFunctions.getPad2Status();
         getPadsOnStatus();
+        updateExtraInfoColorsAndSizes("pad");
         padcurrentTime_TextView.setText(getString(R.string.zerotime));
     }
 
@@ -5932,9 +6071,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void startAutoScroll() {
         FullscreenActivity.clickedOnAutoScrollStart = true;
-        totalTime_TextView.setTextSize(FullscreenActivity.timerFontSizeAutoScroll);
-        timeSeparator_TextView.setTextSize(FullscreenActivity.timerFontSizeAutoScroll);
-        currentTime_TextView.setTextSize(FullscreenActivity.timerFontSizeAutoScroll);
+        updateExtraInfoColorsAndSizes("autoscroll");
         currentTime_TextView.setText(getString(R.string.zerotime));
         totalTime_TextView.setText(TimeTools.timeFormatFixer(FullscreenActivity.autoScrollDuration));
         playbackProgress.setVisibility(View.VISIBLE);
@@ -6107,6 +6244,7 @@ public class StageMode extends AppCompatActivity implements
                     FullscreenActivity.popupAutoscroll_stoporstart = "stop";
                     FullscreenActivity.autoscrollonoff = "off";
                     doCancelAsyncTask(mtask_autoscroll_music);
+                    updateExtraInfoColorsAndSizes("autoscroll");
                     playbackProgress.setVisibility(View.GONE);
                 }
             } catch (Exception e) {
@@ -6128,10 +6266,19 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void stopAutoScroll() {
+        updateExtraInfoColorsAndSizes("autoscroll");
         playbackProgress.setVisibility(View.GONE);
         doCancelAsyncTask(mtask_autoscroll_music);
         FullscreenActivity.isautoscrolling = false;
         currentTime_TextView.setText(getString(R.string.zerotime));
+    }
+
+    @Override
+    public void stopMetronome() {
+        if (FullscreenActivity.metronomeonoff.equals("on")) {
+            // Stop it
+            Metronome.startstopMetronome(StageMode.this);
+        }
     }
 
     public boolean checkCanScrollDown() {
@@ -6223,9 +6370,20 @@ public class StageMode extends AppCompatActivity implements
             }
         } else if (!dealtwithaspdf) {
             // Try to move to the next song alphabetically
+            // However, only do this if the previous item isn't a subfolder!
+            File checkFile;
+            boolean isfolder = false;
+            if (FullscreenActivity.nextSongIndex  < FullscreenActivity.mSongFileNames.length) {
+                checkFile = LoadXML.returnFileLocation(FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex]);
+                if (checkFile.exists() && checkFile.isDirectory()) {
+                    isfolder = true;
+                }
+            }
+
             if (FullscreenActivity.nextSongIndex < FullscreenActivity.mSongFileNames.length
                     && FullscreenActivity.nextSongIndex != -1
-                    && !FullscreenActivity.songfilename.equals(FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex])) {
+                    && !FullscreenActivity.songfilename.equals(FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex]) &&
+                    !isfolder) {
                 FullscreenActivity.tempswipeSet = "disable";
                 FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex];
                 Preferences.savePreferences();
@@ -6268,8 +6426,19 @@ public class StageMode extends AppCompatActivity implements
             }
         } else if (!dealtwithaspdf) {
             // Try to move to the previous song alphabetically
+            // However, only do this if the previous item isn't a subfolder!
+            File checkFile;
+            boolean isfolder = false;
+            if (FullscreenActivity.previousSongIndex >= 0) {
+                checkFile = LoadXML.returnFileLocation(FullscreenActivity.mSongFileNames[FullscreenActivity.previousSongIndex]);
+                if (checkFile.exists() && checkFile.isDirectory()) {
+                    isfolder = true;
+                }
+            }
+
             if (FullscreenActivity.previousSongIndex >= 0
-                    && !FullscreenActivity.songfilename.equals(FullscreenActivity.mSongFileNames[FullscreenActivity.previousSongIndex])) {
+                    && !FullscreenActivity.songfilename.equals(FullscreenActivity.mSongFileNames[FullscreenActivity.previousSongIndex])
+                    && !isfolder) {
                 FullscreenActivity.tempswipeSet = "disable";
 
                 FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[FullscreenActivity.previousSongIndex];
@@ -6591,14 +6760,19 @@ public class StageMode extends AppCompatActivity implements
                 break;
 
             case "sticky":
-                if (stickyPopUpWindow!=null & stickyPopUpWindow.isShowing()) {
+                if (stickyPopUpWindow!=null && stickyPopUpWindow.isShowing()) {
                     try {
                         stickyPopUpWindow.dismiss();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    displaySticky();
+                    if (FullscreenActivity.mNotes==null || FullscreenActivity.mNotes.equals("")) {
+                        FullscreenActivity.myToastMessage = getString(R.string.stickynotes) + " - " + getString(R.string.notset);
+                        ShowToast.showToast(StageMode.this);
+                    } else {
+                        displaySticky();
+                    }
                 }
                 break;
 
@@ -6628,6 +6802,14 @@ public class StageMode extends AppCompatActivity implements
                 } else {
                     openMyDrawers("option");
                 }
+                break;
+
+            case "refreshsong":
+                refreshAll();
+                break;
+
+            case "addsongtoset":
+                PopUpLongSongPressFragment.addtoSet(StageMode.this);
                 break;
         }
     }
@@ -6865,8 +7047,11 @@ public class StageMode extends AppCompatActivity implements
                         gesture1();  // Open/close the drawers
                         break;
                     case "2":
-                        if (justSong(StageMode.this)) {
+                        if (FullscreenActivity.isSong) {
                             gesture2();
+                        } else {
+                            FullscreenActivity.whattodo = "extractPDF";
+                            openFragment();
                         }
                         break;
                     case "3":
@@ -7113,8 +7298,11 @@ public class StageMode extends AppCompatActivity implements
             DoVibrate.vibrate(StageMode.this, 50);
             if (FullscreenActivity.isautoscrolling) {
                 stopAutoScroll();
+                FullscreenActivity.clickedOnAutoScrollStart = false;
+
             } else {
                 if (FullscreenActivity.autoscrollok) {
+                    FullscreenActivity.clickedOnAutoScrollStart = true;
                     startAutoScroll();
                 } else {
                     showToastMessage(getResources().getString(R.string.autoscroll) + " - " +
@@ -7132,6 +7320,7 @@ public class StageMode extends AppCompatActivity implements
             PadFunctions.getPad2Status();
             DoVibrate.vibrate(StageMode.this, 50);
             if (FullscreenActivity.pad1Playing || FullscreenActivity.pad2Playing) {
+                FullscreenActivity.clickedOnPadStart = false;
                 if (FullscreenActivity.pad1Playing) {
                     FullscreenActivity.mPlayer1.stop();
                     FullscreenActivity.mPlayer1.reset();
@@ -7141,6 +7330,7 @@ public class StageMode extends AppCompatActivity implements
                 }
                 FullscreenActivity.padson = false;
             } else if (PadFunctions.isPadValid(StageMode.this)) {
+                FullscreenActivity.clickedOnPadStart = true;
                 preparePad();
             } else {
                 FullscreenActivity.whattodo = "page_pad";
@@ -7156,6 +7346,7 @@ public class StageMode extends AppCompatActivity implements
             // Vibrate to let the user know something happened
             DoVibrate.vibrate(StageMode.this, 50);
             if (FullscreenActivity.metronomeok) {
+                FullscreenActivity.clickedOnMetronomeStart = !FullscreenActivity.metronomeonoff.equals("on");
                 Metronome.startstopMetronome(StageMode.this);
             } else {
                 showToastMessage(getResources().getString(R.string.metronome) + " - " +

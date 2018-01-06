@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <scale
-        android:duration="1000"
+        android:duration="800"
         android:fromXScale="1"
         android:fromYScale="1"
-        android:pivotX="50%"
-        android:pivotY="50%"
-        android:repeatCount="1"
+        android:pivotX="100%"
+        android:pivotY="0%"
+        android:repeatCount="5"
         android:repeatMode="reverse"
-        android:toXScale="0.50"
-        android:toYScale="0.50"
-        android:interpolator="@android:interpolator/bounce" />
-    <scale
-        android:duration="600"
-        android:fromXScale="1"
-        android:fromYScale="1"
-        android:pivotX="50%"
-        android:pivotY="50%"
-        android:repeatCount="1"
-        android:repeatMode="reverse"
-        android:toXScale="1.50"
-        android:toYScale="1.50"
+        android:toXScale="2.00"
+        android:toYScale="2.00"
         android:interpolator="@android:interpolator/bounce" />
 </set>

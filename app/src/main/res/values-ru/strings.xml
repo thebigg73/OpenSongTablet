@@ -633,4 +633,30 @@
 	<string name="fix">"Автоисправление"</string>
 	<string name="timer_learn">"Изучение времени автопрокрутки"</string>
 
+	<string name="action">"действие"</string>
+	<string name="activated">"Активировано / работает"</string>
+	<string name="autostartmetronome">"Автономный метроном"</string>
+	<string name="autostartpad">"Автозапуск"</string>
+	<string name="ccli_automatic">"Автоматическая запись статистики использования"</string>
+	<string name="ccli_church">"Название церкви"</string>
+	<string name="ccli_licence">"Номер лицензии"</string>
+	<string name="ccli_view">"Просмотр журнала CCLI"</string>
+	<string name="ccli_reset">"Сбросить журнал CCLI"</string>
+	<string name="date">"Дата"</string>
+	<string name="editpdf">"Редактировать во внешней программе PDF"</string>
+	<string name="existing">"Найти предыдущие места установки файлов OpenSong"</string>
+	<string name="found">"Вы уже использовали следующие места установки. Выберите его, чтобы использовать его снова."</string>
+	<string name="longpress">"Длительное нажатие / удержание"</string>
+	<string name="nofound">"Не найдено ни одной предыдущей установки."</string>
+	<string name="nothere">"Вы находитесь в папке OpenSong, не используйте это местоположение. Вместо этого переместитесь на один уровень и укажите папку, содержащую эту папку"</string>
+	<string name="pedal">"Педаль"</string>
+	<string name="previouslyused">"Предыдущее место установки найдено. Нажмите на зеленый галочку, чтобы использовать это"</string>
+	<string name="songsheet">"Songsheet"</string>
+	<string name="tap">"Короткое нажатие / отключение"</string>
+
+	<string name="inc_autoscroll_speed">"Увеличьте скорость автосканирования"</string>
+	<string name="dec_autoscroll_speed">"Уменьшить скорость автосканирования"</string>
+	<string name="edit_default_delaymax">"Максимальная задержка (в секундах)"</string>
+	<string name="toggle_autoscroll_pause">"Toggle Autoscroll Pause"</string>
+
 </resources>

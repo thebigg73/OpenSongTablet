@@ -651,6 +651,17 @@
                     android:layout_marginRight="8dp"
                     android:text="@string/edit_song_theme" />
 
+                <EditText
+                    android:id="@+id/customTheme"
+                    style="@style/MyEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/custom"
+                    android:inputType="textMultiLine"
+                    android:scrollHorizontally="false"
+                    android:layout_margin="8dp" />
+
+<!--
                 <CheckBox
                     android:id="@+id/edit_song_theme_christ_attributes"
                     android:layout_width="match_parent"
@@ -1286,6 +1297,7 @@
                     android:text="@string/theme_worship_thankfulness"
                     android:textColor="#000"
                     android:textSize="16sp" />
+-->
 
 
             </LinearLayout>

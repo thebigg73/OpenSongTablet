@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="pedal">Pedal</string>
-    <string name="tap">Short press/tap</string>
-    <string name="longpress">Long press/hold</string>
+    <string name="action">Action</string>
+    <string name="activated">Activated / running</string>
+    <string name="autostartmetronome">Autostart metronome</string>
+    <string name="autostartpad">Autostart pad</string>
+    <string name="ccli_automatic">Record usage stats automatically</string>
+    <string name="ccli_church">Church name</string>
+    <string name="ccli_licence">Licence number</string>
+    <string name="ccli_view">View CCLI log</string>
+    <string name="ccli_reset">Reset CCLI log</string>
+    <string name="date">Date</string>
+    <string name="editpdf">Edit in external PDF program</string>
     <string name="existing">Find previous installation locations for OpenSong files</string>
     <string name="found">You have already used the following install locations.  Please select one to use it again.</string>
+    <string name="longpress">Long press/hold</string>
     <string name="nofound">No previous installations found.</string>
     <string name="nothere">You are inside an OpenSong folder, do not use this location.  Instead move up one level and specify the folder containing this folder</string>
+    <string name="pedal">Pedal</string>
     <string name="previouslyused">Previous install location found.  Click on the green tick to use this</string>
+    <string name="songsheet">Songsheet</string>
+    <string name="tap">Short press/tap</string>
+
+    <string name="inc_autoscroll_speed">Increase Autoscroll Speed</string>
+    <string name="dec_autoscroll_speed">Decrease Autoscroll Speed</string>
+    <string name="edit_default_delaymax">Max Delay (seconds)</string>
+    <string name="toggle_autoscroll_pause">Toggle Autoscroll Pause</string>
 
     <string name="capo_style">Capo fret as numeral</string>
     <string name="fix">Autofix</string>
@@ -903,9 +920,5 @@
 			Sharing my Saviour\'s love, showing my Father\'s heart.
 		</lyrics>
 	</string>
-    <string name="inc_autoscroll_speed">Increase Autoscroll Speed</string>
-    <string name="dec_autoscroll_speed">Decrease Autoscroll Speed</string>
-    <string name="edit_default_delaymax">Max Delay (seconds)</string>
-    <string name="toggle_autoscroll_pause">Toggle Autoscroll Pause</string>
 
 </resources>

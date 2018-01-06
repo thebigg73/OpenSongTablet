@@ -174,58 +174,67 @@ public class PopUpPedalsFragment extends DialogFragment {
         availableactions.add(getString(R.string.autoscrollPedalText) + " & " + getString(R.string.metronomePedalText));
 
         //11
-        availableactions.add(getString(R.string.options_song_edit));
+        availableactions.add(getString(R.string.padPedalText) + " & " + getString(R.string.autoscrollPedalText) + " & " + getString(R.string.metronomePedalText));
 
         //12
-        availableactions.add(getString(R.string.options_options_theme));
+        availableactions.add(getString(R.string.options_song_edit));
 
         //13
-        availableactions.add(getString(R.string.autoscale));
+        availableactions.add(getString(R.string.options_options_theme));
 
         //14
-        availableactions.add(getString(R.string.transpose));
+        availableactions.add(getString(R.string.autoscale));
 
         //15
-        availableactions.add(getString(R.string.showchords));
+        availableactions.add(getString(R.string.transpose));
 
         //16
-        availableactions.add(getString(R.string.showcapo));
+        availableactions.add(getString(R.string.showchords));
 
         //17
-        availableactions.add(getString(R.string.showlyrics));
+        availableactions.add(getString(R.string.showcapo));
 
         //18
-        availableactions.add(getString(R.string.action_search));
+        availableactions.add(getString(R.string.showlyrics));
 
         //19
-        availableactions.add(getString(R.string.random_song));
-
-        //20
-        availableactions.add(getString(R.string.music_score));
-
-        //21
-        availableactions.add(getString(R.string.highlight));
-
-        //22
-        availableactions.add(getString(R.string.stickynotes));
-
-        //23
-        availableactions.add(getString(R.string.inc_autoscroll_speed));
-
-        //24
-        availableactions.add(getString(R.string.dec_autoscroll_speed));
-
-        //25
-        availableactions.add(getString(R.string.toggle_autoscroll_pause));
-
-        //26
         availableactions.add(getString(R.string.action_search));
 
+        //20
+        availableactions.add(getString(R.string.random_song));
+
+        //21
+        availableactions.add(getString(R.string.music_score));
+
+        //22
+        availableactions.add(getString(R.string.highlight));
+
+        //23
+        availableactions.add(getString(R.string.stickynotes));
+
+        //24
+        availableactions.add(getString(R.string.inc_autoscroll_speed));
+
+        //25
+        availableactions.add(getString(R.string.dec_autoscroll_speed));
+
+        //26
+        availableactions.add(getString(R.string.toggle_autoscroll_pause));
+
         //27
-        availableactions.add(getString(R.string.action_settings));
+        availableactions.add(getString(R.string.gesture1));
 
         //28
-        availableactions.add(getString(R.string.options_set));
+        availableactions.add(getString(R.string.action_settings));
+
+        //29
+        availableactions.add(getString(R.string.currentset));
+
+        //30
+        availableactions.add(getString(R.string.gesture4));
+
+        //31
+        availableactions.add(getString(R.string.add_song_to_set));
     }
 
     public String convertSelectionNumberToTextOption(int i) {
@@ -380,7 +389,17 @@ public class PopUpPedalsFragment extends DialogFragment {
 
             case 29:
                 // Show the set
-                option = "set";
+                option = "editset";
+                break;
+
+            case 30:
+                // Refresh song
+                option = "refreshsong";
+                break;
+
+            case 31:
+                // Add song to set
+                option = "addsongtoset";
                 break;
         }
 
@@ -409,7 +428,7 @@ public class PopUpPedalsFragment extends DialogFragment {
 
             case "up":
                 // Up
-                option = 4;
+                option = 3;
                 break;
 
             case "down":
@@ -537,9 +556,19 @@ public class PopUpPedalsFragment extends DialogFragment {
                 option = 28;
                 break;
 
-            case "set":
+            case "editset":
                 // Show the set
                 option = 29;
+                break;
+
+            case "refreshsong":
+                // Refresh song
+                option = 30;
+                break;
+
+            case "addsongtoset":
+                // Add song to set
+                option = 31;
                 break;
         }
 
@@ -613,8 +642,9 @@ public class PopUpPedalsFragment extends DialogFragment {
         if (i==-1) {
             t = getString(R.string.currentkeycode) + "=" + getString(R.string.notset);
         } else {
-            t = getString(R.string.currentkeycode) + "=" + FullscreenActivity.pedal1;
+            t = getString(R.string.currentkeycode) + "=" + i;
         }
+        t = t + "\n" + getString(R.string.options_options_pedal);
         b.setText(t);
 
         b.setOnClickListener(new View.OnClickListener() {

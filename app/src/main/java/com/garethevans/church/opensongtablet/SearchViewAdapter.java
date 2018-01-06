@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,6 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
     String what;
     private HashMap<String, Integer> mapIndex;
     String[] sections;
-
 
     SearchViewAdapter(Context context , ArrayList<SearchViewItems> searchlist, String what) {
         this.context = context;
@@ -96,14 +96,11 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
         SearchViewItems song = searchlist.get(position);
 
         if (what.equals("songmenu")) {
-            //card_view.setBackgroundColor(0x00000000);
             name_tv.setTextSize(16.0f);
-            //name_tv.setTextColor(0xffffffff);
             name_tv.setText(song.getTitle());
 
             author_tv.setText(song.getAuthor());
             author_tv.setTextSize(10.0f);
-            //author_tv.setTextColor(0xffaaaaaa);
 
             folder_tv.setVisibility(View.GONE);
             text_author.setVisibility(View.GONE);
@@ -111,21 +108,6 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
             text_key.setVisibility(View.GONE);
 
         } else {
-
-            // Set the text colours
-            //name_tv.setTextColor(FullscreenActivity.lyricsTextColor);
-            //folder_tv.setTextColor(FullscreenActivity.lyricsChordsColor);
-            //author_tv.setTextColor(FullscreenActivity.lyricsTextColor);
-            //text_author.setTextColor(FullscreenActivity.lyricsTextColor);
-            //key_tv.setTextColor(FullscreenActivity.lyricsTextColor);
-            //text_key.setTextColor(FullscreenActivity.lyricsTextColor);
-
-            // Set the background colour
-            //card_view.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
-            //card_view.setBackgroundResource(R.drawable.section_box);
-            //GradientDrawable drawable = (GradientDrawable) card_view.getBackground();
-            //drawable.setColor(FullscreenActivity.lyricsBackgroundColor);
-
             file_tv.setText(song.getFilename());
             name_tv.setText(song.getTitle());
             folder_tv.setText(song.getFolder());
@@ -211,6 +193,10 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
             if (constraint != null && constraint.length() > 0) {
                 ArrayList<SearchViewItems> filterList = new ArrayList<>();
                 for (int i = 0; i < mStringFilterList.size(); i++) {
+
+                    Log.d("d","getLyrics()="+mStringFilterList.get(i).getLyrics());
+                    Log.d("d","contstraint="+constraint);
+
                     if ( (mStringFilterList.get(i).getLyrics().toUpperCase(FullscreenActivity.locale) )
                             .contains(constraint.toString().toUpperCase(FullscreenActivity.locale))) {
 
@@ -276,6 +262,5 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
         sections = new String[sectionList.size()];
 
         sectionList.toArray(sections);
-
     }
 }

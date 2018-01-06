@@ -575,6 +575,27 @@ public class ExportPreparer extends Activity {
         return emailIntent;
     }
 
+    static Intent exportActivityLog(Context c) {
+	    String title = c.getString(R.string.app_name) + ": " + c.getString(R.string.edit_song_ccli);
+	    String subject = title + " - " + c.getString(R.string.ccli_view);
+	    String text = c.getString(R.string.ccli_church) + ": " + FullscreenActivity.ccli_church + "\n";
+	    text += c.getString(R.string.ccli_licence) + ": " + FullscreenActivity.ccli_licence + "\n\n";
+        Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_TITLE, title);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, text);
+        // Add the attachments
+        ArrayList<Uri> uris = new ArrayList<>();
+        File f = new File(FullscreenActivity.dirsettings,"ActivityLog.xml");
+        if (!f.exists()) {
+            PopUpCCLIFragment.createBlankXML();
+        }
+        uris.add(Uri.fromFile(f));
+        emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        return emailIntent;
+    }
+
     private static void makePDF(Bitmap bmp, File file) {
         Document document = new Document();
         try {

@@ -633,4 +633,30 @@
 	<string name="fix">"Automatikus javítás"</string>
 	<string name="timer_learn">"Ismerje meg az autoscroll idejét"</string>
 
+	<string name="action">"Akció"</string>
+	<string name="activated">"Aktiválva / futva"</string>
+	<string name="autostartmetronome">"Autostart metronóm"</string>
+	<string name="autostartpad">"Autostart pad"</string>
+	<string name="ccli_automatic">"Automatikusan rögzítse a használati statisztikákat"</string>
+	<string name="ccli_church">"Egyház neve"</string>
+	<string name="ccli_licence">"Licencszám"</string>
+	<string name="ccli_view">"CCLI napló megtekintése"</string>
+	<string name="ccli_reset">"A CCLI napló visszaállítása"</string>
+	<string name="date">"Dátum"</string>
+	<string name="editpdf">"Szerkesztés külső PDF programban"</string>
+	<string name="existing">"Az OpenSong fájlok korábbi telepítési helyeinek keresése"</string>
+	<string name="found">"Már használta a következő telepítési helyeket. Kérjük, válasszon egyet, hogy újra használni tudja."</string>
+	<string name="longpress">"Tartsa hosszan a gombot"</string>
+	<string name="nofound">"Nincs korábbi telepítés."</string>
+	<string name="nothere">"Ön egy OpenSong mappában van, ne használja ezt a helyet. Ehelyett egy szinttel feljebb léphet, és megadhatja a mappát tartalmazó mappát"</string>
+	<string name="pedal">"Pedál"</string>
+	<string name="previouslyused">"Előző telepítési hely található. Kattints a zöld jelölésre, hogy ezt használni"</string>
+	<string name="songsheet">"Songsheet"</string>
+	<string name="tap">"Rövid megnyomás / érintés"</string>
+
+	<string name="inc_autoscroll_speed">"Növelje az Autoscroll sebességet"</string>
+	<string name="dec_autoscroll_speed">"Csökkentse az Autoscroll sebességet"</string>
+	<string name="edit_default_delaymax">"Max késleltetés (másodperc)"</string>
+	<string name="toggle_autoscroll_pause">"Kapcsolja be az Autoscroll szünetet"</string>
+
 </resources>

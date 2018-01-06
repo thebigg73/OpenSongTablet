@@ -1148,6 +1148,116 @@
                         android:contentDescription="@string/colorchooser" />
                 </TableRow>
 
+                <TableRow
+                    android:id="@+id/tableRow29"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/timerandcapobg"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/extradisplay"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/dark_extrainfobg"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser"
+                        tools:ignore="TooManyViews" />
+
+                    <ImageView
+                        android:id="@+id/light_extrainfobg"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/custom1_extrainfobg"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/custom2_extrainfobg"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tableRow30"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp">
+
+                    <TextView
+                        android:id="@+id/timerandcapo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.28"
+                        android:text="@string/extradisplay"
+                        style="@style/MyInfoText" />
+
+                    <ImageView
+                        android:id="@+id/dark_extrainfo"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser"
+                        tools:ignore="TooManyViews" />
+
+                    <ImageView
+                        android:id="@+id/light_extrainfo"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/custom1_extrainfo"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+
+                    <ImageView
+                        android:id="@+id/custom2_extrainfo"
+                        android:layout_width="0dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="4dp"
+                        android:layout_weight="0.18"
+                        android:background="#444"
+                        android:contentDescription="@string/colorchooser" />
+                </TableRow>
+
             </TableLayout>
 
 
@@ -1155,9 +1265,6 @@
                 android:id="@+id/resetcolours"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentTop="false"
-                android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:layout_margin="32dp"
                 android:background="@drawable/red_button"

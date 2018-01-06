@@ -633,4 +633,30 @@
 	<string name="fix">"Samonaprawa"</string>
 	<string name="timer_learn">"Dowiedz się czas automatycznego przewijania"</string>
 
+	<string name="action">"Akcja"</string>
+	<string name="activated">"Aktywowany / uruchomiony"</string>
+	<string name="autostartmetronome">"Automatycznie uruchom metronom"</string>
+	<string name="autostartpad">"Płytka autostartu"</string>
+	<string name="ccli_automatic">"Nagraj statystyki użytkowania automatycznie"</string>
+	<string name="ccli_church">"Nazwa kościoła"</string>
+	<string name="ccli_licence">"Numer licencyjny"</string>
+	<string name="ccli_view">"Zobacz dziennik CCLI"</string>
+	<string name="ccli_reset">"Zresetuj dziennik CCLI"</string>
+	<string name="date">"Data"</string>
+	<string name="editpdf">"Edytuj w zewnętrznym programie PDF"</string>
+	<string name="existing">"Znajdź poprzednie lokalizacje instalacji dla plików OpenSong"</string>
+	<string name="found">"Użyłeś już następujących lokalizacji instalacji. Wybierz jeden, aby użyć go ponownie."</string>
+	<string name="longpress">"Długie naciśnięcie / przytrzymanie"</string>
+	<string name="nofound">"Nie znaleziono żadnych poprzednich instalacji."</string>
+	<string name="nothere">"Jesteś w folderze OpenSong, nie korzystaj z tej lokalizacji. Zamiast tego przejdź w górę o jeden poziom i określ folder zawierający ten folder"</string>
+	<string name="pedal">"Pedał"</string>
+	<string name="previouslyused">"Znaleziono poprzednią lokalizację instalacji. Kliknij zielony znaczek, aby go użyć"</string>
+	<string name="songsheet">"Piosenka"</string>
+	<string name="tap">"Krótkie naciśnięcie / dotknięcie"</string>
+
+	<string name="inc_autoscroll_speed">"Zwiększ prędkość autoskalowania"</string>
+	<string name="dec_autoscroll_speed">"Zmniejsz prędkość automatycznego przewijania"</string>
+	<string name="edit_default_delaymax">"Maksymalne opóźnienie (sekundy)"</string>
+	<string name="toggle_autoscroll_pause">"Przełącz autoprzewijanie Wstrzymaj"</string>
+
 </resources>

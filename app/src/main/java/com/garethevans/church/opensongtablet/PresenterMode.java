@@ -118,7 +118,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
         PopUpCreateDrawingFragment.MyInterface, PopUpABCNotationFragment.MyInterface,
         PopUpPDFToTextFragment.MyInterface, PopUpRandomSongFragment.MyInterface,
-        PopUpFindStorageLocationFragment.MyInterface {
+        PopUpFindStorageLocationFragment.MyInterface, PopUpCCLIFragment.MyInterface  {
 
     DialogFragment newFragment;
 
@@ -141,7 +141,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // AsyncTasks
     AsyncTask<Object, Void, String> preparesongmenu_async, prepareoptionmenu_async, autoslideshowtask,
             sharesong_async, shareset_async, load_customreusable, add_slidetoset, indexing_done,
-            open_drawers, close_drawers, resize_drawers, do_moveinset;
+            open_drawers, close_drawers, resize_drawers, do_moveinset, shareactivitylog_async;
     AsyncTask<String, Integer, String> do_download;
     LoadSong loadsong_async;
     IndexSongs.IndexMySongs indexsongs_task;
@@ -177,7 +177,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     FloatingActionButton closeSongsFAB;
     ListView song_list_view;
     ScrollView optionsdisplayscrollview;
-    boolean firstrun_option = true, firstrun_song = true;
+    boolean firstrun_option = true, firstrun_song = true, newsongloaded = false;
     SwitchCompat autoProject;
 
     // The media player
@@ -317,17 +317,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                     // Load the song
                     loadSong();
                 }
+
+                // Deal with any intents from external files/intents
+                dealWithIntent();
             }
         });
 
-
-
-        // If we had an import to do, do it
-        if (FullscreenActivity.whattodo.equals("doimport")) {
-            //openFragment();
-            //TODO
-            Log.d("d","This was causing crashing");
-        }
     }
 
     // Handlers for main page on/off/etc. and window flags
@@ -468,6 +463,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         doCancelAsyncTask(prepareoptionmenu_async);
         doCancelAsyncTask(sharesong_async);
         doCancelAsyncTask(shareset_async);
+        doCancelAsyncTask(shareactivitylog_async);
         doCancelAsyncTask(load_customreusable);
         doCancelAsyncTask(open_drawers);
         doCancelAsyncTask(close_drawers);
@@ -486,6 +482,34 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             } catch (Exception e) {
                 // OOps
             }
+        }
+    }
+    @Override
+    protected void onNewIntent (Intent intent) {
+        super.onNewIntent(intent);
+        dealWithIntent();
+    }
+    public void dealWithIntent() {
+        try {
+            switch (FullscreenActivity.whattodo) {
+                case "importfile_customreusable_scripture":
+                    // Receiving scripture text
+                    FullscreenActivity.whattodo = "customreusable_scripture";
+                    openFragment();
+                    break;
+                case "importfile_processimportosb":
+                    // Receiving an OpenSongApp backup file
+                    FullscreenActivity.whattodo = "processimportosb";
+                    openFragment();
+                    break;
+                case "importfile_doimport":
+                    // Receiving another file
+                    FullscreenActivity.whattodo = "doimport";
+                    openFragment();
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -2024,6 +2048,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             FullscreenActivity.myToastMessage = getResources().getString(R.string.file_type_unknown);
             ShowToast.showToast(PresenterMode.this);
         } else {
+            // Declare we have loaded a new song (for the ccli log).
+            // This stops us reporting projecting every section
+            newsongloaded = true;
+
             // Send WiFiP2P intent
             if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
                 try {
@@ -2506,6 +2534,35 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             cancelled = true;
         }
     }
+    public void shareActivityLog() {
+        doCancelAsyncTask(shareactivitylog_async);
+        shareactivitylog_async = new ShareActivityLog();
+        try {
+            shareactivitylog_async.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @SuppressLint("StaticFieldLeak")
+    private class ShareActivityLog extends AsyncTask<Object, Void, String> {
+        @Override
+        protected String doInBackground(Object... objects) {
+            // Send this off to be processed and sent via an intent
+            try {
+                Intent emailIntent = ExportPreparer.exportActivityLog(PresenterMode.this);
+                startActivityForResult(Intent.createChooser(emailIntent, "ActivityLog.xml"), 2222);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        boolean cancelled = false;
+        @Override
+        protected void onCancelled() {
+            cancelled = true;
+        }
+    }
     public void shareSet() {
         doCancelAsyncTask(shareset_async);
         shareset_async = new ShareSet();
@@ -2538,10 +2595,16 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     @Override
     public void doExport() {
         // This is called after the user has specified what should be exported.
-        if (FullscreenActivity.whattodo.equals("customise_exportsong")) {
-            shareSong();
-        } else {
-            shareSet();
+        switch (FullscreenActivity.whattodo) {
+            case "customise_exportsong":
+                shareSong();
+                break;
+            case "ccli_export":
+                shareActivityLog();
+                break;
+            default:
+                shareSet();
+                break;
         }
     }
     @Override
@@ -3021,12 +3084,28 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             if (mSelectedDevice != null) {
                 try {
                     PresentationService.ExternalDisplay.doUpdate();
+
+                    // If we are autologging CCLI information
+                    if (newsongloaded && FullscreenActivity.ccli_automatic) {
+                        PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
+                                FullscreenActivity.mTitle.toString(), FullscreenActivity.mAuthor.toString(),
+                                FullscreenActivity.mCopyright.toString(), FullscreenActivity.mCCLI, "5"); // Presented
+                        newsongloaded = false;
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else if (FullscreenActivity.isHDMIConnected) {
                 try {
                     PresentationServiceHDMI.doUpdate();
+                    // If we are autologging CCLI information
+                    if (newsongloaded && FullscreenActivity.ccli_automatic) {
+                        PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
+                                FullscreenActivity.mTitle.toString(), FullscreenActivity.mAuthor.toString(),
+                                FullscreenActivity.mCopyright.toString(), FullscreenActivity.mCCLI, "5"); // Presented
+                        newsongloaded = false;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -3314,6 +3393,21 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         displayButton_isSelected = false;
     }
 
+    @Override
+    public void allowPDFEditViaExternal() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("application/pdf");
+        // Always use string resources for UI text.
+        String title = getResources().getString(R.string.export_pdf);
+        // Create intent to show chooser
+        Intent chooser = Intent.createChooser(intent, title);
+
+        // Verify the intent will resolve to at least one activity
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(chooser, FullscreenActivity.REQUEST_PDF_CODE);
+        }
+    }
+
     // The camera permissions and stuff
     @Override
     public void useCamera() {
@@ -3385,6 +3479,9 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         if (requestCode == FullscreenActivity.REQUEST_CAMERA_CODE && resultCode == Activity.RESULT_OK) {
             FullscreenActivity.whattodo = "savecameraimage";
             openFragment();
+        } else if (requestCode == FullscreenActivity.REQUEST_PDF_CODE) {
+            // PDF sent back, so reload it
+            loadSong();
         }
     }
 
@@ -3743,6 +3840,13 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void startAutoScroll() {}
     @Override
     public void prepareLearnAutoScroll() {}
+
+    // Metronome - Not used in PresenterMode
+    @Override
+    public void stopMetronome() {}
+
+    @Override
+    public void updateExtraInfoColorsAndSizes(String what) {}
 
     @Override
     public void takeScreenShot() {

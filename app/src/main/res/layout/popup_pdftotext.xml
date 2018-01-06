@@ -20,8 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/myTitle"
-        android:layout_above="@+id/doextractbutton"
-        android:padding="8dp">
+        android:layout_above="@+id/externalPDF">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,11 +51,26 @@
 
     </ScrollView>
 
+    <!-- HIDING THIS FOR NOW.  I WORKS, BUT ANDROID'S PDF RENDERER DOESN'T SHOW ANNOTATIONS MADE
+    IN OTHER APPS LIKE ADOBE!-->
+    <Button
+        android:id="@+id/externalPDF"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/doextractbutton"
+        android:layout_margin="8dp"
+        android:background="@drawable/blue_button"
+        android:enabled="true"
+        android:text="@string/editpdf"
+        android:visibility="gone"
+        android:textColor="#fff"/>
+
     <Button
         android:id="@+id/doextractbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_margin="8dp"
         android:text="@string/createanewsong"
         android:background="@drawable/green_button"/>
 

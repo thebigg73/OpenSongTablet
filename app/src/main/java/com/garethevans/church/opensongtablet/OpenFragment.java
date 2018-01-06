@@ -114,6 +114,13 @@ class OpenFragment {
                 }
                 break;
 
+            case "ccli_church":
+            case "ccli_licence":
+            case "ccli_view":
+            case "ccli_reset":
+                newFragment = PopUpCCLIFragment.newInstance();
+                break;
+
             case "renamesong":
                 newFragment = PopUpSongRenameFragment.newInstance();
                 break;

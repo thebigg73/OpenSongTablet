@@ -118,7 +118,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             pad2Fading, padson = false, autostartautoscroll, clickedOnAutoScrollStart = false,
             pauseautoscroll = true, autoscrollispaused = false, isautoscrolling = false,
             visualmetronome = false, mTimeSigValid = false, usingdefaults = false,
-            learnPreDelay = false, learnSongLength = false;
+            learnPreDelay = false, learnSongLength = false, autostartmetronome, autostartpad,
+            clickedOnMetronomeStart = false, clickedOnPadStart = false;
     public static int beatoffcolour = 0xff232333, scrollpageHeight, currentBeat = 1,
             total_pixels_to_scroll = 0, timesigindex, default_autoscroll_songlength,
             default_autoscroll_predelay, default_autoscroll_predelay_max, keyindex, scrollSpeed, autoScrollDelay, autoScrollDuration,
@@ -172,6 +173,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             oldchordformat = "", presenterChords = "", capokey = null, transposeDirection = "0",
             transposeStyle = "sharps", transposedLyrics = "";
     public static int transposeTimes = 1;
+    public static float capoFontSizeInfoBar;
     public static boolean showChords, showLyrics, showCapo, showCapoChords, showNativeAndCapoChords,
             switchsharpsflats = false, showCapoAsNumerals = false, convertchords = false;
 
@@ -257,6 +259,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static final int REQUEST_CAMERA_CODE = 1973;
     public static String mCurrentPhotoPath;
     public static final int REQUEST_MICROPHONE_CODE = 1974;
+    public static final int REQUEST_PDF_CODE = 1975;
 
     public static int pdfPageCurrent = 0, pdfPageCount = 0;
     public static boolean isPDF = false, isImage = false, isSong = false, isSlide = false,
@@ -266,6 +269,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static int stickyNotesShowSecs, stickyWidth;
     public static boolean hideActionBar;
 
+    // CCLI
+    public static String ccli_church, ccli_licence;
+    public static boolean ccli_automatic;
 
     // Swipe
     public static int SWIPE_MIN_DISTANCE = 250, SWIPE_MAX_OFF_PATH = 200, SWIPE_THRESHOLD_VELOCITY = 600;
@@ -287,28 +293,32 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             dark_lyricsCustomColor, dark_lyricsCapoColor, dark_presoFont, dark_presoInfoFont,
             dark_presoAlertFont, dark_presoShadow, dark_metronome, dark_pagebuttons,
             dark_stickytext, dark_stickybg, light_lyricsTextColor, light_lyricsBackgroundColor,
+            dark_extrainfobg, dark_extrainfo,
             light_lyricsVerseColor, light_lyricsChorusColor, light_lyricsBridgeColor,
             light_lyricsCommentColor, light_lyricsPreChorusColor, light_lyricsTagColor,
             light_lyricsChordsColor, light_lyricsCustomColor, light_lyricsCapoColor,
             light_presoFont, light_presoInfoFont, light_presoAlertFont, light_presoShadow,
             light_metronome, light_pagebuttons, light_stickytext, light_stickybg,
+            light_extrainfobg, light_extrainfo,
             custom1_lyricsTextColor, custom1_lyricsBackgroundColor, custom1_lyricsVerseColor,
             custom1_lyricsChorusColor, custom1_lyricsBridgeColor, custom1_lyricsCommentColor,
             custom1_lyricsPreChorusColor, custom1_lyricsTagColor, custom1_lyricsChordsColor,
             custom1_lyricsCustomColor, custom1_lyricsCapoColor, custom1_presoFont,
             custom1_presoInfoFont, custom1_presoAlertFont, custom1_presoShadow, custom1_metronome,
             custom1_pagebuttons, custom1_stickytext, custom1_stickybg, custom2_lyricsTextColor,
+            custom1_extrainfobg, custom1_extrainfo,
             custom2_lyricsBackgroundColor, custom2_lyricsVerseColor, custom2_lyricsChorusColor,
             custom2_lyricsBridgeColor, custom2_lyricsCommentColor, custom2_lyricsPreChorusColor,
             custom2_lyricsTagColor, custom2_lyricsChordsColor, custom2_lyricsCustomColor,
             custom2_lyricsCapoColor, custom2_presoFont, custom2_presoInfoFont,
             custom2_presoAlertFont, custom2_presoShadow, custom2_metronome, custom2_pagebuttons,
             custom2_stickytext, custom2_stickybg, lyricsBoxColor, lyricsTextColor,
+            custom2_extrainfobg, custom2_extrainfo,
             lyricsBackgroundColor, lyricsChorusColor, lyricsVerseColor, lyricsBridgeColor,
             lyricsCommentColor, lyricsPreChorusColor, lyricsTagColor, lyricsChordsColor,
             lyricsCustomColor, lyricsCapoColor, metronomeColor, pagebuttonsColor,
             presoAlertFontColor, presoFontColor, presoInfoFontColor, presoShadowColor,
-            stickytextColor, stickybgColor;
+            stickytextColor, stickybgColor, extrainfobgColor, extrainfoColor;
     public static float commentfontscalesize, headingfontscalesize, chordfontscalesize,
             stickyOpacity, stickyTextSize;
 
@@ -750,6 +760,13 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
                 scripture_verse = sharedText;
                 Log.d("d","scripture_title="+FullscreenActivity.scripture_title);
                 Log.d("d","scripture_verse="+FullscreenActivity.scripture_verse);
+            } else {
+                // Just standard text, so create a new song
+                whattodo = "importfile_newsong_text";
+                scripture_title = "importedtext_in_scripture_verse";
+                scripture_verse = sharedText;
+                Log.d("d", "scripture_title=" + FullscreenActivity.scripture_title);
+                Log.d("d", "scripture_verse=" + FullscreenActivity.scripture_verse);
             }
         }
     }

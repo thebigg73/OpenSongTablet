@@ -633,4 +633,30 @@
 	<string name="fix">"Autofix"</string>
 	<string name="timer_learn">"Aprenda o tempo de corte automático"</string>
 
+	<string name="action">"Açao"</string>
+	<string name="activated">"Ativado / executado"</string>
+	<string name="autostartmetronome">"Arranque automático do metrônomo"</string>
+	<string name="autostartpad">"Barra de inicialização automática"</string>
+	<string name="ccli_automatic">"Registre as estatísticas de uso automaticamente"</string>
+	<string name="ccli_church">"Nome da igreja"</string>
+	<string name="ccli_licence">"Número de licença"</string>
+	<string name="ccli_view">"Ver registro CCLI"</string>
+	<string name="ccli_reset">"Redefinir registro CCLI"</string>
+	<string name="date">"Encontro"</string>
+	<string name="editpdf">"Editar no programa PDF externo"</string>
+	<string name="existing">"Encontre locais de instalação anteriores para arquivos OpenSong"</string>
+	<string name="found">"Você já usou os seguintes locais de instalação. Selecione um para usá-lo novamente."</string>
+	<string name="longpress">"Pressione / mantenha pressionado prolongadamente"</string>
+	<string name="nofound">"Não foram encontradas instalações anteriores."</string>
+	<string name="nothere">"Você está dentro de uma pasta OpenSong, não use essa localização. Em vez disso, avance um nível e especifique a pasta que contém esta pasta"</string>
+	<string name="pedal">"Pedal"</string>
+	<string name="previouslyused">"Local de instalação anterior encontrado. Clique no botão verde para usar isso"</string>
+	<string name="songsheet">"Folha de músicas"</string>
+	<string name="tap">"Pressione / toque rapidamente"</string>
+
+	<string name="inc_autoscroll_speed">"Aumentar a velocidade de Autoscroll"</string>
+	<string name="dec_autoscroll_speed">"Diminuir a velocidade do Autoscroll"</string>
+	<string name="edit_default_delaymax">"Max Delay (segundos)"</string>
+	<string name="toggle_autoscroll_pause">"Alternar Pausa Autoscroll"</string>
+
 </resources>

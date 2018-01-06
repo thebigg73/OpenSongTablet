@@ -342,6 +342,12 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("autostartautoscroll")) {
                     FullscreenActivity.autostartautoscroll = getBooleanValue(xpp.nextText(),false);
 
+                } else if (xpp.getName().equals("autostartmetronome")) {
+                    FullscreenActivity.autostartmetronome = getBooleanValue(xpp.nextText(),false);
+
+                } else if (xpp.getName().equals("autostartpad")) {
+                    FullscreenActivity.autostartpad = getBooleanValue(xpp.nextText(),false);
+
                 } else if (xpp.getName().equals("backgroundImage1")) {
                     FullscreenActivity.backgroundImage1 = getTextValue(xpp.nextText(),"ost_bg.png");
 
@@ -373,10 +379,22 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.batterySize = getFloatValue(xpp.nextText(), 9.0f);
 
                 } else if (xpp.getName().equals("bibleFile")) {
-                    FullscreenActivity.bibleFile = getTextValue(xpp.nextText(),"");
+                    FullscreenActivity.bibleFile = getTextValue(xpp.nextText(), "");
+
+                } else if (xpp.getName().equals("capoFontSizeInfoBar")) {
+                    FullscreenActivity.capoFontSizeInfoBar = getFloatValue(xpp.nextText(), 14.0f);
 
                 } else if (xpp.getName().equals("capoDisplay")) {
                     FullscreenActivity.capoDisplay = getTextValue(xpp.nextText(),"both");
+
+                } else if (xpp.getName().equals("ccli_automatic")) {
+                    FullscreenActivity.ccli_automatic = getBooleanValue(xpp.nextText(),false);
+
+                } else if (xpp.getName().equals("ccli_church")) {
+                    FullscreenActivity.ccli_church = getTextValue(xpp.nextText(),"");
+
+                } else if (xpp.getName().equals("ccli_licence")) {
+                    FullscreenActivity.ccli_licence = getTextValue(xpp.nextText(),"ccli_licence");
 
                 } else if (xpp.getName().equals("chordfontscalesize")) {
                     FullscreenActivity.chordfontscalesize = getFloatValue(xpp.nextText(),0.8f);
@@ -424,7 +442,10 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.custom1_presoInfoFont = getIntegerValue(xpp.nextText(),0xffffffff);
                 } else if (xpp.getName().equals("custom1_presoShadow")) {
                     FullscreenActivity.custom1_presoShadow = getIntegerValue(xpp.nextText(),0xff000000);
-
+                } else if (xpp.getName().equals("custom1_extrainfobg")) {
+                    FullscreenActivity.custom1_extrainfobg = getIntegerValue(xpp.nextText(),0xff000000);
+                } else if (xpp.getName().equals("custom1_extrainfo")) {
+                    FullscreenActivity.custom1_extrainfo = getIntegerValue(xpp.nextText(),0xff000000);
                 } else if (xpp.getName().equals("custom2_lyricsBackgroundColor")) {
                     FullscreenActivity.custom2_lyricsBackgroundColor = getIntegerValue(xpp.nextText(),0xffffffff);
                 } else if (xpp.getName().equals("custom2_lyricsBridgeColor")) {
@@ -459,10 +480,12 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.custom2_presoInfoFont = getIntegerValue(xpp.nextText(),0xffffffff);
                 } else if (xpp.getName().equals("custom2_presoShadow")) {
                     FullscreenActivity.custom2_presoShadow = getIntegerValue(xpp.nextText(), 0xff000000);
-
+                } else if (xpp.getName().equals("custom2_extrainfobg")) {
+                    FullscreenActivity.custom2_extrainfobg = getIntegerValue(xpp.nextText(),0xff000000);
+                } else if (xpp.getName().equals("custom2_extrainfo")) {
+                    FullscreenActivity.custom2_extrainfo = getIntegerValue(xpp.nextText(),0xff000000);
                 } else if (xpp.getName().equals("customfontname")) {
                     FullscreenActivity.customfontname = getTextValue(xpp.nextText(), "");
-
                 } else if (xpp.getName().equals("customLogo")) {
                     FullscreenActivity.customLogo = getTextValue(xpp.nextText(),"");
 
@@ -506,6 +529,10 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.dark_presoInfoFont = getIntegerValue(xpp.nextText(),0xffffffff);
                 } else if (xpp.getName().equals("dark_presoShadow")) {
                     FullscreenActivity.dark_presoShadow = getIntegerValue(xpp.nextText(),0xff000000);
+                } else if (xpp.getName().equals("dark_extrainfobg")) {
+                    FullscreenActivity.dark_extrainfobg = getIntegerValue(xpp.nextText(),0xff000000);
+                } else if (xpp.getName().equals("dark_extrainfo")) {
+                    FullscreenActivity.dark_extrainfo = getIntegerValue(xpp.nextText(),0xff000000);
                 } else if (xpp.getName().equals("default_autoscroll_predelay")) {
                     FullscreenActivity.default_autoscroll_predelay = getIntegerValue(xpp.nextText(), 10);
                 } else if (xpp.getName().equals("default_autoscroll_predelay_max")) {
@@ -604,6 +631,10 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.light_presoInfoFont = getIntegerValue(xpp.nextText(),0xffffffff);
                 } else if (xpp.getName().equals("light_presoShadow")) {
                     FullscreenActivity.light_presoShadow = getIntegerValue(xpp.nextText(),0xff000000);
+                } else if (xpp.getName().equals("light_extrainfobg")) {
+                    FullscreenActivity.light_extrainfobg = getIntegerValue(xpp.nextText(),0xff000000);
+                } else if (xpp.getName().equals("light_extrainfo")) {
+                    FullscreenActivity.light_extrainfo = getIntegerValue(xpp.nextText(),0xff000000);
 
                 } else if (xpp.getName().equals("linespacing")) {
                     FullscreenActivity.linespacing = getIntegerValue(xpp.nextText(),0);
@@ -1157,6 +1188,8 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <autoscroll_default_or_prompt>" + FullscreenActivity.autoscroll_default_or_prompt + "</autoscroll_default_or_prompt>\n";
         text += "  <autoScrollDelay>" + FullscreenActivity.autoScrollDelay + "</autoScrollDelay>\n";
         text += "  <autostartautoscroll>" + FullscreenActivity.autostartautoscroll + "</autostartautoscroll>\n";
+        text += "  <autostartmetronome>" + FullscreenActivity.autostartmetronome + "</autostartmetronome>\n";
+        text += "  <autostartpad>" + FullscreenActivity.autostartpad + "</autostartpad>\n";
         text += "  <backgroundImage1>" + FullscreenActivity.backgroundImage1 + "</backgroundImage1>\n";
         text += "  <backgroundImage2>" + FullscreenActivity.backgroundImage2 + "</backgroundImage2>\n";
         text += "  <backgroundVideo1>" + FullscreenActivity.backgroundVideo1 + "</backgroundVideo1>\n";
@@ -1169,10 +1202,16 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <batterySize>" + FullscreenActivity.batterySize + "</batterySize>\n";
         text += "  <bibleFile>" + FullscreenActivity.bibleFile + "</bibleFile>\n";
         text += "  <capoDisplay>" + FullscreenActivity.capoDisplay + "</capoDisplay>\n";
+        text += "  <capoFontSizeInfoBar>" + FullscreenActivity.capoFontSizeInfoBar + "</capoFontSizeInfoBar>\n";
+        text += "  <ccli_automatic>" + FullscreenActivity.ccli_automatic + "</ccli_automatic>\n";
+        text += "  <ccli_church>" + FullscreenActivity.ccli_church + "</ccli_church>\n";
+        text += "  <ccli_licence>" + FullscreenActivity.ccli_licence + "</ccli_licence>\n";
         text += "  <chordfontscalesize>" + FullscreenActivity.chordfontscalesize + "</chordfontscalesize>\n";
         text += "  <chordFormat>" + FullscreenActivity.chordFormat + "</chordFormat>\n";
         text += "  <chordInstrument>" + FullscreenActivity.chordInstrument + "</chordInstrument>\n";
         text += "  <commentfontscalesize>" + FullscreenActivity.commentfontscalesize + "</commentfontscalesize>\n";
+        text += "  <custom1_extrainfobg>" + FullscreenActivity.custom1_extrainfobg + "</custom1_extrainfobg>\n";
+        text += "  <custom1_extrainfo>" + FullscreenActivity.custom1_extrainfo + "</custom1_extrainfo>\n";
         text += "  <custom1_lyricsBackgroundColor>" + FullscreenActivity.custom1_lyricsBackgroundColor + "</custom1_lyricsBackgroundColor>\n";
         text += "  <custom1_lyricsBridgeColor>" + FullscreenActivity.custom1_lyricsBridgeColor + "</custom1_lyricsBridgeColor>\n";
         text += "  <custom1_lyricsCapoColor>" + FullscreenActivity.custom1_lyricsCapoColor + "</custom1_lyricsCapoColor>\n";
@@ -1190,6 +1229,8 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <custom1_presoFont>" + FullscreenActivity.custom1_presoFont + "</custom1_presoFont>\n";
         text += "  <custom1_presoInfoFont>" + FullscreenActivity.custom1_presoInfoFont + "</custom1_presoInfoFont>\n";
         text += "  <custom1_presoShadow>" + FullscreenActivity.custom1_presoShadow + "</custom1_presoShadow>\n";
+        text += "  <custom2_extrainfobg>" + FullscreenActivity.custom2_extrainfobg + "</custom2_extrainfobg>\n";
+        text += "  <custom2_extrainfo>" + FullscreenActivity.custom2_extrainfo + "</custom2_extrainfo>\n";
         text += "  <custom2_lyricsBackgroundColor>" + FullscreenActivity.custom2_lyricsBackgroundColor + "</custom2_lyricsBackgroundColor>\n";
         text += "  <custom2_lyricsBridgeColor>" + FullscreenActivity.custom2_lyricsBridgeColor + "</custom2_lyricsBridgeColor>\n";
         text += "  <custom2_lyricsCapoColor>" + FullscreenActivity.custom2_lyricsCapoColor + "</custom2_lyricsCapoColor>\n";
@@ -1211,6 +1252,8 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <customLogo>" + FullscreenActivity.customLogo + "</customLogo>\n";
         text += "  <customLogoSize>" + FullscreenActivity.customLogoSize + "</customLogoSize>\n";
         text += "  <customStorage>" + FullscreenActivity.customStorage + "</customStorage>\n";
+        text += "  <dark_extrainfobg>" + FullscreenActivity.dark_extrainfobg + "</dark_extrainfobg>\n";
+        text += "  <dark_extrainfo>" + FullscreenActivity.dark_extrainfo + "</dark_extrainfo>\n";
         text += "  <dark_lyricsBackgroundColor>" + FullscreenActivity.dark_lyricsBackgroundColor + "</dark_lyricsBackgroundColor>\n";
         text += "  <dark_lyricsBridgeColor>" + FullscreenActivity.dark_lyricsBridgeColor + "</dark_lyricsBridgeColor>\n";
         text += "  <dark_lyricsCapoColor>" + FullscreenActivity.dark_lyricsCapoColor + "</dark_lyricsCapoColor>\n";
@@ -1254,6 +1297,8 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <hideActionBar>" + FullscreenActivity.hideActionBar + "</hideActionBar>\n";
         text += "  <languageToLoad>" + FullscreenActivity.languageToLoad + "</languageToLoad>\n";
         text += "  <lastSetName>" + FullscreenActivity.lastSetName + "</lastSetName>\n";
+        text += "  <light_extrainfobg>" + FullscreenActivity.light_extrainfobg + "</light_extrainfobg>\n";
+        text += "  <light_extrainfo>" + FullscreenActivity.light_extrainfo + "</light_extrainfo>\n";
         text += "  <light_lyricsBackgroundColor>" + FullscreenActivity.light_lyricsBackgroundColor + "</light_lyricsBackgroundColor>\n";
         text += "  <light_lyricsBridgeColor>" + FullscreenActivity.light_lyricsBridgeColor + "</light_lyricsBridgeColor>\n";
         text += "  <light_lyricsCapoColor>" + FullscreenActivity.light_lyricsCapoColor + "</light_lyricsCapoColor>\n";

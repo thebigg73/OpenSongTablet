@@ -633,4 +633,30 @@
 	<string name="fix">"Autofix"</string>
 	<string name="timer_learn">"Aprende el tiempo de desplazamiento automático"</string>
 
+	<string name="action">"Acción"</string>
+	<string name="activated">"Activado / funcionando"</string>
+	<string name="autostartmetronome">"Metrónomo de inicio automático"</string>
+	<string name="autostartpad">"Pad de inicio automático"</string>
+	<string name="ccli_automatic">"Registre estadísticas de uso automáticamente"</string>
+	<string name="ccli_church">"Nombre de la iglesia"</string>
+	<string name="ccli_licence">"Número de licencia"</string>
+	<string name="ccli_view">"Ver registro de CCLI"</string>
+	<string name="ccli_reset">"Restablecer registro de CCLI"</string>
+	<string name="date">"Fecha"</string>
+	<string name="editpdf">"Editar en un programa PDF externo"</string>
+	<string name="existing">"Encuentra ubicaciones de instalación previas para archivos OpenSong"</string>
+	<string name="found">"Ya ha utilizado las siguientes ubicaciones de instalación. Por favor, seleccione uno para usarlo de nuevo."</string>
+	<string name="longpress">"Mantenga presionado / mantenga presionado"</string>
+	<string name="nofound">"No se encontraron instalaciones previas."</string>
+	<string name="nothere">"Estás dentro de una carpeta de OpenSong, no uses esta ubicación. En lugar de eso, suba un nivel y especifique la carpeta que contiene esta carpeta"</string>
+	<string name="pedal">"Pedal"</string>
+	<string name="previouslyused">"Se encontró la ubicación de instalación anterior. Haga clic en la marca verde para usar esto"</string>
+	<string name="songsheet">"Hoja de canciones"</string>
+	<string name="tap">"Pulsación corta / toque"</string>
+
+	<string name="inc_autoscroll_speed">"Aumenta la velocidad de Autoscroll"</string>
+	<string name="dec_autoscroll_speed">"Disminuir la velocidad del Autoscroll"</string>
+	<string name="edit_default_delaymax">"Max Delay (segundos)"</string>
+	<string name="toggle_autoscroll_pause">"Alternar pausa de desplazamiento automático"</string>
+
 </resources>

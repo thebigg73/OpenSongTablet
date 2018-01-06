@@ -97,16 +97,6 @@ final class SongFileList {
         //todo place check here to see if new file has been added since the last file list was
         //constructed.  This saves memory.
         fileList();
-        /*// Sort the file list  // REMOVED THIS AS IT MESSES WITH THE CURRENT SORTING COMPARE IN FILELIST()
-        try {
-            coll = Collator.getInstance(FullscreenActivity.locale);
-            coll.setStrength(Collator.SECONDARY);
-            Collections.sort(currentFileList, coll);
-        } catch (Exception e) {
-            // Error sorting
-            e.printStackTrace();
-            Log.d("d","Error sorting");
-        }*/
         return currentFileList.toArray(new String[currentFileList.size()]).clone();
     }
 

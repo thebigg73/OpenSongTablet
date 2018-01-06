@@ -305,6 +305,13 @@ public class ListSongFiles {
         if (filetoremove.delete()) {
             FullscreenActivity.myToastMessage = "\"" + FullscreenActivity.songfilename + "\" "
                     + c.getString(R.string.songhasbeendeleted);
+            // If we are autologging CCLI information
+            if (FullscreenActivity.ccli_automatic) {
+                PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
+                        "", "",
+                        "", "", "2"); // Deleted
+            }
+
         } else {
             FullscreenActivity.myToastMessage = c.getString(R.string.deleteerror_start)
                     + " \"" + FullscreenActivity.songfilename + "\" "

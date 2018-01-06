@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.ConsoleMessage;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -123,8 +124,15 @@ public class PopUpABCNotationFragment extends DialogFragment {
         abcWebView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
         abcWebView.setScrollbarFadingEnabled(false);
         abcWebView.addJavascriptInterface(new JsInterface(), "AndroidApp");
-        abcWebView.loadUrl("file:///android_asset/ABC/abc.html");
-        abcWebView.setWebChromeClient(new WebChromeClient());
+        abcWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                Log.d("MyApplication", consoleMessage.message() + " -- From line "
+                        + consoleMessage.lineNumber() + " of "
+                        + consoleMessage.sourceId());
+                return super.onConsoleMessage(consoleMessage);
+            }
+        });
         abcWebView.setWebViewClient(new WebViewClient() {
 
             public void onPageFinished(WebView view, String url) {
@@ -138,16 +146,19 @@ public class PopUpABCNotationFragment extends DialogFragment {
                         abcWebView.evaluateJavascript("javascript:displayAndEdit();", null);
                     } else {
                         abcWebView.loadUrl("javascript:displayAndEdit();");
+                        Log.d("d","pre kitkat load display and edit");
                     }
                 } else {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                         abcWebView.evaluateJavascript("javascript:displayOnly();", null);
                     } else {
                         abcWebView.loadUrl("javascript:displayOnly();");
+                        Log.d("d","pre kitkat load display only");
                     }
                 }
             }
         });
+        abcWebView.loadUrl("file:///android_asset/ABC/abc.html");
         return V;
     }
 
@@ -210,7 +221,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
 
     private class JsInterface {
         @JavascriptInterface
-        void receiveString(String value) {
+        public void receiveString(String value) {
             // String received from WebView
             Log.d("MyApp", value);
             if (!value.equals(getSongInfo())) {

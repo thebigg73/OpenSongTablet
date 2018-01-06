@@ -214,6 +214,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
                 if (FullscreenActivity.metronomeonoff.equals("off") && FullscreenActivity.metronomeok) {
                     popupmetronome_startstopbutton.setText(getResources().getString(R.string.stop));
                     FullscreenActivity.metronomeonoff = "on";
+                    FullscreenActivity.clickedOnMetronomeStart = true;
                     FullscreenActivity.whichbeat = "b";
                     Metronome.metroTask = new Metronome.MetronomeAsyncTask();
                     try {
@@ -226,6 +227,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
                     Runtime.getRuntime().gc();
                     popupmetronome_startstopbutton.setText(getResources().getString(R.string.start));
                     FullscreenActivity.metronomeonoff = "off";
+                    FullscreenActivity.clickedOnMetronomeStart = false;
                     if (Metronome.metroTask!=null) {
                         Metronome.metroTask.stop();
                     }

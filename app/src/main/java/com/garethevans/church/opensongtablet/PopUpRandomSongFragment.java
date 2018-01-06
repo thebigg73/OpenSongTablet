@@ -79,7 +79,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_randomsong, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.profile));
+        title.setText(getActivity().getResources().getString(R.string.random_song));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +98,10 @@ public class PopUpRandomSongFragment extends DialogFragment {
         foundSongFolder_TextView = V.findViewById(R.id.foundSongFolder_TextView);
         generateRandom_Button = V.findViewById(R.id.generateRandom_Button);
         chooseFolders_ListView = V.findViewById(R.id.chooseFolders_ListView);
+
+        // Update the song folders
+        FullscreenActivity.songfilelist = new SongFileList();
+        ListSongFiles.getAllSongFolders();
 
         // Try to generate the file folders available to choose from and highlight the ones already specified
         generateFolderList();
