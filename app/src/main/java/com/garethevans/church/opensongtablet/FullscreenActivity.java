@@ -478,8 +478,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
         // If we have an intent or a whattodo starting with importfile, retain this
 
-        Log.d("FullscreenActivity","getIntent()="+getIntent());
-
         if (getIntent()!=null) {
             dealWithIntent(getIntent());
         }
@@ -499,7 +497,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
         }
 
         if (resetSomePreferences) {
-            Log.d("d","Doing the resetting!");
             FullscreenActivity.longpressdownpedalgesture = "0";
             FullscreenActivity.longpressuppedalgesture = "0";
             FullscreenActivity.longpressnextpedalgesture = "0";
@@ -569,27 +566,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
                 mAndroidBeamAvailable = false;
             }
         }
-        Log.d("d","NFC available="+mAndroidBeamAvailable);
-        Log.d("d","NFC adapter="+mNfcAdapter);
-
-        /*whattodo = "";
-        try {
-            incomingfile = getIntent();
-            if (incomingfile != null) {
-                file_location = incomingfile.getData().getPath();
-                filechosen = new File(incomingfile.getData().getPath());
-                file_name = incomingfile.getData().getLastPathSegment();
-                file_uri = incomingfile.getData();
-                if (file_name.endsWith(".osb")) {
-                    whattodo = "processimportosb";
-                } else {
-                    whattodo = "doimport";
-                }
-            }
-        } catch (Exception e) {
-            // No file
-            //needtoimport = false;
-        }*/
 
         // Initialise api
         currentapiVersion = Build.VERSION.SDK_INT;
@@ -752,21 +728,15 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
                 // Now split it into smaller lines to better fit the screen size
                 sharedText = BibleGateway.shortenTheLines(sharedText, 40, 6);
-                Log.d("d","Bible title found!\n"+title);
-                Log.d("d","Bible text found!\n"+sharedText);
 
                 whattodo = "importfile_customreusable_scripture";
                 scripture_title = title;
                 scripture_verse = sharedText;
-                Log.d("d","scripture_title="+FullscreenActivity.scripture_title);
-                Log.d("d","scripture_verse="+FullscreenActivity.scripture_verse);
             } else {
                 // Just standard text, so create a new song
                 whattodo = "importfile_newsong_text";
                 scripture_title = "importedtext_in_scripture_verse";
                 scripture_verse = sharedText;
-                Log.d("d", "scripture_title=" + FullscreenActivity.scripture_title);
-                Log.d("d", "scripture_verse=" + FullscreenActivity.scripture_verse);
             }
         }
     }

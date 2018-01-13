@@ -89,7 +89,6 @@ public class LoadXML extends Activity {
                 try {
                      grabOpenSongXML();
                 } catch (Exception e) {
-                    e.printStackTrace();
                     Log.d("d", "Error performing grabOpenSongXML()");
                     FullscreenActivity.thissong_scale = "W";
                 }

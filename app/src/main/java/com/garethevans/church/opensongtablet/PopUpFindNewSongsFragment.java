@@ -240,6 +240,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             }
         });
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 
@@ -291,7 +293,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         webresults_WebView.getSettings().setDisplayZoomControls(false);
         webresults_WebView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
         webresults_WebView.setScrollbarFadingEnabled(false);
-        webresults_WebView.loadUrl(weblink);
         webresults_WebView.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT");
         try {
             getActivity().registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
@@ -333,13 +334,13 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 }
             }
         });
+        webresults_WebView.loadUrl(weblink);
     }
 
     BroadcastReceiver onComplete=new BroadcastReceiver() {
         public void onReceive(Context ctxt, Intent intent) {
             downloadcomplete = true;
             saveSong_Button.setEnabled(true);
-            Log.d("d","Download complete");
             // If the song save section isn't visible, make it so
             // This is because there was no chordpro, but pdf is here
             if (newfileinfo_LinearLayout.getVisibility()!=View.VISIBLE) {
@@ -355,9 +356,6 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
     @JavascriptInterface
     public void processHTML(String html) {
-        if (html == null) {
-            Log.d("d","html is null");
-        }
     }
 
     @Override
@@ -1264,7 +1262,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 songfilename_EditText.setText(FullscreenActivity.phrasetosearchfor);
             }
 
-            if (filecontents == null && newtext.equals("")) {
+            if (filecontents == null && (newtext==null || newtext.equals(""))) {
                 songfilename_EditText.setText(FullscreenActivity.phrasetosearchfor);
             }
         }

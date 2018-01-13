@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -337,6 +336,7 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         // Set the appropriate theme button based on what is already set
         setUpButtons();
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         return V;
     }
 
@@ -350,7 +350,6 @@ public class PopUpThemeChooserFragment extends DialogFragment {
         custom2_theme_heading.setBackgroundColor(0xff222222);
         custom2_theme_heading.setTextColor(0xffffff00);
 
-        Log.d("d","mDisplayTheme="+FullscreenActivity.mDisplayTheme);
         switch (FullscreenActivity.mDisplayTheme) {
             case "Theme_Holo":
             case "Theme.Holo":

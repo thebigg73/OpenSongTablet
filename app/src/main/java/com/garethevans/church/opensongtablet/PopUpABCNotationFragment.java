@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.net.Uri;
@@ -146,19 +147,21 @@ public class PopUpABCNotationFragment extends DialogFragment {
                         abcWebView.evaluateJavascript("javascript:displayAndEdit();", null);
                     } else {
                         abcWebView.loadUrl("javascript:displayAndEdit();");
-                        Log.d("d","pre kitkat load display and edit");
                     }
                 } else {
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                         abcWebView.evaluateJavascript("javascript:displayOnly();", null);
                     } else {
                         abcWebView.loadUrl("javascript:displayOnly();");
-                        Log.d("d","pre kitkat load display only");
                     }
                 }
             }
         });
         abcWebView.loadUrl("file:///android_asset/ABC/abc.html");
+        Dialog dialog = getDialog();
+        if (dialog!=null && getActivity()!=null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog);
+        }
         return V;
     }
 
@@ -223,7 +226,6 @@ public class PopUpABCNotationFragment extends DialogFragment {
         @JavascriptInterface
         public void receiveString(String value) {
             // String received from WebView
-            Log.d("MyApp", value);
             if (!value.equals(getSongInfo())) {
                 // Something has changed
                 FullscreenActivity.mNotation = value;

@@ -35,6 +35,7 @@ public class PopUpLanguageFragment extends DialogFragment {
         super.onDetach();
     }
 
+    @Override
     public void onStart() {
         super.onStart();
 
@@ -205,6 +206,8 @@ public class PopUpLanguageFragment extends DialogFragment {
                 }
             }
         });
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 
         return V;
     }

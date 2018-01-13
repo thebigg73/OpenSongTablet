@@ -150,8 +150,7 @@ public class PopUpPagesFragment extends DialogFragment {
             pages_notavailable.setVisibility(View.VISIBLE);
             pages_available.setVisibility(View.GONE);
         }
-
-
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 
         return V;
     }

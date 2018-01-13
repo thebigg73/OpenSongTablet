@@ -191,6 +191,8 @@ public class PopUpPadFragment extends DialogFragment {
 
         mHandler.post(runnable);
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

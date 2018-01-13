@@ -99,6 +99,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     ProgressBar progressbar;
     TextView title;
 
+    @Override
     public void onStart() {
         super.onStart();
 
@@ -246,6 +247,8 @@ public class PopUpImportExternalFile extends DialogFragment {
                 break;
         }
          FullscreenActivity.whattodo = "";
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 
         return V;
     }
@@ -430,7 +433,6 @@ public class PopUpImportExternalFile extends DialogFragment {
         // YouVersion Bible import
         messageOnSong_TextView.setVisibility(View.GONE);
         messageOpenSong_TextView.setVisibility(View.GONE);
-        Log.d("d","Bible true");
         String translation = FullscreenActivity.scripture_title.substring(FullscreenActivity.scripture_title.lastIndexOf(" "));
         String verses = FullscreenActivity.scripture_title.replace(translation, "");
         // Since the scripture is one big line, split it up a little (50 chars max)
@@ -765,9 +767,6 @@ public class PopUpImportExternalFile extends DialogFragment {
             String filename;
             try {
                 is = new FileInputStream(FullscreenActivity.homedir + "/" + backupchosen);
-                Log.d("backup", "is=" + is);
-                //final ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream("zip", is);
-                //File myfile = new File(FullscreenActivity.homedir + "/" + backupchosen);
                 zis = new ZipArchiveInputStream(new BufferedInputStream(is),"UTF-8",false);
 
                 ZipArchiveEntry ze;
@@ -775,7 +774,6 @@ public class PopUpImportExternalFile extends DialogFragment {
                     final byte[] buffer = new byte[2048];
                     int count;
                     filename = ze.getName();
-                    Log.d("d", "filename=" + filename);
 
                     FileOutputStream fout;
                     if (filename.equals("OnSong.Backup.sqlite3") || filename.equals("OnSong.sqlite3")) {

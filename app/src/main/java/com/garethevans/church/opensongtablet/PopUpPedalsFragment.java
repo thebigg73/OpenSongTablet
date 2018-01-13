@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,6 +103,8 @@ public class PopUpPedalsFragment extends DialogFragment {
 
         // Initialise the buttons, text, listeners and set defaults
         resetButtons();
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 
         return V;
     }
@@ -756,7 +757,6 @@ public class PopUpPedalsFragment extends DialogFragment {
         getDialog().setOnKeyListener(new DialogInterface.OnKeyListener() {
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_UP) {
-                    Log.d("d", "up press=" + keyCode);
                     // Reset buttons already using this keycode
                     if (FullscreenActivity.pedal1 == keyCode) {
                         FullscreenActivity.pedal1 = -1;

@@ -1,9 +1,9 @@
 package com.garethevans.church.opensongtablet;
 
+import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +31,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
     RadioButton autoscroll_default_RadioButton;
     RadioButton autoscroll_prompt_RadioButton;
 
+    @Override
     public void onStart() {
         super.onStart();
 
@@ -50,6 +51,7 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -121,11 +123,21 @@ public class PopUpAutoScrollDefaultsFragment extends DialogFragment {
             }
         });
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 
     public void doSave(){
-        FullscreenActivity.default_autoscroll_predelay_max = Integer.parseInt(default_delaymax_EditText.getText().toString());
+        int i;
+        try {
+            String s = default_delaymax_EditText.getText().toString();
+            s = s.replaceAll("[^\\d.]", "");
+            i = Integer.parseInt(s);
+        } catch (Exception e) {
+            i = 0;
+        }
+        FullscreenActivity.default_autoscroll_predelay_max = i;
         FullscreenActivity.default_autoscroll_predelay = default_delaytime_SeekBar.getProgress();
         String length = default_duration_EditText.getText().toString();
         try {

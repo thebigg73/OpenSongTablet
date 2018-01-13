@@ -1,7 +1,6 @@
 package com.garethevans.church.opensongtablet;
 
 import android.graphics.Typeface;
-import android.util.Log;
 
 import java.io.File;
 
@@ -210,8 +209,6 @@ class SetTypeFace {
     static Typeface setCustomFont(String ff) {
         Typeface tf = FullscreenActivity.typeface0;
         String fl = FullscreenActivity.dirfonts + "/" + ff;
-        Log.d("d","ff="+ff);
-        Log.d("d","fl="+fl);
         File cf = new File(fl);
         if (cf.exists() && (ff.endsWith(".ttf") || ff.endsWith(".otf"))) {
             tf = Typeface.createFromFile(cf);

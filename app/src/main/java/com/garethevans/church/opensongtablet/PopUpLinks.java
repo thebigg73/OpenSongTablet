@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -169,10 +168,6 @@ public class PopUpLinks extends DialogFragment {
         linkOther_EditText.setFocusable(false);
         linkOther_EditText.setFocusableInTouchMode(false);
 
-        Log.d("d","filetoselect="+FullscreenActivity.filetoselect);
-        if (FullscreenActivity.filechosen!=null) {
-            Log.d("d", "filechosen=" + FullscreenActivity.filechosen);
-        }
         // If a filetoselect has been set, add this to the view
         if (FullscreenActivity.filetoselect.equals("audiolink") &&
                 FullscreenActivity.filechosen!=null && !FullscreenActivity.filechosen.toString().equals("")) {
@@ -182,7 +177,6 @@ public class PopUpLinks extends DialogFragment {
                 // Make this package local by removing everything before it
                 int pos = link.indexOf("/OpenSong/");
                 link = "../OpenSong/" + link.substring(pos+10);
-                Log.d("d","localised link="+link);
             }
             linkAudio_EditText.setText(link);
             FullscreenActivity.mLinkAudio = link;
@@ -220,7 +214,6 @@ public class PopUpLinks extends DialogFragment {
                 // Make this package local by removing everything before it
                 int pos = link.indexOf("/OpenSong/");
                 link = "../OpenSong/" + link.substring(pos+10);
-                Log.d("d","localised link="+link);
             }
             linkOther_EditText.setText(link);
             FullscreenActivity.mLinkOther = link;
@@ -334,7 +327,6 @@ public class PopUpLinks extends DialogFragment {
                         mimeType = "*/*";
                     }
 
-                    Log.d("d", "mimeType=" + mimeType);
                     newIntent.setDataAndType(uri2, mimeType);
                     newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     try {
@@ -348,6 +340,8 @@ public class PopUpLinks extends DialogFragment {
                 }
             }
         });
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 
         return V;
     }
@@ -372,9 +366,6 @@ public class PopUpLinks extends DialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
-        Log.d("d","requestCode="+requestCode);
-        Log.d("d","resultCode="+resultCode);
-        Log.d("d","intent="+intent);
         if (intent!=null) {
             Uri uri = intent.getData();
             if (requestCode==0) {

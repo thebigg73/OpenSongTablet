@@ -727,7 +727,6 @@ public class ExportPreparer extends Activity {
             if (!whichfolders[i].equals("")) {
                 whichfolders[i] = whichfolders[i].replace("%__", "");
                 whichfolders[i] = whichfolders[i].replace("__%", "");
-                Log.d("d", "whichfolders[" + i + "]=" + whichfolders[i]);
                 File dirObj = new File(dir + "/" + whichfolders[i]);
                 addDirSelected(dirObj);
             }
@@ -735,7 +734,6 @@ public class ExportPreparer extends Activity {
         outSelected.close();
     }
     private static void addDirSelected(File dirObj) throws IOException {
-        Log.d("d","dirObj="+dirObj.toString());
         if (dirObj.toString().contains("/"+FullscreenActivity.mainfoldername)) {
             dirObj = new File(FullscreenActivity.dir.toString());
         }
@@ -770,7 +768,6 @@ public class ExportPreparer extends Activity {
         }
 
         s = s.replace("\n\n\n","\n\n");
-        Log.d("d","ChordProSong = "+s);
         FullscreenActivity.exportChordPro_String = s;
     }
     private static void prepareOnSongFile(Context c) {
@@ -793,7 +790,6 @@ public class ExportPreparer extends Activity {
         }
 
         s = s.replace("\n\n\n","\n\n");
-        Log.d("d","OnSong = "+s);
         FullscreenActivity.exportOnSong_String = s;
     }
     private static void prepareTextFile(Context c) {

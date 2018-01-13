@@ -272,6 +272,8 @@ public class PopUpScalingFragment extends DialogFragment {
                 }
             }
         });
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

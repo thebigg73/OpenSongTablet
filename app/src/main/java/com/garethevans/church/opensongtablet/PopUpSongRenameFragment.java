@@ -134,6 +134,7 @@ public class PopUpSongRenameFragment extends DialogFragment {
             }
         });
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         return V;
     }
 

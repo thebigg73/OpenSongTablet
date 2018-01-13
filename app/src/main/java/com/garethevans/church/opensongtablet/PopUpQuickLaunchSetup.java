@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class PopUpQuickLaunchSetup  extends DialogFragment {
+public class PopUpQuickLaunchSetup extends DialogFragment {
 
     static PopUpQuickLaunchSetup newInstance() {
         PopUpQuickLaunchSetup frag;
@@ -38,6 +38,10 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         mListener = (MyInterface) activity;
+        // safety check
+        if (getActivity() != null && getDialog() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+        }
         super.onAttach(activity);
     }
 
@@ -63,6 +67,14 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
     Spinner button2_spinner;
     Spinner button3_spinner;
     Spinner button4_spinner;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            this.dismiss();
+        }
+    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -213,8 +225,9 @@ public class PopUpQuickLaunchSetup  extends DialogFragment {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
-        return V;
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 
+        return V;
     }
 
     public void doSave() {

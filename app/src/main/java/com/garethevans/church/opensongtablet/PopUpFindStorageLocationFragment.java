@@ -115,6 +115,8 @@ public class PopUpFindStorageLocationFragment extends DialogFragment {
 
         startSearch();
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

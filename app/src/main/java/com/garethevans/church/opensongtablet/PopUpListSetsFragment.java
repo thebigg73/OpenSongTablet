@@ -339,10 +339,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                         FullscreenActivity.setnamechosen = FullscreenActivity.setnamechosen.replace(msetname + "%_%", "");
                     }
                 }
-
-                Log.d("d","setnamechosen="+FullscreenActivity.setnamechosen);
-                Log.d("d","filteredsetnames["+position+"]="+setnames[position]);
-
                 setListName.setText(filteredsetnames[position]);
             }
         });
@@ -369,6 +365,8 @@ public class PopUpListSetsFragment extends DialogFragment {
         });
 
         dataTask = new FetchDataTask();
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 
         return V;
     }
@@ -455,8 +453,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                 }
             }
         }
-        Log.d("d","log="+log);
-
         // Now split the log into available categories
         String[] categoriesfound = log.split(",");
         for (String s:categoriesfound) {
@@ -558,8 +554,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                 setListView1.setItemChecked(f,false);
             }
         }
-        Log.d("d","setnamechosen="+FullscreenActivity.setnamechosen);
-
     }
 
     public void doLoadSet() {
@@ -600,7 +594,6 @@ public class PopUpListSetsFragment extends DialogFragment {
         FullscreenActivity.settoload = FullscreenActivity.setnamechosen;
         FullscreenActivity.lastSetName = setListName.getText().toString();
 
-        Log.d("d","settoload="+FullscreenActivity.settoload);
         dataTask = null;
         dataTask = new FetchDataTask();
         try {
@@ -814,17 +807,11 @@ public class PopUpListSetsFragment extends DialogFragment {
     }
 
     public void doRenameSet() {
-        Log.d("d","doRenameSet() called");
         // Get the values from the page
-        Log.d("d","setnamechosen="+FullscreenActivity.setnamechosen);
         String newcat_edittext = newCategory_EditText.getText().toString();
         String newcat_spinner = cats.get(setCategory_Spinner.getSelectedItemPosition());
 
-        Log.d("d","newcat_edittext="+newcat_edittext);
-        Log.d("d","newcat_spinner="+newcat_spinner);
-
         String newsettitle = setListName.getText().toString();
-        Log.d("d","newsettitle="+newsettitle);
 
         String newsetname;
         if (!newcat_edittext.equals("")) {
@@ -841,10 +828,6 @@ public class PopUpListSetsFragment extends DialogFragment {
         File newsetfile = new File(FullscreenActivity.dirsets+"/"+newsetname);
         boolean success;
 
-        Log.d("d","oldsetfile="+oldsetfile.toString());
-        Log.d("d","newsetfile="+newsetfile.toString());
-        Log.d("d","overWrite_CheckBox.isChecked()="+overWrite_CheckBox.isChecked());
-
         // Check the new song doesn't exist already
         if (newsetfile.exists() && !overWrite_CheckBox.isChecked()) {
             success = false;
@@ -854,7 +837,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                 Log.d("d","error renaming");
             }
         }
-        Log.d("d","newsetname="+newsetname);
 
         if (success) {
             FullscreenActivity.myToastMessage = getActivity().getString(R.string.renametitle) + " - " +

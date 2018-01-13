@@ -47,7 +47,6 @@ final class SongFileList {
             } catch (Exception e) {
                 // Error sorting
                 Log.d("d","Error sorting");
-                e.printStackTrace();
             }
             return folderList.toArray(new String[folderList.size()].clone());
         } else {
@@ -61,7 +60,6 @@ final class SongFileList {
             } catch (Exception e) {
                 // Error sorting
                 Log.d("d","Error sorting");
-                e.printStackTrace();
             }
             return folderList.toArray(new String[folderList.size()]).clone();
         }
@@ -157,7 +155,6 @@ final class SongFileList {
         } catch (Exception e) {
             // Error sorting
             Log.d("d","Error sorting");
-            e.printStackTrace();
         }
         // Show the folders sorted
         /*l=0;
@@ -174,7 +171,6 @@ final class SongFileList {
         } catch (Exception e) {
             // Error sorting
             Log.d("d","Error sorting");
-            e.printStackTrace();
         }
 
         // Now join the two arrays back together

@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,6 +79,8 @@ public class PopUpExportSongListFragment extends DialogFragment {
         songDirectoy_ListView.setAdapter(adapter);
         songDirectoy_ListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 
@@ -105,7 +106,6 @@ public class PopUpExportSongListFragment extends DialogFragment {
         // For each selected directory, list the song that exist.
         String songContents = "";
 
-        Log.d("d", "directories="+directories.toString());
         for (String directory:directories) {
             File directory_file;
             if (directory.equals(FullscreenActivity.mainfoldername)) {

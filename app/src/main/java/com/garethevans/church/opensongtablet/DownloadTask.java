@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -44,7 +43,6 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
             HttpURLConnection connection = null;
             try {
                 URL url = new URL(address);
-                Log.d("d","address="+address);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
 

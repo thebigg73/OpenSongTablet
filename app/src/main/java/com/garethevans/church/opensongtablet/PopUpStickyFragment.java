@@ -96,6 +96,7 @@ public class PopUpStickyFragment extends DialogFragment {
                 dismiss();
             }
         });
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         return V;
     }
 

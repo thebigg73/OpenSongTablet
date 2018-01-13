@@ -149,6 +149,8 @@ public class PopUpLongSongPressFragment extends DialogFragment {
             }
         });
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

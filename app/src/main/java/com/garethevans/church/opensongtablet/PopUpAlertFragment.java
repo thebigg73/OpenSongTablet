@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -118,6 +119,10 @@ public class PopUpAlertFragment extends DialogFragment {
                 }
             }
         });
+        Dialog dialog = getDialog();
+        if (dialog!=null && getActivity()!=null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog);
+        }
         return V;
     }
 

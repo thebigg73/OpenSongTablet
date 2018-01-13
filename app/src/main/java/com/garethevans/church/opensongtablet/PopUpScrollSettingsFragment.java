@@ -120,7 +120,10 @@ public class PopUpScrollSettingsFragment extends DialogFragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Preferences.savePreferences();
             }
-        });        return V;
+        });
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
+        return V;
     }
 
     public void getSpeed(int s) {

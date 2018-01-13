@@ -207,6 +207,8 @@ public class PopUpExportFragment extends DialogFragment {
             }
         });
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

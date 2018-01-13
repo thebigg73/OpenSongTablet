@@ -333,6 +333,8 @@ public class PopUpPageButtonsFragment extends DialogFragment {
                 }
             }
         });
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

@@ -282,6 +282,8 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             }
         });
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 
@@ -293,7 +295,6 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         if (whattype.equals("image")) {
             imagecontents = "";
             // Go through images in list and extract the full location and the filename
-            Log.d("table", "getChildCount=" + slideImageTable.getChildCount());
             for (int r = 0; r < slideImageTable.getChildCount(); r++) {
                 // Look for image file location
                 if (slideImageTable.getChildAt(r) instanceof TableRow) {
@@ -350,7 +351,6 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
         @Override
         protected void onPostExecute(String s) {
-            Log.d("d", "FullscreenActivity.whattodo=" + FullscreenActivity.whattodo);
             switch (FullscreenActivity.whattodo) {
                 case "customreusable_note":
                     // Fill in the details
@@ -604,7 +604,6 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                     // oh well
                     Log.d("error", "No table row with this tag");
                 }
-                Log.d("remove", "rowtag=" + rowtag);
             }
         });
         row.addView(filename);

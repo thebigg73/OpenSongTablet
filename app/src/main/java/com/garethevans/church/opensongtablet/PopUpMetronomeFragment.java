@@ -238,6 +238,8 @@ public class PopUpMetronomeFragment extends DialogFragment {
             }
         });
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 
@@ -309,7 +311,6 @@ public class PopUpMetronomeFragment extends DialogFragment {
         }
         if (Metronome.visualMetronome!=null) {
             Log.d("d","visualMetronome not null");
-            //Metronome.visualMetronome.cancel();
         }
         this.dismiss();
     }
@@ -340,7 +341,6 @@ public class PopUpMetronomeFragment extends DialogFragment {
     }
 
     public int getVolume(float v) {
-        Log.d("d","v="+v);
         return (int) (v*100.0f);
     }
 
@@ -360,10 +360,6 @@ public class PopUpMetronomeFragment extends DialogFragment {
 
         //Specify the NumberPicker data source as array elements
         bpm_numberPicker.setDisplayedValues(bpmValues);
-        Log.d("d","mTempo="+FullscreenActivity.mTempo);
-        Log.d("d","tempo="+tempo);
-        Log.d("d","bpm="+bpm);
-
         bpm_numberPicker.setValue(tempo-40);
         bpm_numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -376,13 +372,11 @@ public class PopUpMetronomeFragment extends DialogFragment {
                 } else {
                     FullscreenActivity.mTempo = "" + (i1+40);
                     bpm = (short) (i1+40);
-                    Log.d("d","mTempo="+FullscreenActivity.mTempo);
                 }
                 FullscreenActivity.metronomeok = Metronome.isMetronomeValid();
                 Preferences.savePreferences();
             }
         });
-        Log.d("d","tempo="+tempo);
     }
 
     public void getTimeSigValues() {
@@ -419,7 +413,6 @@ public class PopUpMetronomeFragment extends DialogFragment {
                     Metronome.setNoteValues();
                 }
                 FullscreenActivity.metronomeok = Metronome.isMetronomeValid();
-                Log.d("d","metronomeok="+FullscreenActivity.metronomeok);
                 Preferences.savePreferences();
             }
         });

@@ -127,6 +127,7 @@ public class PopUpSongDetailsFragment extends DialogFragment {
         v_mLyrics.setTextSize(8.0f);
         v_mLyrics.setText(FullscreenActivity.mLyrics);
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         return V;
     }
 

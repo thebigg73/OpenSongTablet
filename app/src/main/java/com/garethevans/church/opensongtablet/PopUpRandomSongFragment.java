@@ -6,7 +6,6 @@ import android.app.DialogFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,6 +131,8 @@ public class PopUpRandomSongFragment extends DialogFragment {
             }
         });
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 
@@ -153,22 +154,9 @@ public class PopUpRandomSongFragment extends DialogFragment {
                 }
             }
 
-            chooseFolders_ListView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    Log.d("d","selected i="+i);
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
-
             chooseFolders_ListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Log.d("d","itemclicked i="+i);
                     if (chooseFolders_ListView.isItemChecked(i)) {
                         if (!FullscreenActivity.randomFolders.contains("$$__"+FullscreenActivity.mSongFolderNames[i]+"__$$")) {
                             // Not there, so add it
@@ -232,25 +220,30 @@ public class PopUpRandomSongFragment extends DialogFragment {
     }
 
     public String getRandomSong() {
-        // This feature randomly picks a song from the user's database
-        ArrayList<String> songstochoosefrom = new ArrayList<>();
-        if (FullscreenActivity.search_database!=null && FullscreenActivity.search_database.size()>0) {
-            Log.d("d","search_database.size()="+FullscreenActivity.search_database.size());
-            for (String check : FullscreenActivity.search_database) {
-                String[] bits = check.split("_%%%_");
-                if (bits.length >= 2 && bits[0] != null && bits[1] != null &&
-                        FullscreenActivity.randomFolders.contains("$$__" + bits[1].trim() + "__$$")) {
-                    songstochoosefrom.add(bits[1].trim() + "__" + bits[0].trim());
+        try {
+            // This feature randomly picks a song from the user's database
+            ArrayList<String> songstochoosefrom = new ArrayList<>();
+            if (FullscreenActivity.search_database != null && FullscreenActivity.search_database.size() > 0) {
+                for (String check : FullscreenActivity.search_database) {
+                    String[] bits = check.split("_%%%_");
+                    if (bits.length >= 2 && bits[0] != null && bits[1] != null &&
+                            FullscreenActivity.randomFolders.contains("$$__" + bits[1].trim() + "__$$")) {
+                        songstochoosefrom.add(bits[1].trim() + "__" + bits[0].trim());
+                    }
                 }
-            }
-            iserror = false;
-            int rand = getRandomNumber(songstochoosefrom.size());
-            if (rand > -1 && songstochoosefrom.size()>rand) {
-                return songstochoosefrom.get(rand);
+                iserror = false;
+                int rand = getRandomNumber(songstochoosefrom.size());
+                if (rand > -1 && songstochoosefrom.size() > rand) {
+                    return songstochoosefrom.get(rand);
+                } else {
+                    return "";
+                }
             } else {
+                FullscreenActivity.myToastMessage = getActivity().getString(R.string.search_index_error);
+                iserror = true;
                 return "";
             }
-        } else {
+        } catch (Exception e) {
             FullscreenActivity.myToastMessage = getActivity().getString(R.string.search_index_error);
             iserror = true;
             return "";

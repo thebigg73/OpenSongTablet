@@ -207,6 +207,7 @@ public class PopUpSwipeSettingsFragment extends DialogFragment {
                 hideorunhideSettings();
             }
         });
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         return V;
     }
 

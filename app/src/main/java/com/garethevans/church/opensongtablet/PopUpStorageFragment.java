@@ -139,6 +139,7 @@ public class PopUpStorageFragment extends DialogFragment {
         super.onDetach();
     }
 
+    @Override
     public void onStart() {
         super.onStart();
 
@@ -154,7 +155,11 @@ public class PopUpStorageFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null) {
-            this.dismiss();
+            try {
+                dismiss();
+            } catch (Exception e) {
+                Log.d("d","Problem closing fragment");
+            }
         }
     }
 
@@ -229,8 +234,14 @@ public class PopUpStorageFragment extends DialogFragment {
             public void onClick(View view) {
                 if (storageGranted) {
                     FullscreenActivity.whattodo = "wipeallsongs";
-                    mListener.openFragment();
-                    dismiss();
+                    if (mListener!=null) {
+                        mListener.openFragment();
+                    }
+                    try {
+                        dismiss();
+                    } catch (Exception e) {
+                        Log.d("d","Problem closing fragment");
+                    }
                 } else {
                     requestStoragePermission();
                 }
@@ -258,13 +269,25 @@ public class PopUpStorageFragment extends DialogFragment {
                     if (FullscreenActivity.uriTree != null) {
                         FullscreenActivity.searchUsingSAF = true;
                         if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
-                            sListener.selectStorage();
-                            dismiss();
+                            if (sListener!=null) {
+                                sListener.selectStorage();
+                            }
+                            try {
+                                dismiss();
+                            } catch (Exception e) {
+                                Log.d("d","Problem closing fragment");
+                            }
 
                         } else {
                             FullscreenActivity.whattodo = "customstoragefind";
-                            mListener.openFragment();
-                            dismiss();
+                            if (mListener!=null) {
+                                mListener.openFragment();
+                            }
+                            try {
+                                dismiss();
+                            } catch (Exception e) {
+                                Log.d("d","Problem closing fragment");
+                            }
                         }
                     }
                 }
@@ -346,13 +369,25 @@ public class PopUpStorageFragment extends DialogFragment {
             public void onClick(View v) {
                 FullscreenActivity.searchUsingSAF = false;
                 if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
-                    sListener.selectStorage();
-                    dismiss();
+                    if (sListener!=null) {
+                        sListener.selectStorage();
+                    }
+                    try {
+                        dismiss();
+                    } catch (Exception e) {
+                        Log.d("d","Problem closing fragment");
+                    }
 
                 } else {
                     FullscreenActivity.whattodo = "customstoragefind";
-                    mListener.openFragment();
-                    dismiss();
+                    if (mListener!=null) {
+                        mListener.openFragment();
+                    }
+                    try {
+                        dismiss();
+                    } catch (Exception e) {
+                        Log.d("d","Problem closing fragment");
+                    }
                 }
             }
         });
@@ -368,6 +403,7 @@ public class PopUpStorageFragment extends DialogFragment {
         // Set the text for the various storage locations
         checkStorageLocations();
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         return V;
     }
 
@@ -522,9 +558,6 @@ public class PopUpStorageFragment extends DialogFragment {
             }
         }
         if (FullscreenActivity.uriTree!=null) {
-            Log.d("d","uriTree="+FullscreenActivity.uriTree);
-            Log.d("d","uriTree.getPath()="+FullscreenActivity.uriTree.getPath());
-            Log.d("d","uriTree.getEncodedPath()="+FullscreenActivity.uriTree.getEncodedPath());
             DocumentFile df;
             try {
                 df = DocumentFile.fromTreeUri(getActivity(), FullscreenActivity.uriTree);
@@ -533,7 +566,6 @@ public class PopUpStorageFragment extends DialogFragment {
             }
             if (df!=null && df.canWrite()) {
                 isok = true;
-                Log.d("d","df="+df+"\ncanWrite()=true");
             } else {
                 Log.d("d","df="+df+"\ncanWrite()=false");
             }
@@ -602,15 +634,27 @@ public class PopUpStorageFragment extends DialogFragment {
                 FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.createfoldererror);
                 ShowToast.showToast(getActivity());
             }
-            sListener.recheckStorage();
-            dismiss();
+            if (sListener!=null) {
+                sListener.recheckStorage();
+            }
+            try {
+                dismiss();
+            } catch (Exception e) {
+                Log.d("d","Problem closing fragment");
+            }
         } else {
             if (createDirectories()) {
                 Preferences.savePreferences();
                 ListSongFiles.getAllSongFolders();
-                mListener.rebuildSearchIndex();
-                mListener.prepareSongMenu();
-                dismiss();
+                if (mListener!=null) {
+                    mListener.rebuildSearchIndex();
+                    mListener.prepareSongMenu();
+                }
+                try {
+                    dismiss();
+                } catch (Exception e) {
+                    Log.d("d","Problem closing fragment");
+                }
             } else {
                 FullscreenActivity.myToastMessage = getResources().getString(R.string.storage_issues);
                 ShowToast.showToast(getActivity());
@@ -701,7 +745,6 @@ public class PopUpStorageFragment extends DialogFragment {
         boolean success = true;
         if (!folder.exists()) {
             if (!folder.mkdirs()) {
-                Log.d("d","Error creating directory - "+folder);
                 success = false;
             }
         }
@@ -753,7 +796,11 @@ public class PopUpStorageFragment extends DialogFragment {
 
     @Override
     public void onCancel(DialogInterface dialog) {
-        this.dismiss();
+        try {
+            this.dismiss();
+        } catch (Exception e) {
+            Log.d("d","Problem closing fragment");
+        }
     }
 
     public static void copyAssets(Context c) {

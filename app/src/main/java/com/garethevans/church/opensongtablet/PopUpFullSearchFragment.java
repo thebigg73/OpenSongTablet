@@ -121,6 +121,8 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
             Simplesearch();
         }
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

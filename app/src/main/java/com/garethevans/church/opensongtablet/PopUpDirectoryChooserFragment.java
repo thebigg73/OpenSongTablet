@@ -222,7 +222,6 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
 
                 if (FullscreenActivity.searchUsingSAF) {
                     // Try to get the new location using Storage Access Framework
-                    Log.d("d","itemclicked="+itemclicked);
                     if (uri_current.toString().endsWith("%3A")) {
                         // This is the root, so just add the directory name
                         itemclicked = uri_current + itemclicked;
@@ -239,7 +238,6 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
                 } else {
                     //Use the standard file browsing features
                     location = new File(location + "/" + itemclicked);
-                    Log.d("d", "location=" + location);
                     if (location.isDirectory()) {
                         // List the new folder contents
                         if (chooserAction.contains("file")) {
@@ -254,7 +252,6 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
                     } else {
                         // This is the file we want (folder chooser won't list files!)
                         FullscreenActivity.filechosen = location;
-                        Log.d("d", "" + location.toString());
                         if (chooserAction.equals("file")) {
                             mListener.updateCustomStorage();
                         } else if (chooserAction.equals("findosbfiles")) {
@@ -278,6 +275,8 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
         });
 
         checkCanWrite();
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 
         return V;
     }
@@ -311,22 +310,18 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
         if (FullscreenActivity.searchUsingSAF) {
             try {
                 DocumentFile df = DocumentFile.fromTreeUri(getActivity(), uri_current);
-                Log.d("df","df="+uri_current);
-
                 if (df.canWrite()) {
                     if (selectButton != null) {
                         selectButton.setVisibility(View.VISIBLE);
                         selectButton.setEnabled(true);
                     }
                     isWritableText.setVisibility(View.INVISIBLE);
-                    Log.d("d", uri_current + " is writable");
                 } else {
                     if (selectButton != null) {
                         selectButton.setVisibility(View.GONE);
                         selectButton.setEnabled(false);
                     }
                     isWritableText.setVisibility(View.VISIBLE);
-                    Log.d("d", uri_current + " is NOT writable");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -339,14 +334,12 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
                     selectButton.setEnabled(true);
                 }
                 isWritableText.setVisibility(View.INVISIBLE);
-                Log.d("d", location + " is writable");
             } else {
                 if (selectButton != null) {
                     selectButton.setVisibility(View.GONE);
                     selectButton.setEnabled(false);
                 }
                 isWritableText.setVisibility(View.VISIBLE);
-                Log.d("d", location + " is NOT writable");
             }
         }
     }
@@ -523,9 +516,7 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
                             } else if (file.getName().equals("OpenSong")) {
                                 foundOpenSongFolder = true;
                             }
-                            Log.d("d","file.getUri()="+file.getUri());
                             tempProperDirectories.add(file.getName());
-                            Log.d("d","file.getName()="+file.getName());
                         }
                     }
                     String whereami = uri_current.toString().replace(uri_root.toString(), "/");

@@ -5,7 +5,6 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,6 +129,8 @@ public class PopUpGesturesFragment extends DialogFragment {
         setSpinnerVal(upPedalLongPress, FullscreenActivity.longpressuppedalgesture);
         setSpinnerVal(downPedalLongPress, FullscreenActivity.longpressdownpedalgesture);
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 
@@ -179,7 +180,6 @@ public class PopUpGesturesFragment extends DialogFragment {
         if (val != null && !val.equals("")) {
             try {
                 selection = Integer.parseInt(val);
-                Log.d("d", "selection=" + selection);
             } catch (Exception e) {
                 e.printStackTrace();
             }

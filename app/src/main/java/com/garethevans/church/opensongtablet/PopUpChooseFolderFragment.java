@@ -5,7 +5,6 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +97,6 @@ public class PopUpChooseFolderFragment extends DialogFragment {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     FullscreenActivity.whichSongFolder = FullscreenActivity.mSongFolderNames[i];
-                    Log.d("d", "ChooseFolderFragment whichSongFolder=" + FullscreenActivity.whichSongFolder);
                     //Preferences.savePreferences();  // Remove this to avoid bugs if user is only browsing
                     if (mListener != null) {
                         mListener.prepareSongMenu();
@@ -107,6 +105,8 @@ public class PopUpChooseFolderFragment extends DialogFragment {
                 }
             });
         }
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 
         return V;
     }

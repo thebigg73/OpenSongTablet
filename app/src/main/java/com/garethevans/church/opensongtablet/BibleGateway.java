@@ -88,7 +88,6 @@ public class BibleGateway extends Activity {
             if (endoffull>startoffull && startoffull>0 && endoffull>0) {
                 newbit = newbit.substring(startoffull,endoffull);
             } else {
-                Log.d("d","Error getting scripture");
                 FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
                 ShowToast.showToast(c);
             }
@@ -122,7 +121,6 @@ public class BibleGateway extends Activity {
                 try {
                     scripture_title = result.substring(title_startpos,title_endpos);
                 } catch (Exception e) {
-                    e.printStackTrace();
                     Log.d("d","Error getting scripture title");
                     FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
                     ShowToast.showToast(c);

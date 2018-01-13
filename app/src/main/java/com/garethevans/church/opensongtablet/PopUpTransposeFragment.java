@@ -222,6 +222,7 @@ public class PopUpTransposeFragment extends DialogFragment {
             chordFormat5Radio.setVisibility(View.GONE);
         }
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         return V;
     }
 

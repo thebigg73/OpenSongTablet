@@ -123,6 +123,8 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         getPDFExtractedText();
         pdftotext_found.setText(foundText);
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

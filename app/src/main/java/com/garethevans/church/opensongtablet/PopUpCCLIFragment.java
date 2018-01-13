@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -62,11 +64,11 @@ public class PopUpCCLIFragment extends DialogFragment {
         super.onAttach(activity);
     }
 
-    @Override
+    /*@Override
     public void onDetach() {
         mListener = null;
         super.onDetach();
-    }
+    }*/
 
     @Override
     public void onStart() {
@@ -132,6 +134,7 @@ public class PopUpCCLIFragment extends DialogFragment {
         resetText = V.findViewById(R.id.resetText);
         logWebView.getSettings().setBuiltInZoomControls(true);
         logWebView.getSettings().setDisplayZoomControls(false);
+        logWebView.clearCache(true);
         logWebView.setInitialScale(100);
 
         // Set up the views required
@@ -152,7 +155,10 @@ public class PopUpCCLIFragment extends DialogFragment {
                 setupReset();
                 break;
         }
-
+        Dialog dialog = getDialog();
+        if (dialog!=null && getActivity()!=null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog);
+        }
         return V;
     }
 
@@ -259,136 +265,149 @@ public class PopUpCCLIFragment extends DialogFragment {
 
         @Override
         protected String doInBackground(Object... objects) {
-            // If the xml file doesn't exist, create a blank one
-            boolean success = true;
-            if (!activitylogfile.exists()) {
-                success = createBlankXML();
-            }
-            if (success) {
-                try {
-                    // We can proceed!
-                    XmlPullParserFactory factory;
-                    factory = XmlPullParserFactory.newInstance();
+            try {
+                // If the xml file doesn't exist, create a blank one
+                boolean success = true;
+                if (!activitylogfile.exists()) {
+                    success = createBlankXML();
+                }
+                if (success) {
+                    try {
+                        // We can proceed!
+                        XmlPullParserFactory factory;
+                        factory = XmlPullParserFactory.newInstance();
 
-                    factory.setNamespaceAware(true);
-                    XmlPullParser xpp;
-                    xpp = factory.newPullParser();
+                        factory.setNamespaceAware(true);
+                        XmlPullParser xpp;
+                        xpp = factory.newPullParser();
 
-                    songfile = new ArrayList<>();
-                    song = new ArrayList<>();
-                    author = new ArrayList<>();
-                    copyright = new ArrayList<>();
-                    ccli = new ArrayList<>();
-                    date = new ArrayList<>();
-                    time = new ArrayList<>();
-                    action = new ArrayList<>();
+                        songfile = new ArrayList<>();
+                        song = new ArrayList<>();
+                        author = new ArrayList<>();
+                        copyright = new ArrayList<>();
+                        ccli = new ArrayList<>();
+                        date = new ArrayList<>();
+                        time = new ArrayList<>();
+                        action = new ArrayList<>();
 
-                    InputStream inputStream = new FileInputStream(activitylogfile);
-                    xpp.setInput(inputStream, "UTF-8");
+                        InputStream inputStream = new FileInputStream(activitylogfile);
+                        xpp.setInput(inputStream, "UTF-8");
 
-                    int eventType;
-                    String curr_file = "";
-                    String curr_song = "";
-                    String curr_author = "";
-                    String curr_copy = "";
-                    String curr_ccli = "";
-                    String curr_date = "";
-                    String curr_time = "";
-                    String curr_action = "";
+                        int eventType;
+                        String curr_file = "";
+                        String curr_song = "";
+                        String curr_author = "";
+                        String curr_copy = "";
+                        String curr_ccli = "";
+                        String curr_date = "";
+                        String curr_time = "";
+                        String curr_action = "";
 
-                    eventType = xpp.getEventType();
-                    while (eventType != XmlPullParser.END_DOCUMENT) {
-                        if (eventType == XmlPullParser.START_TAG) {
-                            if (xpp.getName().startsWith("Entry")) {
-                                // If the song isn't blank (first time), extract them
-                                if (!curr_song.equals("")) {
-                                    songfile.add(curr_file);
-                                    song.add(curr_song);
-                                    author.add(curr_author);
-                                    copyright.add(curr_copy);
-                                    ccli.add(curr_ccli);
-                                    date.add(curr_date);
-                                    time.add(curr_time);
-                                    action.add(curr_action);
+                        eventType = xpp.getEventType();
+                        while (eventType != XmlPullParser.END_DOCUMENT) {
+                            if (eventType == XmlPullParser.START_TAG) {
+                                if (xpp.getName().startsWith("Entry")) {
+                                    // If the song isn't blank (first time), extract them
+                                    if (!curr_song.equals("")) {
+                                        songfile.add(curr_file);
+                                        song.add(curr_song);
+                                        author.add(curr_author);
+                                        copyright.add(curr_copy);
+                                        ccli.add(curr_ccli);
+                                        date.add(curr_date);
+                                        time.add(curr_time);
+                                        action.add(curr_action);
+
+                                        // Reset the tags
+                                        curr_file = "";
+                                        curr_song = "";
+                                        curr_author = "";
+                                        curr_copy = "";
+                                        curr_ccli = "";
+                                        curr_date = "";
+                                        curr_time = "";
+                                        curr_action = "";
+                                    }
+                                } else if (xpp.getName().equals("FileName")) {
+                                    curr_file = xpp.nextText();
+                                } else if (xpp.getName().equals("title")) {
+                                    curr_song = xpp.nextText();
+                                } else if (xpp.getName().equals("author")) {
+                                    curr_author = xpp.nextText();
+                                } else if (xpp.getName().equals("copyright")) {
+                                    curr_copy = xpp.nextText();
+                                } else if (xpp.getName().equals("ccli")) {
+                                    curr_ccli = xpp.nextText();
+                                } else if (xpp.getName().equals("Date")) {
+                                    curr_date = xpp.nextText();
+                                } else if (xpp.getName().equals("Time")) {
+                                    curr_time = xpp.nextText();
+                                } else if (xpp.getName().equals("Description")) {
+                                    curr_action = xpp.nextText();
                                 }
-                                // Reset the tags
-                                curr_file = "";
-                                curr_song = "";
-                                curr_author = "";
-                                curr_copy = "";
-                                curr_ccli = "";
-                                curr_date = "";
-                                curr_time = "";
-                                curr_action = "";
-                            } else if (xpp.getName().equals("FileName")) {
-                                curr_file = xpp.nextText();
-                            } else if (xpp.getName().equals("title")) {
-                                curr_song = xpp.nextText();
-                            } else if (xpp.getName().equals("author")) {
-                                curr_author = xpp.nextText();
-                            } else if (xpp.getName().equals("copyright")) {
-                                curr_copy = xpp.nextText();
-                            } else if (xpp.getName().equals("ccli")) {
-                                curr_ccli = xpp.nextText();
-                            } else if (xpp.getName().equals("Date")) {
-                                curr_date = xpp.nextText();
-                            } else if (xpp.getName().equals("Time")) {
-                                curr_time = xpp.nextText();
-                            } else if (xpp.getName().equals("Description")) {
-                                curr_action = xpp.nextText();
+                            }
+                            try {
+                                eventType = xpp.next();
+                            } catch (Exception e) {
+                                //Ooops!
+                                e.printStackTrace();
                             }
                         }
-                        try {
-                            eventType = xpp.next();
-                        } catch (Exception e) {
-                            //Ooops!
-                            e.printStackTrace();
+
+                        // Add the last item
+                        if (!curr_song.equals("")) {
+                            songfile.add(curr_file);
+                            song.add(curr_song);
+                            author.add(curr_author);
+                            copyright.add(curr_copy);
+                            ccli.add(curr_ccli);
+                            date.add(curr_date);
+                            time.add(curr_time);
+                            action.add(curr_action);
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-            String table;
-            if (song==null || song.size()==0) {
-                table = "<html><body><h2>"+getString(R.string.edit_song_ccli)+"</h2>\n" +
-                        "<h3>" + getString(R.string.ccli_church) + ": "+ FullscreenActivity.ccli_church + "</h3>\n" +
-                        "<h3>" + getString(R.string.ccli_licence) + ": "+ FullscreenActivity.ccli_licence + "</h3>\n" +
-                        "</body></html>";
+                String table;
+                if (song == null || song.size() == 0) {
+                    table = "<html><body><h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
+                            "<h3>" + getString(R.string.ccli_church) + ": " + FullscreenActivity.ccli_church + "</h3>\n" +
+                            "<h3>" + getString(R.string.ccli_licence) + ": " + FullscreenActivity.ccli_licence + "</h3>\n" +
+                            "</body></html>";
 
-            } else {
-                table = "<html><head>\n"+
-                        "<style>\n#mytable {\nborder-collapse: collapse; width: 100%;\n}\n" +
-                        "#mytable td, #mytable th {\nborder: 1px solid #ddd; padding: 2px;\n}\n" +
-                        "#mytable tr:nth-child(even) {\nbackground-color: #f2f2f2;\n}\n" +
-                        "#mytable th {\npadding-top: 2px; padding-bottom: 2px; text-align: left; " +
-                        "background-color: #4CAF50; color: white;\n}\n" +
-                        "</style>\n</head><body>" +
-                        "<h2>"+getString(R.string.edit_song_ccli)+"</h2>\n" +
-                        "<h3>" + getString(R.string.ccli_church) + ": "+ FullscreenActivity.ccli_church + "</h3>\n" +
-                        "<h3>" + getString(R.string.ccli_licence) + ": "+ FullscreenActivity.ccli_licence + "</h3>\n" +
-                        "<body><table id=\"mytable\">\n<tr>";
-                table += "<th>"+getString(R.string.item)+"</th>";
-                table += "<th>"+getString(R.string.edit_song_title)+"</th>";
-                table += "<th>"+getString(R.string.edit_song_author)+"</th>";
-                table += "<th>"+getString(R.string.edit_song_copyright)+"</th>";
-                table += "<th>"+getString(R.string.edit_song_ccli)+"</th>";
-                table += "<th>"+getString(R.string.date)+"</th>";
-                table += "<th>"+getString(R.string.time)+"</th>";
-                table += "<th>"+getString(R.string.action)+"</th>";
-                table += "</tr>\n";
-                // Build the table view
-                for (int x = 0; x < song.size(); x++) {
-                    table += "<tr>";
-                    table += "<td>" + songfile.get(x) + "</td>";
-                    table += "<td>" + song.get(x) + "</td>";
-                    table += "<td>" + author.get(x) + "</td>";
-                    table += "<td>" + copyright.get(x) + "</td>";
-                    table += "<td>" + ccli.get(x) + "</td>";
-                    table += "<td>" + date.get(x) + "</td>";
-                    table += "<td>" + time.get(x) + "</td>";
-                    switch (action.get(x)) {
+                } else {
+                    table = "<html><head>\n" +
+                            "<style>\n#mytable {\nborder-collapse: collapse; width: 100%;\n}\n" +
+                            "#mytable td, #mytable th {\nborder: 1px solid #ddd; padding: 2px;\n}\n" +
+                            "#mytable tr:nth-child(even) {\nbackground-color: #f2f2f2;\n}\n" +
+                            "#mytable th {\npadding-top: 2px; padding-bottom: 2px; text-align: left; " +
+                            "background-color: #4CAF50; color: white;\n}\n" +
+                            "</style>\n</head><body>" +
+                            "<h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
+                            "<h3>" + getString(R.string.ccli_church) + ": " + FullscreenActivity.ccli_church + "</h3>\n" +
+                            "<h3>" + getString(R.string.ccli_licence) + ": " + FullscreenActivity.ccli_licence + "</h3>\n" +
+                            "<body><table id=\"mytable\">\n<tr>";
+                    table += "<th>" + getString(R.string.item) + "</th>";
+                    table += "<th>" + getString(R.string.edit_song_title) + "</th>";
+                    table += "<th>" + getString(R.string.edit_song_author) + "</th>";
+                    table += "<th>" + getString(R.string.edit_song_copyright) + "</th>";
+                    table += "<th>" + getString(R.string.edit_song_ccli) + "</th>";
+                    table += "<th>" + getString(R.string.date) + "</th>";
+                    table += "<th>" + getString(R.string.time) + "</th>";
+                    table += "<th>" + getString(R.string.action) + "</th>";
+                    table += "</tr>\n";
+                    // Build the table view
+                    for (int x = 0; x < song.size(); x++) {
+                        table += "<tr>";
+                        table += "<td>" + songfile.get(x) + "</td>";
+                        table += "<td>" + song.get(x) + "</td>";
+                        table += "<td>" + author.get(x) + "</td>";
+                        table += "<td>" + copyright.get(x) + "</td>";
+                        table += "<td>" + ccli.get(x) + "</td>";
+                        table += "<td>" + date.get(x) + "</td>";
+                        table += "<td>" + time.get(x) + "</td>";
+                        switch (action.get(x)) {
                         /*
                         1 Created - when importing or clicking on the new
                         2 Deleted - when clicking on the delete options
@@ -399,39 +418,46 @@ public class PopUpCCLIFragment extends DialogFragment {
                         7 Renamed - when rename is called
                         8 Copied - when duplicate is called
                         */
-                        default:
-                            table += "<td>" + getString(R.string.options_other) + "</td>";
-                            break;
-                        case "1":
-                            table += "<td>" + getString(R.string.options_song_new) + "</td>";
-                            break;
-                        case "2":
-                            table += "<td>" + getString(R.string.options_set_delete) + "</td>";
-                            break;
-                        case "3":
-                            table += "<td>" + getString(R.string.options_set_edit) + "</td>";
-                            break;
-                        case "4":
-                        case "7":
-                            table += "<td>" + getString(R.string.options_song_rename) + "</td>";
-                            break;
-                        case "5":
-                            table += "<td>" + getString(R.string.sendtoprojector) + "</td>";
-                            break;
-                        case "6":
-                            table += "<td>" + getString(R.string.songsheet) + "</td>";
-                            break;
+                            default:
+                                table += "<td>" + getString(R.string.options_other) + "</td>";
+                                break;
+                            case "1":
+                                table += "<td>" + getString(R.string.options_song_new) + "</td>";
+                                break;
+                            case "2":
+                                table += "<td>" + getString(R.string.options_set_delete) + "</td>";
+                                break;
+                            case "3":
+                                table += "<td>" + getString(R.string.options_set_edit) + "</td>";
+                                break;
+                            case "4":
+                            case "7":
+                                table += "<td>" + getString(R.string.options_song_rename) + "</td>";
+                                break;
+                            case "5":
+                                table += "<td>" + getString(R.string.sendtoprojector) + "</td>";
+                                break;
+                            case "6":
+                                table += "<td>" + getString(R.string.songsheet) + "</td>";
+                                break;
+                        }
+                        table += "<tr>\n";
                     }
-                    table += "<tr>\n";
+                    table += "</table></body></html>";
                 }
-                table += "</table></body></html>";
+                return table;
+            } catch (Exception e) {
+                return "";
             }
-            return table;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            logWebView.loadData(s,"text/html","UTF-8");
+            try {
+                logWebView.loadData(s, "text/html", "UTF-8");
+            } catch (Exception e) {
+                Log.d("d","Error updating the WebView");
+            }
         }
     }
 
@@ -534,15 +560,42 @@ public class PopUpCCLIFragment extends DialogFragment {
                 Document document = documentBuilder.parse(activitylogfile);
                 Element root = document.getDocumentElement();
 
-                String last = root.getLastChild().getNodeName();
-                last = last.replace("Entry","");
+                String last = "Entry0";
+                try {
+                    if (root!=null && root.getLastChild()!=null && root.getLastChild().getNodeName()!=null) {
+                        last = root.getLastChild().getNodeName();
+                        // Repeat this a max of 5 times, or until we find the EntryX tag
+                        boolean found = false;
+                        int attempts = 0;
+                        Node n = root.getLastChild();
+                        while (!found) {
+                            n = n.getPreviousSibling();
+                            last = n.getNodeName();
+                            if (last.contains("Entry")) {
+                                found = true;
+                            } else {
+                                attempts ++;
+                            }
+                            if (attempts>6) {
+                                last = "";
+                                found = true;
+                            }
+                        }
+                    }
+                    last = last.replace("Entry", "");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                        e.printStackTrace();
+                        last = "0";
+                }
 
                 // Try to get the last entry number
-                int i = 1;
+                int i;
                 try {
-                    i = Integer.parseInt(last) + 1;
+                    i = Integer.parseInt(last.replaceAll("[\\D]", "")) + 1;
                 } catch (Exception e) {
                     Log.d("d","No integer found, so will use 1");
+                    i = 1;
                 }
 
                 Element newItem = document.createElement("Entry"+i);

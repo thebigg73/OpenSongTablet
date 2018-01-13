@@ -1972,8 +1972,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public void sendSongXMLToConnected() {
         String myXML;
         if (FullscreenActivity.isSong && FullscreenActivity.myXML != null) {
-            //myXML = FullscreenActivity.myXML;
-            Log.d("d","presenterSendSong="+FullscreenActivity.presenterSendSong);
             myXML = FullscreenActivity.presenterSendSong;
         } else {
             myXML = "";

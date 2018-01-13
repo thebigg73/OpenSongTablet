@@ -243,6 +243,8 @@ public class PopUpChordsFragment extends DialogFragment {
         });
         prepareChords();
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

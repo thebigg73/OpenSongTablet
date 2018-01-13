@@ -23,6 +23,7 @@ public class PopUpWebViewFragment extends DialogFragment {
     TextView textview;
     String mTitle = "";
 
+    @Override
     public void onStart() {
         super.onStart();
 
@@ -74,6 +75,7 @@ public class PopUpWebViewFragment extends DialogFragment {
             textview.setVisibility(View.VISIBLE);
             textview.setText(FullscreenActivity.indexlog);
         }
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         return V;
     }
 

@@ -52,6 +52,7 @@ public class PopUpAreYouSureFragment extends DialogFragment {
         super.onDetach();
     }
 
+    @Override
     public void onStart() {
         super.onStart();
 
@@ -129,6 +130,8 @@ public class PopUpAreYouSureFragment extends DialogFragment {
 
         TextView areyousurePrompt = V.findViewById(R.id.areyousurePrompt);
         areyousurePrompt.setText(dialog);
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 
         return V;
     }

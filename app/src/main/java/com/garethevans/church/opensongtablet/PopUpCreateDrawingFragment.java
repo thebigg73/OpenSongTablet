@@ -273,6 +273,8 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
 
         drawView.setDrawingSize(screenshot_width,screenshot_height);
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

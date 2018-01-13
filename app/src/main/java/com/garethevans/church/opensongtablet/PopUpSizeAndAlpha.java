@@ -13,116 +13,123 @@ class PopUpSizeAndAlpha {
 
     static void decoratePopUp(Activity ac, Dialog dialog) {
 
-        try {
-            // Get available width and height
-            DisplayMetrics metrics = new DisplayMetrics();
-            ac.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        if (ac!=null && dialog!=null) {
+            try {
+                // Get available width and height
+                DisplayMetrics metrics = new DisplayMetrics();
+                ac.getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-            int height = metrics.heightPixels;
-            int width = metrics.widthPixels;
+                int height = metrics.heightPixels;
+                int width = metrics.widthPixels;
 
-            float myscale;
-            float myalpha;
-            float mydim;
-            String position;
+                float myscale;
+                float myalpha;
+                float mydim;
+                String position;
 
-            switch (FullscreenActivity.whattodo) {
-                case "showtheset":
-                    myscale = FullscreenActivity.popupScale_Set;
-                    myalpha = FullscreenActivity.popupAlpha_Set;
-                    mydim = FullscreenActivity.popupDim_Set;
-                    position = FullscreenActivity.popupPosition_Set;
-                    break;
-
-                case "chordie":
-                case "ultimate-guitar":
-                case "worshipready":
-                case "editsong":
-                    myscale = 1.0f;
-                    myalpha = FullscreenActivity.popupAlpha_All;
-                    mydim = FullscreenActivity.popupDim_All;
-                    position = "C";
-                    break;
-
-                case "drawnotes":
-                    myscale = 1.0f;
-                    myalpha = 1.0f;
-                    mydim = 1.0f;
-                    position = "C";
-                    break;
-
-                case "abcnotation":
-                case "abcnotation_edit":
-                    myscale = 1.0f;
-                    myalpha = FullscreenActivity.popupAlpha_All;
-                    mydim = FullscreenActivity.popupDim_All;
-                    position = "C";
-                    break;
-
-                default:
-                case "default":
-                    myscale = FullscreenActivity.popupScale_All;
-                    myalpha = FullscreenActivity.popupAlpha_All;
-                    mydim = FullscreenActivity.popupDim_All;
-                    position = FullscreenActivity.popupPosition_All;
-            }
-
-            int desired_width = (int) ((float) width * myscale);
-            int desired_height = (int) ((float) height * myscale);
-
-            Window dw = dialog.getWindow();
-            if (dw != null) {
-                dw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dw.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-                dw.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-                dialog.getWindow().setLayout(desired_width, desired_height);
-                WindowManager.LayoutParams lp = dw.getAttributes();
-                lp.alpha = myalpha;
-                lp.dimAmount = mydim;
-                dw.setAttributes(lp);
-                switch (position) {
-                    case "tl":
-                        dw.setGravity(Gravity.TOP|Gravity.LEFT);
+                switch (FullscreenActivity.whattodo) {
+                    case "showtheset":
+                        myscale = FullscreenActivity.popupScale_Set;
+                        myalpha = FullscreenActivity.popupAlpha_Set;
+                        mydim = FullscreenActivity.popupDim_Set;
+                        position = FullscreenActivity.popupPosition_Set;
                         break;
 
-                    case "tc":
-                        dw.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL);
+                    case "chordie":
+                    case "ultimate-guitar":
+                    case "worshipready":
+                    case "editsong":
+                        myscale = 1.0f;
+                        myalpha = FullscreenActivity.popupAlpha_All;
+                        mydim = FullscreenActivity.popupDim_All;
+                        position = "C";
                         break;
 
-                    case "tr":
-                        dw.setGravity(Gravity.TOP|Gravity.RIGHT);
+                    case "drawnotes":
+                        myscale = 1.0f;
+                        myalpha = 1.0f;
+                        mydim = 1.0f;
+                        position = "C";
                         break;
 
-                    case "l":
-                        dw.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);
+                    case "abcnotation":
+                    case "abcnotation_edit":
+                        myscale = 1.0f;
+                        myalpha = FullscreenActivity.popupAlpha_All;
+                        mydim = FullscreenActivity.popupDim_All;
+                        position = "C";
                         break;
 
                     default:
-                    case "c":
-                        dw.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL);
-                        break;
-
-                    case "r":
-                        dw.setGravity(Gravity.CENTER_VERTICAL|Gravity.RIGHT);
-                        break;
-
-                    case "bl":
-                        dw.setGravity(Gravity.BOTTOM|Gravity.LEFT);
-                        break;
-
-                    case "bc":
-                        dw.setGravity(Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL);
-                        break;
-
-                    case "br":
-                        dw.setGravity(Gravity.BOTTOM|Gravity.RIGHT);
-                        break;
+                    case "default":
+                        myscale = FullscreenActivity.popupScale_All;
+                        myalpha = FullscreenActivity.popupAlpha_All;
+                        mydim = FullscreenActivity.popupDim_All;
+                        position = FullscreenActivity.popupPosition_All;
                 }
-                //setWindowFlags(dw, dw.getDecorView());
-                //setWindowFlagsAdvanced(dw, dw.getDecorView());
+
+                int desired_width = (int) ((float) width * myscale);
+                int desired_height = (int) ((float) height * myscale);
+
+                Window dw = dialog.getWindow();
+                if (dw != null) {
+                    dw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dw.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                    dw.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                    dialog.getWindow().setLayout(desired_width, desired_height);
+                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    dw.setBackgroundDrawable(ac.getDrawable(R.drawable.popup_bg));
+                } else {
+                    dw.setBackgroundDrawable(ac.getResources().getDrawable(R.drawable.popup_bg));
+                }*/
+                    WindowManager.LayoutParams lp = dw.getAttributes();
+                    lp.alpha = myalpha;
+                    lp.dimAmount = mydim;
+                    dw.setAttributes(lp);
+                    switch (position) {
+                        case "tl":
+                            dw.setGravity(Gravity.TOP | Gravity.LEFT);
+                            break;
+
+                        case "tc":
+                            dw.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+                            break;
+
+                        case "tr":
+                            dw.setGravity(Gravity.TOP | Gravity.RIGHT);
+                            break;
+
+                        case "l":
+                            dw.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
+                            break;
+
+                        default:
+                        case "c":
+                            dw.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                            break;
+
+                        case "r":
+                            dw.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+                            break;
+
+                        case "bl":
+                            dw.setGravity(Gravity.BOTTOM | Gravity.LEFT);
+                            break;
+
+                        case "bc":
+                            dw.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
+                            break;
+
+                        case "br":
+                            dw.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
+                            break;
+                    }
+                    //setWindowFlags(dw, dw.getDecorView());
+                    //setWindowFlagsAdvanced(dw, dw.getDecorView());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

@@ -183,6 +183,8 @@ public class PopUpChordFormatFragment extends DialogFragment {
             radioButton7.setChecked(true);
         }
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

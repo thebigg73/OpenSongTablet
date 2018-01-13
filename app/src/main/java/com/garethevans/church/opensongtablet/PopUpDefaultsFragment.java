@@ -33,9 +33,9 @@ public class PopUpDefaultsFragment extends DialogFragment {
         return frag;
     }
 
+    @Override
     public void onStart() {
         super.onStart();
-
         // safety check
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());

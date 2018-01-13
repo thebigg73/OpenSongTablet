@@ -147,6 +147,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
             }
         });
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         return V;
 
     }
@@ -160,12 +161,8 @@ public class PopUpSongCreateFragment extends DialogFragment {
             String currimagename = FullscreenActivity.mCurrentPhotoPath.
                     substring(FullscreenActivity.mCurrentPhotoPath.lastIndexOf("/")+1);
 
-            Log.d("d","currimagename="+currimagename);
-            Log.d("d","from="+FullscreenActivity.mCurrentPhotoPath);
-
             // If no name is specified, use the original ugly one
             if (tempNewSong.isEmpty() || tempNewSong.equals("")) {
-                Log.d("d","currimagename="+currimagename);
                 tempNewSong = currimagename;
             }
 
@@ -179,8 +176,6 @@ public class PopUpSongCreateFragment extends DialogFragment {
             } else {
                 to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.newFolder + "/" + tempNewSong);
             }
-
-            Log.d("d","to="+to);
 
             try {
                 FileChannel inChannel = new FileInputStream(from).getChannel();

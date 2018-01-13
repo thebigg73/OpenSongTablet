@@ -207,6 +207,8 @@ public class PopUpAutoscrollFragment extends DialogFragment {
 
         mHandler.post(runnable);
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

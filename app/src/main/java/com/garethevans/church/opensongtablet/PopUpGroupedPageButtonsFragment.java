@@ -285,6 +285,8 @@ public class PopUpGroupedPageButtonsFragment extends DialogFragment {
             }
         });
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

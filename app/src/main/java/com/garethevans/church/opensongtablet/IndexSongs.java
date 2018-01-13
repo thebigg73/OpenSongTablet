@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -64,7 +63,6 @@ public class IndexSongs extends Activity {
             // Removes start bit for subfolders
             // String foldername = currfolder.replace(songfolder.toString()+"/", "");
             String foldername = currfolder;
-            Log.d("d","currfolder="+currfolder);
             File foldtosplit;
             if (currfolder.equals(c.getString(R.string.mainfoldername))) {
                 foldtosplit = new File(FullscreenActivity.dir.getAbsolutePath());
@@ -254,7 +252,6 @@ public class IndexSongs extends Activity {
         int totalsongsindexed = FullscreenActivity.search_database.size();
 
         FullscreenActivity.indexlog += "\n\nTotal songs indexed="+totalsongsindexed+"\n\n";
-        Log.d("Errors in file imports", errmsg);
         FullscreenActivity.indexlog += "\n\nErrors in importing files\n\nThese songs are either not XML or have invalid XML\n\n" + errmsg;
         FullscreenActivity.safetosearch = true;
     }

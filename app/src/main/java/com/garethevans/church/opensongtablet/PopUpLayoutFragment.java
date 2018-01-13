@@ -421,6 +421,8 @@ public class PopUpLayoutFragment extends DialogFragment {
         // Make sure the logo we have is what is displayed (if we have set a new one)
         sendUpdateToScreen("logo");
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

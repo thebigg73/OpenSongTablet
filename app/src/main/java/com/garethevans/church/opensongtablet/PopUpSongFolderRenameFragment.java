@@ -161,8 +161,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
             }
         });
 
-        // Set the button listeners
-
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         return V;
     }
 

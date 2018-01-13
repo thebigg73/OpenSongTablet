@@ -33,9 +33,7 @@ class OnSongConvert {
 		String temp = FullscreenActivity.myXML;
 		String parsedlines;
 		// Initialise all the xml tags a song should have
-        Log.d("d","temp="+temp);
-        //FullscreenActivity.mTitle = FullscreenActivity.songfilename.replaceAll("[\\x0-\\x9]", "");
-		FullscreenActivity.mTitle = FullscreenActivity.songfilename;
+        FullscreenActivity.mTitle = FullscreenActivity.songfilename;
 		// Initialise all the other tags
         LoadXML.initialiseSongTags();
 
@@ -790,9 +788,7 @@ class OnSongConvert {
 			parsedlines = parsedlines + line2[x] + "\n";
 		}
 
-		Log.d("d","parsedlines="+parsedlines);
-
-        boolean isempty = false;
+		boolean isempty = false;
         if (parsedlines.equals("")) {
             parsedlines = FullscreenActivity.songfilename;
             isempty = true;
@@ -1022,7 +1018,6 @@ class OnSongConvert {
 		@Override
 		public void onPostExecute(String s) {
 			try {
-				Log.d("d", s);
 				if (mListener != null) {
 					String mText = context.getResources().getString(R.string.processing) + " - " + context.getResources().getString(R.string.success);
 					mListener.showToastMessage(mText);

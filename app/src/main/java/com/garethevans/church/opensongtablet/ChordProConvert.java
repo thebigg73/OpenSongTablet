@@ -118,7 +118,6 @@ class ChordProConvert {
 				line[x] = line[x].replace("}", "");
 				line[x] = line[x].trim();
 				temptitle = line[x];
-				Log.d("d","temptitle="+temptitle);
 				line[x] = "";
 			}
 
@@ -128,7 +127,6 @@ class ChordProConvert {
                 line[x] = line[x].replace("}", "");
                 line[x] = line[x].trim();
                 tempauthor = line[x];
-                Log.d("d","tempauthor="+tempauthor);
                 line[x] = "";
             }
 
@@ -138,7 +136,6 @@ class ChordProConvert {
                 line[x] = line[x].replace("}", "");
                 line[x] = line[x].trim();
                 tempcopyright = line[x];
-                Log.d("d","tempcopyright="+tempcopyright);
                 line[x] = "";
             }
 
@@ -148,7 +145,6 @@ class ChordProConvert {
 				line[x] = line[x].replace("}", "");
 				line[x] = line[x].trim();
 				tempsubtitle = line[x];
-                Log.d("d","tempsubtitle="+tempsubtitle);
                 if (tempauthor.equals("")) {
                     tempauthor = tempsubtitle;
                 }
@@ -164,7 +160,6 @@ class ChordProConvert {
 				line[x] = line[x].replace("}","");
 				line[x] = line[x].trim();
 				tempccli = line[x];
-				Log.d("d","tempccli="+tempccli);
 				line[x] = "";
 			}
 
@@ -174,7 +169,6 @@ class ChordProConvert {
                 line[x] = line[x].replace("}", "");
                 line[x] = line[x].trim();
                 tempkey = line[x];
-                Log.d("d","tempkey="+tempkey);
                 line[x] = "";
             }
 
@@ -184,7 +178,6 @@ class ChordProConvert {
                 line[x] = line[x].replace("}", "");
                 line[x] = line[x].trim();
                 temptempo = line[x];
-                Log.d("d","temptempo="+temptempo);
                 line[x] = "";
             }
 
@@ -194,7 +187,6 @@ class ChordProConvert {
                 line[x] = line[x].replace("}", "");
                 line[x] = line[x].trim();
                 temptimesig = line[x];
-                Log.d("d","temptimesig="+temptimesig);
                 line[x] = "";
             }
 
@@ -209,7 +201,6 @@ class ChordProConvert {
 				line[x] = line[x].replace("}", "");
 				line[x] = line[x].trim();
 				line[x] = ";" + line[x];
-                Log.d("d","comments="+line[x]);
 			}
 
 			// Change comment lines
@@ -218,7 +209,6 @@ class ChordProConvert {
 				line[x] = line[x].replace("}", "");
 				line[x] = line[x].trim();
 				line[x] = ";" + line[x];
-                Log.d("d","comments="+line[x]);
 			}
 
 			// Remove < > tags
@@ -229,7 +219,6 @@ class ChordProConvert {
 
 		}	
 		
-		Log.d("d","FullscreenActivity.myXML="+FullscreenActivity.myXML);
 		// Go through each line and try to fix chord lines
 		for (int x = 0; x < numlines; x++) {
 			line[x] = line[x].trim();

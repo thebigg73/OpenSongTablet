@@ -208,6 +208,8 @@ public class PopUpProfileFragment extends DialogFragment {
                 showOverView();
             }
         });
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 
@@ -267,8 +269,6 @@ public class PopUpProfileFragment extends DialogFragment {
         // Convert arraylist to string array
         foundFiles = new String[tempFoundFiles.size()];
         foundFiles = tempFoundFiles.toArray(foundFiles);
-
-        Log.d("d","what="+what);
 
         // Add the saved profiles to the listview
         // Populate the file list view

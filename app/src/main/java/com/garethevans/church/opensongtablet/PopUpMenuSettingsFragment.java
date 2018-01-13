@@ -190,6 +190,8 @@ public class PopUpMenuSettingsFragment extends DialogFragment {
             }
         });
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

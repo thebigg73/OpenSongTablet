@@ -36,7 +36,11 @@ public class SongMenuListeners extends Activity {
                         FullscreenActivity.whichSongFolder = s;
                         mListener.prepareSongMenu();
                     } else {
-                        FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[i];
+                        if (FullscreenActivity.mSongFileNames.length>i && FullscreenActivity.mSongFileNames[i]!=null) {
+                            FullscreenActivity.songfilename = FullscreenActivity.mSongFileNames[i];
+                        } else {
+                            FullscreenActivity.songfilename = "";
+                        }
                         if (FullscreenActivity.setView && FullscreenActivity.setSize > 0) {
                             // Get the name of the song to look for (including folders if need be)
                             SetActions.getSongForSetWork(c);

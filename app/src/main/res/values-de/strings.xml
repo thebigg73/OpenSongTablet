@@ -637,28 +637,28 @@
 
 	<string name="action">"Aktion"</string>
 	<string name="activated">"Aktiviert / ausgeführt"</string>
-	<string name="autostartmetronome">"Autostart-Metronom"</string>
-	<string name="autostartpad">"Autostart-Pad"</string>
-	<string name="ccli_automatic">"Notiere die Nutzungsstatistiken automatisch"</string>
+	<string name="autostartmetronome">"Autostart Metronom"</string>
+	<string name="autostartpad">"Autostart Pad"</string>
+	<string name="ccli_automatic">"Nutzungsstatistiken automatisch aufzeichnen"</string>
 	<string name="ccli_church">"Name der Kirche"</string>
 	<string name="ccli_licence">"Lizenznummer"</string>
 	<string name="ccli_view">"CCLI-Protokoll anzeigen"</string>
 	<string name="ccli_reset">"CCLI-Protokoll zurücksetzen"</string>
 	<string name="date">"Datum"</string>
 	<string name="editpdf">"Im externen PDF-Programm bearbeiten"</string>
-	<string name="existing">"Suchen Sie nach früheren Installationsorten für OpenSong-Dateien"</string>
-	<string name="found">"Sie haben die folgenden Installationsorte bereits verwendet. Bitte wählen Sie eines aus, um es erneut zu verwenden."</string>
-	<string name="longpress">"Lang drücken / halten"</string>
+	<string name="existing">"Nach früheren Installationsorten für OpenSong-Dateien suchen"</string>
+	<string name="found">"Sie haben bereits die folgenden Installationsverzeichnisse verwendet.  Bitte wählen Sie eines aus, um es erneut zu verwenden."</string>
+	<string name="longpress">"Lang drücken/halten"</string>
 	<string name="nofound">"Keine vorherigen Installationen gefunden."</string>
-	<string name="nothere">"Sie befinden sich in einem OpenSong-Ordner. Verwenden Sie diesen Speicherort nicht. Bewegen Sie sich stattdessen eine Ebene nach oben und geben Sie den Ordner an, der diesen Ordner enthält"</string>
+	<string name="nothere">"Sie befinden sich in einem OpenSong-Ordner. Verwenden Sie diesen Speicherort nicht! Gehen Sie stattdessen eine Ebene nach oben und wählen Sie dann den Ordner aus, der diesen Ordner hier enthält."</string>
 	<string name="pedal">"Pedal"</string>
-	<string name="previouslyused">"Der vorherige Installationsort wurde gefunden. Klicken Sie auf das grüne Häkchen, um dies zu verwenden"</string>
-	<string name="songsheet">"Liederblatt"</string>
-	<string name="tap">"Kurz drücken / tippen"</string>
+	<string name="previouslyused">"Vorheriger Installationsort wurde gefunden. Klicken Sie auf das grüne Häkchen, um diesen zu verwenden."</string>
+	<string name="songsheet">"Songsheet"</string>
+	<string name="tap">"Kurz drücken/tippen"</string>
 
-	<string name="inc_autoscroll_speed">"Erhöhen Sie die Autoscroll-Geschwindigkeit"</string>
-	<string name="dec_autoscroll_speed">"Verringern Sie die Autoscroll-Geschwindigkeit"</string>
-	<string name="edit_default_delaymax">"Max Verzögerung (Sekunden)"</string>
-	<string name="toggle_autoscroll_pause">"Automatische Autoscroll-Pause einschalten"</string>
+	<string name="inc_autoscroll_speed">"Autoscroll-Geschwindigkeit erhöhen"</string>
+	<string name="dec_autoscroll_speed">"Autoscroll-Geschwindigkeit verringern"</string>
+	<string name="edit_default_delaymax">"Maximale Verzögerung (Sekunden)"</string>
+	<string name="toggle_autoscroll_pause">"Autoscroll-Pause umschalten (toggle)"</string>
 
 </resources>

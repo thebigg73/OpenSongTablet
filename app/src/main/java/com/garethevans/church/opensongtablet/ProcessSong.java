@@ -595,19 +595,16 @@ public class ProcessSong extends Activity {
 
     static int getSalutReceivedSection(String s) {
         int i=-1;
-        Log.d("d","s="+s);
         if (s!=null && s.length()>0 && s.contains("___section___")) {
             s = s.replace("{\"description\":\"","");
             s = s.replace("\"}","");
             s = s.replace("___section___","");
-            Log.d("d","s="+s);
             try {
                 i = Integer.parseInt(s);
             } catch (Exception e) {
                 i = -1;
             }
         }
-        Log.d("d","i="+i);
         return i;
     }
     static String getSalutReceivedLocation(String string, Context c) {
@@ -641,7 +638,6 @@ public class ProcessSong extends Activity {
             }
         } else if (string.length()>0 && string.contains("<lyrics>") && FullscreenActivity.receiveHostFiles) {
             FullscreenActivity.mySalutXML = string;
-            Log.d("d","HostFile");
             return "HostFile";
         }
 
@@ -2214,7 +2210,6 @@ public class ProcessSong extends Activity {
                 case "capo_info":
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = FullscreenActivity.sectionContents[x][y];
-                    Log.d("d","Capo line detected = "+lyrics_returned[0]);
                     TableRow trc = commentlinetoTableRow(c, lyrics_returned, fontsize, false);
                     if (trc.getChildAt(0)!=null) {
                         TextView tvcapo = (TextView) trc.getChildAt(0);
@@ -2240,7 +2235,13 @@ public class ProcessSong extends Activity {
                     }
                     break;*/
                 }
-                ll.addView(tl);
+                try {
+                    ll.addView(tl);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } catch (OutOfMemoryError e2) {
+                    e2.printStackTrace();
+                }
             }
         TextView emptyline = new TextView(c);
         emptyline.setLayoutParams(linearlayout_params());

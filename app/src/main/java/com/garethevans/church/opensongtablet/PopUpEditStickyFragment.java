@@ -175,6 +175,8 @@ public class PopUpEditStickyFragment extends DialogFragment {
                 Preferences.savePreferences();
             }
         });
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

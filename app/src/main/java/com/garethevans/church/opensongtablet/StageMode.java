@@ -785,8 +785,6 @@ public class StageMode extends AppCompatActivity implements
     @Override
     protected void onNewIntent (Intent intent) {
         //super.onNewIntent(intent);
-        Log.d("d","onNewIntent");
-        Log.d("d","intent="+intent);
         dealWithIntent();
     }
     public void dealWithIntent() {
@@ -2879,7 +2877,6 @@ public class StageMode extends AppCompatActivity implements
             FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\","");
             FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("$$__$$","\n");
 
-            Log.d("d",""+FullscreenActivity.mySalutXML);
             // Create the temp song file
             try {
                 if (!FullscreenActivity.dirreceived.exists()) {
@@ -3328,7 +3325,6 @@ public class StageMode extends AppCompatActivity implements
                     .fitCenter()
                     .override(widthavail, heightavail);
             Glide.with(StageMode.this).load(imageUri).apply(myOptions).into(glideimage);
-            Log.d("d","trying to set the image to fullscreen");
         } else {
             // Now decide on the scaling required....
             float xscale = (float) widthavail / (float) imgwidth;
@@ -3408,7 +3404,6 @@ public class StageMode extends AppCompatActivity implements
             e.printStackTrace();
         }
     }
-
 
     public void createPerformanceView1col() {
         doCancelAsyncTask(createperformanceview1col_async);
@@ -5180,10 +5175,6 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void callIntent(String what, Intent i) {
-        Log.d("d","Calling intent");
-        Log.d("d","i="+i);
-        Log.d("d","what="+what);
-
         switch (what) {
             case "web":
                 startActivity(i);
@@ -5964,7 +5955,6 @@ public class StageMode extends AppCompatActivity implements
         FullscreenActivity.learnSongLength = true;
         FullscreenActivity.learnPreDelay = false;
         FullscreenActivity.mPreDelay = time+"";
-        Log.d("d", time+"");
         String s = getString(R.string.edit_song_duration) + "\n" + getString(R.string.savesong);
         learnAutoScroll_TextView.setText(s);
         learnAutoScroll.setOnClickListener(new View.OnClickListener() {
@@ -7171,54 +7161,59 @@ public class StageMode extends AppCompatActivity implements
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                                float velocityY) {
+            try {
+                // Check movement along the Y-axis. If it exceeds
+                // SWIPE_MAX_OFF_PATH, then dismiss the swipe.
+                int screenwidth = mypage.getWidth();
+                int leftmargin = 40;
+                int rightmargin = screenwidth - 40;
+                if (Math.abs(e1.getY() - e2.getY()) > FullscreenActivity.SWIPE_MAX_OFF_PATH) {
+                    return false;
+                }
 
-            // Check movement along the Y-axis. If it exceeds
-            // SWIPE_MAX_OFF_PATH, then dismiss the swipe.
-            int screenwidth = mypage.getWidth();
-            int leftmargin = 40;
-            int rightmargin = screenwidth - 40;
-            if (Math.abs(e1.getY() - e2.getY()) > FullscreenActivity.SWIPE_MAX_OFF_PATH) {
+                if (FullscreenActivity.tempswipeSet.equals("disable")) {
+                    return false; // Currently disabled swiping to let screen finish drawing.
+                }
+
+                // Swipe from right to left.
+                // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
+                // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
+                if (e1.getX() - e2.getX() > FullscreenActivity.SWIPE_MIN_DISTANCE
+                        && e1.getX() < rightmargin
+                        && Math.abs(velocityX) > FullscreenActivity.SWIPE_THRESHOLD_VELOCITY
+                        && (FullscreenActivity.swipeSet.equals("Y") || FullscreenActivity.swipeSet.equals("S"))) {
+
+                    // Trying to move to the next item
+                    try {
+                        setForwardButton.performClick();
+                        //goToNextItem();
+                    } catch (Exception e) {
+                        // No song after
+                    }
+                    return true;
+                }
+
+                // Swipe from left to right.
+                // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
+                // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
+                if (e2.getX() - e1.getX() > FullscreenActivity.SWIPE_MIN_DISTANCE
+                        && e1.getX() > leftmargin
+                        && Math.abs(velocityX) > FullscreenActivity.SWIPE_THRESHOLD_VELOCITY
+                        && (FullscreenActivity.swipeSet.equals("Y") || FullscreenActivity.swipeSet.equals("S"))) {
+
+                    // Go to previous item
+                    try {
+                        setBackButton.performClick();
+                        //goToPreviousItem();
+                    } catch (Exception e) {
+                        // No song before
+                    }
+                    return true;
+                }
                 return false;
-            }
 
-            if (FullscreenActivity.tempswipeSet.equals("disable")) {
-                return false; // Currently disabled swiping to let screen finish drawing.
-            }
-
-            // Swipe from right to left.
-            // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
-            // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
-            if (e1.getX() - e2.getX() > FullscreenActivity.SWIPE_MIN_DISTANCE
-                    && e1.getX() < rightmargin
-                    && Math.abs(velocityX) > FullscreenActivity.SWIPE_THRESHOLD_VELOCITY
-                    && (FullscreenActivity.swipeSet.equals("Y") || FullscreenActivity.swipeSet.equals("S"))) {
-
-                // Trying to move to the next item
-                try {
-                    setForwardButton.performClick();
-                    //goToNextItem();
-                } catch (Exception e) {
-                    // No song after
-                }
-                return true;
-            }
-
-            // Swipe from left to right.
-            // The swipe needs to exceed a certain distance (SWIPE_MIN_DISTANCE)
-            // and a certain velocity (SWIPE_THRESHOLD_VELOCITY).
-            if (e2.getX() - e1.getX() > FullscreenActivity.SWIPE_MIN_DISTANCE
-                    && e1.getX() > leftmargin
-                    && Math.abs(velocityX) > FullscreenActivity.SWIPE_THRESHOLD_VELOCITY
-                    && (FullscreenActivity.swipeSet.equals("Y") || FullscreenActivity.swipeSet.equals("S"))) {
-
-                // Go to previous item
-                try {
-                    setBackButton.performClick();
-                    //goToPreviousItem();
-                } catch (Exception e) {
-                    // No song before
-                }
-                return true;
+            } catch (Exception e) {
+                Log.d("d", "error");
             }
             return false;
         }
@@ -7387,7 +7382,6 @@ public class StageMode extends AppCompatActivity implements
 
         void teardown() {
             try {
-                Log.d("d","Trying teardown");
                 CastRemoteDisplayLocalService.stopService();
                 if (hdmi!=null && hdmi.isShowing()) {
                     try {
@@ -7422,13 +7416,11 @@ public class StageMode extends AppCompatActivity implements
         PendingIntent notificationPendingIntent = PendingIntent.getActivity(
                 StageMode.this, 0, intent, 0);
 
-        Log.d("updateDislpays","Called");
         CastRemoteDisplayLocalService.NotificationSettings settings =
                 new CastRemoteDisplayLocalService.NotificationSettings.Builder()
                         .setNotificationPendingIntent(notificationPendingIntent).build();
 
         if (mSelectedDevice!=null) {
-            Log.d("updateDislpays","startService");
             CastRemoteDisplayLocalService.startService(
             getApplicationContext(),
                     PresentationService.class, getString(R.string.app_id),
@@ -7458,7 +7450,6 @@ public class StageMode extends AppCompatActivity implements
         } else {
             // Might be a hdmi connection
             try {
-                Log.d("updateDislpays","hdmi");
                 Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
                 if (mDisplay!=null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -7474,7 +7465,6 @@ public class StageMode extends AppCompatActivity implements
     }
     @Override
     public void refreshSecondaryDisplay(String which) {
-        Log.d("refreshSecondaryDisplay","which="+which);
         try {
             switch (which) {
                 case "all":

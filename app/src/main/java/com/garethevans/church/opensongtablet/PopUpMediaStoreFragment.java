@@ -167,6 +167,8 @@ public class PopUpMediaStoreFragment extends DialogFragment {
                 // Ooops
             }
         }
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

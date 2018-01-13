@@ -738,6 +738,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 

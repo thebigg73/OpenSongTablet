@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -198,9 +197,10 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
                         selectednote = selectednote.replace("%__" + FullscreenActivity.mSongFolderNames[i] + "__%", "");
                     }
                 }
-                Log.d("d", "selectednote=" + selectednote);
             }
         });
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 
@@ -211,7 +211,6 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
     }
     public void doTheExporting() {
         // Get a note of the folders chosen and add them to a string
-        Log.d("d","selectednote="+selectednote);
         ExportPreparer.folderstoexport = selectednote;
         ExportPreparer.createSelectedOSB(getActivity());
     }
@@ -230,7 +229,6 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
             ZipInputStream zis = null;
             foldersfoundinzip = new ArrayList<>();
             try {
-                Log.d("d","filechosen="+FullscreenActivity.filechosen);
                 zis = new ZipInputStream(new BufferedInputStream(new FileInputStream(FullscreenActivity.filechosen)));
                 ZipEntry ze;
                 while ((ze = zis.getNextEntry()) != null) {

@@ -598,6 +598,8 @@ public class PopUpCustomChordsFragment extends DialogFragment {
         customchords_fret.setAdapter(adapter_fret);
         customchords_fret.setOnItemSelectedListener(new FretListener());
         prepareCustomChords();
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 
@@ -635,7 +637,6 @@ public class PopUpCustomChordsFragment extends DialogFragment {
 
         @Override
         protected void onPostExecute(String s) {
-            Log.d("custom", "FullscreenActivity.mCustomChords=" + FullscreenActivity.mCustomChords);
             if (tempCustomChords.length > 0) {
                 numcustomchords = tempCustomChords.length;
                 for (int q = 0; q < numcustomchords; q++) {

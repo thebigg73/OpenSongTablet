@@ -335,15 +335,11 @@ public class DrawNotes extends View {
             bitmap.recycle();
             //drawCanvas = new Canvas(canvasBitmap);
             imageloaded = true;
-            Log.d("d","Loading the image-success");
 
         } catch (Exception e) {
-            e.printStackTrace();
-            //drawCanvas = new Canvas();
             Log.d("d","Loading the image-error");
             canvasBitmap = null;
         } catch (OutOfMemoryError oom) {
-            oom.printStackTrace();
             Log.d("d","Loading the image-out of memory");
             canvasBitmap = null;
         }

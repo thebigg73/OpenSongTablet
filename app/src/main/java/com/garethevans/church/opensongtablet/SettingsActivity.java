@@ -72,16 +72,15 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         Preferences.loadPreferences();
         showsplash = getIntent().getBooleanExtra("showsplash",false);
         if (showsplash) {
-            Log.d("d","intent to showsplash");
             FullscreenActivity.showSplashVersion = 0;
         }
         if (FullscreenActivity.showSplashVersion>FullscreenActivity.version) {
             showsplash=false;
         }
         // If version is pre v4 reset the gesture choices
-        if (FullscreenActivity.showSplashVersion>0 && FullscreenActivity.showSplashVersion<120) {
-            FullscreenActivity.resetSomePreferences = true;
-        }
+        //if (FullscreenActivity.showSplashVersion>0 && FullscreenActivity.showSplashVersion<120) {
+        //    FullscreenActivity.resetSomePreferences = true;
+        //}
 
         // Decide if user has already seen the splash screenLog.d("d","SettingsActivity showSplashVersion="+FullscreenActivity.showSplashVersion);
         Log.d("d","SettingsActivity version="+FullscreenActivity.version);
@@ -110,7 +109,6 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         }
         if (newMode != null && (newMode.equals("Performance") || newMode.equals("Stage") || newMode.equals("Presentation"))) {
             FullscreenActivity.whichMode = newMode;
-            Log.d("d", "newMode=" + newMode);
             Preferences.savePreferences();
         }
 

@@ -45,7 +45,6 @@ class AudioGenerator {
                     AudioFormat.ENCODING_PCM_16BIT, sampleRate,
                     AudioTrack.MODE_STREAM);
         } catch (Exception e) {
-            e.printStackTrace();
             Log.d("audiotrack","Can't initialise");
         }
 
@@ -101,7 +100,6 @@ class AudioGenerator {
 					} catch (Exception e) {
 						// This will catch any exception, because they are all descended from Exception
 						Log.d("whoops", "error setting volume both");
-						Log.d("AudioGenerator","metronomevol="+FullscreenActivity.metronomevol);
 					}
 					break;
 			}

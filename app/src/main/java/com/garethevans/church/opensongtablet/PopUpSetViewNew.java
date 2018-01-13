@@ -199,16 +199,18 @@ public class PopUpSetViewNew extends DialogFragment {
                 // Save any changes to current set first
                 doSave();
 
-                // Redraw the lists
-                Collections.shuffle(FullscreenActivity.mTempSetList);
+                if (FullscreenActivity.mTempSetList!=null && FullscreenActivity.mTempSetList.size()>0) {
+                    // Redraw the lists
+                    Collections.shuffle(FullscreenActivity.mTempSetList);
 
-                // Prepare the page for redrawing....
-                FullscreenActivity.doneshuffle = true;
+                    // Prepare the page for redrawing....
+                    FullscreenActivity.doneshuffle = true;
 
-                // Run the listener
-                PopUpSetViewNew.this.dismiss();
-                if (mListener != null) {
-                    mListener.shuffleSongsInSet();
+                    // Run the listener
+                    PopUpSetViewNew.this.dismiss();
+                    if (mListener != null) {
+                        mListener.shuffleSongsInSet();
+                    }
                 }
             }
         });
@@ -255,10 +257,6 @@ public class PopUpSetViewNew extends DialogFragment {
             helptext.setVisibility(View.VISIBLE);
         }
 
-        Dialog dialog = getDialog();
-        if (dialog != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog);
-        }
 
         // Try to move to the corresponding item in the set that we are viewing.
         SetActions.indexSongInSet();
@@ -269,6 +267,8 @@ public class PopUpSetViewNew extends DialogFragment {
             //LinearLayoutManager llm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
             llm.scrollToPositionWithOffset(FullscreenActivity.indexSongInSet , 0);
         }
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 
         return V;
     }

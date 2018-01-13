@@ -255,6 +255,7 @@ public class PopUpSoundLevelMeterFragment extends DialogFragment {
             e.printStackTrace();
         }
 
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
         return V;
     }
 

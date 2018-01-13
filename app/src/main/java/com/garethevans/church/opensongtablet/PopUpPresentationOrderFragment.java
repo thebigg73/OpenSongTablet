@@ -149,6 +149,8 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
                 m_mPresentation.setText("");
             }
         });
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
         return V;
     }
 
