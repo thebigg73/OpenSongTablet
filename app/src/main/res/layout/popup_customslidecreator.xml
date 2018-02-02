@@ -102,32 +102,74 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
+                android:layout_weight="1"
                 android:background="@drawable/presenter_box_blue"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                tools:ignore="InefficientWeight">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/section_box"
+                    android:layout_margin="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bibleXML"
+                        style="@style/MyHeadingText"
+                        android:layout_margin="4dp"/>
+                <Button
+                    android:id="@+id/localBibleFile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="#fff"
+                    android:text="@string/search"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/grey_button"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/section_box"
+                    android:layout_margin="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/search_biblegateway"
+                        style="@style/MyHeadingText"
+                        android:layout_margin="4dp"/>
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
 
                         <TextView
                             android:id="@+id/textView48"
                             style="@style/MyHeadingText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
+                            android:layout_weight="0.4"
                             android:text="@string/bible_search" />
 
                         <EditText
                             android:id="@+id/bibleSearch"
                             style="@style/MyEditText"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:layout_weight="1"
+                            android:layout_weight="0.6"
                             android:hint="@string/bible_search"
                             android:inputType="text" />
                     </TableRow>
@@ -139,18 +181,19 @@
                         <TextView
                             android:id="@+id/textView49"
                             style="@style/MyHeadingText"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
+                            android:layout_weight="0.4"
                             android:text="@string/bible_translation" />
 
                         <EditText
                             android:id="@+id/bibleVersion"
                             style="@style/MyEditText"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
-                            android:layout_weight="1"
+                            android:layout_weight="0.6"
                             android:hint="@string/bible_translation"
                             android:inputType="text" />
                     </TableRow>
@@ -164,9 +207,10 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/grey_button"
-                    android:text="@string/search_biblegateway"
+                    android:text="@string/search"
                     android:textColor="#fff" />
 
+                </LinearLayout>
                 <ProgressBar
                     android:id="@+id/searchBible_progressBar"
                     style="?android:attr/progressBarStyleLarge"

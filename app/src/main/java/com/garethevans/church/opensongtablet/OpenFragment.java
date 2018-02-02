@@ -57,6 +57,10 @@ class OpenFragment {
                 newFragment = PopUpSwipeSettingsFragment.newInstance();
                 break;
 
+            case "localbible":
+                newFragment = PopUpBibleXMLFragment.newInstance();
+                break;
+
             case "customreusable_scripture":
                 newFragment = PopUpCustomSlideFragment.newInstance();
                 break;
@@ -210,6 +214,7 @@ class OpenFragment {
                 break;
 
             case "findstoragelocation":
+            case "findstoragelocation_splash":
                 newFragment = PopUpFindStorageLocationFragment.newInstance();
                 break;
 

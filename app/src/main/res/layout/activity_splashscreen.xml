@@ -64,6 +64,11 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/section_box">
             <Button
                 android:id="@+id/goToSongs"
                 android:background="@drawable/green_button"
@@ -75,6 +80,27 @@
                 android:text="@string/storage_help"
                 android:textColor="#fff" />
 
+            <TextView
+                style="@style/MyHeadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/currentstorage" />
+
+            <TextView
+                android:id="@+id/currentStorage"
+                style="@style/MyWhiteHeadingText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="0dp"
+                android:text="@string/currentstorage" />
+
             <Button
                 android:id="@+id/manageStorage"
                 android:background="@drawable/green_button"
@@ -85,6 +111,8 @@
                 android:padding="4dp"
                 android:text="@string/storage_choose"
                 android:textColor="#fff" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/intro"
@@ -165,4 +193,10 @@
         </LinearLayout>
     </ScrollView>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 </RelativeLayout>

@@ -52,6 +52,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
     public interface MyInterface {
         void addSlideToSet();
+        void openFragment();
     }
 
     private MyInterface mListener;
@@ -109,6 +110,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
     @SuppressLint("StaticFieldLeak")
     static EditText bibleVersion;
     Button searchBibleGateway_Button;
+    Button localBibleFile;
     WebView bibleGateway_WebView;
     @SuppressLint("StaticFieldLeak")
     static Button grabVerse_Button;
@@ -180,6 +182,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         slideDetails_RelativeLayout = V.findViewById(R.id.slideDetails_RelativeLayout);
         bibleSearch = V.findViewById(R.id.bibleSearch);
         bibleVersion = V.findViewById(R.id.bibleVersion);
+        localBibleFile = V.findViewById(R.id.localBibleFile);
         searchBibleGateway_Button = V.findViewById(R.id.searchBibleGateway_Button);
         bibleGateway_WebView = V.findViewById(R.id.bibleGateway_WebView);
         grabVerse_Button = V.findViewById(R.id.grabVerse_Button);
@@ -204,10 +207,24 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 searchBible_progressBar.setVisibility(View.VISIBLE);
                 bibleGateway_WebView.setVisibility(View.GONE);
                 grabVerse_Button.setVisibility(View.GONE);
-                BibleGateway.grabBibleText(getActivity().getApplicationContext(), bibleGateway_WebView.getUrl());
+                Bible.grabBibleText(getActivity().getApplicationContext(), bibleGateway_WebView.getUrl());
             }
         });
 
+        localBibleFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "localbible";
+                if (mListener!=null) {
+                    try {
+                        mListener.openFragment();
+                        dismiss();
+                    } catch (Exception e) {
+                        Log.d("d","Error opening local bible");
+                    }
+                }
+            }
+        });
         searchBibleGateway_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -420,7 +437,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         }
     }
 
-    public static void switchViewToNote() {
+    public void switchViewToNote() {
         whattype = "note";
         FullscreenActivity.whattodo ="customnote";
         grabVerse_Button.setVisibility(View.GONE);
@@ -436,7 +453,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         warningTextView.setVisibility(View.GONE);
     }
 
-    public static void switchViewToScripture() {
+    public void switchViewToScripture() {
         whattype = "scripture";
         grabVerse_Button.setVisibility(View.GONE);
         searchBible_progressBar.setVisibility(View.GONE);
@@ -455,7 +472,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         bibleVersion.setVisibility(View.VISIBLE);
     }
 
-    public static void switchViewToSlide() {
+    public void switchViewToSlide() {
         whattype = "slide";
         FullscreenActivity.whattodo ="customslide";
         grabVerse_Button.setVisibility(View.GONE);
@@ -471,7 +488,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         warningTextView.setVisibility(View.GONE);
     }
 
-    public static void switchViewToImage() {
+    public void switchViewToImage() {
         whattype = "image";
         FullscreenActivity.whattodo ="customimage";
         grabVerse_Button.setVisibility(View.GONE);

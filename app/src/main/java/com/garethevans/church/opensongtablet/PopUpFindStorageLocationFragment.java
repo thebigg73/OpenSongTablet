@@ -81,6 +81,7 @@ public class PopUpFindStorageLocationFragment extends DialogFragment {
     boolean nothingchosen = true;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("d","PopUpFindStorageLocationFragment called");
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
         View V = inflater.inflate(R.layout.popup_file_chooser, container, false);
@@ -249,7 +250,11 @@ public class PopUpFindStorageLocationFragment extends DialogFragment {
 
     public void reopenStorageChooser() {
         if (mListener!=null) {
-            FullscreenActivity.whattodo = "managestorage";
+            if (FullscreenActivity.whattodo.equals("findstoragelocation_splash")) {
+                FullscreenActivity.whattodo = "splashpagestorage";
+            } else {
+                FullscreenActivity.whattodo = "managestorage";
+            }
             mListener.openFragment();
         }
         try {

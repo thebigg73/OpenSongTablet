@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="bibleXML">OpenSong XML Bible</string>
+    <string name="book">Book</string>
+    <string name="changestorage">Change storage location</string>
+    <string name="chapter">Chapter</string>
+    <string name="currentstorage">Current location</string>
+    <string name="permissionerror">Permission not granted</string>
+    <string name="pleaseselect">Please select</string>
+    <string name="sdroot">SD card root</string>
+    <string name="search">Search</string>
+    <string name="verse">Verse</string>
+
     <string name="action">Action</string>
     <string name="activated">Activated / running</string>
     <string name="autostartmetronome">Autostart metronome</string>
