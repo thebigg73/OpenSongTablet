@@ -660,4 +660,36 @@
 	<string name="edit_default_delaymax">"Max. Zpoždění (vteřin)"</string>
 	<string name="toggle_autoscroll_pause">"Přepnout automatické přerušení"</string>
 
+	<string name="bibleXML">"OpenSong XML Bible"</string>
+	<string name="book">"Rezervovat"</string>
+	<string name="changestorage">"Změňte umístění úložiště"</string>
+	<string name="chapter">"Kapitola"</string>
+	<string name="currentstorage">"Současná pozice"</string>
+	<string name="hidelyricsbox">"Skrýt textový rámeček"</string>
+	<string name="midi">"MIDI"</string>
+	<string name="midi_add">"Přidat příkaz"</string>
+	<string name="midi_auto">"Automatické odesílání MIDI"</string>
+	<string name="midi_bluetooth">"Připojte zařízení Bluetooth"</string>
+	<string name="midi_channel">"Kanál"</string>
+	<string name="midi_commands">"Upravit příkazy ke skladbě"</string>
+	<string name="midi_controller">"Změna řadiče"</string>
+	<string name="midi_error">"Zkontrolujte prosím připojení MIDI"</string>
+	<string name="midi_inputport">"Vstupní port"</string>
+	<string name="midi_list">"Klikněte na položku, kterou chcete otestovat, a dlouhým klepnutím ji odeberte"</string>
+	<string name="midi_listen">"Poslouchat"</string>
+	<string name="midi_note">"Poznámka"</string>
+	<string name="midi_outputport">"Outport port"</string>
+	<string name="midi_program">"Změna programu"</string>
+	<string name="midi_send">"Odeslat MIDI"</string>
+	<string name="midi_test">"Test"</string>
+	<string name="midi_usb">"Připojte zařízení USB"</string>
+	<string name="midi_value">"Hodnota"</string>
+	<string name="midi_velocity">"Rychlost"</string>
+	<string name="location_rationale">"Pro zjištění zařízení Bluetooth je vyžadován přístup"</string>
+	<string name="permissionerror">"Povolení nebylo uděleno"</string>
+	<string name="pleaseselect">"Prosím vyberte"</string>
+	<string name="sdroot">"Karta SD karty"</string>
+	<string name="search">"Vyhledávání"</string>
+	<string name="verse">"Verš"</string>
+
 </resources>

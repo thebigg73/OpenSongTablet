@@ -658,4 +658,36 @@
 	<string name="edit_default_delaymax">"最大遅延（秒）"</string>
 	<string name="toggle_autoscroll_pause">"自動スクロールの一時停止を切り替える"</string>
 
+	<string name="bibleXML">"OpenSong XML聖書"</string>
+	<string name="book">"本"</string>
+	<string name="changestorage">"保存場所を変更する"</string>
+	<string name="chapter">"章"</string>
+	<string name="currentstorage">"現在位置"</string>
+	<string name="hidelyricsbox">"歌詞ボックスを隠す"</string>
+	<string name="midi">"MIDI"</string>
+	<string name="midi_add">"コマンドを追加"</string>
+	<string name="midi_auto">"自動送信MIDI"</string>
+	<string name="midi_bluetooth">"Bluetoothデバイスを接続する"</string>
+	<string name="midi_channel">"チャネル"</string>
+	<string name="midi_commands">"曲の編集コマンド"</string>
+	<string name="midi_controller">"コントローラの変更"</string>
+	<string name="midi_error">"MIDI接続を確認してください"</string>
+	<string name="midi_inputport">"入力ポート"</string>
+	<string name="midi_list">"テストするアイテムをクリックし、長いクリックで削除します"</string>
+	<string name="midi_listen">"聴く"</string>
+	<string name="midi_note">"注意"</string>
+	<string name="midi_outputport">"アウトポートポート"</string>
+	<string name="midi_program">"プログラムの変更"</string>
+	<string name="midi_send">"ミディを送る"</string>
+	<string name="midi_test">"テスト"</string>
+	<string name="midi_usb">"USBデバイスを接続する"</string>
+	<string name="midi_value">"値"</string>
+	<string name="midi_velocity">"速度"</string>
+	<string name="location_rationale">"Bluetoothデバイスを検出するにはアクセスする必要があります"</string>
+	<string name="permissionerror">"許可されていません"</string>
+	<string name="pleaseselect">"選んでください"</string>
+	<string name="sdroot">"SDカードのルート"</string>
+	<string name="search">"サーチ"</string>
+	<string name="verse">"詩"</string>
+
 </resources>

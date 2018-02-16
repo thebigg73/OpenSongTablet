@@ -50,33 +50,18 @@ public class PopUpFontsFragment extends DialogFragment {
         super.onDetach();
     }
 
-    int temp_mylyricsfontnum = FullscreenActivity.mylyricsfontnum;
-    int temp_mychordsfontnum = FullscreenActivity.mychordsfontnum;
-    int temp_mypresofontnum = FullscreenActivity.mypresofontnum;
-    int temp_mypresoinfofontnum = FullscreenActivity.mypresoinfofontnum;
-    int temp_linespacing = FullscreenActivity.linespacing;
-    Spinner lyricsFontSpinner;
-    Spinner chordsFontSpinner;
-    Spinner presoFontSpinner;
-    Spinner presoInfoFontSpinner;
-    Spinner customFontSpinner;
-    TextView headingPreview;
-    TextView commentPreview;
-    TextView lyricsPreview1;
-    TextView lyricsPreview2;
-    TextView chordPreview1;
-    TextView chordPreview2;
-    TextView scaleHeading_TextView;
-    SeekBar scaleHeading_SeekBar;
-    TextView scaleComment_TextView;
-    SeekBar scaleComment_SeekBar;
-    TextView scaleChords_TextView;
-    SeekBar scaleChords_SeekBar;
-    SeekBar lineSpacingSeekBar;
-    TextView lineSpacingText;
+    int temp_mylyricsfontnum = FullscreenActivity.mylyricsfontnum,
+            temp_mychordsfontnum = FullscreenActivity.mychordsfontnum,
+            temp_mypresofontnum = FullscreenActivity.mypresofontnum,
+            temp_mypresoinfofontnum = FullscreenActivity.mypresoinfofontnum,
+            temp_linespacing = FullscreenActivity.linespacing;
+    Spinner lyricsFontSpinner, chordsFontSpinner, presoFontSpinner, presoInfoFontSpinner, customFontSpinner;
+    TextView headingPreview, commentPreview, lyricsPreview1, lyricsPreview2, chordPreview1,
+            chordPreview2, scaleHeading_TextView, scaleComment_TextView, scaleChords_TextView,
+            lineSpacingText;
+    SeekBar scaleHeading_SeekBar, scaleComment_SeekBar, scaleChords_SeekBar, lineSpacingSeekBar;
     TableLayout songPreview;
-    SwitchCompat trimlines_SwitchCompat;
-    SwitchCompat trimsections_SwitchCompat;
+    SwitchCompat trimlines_SwitchCompat, trimsections_SwitchCompat, hideBox_SwitchCompat;
 
     @Override
     public void onStart() {
@@ -144,6 +129,7 @@ public class PopUpFontsFragment extends DialogFragment {
         lineSpacingSeekBar = V.findViewById(R.id.lineSpacingSeekBar);
         lineSpacingText = V.findViewById(R.id.lineSpacingText);
         songPreview = V.findViewById(R.id.songPreview);
+        hideBox_SwitchCompat = V.findViewById(R.id.hideBox_SwitchCompat);
         trimlines_SwitchCompat = V.findViewById(R.id.trimlines_SwitchCompat);
         trimsections_SwitchCompat = V.findViewById(R.id.trimsections_SwitchCompat);
 
@@ -163,11 +149,9 @@ public class PopUpFontsFragment extends DialogFragment {
         chordPreview2.setPadding(0, -(int) ((float) temp_linespacing / 3.0f), 0, 0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             trimlines_SwitchCompat.setChecked(FullscreenActivity.trimSections);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            hideBox_SwitchCompat.setChecked(FullscreenActivity.hideLyricsBox);
             trimsections_SwitchCompat.setChecked(!FullscreenActivity.trimSectionSpace);
         }
-
         ArrayList<String> font_choices = new ArrayList<>();
         font_choices.add(getResources().getString(R.string.font_default));
         font_choices.add(getResources().getString(R.string.font_monospace));
@@ -375,6 +359,16 @@ public class PopUpFontsFragment extends DialogFragment {
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
 
+        hideBox_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.hideLyricsBox = b;
+                Preferences.savePreferences();
+                if (mListener!=null) {
+                    mListener.refreshAll();
+                }
+            }
+        });
         trimlines_SwitchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

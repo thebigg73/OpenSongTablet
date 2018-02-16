@@ -256,6 +256,9 @@ public class PopUpSongCreateFragment extends DialogFragment {
                     PopUpEditSongFragment.justSaveSongXML();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
+                            getActivity().getResources().getString(R.string.error);
+                    ShowToast.showToast(getActivity());
                 }
 
                 // Load the XML up into memory

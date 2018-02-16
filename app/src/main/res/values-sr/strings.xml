@@ -710,4 +710,36 @@
     <string name="edit_default_delaymax">"Maksimalno odlaganje (sekunde)"</string>
     <string name="toggle_autoscroll_pause">"Prebacite Autoscroll pauzu"</string>
 
+    <string name="bibleXML">"OpenSong XML Biblija"</string>
+    <string name="book">"Knjiga"</string>
+    <string name="changestorage">"Promjena lokacije pohrane"</string>
+    <string name="chapter">"Poglavlje"</string>
+    <string name="currentstorage">"Trenutna lokacija"</string>
+    <string name="hidelyricsbox">"Sakrij okvir za tekst"</string>
+    <string name="midi">"MIDI"</string>
+    <string name="midi_add">"Dodaj naredbu"</string>
+    <string name="midi_auto">"Auto slanje MIDI-a"</string>
+    <string name="midi_bluetooth">"Povežite Bluetooth uređaj"</string>
+    <string name="midi_channel">"Kanal"</string>
+    <string name="midi_commands">"Uređivanje naredbi pjesme"</string>
+    <string name="midi_controller">"Promjena kontrolera"</string>
+    <string name="midi_error">"Provjerite MIDI vezu"</string>
+    <string name="midi_inputport">"Ulazni priključak"</string>
+    <string name="midi_list">"Kliknite stavku za testiranje i dugo kliknite da biste je uklonili"</string>
+    <string name="midi_listen">"Slušati"</string>
+    <string name="midi_note">"Bilješka"</string>
+    <string name="midi_outputport">"Izlazna luka"</string>
+    <string name="midi_program">"Promjena programa"</string>
+    <string name="midi_send">"Pošaljite MIDI"</string>
+    <string name="midi_test">"Test"</string>
+    <string name="midi_usb">"Spojite USB uređaj"</string>
+    <string name="midi_value">"Vrijednost"</string>
+    <string name="midi_velocity">"Brzina"</string>
+    <string name="location_rationale">"Pristup je potreban za otkrivanje Bluetooth uređaja"</string>
+    <string name="permissionerror">"Dopuštenje nije odobreno"</string>
+    <string name="pleaseselect">"Molimo izaberite"</string>
+    <string name="sdroot">"Korijen SD kartice"</string>
+    <string name="search">"traži"</string>
+    <string name="verse">"Stih"</string>
+
 </resources>

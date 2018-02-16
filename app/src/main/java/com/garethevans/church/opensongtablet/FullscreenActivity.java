@@ -11,6 +11,11 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.media.midi.MidiDevice;
+import android.media.midi.MidiInputPort;
+import android.media.midi.MidiManager;
+import android.media.midi.MidiOutputPort;
+import android.media.midi.MidiReceiver;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.os.Build;
@@ -113,6 +118,15 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     // Option menu
     public static String whichOptionMenu = "MAIN";
 
+    // MIDI stuff
+    public static MidiDevice midiDevice;
+    public static MidiManager midiManager;
+    public static MidiInputPort midiInputPort;
+    public static MidiOutputPort midiOutputPort;
+    public static String midiDeviceName = "", midiDeviceAddress = "";
+    public static MidiReceiver loggingReceiver;
+    public static boolean midiAuto;
+
     // Metronome, pad and autoscroll stuff
     public static boolean metronomeok, padok, autoscrollok, pad1Playing, pad2Playing, pad1Fading,
             pad2Fading, padson = false, autostartautoscroll, clickedOnAutoScrollStart = false,
@@ -207,7 +221,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static Bitmap[] sectionbitmaps;
 
     public static float stagemodeScale;
-    public static boolean trimSections,trimSectionSpace;
+    public static boolean trimSections,trimSectionSpace, hideLyricsBox;
 
     public static String filetoselect = "", pagebutton_scale, profile;
 
@@ -727,7 +741,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
                 }
 
                 // Now split it into smaller lines to better fit the screen size
-                sharedText = BibleGateway.shortenTheLines(sharedText, 40, 6);
+                sharedText = Bible.shortenTheLines(sharedText, 40, 6);
 
                 whattodo = "importfile_customreusable_scripture";
                 scripture_title = title;

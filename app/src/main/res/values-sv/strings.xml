@@ -714,4 +714,36 @@
     <string name="edit_default_delaymax">"Max fördröjning (sekunder)"</string>
     <string name="toggle_autoscroll_pause">"Växla Autoscroll paus"</string>
 
+    <string name="bibleXML">"OpenSong XML Bible"</string>
+    <string name="book">"bok"</string>
+    <string name="changestorage">"Ändra lagringsplats"</string>
+    <string name="chapter">"Kapitel"</string>
+    <string name="currentstorage">"Nuvarande position"</string>
+    <string name="hidelyricsbox">"Dölj textrutan"</string>
+    <string name="midi">"MIDI"</string>
+    <string name="midi_add">"Lägg till kommando"</string>
+    <string name="midi_auto">"Auto skicka MIDI"</string>
+    <string name="midi_bluetooth">"Anslut Bluetooth-enhet"</string>
+    <string name="midi_channel">"kanalisera"</string>
+    <string name="midi_commands">"Redigera låtkommandon"</string>
+    <string name="midi_controller">"Controller förändring"</string>
+    <string name="midi_error">"Kontrollera MIDI-anslutningen"</string>
+    <string name="midi_inputport">"Ingångsport"</string>
+    <string name="midi_list">"Klicka på ett objekt som ska testas och länge klicka för att ta bort det"</string>
+    <string name="midi_listen">"Lyssna"</string>
+    <string name="midi_note">"Notera"</string>
+    <string name="midi_outputport">"Outport-porten"</string>
+    <string name="midi_program">"Programändring"</string>
+    <string name="midi_send">"Skicka MIDI"</string>
+    <string name="midi_test">"Testa"</string>
+    <string name="midi_usb">"Anslut USB-enhet"</string>
+    <string name="midi_value">"Värde"</string>
+    <string name="midi_velocity">"Hastighet"</string>
+    <string name="location_rationale">"Åtkomst krävs för att upptäcka Bluetooth-enheter"</string>
+    <string name="permissionerror">"Tillstånd ej beviljat"</string>
+    <string name="pleaseselect">"Vänligen välj"</string>
+    <string name="sdroot">"SD-kort rot"</string>
+    <string name="search">"Sök"</string>
+    <string name="verse">"Vers"</string>
+
 </resources>

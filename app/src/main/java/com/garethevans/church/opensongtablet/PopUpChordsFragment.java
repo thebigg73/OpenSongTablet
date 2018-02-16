@@ -65,42 +65,12 @@ public class PopUpChordsFragment extends DialogFragment {
     AsyncTask<Object,Void,String> prepare_chords;
 
     // Identify the chord images
-    private Drawable f1;
-    private Drawable f2;
-    private Drawable f3;
-    private Drawable f4;
-    private Drawable f5;
-    private Drawable f6;
-    private Drawable f7;
-    private Drawable f8;
-    private Drawable f9;
-    private Drawable lx;
-    private Drawable l0;
-    private Drawable l1;
-    private Drawable l2;
-    private Drawable l3;
-    private Drawable l4;
-    private Drawable l5;
-    private Drawable mx;
-    private Drawable m0;
-    private Drawable m1;
-    private Drawable m2;
-    private Drawable m3;
-    private Drawable m4;
-    private Drawable m5;
-    private Drawable rx;
-    private Drawable r0;
-    private Drawable r1;
-    private Drawable r2;
-    private Drawable r3;
-    private Drawable r4;
-    private Drawable r5;
+    private Drawable f1, f2, f3, f4, f5, f6, f7, f8, f9, lx, l0, l1, l2, l3, l4, l5,
+            mx, m0, m1, m2, m3, m4, m5, rx, r0, r1, r2, r3, r4, r5;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
         if (savedInstanceState != null) {
             this.dismiss();
         }
@@ -309,7 +279,7 @@ public class PopUpChordsFragment extends DialogFragment {
                 FullscreenActivity.allchords = "";
             }
             while (FullscreenActivity.allchords.contains("  ")) {
-                FullscreenActivity.allchords = FullscreenActivity.allchords.replaceAll("  ", " ");
+                FullscreenActivity.allchords = FullscreenActivity.allchords.replace("  ", " ");
             }
 
             // Get rid of other bits that shouldn't be there

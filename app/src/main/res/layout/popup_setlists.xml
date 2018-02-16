@@ -48,7 +48,7 @@
                 android:layout_alignParentLeft="false"
                 android:layout_alignParentStart="false"
                 android:layout_margin="8dp"
-                android:background="@drawable/lyrics_box"
+                android:background="@drawable/section_box"
                 android:choiceMode="multipleChoice"
                 android:isScrollContainer="true"
                 android:padding="16dp" />
@@ -70,7 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:background="@drawable/lyrics_box"
+                    android:background="@drawable/section_box"
                     android:orientation="vertical">
 
                     <TextView
@@ -95,7 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:background="@drawable/lyrics_box"
+                    android:background="@drawable/section_box"
                     android:orientation="vertical">
 
 
@@ -152,7 +152,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:background="@drawable/lyrics_box"
+                    android:background="@drawable/section_box"
                     android:orientation="vertical">
 
                     <TextView

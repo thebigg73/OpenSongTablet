@@ -18,20 +18,14 @@ import android.widget.TextView;
 
 public class PopUpAlertFragment extends DialogFragment {
 
-    EditText alertMessage;
-    SwitchCompat alertToggle;
+    private EditText alertMessage;
+    private MyInterface mListener;
 
     static PopUpAlertFragment newInstance() {
         PopUpAlertFragment frag;
         frag = new PopUpAlertFragment();
         return frag;
     }
-
-    public interface MyInterface {
-        void updateAlert(boolean ison);
-    }
-
-    private MyInterface mListener;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -61,11 +55,11 @@ public class PopUpAlertFragment extends DialogFragment {
         super.onStart();
         // safety check
         if (getActivity() != null && getDialog() != null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
         }
     }
 
-    public void doClose() {
+    private void doClose() {
         FullscreenActivity.myAlert = alertMessage.getText().toString().trim();
         Preferences.savePreferences();
         dismiss();
@@ -84,7 +78,7 @@ public class PopUpAlertFragment extends DialogFragment {
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomAnimations.animateFAB(closeMe,getActivity());
+                CustomAnimations.animateFAB(closeMe, getActivity());
                 closeMe.setEnabled(false);
                 doClose();
             }
@@ -94,7 +88,7 @@ public class PopUpAlertFragment extends DialogFragment {
 
         alertMessage = V.findViewById(R.id.alertMessage);
         alertMessage.setText(FullscreenActivity.myAlert);
-        alertToggle = V.findViewById(R.id.alertToggleButton);
+        SwitchCompat alertToggle = V.findViewById(R.id.alertToggleButton);
 
         // If an alert is currently being shown, make sure the toggle button is on.  If not, off!
         if (PresenterMode.alert_on.equals("Y")) {
@@ -114,14 +108,14 @@ public class PopUpAlertFragment extends DialogFragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 FullscreenActivity.myAlert = alertMessage.getText().toString().trim();
                 Preferences.savePreferences();
-                if (mListener!=null) {
+                if (mListener != null) {
                     mListener.updateAlert(isChecked);
                 }
             }
         });
         Dialog dialog = getDialog();
-        if (dialog!=null && getActivity()!=null) {
-            PopUpSizeAndAlpha.decoratePopUp(getActivity(),dialog);
+        if (dialog != null && getActivity() != null) {
+            PopUpSizeAndAlpha.decoratePopUp(getActivity(), dialog);
         }
         return V;
     }
@@ -129,6 +123,10 @@ public class PopUpAlertFragment extends DialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         this.dismiss();
+    }
+
+    public interface MyInterface {
+        void updateAlert(boolean ison);
     }
 
 }

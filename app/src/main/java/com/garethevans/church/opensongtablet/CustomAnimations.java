@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-
 import android.content.Context;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;

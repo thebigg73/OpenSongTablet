@@ -190,6 +190,14 @@
             </LinearLayout>
 
             <android.support.v7.widget.SwitchCompat
+                android:text="@string/hidelyricsbox"
+                android:layout_width="match_parent"
+                style="@style/MyHeadingText"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/hideBox_SwitchCompat"/>
+
+            <android.support.v7.widget.SwitchCompat
                 android:text="@string/trim_sections"
                 android:layout_width="match_parent"
                 style="@style/MyHeadingText"

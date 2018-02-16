@@ -128,7 +128,8 @@ public class StageMode extends AppCompatActivity implements
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
         PopUpCreateDrawingFragment.MyInterface, PopUpABCNotationFragment.MyInterface,
         PopUpPDFToTextFragment.MyInterface, PopUpRandomSongFragment.MyInterface,
-        PopUpFindStorageLocationFragment.MyInterface, PopUpCCLIFragment.MyInterface {
+        PopUpFindStorageLocationFragment.MyInterface, PopUpCCLIFragment.MyInterface,
+        PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
 
     // The toolbar and menu
     public Toolbar ab_toolbar;
@@ -177,6 +178,9 @@ public class StageMode extends AppCompatActivity implements
     ScrollView extrabuttons, extrabuttons2;
     @CoordinatorLayout.DefaultBehavior(FloatingActionButtonBehaviour.class)
     CoordinatorLayout coordinator_layout;
+
+    // MIDI
+    Midi midi;
 
     // Casting
     MediaRouter mMediaRouter;
@@ -2260,6 +2264,7 @@ public class StageMode extends AppCompatActivity implements
             case "abcnotation_edit":
             case "abcnotation":
             case "abcnotation_editsong":
+            case "showmidicommands":
                 if (s.equals("editsong") && !justSong(StageMode.this) && !FullscreenActivity.isPDF) {
                     ShowToast.showToast(StageMode.this);
                 } else {
@@ -2360,6 +2365,7 @@ public class StageMode extends AppCompatActivity implements
         doEdit();
     }
 
+    @Override
     public void openMyDrawers(String which) {
         doCancelAsyncTask(open_drawers);
         open_drawers = new OpenMyDrawers(which);
@@ -3245,6 +3251,9 @@ public class StageMode extends AppCompatActivity implements
                         },2000);
                     }
 
+                    // Send the midi data if we can
+                    sendMidi();
+
                     // Send WiFiP2P intent
                     if (FullscreenActivity.network!=null && FullscreenActivity.network.isRunningAsHost) {
                         try {
@@ -3390,6 +3399,42 @@ public class StageMode extends AppCompatActivity implements
         delaycheckscroll.postDelayed(checkScrollPosition, FullscreenActivity.checkscroll_time);
 
         Preferences.loadSongSuccess();
+    }
+
+    @Override
+    public void sendMidi() {
+        if ((Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M &&
+                getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI) &&
+                FullscreenActivity.midiAuto && FullscreenActivity.midiDevice!=null &&
+                FullscreenActivity.midiInputPort!=null && FullscreenActivity.mMidi!=null &&
+                !FullscreenActivity.mMidi.isEmpty()) && !FullscreenActivity.mMidi.trim().equals("")) {
+            // Declare the midi code
+            Handler mh = new Handler();
+            mh.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (midi==null) {
+                            midi = new Midi();
+                        }
+                        // Split the midi messages by line, after changing , into new line
+                        FullscreenActivity.mMidi = FullscreenActivity.mMidi.replace(",", "\n");
+                        FullscreenActivity.mMidi = FullscreenActivity.mMidi.replace("\n\n", "\n");
+                        String[] midilines = FullscreenActivity.mMidi.trim().split("\n");
+                        for (String ml : midilines) {
+                            Log.d("d","Sending "+ml);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                if (midi!=null) {
+                                    midi.sendMidi(midi.returnBytesFromHexText(ml));
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -5251,7 +5296,11 @@ public class StageMode extends AppCompatActivity implements
         String message = OpenFragment.getMessage(StageMode.this);
 
         if (newFragment != null && !this.isFinishing()) {
-            newFragment.show(getFragmentManager(), message);
+            try {
+                newFragment.show(getFragmentManager(), message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -5358,8 +5407,7 @@ public class StageMode extends AppCompatActivity implements
             Log.d("d","Section not found");
         }
 
-        // Smooth scroll to show this view at the top of the page
-        // Unless we are autoscrolling
+        // Smooth scroll to show this view at the top of the page unless we are autoscrolling
         try {
             if (!FullscreenActivity.isautoscrolling) {
                 songscrollview.smoothScrollTo(0, FullscreenActivity.sectionviews[whichone].getTop());
@@ -5368,7 +5416,7 @@ public class StageMode extends AppCompatActivity implements
                 Log.d("d","Section not found");
         }
 
-            // Go through each of the views and set the alpha of the others to 0.5f;
+        // Go through each of the views and set the alpha of the others to 0.5f;
         for (int x = 0; x < FullscreenActivity.sectionviews.length; x++) {
             if (x != whichone) {
                 FullscreenActivity.sectionviews[x].setAlpha(0.5f);
@@ -5382,11 +5430,6 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void splashScreen() {
-        /*SharedPreferences settings = getSharedPreferences("mysettings", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putInt("showSplashVersion", 0);
-        editor.apply();
-        */
         FullscreenActivity.showSplashVersion = 0;
         Preferences.savePreferences();
         Intent intent = new Intent();
@@ -5401,7 +5444,6 @@ public class StageMode extends AppCompatActivity implements
         switch (FullscreenActivity.whattodo) {
             case "exit":
                 try {
-                    //this.finish();
                     android.os.Process.killProcess(android.os.Process.myPid());
                 } catch (Exception e) {
                    Log.d("d","Couldn't close the application!") ;
@@ -6505,9 +6547,6 @@ public class StageMode extends AppCompatActivity implements
             return true;
         }
 
-        /*if (keyCode == FullscreenActivity.pageturner_DOWN || keyCode == FullscreenActivity.pageturner_UP ||
-                keyCode == FullscreenActivity.pageturner_PREVIOUS || keyCode == FullscreenActivity.pageturner_NEXT) {
-        */
         if (keyCode == FullscreenActivity.pedal1 || keyCode == FullscreenActivity.pedal2 ||
                 keyCode == FullscreenActivity.pedal3 || keyCode == FullscreenActivity.pedal4 ||
                 keyCode == FullscreenActivity.pedal5 || keyCode == FullscreenActivity.pedal6) {
@@ -6581,78 +6620,6 @@ public class StageMode extends AppCompatActivity implements
             } else if (keyCode == FullscreenActivity.pedal6) {
                 doPedalAction(FullscreenActivity.pedal6shortaction);
             }
-
-            /*} else if (keyCode == FullscreenActivity.pageturner_NEXT) {
-                if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
-                    if (mDrawerLayout.isDrawerOpen(songmenu)) {
-                        // Scroll the song menu down
-                        scrollMenu("down");
-                    } else {
-                        if (checkCanScrollDown()) {
-                            CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
-                            doScrollDown();
-                        } else {
-                            if (setForwardButton!=null && setForwardButton.getVisibility() == View.VISIBLE) {
-                                CustomAnimations.animateFAB(setForwardButton,StageMode.this);
-                            }
-                            goToNextItem();
-                        }
-                    }
-                } else {
-                    goToNextItem();
-                }*/
-
-            /*} else if (keyCode == FullscreenActivity.pageturner_PREVIOUS) {
-                if (FullscreenActivity.toggleScrollBeforeSwipe.equals("Y")) {
-                    if (mDrawerLayout.isDrawerOpen(songmenu)) {
-                        // Scroll the song menu up
-                        scrollMenu("up");
-                    } else {
-                        if (checkCanScrollUp()) {
-                            CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
-                            doScrollUp();
-                        } else {
-                            if (setBackButton!=null && setBackButton.getVisibility() == View.VISIBLE) {
-                                CustomAnimations.animateFAB(setBackButton,StageMode.this);
-                            }
-                            goToPreviousItem();
-                        }
-                    }
-                } else {
-                    goToPreviousItem();
-                }*/
-
-            /*} else if (keyCode == FullscreenActivity.pageturner_UP) {
-                if (mDrawerLayout.isDrawerOpen(songmenu)) {
-                    // Scroll the song menu up
-                    scrollMenu("up");
-                } else {
-                    if (checkCanScrollUp()) {
-                        CustomAnimations.animateFAB(scrollUpButton,StageMode.this);
-                        doScrollUp();
-                    }
-                }*/
-
-            /*} else if (keyCode == FullscreenActivity.pageturner_DOWN) {
-                if (mDrawerLayout.isDrawerOpen(songmenu)) {
-                    // Scroll the song menu down
-                    scrollMenu("down");
-                } else {
-                    if (checkCanScrollDown()) {
-                        CustomAnimations.animateFAB(scrollDownButton,StageMode.this);
-                        doScrollDown();
-                    }
-                }*/
-
-            /*} else if (keyCode == FullscreenActivity.pageturner_PAD) {
-                gesture6();
-
-            } else if (keyCode == FullscreenActivity.pageturner_AUTOSCROLL) {
-                gesture5();
-
-            } else if (keyCode == FullscreenActivity.pageturner_METRONOME) {
-                gesture7();
-            }*/
         }
         FullscreenActivity.shortKeyPress = true;
         FullscreenActivity.longKeyPress = false;
@@ -6895,66 +6862,6 @@ public class StageMode extends AppCompatActivity implements
             doPedalAction(FullscreenActivity.pedal6longaction);
         }
 
-    /*    String action = "";
-        if (keyCode == FullscreenActivity.pageturner_DOWN) {
-            action = FullscreenActivity.longpressdownpedalgesture;
-        } else if (keyCode == FullscreenActivity.pageturner_UP) {
-            action = FullscreenActivity.longpressuppedalgesture;
-        } else if (keyCode == FullscreenActivity.pageturner_PREVIOUS) {
-            action = FullscreenActivity.longpresspreviouspedalgesture;
-        } else if (keyCode == FullscreenActivity.pageturner_NEXT) {
-            action = FullscreenActivity.longpressnextpedalgesture;
-        }
-
-        switch (action) {
-            case "1":
-                gesture1();  // Open/close the drawers
-                break;
-            case "2":
-                if (justSong(StageMode.this)) {
-                    gesture2(); // Edit the song
-                }
-                break;
-            case "3":
-                gesture3();  // Add the song to the set
-                break;
-            case "4":
-                gesture4();  // Refresh the current song
-                break;
-            case "5":
-                gesture5();  // Stop/start autoscroll
-                break;
-            case "6":
-                gesture6();  // Stop/start pad
-                break;
-            case "7":
-                gesture7();  // Stop/start metronome
-                break;
-            case "8":
-                gesture5();  // Stop/start autoscroll
-                gesture6();  // Stop/start pad
-                break;
-            case "9":
-                gesture5();  // Stop/start autoscroll
-                gesture7();  // Stop/start metronome
-                break;
-            case "10":
-                gesture6();  // Stop/start pad
-                gesture7();  // Stop/start metronome
-                break;
-            case "11":
-                gesture5();  // Stop/start autoscroll
-                gesture6();  // Stop/start pad
-                gesture7();  // Stop/start metronome
-                break;
-            case "12":
-                FullscreenActivity.whattodo = "editset"; // Show the set
-                openFragment();
-            default:
-                // Do nothing
-                break;
-        }
-*/
         if (actionrecognised) {
             FullscreenActivity.shortKeyPress = false;
             FullscreenActivity.longKeyPress = true;
@@ -6962,12 +6869,6 @@ public class StageMode extends AppCompatActivity implements
         }
         return super.onKeyLongPress(keyCode, event);
     }
-
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        scaleGestureDetector.onTouchEvent(event);
-//        return true;
-//    }
 
     private class simpleOnScaleGestureListener extends
             ScaleGestureDetector.SimpleOnScaleGestureListener {
@@ -7316,13 +7217,7 @@ public class StageMode extends AppCompatActivity implements
             DoVibrate.vibrate(StageMode.this, 50);
             if (FullscreenActivity.pad1Playing || FullscreenActivity.pad2Playing) {
                 FullscreenActivity.clickedOnPadStart = false;
-                if (FullscreenActivity.pad1Playing) {
-                    FullscreenActivity.mPlayer1.stop();
-                    FullscreenActivity.mPlayer1.reset();
-                } else if (FullscreenActivity.pad2Playing) {
-                    FullscreenActivity.mPlayer2.stop();
-                    FullscreenActivity.mPlayer2.reset();
-                }
+                fadeoutPad();
                 FullscreenActivity.padson = false;
             } else if (PadFunctions.isPadValid(StageMode.this)) {
                 FullscreenActivity.clickedOnPadStart = true;

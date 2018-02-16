@@ -14,7 +14,6 @@ import java.util.List;
 
 class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
 
-    //private static List<SetItemInfo> setList;
     private List<SetItemInfo> setList;
     Context c;
 

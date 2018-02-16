@@ -8,9 +8,7 @@ import java.io.IOException;
 class CustomSlide {
 
     static void addCustomSlide(Context c) {
-        String filename;
-        String reusablefilename;
-        String templocator;
+        String filename, reusablefilename, templocator;
 
         // Get rid of illegal characters
         String filetitle = FullscreenActivity.customslide_title.replaceAll("[|?*<\":>+\\[\\]']", " ");

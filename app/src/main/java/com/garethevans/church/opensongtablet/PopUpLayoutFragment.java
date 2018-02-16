@@ -377,6 +377,9 @@ public class PopUpLayoutFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
+                    image2CheckBox.setChecked(false);
+                    video1CheckBox.setChecked(false);
+                    video2CheckBox.setChecked(false);
                     FullscreenActivity.backgroundTypeToUse = "image";
                     FullscreenActivity.backgroundToUse = "img1";
                     PresenterMode.whatBackgroundLoaded = "image1";
@@ -388,6 +391,9 @@ public class PopUpLayoutFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
+                    image1CheckBox.setChecked(false);
+                    video1CheckBox.setChecked(false);
+                    video2CheckBox.setChecked(false);
                     FullscreenActivity.backgroundTypeToUse = "image";
                     FullscreenActivity.backgroundToUse = "img2";
                     PresenterMode.whatBackgroundLoaded = "image2";
@@ -399,6 +405,9 @@ public class PopUpLayoutFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
+                    image1CheckBox.setChecked(false);
+                    image2CheckBox.setChecked(false);
+                    video2CheckBox.setChecked(false);
                     FullscreenActivity.backgroundTypeToUse = "video";
                     FullscreenActivity.backgroundToUse = "vid1";
                     PresenterMode.whatBackgroundLoaded = "video1";
@@ -410,6 +419,9 @@ public class PopUpLayoutFragment extends DialogFragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
+                    image1CheckBox.setChecked(false);
+                    image2CheckBox.setChecked(false);
+                    video1CheckBox.setChecked(false);
                     FullscreenActivity.backgroundTypeToUse = "video";
                     FullscreenActivity.backgroundToUse = "vid2";
                     PresenterMode.whatBackgroundLoaded = "video2";
@@ -552,7 +564,7 @@ public class PopUpLayoutFragment extends DialogFragment {
 
     public void setButtonBackground(ImageView v, String background) {
         File imgfile = new File(FullscreenActivity.dirbackgrounds + "/"+ background);
-        if (imgfile.exists()) {
+        if (imgfile.exists() && imgfile.isFile()) {
             Uri imageUri = Uri.fromFile(imgfile);
             v.setBackgroundColor(0x00000000);
             RequestOptions myOptions = new RequestOptions()

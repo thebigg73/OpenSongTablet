@@ -734,4 +734,36 @@
     <string name="edit_default_delaymax">"Max καθυστέρηση (δευτερόλεπτα)"</string>
     <string name="toggle_autoscroll_pause">"Εναλλαγή της παύσης αυτόματης κύλισης"</string>
 
+    <string name="bibleXML">"OpenSong XML Bible"</string>
+    <string name="book">"Βιβλίο"</string>
+    <string name="changestorage">"Αλλάξτε τη θέση αποθήκευσης"</string>
+    <string name="chapter">"Κεφάλαιο"</string>
+    <string name="currentstorage">"Τωρινή τοποθεσία"</string>
+    <string name="hidelyricsbox">"Απόκρυψη κουτιού στίχων"</string>
+    <string name="midi">"MIDI"</string>
+    <string name="midi_add">"Προσθήκη εντολής"</string>
+    <string name="midi_auto">"Αυτόματη αποστολή MIDI"</string>
+    <string name="midi_bluetooth">"Συνδέστε τη συσκευή Bluetooth"</string>
+    <string name="midi_channel">"Κανάλι"</string>
+    <string name="midi_commands">"Επεξεργασία εντολών τραγουδιού"</string>
+    <string name="midi_controller">"Εναλλαγή ελεγκτή"</string>
+    <string name="midi_error">"Ελέγξτε τη σύνδεση MIDI"</string>
+    <string name="midi_inputport">"Θύρα εισόδου"</string>
+    <string name="midi_list">"Κάντε κλικ σε ένα στοιχείο για δοκιμή και κάντε κλικ μακριά για να το καταργήσετε"</string>
+    <string name="midi_listen">"Ακούω"</string>
+    <string name="midi_note">"Σημείωση"</string>
+    <string name="midi_outputport">"Θύρα Outport"</string>
+    <string name="midi_program">"Αλλαγή προγράμματος"</string>
+    <string name="midi_send">"Αποστολή MIDI"</string>
+    <string name="midi_test">"Δοκιμή"</string>
+    <string name="midi_usb">"Συνδέστε τη συσκευή USB"</string>
+    <string name="midi_value">"αξία"</string>
+    <string name="midi_velocity">"Ταχύτητα"</string>
+    <string name="location_rationale">"Απαιτείται πρόσβαση για να ανακαλύψετε συσκευές Bluetooth"</string>
+    <string name="permissionerror">"Η άδεια δεν παραχωρείται"</string>
+    <string name="pleaseselect">"Παρακαλώ επιλέξτε"</string>
+    <string name="sdroot">"Ρίζα κάρτας SD"</string>
+    <string name="search">"Ψάξιμο"</string>
+    <string name="verse">"Στίχος"</string>
+
 </resources>

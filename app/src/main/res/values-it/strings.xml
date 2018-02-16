@@ -659,4 +659,36 @@
 	<string name="edit_default_delaymax">"Ritardo massimo (secondi)"</string>
 	<string name="toggle_autoscroll_pause">"Attiva / disattiva pausa di scorrimento automatico"</string>
 
+	<string name="bibleXML">"OpenSong XML Bible"</string>
+	<string name="book">"Libro"</string>
+	<string name="changestorage">"Cambia posizione di archiviazione"</string>
+	<string name="chapter">"Capitolo"</string>
+	<string name="currentstorage">"Posizione attuale"</string>
+	<string name="hidelyricsbox">"Nascondi la finestra dei testi"</string>
+	<string name="midi">"MIDI"</string>
+	<string name="midi_add">"Aggiungi comando"</string>
+	<string name="midi_auto">"Auto invia MIDI"</string>
+	<string name="midi_bluetooth">"Connetti dispositivo Bluetooth"</string>
+	<string name="midi_channel">"Canale"</string>
+	<string name="midi_commands">"Modifica i comandi del brano"</string>
+	<string name="midi_controller">"Cambio del controller"</string>
+	<string name="midi_error">"Si prega di verificare la connessione MIDI"</string>
+	<string name="midi_inputport">"Porta d'ingresso"</string>
+	<string name="midi_list">"Fare clic su un elemento per testare e fare un lungo clic per rimuoverlo"</string>
+	<string name="midi_listen">"Ascolta"</string>
+	<string name="midi_note">"Nota"</string>
+	<string name="midi_outputport">"Porto di uscita"</string>
+	<string name="midi_program">"Cambio di programma"</string>
+	<string name="midi_send">"Invia MIDI"</string>
+	<string name="midi_test">"Test"</string>
+	<string name="midi_usb">"Connetti dispositivo USB"</string>
+	<string name="midi_value">"Valore"</string>
+	<string name="midi_velocity">"Velocità"</string>
+	<string name="location_rationale">"L'accesso è necessario per scoprire i dispositivi Bluetooth"</string>
+	<string name="permissionerror">"Autorizzazione non concessa"</string>
+	<string name="pleaseselect">"Per favore seleziona"</string>
+	<string name="sdroot">"Root della scheda SD"</string>
+	<string name="search">"Ricerca"</string>
+	<string name="verse">"Versetto"</string>
+
 </resources>

@@ -6,7 +6,6 @@ import android.app.DialogFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class PopUpBibleXMLFragment extends DialogFragment {
@@ -57,23 +57,12 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         }
     }
 
-    ArrayList<String> bibleFileNames;
-    ArrayList<String> bibleBookNames;
-    ArrayList<String> bibleChapters;
-    public static ArrayList<String> bibleVerses;
-    public static ArrayList<String> bibleText;
+    ArrayList<String> bibleFileNames, bibleBookNames, bibleChapters;
+    public static ArrayList<String> bibleVerses, bibleText;
     ArrayAdapter<String> blank_array;
-
-    Spinner bibleFileSpinner;
-    Spinner bibleBookSpinner;
-    Spinner bibleChapterSpinner;
-    Spinner bibleVerseFromSpinner;
-    Spinner bibleVerseToSpinner;
-
+    Spinner bibleFileSpinner, bibleBookSpinner, bibleChapterSpinner, bibleVerseFromSpinner, bibleVerseToSpinner;
     ProgressBar progressBar;
-
     TextView previewTextView;
-
     String bible;
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -85,7 +74,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         View V = inflater.inflate(R.layout.popup_biblexml, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.bible_search));
+        title.setText(getActivity().getResources().getString(R.string.bibleXML));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +119,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     }
 
     public void updateBibleFiles() {
+        // This looks for bible files inside the OpenSong/OpenSong Scripture/ folder
         try {
             UpdateBibleFiles update_biblefiles = new UpdateBibleFiles();
             update_biblefiles.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -155,8 +145,8 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         protected String doInBackground(Object... objects) {
             bibleFileNames = new ArrayList<>();
             bibleFileNames.add("");
-            DocumentFile[] files = FullscreenActivity.dirBibles_SAF.listFiles();
-            for (DocumentFile f : files) {
+            File[] files = FullscreenActivity.dirbibles.listFiles();
+            for (File f : files) {
                 if (f.isFile()) {
                     bibleFileNames.add(f.getName());
                 }
@@ -178,7 +168,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                     if (bibleFileNames.size()>=i) {
                         FullscreenActivity.bibleFile = bibleFileNames.get(i);
                         Preferences.savePreferences();
-                        DocumentFile bibleFileChosen = FullscreenActivity.dirBibles_SAF.findFile(bibleFileNames.get(i));
+                        File bibleFileChosen = new File(FullscreenActivity.dirbibles,bibleFileNames.get(i));
                         if (bibleFileChosen!=null && bibleFileChosen.exists() && bibleFileChosen.isFile()) {
                             updateBibleBooks(bibleFileChosen);
                         }
@@ -203,7 +193,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         }
     }
 
-    public void updateBibleBooks(DocumentFile bibleFileChosen) {
+    public void updateBibleBooks(File bibleFileChosen) {
         try {
             UpdateBibleBooks update_biblebooks = new UpdateBibleBooks(bibleFileChosen);
             update_biblebooks.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -214,8 +204,8 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     @SuppressLint("StaticFieldLeak")
     private class UpdateBibleBooks extends AsyncTask<Object,Void,String> {
 
-        DocumentFile bibleFileChosen;
-        UpdateBibleBooks(DocumentFile f) {
+        File bibleFileChosen;
+        UpdateBibleBooks(File f) {
             bibleFileChosen = f;
         }
 
@@ -260,7 +250,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         }
     }
 
-    public void updateBibleChapters(DocumentFile bibleFileChosen, String bibleBookName) {
+    public void updateBibleChapters(File bibleFileChosen, String bibleBookName) {
         try {
             UpdateBibleChapters update_biblechapters = new UpdateBibleChapters(bibleFileChosen, bibleBookName);
             update_biblechapters.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -270,10 +260,10 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     }
     @SuppressLint("StaticFieldLeak")
     private class UpdateBibleChapters extends AsyncTask<Object, Void, String> {
-        DocumentFile bibleFileChosen;
+        File bibleFileChosen;
         String bibleBookName;
 
-        UpdateBibleChapters (DocumentFile f, String s){
+        UpdateBibleChapters (File f, String s){
             bibleFileChosen = f;
             bibleBookName = s;
         }
@@ -316,7 +306,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     }
 
 
-    public void updateBibleVerses(DocumentFile bibleFileChosen, String bibleBookName, String bibleChapter) {
+    public void updateBibleVerses(File bibleFileChosen, String bibleBookName, String bibleChapter) {
         try {
             UpdateBibleVerses update_bibleverses = new UpdateBibleVerses(bibleFileChosen, bibleBookName, bibleChapter);
             update_bibleverses.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -327,10 +317,10 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     @SuppressLint("StaticFieldLeak")
     private class UpdateBibleVerses extends AsyncTask<Object,Void,String> {
 
-        DocumentFile bibleFileChosen;
+        File bibleFileChosen;
         String bibleBookName;
         String bibleChapter;
-        UpdateBibleVerses(DocumentFile f, String s1, String s2) {
+        UpdateBibleVerses(File f, String s1, String s2) {
             bibleFileChosen = f;
             bibleBookName = s1;
             bibleChapter = s2;
@@ -403,7 +393,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         }
     }
 
-    public void getBibleText(DocumentFile bibleFileChosen, String bibleBookName, String bibleChapter, String bibleVerseFrom, String bibleVerseTo) {
+    public void getBibleText(File bibleFileChosen, String bibleBookName, String bibleChapter, String bibleVerseFrom, String bibleVerseTo) {
         int from;
         int to;
         try {
@@ -421,7 +411,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
 
             for (int i=from; i<=to; i++) {
                 if (bibleText.size()>=i) {
-                    s = s + bibleText.get(i) + " ";
+                    s = s + bibleText.get(i-1) + " ";
                 }
             }
             // Trim and fix new sentence double spaces
@@ -475,7 +465,6 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     public void initialiseTheSpinners(Spinner spinner) {
         spinner.setAdapter(blank_array);
         spinner.setOnItemSelectedListener(null);
-        //spinner.setSelection(0);
         spinner.setEnabled(false);
     }
 }

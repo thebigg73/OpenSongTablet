@@ -119,9 +119,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         PopUpCreateDrawingFragment.MyInterface, PopUpABCNotationFragment.MyInterface,
         PopUpPDFToTextFragment.MyInterface, PopUpRandomSongFragment.MyInterface,
         PopUpFindStorageLocationFragment.MyInterface, PopUpCCLIFragment.MyInterface,
-        PopUpBibleXMLFragment.MyInterface {
+        PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
 
     DialogFragment newFragment;
+
+    // MIDI
+    Midi midi;
 
     // Casting
     MediaRouter mMediaRouter;
@@ -2229,6 +2232,10 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                             e.printStackTrace();
                         }
                     }
+
+                    // Send the midi data if we can
+                    sendMidi();
+
                     // If the user has shown the 'Welcome to OpenSongApp' file, and their song lists are empty,
                     // open the find new songs menu
                     if (FullscreenActivity.mTitle.equals("Welcome to OpenSongApp") &&
@@ -2488,7 +2495,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         String message = OpenFragment.getMessage(PresenterMode.this);
 
         if (newFragment != null) {
-            newFragment.show(getFragmentManager(), message);
+            try {
+                newFragment.show(getFragmentManager(), message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
     @Override
@@ -2793,6 +2804,42 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             do_download.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void sendMidi() {
+        if ((Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M &&
+                getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI) &&
+                FullscreenActivity.midiAuto && FullscreenActivity.midiDevice!=null &&
+                FullscreenActivity.midiInputPort!=null && FullscreenActivity.mMidi!=null &&
+                !FullscreenActivity.mMidi.isEmpty()) && !FullscreenActivity.mMidi.trim().equals("")) {
+            // Declare the midi code
+            Handler mh = new Handler();
+            mh.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (midi==null) {
+                            midi = new Midi();
+                        }
+                        // Split the midi messages by line, after changing , into new line
+                        FullscreenActivity.mMidi = FullscreenActivity.mMidi.replace(",", "\n");
+                        FullscreenActivity.mMidi = FullscreenActivity.mMidi.replace("\n\n", "\n");
+                        String[] midilines = FullscreenActivity.mMidi.trim().split("\n");
+                        for (String ml : midilines) {
+                            Log.d("d","Sending "+ml);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                if (midi!=null) {
+                                    midi.sendMidi(midi.returnBytesFromHexText(ml));
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
     }
 

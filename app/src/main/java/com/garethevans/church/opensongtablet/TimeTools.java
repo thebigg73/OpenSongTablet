@@ -17,5 +17,4 @@ class TimeTools {
         }
         return time;
     }
-
 }

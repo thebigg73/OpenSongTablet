@@ -322,10 +322,10 @@ class PresentationServiceHDMI extends Presentation
         float xscale;
         float yscale;
         boolean usingcustom = false;
-        File customLogo = new File(FullscreenActivity.customLogo);
+        File customLogo = new File(FullscreenActivity.dirbackgrounds,FullscreenActivity.customLogo);
         if (customLogo.exists()) {
             // Get the sizes of the custom logo
-            BitmapFactory.decodeFile(FullscreenActivity.customLogo, options);
+            BitmapFactory.decodeFile(customLogo.toString(), options);
             imgwidth = options.outWidth;
             imgheight = options.outHeight;
             if (imgwidth > 0 && imgheight > 0) {
@@ -350,6 +350,7 @@ class PresentationServiceHDMI extends Presentation
         if (usingcustom) {
             Uri logoUri = Uri.fromFile(customLogo);
             RequestOptions myOptions = new RequestOptions()
+                    .fitCenter()
                     .override(logowidth,logoheight);
             Glide.with(c).load(logoUri).apply(myOptions).into(projected_Logo);
         } else {
@@ -418,6 +419,7 @@ class PresentationServiceHDMI extends Presentation
                 // Try to set the new background
                 fixBackground();
 
+                Log.d("d", "backgroundTypeToUse="+FullscreenActivity.backgroundTypeToUse);
                 if (FullscreenActivity.backgroundTypeToUse.equals("image")) {
                     projected_BackgroundImage.startAnimation(background_fadein);
                 } else if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
@@ -581,19 +583,25 @@ class PresentationServiceHDMI extends Presentation
             case "video":
                 projected_BackgroundImage.setVisibility(View.INVISIBLE);
                 projected_TextureView.setVisibility(View.VISIBLE);
-
                 if (FullscreenActivity.backgroundToUse.equals("vid1")) {
                     vidFile = vid1File;
                 } else {
                     vidFile = vid2File;
                 }
-                if (mMediaPlayer != null) {
-                    mMediaPlayer.start();
+                /*if (mMediaPlayer != null) {
+                   // mMediaPlayer.start();
+                }*/
+                try {
+                    Log.d("d","Trying to load video background");
+                    reloadVideo();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 myBitmap = null;
                 dr = null;
                 projected_BackgroundImage.setImageDrawable(null);
                 projected_BackgroundImage.setVisibility(View.GONE);
+                projected_TextureView.startAnimation(background_fadein);
                 break;
             default:
                 myBitmap = null;
@@ -1541,11 +1549,41 @@ class PresentationServiceHDMI extends Presentation
             mMediaPlayer.reset();
             try {
                 mMediaPlayer.setDataSource(vidFile);
+                Log.d("d","Setting the video file "+vidFile);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+
             try {
                 mMediaPlayer.prepareAsync();
+                mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mediaPlayer) {
+                        mediaPlayer.start();
+
+                        Log.d("d","length="+mediaPlayer.getDuration());
+                        Log.d("d","Media player prepared and started");
+                    }
+                });
+                mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        if (mediaPlayer != null) {
+                            if (mediaPlayer.isPlaying()) {
+                                mediaPlayer.stop();
+                            }
+                            Log.d("d","Media player completed and reset");
+                            mediaPlayer.reset();
+                        }
+                        try {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                                reloadVideo();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             } catch (Exception e) {
                 Log.e("Presentation window", "media player error");
             }
@@ -1634,7 +1672,9 @@ class PresentationServiceHDMI extends Presentation
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-        mp.start();
+        if (mp!=null && !mp.isPlaying()) {
+            mp.start();
+        }
     }
 
     @Override

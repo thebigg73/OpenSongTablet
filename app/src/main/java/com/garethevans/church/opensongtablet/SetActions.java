@@ -24,17 +24,9 @@ public class SetActions extends Activity {
 
     public static MyInterface mListener;
 
-    private static String custom_notes;
     private static boolean encodedimage;
-    static String title = "";
-    static String author = "";
-    private static String user1 = "";
-    private static String user2 = "";
-    private static String user3 = "";
-    static String lyrics = "";
-    private static String aka = "";
-    private static String key_line = "";
-    static String hymn_number = "";
+    static String title = "", author = "", lyrics = "", hymn_number = "";
+    private static String custom_notes, user1 = "", user2 = "", user3 = "", aka = "", key_line = "";
     private static XmlPullParser xpp;
 
     static void updateOptionListSets() {

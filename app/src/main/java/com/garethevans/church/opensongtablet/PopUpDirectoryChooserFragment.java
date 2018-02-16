@@ -307,6 +307,7 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
         } else {
             Log.d("d","PERMISSION ALLOWED");
         }
+        FullscreenActivity.searchUsingSAF = false;  // Can't get this working yet!
         if (FullscreenActivity.searchUsingSAF) {
             try {
                 DocumentFile df = DocumentFile.fromTreeUri(getActivity(), uri_current);
@@ -328,7 +329,6 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
             }
         } else {
             if (location.canWrite()) {
-                //if (tryCreateFile()) {
                 if (selectButton != null) {
                     selectButton.setVisibility(View.VISIBLE);
                     selectButton.setEnabled(true);

@@ -360,6 +360,9 @@ public class PopUpLinks extends DialogFragment {
             mListener.refreshAll();
             dismiss();
         } catch (Exception e) {
+            FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
+                    getActivity().getResources().getString(R.string.error);
+            ShowToast.showToast(getActivity());
             e.printStackTrace();
         }
     }

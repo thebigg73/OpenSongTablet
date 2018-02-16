@@ -120,8 +120,13 @@ public class ListSongFiles {
         });*/
 
         FullscreenActivity.numDirs = 0;
-        while (FullscreenActivity.songDetails[FullscreenActivity.numDirs][2].equals(c.getString(R.string.songsinfolder))) {
-            FullscreenActivity.numDirs++;
+        try {
+            while (FullscreenActivity.songDetails[FullscreenActivity.numDirs][2] != null &&
+                    FullscreenActivity.songDetails[FullscreenActivity.numDirs][2].equals(c.getString(R.string.songsinfolder))) {
+                FullscreenActivity.numDirs++;
+            }
+        } catch (Exception e){
+            Log.d("d","Error building a valid index - it's empty");
         }
         //numDirs is zerobased index >> horrible hack.
         if(FullscreenActivity.numDirs > 0)

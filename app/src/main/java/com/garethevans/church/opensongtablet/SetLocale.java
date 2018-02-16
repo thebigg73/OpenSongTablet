@@ -9,7 +9,6 @@ import java.util.Locale;
 
 public class SetLocale extends Activity {
 
-    @SuppressWarnings("deprecation")
     public static void setLocale(Context c) {
         if (!FullscreenActivity.languageToLoad.isEmpty()) {
             Locale locale;

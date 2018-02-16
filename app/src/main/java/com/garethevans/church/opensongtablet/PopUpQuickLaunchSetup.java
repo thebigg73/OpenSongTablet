@@ -163,6 +163,8 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
         actionOptions.add(getActivity().getString(R.string.dec_autoscroll_speed));
         //17
         actionOptions.add(getActivity().getString(R.string.toggle_autoscroll_pause));
+        //18
+        actionOptions.add(getString(R.string.midi));
 
         ArrayAdapter<String> adapter_1 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
         ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, actionOptions);
@@ -317,6 +319,10 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
             case 17:
                 t = "toggle_autoscroll_pause";
                 break;
+
+            case 18:
+                t = "showmidicommands";
+                break;
         }
 
         return t;
@@ -392,6 +398,10 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
 
             case "toggle_autoscroll_pause":
                 i = 17;
+                break;
+
+            case "showmidicommands":
+                i = 18;
                 break;
         }
 
@@ -474,6 +484,10 @@ public class PopUpQuickLaunchSetup extends DialogFragment {
 
             case "toggle_autoscroll_pause":
                 d = c.getResources().getDrawable(R.drawable.ic_autoscroll_pause_white_36dp);
+                break;
+
+            case "showmidicommands":
+                d = c.getResources().getDrawable(R.drawable.ic_midi_white_36dp);
                 break;
         }
         return d;

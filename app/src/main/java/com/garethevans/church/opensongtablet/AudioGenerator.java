@@ -35,11 +35,8 @@ class AudioGenerator {
 		return generatedSound;
 	}
 
-	@SuppressWarnings("deprecation")
 	void createPlayer(){
-		//boolean isready = false;
-
-        try {
+		try {
             audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
                     sampleRate, AudioFormat.CHANNEL_OUT_MONO,
                     AudioFormat.ENCODING_PCM_16BIT, sampleRate,
@@ -63,14 +60,14 @@ class AudioGenerator {
 			audioTrack.play();
 		} catch (Exception e) {
             Log.d("audioTrack","Can't play it");
-			// Catches temp errors
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	void writeSound(double[] samples) {
 		byte[] generatedSnd = get16BitPcm(samples);
-		if (FullscreenActivity.metronomeonoff.equals("on") && audioTrack.getState()==AudioTrack.STATE_INITIALIZED && audioTrack.getPlayState()==AudioTrack.PLAYSTATE_PLAYING) {
+		if (FullscreenActivity.metronomeonoff.equals("on") &&
+				audioTrack.getState()==AudioTrack.STATE_INITIALIZED &&
+                audioTrack.getPlayState()==AudioTrack.PLAYSTATE_PLAYING) {
 			try {
 				audioTrack.write(generatedSnd, 0, generatedSnd.length);
 			} catch (Exception e) {

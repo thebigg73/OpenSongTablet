@@ -659,4 +659,36 @@
 	<string name="edit_default_delaymax">"Максимальная задержка (в секундах)"</string>
 	<string name="toggle_autoscroll_pause">"Toggle Autoscroll Pause"</string>
 
+	<string name="bibleXML">"Библия OpenSong XML"</string>
+	<string name="book">"Книга"</string>
+	<string name="changestorage">"Изменение места хранения"</string>
+	<string name="chapter">"глава"</string>
+	<string name="currentstorage">"Текущее местоположение"</string>
+	<string name="hidelyricsbox">"Скрыть текст"</string>
+	<string name="midi">"миди"</string>
+	<string name="midi_add">"Добавить команду"</string>
+	<string name="midi_auto">"Автоматическая отправка MIDI"</string>
+	<string name="midi_bluetooth">"Подключить устройство Bluetooth"</string>
+	<string name="midi_channel">"канал"</string>
+	<string name="midi_commands">"Редактирование команд песни"</string>
+	<string name="midi_controller">"Изменение контроллера"</string>
+	<string name="midi_error">"Проверьте подключение MIDI"</string>
+	<string name="midi_inputport">"Входной порт"</string>
+	<string name="midi_list">"Нажмите элемент для проверки и нажмите его, чтобы удалить его."</string>
+	<string name="midi_listen">"Слушать"</string>
+	<string name="midi_note">"Заметка"</string>
+	<string name="midi_outputport">"Порт для порта"</string>
+	<string name="midi_program">"Изменение программы"</string>
+	<string name="midi_send">"Отправить midi"</string>
+	<string name="midi_test">"Контрольная работа"</string>
+	<string name="midi_usb">"Подключение USB-устройства"</string>
+	<string name="midi_value">"Стоимость"</string>
+	<string name="midi_velocity">"Скорость"</string>
+	<string name="location_rationale">"Для обнаружения устройств Bluetooth требуется доступ"</string>
+	<string name="permissionerror">"Разрешение не предоставлено"</string>
+	<string name="pleaseselect">"Пожалуйста выберите"</string>
+	<string name="sdroot">"Корневой кабель SD"</string>
+	<string name="search">"Поиск"</string>
+	<string name="verse">"строфа"</string>
+
 </resources>

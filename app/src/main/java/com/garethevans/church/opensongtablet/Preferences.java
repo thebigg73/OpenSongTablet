@@ -212,6 +212,7 @@ public class Preferences extends Activity {
             FullscreenActivity.grouppagebuttons = myPreferences.getBoolean("grouppagebuttons", false);
             FullscreenActivity.headingfontscalesize = myPreferences.getFloat("headingfontscalesize", 0.6f);
             FullscreenActivity.hideActionBar = myPreferences.getBoolean("hideActionBar", false);
+            FullscreenActivity.hideLyricsBox = myPreferences.getBoolean("hideLyricsBox", false);
             FullscreenActivity.highlightShowSecs = myPreferences.getInt("highlightShowSecs", 0);
             FullscreenActivity.languageToLoad = myPreferences.getString("languageToLoad", "");
             FullscreenActivity.lastSetName = myPreferences.getString("lastSetName", "");
@@ -247,6 +248,7 @@ public class Preferences extends Activity {
             FullscreenActivity.menuSize = myPreferences.getFloat("menuSize",0.6f);
             FullscreenActivity.metronomepan = myPreferences.getString("metronomepan", "both");
             FullscreenActivity.metronomevol = myPreferences.getFloat("metronomevol", 0.5f);
+            FullscreenActivity.midiAuto = myPreferences.getBoolean("midiAuto", false);
             FullscreenActivity.mAuthor = myPreferences.getString("mAuthor", "Gareth Evans");
             FullscreenActivity.mCopyright = myPreferences.getString("mCopyright", "");
             FullscreenActivity.mDisplayTheme = myPreferences.getString("mDisplayTheme", "Theme.Holo");
@@ -564,6 +566,7 @@ public class Preferences extends Activity {
             editor.putBoolean("grouppagebuttons", FullscreenActivity.grouppagebuttons);
             editor.putFloat("headingfontscalesize", FullscreenActivity.headingfontscalesize);
             editor.putBoolean("hideActionBar", FullscreenActivity.hideActionBar);
+            editor.putBoolean("hideLyricsBox", FullscreenActivity.hideLyricsBox);
             editor.putInt("highlightShowSecs", FullscreenActivity.highlightShowSecs);
             editor.putString("languageToLoad", FullscreenActivity.languageToLoad);
             editor.putString("lastSetName", FullscreenActivity.lastSetName);
@@ -599,6 +602,7 @@ public class Preferences extends Activity {
             editor.putFloat("menuSize", FullscreenActivity.menuSize);
             editor.putString("metronomepan", FullscreenActivity.metronomepan);
             editor.putFloat("metronomevol", FullscreenActivity.metronomevol);
+            editor.putBoolean("midiAuto", FullscreenActivity.midiAuto);
             editor.putString("mAuthor", FullscreenActivity.mAuthor.toString());
             editor.putString("mCopyright", FullscreenActivity.mCopyright.toString());
             editor.putString("mDisplayTheme", FullscreenActivity.mDisplayTheme);

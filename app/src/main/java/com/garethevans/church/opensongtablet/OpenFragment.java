@@ -20,6 +20,22 @@ class OpenFragment {
                 newFragment = PopUpListSetsFragment.newInstance();
                 break;
 
+            case "bluetoothmidi":
+                newFragment = PopUpBluetoothMidiFragment.newInstance();
+                break;
+
+            case "midicommands":
+                newFragment = PopUpBuildMidiMessageFragment.newInstance();
+                break;
+
+            case "usbmidi":
+                newFragment = PopUpUSBMidiFragment.newInstance();
+                break;
+
+            case "showmidicommands":
+                newFragment = PopUpShowMidiMessageFragment.newInstance();
+                break;
+
             case "customise_exportsong":
             case "customise_exportset":
                 newFragment = PopUpExportFragment.newInstance();
@@ -362,7 +378,6 @@ class OpenFragment {
                 break;
 
         }
-
         return newFragment;
     }
 

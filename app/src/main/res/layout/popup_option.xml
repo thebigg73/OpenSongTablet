@@ -163,6 +163,21 @@
                 android:visibility="visible"/>
 
             <Button
+                android:id="@+id/menuMidiButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_midi_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_midi_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/midi"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:visibility="visible"/>
+
+            <Button
                 android:id="@+id/menuModeButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

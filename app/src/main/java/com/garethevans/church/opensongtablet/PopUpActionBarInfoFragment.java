@@ -65,18 +65,9 @@ public class PopUpActionBarInfoFragment extends DialogFragment {
         this.dismiss();
     }
 
-    SeekBar titleTextSize;
-    SeekBar authorTextSize;
-    SeekBar batteryTextSize;
-    SeekBar batteryDialSize;
-    SeekBar clockTextSize;
-    SwitchCompat batteryDialOnOff;
-    SwitchCompat batteryTextOnOff;
-    SwitchCompat clock24hrOnOff;
-    SwitchCompat clockTextOnOff;
-    TextView batteryTextSizeLabel;
-    TextView batteryDialSizeLabel;
-    TextView clockTextSizeLabel;
+    SeekBar titleTextSize, authorTextSize, batteryTextSize, batteryDialSize, clockTextSize;
+    SwitchCompat batteryDialOnOff, batteryTextOnOff, clock24hrOnOff, clockTextOnOff;
+    TextView batteryTextSizeLabel, batteryDialSizeLabel, clockTextSizeLabel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

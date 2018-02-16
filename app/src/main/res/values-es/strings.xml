@@ -659,4 +659,36 @@
 	<string name="edit_default_delaymax">"Max Delay (segundos)"</string>
 	<string name="toggle_autoscroll_pause">"Alternar pausa de desplazamiento automático"</string>
 
+	<string name="bibleXML">"Biblia OpenSong XML"</string>
+	<string name="book">"Libro"</string>
+	<string name="changestorage">"Cambiar la ubicación de almacenamiento"</string>
+	<string name="chapter">"Capítulo"</string>
+	<string name="currentstorage">"Ubicación actual"</string>
+	<string name="hidelyricsbox">"Cuadro de letras ocultas"</string>
+	<string name="midi">"MIDI"</string>
+	<string name="midi_add">"Agregar comando"</string>
+	<string name="midi_auto">"Auto enviar MIDI"</string>
+	<string name="midi_bluetooth">"Conecte el dispositivo Bluetooth"</string>
+	<string name="midi_channel">"Canal"</string>
+	<string name="midi_commands">"Editar comandos de canciones"</string>
+	<string name="midi_controller">"Cambio de controlador"</string>
+	<string name="midi_error">"Verifique la conexión MIDI"</string>
+	<string name="midi_inputport">"Puerto de entrada"</string>
+	<string name="midi_list">"Haga clic en un elemento para probar y haga clic con el botón largo para quitarlo"</string>
+	<string name="midi_listen">"Escucha"</string>
+	<string name="midi_note">"Nota"</string>
+	<string name="midi_outputport">"Puerto de salida"</string>
+	<string name="midi_program">"Cambio de programa"</string>
+	<string name="midi_send">"Enviar MIDI"</string>
+	<string name="midi_test">"Prueba"</string>
+	<string name="midi_usb">"Conecte el dispositivo USB"</string>
+	<string name="midi_value">"Valor"</string>
+	<string name="midi_velocity">"Velocidad"</string>
+	<string name="location_rationale">"Se requiere acceso para descubrir dispositivos Bluetooth"</string>
+	<string name="permissionerror">"Permiso no concedido"</string>
+	<string name="pleaseselect">"Por favor selecciona"</string>
+	<string name="sdroot">"Raíz de la tarjeta SD"</string>
+	<string name="search">"Buscar"</string>
+	<string name="verse">"Verso"</string>
+
 </resources>

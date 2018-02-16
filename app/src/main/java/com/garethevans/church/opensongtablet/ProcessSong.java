@@ -2592,10 +2592,14 @@ public class ProcessSong extends Activity {
         LinearLayout.LayoutParams llp = linearlayout_params();
         llp.setMargins(0,0,m,0);
         boxbit.setLayoutParams(llp);
-        boxbit.setBackgroundResource(R.drawable.section_box);
+        boxbit.setBackgroundResource(R.drawable.lyrics_box);
         GradientDrawable drawable = (GradientDrawable) boxbit.getBackground();
         drawable.setColor(0x00000000);                             // Makes the box transparent
-        drawable.setStroke(1, FullscreenActivity.lyricsTextColor); // set stroke width and stroke color
+        if (FullscreenActivity.hideLyricsBox) {
+            drawable.setStroke(1, FullscreenActivity.lyricsBackgroundColor); // set stroke width and stroke color
+        } else {
+            drawable.setStroke(1, FullscreenActivity.lyricsTextColor); // set stroke width and stroke color
+        }
         drawable.setCornerRadius(padding);
         int linewidth = (int) (padding - ((float)padding/6.0f))/2;
         boxbit.setPadding(padding-linewidth,padding-linewidth,padding-linewidth,padding-linewidth);
@@ -2620,10 +2624,14 @@ public class ProcessSong extends Activity {
                 boxbit.setGravity(Gravity.CENTER);
             }
         } else {
-            boxbit.setBackgroundResource(R.drawable.section_box);
+            boxbit.setBackgroundResource(R.drawable.lyrics_box);
             GradientDrawable drawable = (GradientDrawable) boxbit.getBackground();
             drawable.setColor(0x00000000);                                    // Makes the box transparent
-            drawable.setStroke(1, FullscreenActivity.lyricsTextColor); // set stroke width and stroke color
+            if (FullscreenActivity.hideLyricsBox) {
+                drawable.setStroke(1, FullscreenActivity.lyricsBackgroundColor); // set stroke width and stroke color
+            } else {
+                drawable.setStroke(1, FullscreenActivity.lyricsTextColor); // set stroke width and stroke color
+            }
             drawable.setCornerRadius(padding);
             boxbit.setPadding(padding, padding, padding, padding);
         }
@@ -2636,10 +2644,14 @@ public class ProcessSong extends Activity {
         LinearLayout.LayoutParams llp = linearlayout_params();
         llp.setMargins(m,m,m,padding);
         boxbit.setLayoutParams(llp);
-        boxbit.setBackgroundResource(R.drawable.section_box);
+        boxbit.setBackgroundResource(R.drawable.lyrics_box);
         GradientDrawable drawable = (GradientDrawable) boxbit.getBackground();
         drawable.setColor(0x00000000);                             // Makes the box transparent
-        drawable.setStroke(1, FullscreenActivity.lyricsTextColor); // set stroke width and stroke color
+        if (FullscreenActivity.hideLyricsBox) {
+            drawable.setStroke(1, FullscreenActivity.lyricsBackgroundColor); // set stroke width and stroke color
+        } else {
+            drawable.setStroke(1, FullscreenActivity.lyricsTextColor); // set stroke width and stroke color
+        }
         drawable.setCornerRadius(padding);
         int linewidth = (int) (padding - ((float)padding/6.0f))/2;
         boxbit.setPadding(padding-linewidth,padding-linewidth,padding-linewidth,padding-linewidth);

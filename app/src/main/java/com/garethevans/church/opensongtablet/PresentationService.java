@@ -614,8 +614,14 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     } else {
                         vidFile = vid2File;
                     }
-                    if (mMediaPlayer != null) {
-                        mMediaPlayer.start();
+                    /*if (mMediaPlayer != null) {
+                        //mMediaPlayer.start();
+                    }*/
+                    try {
+                        Log.d("d","Trying to load video background");
+                        reloadVideo();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     myBitmap = null;
                     dr = null;
@@ -1551,21 +1557,51 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
 
         @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-        static void reloadVideo() throws IOException {
-            if (mMediaPlayer==null) {
-                mMediaPlayer = new MediaPlayer();
-                mMediaPlayer.setSurface(s);
-            }
-            mMediaPlayer.reset();
-            try {
-                mMediaPlayer.setDataSource(vidFile);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            try {
-                mMediaPlayer.prepareAsync();
-            } catch (Exception e) {
-                Log.e("Presentation window","media player error");
+        private static void reloadVideo() throws IOException {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                if (mMediaPlayer == null) {
+                    mMediaPlayer = new MediaPlayer();
+                    mMediaPlayer.setSurface(s);
+                }
+
+                mMediaPlayer.reset();
+                try {
+                    mMediaPlayer.setDataSource(vidFile);
+                    Log.d("d","Setting the video file "+vidFile);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                try {
+                    mMediaPlayer.prepareAsync();
+                    mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mediaPlayer) {
+                            mediaPlayer.start();
+                        }
+                    });
+                    mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mediaPlayer) {
+                            if (mediaPlayer != null) {
+                                if (mediaPlayer.isPlaying()) {
+                                    mediaPlayer.stop();
+                                }
+                                mediaPlayer.reset();
+                            }
+                            try {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                                    reloadVideo();
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.e("Presentation window", "media player error");
+                }
             }
         }
 

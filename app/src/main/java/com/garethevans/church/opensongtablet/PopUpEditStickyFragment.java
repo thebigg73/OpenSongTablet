@@ -33,11 +33,10 @@ public class PopUpEditStickyFragment extends DialogFragment {
 
     private MyInterface mListener;
 
-    SeekBar stickyNotesWidth_SeekBar;
-    SeekBar stickyNotesOpacity_SeekBar;
-    TextView stickyNotesWidth_TextView;
-    TextView stickyNotesOpacity_TextView;
+    SeekBar stickyNotesWidth_SeekBar, stickyNotesOpacity_SeekBar;
+    TextView stickyNotesWidth_TextView, stickyNotesOpacity_TextView;
     SwitchCompat stickyTextSize;
+    EditText editStickyText;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -69,8 +68,6 @@ public class PopUpEditStickyFragment extends DialogFragment {
             this.dismiss();
         }
     }
-
-    EditText editStickyText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -188,9 +185,19 @@ public class PopUpEditStickyFragment extends DialogFragment {
             PopUpEditSongFragment.justSaveSongXML();
         } catch (IOException e) {
             e.printStackTrace();
+            FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
+                    getActivity().getResources().getString(R.string.error);
+            ShowToast.showToast(getActivity());
         }
-        dismiss();
-        mListener.loadSong();
+        if (mListener!=null) {
+            mListener.loadSong();
+        }
+        try {
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

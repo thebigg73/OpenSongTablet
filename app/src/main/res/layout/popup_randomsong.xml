@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:background="@drawable/lyrics_box"
+            android:background="@drawable/section_box"
             android:choiceMode="multipleChoice"
             android:isScrollContainer="true"
             android:layout_weight="0.5"

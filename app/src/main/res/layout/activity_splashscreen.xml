@@ -88,7 +88,8 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/currentstorage" />
+                android:text="@string/currentstorage"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/currentStorage"
@@ -99,7 +100,8 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="0dp"
-                android:text="@string/currentstorage" />
+                android:text="@string/currentstorage"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/manageStorage"
@@ -110,7 +112,7 @@
                 android:layout_margin="8dp"
                 android:padding="4dp"
                 android:text="@string/storage_choose"
-                android:textColor="#fff" />
+                android:textColor="#fff"/>
 
             </LinearLayout>
 

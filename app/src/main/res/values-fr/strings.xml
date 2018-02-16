@@ -659,4 +659,36 @@
 	<string name="edit_default_delaymax">"Max Delay (secondes)"</string>
 	<string name="toggle_autoscroll_pause">"Activer la permutation automatique"</string>
 
+	<string name="bibleXML">"OpenSong XML Bible"</string>
+	<string name="book">"Livre"</string>
+	<string name="changestorage">"Changer l'emplacement de stockage"</string>
+	<string name="chapter">"Chapitre"</string>
+	<string name="currentstorage">"Localisation actuelle"</string>
+	<string name="hidelyricsbox">"Masquer la boîte de paroles"</string>
+	<string name="midi">"Midi"</string>
+	<string name="midi_add">"Ajouter une commande"</string>
+	<string name="midi_auto">"Envoi automatique MIDI"</string>
+	<string name="midi_bluetooth">"Connectez l'appareil Bluetooth"</string>
+	<string name="midi_channel">"Canal"</string>
+	<string name="midi_commands">"Modifier les commandes de morceau"</string>
+	<string name="midi_controller">"Changement de contrôleur"</string>
+	<string name="midi_error">"Veuillez vérifier la connexion MIDI"</string>
+	<string name="midi_inputport">"Port d'entrée"</string>
+	<string name="midi_list">"Cliquez sur un élément à tester et cliquez longuement pour le supprimer"</string>
+	<string name="midi_listen">"Ecouter"</string>
+	<string name="midi_note">"Remarque"</string>
+	<string name="midi_outputport">"Port d'Outport"</string>
+	<string name="midi_program">"Changement de programme"</string>
+	<string name="midi_send">"Envoyer midi"</string>
+	<string name="midi_test">"Tester"</string>
+	<string name="midi_usb">"Connecter un périphérique USB"</string>
+	<string name="midi_value">"Valeur"</string>
+	<string name="midi_velocity">"Rapidité"</string>
+	<string name="location_rationale">"L'accès est requis pour découvrir les appareils Bluetooth"</string>
+	<string name="permissionerror">"Permission non accordée"</string>
+	<string name="pleaseselect">"Veuillez sélectionner"</string>
+	<string name="sdroot">"Racine de la carte SD"</string>
+	<string name="search">"Chercher"</string>
+	<string name="verse">"Verset"</string>
+
 </resources>

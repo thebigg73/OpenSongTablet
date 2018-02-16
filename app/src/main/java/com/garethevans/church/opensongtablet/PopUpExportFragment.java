@@ -56,14 +56,9 @@ public class PopUpExportFragment extends DialogFragment {
         }
     }
 
-    CheckBox exportOpenSongAppSetCheckBox;
-    CheckBox exportOpenSongAppCheckBox;
-    CheckBox exportDesktopCheckBox;
-    CheckBox exportTextCheckBox;
-    CheckBox exportChordProCheckBox;
-    CheckBox exportOnSongCheckBox;
-    CheckBox exportImageCheckBox;
-    CheckBox exportPDFCheckBox;
+    CheckBox exportOpenSongAppSetCheckBox, exportOpenSongAppCheckBox, exportDesktopCheckBox,
+            exportTextCheckBox, exportChordProCheckBox, exportOnSongCheckBox,
+            exportImageCheckBox, exportPDFCheckBox;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -215,7 +210,11 @@ public class PopUpExportFragment extends DialogFragment {
     public void doExportPrepare() {
         if (mListener!=null) {
             mListener.doExport();
-            dismiss();
+            try {
+                dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -239,6 +239,9 @@ public class PopUpABCNotationFragment extends DialogFragment {
                     PopUpEditSongFragment.justSaveSongXML();
                 } catch (Exception e) {
                     Log.d("d","Error saving");
+                    FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
+                            getActivity().getResources().getString(R.string.error);
+                    ShowToast.showToast(getActivity());
                 }
                 try {
                     /*if (mListener!=null) {

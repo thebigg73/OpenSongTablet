@@ -27,21 +27,14 @@ class AmbilWarnaDialog {
 	final AlertDialog dialog;
 	private final boolean supportsAlpha;
 	final OnAmbilWarnaListener listener;
-	private final View viewHue;
+	private final View viewHue, viewNewColor, viewAlphaOverlay;
 	private final AmbilWarnaSquare viewSatVal;
-	private final ImageView viewCursor;
-	private final ImageView viewAlphaCursor;
-	private final View viewNewColor;
-	private final View viewAlphaOverlay;
-	private final ImageView viewTarget;
-	private final ImageView viewAlphaCheckered;
+	private final ImageView viewCursor, viewAlphaCursor, viewTarget, viewAlphaCheckered;
 	private final ViewGroup viewContainer;
 	private final MaskedEditText colorhex;
     private static String hexColor;
-	private final float[] currentColorHsv = new float[3];
-    private final float[] newColorHsv = new float[3];
-	private int alpha;
-    private int mColor;
+	private final float[] currentColorHsv = new float[3], newColorHsv = new float[3];
+	private int alpha, mColor;
     Context context;
 
 	AmbilWarnaDialog(final Context context, int color, OnAmbilWarnaListener listener) {

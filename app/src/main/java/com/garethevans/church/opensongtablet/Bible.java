@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v4.provider.DocumentFile;
 import android.text.Html;
 import android.util.Log;
 
@@ -13,6 +12,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -44,7 +44,6 @@ class Bible {
     private static NodeList nl;
     private static NamedNodeMap nmm;
 
-
     private static void getAttributeToSearch() {
         Log.d("d","getAttributeToSearch() called");
 
@@ -71,33 +70,7 @@ class Bible {
         }
     }
 
-    private static void decideOnBibleFormat(DocumentFile bibleFile) {
-        Log.d("d","decideOnBibleFormat() called");
-
-        try {
-            if (bibleFile.exists() && bibleFile.isFile()) {
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                DocumentBuilder db = dbf.newDocumentBuilder();
-                dom = db.parse(bibleFile.getUri().getPath());
-                docEle = dom.getDocumentElement();
-                XPathFactory xPathfactory = XPathFactory.newInstance();
-                xpath = xPathfactory.newXPath();
-
-                NodeList nl1 = docEle.getElementsByTagName("b");            // OpenSong
-                NodeList nl2 = docEle.getElementsByTagName("BIBLEBOOK");    // Zefania
-                if (nl1 != null && nl1.getLength() > 0) {
-                    bibleFormat = "OpenSong";
-                } else if (nl2 != null && nl2.getLength() > 0) {
-                    bibleFormat = "Zefania";
-                }
-                getAttributeToSearch();
-            }
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-/*    private static void decideOnBibleFormat(File bibleFile) {
+    private static void decideOnBibleFormat(File bibleFile) {
         Log.d("d","decideOnBibleFormat() called");
 
         try {
@@ -121,51 +94,14 @@ class Bible {
         } catch(Exception e){
             e.printStackTrace();
         }
-    }*/
-
-    static String getZefaniaBibleName(DocumentFile bibleFile) {
-        Log.d("d","getZefaniaBibleName() called");
-
-        String b = "";
-        try {
-            if (bibleFile.exists() && bibleFile.isFile()) {
-                /*DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                DocumentBuilder db = dbf.newDocumentBuilder();
-                Document dom = db.parse(bibleFile);
-
-                XPathFactory xPathfactory = XPathFactory.newInstance();
-                XPath xpath = xPathfactory.newXPath();
-                */
-
-                XPathExpression expr = xpath.compile("/XMLBIBLE/INFORMATION/identifier");
-                nl = (NodeList) expr.evaluate(dom, XPathConstants.NODESET);
-                if (nl!=null && nl.getLength()>0) {
-                    b = nl.item(0).getTextContent();
-                }
-            }
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-        return b;
     }
 
-/*
     static String getZefaniaBibleName(File bibleFile) {
         Log.d("d","getZefaniaBibleName() called");
 
         String b = "";
         try {
-            if (bibleFile.exists() && bibleFile.isFile()) {
-                */
-/*DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                DocumentBuilder db = dbf.newDocumentBuilder();
-                Document dom = db.parse(bibleFile);
-
-                XPathFactory xPathfactory = XPathFactory.newInstance();
-                XPath xpath = xPathfactory.newXPath();
-                *//*
-
-
+            if (bibleFile.exists() && bibleFile.isFile() && dom!=null && xpath!=null) {
                 XPathExpression expr = xpath.compile("/XMLBIBLE/INFORMATION/identifier");
                 nl = (NodeList) expr.evaluate(dom, XPathConstants.NODESET);
                 if (nl!=null && nl.getLength()>0) {
@@ -177,64 +113,7 @@ class Bible {
         }
         return b;
     }
-*/
 
-    static ArrayList<String> getBibleBookNames(Context c, DocumentFile bibleFile) {
-        Log.d("d","getBibleBookNames() called");
-        // Get the bible format
-        decideOnBibleFormat(bibleFile);
-
-        ArrayList<String> bookNames = new ArrayList<>();
-        try {
-            // The bible we are using is stored with our preferences
-            if (bibleFile.exists() && bibleFile.isFile()) {
-                bookNames.add("----"+c.getString(R.string.pleaseselect)+"----");
-
-                /*dbf = DocumentBuilderFactory.newInstance();
-                db = dbf.newDocumentBuilder();
-                dom = db.parse(bibleFile);
-
-                xPathfactory = XPathFactory.newInstance();
-                xpath = xPathfactory.newXPath();
-                */
-
-/*                expr = xpath.compile("/" + tagbibleroot + "/" + tagtosearch_book);
-                nl = (NodeList) expr.evaluate(dom, XPathConstants.NODESET);
-                Log.d("d","nl="+nl);
-                Log.d("d","nl.size()="+nl.getLength());
-
-                if (nl!=null && nl.getLength()>0) {
-                    for (int i = 0; i < nl.getLength(); i++) {
-                        nmm = nl.item(i).getAttributes();
-                        if (nmm != null) {
-                            bookNames.add(nmm.getNamedItem(attributetosearch_book).getNodeValue());
-                        }
-                    }
-                }*/
-
-                docEle = dom.getDocumentElement();
-                nl = docEle.getElementsByTagName(tagtosearch_book);
-                for (int i=0; i<nl.getLength();i++) {
-                    nmm = nl.item(i).getAttributes();
-                    if (nmm != null) {
-                        bookNames.add(nmm.getNamedItem(attributetosearch_book).getNodeValue());
-                    }
-                }
-
-            } else {
-                bookNames = new ArrayList<>();
-                bookNames.add("");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            bookNames = new ArrayList<>();
-            bookNames.add("");
-        }
-        return bookNames;
-    }
-
-/*
     static ArrayList<String> getBibleBookNames(Context c, File bibleFile) {
         Log.d("d","getBibleBookNames() called");
         // Get the bible format
@@ -243,34 +122,8 @@ class Bible {
         ArrayList<String> bookNames = new ArrayList<>();
         try {
             // The bible we are using is stored with our preferences
-            if (bibleFile.exists() && bibleFile.isFile()) {
+            if (bibleFile.exists() && bibleFile.isFile() && dom!=null && xpath!=null) {
                 bookNames.add("----"+c.getString(R.string.pleaseselect)+"----");
-
-                */
-/*dbf = DocumentBuilderFactory.newInstance();
-                db = dbf.newDocumentBuilder();
-                dom = db.parse(bibleFile);
-
-                xPathfactory = XPathFactory.newInstance();
-                xpath = xPathfactory.newXPath();
-                *//*
-
-
-*/
-/*                expr = xpath.compile("/" + tagbibleroot + "/" + tagtosearch_book);
-                nl = (NodeList) expr.evaluate(dom, XPathConstants.NODESET);
-                Log.d("d","nl="+nl);
-                Log.d("d","nl.size()="+nl.getLength());
-
-                if (nl!=null && nl.getLength()>0) {
-                    for (int i = 0; i < nl.getLength(); i++) {
-                        nmm = nl.item(i).getAttributes();
-                        if (nmm != null) {
-                            bookNames.add(nmm.getNamedItem(attributetosearch_book).getNodeValue());
-                        }
-                    }
-                }*//*
-
 
                 docEle = dom.getDocumentElement();
                 nl = docEle.getElementsByTagName(tagtosearch_book);
@@ -293,9 +146,8 @@ class Bible {
         }
         return bookNames;
     }
-*/
 
-    static ArrayList<String> getChaptersForBook(Context c, DocumentFile bibleFile, String book) {
+    static ArrayList<String> getChaptersForBook(Context c, File bibleFile, String book) {
         Log.d("d","getChaptersForBook() called");
 
         ArrayList<String> chapters = new ArrayList<>();
@@ -365,86 +217,7 @@ class Bible {
         return chapters;
     }
 
-/*
-    static ArrayList<String> getChaptersForBook(Context c, File bibleFile, String book) {
-        Log.d("d","getChaptersForBook() called");
-
-        ArrayList<String> chapters = new ArrayList<>();
-        if (!book.equals("")) {
-            try {
-                if (bibleFile.exists()) {
-                    chapters.add("----"+c.getString(R.string.pleaseselect)+"----");
-
-
-                    */
-/*//*
-/ Get the bible format
-                    decideOnBibleFormat(bibleFile);*//*
-
-
-                    */
-/*DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder db = dbf.newDocumentBuilder();
-                    Document dom = db.parse(bibleFile);
-
-                    XPathFactory xPathfactory = XPathFactory.newInstance();
-                    XPath xpath = xPathfactory.newXPath();
-                    *//*
-
-
-                    */
-/*expr = xpath.compile("/" + tagbibleroot + "/" + tagtosearch_book +
-                            "[@" + attributetosearch_book + "='" + book + "']/" + tagtosearch_chapter);
-                    nl = (NodeList) expr.evaluate(dom, XPathConstants.NODESET);
-
-                    if (nl != null && nl.getLength() > 0) {
-                        for (int i = 0; i < nl.getLength(); i++) {
-                            nmm = nl.item(i).getAttributes();
-                            if (nmm != null) {
-                                chapters.add(nmm.getNamedItem(attributetosearch_chapter).getNodeValue());
-                            }
-                        }
-                    }*//*
-
-
-                    docEle = dom.getDocumentElement();
-                    nl = docEle.getElementsByTagName(tagtosearch_book);
-                    for (int i=0; i<nl.getLength();i++) {
-                        nmm = nl.item(i).getAttributes();
-                        if (nmm != null) {
-                            String foundbook = nmm.getNamedItem(attributetosearch_book).getNodeValue();
-                            if (foundbook.equals(book)) {
-                                NodeList children = nl.item(i).getChildNodes();
-                                if (children != null) {
-                                    for (int y = 0; y < children.getLength(); y++) {
-                                        NamedNodeMap nmm2 = children.item(y).getAttributes();
-                                        if (nmm2 != null) {
-                                            String s = nmm2.getNamedItem(attributetosearch_chapter).getNodeValue();
-                                            chapters.add(s);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                } else {
-                    chapters = new ArrayList<>();
-                    chapters.add("");
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                chapters = new ArrayList<>();
-                chapters.add("");
-            }
-
-        }
-        return chapters;
-    }
-*/
-
-    static void getVersesForChapter(DocumentFile bibleFile, String book, String chapter) {
+    static void getVersesForChapter(File bibleFile, String book, String chapter) {
         Log.d("d","getVersesForChapter() called");
 
         PopUpBibleXMLFragment.bibleVerses = new ArrayList<>();
@@ -528,97 +301,6 @@ class Bible {
             }
         }
     }
-
-/*
-    static void getVersesForChapter(File bibleFile, String book, String chapter) {
-        Log.d("d","getVersesForChapter() called");
-
-        PopUpBibleXMLFragment.bibleVerses = new ArrayList<>();
-        PopUpBibleXMLFragment.bibleText = new ArrayList<>();
-        if (!book.equals("") && !chapter.equals("")) {
-            try {
-                if (bibleFile.exists() && bibleFile.isFile()) {
-                    */
-/*DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder db = dbf.newDocumentBuilder();
-                    Document dom = db.parse(bibleFile);
-
-                    XPathFactory xPathfactory = XPathFactory.newInstance();
-                    XPath xpath = xPathfactory.newXPath();
-                    *//*
-
-
-                    */
-/*expr = xpath.compile("/" + tagbibleroot + "/" + tagtosearch_book +
-                            "[@" + attributetosearch_book + "='" + book + "']/" + tagtosearch_chapter +
-                            "[@" + attributetosearch_chapter + "='" + chapter + "']/" + tagtosearch_verse);
-                    nl = (NodeList) expr.evaluate(dom, XPathConstants.NODESET);
-
-                    if (nl != null && nl.getLength() > 0) {
-                        for (int i = 0; i < nl.getLength(); i++) {
-                            nmm = nl.item(i).getAttributes();
-                            if (nmm != null) {
-                                String foundverse = nmm.getNamedItem(attributetosearch_verse).getNodeValue();
-                                String foundtext = nl.item(i).getTextContent();
-                                PopUpBibleXMLFragment.bibleVerses.add(foundverse);
-                                PopUpBibleXMLFragment.bibleText.add(foundtext);
-                            }
-                        }
-                    }*//*
-
-
-                    Element docEle = dom.getDocumentElement();
-                    NodeList nl = docEle.getElementsByTagName(tagtosearch_book);
-                    for (int i=0; i<nl.getLength();i++) {
-                        NamedNodeMap nmm = nl.item(i).getAttributes();
-                        if (nmm != null) {
-                            String foundbook = nmm.getNamedItem(attributetosearch_book).getNodeValue();
-                            if (foundbook.equals(book)) {
-                                NodeList c_children = nl.item(i).getChildNodes();
-                                if (c_children != null) {
-                                    for (int y = 0; y < c_children.getLength(); y++) {
-                                        NamedNodeMap nmm2 = c_children.item(y).getAttributes();
-                                        if (nmm2 != null) {
-                                            String foundchapter = nmm2.getNamedItem(attributetosearch_chapter).getNodeValue();
-                                            if (foundchapter.equals(chapter)) {
-                                                NodeList v_children = c_children.item(y).getChildNodes();
-                                                if (v_children != null) {
-                                                    for (int z = 0; z < v_children.getLength(); z++) {
-                                                        NamedNodeMap nmm3 = v_children.item(z).getAttributes();
-                                                        if (nmm3 != null) {
-                                                            String foundverse = nmm3.getNamedItem(attributetosearch_verse).getNodeValue();
-                                                            String foundtext = v_children.item(z).getTextContent();
-                                                            PopUpBibleXMLFragment.bibleVerses.add(foundverse);
-                                                            PopUpBibleXMLFragment.bibleText.add(foundtext);
-                                                            Log.d("d", "book=" + book + "  chapter=" + chapter + "  verse=" + foundverse);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                } else {
-                    PopUpBibleXMLFragment.bibleVerses = new ArrayList<>();
-                    PopUpBibleXMLFragment.bibleText = new ArrayList<>();
-                    PopUpBibleXMLFragment.bibleVerses.add("");
-                    PopUpBibleXMLFragment.bibleText.add("");
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                PopUpBibleXMLFragment.bibleVerses = new ArrayList<>();
-                PopUpBibleXMLFragment.bibleText = new ArrayList<>();
-                PopUpBibleXMLFragment.bibleVerses.add("");
-                PopUpBibleXMLFragment.bibleText.add("");
-            }
-        }
-    }
-*/
 
     static boolean isYouVersionScripture(String importtext) {
         // A simple way to check if this is a scripture file from Bible

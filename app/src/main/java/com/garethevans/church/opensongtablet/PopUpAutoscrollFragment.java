@@ -242,6 +242,9 @@ public class PopUpAutoscrollFragment extends DialogFragment {
             ShowToast.showToast(getActivity());
         } catch (Exception e) {
             e.printStackTrace();
+            FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
+                    getActivity().getResources().getString(R.string.error);
+            ShowToast.showToast(getActivity());
         }
         dismiss();
     }

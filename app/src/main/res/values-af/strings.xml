@@ -658,4 +658,36 @@
 	<string name="edit_default_delaymax">"Maksimum vertraging (sekondes)"</string>
 	<string name="toggle_autoscroll_pause">"Skakel Autoscroll Pause"</string>
 
+	<string name="bibleXML">"OpenSong XML Bible"</string>
+	<string name="book">"Boek"</string>
+	<string name="changestorage">"Verander bergingsplek"</string>
+	<string name="chapter">"Hoofstuk"</string>
+	<string name="currentstorage">"Huidige ligging"</string>
+	<string name="hidelyricsbox">"Versteek lirieke boks"</string>
+	<string name="midi">"MIDI"</string>
+	<string name="midi_add">"Voeg opdrag by"</string>
+	<string name="midi_auto">"Outomaties stuur MIDI"</string>
+	<string name="midi_bluetooth">"Koppel Bluetooth-toestel"</string>
+	<string name="midi_channel">"kanaal"</string>
+	<string name="midi_commands">"Wys liedjies opdragte"</string>
+	<string name="midi_controller">"Kontroleerder verander"</string>
+	<string name="midi_error">"Kontroleer asseblief MIDI-verbinding"</string>
+	<string name="midi_inputport">"Invoerpoort"</string>
+	<string name="midi_list">"Klik 'n item om te toets en langskliek om dit te verwyder"</string>
+	<string name="midi_listen">"luister"</string>
+	<string name="midi_note">"nota"</string>
+	<string name="midi_outputport">"Outport poort"</string>
+	<string name="midi_program">"Program verandering"</string>
+	<string name="midi_send">"Stuur MIDI"</string>
+	<string name="midi_test">"toets"</string>
+	<string name="midi_usb">"Koppel USB-toestel"</string>
+	<string name="midi_value">"waarde"</string>
+	<string name="midi_velocity">"snelheid"</string>
+	<string name="location_rationale">"Toegang is nodig om Bluetooth-toestelle te ontdek"</string>
+	<string name="permissionerror">"Toestemming nie toegestaan ​​nie"</string>
+	<string name="pleaseselect">"Kies asseblief"</string>
+	<string name="sdroot">"SD kaart wortel"</string>
+	<string name="search">"Soek"</string>
+	<string name="verse">"vers"</string>
+
 </resources>

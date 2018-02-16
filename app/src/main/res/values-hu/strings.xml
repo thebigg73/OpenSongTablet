@@ -659,4 +659,36 @@
 	<string name="edit_default_delaymax">"Max késleltetés (másodperc)"</string>
 	<string name="toggle_autoscroll_pause">"Kapcsolja be az Autoscroll szünetet"</string>
 
+	<string name="bibleXML">"OpenSong XML Biblia"</string>
+	<string name="book">"Könyv"</string>
+	<string name="changestorage">"A tárhely helyének módosítása"</string>
+	<string name="chapter">"Fejezet"</string>
+	<string name="currentstorage">"Jelenlegi tartózkodási hely"</string>
+	<string name="hidelyricsbox">"A dalszöveg elrejtése"</string>
+	<string name="midi">"MIDI"</string>
+	<string name="midi_add">"Parancs hozzáadása"</string>
+	<string name="midi_auto">"Automatikus MIDI küldése"</string>
+	<string name="midi_bluetooth">"Bluetooth-eszköz csatlakoztatása"</string>
+	<string name="midi_channel">"Csatorna"</string>
+	<string name="midi_commands">"Zeneszerzőparancsok szerkesztése"</string>
+	<string name="midi_controller">"Vezérlőváltás"</string>
+	<string name="midi_error">"Kérjük, ellenőrizze a MIDI kapcsolatot"</string>
+	<string name="midi_inputport">"Input port"</string>
+	<string name="midi_list">"Kattints egy elemre a teszteléshez, és kattints rá a eltávolításhoz"</string>
+	<string name="midi_listen">"Hallgat"</string>
+	<string name="midi_note">"jegyzet"</string>
+	<string name="midi_outputport">"Outport port"</string>
+	<string name="midi_program">"Programváltás"</string>
+	<string name="midi_send">"MIDI küldése"</string>
+	<string name="midi_test">"Teszt"</string>
+	<string name="midi_usb">"Csatlakoztassa az USB eszközt"</string>
+	<string name="midi_value">"Érték"</string>
+	<string name="midi_velocity">"Sebesség"</string>
+	<string name="location_rationale">"Hozzáférés szükséges a Bluetooth eszközök felfedezéséhez"</string>
+	<string name="permissionerror">"Nem engedélyezett engedély"</string>
+	<string name="pleaseselect">"Kérlek, válassz"</string>
+	<string name="sdroot">"SD-kártya gyökere"</string>
+	<string name="search">"Keresés"</string>
+	<string name="verse">"vers"</string>
+
 </resources>

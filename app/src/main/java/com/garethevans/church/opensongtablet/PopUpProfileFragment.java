@@ -588,6 +588,9 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("hideActionBar")) {
                     FullscreenActivity.hideActionBar = getBooleanValue(xpp.nextText(), false);
 
+                } else if (xpp.getName().equals("hideLyricsBox")) {
+                    FullscreenActivity.hideLyricsBox = getBooleanValue(xpp.nextText(), false);
+
                 } else if (xpp.getName().equals("highlightShowSecs")) {
                     FullscreenActivity.highlightShowSecs = getIntegerValue(xpp.nextText(), 0);
 
@@ -664,7 +667,10 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.metronomepan = getTextValue(xpp.nextText(),"both");
 
                 } else if (xpp.getName().equals("metronomevol")) {
-                    FullscreenActivity.metronomevol = getFloatValue(xpp.nextText(),0.5f);
+                    FullscreenActivity.metronomevol = getFloatValue(xpp.nextText(), 0.5f);
+
+                } else if (xpp.getName().equals("midiAuto")) {
+                    FullscreenActivity.midiAuto = getBooleanValue(xpp.nextText(), false);
 
                 } else if (xpp.getName().equals("mAuthor")) {
                     FullscreenActivity.mAuthor = getTextValue(xpp.nextText(),"Gareth Evans");
@@ -1295,6 +1301,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <headingfontscalesize>" + FullscreenActivity.headingfontscalesize + "</headingfontscalesize>\n";
         text += "  <highlightShowSecs>" + FullscreenActivity.highlightShowSecs + "</highlightShowSecs>\n";
         text += "  <hideActionBar>" + FullscreenActivity.hideActionBar + "</hideActionBar>\n";
+        text += "  <hideLyricsBox>" + FullscreenActivity.hideLyricsBox + "</hideLyricsBox>\n";
         text += "  <languageToLoad>" + FullscreenActivity.languageToLoad + "</languageToLoad>\n";
         text += "  <lastSetName>" + FullscreenActivity.lastSetName + "</lastSetName>\n";
         text += "  <light_extrainfobg>" + FullscreenActivity.light_extrainfobg + "</light_extrainfobg>\n";
@@ -1327,6 +1334,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <menuSize>" + FullscreenActivity.menuSize + "</menuSize>\n";
         text += "  <metronomepan>" + FullscreenActivity.metronomepan + "</metronomepan>\n";
         text += "  <metronomevol>" + FullscreenActivity.metronomevol + "</metronomevol>\n";
+        text += "  <midiAuto>" + FullscreenActivity.midiAuto + "</midiAuto>\n";
         text += "  <mAuthor>" + FullscreenActivity.mAuthor + "</mAuthor>\n";
         text += "  <mCopyright>" + FullscreenActivity.mCopyright + "</mCopyright>\n";
         text += "  <mDisplayTheme>" + FullscreenActivity.mDisplayTheme + "</mDisplayTheme>\n";

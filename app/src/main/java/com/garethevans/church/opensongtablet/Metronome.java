@@ -8,19 +8,15 @@ import android.util.Log;
 class Metronome {
 	
 	private double bpm;
-	private short beat;
-	private short noteValue;
+	private short beat, noteValue;
 	private int silence;
 	private float metrovol;
 
-	private double beatSound;
-	private double sound;
+	private double beatSound, sound;
     private boolean play = true;
 	
 	private AudioGenerator audioGenerator = new AudioGenerator(8000);
-    private double[] soundTickArray;
-	private double[] soundTockArray;
-	private double[] silenceSoundArray;
+    private double[] soundTickArray, soundTockArray, silenceSoundArray;
 	private int currentBeat = 1;
 
     // Variables for metronome to work
@@ -33,7 +29,6 @@ class Metronome {
 	}
 	
 	private void calcSilence() {
-		//silence = (int) (((60/bpm)*8000)-tick);
 
         //TEST
         beat = getBeat();
@@ -57,8 +52,7 @@ class Metronome {
         // 2 = half notes, 4 = quarter notes, 8 = eigth notes
 
 
-		//resolutionmeter = (int) ((float)noteValue/4.0f);
-        int resolutionmeter = (int) (8.0f / (float) noteValue);
+		int resolutionmeter = (int) (8.0f / (float) noteValue);
 
         if (resolutionmeter ==0) {
             resolutionmeter =1;
@@ -98,10 +92,6 @@ class Metronome {
 	public void play() {
 		calcSilence();
 		do {
-			//msg = new Message();
-			//msg.obj = ""+currentBeat;
-            //mHandler.postDelayed(null,(int)((float)silence/8000.0f));
-            //mHandler.sendMessage(msg);
 			if(currentBeat == 1) {
 				audioGenerator.writeSound(soundTockArray);
 			} else {
@@ -109,12 +99,6 @@ class Metronome {
 			}
 			audioGenerator.writeSound(silenceSoundArray);
 
-			//if (bpm <= 120)
-			//	mHandler.sendMessage(msg);
-			
-			
-			//if (bpm > 120)
-				//mHandler.sendMessage(msg);
 			currentBeat++;
 			if(currentBeat > beat)
 				currentBeat = 1;
@@ -226,7 +210,6 @@ class Metronome {
     static void startstopMetronome(Activity activity) {
         if (checkMetronomeValid() && FullscreenActivity.metronomeonoff.equals("off")) {
             // Start the metronome
-            //Runtime.getRuntime().gc();
             FullscreenActivity.metronomeonoff = "on";
             FullscreenActivity.whichbeat = "b";
             metroTask = new MetronomeAsyncTask();
@@ -239,7 +222,6 @@ class Metronome {
 
         } else if (checkMetronomeValid() && FullscreenActivity.metronomeonoff.equals("on")) {
             // Stop the metronome
-            //Runtime.getRuntime().gc();
             FullscreenActivity.metronomeonoff = "off";
             if (metroTask!=null) {
                 metroTask.stop();

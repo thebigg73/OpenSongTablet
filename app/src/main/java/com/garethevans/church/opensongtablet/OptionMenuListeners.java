@@ -91,6 +91,10 @@ public class OptionMenuListeners extends Activity {
                 menu = createConnectMenu(c);
                 break;
 
+            case "MIDI":
+                menu = createMidiMenu(c);
+                break;
+
             case "MODE":
                 menu = createModeMenu(c);
                 break;
@@ -170,6 +174,13 @@ public class OptionMenuListeners extends Activity {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         return (LinearLayout) inflater.inflate(R.layout.popup_option_storage,null);
+    }
+
+    @SuppressLint("InflateParams")
+    private static LinearLayout createMidiMenu(Context c) {
+        LayoutInflater inflater;
+        inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return (LinearLayout) inflater.inflate(R.layout.popup_option_midi,null);
     }
 
     @SuppressLint("InflateParams")
@@ -272,6 +283,10 @@ public class OptionMenuListeners extends Activity {
                 connectOptionListener(v,c);
                 break;
 
+            case "MIDI":
+                midiOptionListener(v,c);
+                break;
+
             case "MODE":
                 modeOptionListener(v,c);
                 break;
@@ -312,6 +327,7 @@ public class OptionMenuListeners extends Activity {
         Button menuGesturesButton = v.findViewById(R.id.menuGesturesButton);
         Button menuConnectButton = v.findViewById(R.id.menuConnectButton);
         Button menuModeButton = v.findViewById(R.id.menuModeButton);
+        Button menuMidiButton = v.findViewById(R.id.menuMidiButton);
         Button menuFindSongsButton = v.findViewById(R.id.menuFindSongsButton);
         Button menuStorageButton = v.findViewById(R.id.menuStorageButton);
         Button menuPadButton = v.findViewById(R.id.menuPadButton);
@@ -328,6 +344,7 @@ public class OptionMenuListeners extends Activity {
         menuDisplayButton.setText(c.getString(R.string.options_display).toUpperCase(FullscreenActivity.locale));
         menuGesturesButton.setText(c.getString(R.string.options_gesturesandmenus).toUpperCase(FullscreenActivity.locale));
         menuConnectButton.setText(c.getString(R.string.options_connections).toUpperCase(FullscreenActivity.locale));
+        menuMidiButton.setText(c.getString(R.string.midi).toUpperCase(FullscreenActivity.locale));
         menuModeButton.setText(c.getString(R.string.options_modes).toUpperCase(FullscreenActivity.locale));
         menuFindSongsButton.setText(c.getString(R.string.findnewsongs).toUpperCase(FullscreenActivity.locale));
         menuStorageButton.setText(c.getString(R.string.options_storage).toUpperCase(FullscreenActivity.locale));
@@ -337,10 +354,19 @@ public class OptionMenuListeners extends Activity {
         menuCCLIButton.setText(c.getString(R.string.edit_song_ccli).toUpperCase(FullscreenActivity.locale));
         menuOtherButton.setText(c.getString(R.string.options_other).toUpperCase(FullscreenActivity.locale));
 
+        // Only allow connection menu for JellyBean+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             menuConnectButton.setVisibility(View.VISIBLE);
         } else {
             menuConnectButton.setVisibility(View.GONE);
+        }
+
+        // Only allow MIDI menu for Marshmallow+ and if it is available
+        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M &&
+                c.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI)) {
+            menuMidiButton.setVisibility(View.VISIBLE);
+        } else {
+            menuMidiButton.setVisibility(View.GONE);
         }
 
         // Set the listeners
@@ -402,6 +428,15 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whichOptionMenu = "STORAGE";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        menuMidiButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MIDI";
                 if (mListener!=null) {
                     mListener.prepareOptionMenu();
                 }
@@ -1805,6 +1840,97 @@ public class OptionMenuListeners extends Activity {
             }
         });
 
+    }
+
+    private static void midiOptionListener(View v, final Context c) {
+        mListener = (MyInterface) c;
+
+        // Identify the buttons
+        TextView menuUp = v.findViewById(R.id.midiMenuTitle);
+
+        Button midiBluetooth = v.findViewById(R.id.midiBluetooth);
+        Button midiUSB = v.findViewById(R.id.midiUSB);
+        Button midiCommands = v.findViewById(R.id.midiCommands);
+        Button midiSend = v.findViewById(R.id.midiSend);
+        SwitchCompat midiAuto = v.findViewById(R.id.midiAuto);
+        FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
+
+        // Capitalise all the text by locale
+        midiBluetooth.setText(c.getResources().getString(R.string.midi_bluetooth).toUpperCase(FullscreenActivity.locale));
+        midiUSB.setText(c.getResources().getString(R.string.midi_usb).toUpperCase(FullscreenActivity.locale));
+        midiCommands.setText(c.getString(R.string.midi_commands).toUpperCase(FullscreenActivity.locale));
+        midiSend.setText(c.getString(R.string.midi_send).toUpperCase(FullscreenActivity.locale));
+        midiAuto.setText(c.getString(R.string.midi_auto).toUpperCase(FullscreenActivity.locale));
+        menuUp.setText(c.getString(R.string.midi).toUpperCase(FullscreenActivity.locale));
+
+        // Set the default
+        midiAuto.setChecked(FullscreenActivity.midiAuto);
+
+        // Set the button listeners
+        menuUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whichOptionMenu = "MAIN";
+                if (mListener!=null) {
+                    mListener.prepareOptionMenu();
+                }
+            }
+        });
+        midiBluetooth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "bluetoothmidi";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+        midiUSB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "usbmidi";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+        midiCommands.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "midicommands";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+        midiSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "showmidicommands";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+        midiAuto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.midiAuto = b;
+                Preferences.savePreferences();
+            }
+        });
+        closeOptionsFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                }
+            }
+        });
     }
 
     private static void setupNetwork(final Context c) {

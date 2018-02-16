@@ -56,17 +56,12 @@ public class PopUpMetronomeFragment extends DialogFragment {
         }
     }
 
-    //Spinner popupmetronome_timesig;
-    NumberPicker bpm_numberPicker;
-    NumberPicker timesig_numberPicker;
-    TextView bpmtext;
-    Button taptempo_Button;
-    SeekBar popupmetronome_volume;
-    TextView popupmetronome_volume_text;
-    SeekBar popupmetronome_pan;
-    TextView popupmetronome_pan_text;
+    NumberPicker bpm_numberPicker, timesig_numberPicker;
+    TextView bpmtext, popupmetronome_volume_text, popupmetronome_pan_text;
+    Button taptempo_Button, popupmetronome_startstopbutton;
+    SeekBar popupmetronome_volume, popupmetronome_pan;
     SwitchCompat visualmetronome;
-    Button popupmetronome_startstopbutton;
+
     public static String[] bpmValues;
     public static int tempo;
     public static short bpm;
@@ -175,17 +170,15 @@ public class PopUpMetronomeFragment extends DialogFragment {
                 switch (i) {
                     case 0:
                         FullscreenActivity.metronomepan = "L";
-                        popupmetronome_pan_text.setText("L");
                         break;
                     case 1:
                         FullscreenActivity.metronomepan = "C";
-                        popupmetronome_pan_text.setText("C");
                         break;
                     case 2:
                         FullscreenActivity.metronomepan = "R";
-                        popupmetronome_pan_text.setText("R");
                         break;
                 }
+                popupmetronome_pan_text.setText(FullscreenActivity.metronomepan);
             }
 
             @Override
@@ -247,12 +240,14 @@ public class PopUpMetronomeFragment extends DialogFragment {
         PopUpEditSongFragment.prepareSongXML();
         try {
             PopUpEditSongFragment.justSaveSongXML();
+            FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
+                    getResources().getString(R.string.ok);
         } catch (Exception e) {
             e.printStackTrace();
+            FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
+                    getActivity().getResources().getString(R.string.error);
         }
         Preferences.savePreferences();
-        FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
-                getResources().getString(R.string.ok);
         ShowToast.showToast(getActivity());
         dismiss();
     }

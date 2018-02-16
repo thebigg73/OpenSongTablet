@@ -15,16 +15,11 @@ import android.util.Log;
 
 public class BatteryMonitor extends BroadcastReceiver {
 
-    public static int level;
-    public static int scale;
+    public static int level, scale, status, chargePlug;
     public static IntentFilter ifilter;
     public static Intent batteryStatus;
     public static float batteryPct;
-    public static int chargePlug;
-    public static boolean usbCharge;
-    public static boolean acCharge;
-    public static int status;
-    public static boolean isCharging;
+    public static boolean usbCharge, acCharge, isCharging;
 
     public interface MyInterface {
         void setUpBatteryMonitor();
@@ -34,26 +29,29 @@ public class BatteryMonitor extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-        isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
-                status == BatteryManager.BATTERY_STATUS_FULL;
+        if (intent!=null) {
+            Log.d("d", "onReceive() intent.getAction()=" + intent.getAction());
+            int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+            isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                    status == BatteryManager.BATTERY_STATUS_FULL;
 
-        chargePlug = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-        usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB;
-        acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC;
+            chargePlug = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
+            usbCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_USB;
+            acCharge = chargePlug == BatteryManager.BATTERY_PLUGGED_AC;
 
-        if (FullscreenActivity.mContext==null) {
-            FullscreenActivity.mContext = context;
-        }
+            if (FullscreenActivity.mContext == null) {
+                FullscreenActivity.mContext = context;
+            }
 
-        if (FullscreenActivity.mContext!=null) {
-            try {
-                mListener = (MyInterface) FullscreenActivity.mContext;
-                if (mListener != null) {
-                    mListener.setUpBatteryMonitor();
+            if (FullscreenActivity.mContext != null) {
+                try {
+                    mListener = (MyInterface) FullscreenActivity.mContext;
+                    if (mListener != null) {
+                        mListener.setUpBatteryMonitor();
+                    }
+                } catch (Exception e) {
+                    Log.d("d", "Problem setting up the battery monitor");
                 }
-            } catch (Exception e) {
-                Log.d("d","Problem setting up the battery monitor");
             }
         }
     }
