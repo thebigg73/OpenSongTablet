@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -333,20 +334,20 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         edit_song_timesig.setSelection(index);
 
         // The capo fret
-        ArrayAdapter<CharSequence> capo_fret = ArrayAdapter.createFromResource(getActivity(),
-                R.array.capo,
-                R.layout.my_spinner);
-        capo_fret.setDropDownViewResource(R.layout.my_spinner);
-        edit_song_capo.setAdapter(capo_fret);
-        // Where is the key in the available array
-        index = -1;
-        List<String> capo_choice = Arrays.asList(getResources().getStringArray(R.array.capo));
-        for (int w=0;w<capo_choice.size();w++) {
-            if (FullscreenActivity.mCapo.equals(capo_choice.get(w))) {
-                index = w;
+        setCapoSpinner(FullscreenActivity.mKey);
+
+        // If the key changes, we need to update the spinner for the capo fret
+        edit_song_key.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                setCapoSpinner(edit_song_key.getItemAtPosition(i).toString());
             }
-        }
-        edit_song_capo.setSelection(index);
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                setCapoSpinner("");
+            }
+        });
 
         // The capo print
         ArrayAdapter<CharSequence> capo_print = ArrayAdapter.createFromResource(getActivity(),
@@ -471,7 +472,17 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         FullscreenActivity.mNotes = edit_song_notes.getText().toString();
         FullscreenActivity.mPadFile = edit_song_pad_file.getItemAtPosition(edit_song_pad_file.getSelectedItemPosition()).toString();
 
+        // Get the position of the capo fret
         FullscreenActivity.mCapo = edit_song_capo.getItemAtPosition(edit_song_capo.getSelectedItemPosition()).toString();
+        // If this contains a space (e.g. 2 (A)), then take the substring at the start as the actual fret
+        // This is because we may have a quick capo key reckoner next to the fret number
+        if (FullscreenActivity.mCapo.contains(" ")) {
+            int pos = FullscreenActivity.mCapo.indexOf(" ");
+            if (pos>0) {
+                FullscreenActivity.mCapo = FullscreenActivity.mCapo.substring(0, pos).trim();
+            }
+        }
+
         int tempmCapoPrint = edit_song_capo_print.getSelectedItemPosition();
         if (tempmCapoPrint==1) {
             FullscreenActivity.mCapoPrint="true";
@@ -699,4 +710,19 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         this.dismiss();
     }
 
+    void setCapoSpinner(String mKey) {
+        ArrayList<String> capooptions = Transpose.quickCapoKey(mKey);
+        ArrayAdapter<String> aa = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, capooptions);
+        aa.notifyDataSetChanged();
+        edit_song_capo.setAdapter(aa);
+        // Where is the key in the available array
+        int index = -1;
+        List<String> capo_choice = Arrays.asList(getResources().getStringArray(R.array.capo));
+        for (int w=0;w<capo_choice.size();w++) {
+            if (FullscreenActivity.mCapo.equals(capo_choice.get(w))) {
+                index = w;
+            }
+        }
+        edit_song_capo.setSelection(index);
+    }
 }

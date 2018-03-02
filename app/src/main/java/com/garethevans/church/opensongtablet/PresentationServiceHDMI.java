@@ -535,6 +535,7 @@ class PresentationServiceHDMI extends Presentation
                 } else if (FullscreenActivity.isImage || FullscreenActivity.isImageSlide) {
                     doImagePage();
                 } else {
+                    projected_ImageView.setVisibility(View.GONE);
                     switch (FullscreenActivity.whichMode) {
                         case "Stage":
                             prepareStageProjected();
@@ -553,6 +554,11 @@ class PresentationServiceHDMI extends Presentation
 
     // Change background images/videos
     static void fixBackground() {
+        img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
+        img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
+        vid1File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
+        vid2File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
+
         // Decide if user is using video or image for background
         switch (FullscreenActivity.backgroundTypeToUse) {
             case "image":
@@ -567,6 +573,7 @@ class PresentationServiceHDMI extends Presentation
                     imgFile = img2File;
                 }
 
+                Log.d("d","imgFile="+imgFile);
                 if (imgFile.exists()) {
                     if (imgFile.toString().contains("ost_bg.png")) {
                         projected_BackgroundImage.setImageDrawable(defimage);

@@ -35,7 +35,6 @@ public class PopUpFindStorageLocationFragment extends DialogFragment {
     public interface MyInterface {
         void openFragment();
     }
-
     private MyInterface mListener;
 
     @Override

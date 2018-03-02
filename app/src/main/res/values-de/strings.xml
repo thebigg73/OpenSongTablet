@@ -663,34 +663,33 @@
 
 	<string name="bibleXML">"OpenSong XML Bibel"</string>
 	<string name="book">"Buch"</string>
-	<string name="changestorage">"Ändern Sie den Speicherort"</string>
+	<string name="changestorage">"Den Speicherort ändern"</string>
 	<string name="chapter">"Kapitel"</string>
-	<string name="currentstorage">"Aktueller Standort"</string>
-	<string name="hidelyricsbox">"Liedtext ausblenden"</string>
+	<string name="currentstorage">"Aktueller Speicherort"</string>
+	<string name="hidelyricsbox">"Liedtext-Container ausblenden"</string>
 	<string name="midi">"MIDI"</string>
-	<string name="midi_add">"Befehl hinzufügen"</string>
-	<string name="midi_auto">"Senden Sie automatisch MIDI"</string>
-	<string name="midi_bluetooth">"Verbinden Sie das Bluetooth-Gerät"</string>
+	<string name="midi_add">"MIDI-Befehl hinzufügen"</string>
+	<string name="midi_auto">"MIDI automatisch senden"</string>
+	<string name="midi_bluetooth">"Bluetooth-Gerät verbinden"</string>
 	<string name="midi_channel">"Kanal"</string>
-	<string name="midi_commands">"Bearbeiten Sie Song-Befehle"</string>
+	<string name="midi_commands">"Song-Befehle bearbeiten"</string>
 	<string name="midi_controller">"Controllerwechsel"</string>
 	<string name="midi_error">"Bitte überprüfen Sie die MIDI-Verbindung"</string>
-	<string name="midi_inputport">"Eingangsport"</string>
+	<string name="midi_inputport">"Eingangs-Port"</string>
 	<string name="midi_list">"Klicken Sie auf ein Objekt, um es zu testen, und klicken Sie lange darauf, um es zu entfernen"</string>
-	<string name="midi_listen">"Hör mal zu"</string>
-	<string name="midi_note">"Hinweis"</string>
-	<string name="midi_outputport">"Outport-Port"</string>
+	<string name="midi_listen">"Hören"</string>
+	<string name="midi_note">"Note"</string>
+	<string name="midi_outputport">"Ausgangs-Port"</string>
 	<string name="midi_program">"Programmwechsel"</string>
 	<string name="midi_send">"Sende MIDI"</string>
 	<string name="midi_test">"Prüfung"</string>
 	<string name="midi_usb">"Schließen Sie das USB-Gerät an"</string>
 	<string name="midi_value">"Wert"</string>
-	<string name="midi_velocity">"Geschwindigkeit"</string>
+	<string name="midi_velocity">"Anschlagsdynamik"</string>
 	<string name="location_rationale">"Der Zugriff ist erforderlich, um Bluetooth-Geräte zu erkennen"</string>
 	<string name="permissionerror">"Erlaubnis nicht erteilt"</string>
 	<string name="pleaseselect">"Bitte auswählen"</string>
-	<string name="sdroot">"SD-Kartenwurzel"</string>
+	<string name="sdroot">"SD-Karte Root-Verzeichnis"</string>
 	<string name="search">"Suche"</string>
 	<string name="verse">"Vers"</string>
-
 </resources>

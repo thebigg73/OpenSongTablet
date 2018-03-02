@@ -492,28 +492,29 @@ public class PopUpLayoutFragment extends DialogFragment {
     }
 
     public void setCheckBoxes() {
-        switch (FullscreenActivity.backgroundTypeToUse) {
+
+        switch (FullscreenActivity.backgroundToUse) {
             case "img1":
                 image1CheckBox.setChecked(true);
-                image1CheckBox.setChecked(false);
+                image2CheckBox.setChecked(false);
                 video1CheckBox.setChecked(false);
                 video2CheckBox.setChecked(false);
                 break;
             case "img2":
                 image1CheckBox.setChecked(false);
-                image1CheckBox.setChecked(true);
+                image2CheckBox.setChecked(true);
                 video1CheckBox.setChecked(false);
                 video2CheckBox.setChecked(false);
                 break;
             case "vid1":
                 image1CheckBox.setChecked(false);
-                image1CheckBox.setChecked(false);
+                image2CheckBox.setChecked(false);
                 video1CheckBox.setChecked(true);
                 video2CheckBox.setChecked(false);
                 break;
             case "vid2":
                 image1CheckBox.setChecked(false);
-                image1CheckBox.setChecked(false);
+                image2CheckBox.setChecked(false);
                 video1CheckBox.setChecked(false);
                 video2CheckBox.setChecked(true);
                 break;

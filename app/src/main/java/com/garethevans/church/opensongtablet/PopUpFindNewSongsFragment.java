@@ -281,7 +281,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             }
         });
 
-        String newUA = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0";
+        //String newUA = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0";
+        String newUA = "Mozilla/5.0 (X11; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0";
         webresults_WebView.getSettings().setUserAgentString(newUA);
         webresults_WebView.getSettings().getJavaScriptEnabled();
         webresults_WebView.getSettings().setJavaScriptEnabled(true);

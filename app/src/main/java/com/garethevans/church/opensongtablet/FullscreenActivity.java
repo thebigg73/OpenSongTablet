@@ -221,7 +221,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static Bitmap[] sectionbitmaps;
 
     public static float stagemodeScale;
-    public static boolean trimSections,trimSectionSpace, hideLyricsBox;
+    public static boolean trimSections,trimSectionSpace, hideLyricsBox, showstartofpdf = true;
 
     public static String filetoselect = "", pagebutton_scale, profile;
 

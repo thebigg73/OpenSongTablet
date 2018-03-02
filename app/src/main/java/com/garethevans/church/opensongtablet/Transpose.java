@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 class Transpose {
@@ -380,9 +381,9 @@ class Transpose {
                 getkeynum = getkeynum.replace("$.51.$", "$.52.$");
                 getkeynum = getkeynum.replace("$.63.$", "$.51.$");
             }
-        }
 
-        if (direction.equals("-1")) {
+
+        } else if (direction.equals("-1")) {
             // Put the numbers down by one.
             // Last step then fixes 0 to be 12
 
@@ -950,6 +951,36 @@ class Transpose {
                 FullscreenActivity.temptranspChords = capoNumberToChord4(FullscreenActivity.temptranspChords);
                 break;
         }
+    }
+
+    static ArrayList<String> quickCapoKey(String key) {
+        // This is used to give the user a list of either simple fret number or fret number with new capo key
+        ArrayList<String> al = new ArrayList<>();
+        // Add a blank entry
+        al.add("");
+
+        boolean keyisset = false;
+        String keynum = key;
+        if (key!=null && !key.equals("") && !key.isEmpty()) {
+            // A key has been set, so convert this to a number
+            keynum = keyToNumber(key);
+            keyisset = true;
+        }
+
+        // Loop through this 12 times to get the key options for each fret
+        // The capo key goes down a semitone as the capo fret goes up a semitone!
+        String whattoadd;
+        for (int i=1; i<=11; i++) {
+            if (keyisset) {
+                keynum = transposeKey(keynum, "-1", 1);
+                key = numberToKey(keynum);
+                whattoadd = i + " (" + key + ")";
+            } else {
+                whattoadd = i + "";
+            }
+            al.add(whattoadd);
+        }
+        return al;
     }
 
 	static void checkChordFormat() {

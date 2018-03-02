@@ -3088,7 +3088,7 @@ public class StageMode extends AppCompatActivity implements
 
                     // Sort song formatting
                     // 1. Sort multiline verse/chord formats
-                    FullscreenActivity.myLyrics = ProcessSong.fixMultiLineFormat(FullscreenActivity.myLyrics, StageMode.this);
+                    FullscreenActivity.myLyrics = ProcessSong.fixMultiLineFormat(FullscreenActivity.myLyrics);
 
                     // If we want info on the next song in the set, add it as a comment line
                     ProcessSong.addExtraInfo(StageMode.this);
@@ -3357,6 +3357,7 @@ public class StageMode extends AppCompatActivity implements
 
     @SuppressWarnings("deprecation")
     public void loadPDF() {
+
         Bitmap bmp = ProcessSong.createPDFPage(StageMode.this, getAvailableWidth(), getAvailableHeight(), FullscreenActivity.toggleYScale);
 
         glideimage_ScrollView.setVisibility(View.VISIBLE);
@@ -3422,7 +3423,6 @@ public class StageMode extends AppCompatActivity implements
                         FullscreenActivity.mMidi = FullscreenActivity.mMidi.replace("\n\n", "\n");
                         String[] midilines = FullscreenActivity.mMidi.trim().split("\n");
                         for (String ml : midilines) {
-                            Log.d("d","Sending "+ml);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 if (midi!=null) {
                                     midi.sendMidi(midi.returnBytesFromHexText(ml));
@@ -6379,6 +6379,7 @@ public class StageMode extends AppCompatActivity implements
     public void goToNextItem() {
         FullscreenActivity.whichDirection = "R2L";
         boolean dealtwithaspdf = false;
+        FullscreenActivity.showstartofpdf = true;
 
         // If this is a PDF, check we can't move pages
         if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent < (FullscreenActivity.pdfPageCount - 1)) {
@@ -6438,6 +6439,7 @@ public class StageMode extends AppCompatActivity implements
     public void goToPreviousItem() {
         FullscreenActivity.whichDirection = "L2R";
         boolean dealtwithaspdf = false;
+        FullscreenActivity.showstartofpdf = true; // Default value - change later if need be
 
         // If this is a PDF, check we can't move pages
         if (FullscreenActivity.isPDF && FullscreenActivity.pdfPageCurrent > 0) {
@@ -6450,6 +6452,7 @@ public class StageMode extends AppCompatActivity implements
 
         // If this hasn't been dealt with
         if (!dealtwithaspdf && FullscreenActivity.setView) {
+            FullscreenActivity.showstartofpdf = false; // Moving backwards, so start at end of pdf
             // Is there another song in the set?  If so move, if not, do nothing
             if (FullscreenActivity.indexSongInSet > 0 && FullscreenActivity.mSetList.length > 0) {
                 //FullscreenActivity.indexSongInSet -= 1;

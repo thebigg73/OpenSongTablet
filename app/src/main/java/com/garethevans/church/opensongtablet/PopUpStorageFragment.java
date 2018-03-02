@@ -52,6 +52,7 @@ public class PopUpStorageFragment extends DialogFragment {
     interface SettingsInterface {
         void recheckStorage();
         void selectStorage();
+        void openExistingStorage();
     }
 
     private MyInterface mListener;
@@ -117,7 +118,8 @@ public class PopUpStorageFragment extends DialogFragment {
     @SuppressWarnings("deprecation")
     public void onAttach(Activity activity) {
         try {
-            if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
+            Log.d("d","whattodo="+FullscreenActivity.whattodo);
+            if (FullscreenActivity.whattodo.contains("splash")) {
                 sListener = (SettingsInterface) activity;
             } else {
                 mListener = (MyInterface) activity;
@@ -136,6 +138,7 @@ public class PopUpStorageFragment extends DialogFragment {
     @Override
     public void onDetach() {
         mListener = null;
+        sListener = null;
         super.onDetach();
     }
 
@@ -299,9 +302,18 @@ public class PopUpStorageFragment extends DialogFragment {
         findExisting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("d","Find existing clicked");
                 FullscreenActivity.whattodo = "findstoragelocation";
                 if (mListener!=null) {
                     mListener.openFragment();
+                    try {
+                        dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (sListener!=null) {
+                    sListener.openExistingStorage();
                     try {
                         dismiss();
                     } catch (Exception e) {

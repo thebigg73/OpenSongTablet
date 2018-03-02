@@ -31,7 +31,7 @@ import java.util.Arrays;
 //import static com.garethevans.church.opensongtablet.FullscreenActivity.myPreferences;
 
 public class SettingsActivity extends AppCompatActivity implements PopUpStorageFragment.SettingsInterface,
-PopUpDirectoryChooserFragment.SettingsInterface {
+PopUpDirectoryChooserFragment.SettingsInterface, PopUpFindStorageLocationFragment.MyInterface {
 
     // This class covers the splash screen and main settings page
     // Users then have the option to move into the FullscreenActivity
@@ -207,6 +207,7 @@ PopUpDirectoryChooserFragment.SettingsInterface {
                 manageStorage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        FullscreenActivity.whattodo = "splashpagestorage";
                         openStorageFragment();
                     }
                 });
@@ -297,7 +298,7 @@ PopUpDirectoryChooserFragment.SettingsInterface {
     }
 
     public void gotothesongs() {
-        if (storageGranted) {
+        if (storageGranted && this!=null) {
             Preferences.savePreferences();
             Intent intent = new Intent();
             intent.setClass(this, FullscreenActivity.class);
@@ -359,8 +360,19 @@ PopUpDirectoryChooserFragment.SettingsInterface {
                 recheckStorage();
             }
         } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             recheckStorage();
+        }
+    }
+
+    @Override
+    public void openExistingStorage() {
+        FullscreenActivity.whattodo = "findstoragelocation_splash";
+        DialogFragment newFragment = PopUpFindStorageLocationFragment.newInstance();
+        try {
+            newFragment.show(getFragmentManager(), "findstoragelocation_splash");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -418,5 +430,10 @@ PopUpDirectoryChooserFragment.SettingsInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void openFragment() {
+        selectStorage();
     }
 }

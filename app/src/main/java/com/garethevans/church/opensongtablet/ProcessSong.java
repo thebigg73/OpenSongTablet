@@ -120,7 +120,10 @@ public class ProcessSong extends Activity {
         String[] lines = lyrics.split("\n");
 
         for (String line:lines) {
-            if (!line.startsWith("[") && !line.startsWith(";") && !line.startsWith(".") && !line.startsWith(" ")) {
+            if (!line.startsWith("[") && !line.startsWith(";") && !line.startsWith(".") && !line.startsWith(" ") &&
+                    !line.startsWith("1") && !line.startsWith("2") && !line.startsWith("3") && !line.startsWith("4") &&
+                    !line.startsWith("5") && !line.startsWith("6") && !line.startsWith("7") && !line.startsWith("8") &&
+                    !line.startsWith("9")) {
                 line = " " + line;
             }
             fixedlyrics += line + "\n";
@@ -1455,114 +1458,182 @@ public class ProcessSong extends Activity {
         return colortouse;
     }
 
-    static String fixMultiLineFormat(String string, Context c) {
+    static String fixMultiLineFormat(String string) {
         // Best way to determine if the song is in multiline format is
         // Look for [v] or [c] case insensitive
         // And it needs to be followed by a line starting with 1 and 2
         try {
-            boolean has_multiline_vtag = string.toLowerCase(FullscreenActivity.locale).contains("[v]");
-            boolean has_multiline_ctag = string.toLowerCase(FullscreenActivity.locale).contains("[c]");
-            boolean has_multiline_1tag = string.toLowerCase(FullscreenActivity.locale).contains("\n1");
-            boolean has_multiline_2tag = string.toLowerCase(FullscreenActivity.locale).contains("\n2");
+            String[] sl = string.split("\n");
+            boolean has_multiline_vtag = false;
+            boolean has_multiline_ctag = false;
+            boolean has_multiline_1tag = false;
+            boolean has_multiline_2tag = false;
+
+            for (String l : sl) {
+                if (l.toLowerCase(FullscreenActivity.locale).startsWith("[v]")) {
+                    has_multiline_vtag = true;
+                } else if (l.toLowerCase(FullscreenActivity.locale).startsWith("[c]")) {
+                    has_multiline_ctag = true;
+                } else if (l.toLowerCase(FullscreenActivity.locale).startsWith("1") ||
+                        l.toLowerCase(FullscreenActivity.locale).startsWith(" 1")) {
+                    has_multiline_1tag = true;
+                } else if (l.toLowerCase(FullscreenActivity.locale).startsWith("2") ||
+                        l.toLowerCase(FullscreenActivity.locale).startsWith(" 2")) {
+                    has_multiline_2tag = true;
+                }
+            }
 
             if ((has_multiline_vtag || has_multiline_ctag) && has_multiline_1tag && has_multiline_2tag) {
 
-                // Ok the song is in the multiline format
-                // [V]
-                // .G     C
-                // 1Verse 1
-                // 2Verse 2
+                // Reset the available song sections
+                    // Ok the song is in the multiline format
+                    // [V]
+                    // .G     C
+                    // 1Verse 1
+                    // 2Verse 2
 
-                // Create empty verse and chorus strings up to 9 verses/choruses
-                String[] verse = {"", "", "", "", "", "", "", "", ""};
-                String[] chorus = {"", "", "", "", "", "", "", "", ""};
+                    // Create empty verse and chorus strings up to 9 verses/choruses
+                    String[] verse = {"", "", "", "", "", "", "", "", ""};
+                    String[] chorus = {"", "", "", "", "", "", "", "", ""};
 
-                String versechords = "";
-                String choruschords = "";
+                    String versechords = "";
+                    String choruschords = "";
 
-                // Split the string into separate lines
-                String[] lines = string.split("\n");
+                    // Split the string into separate lines
+                    String[] lines = string.split("\n");
 
-                // Go through the lines and look for tags and line numbers
-                boolean gettingverse = false;
-                boolean gettingchorus = false;
-                for (int z = 0; z < lines.length; z++) {
-                    if ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[v]") == 0 &&
-                            ((z < lines.length - 1 && lines[z + 1].startsWith(" 1")) || (z < lines.length - 2 && lines[z + 2].startsWith(" 1")))) ||
+                    // Go through the lines and look for tags and line numbers
+                    boolean gettingverse = false;
+                    boolean gettingchorus = false;
+                    for (int z = 0; z < lines.length; z++) {
+                        String l = lines[z];
+                        String l_1 = "";
+                        String l_2 = "";
 
-                            ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[" + c.getResources().getString(R.string.tag_verse).toLowerCase(FullscreenActivity.locale) + "]") == 0) &&
-                                    ((z < lines.length - 1 && lines[z + 1].startsWith(" 1")) || (z < lines.length - 2 && lines[z + 2].startsWith(" 1"))))) {
-                        lines[z] = "__VERSEMULTILINE__";
-                        gettingverse = true;
-                        gettingchorus = false;
-                    }
-                    if ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[c]") == 0 &&
-                            ((z < lines.length - 1 && lines[z + 1].startsWith(" 1")) || (z < lines.length - 2 && lines[z + 2].startsWith(" 1")))) ||
-
-                            ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[" + c.getResources().getString(R.string.tag_chorus).toLowerCase(FullscreenActivity.locale) + "]") == 0) &&
-                                    ((z < lines.length - 1 && lines[z + 1].startsWith(" 1")) || (z < lines.length - 2 && lines[z + 2].startsWith(" 1"))))) {
-                        lines[z] = "__CHORUSMULTILINE__";
-                        gettingchorus = true;
-                        gettingverse = false;
-                    } else if (lines[z].indexOf("[") == 0) {
-                        gettingchorus = false;
-                        gettingverse = false;
-                    }
-
-                    if (gettingverse) {
-                        if (lines[z].startsWith(".")) {
-                            versechords += lines[z] + "\n";
-                            lines[z] = "__REMOVED__";
-                        } else if (Character.isDigit((lines[z] + " ").charAt(0))) {
-                            int vnum = Integer.parseInt((lines[z] + " ").substring(0, 1));
-                            if (verse[vnum].equals("")) {
-                                verse[vnum] = "[V" + vnum + "]\n";
-                            }
-                            verse[vnum] += lines[z].substring(1) + "\n";
-                            lines[z] = "__REMOVED__";
+                        if (lines.length>z+1) {
+                            l_1 = lines[z + 1];
                         }
-                    } else if (gettingchorus) {
-                        if (lines[z].startsWith(".")) {
-                            choruschords += lines[z] + "\n";
-                            lines[z] = "__REMOVED__";
-                        } else if (Character.isDigit((lines[z] + " ").charAt(0))) {
-                            int cnum = Integer.parseInt((lines[z] + " ").substring(0, 1));
-                            if (chorus[cnum].equals("")) {
-                                chorus[cnum] = "[C" + cnum + "]\n";
+                        if (lines.length>z+2) {
+                            l_2 = lines[z + 2];
+                        }
+
+                        boolean mlv = isMultiLine(l, l_1, l_2, "v");
+                        boolean mlc = isMultiLine(l, l_1, l_2, "c");
+
+                        if (mlv) {
+                            lines[z] = "__VERSEMULTILINE__";
+                            gettingverse = true;
+                            gettingchorus = false;
+                        } else if (mlc) {
+                            lines[z] = "__CHORUSMULTILINE__";
+                            gettingverse = false;
+                            gettingchorus = true;
+                        } else if (l.startsWith("[")) {
+                            gettingverse = false;
+                            gettingchorus = false;
+                        }
+
+                        /*if ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[v]") == 0 &&
+                                ((z < lines.length - 1 && (lines[z + 1].startsWith(" 1") || lines[z + 1].startsWith("1"))) ||
+                                        (z < lines.length - 2 && (lines[z + 2].startsWith(" 1") || lines[z + 2].startsWith("1"))))) ||
+
+                                ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[" + c.getResources().getString(R.string.tag_verse).toLowerCase(FullscreenActivity.locale) + "]") == 0) &&
+                                        ((z < lines.length - 1 && (lines[z + 1].startsWith(" 1") || lines[z + 1].startsWith("1")) ||
+                                                (z < lines.length - 2 && (lines[z + 2].startsWith(" 1") || lines[z + 2].startsWith("1"))))))) {
+                            lines[z] = "__VERSEMULTILINE__";
+                            gettingverse = true;
+                            gettingchorus = false;
+                        }
+                        if ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[c]") == 0 &&
+                                ((z < lines.length - 1 && (lines[z + 1].startsWith(" 1") || lines[z + 1].startsWith(" 1")) || (z < lines.length - 2 && lines[z + 2].startsWith(" 1")))) ||
+
+                                ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[" + c.getResources().getString(R.string.tag_chorus).toLowerCase(FullscreenActivity.locale) + "]") == 0) &&
+                                        ((z < lines.length - 1 && lines[z + 1].startsWith(" 1")) || (z < lines.length - 2 && lines[z + 2].startsWith(" 1"))))) {
+                            lines[z] = "__CHORUSMULTILINE__";
+                            gettingchorus = true;
+                            gettingverse = false;
+                        } else if (lines[z].indexOf("[") == 0) {
+                            gettingchorus = false;
+                            gettingverse = false;
+                        }*/
+
+                        if (gettingverse) {
+                            if (lines[z].startsWith(".")) {
+                                versechords += lines[z] + "\n";
+                                lines[z] = "__REMOVED__";
+                            } else if (Character.isDigit((lines[z] + " ").charAt(0))) {
+                                int vnum = Integer.parseInt((lines[z] + " ").substring(0, 1));
+                                if (verse[vnum].equals("")) {
+                                    verse[vnum] = "[V" + vnum + "]\n";
+                                }
+                                verse[vnum] += lines[z].substring(1) + "\n";
+                                lines[z] = "__REMOVED__";
                             }
-                            chorus[cnum] += lines[z].substring(1) + "\n";
-                            lines[z] = "__REMOVED__";
+                        } else if (gettingchorus) {
+                            if (lines[z].startsWith(".")) {
+                                choruschords += lines[z] + "\n";
+                                lines[z] = "__REMOVED__";
+                            } else if (Character.isDigit((lines[z] + " ").charAt(0))) {
+                                int cnum = Integer.parseInt((lines[z] + " ").substring(0, 1));
+                                if (chorus[cnum].equals("")) {
+                                    chorus[cnum] = "[C" + cnum + "]\n";
+                                }
+                                chorus[cnum] += lines[z].substring(1) + "\n";
+                                lines[z] = "__REMOVED__";
+                            }
                         }
                     }
 
+                    // Get the replacement text
+                    String versereplacement = addchordstomultiline(verse, versechords);
+                    String chorusreplacement = addchordstomultiline(chorus, choruschords);
 
-                }
-
-                // Get the replacement text
-                String versereplacement = addchordstomultiline(verse, versechords);
-                String chorusreplacement = addchordstomultiline(chorus, choruschords);
-
-                // Now go back through the lines and extract the new improved version
-                String improvedlyrics = "";
-                for (String thisline : lines) {
-                    if (thisline.equals("__VERSEMULTILINE__")) {
-                        thisline = versereplacement;
-                    } else if (thisline.equals("__CHORUSMULTILINE__")) {
-                        thisline = chorusreplacement;
+                    // Now go back through the lines and extract the new improved version
+                    String improvedlyrics = "";
+                    for (String thisline : lines) {
+                        if (thisline.equals("__VERSEMULTILINE__")) {
+                            thisline = versereplacement;
+                        } else if (thisline.equals("__CHORUSMULTILINE__")) {
+                            thisline = chorusreplacement;
+                        }
+                        if (!thisline.equals("__REMOVED__")) {
+                            improvedlyrics += thisline + "\n";
+                        }
                     }
-                    if (!thisline.equals("__REMOVED__")) {
-                        improvedlyrics += thisline + "\n";
-                    }
-                }
 
-                return improvedlyrics;
-            } else {
+                    return improvedlyrics;
+                } else {
                 // Not multiline format
                 return string;
             }
         } catch (Exception e) {
             return string;
         }
+    }
+
+    static boolean isMultiLine(String l, String l_1, String l_2, String type) {
+        boolean isit = false;
+        l = l.toLowerCase(FullscreenActivity.locale);
+
+        if (l.startsWith("["+type+"]") &&
+                (l_1.startsWith("1") || l_1.startsWith(" 1") || l_2.startsWith("1") || l_2.startsWith(" 1"))) {
+            isit = true;
+        }
+
+
+        /*if ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[v]") == 0 &&
+                ((z < lines.length - 1 && (lines[z + 1].startsWith(" 1") || lines[z + 1].startsWith("1"))) ||
+                        (z < lines.length - 2 && (lines[z + 2].startsWith(" 1") || lines[z + 2].startsWith("1"))))) ||
+
+                ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[" + c.getResources().getString(R.string.tag_verse).toLowerCase(FullscreenActivity.locale) + "]") == 0) &&
+                        ((z < lines.length - 1 && (lines[z + 1].startsWith(" 1") || lines[z + 1].startsWith("1")) ||
+                                (z < lines.length - 2 && (lines[z + 2].startsWith(" 1") || lines[z + 2].startsWith("1"))))))) {
+            lines[z] = "__VERSEMULTILINE__";
+            gettingverse = true;
+            gettingchorus = false;
+        }*/
+
+        return isit;
     }
 
     static String[] removeTagLines(String[] sections) {
@@ -2458,6 +2529,11 @@ public class ProcessSong extends Activity {
             PdfRenderer.Page mCurrentPage = null;
             if (mPdfRenderer != null) {
                 //noinspection AndroidLintNewApi
+                // If we have used the move back option from a previous set item (page button, foot pedal, etc.), we should show the last page
+                if (!FullscreenActivity.showstartofpdf) {
+                    FullscreenActivity.pdfPageCurrent = FullscreenActivity.pdfPageCount - 1;
+                    FullscreenActivity.showstartofpdf = true;
+                }
                 mCurrentPage = mPdfRenderer.openPage(FullscreenActivity.pdfPageCurrent);
             }
 
