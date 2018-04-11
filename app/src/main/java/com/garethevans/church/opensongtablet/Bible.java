@@ -272,7 +272,11 @@ class Bible {
                                                             String foundverse = nmm3.getNamedItem(attributetosearch_verse).getNodeValue();
                                                             String foundtext = v_children.item(z).getTextContent();
                                                             PopUpBibleXMLFragment.bibleVerses.add(foundverse);
-                                                            PopUpBibleXMLFragment.bibleText.add(foundtext);
+                                                            if (PopUpBibleXMLFragment.includeVersNums) {
+                                                                PopUpBibleXMLFragment.bibleText.add("("+foundverse+") "+foundtext);
+                                                            } else {
+                                                                PopUpBibleXMLFragment.bibleText.add(foundtext);
+                                                            }
                                                             Log.d("d", "book=" + book + "  chapter=" + chapter + "  verse=" + foundverse);
                                                         }
                                                     }

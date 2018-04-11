@@ -112,7 +112,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
 
         // Initialise the views
         abcWebView = V.findViewById(R.id.abcWebView);
-        String newUA = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0";
+        String newUA = "Mozilla/5.0 (X11; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0";
         abcWebView.getSettings().setUserAgentString(newUA);
         abcWebView.getSettings().getJavaScriptEnabled();
         abcWebView.getSettings().setJavaScriptEnabled(true);

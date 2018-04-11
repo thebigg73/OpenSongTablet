@@ -317,7 +317,7 @@ public class OptionMenuListeners extends Activity {
         }
     }
 
-    private static void mainOptionListener(View v, Context c) {
+    private static void mainOptionListener(View v, final Context c) {
         mListener = (MyInterface) c;
         // Identify the buttons
         Button menuSetButton = v.findViewById(R.id.menuSetButton);
@@ -362,8 +362,9 @@ public class OptionMenuListeners extends Activity {
         }
 
         // Only allow MIDI menu for Marshmallow+ and if it is available
-        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M &&
-                c.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI)) {
+        if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        /*if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M &&
+                c.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI)) {*/
             menuMidiButton.setVisibility(View.VISIBLE);
         } else {
             menuMidiButton.setVisibility(View.GONE);
@@ -433,15 +434,26 @@ public class OptionMenuListeners extends Activity {
                 }
             }
         });
-        menuMidiButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whichOptionMenu = "MIDI";
-                if (mListener!=null) {
-                    mListener.prepareOptionMenu();
+        if (c.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI)) {
+            menuMidiButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FullscreenActivity.whichOptionMenu = "MIDI";
+                    if (mListener != null) {
+                        mListener.prepareOptionMenu();
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            menuMidiButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FullscreenActivity.myToastMessage = "MIDI - " + c.getString(R.string.notcompatible);
+                    ShowToast.showToast(c);
+                }
+            });
+        }
+
         menuConnectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -764,6 +776,7 @@ public class OptionMenuListeners extends Activity {
         Button songDeleteButton = v.findViewById(R.id.songDeleteButton);
         Button songExportButton = v.findViewById(R.id.songExportButton);
         final SwitchCompat songPresentationOrderButton = v.findViewById(R.id.songPresentationOrderButton);
+        SwitchCompat songKeepMultiLineCompactButton = v.findViewById(R.id.songKeepMultiLineCompactButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
         // Capitalise all the text by locale
@@ -779,6 +792,7 @@ public class OptionMenuListeners extends Activity {
         songDeleteButton.setText(c.getString(R.string.options_song_delete).toUpperCase(FullscreenActivity.locale));
         songExportButton.setText(c.getString(R.string.options_song_export).toUpperCase(FullscreenActivity.locale));
         songPresentationOrderButton.setText(c.getString(R.string.edit_song_presentation).toUpperCase(FullscreenActivity.locale));
+        songKeepMultiLineCompactButton.setText(c.getString(R.string.keepmultiline).toUpperCase(FullscreenActivity.locale));
 
         // Hide the drawing option unless we are in performance mode
         if (FullscreenActivity.whichMode.equals("Performance")) {
@@ -790,6 +804,7 @@ public class OptionMenuListeners extends Activity {
         // Set the switches up based on preferences
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             songPresentationOrderButton.setChecked(FullscreenActivity.usePresentationOrder);
+            songKeepMultiLineCompactButton.setChecked(FullscreenActivity.multilineCompact);
         }
 
         // Set the button listeners
@@ -938,13 +953,24 @@ public class OptionMenuListeners extends Activity {
             }
         });
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            songPresentationOrderButton.setChecked(FullscreenActivity.usePresentationOrder);
-        }
         songPresentationOrderButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.usePresentationOrder = b;
+                Preferences.savePreferences();
+                if (FullscreenActivity.isSong) {
+                    if (mListener != null) {
+                        Preferences.savePreferences();
+                        mListener.loadSong();
+                    }
+                }
+            }
+        });
+
+        songKeepMultiLineCompactButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FullscreenActivity.multilineCompact = b;
                 Preferences.savePreferences();
                 if (FullscreenActivity.isSong) {
                     if (mListener != null) {
@@ -2408,6 +2434,7 @@ public class OptionMenuListeners extends Activity {
         // Identify the buttons
         TextView menuup = v.findViewById(R.id.optionPadTitle);
         Button padCrossFadeButton = v.findViewById(R.id.padCrossFadeButton);
+        Button padCustomButton = v.findViewById(R.id.padCustomButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
         SwitchCompat switchTimerSize = v.findViewById(R.id.switchTimerSize);
         SwitchCompat padStartButton = v.findViewById(R.id.padStartButton);
@@ -2417,6 +2444,7 @@ public class OptionMenuListeners extends Activity {
         // Capitalise all the text by locale
         menuup.setText(c.getString(R.string.pad).toUpperCase(FullscreenActivity.locale));
         padStartButton.setText(c.getString(R.string.autostartpad).toUpperCase(FullscreenActivity.locale));
+        padCustomButton.setText(c.getString(R.string.custom).toUpperCase(FullscreenActivity.locale));
         padCrossFadeButton.setText(c.getString(R.string.crossfade_time).toUpperCase(FullscreenActivity.locale));
         padActivatedSwitch.setText(c.getString(R.string.activated).toUpperCase(FullscreenActivity.locale));
         switchTimerSize.setText(c.getString(R.string.timer_size).toUpperCase(FullscreenActivity.locale));
@@ -2450,6 +2478,16 @@ public class OptionMenuListeners extends Activity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 FullscreenActivity.autostartpad = b;
                 Preferences.savePreferences();
+            }
+        });
+        padCustomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    FullscreenActivity.whattodo = "custompads";
+                    mListener.openFragment();
+                }
             }
         });
         padCrossFadeButton.setOnClickListener(new View.OnClickListener() {

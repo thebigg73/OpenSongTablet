@@ -79,6 +79,14 @@ class FadeoutMediaPlayer extends AsyncTask<Object,Void,String> {
                 FullscreenActivity.pad2Playing = false;
                 FullscreenActivity.pad2Fading = false;
             }
+
+            if (which==0) {
+                FullscreenActivity.pad1Playing = false;
+                FullscreenActivity.pad1Fading = false;
+                FullscreenActivity.pad2Playing = false;
+                FullscreenActivity.pad2Fading = false;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

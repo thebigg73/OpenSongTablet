@@ -824,11 +824,24 @@ public class StageMode extends AppCompatActivity implements
     public void onDataReceived(Object data) {
         // Attempt to extract the song details
         if (data!=null && (data.toString().contains("_____") || data.toString().contains("<lyrics>") ||
-                data.toString().contains("___section___"))) {
+                data.toString().contains("___section___") || data.toString().contains("autoscroll_"))) {
             int mysection = ProcessSong.getSalutReceivedSection(data.toString());
+
             if (mysection>0) {
+                // Choose a section
                 holdBeforeLoadingSection(mysection);
-            } else {
+            } else if (data!=null && data.toString().contains("autoscroll_start")) {
+                // Trigger the autoscroll
+                FullscreenActivity.isautoscrolling = false;
+                holdBeforeAutoscrolling();
+
+            } else if (data!=null && data.toString().contains("autoscroll_stop")) {
+                // Trigger the autoscroll stop
+                FullscreenActivity.isautoscrolling = true;
+                holdBeforeAutoscrolling();
+
+            } else if (data!=null) {
+                // Load the song
                 String action = ProcessSong.getSalutReceivedLocation(data.toString(), StageMode.this);
                 switch (action) {
                     case "Location":
@@ -1060,6 +1073,19 @@ public class StageMode extends AppCompatActivity implements
         myMessage = new SalutMessage();
         myMessage.description = messageString;
         holdBeforeSending();
+    }
+
+    public void sendAutoscrollTriggerToConnected() {
+        String messageString = "autoscroll_";
+
+        if (FullscreenActivity.isautoscrolling) {
+            messageString += "start";
+        } else {
+            messageString += "stop";
+        }
+        SalutMessage sm = new SalutMessage();
+        sm.description = messageString;
+        holdBeforeSendingAutoscroll(sm);
     }
 
     public void sendSongXMLToConnected() {
@@ -2283,7 +2309,7 @@ public class StageMode extends AppCompatActivity implements
                 break;
 
             case "showcapo":
-                FullscreenActivity.showCapo = !FullscreenActivity.showCapo;
+                FullscreenActivity.showCapoChords = !FullscreenActivity.showCapoChords;
                 Preferences.savePreferences();
                 loadSong();
                 break;
@@ -2758,7 +2784,6 @@ public class StageMode extends AppCompatActivity implements
         }
     }
 
-
     public void holdBeforeSending() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we send it, check this is the first time
@@ -2789,7 +2814,36 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-
+    public void holdBeforeSendingAutoscroll(SalutMessage sm) {
+        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
+        // As soon as we send it, check this is the first time
+        if (FullscreenActivity.firstSendingOfSalutAutoscroll) {
+            // Now turn it off
+            FullscreenActivity.firstSendingOfSalutAutoscroll = false;
+            if (FullscreenActivity.network != null) {
+                if (FullscreenActivity.network.isRunningAsHost) {
+                    try {
+                        FullscreenActivity.network.sendToAllDevices(sm, new SalutCallback() {
+                            @Override
+                            public void call() {
+                                Log.e(TAG, "Oh no! The data failed to send.");
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                // After a delay of 2 seconds, reset the firstSendingOfSalut;
+                Handler h = new Handler();
+                h.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        FullscreenActivity.firstSendingOfSalutAutoscroll = true;
+                    }
+                }, 2000);
+            }
+        }
+    }
     public void holdBeforeSendingXML() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we send it, check this is the first time
@@ -2821,7 +2875,6 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-
     public void holdBeforeSendingSection() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we send it, check this is the first time
@@ -2853,7 +2906,6 @@ public class StageMode extends AppCompatActivity implements
             }
         }
     }
-
     public void holdBeforeLoading() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we receive if, check this is the first time
@@ -2872,7 +2924,6 @@ public class StageMode extends AppCompatActivity implements
             },2000);
         }
     }
-
     public void holdBeforeLoadingXML() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we receive if, check this is the first time
@@ -2916,7 +2967,6 @@ public class StageMode extends AppCompatActivity implements
             },2000);
         }
     }
-
     public void holdBeforeLoadingSection(int s) {
         if (FullscreenActivity.firstReceivingOfSalutSection) {
             // Now turn it off
@@ -2929,6 +2979,24 @@ public class StageMode extends AppCompatActivity implements
                 @Override
                 public void run() {
                     FullscreenActivity.firstReceivingOfSalutSection = true;
+                }
+            }, 2000);
+        }
+    }
+    public void holdBeforeAutoscrolling() {
+        // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
+        // As soon as we receive if, check this is the first time
+        if (FullscreenActivity.firstReceivingOfSalutAutoscroll) {
+            // Now turn it off
+            FullscreenActivity.firstReceivingOfSalutAutoscroll = false;
+            gesture5();
+
+            // After a delay of 2 seconds, reset the firstReceivingOfSalut;
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    FullscreenActivity.firstReceivingOfSalutAutoscroll = true;
                 }
             }, 2000);
         }
@@ -3153,7 +3221,7 @@ public class StageMode extends AppCompatActivity implements
             return "done";
         }
 
-        boolean cancelled = false;
+        private boolean cancelled = false;
         @Override
         protected void onCancelled() {
             cancelled = true;
@@ -3252,7 +3320,9 @@ public class StageMode extends AppCompatActivity implements
                     }
 
                     // Send the midi data if we can
-                    sendMidi();
+                    if (FullscreenActivity.midiAuto) {
+                        sendMidi();
+                    }
 
                     // Send WiFiP2P intent
                     if (FullscreenActivity.network!=null && FullscreenActivity.network.isRunningAsHost) {
@@ -3405,8 +3475,8 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void sendMidi() {
         if ((Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M &&
-                getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI) &&
-                FullscreenActivity.midiAuto && FullscreenActivity.midiDevice!=null &&
+                getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI)
+                && FullscreenActivity.midiDevice!=null &&
                 FullscreenActivity.midiInputPort!=null && FullscreenActivity.mMidi!=null &&
                 !FullscreenActivity.mMidi.isEmpty()) && !FullscreenActivity.mMidi.trim().equals("")) {
             // Declare the midi code
@@ -5579,12 +5649,12 @@ public class StageMode extends AppCompatActivity implements
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
             FullscreenActivity.padtime_length = (int) (FullscreenActivity.mPlayer1.getDuration() / 1000.0f);
-            FullscreenActivity.mPlayer1.setLooping(PadFunctions.getLoop(StageMode.this));
+            FullscreenActivity.mPlayer1.setLooping(PadFunctions.getLoop());
             FullscreenActivity.mPlayer1.setVolume(PadFunctions.getVol(0), PadFunctions.getVol(1));
             FullscreenActivity.mPlayer1.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if (!PadFunctions.getLoop(StageMode.this)) {
+                    if (!PadFunctions.getLoop()) {
                         Log.d("d", "Reached end and not looping");
 
                     } else {
@@ -5612,12 +5682,12 @@ public class StageMode extends AppCompatActivity implements
         @Override
         public void onPrepared(MediaPlayer mediaPlayer) {
             FullscreenActivity.padtime_length = (int) (FullscreenActivity.mPlayer2.getDuration() / 1000.0f);
-            FullscreenActivity.mPlayer2.setLooping(PadFunctions.getLoop(StageMode.this));
+            FullscreenActivity.mPlayer2.setLooping(PadFunctions.getLoop());
             FullscreenActivity.mPlayer2.setVolume(PadFunctions.getVol(0), PadFunctions.getVol(1));
             FullscreenActivity.mPlayer2.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if (!PadFunctions.getLoop(StageMode.this)) {
+                    if (!PadFunctions.getLoop()) {
                         Log.d("d", "Reached end and not looping");
 
                     } else {
@@ -5685,14 +5755,25 @@ public class StageMode extends AppCompatActivity implements
 
                         FullscreenActivity.padson = true;
                         if (FullscreenActivity.pad_filename != null && FullscreenActivity.mKey != null) {
-                            path = getResources().getIdentifier(FullscreenActivity.pad_filename, "raw", getPackageName());
+                            boolean custompad = FullscreenActivity.pad_filename.startsWith("custom_");
                             AssetFileDescriptor afd = null;
-                            try {
-                                afd = getResources().openRawResourceFd(path);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                which = 0;
+                            String padpath = null;
+                            if (custompad) {
+                                // Prepare the custom pad
+                                padpath = FullscreenActivity.dirPads + "/" + FullscreenActivity.pad_filename.replace("custom_","");
+                                Log.d("d","padpath="+padpath);
+
+                            } else {
+                                // Prepare the default auto pad
+                                path = getResources().getIdentifier(FullscreenActivity.pad_filename, "raw", getPackageName());
+                                try {
+                                    afd = getResources().openRawResourceFd(path);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    which = 0;
+                                }
                             }
+
                             if (which == 1) {
                                 try {
                                     PadFunctions.getPad1Status();
@@ -5701,8 +5782,12 @@ public class StageMode extends AppCompatActivity implements
                                     }
                                     FullscreenActivity.mPlayer1.reset();
                                     FullscreenActivity.mPlayer1.setOnPreparedListener(new Player1Prepared());
-                                    FullscreenActivity.mPlayer1.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                                    afd.close();
+                                    if (custompad) {
+                                        FullscreenActivity.mPlayer1.setDataSource(padpath);
+                                    } else {
+                                        FullscreenActivity.mPlayer1.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                                        afd.close();
+                                    }
                                     FullscreenActivity.mPlayer1.prepareAsync();
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -5718,8 +5803,12 @@ public class StageMode extends AppCompatActivity implements
                                     }
                                     FullscreenActivity.mPlayer2.reset();
                                     FullscreenActivity.mPlayer2.setOnPreparedListener(new Player2Prepared());
-                                    FullscreenActivity.mPlayer2.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                                    afd.close();
+                                    if (custompad) {
+                                        FullscreenActivity.mPlayer2.setDataSource(padpath);
+                                    } else {
+                                        FullscreenActivity.mPlayer2.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                                        afd.close();
+                                    }
                                     FullscreenActivity.mPlayer2.prepareAsync();
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -5852,6 +5941,20 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void fadeoutPad() {
+        if ((FullscreenActivity.pad1Playing && !FullscreenActivity.pad1Fading) && !FullscreenActivity.pad2Playing) {
+            // Pad 1 is the one that will be faded
+            FullscreenActivity.fadeWhichPad = 1;
+        } else if ((FullscreenActivity.pad2Playing && !FullscreenActivity.pad2Fading) && !FullscreenActivity.pad1Playing) {
+            // Pad 2 is the one that will be faded
+            FullscreenActivity.fadeWhichPad = 2;
+        } else if (FullscreenActivity.pad1Playing && FullscreenActivity.pad1Fading &&
+                FullscreenActivity.pad2Playing && FullscreenActivity.pad2Fading) {
+            // Both pads are being faded, so do nothing
+            FullscreenActivity.fadeWhichPad = -1;
+        } else {
+            // Both pads need faded, or it doesn't matter either way
+            FullscreenActivity.fadeWhichPad = 0;
+        }
 
         switch (FullscreenActivity.fadeWhichPad) {
 
@@ -6203,6 +6306,14 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            // Send WiFiP2P intent
+            if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
+                try {
+                    sendAutoscrollTriggerToConnected();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         @Override
@@ -6303,6 +6414,14 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(mtask_autoscroll_music);
         FullscreenActivity.isautoscrolling = false;
         currentTime_TextView.setText(getString(R.string.zerotime));
+        // Send WiFiP2P intent
+        if (FullscreenActivity.network != null && FullscreenActivity.network.isRunningAsHost) {
+            try {
+                sendAutoscrollTriggerToConnected();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -7215,8 +7334,9 @@ public class StageMode extends AppCompatActivity implements
     public void gesture6() {
         if (justSong(StageMode.this)) {
             // Stop or start pad
-            PadFunctions.getPad1Status();
-            PadFunctions.getPad2Status();
+            FullscreenActivity.pad1Playing = PadFunctions.getPad1Status();
+            FullscreenActivity.pad2Playing = PadFunctions.getPad2Status();
+
             DoVibrate.vibrate(StageMode.this, 50);
             if (FullscreenActivity.pad1Playing || FullscreenActivity.pad2Playing) {
                 FullscreenActivity.clickedOnPadStart = false;

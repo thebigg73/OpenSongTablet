@@ -371,15 +371,24 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         // The pad file
         // Currently only auto or off
         ArrayList<String> pad_option = new ArrayList<>();
-        pad_option.add(getResources().getString(R.string.pad_auto));
-        pad_option.add(getResources().getString(R.string.link_audio));
-        pad_option.add(getResources().getString(R.string.off));
+        String auto = getResources().getString(R.string.pad_auto);
+        String link = getResources().getString(R.string.link_audio);
+        String off = getResources().getString(R.string.off);
+        pad_option.add(auto);
+        pad_option.add(link);
+        pad_option.add(off);
         ArrayAdapter<String> pad_file;
         pad_file = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, pad_option);
         pad_file.setDropDownViewResource(R.layout.my_spinner);
         edit_song_pad_file.setAdapter(pad_file);
         // Only allow auto for now (first index)
-        edit_song_pad_file.setSelection(0);
+        if (FullscreenActivity.mPadFile.equals(auto)) {
+            edit_song_pad_file.setSelection(1);
+        } else if (FullscreenActivity.mPadFile.equals(link)) {
+            edit_song_pad_file.setSelection(2);
+        } else {
+            edit_song_pad_file.setSelection(0);
+        }
 
         // Now the seekbars
         String temp_tempo = FullscreenActivity.mTempo;
@@ -699,9 +708,9 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         // Now HTML encode everything
         val = val.replace("<","&lt;");
         val = val.replace(">","&gt;");
-        val = val.replace("&","&amp;");
-        val = val.replace("&#39;","'");
-
+        val = val.replace("\'","&apos;");
+        val = val.replace("'","&apos;");
+        val = val.replace("\"","&quot;");
         return val;
     }
 

@@ -28,8 +28,6 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.Arrays;
 
-//import static com.garethevans.church.opensongtablet.FullscreenActivity.myPreferences;
-
 public class SettingsActivity extends AppCompatActivity implements PopUpStorageFragment.SettingsInterface,
 PopUpDirectoryChooserFragment.SettingsInterface, PopUpFindStorageLocationFragment.MyInterface {
 
@@ -72,30 +70,18 @@ PopUpDirectoryChooserFragment.SettingsInterface, PopUpFindStorageLocationFragmen
         Preferences.loadPreferences();
         showsplash = getIntent().getBooleanExtra("showsplash",false);
         if (showsplash) {
+            // This is called if the user clicked on the 'Back to start menu' from the app
             FullscreenActivity.showSplashVersion = 0;
         }
+        Log.d("d","showSplashVersion="+FullscreenActivity.showSplashVersion);
+        Log.d("d","version="+FullscreenActivity.version);
+
         if (FullscreenActivity.showSplashVersion>FullscreenActivity.version) {
             showsplash=false;
         }
-        // If version is pre v4 reset the gesture choices
-        //if (FullscreenActivity.showSplashVersion>0 && FullscreenActivity.showSplashVersion<120) {
-        //    FullscreenActivity.resetSomePreferences = true;
-        //}
 
-        // Decide if user has already seen the splash screenLog.d("d","SettingsActivity showSplashVersion="+FullscreenActivity.showSplashVersion);
+        // Decide if user has already seen the splash screen
         Log.d("d","SettingsActivity version="+FullscreenActivity.version);
-
-        //myPreferences = getSharedPreferences("mysettings", MODE_PRIVATE);
-        //showSplashVersion = myPreferences.getInt("showSplashVersion", version);
-
-
-        //indexSongPreferences = getSharedPreferences("indexsongs",MODE_PRIVATE);
-
-
-        // Set up the folders
-        // Load up the user preferences
-        //FullscreenActivity.myPreferences = getPreferences(MODE_PRIVATE);
-        //Preferences.loadPreferences();
 
         // We may have arrived via a shortcut (Nougat+)
         String newMode = "";

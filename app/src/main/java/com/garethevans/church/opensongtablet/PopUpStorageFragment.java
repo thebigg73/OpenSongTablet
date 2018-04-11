@@ -175,7 +175,7 @@ public class PopUpStorageFragment extends DialogFragment {
         title.setText(getActivity().getResources().getString(R.string.storage_choose));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
+        if (FullscreenActivity.whattodo!=null && FullscreenActivity.whattodo.equals("splashpagestorage")) {
             closeMe.setVisibility(View.GONE);
             saveMe.setOnClickListener(new View.OnClickListener() {
                 @Override

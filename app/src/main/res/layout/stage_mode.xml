@@ -202,7 +202,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/padProgress"/>
+                android:layout_below="@+id/padProgress"
+                android:layout_above="@+id/setForwardButton"/>
 
             <TextView
                 android:id="@+id/top_of_page"

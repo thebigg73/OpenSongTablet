@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
     buildTypes {
         release {
             minifyEnabled false
@@ -42,7 +42,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.1'
         //classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'me.tatarka:gradle-retrolambda:3.7.0'
     }
@@ -65,17 +65,17 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.android.support:cardview-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
-    implementation 'org.apache.commons:commons-compress:1.11'
+    implementation 'org.apache.commons:commons-compress:1.12'
     //compile 'com.itextpdf:itextpdf:5.5.11'
     //compile 'org.apache.commons:commons-io:1.3.2'
-    implementation 'com.google.android.gms:play-services-nearby:11.8.0'
-    implementation 'com.google.android.gms:play-services-cast-framework:11.8.0'
+    implementation 'com.google.android.gms:play-services-nearby:12.0.0'
+    implementation 'com.google.android.gms:play-services-cast-framework:12.0.0'
     implementation 'com.github.bumptech.glide:glide:4.0.0'
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.github.markrjr:Salut:v0.5.0'
     annotationProcessor 'com.bluelinelabs:logansquare-compiler:1.3.4'
     implementation 'com.bluelinelabs:logansquare:1.3.6'
-    implementation 'com.android.support:multidex:1.0.2'
+    implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.itextpdf:itextg:5.5.9'
     implementation 'ru.egslava:MaskedEditText:1.0.5'
     implementation 'com.annimon:stream:1.1.9'

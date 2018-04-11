@@ -774,36 +774,42 @@ public class PopUpImportExternalFile extends DialogFragment {
                     final byte[] buffer = new byte[2048];
                     int count;
                     filename = ze.getName();
+                    Log.d("d", "filename=" + filename);
+                    Log.d("d", "ze=" + ze);
+                    if (!filename.startsWith("Media")) {
+                        // The Media folder throws errors (it has zero length files sometimes
+                        // It also contains stuff that is irrelevant for OpenSongApp importing
+                        // Only process stuff that isn't in that folder!
+                        // It will also ignore any song starting with 'Media' - not worth a check for now!
 
-                    FileOutputStream fout;
-                    if (filename.equals("OnSong.Backup.sqlite3") || filename.equals("OnSong.sqlite3")) {
-                        //fout = new FileOutputStream(FullscreenActivity.homedir + "/" + filename);
-                        fout = new FileOutputStream(FullscreenActivity.homedir + "/" + "OnSong.Backup.sqlite3");
-                    } else {
-                        fout = new FileOutputStream(FullscreenActivity.dironsong + "/" + filename);
-                    }
-
-                    final BufferedOutputStream out = new BufferedOutputStream(fout);
-
-                    try {
-                        while ((count = zis.read(buffer)) != -1) {
-                            out.write(buffer, 0, count);
+                        FileOutputStream fout;
+                        if (filename.equals("OnSong.Backup.sqlite3") || filename.equals("OnSong.sqlite3")) {
+                            //fout = new FileOutputStream(FullscreenActivity.homedir + "/" + filename);
+                            fout = new FileOutputStream(FullscreenActivity.homedir + "/" + "OnSong.Backup.sqlite3");
+                        } else {
+                            fout = new FileOutputStream(FullscreenActivity.dironsong + "/" + filename);
                         }
-                        out.flush();
-                    } catch (Exception e) {
-                        message = getActivity().getResources().getString(R.string.import_onsong_error);
-                        e.printStackTrace();
-                    } finally {
+
+                        final BufferedOutputStream out = new BufferedOutputStream(fout);
+
                         try {
-                            fout.getFD().sync();
-                            out.close();
+                            while ((count = zis.read(buffer)) != -1) {
+                                out.write(buffer, 0, count);
+                            }
+                            out.flush();
                         } catch (Exception e) {
+                            message = getActivity().getResources().getString(R.string.import_onsong_error);
                             e.printStackTrace();
+                        } finally {
+                            try {
+                                fout.getFD().sync();
+                                out.close();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
-
                 }
-                //in.close();
                 zis.close();
 
             } catch (Exception e) {
@@ -811,8 +817,6 @@ public class PopUpImportExternalFile extends DialogFragment {
                 message = getActivity().getResources().getString(R.string.import_onsong_error);
                 return message;
             }
-
-            //File dbfile = new File(FullscreenActivity.homedir + "/OnSong.Backup.sqlite3");
 
             if (dbfile.exists()) {
                 SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbfile, null);
@@ -823,7 +827,6 @@ public class PopUpImportExternalFile extends DialogFragment {
 
                 //Cursor points to a location in your results
                 Cursor cursor;
-
                 message = getActivity().getResources().getString(R.string.import_onsong_done);
                 String str_title;
                 String str_content;

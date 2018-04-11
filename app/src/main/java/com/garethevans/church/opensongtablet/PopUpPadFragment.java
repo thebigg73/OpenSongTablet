@@ -125,18 +125,19 @@ public class PopUpPadFragment extends DialogFragment {
             public void onClick(View view) {
                 CustomAnimations.animateFAB(closeMe,getActivity());
                 closeMe.setEnabled(false);
-                dismiss();
+                doSave();
             }
         });
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
-        saveMe.setOnClickListener(new View.OnClickListener() {
+        saveMe.setVisibility(View.GONE);
+        /*saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(saveMe,getActivity());
                 saveMe.setEnabled(false);
                 doSave();
             }
-        });
+        });*/
 
         if (getActivity() != null && getDialog() != null) {
             PopUpSizeAndAlpha.decoratePopUp(getActivity(), getDialog());
@@ -231,8 +232,8 @@ public class PopUpPadFragment extends DialogFragment {
             if (position == 1) {
                 if (FullscreenActivity.mLinkAudio != null &&
                         (FullscreenActivity.mLinkAudio.isEmpty() || FullscreenActivity.mLinkAudio.equals(""))) {
-                    FullscreenActivity.mPadFile = getResources().getString(R.string.pad_auto);
-                    popupPad_file.setSelection(0);
+                    FullscreenActivity.mPadFile = getResources().getString(R.string.link_audio);
+                    //popupPad_file.setSelection(0);
                     FullscreenActivity.myToastMessage = getResources().getString(R.string.notset);
                     ShowToast.showToast(getActivity());
                     // Try opening the link file popup to get the user to set one

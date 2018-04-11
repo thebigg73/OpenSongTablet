@@ -111,7 +111,13 @@ public class PopUpUSBMidiFragment extends DialogFragment {
 
         // Initialise the Midi classes
         m = new Midi();
-        FullscreenActivity.midiManager = (MidiManager) getActivity().getSystemService(Context.MIDI_SERVICE);
+        try {
+            FullscreenActivity.midiManager = (MidiManager) getActivity().getSystemService(Context.MIDI_SERVICE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            FullscreenActivity.myToastMessage = getActivity().getString(R.string.nothighenoughapi);
+            ShowToast.showToast(getActivity());
+        }
 
         selected = new Handler();
         runnable = new Runnable() {
@@ -236,40 +242,47 @@ public class PopUpUSBMidiFragment extends DialogFragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            FullscreenActivity.myToastMessage = getActivity().getString(R.string.nothighenoughapi);
+            ShowToast.showToast(getActivity());
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startScan() {
-        infos = FullscreenActivity.midiManager.getDevices();
-        usbNames = new ArrayList<>();
-        usbNames.clear();
-        usbManufact = new ArrayList<>();
-        usbManufact.clear();
-        for (MidiDeviceInfo md:infos) {
-            String manuf = "Unknown";
-            String device = "Unknown";
-            try {
-                device = md.getProperties().getString(MidiDeviceInfo.PROPERTY_NAME);
-                manuf = md.getProperties().getString(MidiDeviceInfo.PROPERTY_MANUFACTURER);
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (FullscreenActivity.midiManager!=null) {
+            infos = FullscreenActivity.midiManager.getDevices();
+            usbNames = new ArrayList<>();
+            usbNames.clear();
+            usbManufact = new ArrayList<>();
+            usbManufact.clear();
+            for (MidiDeviceInfo md : infos) {
+                String manuf = "Unknown";
+                String device = "Unknown";
+                try {
+                    device = md.getProperties().getString(MidiDeviceInfo.PROPERTY_NAME);
+                    manuf = md.getProperties().getString(MidiDeviceInfo.PROPERTY_MANUFACTURER);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (device != null) {
+                    usbNames.add(device);
+                } else {
+                    usbNames.add("Unknown");
+                }
+                if (manuf != null) {
+                    usbManufact.add(manuf);
+                } else {
+                    usbManufact.add("Unknown");
+                }
             }
-            if (device!=null) {
-                usbNames.add(device);
-            } else {
-                usbNames.add("Unknown");
-            }
-            if (manuf!=null) {
-                usbManufact.add(manuf);
-            } else {
-                usbManufact.add("Unknown");
-            }
+            progressBar.setVisibility(View.GONE);
+            scanStartStop.setEnabled(true);
+            usbDevices.setEnabled(true);
+            updateDevices();
+        } else {
+            FullscreenActivity.myToastMessage = getActivity().getString(R.string.nothighenoughapi);
+            ShowToast.showToast(getActivity());
         }
-        progressBar.setVisibility(View.GONE);
-        scanStartStop.setEnabled(true);
-        usbDevices.setEnabled(true);
-        updateDevices();
     }
 
     void displayCurrentDevice() {

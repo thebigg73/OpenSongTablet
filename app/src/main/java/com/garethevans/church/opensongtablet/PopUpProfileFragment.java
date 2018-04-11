@@ -490,7 +490,56 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.customLogo = getTextValue(xpp.nextText(),"");
 
                 } else if (xpp.getName().equals("customLogoSize")) {
-                    FullscreenActivity.customLogoSize = getFloatValue(xpp.nextText(),0.5f);
+                    FullscreenActivity.customLogoSize = getFloatValue(xpp.nextText(), 0.5f);
+
+                } else if (xpp.getName().equals("customPadAb")) {
+                    FullscreenActivity.customPadAb = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadA")) {
+                    FullscreenActivity.customPadA = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadBb")) {
+                    FullscreenActivity.customPadBb = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadB")) {
+                    FullscreenActivity.customPadB = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadC")) {
+                    FullscreenActivity.customPadC = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadDb")) {
+                    FullscreenActivity.customPadDb = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadD")) {
+                    FullscreenActivity.customPadD = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadEb")) {
+                    FullscreenActivity.customPadEb = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadE")) {
+                    FullscreenActivity.customPadE = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadF")) {
+                    FullscreenActivity.customPadF = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadGb")) {
+                    FullscreenActivity.customPadGb = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadG")) {
+                    FullscreenActivity.customPadG = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadAbm")) {
+                    FullscreenActivity.customPadAbm = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadAm")) {
+                    FullscreenActivity.customPadAm = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadBbm")) {
+                    FullscreenActivity.customPadBbm = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadBm")) {
+                    FullscreenActivity.customPadBm = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadCm")) {
+                    FullscreenActivity.customPadCm = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadDbm")) {
+                    FullscreenActivity.customPadDbm = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadDm")) {
+                    FullscreenActivity.customPadDm = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadEbm")) {
+                    FullscreenActivity.customPadEbm = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadEm")) {
+                    FullscreenActivity.customPadEm = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadFm")) {
+                    FullscreenActivity.customPadFm = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadGbm")) {
+                    FullscreenActivity.customPadGbm = getTextValue(xpp.nextText(), null);
+                } else if (xpp.getName().equals("customPadGm")) {
+                    FullscreenActivity.customPadGm = getTextValue(xpp.nextText(), null);
 
                 } else if (xpp.getName().equals("customStorage")) {
                     FullscreenActivity.customStorage = getTextValue(xpp.nextText(), Environment.getExternalStorageDirectory().getAbsolutePath());
@@ -697,7 +746,10 @@ public class PopUpProfileFragment extends DialogFragment {
                     FullscreenActivity.mStorage = getTextValue(xpp.nextText(),"int");
 
                 } else if (xpp.getName().equals("mTitle")) {
-                    FullscreenActivity.mTitle = getTextValue(xpp.nextText(),"Welcome to OpenSongApp");
+                    FullscreenActivity.mTitle = getTextValue(xpp.nextText(), "Welcome to OpenSongApp");
+
+                } else if (xpp.getName().equals("multilineCompact")) {
+                    FullscreenActivity.multilineCompact = getBooleanValue(xpp.nextText(), false);
 
                 } else if (xpp.getName().equals("myAlert")) {
                     FullscreenActivity.myAlert = getTextValue(xpp.nextText(),"");
@@ -1257,6 +1309,30 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <customfontname>" + FullscreenActivity.customfontname + "</customfontname>\n";
         text += "  <customLogo>" + FullscreenActivity.customLogo + "</customLogo>\n";
         text += "  <customLogoSize>" + FullscreenActivity.customLogoSize + "</customLogoSize>\n";
+        text += "  <customPadAb>" + FullscreenActivity.customPadAb + "</customPadAb>\n";
+        text += "  <customPadA>" + FullscreenActivity.customPadA + "</customPadA>\n";
+        text += "  <customPadBb>" + FullscreenActivity.customPadBb + "</customPadBb>\n";
+        text += "  <customPadB>" + FullscreenActivity.customPadB + "</customPadB>\n";
+        text += "  <customPadC>" + FullscreenActivity.customPadC + "</customPadC>\n";
+        text += "  <customPadDb>" + FullscreenActivity.customPadDb + "</customPadDb>\n";
+        text += "  <customPadD>" + FullscreenActivity.customPadD + "</customPadD>\n";
+        text += "  <customPadEb>" + FullscreenActivity.customPadEb + "</customPadEb>\n";
+        text += "  <customPadE>" + FullscreenActivity.customPadE + "</customPadE>\n";
+        text += "  <customPadF>" + FullscreenActivity.customPadF + "</customPadF>\n";
+        text += "  <customPadGb>" + FullscreenActivity.customPadGb + "</customPadGb>\n";
+        text += "  <customPadG>" + FullscreenActivity.customPadG + "</customPadG>\n";
+        text += "  <customPadAbm>" + FullscreenActivity.customPadAbm + "</customPadAbm>\n";
+        text += "  <customPadAm>" + FullscreenActivity.customPadAm + "</customPadAm>\n";
+        text += "  <customPadBbm>" + FullscreenActivity.customPadBbm + "</customPadBbm>\n";
+        text += "  <customPadBm>" + FullscreenActivity.customPadBm + "</customPadBm>\n";
+        text += "  <customPadCm>" + FullscreenActivity.customPadCm + "</customPadCm>\n";
+        text += "  <customPadDbm>" + FullscreenActivity.customPadDbm + "</customPadDbm>\n";
+        text += "  <customPadDm>" + FullscreenActivity.customPadDm + "</customPadDm>\n";
+        text += "  <customPadEbm>" + FullscreenActivity.customPadEbm + "</customPadEbm>\n";
+        text += "  <customPadEm>" + FullscreenActivity.customPadEm + "</customPadEm>\n";
+        text += "  <customPadFm>" + FullscreenActivity.customPadFm + "</customPadFm>\n";
+        text += "  <customPadGbm>" + FullscreenActivity.customPadGbm + "</customPadGbm>\n";
+        text += "  <customPadGm>" + FullscreenActivity.customPadGm + "</customPadGm>\n";
         text += "  <customStorage>" + FullscreenActivity.customStorage + "</customStorage>\n";
         text += "  <dark_extrainfobg>" + FullscreenActivity.dark_extrainfobg + "</dark_extrainfobg>\n";
         text += "  <dark_extrainfo>" + FullscreenActivity.dark_extrainfo + "</dark_extrainfo>\n";
@@ -1342,6 +1418,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <mMaxFontSize>" + FullscreenActivity.mMaxFontSize + "</mMaxFontSize>\n";
         text += "  <mMinFontSize>" + FullscreenActivity.mMinFontSize + "</mMinFontSize>\n";
         text += "  <mStorage>" + FullscreenActivity.mTitle + "</mStorage>\n";
+        text += "  <multilineCompact>" + FullscreenActivity.multilineCompact + "</multilineCompact>\n";
         text += "  <mTitle>" + FullscreenActivity.mTitle + "</mTitle>\n";
         text += "  <myAlert>" + FullscreenActivity.myAlert + "</myAlert>\n";
         text += "  <mychordsfontnum>" + FullscreenActivity.mychordsfontnum + "</mychordsfontnum>\n";

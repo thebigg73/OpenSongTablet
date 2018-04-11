@@ -26,11 +26,10 @@ class PadFunctions {
         return vol;
     }
 
-    static boolean getLoop(Context c) {
+    static boolean getLoop() {
         // Set the looping value
         boolean shouldloop = false;
-        if (FullscreenActivity.mPadFile.equals(c.getResources().getString(R.string.pad_auto)) ||
-                FullscreenActivity.mLoopAudio.equals("true")) {
+        if (FullscreenActivity.mLoopAudio.equals("true")) {
             shouldloop = true;
         }
         return shouldloop;

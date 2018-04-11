@@ -178,19 +178,27 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
     }
 
     void swap(int firstPosition, int secondPosition){
-        Collections.swap(setList, firstPosition, secondPosition);
-        notifyItemMoved(firstPosition, secondPosition);
-        Collections.swap(FullscreenActivity.mTempSetList, firstPosition, secondPosition);
-        Collections.swap(PopUpSetViewNew.mSongName, firstPosition, secondPosition);
-        Collections.swap(PopUpSetViewNew.mFolderName, firstPosition, secondPosition);
+        try {
+            Collections.swap(setList, firstPosition, secondPosition);
+            notifyItemMoved(firstPosition, secondPosition);
+            Collections.swap(FullscreenActivity.mTempSetList, firstPosition, secondPosition);
+            Collections.swap(PopUpSetViewNew.mSongName, firstPosition, secondPosition);
+            Collections.swap(PopUpSetViewNew.mFolderName, firstPosition, secondPosition);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void remove(int position) {
-        setList.remove(position);
-        notifyItemRemoved(position);
-        FullscreenActivity.mTempSetList.remove(position);
-        PopUpSetViewNew.mSongName.remove(position);
-        PopUpSetViewNew.mFolderName.remove(position);
+        try {
+            setList.remove(position);
+            notifyItemRemoved(position);
+            FullscreenActivity.mTempSetList.remove(position);
+            PopUpSetViewNew.mSongName.remove(position);
+            PopUpSetViewNew.mFolderName.remove(position);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -1898,6 +1898,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         }
     }
 
+
     public void holdBeforeLoading() {
         // When a song is sent via Salut, it occassionally gets set multiple times (poor network)
         // As soon as we receive if, check this is the first time

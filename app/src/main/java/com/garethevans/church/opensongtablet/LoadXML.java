@@ -683,8 +683,12 @@ public class LoadXML extends Activity {
 
     static String parseFromHTMLEntities(String val) {
         //Fix broken stuff
+        if (val==null) {
+            val = "";
+        }
         val = val.replace("&amp;apos;","'");
         val = val.replace("&amp;quote;","\"");
+        val = val.replace("&amp;quot;","\"");
         val = val.replace("&amp;lt;","<");
         val = val.replace("&amp;gt;",">");
         val = val.replace("&amp;","&");
@@ -692,6 +696,7 @@ public class LoadXML extends Activity {
         val = val.replace("&gt;",">");
         val = val.replace("&apos;","'");
         val = val.replace("&quote;","\"");
+        val = val.replace("&quot;","\"");
         return val;
     }
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="keepmultiline">Keep multiline compact</string>
     <string name="bibleXML">OpenSong XML Bible</string>
     <string name="book">Book</string>
     <string name="changestorage">Change storage location</string>

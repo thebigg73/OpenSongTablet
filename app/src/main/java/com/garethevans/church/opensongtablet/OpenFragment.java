@@ -314,6 +314,10 @@ class OpenFragment {
                 newFragment = PopUpImportExternalFile.newInstance();
                 break;
 
+            case "custompads":
+                newFragment = PopUpCustomPadsFragment.newInstance();
+                break;
+
             case "page_pad":
                 newFragment = PopUpPadFragment.newInstance();
                 break;

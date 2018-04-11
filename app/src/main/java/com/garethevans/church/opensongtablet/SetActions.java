@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class SetActions extends Activity {
 
@@ -559,15 +560,57 @@ public class SetActions extends Activity {
         // First up, start each new verse on a new line
         //Replace all spaces (split points) with \n
         scripture_text = scripture_text.replace(" ", "\n");
-
+        scripture_text = scripture_text.replace("---", "[]");
         //Split the verses up into an array by new lines - array of words
         String[] temp_text = scripture_text.split("\n");
 
-        String[] add_text = new String[100];
-        int array_line = 0;
-        //Add all the array back together and make sure no line goes above 40 characters
+        //String[] add_text = new String[800];
+        //int array_line = 0;
 
-        for (String aTemp_text : temp_text) {
+        //Add all the array back together and make sure no line goes above 40 characters
+        ArrayList<String> vlines = new ArrayList<>();
+        String currline = "";
+        for (String words : temp_text) {
+            int check = currline.length();
+            if (check>40 || words.contains("[]")) {
+                if (words.contains("[]")) {
+                    // This is a new section
+                    vlines.add(currline);
+                    vlines.add("[]\n");
+                    currline = "";
+                } else {
+                    vlines.add(currline);
+                    currline = " " + words;
+                }
+            } else {
+                currline = currline + " " + words;
+            }
+        }
+        vlines.add(currline);
+
+        scripture_text = "";
+
+        // Ok go back through the array and add the non-empty lines back up
+        for (int i=0; i<vlines.size();i++) {
+            String s = vlines.get(i);
+            if (s != null && !s.equals("")) {
+                scripture_text = scripture_text + "\n" + s;
+            }
+        }
+
+
+        /*// Ok go back through the array and add the non-empty lines back up
+        for (String anAdd_text : add_text) {
+            if (anAdd_text != null && !anAdd_text.equals("")) {
+                if (anAdd_text.contains("[]")) {
+                    scripture_text = scripture_text + "\n" + anAdd_text;
+                } else {
+                    scripture_text = scripture_text + "\n " + anAdd_text;
+                }
+            }
+        }*/
+
+/*        for (String aTemp_text : temp_text) {
             if (add_text[array_line] == null) {
                 add_text[array_line] = "";
             }
@@ -584,20 +627,9 @@ public class SetActions extends Activity {
             } else {
                 add_text[array_line] = add_text[array_line] + " " + aTemp_text;
             }
-        }
+        }*/
 
-        scripture_text = "";
 
-        // Ok go back through the array and add the non-empty lines back up
-        for (String anAdd_text : add_text) {
-            if (anAdd_text != null && !anAdd_text.equals("")) {
-                if (anAdd_text.contains("[]")) {
-                    scripture_text = scripture_text + "\n" + anAdd_text;
-                } else {
-                    scripture_text = scripture_text + "\n " + anAdd_text;
-                }
-            }
-        }
         while (scripture_text.contains("\\n\\n")) {
             scripture_text = scripture_text.replace("\\n\\n", "\\n");
         }

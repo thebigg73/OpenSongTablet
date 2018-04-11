@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -57,13 +59,14 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         }
     }
 
-    ArrayList<String> bibleFileNames, bibleBookNames, bibleChapters;
+    ArrayList<String> bibleFileNames, bibleBookNames, bibleChapters, quickUpdate;
     public static ArrayList<String> bibleVerses, bibleText;
     ArrayAdapter<String> blank_array;
     Spinner bibleFileSpinner, bibleBookSpinner, bibleChapterSpinner, bibleVerseFromSpinner, bibleVerseToSpinner;
     ProgressBar progressBar;
     TextView previewTextView;
     String bible;
+    public static boolean includeVersNums = false;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -106,6 +109,24 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         bibleVerseToSpinner = V.findViewById(R.id.bibleVerseToSpinner);
         previewTextView = V.findViewById(R.id.previewTextView);
         progressBar = V.findViewById(R.id.progressBar);
+        SwitchCompat includeVersNumsSwitch = V.findViewById(R.id.includeVersNumsSwitch);
+        includeVersNumsSwitch.setChecked(includeVersNums);
+        includeVersNumsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                includeVersNums = b;
+                // Try to update the preview
+                if (quickUpdate!=null) {
+                    try {
+                        Bible.getVersesForChapter(new File(quickUpdate.get(0)), quickUpdate.get(1), quickUpdate.get(2));
+                        getBibleText(new File(quickUpdate.get(0)), quickUpdate.get(1), quickUpdate.get(2),
+                                quickUpdate.get(3), quickUpdate.get(4));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
         // Prepare an empty array
         ArrayList<String> emptyArray = new ArrayList<>();
@@ -115,6 +136,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         // Update the bible file spinner and select the appropriate one
         updateBibleFiles();
 
+        quickUpdate = null;
         return V;
     }
 
@@ -195,6 +217,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
 
     public void updateBibleBooks(File bibleFileChosen) {
         try {
+            quickUpdate = null;
             UpdateBibleBooks update_biblebooks = new UpdateBibleBooks(bibleFileChosen);
             update_biblebooks.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
@@ -247,11 +270,13 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                 public void onNothingSelected(AdapterView<?> adapterView) {}
             });
             progressBar.setVisibility(View.GONE);
+            quickUpdate = null;
         }
     }
 
     public void updateBibleChapters(File bibleFileChosen, String bibleBookName) {
         try {
+            quickUpdate = null;
             UpdateBibleChapters update_biblechapters = new UpdateBibleChapters(bibleFileChosen, bibleBookName);
             update_biblechapters.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
@@ -305,9 +330,9 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         }
     }
 
-
     public void updateBibleVerses(File bibleFileChosen, String bibleBookName, String bibleChapter) {
         try {
+            quickUpdate = null;
             UpdateBibleVerses update_bibleverses = new UpdateBibleVerses(bibleFileChosen, bibleBookName, bibleChapter);
             update_bibleverses.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
@@ -394,6 +419,12 @@ public class PopUpBibleXMLFragment extends DialogFragment {
     }
 
     public void getBibleText(File bibleFileChosen, String bibleBookName, String bibleChapter, String bibleVerseFrom, String bibleVerseTo) {
+        quickUpdate = new ArrayList<>();
+        quickUpdate.add(bibleFileChosen.toString());
+        quickUpdate.add(bibleBookName);
+        quickUpdate.add(bibleChapter);
+        quickUpdate.add(bibleVerseFrom);
+        quickUpdate.add(bibleVerseTo);
         int from;
         int to;
         try {

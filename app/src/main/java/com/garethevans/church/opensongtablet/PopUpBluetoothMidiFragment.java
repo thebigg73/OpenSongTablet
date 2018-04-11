@@ -127,13 +127,6 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         runnable = new Runnable() {
             @Override
             public void run() {
-                /*if (FullscreenActivity.midiOutputPort!=null) {
-                    try {
-                        FullscreenActivity.midiOutputPort.connect(null);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }*/
                 displayCurrentDevice();
             }
         };
@@ -163,15 +156,19 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                if (permissionAllowed()) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    bluetoothDevices.setEnabled(false);
-                    scanStartStop.setEnabled(false);
-                    startScan();
-                } else {
-                    progressBar.setVisibility(View.GONE);
-                    scanStartStop.setEnabled(true);
-                    bluetoothDevices.setEnabled(true);
+                try {
+                    if (permissionAllowed()) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        bluetoothDevices.setEnabled(false);
+                        scanStartStop.setEnabled(false);
+                        startScan();
+                    } else {
+                        progressBar.setVisibility(View.GONE);
+                        scanStartStop.setEnabled(true);
+                        bluetoothDevices.setEnabled(true);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -292,7 +289,12 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
         ScanSettings scanSettings =
                 new ScanSettings.Builder().build();
 
-        mBluetoothLeScanner.startScan(scanFilters, scanSettings, scanCallback);
+        if (mBluetoothLeScanner!=null) {
+            mBluetoothLeScanner.startScan(scanFilters, scanSettings, scanCallback);
+        } else {
+            FullscreenActivity.myToastMessage = getActivity().getString(R.string.nothighenoughapi);
+            ShowToast.showToast(getActivity());
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

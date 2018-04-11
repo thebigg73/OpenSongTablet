@@ -140,6 +140,10 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             audiolength = -1, fadeWhichPad, padtime_length = 0;
     public static final int autoscroll_pause_time = 500; // specified in ms
     public static int autoscroll_modifier = 0;
+    public static String customPadAb, customPadA, customPadBb, customPadB, customPadC, customPadDb,
+            customPadD, customPadEb, customPadE, customPadF, customPadGb, customPadG, customPadAbm,
+            customPadAm, customPadBbm, customPadBm, customPadCm, customPadDbm, customPadDm,
+            customPadEbm, customPadEm, customPadFm, customPadGbm, customPadGm;
     public static String popupAutoscroll_stoporstart = "stop", whichbeat = "a",
             metronomeonoff = "off", metronomepan = "both", padpan = "both",
             autoscroll_default_or_prompt = "", autoscrollonoff = "false", pad_filename = "null";
@@ -377,7 +381,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static String backgroundImage1 = "", backgroundImage2 = "", backgroundVideo1 = "", backgroundVideo2 = "",
             backgroundToUse = "", backgroundTypeToUse = "";
     public static int xmargin_presentation, ymargin_presentation;
-    public static boolean usePresentationOrder = false;
+    public static boolean usePresentationOrder = false, multilineCompact = false;
     public static int presoTransitionTime = 800;
 
 
@@ -449,7 +453,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             mBluetoothName, mySalutXML = "", presenterSendSong="";
     public static boolean firstSendingOfSalut = true, firstSendingOfSalutXML = true,
             firstSendingOfSalutSection = true, firstReceivingOfSalut = true,
-            firstReceivingOfSalutXML = true, firstReceivingOfSalutSection = true;
+            firstReceivingOfSalutXML = true, firstReceivingOfSalutSection = true,
+            firstSendingOfSalutAutoscroll = true, firstReceivingOfSalutAutoscroll = true;
     static NfcAdapter mNfcAdapter;
     // Flag to indicate that Android Beam is available
     public static boolean mAndroidBeamAvailable  = false;

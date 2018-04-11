@@ -45,6 +45,9 @@ public class ProcessSong extends Activity {
         myLyrics = myLyrics.replace("&#x27;", "'");
         myLyrics = myLyrics.replace("&#39;","'");
         myLyrics = myLyrics.replace("&apos;","'");
+        myLyrics = myLyrics.replace("&lt;", "<");
+        myLyrics = myLyrics.replace("&gt;", ">");
+        myLyrics = myLyrics.replace("&quot;", "\"");
         myLyrics = myLyrics.replaceAll("\u0092", "'");
         myLyrics = myLyrics.replaceAll("\u0093", "'");
         myLyrics = myLyrics.replaceAll("\u2018", "'");
@@ -74,6 +77,10 @@ public class ProcessSong extends Activity {
 
         // Replace [Verse] with [V] and [Verse 1] with [V1]
         String languageverse = c.getResources().getString(R.string.tag_verse);
+        String languageverse_lowercase = languageverse.toLowerCase(FullscreenActivity.locale);
+        String languageverse_uppercase = languageverse.toUpperCase(FullscreenActivity.locale);
+        myLyrics = myLyrics.replace("["+languageverse_lowercase,"["+languageverse);
+        myLyrics = myLyrics.replace("["+languageverse_uppercase,"["+languageverse);
         myLyrics = myLyrics.replace("["+languageverse+"]","[V]");
         myLyrics = myLyrics.replace("["+languageverse+" 1]","[V1]");
         myLyrics = myLyrics.replace("["+languageverse+" 2]","[V2]");
@@ -87,6 +94,10 @@ public class ProcessSong extends Activity {
 
         // Replace [Chorus] with [C] and [Chorus 1] with [C1]
         String languagechorus = c.getResources().getString(R.string.tag_chorus);
+        String languagechorus_lowercase = languagechorus.toLowerCase(FullscreenActivity.locale);
+        String languagechorus_uppercase = languagechorus.toUpperCase(FullscreenActivity.locale);
+        myLyrics = myLyrics.replace("["+languagechorus_lowercase,"["+languagechorus);
+        myLyrics = myLyrics.replace("["+languagechorus_uppercase,"["+languagechorus);
         myLyrics = myLyrics.replace("["+languagechorus+"]","[C]");
         myLyrics = myLyrics.replace("["+languagechorus+" 1]","[C1]");
         myLyrics = myLyrics.replace("["+languagechorus+" 2]","[C2]");
@@ -363,148 +374,159 @@ public class ProcessSong extends Activity {
         FullscreenActivity.twothirdsplit_section = twothirdsplit_section;
     }
 
+    static String validCustomPadString(String s, String c) {
+        if (c!=null) {
+            // Null is the built in auto pad.  So, not using that.  Test it exists.
+            File f = new File (FullscreenActivity.dirPads,c);
+            if (f.exists() && f.isFile()) {
+                s = "custom_" + c;
+            }
+        }
+        return s;
+    }
+
     static void processKey() {
         switch (FullscreenActivity.mKey) {
             case "A":
-                FullscreenActivity.pad_filename = "a";
+                FullscreenActivity.pad_filename = validCustomPadString("a", FullscreenActivity.customPadA);
                 FullscreenActivity.keyindex = 1;
                 break;
             case "A#":
-                FullscreenActivity.pad_filename = "asharp";
+                FullscreenActivity.pad_filename = validCustomPadString("asharp", FullscreenActivity.customPadBb);
                 FullscreenActivity.keyindex = 2;
+                break;
             case "Bb":
-                FullscreenActivity.pad_filename = "asharp";
+                FullscreenActivity.pad_filename = validCustomPadString("asharp", FullscreenActivity.customPadBb);
                 FullscreenActivity.keyindex = 3;
                 break;
             case "B":
-                FullscreenActivity.pad_filename = "b";
+                FullscreenActivity.pad_filename = validCustomPadString("b", FullscreenActivity.customPadB);
                 FullscreenActivity.keyindex = 4;
                 break;
             case "C":
-                FullscreenActivity.pad_filename = "c";
+                FullscreenActivity.pad_filename = validCustomPadString("c", FullscreenActivity.customPadC);
                 FullscreenActivity.keyindex = 5;
                 break;
             case "C#":
-                FullscreenActivity.pad_filename = "csharp";
+                FullscreenActivity.pad_filename = validCustomPadString("csharp", FullscreenActivity.customPadDb);
                 FullscreenActivity.keyindex = 6;
                 break;
             case "Db":
-                FullscreenActivity.pad_filename = "csharp";
+                FullscreenActivity.pad_filename = validCustomPadString("csharp", FullscreenActivity.customPadDb);
                 FullscreenActivity.keyindex = 7;
                 break;
             case "D":
-                FullscreenActivity.pad_filename = "d";
+                FullscreenActivity.pad_filename = validCustomPadString("d", FullscreenActivity.customPadD);
                 FullscreenActivity.keyindex = 8;
                 break;
             case "D#":
-                FullscreenActivity.pad_filename = "dsharp";
+                FullscreenActivity.pad_filename = validCustomPadString("dsharp", FullscreenActivity.customPadEb);
                 FullscreenActivity.keyindex = 9;
                 break;
             case "Eb":
-                FullscreenActivity.pad_filename = "dsharp";
+                FullscreenActivity.pad_filename = validCustomPadString("dsharp", FullscreenActivity.customPadEb);
                 FullscreenActivity.keyindex = 10;
                 break;
             case "E":
-                FullscreenActivity.pad_filename = "e";
+                FullscreenActivity.pad_filename = validCustomPadString("e", FullscreenActivity.customPadE);
                 FullscreenActivity.keyindex = 11;
                 break;
             case "F":
-                FullscreenActivity.pad_filename = "f";
+                FullscreenActivity.pad_filename = validCustomPadString("f", FullscreenActivity.customPadF);
                 FullscreenActivity.keyindex = 12;
                 break;
             case "F#":
-                FullscreenActivity.pad_filename = "fsharp";
+                FullscreenActivity.pad_filename = validCustomPadString("fsharp", FullscreenActivity.customPadGb);
                 FullscreenActivity.keyindex = 13;
                 break;
             case "Gb":
-                FullscreenActivity.pad_filename = "fsharp";
+                FullscreenActivity.pad_filename = validCustomPadString("fsharp", FullscreenActivity.customPadGb);
                 FullscreenActivity.keyindex = 14;
                 break;
             case "G":
-                FullscreenActivity.pad_filename = "g";
+                FullscreenActivity.pad_filename = validCustomPadString("g", FullscreenActivity.customPadG);
                 FullscreenActivity.keyindex = 15;
                 break;
             case "G#":
-                FullscreenActivity.pad_filename = "gsharp";
+                FullscreenActivity.pad_filename = validCustomPadString("gsharp", FullscreenActivity.customPadAb);
                 FullscreenActivity.keyindex = 16;
                 break;
             case "Ab":
-                FullscreenActivity.pad_filename = "gsharp";
+                FullscreenActivity.pad_filename = validCustomPadString("gsharp", FullscreenActivity.customPadAb);
                 FullscreenActivity.keyindex = 17;
                 break;
             case "Am":
-                FullscreenActivity.pad_filename = "am";
+                FullscreenActivity.pad_filename = validCustomPadString("am", FullscreenActivity.customPadAm);
                 FullscreenActivity.keyindex = 18;
                 break;
             case "A#m":
-                FullscreenActivity.pad_filename = "asharpm";
+                FullscreenActivity.pad_filename = validCustomPadString("asharpm", FullscreenActivity.customPadBbm);
                 FullscreenActivity.keyindex = 19;
                 break;
             case "Bbm":
-                FullscreenActivity.pad_filename = "asharpm";
+                FullscreenActivity.pad_filename = validCustomPadString("asharpm", FullscreenActivity.customPadBbm);
                 FullscreenActivity.keyindex = 20;
                 break;
             case "Bm":
-                FullscreenActivity.pad_filename = "bm";
+                FullscreenActivity.pad_filename = validCustomPadString("bm", FullscreenActivity.customPadBm);
                 FullscreenActivity.keyindex = 21;
                 break;
             case "Cm":
-                FullscreenActivity.pad_filename = "cm";
+                FullscreenActivity.pad_filename = validCustomPadString("cm", FullscreenActivity.customPadCm);
                 FullscreenActivity.keyindex = 22;
                 break;
             case "C#m":
-                FullscreenActivity.pad_filename = "csharpm";
+                FullscreenActivity.pad_filename = validCustomPadString("csharpm", FullscreenActivity.customPadDbm);
                 FullscreenActivity.keyindex = 23;
                 break;
             case "Dbm":
-                FullscreenActivity.pad_filename = "csharpm";
+                FullscreenActivity.pad_filename = validCustomPadString("csharpm", FullscreenActivity.customPadDbm);
                 FullscreenActivity.keyindex = 24;
                 break;
             case "Dm":
-                FullscreenActivity.pad_filename = "dm";
+                FullscreenActivity.pad_filename = validCustomPadString("dm", FullscreenActivity.customPadDm);
                 FullscreenActivity.keyindex = 25;
                 break;
             case "D#m":
-                FullscreenActivity.pad_filename = "dsharpm";
+                FullscreenActivity.pad_filename = validCustomPadString("dsharpm", FullscreenActivity.customPadEbm);
                 FullscreenActivity.keyindex = 26;
                 break;
             case "Ebm":
-                FullscreenActivity.pad_filename = "dsharpm";
+                FullscreenActivity.pad_filename = validCustomPadString("dsharpm", FullscreenActivity.customPadEbm);
                 FullscreenActivity.keyindex = 27;
                 break;
             case "Em":
-                FullscreenActivity.pad_filename = "em";
+                FullscreenActivity.pad_filename = validCustomPadString("em", FullscreenActivity.customPadEm);
                 FullscreenActivity.keyindex = 28;
                 break;
             case "Fm":
-                FullscreenActivity.pad_filename = "fm";
+                FullscreenActivity.pad_filename = validCustomPadString("fm", FullscreenActivity.customPadFm);
                 FullscreenActivity.keyindex = 29;
                 break;
             case "F#m":
-                FullscreenActivity.pad_filename = "fsharpm";
+                FullscreenActivity.pad_filename = validCustomPadString("fsharpm", FullscreenActivity.customPadGbm);
                 FullscreenActivity.keyindex = 30;
                 break;
             case "Gbm":
-                FullscreenActivity.pad_filename = "fsharpm";
+                FullscreenActivity.pad_filename = validCustomPadString("fsharpm", FullscreenActivity.customPadGbm);
                 FullscreenActivity.keyindex = 31;
                 break;
             case "Gm":
-                FullscreenActivity.pad_filename = "gm";
+                FullscreenActivity.pad_filename = validCustomPadString("gm", FullscreenActivity.customPadGm);
                 FullscreenActivity.keyindex = 32;
                 break;
             case "G#m":
-                FullscreenActivity.pad_filename = "gsharpm";
+                FullscreenActivity.pad_filename = validCustomPadString("gsharpm", FullscreenActivity.customPadAbm);
                 FullscreenActivity.keyindex = 33;
                 break;
             case "Abm":
-                FullscreenActivity.pad_filename = "gsharpm";
+                FullscreenActivity.pad_filename = validCustomPadString("gsharpm", FullscreenActivity.customPadAbm);
                 FullscreenActivity.keyindex = 34;
                 break;
             default:
                 FullscreenActivity.pad_filename = "";
                 FullscreenActivity.keyindex = 0;
         }
-
     }
 
     static void processTimeSig() {
@@ -1459,33 +1481,34 @@ public class ProcessSong extends Activity {
     }
 
     static String fixMultiLineFormat(String string) {
-        // Best way to determine if the song is in multiline format is
-        // Look for [v] or [c] case insensitive
-        // And it needs to be followed by a line starting with 1 and 2
-        try {
-            String[] sl = string.split("\n");
-            boolean has_multiline_vtag = false;
-            boolean has_multiline_ctag = false;
-            boolean has_multiline_1tag = false;
-            boolean has_multiline_2tag = false;
+        if (!FullscreenActivity.multilineCompact) {
+            // Best way to determine if the song is in multiline format is
+            // Look for [v] or [c] case insensitive
+            // And it needs to be followed by a line starting with 1 and 2
+            try {
+                String[] sl = string.split("\n");
+                boolean has_multiline_vtag = false;
+                boolean has_multiline_ctag = false;
+                boolean has_multiline_1tag = false;
+                boolean has_multiline_2tag = false;
 
-            for (String l : sl) {
-                if (l.toLowerCase(FullscreenActivity.locale).startsWith("[v]")) {
-                    has_multiline_vtag = true;
-                } else if (l.toLowerCase(FullscreenActivity.locale).startsWith("[c]")) {
-                    has_multiline_ctag = true;
-                } else if (l.toLowerCase(FullscreenActivity.locale).startsWith("1") ||
-                        l.toLowerCase(FullscreenActivity.locale).startsWith(" 1")) {
-                    has_multiline_1tag = true;
-                } else if (l.toLowerCase(FullscreenActivity.locale).startsWith("2") ||
-                        l.toLowerCase(FullscreenActivity.locale).startsWith(" 2")) {
-                    has_multiline_2tag = true;
+                for (String l : sl) {
+                    if (l.toLowerCase(FullscreenActivity.locale).startsWith("[v]")) {
+                        has_multiline_vtag = true;
+                    } else if (l.toLowerCase(FullscreenActivity.locale).startsWith("[c]")) {
+                        has_multiline_ctag = true;
+                    } else if (l.toLowerCase(FullscreenActivity.locale).startsWith("1") ||
+                            l.toLowerCase(FullscreenActivity.locale).startsWith(" 1")) {
+                        has_multiline_1tag = true;
+                    } else if (l.toLowerCase(FullscreenActivity.locale).startsWith("2") ||
+                            l.toLowerCase(FullscreenActivity.locale).startsWith(" 2")) {
+                        has_multiline_2tag = true;
+                    }
                 }
-            }
 
-            if ((has_multiline_vtag || has_multiline_ctag) && has_multiline_1tag && has_multiline_2tag) {
+                if ((has_multiline_vtag || has_multiline_ctag) && has_multiline_1tag && has_multiline_2tag) {
 
-                // Reset the available song sections
+                    // Reset the available song sections
                     // Ok the song is in the multiline format
                     // [V]
                     // .G     C
@@ -1510,10 +1533,10 @@ public class ProcessSong extends Activity {
                         String l_1 = "";
                         String l_2 = "";
 
-                        if (lines.length>z+1) {
+                        if (lines.length > z + 1) {
                             l_1 = lines[z + 1];
                         }
-                        if (lines.length>z+2) {
+                        if (lines.length > z + 2) {
                             l_2 = lines[z + 2];
                         }
 
@@ -1603,10 +1626,13 @@ public class ProcessSong extends Activity {
 
                     return improvedlyrics;
                 } else {
-                // Not multiline format
+                    // Not multiline format
+                    return string;
+                }
+            } catch (Exception e) {
                 return string;
             }
-        } catch (Exception e) {
+        } else {
             return string;
         }
     }

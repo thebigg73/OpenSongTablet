@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -14,7 +15,9 @@ import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -257,7 +260,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 } else if (whattype.equals("image")) {
                     // Call file browser
                     Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                    i.setType("file/");
+                    i.setType("image/*");
                     try {
                         startActivityForResult(i, 0);
                     } catch (Exception e) {
@@ -514,10 +517,21 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        Log.d("onActivityResult","requestCode="+requestCode);
+        Log.d("onActivityResult","resultCode="+resultCode);
+        Log.d("onActivityResult","intent="+intent);
+
         if (intent!=null) {
             Uri uri = intent.getData();
-            Cursor cursor = null;
-            String fullpath = null;
+            Log.d("onActivityResult","uri="+uri);
+            String fullpath;
+            if (Build.VERSION.SDK_INT >= 19) {
+                fullpath = getRealPathFromURI_API19(uri);
+            } else {
+                fullpath = getRealPathFromURI_API11to18(uri);
+            }
+            /*Cursor cursor = null;
+            String fullpath = uri.toString();
             try {
                 String[] proj = { MediaStore.Images.Media.DATA };
                 cursor = getActivity().getContentResolver().query(uri,  proj, null, null, null);
@@ -528,7 +542,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                         cursor.moveToFirst();
                         fullpath = cursor.getString(column_index);
                     } catch (Exception e) {
-                    e.printStackTrace();
+                        e.printStackTrace();
                     }
                 }
 
@@ -536,16 +550,64 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 if (cursor != null) {
                     cursor.close();
                 }
-            }
+            }*/
 
             if (requestCode==0) {
                 // Create a new row in the table
                 // Each row has the file name, an image thumbnail and a delete button
                 if (fullpath!=null) {
-                    addRow(fullpath);
+                    File f = new File(uri.getPath());
+                    fullpath = f.toString();
+                    Log.d("d","fullpath="+fullpath);
                 }
+                addRow(fullpath);
             }
         }
+    }
+
+    @SuppressLint("NewApi")
+    public String getRealPathFromURI_API19(Uri uri){
+        String filePath = "";
+        String wholeID = DocumentsContract.getDocumentId(uri);
+
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = { MediaStore.Images.Media.DATA };
+
+        // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                column, sel, new String[]{ id }, null);
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
+    }
+
+
+    @SuppressLint("NewApi")
+    public String getRealPathFromURI_API11to18(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        String result = null;
+
+        CursorLoader cursorLoader = new CursorLoader(
+                getActivity(),
+                contentUri, proj, null, null, null);
+        Cursor cursor = cursorLoader.loadInBackground();
+
+        if(cursor != null){
+            int column_index =
+                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            result = cursor.getString(column_index);
+        }
+        return result;
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -576,57 +638,61 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
     @SuppressWarnings("deprecation")
     public void addRow(String fullpath) {
-        TableRow row = new TableRow(getActivity());
-        TableLayout.LayoutParams layoutRow = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
-        row.setLayoutParams(layoutRow);
-        row.setHorizontalGravity(Gravity.CENTER_HORIZONTAL);
-        row.setTag(fullpath);
-        TextView filename = new TextView(getActivity());
-        filename.setText(fullpath);
-        filename.setTextSize(0.0f); // Make it take up no space (user doesn't need to see it).
-        filename.setVisibility(View.GONE);
-        ImageView thumbnail = new ImageView(getActivity());
-        Bitmap ThumbImage;
-        Resources res = getResources();
-        BitmapDrawable bd;
-        File checkfile = new File(fullpath);
-        if (!checkfile.exists()) {
-            Drawable notfound = getResources().getDrawable(R.drawable.notfound);
-            thumbnail.setImageDrawable(notfound);
-        } else {
-            ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(fullpath), 200, 150);
-            bd = new BitmapDrawable(res, ThumbImage);
-            thumbnail.setImageDrawable(bd);
-        }
-        thumbnail.setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_black));
-        thumbnail.setMaxWidth(200);
-        thumbnail.setMaxHeight(150);
-        TableRow.LayoutParams layoutImage = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
-        layoutImage.width = 200;
-        layoutImage.height = 150;
-        thumbnail.setLayoutParams(layoutImage);
-        ImageButton delete = new ImageButton (getActivity());
-        delete.setImageDrawable(getResources().getDrawable(R.drawable.ic_delete_white_36dp));
-        delete.setTag(fullpath + "_delete");
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String rowtag = v.getTag().toString();
-                rowtag = rowtag.replace("_delete", "");
-                try {
-                    if (getView()!=null) {
-                        slideImageTable.removeView(getView().findViewWithTag(rowtag));
-                    }
-                } catch (Exception e) {
-                    // oh well
-                    Log.d("error", "No table row with this tag");
-                }
+        try {
+            TableRow row = new TableRow(getActivity());
+            TableLayout.LayoutParams layoutRow = new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT);
+            row.setLayoutParams(layoutRow);
+            row.setHorizontalGravity(Gravity.CENTER_HORIZONTAL);
+            row.setTag(fullpath);
+            TextView filename = new TextView(getActivity());
+            filename.setText(fullpath);
+            filename.setTextSize(0.0f); // Make it take up no space (user doesn't need to see it).
+            filename.setVisibility(View.GONE);
+            ImageView thumbnail = new ImageView(getActivity());
+            Bitmap ThumbImage;
+            Resources res = getResources();
+            BitmapDrawable bd;
+            File checkfile = new File(fullpath);
+            if (!checkfile.exists()) {
+                Drawable notfound = getResources().getDrawable(R.drawable.notfound);
+                thumbnail.setImageDrawable(notfound);
+            } else {
+                ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(fullpath), 200, 150);
+                bd = new BitmapDrawable(res, ThumbImage);
+                thumbnail.setImageDrawable(bd);
             }
-        });
-        row.addView(filename);
-        row.addView(thumbnail);
-        row.addView(delete);
-        slideImageTable.addView(row);
+            thumbnail.setBackgroundDrawable(getResources().getDrawable(R.drawable.presenter_box_black));
+            thumbnail.setMaxWidth(200);
+            thumbnail.setMaxHeight(150);
+            TableRow.LayoutParams layoutImage = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT);
+            layoutImage.width = 200;
+            layoutImage.height = 150;
+            thumbnail.setLayoutParams(layoutImage);
+            ImageButton delete = new ImageButton(getActivity());
+            delete.setImageDrawable(getResources().getDrawable(R.drawable.ic_delete_white_36dp));
+            delete.setTag(fullpath + "_delete");
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String rowtag = v.getTag().toString();
+                    rowtag = rowtag.replace("_delete", "");
+                    try {
+                        if (getView() != null) {
+                            slideImageTable.removeView(getView().findViewWithTag(rowtag));
+                        }
+                    } catch (Exception e) {
+                        // oh well
+                        Log.d("error", "No table row with this tag");
+                    }
+                }
+            });
+            row.addView(filename);
+            row.addView(thumbnail);
+            row.addView(delete);
+            slideImageTable.addView(row);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void addScripture() {

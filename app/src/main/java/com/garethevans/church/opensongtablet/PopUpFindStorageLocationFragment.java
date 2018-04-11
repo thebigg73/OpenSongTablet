@@ -224,7 +224,9 @@ public class PopUpFindStorageLocationFragment extends DialogFragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                location.setText(str);
+                if (location!=null && str!=null) {
+                    location.setText(str);
+                }
             }
         });
     }

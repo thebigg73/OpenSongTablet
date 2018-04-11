@@ -210,7 +210,6 @@ public class PopUpListSetsFragment extends DialogFragment {
         // Sort the available set lists
         sortSetLists();
 
-
         // Customise the view depending on what we are doing
         adapter = null;
 
@@ -269,7 +268,6 @@ public class PopUpListSetsFragment extends DialogFragment {
                 overWrite_CheckBox.setVisibility(View.VISIBLE);
                 break;
         }
-
 
         // Set The Adapter
         setCorrectAdapter(setnames);
@@ -768,8 +766,10 @@ public class PopUpListSetsFragment extends DialogFragment {
 
         setnames = new String[setnames_ar.size()];
         filteredsetnames = new String[setnames_ar.size()];
-        setnames = setnames_ar.toArray(setnames);
-        filteredsetnames = setnames_ar.toArray(filteredsetnames);
+        //setnames = setnames_ar.toArray(setnames);
+        //filteredsetnames = setnames_ar.toArray(filteredsetnames);
+        setnames_ar.toArray(setnames);
+        setnames_ar.toArray(filteredsetnames);
 
         if (adapter!=null) {
             setCorrectAdapter(filteredsetnames);

@@ -81,6 +81,20 @@
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
+            <Button
+                android:id="@+id/padCustomButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/menu_button"
+                android:drawableLeft="@drawable/ic_content_save_white_36dp"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_content_save_white_36dp"
+                android:gravity="center_vertical"
+                android:text="@string/custom"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/switchTimerSize"
                 android:layout_width="match_parent"
