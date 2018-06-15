@@ -304,6 +304,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     // Font sizes (relative)
     public static int linespacing;
 
+    // Edit style
+    public static boolean editAsChordPro;
     // Colours
     public static int dark_lyricsTextColor, dark_lyricsBackgroundColor, dark_lyricsVerseColor,
             dark_lyricsChorusColor, dark_lyricsBridgeColor, dark_lyricsCommentColor,

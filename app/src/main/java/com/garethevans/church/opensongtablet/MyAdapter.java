@@ -106,7 +106,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
                 } else {
                     issue = true;
                 }
-                if (item != FullscreenActivity.setSize - 1) {
+                if (item != FullscreenActivity.setSize - 1 && FullscreenActivity.mSet.length>(item+1)) {
                     FullscreenActivity.nextSongInSet = FullscreenActivity.mSet[item + 1];
                 } else {
                     issue = true;

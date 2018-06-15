@@ -88,7 +88,6 @@ import com.peak.salut.SalutDataReceiver;
 import com.peak.salut.SalutServiceData;
 
 import org.apache.commons.io.FileUtils;
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.IOException;
@@ -3116,7 +3115,7 @@ public class StageMode extends AppCompatActivity implements
 
                 try {
                     LoadXML.loadXML(StageMode.this);
-                } catch (XmlPullParserException | IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

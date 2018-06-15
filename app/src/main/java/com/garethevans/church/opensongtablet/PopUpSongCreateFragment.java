@@ -18,8 +18,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -264,7 +262,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 // Load the XML up into memory
                 try {
                     LoadXML.loadXML(getActivity());
-                } catch (XmlPullParserException | IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

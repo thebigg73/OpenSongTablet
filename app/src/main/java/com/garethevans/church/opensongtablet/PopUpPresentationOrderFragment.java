@@ -14,8 +14,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.IOException;
 
 public class PopUpPresentationOrderFragment extends DialogFragment {
@@ -167,7 +165,7 @@ public class PopUpPresentationOrderFragment extends DialogFragment {
         }
        try {
            LoadXML.loadXML(getActivity());
-       } catch (XmlPullParserException | IOException e) {
+       } catch (Exception e) {
            e.printStackTrace();
        }
         if (mListener!=null) {

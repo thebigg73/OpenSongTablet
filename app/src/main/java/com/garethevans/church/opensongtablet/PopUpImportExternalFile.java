@@ -869,10 +869,14 @@ public class PopUpImportExternalFile extends DialogFragment {
 
         @Override
         protected void onPostExecute(String doneit) {
-            if (mListener!=null) {
-                mListener.onSongImportDone(doneit);
+            try {
+                if (mListener != null) {
+                    mListener.onSongImportDone(doneit);
+                }
+                dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            dismiss();
         }
     }
 

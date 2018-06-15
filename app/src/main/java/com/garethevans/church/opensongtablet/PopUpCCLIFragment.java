@@ -260,6 +260,16 @@ public class PopUpCCLIFragment extends DialogFragment {
         do_buildTable.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    public static String getLogFileSize(File logfile) {
+
+        int file_size_kb = Integer.parseInt(String.valueOf(logfile.length()/1024));
+        String returntext = logfile.getName() + " ("+file_size_kb + "kb)";
+        if (file_size_kb > 1024) {
+            returntext = " <font color='#f00'>" + logfile.getName() + " ("+file_size_kb + "kb)" + "</font>";
+        }
+        return returntext;
+    }
+
     @SuppressLint("StaticFieldLeak")
     private class BuildTable extends AsyncTask<Object, Void, String> {
 
@@ -268,6 +278,8 @@ public class PopUpCCLIFragment extends DialogFragment {
             try {
                 // If the xml file doesn't exist, create a blank one
                 boolean success = true;
+                // Get the size of the file
+
                 if (!activitylogfile.exists()) {
                     success = createBlankXML();
                 }
@@ -374,6 +386,7 @@ public class PopUpCCLIFragment extends DialogFragment {
                     table = "<html><body><h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
                             "<h3>" + getString(R.string.ccli_church) + ": " + FullscreenActivity.ccli_church + "</h3>\n" +
                             "<h3>" + getString(R.string.ccli_licence) + ": " + FullscreenActivity.ccli_licence + "</h3>\n" +
+                            "<h4>" + getLogFileSize(activitylogfile) + "</h4>\n" +
                             "</body></html>";
 
                 } else {
@@ -387,6 +400,7 @@ public class PopUpCCLIFragment extends DialogFragment {
                             "<h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
                             "<h3>" + getString(R.string.ccli_church) + ": " + FullscreenActivity.ccli_church + "</h3>\n" +
                             "<h3>" + getString(R.string.ccli_licence) + ": " + FullscreenActivity.ccli_licence + "</h3>\n" +
+                            "<h4>" + getLogFileSize(activitylogfile) + "</h4>\n" +
                             "<body><table id=\"mytable\">\n<tr>";
                     table += "<th>" + getString(R.string.item) + "</th>";
                     table += "<th>" + getString(R.string.edit_song_title) + "</th>";

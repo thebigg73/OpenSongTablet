@@ -283,7 +283,12 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         //String newUA = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0";
         String newUA = "Mozilla/5.0 (X11; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0";
-        webresults_WebView.getSettings().setUserAgentString(newUA);
+        String oldUA = "Mozilla/5.0 (Linux; U; Android 4.0.4; en-gb; GT-I9300 Build/IMM76D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            webresults_WebView.getSettings().setUserAgentString(oldUA);
+        } else {
+            webresults_WebView.getSettings().setUserAgentString(newUA);
+        }
         webresults_WebView.getSettings().getJavaScriptEnabled();
         webresults_WebView.getSettings().setJavaScriptEnabled(true);
         webresults_WebView.getSettings().setDomStorageEnabled(true);
@@ -663,7 +668,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             title_resultposted = title_resultposted.replace("\r", "");
             title_resultposted = title_resultposted.replace("\n", "");
             title_resultposted = title_resultposted.trim();
-            filenametosave = title_resultposted;
+            title_resultposted = title_resultposted.replace("&amp;","&");
+            title_resultposted = title_resultposted.replace("&","&amp;");
+            filenametosave = title_resultposted.replace("&amp","");
             filenametosave = filenametosave.replace(" @ Ultimate-Guitar.Com", "");
             filenametosave = filenametosave.replace(" Chords", "");
             int authstart = filenametosave.indexOf(" by ");
@@ -680,6 +687,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             // Remove everything before this position
             if (startpos != 0) {
                 title_resultposted = resultposted.substring(startpos);
+                title_resultposted = title_resultposted.replace("&amp;","&");
+                title_resultposted = title_resultposted.replace("&","&amp;");
                 endpos = title_resultposted.indexOf(",\n");
                 if (endpos < 0) {
                     endpos = 0;
@@ -688,6 +697,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 if (endpos > 5) {
                     filenametosave = title_resultposted.substring(5, endpos);
                     filenametosave = filenametosave.replace("\"", "");
+                    filenametosave = filenametosave.replace("&amp;","");
                     filenametosave = filenametosave.trim();
                 } else {
                     filenametosave = "*temp*";
@@ -700,7 +710,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         endpos = resultposted.indexOf("',", startpos);
         if (startpos != 0 && endpos < (startpos + 40)) {
             title_resultposted = resultposted.substring(startpos, endpos);
-            filenametosave = title_resultposted;
+            title_resultposted = title_resultposted.replace("&amp;","&");
+            title_resultposted = title_resultposted.replace("&","&amp;");
+            filenametosave = title_resultposted.replace("&amp;","");
         }
 
         // Look for a better author
@@ -711,6 +723,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             // Remove everything before this position
             if (startpos != 0) {
                 author_resultposted = resultposted.substring(startpos);
+                author_resultposted = author_resultposted.replace("&amp;","&");
+                author_resultposted = author_resultposted.replace("&","&amp;");
                 endpos = author_resultposted.indexOf(",\n");
                 if (endpos < 0) {
                     endpos = 0;
@@ -719,6 +733,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 if (endpos > 6) {
                     authorname = author_resultposted.substring(6, endpos);
                     authorname = authorname.replace("\"", "");
+                    authorname = authorname.replace("&amp;","&");
+                    authorname = authorname.replace("&","&amp;");
                     authorname = PopUpEditSongFragment.parseToHTMLEntities(authorname.trim());
                 } else {
                     authorname = "";
@@ -731,6 +747,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         endpos = resultposted.indexOf("',", startpos);
         if (startpos != 0 && endpos < (startpos + 80)) {
             author_resultposted = resultposted.substring(startpos, endpos);
+            author_resultposted = author_resultposted.replace("&amp;","&");
+            author_resultposted = author_resultposted.replace("&","&amp;");
             authorname = PopUpEditSongFragment.parseToHTMLEntities(author_resultposted);
         }
 
@@ -744,7 +762,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             String[] keywords = tempkeywords.split(",");
             if (keywords.length > 0) {
                 title_resultposted = keywords[0];
-                filenametosave = title_resultposted;
+                title_resultposted = title_resultposted.replace("&amp;","&");
+                title_resultposted = title_resultposted.replace("&","&amp;");
+                title_resultposted = title_resultposted.replace(" @ Ultimate-Guitar.Com", "");
+                title_resultposted = title_resultposted.replace(" Chords", "");
+                filenametosave = title_resultposted.replace("&amp;","");
             }
         }
 
@@ -830,6 +852,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
         // Ok remove all html tags
         newtext = newtext.replace("<span>", "");
+        // The desktop version of the site has chords inside [ch] [/ch] sections
+        newtext = newtext.replace("[ch]","");
+        newtext = newtext.replace("[/ch]","");
+        newtext = newtext.replace("<div class=\"text-tab js-tab-tab\">","");
+        newtext = newtext.replace("</div>","");
         newtext = newtext.replace("<span class=\"text-chord js-tab-ch\">", "");
         newtext = newtext.replace("<span class=\"text-chord js-tab-ch js-tapped\">", "");
         newtext = newtext.replace("</span>", "");
@@ -1522,7 +1549,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     @SuppressLint("StaticFieldLeak")
     private class GetSourceCode extends AsyncTask<Object, String, String> {
 
-        String html = "";
+        String html;
         GetSourceCode(String s) {
             html = s;
         }

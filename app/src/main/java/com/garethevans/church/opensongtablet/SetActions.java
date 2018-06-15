@@ -149,18 +149,23 @@ public class SetActions extends Activity {
                 if (eventType == XmlPullParser.START_TAG) {
                     if (xpp.getName().equals("slide_group")) {
                         // Is this a song?
-                        if (xpp.getAttributeValue(null, "type").equals("song")) {
-                            // Get song
-                            getSong();
-                        } else if (xpp.getAttributeValue(null, "type").equals("scripture")) {
-                            // Get Scripture
-                            getScripture(c);
-                        } else if (xpp.getAttributeValue(null, "type").equals("custom")) {
-                            // Get Custom (Note or slide or variation)
-                            getCustom(c);
-                        } else if (xpp.getAttributeValue(null, "type").equals("image")) {
-                            // Get the Image(s)
-                            getImage(c);
+                        switch (xpp.getAttributeValue(null, "type")) {
+                            case "song":
+                                // Get song
+                                getSong();
+                                break;
+                            case "scripture":
+                                // Get Scripture
+                                getScripture(c);
+                                break;
+                            case "custom":
+                                // Get Custom (Note or slide or variation)
+                                getCustom(c);
+                                break;
+                            case "image":
+                                // Get the Image(s)
+                                getImage(c);
+                                break;
                         }
                     }
                 }
@@ -513,8 +518,30 @@ public class SetActions extends Activity {
 
     private static void getSong() {
         try {
-            FullscreenActivity.mySet = FullscreenActivity.mySet
-                    + "$**_" + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"path")) + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name")) + "_**$";
+            // Get path and remove leading /
+            String p_name = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"path"));
+            String s_name = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
+            if (p_name.startsWith("/")) {
+                p_name = p_name.replaceFirst("/","");
+            }
+            if (p_name.endsWith("/")) {
+                p_name = p_name.substring(0,p_name.length()-1);
+            }
+            if (s_name.startsWith("/")) {
+                s_name = s_name.replaceFirst("/","");
+            }
+            if (s_name.endsWith("/")) {
+                s_name = s_name.substring(0,s_name.length()-1);
+            }
+            String location = p_name + "/" + s_name;
+            if (location.startsWith("/")) {
+                location = location.replaceFirst("/","");
+            }
+            if (location.endsWith("/")) {
+                location = location.substring(0,location.length()-1);
+            }
+
+            FullscreenActivity.mySet = FullscreenActivity.mySet + "$**_" + location + "_**$";
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -537,12 +564,16 @@ public class SetActions extends Activity {
 
         boolean scripture_finished = false;
         while (!scripture_finished) {
-            if (xpp.getName().equals("title")) {
-                scripture_title = xpp.nextText();
-            } else if (xpp.getName().equals("body")) {
-                scripture_text = scripture_text + "\n[]\n" + LoadXML.parseFromHTMLEntities(xpp.nextText());
-            } else if (xpp.getName().equals("subtitle")) {
-                scripture_translation = LoadXML.parseFromHTMLEntities(xpp.nextText());
+            switch (xpp.getName()) {
+                case "title":
+                    scripture_title = xpp.nextText();
+                    break;
+                case "body":
+                    scripture_text = scripture_text + "\n[]\n" + LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    break;
+                case "subtitle":
+                    scripture_translation = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    break;
             }
 
             xpp.nextTag();
@@ -663,16 +694,19 @@ public class SetActions extends Activity {
 
         boolean custom_finished = false;
         while (!custom_finished) {
-            if (xpp.getName().equals("title")) {
-                custom_title = LoadXML.parseFromHTMLEntities(xpp.nextText());
-            } else if (xpp.getName().equals("subtitle")) {
-                custom_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
-            } else if (xpp.getName().equals("notes")) {
-                custom_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
-            } else if (xpp.getName().equals("body")) {
-                custom_text = custom_text + "\n---\n" + LoadXML.parseFromHTMLEntities(xpp.nextText());
-            } else if (xpp.getName().equals("subtitle")) {
-                custom_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
+            switch (xpp.getName()) {
+                case "title":
+                    custom_title = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    break;
+                case "notes":
+                    custom_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    break;
+                case "body":
+                    custom_text = custom_text + "\n---\n" + LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    break;
+                case "subtitle":
+                    custom_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    break;
             }
 
             xpp.nextTag();
@@ -757,65 +791,72 @@ public class SetActions extends Activity {
 
         while (!allimagesdone) { // Keep iterating unless the current eventType is the end of the document
             if(eventType == XmlPullParser.START_TAG) {
-                if (xpp.getName().equals("title")) {
-                     image_title = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                switch (xpp.getName()) {
+                    case "title":
+                        image_title = LoadXML.parseFromHTMLEntities(xpp.nextText());
 
-                } else if (xpp.getName().equals("subtitle")) {
-                    image_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "subtitle":
+                        image_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
 
-                } else if (xpp.getName().equals("notes")) {
-                    image_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "notes":
+                        image_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
 
-                } else if (xpp.getName().equals("filename")) {
-                    image_filename = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                    if (image_filename !=null && !image_filename.equals("") && !image_filename.isEmpty()) {
-                        slide_images = slide_images + image_filename + "\n";
-                        slide_image_titles = slide_image_titles + "[" + c.getResources().getString(R.string.image) + "_" +
-                                (imagenums + 1) + "]\n" + image_filename + "\n\n";
-                        imagenums++;
-                        encodedimage = false;
-                    }
-
-                } else if (xpp.getName().equals("description")) {
-                    String file_name = LoadXML.parseFromHTMLEntities(xpp.nextText());
-                    if (file_name.contains(".png") || file_name.contains(".PNG")) {
-                        image_type = ".png";
-                    } else if (file_name.contains(".gif") || file_name.contains(".GIF")) {
-                        image_type = ".gif";
-                    } else {
-                        image_type = ".jpg";
-                    }
-
-                    if (encodedimage) {
-                        // Save this image content
-                        // Need to see if the image already exists
-                        if (image_title ==null || image_title.equals("")) {
-                            image_title = c.getResources().getString(R.string.image);
+                        break;
+                    case "filename":
+                        image_filename = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                        if (image_filename != null && !image_filename.equals("") && !image_filename.isEmpty()) {
+                            slide_images = slide_images + image_filename + "\n";
+                            slide_image_titles = slide_image_titles + "[" + c.getResources().getString(R.string.image) + "_" +
+                                    (imagenums + 1) + "]\n" + image_filename + "\n\n";
+                            imagenums++;
+                            encodedimage = false;
                         }
 
-                        File imgfile = new File(FullscreenActivity.dircustomimages + "/" + image_title + imagenums + image_type);
-                        while(imgfile.exists()) {
-
-                            image_title += "_";
-                            imgfile = new File(FullscreenActivity.dircustomimages + "/" + image_title + imagenums + image_type);
+                        break;
+                    case "description":
+                        String file_name = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                        if (file_name.contains(".png") || file_name.contains(".PNG")) {
+                            image_type = ".png";
+                        } else if (file_name.contains(".gif") || file_name.contains(".GIF")) {
+                            image_type = ".gif";
+                        } else {
+                            image_type = ".jpg";
                         }
-                        FileOutputStream overWrite = new FileOutputStream(imgfile, false);
-                        byte[] decodedString = Base64.decode(image_content, Base64.DEFAULT);
-                        overWrite.write(decodedString);
-                        overWrite.flush();
-                        overWrite.close();
-                        image_content = "";
-                        slide_images = slide_images + imgfile.toString() + "\n";
-                        slide_image_titles = slide_image_titles + "[" + c.getResources().getString(R.string.image) + "_" +
-                                (imagenums+1) + "]\n" + imgfile + "\n\n";
-                        imagenums++;
-                        encodedimage=false;
-                    }
 
-                } else if (xpp.getName().equals("image")) {
-                    image_content = xpp.nextText();
-                    hymn_number_imagecode = hymn_number_imagecode + image_content.trim() + "XX_IMAGE_XX";
-                    encodedimage = true;
+                        if (encodedimage) {
+                            // Save this image content
+                            // Need to see if the image already exists
+                            if (image_title == null || image_title.equals("")) {
+                                image_title = c.getResources().getString(R.string.image);
+                            }
+
+                            File imgfile = new File(FullscreenActivity.dircustomimages + "/" + image_title + imagenums + image_type);
+                            while (imgfile.exists()) {
+
+                                image_title += "_";
+                                imgfile = new File(FullscreenActivity.dircustomimages + "/" + image_title + imagenums + image_type);
+                            }
+                            FileOutputStream overWrite = new FileOutputStream(imgfile, false);
+                            byte[] decodedString = Base64.decode(image_content, Base64.DEFAULT);
+                            overWrite.write(decodedString);
+                            overWrite.flush();
+                            overWrite.close();
+                            image_content = "";
+                            slide_images = slide_images + imgfile.toString() + "\n";
+                            slide_image_titles = slide_image_titles + "[" + c.getResources().getString(R.string.image) + "_" +
+                                    (imagenums + 1) + "]\n" + imgfile + "\n\n";
+                            imagenums++;
+                            encodedimage = false;
+                        }
+
+                        break;
+                    case "image":
+                        image_content = xpp.nextText();
+                        hymn_number_imagecode = hymn_number_imagecode + image_content.trim() + "XX_IMAGE_XX";
+                        encodedimage = true;
+                        break;
                 }
 
             } else if(eventType == XmlPullParser.END_TAG) {

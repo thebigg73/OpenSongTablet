@@ -342,6 +342,9 @@ public class PopUpSetViewNew extends DialogFragment {
                     mysongtitle = "!ERROR!";
                 }
 
+                Log.d("d","mysongtitle="+mysongtitle);
+                Log.d("d","mysongfolder="+mysongfolder);
+
                 if (i>-1) {
                     mSongName.add(i, mysongtitle);
                     mFolderName.add(i, mysongfolder);

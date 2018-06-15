@@ -215,6 +215,7 @@ public class PopUpStorageFragment extends DialogFragment {
         FullscreenActivity.searchUsingSAF = false;
         FullscreenActivity.uriTree = null;
         altStorageGroup.setVisibility(View.GONE);
+        //altStorageGroup.setVisibility(View.VISIBLE);
 
         // If the storage hasn't been set, don't allow users to try to wipe it!
         if (FullscreenActivity.whattodo.equals("splashpagestorage")) {
@@ -407,7 +408,11 @@ public class PopUpStorageFragment extends DialogFragment {
         grantPermission.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                triggerStorageAccessFramework();
+                if (FullscreenActivity.uriTree==null) {
+                    triggerStorageAccessFramework();
+                } else {
+                    testSAF();
+                }
             }
         });
 
@@ -870,5 +875,15 @@ public class PopUpStorageFragment extends DialogFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void testSAF() {
+        // This is a test to try to get the appropriate SAF document files
+        // First up, try to get the storage permission
+        StorageAccess SAF = new StorageAccess();
+        DocumentFile df_home = SAF.getLocation(getActivity(),"",FullscreenActivity.uriTree);
+        Log.d("d","df_home="+df_home);
+        DocumentFile df_songs = SAF.getLocation(getActivity(),"Songs",FullscreenActivity.uriTree);
+        Log.d("d","df_songs="+df_songs);
     }
 }

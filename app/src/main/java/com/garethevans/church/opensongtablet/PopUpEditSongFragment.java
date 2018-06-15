@@ -7,6 +7,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +17,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,7 +44,9 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             edit_song_presentation, edit_song_notes, edit_song_lyrics;
     Spinner edit_song_key, edit_song_timesig, edit_song_capo, edit_song_capo_print;
     SeekBar predelay_SeekBar, edit_song_tempo;
-    TextView predelay_TextView, tempo_text, abcnotation;
+    TextView predelay_TextView, tempo_text, abcnotation, availabletags;
+    SwitchCompat editAsChordPro;
+    FrameLayout addBracketsFrame;
 
     // Advanced
     EditText edit_song_CCLI, edit_song_aka, edit_song_key_line, edit_song_hymn, edit_song_user1,
@@ -54,6 +58,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
     // Buttons
     Button toggleGeneralAdvanced, fix_lyrics;
+    FloatingActionButton addBrackets;
 
     static int temposlider;
     View V;
@@ -127,6 +132,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         });
 
         // Initialise the basic views
+        availabletags = V.findViewById(R.id.availabletags);
         edit_song_title = V.findViewById(R.id.edit_song_title);
         edit_song_author = V.findViewById(R.id.edit_song_author);
         edit_song_copyright = V.findViewById(R.id.edit_song_copyright);
@@ -153,8 +159,39 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             }
         });
         edit_song_notes = V.findViewById(R.id.edit_song_notes);
+        addBrackets = V.findViewById(R.id.addBrackets);
+        addBrackets.setVisibility(View.GONE);
+        addBrackets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int start = Math.max(edit_song_lyrics.getSelectionStart(), 0);
+                int end = Math.max(edit_song_lyrics.getSelectionEnd(), 0);
+                edit_song_lyrics.getText().replace(Math.min(start, end), Math.max(start, end),
+                        "[]", 0, 2);
+            }
+        });
+        editAsChordPro = V.findViewById(R.id.editAsChordPro);
+        editAsChordPro.setChecked(FullscreenActivity.editAsChordPro);
+        editAsChordPro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                FullscreenActivity.editAsChordPro = isChecked;
+                Preferences.savePreferences();
+                changeFormat(isChecked);
+            }
+        });
         edit_song_lyrics = V.findViewById(R.id.edit_song_lyrics);
         edit_song_lyrics.setHorizontallyScrolling(true);
+        edit_song_lyrics.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    addBrackets.setVisibility(View.VISIBLE);
+                } else {
+                    addBrackets.setVisibility(View.GONE);
+                }
+            }
+        });
         toggleGeneralAdvanced = V.findViewById(R.id.show_general_advanced);
         generalSettings = V.findViewById(R.id.general_settings);
         abcnotation = V.findViewById(R.id.abcnotation);
@@ -174,8 +211,19 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         fix_lyrics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String s = TextSongConvert.convertText(getActivity(),edit_song_lyrics.getText().toString());
-                edit_song_lyrics.setText(s);
+                String text = edit_song_lyrics.getText().toString();
+                if (FullscreenActivity.editAsChordPro) {
+                    // If we are editing as ChordPro, convert it back to OpenSong first
+                    text = ChordProConvert.fromChordProToOpenSong(text);
+                    // Now fix it
+                    text = TextSongConvert.convertText(getActivity(),text);
+                    // Now set it back to the ChordPro format
+                    text = ChordProConvert.fromOpenSongToChordPro(text,getActivity());
+                } else {
+                    // Using OpenSong format, so simply fix it
+                    text = TextSongConvert.convertText(getActivity(),text);
+                }
+                edit_song_lyrics.setText(text);
             }
         });
 
@@ -284,6 +332,10 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         editBoxLyrics = editBoxLyrics.replace("\b", "    ");
         editBoxLyrics = editBoxLyrics.replaceAll("\f", "    ");
         edit_song_lyrics.setText(editBoxLyrics);
+        // If the user wants to use ChordPro format, change it
+        if (FullscreenActivity.editAsChordPro) {
+            changeFormat(true);
+        }
         edit_song_CCLI.setText(FullscreenActivity.mCCLI);
         edit_song_aka.setText(FullscreenActivity.mAka);
         edit_song_key_line.setText(FullscreenActivity.mKeyLine);
@@ -442,7 +494,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         // Load the song back up with the default values
         try {
             LoadXML.loadXML(getActivity());
-        } catch (XmlPullParserException | IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         dismiss();
@@ -450,6 +502,11 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
     public void saveEdit(boolean ended) {
 
+        // If we are editing as chordpro, convert to OpenSong
+        if (FullscreenActivity.editAsChordPro) {
+            String textLyrics = edit_song_lyrics.getText().toString();
+            edit_song_lyrics.setText(ChordProConvert.fromChordProToOpenSong(textLyrics));
+        }
         // Go through the fields and save them
         // Get the variables
         // Set the newtext to the FullscreenActivity variables
@@ -705,12 +762,34 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             val = "";
         }
         // Make sure all vals are unencoded to start with
-        // Now HTML encode everything
-        val = val.replace("<","&lt;");
-        val = val.replace(">","&gt;");
-        val = val.replace("\'","&apos;");
-        val = val.replace("'","&apos;");
-        val = val.replace("\"","&quot;");
+        // Now HTML encode everything that needs encoded
+        // Protected are < > &
+        // Change < to __lt;  We'll later replace the __ with &.  Do this to deal with &amp; separately
+        val = val.replace("<","__lt;");
+        val = val.replace("&lt;","__lt;");
+
+        // Change > to __gt;  We'll later replace the __ with &.  Do this to deal with &amp; separately
+        val = val.replace(">","__gt;");
+        val = val.replace("&gt;","__gt;");
+
+        // Change &apos; to ' as they don't need encoding in this format - also makes it compatible with desktop
+        val = val.replace("&apos;","'");
+        val = val.replace("\'","'");
+
+        // Change " to __quot;  We'll later replace the __ with &.  Do this to deal with &amp; separately
+        val = val.replace("\"","__quot;");
+        val = val.replace("&quot;","__quot;");
+
+        // Now deal with the remaining ampersands
+        val = val.replace("&amp;","&");  // Reset any that already encoded - all need encoded now
+        val = val.replace("&&","&");     // Just in case we have wrongly encoded old ones e.g. &amp;&quot;
+        val = val.replace("&","&amp;");  // Reencode all remaining ampersands
+
+        // Now replace the other protected encoded entities back with their leading ampersands
+        val = val.replace("__lt;","&lt;");
+        val = val.replace("__gt;","&gt;");
+        val = val.replace("__quot;","&quot;");
+
         return val;
     }
 
@@ -733,5 +812,21 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
             }
         }
         edit_song_capo.setSelection(index);
+    }
+
+    public void changeFormat(boolean chordpro) {
+        String textLyrics = edit_song_lyrics.getText().toString();
+        Log.d("d",textLyrics);
+        if (chordpro) {
+            edit_song_lyrics.setText(ChordProConvert.fromOpenSongToChordPro(textLyrics, getActivity()));
+            availabletags.setVisibility(View.GONE);
+            fix_lyrics.setVisibility(View.GONE);
+            edit_song_lyrics.requestFocus();
+        } else {
+            edit_song_lyrics.setText(ChordProConvert.fromChordProToOpenSong(textLyrics));
+            edit_song_lyrics.requestFocus();
+            availabletags.setVisibility(View.VISIBLE);
+            fix_lyrics.setVisibility(View.VISIBLE);
+        }
     }
 }

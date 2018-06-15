@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/popup_bg"
@@ -51,7 +52,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_title" />
+                    android:hint="@string/edit_song_title"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myAuthor"
@@ -70,7 +72,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_author" />
+                    android:hint="@string/edit_song_author"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myCopyright"
@@ -89,7 +92,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_copyright" />
+                    android:hint="@string/edit_song_copyright"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myKey"
@@ -349,6 +353,20 @@
                     android:layout_marginRight="8dp"
                     android:text="@string/edit_song_lyrics" />
 
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/editAsChordPro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:text="@string/file_type"
+                    android:textOff="OpenSong"
+                    android:textOn="ChordPro"
+                    android:thumb="@drawable/switch_button"
+                    app:showText="true"
+                    app:splitTrack="false"
+                    app:thumbTextPadding="4dp"
+                    app:thumbTint="#444488" />
+
                 <EditText
                     android:id="@+id/edit_song_lyrics"
                     style="@style/MyEditText"
@@ -413,7 +431,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_ccli" />
+                    android:hint="@string/edit_song_ccli"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myAka"
@@ -432,7 +451,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_aka" />
+                    android:hint="@string/edit_song_aka"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myKeyLine"
@@ -450,7 +470,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_keyline" />
+                    android:hint="@string/edit_song_keyline"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myHymnNumber"
@@ -469,7 +490,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_hymn" />
+                    android:hint="@string/edit_song_hymn"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myUser1"
@@ -488,7 +510,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_user1" />
+                    android:hint="@string/edit_song_user1"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myUser2"
@@ -507,7 +530,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_user2" />
+                    android:hint="@string/edit_song_user2"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myUser3"
@@ -526,7 +550,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_user3" />
+                    android:hint="@string/edit_song_user3"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myPadOnOrOff"
@@ -564,7 +589,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_midi" />
+                    android:hint="@string/edit_song_midi"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myMidiIndex"
@@ -583,7 +609,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_midi_index" />
+                    android:hint="@string/edit_song_midi_index"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myRestrictions"
@@ -602,7 +629,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_restrictions" />
+                    android:hint="@string/edit_song_restrictions"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myBooks"
@@ -621,7 +649,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_books" />
+                    android:hint="@string/edit_song_books"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myPitch"
@@ -640,7 +669,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="@string/edit_song_pitch" />
+                    android:hint="@string/edit_song_pitch"
+                    android:inputType="text" />
 
                 <TextView
                     android:id="@+id/myTheme"
@@ -661,645 +691,6 @@
                     android:scrollHorizontally="false"
                     android:layout_margin="8dp" />
 
-<!--
-                <CheckBox
-                    android:id="@+id/edit_song_theme_christ_attributes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:text="@string/theme_christ_attributes"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_christ_birth"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_christ_birth"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_christ_death_atonement"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_on_background"
-                    android:text="@string/theme_christ_death_atonement"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_christ_power_majesty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_christ_power_majesty"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_christ_love_mercy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_christ_love_mercy"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_christ_resurrection"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_christ_resurrection"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_christ_second_coming"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_christ_second_coming"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_christ_victory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_christ_victory"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_church_commitment_obedience"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_church_commitment_obedience"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_church_country"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_church_country"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_church_eternal_life_heaven"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_church_eternal_life_heaven"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_church_evangelism"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_church_evangelism"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_church_family_fellowship"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_church_family_fellowship"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_church_fellowship_w_god"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_church_fellowship_w_god"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_church_purity_holiness"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_church_purity_holiness"
-                    android:textColor="#000"
-
-                    android:textSize="16sp"
-                    tools:ignore="TooManyViews" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_church_repentance_salvation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_church_repentance_salvation"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_church_renewal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_church_renewal"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_church_service_ministry"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_church_service_ministry"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_church_spiritual_hunger"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_church_spiritual_hunger"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_fruit_faith_hope"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_fruit_faith_hope"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_fruit_love"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_fruit_love"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_fruit_joy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_fruit_joy"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_fruit_peace_comfort"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_fruit_peace_comfort"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_fruit_patience_kindness"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_fruit_patience_kindness"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_fruit_humility_meekness"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_fruit_humility_meekness"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_god_attributes"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_god_attributes"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_god_creator_creation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_god_creator_creation"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_god_father"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_god_father"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_god_guidance_care"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_god_guidance_care"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_god_holy_spirit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_god_holy_spirit"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_god_holiness"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_god_holiness"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_god_love_mercy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_god_love_mercy"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_god_power_majesty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_god_power_majesty"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_god_promises"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_god_promises"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_god_victory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_god_victory"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_god_word"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_god_word"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_worship_assurance_trust"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_worship_assurance_trust"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_worship_call_opening"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_worship_call_opening"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_worship_celebration"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_worship_celebration"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_worship_declaration"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_worship_declaration"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_worship_intimacy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_worship_intimacy"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_worship_invitation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_worship_invitation"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_worship_praise_adoration"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_worship_praise_adoration"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_worship_prayer_devotion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_worship_prayer_devotion"
-                    android:textColor="#000"
-
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_worship_provision_deliverance"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_worship_provision_deliverance"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-
-                <CheckBox
-                    android:id="@+id/edit_song_theme_worship_thankfulness"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:background="#fff"
-                    android:drawable="@android:drawable/checkbox_off_background"
-                    android:text="@string/theme_worship_thankfulness"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
--->
-
-
             </LinearLayout>
 
             <Button
@@ -1315,4 +706,13 @@
 
         </LinearLayout>
     </ScrollView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/addBrackets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:gravity="center_vertical|end|right"
+        android:padding="3dp"
+        android:src="@drawable/ic_code_brackets_white_36dp" />
+
 </RelativeLayout>

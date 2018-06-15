@@ -222,6 +222,7 @@ public class Preferences extends Activity {
             FullscreenActivity.drawingPenColor = myPreferences.getString("drawingPenColor", "yellow");
             FullscreenActivity.drawingPenSize = myPreferences.getInt("drawingPenSize", 20);
             FullscreenActivity.drawingTool = myPreferences.getString("drawingTool", "highlighter");
+            FullscreenActivity.editAsChordPro = myPreferences.getBoolean("editAsChordPro",false);
             FullscreenActivity.exportOpenSongAppSet = myPreferences.getBoolean("exportOpenSongAppSet", true);
             FullscreenActivity.exportOpenSongApp = myPreferences.getBoolean("exportOpenSongApp", true);
             FullscreenActivity.exportDesktop = myPreferences.getBoolean("exportDesktop", false);
@@ -601,6 +602,7 @@ public class Preferences extends Activity {
             editor.putString("drawingPenColor", FullscreenActivity.drawingPenColor);
             editor.putInt("drawingPenSize", FullscreenActivity.drawingPenSize);
             editor.putString("drawingTool", FullscreenActivity.drawingTool);
+            editor.putBoolean("editAsChordPro", FullscreenActivity.editAsChordPro);
             editor.putBoolean("exportOpenSongAppSet", FullscreenActivity.exportOpenSongAppSet);
             editor.putBoolean("exportOpenSongApp", FullscreenActivity.exportOpenSongApp);
             editor.putBoolean("exportDesktop", FullscreenActivity.exportDesktop);

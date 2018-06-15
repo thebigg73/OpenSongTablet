@@ -75,8 +75,6 @@ import com.peak.salut.Salut;
 import com.peak.salut.SalutDataReceiver;
 import com.peak.salut.SalutServiceData;
 
-import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -2082,7 +2080,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                 // Load up the song
                 try {
                     LoadXML.loadXML(PresenterMode.this);
-                } catch (XmlPullParserException | IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

@@ -602,6 +602,9 @@ public class PopUpProfileFragment extends DialogFragment {
                 } else if (xpp.getName().equals("drawingTool")) {
                     FullscreenActivity.drawingTool = getTextValue(xpp.nextText(), "highlighter");
 
+                } else if (xpp.getName().equals("editAsChordPro")) {
+                    FullscreenActivity.editAsChordPro = getBooleanValue(xpp.nextText(), false);
+
                 } else if (xpp.getName().equals("exportOpenSongAppSet")) {
                     FullscreenActivity.exportOpenSongAppSet = getBooleanValue(xpp.nextText(),false);
                 } else if (xpp.getName().equals("exportOpenSongApp")) {
@@ -1362,6 +1365,7 @@ public class PopUpProfileFragment extends DialogFragment {
         text += "  <drawingPenColor>" + FullscreenActivity.drawingPenColor + "</drawingPenColor>\n";
         text += "  <drawingPenSize>" + FullscreenActivity.drawingPenSize + "</drawingPenSize>\n";
         text += "  <drawingTool>" + FullscreenActivity.drawingTool + "</drawingTool>\n";
+        text += "  <editAsChordPro>" + FullscreenActivity.editAsChordPro + "</editAsChordPro>\n";
         text += "  <exportOpenSongAppSet>" + FullscreenActivity.exportOpenSongAppSet + "</exportOpenSongAppSet>\n";
         text += "  <exportOpenSongApp>" + FullscreenActivity.exportOpenSongApp + "</exportOpenSongApp>\n";
         text += "  <exportDesktop>" + FullscreenActivity.exportDesktop + "</exportDesktop>\n";

@@ -641,7 +641,6 @@ public class PopUpListSetsFragment extends DialogFragment {
         /*if (newsetname.exists() && !overWrite_CheckBox.isChecked()) {
             FullscreenActivity.myToastMessage = getActivity().getString(R.string.renametitle) + " - " +
                     getActivity().getString(R.string.file_exists);
-
             ShowToast.showToast(getActivity());
         } else {
             String message = getResources().getString(R.string.options_set_save) + " \'" + setListName.getText().toString().trim() + "\"?";

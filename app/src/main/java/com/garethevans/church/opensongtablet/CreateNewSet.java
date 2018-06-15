@@ -3,8 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Base64;
-
-import org.xmlpull.v1.XmlPullParserException;
+import android.util.Log;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -49,11 +48,26 @@ public class CreateNewSet extends Activity {
                         !songparts[0].contains("**"+c.getResources().getString(R.string.slide)) &&
                         !songparts[0].contains("**"+c.getResources().getString(R.string.note))) {
                     // Adding a song
+                    // If we are not in a subfolder, we have two parts, otherwise, we have subfolders
+                    String s_name;
+                    String f_name = "";
+                    for (int pieces=0;pieces<(songparts.length - 1); pieces++) {
+                        f_name += "/" + songparts[pieces];
+                    }
+                    f_name = f_name.replace("///","/");
+                    f_name = f_name.replace("//","/");
+                    try {
+                        s_name = songparts[songparts.length-1];
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        s_name = songparts[1];
+                    }
+
                     FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
                             + "  <slide_group name=\""
-                            + PopUpEditSongFragment.parseToHTMLEntities(songparts[1])
+                            + PopUpEditSongFragment.parseToHTMLEntities(s_name)
                             + "\" type=\"song\" presentation=\"\" path=\""
-                            + PopUpEditSongFragment.parseToHTMLEntities(songparts[0]) + "\"/>\n";
+                            + PopUpEditSongFragment.parseToHTMLEntities(f_name) + "\"/>\n";
 
 
                 } else if (songparts[0].contains("**"+c.getResources().getString(R.string.scripture)) &&
@@ -67,7 +81,7 @@ public class CreateNewSet extends Activity {
                     FullscreenActivity.songfilename = songparts[1];
                     try {
                         LoadXML.loadXML(c);
-                    } catch (XmlPullParserException | IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -116,7 +130,7 @@ public class CreateNewSet extends Activity {
                     FullscreenActivity.songfilename = songparts[1];
                     try {
                         LoadXML.loadXML(c);
-                    } catch (XmlPullParserException | IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -168,7 +182,7 @@ public class CreateNewSet extends Activity {
                     FullscreenActivity.songfilename = songparts[1];
                     try {
                         LoadXML.loadXML(c);
-                    } catch (XmlPullParserException | IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -200,7 +214,7 @@ public class CreateNewSet extends Activity {
                     FullscreenActivity.songfilename = songparts[1];
                     try {
                         LoadXML.loadXML(c);
-                    } catch (XmlPullParserException | IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -270,7 +284,7 @@ public class CreateNewSet extends Activity {
                     FullscreenActivity.songfilename = songparts[1];
                     try {
                         LoadXML.loadXML(c);
-                    } catch (XmlPullParserException | IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -335,6 +349,7 @@ public class CreateNewSet extends Activity {
                 e.printStackTrace();
             }
 
+            Log.d("d","New set=\n"+FullscreenActivity.newSetContents);
             FullscreenActivity.lastSetName = FullscreenActivity.settoload;
 
             // Now we are finished, put the original songfilename back
@@ -342,7 +357,7 @@ public class CreateNewSet extends Activity {
             FullscreenActivity.whichSongFolder = tempdir;
             try {
                 LoadXML.loadXML(c);
-            } catch (XmlPullParserException | IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

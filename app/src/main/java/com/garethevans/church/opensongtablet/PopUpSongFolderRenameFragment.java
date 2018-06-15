@@ -18,10 +18,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.xmlpull.v1.XmlPullParserException;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class PopUpSongFolderRenameFragment extends DialogFragment {
@@ -186,7 +183,7 @@ public class PopUpSongFolderRenameFragment extends DialogFragment {
 
         try {
             LoadXML.loadXML(getActivity());
-        } catch (XmlPullParserException | IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

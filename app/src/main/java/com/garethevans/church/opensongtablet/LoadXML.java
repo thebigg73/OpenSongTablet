@@ -9,7 +9,6 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedReader;
@@ -27,7 +26,7 @@ public class LoadXML extends Activity {
     private static boolean needtoloadextra = false;
 
     // This bit loads the lyrics from the required file
-    static void loadXML(Context c) throws XmlPullParserException, IOException {
+    static void loadXML(Context c) throws IOException {
 
         FullscreenActivity.isPDF = false;
         FullscreenActivity.isSong = true;
@@ -89,6 +88,7 @@ public class LoadXML extends Activity {
                 try {
                      grabOpenSongXML();
                 } catch (Exception e) {
+                    e.printStackTrace();
                     Log.d("d", "Error performing grabOpenSongXML()");
                     FullscreenActivity.thissong_scale = "W";
                 }
@@ -484,97 +484,135 @@ public class LoadXML extends Activity {
         eventType = xpp.getEventType();
         while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG) {
-                if (xpp.getName().equals("author")) {
-                    FullscreenActivity.mAuthor = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("copyright")) {
-                    FullscreenActivity.mCopyright = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("title")) {
-                    String testthetitle = parseFromHTMLEntities(xpp.nextText());
-                    if (testthetitle!=null && !testthetitle.equals("") && !testthetitle.isEmpty()) {
-                        FullscreenActivity.mTitle = parseFromHTMLEntities(testthetitle);
-                    } else if (testthetitle!=null && testthetitle.equals("")) {
-                        FullscreenActivity.mTitle = FullscreenActivity.songfilename;
-                    }
-                } else if (xpp.getName().equals("lyrics")) {
-                    String grabbedlyrics = xpp.nextText();
-                    try {
-                        FullscreenActivity.mLyrics = ProcessSong.fixStartOfLines(parseFromHTMLEntities(xpp.nextText()));
-                    } catch (Exception e) {
-                        FullscreenActivity.mLyrics = grabbedlyrics;
-                    }
+                switch (xpp.getName()) {
+                    case "author":
+                        FullscreenActivity.mAuthor = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "copyright":
+                        FullscreenActivity.mCopyright = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "title":
+                        String testthetitle = parseFromHTMLEntities(xpp.nextText());
+                        if (testthetitle != null && !testthetitle.equals("") && !testthetitle.isEmpty()) {
+                            FullscreenActivity.mTitle = parseFromHTMLEntities(testthetitle);
+                        } else if (testthetitle != null && testthetitle.equals("")) {
+                            FullscreenActivity.mTitle = FullscreenActivity.songfilename;
+                        }
+                        break;
+                    case "lyrics":
+                        String grabbedlyrics = xpp.nextText();
+                        try {
+                            FullscreenActivity.mLyrics = ProcessSong.fixStartOfLines(parseFromHTMLEntities(xpp.nextText()));
+                        } catch (Exception e) {
+                            FullscreenActivity.mLyrics = grabbedlyrics;
+                        }
 
-                } else if (xpp.getName().equals("ccli")) {
-                    FullscreenActivity.mCCLI = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("theme")) {
-                    FullscreenActivity.mTheme = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("alttheme")) {
-                    FullscreenActivity.mAltTheme = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("presentation")) {
-                    FullscreenActivity.mPresentation = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("hymn_number")) {
-                    FullscreenActivity.mHymnNumber = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("user1")) {
-                    FullscreenActivity.mUser1 = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("user2")) {
-                    FullscreenActivity.mUser2 = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("user3")) {
-                    FullscreenActivity.mUser3 = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("key")) {
-                    FullscreenActivity.mKey = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("aka")) {
-                    FullscreenActivity.mAka = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("key_line")) {
-                    FullscreenActivity.mKeyLine = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("capo")) {
-                    if (xpp.getAttributeCount() > 0) {
-                        FullscreenActivity.mCapoPrint = xpp.getAttributeValue(0);
-                    }
-                    FullscreenActivity.mCapo = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("tempo")) {
-                    FullscreenActivity.mTempo = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("time_sig")) {
-                    FullscreenActivity.mTimeSig = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("duration")) {
-                    FullscreenActivity.mDuration = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("predelay")) {
-                    FullscreenActivity.mPreDelay = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("books")) {
-                    FullscreenActivity.mBooks = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("midi")) {
-                    FullscreenActivity.mMidi = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("midi_index")) {
-                    FullscreenActivity.mMidiIndex = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("pitch")) {
-                    FullscreenActivity.mPitch = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("restrictions")) {
-                    FullscreenActivity.mRestrictions = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("notes")) {
-                    FullscreenActivity.mNotes = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("linked_songs")) {
-                    FullscreenActivity.mLinkedSongs = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("pad_file")) {
-                    FullscreenActivity.mPadFile = parseFromHTMLEntities(xpp.nextText());
-                 } else if (xpp.getName().equals("custom_chords")) {
-                    FullscreenActivity.mCustomChords = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("link_youtube")) {
-                    FullscreenActivity.mLinkYouTube = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("link_web")) {
-                    FullscreenActivity.mLinkWeb = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("link_audio")) {
-                    FullscreenActivity.mLinkAudio = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("loop_audio")) {
-                    FullscreenActivity.mLoopAudio = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("link_other")) {
-                    FullscreenActivity.mLinkOther = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("abcnotation")) {
-                    FullscreenActivity.mNotation = parseFromHTMLEntities(xpp.nextText());
-                } else if (xpp.getName().equals("style")) {
-                    // Simplest way to get this is to load the file in line by line as asynctask
-                    needtoloadextra = true;
-                } else if (xpp.getName().equals("backgrounds")) {
-                    //FullscreenActivity.mExtraStuff2 = xpp.nextText();
-                    // Simplest way to get this is to load the file in line by line as asynctask
-                    needtoloadextra = true;
+                        break;
+                    case "ccli":
+                        FullscreenActivity.mCCLI = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "theme":
+                        FullscreenActivity.mTheme = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "alttheme":
+                        FullscreenActivity.mAltTheme = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "presentation":
+                        FullscreenActivity.mPresentation = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "hymn_number":
+                        FullscreenActivity.mHymnNumber = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "user1":
+                        FullscreenActivity.mUser1 = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "user2":
+                        FullscreenActivity.mUser2 = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "user3":
+                        FullscreenActivity.mUser3 = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "key":
+                        FullscreenActivity.mKey = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "aka":
+                        FullscreenActivity.mAka = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "key_line":
+                        FullscreenActivity.mKeyLine = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "capo":
+                        if (xpp.getAttributeCount() > 0) {
+                            FullscreenActivity.mCapoPrint = xpp.getAttributeValue(0);
+                        }
+                        FullscreenActivity.mCapo = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "tempo":
+                        FullscreenActivity.mTempo = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "time_sig":
+                        FullscreenActivity.mTimeSig = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "duration":
+                        FullscreenActivity.mDuration = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "predelay":
+                        FullscreenActivity.mPreDelay = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "books":
+                        FullscreenActivity.mBooks = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "midi":
+                        FullscreenActivity.mMidi = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "midi_index":
+                        FullscreenActivity.mMidiIndex = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "pitch":
+                        FullscreenActivity.mPitch = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "restrictions":
+                        FullscreenActivity.mRestrictions = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "notes":
+                        FullscreenActivity.mNotes = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "linked_songs":
+                        FullscreenActivity.mLinkedSongs = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "pad_file":
+                        FullscreenActivity.mPadFile = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "custom_chords":
+                        FullscreenActivity.mCustomChords = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "link_youtube":
+                        FullscreenActivity.mLinkYouTube = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "link_web":
+                        FullscreenActivity.mLinkWeb = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "link_audio":
+                        FullscreenActivity.mLinkAudio = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "loop_audio":
+                        FullscreenActivity.mLoopAudio = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "link_other":
+                        FullscreenActivity.mLinkOther = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "abcnotation":
+                        FullscreenActivity.mNotation = parseFromHTMLEntities(xpp.nextText());
+                        break;
+                    case "style":
+                        // Simplest way to get this is to load the file in line by line as asynctask
+                        needtoloadextra = true;
+                        break;
+                    case "backgrounds":
+                        //FullscreenActivity.mExtraStuff2 = xpp.nextText();
+                        // Simplest way to get this is to load the file in line by line as asynctask
+                        needtoloadextra = true;
+                        break;
                 }
             }
             try {
@@ -658,14 +696,19 @@ public class LoadXML extends Activity {
                 eventType = xpp.getEventType();
                 while (eventType != XmlPullParser.END_DOCUMENT) {
                     if (eventType == XmlPullParser.START_TAG) {
-                        if (xpp.getName().equals("title")) {
-                            vals[0] = parseFromHTMLEntities(xpp.nextText());
-                        } else if (xpp.getName().equals("author")) {
-                            vals[1] = parseFromHTMLEntities(xpp.nextText());
-                        } else if (xpp.getName().equals("copyright")) {
-                            vals[2] = parseFromHTMLEntities(xpp.nextText());
-                        } else if (xpp.getName().equals("ccli")) {
-                            vals[3] = parseFromHTMLEntities(xpp.nextText());
+                        switch (xpp.getName()) {
+                            case "title":
+                                vals[0] = parseFromHTMLEntities(xpp.nextText());
+                                break;
+                            case "author":
+                                vals[1] = parseFromHTMLEntities(xpp.nextText());
+                                break;
+                            case "copyright":
+                                vals[2] = parseFromHTMLEntities(xpp.nextText());
+                                break;
+                            case "ccli":
+                                vals[3] = parseFromHTMLEntities(xpp.nextText());
+                                break;
                         }
                     }
                     try {

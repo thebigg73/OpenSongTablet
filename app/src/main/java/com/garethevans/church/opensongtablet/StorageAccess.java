@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import static android.net.Uri.encode;
 
-public class StorageAccess {
+class StorageAccess {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     void getStoragePermission(Context c, Uri treeUri) {

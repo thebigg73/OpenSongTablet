@@ -754,9 +754,9 @@ public class ProcessSong extends Activity {
                 string.startsWith(";Gb|") || string.startsWith(";G#|") ||
                 string.startsWith("; ||")) {
             type = "tab";
-        } else if (string.indexOf(";")==0) {
+        } else if (string.startsWith(";")) {
             type = "comment";
-        } else if (string.indexOf("[")==0) {
+        } else if (string.startsWith("[")) {
             type = "heading";
         } else {
             type = "lyric";
@@ -764,7 +764,7 @@ public class ProcessSong extends Activity {
         return type;
     }
 
-    private static String[] getChordPositions(String string) {
+    static String[] getChordPositions(String string) {
         // Given a chord line, get the character positions that each chord starts at
         // Go through the line character by character
         // If the character isn't a " " and the character before is " " or "|" it's a new chord
@@ -810,7 +810,7 @@ public class ProcessSong extends Activity {
         return chordpos;
     }
 
-    private static String[] getChordSections(String string, String[] pos_string) {
+    static String[] getChordSections(String string, String[] pos_string) {
         // Go through the chord positions and extract the substrings
         ArrayList<String> chordsections = new ArrayList<>();
         int startpos = 0;
@@ -862,7 +862,7 @@ public class ProcessSong extends Activity {
         return sections;
     }
 
-    private static String[] getLyricSections(String string, String[] pos_string) {
+    static String[] getLyricSections(String string, String[] pos_string) {
         // Go through the chord positions and extract the substrings
         ArrayList<String> lyricsections = new ArrayList<>();
         int startpos = 0;
@@ -1269,7 +1269,7 @@ public class ProcessSong extends Activity {
         return titleview;
     }
 
-    private static String howToProcessLines(int linenum, int totallines, String thislinetype, String nextlinetype, String previouslinetype) {
+    static String howToProcessLines(int linenum, int totallines, String thislinetype, String nextlinetype, String previouslinetype) {
         String what;
         // If this is a chord line followed by a lyric line.
         if (linenum < totallines - 1 && thislinetype.equals("chord") &&
@@ -1287,6 +1287,8 @@ public class ProcessSong extends Activity {
             what = "extra_info";
         } else if (thislinetype.equals("tab")) {
             what = "guitar_tab";
+        } else if (thislinetype.equals("heading")) {
+            what = "heading";
         //} else if (thislinetype.equals("abcnotation")) {
         //    what = "abc_notation";
         } else {
@@ -1319,6 +1321,14 @@ public class ProcessSong extends Activity {
         }
 
         switch (string) {
+            case "V-":
+                string = string.replace("V-","").trim();
+                section = "verse";
+                break;
+            case "V -":
+                string = string.replace("V -","").trim();
+                section = "verse";
+                break;
             case "V":
             case "V1":
             case "V2":
@@ -1332,6 +1342,15 @@ public class ProcessSong extends Activity {
             case "V10":
                 string = string.replace("V", c.getResources().getString(R.string.tag_verse) + " ");
                 section = "verse";
+                break;
+
+            case "T-":
+                string = string.replace("T-","").trim();
+                section = "tag";
+                break;
+            case "T -":
+                string = string.replace("T -","").trim();
+                section = "tag";
                 break;
             case "T":
             case "T1":
@@ -1347,6 +1366,15 @@ public class ProcessSong extends Activity {
                 string = string.replace("T", c.getResources().getString(R.string.tag_tag) + " ");
                 section = "tag";
                 break;
+
+            case "C-":
+                string = string.replace("C-","").trim();
+                section = "chorus";
+                break;
+            case "C -":
+                string = string.replace("C -","").trim();
+                section = "chorus";
+                break;
             case "C":
             case "C1":
             case "C2":
@@ -1361,6 +1389,15 @@ public class ProcessSong extends Activity {
                 string = string.replace("C", c.getResources().getString(R.string.tag_chorus) + " ");
                 section = "chorus";
                 break;
+
+            case "B-":
+                string = string.replace("B-","").trim();
+                section = "bridge";
+                break;
+            case "B -":
+                string = string.replace("B -","").trim();
+                section = "bridge";
+                break;
             case "B":
             case "B1":
             case "B2":
@@ -1374,6 +1411,15 @@ public class ProcessSong extends Activity {
             case "B10":
                 string = string.replace("B", c.getResources().getString(R.string.tag_bridge) + " ");
                 section = "bridge";
+                break;
+
+            case "P-":
+                string = string.replace("P-","").trim();
+                section = "prechorus";
+                break;
+            case "P -":
+                string = string.replace("P -","").trim();
+                section = "prechorus";
                 break;
             case "P":
             case "P1":
@@ -1391,6 +1437,7 @@ public class ProcessSong extends Activity {
                 break;
             default:
                 section = "custom";
+                break;
         }
 
         // Look for caps or English tags for non-English app users
@@ -1417,7 +1464,7 @@ public class ProcessSong extends Activity {
         return vals;
     }
 
-    private static String fixLineLength(String string, int newlength) {
+    static String fixLineLength(String string, int newlength) {
         int extraspacesrequired = newlength - string.length();
         for (int x=0; x<extraspacesrequired; x++) {
             string += " ";
