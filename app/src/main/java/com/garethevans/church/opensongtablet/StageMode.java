@@ -914,6 +914,15 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
+        if (mDrawerLayout.isDrawerOpen(songmenu)) {
+            mDrawerLayout.closeDrawer(songmenu);
+            return;
+        }
+        if (mDrawerLayout.isDrawerOpen(optionmenu)) {
+            mDrawerLayout.closeDrawer(optionmenu);
+            return;
+        }
+
         String message = getResources().getString(R.string.exit);
         FullscreenActivity.whattodo = "exit";
         newFragment = PopUpAreYouSureFragment.newInstance(message);
