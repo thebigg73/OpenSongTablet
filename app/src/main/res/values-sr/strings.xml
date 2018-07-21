@@ -741,5 +741,7 @@
     <string name="sdroot">"SD kartica root"</string>
     <string name="search">"Pretraga"</string>
     <string name="verse">"Strofa"</string>
+    <string name="keepmultiline">Zadržite višeslojno kompaktno</string>
+    <string name="notsaved">Nije spremljeno</string>
 
 </resources>

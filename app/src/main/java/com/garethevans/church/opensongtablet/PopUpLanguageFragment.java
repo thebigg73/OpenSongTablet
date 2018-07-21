@@ -93,7 +93,7 @@ public class PopUpLanguageFragment extends DialogFragment {
                 case "af":
                     positionselected = 0;
                     break;
-                case "cz":
+                case "cs":
                     positionselected = 1;
                     break;
                 case "de":
@@ -158,7 +158,7 @@ public class PopUpLanguageFragment extends DialogFragment {
                         tempLanguage = "af";
                         break;
                     case 1:
-                        tempLanguage = "cz";
+                        tempLanguage = "cs";
                         break;
                     case 2:
                         tempLanguage = "de";

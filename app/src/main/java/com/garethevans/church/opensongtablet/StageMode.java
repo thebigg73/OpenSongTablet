@@ -345,7 +345,14 @@ public class StageMode extends AppCompatActivity implements
                 backingtrackProgress = findViewById(R.id.backingtrackProgress);
                 backingtrackProgress.setVisibility(View.GONE);
                 padcurrentTime_TextView = findViewById(R.id.padcurrentTime_TextView);
-                padTimeSeparator_TextView = findViewById(R.id.padTimeSeparator_TextView);
+                // Allow the user to pause/resume playback
+                backingtrackProgress.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        PadFunctions.pauseOrResumePad();
+                    }
+                });
+                        padTimeSeparator_TextView = findViewById(R.id.padTimeSeparator_TextView);
                 padtotalTime_TextView = findViewById(R.id.padtotalTime_TextView);
                 playbackProgress = findViewById(R.id.playbackProgress);
                 playbackProgress.setVisibility(View.GONE);
@@ -3012,6 +3019,9 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void loadSong() {
+        // Check for set song
+        FullscreenActivity.setView = SetActions.isSongInSet(StageMode.this);
+
         // Sort the text size and colour of the info stuff
         updateExtraInfoColorsAndSizes("capo");
         updateExtraInfoColorsAndSizes("pad");
@@ -5596,6 +5606,9 @@ public class StageMode extends AppCompatActivity implements
                 PadFunctions.getPad1Status();
                 PadFunctions.getPad2Status();
 
+                FullscreenActivity.mPlayer1Paused = false;
+                FullscreenActivity.mPlayer2Paused = false;
+
                 if (FullscreenActivity.pad1Playing && !FullscreenActivity.pad1Fading) {
                     // If mPlayer1 is already playing, set this to fade out and start mPlayer2
                     FullscreenActivity.pad1Fading = true;
@@ -5848,7 +5861,9 @@ public class StageMode extends AppCompatActivity implements
                                     filetext = filetext.replace("../OpenSong/", FullscreenActivity.homedir + "/");
                                 }
                                 // Add the file start back:
-                                filetext = "file://" + filetext;
+                                if (!filetext.startsWith("file://")) {
+                                    filetext = "file://" + filetext;
+                                }
                                 PadFunctions.getPad1Status();
                                 if (FullscreenActivity.pad1Playing) {
                                     FullscreenActivity.mPlayer1.stop();
@@ -5862,10 +5877,12 @@ public class StageMode extends AppCompatActivity implements
                                 filetext = filetext.replace("file://", "");
                                 // If this is a localised file, we need to unlocalise it to enable it to be read
                                 if (filetext.startsWith("../OpenSong/")) {
-                                    filetext = "file://" + filetext.replace("../OpenSong/", FullscreenActivity.homedir + "/");
+                                    filetext = filetext.replace("../OpenSong/", FullscreenActivity.homedir + "/");
                                 }
                                 // Add the file start back:
-                                filetext = "file://" + filetext;
+                                if (!filetext.startsWith("file://")) {
+                                    filetext = "file://" + filetext;
+                                }
                                 PadFunctions.getPad2Status();
                                 if (FullscreenActivity.pad2Playing) {
                                     FullscreenActivity.mPlayer2.stop();
@@ -5914,13 +5931,17 @@ public class StageMode extends AppCompatActivity implements
         boolean pad1status = PadFunctions.getPad1Status();
         boolean pad2status = PadFunctions.getPad2Status();
 
-        boolean display1 = (pad1status && !FullscreenActivity.pad1Fading) || (pad2status && FullscreenActivity.pad2Fading);
+        boolean display1 = (pad1status && !FullscreenActivity.pad1Fading);
+        boolean display2 = (pad2status && FullscreenActivity.pad2Fading);
         // Decide which player we should be getting the status of
-        if (display1) {
+        if (display1 || FullscreenActivity.mPlayer1Paused) {
             pos = (int) (FullscreenActivity.mPlayer1.getCurrentPosition() / 1000.0f);
-        } else {
+        } else if (display2 || FullscreenActivity.mPlayer2Paused) {
             pos = (int) (FullscreenActivity.mPlayer2.getCurrentPosition() / 1000.0f);
+        } else {
+            pos = 0;
         }
+
         String text = TimeTools.timeFormatFixer(pos);
         updateExtraInfoColorsAndSizes("pad");
         padcurrentTime_TextView.setText(text);

@@ -745,5 +745,7 @@
     <string name="sdroot">"SD-kort rot"</string>
     <string name="search">"Sök"</string>
     <string name="verse">"Vers"</string>
+    <string name="keepmultiline">"Håll multilinkompakt "</string>
+    <string name="notsaved">Ej sparat</string>
 
 </resources>

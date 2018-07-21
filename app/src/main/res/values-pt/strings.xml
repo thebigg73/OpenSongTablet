@@ -690,5 +690,7 @@
 	<string name="sdroot">"Raiz do cartão SD"</string>
 	<string name="search">"Pesquisa"</string>
 	<string name="verse">"Versículo"</string>
+    <string name="keepmultiline">Mantenha o compacto multilinha</string>
+    <string name="notsaved">Não salvo</string>
 
 </resources>

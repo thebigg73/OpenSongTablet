@@ -136,6 +136,12 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             case "ukutabs":
                 mTitle = getActivity().getResources().getString(R.string.ukutabs);
                 break;
+            case "worshipready":
+                mTitle = getActivity().getResources().getString(R.string.worshipready);
+                break;
+            case "holychords":
+                mTitle = getActivity().getResources().getString(R.string.holychords);
+                break;
             default:
                 mTitle = getActivity().getResources().getString(R.string.ultimateguitarsearch);
                 break;
@@ -270,6 +276,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 break;
             case "ukutabs":
                 weblink = "https://ukutabs.com/?s=" + searchtext;
+                break;
+            case "holychords":
+                weblink = "http://holychords.com/search/?id=" + searchtext;
                 break;
         }
 
@@ -807,6 +816,12 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             resultposted = resultposted.substring(startpos + 28);
         }
 
+        // Alternative start point
+        startpos = resultposted.indexOf("<pre class=\"\">");
+        if (startpos >= 0) {
+            resultposted = resultposted.substring(startpos + 14);
+        }
+
         // Find the position of the end of the form
         endpos = resultposted.indexOf("</pre>");
         if (endpos < 0) {
@@ -1041,6 +1056,75 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
 
         newtext = TextUtils.htmlEncode(newtext);
+
+        if (filenametosave != null && !filenametosave.equals("")) {
+            filename = filenametosave.trim();
+        } else {
+            filename = FullscreenActivity.phrasetosearchfor;
+        }
+    }
+
+    public void fixHolyChordsContent(String resultposted) {
+        // from holychords.com
+        grabSongData_ProgressBar.setVisibility(View.INVISIBLE);
+
+        // Try to find the title
+        // By default use the title of the page as a default
+
+        String title_resultposted = "HolyChords Song";
+        String filenametosave;
+        authorname = "";
+        int startpos;
+        int endpos;
+
+        // Try to get the best title
+        // First up, use the page title
+        if (resultposted.contains("<title>") && resultposted.contains("</title>")) {
+            startpos = resultposted.indexOf("<title>") + 7;
+            endpos = resultposted.indexOf("</title>");
+            if (endpos>startpos) {
+                title_resultposted = resultposted.substring(startpos,endpos);
+                authorname = title_resultposted;
+            }
+        }
+
+        // Fix author and title (if it was copied as the title);
+        String text = authorname.replace("|","___");
+        String[] titlebits = text.split("___");
+        if (titlebits.length>1) {
+            title_resultposted = titlebits[0].trim();
+            authorname = titlebits[1].trim();
+        }
+
+        // If there is the title tag, use this instead
+        startpos = resultposted.indexOf("<meta property=\"og:site_name\" content=\"") + 39;
+        endpos = resultposted.indexOf(">",startpos);
+        if (startpos>-1 && endpos>-1 && endpos>startpos) {
+            title_resultposted = resultposted.substring(startpos,endpos);
+            title_resultposted = title_resultposted.replace("/","");
+            title_resultposted = title_resultposted.replace("/","");
+            title_resultposted = title_resultposted.replace("\"","");
+            title_resultposted = title_resultposted.trim();
+        }
+
+        filenametosave = title_resultposted;
+
+        // Everything is found inside the <pre  and </pre> tags
+        startpos = resultposted.indexOf("<pre");
+        startpos = resultposted.indexOf(">",startpos) + 1;
+        // Remove everything before this
+        if (startpos>-1) {
+            resultposted = resultposted.substring(startpos);
+        }
+        // Get everything in the <pre> section
+        endpos = resultposted.indexOf("</pre");
+        if (endpos>0) {
+            resultposted = resultposted.substring(0,endpos);
+        }
+
+        newtext = resultposted.replace("<br />","");
+
+        newtext = PopUpEditSongFragment.parseToHTMLEntities(newtext);
 
         if (filenametosave != null && !filenametosave.equals("")) {
             filename = filenametosave.trim();
@@ -1312,9 +1396,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             tempfile = filename + ".chopro";
         } else {
             tempfile = filename;
-            filecontents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<song>\n<title>" + filename
+            // Last check of best practice OpenSong formatting
+            newtext = TextSongConvert.convertText(getActivity(),newtext);
+            filecontents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<song>\n<title>" + PopUpEditSongFragment.parseToHTMLEntities(filename)
                     + "</title>\n<author>"
-                    + authorname + "</author>\n<copyright></copyright>\n<lyrics>[]\n"
+                    + PopUpEditSongFragment.parseToHTMLEntities(authorname) + "</author>\n<copyright></copyright>\n<lyrics>[]\n"
                     + PopUpEditSongFragment.parseToHTMLEntities(newtext) //Issues cause with &, so fix
                     + "</lyrics>\n</song>";
         }
@@ -1476,6 +1562,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 } else if (result!=null && result.contains("<div id=\"LyricsText\"")) {
                     // Using SongSelect USR page
                     webresults_WebView.loadUrl("javascript:window.HTMLOUT.processHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+
+                } else if (result!=null && result.contains("holychords.com") && result.contains("transpose-keys")) {
+                    // Using Holychords page
+                    fixHolyChordsContent(result);
+                    setFileNameAndFolder();
 
                 } else {
                     FullscreenActivity.myToastMessage = getActivity().getResources().getText(R.string.chordpro_false).toString();

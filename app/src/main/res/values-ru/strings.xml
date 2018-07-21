@@ -690,5 +690,7 @@
     <string name="sdroot">"Корневой каталог SD карты"</string>
     <string name="search">"Поиск"</string>
     <string name="verse">"Куплет"</string>
+    <string name="keepmultiline">Держите многострочный компактный</string>
+    <string name="notsaved">Не сохранено</string>
 
 </resources>

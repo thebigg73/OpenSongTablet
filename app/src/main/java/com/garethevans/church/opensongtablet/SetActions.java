@@ -172,6 +172,11 @@ public class SetActions extends Activity {
                 eventType = xpp.next();
             }
         }
+        // Save the loaded set contents so we can compare to the current set to see if it has changed
+        // On the set list popup it will compare these and display unsaved if it is different.
+        FullscreenActivity.lastLoadedSetContent = FullscreenActivity.mySet;
+
+        // Save the preferences
         Preferences.savePreferences();
     }
 

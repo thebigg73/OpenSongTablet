@@ -1322,13 +1322,7 @@ public class ProcessSong extends Activity {
 
         switch (string) {
             case "V-":
-                string = string.replace("V-","").trim();
-                section = "verse";
-                break;
-            case "V -":
-                string = string.replace("V -","").trim();
-                section = "verse";
-                break;
+            case "V - ":
             case "V":
             case "V1":
             case "V2":
@@ -1340,18 +1334,33 @@ public class ProcessSong extends Activity {
             case "V8":
             case "V9":
             case "V10":
+            case "V1-":
+            case "V2-":
+            case "V3-":
+            case "V4-":
+            case "V5-":
+            case "V6-":
+            case "V7-":
+            case "V8-":
+            case "V9-":
+            case "V10-":
+            case "V1 -":
+            case "V2 -":
+            case "V3 -":
+            case "V4 -":
+            case "V5 -":
+            case "V6 -":
+            case "V7 -":
+            case "V8 -":
+            case "V9 -":
+            case "V - 10":
+                string = removeAnnotatedSections(string);
                 string = string.replace("V", c.getResources().getString(R.string.tag_verse) + " ");
                 section = "verse";
                 break;
 
             case "T-":
-                string = string.replace("T-","").trim();
-                section = "tag";
-                break;
             case "T -":
-                string = string.replace("T -","").trim();
-                section = "tag";
-                break;
             case "T":
             case "T1":
             case "T2":
@@ -1363,18 +1372,13 @@ public class ProcessSong extends Activity {
             case "T8":
             case "T9":
             case "T10":
+                string = removeAnnotatedSections(string);
                 string = string.replace("T", c.getResources().getString(R.string.tag_tag) + " ");
                 section = "tag";
                 break;
 
             case "C-":
-                string = string.replace("C-","").trim();
-                section = "chorus";
-                break;
             case "C -":
-                string = string.replace("C -","").trim();
-                section = "chorus";
-                break;
             case "C":
             case "C1":
             case "C2":
@@ -1386,18 +1390,13 @@ public class ProcessSong extends Activity {
             case "C8":
             case "C9":
             case "C10":
+                string = removeAnnotatedSections(string);
                 string = string.replace("C", c.getResources().getString(R.string.tag_chorus) + " ");
                 section = "chorus";
                 break;
 
             case "B-":
-                string = string.replace("B-","").trim();
-                section = "bridge";
-                break;
             case "B -":
-                string = string.replace("B -","").trim();
-                section = "bridge";
-                break;
             case "B":
             case "B1":
             case "B2":
@@ -1409,18 +1408,13 @@ public class ProcessSong extends Activity {
             case "B8":
             case "B9":
             case "B10":
+                string = removeAnnotatedSections(string);
                 string = string.replace("B", c.getResources().getString(R.string.tag_bridge) + " ");
                 section = "bridge";
                 break;
 
             case "P-":
-                string = string.replace("P-","").trim();
-                section = "prechorus";
-                break;
             case "P -":
-                string = string.replace("P -","").trim();
-                section = "prechorus";
-                break;
             case "P":
             case "P1":
             case "P2":
@@ -1432,10 +1426,12 @@ public class ProcessSong extends Activity {
             case "P8":
             case "P9":
             case "P10":
+                string = removeAnnotatedSections(string);
                 string = string.replace("P", c.getResources().getString(R.string.tag_prechorus) + " ");
                 section = "prechorus";
                 break;
             default:
+                string = removeAnnotatedSections(string);
                 section = "custom";
                 break;
         }
@@ -1458,10 +1454,31 @@ public class ProcessSong extends Activity {
                 string.toLowerCase(FullscreenActivity.locale).contains("bridge")){
             section = "bridge";
         }
+
         String[] vals = new String[2];
         vals[0] = string;
         vals[1] = section;
         return vals;
+    }
+
+    static String removeAnnotatedSections(String s) {
+        // List things to remove
+        String[] removethisbit = {
+                "V-", "V1-", "V2-", "V3-", "V4-", "V5-", "V6-", "V7-", "V8-", "V9-", "V10-",
+                "V -","V1 -","V2 -","V3 -","V4 -","V5 -","V6 -","V7 -","V8 -","V9 -","V10 -",
+                "C-", "C1-", "C2-", "C3-", "C4-", "C5-", "C6-", "C7-", "C8-", "C9-", "C10-",
+                "C -","C1 -","C2 -","C3 -","C4 -","C5 -","C6 -","C7 -","C8 -","C9 -","C10 -",
+                "P-", "P1-", "P2-", "P3-", "P4-", "P5-", "P6-", "P7-", "P8-", "P9-", "P10-",
+                "P -","P1 -","P2 -","P3 -","P4 -","P5 -","P6 -","P7 -","P8 -","P9 -","P10 -",
+                "T-", "T1-", "T2-", "T3-", "T4-", "T5-", "T6-", "T7-", "T8-", "T9-", "T10-",
+                "T -","T1 -","T2 -","T3 -","T4 -","T5 -","T6 -","T7 -","T8 -","T9 -","T10 -",
+                "B-", "B -","I-","I -"
+        };
+
+        for (String sr:removethisbit) {
+            s = s.replace(sr, "");
+        }
+        return s;
     }
 
     static String fixLineLength(String string, int newlength) {

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="keepmultiline" translatable="false">Keep multiline compact</string>
+    <string name="holychords" translatable="false">HolyChords.com</string>
+    <string name="notsaved">not saved</string>
+
+    <string name="keepmultiline">Keep multiline compact</string>
     <string name="bibleXML">OpenSong XML Bible</string>
     <string name="book">Book</string>
     <string name="changestorage">Change storage location</string>

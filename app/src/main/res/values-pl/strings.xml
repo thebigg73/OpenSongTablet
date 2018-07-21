@@ -690,5 +690,7 @@
 	<string name="sdroot">"Korzeń karty SD"</string>
 	<string name="search">"Szukaj"</string>
 	<string name="verse">"Werset"</string>
+    <string name="keepmultiline">Zachowaj wielomiętową kompaktowość</string>
+    <string name="notsaved">Nie zapisane</string>
 
 </resources>

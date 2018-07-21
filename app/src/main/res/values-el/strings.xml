@@ -765,5 +765,7 @@
     <string name="sdroot">"Ρίζα κάρτας SD"</string>
     <string name="search">"Ψάξιμο"</string>
     <string name="verse">"Στίχος"</string>
+    <string name="keepmultiline">Διατηρήστε συμπαγές πολυγραμμικό</string>
+    <string name="notsaved">Δεν έχει αποθηκευτεί</string>
 
 </resources>

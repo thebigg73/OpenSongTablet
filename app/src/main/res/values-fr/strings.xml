@@ -690,5 +690,7 @@
 	<string name="sdroot">"Racine de la carte SD"</string>
 	<string name="search">"Chercher"</string>
 	<string name="verse">"Verset"</string>
+    <string name="keepmultiline">"Gardez multiline compact "</string>
+    <string name="notsaved">Non enregistré</string>
 
 </resources>

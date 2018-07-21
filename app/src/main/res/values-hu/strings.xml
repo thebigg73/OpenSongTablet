@@ -690,5 +690,7 @@
 	<string name="sdroot">"SD-kártya gyökere"</string>
 	<string name="search">"Keresés"</string>
 	<string name="verse">"vers"</string>
+    <string name="keepmultiline">Tartsa a többsoros kompakt</string>
+    <string name="notsaved">Nem mentve</string>
 
 </resources>

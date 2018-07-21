@@ -690,5 +690,7 @@
 	<string name="sdroot">"Root della scheda SD"</string>
 	<string name="search">"Ricerca"</string>
 	<string name="verse">"Versetto"</string>
+    <string name="keepmultiline">Mantieni compatto multilinea</string>
+    <string name="notsaved">Non salvato</string>
 
 </resources>

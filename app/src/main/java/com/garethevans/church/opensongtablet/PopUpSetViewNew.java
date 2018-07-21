@@ -109,7 +109,8 @@ public class PopUpSetViewNew extends DialogFragment {
         final View V = inflater.inflate(R.layout.popup_setview_new, container, false);
         setfrag = getDialog();
         TextView title = V.findViewById(R.id.dialogtitle);
-        title.setText(getActivity().getResources().getString(R.string.options_set));
+        String titletext = getActivity().getResources().getString(R.string.options_set)+displaySetName();
+        title.setText(titletext);
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -601,4 +602,24 @@ public class PopUpSetViewNew extends DialogFragment {
         this.dismiss();
     }
 
+    public String displaySetName() {
+        // This decides on the set name to display as a title
+        // If it is a new set (unsaved), it will be called 'current (unsaved)'
+        // If it is a non-modified loaded set, it will be called 'set name'
+        // If it is a modified, unsaved, loaded set, it will be called 'set name (unsaved)'
+
+        String title;
+        if (FullscreenActivity.lastSetName==null || FullscreenActivity.lastSetName.equals("")) {
+            title = ": " + getActivity().getString(R.string.currentset) +
+                    " (" + getActivity().getString(R.string.notsaved) + ")";
+        } else {
+            String name = FullscreenActivity.lastSetName.replace("__","/");
+            title = ": " + name;
+            if (!FullscreenActivity.mySet.equals(FullscreenActivity.lastLoadedSetContent)) {
+                title += " (" + getActivity().getString(R.string.notsaved) + ")";
+            }
+        }
+
+                return title;
+    }
 }

@@ -689,5 +689,7 @@
 	<string name="sdroot">"SDカードのルート"</string>
 	<string name="search">"サーチ"</string>
 	<string name="verse">"詩"</string>
+    <string name="keepmultiline">マルチラインコンパクトを保つ</string>
+    <string name="notsaved">保存されません</string>
 
 </resources>

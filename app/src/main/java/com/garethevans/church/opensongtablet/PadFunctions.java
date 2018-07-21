@@ -83,4 +83,27 @@ class PadFunctions {
         return isvalid;
     }
 
+    static void pauseOrResumePad() {
+        try {
+            if (FullscreenActivity. mPlayer1Paused) {
+                // Restart pad 1
+                FullscreenActivity.mPlayer1.start();
+                FullscreenActivity.mPlayer1Paused = false;
+            } else if (getPad1Status() && !FullscreenActivity.mPlayer1Paused) {
+                // Pause pad 1
+                FullscreenActivity.mPlayer1.pause();
+                FullscreenActivity.mPlayer1Paused = true;
+            } else if (FullscreenActivity.mPlayer2Paused) {
+                // Restart pad 1
+                FullscreenActivity.mPlayer2.start();
+                FullscreenActivity.mPlayer2Paused = false;
+            } else if (getPad2Status() && !FullscreenActivity.mPlayer2Paused) {
+                // Pause pad 2
+                FullscreenActivity.mPlayer2.pause();
+                FullscreenActivity.mPlayer2Paused = true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

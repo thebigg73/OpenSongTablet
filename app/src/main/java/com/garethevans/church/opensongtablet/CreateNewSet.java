@@ -344,6 +344,9 @@ public class CreateNewSet extends Activity {
                 newFile.flush();
                 newFile.close();
                 FullscreenActivity.myToastMessage = "yes";
+                // Update the last loaded set now it is saved.
+                FullscreenActivity.lastLoadedSetContent = FullscreenActivity.mySet;
+
             } catch (IOException e) {
                 FullscreenActivity.myToastMessage = "no";
                 e.printStackTrace();
@@ -363,6 +366,10 @@ public class CreateNewSet extends Activity {
 
             FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
         }
+
+        // Load the set again - to make sure everything is parsed
+        SetActions.prepareSetList();
+
         Preferences.savePreferences();
         return true;
     }

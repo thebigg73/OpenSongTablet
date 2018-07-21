@@ -694,5 +694,7 @@
 	<string name="sdroot">"SD卡根"</string>
 	<string name="search">"搜索"</string>
 	<string name="verse">"诗"</string>
+    <string name="keepmultiline">保持多线紧凑</string>
+    <string name="notsaved">没保存</string>
 
 </resources>

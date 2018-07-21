@@ -65,6 +65,10 @@ public class Preferences extends Activity {
             if (locale == null || locale.isEmpty() || locale.equals("")) {
                 locale = getDefaultLocaleString().toString();
             }
+            // Wrongly identified Czech locale - my bad fixed in V4.2.8
+            if (locale.equals("cz")) {
+                locale = "cs";
+            }
             return new Locale(locale);
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,7 +82,7 @@ public class Preferences extends Activity {
             locale = new Locale(Locale.getDefault().getDisplayLanguage());
         }
 
-        if (!locale.toString().equals("af") && !locale.toString().equals("cz") && !locale.toString().equals("de") &&
+        if (!locale.toString().equals("af") && !locale.toString().equals("cs") && !locale.toString().equals("de") &&
                 !locale.toString().equals("el") && !locale.toString().equals("es") && !locale.toString().equals("fr") &&
                 !locale.toString().equals("hu") && !locale.toString().equals("it") && !locale.toString().equals("ja") &&
                 !locale.toString().equals("pl") && !locale.toString().equals("pt") && !locale.toString().equals("ru") &&
@@ -240,6 +244,7 @@ public class Preferences extends Activity {
             FullscreenActivity.hideLyricsBox = myPreferences.getBoolean("hideLyricsBox", false);
             FullscreenActivity.highlightShowSecs = myPreferences.getInt("highlightShowSecs", 0);
             FullscreenActivity.languageToLoad = myPreferences.getString("languageToLoad", "");
+            FullscreenActivity.lastLoadedSetContent = myPreferences.getString("lastLoadedSetContent", "");
             FullscreenActivity.lastSetName = myPreferences.getString("lastSetName", "");
             FullscreenActivity.light_lyricsBackgroundColor = myPreferences.getInt("light_lyricsBackgroundColor", default_light_lyricsBackgroundColor);
             FullscreenActivity.light_lyricsBridgeColor = myPreferences.getInt("light_lyricsBridgeColor", default_light_lyricsBridgeColor);
@@ -620,6 +625,7 @@ public class Preferences extends Activity {
             editor.putBoolean("hideLyricsBox", FullscreenActivity.hideLyricsBox);
             editor.putInt("highlightShowSecs", FullscreenActivity.highlightShowSecs);
             editor.putString("languageToLoad", FullscreenActivity.languageToLoad);
+            editor.putString("lastLoadedSetContent", FullscreenActivity.lastLoadedSetContent);
             editor.putString("lastSetName", FullscreenActivity.lastSetName);
             editor.putInt("light_lyricsBridgeColor", FullscreenActivity.light_lyricsBridgeColor);
             editor.putInt("light_lyricsCapoColor", FullscreenActivity.light_lyricsCapoColor);

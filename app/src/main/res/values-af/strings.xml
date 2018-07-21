@@ -689,5 +689,7 @@
 	<string name="sdroot">"SD kaart wortel"</string>
 	<string name="search">"Soek"</string>
 	<string name="verse">"vers"</string>
+    <string name="keepmultiline">" Hou multiline kompak"</string>
+    <string name="notsaved">nie gestoor nie</string>
 
 </resources>

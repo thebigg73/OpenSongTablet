@@ -19,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -46,7 +45,6 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     SeekBar predelay_SeekBar, edit_song_tempo;
     TextView predelay_TextView, tempo_text, abcnotation, availabletags;
     SwitchCompat editAsChordPro;
-    FrameLayout addBracketsFrame;
 
     // Advanced
     EditText edit_song_CCLI, edit_song_aka, edit_song_key_line, edit_song_hymn, edit_song_user1,
@@ -168,6 +166,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 int end = Math.max(edit_song_lyrics.getSelectionEnd(), 0);
                 edit_song_lyrics.getText().replace(Math.min(start, end), Math.max(start, end),
                         "[]", 0, 2);
+                edit_song_lyrics.setSelection(start+1);
             }
         });
         editAsChordPro = V.findViewById(R.id.editAsChordPro);
@@ -740,8 +739,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     }
 
     public static void justSaveSongXML() throws IOException {
-        // Only do this if the title isn't welcome to opensongapp!
-        if (!FullscreenActivity.mTitle.equals("Welcome to OpenSongApp")) {
+        // Only do this if the title or song file doesn't identify it as the 'welcome to opensongapp' file
+        if (!FullscreenActivity.mTitle.equals("Welcome to OpenSongApp") && !FullscreenActivity.mynewXML.contains("Welcome to OpenSongApp")) {
             // Now write the modified song
             String filename;
             if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) || FullscreenActivity.whichSongFolder.isEmpty()) {

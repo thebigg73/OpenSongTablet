@@ -1483,6 +1483,7 @@ public class OptionMenuListeners extends Activity {
         Button worshiptogetherSearchButton = v.findViewById(R.id.worshiptogetherSearchButton);
         Button worshipreadySearchButton = v.findViewById(R.id.worshipreadySearchButton);
         Button ukutabsSearchButton = v.findViewById(R.id.ukutabsSearchButton);
+        Button holychordsSearchButton = v.findViewById(R.id.holychordsSearchButton);
         Button bandDownloadButton = v.findViewById(R.id.bandDownloadButton);
         Button churchDownloadButton = v.findViewById(R.id.churchDownloadButton);
         Button cameraButton = v.findViewById(R.id.cameraButton);
@@ -1501,6 +1502,7 @@ public class OptionMenuListeners extends Activity {
         String wr = c.getString(R.string.worshipready) + " " + c.getString(R.string.subscription);
         worshipreadySearchButton.setText(wr.toUpperCase(FullscreenActivity.locale));
         ukutabsSearchButton.setText(c.getString(R.string.ukutabs).toUpperCase(FullscreenActivity.locale));
+        holychordsSearchButton.setText(c.getString(R.string.holychords).toUpperCase(FullscreenActivity.locale));
         bandDownloadButton.setText(c.getString(R.string.my_band).toUpperCase(FullscreenActivity.locale));
         churchDownloadButton.setText(c.getString(R.string.my_church).toUpperCase(FullscreenActivity.locale));
         cameraButton.setText(c.getString(R.string.camera).toUpperCase(FullscreenActivity.locale));
@@ -1570,6 +1572,16 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 FullscreenActivity.whattodo = "ukutabs";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.openFragment();
+                }
+            }
+        });
+        holychordsSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FullscreenActivity.whattodo = "holychords";
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();

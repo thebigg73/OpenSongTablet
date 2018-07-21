@@ -155,6 +155,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static short noteValue = 4, beats = 4;
     public static double beatSound = 1200, sound = 1600;
     public static MediaPlayer mPlayer1 = new MediaPlayer(), mPlayer2 = new MediaPlayer();
+    public static boolean mPlayer1Paused = false, mPlayer2Paused = false;
     //public static boolean fadeout1 = false, fadeout2 = false;
     //public short initialVolume;
 
@@ -173,7 +174,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     // Set stuff
     public static String previousSongInSet = "", nextSongInSet = "", nextSongKeyInSet = "",
             whichSetCategory, whatsongforsetwork = "", mySet = "", newSetContents = "",
-            settoload = "", setMoveDirection = "", mySetXML = "", setnamechosen = "";
+            settoload = "", setMoveDirection = "", mySetXML = "", setnamechosen = "",
+            lastLoadedSetContent = "";
     public static String[] mySetsFileNames, mySetsFolderNames, mSet, mSetList, myParsedSet;
     public static File[] mySetsFiles, mySetsDirectories;
     public static boolean setView, showingSetsToLoad = false, doneshuffle = false,

@@ -691,5 +691,6 @@
 	<string name="sdroot">"Karta SD karty"</string>
 	<string name="search">"Vyhledávání"</string>
 	<string name="verse">"Verš"</string>
-
+    <string name="keepmultiline">Udržujte multiline kompaktní</string>
+	<string name="notsaved">"neuloženo"</string>
 </resources>
