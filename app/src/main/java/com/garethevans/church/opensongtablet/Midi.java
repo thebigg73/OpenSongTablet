@@ -1,17 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-/*
-//When I call this from wherever, I need to check we have an appropriate API and feature is available
-if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M &&
-    context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_MIDI)) {
-        Midi midi = new Midi();
-        midi.initialiseMidi();
-
-    } else {
-        // display an 'awww sorry' message
-    }
-*/
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;

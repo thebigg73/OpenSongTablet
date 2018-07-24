@@ -4,52 +4,108 @@ package com.garethevans.church.opensongtablet;
 // Still a work in progress
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.provider.DocumentFile;
+import android.util.Log;
 
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import static android.net.Uri.encode;
 
 class StorageAccess {
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    void getStoragePermission(Context c, Uri treeUri) {
-        DocumentFile pickedDir = DocumentFile.fromTreeUri(c, treeUri);
-        c.grantUriPermission(c.getPackageName(), treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        c.getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+    InputStream getInputStream(Context c, String where, String subfolder, String filename) {
+        Uri uri = getSongLocationAsUri(c, where, subfolder, filename);
+        InputStream is;
+        if (uri==null) {
+            return null;
+        }
+        try {
+            is = c.getContentResolver().openInputStream(uri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            is = null;
+        }
+        return is;
+    }
+
+    OutputStream getOutputStream(Context c, String where, String subfolder, String filename) {
+        Uri uri = getSongLocationAsUri(c, where, subfolder, filename);
+        OutputStream os;
+        if (uri==null) {
+            return null;
+        }try {
+            os = c.getContentResolver().openOutputStream(uri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            os = null;
+        }
+        return os;
+    }
+
+    private Uri getSongLocationAsUri(Context c, String where, String subfolder, String filename) {
+        Uri uri;
+        // Firstly get the storage location
+        Preferences mPreferences = new Preferences();
+        uri = Uri.parse(mPreferences.getMyPreferenceString(c, "chosenstorage", null));
+        if (uri!=null) {
+            try {
+                // Define the root folder
+                DocumentFile rootFolder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Log.d("StorageAccess", "Root folder=" + uri);
+                    rootFolder = DocumentFile.fromTreeUri(c, uri);
+                } else {
+                    // Kit-Kat doesn't allow document tree
+                    rootFolder = DocumentFile.fromSingleUri(c, uri);
+                }
+
+                // Get the OpenSong folder
+                DocumentFile openSongFolder = rootFolder.findFile("TestOpenSong");
+
+                // Get the required subfolder of OpenSong using 'where'.
+                // This could be the Songs, Sets, Variables, etc. folder
+                DocumentFile folderLocation = openSongFolder.findFile(where);
+
+                // Go through the folders (may be lots of sub folders, or none) and get the folder uri
+                String[] folders = subfolder.split("/");
+                for (String folder:folders) {
+                    if (!folder.equals(c.getString(R.string.mainfoldername))) {
+                        DocumentFile newFolderLocation = folderLocation.findFile(folder);
+                        if (newFolderLocation==null) {
+                            // Create the folder
+                            folderLocation.createDirectory(folder);
+                            newFolderLocation = folderLocation.findFile(folder);
+                        }
+                        folderLocation = newFolderLocation;
+                    }
+                }
+
+                DocumentFile df = folderLocation.findFile(filename);
+
+                // If the file doesn't exist, create
+                if (df==null) {
+                    folderLocation.createFile(null, filename);
+                    df = folderLocation.findFile(filename);
+                }
+
+                return df.getUri();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     DocumentFile getLocation(Context c, String location, Uri appUri) {
         Uri newUri = Uri.withAppendedPath(appUri, encode(location));
         return DocumentFile.fromSingleUri(c,newUri);
-    }
-
-    DocumentFile createFolder(Context c, String folder, Uri appUri) {
-        Uri newUri = Uri.withAppendedPath(appUri,encode(folder));
-        DocumentFile u_df = DocumentFile.fromSingleUri(c, appUri);
-        DocumentFile df = DocumentFile.fromSingleUri(c,newUri);
-        if (!df.exists()) {
-            u_df.createDirectory(folder);
-            df = DocumentFile.fromSingleUri(c,newUri);
-        }
-        return df;
-    }
-
-    ArrayList<String> listSubDirectories(Context c, String folder, Uri appUri) {
-        Uri newUri = Uri.withAppendedPath(appUri, encode(folder));
-        DocumentFile df = DocumentFile.fromSingleUri(c, newUri);
-        ArrayList<String> l_df = new ArrayList<>();
-        DocumentFile[] dfs = df.listFiles();
-        for (DocumentFile dfz : dfs) {
-            if  (dfz.isDirectory()) {
-                l_df.add(dfz.getName());
-            }
-        }
-        return l_df;
     }
 
 }

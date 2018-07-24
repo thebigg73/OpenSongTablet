@@ -1,9 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.view.Gravity;
 
@@ -703,18 +705,6 @@ public class Preferences extends Activity {
             editor.putFloat("pageButtonAlpha", FullscreenActivity.pageButtonAlpha);
             editor.putString("pagebutton_position", FullscreenActivity.pagebutton_position);
             editor.putString("pagebutton_scale", FullscreenActivity.pagebutton_scale);
-            /*editor.putInt("pageturner_AUTOSCROLL", FullscreenActivity.pageturner_AUTOSCROLL);
-            editor.putInt("pageturner_AUTOSCROLLPAD", FullscreenActivity.pageturner_AUTOSCROLLPAD);
-            editor.putInt("pageturner_AUTOSCROLLMETRONOME", FullscreenActivity.pageturner_AUTOSCROLLMETRONOME);
-            editor.putInt("pageturner_AUTOSCROLLPADMETRONOME", FullscreenActivity.pageturner_AUTOSCROLLPADMETRONOME);
-            editor.putInt("pageturner_DOWN", FullscreenActivity.pageturner_DOWN);
-            editor.putInt("pageturner_METRONOME", FullscreenActivity.pageturner_METRONOME);
-            editor.putInt("pageturner_NEXT", FullscreenActivity.pageturner_NEXT);
-            editor.putInt("pageturner_PAD", FullscreenActivity.pageturner_PAD);
-            editor.putInt("pageturner_PADMETRONOME", FullscreenActivity.pageturner_PADMETRONOME);
-            editor.putInt("pageturner_PREVIOUS", FullscreenActivity.pageturner_PREVIOUS);
-            editor.putInt("pageturner_UP", FullscreenActivity.pageturner_UP);
-            */
             editor.putInt("pedal1", FullscreenActivity.pedal1);
             editor.putInt("pedal2", FullscreenActivity.pedal2);
             editor.putInt("pedal3", FullscreenActivity.pedal3);
@@ -855,4 +845,39 @@ public class Preferences extends Activity {
         return myPreferences.getBoolean("songloadsuccess", false);
     }
 
+
+    // This is the way that preferences will be stored in the future (after SAF is implemented)
+    private SharedPreferences sharedPref;
+
+    // Get the saved preference values
+    String getMyPreferenceString (Context c, String prefname, String fallback) {
+        // Return a string from saved preference
+        // Identify the preferences
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+        return sharedPref.getString(prefname, fallback);
+    }
+    int getMyPreferenceInt (Context c, String prefname, int fallback) {
+        // Return an int from saved preference
+        // Identify the preferences
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+        return sharedPref.getInt(prefname, fallback);
+    }
+
+    // Save the preference values
+    void setMyPreferenceString (Context c, String prefname, String value) {
+        // Identify the preferences
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+        sharedPref.edit().putString(prefname, value).apply();
+    }
+    void setMyPreferenceInt (Context c, String prefname, int value) {
+        // Identify the preferences
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+        sharedPref.edit().putInt(prefname, value).apply();
+    }
+
+    /* Values stored in Prefences alphabetically listed:
+    Variable name           Type        What
+    chosenstorage           String      The uri of the document tree (Storage Access Framework)
+    lastUsedVersion         int         The app version number the last time the app ran
+    */
 }

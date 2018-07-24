@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;

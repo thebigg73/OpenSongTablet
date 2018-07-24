@@ -86,6 +86,8 @@
         <meta-data
                 android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
                 android:value="com.garethevans.church.opensongtablet.CastOptionsProvider" />
+
+
         <activity
             android:name="com.garethevans.church.opensongtablet.SettingsActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
@@ -97,6 +99,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".BootUpCheck" />
+
+        <!--//This is used for testing Storage Access Framework BootUpCheck
+                <activity android:name=".SettingsActivity" />
+
+                <activity android:name=".BootUpCheck"
+                    android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+                    android:label="@string/app_name" >
+                    <intent-filter
+                        android:icon="@mipmap/ic_launcher"
+                        android:roundIcon="@mipmap/ic_round_launcher">
+                        <action android:name="android.intent.action.MAIN" />
+                        <category android:name="android.intent.category.LAUNCHER" />
+                    </intent-filter>
+                </activity>
+        -->
 
         <activity
             android:name="com.garethevans.church.opensongtablet.FullscreenActivity"
@@ -420,6 +439,7 @@
         <activity android:name=".SetLocale" />
         <activity android:name=".SongMenuListeners" />
         <activity android:name=".ShowToast" />
+
 
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->

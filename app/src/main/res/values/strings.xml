@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="root" translatable="false">Choose storage location</string>
+    <string name="root_explain" translatable="false">Your storage location should point to where the OpenSong folder resides or where
+        the app should create it.  If you are locating an existing OpenSong folder, navigate to where it is, but
+        do not select the OpenSong folder itself, but instead, select the folder that contains the OpenSong folder.</string>
+    <string name="root_error" translatable="false">You are currently inside an OpenSong folder - not allowed</string>
+
+
     <string name="holychords" translatable="false">HolyChords.com</string>
     <string name="notsaved">not saved</string>
+    <string name="separator" translatable="false"> / </string>
 
     <string name="keepmultiline">Keep multiline compact</string>
     <string name="bibleXML">OpenSong XML Bible</string>

@@ -33,6 +33,7 @@
                 android:layout_margin="8dp"
                 android:text="@string/storage_help" />
 
+
             <TextView
                 style="@style/MyInfoText"
                 android:background="@color/red"
