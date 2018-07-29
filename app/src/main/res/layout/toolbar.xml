@@ -52,6 +52,18 @@
                 tools:ignore="SmallSp" />
 
             <TextView
+                android:id="@+id/songcapo_ab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/songkey_ab"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#fff"
+                style="@style/MySongTitleText"
+                tools:ignore="SmallSp" />
+
+            <TextView
                 android:id="@+id/songauthor_ab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

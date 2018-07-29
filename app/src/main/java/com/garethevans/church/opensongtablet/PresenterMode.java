@@ -135,7 +135,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     public Toolbar ab_toolbar;
     public static ActionBar ab;
     public RelativeLayout songandauthor;
-    public TextView digitalclock, songtitle_ab, songkey_ab, songauthor_ab, batterycharge;
+    public TextView digitalclock, songtitle_ab, songkey_ab, songcapo_ab, songauthor_ab, batterycharge;
     public ImageView batteryimage;
     RelativeLayout batteryholder;
     Menu menu;
@@ -1050,9 +1050,11 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         digitalclock = findViewById(R.id.digitalclock);
         songtitle_ab = findViewById(R.id.songtitle_ab);
         songkey_ab = findViewById(R.id.songkey_ab);
+        songcapo_ab = findViewById(R.id.songcapo_ab);
         songauthor_ab = findViewById(R.id.songauthor_ab);
         songtitle_ab.setText(getResources().getString(R.string.presentermode));
         songkey_ab.setText("");
+        songcapo_ab.setText("");
         songauthor_ab.setText("");
         batterycharge = findViewById(R.id.batterycharge);
         batteryimage = findViewById(R.id.batteryimage);

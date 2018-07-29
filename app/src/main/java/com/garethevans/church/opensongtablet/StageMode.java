@@ -135,7 +135,7 @@ public class StageMode extends AppCompatActivity implements
     public static ActionBar ab;
     public ActionBarDrawerToggle actionBarDrawerToggle;
     public RelativeLayout songandauthor, batteryholder;
-    public TextView digitalclock, songtitle_ab, songkey_ab, songauthor_ab, batterycharge;
+    public TextView digitalclock, songtitle_ab, songkey_ab, songcapo_ab, songauthor_ab, batterycharge;
     public ImageView batteryimage;
     Menu menu;
 
@@ -328,6 +328,7 @@ public class StageMode extends AppCompatActivity implements
                 digitalclock = findViewById(R.id.digitalclock);
                 songtitle_ab = findViewById(R.id.songtitle_ab);
                 songkey_ab = findViewById(R.id.songkey_ab);
+                songcapo_ab = findViewById(R.id.songcapo_ab);
                 songauthor_ab = findViewById(R.id.songauthor_ab);
                 batterycharge = findViewById(R.id.batterycharge);
                 batteryimage = findViewById(R.id.batteryimage);
@@ -3293,6 +3294,11 @@ public class StageMode extends AppCompatActivity implements
                     // Put the title of the song in the taskbar
                     songtitle_ab.setText(ProcessSong.getSongTitle());
                     songkey_ab.setText(ProcessSong.getSongKey());
+                    String capotext = ProcessSong.getCapoInfo();
+                    if ((capotext != null) && (!capotext.isEmpty())) {
+                        capotext = " [" + capotext + "]";
+                    }
+                    songcapo_ab.setText(capotext);
                     songauthor_ab.setText(ProcessSong.getSongAuthor());
 
                     if (FullscreenActivity.isPDF) {
@@ -3451,9 +3457,10 @@ public class StageMode extends AppCompatActivity implements
         glideimage_ScrollView.setVisibility(View.VISIBLE);
 
         // Set the ab title to include the page info if available
+        songtitle_ab.setText(FullscreenActivity.mTitle);
+        songkey_ab.setText("");
+        songcapo_ab.setText("");
         if (bmp!=null) {
-            songtitle_ab.setText(FullscreenActivity.mTitle);
-            songkey_ab.setText("");
             String text = (FullscreenActivity.pdfPageCurrent + 1) + "/" + FullscreenActivity.pdfPageCount;
             songauthor_ab.setText(text);
 
@@ -3462,8 +3469,6 @@ public class StageMode extends AppCompatActivity implements
             glideimage.setImageBitmap(bmp);
 
         } else {
-            songtitle_ab.setText(FullscreenActivity.mTitle);
-            songkey_ab.setText("");
             songauthor_ab.setText(getResources().getString(R.string.nothighenoughapi));
 
             // Set the image to the unhappy android
