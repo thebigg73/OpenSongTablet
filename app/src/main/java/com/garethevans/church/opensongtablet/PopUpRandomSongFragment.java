@@ -138,7 +138,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
 
     public void generateFolderList() {
         // Since users change their folders, update this chosen list with those actually available
-        String newRandomFoldersChosen = "";
+        StringBuilder newRandomFoldersChosen = new StringBuilder();
         if (FullscreenActivity.mSongFolderNames!=null) {
             ArrayAdapter<String> songfolders = new ArrayAdapter<>(getActivity(),
                     android.R.layout.simple_list_item_checked, FullscreenActivity.mSongFolderNames);
@@ -148,7 +148,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
             for (int i = 0; i < FullscreenActivity.mSongFolderNames.length; i++) {
                 if (FullscreenActivity.randomFolders.contains("$$__"+FullscreenActivity.mSongFolderNames[i]+"__$$")) {
                     chooseFolders_ListView.setItemChecked(i,true);
-                    newRandomFoldersChosen += "$$__"+FullscreenActivity.mSongFolderNames[i]+"__$$";
+                    newRandomFoldersChosen.append("$$__").append(FullscreenActivity.mSongFolderNames[i]).append("__$$");
                 } else {
                     chooseFolders_ListView.setItemChecked(i,false);
                 }
@@ -176,7 +176,7 @@ public class PopUpRandomSongFragment extends DialogFragment {
             });
 
             // Update the chosen folders based on what is actually available
-            FullscreenActivity.randomFolders = newRandomFoldersChosen;
+            FullscreenActivity.randomFolders = newRandomFoldersChosen.toString();
             Preferences.savePreferences();
         }
     }

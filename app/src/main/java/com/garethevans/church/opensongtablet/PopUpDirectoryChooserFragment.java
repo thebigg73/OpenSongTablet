@@ -355,14 +355,14 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
                 // Leaves us with a string like   'folder1/folder2/folder3
                 String[] bits = shortened.split("/");
                 if (bits.length > 0) {
-                    String newlocation = "";
+                    StringBuilder newlocation = new StringBuilder();
                     for (int x = 0; x < bits.length - 1; x++) { // Lose the last folder
-                        newlocation = "%2F" + newlocation;
+                        newlocation.insert(0, "%2F");
                     }
                     // Remove the first %2F
-                    newlocation = newlocation.replaceFirst("%2F", "");
-                    newlocation = uri_root + newlocation;
-                    uri_current = Uri.parse(newlocation);
+                    newlocation = new StringBuilder(newlocation.toString().replaceFirst("%2F", ""));
+                    newlocation.insert(0, uri_root);
+                    uri_current = Uri.parse(newlocation.toString());
                 } else {
                     uri_current = uri_root;
                 }

@@ -441,18 +441,18 @@ public class PopUpListSetsFragment extends DialogFragment {
         // Set categories are identified by mycategory__setname
         // Those with no category are in the main category
         cats = new ArrayList<>();
-        String log = "";
+        StringBuilder log = new StringBuilder();
         for (int w=0;w<FullscreenActivity.mySetsFileNames.length;w++) {
             if (FullscreenActivity.mySetsFileNames[w].contains("__")) {
                 // Split it into category and set name;
                 String[] msplit = FullscreenActivity.mySetsFileNames[w].split("__");
-                if (!log.contains(msplit[0])) {
-                    log += msplit[0] + ",";
+                if (!log.toString().contains(msplit[0])) {
+                    log.append(msplit[0]).append(",");
                 }
             }
         }
         // Now split the log into available categories
-        String[] categoriesfound = log.split(",");
+        String[] categoriesfound = log.toString().split(",");
         for (String s:categoriesfound) {
             if (!s.equals("")) {
                 cats.add(s);
@@ -697,7 +697,7 @@ public class PopUpListSetsFragment extends DialogFragment {
             // We then add the items to a temp string 'allsongsinset'
             // Once we have loaded them all, we replace the mySet field.
 
-            String allsongsinset = "";
+            StringBuilder allsongsinset = new StringBuilder();
 
             // Split the string by "%_%" - last item will be empty as each set added ends with this
             String[] tempsets = FullscreenActivity.setnamechosen.split("%_%");
@@ -710,12 +710,12 @@ public class PopUpListSetsFragment extends DialogFragment {
                     } catch (XmlPullParserException | IOException e) {
                         e.printStackTrace();
                     }
-                    allsongsinset = allsongsinset + FullscreenActivity.mySet;
+                    allsongsinset.append(FullscreenActivity.mySet);
                 }
             }
 
             // Add all the songs of combined sets back to the mySet
-            FullscreenActivity.mySet = allsongsinset;
+            FullscreenActivity.mySet = allsongsinset.toString();
 
             // Reset the options menu
             SetActions.prepareSetList();

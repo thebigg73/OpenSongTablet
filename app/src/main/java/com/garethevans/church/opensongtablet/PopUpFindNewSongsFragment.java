@@ -83,6 +83,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
     private MyInterface mListener;
     String originaltemppdffile;
     boolean downloadcomplete = false;
+    TextSongConvert textSongConvert;
 
     static PopUpFindNewSongsFragment newInstance() {
         PopUpFindNewSongsFragment frag;
@@ -167,6 +168,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
+
+        textSongConvert = new TextSongConvert();
 
         // Initialise the views
         searchtext_LinearLayout = V.findViewById(R.id.searchtext_LinearLayout);
@@ -292,6 +295,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         //String newUA = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0";
         String newUA = "Mozilla/5.0 (X11; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0";
+        //newUA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0";
         String oldUA = "Mozilla/5.0 (Linux; U; Android 4.0.4; en-gb; GT-I9300 Build/IMM76D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30";
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             webresults_WebView.getSettings().setUserAgentString(oldUA);
@@ -342,7 +346,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                         originaltemppdffile = file.toString();
                         DownloadManager dm = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
                         request.addRequestHeader("Cookie", cookie);
-                        dm.enqueue(request);
+                        if (dm != null) {
+                            dm.enqueue(request);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -455,7 +461,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         String copyright = "";
         String bpm = "";
         String ccli = "";
-        String lyrics = "";
+        StringBuilder lyrics = new StringBuilder();
         String key = "";
 
         // Get the song title
@@ -590,12 +596,12 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         startpos = resultposted.indexOf("<div class=\"chord-pro-disp\"");
         endpos = resultposted.indexOf("<h5>",startpos);
         if (startpos > -1 && endpos > -1 && startpos < endpos) {
-            lyrics = resultposted.substring(startpos,endpos);
+            lyrics = new StringBuilder(resultposted.substring(startpos, endpos));
 
             // Split the lines up
-            String[] lines = lyrics.split("\n");
-            String newline = "";
-            lyrics = "";
+            String[] lines = lyrics.toString().split("\n");
+            StringBuilder newline = new StringBuilder();
+            lyrics = new StringBuilder();
             // Go through each line and do what we need
             for (String l : lines) {
                 l = l.trim();
@@ -608,13 +614,13 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
                 if (!emptystuff && l.contains("<div class=\"chord-pro-disp\"")) {
                     // Start section, so initialise the newline and lyrics
-                    lyrics = "";
-                    newline = "";
+                    lyrics = new StringBuilder();
+                    newline = new StringBuilder();
 
                 } else if (!emptystuff && l.contains("<div class='chord-pro-line'>")) {
                     // Starting a new line, so add the previous newline to the lyrics text
-                    lyrics += "\n" + newline;
-                    newline ="";
+                    lyrics.append("\n").append(newline);
+                    newline = new StringBuilder();
 
                 } else if (!emptystuff && l.contains("<div class='chord-pro-note'>")) {
                     // This is a chord
@@ -623,8 +629,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     endpos = l.indexOf("</div>",startpos);
                     if (startpos > -1 && endpos > -1 && startpos < endpos) {
                         String chordbit = l.substring(startpos+2,endpos);
-                        if (!chordbit.isEmpty() && !chordbit.equals("")) {
-                            newline += "[" + l.substring(startpos + 2, endpos) + "]";
+                        if (!chordbit.isEmpty()) {
+                            newline.append("[").append(l.substring(startpos + 2, endpos)).append("]");
                         }
                     }
 
@@ -635,7 +641,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     startpos = l.indexOf("'>",startpos);
                     endpos = l.indexOf("</div>",startpos);
                     if (startpos > -1 && endpos > -1 && startpos < endpos) {
-                        newline += l.substring(startpos+2,endpos);
+                        newline.append(l.substring(startpos + 2, endpos));
                     }
                 }
 
@@ -650,9 +656,9 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         filecontents += "{ccli:"+ccli+"}\n";
         filecontents += "{key:"+key+"}\n";
         filecontents += "{tempo:"+bpm+"}\n\n";
-        filecontents += lyrics.trim();
+        filecontents += lyrics.toString().trim();
 
-        if (lyrics.trim().isEmpty() || lyrics.trim().equals("")) {
+        if (lyrics.toString().trim().isEmpty() || lyrics.toString().trim().equals("")) {
             filecontents = null;
         }
     }
@@ -669,6 +675,13 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         String filenametosave = "UG Song";
         authorname = "";
         String author_resultposted;
+
+/*
+        String[] lines = resultposted.split("\n");
+        for (String l:lines) {
+            Log.d("d", l);
+        }
+*/
 
         int startpos = resultposted.indexOf("<title>");
         int endpos = resultposted.indexOf("</title>");
@@ -805,9 +818,15 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         // Find the text start
         startpos = resultposted.indexOf("<pre>");
-        if (startpos > -1 || startpos < 500) {
+        if (startpos > -1 && startpos < 500) {
             // Remove everything before this position
             resultposted = resultposted.substring(startpos + 5);
+        }
+
+        // For the mobile version
+        startpos = resultposted.indexOf("<pre class=\"js-tab-content\">");
+        if (startpos >= 0) {
+            resultposted = resultposted.substring(startpos + 28);
         }
 
         // For the mobile version
@@ -835,14 +854,12 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         // Split into lines
         String[] templines = resultposted.split("\n");
-        if (templines==null) {
-            templines = new String[1];
-            templines[0] = resultposted;
-        }
+
         // Go through each line and look for chord lines
         // These have <span> in them
         int numlines = templines.length;
-        newtext = "";
+        StringBuilder sb = new StringBuilder();
+
         for (int q = 0; q < numlines; q++) {
             if (templines[q].contains("<span>") || templines[q].contains("<span class=\"text-chord js-tab-ch\">") ||
                     templines[q].contains("<span class=\"text-chord js-tab-ch js-tapped\">")) {
@@ -863,8 +880,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 // Identify lyrics lines
                 templines[q] = " " + templines[q];
             }
-            newtext = newtext + templines[q] + "\n";
+            sb.append(templines[q]).append("\n");
         }
+
+        newtext = sb.toString();
+
         // Ok remove all html tags
         newtext = newtext.replace("<span>", "");
         // The desktop version of the site has chords inside [ch] [/ch] sections
@@ -887,9 +907,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         newtext = newtext.replace("/>", "");
         newtext = newtext.replace("<", "");
         newtext = newtext.replace(">", "");
-        newtext = newtext.replace("&", "&amp;");
+        newtext = newtext.replace("&#039;","'");
+        newtext = newtext.replace("&amp;","&");
+        newtext = newtext.replace("&quot;","\"");
         newtext = TextUtils.htmlEncode(newtext);
-
 
         if (filenametosave != null && !filenametosave.equals("")) {
             filename = filenametosave.trim();
@@ -938,7 +959,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                             bits[1] = bits[1].substring(1);
                         }
                         if (bits[1].endsWith("'")) {
-                            bits[1] = bits[1].substring(0,-1);
+                            bits[1] = bits[1].substring(0,bits[1].indexOf("'")-1);
                         }
                         authorname = bits[1];
                     }
@@ -981,6 +1002,8 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         if (start>-1 && end>-1 && end>start) {
             templyrics = resultposted.substring(start + 24, end);
         }
+
+        StringBuilder sb = new StringBuilder();
 
         // Split the lyrics into lines
         String[] lines = templyrics.split("\n");
@@ -1052,10 +1075,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 l = " " + l;
             }
 
-            newtext += l + "\n";
+            sb.append(l).append("\n");
         }
 
-        newtext = TextUtils.htmlEncode(newtext);
+        newtext = TextUtils.htmlEncode(sb.toString());
 
         if (filenametosave != null && !filenametosave.equals("")) {
             filename = filenametosave.trim();
@@ -1126,30 +1149,49 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
 
         newtext = PopUpEditSongFragment.parseToHTMLEntities(newtext);
 
-        if (filenametosave != null && !filenametosave.equals("")) {
+        if (!filenametosave.equals("")) {
             filename = filenametosave.trim();
         } else {
             filename = FullscreenActivity.phrasetosearchfor;
         }
     }
 
-    @SuppressWarnings("deprecation")
+
+    // Song Select Code
     public String extractSongSelectChordPro(String s, String temptitle) {
+        // Get the title
+        String title = getTitleSongSelectChordPro(s, temptitle);
 
-        int start;
-        int end;
-        String title = temptitle;
-        String key = "";
-        String author = "";
-        String tempo = "";
-        String timesig = "";
-        String ccli = "";
-        String copyright = "";
-        String lyrics = "";
+        // Extract the key
+        String key = getKeySongSelectChordPro(s);
 
+        // Extract the author
+        String author = getAuthorSongSelectChordPro(s);
+
+        // Extract the tempo and time signature
+        String tempo = getTempoSongSelectChordPro(s);
+        String timesig = getTimeSigSongSelectChordPro(s);
+
+        // Extract the CCLI song number
+        String ccli = getCCLISongSelectChordPro(s);
+
+        // Extract the Copyright info
+        String copyright = getCopyrightSongSelectChordPro(s);
+
+        // Extract the lyrics
+        String lyrics =  getLyricsSongSelectChordPro(s);
+
+        // Return the ChordPro version of the song
+        if (lyrics.equals("")) {
+            return null;
+        } else {
+            return title + author + copyright + ccli + key + tempo + timesig + "\n" + lyrics;
+        }
+    }
+    private String getTitleSongSelectChordPro(String s, String temptitle) {
         // Extract the title
-        start = s.indexOf("<span class=\"cproTitle\">");
-        end = s.indexOf("</span>",start);
+        int start = s.indexOf("<span class=\"cproTitle\">");
+        int end = s.indexOf("</span>",start);
         if (start>-1 && end>-1 && end>start) {
             String t = s.substring(start+24,end);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -1157,25 +1199,29 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
             } else {
                 t = Html.fromHtml(t).toString();
             }
-            title = "{title:" + t + "}\n";
             filename = t;
+            return "{title:" + t + "}\n";
+        } else {
+            return temptitle;
         }
-
-        // Extract the key
-        start = s.indexOf("<code class=\"cproSongKey\"");
-        end = s.indexOf("</code></span>",start);
+    }
+    private String getKeySongSelectChordPro(String s) {
+        int start = s.indexOf("<code class=\"cproSongKey\"");
+        int end = s.indexOf("</code></span>",start);
         if (start>-1 && end>-1 && end>start) {
             // Fine tine the start
             int newstart = s.indexOf(">",start);
             if (newstart<0) {
                 newstart = start;
             }
-            key = "{key:" + s.substring(newstart+1,end).trim() + "}\n";
+            return "{key:" + s.substring(newstart+1,end).trim() + "}\n";
+        } else {
+            return "";
         }
-
-        // Extract the author
-        start = s.indexOf("<span class=\"cproAuthors\">");
-        end = s.indexOf("</span>",start);
+    }
+    private String getAuthorSongSelectChordPro(String s) {
+        int start = s.indexOf("<span class=\"cproAuthors\">");
+        int end = s.indexOf("</span>",start);
         if (start>-1 && end>-1 && end>start) {
             String a = s.substring(start+26,end);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -1184,11 +1230,33 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 a = Html.fromHtml(a).toString();
             }
             author = "{artist:" + a + "}\n";
+            return author;
+        } else {
+            return "";
         }
-
-        // Extract the tempo and time signature
-        start = s.indexOf("<span class=\"cproTempoTimeWrapper\">");
-        end = s.indexOf("</span>",start);
+    }
+    private String getCCLISongSelectChordPro(String s) {
+        int start = s.indexOf("CCLI Song #");
+        int end = s.indexOf("</p>",start);
+        if (start>-1 && end>-1 && end>start) {
+            return "{ccli:" + s.substring(start+11,end).trim() + "}\n";
+        } else {
+            return "";
+        }
+    }
+    private String getCopyrightSongSelectChordPro(String s) {
+        int start = s.indexOf("<ul class=\"copyright\">");
+        start = s.indexOf("<li>",start);
+        int end = s.indexOf("</li>",start);
+        if (start>-1 && end>-1 && end>start) {
+            return "{copyright:" + s.substring(start+4,end).trim() + "}\n";
+        } else {
+            return "";
+        }
+    }
+    private String getTempoSongSelectChordPro(String s) {
+        int start = s.indexOf("<span class=\"cproTempoTimeWrapper\">");
+        int end = s.indexOf("</span>",start);
         if (start>-1 && end>-1 && end>start) {
             String both = s.substring(start+35,end);
             String[] bits = both.split("\\|");
@@ -1199,36 +1267,35 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 t = t.replace("BPM", "");
                 t = t.replace("Bpm", "");
                 t = t.trim();
-                tempo = "{tempo:" + t + "}\n";
+                return "{tempo:" + t + "}\n";
+            } else {
+                return "";
             }
+        }
+        return "";
+    }
+    private String getTimeSigSongSelectChordPro(String s) {
+        int start = s.indexOf("<span class=\"cproTempoTimeWrapper\">");
+        int end = s.indexOf("</span>",start);
+        if (start>-1 && end>-1 && end>start) {
+            String both = s.substring(start+35,end);
+            String[] bits = both.split("\\|");
             if (bits.length>1) {
                 String t = bits[1].replace("Time","");
                 t = t.replace("-","");
                 t = t.trim();
-                timesig = "{time:" + t + "}\n";
+                return "{time:" + t + "}\n";
+            } else {
+                return "";
             }
         }
-
-        // Extract the CCLI song number
-        start = s.indexOf("CCLI Song #");
-        end = s.indexOf("</p>",start);
+        return "";
+    }
+    private String getLyricsSongSelectChordPro(String s) {
+        int start = s.indexOf("<pre class=\"cproSongBody\">");
+        int end = s.indexOf("</pre>",start);
         if (start>-1 && end>-1 && end>start) {
-            ccli = "{ccli:" + s.substring(start+11,end).trim() + "}\n";
-        }
-
-        // Extract the Copyright info
-        start = s.indexOf("<ul class=\"copyright\">");
-        start = s.indexOf("<li>",start);
-        end = s.indexOf("</li>",start);
-        if (start>-1 && end>-1 && end>start) {
-            copyright = "{copyright:" + s.substring(start+4,end).trim() + "}\n";
-        }
-
-        // Extract the lyrics
-        start = s.indexOf("<pre class=\"cproSongBody\">");
-        end = s.indexOf("</pre>",start);
-        if (start>-1 && end>-1 && end>start) {
-            lyrics = s.substring(start+26,end);
+            String lyrics = s.substring(start+26,end);
 
             // Fix the song section headers
             while (lyrics.contains("<span class=\"cproSongSection\"><span class=\"cproComment\">")) {
@@ -1254,32 +1321,10 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                 }
             }
 
-            // Get rid of lyric indications
-            lyrics = lyrics.replace("<span class=\"chordLyrics\">","");
-
-            // Get rid of the new line indications
-            lyrics = lyrics.replace("<span class=\"cproSongLine\">","");
-
-            // Get rid of the chord line only indications
-            lyrics = lyrics.replace("<span class=\"cproSongLine chordsOnly\">","");
-
-            // Get rid of directions indicators
-            lyrics = lyrics.replace("<span class=\"cproDirectionWrapper\">","");
-            lyrics = lyrics.replace("<span class=\"cproDirection\">","");
-
-            // Get rid of any remaining close spans
-            lyrics = lyrics.replace("</span>","");
-
-            // Finally, trim the lyrics
-            lyrics = lyrics.trim();
+            // Get rid of code that we don't need
+            return getRidOfRogueCode(lyrics);
         }
-
-        // Return the ChordPro version of the song
-        if (lyrics.equals("")) {
-            return null;
-        } else {
-            return title + author + copyright + ccli + key + tempo + timesig + "\n" + lyrics;
-        }
+        return "";
     }
 
     public String extractSongSelectUsr(String s, String temptitle) {
@@ -1348,6 +1393,27 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         }
     }
 
+    private String getRidOfRogueCode(String lyrics) {
+        // Get rid of lyric indications
+        lyrics = lyrics.replace("<span class=\"chordLyrics\">","");
+
+        // Get rid of the new line indications
+        lyrics = lyrics.replace("<span class=\"cproSongLine\">","");
+
+        // Get rid of the chord line only indications
+        lyrics = lyrics.replace("<span class=\"cproSongLine chordsOnly\">","");
+
+        // Get rid of directions indicators
+        lyrics = lyrics.replace("<span class=\"cproDirectionWrapper\">","");
+        lyrics = lyrics.replace("<span class=\"cproDirection\">","");
+
+        // Get rid of any remaining close spans
+        lyrics = lyrics.replace("</span>","");
+
+        // Finally, trim the lyrics
+        return lyrics.trim();
+    }
+
     public void setFileNameAndFolder() {
 
         // Hide the searchresults_RelativeLayout
@@ -1397,10 +1463,11 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         } else {
             tempfile = filename;
             // Last check of best practice OpenSong formatting
-            newtext = TextSongConvert.convertText(getActivity(),newtext);
+            newtext = textSongConvert.convertText(getActivity(),newtext);
+
             filecontents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<song>\n<title>" + PopUpEditSongFragment.parseToHTMLEntities(filename)
                     + "</title>\n<author>"
-                    + PopUpEditSongFragment.parseToHTMLEntities(authorname) + "</author>\n<copyright></copyright>\n<lyrics>[]\n"
+                    + PopUpEditSongFragment.parseToHTMLEntities(authorname) + "</author>\n<copyright></copyright>\n<lyrics>"
                     + PopUpEditSongFragment.parseToHTMLEntities(newtext) //Issues cause with &, so fix
                     + "</lyrics>\n</song>";
         }
@@ -1494,6 +1561,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
         @Override
         protected String doInBackground(String... addresses) {
             response = "";
+            StringBuilder sb = new StringBuilder();
             for (String address : addresses) {
                 URL url;
                 HttpURLConnection urlConnection = null;
@@ -1506,7 +1574,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
                     String s;
                     while ((s = buffer.readLine()) != null) {
-                        response += "\n" + s;
+                        sb.append("\n").append(s);
                         if (s.contains("<div class=\"fb-meta\">") ||
                                 s.contains("<div class=\"plus-minus\">") ||
                                 s.contains("<section class=\"ugm-ad ugm-ad__bottom\">")) {
@@ -1514,6 +1582,7 @@ public class PopUpFindNewSongsFragment extends DialogFragment {
                             break;
                         }
                     }
+                    response = sb.toString();
                 } catch (Exception | OutOfMemoryError e) {
                     e.printStackTrace();
                 } finally {

@@ -172,7 +172,7 @@ public class ListSongFiles {
                     int startpos = line.indexOf("encoding=\"")+10;
                     int endpos = line.indexOf("\"",startpos);
                     String enc = line.substring(startpos,endpos);
-                    if (enc!=null && enc.length()>0 && !enc.equals("")) {
+                    if (enc.length() > 0) {
                         utf = enc.toUpperCase();
                     }
                 }
@@ -327,21 +327,14 @@ public class ListSongFiles {
     static boolean blacklistFileType(String s) {
         s = s.toLowerCase();
         String type = null;
-        if (s.lastIndexOf(".")>1 && s.lastIndexOf(".")<s.length()-1) {
+        if (s.lastIndexOf(".") > 1 && s.lastIndexOf(".") < s.length() - 1) {
             MimeTypeMap mime = MimeTypeMap.getSingleton();
-            int index = s.lastIndexOf('.')+1;
+            int index = s.lastIndexOf('.') + 1;
             String ext = s.substring(index).toLowerCase();
             type = mime.getMimeTypeFromExtension(ext);
         }
 
-        if (type!=null && !type.equals("")) {
-            if (type.contains("pdf")) {
-                return false;
-            } else if (type.contains("audio") || type.contains("application") || type.contains("video")) {
-                return true;
-            }
-        }
+        return type != null && !type.equals("") && !type.contains("pdf") && (type.contains("audio") || type.contains("application") || type.contains("video"));
 
-        return false;
     }
 }

@@ -1,6 +1,5 @@
 package com.garethevans.church.opensongtablet;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -73,7 +72,7 @@ class Transpose {
     private static boolean usesflats;
     private static boolean capousesflats;
 
-    static void doTranspose() throws IOException {
+    static void doTranspose() {
 
         try {
             // Go through each line and change each chord to $..$
@@ -131,6 +130,7 @@ class Transpose {
 
             transposeChords();
 
+            StringBuilder sb = new StringBuilder();
             // Now we put the numbers back into chords in the correct format and using either the key preference or the forced sharps or flats
             for (int x = 0; x < FullscreenActivity.myTransposedLyrics.length; x++) {
                 if (FullscreenActivity.myTransposedLyrics[x].indexOf(".") == 0) {
@@ -163,9 +163,10 @@ class Transpose {
                 }
 
                 // Add all the lines back up as a string
-                FullscreenActivity.transposedLyrics += FullscreenActivity.myTransposedLyrics[x] + "\n";
+                sb.append(FullscreenActivity.myTransposedLyrics[x]).append("\n");
             }
 
+            FullscreenActivity.transposedLyrics = sb.toString();
 
             // Now that the chords have been changed, replace the myTransposedLyrics
             // into the file

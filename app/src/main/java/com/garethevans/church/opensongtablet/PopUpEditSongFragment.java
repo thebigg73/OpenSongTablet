@@ -62,6 +62,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     View V;
     String title;
 
+    TextSongConvert textSongConvert;
+
     @Override
     public void updatePresentationOrder() {
         edit_song_presentation.setText(FullscreenActivity.mPresentation);
@@ -128,6 +130,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 saveEdit(true);
             }
         });
+
+        textSongConvert = new TextSongConvert();
 
         // Initialise the basic views
         availabletags = V.findViewById(R.id.availabletags);
@@ -215,12 +219,12 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                     // If we are editing as ChordPro, convert it back to OpenSong first
                     text = ChordProConvert.fromChordProToOpenSong(text);
                     // Now fix it
-                    text = TextSongConvert.convertText(getActivity(),text);
+                    text = textSongConvert.convertText(getActivity(),text);
                     // Now set it back to the ChordPro format
                     text = ChordProConvert.fromOpenSongToChordPro(text,getActivity());
                 } else {
                     // Using OpenSong format, so simply fix it
-                    text = TextSongConvert.convertText(getActivity(),text);
+                    text = textSongConvert.convertText(getActivity(),text);
                 }
                 edit_song_lyrics.setText(text);
             }

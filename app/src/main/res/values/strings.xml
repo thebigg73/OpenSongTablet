@@ -7,7 +7,6 @@
         do not select the OpenSong folder itself, but instead, select the folder that contains the OpenSong folder.</string>
     <string name="root_error" translatable="false">You are currently inside an OpenSong folder - not allowed</string>
 
-
     <string name="holychords" translatable="false">HolyChords.com</string>
     <string name="notsaved">not saved</string>
     <string name="separator" translatable="false"> / </string>

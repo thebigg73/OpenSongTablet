@@ -281,7 +281,7 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
     public void setHighlighterFile() {
         // If this file already exists, load it up!
         hf = ProcessSong.getHighlightFile(getActivity());
-        if (hf!=null && hf.exists()) {
+        if (hf.exists()) {
             drawView.loadImage(hf);
         }
     }
@@ -516,16 +516,12 @@ public class PopUpCreateDrawingFragment extends DialogFragment {
                 FullscreenActivity.highlightOn = true;
                 drawView.setDrawingCacheEnabled(true);
                 f = ProcessSong.getHighlightFile(getActivity());
-                if (f!=null) {
-                    try {
-                        bmp = drawView.getDrawingCache();
-                    } catch (Exception e) {
-                        Log.d("d","Error extracting the drawing");
-                    } catch (OutOfMemoryError e) {
-                        Log.d("d","Out of memory trying to get the drawing");
-                    }
-                } else {
-                    Log.d("d","Can't decide on the appropriate file name");
+                try {
+                    bmp = drawView.getDrawingCache();
+                } catch (Exception e) {
+                    Log.d("d","Error extracting the drawing");
+                } catch (OutOfMemoryError e) {
+                    Log.d("d","Out of memory trying to get the drawing");
                 }
             }
         }

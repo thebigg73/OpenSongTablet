@@ -6,6 +6,8 @@ import android.os.Vibrator;
 class DoVibrate {
     static void vibrate(Context c, int i) {
         Vibrator vb = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-        vb.vibrate(i);
+        if (vb!=null) {
+            vb.vibrate(i);
+        }
     }
 }

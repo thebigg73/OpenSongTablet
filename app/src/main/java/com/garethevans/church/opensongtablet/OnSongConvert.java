@@ -30,7 +30,7 @@ class OnSongConvert {
 		// This tries to extract the relevant stuff and reformat the
 		// <lyrics>...</lyrics>
 		String temp = FullscreenActivity.myXML;
-		String parsedlines;
+		StringBuilder parsedlines;
 		// Initialise all the xml tags a song should have
         FullscreenActivity.mTitle = FullscreenActivity.songfilename;
 		// Initialise all the other tags
@@ -53,9 +53,6 @@ class OnSongConvert {
 		temp = temp.replace("&quot;", "\"");
 		String[] line = temp.split("\n");
 		int numlines = line.length;
-		if (numlines < 0) {
-			numlines = 1;
-        }
 
         //Go through the lines and get rid of rubbish
         for (int c=0;c<numlines;c++) {
@@ -460,15 +457,13 @@ class OnSongConvert {
 				line[x] = "";
 			}
 		}
-		
-	if (metadataend>=0) {
-		//First line is the title
-		if (!line[0].isEmpty()) {
-			FullscreenActivity.mTitle = line[0];
-			line[0] = "";
-		}
-	}
-	if (metadataend>=1) {
+
+        //First line is the title
+        if (!line[0].isEmpty()) {
+            FullscreenActivity.mTitle = line[0];
+            line[0] = "";
+        }
+        if (metadataend>=1) {
 		// Second line is the author	
 		if (!line[1].isEmpty()) {
 			FullscreenActivity.mAuthor = line[1];
@@ -555,7 +550,7 @@ class OnSongConvert {
 		// Go through each line and try to fix chord lines
 		for (int x = metadataend; x < numlines; x++) {
 			line[x] = line[x].trim();
-			String tempchordline = "";
+			StringBuilder tempchordline = new StringBuilder();
 
 			// Look for [ and ] signifying a chord
 			while (line[x].contains("[") && line[x].contains("]")) {
@@ -585,10 +580,10 @@ class OnSongConvert {
 					chordstart = tempchordline.length() + 1;
 				}
 				for (int z = tempchordline.length(); z < chordstart; z++) {
-					tempchordline = tempchordline + " ";
+					tempchordline.append(" ");
 				}
 				// Now add the chord
-				tempchordline = tempchordline + chord;
+				tempchordline.append(chord);
 
 			}
 			// All chords should be gone now, so remove any remaining [ and ]
@@ -600,7 +595,7 @@ class OnSongConvert {
         }
 
 		// Join the individual lines back up
-		parsedlines = "";
+		parsedlines = new StringBuilder();
 		for (int x = 0; x < numlines; x++) {
 			// Try to guess tags used
 			if (line[x].indexOf(";")!=0) {
@@ -695,12 +690,12 @@ class OnSongConvert {
 					line[x] = "[" + line[x].replace(":","") + "]";
 				}
 			}
-			parsedlines = parsedlines + line[x] + "\n";
+			parsedlines.append(line[x]).append("\n");
 		}
 
 		
 		// Remove start and end of tabs
-		while (parsedlines.contains("{start_of_tab") && parsedlines.contains("{end_of_tab")) {
+		while (parsedlines.toString().contains("{start_of_tab") && parsedlines.toString().contains("{end_of_tab")) {
 			int startoftabpos;
 			int endoftabpos;
 			startoftabpos = parsedlines.indexOf("{start_of_tab");
@@ -709,70 +704,67 @@ class OnSongConvert {
 			if (endoftabpos > 13 && startoftabpos > -1 && endoftabpos > startoftabpos) {
 				String startbit = parsedlines.substring(0, startoftabpos);
 				String endbit = parsedlines.substring(endoftabpos);
-				parsedlines = startbit + endbit;
+				parsedlines = new StringBuilder(startbit + endbit);
 			}
 		}
 		
 		// Change start and end of chorus
-		while (parsedlines.contains("{start_of_chorus")) {
-			parsedlines = parsedlines.replace("{start_of_chorus}","[C]");
-			parsedlines = parsedlines.replace("{start_of_chorus:}","[C]");
-			parsedlines = parsedlines.replace("{start_of_chorus :}","[C]");
-			parsedlines = parsedlines.replace("{start_of_chorus","[C]");
-			parsedlines = parsedlines.replace(":","");
-			parsedlines = parsedlines.replace("}","");
+		while (parsedlines.toString().contains("{start_of_chorus")) {
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus}", "[C]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus:}", "[C]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus :}", "[C]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus", "[C]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
 		}
 
-		while (parsedlines.contains("{end_of_chorus")) {
-			parsedlines = parsedlines.replace("{end_of_chorus}","[]");
-			parsedlines = parsedlines.replace("{end_of_chorus:}","[]");
-			parsedlines = parsedlines.replace("{end_of_chorus :}","[]");
-			parsedlines = parsedlines.replace("{end_of_chorus","[]");
-			parsedlines = parsedlines.replace(":","");
-			parsedlines = parsedlines.replace("}","");
+		while (parsedlines.toString().contains("{end_of_chorus")) {
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus}", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus:}", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus :}", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_chorus", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
 		}
 
 		// Change start and end of bridge
-		while (parsedlines.contains("{start_of_bridge")) {
-			parsedlines = parsedlines.replace("{start_of_bridge}","[B]");
-			parsedlines = parsedlines.replace("{start_of_bridge:}","[B]");
-			parsedlines = parsedlines.replace("{start_of_bridge :}","[B]");
-			parsedlines = parsedlines.replace("{start_of_bridge","[B]");
-			parsedlines = parsedlines.replace(":","");
-			parsedlines = parsedlines.replace("}","");
+		while (parsedlines.toString().contains("{start_of_bridge")) {
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge}", "[B]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge:}", "[B]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge :}", "[B]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_bridge", "[B]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
 		}
 
-		while (parsedlines.contains("{end_of_bridge")) {
-			parsedlines = parsedlines.replace("{end_of_bridge}","[]");
-			parsedlines = parsedlines.replace("{end_of_bridge:}","[]");
-			parsedlines = parsedlines.replace("{end_of_bridge :}","[]");
-			parsedlines = parsedlines.replace("{end_of_bridge","[]");
-			parsedlines = parsedlines.replace(":","");
-			parsedlines = parsedlines.replace("}","");
+		while (parsedlines.toString().contains("{end_of_bridge")) {
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge}", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge:}", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge :}", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{end_of_bridge", "[]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
 		}
 		
 		// Get rid of double line breaks
-		while (parsedlines.contains("\n\n\n")) {
-			parsedlines = parsedlines.replace("\n\n\n","\n\n");
+		while (parsedlines.toString().contains("\n\n\n")) {
+			parsedlines = new StringBuilder(parsedlines.toString().replace("\n\n\n", "\n\n"));
 		}
 
-		while (parsedlines.contains(";\n\n;")) {
-			parsedlines = parsedlines.replace(";\n\n;",";\n");
+		while (parsedlines.toString().contains(";\n\n;")) {
+			parsedlines = new StringBuilder(parsedlines.toString().replace(";\n\n;", ";\n"));
 		}
 
 		// Ok, go back through the parsed lines and add spaces to the beginning
 		// of lines that aren't comments, chords or tags
-        if (!parsedlines.contains("\n")) {
-            parsedlines += "\n";
+        if (!parsedlines.toString().contains("\n")) {
+            parsedlines.append("\n");
         }
 
-		String[] line2 = parsedlines.split("\n");
+		String[] line2 = parsedlines.toString().split("\n");
 		int numlines2 = line2.length;
-		if (numlines2 < 0) {
-			numlines2 = 1;
-		}
-		// Reset the parsed lines
-		parsedlines = "";
+        // Reset the parsed lines
+		parsedlines = new StringBuilder();
 
 		// Go through the lines one at a time
 		// Add the fixed bit back together
@@ -784,12 +776,12 @@ class OnSongConvert {
 				}
 			}
 
-			parsedlines = parsedlines + line2[x] + "\n";
+			parsedlines.append(line2[x]).append("\n");
 		}
 
 		boolean isempty = false;
-        if (parsedlines.equals("")) {
-            parsedlines = FullscreenActivity.songfilename;
+        if (parsedlines.toString().equals("")) {
+            parsedlines = new StringBuilder(FullscreenActivity.songfilename);
             isempty = true;
         }
 
@@ -819,7 +811,7 @@ class OnSongConvert {
 				+ "  <pitch>" + FullscreenActivity.mPitch + "</pitch>\n"
 				+ "  <restrictions>" + FullscreenActivity.mRestrictions + "</restrictions>\n"
 				+ "  <notes></notes>\n"
-				+ "  <lyrics>" + parsedlines.trim() + "</lyrics>\n"
+				+ "  <lyrics>" + parsedlines.toString().trim() + "</lyrics>\n"
                 + "  <linked_songs>" + FullscreenActivity.mLinkedSongs + "</linked_songs>\n"
                 + "  <pad_file>" + FullscreenActivity.mPadFile + "</pad_file>\n"
                 + "  <custom_chords>" + FullscreenActivity.mCustomChords + "</custom_chords>\n"
@@ -858,35 +850,35 @@ class OnSongConvert {
 
 		// Change the name of the song to remove onsong file extension 
 		// (not needed)
-		String newSongTitle = FullscreenActivity.songfilename;
-        newSongTitle = newSongTitle.replace("&#39;", "'");
-        newSongTitle = newSongTitle.replace("&#145", "'");
-        newSongTitle = newSongTitle.replace("&#146;", "'");
-        newSongTitle = newSongTitle.replace("&#147;", "'");
-        newSongTitle = newSongTitle.replace("&#148;", "'");
-        newSongTitle = newSongTitle.replace("тАЩ","'");
-        newSongTitle = newSongTitle.replace("\u0027", "'");
-        newSongTitle = newSongTitle.replace("\u0028", "'");
-        newSongTitle = newSongTitle.replace("\u0029", "'");
-        newSongTitle = newSongTitle.replace("\u0060", "'");
-        newSongTitle = newSongTitle.replace("\u00B4", "'");
-        newSongTitle = newSongTitle.replace("\u2018", "'");
-        newSongTitle = newSongTitle.replace("\u2019", "'");
-        newSongTitle = newSongTitle.replace("\u0211","'");
-        newSongTitle = newSongTitle.replace("\u0212","'");
-        newSongTitle = newSongTitle.replace("\u0213","'");
-        newSongTitle = newSongTitle.replace("\u00D5","'");
-        newSongTitle = newSongTitle.replace("\u0442\u0410\u0429","'");
-        newSongTitle = newSongTitle.replace("\u0442","");
-        newSongTitle = newSongTitle.replace("\u0410","");
-        newSongTitle = newSongTitle.replace("\u0429","'");
+		StringBuilder newSongTitle = new StringBuilder(FullscreenActivity.songfilename);
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("&#39;", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("&#145", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("&#146;", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("&#147;", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("&#148;", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("тАЩ", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0027", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0028", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0029", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0060", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u00B4", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u2018", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u2019", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0211", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0212", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0213", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u00D5", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0442\u0410\u0429", "'"));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0442", ""));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0410", ""));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0429", "'"));
 
         // Decide if a better song title is in the file
 		if (FullscreenActivity.mTitle.length() > 0) {
-			newSongTitle = FullscreenActivity.mTitle.toString();
+			newSongTitle = new StringBuilder(FullscreenActivity.mTitle.toString());
 		}
 
-		newSongTitle = newSongTitle.replace(".onsong", "");
+		newSongTitle = new StringBuilder(newSongTitle.toString().replace(".onsong", ""));
 
 		File from;
 		File to;
@@ -904,7 +896,7 @@ class OnSongConvert {
 		// OR append _ to the end - STILL TO DO!!!!!
 		//TODO ask the user for a new filename, if file exists
 		while(to.exists()) {
-			newSongTitle = newSongTitle+"_";
+			newSongTitle.append("_");
             if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
                 to = new File(FullscreenActivity.dir + "/" + newSongTitle);
             } else {
@@ -918,7 +910,7 @@ class OnSongConvert {
             if (!from.renameTo(to)) {
                 Log.d("d","Error renaming");
             }
-            FullscreenActivity.songfilename = newSongTitle;
+            FullscreenActivity.songfilename = newSongTitle.toString();
 
             if (!isbatch) {
                 // Load the songs
@@ -971,6 +963,7 @@ class OnSongConvert {
 		protected String doInBackground(String... strings) {
 			try {
 				// Go through each file in the OnSong folder that ends with .onsong and convert it
+				StringBuilder sb = new StringBuilder();
 				FullscreenActivity.whichSongFolder = "OnSong";
 				if (FullscreenActivity.dironsong.exists()) {
 					File[] allfiles = FullscreenActivity.dironsong.listFiles();
@@ -995,15 +988,16 @@ class OnSongConvert {
 										+ context.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
 								FullscreenActivity.myLyrics = "ERROR!";
 								e.printStackTrace();
-								message += thisfile.getName() + " - " + context.getResources().getString(R.string.error);
+								sb.append(thisfile.getName()).append(" - ").append(context.getResources().getString(R.string.error));
 							}
 						} else if (thisfile.getName().endsWith(".sqlite3") || thisfile.getName().endsWith(".preferences") ||
 								thisfile.getName().endsWith(".doc") || thisfile.getName().endsWith(".docx")) {
 							if (!thisfile.delete()) {
-								message += thisfile.getName() + " - " + context.getResources().getString(R.string.deleteerror_start);
+								sb.append(thisfile.getName()).append(" - ").append(context.getResources().getString(R.string.deleteerror_start));
 							}
 						}
 					}
+					message = sb.toString();
 					if (message.equals("")) {
 						message = "OK";
 					}

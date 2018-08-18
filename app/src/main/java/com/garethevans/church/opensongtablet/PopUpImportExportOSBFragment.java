@@ -306,11 +306,15 @@ public class PopUpImportExportOSBFragment extends DialogFragment {
         ShowToast.showToast(getActivity());
         // Check the selected folders
         selectednote = "";
+        StringBuilder sb = new StringBuilder();
+
         for (int i=0; i<foldersfoundinzip.size(); i++) {
             if (folderlist.isItemChecked(i)) {
-                selectednote = selectednote + "%__" + foldersfoundinzip.get(i) + "/__%";
+                sb.append("%__").append(foldersfoundinzip.get(i)).append("/__%");
             }
         }
+
+        selectednote = sb.toString();
 
         // Split
         foldersselectedtoimport = selectednote.split("__%%__");

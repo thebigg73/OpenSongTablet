@@ -181,6 +181,19 @@ public class SetActions extends Activity {
     }
 
     static void indexSongInSet() {
+
+        // Initialise variables if they are null
+        if (FullscreenActivity.mSetList==null) {
+            FullscreenActivity.mSetList = new String[0];
+        }
+
+        if (FullscreenActivity.mSet==null) {
+            FullscreenActivity.mSet = new String[0];
+        }
+
+        if (FullscreenActivity.whatsongforsetwork==null) {
+            FullscreenActivity.whatsongforsetwork = "";
+        }
         // See if we are already there!
         boolean alreadythere = false;
         if (FullscreenActivity.indexSongInSet>-1 && FullscreenActivity.mSetList!=null &&
@@ -259,15 +272,15 @@ public class SetActions extends Activity {
         FullscreenActivity.whattodo = "";
         if (FullscreenActivity.mSetList!=null && FullscreenActivity.mSetList.length>0) {
             if (!CreateNewSet.doCreation(c)) {
-                Log.d("d","Problem creating new set");
+                FullscreenActivity.myToastMessage = c.getString(R.string.error_notset);
             }
+        } else if (FullscreenActivity.mSetList!=null) {
+            FullscreenActivity.myToastMessage = c.getString(R.string.error_notset);
         }
+
         if (FullscreenActivity.myToastMessage.equals("yes")) {
             FullscreenActivity.myToastMessage = c.getString(R.string.set_save)
                     + " - " + c.getString(R.string.ok);
-        } else {
-            FullscreenActivity.myToastMessage = c.getString(R.string.set_save)
-                    + " - " + c.getString(R.string.no);
         }
     }
 
@@ -288,14 +301,16 @@ public class SetActions extends Activity {
     static void deleteSet(Context c) {
         String[] tempsets = FullscreenActivity.setnamechosen.split("%_%");
         FullscreenActivity.myToastMessage = "";
+        StringBuilder message = new StringBuilder();
         for (String tempfile:tempsets) {
             if (tempfile!=null && !tempfile.equals("") && !tempfile.isEmpty()) {
                 File settodelete = new File(FullscreenActivity.dirsets + "/" + tempfile);
                 if (settodelete.delete()) {
-                    FullscreenActivity.myToastMessage = FullscreenActivity.myToastMessage + tempfile + ", ";
+                     message.append(tempfile).append(", ");
                 }
             }
         }
+        FullscreenActivity.myToastMessage = message.toString();
         if (FullscreenActivity.myToastMessage.length()>2) {
             FullscreenActivity.myToastMessage = FullscreenActivity.myToastMessage.substring(0, FullscreenActivity.myToastMessage.length() - 2);
         }
@@ -487,10 +502,12 @@ public class SetActions extends Activity {
 
         // Check to see if that file already exists (same name).  If so, add _ to the end
         temp = new File(foldername + "/" + what);
+        StringBuilder whatBuilder = new StringBuilder(what);
         while (temp.exists()) {
-            what += "_";
-            temp = new File(foldername + "/" + what);
+            whatBuilder.append("_");
+            temp = new File(foldername + "/" + whatBuilder);
         }
+        what = whatBuilder.toString();
 
         set_item = setprefix + what + "_**$";
 
@@ -563,7 +580,7 @@ public class SetActions extends Activity {
         // Ok parse this bit seperately.  Initialise the values
         String scripture_title = "";
         String scripture_translation = "";
-        String scripture_text = "";
+        StringBuilder scripture_text = new StringBuilder();
         String scripture_seconds = xpp.getAttributeValue(null, "seconds");
         String scripture_loop = xpp.getAttributeValue(null, "loop");
 
@@ -574,7 +591,7 @@ public class SetActions extends Activity {
                     scripture_title = xpp.nextText();
                     break;
                 case "body":
-                    scripture_text = scripture_text + "\n[]\n" + LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    scripture_text.append("\n[]\n").append(LoadXML.parseFromHTMLEntities(xpp.nextText()));
                     break;
                 case "subtitle":
                     scripture_translation = LoadXML.parseFromHTMLEntities(xpp.nextText());
@@ -595,42 +612,42 @@ public class SetActions extends Activity {
         // Break the scripture_text up into small manageable chunks
         // First up, start each new verse on a new line
         //Replace all spaces (split points) with \n
-        scripture_text = scripture_text.replace(" ", "\n");
-        scripture_text = scripture_text.replace("---", "[]");
+        scripture_text = new StringBuilder(scripture_text.toString().replace(" ", "\n"));
+        scripture_text = new StringBuilder(scripture_text.toString().replace("---", "[]"));
         //Split the verses up into an array by new lines - array of words
-        String[] temp_text = scripture_text.split("\n");
+        String[] temp_text = scripture_text.toString().split("\n");
 
         //String[] add_text = new String[800];
         //int array_line = 0;
 
         //Add all the array back together and make sure no line goes above 40 characters
         ArrayList<String> vlines = new ArrayList<>();
-        String currline = "";
+        StringBuilder currline = new StringBuilder();
         for (String words : temp_text) {
             int check = currline.length();
             if (check>40 || words.contains("[]")) {
                 if (words.contains("[]")) {
                     // This is a new section
-                    vlines.add(currline);
+                    vlines.add(currline.toString());
                     vlines.add("[]\n");
-                    currline = "";
+                    currline = new StringBuilder();
                 } else {
-                    vlines.add(currline);
-                    currline = " " + words;
+                    vlines.add(currline.toString());
+                    currline = new StringBuilder(" " + words);
                 }
             } else {
-                currline = currline + " " + words;
+                currline.append(" ").append(words);
             }
         }
-        vlines.add(currline);
+        vlines.add(currline.toString());
 
-        scripture_text = "";
+        scripture_text = new StringBuilder();
 
         // Ok go back through the array and add the non-empty lines back up
         for (int i=0; i<vlines.size();i++) {
             String s = vlines.get(i);
             if (s != null && !s.equals("")) {
-                scripture_text = scripture_text + "\n" + s;
+                scripture_text.append("\n").append(s);
             }
         }
 
@@ -666,8 +683,8 @@ public class SetActions extends Activity {
         }*/
 
 
-        while (scripture_text.contains("\\n\\n")) {
-            scripture_text = scripture_text.replace("\\n\\n", "\\n");
+        while (scripture_text.toString().contains("\\n\\n")) {
+            scripture_text = new StringBuilder(scripture_text.toString().replace("\\n\\n", "\\n"));
         }
 
         title = scripture_title;
@@ -675,7 +692,7 @@ public class SetActions extends Activity {
         user1 = scripture_seconds;
         user2 = scripture_loop;
         user3 = "";
-        lyrics = scripture_text.trim();
+        lyrics = scripture_text.toString().trim();
         aka = "";
         key_line = "";
         hymn_number = "";
@@ -695,7 +712,7 @@ public class SetActions extends Activity {
         String custom_title = "";
         String custom_subtitle = "";
         custom_notes = "";
-        String custom_text = "";
+        StringBuilder custom_text = new StringBuilder();
 
         boolean custom_finished = false;
         while (!custom_finished) {
@@ -707,7 +724,7 @@ public class SetActions extends Activity {
                     custom_notes = LoadXML.parseFromHTMLEntities(xpp.nextText());
                     break;
                 case "body":
-                    custom_text = custom_text + "\n---\n" + LoadXML.parseFromHTMLEntities(xpp.nextText());
+                    custom_text.append("\n---\n").append(LoadXML.parseFromHTMLEntities(xpp.nextText()));
                     break;
                 case "subtitle":
                     custom_subtitle = LoadXML.parseFromHTMLEntities(xpp.nextText());
@@ -725,7 +742,7 @@ public class SetActions extends Activity {
 
         // Remove first ---
         if (custom_text.indexOf("\n---\n") == 0) {
-            custom_text = custom_text.replaceFirst("\n---\n", "");
+            custom_text = new StringBuilder(custom_text.toString().replaceFirst("\n---\n", ""));
         }
 
         // If the custom slide is just a note (no content), fix the content
@@ -733,9 +750,9 @@ public class SetActions extends Activity {
         if (custom_name.contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
             // Prepare for a note
             custom_name = custom_name.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");
-            custom_text = custom_notes;
+            custom_text = new StringBuilder(custom_notes);
             if (custom_notes.equals("")) {
-                custom_text = custom_name;
+                custom_text = new StringBuilder(custom_name);
             }
             custom_notes = "";
             custom_title = "";
@@ -748,7 +765,7 @@ public class SetActions extends Activity {
         } else if (custom_name.contains("# " + c.getResources().getString(R.string.variation) + " # - ")) {
             // Prepare for a variation
             custom_name = custom_name.replace("# " + c.getResources().getString(R.string.variation) + " # - ", "");
-            custom_text = custom_notes;
+            custom_text = new StringBuilder(custom_notes);
             custom_title = custom_name;
             custom_subtitle = "";
             custom_seconds = "";
@@ -762,7 +779,7 @@ public class SetActions extends Activity {
         user3 = "";
         aka = custom_name;
         key_line = custom_notes;
-        lyrics = custom_text;
+        lyrics = custom_text.toString();
         hymn_number = "";
 
         writeTempSlide(noteorslide, custom_name,c);
@@ -774,13 +791,13 @@ public class SetActions extends Activity {
         String image_name = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
         String image_seconds = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "seconds"));
         String image_loop = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "loop"));
-        String image_title = "";
+        StringBuilder image_title = new StringBuilder();
         String image_subtitle = "";
-        String slide_images;
-        String slide_image_titles;
+        StringBuilder slide_images;
+        StringBuilder slide_image_titles;
         String image_notes = "";
         String image_filename;
-        String hymn_number_imagecode = "";
+        StringBuilder hymn_number_imagecode = new StringBuilder();
         key_line = "";
         int imagenums = 0;
 
@@ -791,14 +808,14 @@ public class SetActions extends Activity {
         boolean allimagesdone = false;
         String image_content = "";
         String image_type;
-        slide_images = "";
-        slide_image_titles = "";
+        slide_images = new StringBuilder();
+        slide_image_titles = new StringBuilder();
 
         while (!allimagesdone) { // Keep iterating unless the current eventType is the end of the document
             if(eventType == XmlPullParser.START_TAG) {
                 switch (xpp.getName()) {
                     case "title":
-                        image_title = LoadXML.parseFromHTMLEntities(xpp.nextText());
+                        image_title = new StringBuilder(LoadXML.parseFromHTMLEntities(xpp.nextText()));
 
                         break;
                     case "subtitle":
@@ -812,9 +829,10 @@ public class SetActions extends Activity {
                     case "filename":
                         image_filename = LoadXML.parseFromHTMLEntities(xpp.nextText());
                         if (image_filename != null && !image_filename.equals("") && !image_filename.isEmpty()) {
-                            slide_images = slide_images + image_filename + "\n";
-                            slide_image_titles = slide_image_titles + "[" + c.getResources().getString(R.string.image) + "_" +
-                                    (imagenums + 1) + "]\n" + image_filename + "\n\n";
+                            slide_images.append(image_filename).append("\n");
+                            slide_image_titles.append("[").append(c.getResources().getString(R.string.image))
+                                    .append("_").append(imagenums + 1).append("]\n").append(image_filename)
+                                    .append("\n\n");
                             imagenums++;
                             encodedimage = false;
                         }
@@ -833,15 +851,16 @@ public class SetActions extends Activity {
                         if (encodedimage) {
                             // Save this image content
                             // Need to see if the image already exists
-                            if (image_title == null || image_title.equals("")) {
-                                image_title = c.getResources().getString(R.string.image);
+                            if (image_title.toString().equals("")) {
+                                image_title = new StringBuilder(c.getResources().getString(R.string.image));
                             }
 
                             File imgfile = new File(FullscreenActivity.dircustomimages + "/" + image_title + imagenums + image_type);
                             while (imgfile.exists()) {
 
-                                image_title += "_";
-                                imgfile = new File(FullscreenActivity.dircustomimages + "/" + image_title + imagenums + image_type);
+                                image_title.append("_");
+                                imgfile = new File(FullscreenActivity.dircustomimages + "/" +
+                                        image_title + imagenums + image_type);
                             }
                             FileOutputStream overWrite = new FileOutputStream(imgfile, false);
                             byte[] decodedString = Base64.decode(image_content, Base64.DEFAULT);
@@ -849,9 +868,9 @@ public class SetActions extends Activity {
                             overWrite.flush();
                             overWrite.close();
                             image_content = "";
-                            slide_images = slide_images + imgfile.toString() + "\n";
-                            slide_image_titles = slide_image_titles + "[" + c.getResources().getString(R.string.image) + "_" +
-                                    (imagenums + 1) + "]\n" + imgfile + "\n\n";
+                            slide_images.append(imgfile.toString()).append("\n");
+                            slide_image_titles.append("[").append(c.getResources().getString(R.string.image))
+                                    .append("_").append(imagenums + 1).append("]\n").append(imgfile).append("\n\n");
                             imagenums++;
                             encodedimage = false;
                         }
@@ -859,7 +878,7 @@ public class SetActions extends Activity {
                         break;
                     case "image":
                         image_content = xpp.nextText();
-                        hymn_number_imagecode = hymn_number_imagecode + image_content.trim() + "XX_IMAGE_XX";
+                        hymn_number_imagecode.append(image_content.trim()).append("XX_IMAGE_XX");
                         encodedimage = true;
                         break;
                 }
@@ -873,8 +892,8 @@ public class SetActions extends Activity {
             eventType = xpp.next(); // Set the current event type from the return value of next()
         }
 
-        if (image_title ==null || image_title.equals("")) {
-            image_title = c.getResources().getString(R.string.image);
+        if (image_title.toString().equals("")) {
+            image_title = new StringBuilder(c.getResources().getString(R.string.image));
         }
 
         if (image_subtitle ==null) {
@@ -889,10 +908,6 @@ public class SetActions extends Activity {
             image_loop = "";
         }
 
-        if (slide_images ==null) {
-            slide_images = "";
-        }
-
         if (image_name ==null) {
             image_name = "";
         }
@@ -901,19 +916,15 @@ public class SetActions extends Activity {
             image_notes = "";
         }
 
-        if (slide_image_titles ==null) {
-            slide_image_titles = "";
-        }
-
-        title = image_title;
+        title = image_title.toString();
         author = image_subtitle;
         user1 = image_seconds;
         user2 = image_loop;
-        user3 = slide_images.trim();
+        user3 = slide_images.toString().trim();
         aka = image_name;
-        hymn_number = hymn_number_imagecode;
+        hymn_number = hymn_number_imagecode.toString();
         key_line = image_notes;
-        lyrics = slide_image_titles.trim();
+        lyrics = slide_image_titles.toString().trim();
         writeTempSlide(c.getResources().getString(R.string.image),title,c);
     }
 

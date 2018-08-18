@@ -107,6 +107,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
     //instantiated new class here.
     public static SongFileList songfilelist = new SongFileList();
+    public static ArrayList<String> songIds = new ArrayList<>();
+    public static ArrayList<String> folderIds = new ArrayList<>();
     //this could be a ref to an xmlObject.
     public static String[][] songDetails;
     public static int numDirs;
@@ -716,51 +718,49 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     }
 
     public void handleSendText(Intent intent) {
-        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        StringBuilder sharedText = new StringBuilder(intent.getStringExtra(Intent.EXTRA_TEXT));
         String title;
-        if (sharedText != null) {
-            // Fix line breaks (if they exist)
-            sharedText = ProcessSong.fixlinebreaks(sharedText);
+        // Fix line breaks (if they exist)
+        sharedText = new StringBuilder(ProcessSong.fixlinebreaks(sharedText.toString()));
 
-            // If this is imported from YouVersion bible app, it should contain https://bible
-            if (sharedText.contains("https://bible")) {
+        // If this is imported from YouVersion bible app, it should contain https://bible
+        if (sharedText.toString().contains("https://bible")) {
 
-                title = getString(R.string.scripture);
-                // Split the text into lines
-                String[] lines = sharedText.split("\n");
-                if (lines.length>0) {
-                    // Remove the last line (http reference)
-                    if (lines.length-1>0 && lines[lines.length-1]!=null &&
-                            lines[lines.length-1].contains("https://bible")) {
-                        lines[lines.length-1] = "";
-                    }
-
-                    // The 2nd last line is likely to be the verse title
-                    if (lines.length-2>0 && lines[lines.length-2]!=null) {
-                        title = lines[lines.length-2];
-                        lines[lines.length-2] = "";
-                    }
-
-                    // Now put the string back together.
-                    sharedText = "";
-                    for (String l:lines) {
-                        sharedText = sharedText + l + "\n";
-                    }
-                    sharedText = sharedText.trim();
+            title = getString(R.string.scripture);
+            // Split the text into lines
+            String[] lines = sharedText.toString().split("\n");
+            if (lines.length>0) {
+                // Remove the last line (http reference)
+                if (lines.length-1>0 && lines[lines.length-1]!=null &&
+                        lines[lines.length-1].contains("https://bible")) {
+                    lines[lines.length-1] = "";
                 }
 
-                // Now split it into smaller lines to better fit the screen size
-                sharedText = Bible.shortenTheLines(sharedText, 40, 6);
+                // The 2nd last line is likely to be the verse title
+                if (lines.length-2>0 && lines[lines.length-2]!=null) {
+                    title = lines[lines.length-2];
+                    lines[lines.length-2] = "";
+                }
 
-                whattodo = "importfile_customreusable_scripture";
-                scripture_title = title;
-                scripture_verse = sharedText;
-            } else {
-                // Just standard text, so create a new song
-                whattodo = "importfile_newsong_text";
-                scripture_title = "importedtext_in_scripture_verse";
-                scripture_verse = sharedText;
+                // Now put the string back together.
+                sharedText = new StringBuilder();
+                for (String l:lines) {
+                    sharedText.append(l).append("\n");
+                }
+                sharedText = new StringBuilder(sharedText.toString().trim());
             }
+
+            // Now split it into smaller lines to better fit the screen size
+            sharedText = new StringBuilder(Bible.shortenTheLines(sharedText.toString(), 40, 6));
+
+            whattodo = "importfile_customreusable_scripture";
+            scripture_title = title;
+            scripture_verse = sharedText.toString();
+        } else {
+            // Just standard text, so create a new song
+            whattodo = "importfile_newsong_text";
+            scripture_title = "importedtext_in_scripture_verse";
+            scripture_verse = sharedText.toString();
         }
     }
 
@@ -771,7 +771,9 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
         PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity,
                 PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-        System.exit(0);
+        if (mgr!=null) {
+            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+            System.exit(0);
+        }
     }
 }

@@ -2,7 +2,7 @@
 
     <color name="colorAccent">#ff0000</color>
     <color name="colorControlActivated">#f00</color>
-    <color name="toolbar">#222233</color>
+    <color name="toolbar">#232333</color>
     <color name="accent">#ff0000</color>
     <color name="text">#FFFFFF</color>
     <color name="tint">#0000ff</color>
@@ -14,7 +14,7 @@
     <color name="red">#aa0000</color>
     <color name="green">#00aa00</color>
     <color name="grey">#555555</color>
-    <color name="dark">#221233</color>
+    <color name="dark">#222233</color>
     <color name="white">#FFFFFF</color>
     <color name="yellow">#FFFF00</color>
     <color name="tranparent">#00ffffff</color>

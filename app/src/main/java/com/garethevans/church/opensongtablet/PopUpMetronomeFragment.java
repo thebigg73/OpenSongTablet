@@ -290,7 +290,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
         } else if (av_bpm<40) {
             bpm_numberPicker.setValue(160);
             bpmtext.setText("<40 bpm");
-        }  else if (av_bpm>199) {
+        }  else {
             bpm_numberPicker.setValue(160);
             bpmtext.setText(">199 bpm");
         }

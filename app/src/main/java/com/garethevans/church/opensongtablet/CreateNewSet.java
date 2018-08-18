@@ -17,6 +17,8 @@ public class CreateNewSet extends Activity {
         String tempsongfilename = FullscreenActivity.songfilename;
         String tempdir = FullscreenActivity.whichSongFolder;
 
+        StringBuilder sb = new StringBuilder();
+
         // Only do this is the mSetList isn't empty
         if (FullscreenActivity.mSetList!=null && FullscreenActivity.mSetList.length>0) {
             FullscreenActivity.newSetContents = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
@@ -50,12 +52,12 @@ public class CreateNewSet extends Activity {
                     // Adding a song
                     // If we are not in a subfolder, we have two parts, otherwise, we have subfolders
                     String s_name;
-                    String f_name = "";
+                    StringBuilder f_name = new StringBuilder();
                     for (int pieces=0;pieces<(songparts.length - 1); pieces++) {
-                        f_name += "/" + songparts[pieces];
+                        f_name.append("/").append(songparts[pieces]);
                     }
-                    f_name = f_name.replace("///","/");
-                    f_name = f_name.replace("//","/");
+                    f_name = new StringBuilder(f_name.toString().replace("///", "/"));
+                    f_name = new StringBuilder(f_name.toString().replace("//", "/"));
                     try {
                         s_name = songparts[songparts.length-1];
                     } catch (Exception e) {
@@ -63,12 +65,11 @@ public class CreateNewSet extends Activity {
                         s_name = songparts[1];
                     }
 
-                    FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
-                            + "  <slide_group name=\""
-                            + PopUpEditSongFragment.parseToHTMLEntities(s_name)
-                            + "\" type=\"song\" presentation=\"\" path=\""
-                            + PopUpEditSongFragment.parseToHTMLEntities(f_name) + "\"/>\n";
-
+                    sb.append("  <slide_group name=\"")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(s_name))
+                            .append("\" type=\"song\" presentation=\"\" path=\"")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(f_name.toString()))
+                            .append("\"/>\n");
 
                 } else if (songparts[0].contains("**"+c.getResources().getString(R.string.scripture)) &&
                         !songparts[0].contains("**"+c.getResources().getString(R.string.variation)) &&
@@ -98,25 +99,26 @@ public class CreateNewSet extends Activity {
                     if (FullscreenActivity.mAuthor!="") {
                         newname = newname+"|"+FullscreenActivity.mAuthor;
                     }
-                    FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
-                            + "  <slide_group type=\"scripture\" name=\""
-                            + PopUpEditSongFragment.parseToHTMLEntities(newname)
-                            + "\" print=\"true\">\n"
-                            + "    <title>" + PopUpEditSongFragment.parseToHTMLEntities(songparts[1]) + "</title>\n"
-                            + "    <slides>\n";
+                    sb.append("  <slide_group type=\"scripture\" name=\"")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(newname))
+                            .append("\" print=\"true\">\n")
+                            .append("    <title>")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(songparts[1]))
+                            .append("</title>\n");
 
                     for (String mySlide : mySlides) {
                         if (mySlide != null && mySlide.length() > 0) {
-                            FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
-                                    + "      <slide>\n"
-                                    + "      <body>" + PopUpEditSongFragment.parseToHTMLEntities(mySlide.trim()) + "</body>\n"
-                                    + "      </slide>\n";
+                            sb.append("      <slide>\n")
+                                    .append("      <body>")
+                                    .append(PopUpEditSongFragment.parseToHTMLEntities(mySlide.trim()))
+                                    .append("</body>\n")
+                                    .append("      </slide>\n");
                         }
                     }
-                    FullscreenActivity.newSetContents = FullscreenActivity.newSetContents + "    </slides>\n"
-                            + "    <subtitle>" + "</subtitle>\n"
-                            + "    <notes />\n"
-                            + "  </slide_group>\n";
+                    sb.append("    </slides>\n")
+                            .append("    <subtitle></subtitle>\n")
+                            .append( "    <notes />\n")
+                            .append("  </slide_group>\n");
 
                 } else if (songparts[0].contains("**"+c.getResources().getString(R.string.slide)) &&
                         !songparts[0].contains("**"+c.getResources().getString(R.string.variation)) &&
@@ -146,29 +148,31 @@ public class CreateNewSet extends Activity {
 
                     String[] mySlides = slide_lyrics.split("_SPLITHERE_");
 
-                    FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
-                            + "  <slide_group name=\"" + PopUpEditSongFragment.parseToHTMLEntities(songparts[1])
-                            + "\" type=\"custom\" print=\"true\""
-                            + " seconds=\"" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser1) + "\""
-                            + " loop=\"" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser2) + "\""
-                            + " transition=\"" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser3) + "\">\n"
-                            + "    <title>" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mTitle.toString()) + "</title>\n"
-                            + "    <subtitle>" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mCopyright.toString()) + "</subtitle>\n"
-                            + "    <notes>" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mKeyLine) + "</notes>\n"
-                            + "    <slides>\n";
+                    sb.append("  <slide_group name=\"")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(songparts[1]))
+                            .append("\" type=\"custom\" print=\"true\" seconds=\"")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser1))
+                            .append("\" loop=\"")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser2))
+                            .append("\" transition=\"")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser3))
+                            .append("\">\n    <title>")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mTitle.toString()))
+                            .append("</title>\n    <subtitle>")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mCopyright.toString()))
+                            .append("</subtitle>\n    <notes>")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mKeyLine))
+                            .append("</notes>\n    <slides>\n");
 
                     for (String mySlide : mySlides) {
                         if (mySlide != null && mySlide.length() > 0) {
-                            FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
-                                    + "      <slide>\n"
-                                    + "        <body>" + PopUpEditSongFragment.parseToHTMLEntities(mySlide.trim()) + "</body>\n"
-                                    + "      </slide>\n";
+                            sb.append("      <slide>\n        <body>")
+                                    .append(PopUpEditSongFragment.parseToHTMLEntities(mySlide.trim()))
+                                    .append("</body>\n      </slide>\n");
                         }
                     }
 
-                    FullscreenActivity.newSetContents = FullscreenActivity.newSetContents + "    </slides>\n"
-                            + "  </slide_group>\n";
-
+                    sb.append("    </slides>\n  </slide_group>\n");
 
                 } else if (songparts[0].contains("**"+c.getResources().getString(R.string.note)) &&
                         !songparts[0].contains("**"+c.getResources().getString(R.string.variation)) &&
@@ -190,14 +194,18 @@ public class CreateNewSet extends Activity {
 
                     String slide_lyrics = FullscreenActivity.mLyrics;
 
-                    FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
-                            + "  <slide_group name=\"# " + PopUpEditSongFragment.parseToHTMLEntities(c.getResources().getString(R.string.note)) + " # - " + songparts[1] + "\""
-                            + " type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n"
-                            + "    <title></title>\n"
-                            + "    <subtitle></subtitle>\n"
-                            + "    <notes>" + PopUpEditSongFragment.parseToHTMLEntities(slide_lyrics) + "</notes>\n"
-                            + "    <slides></slides>\n"
-                            + "  </slide_group>\n";
+                    sb.append("  <slide_group name=\"# ")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(c.getResources().getString(R.string.note)))
+                            .append(" # - ")
+                            .append(songparts[1])
+                            .append("\" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n")
+                            .append("    <title></title>\n")
+                            .append("    <subtitle></subtitle>\n")
+                            .append("    <notes>")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(slide_lyrics))
+                            .append("</notes>\n")
+                            .append("    <slides></slides>\n")
+                            .append("  </slide_group>\n");
 
 
 
@@ -230,7 +238,7 @@ public class CreateNewSet extends Activity {
                     // Prepare the slide contents so it remains compatible with the desktop app
                     // Split the lyrics into individual lines
                     String[] lyrics_lines = FullscreenActivity.myLyrics.split("\n");
-                    String currentslide = "";
+                    StringBuilder currentslide = new StringBuilder();
                     ArrayList<String> newslides = new ArrayList<>();
 
                     for (String thisline:lyrics_lines) {
@@ -240,36 +248,47 @@ public class CreateNewSet extends Activity {
                             thisline = thisline.replace("||","\n");
                             thisline = thisline.replace("---","\n");
                             thisline = thisline.replace("|","\n");
-                            currentslide = currentslide + thisline.trim()  + "\n";
+                            currentslide.append(thisline.trim()).append("\n");
                         } else if (thisline.startsWith("[")) {
                             // Save the current slide and create a new one
-                            currentslide = currentslide.trim();
-                            newslides.add(currentslide);
-                            currentslide = "";
+                            currentslide = new StringBuilder(currentslide.toString().trim());
+                            newslides.add(currentslide.toString());
+                            currentslide = new StringBuilder();
                         }
                     }
-                    newslides.add(currentslide);
+                    newslides.add(currentslide.toString());
                     // Now go back through the currentslides and write the slide text
-                    String slidetexttowrite = "";
+                    StringBuilder slidetexttowrite = new StringBuilder();
                     for (int z=0; z<newslides.size();z++) {
                         if (!newslides.get(z).equals("")) {
-                            slidetexttowrite = slidetexttowrite
-                                    + "      <slide>\n"
-                                    + "        <body>" + PopUpEditSongFragment.parseToHTMLEntities(newslides.get(z).trim()) +"\n"
-                                    + "        </body>\n"
-                                    + "      </slide>\n";
+                            slidetexttowrite.append("      <slide>\n")
+                                    .append("        <body>")
+                                    .append(PopUpEditSongFragment.parseToHTMLEntities(newslides.get(z).trim()))
+                                    .append("\n")
+                                    .append("        </body>\n")
+                                    .append("      </slide>\n");
                         }
                     }
 
-                    FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
-                            + "  <slide_group name=\"# " + PopUpEditSongFragment.parseToHTMLEntities(c.getResources().getString(R.string.variation)) + " # - " + songparts[1] + "\""
-                            + " type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n"
-                            + "    <title>"+PopUpEditSongFragment.parseToHTMLEntities(songparts[1])+"</title>\n"
-                            + "    <subtitle>"+PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mAuthor.toString())+"</subtitle>\n"
-                            + "    <notes>" + PopUpEditSongFragment.parseToHTMLEntities(slide_lyrics) + "</notes>\n"
-                            + "    <slides>\n" + slidetexttowrite
-                            + "    </slides>\n"
-                            + "  </slide_group>\n";
+                    sb.append("  <slide_group name=\"# ")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(c.getResources().getString(R.string.variation)))
+                            .append(" # - ")
+                            .append(songparts[1])
+                            .append("\"")
+                            .append(" type=\"custom\" print=\"true\" seconds=\"\" loop=\"\" transition=\"\">\n")
+                            .append("    <title>")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(songparts[1]))
+                            .append("</title>\n")
+                            .append("    <subtitle>")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mAuthor.toString()))
+                            .append("</subtitle>\n")
+                            .append("    <notes>")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(slide_lyrics))
+                            .append("</notes>\n")
+                            .append("    <slides>\n")
+                            .append(slidetexttowrite)
+                            .append("    </slides>\n")
+                            .append("  </slide_group>\n");
 
 
                 } else if (songparts[0].contains("**"+c.getResources().getString(R.string.image)) &&
@@ -300,7 +319,7 @@ public class CreateNewSet extends Activity {
 
 
                     FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
-                    String slide_code = "";
+                    StringBuilder slide_code = new StringBuilder();
 
 
                     for (int e=0;e<sepslidesnum;e++) {
@@ -310,31 +329,41 @@ public class CreateNewSet extends Activity {
                         } else {
                             imglinetext = "        <filename>" + separate_slide[e] + "</filename>\n";
                         }
-                        slide_code = slide_code
-                                + "      <slide>\n"
-                                + imglinetext
-                                + "        <description>" + separate_slide[e] + "</description>\n"
-                                + "      </slide>\n";
+                        slide_code.append("      <slide>\n")
+                                .append(imglinetext)
+                                .append("        <description>")
+                                .append(separate_slide[e])
+                                .append("</description>\n")
+                                .append("      </slide>\n");
                     }
 
-                    FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
-                            + "  <slide_group name=\"" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mAka)
-                            + "\" type=\"image\" print=\"true\" seconds=\"" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser1)
-                            + "\" loop=\"" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser2) + "\" transition=\"0\""
-                            + " resize=\"screen\" keep_aspect=\"false\" link=\"false\">\n"
-                            + "    <title>" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mTitle.toString()) + "</title>\n"
-                            + "    <subtitle>" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mAuthor.toString()) + "</subtitle>\n"
-                            + "    <notes>" + PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mKeyLine) + "</notes>\n"
-                            + "    <slides>\n"
-                            + slide_code + "\n"
-                            + "    </slides>\n"
-                            + "  </slide_group>\n";
+                    sb.append("  <slide_group name=\"")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mAka))
+                            .append("\" type=\"image\" print=\"true\" seconds=\"")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser1))
+                            .append("\" loop=\"")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mUser2))
+                            .append("\" transition=\"0\" resize=\"screen\" keep_aspect=\"false\" link=\"false\">\n")
+                            .append("    <title>")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mTitle.toString()))
+                            .append("</title>\n")
+                            .append("    <subtitle>")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mAuthor.toString()))
+                            .append("</subtitle>\n")
+                            .append("    <notes>")
+                            .append(PopUpEditSongFragment.parseToHTMLEntities(FullscreenActivity.mKeyLine))
+                            .append("</notes>\n")
+                            .append("    <slides>\n")
+                            .append(slide_code)
+                            .append("\n")
+                            .append("    </slides>\n")
+                            .append("  </slide_group>\n");
                 }
             }
 
-            FullscreenActivity.newSetContents = FullscreenActivity.newSetContents
-                    + "</slide_groups>\n</set>";
+            sb.append("</slide_groups>\n</set>");
 
+            FullscreenActivity.newSetContents = sb.toString();
             // Write the string to the file
             FileOutputStream newFile;
             try {
@@ -365,6 +394,8 @@ public class CreateNewSet extends Activity {
             }
 
             FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
+        } else {
+            return false;
         }
 
         // Load the set again - to make sure everything is parsed

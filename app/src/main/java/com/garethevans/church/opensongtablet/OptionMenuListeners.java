@@ -138,112 +138,177 @@ public class OptionMenuListeners extends Activity {
     private static LinearLayout createMainMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option, null);
+
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option, null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createSetMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_set,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_set,null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createSongMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_song,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_song,null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createChordsMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_chords,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_chords,null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createDisplayMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_display,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_display,null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createStorageMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_storage,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_storage,null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createMidiMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_midi,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_midi,null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createFindSongsMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_findsongs,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_findsongs,null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createConnectMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_connections,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_connections,null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createModeMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_modes,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_modes,null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createGesturesMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_gestures,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_gestures,null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createAutoscrollMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_autoscroll,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_autoscroll,null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createPadMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_pad,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_pad,null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createMetronomeMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_metronome,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_metronome,null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createCCLIMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_ccli,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_ccli,null);
+        } else {
+            return null;
+        }
     }
 
     @SuppressLint("InflateParams")
     private static LinearLayout createOtherMenu(Context c) {
         LayoutInflater inflater;
         inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        return (LinearLayout) inflater.inflate(R.layout.popup_option_other,null);
+        if (inflater != null) {
+            return (LinearLayout) inflater.inflate(R.layout.popup_option_other,null);
+        } else {
+            return null;
+        }
     }
 
     static void optionListeners(View v, Context c) {
@@ -1125,7 +1190,7 @@ public class OptionMenuListeners extends Activity {
                     Transpose.checkChordFormat();
                     try {
                         Transpose.doTranspose();
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     Preferences.savePreferences();
@@ -1156,7 +1221,7 @@ public class OptionMenuListeners extends Activity {
                     Transpose.checkChordFormat();
                     try {
                         Transpose.doTranspose();
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     Preferences.savePreferences();
@@ -1285,7 +1350,7 @@ public class OptionMenuListeners extends Activity {
                     Transpose.checkChordFormat();
                     try {
                         Transpose.doTranspose();
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }

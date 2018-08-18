@@ -88,7 +88,7 @@ class PopUpSizeAndAlpha {
                     dw.setAttributes(lp);
                     switch (position) {
                         case "tl":
-                            dw.setGravity(Gravity.TOP | Gravity.LEFT);
+                            dw.setGravity(Gravity.TOP | Gravity.START);
                             break;
 
                         case "tc":
@@ -96,11 +96,11 @@ class PopUpSizeAndAlpha {
                             break;
 
                         case "tr":
-                            dw.setGravity(Gravity.TOP | Gravity.RIGHT);
+                            dw.setGravity(Gravity.TOP | Gravity.END);
                             break;
 
                         case "l":
-                            dw.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
+                            dw.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
                             break;
 
                         default:
@@ -109,11 +109,11 @@ class PopUpSizeAndAlpha {
                             break;
 
                         case "r":
-                            dw.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
+                            dw.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
                             break;
 
                         case "bl":
-                            dw.setGravity(Gravity.BOTTOM | Gravity.LEFT);
+                            dw.setGravity(Gravity.BOTTOM | Gravity.START);
                             break;
 
                         case "bc":
@@ -121,7 +121,7 @@ class PopUpSizeAndAlpha {
                             break;
 
                         case "br":
-                            dw.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
+                            dw.setGravity(Gravity.BOTTOM | Gravity.END);
                             break;
                     }
                     //setWindowFlags(dw, dw.getDecorView());

@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -86,7 +87,7 @@ public class LoadXML extends Activity {
             isxml = true;
             if (!FullscreenActivity.songfilename.endsWith(".sqlite3") && !FullscreenActivity.songfilename.endsWith(".preferences")) {
                 try {
-                     grabOpenSongXML();
+                     grabOpenSongXML(c);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.d("d", "Error performing grabOpenSongXML()");
@@ -149,7 +150,7 @@ public class LoadXML extends Activity {
 
                     // Now read in the proper OpenSong xml file
                     try {
-                        grabOpenSongXML();
+                        grabOpenSongXML(c);
                     } catch (Exception e) {
                         Log.d("d","Error performing grabOpenSongXML()");
                     }
@@ -167,7 +168,7 @@ public class LoadXML extends Activity {
 
                     // Now read in the proper OpenSong xml file
                     try {
-                        grabOpenSongXML();
+                        grabOpenSongXML(c);
                     } catch (Exception e) {
                         Log.d("d","Error performing grabOpenSongXML()");
                     }
@@ -193,7 +194,8 @@ public class LoadXML extends Activity {
                     getFileLocation();
                     // Now read in the proper OpenSong xml file
                     try {
-                        grabOpenSongXML();
+                        grabOpenSongXML(c);
+
                     } catch (Exception e) {
                         Log.d("d","Error performing grabOpenSongXML()");
                     }
@@ -211,14 +213,14 @@ public class LoadXML extends Activity {
             if (!FullscreenActivity.myXML.contains("<lyrics")) {
                 // Need to add a space to the start of each line
                 String[] lines = FullscreenActivity.myXML.split("\n");
-                String text = "";
+                StringBuilder text = new StringBuilder();
                 for (int z=0;z<lines.length;z++) {
                     if (lines[z].indexOf("[")!=0 && lines[z].indexOf(".")!=0 && lines[z].indexOf(";")!=0 && lines[z].indexOf("---")!=0 && lines[z].indexOf(" ")!=0) {
                         lines[z] = " " + lines[z];
                     }
-                    text += lines[z] + "\n";
+                    text.append(lines[z]).append("\n");
                 }
-                FullscreenActivity.mLyrics = text;
+                FullscreenActivity.mLyrics = text.toString();
             }
 
             FullscreenActivity.myLyrics = ProcessSong.removeUnderScores(FullscreenActivity.mLyrics,c);
@@ -439,7 +441,7 @@ public class LoadXML extends Activity {
         FullscreenActivity.mExtraStuff2 = "";
     }
 
-    private static void grabOpenSongXML() throws Exception {
+    private static void grabOpenSongXML(Context c) throws Exception {
         // Extract all of the key bits of the song
         XmlPullParserFactory factory;
         factory = XmlPullParserFactory.newInstance();
@@ -459,11 +461,14 @@ public class LoadXML extends Activity {
         String line;
         try {
             line = buffreader.readLine();
+            if (line.contains("<?xml")) {
+                isxml=true;
+            }
             if (line.contains("encoding=\"")) {
                 int startpos = line.indexOf("encoding=\"")+10;
                 int endpos = line.indexOf("\"",startpos);
                 String enc = line.substring(startpos,endpos);
-                if (enc!=null && enc.length()>0 && !enc.equals("")) {
+                if (enc.length() > 0) {
                     utf = enc.toUpperCase();
                 }
             }
@@ -486,10 +491,17 @@ public class LoadXML extends Activity {
             if (eventType == XmlPullParser.START_TAG) {
                 switch (xpp.getName()) {
                     case "author":
-                        FullscreenActivity.mAuthor = parseFromHTMLEntities(xpp.nextText());
+                        try {
+                            FullscreenActivity.mAuthor = parseFromHTMLEntities(xpp.nextText());
+                            isxml=true;
+                        } catch (Exception e) {
+                            // Try to read in the xml
+                            FullscreenActivity.mAuthor = fixXML(c,"author",FullscreenActivity.file);
+                        }
                         break;
                     case "copyright":
                         FullscreenActivity.mCopyright = parseFromHTMLEntities(xpp.nextText());
+                        isxml=true;
                         break;
                     case "title":
                         String testthetitle = parseFromHTMLEntities(xpp.nextText());
@@ -498,15 +510,15 @@ public class LoadXML extends Activity {
                         } else if (testthetitle != null && testthetitle.equals("")) {
                             FullscreenActivity.mTitle = FullscreenActivity.songfilename;
                         }
+                        isxml=true;
                         break;
                     case "lyrics":
-                        String grabbedlyrics = xpp.nextText();
                         try {
                             FullscreenActivity.mLyrics = ProcessSong.fixStartOfLines(parseFromHTMLEntities(xpp.nextText()));
                         } catch (Exception e) {
-                            FullscreenActivity.mLyrics = grabbedlyrics;
+                            // Try to read in the xml
+                            FullscreenActivity.mLyrics = fixXML(c,"lyrics",FullscreenActivity.file);
                         }
-
                         break;
                     case "ccli":
                         FullscreenActivity.mCCLI = parseFromHTMLEntities(xpp.nextText());
@@ -620,7 +632,6 @@ public class LoadXML extends Activity {
 
             } catch (Exception e) {
                 //Ooops!
-                isxml = false;
                 e.printStackTrace();
             }
         }
@@ -768,7 +779,7 @@ public class LoadXML extends Activity {
             try {
                 int style_start = result.indexOf("<style");
                 int style_end = result.indexOf("</style>");
-                if (style_end > style_start && style_start > -1 && style_end > -1) {
+                if (style_end > style_start && style_start > -1) {
                     FullscreenActivity.mExtraStuff1 = result.substring(style_start, style_end + 8);
                 }
                 int backgrounds_start = result.indexOf("<backgrounds");
@@ -778,7 +789,7 @@ public class LoadXML extends Activity {
                 } else {
                     backgrounds_end += 14;
                 }
-                if (backgrounds_end > backgrounds_start && backgrounds_start > -1 && backgrounds_end > -1) {
+                if (backgrounds_end > backgrounds_start && backgrounds_start > -1) {
                     FullscreenActivity.mExtraStuff2 = result.substring(backgrounds_start, backgrounds_end);
                 }
             } catch (Exception e) {
@@ -869,6 +880,75 @@ public class LoadXML extends Activity {
             where = "../Variations/" + file;
         }
         return where;
+    }
+
+    static String fixXML(Context c, String section, File file) {
+        // Error in the xml - tell the user we're trying to fix it!
+        FullscreenActivity.myToastMessage = c.getString(R.string.fix);
+        ShowToast.showToast(c);
+        StringBuilder newXML = new StringBuilder();
+        String tofix;
+        // If an XML file has unencoded ampersands or quotes, fix them
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            tofix = readTextFile(fis);
+            fis.close();
+
+            if (tofix.contains("<")) {
+                String[] sections = tofix.split("<");
+                for (String bit : sections) {
+                    // We are going though a section at a time
+                    int postofix = bit.indexOf(">");
+                    if (postofix >= 0) {
+                        String startbit = "<"+bit.substring(0,postofix);
+                        String bittofix = doFix(bit.substring(postofix));
+                        newXML.append(startbit).append(bittofix);
+                    }
+                }
+            } else {
+                newXML.append(tofix);
+            }
+
+            // Now save the song again
+            FileOutputStream os = new FileOutputStream(file,false);
+            os.write(newXML.toString().getBytes());
+            os.flush();
+            os.close();
+
+            // Try to extract the section we need
+            if (newXML.toString().contains("<"+section+">") && newXML.toString().contains("</"+section+">")) {
+                int start = newXML.indexOf("<"+section+">") + 2 + section.length();
+                int end = newXML.indexOf("</"+section+">");
+                isxml=true;
+                return newXML.substring(start,end);
+            } else {
+                isxml = false;
+                return newXML.toString();
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    static String doFix(String tofix) {
+        tofix = tofix.replace("&amp;", "&");
+        tofix = tofix.replace("&apos;", "'");  // ' are actually fine - no need
+        tofix = tofix.replace("&quot;", "\"");
+
+        // Get rid of doubles
+        while (tofix.contains("&&")) {
+            tofix = tofix.replace("&&;", "&");
+        }
+
+        // Now put them back
+        tofix = tofix.replace("&", "$_amp_$");
+        tofix = tofix.replace("\"", "&quot;");
+        tofix = tofix.replace("$_amp_$", "&amp;");
+
+        return tofix;
     }
 
     private static String templyrics = "[Intro]\n" +

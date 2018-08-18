@@ -41,7 +41,6 @@ import java.util.zip.ZipOutputStream;
 public class ExportPreparer extends Activity {
 
 	private static String setxml = "";
-	static String settext = "";
 	private static String song_title = "";
 	private static String song_author = "";
     private static String song_hymnnumber = "";
@@ -62,7 +61,8 @@ public class ExportPreparer extends Activity {
 
 	private static boolean setParser(Context c) throws IOException, XmlPullParserException {
 
-        settext = "";
+        StringBuilder sb = new StringBuilder();
+
         FullscreenActivity.exportsetfilenames.clear();
         FullscreenActivity.exportsetfilenames_ost.clear();
         filesinset.clear();
@@ -100,88 +100,92 @@ public class ExportPreparer extends Activity {
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 			if (eventType == XmlPullParser.START_TAG) {
 				if (xpp.getName().equals("slide_group")) {
-					if (xpp.getAttributeValue(null,"type").equals("song")) {
-						songfile = null;
-                        String thisline;
-						songfile = new File(FullscreenActivity.homedir + "/Songs/" + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"path")) + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name")));
-						// Ensure there is a folder '/'
-                        if (xpp.getAttributeValue(null,"path").equals("")) {
-                            thisline = "/" + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
-                        } else {
-                            thisline = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"path")) + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
-                        }
-						filesinset.add(thisline);
-						filesinset_ost.add(thisline);
-
-                        // Set the default values exported with the text for the set
-                        song_title = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
-						song_author = "";
-						song_hymnnumber = "";
-						song_key = "";
-                        // Now try to improve on this info
-						if (songfile.exists() && songfile.isFile()) {
-							// Read in the song title, author, copyright, hymnnumber, key
-							getSongData();
-						}
-						settext = settext + song_title;
-						if (!song_author.isEmpty()) {
-							settext = settext + ", " + song_author;
-						}
-						if (!song_hymnnumber.isEmpty()) {
-							settext = settext + ", #" + song_hymnnumber;
-						}
-						if (!song_key.isEmpty()) {
-							settext = settext + " (" + song_key + ")";
-						}
-						settext = settext + "\n";
-					} else if (xpp.getAttributeValue(null,"type").equals("scripture")) {
-						settext = settext + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name")) + "\n";
-
-					} else if (xpp.getAttributeValue(null,"type").equals("custom")) {
-                        // Decide if this is a note or a slide
-                        if (xpp.getAttributeValue(null,"name").contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
-                            String nametemp = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
-                            nametemp = nametemp.replace("# " + c.getResources().getString(R.string.note) + " # - ","");
-                            settext = settext + nametemp + "\n";
-                        } else {
-                            settext = settext + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name")) + "\n";
-                        }
-					} else if (xpp.getAttributeValue(null,"type").equals("image")) {
-                        // Go through the descriptions of each image and extract the absolute file locations
-                        boolean allimagesdone = false;
-                        ArrayList<String> theseimages = new ArrayList<>();
-						String imgname;
-						imgname = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"));
-                        while (!allimagesdone) { // Keep iterating unless the current eventType is the end of the document
-                            if (eventType == XmlPullParser.START_TAG) {
-                                if (xpp.getName().equals("description")) {
-                                    xpp.next();
-                                    theseimages.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
-                                    filesinset.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
-                                    filesinset_ost.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
-                                }
-
-                            } else if (eventType == XmlPullParser.END_TAG) {
-                                if (xpp.getName().equals("slide_group")) {
-                                    allimagesdone = true;
-                                }
+                    switch (xpp.getAttributeValue(null, "type")) {
+                        case "song":
+                            songfile = null;
+                            String thisline;
+                            songfile = new File(FullscreenActivity.homedir + "/Songs/" + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "path")) + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name")));
+                            // Ensure there is a folder '/'
+                            if (xpp.getAttributeValue(null, "path").equals("")) {
+                                thisline = "/" + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+                            } else {
+                                thisline = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "path")) + LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
                             }
+                            filesinset.add(thisline);
+                            filesinset_ost.add(thisline);
 
-                            eventType = xpp.next(); // Set the current event type from the return value of next()
-                        }
-                        // Go through each of these images and add a line for each one
-                        settext = settext + imgname + "\n";
-                        for (int im=0;im<theseimages.size();im++) {
-                            settext = settext + "     - " + theseimages.get(im) + "\n";
-                        }
-					}
+                            // Set the default values exported with the text for the set
+                            song_title = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+                            song_author = "";
+                            song_hymnnumber = "";
+                            song_key = "";
+                            // Now try to improve on this info
+                            if (songfile.exists() && songfile.isFile()) {
+                                // Read in the song title, author, copyright, hymnnumber, key
+                                getSongData();
+                            }
+                            sb.append(song_title);
+                            if (!song_author.isEmpty()) {
+                                sb.append(", ").append(song_author);
+                            }
+                            if (!song_hymnnumber.isEmpty()) {
+                                sb.append(", #").append(song_hymnnumber);
+                            }
+                            if (!song_key.isEmpty()) {
+                                sb.append(" (").append(song_key).append(")");
+                            }
+                            sb.append("\n");
+                            break;
+                        case "scripture":
+                            sb.append(LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"))).append("\n");
+                            break;
+                        case "custom":
+                            // Decide if this is a note or a slide
+                            if (xpp.getAttributeValue(null, "name").contains("# " + c.getResources().getString(R.string.note) + " # - ")) {
+                                String nametemp = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+                                nametemp = nametemp.replace("# " + c.getResources().getString(R.string.note) + " # - ", "");
+                                sb.append(nametemp).append("\n");
+                            } else {
+                                sb.append(LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null,"name"))).append("\n");
+                            }
+                            break;
+                        case "image":
+                            // Go through the descriptions of each image and extract the absolute file locations
+                            boolean allimagesdone = false;
+                            ArrayList<String> theseimages = new ArrayList<>();
+                            String imgname;
+                            imgname = LoadXML.parseFromHTMLEntities(xpp.getAttributeValue(null, "name"));
+                            while (!allimagesdone) { // Keep iterating unless the current eventType is the end of the document
+                                if (eventType == XmlPullParser.START_TAG) {
+                                    if (xpp.getName().equals("description")) {
+                                        xpp.next();
+                                        theseimages.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
+                                        filesinset.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
+                                        filesinset_ost.add(LoadXML.parseFromHTMLEntities(xpp.getText()));
+                                    }
+
+                                } else if (eventType == XmlPullParser.END_TAG) {
+                                    if (xpp.getName().equals("slide_group")) {
+                                        allimagesdone = true;
+                                    }
+                                }
+
+                                eventType = xpp.next(); // Set the current event type from the return value of next()
+                            }
+                            // Go through each of these images and add a line for each one
+                            sb.append(imgname).append("\n");
+                            for (int im = 0; im < theseimages.size(); im++) {
+                                sb.append("     - ").append(theseimages.get(im)).append("\n");
+                            }
+                            break;
+                    }
 				}
 			}
 			eventType = xpp.next();		
 		}
 
 		// Send the settext back to the FullscreenActivity as emailtext
-		FullscreenActivity.emailtext = settext;
+		FullscreenActivity.emailtext = sb.toString();
         FullscreenActivity.exportsetfilenames = filesinset;
         FullscreenActivity.exportsetfilenames_ost = filesinset_ost;
         return true;
@@ -196,7 +200,7 @@ public class ExportPreparer extends Activity {
 		song_title = "";
 		song_author = "";
         String song_lyrics_withchords = "";
-        String song_lyrics_withoutchords = "";
+        StringBuilder song_lyrics_withoutchords = new StringBuilder();
         //String song_copyright = "";
 		song_hymnnumber = "";
 		song_key = "";
@@ -242,19 +246,23 @@ public class ExportPreparer extends Activity {
 		eventType = xppSong.getEventType();
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 			if (eventType == XmlPullParser.START_TAG) {
-				if (xppSong.getName().equals("author")) {
-					song_author = LoadXML.parseFromHTMLEntities(xppSong.nextText());
-				/*} else if (xppSong.getName().equals("copyright")) {
-					song_copyright = LoadXML.parseFromHTMLEntities(xppSong.nextText());*/
-				} else if (xppSong.getName().equals("title")) {
-					song_title = LoadXML.parseFromHTMLEntities(xppSong.nextText());
-				} else if (xppSong.getName().equals("lyrics")) {
-					song_lyrics_withchords = LoadXML.parseFromHTMLEntities(xppSong.nextText());
-				} else if (xppSong.getName().equals("hymn_number")) {
-					song_hymnnumber = LoadXML.parseFromHTMLEntities(xppSong.nextText());
-				} else if (xppSong.getName().equals("key")) {
-					song_key = LoadXML.parseFromHTMLEntities(xppSong.nextText());
-				}
+                switch (xppSong.getName()) {
+                    case "author":
+                        song_author = LoadXML.parseFromHTMLEntities(xppSong.nextText());
+                        break;
+                    case "title":
+                        song_title = LoadXML.parseFromHTMLEntities(xppSong.nextText());
+                        break;
+                    case "lyrics":
+                        song_lyrics_withchords = LoadXML.parseFromHTMLEntities(xppSong.nextText());
+                        break;
+                    case "hymn_number":
+                        song_hymnnumber = LoadXML.parseFromHTMLEntities(xppSong.nextText());
+                        break;
+                    case "key":
+                        song_key = LoadXML.parseFromHTMLEntities(xppSong.nextText());
+                        break;
+                }
 			}
 			eventType = xppSong.next();
 		}
@@ -265,7 +273,7 @@ public class ExportPreparer extends Activity {
 		if (numlines>0) {
             for (String templyric : templyrics) {
                 if (!templyric.startsWith(".")) {
-                    song_lyrics_withoutchords = song_lyrics_withoutchords + templyric + "\n";
+                    song_lyrics_withoutchords.append(templyric).append("\n");
                 }
             }
 		}
@@ -758,61 +766,61 @@ public class ExportPreparer extends Activity {
     private static void prepareChordProFile(Context c) {
         // This converts an OpenSong file into a ChordPro file
         FullscreenActivity.exportChordPro_String = "";
-        String s = "{ns}\n";
-        s += "{t:"+FullscreenActivity.mTitle+"}\n";
-        s += "{st:"+FullscreenActivity.mAuthor+"}\n\n";
+        StringBuilder s = new StringBuilder("{ns}\n");
+        s.append("{t:").append(FullscreenActivity.mTitle).append("}\n");
+        s.append("{st:").append(FullscreenActivity.mAuthor).append("}\n\n");
 
         // Go through each song section and add the ChordPro formatted chords
         for (int f=0;f<FullscreenActivity.songSections.length;f++) {
-            s += ProcessSong.songSectionChordPro(c, f, false);
+            s.append(ProcessSong.songSectionChordPro(c, f, false));
         }
 
-        s = s.replace("\n\n\n","\n\n");
-        FullscreenActivity.exportChordPro_String = s;
+        s = new StringBuilder(s.toString().replace("\n\n\n", "\n\n"));
+        FullscreenActivity.exportChordPro_String = s.toString();
     }
     private static void prepareOnSongFile(Context c) {
         // This converts an OpenSong file into a OnSong file
         FullscreenActivity.exportOnSong_String = "";
-        String s = FullscreenActivity.mTitle+"\n";
+        StringBuilder s = new StringBuilder(FullscreenActivity.mTitle + "\n");
         if (!FullscreenActivity.mAuthor.equals("")) {
-            s += FullscreenActivity.mAuthor + "\n";
+            s.append(FullscreenActivity.mAuthor).append("\n");
         }
         if (!FullscreenActivity.mCopyright.equals("")) {
-            s += "Copyright: "+FullscreenActivity.mCopyright + "\n";
+            s.append("Copyright: ").append(FullscreenActivity.mCopyright).append("\n");
         }
         if (!FullscreenActivity.mKey.equals("")) {
-            s += "Key: " + FullscreenActivity.mKey + "\n\n";
+            s.append("Key: ").append(FullscreenActivity.mKey).append("\n\n");
         }
 
         // Go through each song section and add the ChordPro formatted chords
         for (int f=0;f<FullscreenActivity.songSections.length;f++) {
-            s += ProcessSong.songSectionChordPro(c, f, true);
+            s.append(ProcessSong.songSectionChordPro(c, f, true));
         }
 
-        s = s.replace("\n\n\n","\n\n");
-        FullscreenActivity.exportOnSong_String = s;
+        s = new StringBuilder(s.toString().replace("\n\n\n", "\n\n"));
+        FullscreenActivity.exportOnSong_String = s.toString();
     }
     private static void prepareTextFile(Context c) {
         // This converts an OpenSong file into a text file
         FullscreenActivity.exportText_String = "";
-        String s = FullscreenActivity.mTitle+"\n";
+        StringBuilder s = new StringBuilder(FullscreenActivity.mTitle + "\n");
         if (!FullscreenActivity.mAuthor.equals("")) {
-            s += FullscreenActivity.mAuthor + "\n";
+            s.append(FullscreenActivity.mAuthor).append("\n");
         }
         if (!FullscreenActivity.mCopyright.equals("")) {
-            s += "Copyright: "+FullscreenActivity.mCopyright + "\n";
+            s.append("Copyright: ").append(FullscreenActivity.mCopyright).append("\n");
         }
         if (!FullscreenActivity.mKey.equals("")) {
-            s += "Key: " + FullscreenActivity.mKey + "\n\n";
+            s.append("Key: ").append(FullscreenActivity.mKey).append("\n\n");
         }
 
         // Go through each song section and add the text trimmed lines
         for (int f=0;f<FullscreenActivity.songSections.length;f++) {
-            s += ProcessSong.songSectionText(c, f);
+            s.append(ProcessSong.songSectionText(c, f));
         }
 
-        s = s.replace("\n\n\n","\n\n");
-        FullscreenActivity.exportText_String = s;
+        s = new StringBuilder(s.toString().replace("\n\n\n", "\n\n"));
+        FullscreenActivity.exportText_String = s.toString();
     }
     private static void writeFile(String s, File f, String what, Bitmap bmp) {
         if (what.equals("png")) {

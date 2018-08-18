@@ -104,7 +104,7 @@ public class PopUpExportSongListFragment extends DialogFragment {
 
     public void prepareSongDirectory(ArrayList<String> directories) {
         // For each selected directory, list the song that exist.
-        String songContents = "";
+        StringBuilder songContents = new StringBuilder();
 
         for (String directory:directories) {
             File directory_file;
@@ -123,28 +123,29 @@ public class PopUpExportSongListFragment extends DialogFragment {
                     }
                 }
 
-                songContents += getActivity().getString(R.string.songsinfolder) + " \"" + directory + "\":\n\n";
+                songContents.append(getActivity().getString(R.string.songsinfolder)).append(" \"")
+                        .append(directory).append("\":\n\n");
 
                 try {
                     Collator coll = Collator.getInstance(FullscreenActivity.locale);
                     coll.setStrength(Collator.SECONDARY);
                     Collections.sort(files_ar, coll);
                     for (int l=0;l<files_ar.size();l++) {
-                        songContents += files_ar.get(l) + "\n";
+                        songContents.append(files_ar.get(l)).append("\n");
                     }
                 } catch (Exception e) {
                     // Error sorting
                 }
 
             }
-            songContents += "\n\n\n\n";
+            songContents.append("\n\n\n\n");
         }
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(android.content.Intent.EXTRA_SUBJECT, getActivity().getString(R.string.app_name) + " " +
                 getActivity().getString(R.string.exportsongdirectory));
-        intent.putExtra(Intent.EXTRA_TEXT, songContents);
+        intent.putExtra(Intent.EXTRA_TEXT, songContents.toString());
 
         String title = getActivity().getResources().getString(R.string.options_song_export);
         Intent chooser = Intent.createChooser(intent, title);
