@@ -648,11 +648,6 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         }
                     }
 
-                    if (menuCount_TextView != null) {
-                        menuCount_TextView.setText(songmenulist.size());
-                        menuCount_TextView.setVisibility(View.VISIBLE);
-                    }
-
                     SongMenuAdapter lva = new SongMenuAdapter(PresenterMode.this, songmenulist);
                     song_list_view.setAdapter(lva);
                     song_list_view.setFastScrollEnabled(true);
@@ -675,6 +670,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         openMyDrawers("song");
                         closeMyDrawers("song_delayed");
                         firstrun_song = false;
+                    }
+
+                    if (menuCount_TextView != null) {
+                        String str = ""+songmenulist.size();
+                        menuCount_TextView.setText(str);
+                        menuCount_TextView.setVisibility(View.VISIBLE);
                     }
                 }
             } catch (Exception e) {

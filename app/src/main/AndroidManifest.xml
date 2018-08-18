@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.garethevans.church.opensongtablet"
     xmlns:tools="http://schemas.android.com/tools"
-    android:versionCode="151"
-    android:versionName="4.2.9"
+    android:versionCode="152"
+    android:versionName="4.3.0"
     android:installLocation="auto">
 
     <!--Overrides are for Sdk=12/13 but library specifiesv Sdk=14+-->
