@@ -12,7 +12,6 @@ import java.util.Arrays;
 class ChordProConvert {
 
     static boolean doExtract() throws IOException {
-        Log.d("chordprofix", "extract");
 
         // This is called when a ChordPro format song has been loaded.
         // This tries to extract the relevant stuff and reformat the
@@ -25,11 +24,11 @@ class ChordProConvert {
 
         // Break the temp variable into an array split by line
         // Check line endings are \n
-        Log.d("chordprofix", ""+temp);
+
         temp = fixLineBreaksAndSlashes(temp);
-        Log.d("chordprofix", "AFTER:"+temp);
+
         String[] line = temp.split("\n");
-        Log.d("chordprofix", "LINE:"+ Arrays.toString(line));
+
         int numlines = line.length;
         if (numlines < 0) {
             numlines = 1;
@@ -161,7 +160,7 @@ class ChordProConvert {
 
         // Change start and end of chorus
         while (parsedlines.contains("{start_of_chorus")) {
-            Log.d("ParsedLines", "~"+parsedlines);
+
             parsedlines = parsedlines.replace("{start_of_chorus}","[C]");
             parsedlines = parsedlines.replace("{start_of_chorus:}","[C]");
             parsedlines = parsedlines.replace("{start_of_chorus :}","[C]");
@@ -172,7 +171,7 @@ class ChordProConvert {
         }
 
         while (parsedlines.contains("{end_of_chorus")) {
-            Log.d("ParsedLines", "~"+parsedlines);
+
             parsedlines = parsedlines.replace("{end_of_chorus}","[]");
             parsedlines = parsedlines.replace("{end_of_chorus:}","[]");
             parsedlines = parsedlines.replace("{end_of_chorus :}","[]");
@@ -187,7 +186,7 @@ class ChordProConvert {
          * {eob}
          * */
         while (parsedlines.contains("{start_of_bridge")) {
-            Log.d("ParsedLines", "~"+parsedlines);
+
             parsedlines = parsedlines.replace("{start_of_bridge}","[B]");
             parsedlines = parsedlines.replace("{start_of_bridge:}","[B]");
             parsedlines = parsedlines.replace("{start_of_bridge :}","[B]");
@@ -198,7 +197,7 @@ class ChordProConvert {
         }
 
         while (parsedlines.contains("{end_of_bridge")) {
-            Log.d("ParsedLines", "~"+parsedlines);
+
             parsedlines = parsedlines.replace("{end_of_bridge}","[]");
             parsedlines = parsedlines.replace("{end_of_bridge:}","[]");
             parsedlines = parsedlines.replace("{end_of_bridge :}","[]");
@@ -229,7 +228,7 @@ class ChordProConvert {
         // Go through the lines one at a time
         // Add the fixed bit back together
         for (int x = 0; x < numlines2; x++) {
-            Log.d("LineAddSpaceIfNot","~"+line2[x]);
+
             if (line2[x].length() > 1) {
 
                 //Take the line and eliminates spaces before the first letter of symbol
@@ -296,8 +295,7 @@ class ChordProConvert {
                 + "  <link_audio></link_audio>\n"
                 + "  <link_other></link_other>\n"
                 + "</song>";
-        Log.d("ParsedLinesNoTRIM","~"+parsedlines.trim());
-        Log.d("ParsedLinesTRIM","~"+parsedlines.trim());
+
         // Save this song in the right format!
         // Makes sure all & are replaced with &amp;
         FullscreenActivity.myXML = FullscreenActivity.myXML.replace("&amp;",
