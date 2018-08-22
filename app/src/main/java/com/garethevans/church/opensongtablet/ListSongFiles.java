@@ -1,6 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
@@ -14,11 +15,44 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.Collator;
+import java.util.ArrayList;
 
 public class ListSongFiles {
 
     static Collator coll;
     //private static ArrayList<String> filelist;
+
+
+    // This is what will work with SAF eventually....
+    void songUrisInFolder(Context c) {
+        // All of the songs are in the FullscreenActivity.songIds
+
+        // Get the song folder document id
+        StorageAccess storageAccess = new StorageAccess();
+        Uri songFolderUri = Uri.withAppendedPath(FullscreenActivity.appHome.getUri(), "Songs");
+        String songfolderid;
+        if (storageAccess.lollipopOrLater()) {
+            songfolderid = storageAccess.getDocumentsContractId(songFolderUri);
+        } else {
+            songfolderid = songFolderUri.getPath();
+        }
+        // Now extract the ones in the current folder
+        FullscreenActivity.songsInFolderUris = new ArrayList<>();
+        for (String id : FullscreenActivity.songIds) {
+            String totest = id.replace(songfolderid, "");
+            // If we are in the mainfolder, we shouldn't have any '/'
+            if ((FullscreenActivity.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
+                    FullscreenActivity.whichSongFolder.equals("")) && !totest.contains("/")) {
+                FullscreenActivity.songsInFolderUris.add(storageAccess.documentUriFromId(id));
+
+                // If we are in the current folder, we shouldn't have any / after this
+            } else if (!totest.replace(FullscreenActivity.whichSongFolder + "/", "").contains("/")) {
+                FullscreenActivity.songsInFolderUris.add(storageAccess.documentUriFromId(id));
+            }
+        }
+
+    }
+
 
     public static void getAllSongFolders() {
         FullscreenActivity.allfilesforsearch.clear();
@@ -168,7 +202,7 @@ public class ListSongFiles {
             String line;
             try {
                 line = buffreader.readLine();
-                if (line.contains("encoding=\"")) {
+                if (line!=null && line.contains("encoding=\"")) {
                     int startpos = line.indexOf("encoding=\"")+10;
                     int endpos = line.indexOf("\"",startpos);
                     String enc = line.substring(startpos,endpos);
@@ -177,7 +211,7 @@ public class ListSongFiles {
                     }
                 }
             } catch (Exception e) {
-                Log.d("d","No encoding included in line 1");
+                e.printStackTrace();
             }
 
             inputStream.close();
@@ -312,7 +346,7 @@ public class ListSongFiles {
                     + c.getString(R.string.songhasbeendeleted);
             // If we are autologging CCLI information
             if (FullscreenActivity.ccli_automatic) {
-                PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
+                PopUpCCLIFragment.addUsageEntryToLog(c,FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
                         "", "",
                         "", "", "2"); // Deleted
             }

@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -938,6 +939,8 @@ class OnSongConvert {
 	}
 	private static class DoBatchConvert extends AsyncTask<String, Void, String> {
 
+		StorageAccess storageAccess;
+
         @SuppressLint("StaticFieldLeak")
         Context context;
 
@@ -971,10 +974,15 @@ class OnSongConvert {
 						if (thisfile.getName().endsWith(".onsong")) {
 							FullscreenActivity.songfilename = thisfile.getName();
 							try {
-								InputStream inputStream = new FileInputStream(FullscreenActivity.dironsong + "/" + thisfile.getName());
+							    Uri uri = storageAccess.getUriForItem(context,"Songs","OnSong",thisfile.getName());
+							    InputStream inputStream = storageAccess.getInputStream(context, uri);
+								//TODO
+                                // InputStream inputStream = new FileInputStream(FullscreenActivity.dironsong + "/" + thisfile.getName());
 								InputStreamReader streamReader = new InputStreamReader(inputStream);
 								BufferedReader bufferedReader = new BufferedReader(streamReader);
-								FullscreenActivity.myXML = LoadXML.readTextFile(inputStream);
+								FullscreenActivity.myXML = storageAccess.readTextFileToString(inputStream);
+								//TODO
+                                // FullscreenActivity.myXML = LoadXML.readTextFile(inputStream);
 								FullscreenActivity.mLyrics = FullscreenActivity.myXML;
 								inputStream.close();
 								bufferedReader.close();

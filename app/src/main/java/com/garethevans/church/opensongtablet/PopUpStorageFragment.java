@@ -881,12 +881,12 @@ public class PopUpStorageFragment extends DialogFragment {
     }
 
     public void testSAF() {
-        // This is a test to try to get the appropriate SAF document files
+        /*// This is a test to try to get the appropriate SAF document files
         // First up, try to get the storage permission
         StorageAccess SAF = new StorageAccess();
         Uri uri_home = SAF.homeFolder(getActivity());
         Log.d("d","df_home="+uri_home);
         Uri uri_songs = SAF.getUriFromPath("Songs","","");
-        Log.d("d","df_songs="+uri_songs);
+        Log.d("d","df_songs="+uri_songs);*/
     }
 }

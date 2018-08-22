@@ -601,7 +601,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
 
             // If we are autologging CCLI information
             if (FullscreenActivity.ccli_automatic) {
-                PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
+                PopUpCCLIFragment.addUsageEntryToLog(getActivity(), FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
                         FullscreenActivity.mTitle.toString(), FullscreenActivity.mAuthor.toString(),
                         FullscreenActivity.mCopyright.toString(), FullscreenActivity.mCCLI, "3"); // Edited
             }

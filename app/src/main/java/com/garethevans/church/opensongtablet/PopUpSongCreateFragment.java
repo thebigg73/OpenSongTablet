@@ -273,7 +273,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
 
                 // If we are autologging CCLI information
                 if (FullscreenActivity.ccli_automatic) {
-                    PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
+                    PopUpCCLIFragment.addUsageEntryToLog(getActivity(),FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
                             FullscreenActivity.songfilename, "",
                             "", "", "1"); // Created
                 }

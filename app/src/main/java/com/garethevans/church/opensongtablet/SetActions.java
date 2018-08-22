@@ -233,10 +233,11 @@ public class SetActions extends Activity {
 
         if (!alreadythere) {
             for (int x = 0; x < FullscreenActivity.setSize; x++) {
-//		for (int x = FullscreenActivity.setSize-1; x<1; x--) {
 
-                if (FullscreenActivity.mSet[x].equals(FullscreenActivity.whatsongforsetwork) ||
-                        FullscreenActivity.mSet[x].equals("**" + FullscreenActivity.whatsongforsetwork)) {
+                if (FullscreenActivity.mSet!=null && FullscreenActivity.mSet.length>=x &&
+                        FullscreenActivity.mSet[x]!=null && FullscreenActivity.whatsongforsetwork!=null &&
+                        (FullscreenActivity.mSet[x].equals(FullscreenActivity.whatsongforsetwork) ||
+                        FullscreenActivity.mSet[x].equals("**" + FullscreenActivity.whatsongforsetwork))) {
 
                     FullscreenActivity.indexSongInSet = x;
                     if (x > 0) {

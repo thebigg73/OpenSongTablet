@@ -205,7 +205,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                                     // as this might not be the song loaded
                                     String[] vals = LoadXML.getCCLILogInfo(c, FullscreenActivity.whichSongFolder, songtoadd);
                                     if (vals.length==4 && vals[0]!=null && vals[1]!=null && vals[2]!=null && vals[3]!=null) {
-                                        PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder + "/" + songtoadd,
+                                        PopUpCCLIFragment.addUsageEntryToLog(c,FullscreenActivity.whichSongFolder + "/" + songtoadd,
                                                 vals[0], vals[1], vals[2], vals[3], "6"); // Printed
                                     }
                                 }

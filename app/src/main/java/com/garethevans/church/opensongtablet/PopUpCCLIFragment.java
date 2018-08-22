@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,10 +25,8 @@ import org.w3c.dom.Node;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -90,7 +90,7 @@ public class PopUpCCLIFragment extends DialogFragment {
     ArrayList<String> date;
     ArrayList<String> time;
     ArrayList<String> action;
-    static File activitylogfile;
+    //static File activitylogfile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -122,7 +122,8 @@ public class PopUpCCLIFragment extends DialogFragment {
         saveMe = V.findViewById(R.id.saveMe);
 
         // Set the log file
-        activitylogfile = new File(FullscreenActivity.dirsettings,"ActivityLog.xml");
+        //TODO
+        //activitylogfile = new File(FullscreenActivity.dirsettings,"ActivityLog.xml");
 
         // Initialise the views
         churchNameTextView = V.findViewById(R.id.churchNameTextView);
@@ -201,7 +202,7 @@ public class PopUpCCLIFragment extends DialogFragment {
         setviewvisiblities(View.GONE, View.GONE, View.VISIBLE, View.GONE);
 
         // Set up the default values
-        buildTable();
+        buildTable(getActivity());
 
         // Set up save/tick listener
         saveMe.setVisibility(View.GONE);
@@ -217,7 +218,7 @@ public class PopUpCCLIFragment extends DialogFragment {
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (createBlankXML()) {
+                if (createBlankXML(getActivity())) {
                     FullscreenActivity.myToastMessage = getString(R.string.ok);
                 } else {
                     FullscreenActivity.myToastMessage = getString(R.string.error);
@@ -242,7 +243,8 @@ public class PopUpCCLIFragment extends DialogFragment {
         resetText.setVisibility(reset);
     }
 
-    public void buildTable() {
+    public void buildTable(Context c) {
+        StorageAccess storageAccess = new StorageAccess();
         // Info is stored in ActivityLog.xml file inside Settings folder
 
         // <Entry1>
@@ -256,141 +258,153 @@ public class PopUpCCLIFragment extends DialogFragment {
         // <HasChords>false</HasChords></Entry1>
 
         // Run this as an async task
-        BuildTable do_buildTable = new BuildTable();
+
+        // Check if the Log file exists and if not, create it
+        boolean exists = storageAccess.createFile(c,null, "Settings", "", "ActivityLog.xml");
+        Uri uri = storageAccess.getUriForItem(c,"Settings","","ActivityLog.xml");
+        InputStream inputStream = storageAccess.getInputStream(c, uri);
+        OutputStream outputStream = storageAccess.getOutputStream(c,uri);
+        if (!exists) { // Create a blank file
+            createBlankXML(c);
+        }
+        String actfilesize = getLogFileSize(c,uri);
+        BuildTable do_buildTable = new BuildTable(uri, inputStream, outputStream, actfilesize);
         do_buildTable.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
-
-    public static String getLogFileSize(File logfile) {
-
-        int file_size_kb = Integer.parseInt(String.valueOf(logfile.length()/1024));
-        String returntext = logfile.getName() + " ("+file_size_kb + "kb)";
+    public static String getLogFileSize(Context c, Uri uri) {
+        //TODO
+    //public static String getLogFileSize(File logfile) {
+        StorageAccess storageAccess = new StorageAccess();
+        Long file_size_kb = storageAccess.getFileSizeFromUri(c, uri);
+        //TODO
+        // int file_size_kb = Integer.parseInt(String.valueOf(logfile.length()/1024));
+        String returntext = "ActivityLog.xml ("+file_size_kb + "kb)";
         if (file_size_kb > 1024) {
-            returntext = " <font color='#f00'>" + logfile.getName() + " ("+file_size_kb + "kb)" + "</font>";
+            returntext = " <font color='#f00'>ActivityLog.xml ("+file_size_kb + "kb)" + "</font>";
         }
         return returntext;
     }
 
     @SuppressLint("StaticFieldLeak")
     private class BuildTable extends AsyncTask<Object, Void, String> {
+        Uri uri;
+        InputStream inputStream;
+        OutputStream outputStream;
+        String sizeoffile;
+
+        BuildTable(Uri u, InputStream is, OutputStream os, String filesize) {
+            sizeoffile = filesize;
+            uri = u;
+            inputStream = is;
+            outputStream = os;
+        }
 
         @Override
         protected String doInBackground(Object... objects) {
             try {
-                // If the xml file doesn't exist, create a blank one
-                boolean success = true;
-                // Get the size of the file
 
-                if (!activitylogfile.exists()) {
-                    success = createBlankXML();
-                }
-                if (success) {
+                // We can proceed!
+                XmlPullParserFactory factory;
+                factory = XmlPullParserFactory.newInstance();
+
+                factory.setNamespaceAware(true);
+                XmlPullParser xpp;
+                xpp = factory.newPullParser();
+
+                songfile = new ArrayList<>();
+                song = new ArrayList<>();
+                author = new ArrayList<>();
+                copyright = new ArrayList<>();
+                ccli = new ArrayList<>();
+                date = new ArrayList<>();
+                time = new ArrayList<>();
+                action = new ArrayList<>();
+
+                xpp.setInput(inputStream, "UTF-8");
+
+                int eventType;
+                String curr_file = "";
+                String curr_song = "";
+                String curr_author = "";
+                String curr_copy = "";
+                String curr_ccli = "";
+                String curr_date = "";
+                String curr_time = "";
+                String curr_action = "";
+
+                eventType = xpp.getEventType();
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    if (eventType == XmlPullParser.START_TAG) {
+                        if (xpp.getName().startsWith("Entry")) {
+                            // If the song isn't blank (first time), extract them
+                            if (!curr_song.equals("")) {
+                                songfile.add(curr_file);
+                                song.add(curr_song);
+                                author.add(curr_author);
+                                copyright.add(curr_copy);
+                                ccli.add(curr_ccli);
+                                date.add(curr_date);
+                                time.add(curr_time);
+                                action.add(curr_action);
+
+                                // Reset the tags
+                                curr_file = "";
+                                curr_song = "";
+                                curr_author = "";
+                                curr_copy = "";
+                                curr_ccli = "";
+                                curr_date = "";
+                                curr_time = "";
+                                curr_action = "";
+                            }
+                        } else if (xpp.getName().equals("FileName")) {
+                            curr_file = xpp.nextText();
+                        } else if (xpp.getName().equals("title")) {
+                            curr_song = xpp.nextText();
+                        } else if (xpp.getName().equals("author")) {
+                            curr_author = xpp.nextText();
+                        } else if (xpp.getName().equals("copyright")) {
+                            curr_copy = xpp.nextText();
+                        } else if (xpp.getName().equals("ccli")) {
+                            curr_ccli = xpp.nextText();
+                        } else if (xpp.getName().equals("Date")) {
+                            curr_date = xpp.nextText();
+                        } else if (xpp.getName().equals("Time")) {
+                            curr_time = xpp.nextText();
+                        } else if (xpp.getName().equals("Description")) {
+                            curr_action = xpp.nextText();
+                        }
+                    }
                     try {
-                        // We can proceed!
-                        XmlPullParserFactory factory;
-                        factory = XmlPullParserFactory.newInstance();
-
-                        factory.setNamespaceAware(true);
-                        XmlPullParser xpp;
-                        xpp = factory.newPullParser();
-
-                        songfile = new ArrayList<>();
-                        song = new ArrayList<>();
-                        author = new ArrayList<>();
-                        copyright = new ArrayList<>();
-                        ccli = new ArrayList<>();
-                        date = new ArrayList<>();
-                        time = new ArrayList<>();
-                        action = new ArrayList<>();
-
-                        InputStream inputStream = new FileInputStream(activitylogfile);
-                        xpp.setInput(inputStream, "UTF-8");
-
-                        int eventType;
-                        String curr_file = "";
-                        String curr_song = "";
-                        String curr_author = "";
-                        String curr_copy = "";
-                        String curr_ccli = "";
-                        String curr_date = "";
-                        String curr_time = "";
-                        String curr_action = "";
-
-                        eventType = xpp.getEventType();
-                        while (eventType != XmlPullParser.END_DOCUMENT) {
-                            if (eventType == XmlPullParser.START_TAG) {
-                                if (xpp.getName().startsWith("Entry")) {
-                                    // If the song isn't blank (first time), extract them
-                                    if (!curr_song.equals("")) {
-                                        songfile.add(curr_file);
-                                        song.add(curr_song);
-                                        author.add(curr_author);
-                                        copyright.add(curr_copy);
-                                        ccli.add(curr_ccli);
-                                        date.add(curr_date);
-                                        time.add(curr_time);
-                                        action.add(curr_action);
-
-                                        // Reset the tags
-                                        curr_file = "";
-                                        curr_song = "";
-                                        curr_author = "";
-                                        curr_copy = "";
-                                        curr_ccli = "";
-                                        curr_date = "";
-                                        curr_time = "";
-                                        curr_action = "";
-                                    }
-                                } else if (xpp.getName().equals("FileName")) {
-                                    curr_file = xpp.nextText();
-                                } else if (xpp.getName().equals("title")) {
-                                    curr_song = xpp.nextText();
-                                } else if (xpp.getName().equals("author")) {
-                                    curr_author = xpp.nextText();
-                                } else if (xpp.getName().equals("copyright")) {
-                                    curr_copy = xpp.nextText();
-                                } else if (xpp.getName().equals("ccli")) {
-                                    curr_ccli = xpp.nextText();
-                                } else if (xpp.getName().equals("Date")) {
-                                    curr_date = xpp.nextText();
-                                } else if (xpp.getName().equals("Time")) {
-                                    curr_time = xpp.nextText();
-                                } else if (xpp.getName().equals("Description")) {
-                                    curr_action = xpp.nextText();
-                                }
-                            }
-                            try {
-                                eventType = xpp.next();
-                            } catch (Exception e) {
-                                //Ooops!
-                                e.printStackTrace();
-                            }
-                        }
-
-                        // Add the last item
-                        if (!curr_song.equals("")) {
-                            songfile.add(curr_file);
-                            song.add(curr_song);
-                            author.add(curr_author);
-                            copyright.add(curr_copy);
-                            ccli.add(curr_ccli);
-                            date.add(curr_date);
-                            time.add(curr_time);
-                            action.add(curr_action);
-                        }
+                        eventType = xpp.next();
                     } catch (Exception e) {
+                        //Ooops!
                         e.printStackTrace();
                     }
                 }
-                String table;
+
+                // Add the last item
+                if (!curr_song.equals("")) {
+                    songfile.add(curr_file);
+                    song.add(curr_song);
+                    author.add(curr_author);
+                    copyright.add(curr_copy);
+                    ccli.add(curr_ccli);
+                    date.add(curr_date);
+                    time.add(curr_time);
+                    action.add(curr_action);
+                }
+
+                StringBuilder table;
                 if (song == null || song.size() == 0) {
-                    table = "<html><body><h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
+                    table = new StringBuilder("<html><body><h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
                             "<h3>" + getString(R.string.ccli_church) + ": " + FullscreenActivity.ccli_church + "</h3>\n" +
                             "<h3>" + getString(R.string.ccli_licence) + ": " + FullscreenActivity.ccli_licence + "</h3>\n" +
-                            "<h4>" + getLogFileSize(activitylogfile) + "</h4>\n" +
-                            "</body></html>";
+                            "<h4>" + sizeoffile + "</h4>\n" +
+                            "</body></html>");
 
                 } else {
-                    table = "<html><head>\n" +
+                    table = new StringBuilder("<html><head>\n" +
                             "<style>\n#mytable {\nborder-collapse: collapse; width: 100%;\n}\n" +
                             "#mytable td, #mytable th {\nborder: 1px solid #ddd; padding: 2px;\n}\n" +
                             "#mytable tr:nth-child(even) {\nbackground-color: #f2f2f2;\n}\n" +
@@ -400,27 +414,27 @@ public class PopUpCCLIFragment extends DialogFragment {
                             "<h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
                             "<h3>" + getString(R.string.ccli_church) + ": " + FullscreenActivity.ccli_church + "</h3>\n" +
                             "<h3>" + getString(R.string.ccli_licence) + ": " + FullscreenActivity.ccli_licence + "</h3>\n" +
-                            "<h4>" + getLogFileSize(activitylogfile) + "</h4>\n" +
-                            "<body><table id=\"mytable\">\n<tr>";
-                    table += "<th>" + getString(R.string.item) + "</th>";
-                    table += "<th>" + getString(R.string.edit_song_title) + "</th>";
-                    table += "<th>" + getString(R.string.edit_song_author) + "</th>";
-                    table += "<th>" + getString(R.string.edit_song_copyright) + "</th>";
-                    table += "<th>" + getString(R.string.edit_song_ccli) + "</th>";
-                    table += "<th>" + getString(R.string.date) + "</th>";
-                    table += "<th>" + getString(R.string.time) + "</th>";
-                    table += "<th>" + getString(R.string.action) + "</th>";
-                    table += "</tr>\n";
+                            "<h4>" + sizeoffile + "</h4>\n" +
+                            "<body><table id=\"mytable\">\n<tr>");
+                    table.append("<th>").append(getString(R.string.item)).append("</th>");
+                    table.append("<th>").append(getString(R.string.edit_song_title)).append("</th>");
+                    table.append("<th>").append(getString(R.string.edit_song_author)).append("</th>");
+                    table.append("<th>").append(getString(R.string.edit_song_copyright)).append("</th>");
+                    table.append("<th>").append(getString(R.string.edit_song_ccli)).append("</th>");
+                    table.append("<th>").append(getString(R.string.date)).append("</th>");
+                    table.append("<th>").append(getString(R.string.time)).append("</th>");
+                    table.append("<th>").append(getString(R.string.action)).append("</th>");
+                    table.append("</tr>\n");
                     // Build the table view
                     for (int x = 0; x < song.size(); x++) {
-                        table += "<tr>";
-                        table += "<td>" + songfile.get(x) + "</td>";
-                        table += "<td>" + song.get(x) + "</td>";
-                        table += "<td>" + author.get(x) + "</td>";
-                        table += "<td>" + copyright.get(x) + "</td>";
-                        table += "<td>" + ccli.get(x) + "</td>";
-                        table += "<td>" + date.get(x) + "</td>";
-                        table += "<td>" + time.get(x) + "</td>";
+                        table.append("<tr>");
+                        table.append("<td>").append(songfile.get(x)).append("</td>");
+                        table.append("<td>").append(song.get(x)).append("</td>");
+                        table.append("<td>").append(author.get(x)).append("</td>");
+                        table.append("<td>").append(copyright.get(x)).append("</td>");
+                        table.append("<td>").append(ccli.get(x)).append("</td>");
+                        table.append("<td>").append(date.get(x)).append("</td>");
+                        table.append("<td>").append(time.get(x)).append("</td>");
                         switch (action.get(x)) {
                         /*
                         1 Created - when importing or clicking on the new
@@ -433,33 +447,33 @@ public class PopUpCCLIFragment extends DialogFragment {
                         8 Copied - when duplicate is called
                         */
                             default:
-                                table += "<td>" + getString(R.string.options_other) + "</td>";
+                                table.append("<td>").append(getString(R.string.options_other)).append("</td>");
                                 break;
                             case "1":
-                                table += "<td>" + getString(R.string.options_song_new) + "</td>";
+                                table.append("<td>").append(getString(R.string.options_song_new)).append("</td>");
                                 break;
                             case "2":
-                                table += "<td>" + getString(R.string.options_set_delete) + "</td>";
+                                table.append("<td>").append(getString(R.string.options_set_delete)).append("</td>");
                                 break;
                             case "3":
-                                table += "<td>" + getString(R.string.options_set_edit) + "</td>";
+                                table.append("<td>").append(getString(R.string.options_set_edit)).append("</td>");
                                 break;
                             case "4":
                             case "7":
-                                table += "<td>" + getString(R.string.options_song_rename) + "</td>";
+                                table.append("<td>").append(getString(R.string.options_song_rename)).append("</td>");
                                 break;
                             case "5":
-                                table += "<td>" + getString(R.string.sendtoprojector) + "</td>";
+                                table.append("<td>").append(getString(R.string.sendtoprojector)).append("</td>");
                                 break;
                             case "6":
-                                table += "<td>" + getString(R.string.songsheet) + "</td>";
+                                table.append("<td>").append(getString(R.string.songsheet)).append("</td>");
                                 break;
                         }
-                        table += "<tr>\n";
+                        table.append("<tr>\n");
                     }
-                    table += "</table></body></html>";
+                    table.append("</table></body></html>");
                 }
-                return table;
+                return table.toString();
             } catch (Exception e) {
                 return "";
             }
@@ -487,20 +501,13 @@ public class PopUpCCLIFragment extends DialogFragment {
         }
     }
 
-    public static boolean createBlankXML() {
-        boolean success = false;
+    public static boolean createBlankXML(Context c) {
         String blankXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "  <log></log>\n";
-        try {
-            FileOutputStream overWrite = new FileOutputStream(activitylogfile, false);
-            overWrite.write(blankXML.getBytes());
-            overWrite.flush();
-            overWrite.close();
-            success = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return success;
+        StorageAccess storageAccess = new StorageAccess();
+        Uri uri = storageAccess.getUriForItem(c,"Settings","","ActivityLog.xml");
+        OutputStream outputStream = storageAccess.getOutputStream(c, uri);
+        return storageAccess.writeFileFromString(blankXML,outputStream);
     }
 
     @Override
@@ -512,16 +519,25 @@ public class PopUpCCLIFragment extends DialogFragment {
         }
     }
 
-    public static void addUsageEntryToLog(String fname, String song,
+    public static void addUsageEntryToLog(Context c, String fname, String song,
                                           String author, String copyright, String ccli, String usage) {
         // Do this as an async task
-        AddUsageEntryToLog add_usage = new AddUsageEntryToLog(fname, song, author, copyright, ccli, usage);
+        StorageAccess storageAccess = new StorageAccess();
+        // Check if the log exists or if we need to create it
+        boolean created = storageAccess.createFile(c,"null","Settings","","ActivityLog.xml");
+        Uri uri = storageAccess.getUriForItem(c,"Settings","","ActivityLog.xml");
+        if (created) {
+            createBlankXML(c);
+        }
+        InputStream inputStream = storageAccess.getInputStream(c,uri);
+        AddUsageEntryToLog add_usage = new AddUsageEntryToLog(uri, inputStream, fname, song, author, copyright, ccli, usage);
         add_usage.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
     }
 
     private static class AddUsageEntryToLog extends AsyncTask<Object, Void, String> {
-
+        Uri uri;
+        InputStream inputStream;
         String date;
         String time;
         String fname = "";
@@ -531,7 +547,9 @@ public class PopUpCCLIFragment extends DialogFragment {
         String ccli = "";
         String usage = "";
 
-        AddUsageEntryToLog (String f, String s, String a, String c, String l, String u){
+        AddUsageEntryToLog (Uri fileuri, InputStream is, String f, String s, String a, String c, String l, String u){
+            uri = fileuri;
+            inputStream = is;
             if (f!=null) {
                 fname = f;
             }if (s!=null) {
@@ -560,18 +578,18 @@ public class PopUpCCLIFragment extends DialogFragment {
             date = df.format(d);
             time = tf.format(d);
             date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-            activitylogfile = new File(FullscreenActivity.dirsettings, "ActivityLog.xml");
+            // TODO
+            //activitylogfile = new File(FullscreenActivity.dirsettings, "ActivityLog.xml");
         }
 
         @Override
         protected String doInBackground(Object... objects) {
             try {
-                if (!activitylogfile.exists()) {
-                    createBlankXML();
-                }
                 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                Document document = documentBuilder.parse(activitylogfile);
+                Document document = documentBuilder.parse(inputStream);
+                //TODO
+                // Document document = documentBuilder.parse(activitylogfile);
                 Element root = document.getDocumentElement();
 
                 String last = "Entry0";
@@ -656,8 +674,13 @@ public class PopUpCCLIFragment extends DialogFragment {
                 Transformer transformer = transformerFactory.newTransformer();
                 transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-                StreamResult result = new StreamResult(activitylogfile);
-                transformer.transform(source, result);
+                StreamResult result = new StreamResult(uri.toString());
+                transformer.transform(source,result);
+                //TODO
+                // StreamResult result = new StreamResult(activitylogfile);
+                //transformer.transform(source, result);
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

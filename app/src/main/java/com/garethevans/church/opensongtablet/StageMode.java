@@ -30,6 +30,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -964,6 +965,8 @@ public class StageMode extends AppCompatActivity implements
                 Log.d("d","No need to close battery monitor");
             }
         }
+
+
         tryCancelAsyncTasks();
     }
 
@@ -1012,6 +1015,22 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        // Second screen
+        try {
+            CastRemoteDisplayLocalService.stopService();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if (hdmi!=null) {
+                hdmi.dismiss();
+            }
+        } catch (Exception e) {
+            // Ooops
+            e.printStackTrace();
         }
     }
 
@@ -1157,8 +1176,10 @@ public class StageMode extends AppCompatActivity implements
         protected String doInBackground(Object... objects) {
             // Send this off to be processed and sent via an intent
             try {
+                String title = getString(R.string.exportcurrentsong);
                 Intent emailIntent = ExportPreparer.exportSong(StageMode.this, FullscreenActivity.bmScreen);
-                startActivityForResult(Intent.createChooser(emailIntent, getResources().getString(R.string.exportcurrentsong)), 12345);
+                Intent chooser = Intent.createChooser(emailIntent, title);
+                startActivity(chooser);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1215,8 +1236,10 @@ public class StageMode extends AppCompatActivity implements
         protected String doInBackground(Object... objects) {
             // Send this off to be processed and sent via an intent
             try {
+                String title = getString(R.string.exportsavedset);
                 Intent emailIntent = ExportPreparer.exportSet(StageMode.this);
-                startActivityForResult(Intent.createChooser(emailIntent, getResources().getString(R.string.exportsavedset)), 12345);
+                Intent chooser = Intent.createChooser(emailIntent, title);
+                startActivity(chooser);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -3892,7 +3915,7 @@ public class StageMode extends AppCompatActivity implements
         if (FullscreenActivity.isPresenting || FullscreenActivity.isHDMIConnected) {
             // If we are autologging CCLI information
             if (newsongloaded && FullscreenActivity.ccli_automatic) {
-                PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
+                PopUpCCLIFragment.addUsageEntryToLog(StageMode.this, FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
                         FullscreenActivity.mTitle.toString(), FullscreenActivity.mAuthor.toString(),
                         FullscreenActivity.mCopyright.toString(), FullscreenActivity.mCCLI, "5"); // Presented
                 newsongloaded = false;
@@ -7445,13 +7468,14 @@ public class StageMode extends AppCompatActivity implements
         void teardown() {
             try {
                 CastRemoteDisplayLocalService.stopService();
-                if (hdmi!=null && hdmi.isShowing()) {
-                    try {
-                        hdmi.dismiss();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if (hdmi!=null) {
+                    hdmi.dismiss();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

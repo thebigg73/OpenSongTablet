@@ -54,16 +54,6 @@
         android:vmSafeMode="true"
         android:largeHeap="false">
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.garethevans.church.opensongtablet.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
-        </provider>
-
         <receiver android:name=".BatteryMonitor">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
@@ -87,6 +77,17 @@
                 android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
                 android:value="com.garethevans.church.opensongtablet.CastOptionsProvider" />
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="OpenSongAppFiles"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            android:permission="android.permission.MANAGE_DOCUMENTS">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
 
         <activity
             android:name="com.garethevans.church.opensongtablet.SettingsActivity"
@@ -102,7 +103,10 @@
 
         <activity android:name=".BootUpCheck" />
 
-        <!--//This is used for testing Storage Access Framework BootUpCheck
+<!--
+//This is used for testing Storage Access Framework BootUpCheck
+
+
                 <activity android:name=".SettingsActivity" />
 
                 <activity android:name=".BootUpCheck"
@@ -115,8 +119,8 @@
                         <category android:name="android.intent.category.LAUNCHER" />
                     </intent-filter>
                 </activity>
-        -->
 
+-->
         <activity
             android:name="com.garethevans.church.opensongtablet.FullscreenActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"

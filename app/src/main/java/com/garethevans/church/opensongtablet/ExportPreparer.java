@@ -595,11 +595,22 @@ public class ExportPreparer extends Activity {
         emailIntent.putExtra(Intent.EXTRA_TEXT, text);
         // Add the attachments
         ArrayList<Uri> uris = new ArrayList<>();
-        File f = new File(FullscreenActivity.dirsettings,"ActivityLog.xml");
+
+        // Check if the Log file exists and if not, create it
+        StorageAccess storageAccess = new StorageAccess();
+        boolean exists = storageAccess.createFile(c,null, "Settings", "", "ActivityLog.xml");
+        Uri uri = storageAccess.getUriForItem(c,"Settings","","ActivityLog.xml");
+        if (!exists) { // Create a blank file
+            PopUpCCLIFragment.createBlankXML(c);
+        }
+        uris.add(uri);
+        // TODO
+        /*File f = new File(FullscreenActivity.dirsettings,"ActivityLog.xml");
         if (!f.exists()) {
             PopUpCCLIFragment.createBlankXML();
         }
-        uris.add(Uri.fromFile(f));
+        uris.add(Uri.fromFile(f));*/
+
         emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
         return emailIntent;
     }

@@ -13,4 +13,13 @@
         android:layout_centerInParent="true"
         android:contentDescription="@string/app_name"
         android:src="@drawable/ost_logo"/>
+
+    <TextView
+        android:id="@+id/currentAction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        style="@style/MyWhiteHeadingText"/>
+
     </RelativeLayout>

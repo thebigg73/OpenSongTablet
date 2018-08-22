@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="storage_check" translatable="false">Checking storage</string>
+    <string name="load_preferences" translatable="false">Loading preferences</string>
+
     <string name="root" translatable="false">Choose storage location</string>
     <string name="root_explain" translatable="false">Your storage location should point to where the OpenSong folder resides or where
         the app should create it.  If you are locating an existing OpenSong folder, navigate to where it is, but

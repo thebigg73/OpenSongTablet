@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -13,6 +14,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -31,6 +33,8 @@ public class IndexSongs extends Activity {
         FullscreenActivity.safetosearch = false;
         FullscreenActivity.search_database = null;
         FullscreenActivity.search_database = new ArrayList<>();
+
+        StorageAccess storageAccess = new StorageAccess();
 
         // Get all the folders that are available
         ArrayList<String> fixedfolders = new ArrayList<>(Arrays.asList(FullscreenActivity.mSongFolderNames));
@@ -237,8 +241,12 @@ public class IndexSongs extends Activity {
                                         !filename.contains(".jpg") && !filename.contains(".JPG") &&
                                         !filename.contains(".gif") && !filename.contains(".GIF") &&
                                         !filename.contains(".jpeg") && !filename.contains(".JPEG")) {
-                                    FileInputStream grabFileContents = new FileInputStream(file);
-                                    lyrics = LoadXML.readTextFile(grabFileContents);
+                                    Uri uri = storageAccess.getUriForItem(c,"Songs",foldername,filename);
+                                    InputStream is = storageAccess.getInputStream(c, uri);
+                                    lyrics = storageAccess.readTextFileToString(is);
+                                    // TODO
+                                    //FileInputStream grabFileContents = new FileInputStream(file);
+                                    //lyrics = LoadXML.readTextFile(grabFileContents);
                                 }
                             }
                         } else {
@@ -252,8 +260,12 @@ public class IndexSongs extends Activity {
                                     !filename.contains(".jpg") && !filename.contains(".JPG") &&
                                     !filename.contains(".gif") && !filename.contains(".GIF") &&
                                     !filename.contains(".jpeg") && !filename.contains(".JPEG")) {
-                                FileInputStream grabFileContents = new FileInputStream(file);
-                                lyrics = LoadXML.readTextFile(grabFileContents);
+                                Uri uri = storageAccess.getUriForItem(c,"Songs",foldername,filename);
+                                InputStream is = storageAccess.getInputStream(c, uri);
+                                lyrics = storageAccess.readTextFileToString(is);
+                                // TODO
+                                //FileInputStream grabFileContents = new FileInputStream(file);
+                                //lyrics = LoadXML.readTextFile(grabFileContents);
                             }
                         }
 

@@ -374,7 +374,7 @@ public class Preferences extends Activity {
             FullscreenActivity.presoAlpha = myPreferences.getFloat("presoAlpha", 1.0f);
             FullscreenActivity.presoAutoScale = myPreferences.getBoolean("presoAutoScale", true);
             FullscreenActivity.presoFontSize = myPreferences.getInt("presoFontSize", 12);
-            FullscreenActivity.presoInfoAlign = myPreferences.getInt("presoInfoAlign", Gravity.RIGHT);
+            FullscreenActivity.presoInfoAlign = myPreferences.getInt("presoInfoAlign", Gravity.END);
             FullscreenActivity.presoLyricsAlign = myPreferences.getInt("presoLyricsAlign", Gravity.CENTER_HORIZONTAL);
             FullscreenActivity.presoMaxFontSize = myPreferences.getInt("presoMaxFontSize", 40);
             FullscreenActivity.presoShowChords = myPreferences.getBoolean("presoShowChords", false);
@@ -875,9 +875,11 @@ public class Preferences extends Activity {
         sharedPref.edit().putInt(prefname, value).apply();
     }
 
-    /* Values stored in Prefences alphabetically listed:
+    /* Values stored in Preferences alphabetically listed:
     Variable name           Type        What
+
     chosenstorage           String      The uri of the document tree (Storage Access Framework)
     lastUsedVersion         int         The app version number the last time the app ran
+    treeUri                 String      A string representation of the root app folder (OpenSong/)
     */
 }
