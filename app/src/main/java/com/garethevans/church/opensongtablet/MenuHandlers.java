@@ -79,7 +79,7 @@ class MenuHandlers {
     static void forceOverFlow(Context c, ActionBar ab, Menu menu) {
         try {
             ViewConfiguration config = ViewConfiguration.get(c);
-            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPerma nentMenuKey");
             if (menuKeyField != null) {
                 menuKeyField.setAccessible(true);
                 menuKeyField.setBoolean(config, false);

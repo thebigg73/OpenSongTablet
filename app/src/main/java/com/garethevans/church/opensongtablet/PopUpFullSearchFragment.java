@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -109,6 +111,12 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
         super.onCreate(savedInstanceState);
 
         mSearchView = V.findViewById(R.id.search_view);
+        EditText searchEditText = mSearchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        if (searchEditText!=null) {
+            Log.d("d","setting text colours");
+            searchEditText.setTextColor(getResources().getColor(R.color.white));
+            searchEditText.setHintTextColor(getResources().getColor(R.color.white));
+        }
         mListView = V.findViewById(R.id.list_view);
         mSearchView.requestFocus();
         if (getDialog().getWindow()!=null) {
@@ -267,7 +275,9 @@ public class PopUpFullSearchFragment extends DialogFragment implements SearchVie
     @Override
     public boolean onQueryTextSubmit(String newText) {
         InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
+        if (imm!=null) {
+            imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
+        }
         mListView.requestFocus();
         if (mListView.getCount() == 0) {
             dismiss();

@@ -91,7 +91,6 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -144,7 +143,7 @@ public class StageMode extends AppCompatActivity implements
 
     // The left and right menu
     DrawerLayout mDrawerLayout;
-    TextView menuFolder_TextView;
+    TextView menuFolder_TextView, menuCount_TextView;
     FloatingActionButton closeSongFAB;
     LinearLayout songmenu, optionmenu, changefolder_LinearLayout;
     ScrollView optionsdisplayscrollview;
@@ -408,6 +407,7 @@ public class StageMode extends AppCompatActivity implements
                 optionsdisplayscrollview = findViewById(R.id.optionsdisplayscrollview);
                 menuFolder_TextView = findViewById(R.id.menuFolder_TextView);
                 menuFolder_TextView.setText(getString(R.string.wait));
+                menuCount_TextView = findViewById(R.id.menuCount_TextView);
                 changefolder_LinearLayout = findViewById(R.id.changefolder_LinearLayout);
                 changefolder_LinearLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -837,17 +837,17 @@ public class StageMode extends AppCompatActivity implements
             if (mysection>0) {
                 // Choose a section
                 holdBeforeLoadingSection(mysection);
-            } else if (data!=null && data.toString().contains("autoscroll_start")) {
+            } else if (data.toString().contains("autoscroll_start")) {
                 // Trigger the autoscroll
                 FullscreenActivity.isautoscrolling = false;
                 holdBeforeAutoscrolling();
 
-            } else if (data!=null && data.toString().contains("autoscroll_stop")) {
+            } else if (data.toString().contains("autoscroll_stop")) {
                 // Trigger the autoscroll stop
                 FullscreenActivity.isautoscrolling = true;
                 holdBeforeAutoscrolling();
 
-            } else if (data!=null) {
+            } else {
                 // Load the song
                 String action = ProcessSong.getSalutReceivedLocation(data.toString(), StageMode.this);
                 switch (action) {
@@ -2784,6 +2784,7 @@ public class StageMode extends AppCompatActivity implements
                 extDir = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/");
             }
             File requestFile = new File(extDir, transferFile);
+            @SuppressLint("SetWorldReadable")
             boolean b = requestFile.setReadable(true, false);
             if (!b) {
                 // Get a URI for the File and add it to the list of URIs
@@ -3505,6 +3506,7 @@ public class StageMode extends AppCompatActivity implements
             // Declare the midi code
             Handler mh = new Handler();
             mh.post(new Runnable() {
+                @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void run() {
                     try {
@@ -3516,10 +3518,8 @@ public class StageMode extends AppCompatActivity implements
                         FullscreenActivity.mMidi = FullscreenActivity.mMidi.replace("\n\n", "\n");
                         String[] midilines = FullscreenActivity.mMidi.trim().split("\n");
                         for (String ml : midilines) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                if (midi!=null) {
-                                    midi.sendMidi(midi.returnBytesFromHexText(ml));
-                                }
+                            if (midi!=null) {
+                                midi.sendMidi(midi.returnBytesFromHexText(ml));
                             }
                         }
                     } catch (Exception e) {
@@ -3870,7 +3870,7 @@ public class StageMode extends AppCompatActivity implements
             capoinfo.setText(ProcessSong.getCapoInfo());
             capoinfo.setVisibility(View.VISIBLE);
             bothempty = false;
-        } else {
+        } else if (capoinfo!=null){
             capoinfo.setVisibility(View.GONE);
         }
 
@@ -4496,7 +4496,6 @@ public class StageMode extends AppCompatActivity implements
         int val;
         DisplayMetrics metrics = new DisplayMetrics();
         Display display = getWindowManager().getDefaultDisplay();
-        Method mGetRawW;
 
         try {
             // For JellyBeans and onward
@@ -4507,15 +4506,7 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.scalingDensity = metrics.densityDpi;
 
             } else {
-                // Below Jellybeans you can use reflection method
-                mGetRawW = Display.class.getMethod("getRawWidth");
-
-                try {
-                    val = (Integer) mGetRawW.invoke(display);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    val = mypage.getWidth();
-                }
+                val = mypage.getWidth();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -4531,7 +4522,6 @@ public class StageMode extends AppCompatActivity implements
         int val;
         DisplayMetrics metrics = new DisplayMetrics();
         Display display = getWindowManager().getDefaultDisplay();
-        Method mGetRawH;
 
         try {
             // For JellyBeans and onward
@@ -4540,15 +4530,7 @@ public class StageMode extends AppCompatActivity implements
                 display.getRealMetrics(metrics);
                 val = metrics.heightPixels;
             } else {
-                // Below Jellybeans you can use reflection method
-                mGetRawH = Display.class.getMethod("getRawHeight");
-
-                try {
-                    val = (Integer) mGetRawH.invoke(display);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    val = mypage.getHeight();
-                }
+                val = mypage.getHeight();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -4664,68 +4646,79 @@ public class StageMode extends AppCompatActivity implements
 
     @SuppressLint("ClickableViewAccessibility")
     public void displaySticky() {
-        if (FullscreenActivity.mNotes!=null && !FullscreenActivity.mNotes.isEmpty() && !FullscreenActivity.mNotes.equals("")) {
-            LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-            assert layoutInflater != null;
-            @SuppressLint("InflateParams")
-            final View popupView = layoutInflater.inflate(R.layout.popup_float_sticky, null);
-            // Decide on the popup position
-            int sw = getAvailableWidth();
-            int hp = sw - FullscreenActivity.stickyWidth - (int)((float) setButton.getMeasuredWidth()*1.2f);
-            if (hp<0) { hp = 0;}
-            int vp = (int) ((float) ab_toolbar.getMeasuredHeight() * 1.2f);
-            if (vp<0) { vp = 0;}
-            stickyPopUpWindow = new PopupWindow(popupView);
-            stickyPopUpWindow.setFocusable(false);
-            stickyPopUpWindow.setWidth(FullscreenActivity.stickyWidth);
-            stickyPopUpWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-            stickyPopUpWindow.setContentView(popupView);
-            FloatingActionButton closeStickyFloat = popupView.findViewById(R.id.closeMe);
-            LinearLayout myTitle = popupView.findViewById(R.id.myTitle);
-            TextView mySticky = popupView.findViewById(R.id.mySticky);
-            mySticky.setTextColor(FullscreenActivity.stickytextColor);
-            mySticky.setTextSize(FullscreenActivity.stickyTextSize);
-            mySticky.setText(FullscreenActivity.mNotes);
-            popupView.setBackgroundResource(R.drawable.popup_sticky);
-            GradientDrawable drawable = (GradientDrawable) popupView.getBackground();
-            drawable.setColor(FullscreenActivity.stickybgColor);
-            popupView.setPadding(10,10,10,10);
-            stickyPopUpWindow.showAtLocation(mypage, Gravity.TOP | Gravity.LEFT, hp, vp);
-            RelativeLayout stickyfloat = popupView.findViewById(R.id.stickyfloat);
-            stickyfloat.setAlpha(FullscreenActivity.stickyOpacity);
-            closeStickyFloat.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // If there is a sticky note showing, remove it
-                    if (stickyPopUpWindow!=null && stickyPopUpWindow.isShowing()) {
-                        try {
-                            stickyPopUpWindow.dismiss();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+        if (stickyPopUpWindow!=null && stickyPopUpWindow.isShowing()) {
+            try {
+                stickyPopUpWindow.dismiss();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            if (FullscreenActivity.mNotes != null && !FullscreenActivity.mNotes.isEmpty() && !FullscreenActivity.mNotes.equals("")) {
+                LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                assert layoutInflater != null;
+                @SuppressLint("InflateParams") final View popupView = layoutInflater.inflate(R.layout.popup_float_sticky, null);
+                // Decide on the popup position
+                int sw = getAvailableWidth();
+                int hp = sw - FullscreenActivity.stickyWidth - (int) ((float) setButton.getMeasuredWidth() * 1.2f);
+                if (hp < 0) {
+                    hp = 0;
+                }
+                int vp = (int) ((float) ab_toolbar.getMeasuredHeight() * 1.2f);
+                if (vp < 0) {
+                    vp = 0;
+                }
+                stickyPopUpWindow = new PopupWindow(popupView);
+                stickyPopUpWindow.setFocusable(false);
+                stickyPopUpWindow.setWidth(FullscreenActivity.stickyWidth);
+                stickyPopUpWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                stickyPopUpWindow.setContentView(popupView);
+                FloatingActionButton closeStickyFloat = popupView.findViewById(R.id.closeMe);
+                LinearLayout myTitle = popupView.findViewById(R.id.myTitle);
+                TextView mySticky = popupView.findViewById(R.id.mySticky);
+                mySticky.setTextColor(FullscreenActivity.stickytextColor);
+                mySticky.setTextSize(FullscreenActivity.stickyTextSize);
+                mySticky.setText(FullscreenActivity.mNotes);
+                popupView.setBackgroundResource(R.drawable.popup_sticky);
+                GradientDrawable drawable = (GradientDrawable) popupView.getBackground();
+                drawable.setColor(FullscreenActivity.stickybgColor);
+                popupView.setPadding(10, 10, 10, 10);
+                stickyPopUpWindow.showAtLocation(mypage, Gravity.TOP | Gravity.START, hp, vp);
+                RelativeLayout stickyfloat = popupView.findViewById(R.id.stickyfloat);
+                stickyfloat.setAlpha(FullscreenActivity.stickyOpacity);
+                closeStickyFloat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // If there is a sticky note showing, remove it
+                        if (stickyPopUpWindow != null && stickyPopUpWindow.isShowing()) {
+                            try {
+                                stickyPopUpWindow.dismiss();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
-                }
-            });
-            myTitle.setOnTouchListener(new View.OnTouchListener() {
-                int orgX, orgY;
-                int offsetX, offsetY;
+                });
+                myTitle.setOnTouchListener(new View.OnTouchListener() {
+                    int orgX, orgY;
+                    int offsetX, offsetY;
 
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            orgX = (int) event.getX();
-                            orgY = (int) event.getY();
-                            break;
-                        case MotionEvent.ACTION_MOVE:
-                            offsetX = (int) event.getRawX() - orgX;
-                            offsetY = (int) event.getRawY() - orgY;
-                            stickyPopUpWindow.update(offsetX, offsetY, -1, -1, true);
-                            break;
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        switch (event.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                orgX = (int) event.getX();
+                                orgY = (int) event.getY();
+                                break;
+                            case MotionEvent.ACTION_MOVE:
+                                offsetX = (int) event.getRawX() - orgX;
+                                offsetY = (int) event.getRawY() - orgY;
+                                stickyPopUpWindow.update(offsetX, offsetY, -1, -1, true);
+                                break;
+                        }
+                        return true;
                     }
-                    return true;
-                }
-            });
+                });
+            }
         }
     }
 
@@ -4889,7 +4882,7 @@ public class StageMode extends AppCompatActivity implements
                 highlightNotes.setVisibility(View.GONE);
             } else if (FullscreenActivity.thissong_scale.equals("Y")) {
                 File file = ProcessSong.getHighlightFile(StageMode.this);
-                if (file != null && file.exists()) {
+                if (file.exists()) {
                     // Load the image in if it exists and then show it
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inPreferredConfig = Bitmap.Config.ARGB_8888;
@@ -4975,6 +4968,12 @@ public class StageMode extends AppCompatActivity implements
     private class PrepareSongMenu extends AsyncTask<Object, Void, String> {
 
         @Override
+        protected void onPreExecute() {
+            menuCount_TextView.setText("");
+            menuCount_TextView.setVisibility(View.GONE);
+        }
+
+        @Override
         protected String doInBackground(Object... params) {
             try {
                 Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
@@ -5058,6 +5057,12 @@ public class StageMode extends AppCompatActivity implements
                         openMyDrawers("song");
                         closeMyDrawers("song_delayed");
                         firstrun_song = false;
+                    }
+
+                    if (menuCount_TextView != null) {
+                        String str = ""+songmenulist.size();
+                        menuCount_TextView.setText(str);
+                        menuCount_TextView.setVisibility(View.VISIBLE);
                     }
                 }
             } catch (Exception e) {
@@ -5196,11 +5201,14 @@ public class StageMode extends AppCompatActivity implements
         FullscreenActivity.mSetList[val] = "";
 
         FullscreenActivity.mySet = "";
+        StringBuilder sb = new StringBuilder();
         for (String aMSetList : FullscreenActivity.mSetList) {
             if (!aMSetList.isEmpty()) {
-                FullscreenActivity.mySet = FullscreenActivity.mySet + "$**_" + aMSetList + "_**$";
+                sb.append("$**_").append(aMSetList).append("_**$");
             }
         }
+
+        FullscreenActivity.mySet = sb.toString();
 
         // Tell the user that the song has been removed.
         showToastMessage("\"" + tempSong + "\" "
@@ -6158,6 +6166,13 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        // Save the learned values to the song
+        try {
+            PopUpEditSongFragment.justSaveSongXML();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         FullscreenActivity.whattodo = "page_autoscroll";

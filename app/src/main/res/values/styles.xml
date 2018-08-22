@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="CustomDialog" parent="@style/Theme.AppCompat.NoActionBar">
+    <style name="CustomDialog" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowNoTitle">false</item>
         <item name="android:colorBackground">@color/toolbar</item>
         <item name="android:layout_height">42dp</item>
         <item name="android:textColor">#fff</item>
+    </style>
+
+
+    <style name="SearchAutoCompleteTextView" parent="Widget.AppCompat.SearchView">
+        <item name="android:editTextColor">#fff</item>
+        <item name="android:textColorHint">#fff</item>
+        <item name="android:background">#000</item>
     </style>
 
     <style name="MyDialogHeadingText" parent="MyTheme.Base">
@@ -60,6 +67,10 @@
         <item name="android:background">#fff</item>
         <item name="android:textColorHint">#555</item>
         <item name="android:textCursorDrawable">@null</item>
+    </style>
+
+    <style name="CustomMediaRouterTheme" parent="Theme.MediaRouter">
+        <item name="android:background">@color/popupcolor</item>
     </style>
 
     <style name="MyTextSwitch">

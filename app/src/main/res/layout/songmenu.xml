@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/songmenu"
     android:layout_width="220dp"
     android:layout_height="match_parent"
-    android:layout_gravity="start|left"
+    android:layout_gravity="start"
     android:background="@drawable/drawer_bg"
     android:clickable="true"
     android:orientation="vertical"
-    android:padding="4dp">
+    android:padding="4dp"
+    android:focusable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,6 +24,11 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -32,11 +39,26 @@
                 android:src="@drawable/ic_folder_upload_white_36dp" />
 
             <TextView
+                android:id="@+id/menuCount_TextView"
+                android:background="@drawable/count_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:textSize="12sp"
+                tools:ignore="RelativeOverlap" />
+
+        </RelativeLayout>
+
+            <TextView
                 android:id="@+id/menuFolder_TextView"
                 style="@style/MyHeadingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:textColor="@color/white"
                 android:layout_margin="8dp" />
 
 
@@ -76,7 +98,9 @@
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:paddingRight="24dp"
+            android:paddingEnd="24dp"
             android:paddingLeft="4dp"
+            android:paddingStart="4dp"
             android:scrollbarStyle="outsideOverlay"
             android:layout_weight="1"
             android:choiceMode="singleChoice"

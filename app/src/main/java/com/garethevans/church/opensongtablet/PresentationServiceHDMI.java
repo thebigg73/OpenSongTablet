@@ -293,7 +293,7 @@ class PresentationServiceHDMI extends Presentation
             bottombarheight = icon.getIntrinsicHeight();
         }
 
-        int density = metrics.densityDpi;
+        //int density = metrics.densityDpi;
 
         padding = 8;
 
@@ -638,13 +638,13 @@ class PresentationServiceHDMI extends Presentation
         String old_title = presentermode_title.getText().toString();
         String old_author = presentermode_author.getText().toString();
         String old_copyright = presentermode_copyright.getText().toString();
-        if (!old_title.equals(FullscreenActivity.mTitle)) {
+        if (!old_title.contentEquals(FullscreenActivity.mTitle)) {
             presenterFadeOutSongInfo(presentermode_title, songtitle_fadeout, songtitle_fadein, FullscreenActivity.mTitle.toString());
         }
-        if (!old_author.equals(FullscreenActivity.mAuthor)) {
+        if (!old_author.contentEquals(FullscreenActivity.mAuthor)) {
             presenterFadeOutSongInfo(presentermode_author, songauthor_fadeout, songauthor_fadein, FullscreenActivity.mAuthor.toString());
         }
-        if (!old_copyright.equals(FullscreenActivity.mCopyright)) {
+        if (!old_copyright.contentEquals(FullscreenActivity.mCopyright)) {
             presenterFadeOutSongInfo(presentermode_copyright, songcopyright_fadeout, songcopyright_fadein, FullscreenActivity.mCopyright.toString());
         }
     }
@@ -806,7 +806,9 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class ProjectedStageView1Col extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_1 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
         float scale;
 
@@ -882,6 +884,7 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class PreparePresenterProjected extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout test1_1 = ProcessSong.createLinearLayout(context);
 
         @Override
@@ -947,7 +950,9 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class ProjectedPresenterView1Col extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_1 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
         float scale;
 
@@ -1248,7 +1253,9 @@ class PresentationServiceHDMI extends Presentation
     }
 
     private static class ProjectedPerformanceView1Col extends AsyncTask<Object, Void, String> {
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_1 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_1 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
         float scale1_1;
         float fontsize1_1;
@@ -1325,9 +1332,13 @@ class PresentationServiceHDMI extends Presentation
         float scale2_2;
         float fontsize1_2;
         float fontsize2_2;
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_2 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics2_2 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_2 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box2_2 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
 
         ProjectedPerformanceView2Col(float s1_2, float s2_2) {
@@ -1419,11 +1430,17 @@ class PresentationServiceHDMI extends Presentation
         float fontsize1_3;
         float fontsize2_3;
         float fontsize3_3;
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics1_3 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics2_3 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout lyrics3_3 = ProcessSong.createLinearLayout(context);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box1_3 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box2_3 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
+        @SuppressLint("StaticFieldLeak")
         LinearLayout box3_3 = ProcessSong.prepareProjectedBoxView(context, 0, padding);
 
         ProjectedPerformanceView3Col(float s1_3, float s2_3, float s3_3) {
@@ -1545,7 +1562,7 @@ class PresentationServiceHDMI extends Presentation
     }
 
     @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    private static void reloadVideo() throws IOException {
+    private static void reloadVideo() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             if (mMediaPlayer == null) {
@@ -1583,10 +1600,8 @@ class PresentationServiceHDMI extends Presentation
                             mediaPlayer.reset();
                         }
                         try {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                                reloadVideo();
-                            }
-                        } catch (IOException e) {
+                            reloadVideo();
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
@@ -1696,7 +1711,7 @@ class PresentationServiceHDMI extends Presentation
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
                 reloadVideo();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

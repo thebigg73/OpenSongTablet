@@ -437,25 +437,26 @@ public class PopUpImportExternalFile extends DialogFragment {
         String verses = FullscreenActivity.scripture_title.replace(translation, "");
         // Since the scripture is one big line, split it up a little (50 chars max)
         String[] scripture = FullscreenActivity.mScripture.split(" ");
-        String scriptureline = "";
+        StringBuilder scriptureline = new StringBuilder();
         ArrayList<String> scripturearray = new ArrayList<>();
 
         for (String aScripture : scripture) {
-            scriptureline = scriptureline + aScripture;
+            scriptureline.append(aScripture);
             if (scriptureline.length() > 50) {
-                scripturearray.add(scriptureline);
-                scriptureline = "";
+                scripturearray.add(scriptureline.toString());
+                scriptureline = new StringBuilder();
             }
         }
-        scripturearray.add(scriptureline);
+        scripturearray.add(scriptureline.toString());
 
         // Convert the array back into one string separated by new lines
         FullscreenActivity.mScripture = "";
+        StringBuilder sb = new StringBuilder();
         for (int x=0;x<scripturearray.size();x++) {
-            FullscreenActivity.mScripture = FullscreenActivity.mScripture + scripturearray.get(x) + "\n";
+            sb.append(scripturearray.get(x)).append("\n");
         }
 
-        FullscreenActivity.mScripture = FullscreenActivity.mScripture.trim();
+        FullscreenActivity.mScripture = sb.toString().trim();
 
         String text = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<song>" +

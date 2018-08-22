@@ -27,6 +27,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -175,7 +176,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
     // The song and option menu stuff
     DrawerLayout mDrawerLayout;
     LinearLayout songmenu, optionmenu, side_index, changefolder_LinearLayout;
-    TextView menuFolder_TextView;
+    TextView menuFolder_TextView, menuCount_TextView;
     FloatingActionButton closeSongsFAB;
     ListView song_list_view;
     ScrollView optionsdisplayscrollview;
@@ -582,6 +583,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            menuCount_TextView.setText("");
+            menuCount_TextView.setVisibility(View.GONE);
         }
 
         @Override
@@ -667,6 +670,12 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         openMyDrawers("song");
                         closeMyDrawers("song_delayed");
                         firstrun_song = false;
+                    }
+
+                    if (menuCount_TextView != null) {
+                        String str = ""+songmenulist.size();
+                        menuCount_TextView.setText(str);
+                        menuCount_TextView.setVisibility(View.VISIBLE);
                     }
                 }
             } catch (Exception e) {
@@ -1063,6 +1072,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         // The song menu
         songmenu = findViewById(R.id.songmenu);
         menuFolder_TextView = findViewById(R.id.menuFolder_TextView);
+        menuCount_TextView = findViewById(R.id.menuCount_TextView);
         closeSongsFAB = findViewById(R.id.closeSongsFAB);
         side_index = findViewById(R.id.side_index);
         song_list_view = findViewById(R.id.song_list_view);
@@ -1433,43 +1443,38 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         thisloc = imagelocs[x];
                     }
 
-                    String buttonText;
+                    StringBuilder buttonText;
                     if (FullscreenActivity.songSections!=null && FullscreenActivity.songSections.length>x) {
-                        buttonText = FullscreenActivity.songSections[x];
+                        buttonText = new StringBuilder(FullscreenActivity.songSections[x]);
                     } else {
-                        buttonText = "";
+                        buttonText = new StringBuilder();
                     }
                     // Get the text for the button
                     if (FullscreenActivity.isImageSlide) {
                         if (thisloc == null) {
                             thisloc = "";
                         }
-                        buttonText = thisloc;
+                        buttonText = new StringBuilder(thisloc);
                         FullscreenActivity.file = new File(thisloc);
                         // Try to remove everything except the name
-                        if (buttonText.contains("/") && buttonText.lastIndexOf("/") < buttonText.length() - 1) {
-                            buttonText = buttonText.substring(buttonText.lastIndexOf("/") + 1);
+                        if (buttonText.toString().contains("/") && buttonText.lastIndexOf("/") < buttonText.length() - 1) {
+                            buttonText = new StringBuilder(buttonText.substring(buttonText.lastIndexOf("/") + 1));
                         }
                     }
 
                     // If we aren't showing the chords, strip them out
                     if (!FullscreenActivity.presoShowChords) {
                         String[] l;
-                        if (buttonText != null) {
-                            l = buttonText.split("\n");
-                        } else {
-                            l = new String[1];
-                            l[0] = "";
-                        }
+                        l = buttonText.toString().split("\n");
 
-                        buttonText = "";
+                        buttonText = new StringBuilder();
                         // Add the lines back in, but removing the ones starting with .
                         for (String eachline : l) {
                             if (!eachline.startsWith(".")) {
-                                buttonText += eachline.trim() + "\n";
+                                buttonText.append(eachline.trim()).append("\n");
                             }
                         }
-                        buttonText = buttonText.trim();
+                        buttonText = new StringBuilder(buttonText.toString().trim());
                     }
 
                     // Get the button information (type of section)
@@ -1482,7 +1487,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
 
                     newSongSectionGroup = ProcessSong.makePresenterSongButtonLayout(PresenterMode.this);
                     newSongSectionText = ProcessSong.makePresenterSongButtonSection(PresenterMode.this, sectionText.replace("_", " "));
-                    newSongButton = ProcessSong.makePresenterSongButtonContent(PresenterMode.this, buttonText);
+                    newSongButton = ProcessSong.makePresenterSongButtonContent(PresenterMode.this, buttonText.toString());
 
                     if (FullscreenActivity.isImageSlide || FullscreenActivity.isSlide) {
                         // Make sure the time, loop and autoslideshow buttons are visible
@@ -2332,24 +2337,24 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         presenter_lyrics.setVisibility(View.VISIBLE);
 
         // Prepare the text to go in the view
-        String s = "";
+        StringBuilder s = new StringBuilder();
         try {
             if (FullscreenActivity.projectedContents!=null && FullscreenActivity.projectedContents[FullscreenActivity.currentSection]!=null) {
                 for (int w = 0; w < FullscreenActivity.projectedContents[FullscreenActivity.currentSection].length; w++) {
                     if (FullscreenActivity.presoShowChords) {
-                        s += FullscreenActivity.projectedContents[FullscreenActivity.currentSection][w] + "\n";
+                        s.append(FullscreenActivity.projectedContents[FullscreenActivity.currentSection][w]).append("\n");
                     } else {
-                        s += FullscreenActivity.projectedContents[FullscreenActivity.currentSection][w].trim() + "\n";
+                        s.append(FullscreenActivity.projectedContents[FullscreenActivity.currentSection][w].trim()).append("\n");
                     }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        s = s.trim();
+        s = new StringBuilder(s.toString().trim());
 
         // And write it
-        presenter_lyrics.setText(s);
+        presenter_lyrics.setText(s.toString());
 
         if (autoproject || FullscreenActivity.autoProject) {
             autoproject = false;
@@ -2764,11 +2769,14 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         FullscreenActivity.mSetList[val] = "";
 
         FullscreenActivity.mySet = "";
+        StringBuilder sb = new StringBuilder();
         for (String aMSetList : FullscreenActivity.mSetList) {
             if (!aMSetList.isEmpty()) {
-                FullscreenActivity.mySet = FullscreenActivity.mySet + "$**_" + aMSetList + "_**$";
+                sb.append("$**_").append(aMSetList).append("_**$");
             }
         }
+
+        FullscreenActivity.mySet = sb.toString();
 
         // Tell the user that the song has been removed.
         showToastMessage("\"" + tempSong + "\" "
@@ -2818,6 +2826,7 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
             // Declare the midi code
             Handler mh = new Handler();
             mh.post(new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public void run() {
                     try {
@@ -2830,10 +2839,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
                         String[] midilines = FullscreenActivity.mMidi.trim().split("\n");
                         for (String ml : midilines) {
                             Log.d("d","Sending "+ml);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                if (midi!=null) {
-                                    midi.sendMidi(midi.returnBytesFromHexText(ml));
-                                }
+                            if (midi!=null) {
+                                midi.sendMidi(midi.returnBytesFromHexText(ml));
                             }
                         }
                     } catch (Exception e) {

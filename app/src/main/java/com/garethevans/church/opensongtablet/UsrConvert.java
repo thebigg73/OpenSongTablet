@@ -32,9 +32,6 @@ class UsrConvert {
 
         String[] line = temp.split("\n");
         int numlines = line.length;
-        if (numlines < 0) {
-            numlines = 1;
-        }
 
         String temptitle = "";
         String tempauthor = "";
@@ -118,7 +115,7 @@ class UsrConvert {
         // Split the section titles up
         String[] sectiontitles = tempfields.split("/t");
 
-        String templyrics = "";
+        StringBuilder templyrics = new StringBuilder();
 
         // Go through the sections and add the appropriate tag
         for (int s=0;s<sections.length;s++) {
@@ -153,14 +150,14 @@ class UsrConvert {
             // Fix all line breaks
             sections[s] = sections[s].replace("/n", "\n ");
 
-            templyrics = templyrics + sections[s] + "\n";
+            templyrics.append(sections[s]).append("\n");
 
         }
 
 
         // Get rid of double line breaks
-        while (templyrics.contains("\n\n\n")) {
-            templyrics = templyrics.replace("\n\n\n","\n\n");
+        while (templyrics.toString().contains("\n\n\n")) {
+            templyrics = new StringBuilder(templyrics.toString().replace("\n\n\n", "\n\n"));
         }
 
 
@@ -189,7 +186,7 @@ class UsrConvert {
                 + "  <pitch></pitch>\r\n"
                 + "  <restrictions></restrictions>\r\n"
                 + "  <notes></notes>\r\n"
-                + "  <lyrics>" + templyrics.trim() + "</lyrics>\r\n"
+                + "  <lyrics>" + templyrics.toString().trim() + "</lyrics>\r\n"
                 + "  <linked_songs></linked_songs>\n"
                 + "  <pad_file></pad_file>\n"
                 + "  <custom_chords></custom_chords>\n"
@@ -228,16 +225,16 @@ class UsrConvert {
 
         // Change the name of the song to remove usr file extension
         // (not needed)
-        String newSongTitle = FullscreenActivity.songfilename;
+        StringBuilder newSongTitle = new StringBuilder(FullscreenActivity.songfilename);
 
         // Decide if a better song title is in the file
         if (temptitle.length() > 0) {
-            newSongTitle = temptitle;
+            newSongTitle = new StringBuilder(temptitle);
         }
 
-        newSongTitle = newSongTitle.replace(".usr", "");
-        newSongTitle = newSongTitle.replace(".USR", "");
-        newSongTitle = newSongTitle.replace(".txt", "");
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace(".usr", ""));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace(".USR", ""));
+        newSongTitle = new StringBuilder(newSongTitle.toString().replace(".txt", ""));
 
         File from;
         File to;
@@ -256,7 +253,7 @@ class UsrConvert {
         // IF THE FILENAME ALREADY EXISTS, REALLY SHOULD ASK THE USER FOR A NEW FILENAME
         // OR append _ to the end - STILL TO DO!!!!!
         while(to.exists()) {
-            newSongTitle = newSongTitle+"_";
+            newSongTitle.append("_");
             if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
                 to = new File(FullscreenActivity.dir + "/" + newSongTitle);
             } else {
@@ -269,7 +266,7 @@ class UsrConvert {
         if (!diditrename) {
             Log.d ("UsrConvert","Error renaming");
         }
-        FullscreenActivity.songfilename = newSongTitle;
+        FullscreenActivity.songfilename = newSongTitle.toString();
 
         // Load the songs
         ListSongFiles.getAllSongFiles();

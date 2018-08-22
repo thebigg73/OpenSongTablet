@@ -719,7 +719,7 @@ public class PopUpCustomChordsFragment extends DialogFragment {
                     deleteChord.setText(newtext);
                     deleteChord.setBackgroundDrawable(getResources().getDrawable(R.drawable.red_button));
                     deleteChord.setOnClickListener(new OnDelete(deleteChord));
-                    if (!workingChord.isEmpty() && !workingChord.equals("")) {
+                    if (!workingChord.isEmpty()) {
                         savedcustomchords.addView(chordvalue);
                         savedcustomchords.addView(deleteChord);
                     }

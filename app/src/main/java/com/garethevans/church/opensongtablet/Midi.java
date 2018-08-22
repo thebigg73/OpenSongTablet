@@ -59,8 +59,7 @@ class Midi extends Activity {
         String lsb = "LSB";
 
         String[] sections = s.trim().split(" ");
-        if (sections != null && sections.length >= 1 && sections[0] != null &&
-                !sections[0].isEmpty() && !sections[0].equals("")) {
+        if (sections.length >= 1 && sections[0] != null && !sections[0].isEmpty()) {
             String s0_0;
             String s0_1;
             try {
@@ -92,8 +91,7 @@ class Midi extends Activity {
         }
 
         // Now deal with the middle byte (note or program number)
-        if (sections != null && sections.length >= 2 && sections[1] != null &&
-                !sections[1].isEmpty() && !sections[1].equals("")) {
+        if (sections.length >= 2 && sections[1] != null && !sections[1].isEmpty()) {
             try {
                 String s1 = sections[1].replace("0x", "").trim();
                 int v1 = getIntFromHexString(s1);
@@ -113,8 +111,7 @@ class Midi extends Activity {
             }
         }
         // Now deal with the last byte (velocity or value) - not present for program change
-        if (sections != null && sections.length >= 3 && sections[2] != null &&
-                !sections[2].isEmpty() && !sections[2].equals("")) {
+        if (sections.length >= 3 && sections[2] != null && !sections[2].isEmpty()) {
             try {
                 String s2 = sections[2].replace("0x", "").trim();
                 int v2 = getIntFromHexString(s2);

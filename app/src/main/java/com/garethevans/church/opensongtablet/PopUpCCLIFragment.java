@@ -646,7 +646,9 @@ public class PopUpCCLIFragment extends DialogFragment {
                 a_ccli.appendChild(document.createTextNode(ccli));
                 newItem.appendChild(a_ccli);
 
-                root.appendChild(newItem);
+                if (root!=null) {
+                    root.appendChild(newItem);
+                }
 
                 DOMSource source = new DOMSource(document);
 

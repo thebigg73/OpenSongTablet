@@ -253,7 +253,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(lyrics_left_align, getActivity());
-                FullscreenActivity.presoLyricsAlign = Gravity.LEFT;
+                FullscreenActivity.presoLyricsAlign = Gravity.START;
                 Preferences.savePreferences();
                 setUpAlignmentButtons();
                 sendUpdateToScreen("all");
@@ -273,7 +273,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(lyrics_right_align, getActivity());
-                FullscreenActivity.presoLyricsAlign = Gravity.RIGHT;
+                FullscreenActivity.presoLyricsAlign = Gravity.END;
                 Preferences.savePreferences();
                 setUpAlignmentButtons();
                 sendUpdateToScreen("all");
@@ -283,7 +283,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(info_left_align, getActivity());
-                FullscreenActivity.presoInfoAlign = Gravity.LEFT;
+                FullscreenActivity.presoInfoAlign = Gravity.START;
                 Preferences.savePreferences();
                 setUpAlignmentButtons();
                 sendUpdateToScreen("info");
@@ -303,7 +303,7 @@ public class PopUpLayoutFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 CustomAnimations.animateFAB(info_right_align, getActivity());
-                FullscreenActivity.presoInfoAlign = Gravity.RIGHT;
+                FullscreenActivity.presoInfoAlign = Gravity.END;
                 Preferences.savePreferences();
                 setUpAlignmentButtons();
                 sendUpdateToScreen("info");
@@ -452,7 +452,7 @@ public class PopUpLayoutFragment extends DialogFragment {
     }
 
     public void setUpAlignmentButtons() {
-        if (FullscreenActivity.presoLyricsAlign == Gravity.LEFT) {
+        if (FullscreenActivity.presoLyricsAlign == Gravity.START) {
             lyrics_left_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
             lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
             lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
@@ -466,11 +466,11 @@ public class PopUpLayoutFragment extends DialogFragment {
             lyrics_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
             lyrics_right_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
         }
-        if (FullscreenActivity.presoInfoAlign == Gravity.LEFT) {
+        if (FullscreenActivity.presoInfoAlign == Gravity.START) {
             info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));
             info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
             info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
-        } else if (FullscreenActivity.presoInfoAlign == Gravity.RIGHT) {
+        } else if (FullscreenActivity.presoInfoAlign == Gravity.END) {
             info_left_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
             info_center_align.setBackgroundTintList(ColorStateList.valueOf(0xff555555));
             info_right_align.setBackgroundTintList(ColorStateList.valueOf(0xffff0000));

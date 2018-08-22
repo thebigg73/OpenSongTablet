@@ -382,6 +382,7 @@ class Bible {
         @Override
         protected String doInBackground(String... addresses) {
             response = "";
+            StringBuilder sb = new StringBuilder();
             for (String address:addresses) {
                 URL url;
                 HttpURLConnection urlConnection = null;
@@ -392,24 +393,10 @@ class Bible {
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
                     String s;
                     while ((s = buffer.readLine()) != null) {
-                        response += "\n" + s;
-/*
-                        if (s.contains("<meta name=\"twitter:title\" content=\"")) {
-                            gottitle=true;
-                        }
-                        if (s.contains("<meta property=\"og:description\" content=\"")) {
-                            gotscripture=true;
-                        }
-*/
+                        sb.append("\n").append(s);
 
-                        // OVERRIDE THIS BIT FOR NOW WHILE I TEST FULL SCRIPTURE EXTRACT
-/*
-                        if (s.contains("<meta property=\"al:ios:url\"") || (gottitle && gotscripture)) {
-                            // Force s to be null as we've got all we need!
-                            break;
-                        }
-*/
                     }
+                    response = sb.toString();
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {

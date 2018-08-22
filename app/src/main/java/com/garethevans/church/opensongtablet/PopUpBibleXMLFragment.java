@@ -191,7 +191,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                         FullscreenActivity.bibleFile = bibleFileNames.get(i);
                         Preferences.savePreferences();
                         File bibleFileChosen = new File(FullscreenActivity.dirbibles,bibleFileNames.get(i));
-                        if (bibleFileChosen!=null && bibleFileChosen.exists() && bibleFileChosen.isFile()) {
+                        if (bibleFileChosen.exists() && bibleFileChosen.isFile()) {
                             updateBibleBooks(bibleFileChosen);
                         }
                         /*File bibleFileChosen = new File(FullscreenActivity.dirbibles, bibleFileNames.get(i));
@@ -437,20 +437,20 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         } catch (Exception e) {
             to = 0;
         }
-        String s = "";
+        StringBuilder s = new StringBuilder();
         if (to>0 && from>0 && to>=from) {
 
             for (int i=from; i<=to; i++) {
                 if (bibleText.size()>=i) {
-                    s = s + bibleText.get(i-1) + " ";
+                    s.append(bibleText.get(i - 1)).append(" ");
                 }
             }
             // Trim and fix new sentence double spaces
-            s = s.trim();
-            s = s.replace(".  ",". ");
-            s = s.replace(". ", ".  ");
+            s = new StringBuilder(s.toString().trim());
+            s = new StringBuilder(s.toString().replace(".  ", ". "));
+            s = new StringBuilder(s.toString().replace(". ", ".  "));
         }
-        previewTextView.setText(s);
+        previewTextView.setText(s.toString());
 
         // Work out the Scripture title to use
         if (Bible.bibleFormat.equals("Zefania")) {
@@ -468,7 +468,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
             verses = from + "-" + to;
         }
         FullscreenActivity.scripture_title = bibleBookName + " " + bibleChapter + ":" + verses + " (" + bible + ")";
-        FullscreenActivity.scripture_verse = Bible.shortenTheLines(s,40,6);
+        FullscreenActivity.scripture_verse = Bible.shortenTheLines(s.toString(),40,6);
     }
 
     public void doSave() {

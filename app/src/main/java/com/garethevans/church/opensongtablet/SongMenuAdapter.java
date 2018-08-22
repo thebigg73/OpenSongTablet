@@ -29,9 +29,9 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
 
     private MyInterface mListener;
     @SuppressLint("UseSparseArrays")
-    private HashMap<Integer,Integer> sectionPositions = new HashMap<>();
+    private HashMap<Integer,Integer> sectionPositions;
     @SuppressLint("UseSparseArrays")
-    private HashMap<Integer,Integer> positionsForSection = new HashMap<>();
+    private HashMap<Integer,Integer> positionsForSection;
     String[] sections;
     Context context;
     String[] songs;
@@ -107,7 +107,9 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
             LayoutInflater mInflater = (LayoutInflater) context
                     .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
-            convertView = mInflater.inflate(R.layout.list_item, null);
+            if (mInflater!=null) {
+                convertView = mInflater.inflate(R.layout.list_item, null);
+            }
             TextView lblListItem = convertView.findViewById(R.id.lblListItem);
             TextView lblListItemAuthor = convertView.findViewById(R.id.lblListItemAuthor);
             final CheckBox lblListCheck = convertView.findViewById(R.id.lblListCheck);
@@ -143,7 +145,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                 lblListItem.setCompoundDrawablesWithIntrinsicBounds(d,null,null,null);
             }
 
-            if (key != null && !key.equals("") && !key.equals(" ")) {
+            if (!key.equals("") && !key.equals(" ")) {
                 key = " (" + key + ")";
             } else {
                 key = "";

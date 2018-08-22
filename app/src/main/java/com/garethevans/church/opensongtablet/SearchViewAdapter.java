@@ -3,7 +3,6 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +80,9 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
-        convertView = mInflater.inflate(R.layout.searchrow, null);
+        if (mInflater!=null) {
+            convertView = mInflater.inflate(R.layout.searchrow, null);
+        }
         TextView file_tv = convertView.findViewById(R.id.cardview_filename);
         TextView name_tv = convertView.findViewById(R.id.cardview_songtitle);
         TextView folder_tv = convertView.findViewById(R.id.cardview_folder);
@@ -193,9 +194,6 @@ class SearchViewAdapter extends BaseAdapter implements Filterable, SectionIndexe
             if (constraint != null && constraint.length() > 0) {
                 ArrayList<SearchViewItems> filterList = new ArrayList<>();
                 for (int i = 0; i < mStringFilterList.size(); i++) {
-
-                    Log.d("d","getLyrics()="+mStringFilterList.get(i).getLyrics());
-                    Log.d("d","contstraint="+constraint);
 
                     if ( (mStringFilterList.get(i).getLyrics().toUpperCase(FullscreenActivity.locale) )
                             .contains(constraint.toString().toUpperCase(FullscreenActivity.locale))) {

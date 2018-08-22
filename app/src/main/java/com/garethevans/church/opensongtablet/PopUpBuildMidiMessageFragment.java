@@ -214,16 +214,16 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
     private void doSave() {
         try {
             // Get a string representation of the midi commands
-            String s = "";
+            StringBuilder s = new StringBuilder();
             for (String c:songMidiMessagesToSave) {
                 c = c.trim();
-                if (c!=null && !c.isEmpty() && !c.equals("")) {
-                    s = s + c + "\n";
+                if (!c.isEmpty()) {
+                    s.append(c).append("\n");
                 }
             }
-            s = s.trim(); // Get rid of extra line breaks
+            s = new StringBuilder(s.toString().trim()); // Get rid of extra line breaks
             Log.d("d","s="+s);
-            FullscreenActivity.mMidi = s;
+            FullscreenActivity.mMidi = s.toString();
             PopUpEditSongFragment.prepareSongXML();
             PopUpEditSongFragment.justSaveSongXML();
             dismiss();

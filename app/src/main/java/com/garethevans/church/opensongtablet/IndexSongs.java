@@ -19,6 +19,8 @@ import java.util.Arrays;
 // This class is called asynchronously
 public class IndexSongs extends Activity {
 
+    static boolean errorsencountered = false;
+
     public interface MyInterface {
         void indexingDone();
     }
@@ -29,10 +31,6 @@ public class IndexSongs extends Activity {
         FullscreenActivity.safetosearch = false;
         FullscreenActivity.search_database = null;
         FullscreenActivity.search_database = new ArrayList<>();
-
-        FullscreenActivity.indexlog = "Search index progress.\n\n" +
-                "If the last song shown in this list is not the last song in your directory, there was an error indexing it.\n" +
-                "Please manually check that the file is a correctly formatted OpenSong file.\n\n\n";
 
         // Get all the folders that are available
         ArrayList<String> fixedfolders = new ArrayList<>(Arrays.asList(FullscreenActivity.mSongFolderNames));
@@ -55,8 +53,13 @@ public class IndexSongs extends Activity {
         String ccli;
         String key;
         String hymnnumber;
-        String errmsg;
-        errmsg = "";
+        StringBuilder errmsg;
+        errmsg = new StringBuilder();
+        StringBuilder log = new StringBuilder();
+
+        log.append("Search index progress.\n\n" +
+                "If the last song shown in this list is not the last song in your directory, there was an error indexing it.\n" +
+                "Please manually check that the file is a correctly formatted OpenSong file.\n\n\n");
 
         // Now go through each folder and load each song in turn and then add it to the array
         for (String currfolder : fixedfolders) {
@@ -71,7 +74,7 @@ public class IndexSongs extends Activity {
             }
             File files[] = foldtosplit.listFiles();
             // Go through each file
-            if(files != null) {
+            if (files != null) {
                 for (File file : files) {
 
                     if (file.isFile() && file.exists() && file.canRead()) {
@@ -118,142 +121,187 @@ public class IndexSongs extends Activity {
 
                         if (isxml) {
                             FileInputStream fis = new FileInputStream(file);
-                            xpp.setInput(fis, null);
-
-                            // Extract the title, author, key, lyrics, theme
-                            int eventType = xpp.getEventType();
-                            while (eventType != XmlPullParser.END_DOCUMENT) {
-                                if (eventType == XmlPullParser.START_TAG) {
-                                    if (xpp.getName().equals("author")) {
-                                        String text = xpp.nextText();
-                                        if (!text.equals("")) {
-                                            author = text;
-                                        }
-                                    } else if (xpp.getName().equals("title")) {
-                                        String text = xpp.nextText();
-                                        if (!text.equals("")) {
-                                            title = text;
-                                        }
-                                    } else if (xpp.getName().equals("lyrics")) {
-                                        String text = xpp.nextText();
-                                        if (!text.equals("")) {
-                                            lyrics = text;
-                                        }
-                                    } else if (xpp.getName().equals("key")) {
-                                        String text = xpp.nextText();
-                                        if (!text.equals("")) {
-                                            key = text;
-                                        }
-                                    } else if (xpp.getName().equals("theme")) {
-                                        String text = xpp.nextText();
-                                        if (!text.equals("")) {
-                                            theme = text;
-                                        }
-                                    } else if (xpp.getName().equals("copyright")) {
-                                        String text = xpp.nextText();
-                                        if (!text.equals("")) {
-                                            copyright = text;
-                                        }
-                                    } else if (xpp.getName().equals("ccli")) {
-                                        String text = xpp.nextText();
-                                        if (!text.equals("")) {
-                                            ccli = text;
-                                        }
-                                    } else if (xpp.getName().equals("alttheme")) {
-                                        String text = xpp.nextText();
-                                        if (!text.equals("")) {
-                                            alttheme = text;
-                                        }
-                                    } else if (xpp.getName().equals("user1")) {
-                                        String text = xpp.nextText();
-                                        if (!text.equals("")) {
-                                            user1 = text;
-                                        }
-                                    } else if (xpp.getName().equals("user2")) {
-                                        String text = xpp.nextText();
-                                        if (!text.equals("")) {
-                                            user2 = text;
-                                        }
-                                    } else if (xpp.getName().equals("user3")) {
-                                        String text = xpp.nextText();
-                                        if (!text.equals("")) {
-                                            user3 = text;
-                                        }
-                                    } else if (xpp.getName().equals("aka")) {
-                                        String text = xpp.nextText();
-                                        if (!text.equals("")) {
-                                            aka = text;
-                                        }
-                                    } else if (xpp.getName().equals("hymn_number")) {
-                                        String text = xpp.nextText();
-                                        if (!text.equals("")) {
-                                            hymnnumber = text;
+                            int eventType;
+                            try {
+                                xpp.setInput(fis, null);
+                                // Extract the title, author, key, lyrics, theme
+                                eventType = xpp.getEventType();
+                                while (eventType != XmlPullParser.END_DOCUMENT) {
+                                    if (eventType == XmlPullParser.START_TAG) {
+                                        switch (xpp.getName()) {
+                                            case "author": {
+                                                String text = xpp.nextText();
+                                                if (!text.equals("")) {
+                                                    author = text;
+                                                }
+                                                break;
+                                            }
+                                            case "title": {
+                                                String text = xpp.nextText();
+                                                if (!text.equals("")) {
+                                                    title = text;
+                                                }
+                                                break;
+                                            }
+                                            case "lyrics": {
+                                                String text = xpp.nextText();
+                                                if (!text.equals("")) {
+                                                    lyrics = text;
+                                                }
+                                                break;
+                                            }
+                                            case "key": {
+                                                String text = xpp.nextText();
+                                                if (!text.equals("")) {
+                                                    key = text;
+                                                }
+                                                break;
+                                            }
+                                            case "theme": {
+                                                String text = xpp.nextText();
+                                                if (!text.equals("")) {
+                                                    theme = text;
+                                                }
+                                                break;
+                                            }
+                                            case "copyright": {
+                                                String text = xpp.nextText();
+                                                if (!text.equals("")) {
+                                                    copyright = text;
+                                                }
+                                                break;
+                                            }
+                                            case "ccli": {
+                                                String text = xpp.nextText();
+                                                if (!text.equals("")) {
+                                                    ccli = text;
+                                                }
+                                                break;
+                                            }
+                                            case "alttheme": {
+                                                String text = xpp.nextText();
+                                                if (!text.equals("")) {
+                                                    alttheme = text;
+                                                }
+                                                break;
+                                            }
+                                            case "user1": {
+                                                String text = xpp.nextText();
+                                                if (!text.equals("")) {
+                                                    user1 = text;
+                                                }
+                                                break;
+                                            }
+                                            case "user2": {
+                                                String text = xpp.nextText();
+                                                if (!text.equals("")) {
+                                                    user2 = text;
+                                                }
+                                                break;
+                                            }
+                                            case "user3": {
+                                                String text = xpp.nextText();
+                                                if (!text.equals("")) {
+                                                    user3 = text;
+                                                }
+                                                break;
+                                            }
+                                            case "aka": {
+                                                String text = xpp.nextText();
+                                                if (!text.equals("")) {
+                                                    aka = text;
+                                                }
+                                                break;
+                                            }
+                                            case "hymn_number": {
+                                                String text = xpp.nextText();
+                                                if (!text.equals("")) {
+                                                    hymnnumber = text;
+                                                }
+                                                break;
+                                            }
                                         }
                                     }
-                                }
-                                try {
                                     eventType = xpp.next();
-                                } catch (Exception e) {
-                                    eventType = XmlPullParser.END_DOCUMENT;
-                                    errmsg += "File with error = " + filename + "\n";
-                                    // This wasn't an xml, so grab the file contents instead
-                                    // By default, make the lyrics the content, unless it is a pdf, image, etc.
-                                    if (filesize < 250 &&
-                                            !filename.contains(".pdf") && !filename.contains(".PDF") &&
-                                            !filename.contains(".doc") && !filename.contains(".DOC") &&
-                                            !filename.contains(".docx") && !filename.contains(".DOCX") &&
-                                            !filename.contains(".png") && !filename.contains(".PNG") &&
-                                            !filename.contains(".jpg") && !filename.contains(".JPG") &&
-                                            !filename.contains(".gif") && !filename.contains(".GIF") &&
-                                            !filename.contains(".jpeg") && !filename.contains(".JPEG")) {
-                                        FileInputStream grabFileContents = new FileInputStream(file);
-                                        lyrics = LoadXML.readTextFile(grabFileContents);
-                                    }
                                 }
+                            } catch (Exception e) {
+                                //eventType = XmlPullParser.END_DOCUMENT;
+                                errmsg.append("File with error = ").append(filename).append("\n");
+                                errorsencountered = true;
+                                // Error in the xml, so import the text
+                                if (filesize < 250 &&
+                                        !filename.contains(".pdf") && !filename.contains(".PDF") &&
+                                        !filename.contains(".doc") && !filename.contains(".DOC") &&
+                                        !filename.contains(".docx") && !filename.contains(".DOCX") &&
+                                        !filename.contains(".png") && !filename.contains(".PNG") &&
+                                        !filename.contains(".jpg") && !filename.contains(".JPG") &&
+                                        !filename.contains(".gif") && !filename.contains(".GIF") &&
+                                        !filename.contains(".jpeg") && !filename.contains(".JPEG")) {
+                                    FileInputStream grabFileContents = new FileInputStream(file);
+                                    lyrics = LoadXML.readTextFile(grabFileContents);
+                                }
+                            }
+                        } else {
+                            // This wasn't an xml, so grab the file contents instead
+                            // By default, make the lyrics the content, unless it is a pdf, image, etc.
+                            if (filesize < 250 &&
+                                    !filename.contains(".pdf") && !filename.contains(".PDF") &&
+                                    !filename.contains(".doc") && !filename.contains(".DOC") &&
+                                    !filename.contains(".docx") && !filename.contains(".DOCX") &&
+                                    !filename.contains(".png") && !filename.contains(".PNG") &&
+                                    !filename.contains(".jpg") && !filename.contains(".JPG") &&
+                                    !filename.contains(".gif") && !filename.contains(".GIF") &&
+                                    !filename.contains(".jpeg") && !filename.contains(".JPEG")) {
+                                FileInputStream grabFileContents = new FileInputStream(file);
+                                lyrics = LoadXML.readTextFile(grabFileContents);
                             }
                         }
 
 
                         // Remove chord lines, empty lines and setions in lyrics (to save memory) - only line that start with " "
                         String lyricslines[] = lyrics.split("\n");
-                        String shortlyrics = "";
+                        StringBuilder shortlyrics = new StringBuilder();
                         for (String line : lyricslines) {
                             if (!line.startsWith(".") && !line.startsWith("[") && !line.equals("")) {
                                 if (line.startsWith(";")) {
                                     line = line.substring(1);
                                 }
-                                shortlyrics = shortlyrics + line;
+                                shortlyrics.append(line);
                             }
                         }
 
-                        shortlyrics = filename.trim() + " " + folder.trim() + " " + title.trim() + " " + author.trim() + " " +
+                        shortlyrics = new StringBuilder(filename.trim() + " " + folder.trim() + " " + title.trim() + " " + author.trim() + " " +
                                 c.getString(R.string.edit_song_key) + " " + key.trim() + " " + copyright.trim() + " " + ccli.trim() + " " +
                                 user1.trim() + " " + user2.trim() + " " + user3.trim() + " " + alttheme.trim() + " " + aka.trim() + " " +
-                                theme.trim() + " " + hymnnumber.trim() + " " + shortlyrics.trim();
+                                theme.trim() + " " + hymnnumber.trim() + " " + shortlyrics.toString().trim());
 
                         // Replace unwanted symbols
-                        shortlyrics = ProcessSong.removeUnwantedSymbolsAndSpaces(shortlyrics);
+                        shortlyrics = new StringBuilder(ProcessSong.removeUnwantedSymbolsAndSpaces(shortlyrics.toString()));
 
                         String item_to_add = filename + " _%%%_ " + folder + " _%%%_ " + title + " _%%%_ " + author + " _%%%_ " + shortlyrics + " _%%%_ " +
                                 theme + " _%%%_ " + key + " _%%%_ " + hymnnumber;
 
-                        if (item_to_add != null) {
-                            FullscreenActivity.search_database.add(item_to_add);
-                        }
+                        FullscreenActivity.search_database.add(item_to_add);
 
                         String line_to_add = folder + "/" + filename + "\n";
 
-                        FullscreenActivity.indexlog += line_to_add;
+                        log.append(line_to_add);
                     }
                 }
             }
         }
+        if (errorsencountered) {
+            FullscreenActivity.indexlog += "\n\nErrors in importing files\n\nThese songs are either not XML or have invalid XML\n\n" + errmsg;
+        }
 
         int totalsongsindexed = FullscreenActivity.search_database.size();
 
-        FullscreenActivity.indexlog += "\n\nTotal songs indexed="+totalsongsindexed+"\n\n";
-        FullscreenActivity.indexlog += "\n\nErrors in importing files\n\nThese songs are either not XML or have invalid XML\n\n" + errmsg;
+        FullscreenActivity.indexlog += "\n\nTotal songs indexed=" + totalsongsindexed + "\n\n";
+
+        FullscreenActivity.indexlog += log.toString();
+
         FullscreenActivity.safetosearch = true;
+
     }
 
     static class IndexMySongs extends AsyncTask<Object,Void,String> {
@@ -271,6 +319,7 @@ public class IndexSongs extends Activity {
             try {
                 FullscreenActivity.myToastMessage = context.getString(R.string.search_index_start);
                 ShowToast.showToast(context);
+                errorsencountered = false;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -285,6 +334,9 @@ public class IndexSongs extends Activity {
                 val = "ok";
             } catch (Exception e) {
                 e.printStackTrace();
+                val = "error";
+            }
+            if (errorsencountered) {
                 val = "error";
             }
             return val;

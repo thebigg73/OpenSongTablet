@@ -275,17 +275,17 @@ public class PopUpSetViewNew extends DialogFragment {
     }
 
     public void doSave() {
-        String tempmySet = "";
+        StringBuilder tempmySet = new StringBuilder();
         String tempItem;
         if (FullscreenActivity.mTempSetList == null) {
             FullscreenActivity.mTempSetList = new ArrayList<>();
         }
         for (int z=0; z<FullscreenActivity.mTempSetList.size(); z++) {
             tempItem = FullscreenActivity.mTempSetList.get(z);
-            tempmySet = tempmySet + "$**_"+ tempItem + "_**$";
+            tempmySet.append("$**_").append(tempItem).append("_**$");
         }
         FullscreenActivity.mySet = null;
-        FullscreenActivity.mySet = tempmySet;
+        FullscreenActivity.mySet = tempmySet.toString();
         FullscreenActivity.mTempSetList = null;
         SetActions.prepareSetList();
         FullscreenActivity.myToastMessage = getActivity().getString(R.string.currentset) +
@@ -324,15 +324,9 @@ public class PopUpSetViewNew extends DialogFragment {
                 }
                 // Replace the last instance of a / (as we may have subfolders)
                 String mysongfolder = tempTitle.substring(0,tempTitle.lastIndexOf("/"));
-                if (mysongfolder==null) {
-                    mysongfolder="";
-                }
                 String mysongtitle = tempTitle.substring(tempTitle.lastIndexOf("/"));
                 if (mysongtitle.startsWith("/")) {
                     mysongtitle = mysongtitle.substring(1);
-                }
-                if (mysongtitle==null) {
-                    mysongtitle="";
                 }
 
                 if (mysongfolder.isEmpty() || mysongfolder.equals("")) {
@@ -346,10 +340,8 @@ public class PopUpSetViewNew extends DialogFragment {
                 Log.d("d","mysongtitle="+mysongtitle);
                 Log.d("d","mysongfolder="+mysongfolder);
 
-                if (i>-1) {
-                    mSongName.add(i, mysongtitle);
-                    mFolderName.add(i, mysongfolder);
-                }
+                mSongName.add(i, mysongtitle);
+                mFolderName.add(i, mysongfolder);
             }
         }
     }
@@ -398,11 +390,11 @@ public class PopUpSetViewNew extends DialogFragment {
         // Prepare the name of the new variation slide
         // If the file already exists, add _ to the filename
         String newfilename = FullscreenActivity.dirvariations + "/" + FullscreenActivity.songfilename;
-        String newsongname = FullscreenActivity.songfilename;
+        StringBuilder newsongname = new StringBuilder(FullscreenActivity.songfilename);
         File newfile = new File(newfilename);
         while (newfile.exists()) {
             newfilename = newfilename + "_";
-            newsongname = newsongname + "_";
+            newsongname.append("_");
             newfile = new File(newfilename);
         }
 
@@ -433,18 +425,18 @@ public class PopUpSetViewNew extends DialogFragment {
         }
 
         // Fix the song name and folder for loading
-        FullscreenActivity.songfilename = newsongname;
+        FullscreenActivity.songfilename = newsongname.toString();
         FullscreenActivity.whichSongFolder = "../Variations";
         FullscreenActivity.whatsongforsetwork = "\"$**_**"+c.getResources().getString(R.string.variation)+"/"+newsongname+"_**$";
 
         // Replace the set item with the variation item
         FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet] = "**"+c.getResources().getString(R.string.variation)+"/"+newsongname;
         // Rebuild the mySet variable
-        String new_mySet = "";
+        StringBuilder new_mySet = new StringBuilder();
         for (String thisitem:FullscreenActivity.mSetList) {
-            new_mySet = new_mySet + "$**_" + thisitem + "_**$";
+            new_mySet.append("$**_").append(thisitem).append("_**$");
         }
-        FullscreenActivity.mySet = new_mySet;
+        FullscreenActivity.mySet = new_mySet.toString();
 
         Preferences.savePreferences();
 
@@ -461,17 +453,17 @@ public class PopUpSetViewNew extends DialogFragment {
 
     public void doExportSetTweet() {
         // Add the set items
-        String setcontents = "";
+        StringBuilder setcontents = new StringBuilder();
 
         for (String getItem:FullscreenActivity.mSetList) {
             int songtitlepos = getItem.indexOf("/")+1;
             getItem = getItem.substring(songtitlepos);
-            setcontents = setcontents + getItem +", ";
+            setcontents.append(getItem).append(", ");
         }
 
-        setcontents = setcontents.substring(0,setcontents.length()-2);
+        setcontents = new StringBuilder(setcontents.substring(0, setcontents.length() - 2));
 
-        String tweet = setcontents;
+        String tweet = setcontents.toString();
         try {
             tweet = URLEncoder.encode("#OpenSongApp\n" + setcontents,"UTF-8");
         } catch (Exception e) {

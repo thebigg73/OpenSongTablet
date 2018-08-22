@@ -42,8 +42,10 @@ public class ProcessSong extends Activity {
         myLyrics = myLyrics.replace("\t", "    ");
         myLyrics = myLyrics.replace("\b", "    ");
         myLyrics = myLyrics.replace("\f", "    ");
-        myLyrics = myLyrics.replace("&#x27;", "'");
+        myLyrics = myLyrics.replace("&#27;", "'");
+        myLyrics = myLyrics.replace("&#027;", "'");
         myLyrics = myLyrics.replace("&#39;","'");
+        myLyrics = myLyrics.replace("&#039;","'");
         myLyrics = myLyrics.replace("&apos;","'");
         myLyrics = myLyrics.replace("&lt;", "<");
         myLyrics = myLyrics.replace("&gt;", ">");
@@ -52,6 +54,9 @@ public class ProcessSong extends Activity {
         myLyrics = myLyrics.replaceAll("\u0093", "'");
         myLyrics = myLyrics.replaceAll("\u2018", "'");
         myLyrics = myLyrics.replaceAll("\u2019", "'");
+
+        // If UG has been bad, replace these bits:
+        myLyrics = myLyrics.replace("pre class=\"\"","");
 
         if (!FullscreenActivity.whichSongFolder.contains(c.getResources().getString(R.string.slide)) &&
                 !FullscreenActivity.whichSongFolder.contains(c.getResources().getString(R.string.image)) &&
@@ -127,7 +132,7 @@ public class ProcessSong extends Activity {
     }
 
     static String fixStartOfLines(String lyrics) {
-        String fixedlyrics = "";
+        StringBuilder fixedlyrics = new StringBuilder();
         String[] lines = lyrics.split("\n");
 
         for (String line:lines) {
@@ -137,9 +142,9 @@ public class ProcessSong extends Activity {
                     !line.startsWith("9")) {
                 line = " " + line;
             }
-            fixedlyrics += line + "\n";
+            fixedlyrics.append(line).append("\n");
         }
-        return fixedlyrics;
+        return fixedlyrics.toString();
     }
 
     static String fixlinebreaks(String string) {
@@ -155,8 +160,8 @@ public class ProcessSong extends Activity {
         // Go through the lines and remove underscores if the line isn't an image location
         // Split the lyrics into a line by line array so we can fix individual lines
         String[] lineLyrics = myLyrics.split("\n");
-        myLyrics = "";
-        for (int l=0;l<lineLyrics.length;l++) {
+        StringBuilder myLyricsBuilder = new StringBuilder();
+        for (int l = 0; l<lineLyrics.length; l++) {
 
             if (lineLyrics[l].contains("_")) {
                 if (l>0 && !lineLyrics[l].contains("["+c.getResources().getString(R.string.image)+"_") &&
@@ -181,24 +186,25 @@ public class ProcessSong extends Activity {
                     }
                 }
             }
-            myLyrics += lineLyrics[l] + "\n";
+            myLyricsBuilder.append(lineLyrics[l]).append("\n");
         }
+        myLyrics = myLyricsBuilder.toString();
         return myLyrics;
     }
 
     static String rebuildParsedLyrics(int length) {
-        String tempLyrics = "";
+        StringBuilder tempLyrics = new StringBuilder();
         for (int x = 0; x < length; x++) {
             // First line of section should be the label, so replace it with label.
             if (FullscreenActivity.songSections[x].startsWith("[" + FullscreenActivity.songSectionsLabels[x] + "]")) {
-                tempLyrics += FullscreenActivity.songSections[x] + "\n";
+                tempLyrics.append(FullscreenActivity.songSections[x]).append("\n");
             } else {
-                tempLyrics += FullscreenActivity.songSections[x] + "\n";
+                tempLyrics.append(FullscreenActivity.songSections[x]).append("\n");
             }
         }
-        FullscreenActivity.myParsedLyrics = tempLyrics.split("\n");
+        FullscreenActivity.myParsedLyrics = tempLyrics.toString().split("\n");
 
-        return tempLyrics;
+        return tempLyrics.toString();
     }
 
     static void lookForSplitPoints() {
@@ -636,37 +642,48 @@ public class ProcessSong extends Activity {
         String[] s;
         string = string.replace("{\"description\":\"","");
         string = string.replace("\"}","");
-        boolean exists;
-        if (string.length()>0 && string.contains("_____") && !FullscreenActivity.receiveHostFiles) {
+        boolean exists=false;
+        boolean haslyrics = string.contains("<lyrics>");
+
+        // Try to get the location
+        String sent_folder = "";
+        String sent_file = "";
+        String sent_direction = "L2R";
+
+        if (string.length()>0 && string.contains("_____")) {
             // We have a song location!
             s = string.split("_____");
-            // Check the song exists
-            File testfile;
-            if (s[0].equals(FullscreenActivity.mainfoldername)) {
-                testfile = new File(FullscreenActivity.dir + "/" + s[1]);
-                exists = testfile.exists();
-            } else {
-                testfile = new File(FullscreenActivity.dir + "/" + s[0] + "/" + s[1]);
+            if (s.length == 3 && s[0] != null && s[1] != null && s[2] != null) {
+                sent_folder = s[0];
+                sent_file = s[1];
+                sent_direction = s[2];
+                // Check the song exists
+                File testfile;
+                if (s[0].equals(FullscreenActivity.mainfoldername)) {
+                    testfile = new File(FullscreenActivity.dir + "/" + s[1]);
+                } else {
+                    testfile = new File(FullscreenActivity.dir + "/" + s[0] + "/" + s[1]);
+                }
                 exists = testfile.exists();
             }
-
-            if (exists && s.length == 3 && s[0] != null && s[1] != null && s[2] != null) {
-                FullscreenActivity.whichSongFolder = s[0];
-                FullscreenActivity.songfilename = s[1];
-                FullscreenActivity.whichDirection = s[2];
-                return "Location";
-            } else {
-                FullscreenActivity.myToastMessage = s[0] + "/" + s[1] + "\n" +
-                        c.getResources().getString(R.string.songdoesntexist);
-                ShowToast.showToast(c);
-                return "";
-            }
-        } else if (string.length()>0 && string.contains("<lyrics>") && FullscreenActivity.receiveHostFiles) {
-            FullscreenActivity.mySalutXML = string;
-            return "HostFile";
         }
 
-        return "";
+        // If we don't want host files, the file needs to exist!  If not, we will force receiving
+        if (exists && !FullscreenActivity.receiveHostFiles) {
+            FullscreenActivity.whichSongFolder = sent_folder;
+            FullscreenActivity.songfilename = sent_file;
+            FullscreenActivity.whichDirection = sent_direction;
+            return "Location";
+
+        } else if(!exists && haslyrics) {
+            // The song doesn't exist, but song details have been sent, so receive them
+            FullscreenActivity.mySalutXML = string;
+            return "HostFile";
+        } else {
+            FullscreenActivity.myToastMessage = c.getResources().getString(R.string.songdoesntexist);
+            ShowToast.showToast(c);
+            return "";
+        }
     }
 
     static boolean isAutoScrollValid() {
@@ -790,16 +807,14 @@ public class ProcessSong extends Activity {
                 thischarempty = true;
             }
 
-            String prevchar = "";
+            String prevchar;
             boolean prevcharempty = false;
-            if (x>0) {
-                prevchar = string.substring(x-1,x);
-            }
-            if (prevchar.equals(" ") || prevchar.equals("|") || x==0) {
+            prevchar = string.substring(x-1,x);
+            if (prevchar.equals(" ") || prevchar.equals("|")) {
                 prevcharempty = true;
             }
 
-            if ((!thischarempty && prevcharempty) || (thischarempty && x==0)) {
+            if (!thischarempty && prevcharempty) {
                 // This is a chord position
                 chordpositions.add(x + "");
             }
@@ -1299,11 +1314,11 @@ public class ProcessSong extends Activity {
 
     @SuppressWarnings("unused")
     public static String lyriclinetoHTML(String[] lyrics) {
-        String lyrichtml = "";
+        StringBuilder lyrichtml = new StringBuilder();
         for (String bit:lyrics) {
-            lyrichtml += "<td class=\"lyric\">"+bit.replace(" ","&nbsp;")+"</td>";
+            lyrichtml.append("<td class=\"lyric\">").append(bit.replace(" ", "&nbsp;")).append("</td>");
         }
-        return lyrichtml;
+        return lyrichtml.toString();
     }
 
     private static String[] beautifyHeadings(String string, Context c) {
@@ -1483,9 +1498,11 @@ public class ProcessSong extends Activity {
 
     static String fixLineLength(String string, int newlength) {
         int extraspacesrequired = newlength - string.length();
-        for (int x=0; x<extraspacesrequired; x++) {
-            string += " ";
+        StringBuilder stringBuilder = new StringBuilder(string);
+        for (int x = 0; x<extraspacesrequired; x++) {
+            stringBuilder.append(" ");
         }
+        string = stringBuilder.toString();
         return string;
     }
 
@@ -1583,8 +1600,8 @@ public class ProcessSong extends Activity {
                     String[] verse = {"", "", "", "", "", "", "", "", ""};
                     String[] chorus = {"", "", "", "", "", "", "", "", ""};
 
-                    String versechords = "";
-                    String choruschords = "";
+                    StringBuilder versechords = new StringBuilder();
+                    StringBuilder choruschords = new StringBuilder();
 
                     // Split the string into separate lines
                     String[] lines = string.split("\n");
@@ -1646,7 +1663,7 @@ public class ProcessSong extends Activity {
 
                         if (gettingverse) {
                             if (lines[z].startsWith(".")) {
-                                versechords += lines[z] + "\n";
+                                versechords.append(lines[z]).append("\n");
                                 lines[z] = "__REMOVED__";
                             } else if (Character.isDigit((lines[z] + " ").charAt(0))) {
                                 int vnum = Integer.parseInt((lines[z] + " ").substring(0, 1));
@@ -1658,7 +1675,7 @@ public class ProcessSong extends Activity {
                             }
                         } else if (gettingchorus) {
                             if (lines[z].startsWith(".")) {
-                                choruschords += lines[z] + "\n";
+                                choruschords.append(lines[z]).append("\n");
                                 lines[z] = "__REMOVED__";
                             } else if (Character.isDigit((lines[z] + " ").charAt(0))) {
                                 int cnum = Integer.parseInt((lines[z] + " ").substring(0, 1));
@@ -1672,11 +1689,11 @@ public class ProcessSong extends Activity {
                     }
 
                     // Get the replacement text
-                    String versereplacement = addchordstomultiline(verse, versechords);
-                    String chorusreplacement = addchordstomultiline(chorus, choruschords);
+                    String versereplacement = addchordstomultiline(verse, versechords.toString());
+                    String chorusreplacement = addchordstomultiline(chorus, choruschords.toString());
 
                     // Now go back through the lines and extract the new improved version
-                    String improvedlyrics = "";
+                    StringBuilder improvedlyrics = new StringBuilder();
                     for (String thisline : lines) {
                         if (thisline.equals("__VERSEMULTILINE__")) {
                             thisline = versereplacement;
@@ -1684,11 +1701,11 @@ public class ProcessSong extends Activity {
                             thisline = chorusreplacement;
                         }
                         if (!thisline.equals("__REMOVED__")) {
-                            improvedlyrics += thisline + "\n";
+                            improvedlyrics.append(thisline).append("\n");
                         }
                     }
 
-                    return improvedlyrics;
+                    return improvedlyrics.toString();
                 } else {
                     // Not multiline format
                     return string;
@@ -1743,63 +1760,63 @@ public class ProcessSong extends Activity {
     static String removeChordLines(String song) {
         // Split the song into separate lines
         String[] lines = song.split("\n");
-        String newsong = "";
+        StringBuilder newsong = new StringBuilder();
 
         for (String thisline:lines) {
             if (!thisline.startsWith(".")) {
-                newsong += thisline + "\n";
+                newsong.append(thisline).append("\n");
             }
         }
-        return newsong;
+        return newsong.toString();
     }
 
     static String getAllChords(String song) {
         // Split the song into separate lines
         String[] lines = song.split("\n");
-        String chordsonly = "";
+        StringBuilder chordsonly = new StringBuilder();
 
         for (String thisline:lines) {
             if (thisline.startsWith(".")) {
-                chordsonly += thisline + " ";
+                chordsonly.append(thisline).append(" ");
             }
         }
-        return chordsonly.replace("."," ");
+        return chordsonly.toString().replace("."," ");
     }
 
     static String removeCommentLines(String song) {
         // Split the song into separate lines
         String[] lines = song.split("\n");
-        String newsong = "";
+        StringBuilder newsong = new StringBuilder();
 
         for (String thisline:lines) {
             if (!thisline.startsWith(";")) {
-                newsong += thisline + "\n";
+                newsong.append(thisline).append("\n");
             }
         }
-        return newsong;
+        return newsong.toString();
 
     }
 
     private static String addchordstomultiline(String[] multiline, String chords) {
         String[] chordlines = chords.split("\n");
-        String replacementtext = "";
+        StringBuilder replacementtext = new StringBuilder();
 
         // Go through each verse/chorus in turn
         for (String sections:multiline) {
             String[] section = sections.split("\n");
 
             if (section.length == chordlines.length+1) {
-                replacementtext += section[0] + "\n";
+                replacementtext.append(section[0]).append("\n");
                 // Only works if there are the same number of lyric lines as chords!
                 for (int x=0; x<chordlines.length; x++) {
-                    replacementtext += chordlines[x]+"\n"+section[x+1]+"\n";
+                    replacementtext.append(chordlines[x]).append("\n").append(section[x + 1]).append("\n");
                 }
-                replacementtext += "\n";
+                replacementtext.append("\n");
             } else {
-                replacementtext += sections+"\n";
+                replacementtext.append(sections).append("\n");
             }
         }
-        return replacementtext;
+        return replacementtext.toString();
     }
 
     static String[] splitSongIntoSections(String song, Context c) {
@@ -1818,7 +1835,7 @@ public class ProcessSong extends Activity {
         }
 
         String[] temp = song.split("\n");
-        song = "";
+        StringBuilder songBuilder = new StringBuilder();
         for (String t:temp) {
             if (!t.startsWith(";") && !t.startsWith(".")) {
                 if (t.trim().startsWith("---")) {
@@ -1828,39 +1845,42 @@ public class ProcessSong extends Activity {
             }
 
             if (t.startsWith(".")||t.startsWith(";")) {
-                song += t + "\n";
+                songBuilder.append(t).append("\n");
             } else {
                 if (FullscreenActivity.whichMode.equals("Presentation") && !FullscreenActivity.presoShowChords) {
-                    song += t.replace("|", "\n") + "\n";
+                    songBuilder.append(t.replace("|", "\n")).append("\n");
                 } else if (FullscreenActivity.whichMode.equals("Presentation") && FullscreenActivity.presoShowChords) {
-                    song += t.replace("|", " ") + "\n";
+                    songBuilder.append(t.replace("|", " ")).append("\n");
                 } else {
-                    song += t + "\n";
+                    songBuilder.append(t).append("\n");
                 }
             }
         }
+        song = songBuilder.toString();
 
         if (FullscreenActivity.presenterChords.equals("N")) {
             // Split into lines
-            song = "";
+            StringBuilder songBuilder1 = new StringBuilder();
             for (String t:temp) {
                 if (t.startsWith(".") || t.startsWith(";")) {
-                    song += t + "\n";
+                    songBuilder1.append(t).append("\n");
                 } else {
-                    song += t.replace("|","\n") + "\n";
+                    songBuilder1.append(t.replace("|", "\n")).append("\n");
                 }
             }
+            song = songBuilder1.toString();
         } else {
             // Split into lines
             temp = song.split("\n");
-            song = "";
+            StringBuilder songBuilder1 = new StringBuilder();
             for (String t:temp) {
                 if (t.startsWith(".") || t.startsWith(";")) {
-                    song += t + "\n";
+                    songBuilder1.append(t).append("\n");
                 } else {
-                    song += t.replace("|"," ") + "\n";
+                    songBuilder1.append(t.replace("|", " ")).append("\n");
                 }
             }
+            song = songBuilder1.toString();
 
         }
         song = song.replace("\n[","\n%%__SPLITHERE__%%\n[");
@@ -1875,14 +1895,14 @@ public class ProcessSong extends Activity {
 
         // Check that we don't have empty sections
         String[] check = song.split("%%__SPLITHERE__%%");
-        String newsong = "";
+        StringBuilder newsong = new StringBuilder();
         for (String checkthis:check) {
-            if (checkthis!=null && !checkthis.isEmpty() && !checkthis.equals("") && !checkthis.equals(" ")) {
-                newsong += checkthis + "%%__SPLITHERE__%%";
+            if (checkthis != null && !checkthis.isEmpty() && !checkthis.equals(" ")) {
+                newsong.append(checkthis).append("%%__SPLITHERE__%%");
             }
         }
 
-        return newsong.split("%%__SPLITHERE__%%");
+        return newsong.toString().split("%%__SPLITHERE__%%");
 
         //return song.split("%%__SPLITHERE__%%");
     }
@@ -1982,7 +2002,7 @@ public class ProcessSong extends Activity {
         // The other issue is that custom tags (e.g. Guitar Solo) can have spaces in them
 
         String tempPresentationOrder = FullscreenActivity.mPresentation + " ";
-        String errors = "";
+        StringBuilder errors = new StringBuilder();
 
         // Go through each tag in the song
         for (String tag:currentSectionLabels) {
@@ -1991,7 +2011,7 @@ public class ProcessSong extends Activity {
             } else if (tempPresentationOrder.contains(tag)) {
                 tempPresentationOrder = tempPresentationOrder.replace(tag + " ", "<__" + tag + "__>");
             } else {
-                errors += tag + " - not found in presentation order\n";
+                errors.append(tag).append(" - not found in presentation order\n");
             }
         }
 
@@ -2005,7 +2025,7 @@ public class ProcessSong extends Activity {
         for (int d=0; d<tempPresOrderArray.length; d++) {
             if (!tempPresOrderArray[d].contains("__>")) {
                 if (!tempPresOrderArray[d].equals("") && !tempPresOrderArray[d].equals(" ")) {
-                    errors += tempPresOrderArray[d] + " - not found in song\n";
+                    errors.append(tempPresOrderArray[d]).append(" - not found in song\n");
                 }
                 tempPresOrderArray[d] = "";
                 // tempPresOrderArray now looks like "", "V1__>V2 ", "C__>", "V3__>", "C__>", "C__>", "Guitar Solo__>", "C__>Outro "
@@ -2014,29 +2034,29 @@ public class ProcessSong extends Activity {
                 String badbit = tempPresOrderArray[d].replace(goodbit+"__>","");
                 tempPresOrderArray[d] = goodbit;
                 if (!badbit.equals("") && !badbit.equals(" ")) {
-                    errors += badbit + " - not found in song\n";
+                    errors.append(badbit).append(" - not found in song\n");
                 }
                 // tempPresOrderArray now looks like "", "V1", "C", "V3", "C", "C", "Guitar Solo", "C"
             }
         }
 
         // Go through the tempPresOrderArray and add the sections back together as a string
-        String newSongText = "";
+        StringBuilder newSongText = new StringBuilder();
 
         for (String aTempPresOrderArray : tempPresOrderArray) {
             if (!aTempPresOrderArray.equals("")) {
                 for (int a = 0; a < currentSectionLabels.length; a++) {
                     if (currentSectionLabels[a].trim().equals(aTempPresOrderArray.trim())) {
-                        newSongText += currentSections[a] + "\n";
+                        newSongText.append(currentSections[a]).append("\n");
                     }
                 }
             }
         }
 
         // Display any errors
-        FullscreenActivity.myToastMessage = errors;
+        FullscreenActivity.myToastMessage = errors.toString();
 
-        return splitSongIntoSections(newSongText,c);
+        return splitSongIntoSections(newSongText.toString(),c);
 
     }
 
@@ -2137,15 +2157,15 @@ public class ProcessSong extends Activity {
     }
 
     static String songSectionChordPro(Context c, int x, boolean onsong) {
-        String chopro = "";
+        StringBuilder chopro = new StringBuilder();
         String[] heading = beautifyHeadings(FullscreenActivity.songSectionsLabels[x],c);
         if (onsong) {
-            chopro += heading[0].trim() + ":\n";
+            chopro.append(heading[0].trim()).append(":\n");
         } else {
             if (heading[1].equals("chorus")) {
-                chopro += "{soc}\n";
+                chopro.append("{soc}\n");
             } else {
-                chopro += "{c:" + heading[0].trim() + "}\n";
+                chopro.append("{c:").append(heading[0].trim()).append("}\n");
             }
         }
 
@@ -2185,7 +2205,7 @@ public class ProcessSong extends Activity {
                         } else {
                             chord_to_add = "";
                         }
-                        chopro += chord_to_add + lyrics_returned[w];
+                        chopro.append(chord_to_add).append(lyrics_returned[w]);
                     }
                     break;
 
@@ -2197,35 +2217,35 @@ public class ProcessSong extends Activity {
                         if (aChords_returned != null && !aChords_returned.trim().equals("")) {
                             chord_to_add = "[" + aChords_returned.trim() + "]";
                         }
-                        chopro += chord_to_add;
+                        chopro.append(chord_to_add);
                     }
                     break;
 
                 case "lyric_no_chord":
-                    chopro += FullscreenActivity.sectionContents[x][y].trim();
+                    chopro.append(FullscreenActivity.sectionContents[x][y].trim());
 
                     break;
 
                 case "comment_no_chord":
-                    chopro += "{c:" + FullscreenActivity.sectionContents[x][y].trim() + "}";
+                    chopro.append("{c:").append(FullscreenActivity.sectionContents[x][y].trim()).append("}");
                     break;
             }
-            chopro += "\n";
-            chopro = chopro.replace("][","]  [");
-            chopro = chopro.replace("\n\n","\n");
+            chopro.append("\n");
+            chopro = new StringBuilder(chopro.toString().replace("][", "]  ["));
+            chopro = new StringBuilder(chopro.toString().replace("\n\n", "\n"));
         }
 
         if (heading[1].equals("chorus")) {
-            chopro += "{eoc}\n";
+            chopro.append("{eoc}\n");
         }
-        chopro += "\n";
-        return chopro;
+        chopro.append("\n");
+        return chopro.toString();
     }
 
     static String songSectionText(Context c, int x) {
-        String text = "";
+        StringBuilder text = new StringBuilder();
         String[] heading = beautifyHeadings(FullscreenActivity.songSectionsLabels[x],c);
-        text += heading[0].trim() + ":";
+        text.append(heading[0].trim()).append(":");
 
         int linenums = FullscreenActivity.sectionContents[x].length;
 
@@ -2233,24 +2253,24 @@ public class ProcessSong extends Activity {
         for (int y = 0; y < linenums; y++) {
             if (FullscreenActivity.sectionContents[x][y].length() > 1 &&
                     FullscreenActivity.sectionContents[x][y].startsWith("[")) {
-                text += "";
+                text.append("");
             } else if (FullscreenActivity.sectionContents[x][y].length() > 1 &&
                     FullscreenActivity.sectionContents[x][y].startsWith(" ") ||
                     FullscreenActivity.sectionContents[x][y].startsWith(".") ||
                     FullscreenActivity.sectionContents[x][y].startsWith(";")) {
-                text += FullscreenActivity.sectionContents[x][y].substring(1);
+                text.append(FullscreenActivity.sectionContents[x][y].substring(1));
             } else {
-                text += FullscreenActivity.sectionContents[x][y];
+                text.append(FullscreenActivity.sectionContents[x][y]);
             }
-            text += "\n";
+            text.append("\n");
 
         }
-        text += "\n";
+        text.append("\n");
 
         if (FullscreenActivity.trimSections) {
-            text = text.trim();
+            text = new StringBuilder(text.toString().trim());
         }
-        return text;
+        return text.toString();
     }
     @SuppressWarnings("all")
     public static LinearLayout songSectionView(Context c, int x, float fontsize, boolean projected) {
@@ -2548,9 +2568,9 @@ public class ProcessSong extends Activity {
                     lyrics_returned = new String[1];
                     lyrics_returned[0] = whattoprocess[y];
                     TableRow tr = commentlinetoTableRow(c, lyrics_returned, fontsize, false);
-                    tr.setGravity(Gravity.RIGHT);
+                    tr.setGravity(Gravity.END);
                     tl.addView(tr);
-                    tl.setGravity(Gravity.RIGHT);
+                    tl.setGravity(Gravity.END);
                     break;
 
                 case "guitar_tab":
@@ -2678,9 +2698,7 @@ public class ProcessSong extends Activity {
             // Pdf page is rendered on Bitmap
             if (mCurrentPage != null) {
                 try {
-                    if (PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY>-1) {
-                        mCurrentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
-                    }
+                    mCurrentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -2894,21 +2912,21 @@ public class ProcessSong extends Activity {
             }
         }
 
-        String capoDetails = "";
+        //String capoDetails = "";
         /*if (FullscreenActivity.showCapoChords && !FullscreenActivity.mCapo.equals("")) {
             //capoDetails = ";__" + c.getResources().getString(R.string.edit_song_capo) + " " + FullscreenActivity.mCapo + "\n\n";
             //FullscreenActivity.myToastMessage = c.getResources().getString(R.string.edit_song_capo) + " " + FullscreenActivity.mCapo + "\n\n";
             //ShowToast.showToast(c);
         }*/
 
-        String stickyNotes = "";
+        StringBuilder stickyNotes = new StringBuilder();
         if (FullscreenActivity.toggleAutoSticky.equals("T")||FullscreenActivity.toggleAutoSticky.equals("B")) {
             String notes[] = FullscreenActivity.mNotes.split("\n");
-            stickyNotes += ";__"+c.getString(R.string.note)+": ";
+            stickyNotes.append(";__").append(c.getString(R.string.note)).append(": ");
             for (String line:notes) {
-                stickyNotes += ";__" + line + "\n";
+                stickyNotes.append(";__").append(line).append("\n");
             }
-            stickyNotes = stickyNotes.replace(";__"+c.getString(R.string.note)+": "+";__",";__"+c.getString(R.string.note)+": ");
+            stickyNotes = new StringBuilder(stickyNotes.toString().replace(";__" + c.getString(R.string.note) + ": " + ";__", ";__" + c.getString(R.string.note) + ": "));
             if (FullscreenActivity.toggleAutoSticky.equals("T") && !FullscreenActivity.mNotes.equals("")) {
                 FullscreenActivity.myLyrics = stickyNotes + "\n" + FullscreenActivity.myLyrics;
             }
@@ -2934,9 +2952,9 @@ public class ProcessSong extends Activity {
             FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n\n" + nextinset;
         }
 
-        if (!capoDetails.equals("")) {
+        /*if (!capoDetails.equals("")) {
             FullscreenActivity.myLyrics = capoDetails + FullscreenActivity.myLyrics;
-        }
+        }*/
 
     }
 

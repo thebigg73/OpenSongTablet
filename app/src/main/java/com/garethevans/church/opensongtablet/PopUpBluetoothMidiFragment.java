@@ -175,8 +175,10 @@ public class PopUpBluetoothMidiFragment extends DialogFragment {
 
         // Get scanner.  This is only allowed for Marshmallow or later
         BluetoothManager bluetoothManager = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-        BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
-        mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
+        if (bluetoothManager!=null) {
+            BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
+            mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
+        }
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 

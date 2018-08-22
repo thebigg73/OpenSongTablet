@@ -599,7 +599,7 @@ public class PopUpStorageFragment extends DialogFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (resultCode == RESULT_OK) {
             Uri treeUri = resultData.getData();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (treeUri!=null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getActivity().grantUriPermission(getActivity().getPackageName(), treeUri, Intent.FLAG_GRANT_READ_URI_PERMISSION |
                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
@@ -609,6 +609,9 @@ public class PopUpStorageFragment extends DialogFragment {
                 FullscreenActivity.uriTree = treeUri;
                 Preferences.savePreferences();
                 altStorageButton.setEnabled(true);
+            } else if (treeUri!=null) {
+                FullscreenActivity.uriTree = treeUri;
+                Preferences.savePreferences();
             }
         }
     }
@@ -881,9 +884,9 @@ public class PopUpStorageFragment extends DialogFragment {
         // This is a test to try to get the appropriate SAF document files
         // First up, try to get the storage permission
         StorageAccess SAF = new StorageAccess();
-        DocumentFile df_home = SAF.getLocation(getActivity(),"",FullscreenActivity.uriTree);
-        Log.d("d","df_home="+df_home);
-        DocumentFile df_songs = SAF.getLocation(getActivity(),"Songs",FullscreenActivity.uriTree);
-        Log.d("d","df_songs="+df_songs);
+        Uri uri_home = SAF.homeFolder(getActivity());
+        Log.d("d","df_home="+uri_home);
+        Uri uri_songs = SAF.getUriFromPath("Songs","","");
+        Log.d("d","df_songs="+uri_songs);
     }
 }

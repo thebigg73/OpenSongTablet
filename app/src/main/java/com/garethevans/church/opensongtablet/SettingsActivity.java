@@ -252,7 +252,9 @@ PopUpDirectoryChooserFragment.SettingsInterface, PopUpFindStorageLocationFragmen
                     .setIcon(Icon.createWithResource(SettingsActivity.this, R.drawable.projector))
                     .setIntent(intent.putExtra("whichMode","Presentation"))
                     .build();
-            shortcutManager.setDynamicShortcuts(Arrays.asList(shortcut3,shortcut2, shortcut1));
+            if (shortcutManager!=null) {
+                shortcutManager.setDynamicShortcuts(Arrays.asList(shortcut3, shortcut2, shortcut1));
+            }
         }
     }
 
@@ -284,7 +286,7 @@ PopUpDirectoryChooserFragment.SettingsInterface, PopUpFindStorageLocationFragmen
     }
 
     public void gotothesongs() {
-        if (storageGranted && this!=null) {
+        if (storageGranted) {
             Preferences.savePreferences();
             Intent intent = new Intent();
             intent.setClass(this, FullscreenActivity.class);
