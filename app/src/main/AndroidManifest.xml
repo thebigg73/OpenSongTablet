@@ -103,7 +103,10 @@
 
         <activity android:name=".BootUpCheck" />
 
-        <!--//This is used for testing Storage Access Framework BootUpCheck
+<!--
+//This is used for testing Storage Access Framework BootUpCheck
+
+
                 <activity android:name=".SettingsActivity" />
 
                 <activity android:name=".BootUpCheck"
@@ -116,8 +119,8 @@
                         <category android:name="android.intent.category.LAUNCHER" />
                     </intent-filter>
                 </activity>
-        -->
 
+-->
         <activity
             android:name="com.garethevans.church.opensongtablet.FullscreenActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"

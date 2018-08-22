@@ -67,6 +67,15 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         dismissPresentation();
     }
 
+    @Override
+    public void onDestroy() {
+        try {
+            myPresentation.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void dismissPresentation() {
         if (myPresentation != null) {
             myPresentation.dismiss();

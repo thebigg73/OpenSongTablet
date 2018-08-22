@@ -52,7 +52,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
     // The important starting up ones
     public static Locale locale;
-    public static boolean resetSomePreferences, firstload = true;
+    public static boolean firstload = true;
     public static int currentapiVersion;
 
     // Storage variables
@@ -111,6 +111,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static SongFileList songfilelist = new SongFileList();
     public static ArrayList<String> songIds = new ArrayList<>();
     public static ArrayList<String> folderIds = new ArrayList<>();
+    public static ArrayList<Uri> songsInFolderUris = new ArrayList<>();
     //this could be a ref to an xmlObject.
     public static String[][] songDetails;
     public static int numDirs;
@@ -501,21 +502,17 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 //            return;
 //        }
 //        refWatcher = LeakCanary.install(this.getApplication());
-        myPreferences = getSharedPreferences("OpenSongApp", Context.MODE_PRIVATE);
+
+        // Load up the preferences
+        loadPreferences(FullscreenActivity.this);
+
+        // Fix and set some variables
+        fixAndSet(FullscreenActivity.this);
 
         // If we have an intent or a whattodo starting with importfile, retain this
-
         if (getIntent()!=null) {
             dealWithIntent(getIntent());
         }
-
-
-        if (whattodo==null) {
-            whattodo = "";
-        }
-
-        // Load up the preferences
-        Preferences.loadPreferences();
 
         // To get here from the SettingsActivity, we only needed to check for basic folders existing
         // Now lets check properly for all of the stuff we need, and if it is missing, create them
@@ -523,106 +520,20 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             PopUpStorageFragment.createDirectories();
         }
 
-        if (resetSomePreferences) {
-            FullscreenActivity.longpressdownpedalgesture = "0";
-            FullscreenActivity.longpressuppedalgesture = "0";
-            FullscreenActivity.longpressnextpedalgesture = "0";
-            FullscreenActivity.longpresspreviouspedalgesture = "0";
-            FullscreenActivity.gesture_doubletap = "2";
-            FullscreenActivity.gesture_longpress = "3";
-            Preferences.savePreferences();
-            resetSomePreferences = false;
-        }
+        // Check song was loaded last time (if appropriate)
+        checkSongLoadedLastTime();
 
-        mainfoldername = getResources().getString(R.string.mainfoldername);
-
-        // If the song was loaded last time correctly, then we are good to continue
-        // If it didn't load, then reset the starting song and folder
-        if (!Preferences.wasSongLoaded()) {
-            whichSongFolder = "";
-            songfilename = "Welcome to OpenSongApp";
-        }
-
-        // If whichSongFolder is empty, reset to main
-        if (whichSongFolder == null || whichSongFolder.isEmpty() || whichSongFolder.equals("")) {
-            whichSongFolder = mainfoldername;
-            Preferences.savePreferences();
-        }
-        locale = Locale.getDefault();
-        if  (locale==null) {
-            locale = new Locale(Locale.getDefault().getDisplayLanguage());
-        }
-
-        if (!locale.toString().equals("af") && !locale.toString().equals("cz") && !locale.toString().equals("de") &&
-                !locale.toString().equals("el") && !locale.toString().equals("es") && !locale.toString().equals("fr") &&
-                !locale.toString().equals("hu") && !locale.toString().equals("it") && !locale.toString().equals("ja") &&
-                !locale.toString().equals("pl") && !locale.toString().equals("pt") && !locale.toString().equals("ru") &&
-                !locale.toString().equals("sr") && !locale.toString().equals("zh")) {
-            locale = new Locale("en");
-        }
+        // Set the locale
+        setTheLocale();
 
         // Get the song folders
         ListSongFiles.getAllSongFolders();
 
-        // Try language locale change
-        if (!languageToLoad.isEmpty()) {
-            locale = new Locale(languageToLoad);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config,
-                    getBaseContext().getResources().getDisplayMetrics());
-        }
-
-        timesigs = getResources().getStringArray(R.array.timesig);
-
-        mainfoldername = getResources().getString(R.string.mainfoldername);
-
-
         // Test for NFC capability
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            mAndroidBeamAvailable = false;
-        } else {
-            mAndroidBeamAvailable = true;
-            try {
-                mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-            } catch (Exception e) {
-                mAndroidBeamAvailable = false;
-            }
-            if (mNfcAdapter==null) {
-                mAndroidBeamAvailable = false;
-            }
-        }
+        testForNFC();
 
-        // Initialise api
-        currentapiVersion = Build.VERSION.SDK_INT;
-
-        // Capable of dual head presentations
-        dualDisplayCapable = currentapiVersion >= 17;
-
-        // Set up the available typefaces
-        // Initialise the typefaces available
-        typeface0 = Typeface.DEFAULT;
-        typeface1 = Typeface.MONOSPACE;
-        typeface2 = Typeface.SANS_SERIF;
-        typeface3 = Typeface.SERIF;
-        typeface4 = Typeface.createFromAsset(getAssets(), "fonts/FiraSansOT-Light.otf");
-        typeface4i = Typeface.createFromAsset(getAssets(), "fonts/FiraSans-LightItalic.otf");
-        typeface5 = Typeface.createFromAsset(getAssets(), "fonts/FiraSansOT-Regular.otf");
-        typeface5i = Typeface.createFromAsset(getAssets(), "fonts/FiraSans-Italic.otf");
-        typeface6 = Typeface.createFromAsset(getAssets(), "fonts/KaushanScript-Regular.otf");
-        typeface7 = Typeface.createFromAsset(getAssets(), "fonts/Lato-Lig.ttf");
-        typeface7i = Typeface.createFromAsset(getAssets(), "fonts/Lato-LigIta.ttf");
-        typeface8 = Typeface.createFromAsset(getAssets(), "fonts/Lato-Reg.ttf");
-        typeface8i = Typeface.createFromAsset(getAssets(), "fonts/Lato-RegIta.ttf");
-        typeface9 = Typeface.createFromAsset(getAssets(), "fonts/LeagueGothic-Regular.otf");
-        typeface9i = Typeface.createFromAsset(getAssets(), "fonts/LeagueGothic-Italic.otf");
-        typeface10 = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
-        typeface10i = Typeface.createFromAsset(getAssets(), "fonts/Roboto-LightItalic.ttf");
-        typeface11 = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Thin.ttf");
-        typeface11i = Typeface.createFromAsset(getAssets(), "fonts/Roboto-ThinItalic.ttf");
-        typeface12 = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Medium.ttf");
-        typeface12i = Typeface.createFromAsset(getAssets(), "fonts/Roboto-MediumItalic.ttf");
+        // Initialise typefaces
+        initialiseTypefaces(FullscreenActivity.this);
 
         // Set up the user preferences for page colours and fonts
         SetUpColours.colours();
@@ -630,10 +541,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
         // Copy assets (background images)
         PopUpStorageFragment.copyAssets(FullscreenActivity.this);
-
-        // Prepare import varaibale
-        // Copy the default files into the image folder (from assets)
-
 
         // If whichMode is Presentation, open that app instead
         switch (whichMode) {
@@ -767,6 +674,141 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
         }
     }
 
+    void mainSetterOfVariables(Context c) {
+        // Load up the preferences
+        loadPreferences(c);
+
+        // Fix and set some variables
+        fixAndSet(c);
+
+        // If we have an intent or a whattodo starting with importfile, retain this
+        if (getIntent()!=null) {
+            dealWithIntent(getIntent());
+        }
+
+        // To get here from the SettingsActivity, we only needed to check for basic folders existing
+        // Now lets check properly for all of the stuff we need, and if it is missing, create them
+        if (!PopUpStorageFragment.checkDirectoriesExistOnly()) {
+            PopUpStorageFragment.createDirectories();
+        }
+
+        // Check song was loaded last time (if appropriate)
+        checkSongLoadedLastTime();
+
+        // Set the locale
+        setTheLocale();
+
+        // Get the song folders
+        ListSongFiles.getAllSongFolders();
+
+        // Test for NFC capability
+        testForNFC();
+
+        // Initialise typefaces
+        initialiseTypefaces(c);
+
+        // Set up the user preferences for page colours and fonts
+        SetUpColours.colours();
+        SetTypeFace.setTypeface();
+    }
+
+    void loadPreferences(Context c) {
+        try {
+            myPreferences = c.getSharedPreferences("OpenSongApp",Context.MODE_PRIVATE);
+            Preferences.loadPreferences();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    void fixAndSet(Context c) {
+        if (whattodo==null) {
+            whattodo = "";
+        }
+        mainfoldername = c.getResources().getString(R.string.mainfoldername);
+        timesigs = c.getResources().getStringArray(R.array.timesig);
+        currentapiVersion = Build.VERSION.SDK_INT;
+        // Capable of dual head presentations
+        dualDisplayCapable = currentapiVersion >= 17;
+    }
+    void checkSongLoadedLastTime() {
+        // If the song was loaded last time correctly, then we are good to continue
+        // If it didn't load, then reset the starting song and folder
+        if (!Preferences.wasSongLoaded()) {
+            whichSongFolder = "";
+            songfilename = "Welcome to OpenSongApp";
+        }
+
+        // If whichSongFolder is empty, reset to main
+        if (whichSongFolder == null || whichSongFolder.isEmpty() || whichSongFolder.equals("")) {
+            whichSongFolder = mainfoldername;
+            Preferences.savePreferences();
+        }
+    }
+    void setTheLocale() {
+        locale = Locale.getDefault();
+        if  (locale==null) {
+            locale = new Locale(Locale.getDefault().getDisplayLanguage());
+        }
+
+        if (!locale.toString().equals("af") && !locale.toString().equals("cz") && !locale.toString().equals("de") &&
+                !locale.toString().equals("el") && !locale.toString().equals("es") && !locale.toString().equals("fr") &&
+                !locale.toString().equals("hu") && !locale.toString().equals("it") && !locale.toString().equals("ja") &&
+                !locale.toString().equals("pl") && !locale.toString().equals("pt") && !locale.toString().equals("ru") &&
+                !locale.toString().equals("sr") && !locale.toString().equals("zh")) {
+            locale = new Locale("en");
+        }
+
+        // Try language locale change
+        if (!languageToLoad.isEmpty()) {
+            locale = new Locale(languageToLoad);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config,
+                    getBaseContext().getResources().getDisplayMetrics());
+        }
+    }
+    void testForNFC() {
+        // Test for NFC capability
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            mAndroidBeamAvailable = false;
+        } else {
+            mAndroidBeamAvailable = true;
+            try {
+                mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+            } catch (Exception e) {
+                mAndroidBeamAvailable = false;
+            }
+            if (mNfcAdapter==null) {
+                mAndroidBeamAvailable = false;
+            }
+        }
+    }
+    void initialiseTypefaces(Context c) {
+        // Set up the available typefaces
+        // Initialise the typefaces available
+        typeface0 = Typeface.DEFAULT;
+        typeface1 = Typeface.MONOSPACE;
+        typeface2 = Typeface.SANS_SERIF;
+        typeface3 = Typeface.SERIF;
+        typeface4 = Typeface.createFromAsset(c.getAssets(), "fonts/FiraSansOT-Light.otf");
+        typeface4i = Typeface.createFromAsset(c.getAssets(), "fonts/FiraSans-LightItalic.otf");
+        typeface5 = Typeface.createFromAsset(c.getAssets(), "fonts/FiraSansOT-Regular.otf");
+        typeface5i = Typeface.createFromAsset(c.getAssets(), "fonts/FiraSans-Italic.otf");
+        typeface6 = Typeface.createFromAsset(c.getAssets(), "fonts/KaushanScript-Regular.otf");
+        typeface7 = Typeface.createFromAsset(c.getAssets(), "fonts/Lato-Lig.ttf");
+        typeface7i = Typeface.createFromAsset(c.getAssets(), "fonts/Lato-LigIta.ttf");
+        typeface8 = Typeface.createFromAsset(c.getAssets(), "fonts/Lato-Reg.ttf");
+        typeface8i = Typeface.createFromAsset(c.getAssets(), "fonts/Lato-RegIta.ttf");
+        typeface9 = Typeface.createFromAsset(c.getAssets(), "fonts/LeagueGothic-Regular.otf");
+        typeface9i = Typeface.createFromAsset(c.getAssets(), "fonts/LeagueGothic-Italic.otf");
+        typeface10 = Typeface.createFromAsset(c.getAssets(), "fonts/Roboto-Light.ttf");
+        typeface10i = Typeface.createFromAsset(c.getAssets(), "fonts/Roboto-LightItalic.ttf");
+        typeface11 = Typeface.createFromAsset(c.getAssets(), "fonts/Roboto-Thin.ttf");
+        typeface11i = Typeface.createFromAsset(c.getAssets(), "fonts/Roboto-ThinItalic.ttf");
+        typeface12 = Typeface.createFromAsset(c.getAssets(), "fonts/Roboto-Medium.ttf");
+        typeface12i = Typeface.createFromAsset(c.getAssets(), "fonts/Roboto-MediumItalic.ttf");
+    }
 
     public static void restart(Context context) {
         Intent mStartActivity = new Intent(context, SettingsActivity.class);

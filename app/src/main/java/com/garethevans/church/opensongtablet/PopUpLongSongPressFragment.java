@@ -189,7 +189,7 @@ public class PopUpLongSongPressFragment extends DialogFragment {
                 // as this might not be the song loaded
                 String[] vals = LoadXML.getCCLILogInfo(c, FullscreenActivity.whichSongFolder, FullscreenActivity.songfilename);
                 if (vals.length==4 && vals[0]!=null && vals[1]!=null && vals[2]!=null && vals[3]!=null) {
-                    PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
+                    PopUpCCLIFragment.addUsageEntryToLog(c,FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
                             vals[0], vals[1], vals[2], vals[3], "6"); // Printed
                 }
             }
