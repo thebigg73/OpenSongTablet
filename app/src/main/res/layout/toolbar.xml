@@ -9,7 +9,8 @@
     android:layout_alignParentTop="true"
     android:background="@color/toolbar"
     app:elevation="8dp"
-    app:popupTheme="@style/ThemeOverlay.OpenSongApp">
+    app:popupTheme="@style/ThemeOverlay.OpenSongApp"
+    android:layout_alignParentStart="true">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,8 +24,9 @@
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/batteryholder"
             android:layout_toStartOf="@+id/batteryholder"
-            android:gravity="center_vertical|left"
-            android:minWidth="90dp">
+            android:gravity="center_vertical|start"
+            android:minWidth="90dp"
+            android:layout_alignParentStart="true">
 
             <TextView
                 android:id="@+id/songtitle_ab"
@@ -37,7 +39,8 @@
                 android:maxLines="1"
                 android:textColor="#fff"
                 style="@style/MySongTitleText"
-                tools:ignore="SmallSp" />
+                tools:ignore="SmallSp"
+                android:layout_alignParentStart="true" />
 
             <TextView
                 android:id="@+id/songkey_ab"
@@ -49,7 +52,8 @@
                 android:maxLines="1"
                 android:textColor="#fff"
                 style="@style/MySongTitleText"
-                tools:ignore="SmallSp" />
+                tools:ignore="SmallSp"
+                android:layout_toEndOf="@+id/songtitle_ab" />
 
             <TextView
                 android:id="@+id/songcapo_ab"
@@ -61,7 +65,8 @@
                 android:maxLines="1"
                 android:textColor="#fff"
                 style="@style/MySongTitleText"
-                tools:ignore="SmallSp" />
+                tools:ignore="SmallSp"
+                android:layout_toEndOf="@+id/songkey_ab" />
 
             <TextView
                 android:id="@+id/songauthor_ab"
@@ -74,7 +79,8 @@
                 android:maxLines="1"
                 android:textColor="#fff"
                 style="@style/MySongAuthorText"
-                tools:ignore="SmallSp" />
+                tools:ignore="SmallSp"
+                android:layout_alignParentStart="true" />
 
         </RelativeLayout>
 
@@ -116,7 +122,7 @@
                     android:textColor="#fff"
                     android:textSize="11sp"
                     tools:gravity="center"
-                    tools:ignore="SmallSp" />
+                    tools:ignore="HardcodedText,SmallSp" />
 
                 <TextView
                     android:id="@+id/digitalclock"
@@ -126,13 +132,13 @@
                     android:layout_margin="0dp"
                     android:ellipsize="marquee"
                     android:gravity="center"
-                    android:lines="1"
+                    android:singleLine="true"
                     android:maxWidth="50dp"
                     android:padding="0dp"
                     android:text="12:00"
                     android:textColor="#ffffff"
                     android:textSize="11sp"
-                    tools:ignore="SmallSp" />
+                    tools:ignore="HardcodedText,SmallSp" />
 
             </LinearLayout>
 
