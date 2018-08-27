@@ -275,6 +275,15 @@ public class PopUpSetViewNew extends DialogFragment {
     }
 
     public void doSave() {
+        Log.d("SETVIEW","before: mySet="+FullscreenActivity.mySet);
+        for(String ms:FullscreenActivity.mSet) {
+            Log.d("SETVIEW","before: mSet="+ms);
+
+        }
+        for(String msl:FullscreenActivity.mSetList) {
+            Log.d("SETVIEW","before: mSetList="+msl);
+
+        }
         StringBuilder tempmySet = new StringBuilder();
         String tempItem;
         if (FullscreenActivity.mTempSetList == null) {
@@ -291,6 +300,14 @@ public class PopUpSetViewNew extends DialogFragment {
         FullscreenActivity.myToastMessage = getActivity().getString(R.string.currentset) +
                 " - " + getActivity().getString(R.string.ok);
         Preferences.savePreferences();
+        Log.d("SETVIEW","after: mySet="+FullscreenActivity.mySet);
+        for(String ms:FullscreenActivity.mSet) {
+            Log.d("SETVIEW","after: mSet="+ms);
+
+        }
+        for(String msl:FullscreenActivity.mSetList) {
+            Log.d("SETVIEW","after: mSetList="+msl);
+        }
         // Tell the listener to do something
 
     }

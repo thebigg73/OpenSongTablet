@@ -75,6 +75,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
     AsyncTask<Object,Void,String> update_fields;
 
+    Bible bibleC;
     // Declare views
     View V;
     RadioGroup customRadioGroup;
@@ -139,6 +140,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
+        bibleC = new Bible();
         V = inflater.inflate(R.layout.popup_customslidecreator, container, false);
 
         TextView title = V.findViewById(R.id.dialogtitle);
@@ -210,7 +212,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 searchBible_progressBar.setVisibility(View.VISIBLE);
                 bibleGateway_WebView.setVisibility(View.GONE);
                 grabVerse_Button.setVisibility(View.GONE);
-                Bible.grabBibleText(getActivity().getApplicationContext(), bibleGateway_WebView.getUrl());
+                bibleC.grabBibleText(getActivity().getApplicationContext(), bibleGateway_WebView.getUrl());
             }
         });
 

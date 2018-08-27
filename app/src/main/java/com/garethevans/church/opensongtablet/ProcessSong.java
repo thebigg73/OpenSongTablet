@@ -1637,30 +1637,6 @@ public class ProcessSong extends Activity {
                             gettingchorus = false;
                         }
 
-                        /*if ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[v]") == 0 &&
-                                ((z < lines.length - 1 && (lines[z + 1].startsWith(" 1") || lines[z + 1].startsWith("1"))) ||
-                                        (z < lines.length - 2 && (lines[z + 2].startsWith(" 1") || lines[z + 2].startsWith("1"))))) ||
-
-                                ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[" + c.getResources().getString(R.string.tag_verse).toLowerCase(FullscreenActivity.locale) + "]") == 0) &&
-                                        ((z < lines.length - 1 && (lines[z + 1].startsWith(" 1") || lines[z + 1].startsWith("1")) ||
-                                                (z < lines.length - 2 && (lines[z + 2].startsWith(" 1") || lines[z + 2].startsWith("1"))))))) {
-                            lines[z] = "__VERSEMULTILINE__";
-                            gettingverse = true;
-                            gettingchorus = false;
-                        }
-                        if ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[c]") == 0 &&
-                                ((z < lines.length - 1 && (lines[z + 1].startsWith(" 1") || lines[z + 1].startsWith(" 1")) || (z < lines.length - 2 && lines[z + 2].startsWith(" 1")))) ||
-
-                                ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[" + c.getResources().getString(R.string.tag_chorus).toLowerCase(FullscreenActivity.locale) + "]") == 0) &&
-                                        ((z < lines.length - 1 && lines[z + 1].startsWith(" 1")) || (z < lines.length - 2 && lines[z + 2].startsWith(" 1"))))) {
-                            lines[z] = "__CHORUSMULTILINE__";
-                            gettingchorus = true;
-                            gettingverse = false;
-                        } else if (lines[z].indexOf("[") == 0) {
-                            gettingchorus = false;
-                            gettingverse = false;
-                        }*/
-
                         if (gettingverse) {
                             if (lines[z].startsWith(".")) {
                                 versechords.append(lines[z]).append("\n");
@@ -1726,19 +1702,6 @@ public class ProcessSong extends Activity {
                 (l_1.startsWith("1") || l_1.startsWith(" 1") || l_2.startsWith("1") || l_2.startsWith(" 1"))) {
             isit = true;
         }
-
-
-        /*if ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[v]") == 0 &&
-                ((z < lines.length - 1 && (lines[z + 1].startsWith(" 1") || lines[z + 1].startsWith("1"))) ||
-                        (z < lines.length - 2 && (lines[z + 2].startsWith(" 1") || lines[z + 2].startsWith("1"))))) ||
-
-                ((lines[z].toLowerCase(FullscreenActivity.locale).indexOf("[" + c.getResources().getString(R.string.tag_verse).toLowerCase(FullscreenActivity.locale) + "]") == 0) &&
-                        ((z < lines.length - 1 && (lines[z + 1].startsWith(" 1") || lines[z + 1].startsWith("1")) ||
-                                (z < lines.length - 2 && (lines[z + 2].startsWith(" 1") || lines[z + 2].startsWith("1"))))))) {
-            lines[z] = "__VERSEMULTILINE__";
-            gettingverse = true;
-            gettingchorus = false;
-        }*/
 
         return isit;
     }
@@ -2089,10 +2052,8 @@ public class ProcessSong extends Activity {
             }
             if (mcapo>0) {
                 if (FullscreenActivity.showCapoAsNumerals) {
-                    //s = c.getString(R.string.edit_song_capo) + ": " + numberToNumeral(mcapo);
                     s = numberToNumeral(mcapo);
                 } else {
-                    //s = c.getString(R.string.edit_song_capo) + ": " + mcapo;
                     s = "" + mcapo;
                 }
             }
@@ -2912,13 +2873,6 @@ public class ProcessSong extends Activity {
             }
         }
 
-        //String capoDetails = "";
-        /*if (FullscreenActivity.showCapoChords && !FullscreenActivity.mCapo.equals("")) {
-            //capoDetails = ";__" + c.getResources().getString(R.string.edit_song_capo) + " " + FullscreenActivity.mCapo + "\n\n";
-            //FullscreenActivity.myToastMessage = c.getResources().getString(R.string.edit_song_capo) + " " + FullscreenActivity.mCapo + "\n\n";
-            //ShowToast.showToast(c);
-        }*/
-
         StringBuilder stickyNotes = new StringBuilder();
         if (FullscreenActivity.toggleAutoSticky.equals("T")||FullscreenActivity.toggleAutoSticky.equals("B")) {
             String notes[] = FullscreenActivity.mNotes.split("\n");
@@ -2951,11 +2905,6 @@ public class ProcessSong extends Activity {
                 FullscreenActivity.showNextInSet.equals(("bottom"))) {
             FullscreenActivity.myLyrics = FullscreenActivity.myLyrics + "\n\n" + nextinset;
         }
-
-        /*if (!capoDetails.equals("")) {
-            FullscreenActivity.myLyrics = capoDetails + FullscreenActivity.myLyrics;
-        }*/
-
     }
 
     // The stuff for PresenterMode

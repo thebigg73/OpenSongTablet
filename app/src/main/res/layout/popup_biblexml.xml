@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,7 +16,30 @@
         <include layout="@layout/popup_dialogtitle" />
     </FrameLayout>
 
+
+
+    <WebView
+        android:id="@+id/webViewBibleDownload"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/myTitle"
+        android:layout_margin="4dp"
+        android:visibility="gone"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/webViewCloseFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/myTitle"
+        app:backgroundTint="@color/blue"
+        app:useCompatPadding="true"
+        app:borderWidth="0dp"
+        android:src="@drawable/ic_close_white_36dp"
+        android:visibility="gone"/>
+
     <ScrollView
+        android:id="@+id/xmlscrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/myTitle">
@@ -32,15 +56,16 @@
                 android:layout_margin="4dp"
                 android:text="@string/file_chooser" />
 
-            <Spinner
-                android:id="@+id/bibleFileSpinner"
-                style="@style/MySpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginBottom="12dp" />
+                <Spinner
+                    android:id="@+id/bibleFileSpinner"
+                    style="@style/MySpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginBottom="12dp" />
+
 
             <TextView
                 style="@style/MyHeadingText"
@@ -90,7 +115,8 @@
                 android:layout_margin="4dp"
                 style="@style/MyHeadingText"
                 android:text="(1) .... (2) ..."
-                app:showText="false"/>
+                app:showText="false"
+                tools:ignore="HardcodedText" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -108,14 +134,16 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="12dp"
+                    tools:ignore="NestedWeights" />
 
                 <TextView
                     style="@style/MyHeadingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:text=" - " />
+                    android:text=" - "
+                    tools:ignore="HardcodedText" />
 
                 <Spinner
                     android:id="@+id/bibleVerseToSpinner"
@@ -149,9 +177,10 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
+        android:indeterminate="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 </RelativeLayout>

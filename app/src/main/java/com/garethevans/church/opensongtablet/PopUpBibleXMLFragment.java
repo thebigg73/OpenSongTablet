@@ -3,8 +3,15 @@ package com.garethevans.church.opensongtablet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.os.AsyncTask;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
@@ -12,15 +19,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.CookieManager;
+import android.webkit.DownloadListener;
+import android.webkit.URLUtil;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import java.io.File;
 import java.util.ArrayList;
+
+import static android.content.Context.DOWNLOAD_SERVICE;
 
 public class PopUpBibleXMLFragment extends DialogFragment {
 
@@ -45,12 +61,24 @@ public class PopUpBibleXMLFragment extends DialogFragment {
 
     @Override
     public void onDetach() {
+        try {
+            getActivity().unregisterReceiver(onComplete);
+        } catch (Exception e) {
+            Log.d("d","No need to unregister receiver");
+        }
         mListener = null;
         super.onDetach();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
+        try {
+            getActivity().registerReceiver(onComplete,
+                    new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         super.onCreate(savedInstanceState);
 
@@ -59,14 +87,36 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            getActivity().unregisterReceiver(onComplete);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     ArrayList<String> bibleFileNames, bibleBookNames, bibleChapters, quickUpdate;
     public static ArrayList<String> bibleVerses, bibleText;
-    ArrayAdapter<String> blank_array;
+    ArrayAdapter<String> blank_array, aa, b_aa, c_aa, v_aa;
     Spinner bibleFileSpinner, bibleBookSpinner, bibleChapterSpinner, bibleVerseFromSpinner, bibleVerseToSpinner;
+    FloatingActionButton closeMe, saveMe;
     ProgressBar progressBar;
-    TextView previewTextView;
+    SwitchCompat includeVersNumsSwitch;
+    TextView previewTextView, title;
     String bible;
-    public static boolean includeVersNums = false;
+    WebView webViewBibleDownload;
+    FloatingActionButton webViewCloseFAB;
+    View V;
+    ScrollView xmlscrollview;
+    Uri bibleFile;
+    Uri downloadedFile;
+    int selectedItem;
+
+    StorageAccess storageAccess;
+    Bible bibleC;
+    boolean includeVersNums = false;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -74,11 +124,60 @@ public class PopUpBibleXMLFragment extends DialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
-        View V = inflater.inflate(R.layout.popup_biblexml, container, false);
+        storageAccess = new StorageAccess();
+        bibleC = new Bible();
 
-        TextView title = V.findViewById(R.id.dialogtitle);
+        V = inflater.inflate(R.layout.popup_biblexml, container, false);
+
+        // Be nice and run the actions as a separate thread
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Set the views
+                        setTheViews(V);
+
+                        // Hide the webview before initialising it
+                        hideViewsIfNeeded(false);
+
+                        // Initialise the webview
+                        initialiseTheWebView();
+                    }
+                });
+
+                // Prepare an empty array
+                ArrayList<String> emptyArray = new ArrayList<>();
+                emptyArray.add("");
+                blank_array = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,emptyArray);
+
+                quickUpdate = null;
+
+                // Update the bible file spinner and select the appropriate one
+                updateBibleFiles();
+            }
+        }).run();
+
+        return V;
+    }
+
+    void setTheViews(View V) {
+        title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.bibleXML));
-        final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
+        closeMe = V.findViewById(R.id.closeMe);
+        saveMe = V.findViewById(R.id.saveMe);
+        webViewBibleDownload = V.findViewById(R.id.webViewBibleDownload);
+        xmlscrollview = V.findViewById(R.id.xmlscrollview);
+        webViewCloseFAB = V.findViewById(R.id.webViewCloseFAB);
+        bibleFileSpinner = V.findViewById(R.id.bibleFileSpinner);
+        bibleBookSpinner = V.findViewById(R.id.bibleBookSpinner);
+        bibleChapterSpinner = V.findViewById(R.id.bibleChapterSpinner);
+        bibleVerseFromSpinner = V.findViewById(R.id.bibleVerseFromSpinner);
+        bibleVerseToSpinner = V.findViewById(R.id.bibleVerseToSpinner);
+        previewTextView = V.findViewById(R.id.previewTextView);
+        progressBar = V.findViewById(R.id.progressBar);
+        includeVersNumsSwitch = V.findViewById(R.id.includeVersNumsSwitch);
         closeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,7 +190,6 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                 }
             }
         });
-        final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,402 +198,576 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                 doSave();
             }
         });
-
-        // Initialise the basic views
-        bibleFileSpinner = V.findViewById(R.id.bibleFileSpinner);
-        bibleBookSpinner = V.findViewById(R.id.bibleBookSpinner);
-        bibleChapterSpinner = V.findViewById(R.id.bibleChapterSpinner);
-        bibleVerseFromSpinner = V.findViewById(R.id.bibleVerseFromSpinner);
-        bibleVerseToSpinner = V.findViewById(R.id.bibleVerseToSpinner);
-        previewTextView = V.findViewById(R.id.previewTextView);
-        progressBar = V.findViewById(R.id.progressBar);
-        SwitchCompat includeVersNumsSwitch = V.findViewById(R.id.includeVersNumsSwitch);
         includeVersNumsSwitch.setChecked(includeVersNums);
         includeVersNumsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                includeVersNums = b;
-                // Try to update the preview
+            public void onCheckedChanged(CompoundButton compoundButton, final boolean b) {
                 if (quickUpdate!=null) {
-                    try {
-                        Bible.getVersesForChapter(new File(quickUpdate.get(0)), quickUpdate.get(1), quickUpdate.get(2));
-                        getBibleText(new File(quickUpdate.get(0)), quickUpdate.get(1), quickUpdate.get(2),
-                                quickUpdate.get(3), quickUpdate.get(4));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    includeVersNums = b;
+                    getBibleText(quickUpdate.get(1), quickUpdate.get(2),
+                            quickUpdate.get(3), quickUpdate.get(4));
                 }
+
             }
         });
+    }
 
-        // Prepare an empty array
-        ArrayList<String> emptyArray = new ArrayList<>();
-        emptyArray.add("");
-        blank_array = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,emptyArray);
-
-        // Update the bible file spinner and select the appropriate one
-        updateBibleFiles();
-
-        quickUpdate = null;
-        return V;
+    class MyClient extends WebViewClient {
+        @Override
+        public void onPageStarted(WebView view,String url,Bitmap favicon){
+            super.onPageStarted(view,url,favicon);
+        }
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view,String Url) {
+            view.loadUrl(Url);
+            return true;
+        }
+        @Override
+        public void onPageFinished(WebView view,String url) {
+            super.onPageFinished(view,url);
+        }
+    }
+    class GoogleClient extends WebChromeClient {
+        @Override
+        public void onProgressChanged(WebView view,int newProgress) {
+            super.onProgressChanged(view,newProgress);
+        }
     }
 
     public void updateBibleFiles() {
         // This looks for bible files inside the OpenSong/OpenSong Scripture/ folder
-        try {
-            UpdateBibleFiles update_biblefiles = new UpdateBibleFiles();
-            update_biblefiles.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    @SuppressLint("StaticFieldLeak")
-    private class UpdateBibleFiles extends AsyncTask<Object,Void,String> {
-        @Override
-        protected void onPreExecute() {
-            // Initialise the other spinners
-            progressBar.setVisibility(View.VISIBLE);
-            initialiseTheSpinners(bibleFileSpinner);
-            initialiseTheSpinners(bibleBookSpinner);
-            initialiseTheSpinners(bibleChapterSpinner);
-            initialiseTheSpinners(bibleVerseFromSpinner);
-            initialiseTheSpinners(bibleVerseToSpinner);
-            previewTextView.setText("");
-        }
+        new Thread(new Runnable() {
+            @Override
 
-        @Override
-        protected String doInBackground(Object... objects) {
-            bibleFileNames = new ArrayList<>();
-            bibleFileNames.add("");
-            File[] files = FullscreenActivity.dirbibles.listFiles();
-            for (File f : files) {
-                if (f.isFile()) {
-                    bibleFileNames.add(f.getName());
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            // Set up the spinner
-            ArrayAdapter<String> aa = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, bibleFileNames);
-            bibleFileSpinner.setAdapter(aa);
-            bibleFileSpinner.setEnabled(true);
-
-            // Set up the listener for the bible file spinner
-            bibleFileSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    if (bibleFileNames.size()>=i) {
-                        FullscreenActivity.bibleFile = bibleFileNames.get(i);
-                        Preferences.savePreferences();
-                        File bibleFileChosen = new File(FullscreenActivity.dirbibles,bibleFileNames.get(i));
-                        if (bibleFileChosen.exists() && bibleFileChosen.isFile()) {
-                            updateBibleBooks(bibleFileChosen);
-                        }
-                        /*File bibleFileChosen = new File(FullscreenActivity.dirbibles, bibleFileNames.get(i));
-                        updateBibleBooks(bibleFileChosen);*/
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {}
-            });
-
-            // Decide if we have already selected our favourite bible file, if so, set it
-            if (bibleFileNames!=null && bibleFileNames.size()>0) {
-                for (int i=0; i<bibleFileNames.size(); i++) {
-                    if (bibleFileNames.get(i).equals(FullscreenActivity.bibleFile)) {
-                        bibleFileSpinner.setSelection(i);
-                    }
-                }
-            }
-            progressBar.setVisibility(View.GONE);
-        }
-    }
-
-    public void updateBibleBooks(File bibleFileChosen) {
-        try {
-            quickUpdate = null;
-            UpdateBibleBooks update_biblebooks = new UpdateBibleBooks(bibleFileChosen);
-            update_biblebooks.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    @SuppressLint("StaticFieldLeak")
-    private class UpdateBibleBooks extends AsyncTask<Object,Void,String> {
-
-        File bibleFileChosen;
-        UpdateBibleBooks(File f) {
-            bibleFileChosen = f;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            // Initialise the other spinners
-            progressBar.setVisibility(View.VISIBLE);
-            initialiseTheSpinners(bibleBookSpinner);
-            initialiseTheSpinners(bibleChapterSpinner);
-            initialiseTheSpinners(bibleVerseFromSpinner);
-            initialiseTheSpinners(bibleVerseToSpinner);
-            previewTextView.setText("");
-        }
-
-        @Override
-        protected String doInBackground(Object... objects) {
-            // Get the bible book names if the bible file is set correctly
-            bibleBookNames = Bible.getBibleBookNames(getActivity(), bibleFileChosen);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            ArrayAdapter b_aa = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,bibleBookNames);
-            bibleBookSpinner.setAdapter(b_aa);
-            bibleBookSpinner.setEnabled(true);
-            // If the book listener changes, update the chapters and verses
-            bibleBookSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    // Get the Bible book name
-                    if (bibleBookNames.size()>0 && bibleBookNames.size()>=i) {
-                        String bibleBookName = bibleBookNames.get(i);
-                        updateBibleChapters(bibleFileChosen, bibleBookName);
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {}
-            });
-            progressBar.setVisibility(View.GONE);
-            quickUpdate = null;
-        }
-    }
-
-    public void updateBibleChapters(File bibleFileChosen, String bibleBookName) {
-        try {
-            quickUpdate = null;
-            UpdateBibleChapters update_biblechapters = new UpdateBibleChapters(bibleFileChosen, bibleBookName);
-            update_biblechapters.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    @SuppressLint("StaticFieldLeak")
-    private class UpdateBibleChapters extends AsyncTask<Object, Void, String> {
-        File bibleFileChosen;
-        String bibleBookName;
-
-        UpdateBibleChapters (File f, String s){
-            bibleFileChosen = f;
-            bibleBookName = s;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            // Initialise the other spinners
-            progressBar.setVisibility(View.VISIBLE);
-            initialiseTheSpinners(bibleChapterSpinner);
-            initialiseTheSpinners(bibleVerseFromSpinner);
-            initialiseTheSpinners(bibleVerseToSpinner);
-            previewTextView.setText("");
-        }
-
-        @Override
-        protected String doInBackground(Object... objects) {
-            bibleChapters = Bible.getChaptersForBook(getActivity(), bibleFileChosen, bibleBookName);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            ArrayAdapter c_aa = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,bibleChapters);
-            bibleChapterSpinner.setAdapter(c_aa);
-            bibleChapterSpinner.setEnabled(true);
-            bibleChapterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    if (bibleChapters.size()>0 && bibleChapters.size()>=i) {
-                        String bibleChapter = bibleChapters.get(i);
-                        updateBibleVerses(bibleFileChosen, bibleBookName, bibleChapter);
-                    }
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {}
-            });
-            progressBar.setVisibility(View.GONE);
-        }
-    }
-
-    public void updateBibleVerses(File bibleFileChosen, String bibleBookName, String bibleChapter) {
-        try {
-            quickUpdate = null;
-            UpdateBibleVerses update_bibleverses = new UpdateBibleVerses(bibleFileChosen, bibleBookName, bibleChapter);
-            update_bibleverses.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    @SuppressLint("StaticFieldLeak")
-    private class UpdateBibleVerses extends AsyncTask<Object,Void,String> {
-
-        File bibleFileChosen;
-        String bibleBookName;
-        String bibleChapter;
-        UpdateBibleVerses(File f, String s1, String s2) {
-            bibleFileChosen = f;
-            bibleBookName = s1;
-            bibleChapter = s2;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            // Initialise the other spinners
-            progressBar.setVisibility(View.VISIBLE);
-            initialiseTheSpinners(bibleVerseFromSpinner);
-            initialiseTheSpinners(bibleVerseToSpinner);
-            previewTextView.setText("");
-        }
-
-        @Override
-        protected String doInBackground(Object... objects) {
-            Bible.getVersesForChapter(bibleFileChosen, bibleBookName, bibleChapter);
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            if (bibleVerses != null && bibleVerses.size() > 0) {
-                ArrayAdapter v_aa = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, bibleVerses);
-                bibleVerseFromSpinner.setAdapter(v_aa);
-                bibleVerseToSpinner.setAdapter(v_aa);
-                bibleVerseFromSpinner.setEnabled(true);
-                bibleVerseToSpinner.setEnabled(true);
-                bibleVerseFromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            // Initialise the views
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        if (bibleVerses.size() > 0 && bibleVerses.size() >= i) {
-                            String bibleVerseFrom = bibleVerses.get(i);
-
-                            // Whatever this value is, if the 'to' spinner is before this, make it match this
-                            if (bibleVerseToSpinner.getSelectedItemPosition() < i) {
-                                bibleVerseToSpinner.setSelection(i);
-                            }
-                            String bibleVerseTo = bibleVerses.get(bibleVerseToSpinner.getSelectedItemPosition());
-                            getBibleText(bibleFileChosen, bibleBookName, bibleChapter, bibleVerseFrom, bibleVerseTo);
-                        }
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    public void run() {
+                        progressBar.setVisibility(View.VISIBLE);
+                        previewTextView.setText("");
                     }
                 });
-                bibleVerseToSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        if (bibleVerses.size() > 0 && bibleVerses.size() >= i) {
 
-                            String bibleVerseTo = bibleVerses.get(i);
+                // Initialise the spinners
+                initialiseTheSpinners(true,true,true,true);
+                quickUpdate = null;
 
-                            // Whatever this value is, if the 'from' spinner is after this, make it match this
-                            if (bibleVerseFromSpinner.getSelectedItemPosition() > i) {
-                                bibleVerseFromSpinner.setSelection(i);
-                            }
-                            String bibleVerseFrom = bibleVerses.get(bibleVerseFromSpinner.getSelectedItemPosition());
-                            getBibleText(bibleFileChosen, bibleBookName, bibleChapter, bibleVerseFrom, bibleVerseTo);
+                // Get a list of the bible files in the folder
+                bibleFileNames = storageAccess.listFilesInFolder(getActivity(), "OpenSong Scripture","");
+                bibleFileNames.add(0,"");
+                bibleFileNames.add(1,getActivity().getString(R.string.download_new));
+                bibleFileNames.add(2,"");
+
+                // Set the array adapter
+                aa = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, bibleFileNames);
+
+                getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    // Set up the spinner
+                                                    aa.notifyDataSetChanged();
+                                                    bibleFileSpinner.setAdapter(aa);
+                                                    bibleFileSpinner.setEnabled(true);
+                                                }
+                                            });
+
+                // Decide if we have already selected our favourite bible file, if so, set it
+                selectedItem = -1;
+                if (bibleFileNames.size()>3) { // Must have files in the OpenSong Scripture folder
+                    for (int i = 3; i < bibleFileNames.size(); i++) {
+                        if (bibleFileNames.get(i).equals(FullscreenActivity.bibleFile)) {
+                            // This is the one we had previously used and it is available
+                            selectedItem = i;
                         }
                     }
-
+                }
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
+                    public void run() {
+                        // Set the Spinner selection if set
+                        if (selectedItem>-1) {
+                            bibleFileSpinner.setSelection(selectedItem);
+                        }
+                        // Set a listener on the spinner to load the appropriate file
+                        bibleFileSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                if (bibleFileNames.size()>=i && i>2) {
+                                    loadABible(bibleFileNames.get(i), true);
+                                } else if (i==1) {
+                                    // Download a new bible
+                                    hideViewsIfNeeded(true);
+                                } else {
+                                    // Blank line selected (0 or 2)
+                                    FullscreenActivity.bibleFile = "";
+                                    Preferences.savePreferences();
+                                    initialiseTheSpinners(false,true,true,true);
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {}
+                        });
+                    }
+                });
+
+                // If we selected a bible, load it
+                if (selectedItem>-1) {
+                    loadABible(FullscreenActivity.bibleFile,false);
+                } else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Hide the loading bar for now
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            }
+        }).run();
+    }
+
+    public void loadABible(final String selectedBible, final boolean biblechanged) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                // Get the bible Uri
+                bibleFile = storageAccess.getUriForItem(getActivity(), "OpenSong Scripture", "", selectedBible);
+
+                if (biblechanged) {
+                    FullscreenActivity.bibleFile = selectedBible;
+                    Preferences.savePreferences();
+                }
+
+                // Work out the Scripture title to use
+                if (bibleC.bibleFormat.equals("Zefania")) {
+                    bible = bibleC.getZefaniaBibleName(getActivity(), bibleFile);
+
+                } else {
+                    if (bibleFile!=null) {
+                        bible = bibleFile.getLastPathSegment().toUpperCase(FullscreenActivity.locale);
+                        bible = bible.replace(".XML", "");
+                        bible = bible.replace(".XMM", "");
+                    } else {
+                        bible = "";
+                    }
+                }
+
+                quickUpdate = null;
+
+                // Now get the chapters ready
+                updateBibleBooks();
+            }
+        }).run();
+    }
+
+    public void updateBibleBooks() {
+        // This is only called when the bible is loaded or changed
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Initialise the other spinners beyond this
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.VISIBLE);
+                        initialiseTheSpinners(false,true,true,true);
+                        previewTextView.setText("");
+                    }
+                });
+
+                quickUpdate = null;
+
+                // Get the bible book names if the bible file is set correctly
+                bibleBookNames = bibleC.getBibleBookNames(getActivity(),bibleFile);
+
+                // Build the adapter
+                b_aa = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,bibleBookNames);
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        b_aa.notifyDataSetChanged();
+                        bibleBookSpinner.setAdapter(b_aa);
+                        bibleBookSpinner.setSelection(0);
+                        bibleBookSpinner.setEnabled(true);
+
+                        // Set the book listener
+                        bibleBookSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                // Get the Bible book name
+                                if (bibleBookNames.size()>0 && bibleBookNames.size()>=i && i>0) {
+                                    updateBibleChapters(bibleBookNames.get(i));
+                                }
+                            }
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {}
+                        });
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+                quickUpdate = null;
+            }
+        }).run();
+    }
+
+    public void updateBibleChapters(final String bibleBookName) {
+        // This is only called when a book is selected
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Initialise the other spinners
+                        progressBar.setVisibility(View.VISIBLE);
+                        previewTextView.setText("");
+                    }
+                });
+                initialiseTheSpinners(false,false,true,true);
+
+                quickUpdate = null;
+
+                // Get a list of the chapters for this book
+                bibleChapters = bibleC.getChaptersForBook(getActivity(), bibleFile, bibleBookName);
+                c_aa = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,bibleChapters);
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bibleChapterSpinner.setAdapter(c_aa);
+                        c_aa.notifyDataSetChanged();
+                        bibleChapterSpinner.setSelection(0);
+                        bibleChapterSpinner.setEnabled(true);
+                        bibleChapterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                if (bibleChapters!=null && bibleChapters.size()>0 && bibleChapters.size()>=i && i>0) {
+                                    updateBibleVerses(bibleBookName, bibleChapters.get(i));
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {}
+                        });
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
             }
-            progressBar.setVisibility(View.GONE);
-        }
+        }).run();
     }
 
-    public void getBibleText(File bibleFileChosen, String bibleBookName, String bibleChapter, String bibleVerseFrom, String bibleVerseTo) {
-        quickUpdate = new ArrayList<>();
-        quickUpdate.add(bibleFileChosen.toString());
-        quickUpdate.add(bibleBookName);
-        quickUpdate.add(bibleChapter);
-        quickUpdate.add(bibleVerseFrom);
-        quickUpdate.add(bibleVerseTo);
-        int from;
-        int to;
-        try {
-            from = Integer.parseInt(bibleVerseFrom);
-        } catch (Exception e) {
-            from = 0;
-        }
-        try {
-            to = Integer.parseInt(bibleVerseTo);
-        } catch (Exception e) {
-            to = 0;
-        }
-        StringBuilder s = new StringBuilder();
-        if (to>0 && from>0 && to>=from) {
+    public void updateBibleVerses(final String bibleBookName, final String bibleChapter) {
+        // This is called when the chapter has been changed/set
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Initialise the other spinners
+                        progressBar.setVisibility(View.VISIBLE);
+                        previewTextView.setText("");
+                    }
+                });
 
-            for (int i=from; i<=to; i++) {
-                if (bibleText.size()>=i) {
-                    s.append(bibleText.get(i - 1)).append(" ");
-                }
+                initialiseTheSpinners(false,false,false,true);
+
+                quickUpdate = null;
+
+                // Get the verses available for this chapter
+                bibleC.getVersesForChapter(getActivity(),bibleFile, bibleBookName, bibleChapter);
+                v_aa = new ArrayAdapter<>(getActivity(), R.layout.my_spinner, bibleVerses);
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (bibleVerses != null && bibleVerses.size() > 0) {
+                            v_aa.notifyDataSetChanged();
+                            bibleVerseFromSpinner.setAdapter(v_aa);
+                            bibleVerseToSpinner.setAdapter(v_aa);
+                            bibleVerseFromSpinner.setSelection(0);
+                            bibleVerseToSpinner.setSelection(0);
+                            bibleVerseFromSpinner.setEnabled(true);
+                            bibleVerseToSpinner.setEnabled(true);
+                            bibleVerseFromSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    if (bibleVerses!=null && bibleVerses.size() > 0 && bibleVerses.size() >= i && i>0) {
+                                        String bibleVerseFrom = bibleVerses.get(i);
+
+                                        // Whatever this value is, if the 'to' spinner is before this, make it match this
+                                        if (bibleVerseToSpinner.getSelectedItemPosition() < i) {
+                                            bibleVerseToSpinner.setSelection(i);
+                                        }
+                                        String bibleVerseTo = bibleVerses.get(bibleVerseToSpinner.getSelectedItemPosition());
+                                        getBibleText(bibleBookName, bibleChapter, bibleVerseFrom, bibleVerseTo);
+                                    }
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+                                }
+                            });
+                            bibleVerseToSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    if (bibleVerses.size() > 0 && bibleVerses.size() >= i) {
+
+                                        String bibleVerseTo = bibleVerses.get(i);
+
+                                        // Whatever this value is, if the 'from' spinner is after this, make it match this
+                                        if (bibleVerseFromSpinner.getSelectedItemPosition() > i) {
+                                            bibleVerseFromSpinner.setSelection(i);
+                                        }
+                                        String bibleVerseFrom = bibleVerses.get(bibleVerseFromSpinner.getSelectedItemPosition());
+                                        getBibleText(bibleBookName, bibleChapter, bibleVerseFrom, bibleVerseTo);
+                                    }
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+                                }
+                            });
+                        }
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
             }
-            // Trim and fix new sentence double spaces
-            s = new StringBuilder(s.toString().trim());
-            s = new StringBuilder(s.toString().replace(".  ", ". "));
-            s = new StringBuilder(s.toString().replace(". ", ".  "));
-        }
-        previewTextView.setText(s.toString());
+        }).run();
+    }
 
-        // Work out the Scripture title to use
-        if (Bible.bibleFormat.equals("Zefania")) {
-            bible = Bible.getZefaniaBibleName(bibleFileChosen);
-        } else {
-            bible = bibleFileChosen.getName().toUpperCase(FullscreenActivity.locale);
-            bible = bible.replace(".XML", "");
-            bible = bible.replace(".XMM", "");
-        }
+    public void getBibleText(final String bibleBookName, final String bibleChapter, final String bibleVerseFrom, final String bibleVerseTo) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
 
-        String verses;
-        if (from==to) {
-            verses = "" + from;
-        } else {
-            verses = from + "-" + to;
-        }
-        FullscreenActivity.scripture_title = bibleBookName + " " + bibleChapter + ":" + verses + " (" + bible + ")";
-        FullscreenActivity.scripture_verse = Bible.shortenTheLines(s.toString(),40,6);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                quickUpdate = new ArrayList<>();
+                quickUpdate.add(bible);
+                quickUpdate.add(bibleBookName);
+                quickUpdate.add(bibleChapter);
+                quickUpdate.add(bibleVerseFrom);
+                quickUpdate.add(bibleVerseTo);
+
+                int from;
+                int to;
+                try {
+                    from = Integer.parseInt(bibleVerseFrom);
+                    to = Integer.parseInt(bibleVerseTo);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    from = 0;
+                    to = 0;
+                }
+                StringBuilder s = new StringBuilder();
+                if (to>0 && from>0 && to>=from && bibleText.size()>=to) {
+
+                    for (int i=from; i<=to; i++) {
+                        if (includeVersNums) {
+                            s.append("(").append(bibleVerses.get(i - 1)).append(") ");
+                        }
+                        s.append(bibleText.get(i - 1)).append(" ");
+                    }
+                    // Trim and fix new sentence double spaces
+                    s = new StringBuilder(s.toString().trim());
+                    s = new StringBuilder(s.toString().replace(".  ", ". "));
+                    s = new StringBuilder(s.toString().replace(". ", ".  "));
+                }
+
+                final StringBuilder finalS = s;
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        previewTextView.setText(finalS.toString());
+                    }
+                });
+
+                String verses;
+                if (from==to) {
+                    verses = "" + from;
+                } else {
+                    verses = from + "-" + to;
+                }
+                FullscreenActivity.scripture_title = bibleBookName + " " + bibleChapter + ":" + verses + " (" + bible + ")";
+                FullscreenActivity.scripture_verse = bibleC.shortenTheLines(s.toString(),40,6);
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+            }
+        }).run();
     }
 
     public void doSave() {
-        FullscreenActivity.whattodo = "customreusable_scripture";
-        if (mListener!=null) {
-            try {
+        try {
+            FullscreenActivity.whattodo = "customreusable_scripture";
+            if (mListener != null) {
                 mListener.openFragment();
-                dismiss();
-            } catch (Exception e) {
-                Log.d("d","Error grabbing details");
             }
-        }
-
-        if (mListener!=null) {
-            try {
-                FullscreenActivity.whattodo = "customreusable_scripture";
-                mListener.openFragment();
-                dismiss();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("d", "Error grabbing details");
         }
     }
 
-    public void initialiseTheSpinners(Spinner spinner) {
-        spinner.setAdapter(blank_array);
-        spinner.setOnItemSelectedListener(null);
-        spinner.setEnabled(false);
+    public void initialiseTheSpinners(final boolean bibles, final boolean books, final boolean chapters, final boolean verses) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (bibles) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            bibleFileSpinner.setAdapter(blank_array);
+                            bibleFileSpinner.setOnItemSelectedListener(null);
+                            bibleFileSpinner.setEnabled(false);
+                        }
+                    });
+                }
+                if (books) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            bibleBookSpinner.setAdapter(blank_array);
+                            bibleBookSpinner.setOnItemSelectedListener(null);
+                            bibleBookSpinner.setEnabled(false);
+                        }
+                    });
+                }
+                if (chapters) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            bibleChapterSpinner.setAdapter(blank_array);
+                            bibleChapterSpinner.setOnItemSelectedListener(null);
+                            bibleChapterSpinner.setEnabled(false);
+                        }
+                    });
+                }
+                if (verses) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            bibleVerseFromSpinner.setAdapter(blank_array);
+                            bibleVerseToSpinner.setAdapter(blank_array);
+                            bibleVerseFromSpinner.setOnItemSelectedListener(null);
+                            bibleVerseToSpinner.setOnItemSelectedListener(null);
+                            bibleVerseFromSpinner.setEnabled(false);
+                            bibleVerseToSpinner.setEnabled(false);
+                        }
+                    });
+                }
+            }
+        }).run();
     }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    public void initialiseTheWebView() {
+        webViewBibleDownload.setWebViewClient(new MyClient());
+        webViewBibleDownload.setWebChromeClient(new GoogleClient());
+        WebSettings webSettings = webViewBibleDownload.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webViewBibleDownload.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        webViewBibleDownload.clearCache(true);
+        webViewBibleDownload.clearHistory();
+        webViewBibleDownload.setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+                request.setMimeType(mimetype);
+                String cookies = CookieManager.getInstance().getCookie(url);
+                request.addRequestHeader("cookie", cookies);
+                request.addRequestHeader("User-Agent", userAgent);
+                request.setDescription("Downloading file...");
+                String filename = URLUtil.guessFileName(url, contentDisposition, mimetype);
+                request.setTitle(filename);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename);
+                downloadedFile = Uri.fromFile(file);
+                request.allowScanningByMediaScanner();
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                DownloadManager dm = (DownloadManager) getActivity().getSystemService(DOWNLOAD_SERVICE);
+                if (dm != null) {
+                    dm.enqueue(request);
+                }
+            }
+        });
+        // Hide the webview to begin with
+        hideViewsIfNeeded(false);
+        webViewCloseFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideViewsIfNeeded(false);
+            }
+        });
+    }
+
+    public void hideViewsIfNeeded(boolean showWebView) {
+        if (showWebView) {
+            xmlscrollview.setVisibility(View.GONE);
+            webViewBibleDownload.setVisibility(View.VISIBLE);
+            webViewBibleDownload.loadUrl("https://sourceforge.net/projects/zefania-sharp/files/Bibles/");
+            webViewCloseFAB.setVisibility(View.VISIBLE);
+        } else {
+            xmlscrollview.setVisibility(View.VISIBLE);
+            webViewBibleDownload.setVisibility(View.GONE);
+            webViewCloseFAB.setVisibility(View.GONE);
+        }
+    }
+
+    public void dealWithDownloadFile() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                extractTheZipFile(downloadedFile);
+                deleteTheZipFile(downloadedFile);
+                // Update the list of bible files available
+                updateBibleFiles();
+            }
+        }).run();
+    }
+
+    public void extractTheZipFile(Uri newuri) {
+        // Unzip the file
+        StorageAccess storageAccess = new StorageAccess();
+        storageAccess.extractZipFile(getActivity(),newuri,"OpenSong Scripture","",null);
+    }
+
+    public void deleteTheZipFile(Uri newuri) {
+            StorageAccess storageAccess = new StorageAccess();
+            storageAccess.deleteFile(getActivity(), newuri);
+    }
+
+    BroadcastReceiver onComplete = new BroadcastReceiver() {
+        public void onReceive(Context ctxt, Intent intent) {
+            hideViewsIfNeeded(false);
+            FullscreenActivity.myToastMessage = getActivity().getString(R.string.wait);
+            ShowToast.showToast(getActivity());
+
+            // Copy the zip file
+            dealWithDownloadFile();
+        }
+    };
+
 }

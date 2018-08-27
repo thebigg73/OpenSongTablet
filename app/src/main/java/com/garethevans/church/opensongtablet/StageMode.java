@@ -3295,12 +3295,8 @@ public class StageMode extends AppCompatActivity implements
                     // Put the title of the song in the taskbar
                     songtitle_ab.setText(ProcessSong.getSongTitle());
                     songkey_ab.setText(ProcessSong.getSongKey());
-                    String capotext = ProcessSong.getCapoInfo();
-                    if ((capotext != null) && (!capotext.isEmpty())) {
-                        capotext = " [" + capotext + "]";
-                    }
-                    songcapo_ab.setText(capotext);
                     songauthor_ab.setText(ProcessSong.getSongAuthor());
+                    songcapo_ab.setText("");
 
                     if (FullscreenActivity.isPDF) {
                         loadPDF();
@@ -3865,9 +3861,12 @@ public class StageMode extends AppCompatActivity implements
     public void setUpCapoInfo() {
         updateExtraInfoColorsAndSizes("capo");
         boolean bothempty = true;
+        StringBuilder allcapodetails = new StringBuilder();
         // If we are showing capo chords, show this info
         if (capoinfo!=null && !FullscreenActivity.mCapo.equals("") && !FullscreenActivity.mCapo.equals("0")) {
-            capoinfo.setText(ProcessSong.getCapoInfo());
+            String t = ProcessSong.getCapoInfo();
+            allcapodetails.append(t);
+            capoinfo.setText(t);
             capoinfo.setVisibility(View.VISIBLE);
             bothempty = false;
         } else if (capoinfo!=null){
@@ -3876,6 +3875,7 @@ public class StageMode extends AppCompatActivity implements
 
         String capokey = ProcessSong.getCapoNewKey();
         if (!capokey.equals("")) {
+            allcapodetails.append(" - ").append(capokey);
             String t = " (" + capokey + ")";
             capoinfonewkey.setText(t);
             capoinfonewkey.setVisibility(View.VISIBLE);
@@ -3891,6 +3891,16 @@ public class StageMode extends AppCompatActivity implements
             // Highlight the capoInfo to draw attention to it
             CustomAnimations.highlightAction(capoInfo,StageMode.this);
         }
+
+        // Add the capo information for theactionbar
+        String s = allcapodetails.toString();
+        String capotext;
+        if (s==null || s.isEmpty()) {
+            capotext = "";
+        } else {
+            capotext = " ["+s+"]";
+        }
+        songcapo_ab.setText(capotext);
     }
 
     public void dualScreenWork() {
@@ -5024,6 +5034,7 @@ public class StageMode extends AppCompatActivity implements
                         }
                         boolean isinset = false;
                         if (FullscreenActivity.mySet.contains(whattolookfor)) {
+                            Log.d("d","whattolookfor="+whattolookfor+"is in the set ("+FullscreenActivity.mySet+")");
                             isinset = true;
                         }
                         try {

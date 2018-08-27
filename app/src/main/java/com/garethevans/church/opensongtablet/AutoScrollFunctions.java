@@ -100,23 +100,14 @@ class AutoScrollFunctions {
     static void getAudioLength(Context c) {
         MediaPlayer mediafile = new MediaPlayer();
 
-        // Try to fix the mLinkAudio file to get the metadata.
-        // **RAGE** android security permissions messing with file access......
+        // Ultimately these should be stored as strings that get parsed as Uris
+        StorageAccess storageAccess = new StorageAccess();
         String audiofile = FullscreenActivity.mLinkAudio;
-        // Strip out the file locator
-        if (audiofile.startsWith("file://")) {
-            audiofile = audiofile.replace("file://","");
-        }
-        // If this is a localised file, we need to unlocalise it to enable it to be read
-        if (audiofile.startsWith("../OpenSong/")) {
-            audiofile = audiofile.replace("../OpenSong/",FullscreenActivity.homedir+"/");
-        }
-        // Add the file locator back in
-        audiofile = "file://" + audiofile;
+        Uri uri = storageAccess.fixLocalisedUri(c,audiofile);
 
-        if (FullscreenActivity.mLinkAudio!=null && !FullscreenActivity.mLinkAudio.equals("")) {
+        if (uri!=null && storageAccess.uriExists(c,uri)) {
             try {
-                mediafile.setDataSource(c, Uri.parse(audiofile));
+                mediafile.setDataSource(c,uri);
                 mediafile.prepare();
                 FullscreenActivity.audiolength = (int) (mediafile.getDuration() / 1000.0f);
                 mediafile.reset();
@@ -205,12 +196,10 @@ class AutoScrollFunctions {
                 FullscreenActivity.time_passed = System.currentTimeMillis();
                 int currtimesecs = (int) ((FullscreenActivity.time_passed - FullscreenActivity.time_start) / 1000);
                 String text;
-                //tv.setTextSize(FullscreenActivity.timerFontSizeAutoScroll);
                 text = TimeTools.timeFormatFixer(currtimesecs);
                 tv.setTextColor(0xffffffff);
                 tv.setText(text);
             }
         }
     }
-
 }

@@ -182,72 +182,80 @@ public class SetActions extends Activity {
 
     static void indexSongInSet() {
 
-        // Initialise variables if they are null
-        if (FullscreenActivity.mSetList==null) {
-            FullscreenActivity.mSetList = new String[0];
-        }
+        try {
 
-        if (FullscreenActivity.mSet==null) {
-            FullscreenActivity.mSet = new String[0];
-        }
-
-        if (FullscreenActivity.whatsongforsetwork==null) {
-            FullscreenActivity.whatsongforsetwork = "";
-        }
-        // See if we are already there!
-        boolean alreadythere = false;
-        if (FullscreenActivity.indexSongInSet>-1 && FullscreenActivity.mSetList!=null &&
-                FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length) {
-            if (FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet].contains(FullscreenActivity.songfilename)) {
-                alreadythere = true;
+            // Initialise variables if they are null
+            if (FullscreenActivity.mSetList == null) {
+                FullscreenActivity.mSetList = new String[1];
+                FullscreenActivity.mSetList[0] = "";
             }
-        }
 
-        if (FullscreenActivity.mSetList!=null) {
-            FullscreenActivity.setSize = FullscreenActivity.mSetList.length;
-        } else {
-            FullscreenActivity.setSize = 0;
-        }
-
-        if (alreadythere) {
-            if (FullscreenActivity.indexSongInSet>0) {
-                FullscreenActivity.previousSongInSet = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet-1];
-            } else {
-                FullscreenActivity.previousSongInSet = "";
+            if (FullscreenActivity.mSet == null) {
+                FullscreenActivity.mSet = new String[1];
+                FullscreenActivity.mSet[0] = "";
             }
-            if (FullscreenActivity.indexSongInSet<FullscreenActivity.mSetList.length-1) {
-                FullscreenActivity.nextSongInSet = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet+1];
-            } else {
-                FullscreenActivity.nextSongInSet = "";
+
+            if (FullscreenActivity.whatsongforsetwork == null) {
+                FullscreenActivity.whatsongforsetwork = "";
             }
-        } else {
-            FullscreenActivity.previousSongInSet = "";
-            FullscreenActivity.nextSongInSet = "";
-        }
-
-        // Go backwards through the setlist - this finishes with the first occurrence
-        // Useful for duplicate items, otherwise it returns the last occurrence
-        // Not yet tested, so left
-
-        FullscreenActivity.mSet = FullscreenActivity.mSetList;
-
-        if (!alreadythere) {
-            for (int x = 0; x < FullscreenActivity.setSize; x++) {
-//		for (int x = FullscreenActivity.setSize-1; x<1; x--) {
-
-                if (FullscreenActivity.mSet[x].equals(FullscreenActivity.whatsongforsetwork) ||
-                        FullscreenActivity.mSet[x].equals("**" + FullscreenActivity.whatsongforsetwork)) {
-
-                    FullscreenActivity.indexSongInSet = x;
-                    if (x > 0) {
-                        FullscreenActivity.previousSongInSet = FullscreenActivity.mSet[x - 1];
-                    }
-                    if (x != FullscreenActivity.setSize - 1) {
-                        FullscreenActivity.nextSongInSet = FullscreenActivity.mSet[x + 1];
-                    }
-
+            // See if we are already there!
+            boolean alreadythere = false;
+            if (FullscreenActivity.indexSongInSet > -1 && FullscreenActivity.mSetList != null &&
+                    FullscreenActivity.indexSongInSet < FullscreenActivity.mSetList.length) {
+                if (FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet].contains(FullscreenActivity.songfilename)) {
+                    alreadythere = true;
                 }
             }
+
+            if (FullscreenActivity.mSetList != null) {
+                FullscreenActivity.setSize = FullscreenActivity.mSetList.length;
+            } else {
+                FullscreenActivity.setSize = 0;
+            }
+
+            if (alreadythere) {
+                if (FullscreenActivity.indexSongInSet > 0) {
+                    FullscreenActivity.previousSongInSet = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet - 1];
+                } else {
+                    FullscreenActivity.previousSongInSet = "";
+                }
+                if (FullscreenActivity.indexSongInSet < FullscreenActivity.mSetList.length - 1) {
+                    FullscreenActivity.nextSongInSet = FullscreenActivity.mSetList[FullscreenActivity.indexSongInSet + 1];
+                } else {
+                    FullscreenActivity.nextSongInSet = "";
+                }
+            } else {
+                FullscreenActivity.previousSongInSet = "";
+                FullscreenActivity.nextSongInSet = "";
+            }
+
+            // Go backwards through the setlist - this finishes with the first occurrence
+            // Useful for duplicate items, otherwise it returns the last occurrence
+            // Not yet tested, so left
+
+            FullscreenActivity.mSet = FullscreenActivity.mSetList;
+
+            if (!alreadythere) {
+                for (int x = 0; x < FullscreenActivity.setSize; x++) {
+//		for (int x = FullscreenActivity.setSize-1; x<1; x--) {
+
+                    if (FullscreenActivity.mSet[x].equals(FullscreenActivity.whatsongforsetwork) ||
+                            FullscreenActivity.mSet[x].equals("**" + FullscreenActivity.whatsongforsetwork)) {
+
+                        FullscreenActivity.indexSongInSet = x;
+                        if (x > 0) {
+                            FullscreenActivity.previousSongInSet = FullscreenActivity.mSet[x - 1];
+                        }
+                        if (x != FullscreenActivity.setSize - 1) {
+                            FullscreenActivity.nextSongInSet = FullscreenActivity.mSet[x + 1];
+                        }
+
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

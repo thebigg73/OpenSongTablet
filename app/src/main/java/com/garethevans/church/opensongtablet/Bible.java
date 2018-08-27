@@ -1,8 +1,8 @@
 package com.garethevans.church.opensongtablet;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.AsyncTask;
+import android.net.Uri;
+import android.os.StrictMode;
 import android.text.Html;
 import android.util.Log;
 
@@ -12,7 +12,6 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -28,41 +27,31 @@ import javax.xml.xpath.XPathFactory;
 
 class Bible {
 
-    static String response = "";
-    //private static String tagbibleroot = "";
-    private static String tagtosearch_book = "";
-    //private static String tagtosearch_chapter = "";
-    //private static String tagtosearch_verse = "";
-    private static String attributetosearch_book = "";
-    private static String attributetosearch_chapter = "";
-    private static String attributetosearch_verse = "";
-    static String bibleFormat = "OpenSong";
+    private String tagtosearch_book = "";
+    private String attributetosearch_book = "";
+    private String attributetosearch_chapter = "";
+    private String attributetosearch_verse = "";
+    String bibleFormat = "OpenSong";
 
-    private static Document dom;
-    private static Element docEle;
-    private static XPath xpath;
-    private static NodeList nl;
-    private static NamedNodeMap nmm;
+    private Document dom;
+    private Element docEle;
+    private XPath xpath;
+    private NodeList nl;
+    private NamedNodeMap nmm;
 
-    private static void getAttributeToSearch() {
-        Log.d("d","getAttributeToSearch() called");
+    private void getAttributeToSearch() {
 
         switch (bibleFormat) {
             case "OpenSong":
             default:
                 tagtosearch_book = "b";
-                //tagtosearch_chapter = "c";
-                //tagtosearch_verse = "v";
                 attributetosearch_book = "n";
                 attributetosearch_chapter = "n";
                 attributetosearch_verse = "n";
                 break;
 
             case "Zefania":
-                //tagbibleroot = "XMLBIBLE";
                 tagtosearch_book = "BIBLEBOOK";
-                //tagtosearch_chapter = "CHAPTER";
-                //tagtosearch_verse = "VERSE";
                 attributetosearch_book = "bname";
                 attributetosearch_chapter = "cnumber";
                 attributetosearch_verse = "vnumber";
@@ -70,14 +59,15 @@ class Bible {
         }
     }
 
-    private static void decideOnBibleFormat(File bibleFile) {
-        Log.d("d","decideOnBibleFormat() called");
-
+    private void decideOnBibleFormat(Context c, Uri bibleUri) {
+        StorageAccess storageAccess = new StorageAccess();
+        boolean exists = storageAccess.uriExists(c,bibleUri);
         try {
-            if (bibleFile.exists() && bibleFile.isFile()) {
+            if (exists) {
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 DocumentBuilder db = dbf.newDocumentBuilder();
-                dom = db.parse(bibleFile);
+                InputStream inputStream = storageAccess.getInputStream(c,bibleUri);
+                dom = db.parse(inputStream);
                 docEle = dom.getDocumentElement();
                 XPathFactory xPathfactory = XPathFactory.newInstance();
                 xpath = xPathfactory.newXPath();
@@ -96,12 +86,12 @@ class Bible {
         }
     }
 
-    static String getZefaniaBibleName(File bibleFile) {
-        Log.d("d","getZefaniaBibleName() called");
-
+    String getZefaniaBibleName(Context c, Uri bibleUri) {
+        StorageAccess storageAccess = new StorageAccess();
+        boolean exists = storageAccess.uriExists(c,bibleUri);
         String b = "";
         try {
-            if (bibleFile.exists() && bibleFile.isFile() && dom!=null && xpath!=null) {
+            if (exists && dom!=null && xpath!=null) {
                 XPathExpression expr = xpath.compile("/XMLBIBLE/INFORMATION/identifier");
                 nl = (NodeList) expr.evaluate(dom, XPathConstants.NODESET);
                 if (nl!=null && nl.getLength()>0) {
@@ -114,15 +104,18 @@ class Bible {
         return b;
     }
 
-    static ArrayList<String> getBibleBookNames(Context c, File bibleFile) {
-        Log.d("d","getBibleBookNames() called");
+    ArrayList<String> getBibleBookNames(Context c, Uri bibleUri) {
         // Get the bible format
-        decideOnBibleFormat(bibleFile);
+
+        decideOnBibleFormat(c, bibleUri);
+
+        StorageAccess storageAccess = new StorageAccess();
+        boolean exists = storageAccess.uriExists(c,bibleUri);
 
         ArrayList<String> bookNames = new ArrayList<>();
         try {
             // The bible we are using is stored with our preferences
-            if (bibleFile.exists() && bibleFile.isFile() && dom!=null && xpath!=null) {
+            if (exists && dom!=null && xpath!=null) {
                 bookNames.add("----"+c.getString(R.string.pleaseselect)+"----");
 
                 docEle = dom.getDocumentElement();
@@ -130,56 +123,46 @@ class Bible {
                 for (int i=0; i<nl.getLength();i++) {
                     nmm = nl.item(i).getAttributes();
                     if (nmm != null) {
-                        bookNames.add(nmm.getNamedItem(attributetosearch_book).getNodeValue());
+                        if (nmm.getNamedItem(attributetosearch_book)==null ) {
+                            attributetosearch_book = "bsname";  // Use the short name instead (Zefania)
+                            if (nmm.getNamedItem(attributetosearch_book)==null) {
+                                attributetosearch_book = "bnumber"; // Use the book number instead (Zefania)
+                            }
+                        }
+                        String val = nmm.getNamedItem(attributetosearch_book).getNodeValue();
+                        if (attributetosearch_book.equals("bnumber")) {
+                            val = getBookNameFromNumber(val);
+                        }
+                        bookNames.add(val);
                     }
                 }
 
             } else {
-                bookNames = new ArrayList<>();
-                bookNames.add("");
+                bookNames = blankArray();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            bookNames = new ArrayList<>();
-            bookNames.add("");
+            bookNames = blankArray();
         }
+        // Add a blank value at the top
         return bookNames;
     }
 
-    static ArrayList<String> getChaptersForBook(Context c, File bibleFile, String book) {
-        Log.d("d","getChaptersForBook() called");
+    ArrayList<String> getChaptersForBook(Context c, Uri bibleUri, String book) {
+
+        // If the xml file only has booknums, we need to change back to this
+        if (attributetosearch_book.equals("bnumber")) { //Zefania with no book names in the xml
+            book = getBookNumberFromName(book);
+        }
+        StorageAccess storageAccess = new StorageAccess();
+        boolean exists = storageAccess.uriExists(c,bibleUri);
 
         ArrayList<String> chapters = new ArrayList<>();
         if (!book.equals("")) {
             try {
-                if (bibleFile.exists()) {
+                if (exists) {
                     chapters.add("----"+c.getString(R.string.pleaseselect)+"----");
-
-
-                    /*// Get the bible format
-                    decideOnBibleFormat(bibleFile);*/
-
-                    /*DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder db = dbf.newDocumentBuilder();
-                    Document dom = db.parse(bibleFile);
-
-                    XPathFactory xPathfactory = XPathFactory.newInstance();
-                    XPath xpath = xPathfactory.newXPath();
-                    */
-
-                    /*expr = xpath.compile("/" + tagbibleroot + "/" + tagtosearch_book +
-                            "[@" + attributetosearch_book + "='" + book + "']/" + tagtosearch_chapter);
-                    nl = (NodeList) expr.evaluate(dom, XPathConstants.NODESET);
-
-                    if (nl != null && nl.getLength() > 0) {
-                        for (int i = 0; i < nl.getLength(); i++) {
-                            nmm = nl.item(i).getAttributes();
-                            if (nmm != null) {
-                                chapters.add(nmm.getNamedItem(attributetosearch_chapter).getNodeValue());
-                            }
-                        }
-                    }*/
 
                     docEle = dom.getDocumentElement();
                     nl = docEle.getElementsByTagName(tagtosearch_book);
@@ -203,52 +186,33 @@ class Bible {
                     }
 
                 } else {
-                    chapters = new ArrayList<>();
-                    chapters.add("");
+                    chapters = blankArray();
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
-                chapters = new ArrayList<>();
-                chapters.add("");
+                chapters = blankArray();
             }
 
         }
         return chapters;
     }
 
-    static void getVersesForChapter(File bibleFile, String book, String chapter) {
-        Log.d("d","getVersesForChapter() called");
+    void getVersesForChapter(Context c, Uri bibleUri, String book, String chapter) {
+
+        // If the xml file only has booknums, we need to change back to this
+        if (attributetosearch_book.equals("bnumber")) { //Zefania with no book names in the xml
+            book = getBookNumberFromName(book);
+        }
+
+        StorageAccess storageAccess = new StorageAccess();
+        boolean exists = storageAccess.uriExists(c,bibleUri);
 
         PopUpBibleXMLFragment.bibleVerses = new ArrayList<>();
         PopUpBibleXMLFragment.bibleText = new ArrayList<>();
         if (!book.equals("") && !chapter.equals("")) {
             try {
-                if (bibleFile.exists() && bibleFile.isFile()) {
-                    /*DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                    DocumentBuilder db = dbf.newDocumentBuilder();
-                    Document dom = db.parse(bibleFile);
-
-                    XPathFactory xPathfactory = XPathFactory.newInstance();
-                    XPath xpath = xPathfactory.newXPath();
-                    */
-
-                    /*expr = xpath.compile("/" + tagbibleroot + "/" + tagtosearch_book +
-                            "[@" + attributetosearch_book + "='" + book + "']/" + tagtosearch_chapter +
-                            "[@" + attributetosearch_chapter + "='" + chapter + "']/" + tagtosearch_verse);
-                    nl = (NodeList) expr.evaluate(dom, XPathConstants.NODESET);
-
-                    if (nl != null && nl.getLength() > 0) {
-                        for (int i = 0; i < nl.getLength(); i++) {
-                            nmm = nl.item(i).getAttributes();
-                            if (nmm != null) {
-                                String foundverse = nmm.getNamedItem(attributetosearch_verse).getNodeValue();
-                                String foundtext = nl.item(i).getTextContent();
-                                PopUpBibleXMLFragment.bibleVerses.add(foundverse);
-                                PopUpBibleXMLFragment.bibleText.add(foundtext);
-                            }
-                        }
-                    }*/
+                if (exists) {
 
                     Element docEle = dom.getDocumentElement();
                     NodeList nl = docEle.getElementsByTagName(tagtosearch_book);
@@ -272,12 +236,7 @@ class Bible {
                                                             String foundverse = nmm3.getNamedItem(attributetosearch_verse).getNodeValue();
                                                             String foundtext = v_children.item(z).getTextContent();
                                                             PopUpBibleXMLFragment.bibleVerses.add(foundverse);
-                                                            if (PopUpBibleXMLFragment.includeVersNums) {
-                                                                PopUpBibleXMLFragment.bibleText.add("("+foundverse+") "+foundtext);
-                                                            } else {
-                                                                PopUpBibleXMLFragment.bibleText.add(foundtext);
-                                                            }
-                                                            Log.d("d", "book=" + book + "  chapter=" + chapter + "  verse=" + foundverse);
+                                                            PopUpBibleXMLFragment.bibleText.add(foundtext);
                                                         }
                                                     }
                                                 }
@@ -290,29 +249,30 @@ class Bible {
                     }
 
                 } else {
-                    PopUpBibleXMLFragment.bibleVerses = new ArrayList<>();
-                    PopUpBibleXMLFragment.bibleText = new ArrayList<>();
-                    PopUpBibleXMLFragment.bibleVerses.add("");
-                    PopUpBibleXMLFragment.bibleText.add("");
+                    PopUpBibleXMLFragment.bibleVerses = blankArray();
+                    PopUpBibleXMLFragment.bibleText = blankArray();
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
-                PopUpBibleXMLFragment.bibleVerses = new ArrayList<>();
-                PopUpBibleXMLFragment.bibleText = new ArrayList<>();
-                PopUpBibleXMLFragment.bibleVerses.add("");
-                PopUpBibleXMLFragment.bibleText.add("");
+                PopUpBibleXMLFragment.bibleVerses = blankArray();
+                PopUpBibleXMLFragment.bibleText = blankArray();
             }
         }
     }
 
-    static boolean isYouVersionScripture(String importtext) {
-        // A simple way to check if this is a scripture file from Bible
-        // is to look for the last line starting with http://bible.com
+    private ArrayList<String> blankArray() {
+        ArrayList<String> al = new ArrayList<>();
+        al.add("");
+        return al;
+    }
+    boolean isYouVersionScripture(String importtext) {
+        /* A simple way to check if this is a scripture file from Bible
+         is to look for the last line starting with http://bible.com
 
-        // Split the string into separate lines
-        // If it is a scripture, the last line indicates so
-        // The second last line is the Scripture reference
+         Split the string into separate lines
+         If it is a scripture, the last line indicates so
+         The second last line is the Scripture reference */
         String[] importtextparts = importtext.split("\n");
         int lines = importtextparts.length;
         String identifying_line = "http://bible.com";
@@ -335,44 +295,133 @@ class Bible {
         }
     }
 
-    static String shortenTheLines(String originaltext, int charsperline, int linesbeforenewslide) {
-        String scripture = "";
+    @SuppressWarnings("SameParameterValue")
+    String shortenTheLines(String originaltext, int charsperline, int linesbeforenewslide) {
+        StringBuilder scripture = new StringBuilder();
         // Split the current string into a separate words array
         String[] scripturewords = originaltext.split(" ");
-        String currentline="";
+        StringBuilder currentline= new StringBuilder();
         ArrayList<String> newimprovedscripture = new ArrayList<>();
         for (String words:scripturewords) {
             if (currentline.length()<charsperline) {
-                currentline = currentline + " " + words;
+                currentline.append(" ").append(words);
             } else {
-                newimprovedscripture.add(currentline.trim());
+                newimprovedscripture.add(currentline.toString().trim());
                 if (words.startsWith(";") || words.startsWith("|") || words.startsWith("[") || words.startsWith("]")) {
                     words = " " + words;
                 }
-                currentline = words;
+                currentline = new StringBuilder(words);
             }
         }
-        newimprovedscripture.add(currentline);
+        newimprovedscripture.add(currentline.toString());
 
         int newslideneeded = 0;
         for (int z=0;z<newimprovedscripture.size();z++) {
-            scripture = scripture + "\n" + newimprovedscripture.get(z);
+            scripture.append("\n").append(newimprovedscripture.get(z));
             newslideneeded ++;
             // Every linesbeforenewslide lines, start a new slide
             if (newslideneeded >= linesbeforenewslide) {
-                scripture = scripture + "\n---";
+                scripture.append("\n---");
                 newslideneeded = 0;
             }
         }
 
-        return scripture.trim();
+        return scripture.toString().trim();
     }
 
-    static void grabBibleText(Context c, String weblink) {
-        DownloadWebTextTask task = new DownloadWebTextTask(c);
-        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,weblink);
+    void grabBibleText(final Context c, final String weblink) {
+        // Do this in a new thread
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                StringBuilder sb = new StringBuilder();
+                URL url;
+                HttpURLConnection urlConnection = null;
+                try {
+                    url = new URL(weblink);
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    InputStream in = urlConnection.getInputStream();
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
+                    String s;
+                    while ((s = buffer.readLine()) != null) {
+                        sb.append("\n").append(s);
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (urlConnection != null) {
+                        urlConnection.disconnect();
+                    }
+                }
+                String scripture;
+                String scripture_title = "";
+
+                // TEST THE FULLY EXTRACTED SCRIPTURE (FULLER THAN HEADER)
+                String result = sb.toString();
+                String newbit = sb.toString();
+
+                // Find the start and end of the scripture bit
+                int startoffull = newbit.indexOf("<sup class=\"versenum\">");
+                int endoffull   = newbit.indexOf("<div class=\"crossrefs hidden\">");
+
+                if (endoffull>startoffull && startoffull>0 && endoffull>0) {
+                    newbit = newbit.substring(startoffull,endoffull);
+                } else {
+                    FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
+                    ShowToast.showToast(c);
+                }
+
+                newbit = Html.fromHtml(newbit).toString();
+                newbit = newbit.replace("<p>","");
+                newbit = newbit.replace("</p>","");
+
+                //Now look to see if the webcontent has the desired text in it
+                if (result.contains("og:description")) {
+
+                    // Get the title
+                    int title_startpos = result.indexOf("<meta name=\"twitter:title\" content=\"")+36;
+                    int title_endpos   = result.indexOf("\" />",title_startpos);
+
+                    try {
+                        scripture_title = result.substring(title_startpos,title_endpos);
+                    } catch (Exception e) {
+                        Log.d("d","Error getting scripture title");
+                        FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
+                        ShowToast.showToast(c);
+                    }
+
+                    // Make the scripture more readable by making a line break at the start of the word after 40 chars
+                    // First split the scripture into an array of words
+                    //String[] scripturewords = scripture.split(" ");
+
+                    scripture = shortenTheLines(newbit, 40, 6);
+
+                    // Send these back to the popupcustomslide creator window
+                    FullscreenActivity.scripture_title = scripture_title;
+                    FullscreenActivity.scripture_verse = scripture;
+
+                    PopUpCustomSlideFragment.addScripture();
+
+                } else {
+                    FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
+                    ShowToast.showToast(c);
+                }
+            }
+        }).run();
+
+
+
+
+        /*DownloadWebTextTask task = new DownloadWebTextTask(c);
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,weblink);*/
     }
-    private static class DownloadWebTextTask extends AsyncTask<String, Void, String> {
+/*    @SuppressLint("StaticFieldLeak")
+    private class DownloadWebTextTask extends AsyncTask<String, Void, String> {
         @SuppressLint("StaticFieldLeak")
         Context c;
 
@@ -381,7 +430,7 @@ class Bible {
         }
         @Override
         protected String doInBackground(String... addresses) {
-            response = "";
+            String response = "";
             StringBuilder sb = new StringBuilder();
             for (String address:addresses) {
                 URL url;
@@ -431,24 +480,9 @@ class Bible {
             newbit = Html.fromHtml(newbit).toString();
             newbit = newbit.replace("<p>","");
             newbit = newbit.replace("</p>","");
-            //newbit = newbit.replace("\n","");
 
             //Now look to see if the webcontent has the desired text in it
             if (result.contains("og:description")) {
-                // Find the position of the start of this section
-                // Get the scripture
-/*
-                int script_startpos = result.indexOf("og:description\" content=\"")+25;
-                int script_endpos = result.indexOf("\"/>",script_startpos);
-                try {
-                    scripture = result.substring(script_startpos,script_endpos);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.d("d","Error getting scripture");
-                    FullscreenActivity.myToastMessage = FullscreenActivity.error_missingsection;
-                    ShowToast.showToast(context);
-                }
-*/
 
                 // Get the title
                 int title_startpos = result.indexOf("<meta name=\"twitter:title\" content=\"")+36;
@@ -479,6 +513,42 @@ class Bible {
                 ShowToast.showToast(c);
             }
         }
+    }*/
+
+    private String[] bibleBooks = {"Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy",
+            "Joshua", "Judges", "Ruth", "1 Samuel", "2 Samuel", "1 Kings", "2 Kings",
+            "1 Chronicles", "2 Chronicles", "Ezra", "Nehemiah", "Esther", "Job", "Psalms",
+            "Proverbs", "Ecclesiastes", "Song of Solomon", "Isaiah", "Jeremiah",
+            "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel", "Amos", "Obadiah",
+            "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi",
+
+            "Matthew", "Mark", "Luke", "John", "Acts (of the Apostles)", "Romans",
+            "1 Corinthians", "2 Corinthians", "Galatians", "Ephesians", "Philippians",
+            "Colossians", "1 Thessalonians", "2 Thessalonians", "1 Timothy", "2 Timothy",
+            "Titus", "Philemon", "Hebrews", "James", "1 Peter", "2 Peter",
+            "1 John", "2 John", "3 John", "Jude", "Revelation"};
+
+    private String getBookNameFromNumber (String n) {
+        try {
+            int num = Integer.parseInt(n);
+            num = num-1;  // Make the first item 0
+            if (num < bibleBooks.length) {
+                return bibleBooks[num];
+            } else {
+                return ""+num;
+            }
+        } catch (Exception e) {
+            return n;
+        }
     }
 
+    private String getBookNumberFromName (String n) {
+        for (int x=0; x<bibleBooks.length; x++) {
+            if (n.equals(bibleBooks[x])) {
+                // This is it.  Add one on to convert array to number 1-66 (not 0-65)
+                return ""+(x+1);
+            }
+        }
+        return "1";
+    }
 }

@@ -85,6 +85,7 @@ public class PopUpImportExternalFile extends DialogFragment {
     Backup_Install import_osb;
     String mTitle = "";
 
+    Bible bibleC;
     //static ArrayList<String> newtempfolders;
     String moveToFolder;
     String backupchosen;
@@ -137,6 +138,8 @@ public class PopUpImportExternalFile extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
+
+        bibleC = new Bible();
 
         V = inflater.inflate(R.layout.popup_importexternalfile, container, false);
 
@@ -227,7 +230,7 @@ public class PopUpImportExternalFile extends DialogFragment {
                     // This is definitely an opensong archive
                     setupOSImport();
 
-                } else if (Bible.isYouVersionScripture(FullscreenActivity.incoming_text)) {
+                } else if (bibleC.isYouVersionScripture(FullscreenActivity.incoming_text)) {
                     // It is a scripture, so create the Scripture file
                     // Get the bible translation
                     setupBibleImport();

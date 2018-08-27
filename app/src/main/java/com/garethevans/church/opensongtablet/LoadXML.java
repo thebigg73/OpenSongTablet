@@ -92,6 +92,7 @@ public class LoadXML extends Activity {
                     e.printStackTrace();
                     Log.d("d", "Error performing grabOpenSongXML()");
                     FullscreenActivity.thissong_scale = "W";
+                    isxml = false;
                 }
             } else {
                 FullscreenActivity.myXML = "<title>Love everlasting</title>\n<author></author>\n<lyrics>"
@@ -627,13 +628,8 @@ public class LoadXML extends Activity {
                         break;
                 }
             }
-            try {
-                eventType = xpp.next();
-
-            } catch (Exception e) {
-                //Ooops!
-                e.printStackTrace();
-            }
+            // If it isn't an xml file, an error is about to be thrown
+            eventType = xpp.next();
         }
 
         if (FullscreenActivity.mLyrics.equals("")) {

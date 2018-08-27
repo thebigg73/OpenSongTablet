@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.provider.DocumentFile;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -57,6 +58,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     // Storage variables
     public static String mediaStore = "", prefStorage, customStorage, mStorage = "";
     public static Uri uriTree;
+    public static DocumentFile appHome;
     public static boolean useStorageAcessFramework, searchUsingSAF=false;
     public static File root = Environment.getExternalStorageDirectory(),
             homedir = new File(root.getAbsolutePath() + "/documents/OpenSong"),
@@ -751,7 +753,8 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             }
 
             // Now split it into smaller lines to better fit the screen size
-            sharedText = new StringBuilder(Bible.shortenTheLines(sharedText.toString(), 40, 6));
+            Bible bibleC = new Bible();
+            sharedText = new StringBuilder(bibleC.shortenTheLines(sharedText.toString(), 40, 6));
 
             whattodo = "importfile_customreusable_scripture";
             scripture_title = title;
