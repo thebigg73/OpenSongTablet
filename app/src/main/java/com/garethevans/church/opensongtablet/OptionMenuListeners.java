@@ -24,7 +24,6 @@ import com.peak.salut.Callbacks.SalutDeviceCallback;
 import com.peak.salut.SalutDevice;
 
 import java.io.File;
-import java.io.IOException;
 
 public class OptionMenuListeners extends Activity {
 
@@ -420,11 +419,7 @@ public class OptionMenuListeners extends Activity {
         menuOtherButton.setText(c.getString(R.string.options_other).toUpperCase(FullscreenActivity.locale));
 
         // Only allow connection menu for JellyBean+
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            menuConnectButton.setVisibility(View.VISIBLE);
-        } else {
-            menuConnectButton.setVisibility(View.GONE);
-        }
+        menuConnectButton.setVisibility(View.VISIBLE);
 
         // Only allow MIDI menu for Marshmallow+ and if it is available
         if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -625,9 +620,7 @@ public class OptionMenuListeners extends Activity {
         setEditButton.setText(c.getString(R.string.options_set_edit).toUpperCase(FullscreenActivity.locale));
         showSetTickBoxInSongMenu.setText(c.getString(R.string.setquickcheck).toUpperCase(FullscreenActivity.locale));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            showSetTickBoxInSongMenu.setChecked(FullscreenActivity.showSetTickBoxInSongMenu);
-        }
+        showSetTickBoxInSongMenu.setChecked(FullscreenActivity.showSetTickBoxInSongMenu);
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -867,10 +860,8 @@ public class OptionMenuListeners extends Activity {
         }
 
         // Set the switches up based on preferences
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            songPresentationOrderButton.setChecked(FullscreenActivity.usePresentationOrder);
-            songKeepMultiLineCompactButton.setChecked(FullscreenActivity.multilineCompact);
-        }
+        songPresentationOrderButton.setChecked(FullscreenActivity.usePresentationOrder);
+        songKeepMultiLineCompactButton.setChecked(FullscreenActivity.multilineCompact);
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -1095,49 +1086,33 @@ public class OptionMenuListeners extends Activity {
 
         // Set the switches up based on preferences
         if (FullscreenActivity.showChords) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                chordsToggleSwitch.setChecked(true);
-            }
+            chordsToggleSwitch.setChecked(true);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                chordsToggleSwitch.setChecked(false);
-            }
+            chordsToggleSwitch.setChecked(false);
             chordsCapoToggleSwitch.setEnabled(false);
             chordsNativeAndCapoToggleSwitch.setEnabled(false);
         }
 
         if (FullscreenActivity.capoFontSizeInfoBar==20.0f) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                switchCapoTextSize.setChecked(true);
-            }
+            switchCapoTextSize.setChecked(true);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                switchCapoTextSize.setChecked(false);
-            }
+            switchCapoTextSize.setChecked(false);
         }
 
         if (FullscreenActivity.showLyrics) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                chordsLyricsToggleSwitch.setChecked(true);
-            }
+            chordsLyricsToggleSwitch.setChecked(true);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                chordsLyricsToggleSwitch.setChecked(false);
-            }
+            chordsLyricsToggleSwitch.setChecked(false);
         }
         boolean capochordsbuttonenabled = FullscreenActivity.showChords;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            chordsCapoToggleSwitch.setChecked(FullscreenActivity.showCapoChords);
-        }
+        chordsCapoToggleSwitch.setChecked(FullscreenActivity.showCapoChords);
         chordsCapoToggleSwitch.setEnabled(capochordsbuttonenabled);
         if (!capochordsbuttonenabled) {
             chordsCapoToggleSwitch.setAlpha(0.4f);
         }
 
         boolean nativeandcapobuttonenabled = FullscreenActivity.showChords && capochordsbuttonenabled;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            chordsNativeAndCapoToggleSwitch.setChecked(FullscreenActivity.showNativeAndCapoChords);
-        }
+        chordsNativeAndCapoToggleSwitch.setChecked(FullscreenActivity.showNativeAndCapoChords);
         chordsNativeAndCapoToggleSwitch.setEnabled(nativeandcapobuttonenabled);
         if (!nativeandcapobuttonenabled) {
             chordsNativeAndCapoToggleSwitch.setAlpha(0.4f);
@@ -1895,9 +1870,7 @@ public class OptionMenuListeners extends Activity {
         }
         FullscreenActivity.clientButton.setText(FullscreenActivity.clientButtonText);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            connectionsReceiveHostFile.setChecked(FullscreenActivity.receiveHostFiles);
-        }
+        connectionsReceiveHostFile.setChecked(FullscreenActivity.receiveHostFiles);
 
         // Set the button listeners
         menuUp.setOnClickListener(new View.OnClickListener() {
@@ -2289,9 +2262,7 @@ public class OptionMenuListeners extends Activity {
         gesturesSongSwipeButton.setText(c.getString(R.string.swipe).toUpperCase(FullscreenActivity.locale));
 
         // Set the switches up based on preferences
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            displayMenuToggleSwitch.setChecked(FullscreenActivity.hideActionBar);
-        }
+        displayMenuToggleSwitch.setChecked(FullscreenActivity.hideActionBar);
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -2417,19 +2388,13 @@ public class OptionMenuListeners extends Activity {
         autoScrollLearnButton.setText(c.getString(R.string.timer_learn).toUpperCase(FullscreenActivity.locale));
 
         // Set the switches up based on preferences
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            autoScrollStartButton.setChecked(FullscreenActivity.autostartautoscroll);
-            autoscrollActivatedSwitch.setChecked(FullscreenActivity.clickedOnAutoScrollStart);
-        }
+        autoScrollStartButton.setChecked(FullscreenActivity.autostartautoscroll);
+        autoscrollActivatedSwitch.setChecked(FullscreenActivity.clickedOnAutoScrollStart);
 
         if (FullscreenActivity.timerFontSizeAutoScroll==20.0f) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                switchTimerSize.setChecked(true);
-            }
+            switchTimerSize.setChecked(true);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                switchTimerSize.setChecked(false);
-            }
+            switchTimerSize.setChecked(false);
         }
 
         // Set the button listeners
@@ -2528,18 +2493,12 @@ public class OptionMenuListeners extends Activity {
 
         // Set the switch
         if (FullscreenActivity.timerFontSizePad==20.0f) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                switchTimerSize.setChecked(true);
-            }
+            switchTimerSize.setChecked(true);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                switchTimerSize.setChecked(false);
-            }
+            switchTimerSize.setChecked(false);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            padStartButton.setChecked(FullscreenActivity.autostartpad);
-            padActivatedSwitch.setChecked(FullscreenActivity.clickedOnPadStart);
-        }
+        padStartButton.setChecked(FullscreenActivity.autostartpad);
+        padActivatedSwitch.setChecked(FullscreenActivity.clickedOnPadStart);
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2628,10 +2587,8 @@ public class OptionMenuListeners extends Activity {
         metronomeStartButton.setText(c.getString(R.string.autostartmetronome).toUpperCase(FullscreenActivity.locale));
 
         // Set the switches up based on preferences
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            metronomeStartButton.setChecked(FullscreenActivity.autostartmetronome);
-            metronomeActivatedSwitch.setChecked(FullscreenActivity.clickedOnMetronomeStart);
-        }
+        metronomeStartButton.setChecked(FullscreenActivity.autostartmetronome);
+        metronomeActivatedSwitch.setChecked(FullscreenActivity.clickedOnMetronomeStart);
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {
@@ -2708,9 +2665,7 @@ public class OptionMenuListeners extends Activity {
         ccliResetButton.setText(c.getString(R.string.ccli_reset).toUpperCase(FullscreenActivity.locale));
 
         // Set the switches up based on preferences
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            ccliAutoButton.setChecked(FullscreenActivity.ccli_automatic);
-        }
+        ccliAutoButton.setChecked(FullscreenActivity.ccli_automatic);
 
         // Set the button listeners
         menuup.setOnClickListener(new View.OnClickListener() {

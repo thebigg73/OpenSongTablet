@@ -198,9 +198,12 @@ public class ProcessSong extends Activity {
             // First line of section should be the label, so replace it with label.
             if (FullscreenActivity.songSections[x].startsWith("[" + FullscreenActivity.songSectionsLabels[x] + "]")) {
                 tempLyrics.append(FullscreenActivity.songSections[x]).append("\n");
-            } else {
+            } else if (FullscreenActivity.songSectionsLabels[x]!=null &&
+                    !FullscreenActivity.songSectionsLabels[x].isEmpty()) {
+                tempLyrics.append("["+FullscreenActivity.songSectionsLabels[x]).append("]\n");
                 tempLyrics.append(FullscreenActivity.songSections[x]).append("\n");
             }
+            Log.d("d","tempLyrics="+tempLyrics);
         }
         FullscreenActivity.myParsedLyrics = tempLyrics.toString().split("\n");
 

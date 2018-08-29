@@ -830,23 +830,29 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void onDataReceived(Object data) {
         // Attempt to extract the song details
+        Log.d("d","data="+data.toString());
         if (data!=null && (data.toString().contains("_____") || data.toString().contains("<lyrics>") ||
                 data.toString().contains("___section___") || data.toString().contains("autoscroll_"))) {
-            int mysection = ProcessSong.getSalutReceivedSection(data.toString());
 
-            if (mysection>0) {
+            // Look for a section being sent
+            int mysection = ProcessSong.getSalutReceivedSection(data.toString());
+            if (mysection>=0) {
                 // Choose a section
                 holdBeforeLoadingSection(mysection);
+
+                // Listen for autoscroll start being sent
             } else if (data.toString().contains("autoscroll_start")) {
                 // Trigger the autoscroll
                 FullscreenActivity.isautoscrolling = false;
                 holdBeforeAutoscrolling();
 
+                // Listen for autoscroll stop being sent
             } else if (data.toString().contains("autoscroll_stop")) {
                 // Trigger the autoscroll stop
                 FullscreenActivity.isautoscrolling = true;
                 holdBeforeAutoscrolling();
 
+                // Must be receiving a song or a song location
             } else {
                 // Load the song
                 String action = ProcessSong.getSalutReceivedLocation(data.toString(), StageMode.this);
@@ -1111,6 +1117,7 @@ public class StageMode extends AppCompatActivity implements
         } else {
             myXML = "";
         }
+        Log.d("d","Message being sent=\n"+myXML);
         mySongMessage = new SalutMessage();
         mySongMessage.description = myXML;
         holdBeforeSendingXML();
@@ -2827,7 +2834,7 @@ public class StageMode extends AppCompatActivity implements
                     public void run() {
                         FullscreenActivity.firstSendingOfSalut = true;
                     }
-                }, 2000);
+                }, 500);
             }
         }
     }
@@ -2857,7 +2864,7 @@ public class StageMode extends AppCompatActivity implements
                     public void run() {
                         FullscreenActivity.firstSendingOfSalutAutoscroll = true;
                     }
-                }, 2000);
+                }, 500);
             }
         }
     }
@@ -2888,7 +2895,7 @@ public class StageMode extends AppCompatActivity implements
                     public void run() {
                         FullscreenActivity.firstSendingOfSalutXML = true;
                     }
-                }, 2000);
+                }, 500);
             }
         }
     }
@@ -2919,7 +2926,7 @@ public class StageMode extends AppCompatActivity implements
                     public void run() {
                         FullscreenActivity.firstSendingOfSalutSection = true;
                     }
-                }, 2000);
+                }, 500);
             }
         }
     }
@@ -2929,7 +2936,19 @@ public class StageMode extends AppCompatActivity implements
         if (FullscreenActivity.firstReceivingOfSalut) {
             // Now turn it off
             FullscreenActivity.firstReceivingOfSalut = false;
-            loadSong();
+            // Decide if the file exists on this device first
+            File f;
+            if (FullscreenActivity.whichSongFolder.equals("") || FullscreenActivity.whichSongFolder.equals(getString(R.string.mainfoldername))) {
+                f = new File(FullscreenActivity.dir,FullscreenActivity.songfilename);
+            } else {
+                f = new File(FullscreenActivity.dir,FullscreenActivity.whichSongFolder);
+                f = new File(f,FullscreenActivity.songfilename);
+            }
+            Log.d("d","f="+f);
+            Log.d("d","f.exists()="+f.exists());
+            if (f.exists()) {
+                loadSong();
+            }
 
             // After a delay of 2 seconds, reset the firstReceivingOfSalut;
             Handler h = new Handler();
@@ -2938,7 +2957,7 @@ public class StageMode extends AppCompatActivity implements
                 public void run() {
                     FullscreenActivity.firstReceivingOfSalut = true;
                 }
-            },2000);
+            },500);
         }
     }
     public void holdBeforeLoadingXML() {
@@ -2947,33 +2966,38 @@ public class StageMode extends AppCompatActivity implements
         if (FullscreenActivity.firstReceivingOfSalutXML) {
             // Now turn it off
             FullscreenActivity.firstReceivingOfSalutXML = false;
-            FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\n","$$__$$");
-            FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\","");
-            FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("$$__$$","\n");
 
-            // Create the temp song file
-            try {
-                if (!FullscreenActivity.dirreceived.exists()) {
-                    if (!FullscreenActivity.dirreceived.mkdirs()) {
-                        Log.d("d","Couldn't make directory");
-                    }
-                }
-                FullscreenActivity.file = new File(FullscreenActivity.dirreceived,"ReceivedSong");
-
-                FileUtils.writeStringToFile(FullscreenActivity.file, FullscreenActivity.mySalutXML, "UTF-8");
-
-                //FileOutputStream overWrite = new FileOutputStream(FullscreenActivity.file,	false);
-                //overWrite.write(FullscreenActivity.mySalutXML.getBytes());
-                //overWrite.flush();
-                //overWrite.close();
-                FullscreenActivity.songfilename = "ReceivedSong";
-                FullscreenActivity.whichSongFolder = "../Received";
-            } catch (Exception e) {
-                FullscreenActivity.myToastMessage = getResources().getString(R.string.songdoesntexist);
-                ShowToast.showToast(StageMode.this);
+            File f;
+            if (FullscreenActivity.whichSongFolder.equals("") || FullscreenActivity.whichSongFolder.equals(getString(R.string.mainfoldername))) {
+                f = new File(FullscreenActivity.dir,FullscreenActivity.songfilename);
+            } else {
+                f = new File(FullscreenActivity.dir,FullscreenActivity.whichSongFolder);
+                f = new File(f,FullscreenActivity.songfilename);
             }
-            loadSong();
+            if (!f.exists() || FullscreenActivity.receiveHostFiles) {
+                FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\n", "$$__$$");
+                FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("\\", "");
+                FullscreenActivity.mySalutXML = FullscreenActivity.mySalutXML.replace("$$__$$", "\n");
 
+                // Create the temp song file
+                try {
+                    if (!FullscreenActivity.dirreceived.exists()) {
+                        if (!FullscreenActivity.dirreceived.mkdirs()) {
+                            Log.d("d", "Couldn't make directory");
+                        }
+                    }
+                    FullscreenActivity.file = new File(FullscreenActivity.dirreceived, "ReceivedSong");
+
+                    FileUtils.writeStringToFile(FullscreenActivity.file, FullscreenActivity.mySalutXML, "UTF-8");
+
+                    FullscreenActivity.songfilename = "ReceivedSong";
+                    FullscreenActivity.whichSongFolder = "../Received";
+                } catch (Exception e) {
+                    FullscreenActivity.myToastMessage = getResources().getString(R.string.songdoesntexist);
+                    ShowToast.showToast(StageMode.this);
+                }
+                loadSong();
+            }
             // After a delay of 2 seconds, reset the firstReceivingOfSalut;
             Handler h = new Handler();
             h.postDelayed(new Runnable() {
@@ -2981,7 +3005,7 @@ public class StageMode extends AppCompatActivity implements
                 public void run() {
                     FullscreenActivity.firstReceivingOfSalutXML = true;
                 }
-            },2000);
+            },500);
         }
     }
     public void holdBeforeLoadingSection(int s) {
@@ -2997,7 +3021,7 @@ public class StageMode extends AppCompatActivity implements
                 public void run() {
                     FullscreenActivity.firstReceivingOfSalutSection = true;
                 }
-            }, 2000);
+            }, 500);
         }
     }
     public void holdBeforeAutoscrolling() {
@@ -3015,13 +3039,14 @@ public class StageMode extends AppCompatActivity implements
                 public void run() {
                     FullscreenActivity.firstReceivingOfSalutAutoscroll = true;
                 }
-            }, 2000);
+            }, 500);
         }
     }
 
     @Override
     public void loadSong() {
         // Check for set song
+        Log.d("d","Trying to load song");
         FullscreenActivity.setView = SetActions.isSongInSet(StageMode.this);
 
         // Sort the text size and colour of the info stuff
@@ -3056,6 +3081,7 @@ public class StageMode extends AppCompatActivity implements
                 }
             }
 
+            Log.d("d","whichDirection="+FullscreenActivity.whichDirection);
             // Animate out the current song
             if (FullscreenActivity.whichDirection.equals("L2R")) {
                 if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
@@ -3093,12 +3119,16 @@ public class StageMode extends AppCompatActivity implements
             padcurrentTime_TextView.setText(getString(R.string.zerotime));
             backingtrackProgress.setVisibility(View.GONE);
 
+            Log.d("d","Waiting to animate out the song");
+
             // After animate out, load the song
             Handler h = new Handler();
             h.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     try {
+                        Log.d("d","Do animate out the song");
+
                         glideimage_ScrollView.setVisibility(View.GONE);
                         songscrollview.setVisibility(View.GONE);
                         highlightNotes.setVisibility(View.GONE);
@@ -3135,6 +3165,7 @@ public class StageMode extends AppCompatActivity implements
                 sectionpresented = false;
 
                 try {
+                    Log.d("d","LoadXML being called");
                     LoadXML.loadXML(StageMode.this);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -5528,16 +5559,20 @@ public class StageMode extends AppCompatActivity implements
                 Log.d("d","Section not found");
         }
 
-        // Go through each of the views and set the alpha of the others to 0.5f;
-        for (int x = 0; x < FullscreenActivity.sectionviews.length; x++) {
-            if (x != whichone) {
-                FullscreenActivity.sectionviews[x].setAlpha(0.5f);
+        try {
+            // Go through each of the views and set the alpha of the others to 0.5f;
+            for (int x = 0; x < FullscreenActivity.sectionviews.length; x++) {
+                if (x != whichone) {
+                    FullscreenActivity.sectionviews[x].setAlpha(0.5f);
+                }
             }
-        }
-        FullscreenActivity.tempswipeSet = "enable";
-        FullscreenActivity.setMoveDirection = "";
+            FullscreenActivity.tempswipeSet = "enable";
+            FullscreenActivity.setMoveDirection = "";
 
-        dualScreenWork();
+            dualScreenWork();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

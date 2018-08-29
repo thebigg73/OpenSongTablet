@@ -341,6 +341,7 @@ public class ExportPreparer extends Activity {
         File ostsfile = new File(exportdir + "/" + FullscreenActivity.settoload + ".osts");
 
         if (!setfile.exists() || !setfile.canRead()) {
+            Log.d("d",setfile+ " - File doesn't exist");
             return null;
         }
 
@@ -397,7 +398,9 @@ public class ExportPreparer extends Activity {
                 String tempsong_ost = FullscreenActivity.exportsetfilenames_ost.get(q);
                 tempsong_ost = tempsong_ost.substring(tempsong_ost.indexOf("/") + 1);
                 File songtoload = new File(FullscreenActivity.dir + "/" + FullscreenActivity.exportsetfilenames.get(q));
+                Log.d("d","Song to copy="+songtoload);
                 File ostsongcopy = new File(FullscreenActivity.homedir + "/Notes/_cache/" + tempsong_ost + ".ost");
+                Log.d("d","Copied file="+ostsongcopy);
                 boolean isimage = false;
                 if (songtoload.toString().endsWith(".jpg") || songtoload.toString().endsWith(".JPG") ||
                         songtoload.toString().endsWith(".jpeg") || songtoload.toString().endsWith(".JPEG") ||
@@ -444,6 +447,7 @@ public class ExportPreparer extends Activity {
         }
 
         emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         return emailIntent;
     }
 
@@ -564,6 +568,7 @@ public class ExportPreparer extends Activity {
             uris.add(pdf);
         }
         emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         return emailIntent;
     }
 
@@ -580,6 +585,7 @@ public class ExportPreparer extends Activity {
         uris.add(uri);
 
         emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         return emailIntent;
     }
 
@@ -601,6 +607,7 @@ public class ExportPreparer extends Activity {
         }
         uris.add(Uri.fromFile(f));
         emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         return emailIntent;
     }
 
