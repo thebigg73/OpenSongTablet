@@ -16,9 +16,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.DocumentsContract;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.FileProvider;
 import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -26,6 +28,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 class StorageAccess {
 
@@ -36,8 +40,6 @@ class StorageAccess {
     private String[] cacheFolders = {"Backgrounds/_cache", "Images/_cache", "Notes/_cache",
             "OpenSong Scripture/_cache", "Scripture/_cache", "Slides/_cache"};
 
-
-    private boolean testingKitKat = true;
 
     // These are used primarily on start up to initialise stuff
     String getStoragePreference(Context c) {
@@ -166,7 +168,7 @@ class StorageAccess {
         }
     }
 
-    String stringForFile(String folderpath) {
+    private String stringForFile(String folderpath) {
         String file = FullscreenActivity.customStorage;
         if (!file.endsWith(appFolder)) {
             file = file + "/" + appFolder;
@@ -175,7 +177,7 @@ class StorageAccess {
     }
 
     // These are used to return Uris, Ids, DocumentFiles, etc. for files
-    Uri getUriFromFilePath(Context c, String folder, String subfolder, String filename) {
+    private Uri getUriFromFilePath(Context c, String folder, String subfolder, String filename) {
         String s = stringForFile(folder);
         File f = new File(s);
         if (subfolder != null && !subfolder.isEmpty() && !subfolder.equals(c.getString(R.string.mainfoldername))) {
@@ -184,10 +186,13 @@ class StorageAccess {
         if (filename != null && !filename.isEmpty() && !filename.equals(c.getString(R.string.mainfoldername))) {
             f = new File(f, filename);
         }
-        return Uri.fromFile(f);
+
+        // Convert to a FileProvider uri
+        return FileProvider.getUriForFile(c,"OpenSongAppFiles",f);
+        //return Uri.fromFile(f);
     }
 
-    Uri getUriFromPath(Context c, String folder, String subfolder, String filename) {
+    private Uri getUriFromPath(Context c, String folder, String subfolder, String filename) {
         // Use the appHome uri
         Uri uri = null;
         if (FullscreenActivity.appHome != null) {
@@ -213,7 +218,7 @@ class StorageAccess {
                 // Might have sent subfolder info
                 String[] sfs = filename.split("/");
                 for (String sf : sfs) {
-                    if (sf != null && !sf.equals("") && !subfolder.equals(c.getString(R.string.mainfoldername))) {
+                    if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername))) {
                         uri = Uri.withAppendedPath(uri, Uri.encode(sf));
                     }
                 }
@@ -244,6 +249,7 @@ class StorageAccess {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     Uri documentUriFromId(String id) {
         if (lollipopOrLater()) {
             return DocumentsContract.buildDocumentUriUsingTree(FullscreenActivity.uriTree, id);
@@ -252,6 +258,7 @@ class StorageAccess {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     Uri getUriFromId(Uri uri, String id) {
         if (lollipopOrLater()) {
             return DocumentsContract.buildDocumentUriUsingTree(uri, id);
@@ -260,6 +267,7 @@ class StorageAccess {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Uri getChildren(Uri uri, String id) {
         Log.d("d", "uri=" + uri);
         Log.d("d", "id=" + id);
@@ -273,7 +281,7 @@ class StorageAccess {
 
 
     // Basic file actions
-    private void copyFile(InputStream in, OutputStream out) {
+    void copyFile(InputStream in, OutputStream out) {
         try {
             byte[] buffer = new byte[1024];
             int read;
@@ -340,12 +348,15 @@ class StorageAccess {
 
 
     // Used to decide on the best storage method (using tree or not)
+    //TODO
     boolean lollipopOrLater() {
+        boolean testingKitKat = true;
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !testingKitKat;
     }
 
 
     // This builds an index of all the songs on the device
+    @SuppressLint("NewApi")
     void listSongs(Context c) {
         // Decide if we are using storage access framework or not
         if (lollipopOrLater()) {
@@ -354,7 +365,6 @@ class StorageAccess {
             listSongs_File();
         }
     }
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void listSongs_SAF(Context c) {
         FullscreenActivity.songIds = new ArrayList<>();
@@ -423,7 +433,6 @@ class StorageAccess {
             FullscreenActivity.folderIds.add(f);
         }
     }
-
     private void listSongs_File() {
         // We must be using an older version of Android, so stick with File access
         FullscreenActivity.songIds = new ArrayList<>();  // These will be the file locations
@@ -559,23 +568,22 @@ class StorageAccess {
         if (subfolder != null && !subfolder.isEmpty()) {
             f = new File(f, subfolder);
         }
-        if (filename != null && !filename.isEmpty()) {
-            f = new File(f, filename);
-        }
+
         if (!f.exists()) {
             try {
                 stuffCreated = f.mkdirs();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
 
-            if (filename != null && !filename.equals("")) {
-                try {
-                    stuffCreated = f.createNewFile();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    stuffCreated = false;
-                }
+        if (filename != null && !filename.isEmpty()) {
+            f = new File(f, filename);
+            try {
+                stuffCreated = f.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+                stuffCreated = false;
             }
         }
         return stuffCreated;
@@ -611,26 +619,189 @@ class StorageAccess {
         if (lollipopOrLater()) {
             return getFileSizeFromUri_SAF(c, uri);
         } else {
-            return getFileSizeFromUri_File(uri);
+            return getFileSizeFromUri_File(c,uri);
         }
     }
     private long getFileSizeFromUri_SAF(Context c, Uri uri) {
         DocumentFile df = documentFileFromUri(c,uri,uri.getPath());
         if (df!=null && df.exists()) {
-            return df.length();
+            return df.length()/1024;
         } else {
             return 0;
         }
     }
-    private long getFileSizeFromUri_File(Uri uri) {
-        File f = null;
-        if (uri!=null) {
-            f = new File(uri.getPath());
-        }
-        if (uri != null && f.exists()) {
-            return Long.parseLong(String.valueOf(f.length() / 1024));
+    private long getFileSizeFromUri_File(Context c, Uri uri) {
+        DocumentFile df = DocumentFile.fromSingleUri(c,uri);
+        if (df!=null && df.exists()) {
+            return df.length() / 1024;
         } else {
             return 0;
         }
+    }
+    boolean uriExists(Context c, Uri uri) {
+        if (lollipopOrLater()) {
+            return uriExists_SAF(c, uri);
+        } else {
+            return uriExists_File(c, uri);
+        }
+    }
+    private boolean uriExists_SAF(Context c, Uri uri) {
+        DocumentFile df = documentFileFromUri(c, uri, uri.getPath());
+        return df != null && df.exists();
+    }
+    private boolean uriExists_File(Context c, Uri uri) {
+        DocumentFile df = DocumentFile.fromSingleUri(c, uri);
+        return df.exists();
+    }
+    Uri fixLocalisedUri(Context c, String uriString) {
+        // This checks for localised filenames first and fixes the Uri
+        if (uriString.startsWith("../OpenSong/Media/")) {
+            // Remove this and get the proper location
+            uriString = uriString.replace("../OpenSong/Media/","");
+            // Now get the actual uri
+            return getUriForItem(c,"Media","",uriString);
+        } else {
+            return Uri.parse(uriString);
+        }
+    }
+    @SuppressLint("NewApi")
+    ArrayList<String> listFilesInFolder(Context c, String folder, String subfolder) {
+        if (lollipopOrLater()) {
+            return listFilesInFolder_SAF(c, folder, subfolder);
+        } else {
+            return listFilesInFolder_File(folder, subfolder);
+        }
+    }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private ArrayList<String> listFilesInFolder_SAF(Context c, String folder, String subfolder) {
+        ArrayList<String> al = new ArrayList<>();
+        DocumentFile df = FullscreenActivity.appHome.findFile(folder);
+        //Split the subfolder up incase there is more than one!
+        String[] sfs = subfolder.split("/");
+        for (String sf:sfs) {
+            if (sf!=null && !sf.isEmpty() && df.findFile(sf)!=null) {
+                df = df.findFile(sf);
+            }
+        }
+        Uri uri = df.getUri();
+
+        // Now get a documents contract at this location
+        String id = getDocumentsContractId(uri);
+
+        // Get the children
+        Uri children = getChildren(uri, id);
+        ContentResolver contentResolver = c.getContentResolver();
+
+        // Keep track of our directory hierarchy
+        List<Uri> dirNodes = new LinkedList<>();
+        dirNodes.add(children);
+
+        while (!dirNodes.isEmpty()) {
+            children = dirNodes.remove(0); // get the item from top
+            Cursor cursor = contentResolver.query(children, new String[]{
+                    DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+                    DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+                    DocumentsContract.Document.COLUMN_MIME_TYPE}, null, null, null);
+            try {
+                if (cursor != null) {
+                    while (cursor.moveToNext()) {
+                        final String name = cursor.getString(1);
+                        final String mime = cursor.getString(2);
+                        if (!DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
+                            al.add(name);
+                            Log.d("d", "file name = " + name);
+                        }
+                    }
+                    cursor.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return al;
+    }
+    private ArrayList<String> listFilesInFolder_File(String folder, String subfolder) {
+        ArrayList<String> al = new ArrayList<>();
+        String filebuilder = stringForFile(folder);
+        File f = new File(filebuilder);
+        if (subfolder!=null && !subfolder.isEmpty()) {
+            f = new File (f,subfolder);
+        }
+        File[] fs = f.listFiles();
+        for (File fi:fs) {
+            if (fi.isFile()) {
+                al.add(fi.getName());
+            }
+        }
+        return al;
+    }
+    boolean extractZipFile(Context c, Uri zipUri, String folder, String subfolder, ArrayList<String> zipfolders) {
+        // This bit could be slow, so it will likely be called in an async task
+        ZipInputStream zis = null;
+        try {
+            InputStream inputStream = getInputStream(c, zipUri);
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            zis = new ZipInputStream(bufferedInputStream);
+            ZipEntry ze;
+            int count;
+            byte[] buffer = new byte[8192];
+            while ((ze = zis.getNextEntry()) != null) {
+                // Look to see if ze is in one of the folders we are wanting to import
+                boolean oktoimportthisone = false;
+                if (zipfolders != null && zipfolders.contains(ze.getName()) ||
+                        (!ze.getName().contains("/") && zipfolders!=null &&
+                                zipfolders.contains(c.getString(R.string.mainfoldername)))) {
+                    oktoimportthisone = true;
+                } else if (zipfolders == null) {
+                    // Just import everthing
+                    oktoimportthisone = true;
+                }
+
+
+                if (oktoimportthisone) {
+                    createFile(c, null, folder, subfolder, ze.getName());
+                    Uri newUri = getUriForItem(c, folder, subfolder, ze.getName());
+                    OutputStream outputStream = getOutputStream(c, newUri);
+
+                    try {
+                        while ((count = zis.read(buffer)) != -1)
+                            outputStream.write(buffer, 0, count);
+                    } finally {
+                        try {
+                            outputStream.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (zis != null) {
+                try {
+                    zis.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return true;
+    }
+    boolean deleteFile(Context c, Uri uri) {
+        if (lollipopOrLater()) {
+            return deleteFile_SAF(c, uri);
+        } else {
+            return deleteFile_File(c, uri);
+        }
+    }
+    private boolean deleteFile_SAF(Context c, Uri uri) {
+        DocumentFile df = DocumentFile.fromTreeUri(c, uri);
+        return df.delete();
+    }
+    private  boolean deleteFile_File(Context c, Uri uri) {
+        DocumentFile df = DocumentFile.fromSingleUri(c,uri);
+        return df.delete();
     }
 }
