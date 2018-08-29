@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import com.itextpdf.text.Document;
@@ -348,13 +349,13 @@ public class ExportPreparer extends Activity {
         if (FullscreenActivity.exportText) {
             newfile = new File(exportdir, FullscreenActivity.settoload + ".txt");
             writeFile(FullscreenActivity.emailtext, newfile, "text", null);
-            text = Uri.fromFile(newfile);
+            text = FileProvider.getUriForFile(c, "OpenSongAppFiles", newfile);
         }
 
         FullscreenActivity.emailtext = "";
 
         if (FullscreenActivity.exportDesktop) {
-            desktop = Uri.fromFile(setfile);
+            desktop = FileProvider.getUriForFile(c, "OpenSongAppFiles", setfile);
         }
 
         if (FullscreenActivity.exportOpenSongAppSet) {
@@ -372,7 +373,8 @@ public class ExportPreparer extends Activity {
                 // write the output file (You have now copied the file)
                 out.flush();
                 out.close();
-                osts = Uri.fromFile(ostsfile);
+                osts = FileProvider.getUriForFile(c, "OpenSongAppFiles", ostsfile);
+
             } catch (Exception e) {
                 // Error
                 e.printStackTrace();
@@ -428,7 +430,7 @@ public class ExportPreparer extends Activity {
                             // write the output file (You have now copied the file)
                             out.flush();
                             out.close();
-                            Uri urisongs_ost = Uri.fromFile(ostsongcopy);
+                            Uri urisongs_ost = FileProvider.getUriForFile(c, "OpenSongAppFiles", ostsongcopy);
                             uris.add(urisongs_ost);
                         }
                     } catch (Exception e) {
@@ -441,7 +443,7 @@ public class ExportPreparer extends Activity {
         if (FullscreenActivity.exportDesktop) {
             for (int q = 0; q < FullscreenActivity.exportsetfilenames.size(); q++) {
                 File songtoload = new File(FullscreenActivity.dir + "/" + FullscreenActivity.exportsetfilenames.get(q));
-                Uri urisongs = Uri.fromFile(songtoload);
+                Uri urisongs = FileProvider.getUriForFile(c, "OpenSongAppFiles", songtoload);
                 uris.add(urisongs);
             }
         }
@@ -475,7 +477,7 @@ public class ExportPreparer extends Activity {
         if (FullscreenActivity.exportText) {
             newfile = new File(exportdir, FullscreenActivity.songfilename + ".txt");
             writeFile(FullscreenActivity.exportText_String, newfile, "text", null);
-            text = Uri.fromFile(newfile);
+            text = FileProvider.getUriForFile(c, "OpenSongAppFiles", newfile);
         }
 
         if (FullscreenActivity.exportOpenSongApp) {
@@ -489,7 +491,7 @@ public class ExportPreparer extends Activity {
                         FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename);
             }
             copyFile(filetocopy, newfile);
-            ost = Uri.fromFile(newfile);
+            ost = FileProvider.getUriForFile(c, "OpenSongAppFiles", newfile);
         }
 
         if (FullscreenActivity.exportDesktop) {
@@ -503,7 +505,7 @@ public class ExportPreparer extends Activity {
                         FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename);
             }
             copyFile(filetocopy, newfile);
-            desktop = Uri.fromFile(newfile);
+            desktop = FileProvider.getUriForFile(c, "OpenSongAppFiles", newfile);
         }
 
         if (FullscreenActivity.exportChordPro) {
@@ -511,7 +513,7 @@ public class ExportPreparer extends Activity {
             newfile = new File(exportdir, FullscreenActivity.songfilename + ".chopro");
             prepareChordProFile(c);
             writeFile(FullscreenActivity.exportChordPro_String, newfile, "chopro", null);
-            chopro = Uri.fromFile(newfile);
+            chopro = FileProvider.getUriForFile(c, "OpenSongAppFiles", newfile);
         }
 
         if (FullscreenActivity.exportOnSong) {
@@ -519,14 +521,14 @@ public class ExportPreparer extends Activity {
             newfile = new File(exportdir, FullscreenActivity.songfilename + ".onsong");
             prepareOnSongFile(c);
             writeFile(FullscreenActivity.exportOnSong_String, newfile, "onsong", null);
-            onsong = Uri.fromFile(newfile);
+            onsong = FileProvider.getUriForFile(c, "OpenSongAppFiles", newfile);
         }
 
         if (FullscreenActivity.exportImage) {
             // Prepare an image/png version of the song.
             newfile = new File(exportdir, FullscreenActivity.songfilename + ".png");
             writeFile(FullscreenActivity.exportOnSong_String, newfile, "png", bmp);
-            image = Uri.fromFile(newfile);
+            image = FileProvider.getUriForFile(c, "OpenSongAppFiles", newfile);
         }
 
         if (FullscreenActivity.exportPDF) {
@@ -534,7 +536,7 @@ public class ExportPreparer extends Activity {
             newfile = new File(exportdir, FullscreenActivity.songfilename + ".pdf");
             makePDF(bmp, newfile);
             //writeFile(c,FullscreenActivity.exportOnSong_String, newfile, "pdf", bmp);
-            pdf = Uri.fromFile(newfile);
+            pdf = FileProvider.getUriForFile(c, "OpenSongAppFiles", newfile);
         }
 
         Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
@@ -580,7 +582,7 @@ public class ExportPreparer extends Activity {
         emailIntent.putExtra(Intent.EXTRA_TEXT,  c.getString(R.string.backup_info));
         FullscreenActivity.emailtext = "";
 
-        Uri uri = Uri.fromFile(f);
+        Uri uri = FileProvider.getUriForFile(c, "OpenSongAppFiles", f);
         ArrayList<Uri> uris = new ArrayList<>();
         uris.add(uri);
 
@@ -605,7 +607,7 @@ public class ExportPreparer extends Activity {
         if (!f.exists()) {
             PopUpCCLIFragment.createBlankXML();
         }
-        uris.add(Uri.fromFile(f));
+        uris.add(FileProvider.getUriForFile(c, "OpenSongAppFiles", f));
         emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
         emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         return emailIntent;
