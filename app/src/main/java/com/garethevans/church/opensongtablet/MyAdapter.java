@@ -113,7 +113,8 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.SetItemViewHolder> {
                 }
 
                 if (issue) {
-                    SetActions.indexSongInSet();
+                    SetActions setActions = new SetActions();
+                    setActions.indexSongInSet();
                 }
 
                 if (FullscreenActivity.whattodo.equals("setitemvariation")) {

@@ -42,7 +42,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.io.File;
+import java.io.InputStream;
 import java.net.URLEncoder;
 
 public class PopUpCustomSlideFragment extends DialogFragment {
@@ -123,6 +123,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
 
     // Declare variables used
     static String whattype = "note";
+    StorageAccess storageAccess;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,9 +141,128 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().setCanceledOnTouchOutside(true);
 
+        storageAccess = new StorageAccess();
         bibleC = new Bible();
         V = inflater.inflate(R.layout.popup_customslidecreator, container, false);
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initialiseTheViews();
+                        grabVerse_Button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                searchBible_progressBar.setVisibility(View.VISIBLE);
+                                bibleGateway_WebView.setVisibility(View.GONE);
+                                grabVerse_Button.setVisibility(View.GONE);
+                                bibleC.grabBibleText(getActivity().getApplicationContext(), bibleGateway_WebView.getUrl());
+                            }
+                        });
+
+                        localBibleFile.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                FullscreenActivity.whattodo = "localbible";
+                                if (mListener!=null) {
+                                    try {
+                                        mListener.openFragment();
+                                        dismiss();
+                                    } catch (Exception e) {
+                                        Log.d("d","Error opening local bible");
+                                    }
+                                }
+                            }
+                        });
+                        searchBibleGateway_Button.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                searchBible_progressBar.setVisibility(View.VISIBLE);
+                                setUpWebView();
+                                searchBible();
+                            }
+                        });
+
+                        if (FullscreenActivity.whattodo.contains("customreusable_")) {
+                            updateFields();
+                        } else {
+                            // By default we want to make a brief note/placeholder
+                            noteRadioButton.setChecked(true);
+                            FullscreenActivity.whattodo = "customnote";
+                            slideRadioButton.setChecked(false);
+                            imageRadioButton.setChecked(false);
+                            scriptureRadioButton.setChecked(false);
+                            saveReusableCheckBox.setChecked(false);
+                            switchViewToNote();
+                        }
+
+                        // Set button listeners
+                        addPageButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (whattype.equals("slide")) {
+                                    String newText = slideContentEditText.getText().toString().trim() + "\n---\n";
+                                    newText = newText.trim() + "\n";
+                                    slideContentEditText.setText(newText);
+                                } else if (whattype.equals("image")) {
+                                    // Call file browser
+                                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                                    i.setType("image/*");
+                                    try {
+                                        startActivityForResult(i, 0);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        FullscreenActivity.myToastMessage = getResources().getString(R.string.no_filemanager);
+                                        ShowToast.showToast(getActivity());
+                                        try {
+                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.estrongs.android.pop")));
+                                        } catch (Exception anfe) {
+                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.estrongs.android.pop")));
+                                        }
+                                    }
+
+                                }
+                            }
+                        });
+
+                        loadReusableButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // This reopens the choose backgrounds popupFragment
+                                dismiss();
+                                DialogFragment newFragment = PopUpFileChooseFragment.newInstance();
+                                newFragment.show(getFragmentManager(), "dialog");
+                            }
+                        });
+                        customRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                                if (noteRadioButton.isChecked()) {
+                                    switchViewToNote();
+                                } else if (slideRadioButton.isChecked()) {
+                                    switchViewToSlide();
+                                } else if (scriptureRadioButton.isChecked()) {
+                                    switchViewToScripture();
+                                } else {
+                                    switchViewToImage();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        }).start();
+
+        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
+
+        return V;
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    void initialiseTheViews() {
         TextView title = V.findViewById(R.id.dialogtitle);
         title.setText(getActivity().getResources().getString(R.string.add_custom_slide));
         final FloatingActionButton closeMe = V.findViewById(R.id.closeMe);
@@ -195,6 +315,11 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         searchBible_progressBar = V.findViewById(R.id.searchBible_progressBar);
         searchBible_progressBar.setVisibility(View.GONE);
         bibleGateway_WebView.setVisibility(View.GONE);
+
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    public void setUpWebView() {
         bibleGateway_WebView.getSettings().getJavaScriptEnabled();
         bibleGateway_WebView.getSettings().setJavaScriptEnabled(true);
         bibleGateway_WebView.getSettings().setDomStorageEnabled(true);
@@ -205,108 +330,6 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 return false;
             }
         });
-
-        grabVerse_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchBible_progressBar.setVisibility(View.VISIBLE);
-                bibleGateway_WebView.setVisibility(View.GONE);
-                grabVerse_Button.setVisibility(View.GONE);
-                bibleC.grabBibleText(getActivity().getApplicationContext(), bibleGateway_WebView.getUrl());
-            }
-        });
-
-        localBibleFile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FullscreenActivity.whattodo = "localbible";
-                if (mListener!=null) {
-                    try {
-                        mListener.openFragment();
-                        dismiss();
-                    } catch (Exception e) {
-                        Log.d("d","Error opening local bible");
-                    }
-                }
-            }
-        });
-        searchBibleGateway_Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchBible_progressBar.setVisibility(View.VISIBLE);
-                searchBible();
-            }
-        });
-
-        if (FullscreenActivity.whattodo.contains("customreusable_")) {
-            updateFields();
-        } else {
-            // By default we want to make a brief note/placeholder
-            noteRadioButton.setChecked(true);
-            FullscreenActivity.whattodo = "customnote";
-            slideRadioButton.setChecked(false);
-            imageRadioButton.setChecked(false);
-            scriptureRadioButton.setChecked(false);
-            saveReusableCheckBox.setChecked(false);
-            switchViewToNote();
-        }
-
-        // Set button listeners
-        addPageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (whattype.equals("slide")) {
-                    String newText = slideContentEditText.getText().toString().trim() + "\n---\n";
-                    newText = newText.trim() + "\n";
-                    slideContentEditText.setText(newText);
-                } else if (whattype.equals("image")) {
-                    // Call file browser
-                    Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                    i.setType("image/*");
-                    try {
-                        startActivityForResult(i, 0);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        FullscreenActivity.myToastMessage = getResources().getString(R.string.no_filemanager);
-                        ShowToast.showToast(getActivity());
-                        try {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.estrongs.android.pop")));
-                        } catch (Exception anfe) {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=com.estrongs.android.pop")));
-                        }
-                    }
-
-                }
-            }
-        });
-
-        loadReusableButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // This reopens the choose backgrounds popupFragment
-                dismiss();
-                DialogFragment newFragment = PopUpFileChooseFragment.newInstance();
-                newFragment.show(getFragmentManager(), "dialog");
-            }
-        });
-        customRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (noteRadioButton.isChecked()) {
-                    switchViewToNote();
-                } else if (slideRadioButton.isChecked()) {
-                    switchViewToSlide();
-                } else if (scriptureRadioButton.isChecked()) {
-                    switchViewToScripture();
-                } else {
-                    switchViewToImage();
-                }
-            }
-        });
-
-        PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
-
-        return V;
     }
 
     public void doSave(){
@@ -314,6 +337,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
         StringBuilder text = new StringBuilder(slideContentEditText.getText().toString().trim());
         FullscreenActivity.customreusable = saveReusableCheckBox.isChecked();
         StringBuilder imagecontents;
+
         if (whattype.equals("image")) {
             imagecontents = new StringBuilder();
             // Go through images in list and extract the full location and the filename
@@ -558,8 +582,7 @@ public class PopUpCustomSlideFragment extends DialogFragment {
                 // Create a new row in the table
                 // Each row has the file name, an image thumbnail and a delete button
                 if (fullpath!=null && uri!=null) {
-                    File f = new File(uri.getPath());
-                    fullpath = f.toString();
+                    fullpath = uri.getLastPathSegment();
                     Log.d("d","fullpath="+fullpath);
                 }
                 addRow(fullpath);
@@ -656,12 +679,13 @@ public class PopUpCustomSlideFragment extends DialogFragment {
             Bitmap ThumbImage;
             Resources res = getResources();
             BitmapDrawable bd;
-            File checkfile = new File(fullpath);
-            if (!checkfile.exists()) {
+            Uri uri = Uri.parse(fullpath);
+            if (!storageAccess.uriExists(getActivity(),uri)) {
                 Drawable notfound = getResources().getDrawable(R.drawable.notfound);
                 thumbnail.setImageDrawable(notfound);
             } else {
-                ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(fullpath), 200, 150);
+                InputStream inputStream = storageAccess.getInputStream(getActivity(), uri);
+                ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeStream(inputStream), 200, 150);
                 bd = new BitmapDrawable(res, ThumbImage);
                 thumbnail.setImageDrawable(bd);
             }

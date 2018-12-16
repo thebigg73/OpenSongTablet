@@ -40,13 +40,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 
-//import com.squareup.leakcanary.LeakCanary;
-//import com.squareup.leakcanary.RefWatcher;
-
 @SuppressWarnings("deprecation")
 @SuppressLint({"DefaultLocale", "RtlHardcoded", "InflateParams", "SdCardPath"})
-public class FullscreenActivity extends AppCompatActivity implements PopUpImportExportOSBFragment.MyInterface,
-        PopUpImportExternalFile.MyInterface {
+public class FullscreenActivity extends AppCompatActivity {
 
     //First up, declare all of the variables needed by this application
 
@@ -59,29 +55,15 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static String mediaStore = "", prefStorage, customStorage, mStorage = "";
     public static Uri uriTree;
     public static DocumentFile appHome;
-    public static boolean useStorageAcessFramework, searchUsingSAF=false;
     public static File root = Environment.getExternalStorageDirectory(),
-            homedir = new File(root.getAbsolutePath() + "/documents/OpenSong"),
             dir = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs"),
-            dirsettings = new File(root.getAbsolutePath() + "/documents/OpenSong/Settings"),
-            dironsong = new File(root.getAbsolutePath() + "/documents/OpenSong/Songs/OnSong"),
             dirsets = new File(root.getAbsolutePath() + "/documents/OpenSong/Sets"),
-            direxport = new File(root.getAbsolutePath() + "/documents/OpenSong/Export"),
             dirPads = new File(root.getAbsolutePath() + "/documents/OpenSong/Pads"),
-            dirMedia = new File(root.getAbsolutePath() + "/documents/OpenSong/Media"),
             dirbackgrounds = new File(root.getAbsolutePath() + "/documents/OpenSong/Backgrounds"),
-            dirbibles = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture"),
-            dirbibleverses = new File(root.getAbsolutePath() + "/documents/OpenSong/OpenSong Scripture/_cache"),
-            dirscripture = new File(root.getAbsolutePath() + "/documents/OpenSong/Scripture/"),
-            dirscriptureverses = new File(root.getAbsolutePath() + "/documents/OpenSong/Scripture/_cache"),
             dircustomslides = new File(root.getAbsolutePath() + "/documents/OpenSong/Slides/_cache"),
             dircustomnotes = new File(root.getAbsolutePath() + "/documents/OpenSong/Notes/_cache"),
             dircustomimages = new File(root.getAbsolutePath() + "/documents/OpenSong/Images/_cache"),
-            dirvariations = new File(root.getAbsolutePath() + "/documents/OpenSong/Variations"),
-            dirprofiles = new File(root.getAbsolutePath() + "/documents/OpenSong/Profiles"),
-            dirreceived = new File(root.getAbsolutePath() + "/documents/OpenSong/Received"),
-            dirhighlighter = new File(root.getAbsolutePath() + "/documents/OpenSong/Highlighter"),
-            dirfonts = new File(root.getAbsolutePath() + "/documents/OpenSong/Fonts");
+            dirreceived = new File(root.getAbsolutePath() + "/documents/OpenSong/Received");
 
     // The song fields
     public static CharSequence mTitle = "", mAuthor = "Gareth Evans", mCopyright = "";
@@ -161,8 +143,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     public static double beatSound = 1200, sound = 1600;
     public static MediaPlayer mPlayer1 = new MediaPlayer(), mPlayer2 = new MediaPlayer();
     public static boolean mPlayer1Paused = false, mPlayer2Paused = false;
-    //public static boolean fadeout1 = false, fadeout2 = false;
-    //public short initialVolume;
 
     // The toolbar, clock battery and titles
     public Toolbar toolbar;
@@ -181,13 +161,11 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             whichSetCategory, whatsongforsetwork = "", mySet = "", newSetContents = "",
             settoload = "", setMoveDirection = "", mySetXML = "", setnamechosen = "",
             lastLoadedSetContent = "";
-    public static String[] mySetsFileNames, mySetsFolderNames, mSet, mSetList, myParsedSet;
-    public static File[] mySetsFiles, mySetsDirectories;
-    public static boolean setView, showingSetsToLoad = false, doneshuffle = false,
+    public static String[] mSet, mSetList, myParsedSet;
+    public static boolean setView, doneshuffle = false,
             addingtoset = false;
     public static int setSize, indexSongInSet;
     public static ArrayList<String> mTempSetList;
-    public static File setfile;
 
     // Chords, capo and transpose stuff
     public static String prefChord_Aflat_Gsharp = "", prefChord_Bflat_Asharp = "",
@@ -350,12 +328,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             stickyOpacity, stickyTextSize;
 
     // Page turner
-    //This has now been superceded
-   /* public static int pageturner_NEXT, pageturner_PREVIOUS, pageturner_UP, pageturner_DOWN,
-            pageturner_PAD, pageturner_AUTOSCROLL, pageturner_METRONOME, pageturner_AUTOSCROLLPAD,
-            pageturner_AUTOSCROLLMETRONOME, pageturner_PADMETRONOME, pageturner_AUTOSCROLLPADMETRONOME,
-            pageturner_;*/
-
     public static int pedal1, pedal2, pedal3, pedal4, pedal5, pedal6;
     public static String pedal1shortaction, pedal2shortaction, pedal3shortaction, pedal4shortaction,
             pedal5shortaction, pedal6shortaction;
@@ -397,7 +369,6 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     // Song xml data
     public static ArrayList<String> foundSongSections_heading = new ArrayList<>();
     //public static ArrayList<String> foundSongSections_content = new ArrayList<>();
-
 
 
     public static boolean isPresenting, isHDMIConnected = false, autoProject;
@@ -471,37 +442,12 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
     //public static RefWatcher refWatcher;
 
+    StorageAccess storageAccess;
 
-    // Just for the popups - let StageMode or PresenterMode try to deal with them
-    // @Override
-    public void refreshAll() {
-        Log.d("d","refreshAll() called from FullscreenActivity");
-    }
-
-    @Override
-    public void onSongImportDone(String message) {
-        Log.d("d","onSongImportDone() called from FullscreenActivity");
-    }
-
-    @Override
-    public void backupInstall(String message) {
-        Log.d("d","backupInstall() called from FullscreenActivity");
-    }
-
-    @Override
-    public void openFragment() {
-        Log.d("d","openFragment() called from FullscreenActivity");
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (LeakCanary.isInAnalyzerProcess(this.getApplication())) {
-//            // This process is dedicated to LeakCanary for heap analysis.
-//            // You should not init your app in this process.
-//            return;
-//        }
-//        refWatcher = LeakCanary.install(this.getApplication());
 
         // Load up the preferences
         loadPreferences(FullscreenActivity.this);
@@ -514,20 +460,15 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             dealWithIntent(getIntent());
         }
 
-        // To get here from the SettingsActivity, we only needed to check for basic folders existing
-        // Now lets check properly for all of the stuff we need, and if it is missing, create them
-        if (!PopUpStorageFragment.checkDirectoriesExistOnly()) {
-            PopUpStorageFragment.createDirectories();
-        }
-
         // Check song was loaded last time (if appropriate)
         checkSongLoadedLastTime();
 
         // Set the locale
-        setTheLocale();
+        setTheLocale(FullscreenActivity.this);
 
         // Get the song folders
-        ListSongFiles.getAllSongFolders();
+        storageAccess = new StorageAccess();
+        ListSongFiles.getAllSongFolders(FullscreenActivity.this,storageAccess);
 
         // Test for NFC capability
         testForNFC();
@@ -537,10 +478,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
         // Set up the user preferences for page colours and fonts
         SetUpColours.colours();
-        SetTypeFace.setTypeface();
-
-        // Copy assets (background images)
-        PopUpStorageFragment.copyAssets(FullscreenActivity.this);
+        SetTypeFace.setTypeface(FullscreenActivity.this);
 
         // If whichMode is Presentation, open that app instead
         switch (whichMode) {
@@ -686,20 +624,15 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
             dealWithIntent(getIntent());
         }
 
-        // To get here from the SettingsActivity, we only needed to check for basic folders existing
-        // Now lets check properly for all of the stuff we need, and if it is missing, create them
-        if (!PopUpStorageFragment.checkDirectoriesExistOnly()) {
-            PopUpStorageFragment.createDirectories();
-        }
-
         // Check song was loaded last time (if appropriate)
         checkSongLoadedLastTime();
 
         // Set the locale
-        setTheLocale();
+        setTheLocale(c);
 
         // Get the song folders
-        ListSongFiles.getAllSongFolders();
+        //storageAccess = new StorageAccess();
+        //ListSongFiles.getAllSongFolders(c,storageAccess);
 
         // Test for NFC capability
         testForNFC();
@@ -709,7 +642,14 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
 
         // Set up the user preferences for page colours and fonts
         SetUpColours.colours();
-        SetTypeFace.setTypeface();
+        SetTypeFace.setTypeface(c);
+
+        Preferences preferences = new Preferences();
+        String uriTree_string = preferences.getMyPreferenceString(c, "uriTree", null);
+        if (uriTree_string!=null) {
+            uriTree = Uri.parse(uriTree_string);
+        }
+        Log.d("d","From FullscreenActivity FullscreenActivity.uriTree="+uriTree);
     }
 
     void loadPreferences(Context c) {
@@ -739,49 +679,50 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
         }
 
         // If whichSongFolder is empty, reset to main
-        if (whichSongFolder == null || whichSongFolder.isEmpty() || whichSongFolder.equals("")) {
+        if (whichSongFolder == null || whichSongFolder.isEmpty()) {
             whichSongFolder = mainfoldername;
             Preferences.savePreferences();
         }
     }
-    void setTheLocale() {
+    void setTheLocale(Context c) {
         locale = Locale.getDefault();
-        if  (locale==null) {
-            locale = new Locale(Locale.getDefault().getDisplayLanguage());
+        if  (locale!=null) {
+            String s = locale.getDisplayLanguage();
+            if (s!=null) {
+                locale = new Locale(s);
+            }
         }
 
-        if (!locale.toString().equals("af") && !locale.toString().equals("cz") && !locale.toString().equals("de") &&
+        if (locale!=null && !locale.toString().equals("af") && !locale.toString().equals("cz") && !locale.toString().equals("de") &&
                 !locale.toString().equals("el") && !locale.toString().equals("es") && !locale.toString().equals("fr") &&
                 !locale.toString().equals("hu") && !locale.toString().equals("it") && !locale.toString().equals("ja") &&
                 !locale.toString().equals("pl") && !locale.toString().equals("pt") && !locale.toString().equals("ru") &&
                 !locale.toString().equals("sr") && !locale.toString().equals("zh")) {
             locale = new Locale("en");
+        } else {
+            locale = new Locale("en");
         }
 
         // Try language locale change
-        if (!languageToLoad.isEmpty()) {
+        if (languageToLoad!=null && !languageToLoad.isEmpty()) {
             locale = new Locale(languageToLoad);
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config,
-                    getBaseContext().getResources().getDisplayMetrics());
+            c.getResources().updateConfiguration(config,
+                    c.getResources().getDisplayMetrics());
         }
     }
     void testForNFC() {
         // Test for NFC capability
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        mAndroidBeamAvailable = true;
+        try {
+            mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        } catch (Exception e) {
             mAndroidBeamAvailable = false;
-        } else {
-            mAndroidBeamAvailable = true;
-            try {
-                mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-            } catch (Exception e) {
-                mAndroidBeamAvailable = false;
-            }
-            if (mNfcAdapter==null) {
-                mAndroidBeamAvailable = false;
-            }
+        }
+        if (mNfcAdapter==null) {
+            mAndroidBeamAvailable = false;
         }
     }
     void initialiseTypefaces(Context c) {
@@ -811,7 +752,7 @@ public class FullscreenActivity extends AppCompatActivity implements PopUpImport
     }
 
     public static void restart(Context context) {
-        Intent mStartActivity = new Intent(context, SettingsActivity.class);
+        Intent mStartActivity = new Intent(context, BootUpCheck.class);
         int mPendingIntentId = 123456;
         PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity,
                 PendingIntent.FLAG_CANCEL_CURRENT);

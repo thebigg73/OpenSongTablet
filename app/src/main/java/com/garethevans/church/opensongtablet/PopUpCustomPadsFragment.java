@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class PopUpCustomPadsFragment extends DialogFragment {
@@ -19,6 +18,7 @@ public class PopUpCustomPadsFragment extends DialogFragment {
     ArrayList<String> filenames;
     Spinner padAb, padA, padBb, padB, padC, padDb, padD, padEb, padE, padF, padGb, padG,
             padAbm, padAm, padBbm, padBm, padCm, padDbm, padDm, padEbm, padEm, padFm, padGbm, padGm;
+    StorageAccess storageAccess;
 
     static PopUpCustomPadsFragment newInstance() {
         PopUpCustomPadsFragment frag;
@@ -89,13 +89,10 @@ public class PopUpCustomPadsFragment extends DialogFragment {
         padGm = V.findViewById(R.id.padGm);
 
         // Set up the spinners
-        File[] files = FullscreenActivity.dirPads.listFiles();
-        filenames = new ArrayList<>();
-        filenames.add(getActivity().getString(R.string.pad_auto));
-        for (File f:files) {
-            filenames.add(f.getName());
-        }
-        ArrayAdapter<String> aa = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,filenames);
+        storageAccess = new StorageAccess();
+        ArrayList<String> padfiles = storageAccess.listFilesInFolder(getActivity(),"Pads","");
+        padfiles.add(0,getActivity().getString(R.string.pad_auto));
+        ArrayAdapter<String> aa = new ArrayAdapter<>(getActivity(),R.layout.my_spinner,padfiles);
         padAb.setAdapter(aa);
         padA.setAdapter(aa);
         padBb.setAdapter(aa);

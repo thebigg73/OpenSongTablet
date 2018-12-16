@@ -236,7 +236,7 @@ public class PopUpAutoscrollFragment extends DialogFragment {
                 FullscreenActivity.autoScrollDuration = -1;
             }
             PopUpEditSongFragment.prepareSongXML();
-            PopUpEditSongFragment.justSaveSongXML();
+            PopUpEditSongFragment.justSaveSongXML(getActivity());
             FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
                     getActivity().getResources().getString(R.string.ok);
             ShowToast.showToast(getActivity());

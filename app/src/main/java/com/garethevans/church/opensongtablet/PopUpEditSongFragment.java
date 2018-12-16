@@ -2,8 +2,10 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -24,8 +26,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,6 +64,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     String title;
 
     TextSongConvert textSongConvert;
+    ChordProConvert chordProConvert;
+    StorageAccess storageAccess;
 
     @Override
     public void updatePresentationOrder() {
@@ -132,6 +135,8 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         });
 
         textSongConvert = new TextSongConvert();
+        chordProConvert = new ChordProConvert();
+        storageAccess = new StorageAccess();
 
         // Initialise the basic views
         availabletags = V.findViewById(R.id.availabletags);
@@ -217,11 +222,11 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
                 String text = edit_song_lyrics.getText().toString();
                 if (FullscreenActivity.editAsChordPro) {
                     // If we are editing as ChordPro, convert it back to OpenSong first
-                    text = ChordProConvert.fromChordProToOpenSong(text);
+                    text = chordProConvert.fromChordProToOpenSong(text);
                     // Now fix it
                     text = textSongConvert.convertText(getActivity(),text);
                     // Now set it back to the ChordPro format
-                    text = ChordProConvert.fromOpenSongToChordPro(text,getActivity());
+                    text = chordProConvert.fromOpenSongToChordPro(text,getActivity());
                 } else {
                     // Using OpenSong format, so simply fix it
                     text = textSongConvert.convertText(getActivity(),text);
@@ -496,7 +501,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
     public void cancelEdit() {
         // Load the song back up with the default values
         try {
-            LoadXML.loadXML(getActivity());
+            LoadXML.loadXML(getActivity(), storageAccess);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -508,7 +513,7 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         // If we are editing as chordpro, convert to OpenSong
         if (FullscreenActivity.editAsChordPro) {
             String textLyrics = edit_song_lyrics.getText().toString();
-            edit_song_lyrics.setText(ChordProConvert.fromChordProToOpenSong(textLyrics));
+            edit_song_lyrics.setText(chordProConvert.fromChordProToOpenSong(textLyrics));
         }
         // Go through the fields and save them
         // Get the variables
@@ -584,31 +589,18 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         FullscreenActivity.mynewXML = FullscreenActivity.mynewXML.replace("&","&amp;");
 
         // Now write the modified song
-        try {
-            FileOutputStream overWrite;
-            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                overWrite = new FileOutputStream(
-                        FullscreenActivity.dir + "/" + FullscreenActivity.songfilename,
-                        false);
-            } else {
-                overWrite = new FileOutputStream(
-                        FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename,
-                        false);
-            }
-            overWrite.write(FullscreenActivity.mynewXML.getBytes());
-            overWrite.flush();
-            overWrite.close();
+        Uri uri = storageAccess.getUriForItem(getActivity(),"Songs",FullscreenActivity.whichSongFolder,
+                FullscreenActivity.songfilename);
+        OutputStream outputStream = storageAccess.getOutputStream(getActivity(),uri);
+        storageAccess.writeFileFromString(FullscreenActivity.mynewXML,outputStream);
 
-            // If we are autologging CCLI information
-            if (FullscreenActivity.ccli_automatic) {
-                PopUpCCLIFragment.addUsageEntryToLog(getActivity(), FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
-                        FullscreenActivity.mTitle.toString(), FullscreenActivity.mAuthor.toString(),
-                        FullscreenActivity.mCopyright.toString(), FullscreenActivity.mCCLI, "3"); // Edited
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        // If we are autologging CCLI information
+        if (FullscreenActivity.ccli_automatic) {
+            PopUpCCLIFragment.addUsageEntryToLog(getActivity(), FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
+                    FullscreenActivity.mTitle.toString(), FullscreenActivity.mAuthor.toString(),
+                    FullscreenActivity.mCopyright.toString(), FullscreenActivity.mCCLI, "3"); // Edited
         }
+
         FullscreenActivity.mynewXML = "";
 
         // Save the preferences
@@ -742,21 +734,16 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         FullscreenActivity.mynewXML = myNEWXML;
     }
 
-    public static void justSaveSongXML() throws IOException {
+    public static void justSaveSongXML(Context c) {
         // Only do this if the title or song file doesn't identify it as the 'welcome to opensongapp' file
-        if (!FullscreenActivity.mTitle.equals("Welcome to OpenSongApp") && !FullscreenActivity.mynewXML.contains("Welcome to OpenSongApp")) {
+        if (!FullscreenActivity.mTitle.equals("Welcome to OpenSongApp") &&
+                !FullscreenActivity.mynewXML.contains("Welcome to OpenSongApp")) {
             // Now write the modified song
-            String filename;
-            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername) || FullscreenActivity.whichSongFolder.isEmpty()) {
-                filename = FullscreenActivity.dir + "/" + FullscreenActivity.songfilename;
-            } else {
-                filename = FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename;
-            }
-
-            FileOutputStream overWrite = new FileOutputStream(filename, false);
-            overWrite.write(FullscreenActivity.mynewXML.getBytes());
-            overWrite.flush();
-            overWrite.close();
+            StorageAccess storageAccess = new StorageAccess();
+            Uri uri = storageAccess.getUriForItem(c, "Songs", FullscreenActivity.whichSongFolder,
+                    FullscreenActivity.songfilename);
+            OutputStream outputStream = storageAccess.getOutputStream(c, uri);
+            storageAccess.writeFileFromString(FullscreenActivity.mynewXML,outputStream);
         }
     }
 
@@ -821,12 +808,12 @@ public class PopUpEditSongFragment extends DialogFragment implements PopUpPresen
         String textLyrics = edit_song_lyrics.getText().toString();
         Log.d("d",textLyrics);
         if (chordpro) {
-            edit_song_lyrics.setText(ChordProConvert.fromOpenSongToChordPro(textLyrics, getActivity()));
+            edit_song_lyrics.setText(chordProConvert.fromOpenSongToChordPro(textLyrics, getActivity()));
             availabletags.setVisibility(View.GONE);
             fix_lyrics.setVisibility(View.GONE);
             edit_song_lyrics.requestFocus();
         } else {
-            edit_song_lyrics.setText(ChordProConvert.fromChordProToOpenSong(textLyrics));
+            edit_song_lyrics.setText(chordProConvert.fromChordProToOpenSong(textLyrics));
             edit_song_lyrics.requestFocus();
             availabletags.setVisibility(View.VISIBLE);
             fix_lyrics.setVisibility(View.VISIBLE);

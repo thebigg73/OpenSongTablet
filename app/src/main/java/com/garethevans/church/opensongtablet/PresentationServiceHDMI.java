@@ -30,8 +30,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.io.File;
+//import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 class PresentationServiceHDMI extends Presentation
@@ -115,12 +116,21 @@ class PresentationServiceHDMI extends Presentation
     private static MediaPlayer mMediaPlayer;
 
     // Images and video backgrounds
-    private static File img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
-    private static File img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
-    private static String vid1File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
-    private static String vid2File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
-    private static String vidFile;
-    private static File imgFile;
+    private static Uri img1Uri;
+    private static Uri img2Uri;
+    private static Uri imgUri;
+    private static Uri vid1Uri;
+    private static Uri vid2Uri;
+    private static Uri vidUri;
+
+    static StorageAccess storageAccess;
+    //private static File img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
+    //private static File img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
+    //private static String vid1File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
+    //private static String vid2File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
+    //private static String vidFile;
+    //private static File imgFile;
+
     private static Drawable defimage;
     @SuppressWarnings("unused")
     private static Bitmap myBitmap;
@@ -162,26 +172,26 @@ class PresentationServiceHDMI extends Presentation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cast_screen);
 
-        pageHolder = (RelativeLayout) findViewById(R.id.pageHolder);
-        projectedPage_RelativeLayout = (RelativeLayout) findViewById(R.id.projectedPage_RelativeLayout);
-        projected_LinearLayout = (LinearLayout) findViewById(R.id.projected_LinearLayout);
-        projected_ImageView = (ImageView) findViewById(R.id.projected_ImageView);
-        projected_BackgroundImage = (ImageView) findViewById(R.id.projected_BackgroundImage);
-        projected_TextureView = (TextureView) findViewById(R.id.projected_TextureView);
-        projected_Logo = (ImageView) findViewById(R.id.projected_Logo);
-        songinfo_TextView = (TextView) findViewById(R.id.songinfo_TextView);
-        presentermode_bottombit = (LinearLayout) findViewById(R.id.presentermode_bottombit);
-        presentermode_title = (TextView) findViewById(R.id.presentermode_title);
-        presentermode_author = (TextView) findViewById(R.id.presentermode_author);
-        presentermode_copyright = (TextView) findViewById(R.id.presentermode_copyright);
-        presentermode_alert = (TextView) findViewById(R.id.presentermode_alert);
-        bottom_infobar = (LinearLayout) findViewById(R.id.bottom_infobar);
-        col1_1 = (LinearLayout) findViewById(R.id.col1_1);
-        col1_2 = (LinearLayout) findViewById(R.id.col1_2);
-        col2_2 = (LinearLayout) findViewById(R.id.col2_2);
-        col1_3 = (LinearLayout) findViewById(R.id.col1_3);
-        col2_3 = (LinearLayout) findViewById(R.id.col2_3);
-        col3_3 = (LinearLayout) findViewById(R.id.col3_3);
+        pageHolder = findViewById(R.id.pageHolder);
+        projectedPage_RelativeLayout = findViewById(R.id.projectedPage_RelativeLayout);
+        projected_LinearLayout = findViewById(R.id.projected_LinearLayout);
+        projected_ImageView = findViewById(R.id.projected_ImageView);
+        projected_BackgroundImage = findViewById(R.id.projected_BackgroundImage);
+        projected_TextureView = findViewById(R.id.projected_TextureView);
+        projected_Logo = findViewById(R.id.projected_Logo);
+        songinfo_TextView = findViewById(R.id.songinfo_TextView);
+        presentermode_bottombit = findViewById(R.id.presentermode_bottombit);
+        presentermode_title = findViewById(R.id.presentermode_title);
+        presentermode_author = findViewById(R.id.presentermode_author);
+        presentermode_copyright = findViewById(R.id.presentermode_copyright);
+        presentermode_alert = findViewById(R.id.presentermode_alert);
+        bottom_infobar = findViewById(R.id.bottom_infobar);
+        col1_1 = findViewById(R.id.col1_1);
+        col1_2 = findViewById(R.id.col1_2);
+        col2_2 = findViewById(R.id.col2_2);
+        col1_3 = findViewById(R.id.col1_3);
+        col2_3 = findViewById(R.id.col2_3);
+        col3_3 = findViewById(R.id.col3_3);
 
         c = projectedPage_RelativeLayout.getContext();
 
@@ -219,7 +229,7 @@ class PresentationServiceHDMI extends Presentation
     }
 
     // Setup some default stuff
-    static void matchPresentationToMode() {
+    private static void matchPresentationToMode() {
         switch (FullscreenActivity.whichMode) {
             case "Stage":
             case "Performance":
@@ -322,13 +332,14 @@ class PresentationServiceHDMI extends Presentation
         float xscale;
         float yscale;
         boolean usingcustom = false;
-        File customLogo = new File(FullscreenActivity.dirbackgrounds,FullscreenActivity.customLogo);
-        if (customLogo.exists()) {
+        Uri customLogo = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.customLogo);
+        if (storageAccess.uriExists(c,customLogo)) {
+            InputStream inputStream = storageAccess.getInputStream(c, customLogo);
             // Get the sizes of the custom logo
-            BitmapFactory.decodeFile(customLogo.toString(), options);
+            BitmapFactory.decodeStream(inputStream,null,options);
             imgwidth = options.outWidth;
             imgheight = options.outHeight;
-            if (imgwidth > 0 && imgheight > 0) {
+            if (imgwidth>0 && imgheight>0) {
                 usingcustom = true;
             }
         }
@@ -348,14 +359,13 @@ class PresentationServiceHDMI extends Presentation
         projected_Logo.setLayoutParams(rlp);
 
         if (usingcustom) {
-            Uri logoUri = Uri.fromFile(customLogo);
             RequestOptions myOptions = new RequestOptions()
                     .fitCenter()
                     .override(logowidth,logoheight);
-            Glide.with(c).load(logoUri).apply(myOptions).into(projected_Logo);
+            Glide.with(c).load(customLogo).apply(myOptions).into(projected_Logo);
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo, c.getTheme()));
+                projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo,c.getTheme()));
             } else {
                 projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo));
             }
@@ -554,10 +564,10 @@ class PresentationServiceHDMI extends Presentation
 
     // Change background images/videos
     static void fixBackground() {
-        img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
-        img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
-        vid1File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
-        vid2File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
+        img1Uri = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.backgroundImage1);
+        img2Uri = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.backgroundImage2);
+        vid1Uri = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.backgroundVideo1);
+        vid2Uri = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.backgroundVideo2);
 
         // Decide if user is using video or image for background
         switch (FullscreenActivity.backgroundTypeToUse) {
@@ -568,21 +578,18 @@ class PresentationServiceHDMI extends Presentation
                     mMediaPlayer.pause();
                 }
                 if (FullscreenActivity.backgroundToUse.equals("img1")) {
-                    imgFile = img1File;
+                    imgUri = img1Uri;
                 } else {
-                    imgFile = img2File;
+                    imgUri = img2Uri;
                 }
 
-                Log.d("d","imgFile="+imgFile);
-                if (imgFile.exists()) {
-                    if (imgFile.toString().contains("ost_bg.png")) {
+                if (storageAccess.uriExists(c,imgUri)) {
+                    if (imgUri.getLastPathSegment().contains("ost_bg.png")) {
                         projected_BackgroundImage.setImageDrawable(defimage);
                     } else {
-                        // Process the image location into an URI
-                        Uri imageUri = Uri.fromFile(imgFile);
                         RequestOptions myOptions = new RequestOptions()
                                 .centerCrop();
-                        Glide.with(c).load(imageUri).apply(myOptions).into(projected_BackgroundImage);
+                        Glide.with(c).load(imgUri).apply(myOptions).into(projected_BackgroundImage);
                     }
                     projected_BackgroundImage.setVisibility(View.VISIBLE);
                 }
@@ -591,13 +598,10 @@ class PresentationServiceHDMI extends Presentation
                 projected_BackgroundImage.setVisibility(View.INVISIBLE);
                 projected_TextureView.setVisibility(View.VISIBLE);
                 if (FullscreenActivity.backgroundToUse.equals("vid1")) {
-                    vidFile = vid1File;
+                    vidUri = vid1Uri;
                 } else {
-                    vidFile = vid2File;
+                    vidUri = vid2Uri;
                 }
-                /*if (mMediaPlayer != null) {
-                   // mMediaPlayer.start();
-                }*/
                 try {
                     Log.d("d","Trying to load video background");
                     reloadVideo();
@@ -696,7 +700,7 @@ class PresentationServiceHDMI extends Presentation
 
 
     private static void doPDFPage() {
-        Bitmap bmp = ProcessSong.createPDFPage(c, availableScreenWidth, availableScreenHeight, "Y");
+        Bitmap bmp = ProcessSong.createPDFPage(c, storageAccess, availableScreenWidth, availableScreenHeight, "Y");
         projected_ImageView.setVisibility(View.GONE);
         projected_ImageView.setBackgroundColor(0xffffffff);
         projected_ImageView.setImageBitmap(bmp);
@@ -1561,54 +1565,47 @@ class PresentationServiceHDMI extends Presentation
         projected_TextureView.setAlpha(FullscreenActivity.presoAlpha);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private static void reloadVideo() {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            if (mMediaPlayer == null) {
-                mMediaPlayer = new MediaPlayer();
-                mMediaPlayer.setSurface(s);
-            }
+        if (mMediaPlayer == null) {
+            mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setSurface(s);
+        }
 
-            mMediaPlayer.reset();
-            try {
-                mMediaPlayer.setDataSource(vidFile);
-                Log.d("d","Setting the video file "+vidFile);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+        mMediaPlayer.reset();
+        try {
+            mMediaPlayer.setDataSource(c,vidUri);
+            Log.d("d","Setting the video file "+vidUri);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
 
-            try {
-                mMediaPlayer.prepareAsync();
-                mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mediaPlayer) {
-                        mediaPlayer.start();
-
-                        Log.d("d","length="+mediaPlayer.getDuration());
-                        Log.d("d","Media player prepared and started");
-                    }
-                });
-                mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
-                        if (mediaPlayer != null) {
-                            if (mediaPlayer.isPlaying()) {
-                                mediaPlayer.stop();
-                            }
-                            Log.d("d","Media player completed and reset");
-                            mediaPlayer.reset();
+        try {
+            mMediaPlayer.prepareAsync();
+            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mediaPlayer) {
+                    mediaPlayer.start();
+                }
+            });
+            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    if (mediaPlayer != null) {
+                        if (mediaPlayer.isPlaying()) {
+                            mediaPlayer.stop();
                         }
-                        try {
-                            reloadVideo();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        mediaPlayer.reset();
                     }
-                });
-            } catch (Exception e) {
-                Log.e("Presentation window", "media player error");
-            }
+                    try {
+                        reloadVideo();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            Log.e("Presentation window", "media player error");
         }
     }
 
@@ -1653,20 +1650,18 @@ class PresentationServiceHDMI extends Presentation
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            s = new Surface(surface);
-            mMediaPlayer = new MediaPlayer();
-            mMediaPlayer.setSurface(s);
-            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mMediaPlayer.setOnPreparedListener(this);
-            mMediaPlayer.setOnCompletionListener(this);
-            if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
-                try {
-                    mMediaPlayer.setDataSource(vidFile);
-                    mMediaPlayer.prepareAsync();
-                } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
-                    e.printStackTrace();
-                }
+        s = new Surface(surface);
+        mMediaPlayer = new MediaPlayer();
+        mMediaPlayer.setSurface(s);
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mMediaPlayer.setOnPreparedListener(this);
+        mMediaPlayer.setOnCompletionListener(this);
+        if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
+            try {
+                mMediaPlayer.setDataSource(c,vidUri);
+                mMediaPlayer.prepareAsync();
+            } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -1708,9 +1703,7 @@ class PresentationServiceHDMI extends Presentation
             mp.reset();
         }
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                reloadVideo();
-            }
+            reloadVideo();
         } catch (Exception e) {
             e.printStackTrace();
         }

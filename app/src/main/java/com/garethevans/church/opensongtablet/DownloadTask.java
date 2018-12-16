@@ -1,10 +1,11 @@
 package com.garethevans.church.opensongtablet;
 
+// This class is used to download my versions of the Church and Band songs as .osb files
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -19,9 +20,14 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
     private MyInterface mListener;
     private String address;
     private String filename;
+    StorageAccess storageAccess;
+    @SuppressLint("StaticFieldLeak")
+    private Context c;
+    private Uri uri;
 
         DownloadTask(Context context, String address) {
             this.address = address;
+            c = context;
             mListener = (MyInterface) context;
             switch (FullscreenActivity.whattodo) {
                 case "download_band":
@@ -34,12 +40,13 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
                     filename = "Download.osb";
                     break;
             }
+            storageAccess = new StorageAccess();
         }
 
         @Override
         protected String doInBackground(String... sUrl) {
             InputStream input = null;
-            OutputStream output = null;
+            OutputStream outputStream = null;
             HttpURLConnection connection = null;
             try {
                 URL url = new URL(address);
@@ -59,7 +66,9 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
 
                 // download the file
                 input = connection.getInputStream();
-                output = new FileOutputStream(FullscreenActivity.homedir + "/" + filename);
+
+                uri = storageAccess.getUriForItem(c,"","",filename);
+                outputStream = storageAccess.getOutputStream(c,uri);
 
                 byte data[] = new byte[4096];
                 long total = 0;
@@ -74,14 +83,14 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
                     // publishing the progress....
                     if (fileLength > 0) // only if total length is known
                         publishProgress((int) (total * 100 / fileLength));
-                    output.write(data, 0, count);
+                    outputStream.write(data, 0, count);
                 }
             } catch (Exception e) {
                 return e.toString();
             } finally {
                 try {
-                    if (output != null)
-                        output.close();
+                    if (outputStream != null)
+                        outputStream.close();
                     if (input != null)
                         input.close();
                 } catch (Exception ignored) {
@@ -97,7 +106,7 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
         @Override
         protected void onPostExecute(String s) {
             FullscreenActivity.whattodo = "processimportosb";
-            FullscreenActivity.filechosen = new File(FullscreenActivity.homedir + "/" + filename);
+            FullscreenActivity.file_uri = uri;
             if (mListener!=null) {
                 mListener.openFragment();
             }

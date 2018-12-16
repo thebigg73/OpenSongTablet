@@ -91,6 +91,8 @@ public class PopUpCCLIFragment extends DialogFragment {
     ArrayList<String> time;
     ArrayList<String> action;
     //static File activitylogfile;
+    StorageAccess storageAccess;
+    Uri uri;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -122,8 +124,8 @@ public class PopUpCCLIFragment extends DialogFragment {
         saveMe = V.findViewById(R.id.saveMe);
 
         // Set the log file
-        //TODO
-        //activitylogfile = new File(FullscreenActivity.dirsettings,"ActivityLog.xml");
+        storageAccess = new StorageAccess();
+        uri = storageAccess.getUriForItem(getActivity(),"Settings","","ActivityLog.xml");
 
         // Initialise the views
         churchNameTextView = V.findViewById(R.id.churchNameTextView);
@@ -272,12 +274,8 @@ public class PopUpCCLIFragment extends DialogFragment {
         do_buildTable.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
     public static String getLogFileSize(Context c, Uri uri) {
-        //TODO
-    //public static String getLogFileSize(File logfile) {
         StorageAccess storageAccess = new StorageAccess();
         Long file_size_kb = storageAccess.getFileSizeFromUri(c, uri);
-        //TODO
-        // int file_size_kb = Integer.parseInt(String.valueOf(logfile.length()/1024));
         String returntext = "ActivityLog.xml ("+file_size_kb + "kb)";
         if (file_size_kb > 1024) {
             returntext = " <font color='#f00'>ActivityLog.xml ("+file_size_kb + "kb)" + "</font>";
@@ -302,7 +300,6 @@ public class PopUpCCLIFragment extends DialogFragment {
         @Override
         protected String doInBackground(Object... objects) {
             try {
-
                 // We can proceed!
                 XmlPullParserFactory factory;
                 factory = XmlPullParserFactory.newInstance();
@@ -311,14 +308,7 @@ public class PopUpCCLIFragment extends DialogFragment {
                 XmlPullParser xpp;
                 xpp = factory.newPullParser();
 
-                songfile = new ArrayList<>();
-                song = new ArrayList<>();
-                author = new ArrayList<>();
-                copyright = new ArrayList<>();
-                ccli = new ArrayList<>();
-                date = new ArrayList<>();
-                time = new ArrayList<>();
-                action = new ArrayList<>();
+                initialiseTable();
 
                 xpp.setInput(inputStream, "UTF-8");
 
@@ -394,86 +384,7 @@ public class PopUpCCLIFragment extends DialogFragment {
                     time.add(curr_time);
                     action.add(curr_action);
                 }
-
-                StringBuilder table;
-                if (song == null || song.size() == 0) {
-                    table = new StringBuilder("<html><body><h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
-                            "<h3>" + getString(R.string.ccli_church) + ": " + FullscreenActivity.ccli_church + "</h3>\n" +
-                            "<h3>" + getString(R.string.ccli_licence) + ": " + FullscreenActivity.ccli_licence + "</h3>\n" +
-                            "<h4>" + sizeoffile + "</h4>\n" +
-                            "</body></html>");
-
-                } else {
-                    table = new StringBuilder("<html><head>\n" +
-                            "<style>\n#mytable {\nborder-collapse: collapse; width: 100%;\n}\n" +
-                            "#mytable td, #mytable th {\nborder: 1px solid #ddd; padding: 2px;\n}\n" +
-                            "#mytable tr:nth-child(even) {\nbackground-color: #f2f2f2;\n}\n" +
-                            "#mytable th {\npadding-top: 2px; padding-bottom: 2px; text-align: left; " +
-                            "background-color: #4CAF50; color: white;\n}\n" +
-                            "</style>\n</head><body>" +
-                            "<h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
-                            "<h3>" + getString(R.string.ccli_church) + ": " + FullscreenActivity.ccli_church + "</h3>\n" +
-                            "<h3>" + getString(R.string.ccli_licence) + ": " + FullscreenActivity.ccli_licence + "</h3>\n" +
-                            "<h4>" + sizeoffile + "</h4>\n" +
-                            "<body><table id=\"mytable\">\n<tr>");
-                    table.append("<th>").append(getString(R.string.item)).append("</th>");
-                    table.append("<th>").append(getString(R.string.edit_song_title)).append("</th>");
-                    table.append("<th>").append(getString(R.string.edit_song_author)).append("</th>");
-                    table.append("<th>").append(getString(R.string.edit_song_copyright)).append("</th>");
-                    table.append("<th>").append(getString(R.string.edit_song_ccli)).append("</th>");
-                    table.append("<th>").append(getString(R.string.date)).append("</th>");
-                    table.append("<th>").append(getString(R.string.time)).append("</th>");
-                    table.append("<th>").append(getString(R.string.action)).append("</th>");
-                    table.append("</tr>\n");
-                    // Build the table view
-                    for (int x = 0; x < song.size(); x++) {
-                        table.append("<tr>");
-                        table.append("<td>").append(songfile.get(x)).append("</td>");
-                        table.append("<td>").append(song.get(x)).append("</td>");
-                        table.append("<td>").append(author.get(x)).append("</td>");
-                        table.append("<td>").append(copyright.get(x)).append("</td>");
-                        table.append("<td>").append(ccli.get(x)).append("</td>");
-                        table.append("<td>").append(date.get(x)).append("</td>");
-                        table.append("<td>").append(time.get(x)).append("</td>");
-                        switch (action.get(x)) {
-                        /*
-                        1 Created - when importing or clicking on the new
-                        2 Deleted - when clicking on the delete options
-                        3 Edited - when saving an edit (only from the edit page though)
-                        4 Moved - when renaming a file and the folder changes
-                        5 Presented - when dual screen work is called
-                        6 Printed - This is the akward one - when a song is added to a set
-                        7 Renamed - when rename is called
-                        8 Copied - when duplicate is called
-                        */
-                            default:
-                                table.append("<td>").append(getString(R.string.options_other)).append("</td>");
-                                break;
-                            case "1":
-                                table.append("<td>").append(getString(R.string.options_song_new)).append("</td>");
-                                break;
-                            case "2":
-                                table.append("<td>").append(getString(R.string.options_set_delete)).append("</td>");
-                                break;
-                            case "3":
-                                table.append("<td>").append(getString(R.string.options_set_edit)).append("</td>");
-                                break;
-                            case "4":
-                            case "7":
-                                table.append("<td>").append(getString(R.string.options_song_rename)).append("</td>");
-                                break;
-                            case "5":
-                                table.append("<td>").append(getString(R.string.sendtoprojector)).append("</td>");
-                                break;
-                            case "6":
-                                table.append("<td>").append(getString(R.string.songsheet)).append("</td>");
-                                break;
-                        }
-                        table.append("<tr>\n");
-                    }
-                    table.append("</table></body></html>");
-                }
-                return table.toString();
+                return buildMyTable(sizeoffile);
             } catch (Exception e) {
                 return "";
             }
@@ -578,8 +489,6 @@ public class PopUpCCLIFragment extends DialogFragment {
             date = df.format(d);
             time = tf.format(d);
             date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-            // TODO
-            //activitylogfile = new File(FullscreenActivity.dirsettings, "ActivityLog.xml");
         }
 
         @Override
@@ -588,8 +497,6 @@ public class PopUpCCLIFragment extends DialogFragment {
                 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
                 Document document = documentBuilder.parse(inputStream);
-                //TODO
-                // Document document = documentBuilder.parse(activitylogfile);
                 Element root = document.getDocumentElement();
 
                 String last = "Entry0";
@@ -676,9 +583,6 @@ public class PopUpCCLIFragment extends DialogFragment {
                 transformer.setOutputProperty(OutputKeys.INDENT, "yes");
                 StreamResult result = new StreamResult(uri.toString());
                 transformer.transform(source,result);
-                //TODO
-                // StreamResult result = new StreamResult(activitylogfile);
-                //transformer.transform(source, result);
 
 
             } catch (Exception e) {
@@ -686,5 +590,98 @@ public class PopUpCCLIFragment extends DialogFragment {
             }
             return null;
         }
+    }
+
+    private void initialiseTable() {
+        songfile = new ArrayList<>();
+        song = new ArrayList<>();
+        author = new ArrayList<>();
+        copyright = new ArrayList<>();
+        ccli = new ArrayList<>();
+        date = new ArrayList<>();
+        time = new ArrayList<>();
+        action = new ArrayList<>();
+    }
+
+    private String buildMyTable(String sizeoffile) {
+        StringBuilder table;
+        if (song == null || song.size() == 0) {
+            table = new StringBuilder("<html><body><h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
+                    "<h3>" + getString(R.string.ccli_church) + ": " + FullscreenActivity.ccli_church + "</h3>\n" +
+                    "<h3>" + getString(R.string.ccli_licence) + ": " + FullscreenActivity.ccli_licence + "</h3>\n" +
+                    "<h4>" + sizeoffile + "</h4>\n" +
+                    "</body></html>");
+
+        } else {
+            table = new StringBuilder("<html><head>\n" +
+                    "<style>\n#mytable {\nborder-collapse: collapse; width: 100%;\n}\n" +
+                    "#mytable td, #mytable th {\nborder: 1px solid #ddd; padding: 2px;\n}\n" +
+                    "#mytable tr:nth-child(even) {\nbackground-color: #f2f2f2;\n}\n" +
+                    "#mytable th {\npadding-top: 2px; padding-bottom: 2px; text-align: left; " +
+                    "background-color: #4CAF50; color: white;\n}\n" +
+                    "</style>\n</head><body>" +
+                    "<h2>" + getString(R.string.edit_song_ccli) + "</h2>\n" +
+                    "<h3>" + getString(R.string.ccli_church) + ": " + FullscreenActivity.ccli_church + "</h3>\n" +
+                    "<h3>" + getString(R.string.ccli_licence) + ": " + FullscreenActivity.ccli_licence + "</h3>\n" +
+                    "<h4>" + sizeoffile + "</h4>\n" +
+                    "<body><table id=\"mytable\">\n<tr>");
+            table.append("<th>").append(getString(R.string.item)).append("</th>");
+            table.append("<th>").append(getString(R.string.edit_song_title)).append("</th>");
+            table.append("<th>").append(getString(R.string.edit_song_author)).append("</th>");
+            table.append("<th>").append(getString(R.string.edit_song_copyright)).append("</th>");
+            table.append("<th>").append(getString(R.string.edit_song_ccli)).append("</th>");
+            table.append("<th>").append(getString(R.string.date)).append("</th>");
+            table.append("<th>").append(getString(R.string.time)).append("</th>");
+            table.append("<th>").append(getString(R.string.action)).append("</th>");
+            table.append("</tr>\n");
+            // Build the table view
+            for (int x = 0; x < song.size(); x++) {
+                table.append("<tr>");
+                table.append("<td>").append(songfile.get(x)).append("</td>");
+                table.append("<td>").append(song.get(x)).append("</td>");
+                table.append("<td>").append(author.get(x)).append("</td>");
+                table.append("<td>").append(copyright.get(x)).append("</td>");
+                table.append("<td>").append(ccli.get(x)).append("</td>");
+                table.append("<td>").append(date.get(x)).append("</td>");
+                table.append("<td>").append(time.get(x)).append("</td>");
+                switch (action.get(x)) {
+                        /*
+                        1 Created - when importing or clicking on the new
+                        2 Deleted - when clicking on the delete options
+                        3 Edited - when saving an edit (only from the edit page though)
+                        4 Moved - when renaming a file and the folder changes
+                        5 Presented - when dual screen work is called
+                        6 Printed - This is the akward one - when a song is added to a set
+                        7 Renamed - when rename is called
+                        8 Copied - when duplicate is called
+                        */
+                    default:
+                        table.append("<td>").append(getString(R.string.options_other)).append("</td>");
+                        break;
+                    case "1":
+                        table.append("<td>").append(getString(R.string.options_song_new)).append("</td>");
+                        break;
+                    case "2":
+                        table.append("<td>").append(getString(R.string.options_set_delete)).append("</td>");
+                        break;
+                    case "3":
+                        table.append("<td>").append(getString(R.string.options_set_edit)).append("</td>");
+                        break;
+                    case "4":
+                    case "7":
+                        table.append("<td>").append(getString(R.string.options_song_rename)).append("</td>");
+                        break;
+                    case "5":
+                        table.append("<td>").append(getString(R.string.sendtoprojector)).append("</td>");
+                        break;
+                    case "6":
+                        table.append("<td>").append(getString(R.string.songsheet)).append("</td>");
+                        break;
+                }
+                table.append("<tr>\n");
+            }
+            table.append("</table></body></html>");
+        }
+        return table.toString();
     }
 }

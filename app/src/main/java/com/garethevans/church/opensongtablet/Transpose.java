@@ -1,5 +1,7 @@
 package com.garethevans.church.opensongtablet;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -72,7 +74,7 @@ class Transpose {
     private static boolean usesflats;
     private static boolean capousesflats;
 
-    static void doTranspose() {
+    static void doTranspose(Context c) {
 
         try {
             // Go through each line and change each chord to $..$
@@ -177,7 +179,7 @@ class Transpose {
             FullscreenActivity.mLyrics = FullscreenActivity.transposedLyrics;
 
             PopUpEditSongFragment.prepareSongXML();
-            PopUpEditSongFragment.justSaveSongXML();
+            PopUpEditSongFragment.justSaveSongXML(c);
 
             FullscreenActivity.transposedLyrics = null;
             FullscreenActivity.transposedLyrics = "";

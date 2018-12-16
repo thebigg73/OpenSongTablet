@@ -2,7 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 // This class deals with accessing the app storage
 // There are two sets of methods
-// Newer versions of Android (Lollipop and later) should use the will use content uris
+// Newer versions of Android (Lollipop and later) will use content uris
 // These are based on the ACTION_OPEN_DOCUMENT_TREE location
 // KitKat and below will use file uris based on built in folder chooser
 
@@ -12,28 +12,43 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.DocumentsContract;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.FileProvider;
 import android.support.v4.provider.DocumentFile;
+import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
+
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 class StorageAccess {
 
     String appFolder = "OpenSong";
+    private Uri uriTree = null;
     private String[] rootFolders = {"Backgrounds", "Export", "Fonts", "Highlighter", "Images", "Media",
             "Notes", "OpenSong Scripture", "Pads", "Profiles", "Received", "Scripture",
             "Sets", "Settings", "Slides", "Songs", "Variations"};
@@ -53,23 +68,29 @@ class StorageAccess {
         // This function is called once when the app starts
         String uriTree = getStoragePreference(c);
         Uri uri;
-        if (uriTree != null) {
-            if (lollipopOrLater()) {
-                uri = Uri.parse(uriTree);
-                if (uri != null) {
-                    DocumentFile df = documentFileFromUri(c, uri, uriTree);
-                    if (df == null || !df.exists()) {
-                        uri = null;
+
+        try {
+            if (uriTree != null) {
+                if (lollipopOrLater()) {
+                    uri = Uri.parse(uriTree);
+                    if (uri != null) {
+                        DocumentFile df = documentFileFromUri(c, uri, uriTree);
+                        if (df == null || !df.exists()) {
+                            uri = null;
+                        }
                     }
+                } else {
+                    File f = new File(uriTree);
+                    uri = Uri.fromFile(f);
                 }
             } else {
-                File f = new File(uriTree);
-                uri = Uri.fromFile(f);
+                uri = null;
             }
-        } else {
+
+        } catch (Exception e) {
+            // Could be called if the uri stored is for a different version of Android. e.g. after upgrade
             uri = null;
         }
-
         FullscreenActivity.uriTree = uri;  // This is the chosen route
         return uri;
     }
@@ -83,25 +104,21 @@ class StorageAccess {
         //Make sure FullscreenActivity.uriTree is set
         homeFolder(c);
         FullscreenActivity.appHome = null;
-        Log.d("d", "About to create the documentfile");
-        Log.d("d", "FullscreenActivity.uriTree=" + FullscreenActivity.uriTree);
-        Log.d("d", "uriTree=" + uriTree);
         DocumentFile df = documentFileFromUri(c, FullscreenActivity.uriTree, uriTree);
-        Log.d("d", "df=" + df);
 
         if (df != null) {
             // Check if we are in the app folder
             if (df.getName() != null && df.getName().equals(appFolder)) {
                 // Already in the app folder
-                Log.d("d", "Already in the app folder");
+                Log.d("StorageAccess", "Already in the app folder");
                 FullscreenActivity.appHome = df;
             } else if (df.findFile(appFolder) != null) {
                 // Need to move into the app folder
-                Log.d("d", "Above the app folder, so move inside");
+                Log.d("StorageAccess", "Above the app folder, so move inside");
                 FullscreenActivity.appHome = df.findFile(appFolder);
             } else {
                 // No app folder, so create it
-                Log.d("d", "Can't find app folder so creating it");
+                Log.d("StorageAccess", "Can't find app folder so creating it");
                 df.createDirectory(appFolder);
                 FullscreenActivity.appHome = df.findFile(appFolder);
             }
@@ -169,11 +186,21 @@ class StorageAccess {
     }
 
     private String stringForFile(String folderpath) {
-        String file = FullscreenActivity.customStorage;
-        if (!file.endsWith(appFolder)) {
-            file = file + "/" + appFolder;
+        if (uriTree==null && FullscreenActivity.uriTree!=null) {
+            String uriTree_String = FullscreenActivity.uriTree.getPath();
+            if (uriTree_String!=null) {
+                uriTree = Uri.parse(uriTree_String);
+            }
         }
-        return file + "/" + folderpath;
+        if (uriTree!=null) {
+            String file = uriTree.getPath();
+            if (file!=null && !file.endsWith(appFolder)) {
+                file = file + "/" + appFolder;
+            }
+            return file + "/" + folderpath;
+        } else {
+            return folderpath;
+        }
     }
 
     // These are used to return Uris, Ids, DocumentFiles, etc. for files
@@ -186,13 +213,64 @@ class StorageAccess {
         if (filename != null && !filename.isEmpty() && !filename.equals(c.getString(R.string.mainfoldername))) {
             f = new File(f, filename);
         }
+        return Uri.fromFile(f);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private Uri getUriFromPath(Context c, String folder, String subfolder, String filename) {
+        // Use the appHome uri
+        Uri uri = FullscreenActivity.appHome.getUri();
 
-        // Convert to a FileProvider uri
-        return FileProvider.getUriForFile(c,"OpenSongAppFiles",f);
-        //return Uri.fromFile(f);
+        if (uri != null) {
+            // Now point to the specific folder (Songs, Sets, Backgrounds, etc.)
+            if (folder != null && !folder.isEmpty()) {
+                uri = Uri.withAppendedPath(uri, Uri.encode(folder));
+            }
+
+            // Now go through the subfolder(s)
+            if (subfolder != null && !subfolder.equals(c.getString(R.string.mainfoldername))) {
+                String[] sfs = subfolder.split("/");
+                for (String sf : sfs) {
+                    if (sf != null && !sf.equals("")) {
+                        uri = Uri.withAppendedPath(uri, Uri.encode(sf));
+                    }
+                }
+            }
+
+            // Now add the filename
+            if (filename != null && !filename.equals("")) {
+                // Might have sent subfolder info
+                String[] sfs = filename.split("/");
+                for (String sf : sfs) {
+                    if (sf != null && !sf.equals("") && !sf.equals(c.getString(R.string.mainfoldername))) {
+                        uri = Uri.withAppendedPath(uri, Uri.encode(sf));
+                    }
+                }
+            }
+        }
+        // Now return the Uri
+        if (uri!=null) {
+            String uristring = uri.toString();
+
+            int pos = uristring.lastIndexOf("OpenSong/");
+            if (pos > 0) {
+                String start = uristring.substring(0, pos);
+                String end = uristring.substring(pos);
+                end = end.replace("/", "%2F");
+                uristring = start + end;
+                uri = Uri.parse(uristring);
+            }
+        }
+        return uri;
     }
 
-    private Uri getUriFromPath(Context c, String folder, String subfolder, String filename) {
+    Uri getFileProviderUri(Context c, String folder, String subfolder, String filename) {
+        if (lollipopOrLater()) {
+            return getFileProviderUri_SAF(c,folder,subfolder,filename);
+        } else {
+            return getFileProviderUri_File(c,folder,subfolder,filename);
+        }
+    }
+    private Uri getFileProviderUri_SAF(Context c, String folder, String subfolder, String filename) {
         // Use the appHome uri
         Uri uri = null;
         if (FullscreenActivity.appHome != null) {
@@ -224,8 +302,26 @@ class StorageAccess {
                 }
             }
         }
-        // Now return the Uri
-        return uri;
+        if (uri!=null && uri.getPath()!=null) {
+            File f = new File(uri.getPath());
+
+            // Now return the Uri
+            return FileProvider.getUriForFile(c, "OpenSongAppFiles", f);
+        } else {
+            return null;
+        }
+    }
+    private Uri getFileProviderUri_File(Context c, String folder, String subfolder, String filename) {
+        String s = stringForFile(folder);
+        File f = new File(s);
+        if (subfolder != null && !subfolder.isEmpty() && !subfolder.equals(c.getString(R.string.mainfoldername))) {
+            f = new File(f, subfolder);
+        }
+        if (filename != null && !filename.isEmpty() && !filename.equals(c.getString(R.string.mainfoldername))) {
+            f = new File(f, filename);
+        }
+        // Convert to a FileProvider uri
+        return FileProvider.getUriForFile(c,"OpenSongAppFiles",f);
     }
 
     DocumentFile documentFileFromUri(Context c, Uri uri, String path) {
@@ -242,14 +338,14 @@ class StorageAccess {
     @SuppressLint("NewApi")
     String getDocumentsContractId(Uri uri) {
         if (lollipopOrLater()) {
-            Log.d("d", "Setting for Lollipop");
+            Log.d("StorageAccess", "Setting for Lollipop");
             return DocumentsContract.getTreeDocumentId(uri);
         } else {
             return null;
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint("NewApi")
     Uri documentUriFromId(String id) {
         if (lollipopOrLater()) {
             return DocumentsContract.buildDocumentUriUsingTree(FullscreenActivity.uriTree, id);
@@ -259,18 +355,7 @@ class StorageAccess {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    Uri getUriFromId(Uri uri, String id) {
-        if (lollipopOrLater()) {
-            return DocumentsContract.buildDocumentUriUsingTree(uri, id);
-        } else {
-            return DocumentsContract.buildDocumentUri(uri.getAuthority(), id);
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Uri getChildren(Uri uri, String id) {
-        Log.d("d", "uri=" + uri);
-        Log.d("d", "id=" + id);
         if (lollipopOrLater()) {
             return DocumentsContract.buildChildDocumentsUriUsingTree(uri, id);
         } else {
@@ -281,7 +366,7 @@ class StorageAccess {
 
 
     // Basic file actions
-    void copyFile(InputStream in, OutputStream out) {
+    boolean copyFile(InputStream in, OutputStream out) {
         try {
             byte[] buffer = new byte[1024];
             int read;
@@ -291,8 +376,10 @@ class StorageAccess {
             in.close();
             out.flush();
             out.close();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -306,7 +393,25 @@ class StorageAccess {
             return false;
         }
     }
-
+    void writeFileFromDecodedImageString(OutputStream os, byte[] bytes) {
+        try {
+            os.write(bytes);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    void writeImage(OutputStream outputStream, Bitmap bmp, Bitmap.CompressFormat compressFormat) {
+        try {
+            bmp.compress(compressFormat, 100, outputStream);
+            outputStream.flush();
+            outputStream.close();
+            bmp.recycle();
+        } catch (Exception | OutOfMemoryError e) {
+            e.printStackTrace();
+        }
+    }
     String readTextFileToString(InputStream in) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte buf[] = new byte[1024];
@@ -318,7 +423,7 @@ class StorageAccess {
             outputStream.close();
             in.close();
         } catch (Exception e) {
-            Log.d("d", "Error reading text file");
+            Log.d("StorageAccess", "Error reading text file");
         } catch (OutOfMemoryError e2) {
             e2.printStackTrace();
         }
@@ -335,25 +440,49 @@ class StorageAccess {
             return null;
         }
     }
-
     OutputStream getOutputStream(Context c, Uri uri) {
-        Log.d("d", "uri=" + uri);
         try {
+            Log.d("d","uri="+uri);
             return c.getContentResolver().openOutputStream(uri);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d("d","error getting outputstream");
+            //e.printStackTrace();
             return null;
         }
     }
 
 
+/*
+    void createUri(Context c, Uri uri) {
+        if (lollipopOrLater()) {
+            createUri_SAF(c,uri);
+        } else {
+            createUri_File(c,uri);
+        }
+    }
+    private void createUri_SAF(Context c, Uri uri) {
+        if (uri!=null) {
+            String filename = uri.getLastPathSegment();
+            DocumentFile df = DocumentFile.fromTreeUri(c, uri);
+            DocumentFile df_parent = df.getParentFile();
+            df_parent.createFile(null, filename);
+        }
+    }
+    private void createUri_File(Context c, Uri uri) {
+        if (uri!=null) {
+            File f = new File(uri.getPath());
+        }
+    }
+*/
+
+
     // Used to decide on the best storage method (using tree or not)
     //TODO
     boolean lollipopOrLater() {
-        boolean testingKitKat = true;
+        boolean testingKitKat = false;
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !testingKitKat;
+        //return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
-
 
     // This builds an index of all the songs on the device
     @SuppressLint("NewApi")
@@ -362,28 +491,16 @@ class StorageAccess {
         if (lollipopOrLater()) {
             listSongs_SAF(c);
         } else {
-            listSongs_File();
+            listSongs_File(c);
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void listSongs_SAF(Context c) {
         FullscreenActivity.songIds = new ArrayList<>();
-
-        // The base/tree Uri is the static field in FullscreenActivity
-        // Now extract the song folders from the song ids
         FullscreenActivity.folderIds = new ArrayList<>();
-        for (String f : FullscreenActivity.songIds) {
-            // Remove the last path
-            int endoffolder = f.lastIndexOf("/");
-            if (endoffolder > 0) {
-                f = f.substring(0, endoffolder - 1);
-            }
-            FullscreenActivity.folderIds.add(f);
-        }
-        DocumentFile df_songs = FullscreenActivity.appHome.findFile("Songs");
-        Uri uri;
 
-        uri = df_songs.getUri();
+        DocumentFile df_songs = FullscreenActivity.appHome.findFile("Songs");
+        Uri uri = df_songs.getUri();
 
         // Now get a documents contract at this location
         String songFolderId = getDocumentsContractId(uri);
@@ -407,12 +524,13 @@ class StorageAccess {
                     while (cursor.moveToNext()) {
                         final String docId = cursor.getString(0);
                         final String mime = cursor.getString(2);
-                        if (DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
+                        if (DocumentsContract.Document.MIME_TYPE_DIR.equals(mime) && docId.contains("OpenSong")) {
                             final Uri newNode = getChildren(children, docId);
                             dirNodes.add(newNode);
-                        } else {
+                            //Log.d("d","newNode="+newNode);
+                        } else if (docId.contains("OpenSong/Songs")) {
+                            //Log.d("d","docId="+docId);
                             FullscreenActivity.songIds.add(docId);
-                            Log.d("d", "songId=" + docId);
                         }
                     }
                     cursor.close();
@@ -422,18 +540,27 @@ class StorageAccess {
             }
         }
 
-        // Now extract the song folders from the song ids
-        FullscreenActivity.folderIds = new ArrayList<>();
-        for (String f : FullscreenActivity.songIds) {
-            // Remove the last path
-            int endoffolder = f.lastIndexOf("/");
-            if (endoffolder > 0) {
-                f = f.substring(0, endoffolder - 1);
+        getSongFolderNames(c);
+
+        // Remove everything before the actual songs folder
+        ArrayList<String> tempfolders = new ArrayList<>();
+        for (String s:FullscreenActivity.folderIds) {
+            if (s.contains("OpenSong/Songs/")) {
+                s=s.substring(s.indexOf("OpenSong/Songs/")+15);
             }
-            FullscreenActivity.folderIds.add(f);
+            if (!tempfolders.contains(s)) {
+                tempfolders.add(s);
+            }
+        }
+
+        FullscreenActivity.folderIds.clear();
+        FullscreenActivity.folderIds = tempfolders;
+
+        for (String s:FullscreenActivity.folderIds) {
+            Log.d("d","folder="+s);
         }
     }
-    private void listSongs_File() {
+    private void listSongs_File(Context c) {
         // We must be using an older version of Android, so stick with File access
         FullscreenActivity.songIds = new ArrayList<>();  // These will be the file locations
         FullscreenActivity.folderIds = new ArrayList<>();
@@ -451,18 +578,58 @@ class StorageAccess {
             // Go through each item and add songs or folders
             for (File item : contents) {
                 if (item.isDirectory()) {
-                    foldersToIndex.add(item.getAbsolutePath());
-                    FullscreenActivity.folderIds.add(item.getAbsolutePath());
+                    foldersToIndex.add(item.getPath());
+                    FullscreenActivity.folderIds.add(item.getPath());
                     num = foldersToIndex.size();
-                    Log.d("d", "Folder found: " + item);
                 } else if (item.isFile()) {
-                    FullscreenActivity.songIds.add(item.getAbsolutePath());
-                    Log.d("d", "Song found: " + item);
+                    FullscreenActivity.songIds.add(item.getPath());
+
                 }
             }
         }
+        getSongFolderNames(c);
     }
 
+    private void getSongFolderNames(Context c) {
+        // Use the folderIds to get the song folders found
+        ArrayList<String> folders = new ArrayList<>();
+        FullscreenActivity.mSongFolderNames = null;
+        String bittoremove = getUriForItem(c,"Songs","","").getPath() + "/";
+        for (String s:FullscreenActivity.folderIds) {
+            folders.add(s.replace(bittoremove,""));
+        }
+
+        // Remove any duplicates
+        Set<String> hs = new HashSet<>(folders);
+        folders.clear();
+        folders.addAll(hs);
+
+        // Sort the list
+        Collator collator = Collator.getInstance(FullscreenActivity.locale);
+        collator.setStrength(Collator.SECONDARY);
+        Collections.sort(folders, collator);
+
+        // Add the main folder to the top
+        folders.add(0,c.getString(R.string.mainfoldername));
+        FullscreenActivity.mSongFolderNames = folders.toArray(new String[0]).clone();
+    }
+
+    @SuppressLint("NewApi")
+    Uri getUriFromId(Uri uri, String id) {
+        if (lollipopOrLater()) {
+            return getUriFromId_SAF(uri, id);
+        } else {
+            return getUriFromId_File(id);
+        }
+    }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private Uri getUriFromId_SAF(Uri uri, String id) {
+        return DocumentsContract.buildDocumentUriUsingTree(uri,id);
+    }
+    private Uri getUriFromId_File(String id) {
+        File f = new File (id);
+        return Uri.fromFile(f);
+    }
 
     // Here are all the file accesses used in the app!!!
     Uri getUriForItem(Context c, String folder, String subfolder, String filename) {
@@ -473,10 +640,26 @@ class StorageAccess {
             return getUriForItem_File(c, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
         }
     }
+    @SuppressLint("NewApi")
+    private Uri getUriForItem_SAF(Context c, String folder, String subfolder, String filename) {
+        return getUriFromPath(c, folder, subfolder, filename);
+    }
+    private Uri getUriForItem_File(Context c, String folder, String subfolder, String filename) {
+        return getUriFromFilePath(c, folder, subfolder, filename);
+    }
 
     private String[] fixFoldersAndFiles(Context c, String folder, String subfolder, String filename) {
         // This fixes incorrect folders that would cause problems
         String[] returnvals = new String[3];
+        if (subfolder.startsWith("**")) {
+            // This is used when custom slides are created as part of a set, making the folder look more obvious
+            subfolder = subfolder.replace("**","../");
+            subfolder = subfolder.replace(c.getResources().getString(R.string.image_slide),"Images/_cache");
+            subfolder = subfolder.replace(c.getResources().getString(R.string.slide),"Slides/_cache");
+            subfolder = subfolder.replace(c.getResources().getString(R.string.scripture),"Scripture/_cache");
+            subfolder = subfolder.replace(c.getResources().getString(R.string.image_slide),"Variations");
+            subfolder = subfolder.replace(c.getResources().getString(R.string.note),"Notes/_cache");
+        }
         switch (subfolder) {
             case "../Images/_cache":
                 folder = "Images";
@@ -494,12 +677,20 @@ class StorageAccess {
                 folder = "Variations";
                 subfolder = "";
                 break;
+            case "../Notes/_cache":
+                folder = "Notes";
+                subfolder = "_cache";
+                break;
         }
-        if (folder.equals(c.getString(R.string.mainfoldername))) {
+        if (folder==null || folder.equals(c.getResources().getString(R.string.mainfoldername))) {
             folder = "";
         }
 
-        if (filename.contains("/")) {
+        if (subfolder.equals(c.getResources().getString(R.string.mainfoldername))) {
+            subfolder = "";
+        }
+
+        if (filename!=null && filename.contains("/")) {
             // Filename is everything after the last one
             int indexforfilename = filename.lastIndexOf("/");
             subfolder = subfolder + "/" + filename.substring(0, indexforfilename);
@@ -515,14 +706,6 @@ class StorageAccess {
         returnvals[1] = subfolder;
         returnvals[2] = filename;
         return returnvals;
-    }
-
-    private Uri getUriForItem_SAF(Context c, String folder, String subfolder, String filename) {
-        return getUriFromPath(c, folder, subfolder, filename);
-    }
-
-    private Uri getUriForItem_File(Context c, String folder, String subfolder, String filename) {
-        return getUriFromFilePath(c, folder, subfolder, filename);
     }
 
     boolean createFile(Context c, String mimeType, String folder, String subfolder, String filename) {
@@ -554,7 +737,7 @@ class StorageAccess {
                 }
             }
 
-            if (df_parent != null && df_parent.findFile(filename) == null) {
+            if (df_parent != null && filename!=null && !filename.equals("") &&df_parent.findFile(filename) == null) {
                 df_parent.createFile(mimeType, filename);
                 createdStuff = true;
             }
@@ -588,6 +771,7 @@ class StorageAccess {
         }
         return stuffCreated;
     }
+
     String getUTFEncoding (Context c, Uri uri) {
         // Try to determine the BOM for UTF encoding
         String utf = "";
@@ -615,11 +799,12 @@ class StorageAccess {
         }
         return utf;
     }
+
     long getFileSizeFromUri(Context c, Uri uri) {
         if (lollipopOrLater()) {
             return getFileSizeFromUri_SAF(c, uri);
         } else {
-            return getFileSizeFromUri_File(c,uri);
+            return getFileSizeFromUri_File(uri);
         }
     }
     private long getFileSizeFromUri_SAF(Context c, Uri uri) {
@@ -630,29 +815,94 @@ class StorageAccess {
             return 0;
         }
     }
-    private long getFileSizeFromUri_File(Context c, Uri uri) {
-        DocumentFile df = DocumentFile.fromSingleUri(c,uri);
+    private long getFileSizeFromUri_File(Uri uri) {
+        File df = null;
+        if (uri!=null && uri.getPath()!=null) {
+            df = new File(uri.getPath());
+        }
         if (df!=null && df.exists()) {
             return df.length() / 1024;
         } else {
             return 0;
         }
     }
+
+    void createBlankDocumentFile(Context c, Uri uri, String location) {
+        DocumentFile df = DocumentFile.fromTreeUri(c,uri);
+        DocumentFile test;
+        String[] bits = location.split("/");
+        if (bits.length>1) {
+            // There are sub folders
+            for (int x=0;x<bits.length-1;x++) {
+                uri = Uri.withAppendedPath(uri,bits[x]);
+                test = DocumentFile.fromTreeUri(c,uri);
+                uri = test.getUri();
+                Log.d("d","uri of directory = "+uri);
+                if (!uriExists(c,uri)) {
+                    df = df.createDirectory(bits[x]);
+                    Log.d("d","creating Directory "+bits[x]);
+                    uri = df.getUri();
+                }
+            }
+        }
+        uri = Uri.withAppendedPath(uri, bits[bits.length-1]);
+        test = DocumentFile.fromTreeUri(c,uri);
+        uri = test.getUri();
+        Log.d("d","uri of file = "+uri);
+
+        if (!uriExists(c,uri)) {
+            df.createFile(null,bits[bits.length-1]);
+            Log.d("d","creating File "+bits[bits.length-1]);
+        }
+    }
+
     boolean uriExists(Context c, Uri uri) {
         if (lollipopOrLater()) {
             return uriExists_SAF(c, uri);
         } else {
-            return uriExists_File(c, uri);
+            return uriExists_File(uri);
         }
     }
     private boolean uriExists_SAF(Context c, Uri uri) {
-        DocumentFile df = documentFileFromUri(c, uri, uri.getPath());
-        return df != null && df.exists();
+        try {
+            c.getContentResolver().openInputStream(uri);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
-    private boolean uriExists_File(Context c, Uri uri) {
-        DocumentFile df = DocumentFile.fromSingleUri(c, uri);
-        return df.exists();
+    private boolean uriExists_File(Uri uri) {
+        File df = null;
+        if (uri!=null && uri.getPath()!=null) {
+            df = new File(uri.getPath());
+        }
+        if (df!=null) {
+            return df.exists();
+        } else {
+            return false;
+        }
     }
+
+    boolean uriIsFile(Context c, Uri uri) {
+        if (lollipopOrLater()) {
+            return uriIsFile_SAF(c,uri);
+        } else {
+            return uriIsFile_File(uri);
+        }
+    }
+    private boolean uriIsFile_SAF(Context c, Uri uri) {
+        DocumentFile df = DocumentFile.fromTreeUri(c,uri);
+        return df.isFile();
+    }
+    private boolean uriIsFile_File(Uri uri) {
+        if (uri!=null && uri.getPath()!=null) {
+            File f = new File(uri.getPath());
+            return f.isFile();
+        } else {
+            return false;
+        }
+    }
+
     Uri fixLocalisedUri(Context c, String uriString) {
         // This checks for localised filenames first and fixes the Uri
         if (uriString.startsWith("../OpenSong/Media/")) {
@@ -664,12 +914,14 @@ class StorageAccess {
             return Uri.parse(uriString);
         }
     }
+
     @SuppressLint("NewApi")
     ArrayList<String> listFilesInFolder(Context c, String folder, String subfolder) {
+        String[] fixedfolders = fixFoldersAndFiles(c,folder,subfolder,"");
         if (lollipopOrLater()) {
-            return listFilesInFolder_SAF(c, folder, subfolder);
+            return listFilesInFolder_SAF(c, fixedfolders[0], fixedfolders[1]);
         } else {
-            return listFilesInFolder_File(folder, subfolder);
+            return listFilesInFolder_File(fixedfolders[0], fixedfolders[1]);
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -709,7 +961,6 @@ class StorageAccess {
                         final String mime = cursor.getString(2);
                         if (!DocumentsContract.Document.MIME_TYPE_DIR.equals(mime)) {
                             al.add(name);
-                            Log.d("d", "file name = " + name);
                         }
                     }
                     cursor.close();
@@ -728,14 +979,17 @@ class StorageAccess {
             f = new File (f,subfolder);
         }
         File[] fs = f.listFiles();
-        for (File fi:fs) {
-            if (fi.isFile()) {
-                al.add(fi.getName());
+        if (fs!=null && fs.length>0) {
+            for (File fi : fs) {
+                if (fi.isFile()) {
+                    al.add(fi.getName());
+                }
             }
         }
         return al;
     }
-    boolean extractZipFile(Context c, Uri zipUri, String folder, String subfolder, ArrayList<String> zipfolders) {
+
+    void extractZipFile(Context c, Uri zipUri, String folder, String subfolder, ArrayList<String> zipfolders) {
         // This bit could be slow, so it will likely be called in an async task
         ZipInputStream zis = null;
         try {
@@ -757,7 +1011,6 @@ class StorageAccess {
                     oktoimportthisone = true;
                 }
 
-
                 if (oktoimportthisone) {
                     createFile(c, null, folder, subfolder, ze.getName());
                     Uri newUri = getUriForItem(c, folder, subfolder, ze.getName());
@@ -777,7 +1030,6 @@ class StorageAccess {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         } finally {
             if (zis != null) {
                 try {
@@ -787,21 +1039,398 @@ class StorageAccess {
                 }
             }
         }
-        return true;
     }
+    String extractOnSongZipFile(Context c, Uri zipUri) {
+
+        // This bit will take a while, so will be called in an async task
+        String message = c.getResources().getString(R.string.success);
+
+        // Remove any existing sqlite3 files
+        Uri dbfile = getUriForItem(c,"","","OnSong.Backup.sqlite3");
+
+        if (uriExists(c,dbfile)) {
+            deleteFile(c,dbfile);
+        }
+
+        createFile(c,null,"Songs","OnSong","");
+
+        InputStream is;
+        ZipArchiveInputStream zis;
+        String filename;
+
+        try {
+            is = getInputStream(c,zipUri);
+            zis = new ZipArchiveInputStream(new BufferedInputStream(is),"UTF-8",false);
+
+            ZipArchiveEntry ze;
+            while ((ze = (ZipArchiveEntry) zis.getNextEntry()) != null) {
+                final byte[] buffer = new byte[2048];
+                int count;
+                filename = ze.getName();
+                if (!filename.startsWith("Media")) {
+                    // The Media folder throws errors (it has zero length files sometimes
+                    // It also contains stuff that is irrelevant for OpenSongApp importing
+                    // Only process stuff that isn't in that folder!
+                    // It will also ignore any song starting with 'Media' - not worth a check for now!
+
+                    OutputStream out;
+                    if (filename.equals("OnSong.Backup.sqlite3") || filename.equals("OnSong.sqlite3")) {
+                        Uri outuri = getUriForItem(c,"","","OnSong.Backup.sqlite3");
+                        out = getOutputStream(c,outuri);
+                    } else {
+                        Uri outuri = getUriForItem(c, "Songs","OnSong",filename);
+                        out = getOutputStream(c,outuri);
+                    }
+
+                    final BufferedOutputStream bout = new BufferedOutputStream(out);
+
+                    try {
+                        while ((count = zis.read(buffer)) != -1) {
+                            bout.write(buffer, 0, count);
+                        }
+                        bout.flush();
+                    } catch (Exception e) {
+                        message = c.getResources().getString(R.string.file_type_unknown);
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            bout.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+            zis.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = c.getResources().getString(R.string.import_onsong_error);
+            return message;
+        }
+
+        if (uriExists(c,dbfile) && dbfile!=null && dbfile.getPath()!=null) {
+            SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(new File(dbfile.getPath()), null);
+            // Go through each row and read in the content field
+            // Save the files with the .onsong extension
+
+            String query = "SELECT * FROM Song";
+
+            //Cursor points to a location in your results
+            Cursor cursor;
+            message = c.getResources().getString(R.string.import_onsong_done);
+            String str_title;
+            String str_content;
+
+            try {
+                cursor = db.rawQuery(query, null);
+
+                // Move to first row
+                cursor.moveToFirst();
+
+                while (cursor.moveToNext()) {
+                    // Extract data.
+                    str_title = cursor.getString(cursor.getColumnIndex("title"));
+                    // Make sure title doesn't have /
+                    str_title = str_title.replace("/", "_");
+                    str_title = TextUtils.htmlEncode(str_title);
+                    str_content = cursor.getString(cursor.getColumnIndex("content"));
+
+                    try {
+                        // Now write the modified song
+                        Uri newsong = getUriForItem(c,"Songs","OnSong",str_title+".onsong");
+                        OutputStream overWrite = getOutputStream(c,newsong);
+                        writeFileFromString(str_content,overWrite);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                cursor.close();
+
+
+
+            } catch (Exception e) {
+                // Error with sql database
+                e.printStackTrace();
+                message = c.getResources().getString(R.string.import_onsong_error);
+            }
+        }
+
+        return message;
+    }
+    /*String extractOSBFile(Context c, Uri zipUri) {
+        // This may take a while, so it will be called in an async task
+        String message = c.getResources().getString(R.string.assetcopydone);
+
+        ZipInputStream zis = null;
+
+        InputStream inputStream = getInputStream(c,zipUri);
+        try {
+            zis = new ZipInputStream(new BufferedInputStream(inputStream));
+            ZipEntry ze;
+            int count;
+            byte[] buffer = new byte[8192];
+            while ((ze = zis.getNextEntry()) != null) {
+                Uri uri =  getUriForItem(c,"Songs","",ze.getName());
+                OutputStream outputStream = getOutputStream(c, uri);
+                try {
+                    while ((count = zis.read(buffer)) != -1)
+                        outputStream.write(buffer, 0, count);
+                } finally {
+                    try {
+                        outputStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            message = c.getResources().getString(R.string.backup_error);
+        } finally {
+            if (zis!=null) {
+                try {
+                    zis.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    message = c.getString(R.string.backup_error);
+                }
+            }
+        }
+        return message;
+    }*/
+
     boolean deleteFile(Context c, Uri uri) {
         if (lollipopOrLater()) {
             return deleteFile_SAF(c, uri);
         } else {
-            return deleteFile_File(c, uri);
+            return deleteFile_File(uri);
         }
     }
     private boolean deleteFile_SAF(Context c, Uri uri) {
         DocumentFile df = DocumentFile.fromTreeUri(c, uri);
         return df.delete();
     }
-    private  boolean deleteFile_File(Context c, Uri uri) {
-        DocumentFile df = DocumentFile.fromSingleUri(c,uri);
-        return df.delete();
+    private boolean deleteFile_File(Uri uri) {
+        try {
+            if (uri != null && uri.getPath() != null) {
+                File f = new File(uri.getPath());
+                // If this is a directory, empty it first
+                if (f.isDirectory()) {
+                    for (File child : f.listFiles()) {
+                        Log.d("StorageAccess", "Deleting " + child + " = " + child.delete());
+                    }
+                }
+                return f.delete();
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
     }
+
+    boolean renameFile(Context c, Uri uri, String name) {
+        if (lollipopOrLater()) {
+            return renameFile_SAF(c, uri, name);
+        } else {
+            return renameFile_File(uri, name);
+        }
+    }
+    private boolean renameFile_SAF(Context c, Uri olduri, String name) {
+        DocumentFile olddf = DocumentFile.fromTreeUri(c,olduri);
+        return olddf.renameTo(name);
+    }
+    private boolean renameFile_File(Uri olduri, String name) {
+        if (olduri!=null && olduri.getPath()!=null) {
+            File oldf = new File(olduri.getPath());
+            String oldfilename = olduri.getLastPathSegment();
+            String newfilename;
+            if (oldfilename!=null) {
+                newfilename = olduri.getPath().replace(oldfilename, name);
+                File newfile =  new File(newfilename);
+                return oldf.renameTo(newfile);
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    boolean fileIsEmpty(Context c, Uri uri) {
+        if (lollipopOrLater()) {
+            return fileIsEmpty_SAF(c,uri);
+        } else {
+            return fileIsEmpty_File(uri);
+        }
+    }
+    private boolean fileIsEmpty_SAF(Context c, Uri uri) {
+        DocumentFile df = DocumentFile.fromSingleUri(c, uri);
+        return df != null && df.exists() && df.length() > 0;
+    }
+    private boolean fileIsEmpty_File(Uri uri) {
+        if (uri!=null && uri.getPath()!=null) {
+            File f = new File(uri.getPath());
+            return f.exists() && f.length()>0;
+        } else {
+            return false;
+        }
+    }
+
+    boolean canWrite(Context c, Uri uri) {
+        if (lollipopOrLater()) {
+            return canWrite_SAF(c, uri);
+        } else {
+            return canWrite_File(uri);
+        }
+    }
+    private boolean canWrite_SAF(Context c, Uri uri) {
+        DocumentFile df = DocumentFile.fromTreeUri(c,uri);
+        return df.canWrite();
+    }
+    private boolean canWrite_File(Uri uri) {
+        if (uri!=null && uri.getPath()!=null) {
+            File f = new File(uri.getPath());
+            return f.canWrite();
+        } else {
+            return false;
+        }
+    }
+
+    void wipeFolder(Context c, String folder, String subfolder) {
+        Uri uri = getUriForItem(c,folder,subfolder,"");
+        // Delete the contents of this folder
+        deleteFile(c,uri);
+        // Recreate it (now empty)
+        createFile(c, DocumentsContract.Document.MIME_TYPE_DIR,folder,subfolder,"");
+    }
+
+    boolean isXML(Uri uri) {
+        boolean isxml = true;
+        if (uri != null && uri.getLastPathSegment()!=null) {
+            String name = uri.getLastPathSegment().toLowerCase(FullscreenActivity.locale);
+            if (name.endsWith(".pdf") || name.endsWith(".doc") ||
+                    name.endsWith(".jpg") || name.endsWith(".png") ||
+                    name.endsWith(".bmp") || name.endsWith(".gif") ||
+                    name.endsWith(".jpeg") || name.endsWith(".apk") ||
+                    name.endsWith(".txt") || name.endsWith(".zip")) {
+                isxml = false;
+            }
+        } else {
+            isxml = false;
+        }
+        return isxml;
+    }
+
+    boolean containsXMLTags(Context c, Uri uri) {
+        try {
+            boolean found = false;
+            String utf = getUTFEncoding(c, uri);
+            InputStream inputStream = getInputStream(c, uri);
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            XmlPullParser xpp = factory.newPullParser();
+            xpp.setInput(inputStream, utf);
+            int eventType;
+            eventType = xpp.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT && !found) {
+                if (eventType == XmlPullParser.START_TAG) {
+                    if (xpp.getName().equals("lyrics")) {
+                        found = true;
+                    }
+                }
+                // If it isn't an xml file, an error is about to be thrown
+                try {
+                    eventType = xpp.next();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return found;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    boolean isTextFile(Uri uri) {
+        boolean istext = false;
+        if (uri!=null && uri.getLastPathSegment()!=null) {
+            String name = uri.getLastPathSegment().toLowerCase(FullscreenActivity.locale);
+            if ((!name.contains(".pdf") && !name.contains(".PDF") &&
+                    !name.contains(".doc") && !name.contains(".DOC") &&
+                    !name.contains(".docx") && !name.contains(".DOCX") &&
+                    !name.contains(".png") && !name.contains(".PNG") &&
+                    !name.contains(".jpg") && !name.contains(".JPG") &&
+                    !name.contains(".gif") && !name.contains(".GIF") &&
+                    !name.contains(".jpeg") && !name.contains(".JPEG")) ||
+                    name.endsWith(".txt")) {
+                istext = true;
+            }
+        }
+        return istext;
+    }
+
+    String getPartOfUri(Uri uri, String from) {
+        // This gets the filename
+        String path = uri.getPath();
+        if (path!=null && path.contains(from)) {
+            path = path.substring(path.lastIndexOf(from));
+        }
+        return path;
+    }
+
+    boolean checkFileExtensionValid(Uri uri) {
+        // This lets us know if the file is appropriate to read the title/author/key from during indexing
+        String filename;
+        if (uri!=null && uri.getLastPathSegment()!=null) {
+            filename = uri.getLastPathSegment().toLowerCase();
+        } else {
+            filename = "";
+        }
+        boolean isvalid = true;
+        String type = null;
+        if (filename.lastIndexOf(".")>1 && filename.lastIndexOf(".")<filename.length()-1) {
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            int index = filename.lastIndexOf('.')+1;
+            String ext = filename.substring(index).toLowerCase();
+            type = mime.getMimeTypeFromExtension(ext);
+        }
+
+        if (type!=null && !type.equals("")) {
+            if (type.contains("image") || type.contains("application") || type.contains("pdf") || type.contains("video") || type.contains("audio")) {
+                isvalid = false;
+            }
+        }
+
+        if (filename.endsWith(".pdf") || filename.endsWith(".jpg") ||
+                filename.endsWith(".png") || filename.endsWith(".gif") ||
+                filename.endsWith(".doc") || filename.endsWith(".docx") ||
+                filename.endsWith(".zip") || filename.endsWith(".apk") ||
+                filename.endsWith(".tar")  || filename.endsWith(".backup")) {
+            isvalid = false;
+        }
+        return isvalid;
+    }
+    boolean determineFileTypeByExtension() {
+        // Determines if we can load song as text, image or pdf
+        String file_ext = FullscreenActivity.songfilename;
+        FullscreenActivity.isImage = false;
+        FullscreenActivity.isPDF = false;
+
+        if (file_ext!=null) {
+            file_ext = file_ext.toLowerCase();
+        } else {
+            file_ext = "";
+        }
+        if (file_ext.endsWith(".pdf")) {
+            FullscreenActivity.isPDF = true;
+        } else if (file_ext.endsWith(".jpg") || file_ext.endsWith(".bmp") ||
+                file_ext.endsWith(".png") || file_ext.endsWith(".gif")) {
+            FullscreenActivity.isImage = true;
+        }
+
+        return FullscreenActivity.isPDF || FullscreenActivity.isImage;
+    }
+
 }

@@ -3,6 +3,7 @@ package com.garethevans.church.opensongtablet;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -24,10 +25,8 @@ import android.widget.TextView;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,26 +60,16 @@ public class PopUpProfileFragment extends DialogFragment {
         super.onDetach();
     }
 
-    File location;
-    File[] tempmyFiles;
+    StorageAccess storageAccess;
     String[] foundFiles;
-    ArrayList<String> tempFoundFiles;
-    String[] filechecks;
     Collator coll;
     ScrollView profile_overview;
-    RelativeLayout profile_load;
-    RelativeLayout profile_save;
+    RelativeLayout profile_load, profile_save;
     TextView profileName_TextView;
     EditText profileName_EditText;
-    ListView profileFilesLoad_ListView;
-    ListView profileFilesSave_ListView;
-    Button loadProfile_Button;
-    Button saveProfile_Button;
-    Button okSave_Button;
-    Button cancelSave_Button;
-    Button cancelLoad_Button;
-    String name;
-    String what = "overview";
+    ListView profileFilesLoad_ListView, profileFilesSave_ListView;
+    Button loadProfile_Button, saveProfile_Button, okSave_Button, cancelSave_Button, cancelLoad_Button;
+    String name, what = "overview";
 
     @Override
     public void onStart() {
@@ -119,6 +108,8 @@ public class PopUpProfileFragment extends DialogFragment {
         });
         FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
+
+        storageAccess = new StorageAccess();
 
         // Initialise the views
         profile_overview = V.findViewById(R.id.profile_overview);
@@ -167,23 +158,13 @@ public class PopUpProfileFragment extends DialogFragment {
                 String contents = prepareProfile();
                 name = profileName_EditText.getText().toString();
                 if (!name.equals("")) {
-                    File myfile = new File(FullscreenActivity.dirprofiles + "/" + name);
-                    try {
-                        FileOutputStream overWrite = new FileOutputStream(myfile, false);
-                        overWrite.write(contents.getBytes());
-                        overWrite.flush();
-                        overWrite.close();
-                        FullscreenActivity.myToastMessage = getString(R.string.ok);
-                        FullscreenActivity.profile = name;
-                        profileName_TextView.setText(name);
-                        profileName_EditText.setText(name);
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        FullscreenActivity.myToastMessage = getString(R.string.profile) + " " +
-                                getString(R.string.hasnotbeenexported);
-                    }
+                    Uri uri = storageAccess.getUriForItem(getActivity(),"Profiles","",name);
+                    OutputStream outputStream = storageAccess.getOutputStream(getActivity(), uri);
+                    storageAccess.writeFileFromString(contents,outputStream);
+                    FullscreenActivity.myToastMessage = getString(R.string.ok);
+                    FullscreenActivity.profile = name;
+                    profileName_TextView.setText(name);
+                    profileName_EditText.setText(name);
                 } else {
                     FullscreenActivity.myToastMessage = getString(R.string.profile) + " " +
                             getString(R.string.hasnotbeenexported);
@@ -237,28 +218,7 @@ public class PopUpProfileFragment extends DialogFragment {
     }
 
     public void setupProfileList() {
-        location = new File(FullscreenActivity.homedir + "/Profiles");
-        tempmyFiles = location.listFiles();
-        tempFoundFiles = new ArrayList<>();
-
-        // Go through each file
-        for (File tempmyFile : tempmyFiles) {
-
-            // If we need to check the filetype and it is ok, add it to the array
-            if (filechecks != null && filechecks.length > 0) {
-                for (String filecheck : filechecks) {
-                    if (tempmyFile!=null && tempmyFile.getName().contains(filecheck) && !tempmyFile.isDirectory()) {
-                        tempFoundFiles.add(tempmyFile.getName());
-                    }
-                }
-
-                // Otherwise, no check needed, add to the array (if it isn't a directory)
-            } else {
-                if (tempmyFile!=null && !tempmyFile.isDirectory()) {
-                    tempFoundFiles.add(tempmyFile.getName());
-                }
-            }
-        }
+        ArrayList<String> tempFoundFiles = storageAccess.listFilesInFolder(getActivity(),"Profiles","");
 
         // Sort the array list alphabetically by locale rules
         // Add locale sort
@@ -292,7 +252,7 @@ public class PopUpProfileFragment extends DialogFragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
                         FullscreenActivity.profile = foundFiles[position];
-                        grabvalues(FullscreenActivity.dirprofiles + "/" + foundFiles[position]);
+                        grabvalues(foundFiles[position]);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -305,12 +265,12 @@ public class PopUpProfileFragment extends DialogFragment {
         // Extract all of the key bits of the profile
         XmlPullParserFactory factory;
         factory = XmlPullParserFactory.newInstance();
-
         factory.setNamespaceAware(true);
         XmlPullParser xpp;
         xpp = factory.newPullParser();
 
-        InputStream inputStream = new FileInputStream(file);
+        Uri uri = storageAccess.getUriForItem(getActivity(),"Profiles","",file);
+        InputStream inputStream = storageAccess.getInputStream(getActivity(),uri);
         xpp.setInput(inputStream,null);
 
         int eventType;

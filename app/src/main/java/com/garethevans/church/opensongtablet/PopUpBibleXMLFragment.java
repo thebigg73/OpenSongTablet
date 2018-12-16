@@ -157,7 +157,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                 // Update the bible file spinner and select the appropriate one
                 updateBibleFiles();
             }
-        }).run();
+        }).start();
 
         return V;
     }
@@ -325,7 +325,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                     });
                 }
             }
-        }).run();
+        }).start();
     }
 
     public void loadABible(final String selectedBible, final boolean biblechanged) {
@@ -352,10 +352,10 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                     bible = bibleC.getZefaniaBibleName(getActivity(), bibleFile);
 
                 } else {
-                    if (bibleFile!=null) {
-                        bible = bibleFile.getLastPathSegment().toUpperCase(FullscreenActivity.locale);
-                        bible = bible.replace(".XML", "");
-                        bible = bible.replace(".XMM", "");
+                    if (bibleFile!=null && bibleFile.getLastPathSegment()!=null) {
+                            bible = bibleFile.getLastPathSegment().toUpperCase(FullscreenActivity.locale);
+                            bible = bible.replace(".XML", "");
+                            bible = bible.replace(".XMM", "");
                     } else {
                         bible = "";
                     }
@@ -366,7 +366,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                 // Now get the chapters ready
                 updateBibleBooks();
             }
-        }).run();
+        }).start();
     }
 
     public void updateBibleBooks() {
@@ -417,7 +417,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                 });
                 quickUpdate = null;
             }
-        }).run();
+        }).start();
     }
 
     public void updateBibleChapters(final String bibleBookName) {
@@ -463,7 +463,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                     }
                 });
             }
-        }).run();
+        }).start();
     }
 
     public void updateBibleVerses(final String bibleBookName, final String bibleChapter) {
@@ -543,7 +543,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                     }
                 });
             }
-        }).run();
+        }).start();
     }
 
     public void getBibleText(final String bibleBookName, final String bibleChapter, final String bibleVerseFrom, final String bibleVerseTo) {
@@ -614,7 +614,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                     }
                 });
             }
-        }).run();
+        }).start();
     }
 
     public void doSave() {
@@ -678,7 +678,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                     });
                 }
             }
-        }).run();
+        }).start();
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -745,7 +745,7 @@ public class PopUpBibleXMLFragment extends DialogFragment {
                 // Update the list of bible files available
                 updateBibleFiles();
             }
-        }).run();
+        }).start();
     }
 
     public void extractTheZipFile(Uri newuri) {

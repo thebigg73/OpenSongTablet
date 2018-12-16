@@ -247,7 +247,7 @@ public class PopUpTransposeFragment extends DialogFragment {
 
         // Do the transpose
         try {
-            Transpose.doTranspose();
+            Transpose.doTranspose(getActivity());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -77,4 +77,11 @@
         android:isScrollContainer="true" />
 
     </LinearLayout>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 </RelativeLayout>

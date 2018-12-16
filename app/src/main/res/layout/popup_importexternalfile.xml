@@ -27,57 +27,38 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/itemTitle_TextView"
-                style="@style/MyHeadingText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/title"
-                android:visibility="gone" />
-
-            <EditText
-                android:id="@+id/fileTitle_EditText"
+                android:id="@+id/fileTitle_TextView"
                 style="@style/MyEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_marginBottom="12dp"
-                android:inputType="text"
                 android:maxLines="1" />
 
-            <TextView
-                android:id="@+id/fileType_heading"
-                style="@style/MyHeadingText"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/file_type" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/fileType_TextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_marginBottom="12sp"
-                android:text="@string/file_type"
-                android:textColor="#fff"
-                android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/fileType_heading"
+                    style="@style/MyHeadingText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/file_type" />
 
-            <TextView
-                android:id="@+id/messageOnSong_TextView"
-                style="@style/MyInfoText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/onsonglocation" />
+                <TextView
+                    android:id="@+id/fileType_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_marginBottom="12sp"
+                    android:text="@string/file_type"
+                    android:textColor="#fff"
+                    android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/messageOpenSong_TextView"
-                style="@style/MyInfoText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:text="@string/onsonglocation" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/chooseFolder_TextView"
@@ -110,4 +91,5 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone" />
+
 </RelativeLayout>

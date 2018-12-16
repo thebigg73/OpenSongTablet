@@ -1,9 +1,8 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
-
-import java.io.File;
-import java.net.URI;
+import android.net.Uri;
+import android.util.Log;
 
 class PadFunctions {
 
@@ -68,18 +67,16 @@ class PadFunctions {
             isvalid = false;
         } else if (FullscreenActivity.mPadFile.equals(c.getResources().getString(R.string.link_audio)) &&
                 !FullscreenActivity.mLinkAudio.isEmpty() && !FullscreenActivity.mLinkAudio.equals("")) {
-            String filetext = FullscreenActivity.mLinkAudio;
-            filetext = filetext.replace("file://","");
-            // If this is a localised file, we need to unlocalise it to enable it to be read
-            if (filetext.startsWith("../OpenSong/")) {
-                filetext = filetext.replace("../OpenSong/",FullscreenActivity.homedir+"/");
-            }
-            filetext = "file://" + filetext;
-            File file = new File(URI.create(filetext).getPath());
-            isvalid = file.exists() && file.isFile();
+            StorageAccess storageAccess = new StorageAccess();
+            Uri uri = storageAccess.fixLocalisedUri(c,FullscreenActivity.mLinkAudio);
+            Log.d("d","uri="+uri);
+            isvalid = storageAccess.uriExists(c,uri);
         } else if (!FullscreenActivity.mKey.isEmpty()){
+            // Using auto
             isvalid = true;
         }
+        Log.d("d","isvalid="+isvalid);
+
         return isvalid;
     }
 

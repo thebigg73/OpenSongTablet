@@ -874,6 +874,11 @@ public class Preferences extends Activity {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
         sharedPref.edit().putInt(prefname, value).apply();
     }
+    void setMyPreferenceBoolean (Context c, String prefname, boolean value) {
+        // Identify the preferences
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(c);
+        sharedPref.edit().putBoolean(prefname, value).apply();
+    }
 
     /* Values stored in Preferences alphabetically listed:
     Variable name           Type        What

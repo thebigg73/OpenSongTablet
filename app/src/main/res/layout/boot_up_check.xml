@@ -88,6 +88,42 @@
                     android:text="@string/changestorage"
                     android:textColor="#fff" />
 
+                <Button
+                    android:id="@+id/previousStorageButton"
+                    android:background="@drawable/yellow_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="8dp"
+                    android:padding="4dp"
+                    android:text="@string/existing"
+                    android:textColor="#fff" />
+
+
+                <TextView
+                    android:id="@+id/previousStorageTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/previousStorageHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/found"
+                    style="@style/MyWhiteHeadingText"
+                    android:visibility="gone"/>
+
+                <Spinner
+                    android:id="@+id/previousStorageSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    style="@style/MySpinner"
+                    android:visibility="gone"/>
+
             </LinearLayout>
 
 
@@ -107,6 +143,7 @@
                     android:layout_margin="16dp"
                     android:padding="4dp"
                     android:text="@string/start"
+                    android:textSize="24sp"
                     android:textColor="#fff" />
 
                 <Spinner
@@ -117,8 +154,6 @@
                     style="@style/MySpinner"
                     android:layout_below="@+id/goToSongsButton"
                     android:layout_centerHorizontal="true"/>
-
-
 
                 <ProgressBar
                     android:id="@+id/progressBar"

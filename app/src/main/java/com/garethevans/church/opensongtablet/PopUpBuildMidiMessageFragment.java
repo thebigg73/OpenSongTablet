@@ -225,7 +225,7 @@ public class PopUpBuildMidiMessageFragment extends DialogFragment {
             Log.d("d","s="+s);
             FullscreenActivity.mMidi = s.toString();
             PopUpEditSongFragment.prepareSongXML();
-            PopUpEditSongFragment.justSaveSongXML();
+            PopUpEditSongFragment.justSaveSongXML(getActivity());
             dismiss();
         } catch (Exception e) {
             e.printStackTrace();

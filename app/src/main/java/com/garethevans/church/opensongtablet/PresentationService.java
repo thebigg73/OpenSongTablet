@@ -14,7 +14,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -33,8 +32,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.cast.CastPresentation;
 import com.google.android.gms.cast.CastRemoteDisplayLocalService;
 
-import java.io.File;
+//import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class PresentationService extends CastRemoteDisplayLocalService {
 
@@ -43,15 +43,13 @@ public class PresentationService extends CastRemoteDisplayLocalService {
     private void createPresentation(Display display) {
         dismissPresentation();
         myPresentation = new ExternalDisplay(this, display);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            try {
-                myPresentation.show();
-                FullscreenActivity.isPresenting = true;
+        try {
+            myPresentation.show();
+            FullscreenActivity.isPresenting = true;
 
-            } catch (WindowManager.InvalidDisplayException ex) {
-                dismissPresentation();
-                FullscreenActivity.isPresenting = false;
-            }
+        } catch (WindowManager.InvalidDisplayException ex) {
+            dismissPresentation();
+            FullscreenActivity.isPresenting = false;
         }
     }
 
@@ -165,12 +163,22 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         static MediaPlayer mMediaPlayer;
 
         // Images and video backgrounds
-        static File img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
-        static File img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
-        static String vid1File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
-        static String vid2File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
-        static String vidFile;
-        static File imgFile;
+        static Uri img1Uri;
+        static Uri img2Uri;
+        static Uri imgUri;
+        static Uri vid1Uri;
+        static Uri vid2Uri;
+        static Uri vidUri;
+
+        static StorageAccess storageAccess;
+
+        //static File img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
+        //static File img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
+        //static String vid1File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
+        //static String vid2File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
+        //static String vidFile;
+        //static File imgFile;
+
         static Drawable defimage;
         static Bitmap myBitmap;
         static Drawable dr;
@@ -202,11 +210,11 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         @SuppressLint("StaticFieldLeak")
         static Context c;
 
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.cast_screen);
+            storageAccess = new StorageAccess();
 
             pageHolder                   = findViewById(R.id.pageHolder);
             projectedPage_RelativeLayout = findViewById(R.id.projectedPage_RelativeLayout);
@@ -310,7 +318,6 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             songalert_fadein = CustomAnimations.setUpAnimation(presentermode_alert,0.0f,1.0f);
             songalert_fadeout = CustomAnimations.setUpAnimation(presentermode_alert,1.0f,0.0f);
         }
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
         @SuppressWarnings("deprecation")
         void setDefaultBackgroundImage() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -366,10 +373,11 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             float xscale;
             float yscale;
             boolean usingcustom = false;
-            File customLogo = new File(FullscreenActivity.dirbackgrounds,FullscreenActivity.customLogo);
-            if (customLogo.exists()) {
+            Uri customLogo = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.customLogo);
+            if (storageAccess.uriExists(c,customLogo)) {
+                InputStream inputStream = storageAccess.getInputStream(c, customLogo);
                 // Get the sizes of the custom logo
-                BitmapFactory.decodeFile(customLogo.toString(), options);
+                BitmapFactory.decodeStream(inputStream,null,options);
                 imgwidth = options.outWidth;
                 imgheight = options.outHeight;
                 if (imgwidth>0 && imgheight>0) {
@@ -392,11 +400,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             projected_Logo.setLayoutParams(rlp);
 
             if (usingcustom) {
-                Uri logoUri = Uri.fromFile(customLogo);
                 RequestOptions myOptions = new RequestOptions()
                         .fitCenter()
                         .override(logowidth,logoheight);
-                Glide.with(c).load(logoUri).apply(myOptions).into(projected_Logo);
+                Glide.with(c).load(customLogo).apply(myOptions).into(projected_Logo);
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     projected_Logo.setImageDrawable(c.getResources().getDrawable(R.drawable.ost_logo,c.getTheme()));
@@ -590,10 +597,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
 
         // Change background images/videos
         static void fixBackground() {
-            img1File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage1);
-            img2File = new File(FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundImage2);
-            vid1File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo1;
-            vid2File = FullscreenActivity.dirbackgrounds + "/" + FullscreenActivity.backgroundVideo2;
+            img1Uri = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.backgroundImage1);
+            img2Uri = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.backgroundImage2);
+            vid1Uri = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.backgroundVideo1);
+            vid2Uri = storageAccess.getUriForItem(c,"Backgrounds","",FullscreenActivity.backgroundVideo2);
 
             // Decide if user is using video or image for background
             switch (FullscreenActivity.backgroundTypeToUse) {
@@ -604,20 +611,18 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                         mMediaPlayer.pause();
                     }
                     if (FullscreenActivity.backgroundToUse.equals("img1")) {
-                        imgFile = img1File;
+                        imgUri = img1Uri;
                     } else {
-                        imgFile = img2File;
+                        imgUri = img2Uri;
                     }
 
-                    if (imgFile.exists()) {
-                        if (imgFile.toString().contains("ost_bg.png")) {
+                    if (storageAccess.uriExists(c,imgUri)) {
+                        if (imgUri.getLastPathSegment().contains("ost_bg.png")) {
                             projected_BackgroundImage.setImageDrawable(defimage);
                         } else {
-                            // Process the image location into an URI
-                            Uri imageUri = Uri.fromFile(imgFile);
                             RequestOptions myOptions = new RequestOptions()
                                     .centerCrop();
-                            Glide.with(c).load(imageUri).apply(myOptions).into(projected_BackgroundImage);
+                            Glide.with(c).load(imgUri).apply(myOptions).into(projected_BackgroundImage);
                         }
                         projected_BackgroundImage.setVisibility(View.VISIBLE);
                     }
@@ -627,13 +632,10 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                     projected_TextureView.setVisibility(View.VISIBLE);
 
                     if (FullscreenActivity.backgroundToUse.equals("vid1")) {
-                        vidFile = vid1File;
+                        vidUri = vid1Uri;
                     } else {
-                        vidFile = vid2File;
+                        vidUri = vid2Uri;
                     }
-                    /*if (mMediaPlayer != null) {
-                        //mMediaPlayer.start();
-                    }*/
                     try {
                         Log.d("d","Trying to load video background");
                         reloadVideo();
@@ -727,7 +729,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         }
 
         static void doPDFPage() {
-            Bitmap bmp = ProcessSong.createPDFPage(c, availableScreenWidth, availableScreenHeight, "Y");
+            Bitmap bmp = ProcessSong.createPDFPage(c, storageAccess, availableScreenWidth, availableScreenHeight, "Y");
             projected_ImageView.setVisibility(View.GONE);
             projected_ImageView.setBackgroundColor(0xffffffff);
             projected_ImageView.setImageBitmap(bmp);
@@ -1570,50 +1572,47 @@ public class PresentationService extends CastRemoteDisplayLocalService {
         }
 
 
-        @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH)
         private static void reloadVideo() {
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                if (mMediaPlayer == null) {
-                    mMediaPlayer = new MediaPlayer();
-                    mMediaPlayer.setSurface(s);
-                }
+            if (mMediaPlayer == null) {
+                mMediaPlayer = new MediaPlayer();
+                mMediaPlayer.setSurface(s);
+            }
 
-                mMediaPlayer.reset();
-                try {
-                    mMediaPlayer.setDataSource(vidFile);
-                    Log.d("d","Setting the video file "+vidFile);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+            mMediaPlayer.reset();
+            try {
+                mMediaPlayer.setDataSource(c,vidUri);
+                Log.d("d","Setting the video file "+vidUri);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
 
-                try {
-                    mMediaPlayer.prepareAsync();
-                    mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mediaPlayer) {
-                            mediaPlayer.start();
-                        }
-                    });
-                    mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mediaPlayer) {
-                            if (mediaPlayer != null) {
-                                if (mediaPlayer.isPlaying()) {
-                                    mediaPlayer.stop();
-                                }
-                                mediaPlayer.reset();
+            try {
+                mMediaPlayer.prepareAsync();
+                mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mediaPlayer) {
+                        mediaPlayer.start();
+                    }
+                });
+                mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        if (mediaPlayer != null) {
+                            if (mediaPlayer.isPlaying()) {
+                                mediaPlayer.stop();
                             }
-                            try {
-                                reloadVideo();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                            mediaPlayer.reset();
                         }
-                    });
-                } catch (Exception e) {
-                    Log.e("Presentation window", "media player error");
-                }
+                        try {
+                            reloadVideo();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                Log.e("Presentation window", "media player error");
             }
         }
 
@@ -1654,7 +1653,6 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             doUpdate(); // Updates the page
         }
 
-        @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
             s = new Surface(surface);
@@ -1665,7 +1663,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
             mMediaPlayer.setOnCompletionListener(this);
             if (FullscreenActivity.backgroundTypeToUse.equals("video")) {
                 try {
-                    mMediaPlayer.setDataSource(vidFile);
+                    mMediaPlayer.setDataSource(c,vidUri);
                     mMediaPlayer.prepareAsync();
                 } catch (IllegalArgumentException | SecurityException | IllegalStateException | IOException e) {
                     e.printStackTrace();
@@ -1708,9 +1706,7 @@ public class PresentationService extends CastRemoteDisplayLocalService {
                 mp.reset();
             }
             try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                    reloadVideo();
-                }
+                reloadVideo();
             } catch (Exception e) {
                 e.printStackTrace();
             }

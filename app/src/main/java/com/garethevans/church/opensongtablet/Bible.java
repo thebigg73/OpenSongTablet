@@ -369,7 +369,7 @@ class Bible {
                 int startoffull = newbit.indexOf("<sup class=\"versenum\">");
                 int endoffull   = newbit.indexOf("<div class=\"crossrefs hidden\">");
 
-                if (endoffull>startoffull && startoffull>0 && endoffull>0) {
+                if (endoffull > startoffull && startoffull > 0) {
                     newbit = newbit.substring(startoffull,endoffull);
                 } else {
                     FullscreenActivity.myToastMessage = c.getResources().getString(R.string.error_missingsection);
@@ -412,7 +412,7 @@ class Bible {
                     ShowToast.showToast(c);
                 }
             }
-        }).run();
+        }).start();
 
 
 

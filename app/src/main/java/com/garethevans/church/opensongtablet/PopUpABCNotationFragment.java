@@ -237,14 +237,7 @@ public class PopUpABCNotationFragment extends DialogFragment {
                     FullscreenActivity.mLyrics = ABCPlaceHolder + "\n\n" + FullscreenActivity.mLyrics;
                 }*/
                 PopUpEditSongFragment.prepareSongXML();
-                try {
-                    PopUpEditSongFragment.justSaveSongXML();
-                } catch (Exception e) {
-                    Log.d("d","Error saving");
-                    FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
-                            getActivity().getResources().getString(R.string.error);
-                    ShowToast.showToast(getActivity());
-                }
+                PopUpEditSongFragment.justSaveSongXML(getActivity());
                 try {
                     /*if (mListener!=null) {
                         mListener.refreshAll();

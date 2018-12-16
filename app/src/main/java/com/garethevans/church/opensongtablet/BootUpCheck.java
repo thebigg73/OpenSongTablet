@@ -8,13 +8,15 @@ package com.garethevans.church.opensongtablet;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.DialogFragment;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -25,6 +27,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -37,7 +40,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChooserFragment.MyInterface {
+import lib.folderpicker.FolderPicker;
+
+public class BootUpCheck extends AppCompatActivity {
 
     // Declare helper classes:
     Preferences mPreferences;
@@ -45,17 +50,19 @@ public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChoo
 
     // Declare views
     ProgressBar progressBar;
-    TextView progressText, version;
-    Button chooseStorageButton, goToSongsButton, userGuideButton;
+    TextView progressText, version, previousStorageTextView, previousStorageHeading;
+    Button chooseStorageButton, goToSongsButton, userGuideButton, previousStorageButton;
     LinearLayout storageLinearLayout, readUpdate, userGuideLinearLayout;
     RelativeLayout goToSongsRelativeLayout;
-    Spinner appMode;
+    Spinner appMode, previousStorageSpinner;
     Toolbar toolbar;
     // Declare variables
     String text="", versionCode="",storagePath="";
     Uri uriTree;
-    boolean foldersok, storageGranted, skiptoapp;
+    boolean foldersok, storageGranted, skiptoapp, changed;
     int lastUsedVersion, thisVersion;
+    ArrayList<String> locations;
+    File folder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +129,10 @@ public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChoo
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.app_name));
         appMode = findViewById(R.id.appMode);
+        previousStorageSpinner = findViewById(R.id.previousStorageSpinner);
+        previousStorageButton = findViewById(R.id.previousStorageButton);
+        previousStorageTextView = findViewById(R.id.previousStorageTextView);
+        previousStorageHeading = findViewById(R.id.previousStorageHeading);
         // Set the 3 options
         ArrayList<String> appModes = new ArrayList<>();
         appModes.add(getString(R.string.performancemode));
@@ -212,6 +223,12 @@ public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChoo
                 }
             }
         });
+        previousStorageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearch();
+            }
+        });
     }
     void pulseStartButton() {
         CustomAnimations ca = new CustomAnimations();
@@ -293,7 +310,6 @@ public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChoo
             if (storageAccess.lollipopOrLater()) {
                 try {
                     String id = storageAccess.getDocumentsContractId(u);
-                    Log.d("d", "id=" + id);
                     List<String> bits = u.getPathSegments();
                     StringBuilder sb = new StringBuilder();
                     for (String b : bits) {
@@ -315,7 +331,7 @@ public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChoo
                     text = "" + uriTree;
                 }
             } else {
-                text = FullscreenActivity.customStorage;
+                text = u.getPath();
             }
 
         } else {
@@ -332,16 +348,14 @@ public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChoo
         if (storageGranted) {
             Intent intent;
             if (storageAccess.lollipopOrLater()) {
-                Log.d("d","Lollipop action");
                 intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
+                intent.putExtra("android.content.extra.FANCY", true);
+                intent.putExtra("android.content.extra.SHOW_FILESIZE", true);
+                intent.putExtra("android.content.extra.INITIAL_URI", uriTree);
                 startActivityForResult(intent, 42);
             } else {
                 openFragment();
-                /*intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.setType(DocumentsContract.Document.MIME_TYPE_DIR);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                //intent.putExtra(Intent.EXTRA_TITLE, storageAccess.appFolder);
-                startActivityForResult(intent, 40);*/
             }
 
         } else {
@@ -350,24 +364,54 @@ public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChoo
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-        if (resultCode == RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
 
-            uriTree = resultData.getData();
+            if (requestCode==7789 && resultData!=null && resultData.getExtras()!=null) {
+                // This is for Android KitKat - deprecated file method
+                String folderLocation = resultData.getExtras().getString("data");
+                if (folderLocation!=null) {
+                    uriTree = Uri.parse(folderLocation);
 
-            if (uriTree != null) {
-                getContentResolver().takePersistableUriPermission(uriTree,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                                Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    // If we can write to this all is good, if not, tell the user (likely to be SD card)
+                    if (!storageAccess.canWrite(BootUpCheck.this, uriTree)) {
+                        uriTree = null;
+                        ShowToast showToast = new ShowToast();
+                        showToast.showToastMessage(BootUpCheck.this, getString(R.string.storage_notwritable));
+                        if (locations.size() > 0) {
+                            // Revert back to the blank selection as the one chosen can't be used
+                            previousStorageSpinner.setSelection(0);
+                        }
+                    }
+                }
 
-                // Save the location
-                mPreferences.setMyPreferenceString(this,"uriTree",uriTree.toString());
 
-                // Update the storage text
-                showCurrentStorage(uriTree);
-
-                // See if we can show the start button yet
-                checkReadiness();
+            } else {
+                // This is the newer version for Lollipop+ This is preferred!
+                if (resultData!=null) {
+                    uriTree = resultData.getData();
+                } else {
+                    uriTree = null;
+                }
+                if (uriTree!=null) {
+                    getContentResolver().takePersistableUriPermission(uriTree,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                }
             }
+
+            // Save the location
+            if (uriTree!=null) {
+                FullscreenActivity.uriTree = uriTree;
+                mPreferences.setMyPreferenceString(this, "uriTree", uriTree.toString());
+            } else {
+                mPreferences.setMyPreferenceString(this, "uriTree", "");
+            }
+
+            // Update the storage text
+            showCurrentStorage(uriTree);
+
+            // See if we can show the start button yet
+            checkReadiness();
         }
     }
 
@@ -421,6 +465,9 @@ public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChoo
             showLoadingBar(false);
         }
 
+        // Load up the storage into the FullscreenActivity
+        FullscreenActivity.uriTree = uriTree;
+
         final TextView tv = findViewById(R.id.currentAction);
         tv.setVisibility(View.VISIBLE);
         tv.setText("");
@@ -461,12 +508,10 @@ public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChoo
                             tv.setText(message);
                         }
                     });
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        try {
-                            storageAccess.listSongs(BootUpCheck.this);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        storageAccess.listSongs(BootUpCheck.this);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
                     runOnUiThread(new Runnable() {
@@ -480,6 +525,7 @@ public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChoo
                         }
                     });
 
+
                     ListSongFiles listSongFiles = new ListSongFiles();
                     try {
                         listSongFiles.songUrisInFolder(BootUpCheck.this);
@@ -487,10 +533,11 @@ public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChoo
                         e.printStackTrace();
                     }
 
+
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            message = getString(R.string.success);
+                            message = tv.getText().toString() + "\n" + getString(R.string.success);
                             tv.setText(message);
                         }
                     });
@@ -514,15 +561,16 @@ public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChoo
                     mPreferences.setMyPreferenceInt(BootUpCheck.this, "showSplashVersion", thisVersion);
                     Preferences.savePreferences();
 
-                    //startActivity(intent);
-                    //finish();
-                    // For now, just stay here
+                    startActivity(intent);
+                    finish();
+
+                    /*// For now, just stay here
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             showLoadingBar(true);
                         }
-                    });
+                    });*/
                 } else {
                     // Show the progressBar if we were on the BootUpCheck screen
                     if (progressBar!=null) {
@@ -546,7 +594,7 @@ public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChoo
         }).start();
     }
 
-    @Override
+/*
     public void updateCustomStorage() {
         String storageChosen = FullscreenActivity.customStorage;
         Log.d("d","customStorage="+FullscreenActivity.customStorage);
@@ -574,15 +622,132 @@ public class BootUpCheck extends AppCompatActivity implements PopUpDirectoryChoo
             uriTree = null;
         }
     }
+*/
 
-    @Override
+    public void startSearch() {
+        // Deactivate the stuff we shouldn't click on while it is being prepared
+        setEnabledOrDisabled(false);
+
+        // Initialise the available storage locations
+        locations = new ArrayList<>();
+
+        FindLocations findlocations = new FindLocations();
+        findlocations.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    void setEnabledOrDisabled(boolean what) {
+        goToSongsButton.setEnabled(what);
+        chooseStorageButton.setEnabled(what);
+        readUpdate.setEnabled(what);
+        userGuideLinearLayout.setEnabled(what);
+        previousStorageButton.setEnabled(what);
+        previousStorageSpinner.setEnabled(what);
+        if (!what) {
+            progressBar.setVisibility(View.VISIBLE);
+            previousStorageTextView.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+            previousStorageTextView.setVisibility(View.GONE);
+        }
+    }
     public void openFragment() {
         Log.d("d","KitKat action to choose storage location");
-        DialogFragment frag = PopUpDirectoryChooserFragment.newInstance();
-        Bundle args = new Bundle();
-        args.putString("type", "folder");
-        frag.setArguments(args);
-        FullscreenActivity.whattodo = "choosefolder_kitkat";
-        frag.show(getFragmentManager(),"choosefolder_kitkat");
+        Intent intent = new Intent(this, FolderPicker.class);
+        intent.putExtra("title", getString(R.string.changestorage));
+        intent.putExtra("pickFiles", false);
+        if (uriTree!=null) {
+            intent.putExtra("location", uriTree.getPath());
+        }
+        startActivityForResult(intent, 7789);
+    }
+
+    public void walkFiles(File root) {
+        if (root!=null && root.exists() && root.isDirectory()) {
+            File[] list = root.listFiles();
+            if (list != null) {
+                for (File f : list) {
+                    if (f.isDirectory()) {
+                        String where = f.getAbsolutePath();
+                        if (where.endsWith("/OpenSong/Songs") && !where.contains(".estrongs") && !where.contains("com.ttxapps")) {
+                            // Found one and it isn't in eStrongs recycle folder or the dropsync temp files!
+                            where = where.substring(0, where.length() - 15);
+                            locations.add(where);
+                        }
+                        folder = f;
+                        displayWhere(where);
+                        walkFiles(f);
+                    }
+                }
+            }
+        }
+    }
+
+    public void displayWhere(String msg) {
+        final String str = msg;
+        runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    previousStorageTextView.setText(str);
+                }
+            });
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class FindLocations extends AsyncTask<Object, String, String> {
+
+        String s;
+
+        @Override
+        protected String doInBackground(Object... objects) {
+            // Go through the directories recursively and add them to an arraylist
+            folder = new File("/storage");
+            walkFiles(folder);
+
+            folder = Environment.getExternalStorageDirectory();
+            walkFiles(folder);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            // Set up the file list, as long as the user wasn't bored and closed the window!
+            if (locations!=null) {
+                // Hide the  and reenable stuff
+                setEnabledOrDisabled(true);
+
+                if (locations.size()<1) {
+                    // No previous installations found
+                    previousStorageTextView.setText(getString(R.string.nofound));
+                    previousStorageTextView.setVisibility(View.VISIBLE);
+                    previousStorageSpinner.setVisibility(View.GONE);
+                    previousStorageHeading.setVisibility(View.GONE);
+                } else {
+                    // Listen for the clicks!
+                    previousStorageHeading.setVisibility(View.VISIBLE);
+                    locations.add(0,"");
+                    previousStorageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            if (changed) {
+                                if (position>0) {
+                                    uriTree = Uri.parse(locations.get(position));
+                                    chooseStorageButton.performClick();
+                                }
+                            } else {
+                                changed=true;
+                            }
+
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) { }
+                    });
+                    ArrayAdapter<String> listAdapter = new ArrayAdapter<>(BootUpCheck.this, R.layout.my_spinner, locations);
+                    previousStorageSpinner.setAdapter(listAdapter);
+                    previousStorageSpinner.setVisibility(View.VISIBLE);
+                    previousStorageTextView.setVisibility(View.GONE);
+                }
+            }
+        }
     }
 }

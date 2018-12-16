@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -40,7 +39,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
     private ArrayList<SongMenuViewItems> songList;
     ViewHolder viewHolder;
     // sparse boolean array for checking the state of the items
-    private SparseBooleanArray itemStateArray= new SparseBooleanArray();
+    private SparseBooleanArray itemStateArray = new SparseBooleanArray();
 
     @SuppressLint("UseSparseArrays")
     SongMenuAdapter(Context context, ArrayList<SongMenuViewItems> songList) {
@@ -134,10 +133,6 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
 
                 viewHolder.lblListCheck.setTag(position); // This line is important.
 
-                //convertView.setTag(R.id.lblListItem, viewHolder.lblListItem);
-                //convertView.setTag(R.id.lblListItemAuthor, viewHolder.lblListItemAuthor);
-                //convertView.setTag(R.id.lblListCheck, viewHolder.lblListCheck);
-
                 // Get the values for this song
                 final SongMenuViewItems song = songList.get(position);
                 final String item_filename = song.getFilename();
@@ -145,6 +140,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                 String item_author = song.getAuthor();
                 String item_key = song.getKey();
                 boolean item_isinset = song.getInSet();
+
 
                 // Get the listener ready for item actions (press and long press items)
                 final Context c = convertView.getContext();
@@ -214,7 +210,8 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                                 viewHolder.isTicked = false;
                                 songList.get(position).setInSet(false);
                                 FullscreenActivity.mySet = FullscreenActivity.mySet.replace(FullscreenActivity.whatsongforsetwork, "");
-                                SetActions.prepareSetList();
+                                SetActions setActions = new SetActions();
+                                setActions.prepareSetList();
 
                                 // Tell the user that the song has been removed.
                                 FullscreenActivity.myToastMessage = "\"" + item_title + "\" " + c.getResources().getString(R.string.removedfromset);
@@ -251,14 +248,15 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                                         // as this might not be the song loaded
                                         String[] vals = LoadXML.getCCLILogInfo(c, FullscreenActivity.whichSongFolder, item_filename);
                                         if (vals.length == 4 && vals[0] != null && vals[1] != null && vals[2] != null && vals[3] != null) {
-                                            PopUpCCLIFragment.addUsageEntryToLog(FullscreenActivity.whichSongFolder + "/" + item_filename,
+                                            PopUpCCLIFragment.addUsageEntryToLog(c,FullscreenActivity.whichSongFolder + "/" + item_filename,
                                                     vals[0], vals[1], vals[2], vals[3], "6"); // Printed
                                         }
                                     }
 
                                     // Add the song
                                     FullscreenActivity.mySet = FullscreenActivity.mySet + FullscreenActivity.whatsongforsetwork;
-                                    SetActions.prepareSetList();
+                                    SetActions setActions = new SetActions();
+                                    setActions.prepareSetList();
 
                                     // Tell the user that the song has been added.
                                     FullscreenActivity.myToastMessage = "\"" + item_title + "\" " + c.getResources().getString(R.string.addedtoset);

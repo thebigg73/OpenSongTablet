@@ -25,9 +25,6 @@ import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
@@ -81,6 +78,8 @@ public class PopUpSetViewNew extends DialogFragment {
     static ItemTouchHelper.Callback callback;
     static ItemTouchHelper helper;
     FloatingActionButton saveMe;
+    StorageAccess storageAccess;
+    SetActions setActions;
 
     @Override
     public void onStart() {
@@ -141,6 +140,9 @@ public class PopUpSetViewNew extends DialogFragment {
         if (mListener!=null) {
             mListener.pageButtonAlpha("set");
         }
+
+        storageAccess = new StorageAccess();
+        setActions = new SetActions();
 
         TextView helpClickItem_TextView = V.findViewById(R.id.helpClickItem_TextView);
         TextView helpDragItem_TextView = V.findViewById(R.id.helpDragItem_TextView);
@@ -223,13 +225,15 @@ public class PopUpSetViewNew extends DialogFragment {
                 // Save any changes to current set first
                 doSave();
 
-                File settosave = new File(FullscreenActivity.dirsets,FullscreenActivity.lastSetName);
+                Uri uri = storageAccess.getUriForItem(getActivity(),"Sets","",
+                        FullscreenActivity.lastSetName);
+
                 if (FullscreenActivity.lastSetName==null || FullscreenActivity.lastSetName.equals("")) {
                     FullscreenActivity.whattodo = "saveset";
                     if (mListener != null) {
                         mListener.openFragment();
                     }
-                } else if (settosave.exists()) {
+                } else if (storageAccess.uriExists(getActivity(),uri)) {
                     // Load the are you sure prompt
                     FullscreenActivity.whattodo = "saveset";
                     String setnamenice = FullscreenActivity.lastSetName.replace("__"," / ");
@@ -260,7 +264,7 @@ public class PopUpSetViewNew extends DialogFragment {
 
 
         // Try to move to the corresponding item in the set that we are viewing.
-        SetActions.indexSongInSet();
+        setActions.indexSongInSet();
 
         // If the song is found (indexSongInSet>-1 and lower than the number of items shown), smooth scroll to it
         if (FullscreenActivity.indexSongInSet>-1 && FullscreenActivity.indexSongInSet<FullscreenActivity.mTempSetList.size()) {
@@ -296,7 +300,7 @@ public class PopUpSetViewNew extends DialogFragment {
         FullscreenActivity.mySet = null;
         FullscreenActivity.mySet = tempmySet.toString();
         FullscreenActivity.mTempSetList = null;
-        SetActions.prepareSetList();
+        setActions.prepareSetList();
         FullscreenActivity.myToastMessage = getActivity().getString(R.string.currentset) +
                 " - " + getActivity().getString(R.string.ok);
         Preferences.savePreferences();
@@ -346,7 +350,7 @@ public class PopUpSetViewNew extends DialogFragment {
                     mysongtitle = mysongtitle.substring(1);
                 }
 
-                if (mysongfolder.isEmpty() || mysongfolder.equals("")) {
+                if (mysongfolder.isEmpty()) {
                     mysongfolder = getResources().getString(R.string.mainfoldername);
                 }
 
@@ -406,40 +410,19 @@ public class PopUpSetViewNew extends DialogFragment {
     public static void makeVariation(Context c) {
         // Prepare the name of the new variation slide
         // If the file already exists, add _ to the filename
-        String newfilename = FullscreenActivity.dirvariations + "/" + FullscreenActivity.songfilename;
         StringBuilder newsongname = new StringBuilder(FullscreenActivity.songfilename);
-        File newfile = new File(newfilename);
-        while (newfile.exists()) {
-            newfilename = newfilename + "_";
-            newsongname.append("_");
-            newfile = new File(newfilename);
-        }
+        StorageAccess storageAccess = new StorageAccess();
+        Uri uriVariation = storageAccess.getUriForItem(c,"Variations","",
+                FullscreenActivity.songfilename);
 
         // Original file
-        File src;
-        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-            src = new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename);
-        } else {
-            src = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.songfilename);
-        }
+        Uri uriOriginal = storageAccess.getUriForItem(c,"Songs",FullscreenActivity.whichSongFolder,
+                FullscreenActivity.songfilename);
 
         // Copy the file into the variations folder
-        try {
-            InputStream in = new FileInputStream(src);
-            OutputStream out = new FileOutputStream(newfile);
-
-            // Transfer bytes from in to out
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                out.write(buf, 0, len);
-            }
-            in.close();
-            out.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        InputStream inputStream = storageAccess.getInputStream(c,uriOriginal);
+        OutputStream outputStream = storageAccess.getOutputStream(c,uriVariation);
+        storageAccess.copyFile(inputStream,outputStream);
 
         // Fix the song name and folder for loading
         FullscreenActivity.songfilename = newsongname.toString();

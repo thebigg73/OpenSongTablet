@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -23,8 +23,6 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 
 public class PopUpPadFragment extends DialogFragment {
@@ -199,14 +197,7 @@ public class PopUpPadFragment extends DialogFragment {
 
     public void doSave() {
         PopUpEditSongFragment.prepareSongXML();
-        try {
-            PopUpEditSongFragment.justSaveSongXML();
-        } catch (Exception e) {
-            e.printStackTrace();
-            FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
-                    getActivity().getResources().getString(R.string.error);
-            ShowToast.showToast(getActivity());
-        }
+        PopUpEditSongFragment.justSaveSongXML(getActivity());
         Preferences.savePreferences();
         mListener.loadSong();
         dismiss();
@@ -249,14 +240,7 @@ public class PopUpPadFragment extends DialogFragment {
                 FullscreenActivity.mPadFile = popupPad_file.getItemAtPosition(popupPad_file.getSelectedItemPosition()).toString();
             }
             PopUpEditSongFragment.prepareSongXML();
-            try {
-                PopUpEditSongFragment.justSaveSongXML();
-            } catch (Exception e) {
-                e.printStackTrace();
-                FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
-                        getActivity().getResources().getString(R.string.error);
-                ShowToast.showToast(getActivity());
-            }
+            PopUpEditSongFragment.justSaveSongXML(getActivity());
         }
 
         @Override
@@ -356,14 +340,10 @@ public class PopUpPadFragment extends DialogFragment {
 
                 // Set the loop on or off
                 if (FullscreenActivity.mLoopAudio.equals("true")) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                        popupPad_loopaudio.setChecked(true);
-                    }
+                    popupPad_loopaudio.setChecked(true);
                 } else {
                     FullscreenActivity.mLoopAudio = "false";
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                        popupPad_loopaudio.setChecked(false);
-                    }
+                    popupPad_loopaudio.setChecked(false);
                 }
 
                 // Set the pad volume and pan
@@ -396,17 +376,10 @@ public class PopUpPadFragment extends DialogFragment {
 
     private void startenabled() {
         validpad = false;
-        String filetext = FullscreenActivity.mLinkAudio;
-        filetext = filetext.replace("file://","");
-        // If this is a localised file, we need to unlocalise it to enable it to be read
-        if (filetext.startsWith("../OpenSong/")) {
-            filetext = filetext.replace("../OpenSong/",FullscreenActivity.homedir+"/");
-        }
-        //filetext = "file://" + filetext;
-        // The above line was causing errors (file was wrong location)
-
-        // Try to fix the start of the file
-        File file = new File(URI.create(filetext).getPath());
+        StorageAccess storageAccess = new StorageAccess();
+        Uri uri = storageAccess.fixLocalisedUri(getActivity(),FullscreenActivity.mLinkAudio);
+        Log.d("d","uri="+uri);
+        boolean isvalid = storageAccess.uriExists(getActivity(),uri);
 
         if (popupPad_file.getSelectedItemPosition() == 0 && popupPad_key.getSelectedItemPosition() > 0) {
             validpad = true;
@@ -414,9 +387,9 @@ public class PopUpPadFragment extends DialogFragment {
             text = getResources().getString(R.string.pad_choose_key);
             validpad = false;
 
-        } else if (popupPad_file.getSelectedItemPosition() == 1 && file.exists()) {
+        } else if (popupPad_file.getSelectedItemPosition() == 1 && isvalid) {
             validpad = true;
-        } else if (popupPad_file.getSelectedItemPosition() == 1 && !file.exists()) {
+        } else if (popupPad_file.getSelectedItemPosition() == 1 && !isvalid) {
             validpad = false;
             text = getResources().getString(R.string.link_audio) + " - " + getResources().getString(R.string.notset);
 

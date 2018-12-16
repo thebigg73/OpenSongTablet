@@ -239,7 +239,7 @@ public class PopUpMetronomeFragment extends DialogFragment {
     public void doSave() {
         PopUpEditSongFragment.prepareSongXML();
         try {
-            PopUpEditSongFragment.justSaveSongXML();
+            PopUpEditSongFragment.justSaveSongXML(getActivity());
             FullscreenActivity.myToastMessage = getResources().getString(R.string.edit_save) + " - " +
                     getResources().getString(R.string.ok);
         } catch (Exception e) {

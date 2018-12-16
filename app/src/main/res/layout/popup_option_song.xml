@@ -2,6 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -23,7 +24,8 @@
             android:drawableStart="@drawable/ic_arrow_up_drop_circle_outline_yellow_36dp"
             android:gravity="center"
             android:text="@string/options_song"
-            style="@style/MyMenuHeadingText" />
+            style="@style/MyMenuHeadingText"
+            tools:ignore="RtlHardcoded" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/closeOptionsFAB"
@@ -65,7 +67,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_song_edit"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/songStickyButton"
@@ -79,7 +82,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_song_stickynotes"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/songDrawingButton"
@@ -93,7 +97,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/highlight"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/songScoreButton"
@@ -107,7 +112,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/highlight"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/songOnYouTubeButton"
@@ -121,7 +127,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/youtube"
                 android:textColor="#fff"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/songOnWebButton"
@@ -135,7 +142,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/websearch"
                 android:textColor="#fff"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/songRenameButton"
@@ -149,7 +157,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_song_rename"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/songNewButton"
@@ -163,7 +172,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_song_new"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/songDeleteButton"
@@ -177,7 +187,23 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_song_delete"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
+
+        <Button
+            android:id="@+id/songImportButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/menu_button"
+            android:drawableLeft="@drawable/ic_arrow_right_white_36dp"
+            android:drawablePadding="4dp"
+            android:drawableStart="@drawable/ic_arrow_right_white_36dp"
+            android:gravity="center_vertical"
+            android:text="@string/importnewsong"
+            android:textColor="#fff"
+            android:textSize="12sp"
+            tools:ignore="RtlHardcoded" />
 
             <Button
                 android:id="@+id/songExportButton"
@@ -191,7 +217,8 @@
                 android:gravity="center_vertical"
                 android:text="@string/options_song_export"
                 android:textColor="#fff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="RtlHardcoded" />
 
             <android.support.v7.widget.SwitchCompat
                 android:id="@+id/songPresentationOrderButton"
@@ -206,7 +233,8 @@
                 android:theme="@style/SwitchStyle"
                 android:textColor="#fff"
                 android:textSize="12sp"
-                app:showText="false" />
+                app:showText="false"
+                tools:ignore="RtlHardcoded" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/songKeepMultiLineCompactButton"
@@ -221,7 +249,8 @@
             android:theme="@style/SwitchStyle"
             android:textColor="#fff"
             android:textSize="12sp"
-            app:showText="false" />
+            app:showText="false"
+            tools:ignore="RtlHardcoded" />
 
     </LinearLayout>
     </ScrollView>

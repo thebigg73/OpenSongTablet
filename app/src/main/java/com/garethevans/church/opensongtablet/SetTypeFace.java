@@ -1,14 +1,14 @@
 package com.garethevans.church.opensongtablet;
 
+import android.content.Context;
 import android.graphics.Typeface;
-
-import java.io.File;
+import android.net.Uri;
 
 class SetTypeFace {
 
-    public static void setTypeface() {
+    public static void setTypeface(Context c) {
         // Set up the custom font (if it has been set)
-        FullscreenActivity.customfont = setCustomFont(FullscreenActivity.customfontname);
+        FullscreenActivity.customfont = setCustomFont(c, FullscreenActivity.customfontname);
 
         switch (FullscreenActivity.mylyricsfontnum) {
             case 1:
@@ -206,12 +206,12 @@ class SetTypeFace {
 
     }
 
-    static Typeface setCustomFont(String ff) {
+    static Typeface setCustomFont(Context c, String ff) {
         Typeface tf = FullscreenActivity.typeface0;
-        String fl = FullscreenActivity.dirfonts + "/" + ff;
-        File cf = new File(fl);
-        if (cf.exists() && (ff.endsWith(".ttf") || ff.endsWith(".otf"))) {
-            tf = Typeface.createFromFile(cf);
+        StorageAccess storageAccess = new StorageAccess();
+        Uri uri = storageAccess.getUriForItem(c,"Fonts","",ff);
+        if (storageAccess.uriExists(c,uri) && (ff.endsWith(".ttf") || ff.endsWith(".otf"))) {
+            tf = Typeface.createFromFile(uri.getPath());
         } else {
             FullscreenActivity.customfontname = "";
             Preferences.savePreferences();

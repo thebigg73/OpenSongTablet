@@ -2,7 +2,6 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.DialogFragment;
 import android.content.Context;
-import android.os.Bundle;
 
 class OpenFragment {
 
@@ -225,31 +224,15 @@ class OpenFragment {
                 newFragment = PopUpSongFolderRenameFragment.newInstance(message);
                 break;
 
-            case "managestorage":
-                newFragment = PopUpStorageFragment.newInstance();
-                break;
-
-            case "findstoragelocation":
-            case "findstoragelocation_splash":
-                newFragment = PopUpFindStorageLocationFragment.newInstance();
-                break;
-
             case "exportsonglist":
                 newFragment = PopUpExportSongListFragment.newInstance();
                 break;
 
-            case "customstoragefind":
-                newFragment = PopUpDirectoryChooserFragment.newInstance();
-                Bundle args = new Bundle();
-                args.putString("type", "folder");
-                newFragment.setArguments(args);
-                break;
-
             case "filechooser":
-                newFragment = PopUpDirectoryChooserFragment.newInstance();
+                /*newFragment = PopUpDirectoryChooserFragment.newInstance();
                 Bundle args2 = new Bundle();
                 args2.putString("type", "file");
-                newFragment.setArguments(args2);
+                newFragment.setArguments(args2);*/
                 break;
 
             case "choosefile": //For connected display backgrounds
@@ -289,22 +272,7 @@ class OpenFragment {
                 newFragment = PopUpChordFormatFragment.newInstance();
                 break;
 
-            // OLD
-            case "importosb":
-                newFragment = PopUpImportExternalFile.newInstance();
-                break;
-
-            case "findosbfiles":
-                newFragment = PopUpDirectoryChooserFragment.newInstance();
-                Bundle argsosb = new Bundle();
-                argsosb.putString("type", "findosbfiles");
-                newFragment.setArguments(argsosb);
-                break;
-
             case "processimportosb":
-                newFragment = PopUpImportExportOSBFragment.newInstance();
-                break;
-
             case "exportosb":
                 newFragment = PopUpImportExportOSBFragment.newInstance();
                 break;

@@ -27,6 +27,7 @@ public class PopUpChooseFolderFragment extends DialogFragment {
     }
 
     private MyInterface mListener;
+    StorageAccess storageAccess;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -85,26 +86,41 @@ public class PopUpChooseFolderFragment extends DialogFragment {
 
         lv = V.findViewById(R.id.songfolders_ListView);
 
+        storageAccess = new StorageAccess();
+
         // Update the song folders
         FullscreenActivity.songfilelist = new SongFileList();
-        ListSongFiles.getAllSongFolders();
+        FullscreenActivity.mSongFolderNames = null;
 
-        if (FullscreenActivity.mSongFolderNames!=null) {
-            ArrayAdapter<String> lva = new ArrayAdapter<>(getActivity(),
-                    R.layout.songlistitem, FullscreenActivity.mSongFolderNames);
-            lv.setAdapter(lva);
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    FullscreenActivity.whichSongFolder = FullscreenActivity.mSongFolderNames[i];
-                    //Preferences.savePreferences();  // Remove this to avoid bugs if user is only browsing
-                    if (mListener != null) {
-                        mListener.prepareSongMenu();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ListSongFiles.getAllSongFolders(getActivity(),storageAccess);
+
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (FullscreenActivity.mSongFolderNames!=null) {
+                            ArrayAdapter<String> lva = new ArrayAdapter<>(getActivity(),
+                                    R.layout.songlistitem, FullscreenActivity.mSongFolderNames);
+                            lv.setAdapter(lva);
+                            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    FullscreenActivity.whichSongFolder = FullscreenActivity.mSongFolderNames[i];
+                                    //Preferences.savePreferences();  // Remove this to avoid bugs if user is only browsing
+                                    if (mListener != null) {
+                                        mListener.prepareSongMenu();
+                                    }
+                                    PopUpChooseFolderFragment.this.dismiss();
+                                }
+                            });
+                        }
                     }
-                    PopUpChooseFolderFragment.this.dismiss();
-                }
-            });
-        }
+                });
+            }
+        }).start();
 
         PopUpSizeAndAlpha.decoratePopUp(getActivity(),getDialog());
 

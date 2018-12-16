@@ -181,14 +181,7 @@ public class PopUpEditStickyFragment extends DialogFragment {
         FullscreenActivity.mNotes = editStickyText.getText().toString();
         // Save the file
         PopUpEditSongFragment.prepareSongXML();
-        try {
-            PopUpEditSongFragment.justSaveSongXML();
-        } catch (IOException e) {
-            e.printStackTrace();
-            FullscreenActivity.myToastMessage = getActivity().getResources().getString(R.string.savesong) + " - " +
-                    getActivity().getResources().getString(R.string.error);
-            ShowToast.showToast(getActivity());
-        }
+        PopUpEditSongFragment.justSaveSongXML(getActivity());
         if (mListener!=null) {
             mListener.loadSong();
         }

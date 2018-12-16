@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.pdf.PdfRenderer;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
@@ -45,7 +46,10 @@ public class ProcessSong extends Activity {
         myLyrics = myLyrics.replace("&#27;", "'");
         myLyrics = myLyrics.replace("&#027;", "'");
         myLyrics = myLyrics.replace("&#39;","'");
+        myLyrics = myLyrics.replace("&#34;","'");
         myLyrics = myLyrics.replace("&#039;","'");
+        myLyrics = myLyrics.replace("&ndash;","-");
+        myLyrics = myLyrics.replace("&mdash;","-");
         myLyrics = myLyrics.replace("&apos;","'");
         myLyrics = myLyrics.replace("&lt;", "<");
         myLyrics = myLyrics.replace("&gt;", ">");
@@ -200,10 +204,9 @@ public class ProcessSong extends Activity {
                 tempLyrics.append(FullscreenActivity.songSections[x]).append("\n");
             } else if (FullscreenActivity.songSectionsLabels[x]!=null &&
                     !FullscreenActivity.songSectionsLabels[x].isEmpty()) {
-                tempLyrics.append("["+FullscreenActivity.songSectionsLabels[x]).append("]\n");
+                tempLyrics.append("[").append(FullscreenActivity.songSectionsLabels[x]).append("]\n");
                 tempLyrics.append(FullscreenActivity.songSections[x]).append("\n");
             }
-            Log.d("d","tempLyrics="+tempLyrics);
         }
         FullscreenActivity.myParsedLyrics = tempLyrics.toString().split("\n");
 
@@ -2571,7 +2574,7 @@ public class ProcessSong extends Activity {
         return tl;
     }
 
-    static Bitmap createPDFPage(Context c, int pagewidth, int pageheight, String scale) {
+    static Bitmap createPDFPage(Context c, StorageAccess storageAccess, int pagewidth, int pageheight, String scale) {
         String tempsongtitle = FullscreenActivity.songfilename.replace(".pdf", "");
         tempsongtitle = tempsongtitle.replace(".PDF", "");
         FullscreenActivity.mTitle = tempsongtitle;
@@ -2579,13 +2582,14 @@ public class ProcessSong extends Activity {
 
         // This only works for post Lollipop devices
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            LoadXML.getFileLocation();
+
+            Uri uri = storageAccess.getUriForItem(c,"Songs",FullscreenActivity.whichSongFolder,FullscreenActivity.songfilename);
+
             // FileDescriptor for file, it allows you to close file when you are done with it
             ParcelFileDescriptor mFileDescriptor = null;
             PdfRenderer mPdfRenderer = null;
-
             try {
-                mFileDescriptor = ParcelFileDescriptor.open(FullscreenActivity.file, ParcelFileDescriptor.MODE_READ_ONLY);
+                mFileDescriptor = c.getContentResolver().openFileDescriptor(uri, "r");
                 if (mFileDescriptor != null) {
                     mPdfRenderer = new PdfRenderer(mFileDescriptor);
                     FullscreenActivity.pdfPageCount = mPdfRenderer.getPageCount();
@@ -2865,14 +2869,18 @@ public class ProcessSong extends Activity {
         String nextinset = "";
         if (FullscreenActivity.setView) {
             // Get the index in the set
-            if (!FullscreenActivity.nextSongInSet.equals("")) {
-                FullscreenActivity.nextSongKeyInSet = LoadXML.grabNextSongInSetKey(c,FullscreenActivity.nextSongInSet);
-                nextinset = ";__" + c.getString(R.string.next) + ": " + FullscreenActivity.nextSongInSet;
-                if (!FullscreenActivity.nextSongKeyInSet.equals("")) {
-                    nextinset = nextinset + " (" + FullscreenActivity.nextSongKeyInSet + ")";
+            try {
+                if (!FullscreenActivity.nextSongInSet.equals("")) {
+                    FullscreenActivity.nextSongKeyInSet = LoadXML.grabNextSongInSetKey(c, FullscreenActivity.nextSongInSet);
+                    nextinset = ";__" + c.getString(R.string.next) + ": " + FullscreenActivity.nextSongInSet;
+                    if (!FullscreenActivity.nextSongKeyInSet.equals("")) {
+                        nextinset = nextinset + " (" + FullscreenActivity.nextSongKeyInSet + ")";
+                    }
+                } else {
+                    nextinset = ";__" + c.getResources().getString(R.string.lastsong);
                 }
-            } else {
-                nextinset = ";__"  + c.getResources().getString(R.string.lastsong);
+            } catch (Exception e) {
+                Log.d("d","Problem getting next song info");
             }
         }
 
@@ -2996,7 +3004,7 @@ public class ProcessSong extends Activity {
     }
 
     // The stuff for the highlighter notes
-    static File getHighlightFile(Context c) {
+    static Uri getHighlightFile(Context c) {
         String layout;
         String highlighterfile;
         if (c.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -3007,6 +3015,8 @@ public class ProcessSong extends Activity {
         if (FullscreenActivity.whichSongFolder.equals(c.getString(R.string.mainfoldername)) ||
                 FullscreenActivity.whichSongFolder.equals("")) {
             highlighterfile = FullscreenActivity.mainfoldername + "_" + FullscreenActivity.songfilename;
+        } else if (FullscreenActivity.whichSongFolder.startsWith("../")) {
+            highlighterfile = FullscreenActivity.whichSongFolder.replace("../","").replace("/","_") + "_" + FullscreenActivity.songfilename;
         } else {
             highlighterfile = FullscreenActivity.whichSongFolder.replace("/","_") + "_" + FullscreenActivity.songfilename;
         }
@@ -3018,7 +3028,8 @@ public class ProcessSong extends Activity {
         highlighterfile =  highlighterfile + layout + page + ".png";
 
         // This file may or may not exist
-        return new File (FullscreenActivity.dirhighlighter,highlighterfile);
+        StorageAccess storageAccess = new StorageAccess();
+        return storageAccess.getUriForItem(c,"Highlighter","",highlighterfile);
     }
 
 }

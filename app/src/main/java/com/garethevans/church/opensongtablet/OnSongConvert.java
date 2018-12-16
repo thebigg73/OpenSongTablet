@@ -4,15 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.DocumentsContract;
 import android.util.Log;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.util.ArrayList;
 
 class OnSongConvert {
 
@@ -25,18 +22,18 @@ class OnSongConvert {
 
     static String message = "";
     private static boolean isbatch = false;
-	static boolean doExtract() throws IOException {
+	boolean doExtract(Context c) {
 
 		// This is called when a OnSong format song has been loaded.
 		// This tries to extract the relevant stuff and reformat the
 		// <lyrics>...</lyrics>
 		String temp = FullscreenActivity.myXML;
 		StringBuilder parsedlines;
-		// Initialise all the xml tags a song should have
-        FullscreenActivity.mTitle = FullscreenActivity.songfilename;
-		// Initialise all the other tags
-        LoadXML.initialiseSongTags();
-
+		
+        // Initialise the variables
+        SongXML songXML = new SongXML();
+        songXML.initialiseSongTags();
+        
         // Break the temp variable into an array split by line
 		// Check line endings are \n
         //temp = temp.replaceAll("[\\x0-\\x9]", "");
@@ -56,29 +53,29 @@ class OnSongConvert {
 		int numlines = line.length;
 
         //Go through the lines and get rid of rubbish
-        for (int c=0;c<numlines;c++) {
-			line[c] = line[c].replace("&#39;","'");
-            line[c] = line[c].replace("&#145","'");
-            line[c] = line[c].replace("&#146;","'");
-            line[c] = line[c].replace("&#147;","'");
-            line[c] = line[c].replace("&#148;","'");
-            line[c] = line[c].replace("тАЩ","'");
-            line[c] = line[c].replace("\u0027","'");
-            line[c] = line[c].replace("\u0028","'");
-            line[c] = line[c].replace("\u0029","'");
-            line[c] = line[c].replace("\u0211", "'");
-            line[c] = line[c].replace("\u0212", "'");
-            line[c] = line[c].replace("\u0213", "'");
-            line[c] = line[c].replace("\u00D5", "'");
-            line[c] = line[c].replace("\u0442\u0410\u0429", "'");
-            line[c] = line[c].replace("\u0429", "");
-            line[c] = line[c].replace("\u0410", "");
-            line[c] = line[c].replace("\u0429", "'");
-            line[c] = line[c].replace("\u0060", "'");
-            line[c] = line[c].replace("\u00B4", "'");
-            line[c] = line[c].replace("\u2018", "'");
-            line[c] = line[c].replace("\u2019", "'");
-            //line[c] = line[c].replaceAll("[^\\x20-\\x7e]", "");
+        for (int y=0;y<numlines;y++) {
+			line[y] = line[y].replace("&#39;","'");
+            line[y] = line[y].replace("&#145","'");
+            line[y] = line[y].replace("&#146;","'");
+            line[y] = line[y].replace("&#147;","'");
+            line[y] = line[y].replace("&#148;","'");
+            line[y] = line[y].replace("тАЩ","'");
+            line[y] = line[y].replace("\u0027","'");
+            line[y] = line[y].replace("\u0028","'");
+            line[y] = line[y].replace("\u0029","'");
+            line[y] = line[y].replace("\u0211", "'");
+            line[y] = line[y].replace("\u0212", "'");
+            line[y] = line[y].replace("\u0213", "'");
+            line[y] = line[y].replace("\u00D5", "'");
+            line[y] = line[y].replace("\u0442\u0410\u0429", "'");
+            line[y] = line[y].replace("\u0429", "");
+            line[y] = line[y].replace("\u0410", "");
+            line[y] = line[y].replace("\u0429", "'");
+            line[y] = line[y].replace("\u0060", "'");
+            line[y] = line[y].replace("\u00B4", "'");
+            line[y] = line[y].replace("\u2018", "'");
+            line[y] = line[y].replace("\u2019", "'");
+            //line[y] = line[y].replaceAll("[^\\x20-\\x7e]", "");
         }
 
 		// Extract the metadata
@@ -621,9 +618,9 @@ class OnSongConvert {
 				line[x] = line[x].replace(" (Verse 1)", "[V1]");
 				line[x] = line[x].replace(" (Verse 2)", "[V2]");
 				line[x] = line[x].replace(" (Verse 3)", "[V3]");
-				line[x] = line[x].replace(" (Chorus)", "[C]");
-                line[x] = line[x].replace(" Chorus", "[C]");
-				line[x] = line[x].replace(" C:", "[C]");
+				line[x] = line[x].replace(" (Chorus)", "[y]");
+                line[x] = line[x].replace(" Chorus", "[y]");
+				line[x] = line[x].replace(" C:", "[y]");
 				line[x] = line[x].replace(" C1:", "[C1]");
 				line[x] = line[x].replace(" C2:", "[C2]");
 				line[x] = line[x].replace(" C3:", "[C3]");
@@ -633,7 +630,7 @@ class OnSongConvert {
 				line[x] = line[x].replace(" C7:", "[C7]");
 				line[x] = line[x].replace(" C8:", "[C8]");
 				line[x] = line[x].replace(" C9:", "[C9]");
-				line[x] = line[x].replace(" Chorus:", "[C]");
+				line[x] = line[x].replace(" Chorus:", "[y]");
 				line[x] = line[x].replace(" Chorus 1:", "[C1]");
 				line[x] = line[x].replace(" Chorus 2:", "[C2]");
 				line[x] = line[x].replace(" Chorus 3:", "[C3]");
@@ -664,8 +661,8 @@ class OnSongConvert {
 				line[x] = line[x].replace("(Verse 1)", "[V1]");
 				line[x] = line[x].replace("(Verse 2)", "[V2]");
 				line[x] = line[x].replace("(Verse 3)", "[V3]");				
-				line[x] = line[x].replace("(Chorus)", "[C]");
-				line[x] = line[x].replace("C:", "[C]");
+				line[x] = line[x].replace("(Chorus)", "[y]");
+				line[x] = line[x].replace("C:", "[y]");
 				line[x] = line[x].replace("C1:", "[C1]");
 				line[x] = line[x].replace("C2:", "[C2]");
 				line[x] = line[x].replace("C3:", "[C3]");
@@ -675,7 +672,7 @@ class OnSongConvert {
 				line[x] = line[x].replace("C7:", "[C7]");
 				line[x] = line[x].replace("C8:", "[C8]");
 				line[x] = line[x].replace("C9:", "[C9]");
-				line[x] = line[x].replace("Chorus:", "[C]");
+				line[x] = line[x].replace("Chorus:", "[y]");
 				line[x] = line[x].replace("Chorus 1:", "[C1]");
 				line[x] = line[x].replace("Chorus 2:", "[C2]");
 				line[x] = line[x].replace("Chorus 3:", "[C3]");
@@ -711,10 +708,10 @@ class OnSongConvert {
 		
 		// Change start and end of chorus
 		while (parsedlines.toString().contains("{start_of_chorus")) {
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus}", "[C]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus:}", "[C]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus :}", "[C]"));
-			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus", "[C]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus}", "[y]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus:}", "[y]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus :}", "[y]"));
+			parsedlines = new StringBuilder(parsedlines.toString().replace("{start_of_chorus", "[y]"));
 			parsedlines = new StringBuilder(parsedlines.toString().replace(":", ""));
 			parsedlines = new StringBuilder(parsedlines.toString().replace("}", ""));
 		}
@@ -780,164 +777,68 @@ class OnSongConvert {
 			parsedlines.append(line2[x]).append("\n");
 		}
 
-		boolean isempty = false;
-        if (parsedlines.toString().equals("")) {
+		if (parsedlines.toString().equals("")) {
             parsedlines = new StringBuilder(FullscreenActivity.songfilename);
-            isempty = true;
         }
 
-		FullscreenActivity.myXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-				+ "<song>\n"
-				+ "<title>" + FullscreenActivity.mTitle + "</title>\n"
-				+ "<author>" + FullscreenActivity.mAuthor + "</author>\n"
-				+ "<copyright>" + FullscreenActivity.mCopyright + "</copyright>\n"
-				+ "  <presentation>" + FullscreenActivity.mPresentation + "</presentation>\n"
-				+ "  <hymn_number>" + FullscreenActivity.mHymnNumber + "</hymn_number>\n"
-				+ "  <capo print=\"" + FullscreenActivity.mCapoPrint + "\">" + FullscreenActivity.mCapo + "</capo>\n"
-				+ "  <tempo>" + FullscreenActivity.mTempo + "</tempo>\n"
-				+ "  <time_sig>" + FullscreenActivity.mTimeSig + "</time_sig>\n"
-				+ "  <duration>" + FullscreenActivity.mDuration + "</duration>\n"
-				+ "  <ccli>" + FullscreenActivity.mCCLI + "</ccli>\n"
-				+ "  <theme>" + FullscreenActivity.mTheme + "</theme>\n"
-				+ "  <alttheme></alttheme>\n"
-				+ "  <user1>" + FullscreenActivity.mUser1 + "</user1>\n"
-				+ "  <user2></user2>\n"
-				+ "  <user3></user3>\n"
-				+ "  <key>" + FullscreenActivity.mKey + "</key>\n"
-				+ "  <aka></aka>\n"
-				+ "  <key_line></key_line>\n"
-				+ "  <books>" + FullscreenActivity.mBooks + "</books>\n"
-				+ "  <midi>" + FullscreenActivity.mMidi + "</midi>\n"
-				+ "  <midi_index>" + FullscreenActivity.mMidiIndex + "</midi_index>\n"
-				+ "  <pitch>" + FullscreenActivity.mPitch + "</pitch>\n"
-				+ "  <restrictions>" + FullscreenActivity.mRestrictions + "</restrictions>\n"
-				+ "  <notes></notes>\n"
-				+ "  <lyrics>" + parsedlines.toString().trim() + "</lyrics>\n"
-                + "  <linked_songs>" + FullscreenActivity.mLinkedSongs + "</linked_songs>\n"
-                + "  <pad_file>" + FullscreenActivity.mPadFile + "</pad_file>\n"
-                + "  <custom_chords>" + FullscreenActivity.mCustomChords + "</custom_chords>\n"
-                + "  <link_youtube>" + FullscreenActivity.mLinkYouTube + "</link_youtube>\n"
-                + "  <link_web>" + FullscreenActivity.mLinkWeb + "</link_web>\n"
-                + "  <link_audio>" + FullscreenActivity.mLinkAudio + "</link_audio>\n"
-                + "  <link_other>" + FullscreenActivity.mLinkOther + "</link_other>\n"
-				+ "</song>";
-		
-		// Save this song in the right format!
-		// Makes sure all & are replaced with &amp;
-		FullscreenActivity.myXML = FullscreenActivity.myXML.replace("&amp;",
-				"&");
-		FullscreenActivity.myXML = FullscreenActivity.myXML.replace("&",
-				"&amp;");
-		
-		FullscreenActivity.myXML = FullscreenActivity.myXML.replace("\'","'");
-		FullscreenActivity.myXML = FullscreenActivity.myXML.replace("Õ","'");
-		FullscreenActivity.myXML = FullscreenActivity.myXML.replace("Ó","'");
-		FullscreenActivity.myXML = FullscreenActivity.myXML.replace("Ò","'");
-		// Save the file
-		Preferences.savePreferences();
+        // Set the correct values
+        FullscreenActivity.mLyrics = parsedlines.toString().trim();
 
-		// Now write the modified song
-		FileOutputStream overWrite;
-		if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-            overWrite = new FileOutputStream(FullscreenActivity.dir + "/"
-                    + FullscreenActivity.songfilename, false);
-        } else {
-            overWrite = new FileOutputStream(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
-                    + FullscreenActivity.songfilename, false);
-        }
-		overWrite.write(FullscreenActivity.myXML.getBytes());
-		overWrite.flush();
-		overWrite.close();
+        FullscreenActivity.myXML = songXML.getXML();
 
-		// Change the name of the song to remove onsong file extension 
-		// (not needed)
-		StringBuilder newSongTitle = new StringBuilder(FullscreenActivity.songfilename);
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("&#39;", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("&#145", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("&#146;", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("&#147;", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("&#148;", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("тАЩ", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0027", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0028", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0029", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0060", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u00B4", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u2018", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u2019", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0211", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0212", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0213", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u00D5", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0442\u0410\u0429", "'"));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0442", ""));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0410", ""));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace("\u0429", "'"));
+        // Change the name of the song to remove chordpro file extension
+        String newSongTitle = FullscreenActivity.songfilename;
 
         // Decide if a better song title is in the file
-		if (FullscreenActivity.mTitle.length() > 0) {
-			newSongTitle = new StringBuilder(FullscreenActivity.mTitle.toString());
-		}
-
-		newSongTitle = new StringBuilder(newSongTitle.toString().replace(".onsong", ""));
-
-		File from;
-		File to;
-
-        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-            from = new File(FullscreenActivity.dir + "/" + FullscreenActivity.songfilename);
-            to = new File(FullscreenActivity.dir + "/" + newSongTitle);
-        } else {
-            from = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
-                    + FullscreenActivity.songfilename);
-            to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + newSongTitle);
+        if (FullscreenActivity.mTitle!=null && FullscreenActivity.mTitle.length() > 0) {
+            newSongTitle = FullscreenActivity.mTitle.toString();
         }
 
-        // IF THE FILENAME ALREADY EXISTS, REALLY SHOULD ASK THE USER FOR A NEW FILENAME
-		// OR append _ to the end - STILL TO DO!!!!!
-		//TODO ask the user for a new filename, if file exists
-		while(to.exists()) {
-			newSongTitle.append("_");
-            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                to = new File(FullscreenActivity.dir + "/" + newSongTitle);
-            } else {
-                to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + newSongTitle);
-            }
+        newSongTitle = songXML.parseToHTMLEntities(newSongTitle);
+        newSongTitle = newSongTitle.replace(".onsong", "");
+        newSongTitle = newSongTitle.replace(".ONSONG", "");
+        newSongTitle = newSongTitle.replace(".OnSong", "");
+        
+        // Now write the modified song
+        StorageAccess storageAccess = new StorageAccess();
+        String newfilename = newSongTitle.replace("/","_");   // incase filename has path separator
+        Uri uri = storageAccess.getUriForItem(c,"Songs", FullscreenActivity.whichSongFolder,newfilename);
+        OutputStream outputStream = storageAccess.getOutputStream(c, uri);
+        if (storageAccess.writeFileFromString(FullscreenActivity.myXML,outputStream)) {
+            // Writing was successful, so delete the original
+            Uri originalfile = storageAccess.getUriForItem(c,"Songs", FullscreenActivity.whichSongFolder,FullscreenActivity.songfilename);
+            storageAccess.deleteFile(c,originalfile);
         }
 
+        FullscreenActivity.songfilename = newSongTitle;
 
 		FullscreenActivity.needtorefreshsongmenu = true;
-        if (!isempty) {
-            if (!from.renameTo(to)) {
-                Log.d("d","Error renaming");
-            }
-            FullscreenActivity.songfilename = newSongTitle.toString();
+        if (!isbatch) {
 
-            if (!isbatch) {
-                // Load the songs
-                //ListSongFiles.listSongs();
-                ListSongFiles.getAllSongFiles();
-                // Get the song indexes
-                ListSongFiles.getCurrentSongIndex();
-                Preferences.savePreferences();
-                // Prepare the app to fix the song menu with the new file
-                FullscreenActivity.converting = true;
-            }
+			// Rebuild the song list
+			storageAccess.listSongs(c);
+			ListSongFiles listSongFiles = new ListSongFiles();
+			listSongFiles.songUrisInFolder(c);
 
-        } else {
-            if (!from.delete()) {
-                Log.d("d", "Error deleting");
-            }
+            // Load the songs
+            ListSongFiles.getAllSongFiles(c,storageAccess);
+
+            // Get the song indexes
+            ListSongFiles.getCurrentSongIndex();
+            Preferences.savePreferences();
+            // Prepare the app to fix the song menu with the new file
+            FullscreenActivity.converting = true;
         }
-
+        
 		return true;
 	}
 
-	static void doBatchConvert(Context contxt) {
+	void doBatchConvert(Context contxt) {
 		DoBatchConvert dobatch = new DoBatchConvert(contxt);
 		dobatch.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 	}
-	private static class DoBatchConvert extends AsyncTask<String, Void, String> {
+	@SuppressLint("StaticFieldLeak")
+    private class DoBatchConvert extends AsyncTask<String, Void, String> {
 
 		StorageAccess storageAccess;
 
@@ -947,6 +848,7 @@ class OnSongConvert {
         DoBatchConvert(Context c) {
             context = c;
             mListener = (MyInterface) c;
+            storageAccess = new StorageAccess();
         }
 
         @Override
@@ -968,26 +870,18 @@ class OnSongConvert {
 				// Go through each file in the OnSong folder that ends with .onsong and convert it
 				StringBuilder sb = new StringBuilder();
 				FullscreenActivity.whichSongFolder = "OnSong";
-				if (FullscreenActivity.dironsong.exists()) {
-					File[] allfiles = FullscreenActivity.dironsong.listFiles();
-					for (File thisfile : allfiles) {
-						if (thisfile.getName().endsWith(".onsong")) {
-							FullscreenActivity.songfilename = thisfile.getName();
+				// Check if the OnSongFolder exists
+                storageAccess.createFile(context, DocumentsContract.Document.MIME_TYPE_DIR,"Songs","OnSong","");
+                ArrayList<String> allfiles= storageAccess.listFilesInFolder(context,"Songs","OnSong");
+					for (String thisfile : allfiles) {
+                        Uri uri = storageAccess.getUriForItem(context,"Songs","OnSong",thisfile);
+                        if (thisfile.endsWith(".onsong")) {
+							FullscreenActivity.songfilename = thisfile;
 							try {
-							    Uri uri = storageAccess.getUriForItem(context,"Songs","OnSong",thisfile.getName());
 							    InputStream inputStream = storageAccess.getInputStream(context, uri);
-								//TODO
-                                // InputStream inputStream = new FileInputStream(FullscreenActivity.dironsong + "/" + thisfile.getName());
-								InputStreamReader streamReader = new InputStreamReader(inputStream);
-								BufferedReader bufferedReader = new BufferedReader(streamReader);
 								FullscreenActivity.myXML = storageAccess.readTextFileToString(inputStream);
-								//TODO
-                                // FullscreenActivity.myXML = LoadXML.readTextFile(inputStream);
-								FullscreenActivity.mLyrics = FullscreenActivity.myXML;
-								inputStream.close();
-								bufferedReader.close();
 
-								if (!doExtract()) {
+								if (!doExtract(context)) {
 									Log.d("d","Problem extracting OnSong");
 								}
 							} catch (Exception e) {
@@ -996,12 +890,12 @@ class OnSongConvert {
 										+ context.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
 								FullscreenActivity.myLyrics = "ERROR!";
 								e.printStackTrace();
-								sb.append(thisfile.getName()).append(" - ").append(context.getResources().getString(R.string.error));
+								sb.append(thisfile).append(" - ").append(context.getResources().getString(R.string.error));
 							}
-						} else if (thisfile.getName().endsWith(".sqlite3") || thisfile.getName().endsWith(".preferences") ||
-								thisfile.getName().endsWith(".doc") || thisfile.getName().endsWith(".docx")) {
-							if (!thisfile.delete()) {
-								sb.append(thisfile.getName()).append(" - ").append(context.getResources().getString(R.string.deleteerror_start));
+						} else if (thisfile.endsWith(".sqlite3") || thisfile.endsWith(".preferences") ||
+								thisfile.endsWith(".doc") || thisfile.endsWith(".docx")) {
+							if (!storageAccess.deleteFile(context,uri)) {
+								sb.append(thisfile).append(" - ").append(context.getResources().getString(R.string.deleteerror_start));
 							}
 						}
 					}
@@ -1009,7 +903,7 @@ class OnSongConvert {
 					if (message.equals("")) {
 						message = "OK";
 					}
-				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

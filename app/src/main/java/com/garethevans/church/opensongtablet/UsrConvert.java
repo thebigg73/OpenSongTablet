@@ -1,15 +1,12 @@
 package com.garethevans.church.opensongtablet;
 
 import android.content.Context;
-import android.util.Log;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import android.net.Uri;
+import java.io.OutputStream;
 
 class UsrConvert {
 
-    static boolean doExtract(Context c) throws IOException {
+    boolean doExtract(Context c) {
 
         // This is called when a usr format song has been loaded.
         // This tries to extract the relevant stuff and reformat the
@@ -161,115 +158,46 @@ class UsrConvert {
         }
 
 
-        FullscreenActivity.myXML = "<song>\r\n"
-                + "<title>" + temptitle.trim() + "</title>\r\n"
-                + "<author>" + tempauthor.trim() + "</author>\r\n"
-                + "<copyright>" + tempcopy.trim() + "</copyright>\r\n"
-                + "  <presentation></presentation>\r\n"
-                + "  <hymn_number></hymn_number>\r\n"
-                + "  <capo print=\"false\"></capo>\r\n"
-                + "  <tempo></tempo>\r\n"
-                + "  <time_sig></time_sig>\r\n"
-                + "  <duration></duration>\r\n"
-                + "  <ccli>" + tempccli.trim() + "</ccli>\r\n"
-                + "  <theme>" + temptheme.trim() + "</theme>\r\n"
-                + "  <alttheme></alttheme>\r\n"
-                + "  <user1></user1>\r\n"
-                + "  <user2></user2>\r\n"
-                + "  <user3></user3>\r\n"
-                + "  <key>" + tempkey + "</key>\r\n"
-                + "  <aka></aka>\r\n"
-                + "  <key_line></key_line>\r\n"
-                + "  <books></books>\r\n"
-                + "  <midi></midi>\r\n"
-                + "  <midi_index></midi_index>\r\n"
-                + "  <pitch></pitch>\r\n"
-                + "  <restrictions></restrictions>\r\n"
-                + "  <notes></notes>\r\n"
-                + "  <lyrics>" + templyrics.toString().trim() + "</lyrics>\r\n"
-                + "  <linked_songs></linked_songs>\n"
-                + "  <pad_file></pad_file>\n"
-                + "  <custom_chords></custom_chords>\n"
-                + "  <link_youtube></link_youtube>\n"
-                + "  <link_web></link_web>\n"
-                + "  <link_audio></link_audio>\n"
-                + "  <link_other></link_other>\n"
-                + "</song>";
+        // Initialise the variables
+        SongXML songXML = new SongXML();
+        songXML.initialiseSongTags();
 
-        // Save this song in the right format!
-        // Makes sure all & are replaced with &amp;
-        FullscreenActivity.myXML = FullscreenActivity.myXML.replace("&amp;","&");
-        FullscreenActivity.myXML = FullscreenActivity.myXML.replace("&","&amp;");
+        // Set the correct values
+        FullscreenActivity.mTitle = temptitle.trim();
+        FullscreenActivity.mAuthor = tempauthor.trim();
+        FullscreenActivity.mCopyright = tempcopy.trim();
+        FullscreenActivity.mCCLI = tempccli.trim();
+        FullscreenActivity.mTheme = temptheme.trim();
+        FullscreenActivity.mKey = tempkey.trim();
+        FullscreenActivity.mLyrics = templyrics.toString().trim();
 
-        FullscreenActivity.myXML = FullscreenActivity.myXML.replace("\'","'");
-        FullscreenActivity.myXML = FullscreenActivity.myXML.replace("Õ","'");
-        FullscreenActivity.myXML = FullscreenActivity.myXML.replace("Ó","'");
-        FullscreenActivity.myXML = FullscreenActivity.myXML.replace("Ò","'");
-
-        // Save the file
-        Preferences.savePreferences();
-
-        // Now write the modified song
-        FileOutputStream overWrite;
-
-        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-            overWrite = new FileOutputStream(FullscreenActivity.dir + "/"
-                    + FullscreenActivity.songfilename, false);
-        } else {
-            overWrite = new FileOutputStream(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
-                    + FullscreenActivity.songfilename, false);
-        }
-        overWrite.write(FullscreenActivity.myXML.getBytes());
-        overWrite.flush();
-        overWrite.close();
+        FullscreenActivity.myXML = songXML.getXML();
 
         // Change the name of the song to remove usr file extension
-        // (not needed)
-        StringBuilder newSongTitle = new StringBuilder(FullscreenActivity.songfilename);
+        String newSongTitle = FullscreenActivity.songfilename;
 
         // Decide if a better song title is in the file
         if (temptitle.length() > 0) {
-            newSongTitle = new StringBuilder(temptitle);
+            newSongTitle = temptitle;
+        }
+        newSongTitle = newSongTitle.replace(".usr", "");
+        newSongTitle = newSongTitle.replace(".USR", "");
+        newSongTitle = newSongTitle.replace(".txt", "");
+
+        // Now write the modified song
+        StorageAccess storageAccess = new StorageAccess();
+        Uri uri = storageAccess.getUriForItem(c,"Songs", FullscreenActivity.whichSongFolder,newSongTitle);
+        OutputStream outputStream = storageAccess.getOutputStream(c, uri);
+        if (storageAccess.writeFileFromString(FullscreenActivity.myXML,outputStream)) {
+            // Writing was successful, so delete the original
+            Uri originalfile = storageAccess.getUriForItem(c,"Songs", FullscreenActivity.whichSongFolder,FullscreenActivity.songfilename);
+            storageAccess.deleteFile(c,originalfile);
         }
 
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace(".usr", ""));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace(".USR", ""));
-        newSongTitle = new StringBuilder(newSongTitle.toString().replace(".txt", ""));
-
-        File from;
-        File to;
-
-        if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-            from = new File(FullscreenActivity.dir + "/"
-                    + FullscreenActivity.songfilename);
-            to = new File(FullscreenActivity.dir + "/" + newSongTitle);
-        } else {
-            from = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
-                    + FullscreenActivity.songfilename);
-            to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/"
-                    + newSongTitle);
-        }
-
-        // IF THE FILENAME ALREADY EXISTS, REALLY SHOULD ASK THE USER FOR A NEW FILENAME
-        // OR append _ to the end - STILL TO DO!!!!!
-        while(to.exists()) {
-            newSongTitle.append("_");
-            if (FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                to = new File(FullscreenActivity.dir + "/" + newSongTitle);
-            } else {
-                to = new File(FullscreenActivity.dir + "/" + FullscreenActivity.whichSongFolder + "/" + newSongTitle);
-            }
-        }
-
-        // Do the renaming
-        boolean diditrename = from.renameTo(to);
-        if (!diditrename) {
-            Log.d ("UsrConvert","Error renaming");
-        }
-        FullscreenActivity.songfilename = newSongTitle.toString();
+        FullscreenActivity.songfilename = newSongTitle;
 
         // Load the songs
-        ListSongFiles.getAllSongFiles();
+        ListSongFiles.getAllSongFiles(c,storageAccess);
 
         // Get the song indexes
         ListSongFiles.getCurrentSongIndex();

@@ -292,7 +292,7 @@ public class PopUpLinks extends DialogFragment {
         // Now resave the song with these new links
         PopUpEditSongFragment.prepareSongXML();
         try {
-            PopUpEditSongFragment.justSaveSongXML();
+            PopUpEditSongFragment.justSaveSongXML(getActivity());
             mListener.refreshAll();
             dismiss();
         } catch (Exception e) {

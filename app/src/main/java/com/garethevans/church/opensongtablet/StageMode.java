@@ -30,7 +30,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -92,6 +91,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -99,6 +99,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import lib.folderpicker.FolderPicker;
 
 public class StageMode extends AppCompatActivity implements
         PopUpAreYouSureFragment.MyInterface, PopUpPagesFragment.MyInterface,
@@ -108,8 +110,8 @@ public class StageMode extends AppCompatActivity implements
         SetActions.MyInterface, PopUpFullSearchFragment.MyInterface, IndexSongs.MyInterface,
         SearchView.OnQueryTextListener, PopUpSetViewNew.MyInterface,
         PopUpChooseFolderFragment.MyInterface, PopUpCustomSlideFragment.MyInterface,
-        PopUpImportExternalFile.MyInterface, PopUpDirectoryChooserFragment.MyInterface,
-        OnSongConvert.MyInterface, PopUpStorageFragment.MyInterface,
+        PopUpImportExternalFile.MyInterface,
+        OnSongConvert.MyInterface,
         PopUpSongFolderRenameFragment.MyInterface, PopUpThemeChooserFragment.MyInterface,
         PopUpProfileFragment.MyInterface, PopUpExtraInfoFragment.MyInterface,
         PopUpPageButtonsFragment.MyInterface, PopUpScalingFragment.MyInterface,
@@ -127,7 +129,7 @@ public class StageMode extends AppCompatActivity implements
         PopUpExportFragment.MyInterface, PopUpActionBarInfoFragment.MyInterface,
         PopUpCreateDrawingFragment.MyInterface, PopUpABCNotationFragment.MyInterface,
         PopUpPDFToTextFragment.MyInterface, PopUpRandomSongFragment.MyInterface,
-        PopUpFindStorageLocationFragment.MyInterface, PopUpCCLIFragment.MyInterface,
+        PopUpCCLIFragment.MyInterface,
         PopUpBibleXMLFragment.MyInterface, PopUpShowMidiMessageFragment.MyInterface {
 
     // The toolbar and menu
@@ -206,7 +208,6 @@ public class StageMode extends AppCompatActivity implements
             show_sticky,show_highlight, mtask_learnautoscroll, shareactivitylog_async;
     AsyncTask<Void, Void, String> resizeperformance_async, resizestage_async;
     AsyncTask<String, Integer, String> mtask_autoscroll_music;
-    IndexSongs.IndexMySongs indexsongs_task;
     AsyncTask<Void, Void, Integer> prepare_pad, play_pads;
     AsyncTask<String, Integer, String> do_download;
     AsyncTask<Object, Integer, String> get_scrollheight;
@@ -263,6 +264,15 @@ public class StageMode extends AppCompatActivity implements
     // Battery
     BroadcastReceiver br;
 
+    // Helper classes
+    ExportPreparer exportPreparer;
+    SetActions setActions;
+    StorageAccess storageAccess;
+    IndexSongs indexSongs;
+    Preferences preferences;
+    LoadXML loadXML;
+    ListSongFiles listSongFiles;
+
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -276,22 +286,16 @@ public class StageMode extends AppCompatActivity implements
         // Load up the user preferences
         Preferences.loadPreferences();
 
+        setActions = new SetActions();
+        exportPreparer = new ExportPreparer();
+        storageAccess = new StorageAccess();
+        indexSongs = new IndexSongs();
+        preferences = new Preferences();
+        loadXML = new LoadXML();
+        listSongFiles = new ListSongFiles();
+
         checkStorage();
-        PopUpStorageFragment.setUpStoragePreferences();
-        Preferences.savePreferences();
-
-        // Set the fullscreen window flags
-        runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                setWindowFlags();
-                setWindowFlagsAdvanced();
-
-                // Try language locale change
-                SetLocale.setLocale(StageMode.this);
-            }
-        });
+        //Preferences.savePreferences();
 
         // Load the layout and set the title
         setContentView(R.layout.stage_mode);
@@ -303,163 +307,75 @@ public class StageMode extends AppCompatActivity implements
                 .addControlCategory(MediaControlIntent.CATEGORY_LIVE_VIDEO)
                 .build();
 
-        // Since this mode has just been opened, force an update to the cast screen
-        FullscreenActivity.forcecastupdate = true;
-
-        // Set up the gesture detector
-        scaleGestureDetector = new ScaleGestureDetector(this, new simpleOnScaleGestureListener());
-        gestureDetector = new GestureDetector(new SwipeDetector());
-
-        // Set up the toolbar and views
-        runOnUiThread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                ab_toolbar = findViewById(R.id.mytoolbar); // Attaching the layout to the toolbar object
-                setSupportActionBar(ab_toolbar);                     // Setting toolbar as the ActionBar with setSupportActionBar() call
-                ab = getSupportActionBar();
-                if (ab != null) {
-                    ab.setDisplayShowHomeEnabled(false); // show or hide the default home button
-                    ab.setDisplayHomeAsUpEnabled(false);
-                    ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
-                    ab.setDisplayShowTitleEnabled(false);
-                }
-
-                songandauthor = findViewById(R.id.songandauthor);
-                digitalclock = findViewById(R.id.digitalclock);
-                songtitle_ab = findViewById(R.id.songtitle_ab);
-                songkey_ab = findViewById(R.id.songkey_ab);
-                songcapo_ab = findViewById(R.id.songcapo_ab);
-                songauthor_ab = findViewById(R.id.songauthor_ab);
-                batterycharge = findViewById(R.id.batterycharge);
-                batteryimage = findViewById(R.id.batteryimage);
-                batteryholder = findViewById(R.id.batteryholder);
-                mypage = findViewById(R.id.mypage);
-                mypage.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
-
-                // Set up the pad and autoscroll timing display
-                capoinfo = findViewById(R.id.capoinfo);
-                capoinfonewkey = findViewById(R.id.capoinfonewkey);
-                learnAutoScroll = findViewById(R.id.learnAutoScroll);
-                learnAutoScroll.setVisibility(View.GONE);
-                learnAutoScroll_TextView = findViewById(R.id.learnAutoScroll_TextView);
-                learnAutoScrollTime_TextView = findViewById(R.id.learnAutoScrollTime_TextView);
-                backingtrackProgress = findViewById(R.id.backingtrackProgress);
-                backingtrackProgress.setVisibility(View.GONE);
-                padcurrentTime_TextView = findViewById(R.id.padcurrentTime_TextView);
-                // Allow the user to pause/resume playback
-                backingtrackProgress.setOnClickListener(new View.OnClickListener() {
+                // Set the fullscreen window flags
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void onClick(View v) {
-                        PadFunctions.pauseOrResumePad();
-                    }
-                });
-                        padTimeSeparator_TextView = findViewById(R.id.padTimeSeparator_TextView);
-                padtotalTime_TextView = findViewById(R.id.padtotalTime_TextView);
-                playbackProgress = findViewById(R.id.playbackProgress);
-                playbackProgress.setVisibility(View.GONE);
-                capoInfo = findViewById(R.id.capoInfo);
-                capoInfo.setVisibility(View.GONE);
-                currentTime_TextView = findViewById(R.id.currentTime_TextView);
-                timeSeparator_TextView = findViewById(R.id.timeSeparator_TextView);
-                totalTime_TextView = findViewById(R.id.totalTime_TextView);
-
-                // Identify the views being used
-                songscrollview = findViewById(R.id.songscrollview);
-
-                glideimage_ScrollView = findViewById(R.id.glideimage_ScrollView);
-                glideimage = findViewById(R.id.glideimage);
-                testpane = findViewById(R.id.testpane);
-                testpane1_2 = findViewById(R.id.testpane1_2);
-                testpane2_2 = findViewById(R.id.testpane2_2);
-                testpane1_3 = findViewById(R.id.testpane1_3);
-                testpane2_3 = findViewById(R.id.testpane2_3);
-                testpane3_3 = findViewById(R.id.testpane3_3);
-                highlightNotes = findViewById(R.id.highlightNotes);
-
-                songscrollview.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
-
-                // Enable the song and author section to link to edit song
-                songandauthor.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (FullscreenActivity.isPDF) {
-                            FullscreenActivity.whattodo = "extractPDF";
-                            openFragment();
-                        } else if (FullscreenActivity.isSong){
-                            FullscreenActivity.whattodo = "songdetails";
-                            openFragment();
-                        }
-                    }
-                });
-                batteryholder.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        FullscreenActivity.whattodo = "actionbarinfo";
-                        openFragment();
-                    }
-                });
-                
-                // Set up the navigation drawer
-                mDrawerLayout = findViewById(R.id.drawer_layout);
-                songmenu = findViewById(R.id.songmenu);
-                optionmenu = findViewById(R.id.optionmenu);
-                song_list_view = findViewById(R.id.song_list_view);
-                closeSongFAB = findViewById(R.id.closeSongsFAB);
-                optionsdisplayscrollview = findViewById(R.id.optionsdisplayscrollview);
-                menuFolder_TextView = findViewById(R.id.menuFolder_TextView);
-                menuFolder_TextView.setText(getString(R.string.wait));
-                menuCount_TextView = findViewById(R.id.menuCount_TextView);
-                changefolder_LinearLayout = findViewById(R.id.changefolder_LinearLayout);
-                changefolder_LinearLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        FullscreenActivity.whattodo = "choosefolder";
-                        openFragment();
-                    }
-                });
-                closeSongFAB.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        closeMyDrawers("song");
+                    public void run() {
+                        setWindowFlags();
+                        setWindowFlagsAdvanced();
                     }
                 });
 
+                // Try language locale change
+                SetLocale.setLocale(StageMode.this);
+
+                // Since this mode has just been opened, force an update to the cast screen
+                FullscreenActivity.forcecastupdate = true;
+
+
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        // Set up the gesture detector
+                        scaleGestureDetector = new ScaleGestureDetector(StageMode.this, new simpleOnScaleGestureListener());
+                        gestureDetector = new GestureDetector(new SwipeDetector());
+
+                        // Set up the toolbar and views
+                        setUpToolbar();
+                        setUpViews();
+                    }
+                });
 
                 // Battery monitor
                 IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
                 br = new BatteryMonitor();
                 StageMode.this.registerReceiver(br, filter);
 
-                // Make the drawers match half the width of the screen
-                resizeDrawers();
 
-                // Prepare the song menu
-                prepareSongMenu();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Make the drawers match half the width of the screen
+                        resizeDrawers();
 
-                // Prepare the option menu
-                prepareOptionMenu();
+                        // Prepare the song menu
+                        prepareSongMenu();
 
-                // Set up the page buttons
-                setupPageButtons(null);
+                        // Prepare the option menu
+                        prepareOptionMenu();
 
-                // Load the song and get started
-                loadSong();
+                        // Set up the page buttons
+                        setupPageButtons(null);
 
-                // Prepare the scrollbuttons
-                scrollButtons();
+                        // Load the song and get started
+                        loadSong();
 
-                // Prepare abhide listener
-                setupAbHide();
+                        // Prepare the scrollbuttons
+                        scrollButtons();
+
+                        // Prepare abhide listener
+                        setupAbHide();
+                    }
+                });
 
                 // Set up the Salut service
                 getBluetoothName();
                 startRegistration();
-
-                // If we have started for the first time (not redrawn)
-                if (FullscreenActivity.firstload) {
-                    FullscreenActivity.firstload = false;
-                    rebuildSearchIndex();
-                }
 
                 dealWithIntent();
 
@@ -468,16 +384,149 @@ public class StageMode extends AppCompatActivity implements
                     FullscreenActivity.mNfcAdapter = NfcAdapter.getDefaultAdapter(StageMode.this);
                     mFileUriCallback = new FileUriCallback();
                     // Set the dynamic callback for URI requests.
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        FullscreenActivity.mNfcAdapter.setBeamPushUrisCallback(mFileUriCallback,StageMode.this);
-                    }
+                    FullscreenActivity.mNfcAdapter.setBeamPushUrisCallback(mFileUriCallback, StageMode.this);
                 }
 
-                // Initialise the ab info
-                adjustABInfo();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Initialise the ab info
+                        adjustABInfo();
+                    }
+                });
+
+            }
+        }).start();
+
+        // If we have started for the first time (not redrawn)
+        Handler rebuild = new Handler();
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                FullscreenActivity.firstload = false;
+                rebuildSearchIndex();
+            }
+        };
+
+        if (FullscreenActivity.firstload) {
+            rebuild.postDelayed(r,2000);
+        }
+
+    }
+
+    public void setUpToolbar() {
+        ab_toolbar = findViewById(R.id.mytoolbar); // Attaching the layout to the toolbar object
+        setSupportActionBar(ab_toolbar);                     // Setting toolbar as the ActionBar with setSupportActionBar() call
+        ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayShowHomeEnabled(false); // show or hide the default home button
+            ab.setDisplayHomeAsUpEnabled(false);
+            ab.setDisplayShowCustomEnabled(true); // enable overriding the default toolbar layout
+            ab.setDisplayShowTitleEnabled(false);
+        }
+    }
+
+    public void setUpViews() {
+        songandauthor = findViewById(R.id.songandauthor);
+        digitalclock = findViewById(R.id.digitalclock);
+        songtitle_ab = findViewById(R.id.songtitle_ab);
+        songkey_ab = findViewById(R.id.songkey_ab);
+        songcapo_ab = findViewById(R.id.songcapo_ab);
+        songauthor_ab = findViewById(R.id.songauthor_ab);
+        batterycharge = findViewById(R.id.batterycharge);
+        batteryimage = findViewById(R.id.batteryimage);
+        batteryholder = findViewById(R.id.batteryholder);
+        mypage = findViewById(R.id.mypage);
+        mypage.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
+
+        // Set up the pad and autoscroll timing display
+        capoinfo = findViewById(R.id.capoinfo);
+        capoinfonewkey = findViewById(R.id.capoinfonewkey);
+        learnAutoScroll = findViewById(R.id.learnAutoScroll);
+        learnAutoScroll.setVisibility(View.GONE);
+        learnAutoScroll_TextView = findViewById(R.id.learnAutoScroll_TextView);
+        learnAutoScrollTime_TextView = findViewById(R.id.learnAutoScrollTime_TextView);
+        backingtrackProgress = findViewById(R.id.backingtrackProgress);
+        backingtrackProgress.setVisibility(View.GONE);
+        padcurrentTime_TextView = findViewById(R.id.padcurrentTime_TextView);
+        // Allow the user to pause/resume playback
+        backingtrackProgress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PadFunctions.pauseOrResumePad();
             }
         });
-     }
+        padTimeSeparator_TextView = findViewById(R.id.padTimeSeparator_TextView);
+        padtotalTime_TextView = findViewById(R.id.padtotalTime_TextView);
+        playbackProgress = findViewById(R.id.playbackProgress);
+        playbackProgress.setVisibility(View.GONE);
+        capoInfo = findViewById(R.id.capoInfo);
+        capoInfo.setVisibility(View.GONE);
+        currentTime_TextView = findViewById(R.id.currentTime_TextView);
+        timeSeparator_TextView = findViewById(R.id.timeSeparator_TextView);
+        totalTime_TextView = findViewById(R.id.totalTime_TextView);
+
+        // Identify the views being used
+        songscrollview = findViewById(R.id.songscrollview);
+
+        glideimage_ScrollView = findViewById(R.id.glideimage_ScrollView);
+        glideimage = findViewById(R.id.glideimage);
+        testpane = findViewById(R.id.testpane);
+        testpane1_2 = findViewById(R.id.testpane1_2);
+        testpane2_2 = findViewById(R.id.testpane2_2);
+        testpane1_3 = findViewById(R.id.testpane1_3);
+        testpane2_3 = findViewById(R.id.testpane2_3);
+        testpane3_3 = findViewById(R.id.testpane3_3);
+        highlightNotes = findViewById(R.id.highlightNotes);
+
+        songscrollview.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
+
+        // Enable the song and author section to link to edit song
+        songandauthor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FullscreenActivity.isPDF) {
+                    FullscreenActivity.whattodo = "extractPDF";
+                    openFragment();
+                } else if (FullscreenActivity.isSong) {
+                    FullscreenActivity.whattodo = "songdetails";
+                    openFragment();
+                }
+            }
+        });
+        batteryholder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "actionbarinfo";
+                openFragment();
+            }
+        });
+
+        // Set up the navigation drawer
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        songmenu = findViewById(R.id.songmenu);
+        optionmenu = findViewById(R.id.optionmenu);
+        song_list_view = findViewById(R.id.song_list_view);
+        closeSongFAB = findViewById(R.id.closeSongsFAB);
+        optionsdisplayscrollview = findViewById(R.id.optionsdisplayscrollview);
+        menuFolder_TextView = findViewById(R.id.menuFolder_TextView);
+        menuFolder_TextView.setText(getString(R.string.wait));
+        menuCount_TextView = findViewById(R.id.menuCount_TextView);
+        changefolder_LinearLayout = findViewById(R.id.changefolder_LinearLayout);
+        changefolder_LinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FullscreenActivity.whattodo = "choosefolder";
+                openFragment();
+            }
+        });
+        closeSongFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeMyDrawers("song");
+            }
+        });
+    }
 
     public void getBluetoothName() {
         try {
@@ -590,17 +639,12 @@ public class StageMode extends AppCompatActivity implements
         v.setOnSystemUiVisibilityChangeListener(null);
         v.setOnFocusChangeListener(null);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LOW_PROFILE);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
+        v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                View.SYSTEM_UI_FLAG_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_LOW_PROFILE |
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
         Runnable testnavbar = new Runnable() {
             @Override
@@ -831,9 +875,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void onDataReceived(Object data) {
         // Attempt to extract the song details
-        Log.d("d","data="+data.toString());
-        if (data!=null && (data.toString().contains("_____") || data.toString().contains("<lyrics>") ||
-                data.toString().contains("___section___") || data.toString().contains("autoscroll_"))) {
+        if (data.toString().contains("_____") || data.toString().contains("<lyrics>") || data.toString().contains("___section___") || data.toString().contains("autoscroll_")) {
 
             // Look for a section being sent
             int mysection = ProcessSong.getSalutReceivedSection(data.toString());
@@ -947,7 +989,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        if (mMediaRouter!=null && mMediaRouteSelector!=null && mMediaRouterCallback!=null) {
             mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                     MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
         }
@@ -958,12 +1000,10 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void onStop() {
         super.onStop();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            try {
-                mMediaRouter.removeCallback(mMediaRouterCallback);
-            } catch (Exception e) {
-                Log.d("d","Problem removing mediaroutercallback");
-            }
+        try {
+            mMediaRouter.removeCallback(mMediaRouterCallback);
+        } catch (Exception e) {
+            Log.d("d", "Problem removing mediaroutercallback");
         }
         if (br!=null) {
             try {
@@ -1068,7 +1108,6 @@ public class StageMode extends AppCompatActivity implements
         doCancelAsyncTask(indexing_done);
         doCancelAsyncTask(add_slidetoset);
         doCancelAsyncTask(dualscreenwork_async);
-        doCancelAsyncTask(indexsongs_task);
         doCancelAsyncTask(prepare_pad);
         doCancelAsyncTask(play_pads);
         doCancelAsyncTask(do_download);
@@ -1185,7 +1224,7 @@ public class StageMode extends AppCompatActivity implements
             // Send this off to be processed and sent via an intent
             try {
                 String title = getString(R.string.exportcurrentsong);
-                Intent emailIntent = ExportPreparer.exportSong(StageMode.this, FullscreenActivity.bmScreen);
+                Intent emailIntent = exportPreparer.exportSong(StageMode.this, FullscreenActivity.bmScreen, storageAccess);
                 Intent chooser = Intent.createChooser(emailIntent, title);
                 startActivity(chooser);
             } catch (Exception e) {
@@ -1215,7 +1254,7 @@ public class StageMode extends AppCompatActivity implements
         protected String doInBackground(Object... objects) {
             // Send this off to be processed and sent via an intent
             try {
-                Intent emailIntent = ExportPreparer.exportActivityLog(StageMode.this);
+                Intent emailIntent = exportPreparer.exportActivityLog(StageMode.this, storageAccess);
                 startActivityForResult(Intent.createChooser(emailIntent, "ActivityLog.xml"), 2222);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1245,7 +1284,7 @@ public class StageMode extends AppCompatActivity implements
             // Send this off to be processed and sent via an intent
             try {
                 String title = getString(R.string.exportsavedset);
-                Intent emailIntent = ExportPreparer.exportSet(StageMode.this);
+                Intent emailIntent = exportPreparer.exportSet(StageMode.this, storageAccess);
                 Intent chooser = Intent.createChooser(emailIntent, title);
                 startActivity(chooser);
             } catch (Exception e) {
@@ -1295,7 +1334,7 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected String doInBackground(Object... obj) {
             try {
-                LoadXML.prepareLoadCustomReusable(FullscreenActivity.customreusabletoload, StageMode.this);
+                LoadXML.prepareLoadCustomReusable(StageMode.this, storageAccess, FullscreenActivity.customreusabletoload);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1329,7 +1368,7 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void shuffleSongsInSet() {
-        SetActions.indexSongInSet();
+        setActions.indexSongInSet();
         newFragment = PopUpSetViewNew.newInstance();
         newFragment.show(getFragmentManager(), "dialog");
     }
@@ -1342,7 +1381,7 @@ public class StageMode extends AppCompatActivity implements
         }
         mypage.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
         songscrollview.setBackgroundColor(FullscreenActivity.lyricsBackgroundColor);
-        SetTypeFace.setTypeface();
+        SetTypeFace.setTypeface(StageMode.this);
         prepareSongMenu();
         prepareOptionMenu();
         loadSong();
@@ -2405,7 +2444,8 @@ public class StageMode extends AppCompatActivity implements
             showToastMessage(message);
             prepareSongMenu();
         }
-        OnSongConvert.doBatchConvert(StageMode.this);
+        OnSongConvert onSongConvert = new OnSongConvert();
+        onSongConvert.doBatchConvert(StageMode.this);
     }
 
     @Override
@@ -2632,7 +2672,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 // Get the next set positions and song
                 if (!cancelled) {
-                    SetActions.doMoveInSet(StageMode.this);
+                    setActions.doMoveInSet(StageMode.this, storageAccess);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2751,12 +2791,18 @@ public class StageMode extends AppCompatActivity implements
     }
     @SuppressLint("StaticFieldLeak")
     private class AddSlideToSet extends AsyncTask<Object, Void, String> {
+        CustomSlide customSlide;
+
+        @Override
+        protected void onPreExecute() {
+            customSlide = new CustomSlide();
+        }
 
         @Override
         protected String doInBackground(Object... objects) {
             // Add the slide
             try {
-                CustomSlide.addCustomSlide(StageMode.this);
+                customSlide.addCustomSlide(StageMode.this);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -2785,16 +2831,6 @@ public class StageMode extends AppCompatActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    @Override
-    public void updateCustomStorage() {
-        switch (FullscreenActivity.whattodo) {
-            case "customstoragefind":
-                FullscreenActivity.whattodo = "managestorage";
-                openFragment();
-                break;
         }
     }
 
@@ -2967,8 +3003,6 @@ public class StageMode extends AppCompatActivity implements
                 f = new File(FullscreenActivity.dir,FullscreenActivity.whichSongFolder);
                 f = new File(f,FullscreenActivity.songfilename);
             }
-            Log.d("d","f="+f);
-            Log.d("d","f.exists()="+f.exists());
             if (f.exists()) {
                 loadSong();
             }
@@ -3070,7 +3104,7 @@ public class StageMode extends AppCompatActivity implements
     public void loadSong() {
         // Check for set song
         Log.d("d","Trying to load song");
-        FullscreenActivity.setView = SetActions.isSongInSet(StageMode.this);
+        FullscreenActivity.setView = setActions.isSongInSet(StageMode.this);
 
         // Sort the text size and colour of the info stuff
         updateExtraInfoColorsAndSizes("capo");
@@ -3079,7 +3113,9 @@ public class StageMode extends AppCompatActivity implements
 
         // Set the focus
         // Don't do this for a blacklisted filetype (application, video, audio)
-        if (ListSongFiles.blacklistFileType(FullscreenActivity.songfilename)) {
+        Uri uri = storageAccess.getUriForItem(StageMode.this,"Songs",FullscreenActivity.whichSongFolder,
+                FullscreenActivity.songfilename);
+        if (!storageAccess.checkFileExtensionValid(uri) && !storageAccess.determineFileTypeByExtension()) {
             FullscreenActivity.myToastMessage = getResources().getString(R.string.file_type_unknown);
             ShowToast.showToast(StageMode.this);
         } else {
@@ -3104,7 +3140,6 @@ public class StageMode extends AppCompatActivity implements
                 }
             }
 
-            Log.d("d","whichDirection="+FullscreenActivity.whichDirection);
             // Animate out the current song
             if (FullscreenActivity.whichDirection.equals("L2R")) {
                 if (FullscreenActivity.isPDF || FullscreenActivity.isImage) {
@@ -3142,16 +3177,12 @@ public class StageMode extends AppCompatActivity implements
             padcurrentTime_TextView.setText(getString(R.string.zerotime));
             backingtrackProgress.setVisibility(View.GONE);
 
-            Log.d("d","Waiting to animate out the song");
-
             // After animate out, load the song
             Handler h = new Handler();
             h.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        Log.d("d","Do animate out the song");
-
                         glideimage_ScrollView.setVisibility(View.GONE);
                         songscrollview.setVisibility(View.GONE);
                         highlightNotes.setVisibility(View.GONE);
@@ -3183,19 +3214,19 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected String doInBackground(Object... params) {
             try {
-                Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+                //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
                 FullscreenActivity.scalingfiguredout = false;
                 sectionpresented = false;
 
                 try {
                     Log.d("d","LoadXML being called");
-                    LoadXML.loadXML(StageMode.this);
+                    LoadXML.loadXML(StageMode.this, storageAccess);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 // Open the current folder and list the songs
-                ListSongFiles.getAllSongFiles();
+                ListSongFiles.getAllSongFiles(StageMode.this,storageAccess);
                 // Get the current song index
                 try {
                     ListSongFiles.getCurrentSongIndex();
@@ -3205,8 +3236,8 @@ public class StageMode extends AppCompatActivity implements
 
                 // If we are in a set, try to get the appropriate indexes
 
-                SetActions.getSongForSetWork(StageMode.this);
-                SetActions.indexSongInSet();
+                setActions.getSongForSetWork(StageMode.this);
+                setActions.indexSongInSet();
 
                 if (FullscreenActivity.mLyrics != null) {
                     FullscreenActivity.myLyrics = FullscreenActivity.mLyrics;
@@ -3304,7 +3335,17 @@ public class StageMode extends AppCompatActivity implements
         protected void onPostExecute(String s) {
             try {
                 if (!cancelled) {
-                    prepareSongMenu();
+                    // If we have changed folders, redraw the song menu
+                    if (menuFolder_TextView.getText()!=null && menuFolder_TextView.getText().toString()!=null) {
+                        if (menuFolder_TextView.getText().toString().equals(FullscreenActivity.whichSongFolder)) {
+                            // Just move to the correct song
+                            findSongInFolders();
+
+                        } else {
+                            prepareSongMenu();
+                        }
+                    }
+
 
                     // Fix the page flags
                     setWindowFlags();
@@ -3351,6 +3392,9 @@ public class StageMode extends AppCompatActivity implements
                     songkey_ab.setText(ProcessSong.getSongKey());
                     songauthor_ab.setText(ProcessSong.getSongAuthor());
                     songcapo_ab.setText("");
+
+                    //Determine file type
+                    storageAccess.determineFileTypeByExtension();
 
                     if (FullscreenActivity.isPDF) {
                         loadPDF();
@@ -3424,13 +3468,13 @@ public class StageMode extends AppCompatActivity implements
     }
 
     public void fixSetActionButtons() {
-        FullscreenActivity.setView = SetActions.isSongInSet(StageMode.this);
+        FullscreenActivity.setView = setActions.isSongInSet(StageMode.this);
 
         if (FullscreenActivity.setView) {
             // Now get the position in the set and decide on the set move buttons
             if (FullscreenActivity.indexSongInSet < 0) {
                 // We weren't in set mode, so find the first instance of this song.
-                SetActions.indexSongInSet();
+                setActions.indexSongInSet();
             }
             // If we aren't at the beginning or have pdf pages before this, enable the setBackButton
             if ((FullscreenActivity.indexSongInSet > 0) ||
@@ -3503,7 +3547,7 @@ public class StageMode extends AppCompatActivity implements
     @SuppressWarnings("deprecation")
     public void loadPDF() {
 
-        Bitmap bmp = ProcessSong.createPDFPage(StageMode.this, getAvailableWidth(), getAvailableHeight(), FullscreenActivity.toggleYScale);
+        Bitmap bmp = ProcessSong.createPDFPage(StageMode.this, storageAccess, getAvailableWidth(), getAvailableHeight(), FullscreenActivity.toggleYScale);
 
         glideimage_ScrollView.setVisibility(View.VISIBLE);
 
@@ -3949,7 +3993,7 @@ public class StageMode extends AppCompatActivity implements
         // Add the capo information for theactionbar
         String s = allcapodetails.toString();
         String capotext;
-        if (s==null || s.isEmpty()) {
+        if (s.isEmpty()) {
             capotext = "";
         } else {
             capotext = " ["+s+"]";
@@ -4001,9 +4045,7 @@ public class StageMode extends AppCompatActivity implements
                     }
                     if (FullscreenActivity.isHDMIConnected) {
                         try {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                                PresentationServiceHDMI.doUpdate();
-                            }
+                            PresentationServiceHDMI.doUpdate();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -4055,7 +4097,7 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected String doInBackground(Object... params) {
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             // Set up the songviews
             try {
                 FullscreenActivity.songSectionsTypes = new String[FullscreenActivity.songSections.length];
@@ -4234,7 +4276,7 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected String doInBackground(Void... voids) {
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             try {
                 // Decide on the best scaling
                 FullscreenActivity.padding = getPixelsFromDpi(16);
@@ -4403,7 +4445,7 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected String doInBackground(Void... voids) {
             try {
-                Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+                //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
                 // Decide on the best scaling
                 FullscreenActivity.padding = getPixelsFromDpi(6);
                 int availablewidth_1col = getAvailableWidth() - FullscreenActivity.padding;
@@ -4562,16 +4604,10 @@ public class StageMode extends AppCompatActivity implements
         Display display = getWindowManager().getDefaultDisplay();
 
         try {
-            // For JellyBeans and onward
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            display.getRealMetrics(metrics);
+            val = metrics.widthPixels;
+            FullscreenActivity.scalingDensity = metrics.densityDpi;
 
-                display.getRealMetrics(metrics);
-                val = metrics.widthPixels;
-                FullscreenActivity.scalingDensity = metrics.densityDpi;
-
-            } else {
-                val = mypage.getWidth();
-            }
         } catch (Exception e) {
             e.printStackTrace();
             val = mypage.getWidth();
@@ -4588,14 +4624,9 @@ public class StageMode extends AppCompatActivity implements
         Display display = getWindowManager().getDefaultDisplay();
 
         try {
-            // For JellyBeans and onward
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            display.getRealMetrics(metrics);
+            val = metrics.heightPixels;
 
-                display.getRealMetrics(metrics);
-                val = metrics.heightPixels;
-            } else {
-                val = mypage.getHeight();
-            }
         } catch (Exception e) {
             e.printStackTrace();
             val = mypage.getHeight();
@@ -4782,6 +4813,10 @@ public class StageMode extends AppCompatActivity implements
                         return true;
                     }
                 });
+            } else {
+                // No sticky note, so show the edit window
+                FullscreenActivity.whattodo = "page_sticky";
+                openFragment();
             }
         }
     }
@@ -4843,9 +4878,9 @@ public class StageMode extends AppCompatActivity implements
     }
     public boolean shouldHighlightsBeShown() {
         // This is the check before animating in the highlight notes.
-        File f = ProcessSong.getHighlightFile(StageMode.this);
+        Uri uri = ProcessSong.getHighlightFile(StageMode.this);
         return (FullscreenActivity.highlightOn || FullscreenActivity.toggleAutoHighlight) &&
-                f.exists() && FullscreenActivity.whichMode.equals("Performance");
+                storageAccess.uriExists(StageMode.this, uri) && FullscreenActivity.whichMode.equals("Performance");
     }
     public void showHighlight() {
         doCancelAsyncTask(show_highlight);
@@ -4945,48 +4980,90 @@ public class StageMode extends AppCompatActivity implements
                 FullscreenActivity.highlightOn = false;
                 highlightNotes.setVisibility(View.GONE);
             } else if (FullscreenActivity.thissong_scale.equals("Y")) {
-                File file = ProcessSong.getHighlightFile(StageMode.this);
-                if (file.exists()) {
+                Uri uri = ProcessSong.getHighlightFile(StageMode.this);
+                if (storageAccess.uriExists(StageMode.this, uri)) {
                     // Load the image in if it exists and then show it
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                     try {
-                        Bitmap bitmap = BitmapFactory.decodeFile(file.toString(), options);
-                        Bitmap canvasBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-                        bitmap.recycle();
-                        RelativeLayout.LayoutParams rlp;
-                        if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
-                            rlp = new RelativeLayout.LayoutParams(glideimage_ScrollView.getMeasuredWidth(),
-                                    glideimage_ScrollView.getMeasuredHeight());
-                        } else {
-                            rlp = new RelativeLayout.LayoutParams(songscrollview.getMeasuredWidth(),
-                                    songscrollview.getMeasuredHeight());
-                        }
-                        if (FullscreenActivity.hideActionBar) {
-                            rlp.addRule(RelativeLayout.BELOW, 0);
-                        } else {
-                            rlp.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
-                        }
-                        highlightNotes.setLayoutParams(rlp);
-
-                        highlightNotes.setImageBitmap(canvasBitmap);
-                        highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                        //highlightNotes.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                        //highlightNotes.setScaleType(ImageView.ScaleType.CENTER);
-                        //highlightNotes.setScaleType(ImageView.ScaleType.FIT_START);
-                        //highlightNotes.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                        //highlightNotes.setScaleType(ImageView.ScaleType.FIT_END);
-                        if (!fromautoshow) {
-                            // If user manually wanted to show, otherwise song load animates it in
-                            highlightNotes.setVisibility(View.VISIBLE);
-                        } else {
-                            highlightNotes.setVisibility(View.VISIBLE);
-                            if (FullscreenActivity.whichDirection.equals("L2R")) {
-                                highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
+                        InputStream inputStream = storageAccess.getInputStream(StageMode.this,uri);
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+                        if (bitmap!=null) {
+                            Bitmap canvasBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                            bitmap.recycle();
+                            RelativeLayout.LayoutParams rlp;
+                            final int firstguesswidth;
+                            final int firstguessheight;
+                            if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
+                                firstguesswidth = glideimage_ScrollView.getMeasuredWidth();
+                                firstguessheight = glideimage_ScrollView.getMeasuredHeight();
                             } else {
-                                highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
+                                firstguesswidth = songscrollview.getMeasuredWidth();
+                                firstguessheight = songscrollview.getMeasuredHeight();
+                            }
+                            rlp = new RelativeLayout.LayoutParams(firstguesswidth,firstguessheight);
+                            if (FullscreenActivity.hideActionBar) {
+                                rlp.addRule(RelativeLayout.BELOW, 0);
+                            } else {
+                                rlp.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
+                            }
+
+                            // Set a runnable to check the height/width after a couple of seconds to redraw the image position
+                            // Only if it has changed though
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(1000);
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                int secondguessheight;
+                                                int secondguesswidth;
+                                                if (FullscreenActivity.isImage || FullscreenActivity.isPDF) {
+                                                    secondguesswidth = glideimage_ScrollView.getMeasuredWidth();
+                                                    secondguessheight = glideimage_ScrollView.getMeasuredHeight();
+                                                } else {
+                                                    secondguesswidth = songscrollview.getMeasuredWidth();
+                                                    secondguessheight = songscrollview.getMeasuredHeight();
+                                                }
+                                                if (secondguessheight!=firstguessheight || secondguesswidth!=firstguesswidth) {
+                                                    // Set the parameters again
+                                                    RelativeLayout.LayoutParams rlp2 =
+                                                            new RelativeLayout.LayoutParams(secondguesswidth,secondguessheight);
+                                                    if (FullscreenActivity.hideActionBar) {
+                                                        rlp2.addRule(RelativeLayout.BELOW, 0);
+                                                    } else {
+                                                        rlp2.addRule(RelativeLayout.BELOW, ab_toolbar.getId());
+                                                    }
+                                                    highlightNotes.setLayoutParams(rlp2);
+                                                    highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                                                    Log.d("d","Image size set on second pass");
+                                                }
+                                            }
+                                        });
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }).start();
+                            highlightNotes.setImageBitmap(canvasBitmap);
+                            highlightNotes.setLayoutParams(rlp);
+                            highlightNotes.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                            if (!fromautoshow) {
+                                // If user manually wanted to show, otherwise song load animates it in
+                                highlightNotes.setVisibility(View.VISIBLE);
+                            } else {
+                                highlightNotes.setVisibility(View.VISIBLE);
+                                if (FullscreenActivity.whichDirection.equals("L2R")) {
+                                    highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_left));
+                                } else {
+                                    highlightNotes.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_in_right));
+                                }
                             }
                         }
+
                     } catch (OutOfMemoryError | Exception e) {
                         e.printStackTrace();
                         Log.d("d","Oops - error, likely too big an image!");
@@ -5035,18 +5112,27 @@ public class StageMode extends AppCompatActivity implements
         protected void onPreExecute() {
             menuCount_TextView.setText("");
             menuCount_TextView.setVisibility(View.GONE);
+            menuFolder_TextView.setText(getString(R.string.wait));
+            song_list_view.setAdapter(null);
+            LinearLayout indexLayout = findViewById(R.id.side_index);
+            indexLayout.removeAllViews();
         }
 
         @Override
         protected String doInBackground(Object... params) {
             try {
-                Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
-                // List all of the songs in the current folder
-                ListSongFiles.getAllSongFolders();
-                ListSongFiles.getAllSongFiles();
-                ListSongFiles.getSongDetails(StageMode.this);
+                // Rebuild the song list
+                storageAccess.listSongs(StageMode.this);
+                ListSongFiles listSongFiles = new ListSongFiles();
+                listSongFiles.songUrisInFolder(StageMode.this);
+
+                //List all of the songs in the current folder
+                ListSongFiles.getAllSongFiles(StageMode.this, storageAccess);
+                ListSongFiles.getSongDetails(StageMode.this, storageAccess, loadXML);
+
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.d("d","StageMode: issue listing files in the folder "+FullscreenActivity.whichSongFolder);
+                //e.printStackTrace();
             }
             return null;
         }
@@ -5080,15 +5166,13 @@ public class StageMode extends AppCompatActivity implements
                         }
 
                         // Detect if the song is in the set
-                        String whattolookfor;
-                        if (FullscreenActivity.whichSongFolder.equals("") || FullscreenActivity.whichSongFolder.equals(FullscreenActivity.mainfoldername)) {
-                            whattolookfor = "$**_" + FullscreenActivity.mSongFileNames[i] + "_**$";
-                        } else {
-                            whattolookfor = "$**_" + FullscreenActivity.whichSongFolder + "/" + FullscreenActivity.mSongFileNames[i] +"_**$";
+                        String whattolookfor = "$$**_**$$"; // not going to find this...
+                        if (FullscreenActivity.mSongFileNames!=null && FullscreenActivity.mSongFileNames.length>i) {
+                            whattolookfor = setActions.whatToLookFor(StageMode.this,
+                                    FullscreenActivity.whichSongFolder, FullscreenActivity.mSongFileNames[i]);
                         }
                         boolean isinset = false;
                         if (FullscreenActivity.mySet.contains(whattolookfor)) {
-                            Log.d("d","whattolookfor="+whattolookfor+"is in the set ("+FullscreenActivity.mySet+")");
                             isinset = true;
                         }
                         try {
@@ -5199,7 +5283,7 @@ public class StageMode extends AppCompatActivity implements
         protected String doInBackground(Object... objects) {
             // Get the current set list
             try {
-                SetActions.prepareSetList();
+                setActions.prepareSetList();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -5233,7 +5317,7 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void songLongClick() {
         // Rebuild the set list as we've just added a song
-        SetActions.prepareSetList();
+        setActions.prepareSetList();
         prepareOptionMenu();
         prepareSongMenu();
         closeMyDrawers("song");
@@ -5280,7 +5364,7 @@ public class StageMode extends AppCompatActivity implements
                 + getResources().getString(R.string.removedfromset));
 
         //Check to see if our set list is still valid
-        SetActions.prepareSetList();
+        setActions.prepareSetList();
         prepareOptionMenu();
 
         // Save set
@@ -5379,9 +5463,15 @@ public class StageMode extends AppCompatActivity implements
 
     @Override
     public void rebuildSearchIndex() {
-        doCancelAsyncTask(indexsongs_task);
-        indexsongs_task = new IndexSongs.IndexMySongs(StageMode.this);
-        indexsongs_task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        FullscreenActivity.myToastMessage = getString(R.string.search_index_start);
+        ShowToast.showToast(StageMode.this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                indexSongs.indexMySongs(StageMode.this,storageAccess);
+            }
+        }).start();
+
     }
 
     @Override
@@ -5433,8 +5523,9 @@ public class StageMode extends AppCompatActivity implements
     @Override
     public void allowPDFEditViaExternal() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        File f = LoadXML.returnFileLocation(FullscreenActivity.songfilename);
-        intent.setDataAndType(Uri.fromFile(f), "application/pdf");
+        Uri uri = storageAccess.getUriForItem(StageMode.this,"Songs",FullscreenActivity.whichSongFolder,
+                FullscreenActivity.songfilename);
+        intent.setDataAndType(uri, "application/pdf");
         // Always use string resources for UI text.
         String title = getResources().getString(R.string.editpdf);
         // Create intent to show chooser
@@ -5547,6 +5638,22 @@ public class StageMode extends AppCompatActivity implements
         } else if (requestCode == FullscreenActivity.REQUEST_PDF_CODE) {
             // PDF sent back, so reload it
             loadSong();
+        } else if (requestCode == 7789 && data != null && data.getExtras() != null) {
+            // This is for the File Chooser returning a file uri
+            String filelocation = data.getExtras().getString("data");
+            if (filelocation!=null) {
+                boolean validfiletype = (FullscreenActivity.whattodo.equals("processimportosb") && filelocation.endsWith(".osb")) ||
+                        (FullscreenActivity.whattodo.equals("importos") && filelocation.endsWith(".backup") ||
+                        FullscreenActivity.whattodo.equals("doimport"));
+
+                if (validfiletype) {
+                    FullscreenActivity.file_uri = Uri.fromFile(new File(filelocation));
+                    openFragment();
+                } else {
+                    FullscreenActivity.myToastMessage = getString(R.string.file_type_unknown);
+                    ShowToast.showToast(StageMode.this);
+                }
+            }
         }
     }
 
@@ -5604,7 +5711,7 @@ public class StageMode extends AppCompatActivity implements
         Preferences.savePreferences();
         Intent intent = new Intent();
         intent.putExtra("showsplash",true);
-        intent.setClass(StageMode.this, SettingsActivity.class);
+        intent.setClass(StageMode.this, BootUpCheck.class);
         startActivity(intent);
         finish();
     }
@@ -5622,34 +5729,46 @@ public class StageMode extends AppCompatActivity implements
 
             case "saveset":
                 // Save the set
-                SetActions.saveSetMessage(StageMode.this);
+                setActions.saveSetMessage(StageMode.this, storageAccess);
                 refreshAll();
                 break;
 
             case "clearset":
                 // Clear the set
-                SetActions.clearSet(StageMode.this);
+                setActions.clearSet(StageMode.this);
                 refreshAll();
                 break;
 
             case "deletesong":
                 // Delete current song
-                ListSongFiles.deleteSong(StageMode.this);
+                Uri uri = storageAccess.getUriForItem(StageMode.this, "Songs", FullscreenActivity.whichSongFolder,
+                        FullscreenActivity.songfilename);
+                storageAccess.deleteFile(StageMode.this,uri);
+                // If we are autologging CCLI information
+                if (FullscreenActivity.ccli_automatic) {
+                    PopUpCCLIFragment.addUsageEntryToLog(StageMode.this,FullscreenActivity.whichSongFolder+"/"+FullscreenActivity.songfilename,
+                            "", "",
+                            "", "", "2"); // Deleted
+                }
                 Preferences.savePreferences();
+                // Rebuild the song list
+                storageAccess.listSongs(StageMode.this);
+                listSongFiles.songUrisInFolder(StageMode.this);
                 refreshAll();
                 break;
 
             case "deleteset":
                 // Delete set
-                SetActions.deleteSet(StageMode.this);
+                setActions.deleteSet(StageMode.this, storageAccess);
                 refreshAll();
                 break;
 
             case "wipeallsongs":
                 // Wipe all songs
-                if (!ListSongFiles.clearAllSongs()) {
-                    Log.d("d","Problem clearing songs");
-                }
+                storageAccess.wipeFolder(StageMode.this,"Songs","");
+                // Rebuild the song list
+                storageAccess.listSongs(StageMode.this);
+                listSongFiles.songUrisInFolder(StageMode.this);
                 refreshAll();
                 break;
 
@@ -5682,7 +5801,7 @@ public class StageMode extends AppCompatActivity implements
 
         @Override
         protected Integer doInBackground(Void... voids) {
-            Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+            //Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
             try {
                 FullscreenActivity.padson = true;
                 PadFunctions.getPad1Status();
@@ -5864,7 +5983,6 @@ public class StageMode extends AppCompatActivity implements
                             if (custompad) {
                                 // Prepare the custom pad
                                 padpath = FullscreenActivity.dirPads + "/" + FullscreenActivity.pad_filename.replace("custom_","");
-                                Log.d("d","padpath="+padpath);
 
                             } else {
                                 // Prepare the default auto pad
@@ -5935,43 +6053,25 @@ public class StageMode extends AppCompatActivity implements
                     // Prepare the link audio file
                     if (FullscreenActivity.mPadFile.equals(getResources().getString(R.string.link_audio))) {
                         try {
+                            StorageAccess storageAccess = new StorageAccess();
+                            Uri uri = storageAccess.fixLocalisedUri(StageMode.this,FullscreenActivity.mLinkAudio);
                             if (which == 1) {
-                                String filetext = FullscreenActivity.mLinkAudio;
-                                filetext = filetext.replace("file://", "");
-                                // If this is a localised file, we need to unlocalise it to enable it to be read
-                                if (filetext.startsWith("../OpenSong/")) {
-                                    filetext = filetext.replace("../OpenSong/", FullscreenActivity.homedir + "/");
-                                }
-                                // Add the file start back:
-                                if (!filetext.startsWith("file://")) {
-                                    filetext = "file://" + filetext;
-                                }
                                 PadFunctions.getPad1Status();
                                 if (FullscreenActivity.pad1Playing) {
                                     FullscreenActivity.mPlayer1.stop();
                                 }
                                 FullscreenActivity.mPlayer1.reset();
                                 FullscreenActivity.mPlayer1.setOnPreparedListener(new Player1Prepared());
-                                FullscreenActivity.mPlayer1.setDataSource(filetext);
+                                FullscreenActivity.mPlayer1.setDataSource(StageMode.this, uri);
                                 FullscreenActivity.mPlayer1.prepareAsync();
                             } else if (which == 2) {
-                                String filetext = FullscreenActivity.mLinkAudio;
-                                filetext = filetext.replace("file://", "");
-                                // If this is a localised file, we need to unlocalise it to enable it to be read
-                                if (filetext.startsWith("../OpenSong/")) {
-                                    filetext = filetext.replace("../OpenSong/", FullscreenActivity.homedir + "/");
-                                }
-                                // Add the file start back:
-                                if (!filetext.startsWith("file://")) {
-                                    filetext = "file://" + filetext;
-                                }
                                 PadFunctions.getPad2Status();
                                 if (FullscreenActivity.pad2Playing) {
                                     FullscreenActivity.mPlayer2.stop();
                                 }
                                 FullscreenActivity.mPlayer2.reset();
                                 FullscreenActivity.mPlayer2.setOnPreparedListener(new Player2Prepared());
-                                FullscreenActivity.mPlayer2.setDataSource(filetext);
+                                FullscreenActivity.mPlayer2.setDataSource(StageMode.this, uri);
                                 FullscreenActivity.mPlayer2.prepareAsync();
                             }
                             validlinkaudio = true;
@@ -6238,11 +6338,7 @@ public class StageMode extends AppCompatActivity implements
         }
 
         // Save the learned values to the song
-        try {
-            PopUpEditSongFragment.justSaveSongXML();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        PopUpEditSongFragment.justSaveSongXML(StageMode.this);
 
         FullscreenActivity.whattodo = "page_autoscroll";
         openFragment();
@@ -6641,11 +6737,11 @@ public class StageMode extends AppCompatActivity implements
         } else if (!dealtwithaspdf) {
             // Try to move to the next song alphabetically
             // However, only do this if the previous item isn't a subfolder!
-            File checkFile;
             boolean isfolder = false;
             if (FullscreenActivity.nextSongIndex  < FullscreenActivity.mSongFileNames.length) {
-                checkFile = LoadXML.returnFileLocation(FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex]);
-                if (checkFile.exists() && checkFile.isDirectory()) {
+                Uri uri = storageAccess.getUriForItem(StageMode.this,"Songs","",
+                        FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex]);
+                if (storageAccess.uriExists(StageMode.this, uri) && !storageAccess.uriIsFile(StageMode.this, uri)) {
                     isfolder = true;
                 }
             }
@@ -6699,11 +6795,11 @@ public class StageMode extends AppCompatActivity implements
         } else if (!dealtwithaspdf) {
             // Try to move to the previous song alphabetically
             // However, only do this if the previous item isn't a subfolder!
-            File checkFile;
             boolean isfolder = false;
             if (FullscreenActivity.previousSongIndex >= 0) {
-                checkFile = LoadXML.returnFileLocation(FullscreenActivity.mSongFileNames[FullscreenActivity.previousSongIndex]);
-                if (checkFile.exists() && checkFile.isDirectory()) {
+                Uri uri = storageAccess.getUriForItem(StageMode.this,"Songs","",
+                        FullscreenActivity.mSongFileNames[FullscreenActivity.nextSongIndex]);
+                if (storageAccess.uriExists(StageMode.this, uri) && !storageAccess.uriIsFile(StageMode.this, uri)) {
                     isfolder = true;
                 }
             }
@@ -7405,7 +7501,7 @@ public class StageMode extends AppCompatActivity implements
         // Save the set and other preferences
         Preferences.savePreferences();
 
-        SetActions.prepareSetList();
+        setActions.prepareSetList();
         prepareOptionMenu();
 
         // Show the current set
@@ -7489,10 +7585,8 @@ public class StageMode extends AppCompatActivity implements
     // The stuff to deal with the second screen
     @Override
     public void connectHDMI() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
+        mMediaRouter.addCallback(mMediaRouteSelector, mMediaRouterCallback,
                     MediaRouter.CALLBACK_FLAG_REQUEST_DISCOVERY);
-        }
         updateDisplays();
     }
     @SuppressLint("NewApi")
@@ -7589,11 +7683,9 @@ public class StageMode extends AppCompatActivity implements
             try {
                 Display mDisplay = mMediaRouter.getSelectedRoute().getPresentationDisplay();
                 if (mDisplay!=null) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                        hdmi = new PresentationServiceHDMI(StageMode.this,mDisplay);
-                        hdmi.show();
-                        FullscreenActivity.isHDMIConnected = true;
-                    }
+                    hdmi = new PresentationServiceHDMI(StageMode.this, mDisplay);
+                    hdmi.show();
+                    FullscreenActivity.isHDMIConnected = true;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -7619,9 +7711,7 @@ public class StageMode extends AppCompatActivity implements
                     }
                     if (FullscreenActivity.isHDMIConnected) {
                         try {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                                PresentationServiceHDMI.doUpdate();
-                            }
+                            PresentationServiceHDMI.doUpdate();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -7638,9 +7728,7 @@ public class StageMode extends AppCompatActivity implements
                     }
                     if (FullscreenActivity.isHDMIConnected) {
                         try {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                                PresentationServiceHDMI.updateFonts();
-                            }
+                            PresentationServiceHDMI.updateFonts();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -7657,9 +7745,7 @@ public class StageMode extends AppCompatActivity implements
                     }
                     if (FullscreenActivity.isHDMIConnected) {
                         try {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                                PresentationServiceHDMI.fixBackground();
-                            }
+                            PresentationServiceHDMI.fixBackground();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -7676,9 +7762,7 @@ public class StageMode extends AppCompatActivity implements
                     }
                     if (FullscreenActivity.isHDMIConnected) {
                         try {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                                PresentationServiceHDMI.changeMargins();
-                            }
+                            PresentationServiceHDMI.changeMargins();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -7689,5 +7773,16 @@ public class StageMode extends AppCompatActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void selectAFileUri(String s) {
+        Intent intent = new Intent(this, FolderPicker.class);
+        intent.putExtra("title", s);
+        intent.putExtra("pickFiles", true);
+        if (FullscreenActivity.uriTree!=null) {
+            intent.putExtra("location", FullscreenActivity.uriTree.getPath());
+        }
+        startActivityForResult(intent, 7789);
     }
 }

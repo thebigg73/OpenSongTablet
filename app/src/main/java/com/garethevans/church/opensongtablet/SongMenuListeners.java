@@ -17,6 +17,7 @@ public class SongMenuListeners extends Activity {
 
     public static TextView.OnClickListener itemShortClickListener(final int i) {
         final Context c =  FullscreenActivity.mContext;
+        final SetActions setActions = new SetActions();
         mListener = null;
         try {
             mListener = (MyInterface) c;
@@ -44,14 +45,14 @@ public class SongMenuListeners extends Activity {
                             }
                             if (FullscreenActivity.setView && FullscreenActivity.setSize > 0) {
                                 // Get the name of the song to look for (including folders if need be)
-                                SetActions.getSongForSetWork(c);
+                                setActions.getSongForSetWork(c);
 
                                 if (FullscreenActivity.mySet.contains(FullscreenActivity.whatsongforsetwork)) {
                                     // Song is in current set.  Find the song position in the current set and load it (and next/prev)
 
                                     FullscreenActivity.previousSongInSet = "";
                                     FullscreenActivity.nextSongInSet = "";
-                                    SetActions.prepareSetList();
+                                    setActions.prepareSetList();
                                     //setupSetButtons();
                                 } else {
                                     // Song isn't in the set, so just show the song

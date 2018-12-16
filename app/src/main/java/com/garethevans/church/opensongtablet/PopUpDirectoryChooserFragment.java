@@ -1,3 +1,4 @@
+/*
 package com.garethevans.church.opensongtablet;
 
 import android.Manifest;
@@ -23,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.File;
+//import java.io.File;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,7 +72,7 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
     ImageView navigateUp;
     public TextView currentFolder;
     ListView directoryList;
-    public static File location = Environment.getExternalStorageDirectory();
+    //public static File location = Environment.getExternalStorageDirectory();
     public static Uri uri_root = FullscreenActivity.uriTree;
     public static Uri uri_current = FullscreenActivity.uriTree;
     public static String[] splitlocation;
@@ -610,3 +611,4 @@ public class PopUpDirectoryChooserFragment extends DialogFragment {
     }
 
 }
+*/

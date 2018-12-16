@@ -53,6 +53,7 @@ public class OptionMenuListeners extends Activity {
         void stopMetronome();
         void doExport();
         void updateExtraInfoColorsAndSizes(String s);
+        void selectAFileUri(String s);
     }
 
     public static MyInterface mListener;
@@ -599,6 +600,7 @@ public class OptionMenuListeners extends Activity {
         Button setNewButton = v.findViewById(R.id.setNewButton);
         Button setDeleteButton = v.findViewById(R.id.setDeleteButton);
         Button setOrganiseButton = v.findViewById(R.id.setOrganiseButton);
+        Button setImportButton = v.findViewById(R.id.setImportButton);
         Button setExportButton = v.findViewById(R.id.setExportButton);
         Button setCustomButton = v.findViewById(R.id.setCustomButton);
         Button setVariationButton = v.findViewById(R.id.setVariationButton);
@@ -614,6 +616,7 @@ public class OptionMenuListeners extends Activity {
         setNewButton.setText(c.getString(R.string.options_set_clear).toUpperCase(FullscreenActivity.locale));
         setDeleteButton.setText(c.getString(R.string.options_set_delete).toUpperCase(FullscreenActivity.locale));
         setOrganiseButton.setText(c.getString(R.string.managesets).toUpperCase(FullscreenActivity.locale));
+        setImportButton.setText(c.getString(R.string.importnewsong).toUpperCase(FullscreenActivity.locale));
         setExportButton.setText(c.getString(R.string.options_set_export).toUpperCase(FullscreenActivity.locale));
         setCustomButton.setText(c.getString(R.string.add_custom_slide).toUpperCase(FullscreenActivity.locale));
         setVariationButton.setText(c.getString(R.string.customise_set_item).toUpperCase(FullscreenActivity.locale));
@@ -710,6 +713,17 @@ public class OptionMenuListeners extends Activity {
             }
         });
 
+        setImportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FullscreenActivity.whattodo = "doimport";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.selectAFileUri(c.getString(R.string.importnewset));
+                }
+            }
+        });
+
         setExportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -794,8 +808,9 @@ public class OptionMenuListeners extends Activity {
                         FullscreenActivity.pdfPageCurrent = 0;
                         FullscreenActivity.linkclicked = FullscreenActivity.mSetList[val];
                         FullscreenActivity.indexSongInSet = val;
-                        SetActions.songIndexClickInSet();
-                        SetActions.getSongFileAndFolder(c);
+                        SetActions setActions = new SetActions();
+                        setActions.songIndexClickInSet();
+                        setActions.getSongFileAndFolder(c);
                         if (mListener!=null) {
                             mListener.closeMyDrawers("option");
                             mListener.loadSong();
@@ -833,6 +848,7 @@ public class OptionMenuListeners extends Activity {
         Button songNewButton = v.findViewById(R.id.songNewButton);
         Button songDeleteButton = v.findViewById(R.id.songDeleteButton);
         Button songExportButton = v.findViewById(R.id.songExportButton);
+        Button songImportButton = v.findViewById(R.id.songImportButton);
         final SwitchCompat songPresentationOrderButton = v.findViewById(R.id.songPresentationOrderButton);
         SwitchCompat songKeepMultiLineCompactButton = v.findViewById(R.id.songKeepMultiLineCompactButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
@@ -848,6 +864,7 @@ public class OptionMenuListeners extends Activity {
         songRenameButton.setText(c.getString(R.string.options_song_rename).toUpperCase(FullscreenActivity.locale));
         songNewButton.setText(c.getString(R.string.options_song_new).toUpperCase(FullscreenActivity.locale));
         songDeleteButton.setText(c.getString(R.string.options_song_delete).toUpperCase(FullscreenActivity.locale));
+        songImportButton.setText(c.getString(R.string.importnewsong).toUpperCase(FullscreenActivity.locale));
         songExportButton.setText(c.getString(R.string.options_song_export).toUpperCase(FullscreenActivity.locale));
         songPresentationOrderButton.setText(c.getString(R.string.edit_song_presentation).toUpperCase(FullscreenActivity.locale));
         songKeepMultiLineCompactButton.setText(c.getString(R.string.keepmultiline).toUpperCase(FullscreenActivity.locale));
@@ -989,6 +1006,17 @@ public class OptionMenuListeners extends Activity {
                 if (mListener!=null) {
                     mListener.closeMyDrawers("option");
                     mListener.openFragment();
+                }
+            }
+        });
+
+        songImportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FullscreenActivity.whattodo = "doimport";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.selectAFileUri(c.getString(R.string.importnewsong));
                 }
             }
         });
@@ -1164,7 +1192,7 @@ public class OptionMenuListeners extends Activity {
                     FullscreenActivity.switchsharpsflats = true;
                     Transpose.checkChordFormat();
                     try {
-                        Transpose.doTranspose();
+                        Transpose.doTranspose(c);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1195,7 +1223,7 @@ public class OptionMenuListeners extends Activity {
                     FullscreenActivity.switchsharpsflats = true;
                     Transpose.checkChordFormat();
                     try {
-                        Transpose.doTranspose();
+                        Transpose.doTranspose(c);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1324,7 +1352,7 @@ public class OptionMenuListeners extends Activity {
                     FullscreenActivity.transposeDirection = "0";
                     Transpose.checkChordFormat();
                     try {
-                        Transpose.doTranspose();
+                        Transpose.doTranspose(c);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1526,6 +1554,7 @@ public class OptionMenuListeners extends Activity {
         Button holychordsSearchButton = v.findViewById(R.id.holychordsSearchButton);
         Button bandDownloadButton = v.findViewById(R.id.bandDownloadButton);
         Button churchDownloadButton = v.findViewById(R.id.churchDownloadButton);
+        Button songImportButton = v.findViewById(R.id.songImportButton);
         Button cameraButton = v.findViewById(R.id.cameraButton);
         FloatingActionButton closeOptionsFAB = v.findViewById(R.id.closeOptionsFAB);
 
@@ -1545,6 +1574,7 @@ public class OptionMenuListeners extends Activity {
         holychordsSearchButton.setText(c.getString(R.string.holychords).toUpperCase(FullscreenActivity.locale));
         bandDownloadButton.setText(c.getString(R.string.my_band).toUpperCase(FullscreenActivity.locale));
         churchDownloadButton.setText(c.getString(R.string.my_church).toUpperCase(FullscreenActivity.locale));
+        songImportButton.setText(c.getString(R.string.importnewsong).toUpperCase(FullscreenActivity.locale));
         cameraButton.setText(c.getString(R.string.camera).toUpperCase(FullscreenActivity.locale));
 
         // Set the button listeners
@@ -1652,6 +1682,16 @@ public class OptionMenuListeners extends Activity {
                 }
             }
         });
+        songImportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FullscreenActivity.whattodo = "doimport";
+                if (mListener!=null) {
+                    mListener.closeMyDrawers("option");
+                    mListener.selectAFileUri(c.getString(R.string.importnewsong));
+                }
+            }
+        });
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1740,9 +1780,8 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    FullscreenActivity.whattodo = "managestorage";
                     mListener.closeMyDrawers("option");
-                    mListener.openFragment();
+                    mListener.splashScreen();
                 }
             }
         });
@@ -1762,11 +1801,10 @@ public class OptionMenuListeners extends Activity {
             @Override
             public void onClick(View view) {
                 if (mListener!=null) {
-                    //FullscreenActivity.whattodo = "importosb";
                     FullscreenActivity.filechosen = null;
                     FullscreenActivity.whattodo = "processimportosb";
+                    mListener.selectAFileUri(c.getString(R.string.backup_import));
                     mListener.closeMyDrawers("option");
-                    mListener.openFragment();
                 }
             }
         });
@@ -1791,7 +1829,7 @@ public class OptionMenuListeners extends Activity {
                 if (mListener!=null) {
                     FullscreenActivity.whattodo = "importos";
                     mListener.closeMyDrawers("option");
-                    mListener.openFragment();
+                    mListener.selectAFileUri(c.getString(R.string.import_onsong_choose));
                 }
             }
         });

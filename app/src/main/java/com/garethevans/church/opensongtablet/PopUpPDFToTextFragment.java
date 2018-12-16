@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
+
+import java.io.InputStream;
 
 public class PopUpPDFToTextFragment extends DialogFragment {
     // This is called when user tries to extract pdf to text
@@ -35,6 +38,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
     String foundKey = "";
     String foundTempo = "";
     String foundTimeSig = "";
+    StorageAccess storageAccess;
 
     public interface MyInterface {
         void refreshAll();
@@ -94,6 +98,7 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         final FloatingActionButton saveMe = V.findViewById(R.id.saveMe);
         saveMe.setVisibility(View.GONE);
 
+        storageAccess = new StorageAccess();
         // Initialise the basic views
         TextView pdftotext_found = V.findViewById(R.id.pdftotext_found);
         pdftotext_found.setTypeface(Typeface.MONOSPACE);
@@ -190,8 +195,8 @@ public class PopUpPDFToTextFragment extends DialogFragment {
         FullscreenActivity.songfilename = FullscreenActivity.songfilename.replace(".pdf","_from_pdf");
         FullscreenActivity.songfilename = FullscreenActivity.songfilename.replace(".PDF","_from_pdf");
         try {
-            PopUpEditSongFragment.justSaveSongXML();
             if (mListener!=null) {
+                PopUpEditSongFragment.justSaveSongXML(getActivity());
                 FullscreenActivity.myToastMessage = "";
                 mListener.refreshAll();
                 dismiss();
@@ -206,8 +211,12 @@ public class PopUpPDFToTextFragment extends DialogFragment {
 
     public void getPDFExtractedText() {
         StringBuilder parsedText= new StringBuilder();
+
         try {
-            PdfReader reader = new PdfReader(FullscreenActivity.file.toString());
+            Uri uri = storageAccess.getUriForItem(getActivity(),"Songs",FullscreenActivity.whichSongFolder,
+                    FullscreenActivity.songfilename);
+            InputStream inputStream = storageAccess.getInputStream(getActivity(),uri);
+            PdfReader reader = new PdfReader(inputStream);
             int n = reader.getNumberOfPages();
             for (int i = 1; i<=n ; i++) {
                 String text = detectAndImproveLine(PdfTextExtractor.getTextFromPage(reader, i));
