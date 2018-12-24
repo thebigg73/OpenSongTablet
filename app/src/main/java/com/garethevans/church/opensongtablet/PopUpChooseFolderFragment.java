@@ -97,7 +97,6 @@ public class PopUpChooseFolderFragment extends DialogFragment {
             public void run() {
                 ListSongFiles.getAllSongFolders(getActivity(),storageAccess);
 
-
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

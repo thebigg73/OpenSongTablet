@@ -78,8 +78,10 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
             String ch;
             if (key.equals(context.getString(R.string.songsinfolder))) { // This is a directory
                 ch = "/";
-            } else {
+            } else if (song.length()>=1) {
                 ch = song.substring(0, 1);
+            } else {
+                ch = "/";
             }
             ch = ch.toUpperCase(FullscreenActivity.locale);
 
@@ -267,7 +269,6 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                                     Preferences.savePreferences();
                                 }
 
-
                             }
                             // Check updates to the set in the Option menu
                             if (mListener != null) {
@@ -284,8 +285,6 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
 
         return convertView;
     }
@@ -388,7 +387,7 @@ class SongMenuAdapter extends BaseAdapter implements SectionIndexer {
                 }
                 if (FullscreenActivity.songDetails[i][0] != null) {
                     title = FullscreenActivity.songDetails[i][0];
-                    if (!index.equals("/")) {
+                    if (!index.equals("/") && title!=null && title.length()>=1) {
                         index = title.substring(0, 1);
                     }
                 }

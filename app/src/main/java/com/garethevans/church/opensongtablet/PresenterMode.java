@@ -2464,8 +2464,8 @@ public class PresenterMode extends AppCompatActivity implements MenuHandlers.MyI
         prepareSongMenu();
         rebuildSearchIndex();
         openMyDrawers("song");
-        FullscreenActivity.whattodo = "choosefolder";
-        openFragment();
+        //FullscreenActivity.whattodo = "choosefolder";
+        //openFragment();
     }
     @Override
     public void fixSet() {

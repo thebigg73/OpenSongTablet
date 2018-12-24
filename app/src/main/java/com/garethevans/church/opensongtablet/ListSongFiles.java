@@ -3,6 +3,8 @@ package com.garethevans.church.opensongtablet;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.TextView;
+
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,14 +50,13 @@ public class ListSongFiles {
     }
 
     public static void getAllSongFolders(Context c, StorageAccess storageAccess) {
-        //FullscreenActivity.allfilesforsearch.clear();
-        //FullscreenActivity.mSongFolderNames = FullscreenActivity.songfilelist.getFolderList(c, storageAccess);
         // Use the folderIds to get the song folders found
         ArrayList<String> folders = new ArrayList<>();
         FullscreenActivity.mSongFolderNames = null;
         String bittoremove = storageAccess.getUriForItem(c,"Songs","","").getPath() + "/";
         for (String s:FullscreenActivity.folderIds) {
-            folders.add(s.replace(bittoremove,""));
+            s = s.replace(bittoremove,"");
+            folders.add(s);
         }
 
         // Remove any duplicates
@@ -77,14 +78,16 @@ public class ListSongFiles {
     static void getAllSongFiles(Context c, StorageAccess storageAccess) {
         // This will list all of the songs and subfolders in the current folder
         ArrayList<String> songs = new ArrayList<>();
+        songs.clear();
         ArrayList<String> subfolders = new ArrayList<>();
+        subfolders.clear();
         if (FullscreenActivity.whichSongFolder.startsWith("../")) {
             // This is one of the custom slides/notes/images
             songs = storageAccess.listFilesInFolder(c,"",FullscreenActivity.whichSongFolder);
         } else {
             String bittoremove = storageAccess.getUriForItem(c, "Songs", FullscreenActivity.whichSongFolder, "").getPath() + "/";
-            if (storageAccess.lollipopOrLater() && FullscreenActivity.songIds!=null && FullscreenActivity.songIds.get(0)!=null) {
-
+            if (storageAccess.lollipopOrLater() && FullscreenActivity.songIds!=null && FullscreenActivity.songIds.size()>0 &&
+                    FullscreenActivity.songIds.get(0)!=null) {
                 // Get the start section to remove
                 String[] bits = FullscreenActivity.songIds.get(0).split("OpenSong/Songs/");
                 if (bits.length==2) {
@@ -102,18 +105,29 @@ public class ListSongFiles {
 
             for (String s : FullscreenActivity.songIds) {
 
-                if (s.startsWith(bittoremove)) {
+                if (s.contains(bittoremove)) {
                     // We are in the folder!
-                    s = s.replace(bittoremove, "");
+                    int pos = s.lastIndexOf(bittoremove)+bittoremove.length();
+                    s = s.substring(pos);
 
+                    if (s.endsWith("/")) {
+                        // This is a subfolder.  Add the root only
+                        // Get rid of leading or trailing folder slashes /
+                        if (s.startsWith("/")) {
+                            s = s.replaceFirst("/","");
+                        }
+                        if (s.endsWith("/")) {
+                            s = s.substring(0,s.length()-1);
+                        }
 
-                    if (s.contains("/")) {
-                        // This is a subfolder.  Get the root only
-                        s = s.substring(0, s.indexOf("/"));
+                        if (s.contains("/")) {
+                            s = s.substring(0,s.indexOf("/"));
+                        }
+
                         if (!subfolders.contains("/" + s + "/")) {
                             subfolders.add("/" + s + "/");
                         }
-                    } else {
+                    } else if (!s.contains("/") && !s.equals("")){
                         // This is a song
                         songs.add(s);
                     }
@@ -136,26 +150,56 @@ public class ListSongFiles {
         FullscreenActivity.mSongFileNames = items.toArray(new String[0]).clone();
     }
 
-    /*TODO why use a multidimensional array, when you could use an xml object?
-    I've been reading about performance and I guess its because of performance
-    limitations?  Is maintaining an object in memory expensive
-    in terms of performance?  So, the class I created is essentially worse
-    than reading directly from the file system?  I don't think so personally,
-    as I don't think the garbage collector will be dereference either of the objects
-    internal to the songfilelist class, and the songfilelist class persists for the
-    lifetime of the app, so there shouldn't be any extra work, and the memory overhead
-    is low and speed of access of cached variable is faster than file access, at
-    least I guess.
-     */
     static void getSongDetails(final Context c, StorageAccess storageAccess, LoadXML loadXML) {
-        // Go through each song in the current folder and extract the title, key and author
+
+        // Try to do this simply by only indexing values in the current folder
+        ArrayList<String> items = new ArrayList<>();
+        items.clear();
+
+        for (String[] item : FullscreenActivity.allSongDetailsForMenu) {
+            Log.d("d","item[0]="+item[0]+"  item[1]="+item[1]+"  item[2]="+item[2]+"  item[3]="+item[3]);
+            if (item[0]==null) {
+                item[0] = "";
+            }
+            if (FullscreenActivity.whichSongFolder == null || item[0].equals(FullscreenActivity.whichSongFolder) || (item[0].equals("") && FullscreenActivity.whichSongFolder.equals(c.getResources().getString(R.string.mainfoldername)))) {
+                items.add(item[1] + "_&&_" + item[2] + "_&&_" + item[3]);
+                Log.d("d",item[1] + "_&&_" + item[2] + "_&&_" + item[3]);
+            }
+        }
+
+        FullscreenActivity.songDetails = new String[items.size()][3];
+        for (int x=0; x<items.size(); x++) {
+            String[] bits = items.get(x).split("_&&_");
+            if (bits.length > 0 && bits[0] != null) {
+                FullscreenActivity.songDetails[x][0] = bits[0];
+            } else {
+                FullscreenActivity.songDetails[x][0] = "?";
+            }
+            if (bits.length > 1 && bits[1] != null) {
+                FullscreenActivity.songDetails[x][1] = bits[1];
+            } else {
+                FullscreenActivity.songDetails[x][1] = "";
+            }
+            if (bits.length > 2 && bits[2] != null) {
+                FullscreenActivity.songDetails[x][2] = bits[2];
+            } else {
+                FullscreenActivity.songDetails[x][2] = "";
+            }
+
+        }
+
+
+/*        // Go through each song in the current folder and extract the title, key and author
         // If not a valid song, just return the file name
+        Log.d("d","getSongDetails called: mSongFileNames.length="+FullscreenActivity.mSongFileNames.length);
         try {
             FullscreenActivity.songDetails = new String[FullscreenActivity.mSongFileNames.length][3];
             boolean fileextensionok;
             String utf;
+
             for (int r = 0; r < FullscreenActivity.mSongFileNames.length; r++) {
                 String s = FullscreenActivity.mSongFileNames[r];
+                Log.d("d","s="+s);
                 boolean isdir = s.startsWith("/") && s.endsWith("/");
                 String[] vals = new String[3];
                 Uri uri;
@@ -214,7 +258,7 @@ public class ListSongFiles {
         //numDirs is zerobased index >> horrible hack.
         if (FullscreenActivity.numDirs > 0) {
             FullscreenActivity.numDirs += 1;
-        }
+        }*/
     }
 
     static void getCurrentSongIndex() {

@@ -2,6 +2,7 @@ package com.garethevans.church.opensongtablet;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -31,7 +32,9 @@ public class SongMenuListeners extends Activity {
                 try {
                     if (FullscreenActivity.mSongFileNames.length > i) {
                         if (FullscreenActivity.songDetails[i][2].equals(c.getString(R.string.songsinfolder))) {
-                            String s = FullscreenActivity.songDetails[i][1];
+                            Log.d("SongMenuListener","Song folder");
+                            String s = FullscreenActivity.songDetails[i][0];
+                            Log.d("SongMenuListener","s="+s);
                             if (s.startsWith("/")) {
                                 s = s.replaceFirst("/", "");
                             }

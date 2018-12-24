@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -66,35 +67,48 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
 
                 // download the file
                 input = connection.getInputStream();
+                if (input!=null) {
 
-                uri = storageAccess.getUriForItem(c,"","",filename);
-                outputStream = storageAccess.getOutputStream(c,uri);
-
-                byte data[] = new byte[4096];
-                long total = 0;
-                int count;
-                while ((count = input.read(data)) != -1) {
-                    // allow canceling with back button
-                    if (isCancelled()) {
-                        input.close();
-                        return null;
+                    uri = storageAccess.getUriForItem(c, "", "", filename);
+                    Log.d("d","uri = "+uri);
+                    Log.d("d","uriExists()="+storageAccess.uriExists(c,uri));
+                    if (storageAccess.lollipopOrLater() && !storageAccess.uriExists(c, uri)) {
+                        storageAccess.createFile(c, null, "", "", filename);
+                        Log.d("d","Trying to create");
+                        uri = storageAccess.getUriForItem(c, "", "", filename);
+                        Log.d("d","uriExitst = "+storageAccess.uriExists(c,uri));
                     }
-                    total += count;
-                    // publishing the progress....
-                    if (fileLength > 0) // only if total length is known
-                        publishProgress((int) (total * 100 / fileLength));
-                    outputStream.write(data, 0, count);
+                    outputStream = storageAccess.getOutputStream(c, uri);
+
+                    byte data[] = new byte[4096];
+                    long total = 0;
+                    int count;
+                    while ((count = input.read(data)) != -1) {
+                        // allow canceling with back button
+                        if (isCancelled()) {
+                            input.close();
+                            return null;
+                        }
+                        total += count;
+                        // publishing the progress....
+                        if (fileLength > 0) // only if total length is known
+                            publishProgress((int) (total * 100 / fileLength));
+                        outputStream.write(data, 0, count);
+                    }
+                } else {
+                    FullscreenActivity.myToastMessage = c.getResources().getString(R.string.network_error);
                 }
             } catch (Exception e) {
-                return e.toString();
+                FullscreenActivity.myToastMessage = c.getResources().getString(R.string.network_error);
+                e.printStackTrace();
             } finally {
                 try {
                     if (outputStream != null)
                         outputStream.close();
                     if (input != null)
                         input.close();
-                } catch (Exception ignored) {
-                    ignored.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 if (connection != null)
@@ -105,10 +119,14 @@ class DownloadTask extends AsyncTask<String, Integer, String> {
 
         @Override
         protected void onPostExecute(String s) {
-            FullscreenActivity.whattodo = "processimportosb";
-            FullscreenActivity.file_uri = uri;
-            if (mListener!=null) {
-                mListener.openFragment();
+            if (FullscreenActivity.myToastMessage.equals(c.getResources().getString(R.string.network_error))) {
+                ShowToast.showToast(c);
+            } else {
+                FullscreenActivity.whattodo = "processimportosb";
+                FullscreenActivity.file_uri = uri;
+                if (mListener != null) {
+                    mListener.openFragment();
+                }
             }
         }
 }

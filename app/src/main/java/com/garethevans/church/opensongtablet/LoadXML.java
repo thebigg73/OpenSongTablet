@@ -74,19 +74,11 @@ public class LoadXML extends Activity {
         }
 
         // Determine the file encoding
-
-
         Uri uri = storageAccess.getUriForItem(c,"Songs", FullscreenActivity.whichSongFolder,
                 FullscreenActivity.songfilename);
         if (filetype.equals("SONG") && !FullscreenActivity.songfilename.equals("Welcome to OpenSongApp")) {
             utf = storageAccess.getUTFEncoding(c,uri);
         }
-        //TODO
-        /*getFileLocation();
-
-        if (filetype.equals("SONG")) {
-            utf = getUTFEncoding(FullscreenActivity.file, c);
-        }*/
 
         // if (androidapi > 20 || !filetype.equals("PDF") && (!filetype.equals("DOC") && (!filetype.equals("IMG")))) {
         if (!filetype.equals("PDF") && !filetype.equals("DOC") && (!filetype.equals("IMG"))) {
@@ -642,7 +634,12 @@ public class LoadXML extends Activity {
                 }
             }
             // If it isn't an xml file, an error is about to be thrown
-            eventType = xpp.next();
+            try {
+                eventType = xpp.next();
+            } catch (Exception e) {
+                Log.d("d","Not xml so exiting");
+                eventType = XmlPullParser.END_DOCUMENT;
+            }
         }
 
         if (FullscreenActivity.mLyrics.equals("")) {

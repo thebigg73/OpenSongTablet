@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="network_error" translatable="false">Network error</string>
     <string name="download_new" translatable="false">Click here to download a new Bible</string>
     <string name="storage_check" translatable="false">Checking storage</string>
     <string name="load_preferences" translatable="false">Loading preferences</string>

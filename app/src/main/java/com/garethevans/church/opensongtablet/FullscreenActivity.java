@@ -95,6 +95,7 @@ public class FullscreenActivity extends AppCompatActivity {
     public static ArrayList<String> folderIds = new ArrayList<>();
     public static ArrayList<Uri> songsInFolderUris = new ArrayList<>();
     //this could be a ref to an xmlObject.
+    public static String[][] allSongDetailsForMenu;
     public static String[][] songDetails;
     public static int numDirs;
     public static Map<String, Integer> mapIndex;
@@ -216,7 +217,7 @@ public class FullscreenActivity extends AppCompatActivity {
 
     // This is for trying to automatically open songs via intent
     public static Intent incomingfile;
-    public static String file_name = "", file_location = "", file_type = "", file_contents = "";
+    public static String file_name = "", file_location = "", file_type = "";
     public static Uri file_uri;
 
     // Screencapure variables

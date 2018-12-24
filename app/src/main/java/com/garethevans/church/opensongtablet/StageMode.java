@@ -404,7 +404,7 @@ public class StageMode extends AppCompatActivity implements
             @Override
             public void run() {
                 FullscreenActivity.firstload = false;
-                rebuildSearchIndex();
+                //rebuildSearchIndex();
             }
         };
 
@@ -1012,7 +1012,6 @@ public class StageMode extends AppCompatActivity implements
                 Log.d("d","No need to close battery monitor");
             }
         }
-
 
         tryCancelAsyncTasks();
     }
@@ -2455,8 +2454,8 @@ public class StageMode extends AppCompatActivity implements
         prepareSongMenu();
         rebuildSearchIndex();
         openMyDrawers("song");
-        FullscreenActivity.whattodo = "choosefolder";
-        openFragment();
+        //FullscreenActivity.whattodo = "choosefolder";
+        //openFragment();
     }
 
     @Override
@@ -2606,7 +2605,7 @@ public class StageMode extends AppCompatActivity implements
         @Override
         protected void onPostExecute(String s) {
             try {
-                if (!cancelled) {
+                if (!cancelled && songmenu!=null && optionmenu!=null) {
                     songmenu.setLayoutParams(DrawerTweaks.resizeMenu(songmenu, width));
                     optionmenu.setLayoutParams(DrawerTweaks.resizeMenu(optionmenu, width));
                 }
@@ -3336,7 +3335,7 @@ public class StageMode extends AppCompatActivity implements
             try {
                 if (!cancelled) {
                     // If we have changed folders, redraw the song menu
-                    if (menuFolder_TextView.getText()!=null && menuFolder_TextView.getText().toString()!=null) {
+                    if (menuFolder_TextView.getText() != null) {
                         if (menuFolder_TextView.getText().toString().equals(FullscreenActivity.whichSongFolder)) {
                             // Just move to the correct song
                             findSongInFolders();
@@ -3630,6 +3629,9 @@ public class StageMode extends AppCompatActivity implements
             doCancelAsyncTask(do_download);
         }
         do_download = new DownloadTask(StageMode.this,filename);
+
+        // Only do this if we have a valid internet connection.
+
         try {
             do_download.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } catch (Exception e) {
@@ -5154,33 +5156,35 @@ public class StageMode extends AppCompatActivity implements
                     ListSongFiles.getCurrentSongIndex();
 
                     ArrayList<SongMenuViewItems> songmenulist = new ArrayList<>();
-                    for (int i = 0; i < FullscreenActivity.songDetails.length; i++) {
-                        if (FullscreenActivity.songDetails[i][0] == null) {
-                            FullscreenActivity.songDetails[i][0] = "Can't find title";
-                        }
-                        if (FullscreenActivity.songDetails[i][1] == null) {
-                            FullscreenActivity.songDetails[i][1] = "Can't find author";
-                        }
-                        if (FullscreenActivity.songDetails[i][2] == null) {
-                            FullscreenActivity.songDetails[i][2] = "Can't find key";
-                        }
+                    if (FullscreenActivity.songDetails!=null) {
+                        for (int i = 0; i < FullscreenActivity.songDetails.length; i++) {
+                            if (FullscreenActivity.songDetails[i][0] == null) {
+                                FullscreenActivity.songDetails[i][0] = "Can't find title";
+                            }
+                            if (FullscreenActivity.songDetails[i][1] == null) {
+                                FullscreenActivity.songDetails[i][1] = "Can't find author";
+                            }
+                            if (FullscreenActivity.songDetails[i][2] == null) {
+                                FullscreenActivity.songDetails[i][2] = "Can't find key";
+                            }
 
-                        // Detect if the song is in the set
-                        String whattolookfor = "$$**_**$$"; // not going to find this...
-                        if (FullscreenActivity.mSongFileNames!=null && FullscreenActivity.mSongFileNames.length>i) {
-                            whattolookfor = setActions.whatToLookFor(StageMode.this,
-                                    FullscreenActivity.whichSongFolder, FullscreenActivity.mSongFileNames[i]);
-                        }
-                        boolean isinset = false;
-                        if (FullscreenActivity.mySet.contains(whattolookfor)) {
-                            isinset = true;
-                        }
-                        try {
-                            SongMenuViewItems song = new SongMenuViewItems(FullscreenActivity.mSongFileNames[i],
-                                    FullscreenActivity.songDetails[i][0], FullscreenActivity.songDetails[i][1], FullscreenActivity.songDetails[i][2], isinset);
-                            songmenulist.add(song);
-                        } catch (Exception e) {
-                            // Probably moving too quickly
+                            // Detect if the song is in the set
+                            String whattolookfor = "$$**_**$$"; // not going to find this...
+                            if (FullscreenActivity.mSongFileNames != null && FullscreenActivity.mSongFileNames.length > i) {
+                                whattolookfor = setActions.whatToLookFor(StageMode.this,
+                                        FullscreenActivity.whichSongFolder, FullscreenActivity.mSongFileNames[i]);
+                            }
+                            boolean isinset = false;
+                            if (FullscreenActivity.mySet.contains(whattolookfor)) {
+                                isinset = true;
+                            }
+                            try {
+                                SongMenuViewItems song = new SongMenuViewItems(FullscreenActivity.mSongFileNames[i],
+                                        FullscreenActivity.songDetails[i][0], FullscreenActivity.songDetails[i][1], FullscreenActivity.songDetails[i][2], isinset);
+                                songmenulist.add(song);
+                            } catch (Exception e) {
+                                // Probably moving too quickly
+                            }
                         }
                     }
 
@@ -5750,6 +5754,7 @@ public class StageMode extends AppCompatActivity implements
                             "", "",
                             "", "", "2"); // Deleted
                 }
+                FullscreenActivity.songfilename = "Welcome to OpenSongApp";
                 Preferences.savePreferences();
                 // Rebuild the song list
                 storageAccess.listSongs(StageMode.this);

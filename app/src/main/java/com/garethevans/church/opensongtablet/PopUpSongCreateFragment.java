@@ -44,6 +44,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
     public interface MyInterface {
         void doEdit();
         void loadSong();
+        void prepareSongMenu();
     }
 
     @Override
@@ -165,7 +166,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                     substring(FullscreenActivity.mCurrentPhotoPath.lastIndexOf("/")+1);
 
             // If no name is specified, use the original ugly one
-            if (tempNewSong.isEmpty() || tempNewSong.equals("")) {
+            if (tempNewSong.isEmpty()) {
                 tempNewSong = currimagename;
             }
 
@@ -232,6 +233,7 @@ public class PopUpSongCreateFragment extends DialogFragment {
                 }
 
                 // Save the file
+                storageAccess.createFile(getActivity(), null,"Songs",FullscreenActivity.whichSongFolder,FullscreenActivity.songfilename);
                 Uri uri = storageAccess.getUriForItem(getActivity(),"Songs",FullscreenActivity.whichSongFolder,
                         FullscreenActivity.songfilename);
                 OutputStream outputStream = storageAccess.getOutputStream(getActivity(),uri);
@@ -244,8 +246,9 @@ public class PopUpSongCreateFragment extends DialogFragment {
                     e.printStackTrace();
                 }
 
-                // Tell the main page to now edit the song
+                // Tell the main page to now edit the song and refresh the song menu
                 if (mListener != null) {
+                    mListener.prepareSongMenu();
                     mListener.doEdit();
                 }
 

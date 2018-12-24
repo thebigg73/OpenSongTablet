@@ -11,9 +11,13 @@ class DrawerTweaks {
     private static Handler optionMenuFlickClosed = new Handler();
 
     static DrawerLayout.LayoutParams resizeMenu(View thismenu, int width) {
-        DrawerLayout.LayoutParams lp = (DrawerLayout.LayoutParams) thismenu.getLayoutParams();
-        lp.width = width;
-        return lp;
+        if (thismenu!=null) {
+            DrawerLayout.LayoutParams lp = (DrawerLayout.LayoutParams) thismenu.getLayoutParams();
+            lp.width = width;
+            return lp;
+        } else {
+            return null;
+        }
     }
 
     static void openMyDrawers(DrawerLayout drawer,

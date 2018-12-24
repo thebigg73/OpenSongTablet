@@ -74,7 +74,7 @@ class StorageAccess {
                 if (lollipopOrLater()) {
                     uri = Uri.parse(uriTree);
                     if (uri != null) {
-                        DocumentFile df = documentFileFromUri(c, uri, uriTree);
+                        DocumentFile df = documentFileFromRootUri(c, uri, uriTree);
                         if (df == null || !df.exists()) {
                             uri = null;
                         }
@@ -104,7 +104,7 @@ class StorageAccess {
         //Make sure FullscreenActivity.uriTree is set
         homeFolder(c);
         FullscreenActivity.appHome = null;
-        DocumentFile df = documentFileFromUri(c, FullscreenActivity.uriTree, uriTree);
+        DocumentFile df = documentFileFromRootUri(c, FullscreenActivity.uriTree, uriTree);
 
         if (df != null) {
             // Check if we are in the app folder
@@ -218,6 +218,10 @@ class StorageAccess {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private Uri getUriFromPath(Context c, String folder, String subfolder, String filename) {
         // Use the appHome uri
+        if (FullscreenActivity.appHome==null) {
+            FullscreenActivity.appHome = getAppFolderDocumentFile(c);
+        }
+
         Uri uri = FullscreenActivity.appHome.getUri();
 
         if (uri != null) {
@@ -324,9 +328,19 @@ class StorageAccess {
         return FileProvider.getUriForFile(c,"OpenSongAppFiles",f);
     }
 
-    DocumentFile documentFileFromUri(Context c, Uri uri, String path) {
+    DocumentFile documentFileFromRootUri(Context c, Uri uri, String path) {
         if (uri != null && lollipopOrLater()) {
             return DocumentFile.fromTreeUri(c, uri);
+        } else if (path != null) {
+            File f = new File(path);
+            return DocumentFile.fromFile(f);
+        } else {
+            return null;
+        }
+    }
+    private DocumentFile documentFileFromUri(Context c, Uri uri, String path) {
+        if (uri != null && lollipopOrLater()) {
+            return DocumentFile.fromSingleUri(c, uri);
         } else if (path != null) {
             File f = new File(path);
             return DocumentFile.fromFile(f);
@@ -338,7 +352,6 @@ class StorageAccess {
     @SuppressLint("NewApi")
     String getDocumentsContractId(Uri uri) {
         if (lollipopOrLater()) {
-            Log.d("StorageAccess", "Setting for Lollipop");
             return DocumentsContract.getTreeDocumentId(uri);
         } else {
             return null;
@@ -436,19 +449,20 @@ class StorageAccess {
         try {
             return c.getContentResolver().openInputStream(uri);
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
     OutputStream getOutputStream(Context c, Uri uri) {
-        try {
-            Log.d("d","uri="+uri);
-            return c.getContentResolver().openOutputStream(uri);
-        } catch (Exception e) {
-            Log.d("d","error getting outputstream");
-            //e.printStackTrace();
-            return null;
+        if (uriExists(c, uri) || !lollipopOrLater()) {
+            try {
+                return c.getContentResolver().openOutputStream(uri);
+            } catch (Exception e) {
+                Log.d("d", "error getting outputstream");
+                e.printStackTrace();
+                return null;
+            }
         }
+        return null;
     }
 
 
@@ -487,18 +501,28 @@ class StorageAccess {
     // This builds an index of all the songs on the device
     @SuppressLint("NewApi")
     void listSongs(Context c) {
-        // Decide if we are using storage access framework or not
-        if (lollipopOrLater()) {
-            listSongs_SAF(c);
-        } else {
-            listSongs_File(c);
+        try {
+            // Decide if we are using storage access framework or not
+            if (lollipopOrLater()) {
+                listSongs_SAF(c);
+            } else {
+                listSongs_File(c);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void listSongs_SAF(Context c) {
+        // This gets all songs (including any subfolders)
         FullscreenActivity.songIds = new ArrayList<>();
+        FullscreenActivity.songIds.clear();
         FullscreenActivity.folderIds = new ArrayList<>();
+        FullscreenActivity.folderIds.clear();
 
+        if (FullscreenActivity.appHome==null) {
+            FullscreenActivity.appHome = getAppFolderDocumentFile(c);
+        }
         DocumentFile df_songs = FullscreenActivity.appHome.findFile("Songs");
         Uri uri = df_songs.getUri();
 
@@ -527,9 +551,11 @@ class StorageAccess {
                         if (DocumentsContract.Document.MIME_TYPE_DIR.equals(mime) && docId.contains("OpenSong")) {
                             final Uri newNode = getChildren(children, docId);
                             dirNodes.add(newNode);
-                            //Log.d("d","newNode="+newNode);
+                            if (docId.contains("OpenSong/Songs/")) {
+                                FullscreenActivity.folderIds.add(docId);
+                                FullscreenActivity.songIds.add(docId+"/"); // In case the folder is empty add it as a songId
+                            }
                         } else if (docId.contains("OpenSong/Songs")) {
-                            //Log.d("d","docId="+docId);
                             FullscreenActivity.songIds.add(docId);
                         }
                     }
@@ -549,16 +575,13 @@ class StorageAccess {
                 s=s.substring(s.indexOf("OpenSong/Songs/")+15);
             }
             if (!tempfolders.contains(s)) {
+                // Add this new folder/subfolder
                 tempfolders.add(s);
             }
         }
 
         FullscreenActivity.folderIds.clear();
         FullscreenActivity.folderIds = tempfolders;
-
-        for (String s:FullscreenActivity.folderIds) {
-            Log.d("d","folder="+s);
-        }
     }
     private void listSongs_File(Context c) {
         // We must be using an older version of Android, so stick with File access
@@ -587,16 +610,18 @@ class StorageAccess {
                 }
             }
         }
+        Log.d("StorageAccess","folderIds.size()="+FullscreenActivity.folderIds.size());
         getSongFolderNames(c);
     }
 
     private void getSongFolderNames(Context c) {
         // Use the folderIds to get the song folders found
         ArrayList<String> folders = new ArrayList<>();
+        folders.clear();
         FullscreenActivity.mSongFolderNames = null;
-        String bittoremove = getUriForItem(c,"Songs","","").getPath() + "/";
+        String bittoremove = getUriForItem(c,"Songs",FullscreenActivity.whichSongFolder,"").getPath() + "/";
         for (String s:FullscreenActivity.folderIds) {
-            folders.add(s.replace(bittoremove,""));
+            folders.add(s.replace(bittoremove, ""));
         }
 
         // Remove any duplicates
@@ -711,28 +736,38 @@ class StorageAccess {
     boolean createFile(Context c, String mimeType, String folder, String subfolder, String filename) {
         String[] fixedfolders = fixFoldersAndFiles(c, folder, subfolder, filename);
         if (lollipopOrLater()) {
-            return createFile_SAF(mimeType, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
+            return createFile_SAF(c, mimeType, fixedfolders[0], fixedfolders[1], fixedfolders[2]);
         } else {
             return createFile_File(fixedfolders[0], fixedfolders[1], fixedfolders[2]);
         }
     }
-    private boolean createFile_SAF(String mimeType, String folder, String subfolder, String filename) {
+    private boolean createFile_SAF(Context c, String mimeType, String folder, String subfolder, String filename) {
+        if (FullscreenActivity.appHome==null) {
+            FullscreenActivity.appHome = getAppFolderDocumentFile(c);
+        }
         DocumentFile df = FullscreenActivity.appHome;
         DocumentFile df_parent;
-        boolean createdStuff = false;
-        if (df != null && df.findFile(folder) != null) {
-            df_parent = df.findFile(folder);
 
+        boolean createdStuff = false;
+        if (df != null && df.findFile(folder) != null && !folder.equals("")) {
+            df_parent = df.findFile(folder);
+        } else {
+            df_parent = df;
+        }
+
+        if (df!=null) {
             // Split the subfolder up if required
-            String[] subfolders = subfolder.split("/");
-            for (String sf : subfolders) {
-                if (sf != null && !sf.isEmpty()) {
-                    if (df_parent != null && df_parent.findFile(sf) == null) {
-                        // Create this folder
-                        df_parent.createDirectory(sf);
-                        createdStuff = true;
-                    } else if (df_parent != null && df_parent.findFile(sf) != null) {
-                        df_parent = df_parent.findFile(sf);
+            if (!subfolder.equals("")) {
+                String[] subfolders = subfolder.split("/");
+                for (String sf : subfolders) {
+                    if (sf != null && !sf.isEmpty()) {
+                        if (df_parent != null && df_parent.findFile(sf) == null) {
+                            // Create this folder
+                            df_parent.createDirectory(sf);
+                            createdStuff = true;
+                        } else if (df_parent != null && df_parent.findFile(sf) != null) {
+                            df_parent = df_parent.findFile(sf);
+                        }
                     }
                 }
             }
@@ -783,9 +818,9 @@ class StorageAccess {
             utf = ubis.getBOM().toString();
 
         } catch (Exception e) {
-            FullscreenActivity.myXML = "<title>Love everlasting</title>\n<author></author>\n<lyrics>"
-                    + c.getResources().getString(R.string.songdoesntexist) + "\n\n" + "</lyrics>";
-            FullscreenActivity.myLyrics = "ERROR!";
+            FullscreenActivity.myXML = "<title>Welcome to OpenSongApp</title>\n<author>Gareth Evans</author>\n<lyrics>"
+                    + c.getResources().getString(R.string.user_guide) + "\n\n" + "</lyrics>";
+            FullscreenActivity.myLyrics = c.getResources().getString(R.string.user_guide);
         }
         try {
             if (is != null) {
@@ -827,34 +862,6 @@ class StorageAccess {
         }
     }
 
-    void createBlankDocumentFile(Context c, Uri uri, String location) {
-        DocumentFile df = DocumentFile.fromTreeUri(c,uri);
-        DocumentFile test;
-        String[] bits = location.split("/");
-        if (bits.length>1) {
-            // There are sub folders
-            for (int x=0;x<bits.length-1;x++) {
-                uri = Uri.withAppendedPath(uri,bits[x]);
-                test = DocumentFile.fromTreeUri(c,uri);
-                uri = test.getUri();
-                Log.d("d","uri of directory = "+uri);
-                if (!uriExists(c,uri)) {
-                    df = df.createDirectory(bits[x]);
-                    Log.d("d","creating Directory "+bits[x]);
-                    uri = df.getUri();
-                }
-            }
-        }
-        uri = Uri.withAppendedPath(uri, bits[bits.length-1]);
-        test = DocumentFile.fromTreeUri(c,uri);
-        uri = test.getUri();
-        Log.d("d","uri of file = "+uri);
-
-        if (!uriExists(c,uri)) {
-            df.createFile(null,bits[bits.length-1]);
-            Log.d("d","creating File "+bits[bits.length-1]);
-        }
-    }
 
     boolean uriExists(Context c, Uri uri) {
         if (lollipopOrLater()) {
@@ -891,7 +898,7 @@ class StorageAccess {
         }
     }
     private boolean uriIsFile_SAF(Context c, Uri uri) {
-        DocumentFile df = DocumentFile.fromTreeUri(c,uri);
+        DocumentFile df = DocumentFile.fromSingleUri(c,uri);
         return df.isFile();
     }
     private boolean uriIsFile_File(Uri uri) {
@@ -900,6 +907,16 @@ class StorageAccess {
             return f.isFile();
         } else {
             return false;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    Uri createDocument(Context c, Uri uri, String name) {
+        try {
+            return DocumentsContract.createDocument(c.getContentResolver(), uri, null, name);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -926,22 +943,35 @@ class StorageAccess {
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private ArrayList<String> listFilesInFolder_SAF(Context c, String folder, String subfolder) {
+        Log.d("StorageAccess","Started listing files in folder");
         ArrayList<String> al = new ArrayList<>();
-        DocumentFile df = FullscreenActivity.appHome.findFile(folder);
-        //Split the subfolder up incase there is more than one!
-        String[] sfs = subfolder.split("/");
-        for (String sf:sfs) {
-            if (sf!=null && !sf.isEmpty() && df.findFile(sf)!=null) {
-                df = df.findFile(sf);
-            }
+        Uri root = DocumentsContract.buildDocumentUriUsingTree(FullscreenActivity.uriTree,
+                DocumentsContract.getDocumentId(FullscreenActivity.uriTree));
+
+        String appendPath="";
+
+        if (folder!=null && !folder.equals("")) {
+            appendPath += folder + "/";
         }
-        Uri uri = df.getUri();
+
+        if (subfolder!=null && !subfolder.equals("") && !subfolder.equals(c.getResources().getString(R.string.mainfoldername))) {
+            appendPath += subfolder + "/";
+        }
+
+        if (appendPath.endsWith("/")) {
+            appendPath = appendPath.substring(0,appendPath.lastIndexOf("/"));
+        }
+
+        Uri locationtoindex = root;
+        if (!appendPath.equals("")) {
+            locationtoindex = Uri.withAppendedPath(root, Uri.encode(appendPath));
+        }
 
         // Now get a documents contract at this location
-        String id = getDocumentsContractId(uri);
+        String id = getDocumentsContractId(locationtoindex);
 
         // Get the children
-        Uri children = getChildren(uri, id);
+        Uri children = getChildren(locationtoindex, id);
         ContentResolver contentResolver = c.getContentResolver();
 
         // Keep track of our directory hierarchy
@@ -969,6 +999,7 @@ class StorageAccess {
                 e.printStackTrace();
             }
         }
+        Log.d("StorageAccess","Ended listing files in folder");
         return al;
     }
     private ArrayList<String> listFilesInFolder_File(String folder, String subfolder) {
@@ -1208,8 +1239,10 @@ class StorageAccess {
         }
     }
     private boolean deleteFile_SAF(Context c, Uri uri) {
-        DocumentFile df = DocumentFile.fromTreeUri(c, uri);
+        DocumentFile df = DocumentFile.fromSingleUri(c,uri);
+        Log.d("d","trying to delete uri="+uri);
         return df.delete();
+        //return false;
     }
     private boolean deleteFile_File(Uri uri) {
         try {
@@ -1238,7 +1271,7 @@ class StorageAccess {
         }
     }
     private boolean renameFile_SAF(Context c, Uri olduri, String name) {
-        DocumentFile olddf = DocumentFile.fromTreeUri(c,olduri);
+        DocumentFile olddf = DocumentFile.fromSingleUri(c,olduri);
         return olddf.renameTo(name);
     }
     private boolean renameFile_File(Uri olduri, String name) {
@@ -1286,7 +1319,7 @@ class StorageAccess {
         }
     }
     private boolean canWrite_SAF(Context c, Uri uri) {
-        DocumentFile df = DocumentFile.fromTreeUri(c,uri);
+        DocumentFile df = DocumentFile.fromSingleUri(c,uri);
         return df.canWrite();
     }
     private boolean canWrite_File(Uri uri) {
